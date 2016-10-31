@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Page</title>
+    <link rel="stylesheet" type="text/css" href="../lib/bootstrap/css/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="../lib/angular-ui/angular-ui.css"/>
+    <link rel="stylesheet" type="text/css" href="../lib/codemirror/codemirror.css"/>
+    <link rel="stylesheet" type="text/css" href="../lib/codemirror/show-hint.css"/>
+
+    <!--here's the place for any css and less you may need-->
+    <link rel="stylesheet/less" type="text/css" href="../src/less/main.less"/>
+    <script src="../lib/less/less-1.5.0.min.js" type="text/javascript"></script>
+
+<style>
+
+    .my-page {
+        margin-top: 10px;
+    }
+
+    .name-expression {
+        background-color: yellowgreen;
+        padding: 2px;
+    }
+
+    .full-editor {
+        position: relative;
+        background-color: lightgoldenrodyellow;
+        padding: 2px;
+        max-height: 200px;
+        overflow: auto;
+    }
+
+</style>
+</head>
+
+<body ng-app="app">
+
+<div class="my-page container-fluid" ng-controller="myController">
+
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6">
+            <p class="clearfix">inline template editor
+                <button class="btn-link pull-right" ng-click="showTemplateEditor()">edit</button>
+            </p>
+
+            <sp-expression-editor class="name-expression multiline-expression" ng-model="templateText"
+                                  context="contextId" params="params"
+                                  mode="inline"></sp-expression-editor>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6">
+            <p>full template editor</p>
+            <sp-expression-editor class="full-editor multiline-expression" ng-model="templateText" context="contextId"
+                                  params="params"
+                                  mode="'full'"></sp-expression-editor>
+            <sp-view-region-container region="template-editor"></sp-view-region-container>
+        </div>
+    </div>
+    <hr/>
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6">
+            <p class="clearfix">inline expression editor
+                <button class="btn-link pull-right" ng-click="showExpressionEditor()">edit</button>
+            </p>
+            <sp-expression-editor class="name-expression" ng-model="expressionText" context="contextId" params="params"
+                                  mode="inline"></sp-expression-editor>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6">
+            <p>full expression editor</p>
+            <sp-expression-editor class="full-editor" ng-model="expressionText" context="contextId" params="params"
+                                  mode="'full'"></sp-expression-editor>
+            <sp-view-region-container region="expression-editor"></sp-view-region-container>
+        </div>
+    </div>
+    <hr/>
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6">
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6">
+            <sp-view-region-container region="the-editor"></sp-view-region-container>
+        </div>
+    </div>
+    <hr/>
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6">
+            <sp-workflow-expression-control></sp-workflow-expression-control>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6">
+            <sp-view-region-container region="side-region-3"></sp-view-region-container>
+        </div>
+    </div>
+    <hr/>
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <p>Debug for the hosting page:</p>
+            <pre>{{expressionText}}</pre>
+            <pre>{{expressionText2}}</pre>
+            <pre>{{params}}</pre>
+        </div>
+    </div>
+
+</div>
+
+<script type="text/ng-template" id="expression-editor-view">
+    <div>
+        <div class="clearfix">
+            <button class="pull-right btn-link" ng-click="view.cancel(); close()">cancel</button>
+            <button class="pull-right btn-link" ng-click="view.apply(); close()">ok</button>
+            <button class="pull-right btn-link" ng-click="view.cancel()"><img src="assets/images/reset.png" />reset</button>
+            <button class="pull-right btn-link" ng-click="view.apply()">apply</button>
+        </div>
+        <sp-expression-editor class="full-editor multiline-expression"
+                              ng-model="view.model" context="view.contextId" params="view.params"
+                              mode="'full'">
+        </sp-expression-editor>
+    </div>
+</script>
+
+<script type="text/ng-template" id="workflowExpressionControl.tpl.html">
+    <div>
+        hello
+    </div>
+</script>
+
+<script src="../src/components/utils/console.js"></script>
+<script src="../lib/jquery/jquery.js"></script>
+<script src="../lib/angular/angular.js"></script>
+<script src="../lib/angular/angular-animate.js"></script>
+<script src="../lib/bootstrap/js/bootstrap.js"></script>
+<script src="../lib/lodash/lodash.js"></script>
+<script src="../lib/angular-ui/angular-ui.js"></script>
+<script src="../lib/jsTimezoneDetect/jstz.js"></script>
+
+<script src="../lib/codemirror/codemirror.js"></script>
+<script src="../lib/codemirror/show-hint.js"></script>
+<script src="../lib/codemirror/multiplex.js"></script>
+<!--<script src="../lib/codemirror/sql-hint.js"></script>-->
+<!--<script src="../lib/codemirror/anyword-hint.js"></script>-->
+
+<script src="../src/components/entity/spEntity.js"></script>
+<script src="../src/components/entity/spEntity.Dict.js"></script>
+<script src="../src/components/entity/spEntity.Entity.js"></script>
+<script src="../src/components/entity/spEntity.Field.js"></script>
+<script src="../src/components/entity/spEntity.Entity.js"></script>
+<script src="../src/components/entity/spEntity.EntityRef.js"></script>
+<script src="../src/components/entity/spEntity.Field.js"></script>
+<script src="../src/components/entity/spEntity.JSON.js"></script>
+<script src="../src/components/entity/spEntity.Relationship.js"></script>
+<script src="../src/components/entity/spEntity.fromRawV1.js"></script>
+<script src="../src/components/entity/spEntity.fromRawV2.js"></script>
+<script src="../src/components/entity/aliases.js"></script>
+<script src="../src/components/entity/spResource.js"></script>
+
+<!--to use spUtils you need spEntity to be before it -->
+<!--... some evil dependencies have found their way in and need to be removed-->
+<script src="../src/components/utils/spUtils.js"></script>
+
+<!--include any other source files you need here (or where ever they need to be) -->
+<script src="../src/components/utils/spWebService.js"></script>
+<script src="../src/components/entity/spEntityService.js"></script>
+<script src="../src/components/calcService/calcService.js"></script>
+<script src="../src/components/localStorage/localStorage.js"></script>
+<script src="../src/components/codemirror/spql.js"></script>
+<script src="../src/components/expressionEditor/expressionEditor.js"></script>
+<script src="../src/components/viewRegion/viewRegion.js"></script>
+<script src="../src/components/layout/layout.js"></script>
+<script src="../src/app/appSettings.js"></script>
+
+
+<script>
+    'use strict';
+
+    var mappedTemplateUrls = {};
+
+    angular.module('app', [
+        'ngAnimate',
+        'sp.common.ui.expressionEditor',
+        'mod.common.spEntityService',
+        'mod.common.viewRegion',
+        'mod.common.ui.layout'
+    ])
+            .config(function ($provide, $httpProvider) {
+                $httpProvider.interceptors.push(function ($q) {
+                    return {
+                        'request': function (config) {
+                            //console.log('http request', config.url);
+                            if (config.url.match(/\.tpl\.html/) && mappedTemplateUrls[config.url]) {
+                                config.url = mappedTemplateUrls[config.url];
+                                console.log('MAPPED to', config.url);
+                            }
+                            return config;
+                        }
+                    };
+                });
+            })
+            .run(function (spWebService) {
+                function appTemplate(templateUrl) {
+                    mappedTemplateUrls[templateUrl.substring('src/app/'.length)] = '../' + templateUrl;
+                }
+
+                function componentTemplate(templateUrl) {
+                    mappedTemplateUrls[templateUrl.substring('src/components/'.length)] = '../' + templateUrl;
+                }
+
+                // add your app and component templates here...
+                // this is needed to get the paths correct since we aren't using the build system
+
+                componentTemplate('src/components/expressionEditor/expressionEditor.tpl.html');
+                componentTemplate('src/components/expressionEditor/templateEditor.tpl.html');
+
+                // authenticate with test account, if you need it...
+                spWebService.setHeader('Authorization', 'Basic RURDXEFkbWluaXN0cmF0b3I6UGFzc3dvcmQ=');
+            })
+            .directive('spWorkflowExpressionControl', function() {
+                return {
+                    restrict: 'E',
+                    templateUrl: 'workflowExpressionControl.tpl.html',
+                    link: function (scope, elem, attrs) {
+
+                    }
+                };
+            })
+            .controller('myController', function ($scope, spEntityService, spViewRegionService) {
+
+                $scope.myTitle = 'hello world';
+                $scope.expressionText = '[ResourceId]';
+                $scope.templateText = 'Hello {{[ResourceId]}}, your manager is {{[ResourceId].[Manager]}}!';
+                $scope.params = [
+                    { name: 'Default Name', typeName: 'String' },
+                    { name: 'Direct Reports', expression: 'Manager.[Direct Reports]' },
+                    { name: 'ResourceId', typeName: 'Entity', entityTypeId: 'test:employee' },
+                    { name: 'Manager', expression: '[ResourceId].Manager' }
+                ];
+                $scope.contextId = null;
+
+//                spEntityService.getEntity('resource', 'name,isOfType.alias').then(function (entity) {
+//                    $scope.contextId = entity.id();
+//                });
+
+//                spEntityService.getEntity('test:aaScottHopwood', 'name,isOfType.alias').then(function (entity) {
+//                    $scope.params = $scope.params.concat([{ name: 'Manager Lookup.Value', typeName: 'Entity', entityTypeId: entity.getType().id() }]);
+//                });
+
+
+                $scope.showTemplateEditor = function () {
+                    var view = {
+                        templateUrl: 'expression-editor-view',
+                        model: $scope.templateText,
+                        contextId: $scope.contextId,
+                        params: $scope.params,
+                        apply: function () {
+                            $scope.templateText = this.model;
+                        },
+                        cancel: function () {
+                            this.model = $scope.templateText;
+                        }
+                    };
+                    spViewRegionService.pushView('template-editor', view);
+                    spViewRegionService.pushView('the-editor', view);
+                    $scope.$emit('app.layout');
+                };
+
+                $scope.showExpressionEditor = function () {
+                    var view = {
+                        templateUrl: 'expression-editor-view',
+                        model: $scope.expressionText,
+                        contextId: $scope.contextId,
+                        params: $scope.params
+                    };
+                    spViewRegionService.pushView('expression-editor', view);
+                    spViewRegionService.pushView('the-editor', view);
+                    $scope.$emit('app.layout');
+                };
+
+            });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,58 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+.report-Builder-Page {
+
+    .report-Builder-ToolBar {
+        top: 0;
+        .builder-ToolBar;
+    }
+
+    .report-header {
+        position: absolute;
+        height: auto;
+        z-index: 5;
+        top:30px;
+
+        .description {
+            padding-left: 5px;
+            display: inline-block;
+            color: #999;
+
+            &:empty {
+                height:0;
+            }
+        }
+    }
+
+    .report-content {
+        position: absolute;
+        top: 90px;
+        right: 30px;
+        left: 30px;
+        bottom: 0px;
+        margin-bottom: 0px;
+    }
+
+    .report-footer {
+        position: absolute;
+        height: 2px;
+        bottom: 0;
+    }
+
+    .reportDataGridStyle {
+        position: absolute;
+        top: 30px;
+        bottom: 0;
+        margin-top: auto;
+        height: auto;
+        width:100%;
+    }
+
+    .gridStyle {
+        border: 0px solid #d4d4d4;
+        background: none;
+
+        &.ngGrid {
+            background-color: none;
+        }
+    }
+}

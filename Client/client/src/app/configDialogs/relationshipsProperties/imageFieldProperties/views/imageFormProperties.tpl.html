@@ -1,0 +1,40 @@
+<div>
+    <div>
+        <div class="edit-form-title">
+            <label>Mandatory: </label>
+        </div>
+        <div class="edit-form-value">
+            <input type="checkbox" ng-model="model.formControl.mandatoryControl" ng-disabled="model.formControl.readOnlyControl" />
+        </div>
+    </div>
+    <div>
+        <div class="edit-form-title">
+            <label>Read Only: </label>
+        </div>
+        <div class="edit-form-value">
+            <input type="checkbox" ng-model="model.formControl.readOnlyControl" ng-disabled="model.formControl.mandatoryControl" />
+        </div>
+    </div>
+    <span class="divide-formproperties-field"></span>
+    <div>
+        <div class="edit-form-title">
+            <label>Thumbnail Size: </label>
+        </div>
+        <div class="edit-form-value">
+            <select ng-selected="model.thumbnailSizeSetting" ng-options="size.getName() for size in model.thumbNailSize" ng-model="model.thumbnailSizeSetting"></select>
+        </div>
+    </div>
+    <div>
+        <div class="edit-form-title" style="vertical-align: text-top">
+            <label>Thumbnail Scaling: </label>
+        </div>
+        <div class="edit-form-value">
+            <ul class="thumbnailScalingOptoin">
+                <li ng-repeat="scaling in model.thumbNailScaling">
+                    <input type="radio" name="scaling" ng-model="$parent.model.thumbnailScalingSetting" ng-value="scaling" text="{{scaling.getName()}}" />
+                    <span style="color:#666; font-weight:normal;">{{scaling.getName()}}</span><br />{{scaling.getDescription()}}
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

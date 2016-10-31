@@ -1,0 +1,24 @@
+<div class="spConditionalFormattingDialog-view" sp-moveable-modal sp-set-focus-dialog-input>
+
+    <div class="modal-header">
+        <h6>Format</h6>
+        <h7>Name: {{model.name}}</h7>
+    </div>
+    <div class="modal-body overflowModalBody">
+        <uib-tabset>
+            <uib-tab heading="Conditional Formatting" select="clearErrors()" ng-show="model.condFormatting.hasCondFormatting">
+                <ng-include src="'conditionalFormatting/spConditionalFormattingTab.tpl.html'"></ng-include>
+            </uib-tab>
+            <uib-tab heading="Value Formatting" select="clearErrors()" ng-show="model.valueFormatting.hasValueFormatting">
+                <ng-include src="'conditionalFormatting/spValueFormattingTab.tpl.html'"></ng-include>
+            </uib-tab>
+            <uib-tab heading="Image Formatting" select="clearErrors()" ng-show="model.imageFormatting.hasImageFormatting" active="model.imageFormatting.imageTabActive">
+                <ng-include src="'conditionalFormatting/spImageFormattingTab.tpl.html'"></ng-include>
+            </uib-tab>
+        </uib-tabset>
+        <uib-alert class="alerter" ng-repeat="error in model.errors" type="error.type">{{error.msg}}</uib-alert>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn" ng-click="ok()">OK</button><button type="button" class="btn" ng-click="cancel()">Cancel</button>
+    </div>
+</div>

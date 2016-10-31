@@ -1,0 +1,33 @@
+<!-- Script Name -->
+<div>
+    <sp-control-on-form form-data="model.formData" form-control="model.scriptNameControl" form-mode="model.formMode" is-read-only="model.isReadOnly" is-in-test-mode="model.isInTestMode">
+    </sp-control-on-form>
+</div>
+
+<!-- Mandatory -->
+<div>
+    <div class="edit-form-title">
+        <label>Mandatory: </label>
+    </div>
+    <div class="edit-form-value">
+        <input type="checkbox" ng-model="model.relationshipToRender.relationshipIsMandatory" />
+    </div>
+</div>
+
+<!-- Type -->
+<div class="edit-form-control-container">
+    <div class="edit-form-title"><label class="form-label">Type </label></div>
+    <div class="edit-form-value">
+        <select ng-selected="model.selectedType" ng-options="option.name for option in model.typeOptions" ng-model="model.selectedType" ng-disabled="!isNewRelationship"></select>
+    </div>
+</div>
+
+<!-- Default Value -->
+<div class="edit-form-control-container">
+    <div class="edit-form-title"><label>Default Value</label></div>
+    <div class="edit-form-value">
+        <select ng-selected="model.toTypeDefaultValue" ng-options="value.name for value in model.choiceValues" ng-model="model.toTypeDefaultValue">
+            <option value="">[Select]</option>
+        </select>
+    </div>
+</div>

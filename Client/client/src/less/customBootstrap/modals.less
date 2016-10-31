@@ -1,0 +1,484 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+/////
+// SoftwarePlatform bootstrap modal overrides.
+/////.headerPanel button
+
+.modal {
+
+
+    .sp-mobile-device & {
+        overflow-y: hidden;
+    }
+}
+
+.modal-content {
+    position: relative;
+    background-color: @modal-content-bg;
+    border: none;
+    .border-radius(0);
+    .box-shadow(0 3px 9px rgba(0,0,0,.5));
+    background-clip: padding-box;
+    // Remove focus outline from opened modal
+    outline: none;
+    color: @textContents;
+}
+
+.modal-header {
+    background-color: darken(@modal-content-bg, 3%);
+    padding: @modal-title-padding;
+    min-height: (@modal-title-padding + @modal-title-line-height);
+    padding: 15px 15px 10px;
+    .border-radius(0);
+    border-bottom: none;
+    color: #000;
+    // Heading
+    h6 {
+        margin: 0px;
+        padding: 0px;
+        font-size: 1.4em;
+        text-shadow: none;
+        text-align: left;
+        font-weight: normal;
+        display: inline-block;
+
+
+        .sp-mobile-device &,
+        .sp-tablet-device & {
+            font-weight: lighter;
+        }
+    }
+
+    h5 {
+        margin-left: 5px;
+        opacity: .8;
+        padding: 0;
+        font-size: 1.1em;
+        text-shadow: none;
+        color: white;
+        text-align: left;
+        font-weight: lighter;
+        display: inline-block;
+    }
+
+    h7 {
+        margin-left: 5px;
+        opacity: .8;
+        padding: 0;
+        font-size: 1.1em;
+        text-shadow: none;
+        text-align: left;
+        font-weight: lighter;
+        display: inline-block;
+    }
+}
+
+.modal-body {
+    position: relative;
+    padding: 10px 15px;
+    overflow-y: auto;
+    vertical-align: middle;
+    width: 100%;
+
+    .sp-mobile-device &,
+    .sp-tablet-device & {
+        padding: 0;
+    }
+
+    label {
+        text-align: left;
+        min-width: 140px;
+        vertical-align: top;
+        margin-bottom: 0;
+        min-height: 22px;
+    }
+
+    select {
+        height: inherit;
+        padding: 0 0 0 2px;
+        width: 100%;
+    }
+
+    .spreport-view .headerPanel button[name="actionButton"] {
+        left: 18px;
+        margin: 0;
+    }
+
+
+
+    .option {
+        text-align: left;
+        padding-left: 6px;
+        margin: 5px 0 0;
+        font-size: .85em;
+        color: #7b878f;
+        text-decoration: none;
+        text-transform: uppercase;
+        background-color: transparent;
+        border: none;
+        border-radius: 0;
+        border-top: 1px solid #ccc;
+        margin-left: -15px;
+        padding-left: 15px;
+
+        &:hover {
+            background-color: #ededed;
+            box-shadow: inherit;
+        }
+
+        img {
+            opacity: .65;
+            margin-top: -2px;
+        }
+    }
+
+    .tabarea {
+        padding: 0;
+        margin: 0;
+        box-shadow: none;
+        background-color: transparent;
+
+        .tab-container {
+            padding: 0 3px;
+            display: table;
+            vertical-align: middle;
+            width: 100%;
+
+            div {
+                vertical-align: middle;
+
+                &.spRelationshipFiltersControl {
+                    width: 100%;
+
+                    input {
+                        width: 100% !important;
+                    }
+                }
+
+                &.inlineRelPicker {
+
+                    input {
+                        width: 100% !important;
+                    }
+                }
+            }
+
+            sp-numeric-k-field-render-control,
+            sp-decimal-k-field-render-control,
+            sp-single-line-text-control {
+                width: 100% !important;
+
+                input {
+                    width: 100%;
+                }
+            }
+
+            label {
+                vertical-align: top;
+
+                &.field-title {
+                    padding-top: 4px;
+                }
+
+                &[for="ColorBox"] {
+                    vertical-align: middle;
+                }
+            }
+
+            input[type="text"] {
+                background-color: #fff;
+                width: 100%;
+            }
+
+            textarea {
+                background-color: #fff;
+            }
+
+            input[type="checkbox"] {
+                margin: 0;
+            }
+
+            input[type="text"].input-medium {
+                min-width: 10px;
+                width: 100%;
+            }
+
+            table {
+                width: 100%;
+            }
+
+            .divide-formproperties-field {
+                display: block;
+                margin: 8px 0;
+                border-bottom: 1px dotted #aaa;
+            }
+
+            .thumbnailScalingOptoin {
+                display: inline-block;
+                padding-left: 16px;
+                padding-top: 8px;
+
+                li {
+                    line-height: 1.3em;
+                    margin-bottom: 5px;
+                    color: #aaa;
+                }
+
+                input[type="radio"] {
+                    width: 14px;
+                    min-height: inherit;
+                    margin: 0;
+                    line-height: initial;
+                    margin-left: -16px;
+                }
+            }
+
+            sp-time-control, sp-date-control {
+                display: inherit;
+                width: 240px;
+            }
+
+            sp-date-and-time-control {
+                span {
+                    width: auto !important;
+                }
+
+                sp-time-control, sp-date-control {
+                    width: 120px !important;
+                }
+            }
+
+            .definitionControlFile {
+                select {
+                    margin-bottom: 3px;
+                }
+            }
+
+            .edit-form-title {
+            }
+        }
+    }
+
+    .nav-tabs {
+        margin: 0;
+        margin-top: 5px;
+        cursor: pointer;
+        border-bottom: 1px solid #bbb;
+        margin-bottom: 5px;
+
+        li a {
+            padding: 3px 12px 2px;
+            background-color: #ddd;
+            color: @tabText;
+            border: none;
+        }
+
+        .active a {
+            padding-bottom: 3px;
+            background: @tabBgActive;
+            color: white;
+
+            &:hover,
+            &:focus {
+                border: none;
+                background: darken(@tabBgActive, 10%);
+                color: white;
+            }
+        }
+    }
+
+    .table {
+        width: 100%;
+        display: table;
+    }
+
+    .row {
+        width: 100%;
+        display: table-row;
+        margin: 0;
+    }
+
+    .cell {
+        display: table-cell;
+        padding-bottom: 1em;
+        padding-right: 1em;
+
+        &:first-child {
+            width: 140px;
+        }
+    }
+
+    .repeater {
+        width: 100% !important;
+    }
+
+    .edit-form-control-container {
+        display: table;
+        width: 100%;
+
+        .edit-form-title {
+            width: 140px;
+            display: table-cell;
+            vertical-align: top;
+            padding-top: 8px;
+        }
+
+        .edit-form-value {
+            display: table-cell;
+            padding-top: 3px;
+
+            input[type="checkbox"] {
+                display: inline-block;
+
+                & + label {
+                    width: auto;
+                    margin-bottom: 0;
+                    vertical-align: middle;
+                    margin-top: 4px;
+                }
+            }
+        }
+    }
+
+    .fieldValue {
+        margin-top: 4px;
+        display: inline-block;
+        width: 100%;
+    }
+
+    .multiLineTextField-text-read {
+        padding-top: 3px;
+    }
+
+    .repeater-wrapper sp-control-on-form > * {
+        width: 100% !important;
+
+        input {
+            width: 100%;
+
+            &[type="checkbox"] {
+                width: auto;
+            }
+        }
+    }
+}
+
+.modal-footer {
+    padding: 10px;
+    display: block;
+    margin-top: 0;
+    text-align: right; // right align buttons
+    border-top: none;
+    .clearfix(); // clear it in case folks use .pull-* classes on buttons
+    background-color: @modalBgBtm;
+    .border-radius(0);
+
+    button {
+        min-height: 26px;
+        min-width: 65px;
+    }
+    // Properly space out buttons
+    .btn + .btn {
+        margin-left: 3px;
+        margin-bottom: 0; // account for input[type="submit"] which gets the bottom margin like all other inputs
+    }
+    // but override that for button groups
+    .btn-group .btn + .btn {
+        margin-left: -1px;
+    }
+    // and override it for block buttons as well
+    .btn-block + .btn-block {
+        margin-left: 0;
+    }
+
+    .btn.btn-danger,
+    .btn.btn-success {
+        color: white;
+    }
+}
+
+.sp-mobile-device,
+.sp-tablet-device {
+    /* stretch the modal to fill full screen. need to set both 'modal-dialog' and 'modal-content' to make it work */
+    .modal-dialog {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 100% !important;
+        margin: 0 !important;
+    }
+    /* stretch the modal to fill full screen. need to set both 'modal-dialog' and 'modal-content' to make it work */
+    .modal-content {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+    }
+
+    .modal-header {
+        position: relative;
+        height: 50px;
+    }
+
+    .modal-body {
+        position: absolute;
+        top: 50px;
+        bottom: 60px;
+        left: 0;
+        right: 0;
+        padding: 10px 15px;
+
+        .edit-form-control-container {
+            display: block;
+            width: 100%;
+
+            .edit-form-title {
+                width: 100%;
+                display: block;
+            }
+
+            .edit-form-value {
+                display: block;
+            }
+        }
+    }
+
+    .modal-footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+
+        button.btn {
+            width: calc(~'50% - 4px');
+            height: 38px;
+        }
+    }
+}
+
+.sp-tablet-device {
+    .modal-footer {
+
+        button.btn {
+            width: auto;
+            height: 38px;
+        }
+    }
+}
+
+.inlineRelationPickerDialog {
+
+    .sp-mobile-device & {
+        .modal-body {
+            top: 0px;
+            padding: 0;
+        }
+    }
+
+    .sp-tablet-device & {
+        .modal-body {
+            padding: 0;
+        }
+    }
+}

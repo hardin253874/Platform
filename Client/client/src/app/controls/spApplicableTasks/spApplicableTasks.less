@@ -1,0 +1,91 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+.sp-applicable-tasks {
+    @spatBackground: #888;
+    @spatText: #444;
+    @spatMinButtonWidth: auto;
+
+    color: @spatText;
+    padding: 10px 0;
+    margin: 0;
+    border-bottom: 1px dotted #ddd;
+
+    & > img {
+        display: inline-block;
+        width: 18px;
+        height: 18px;
+        padding: 1px 0 0 1px;
+        margin-left: -1px;
+        border: 1px solid #888;
+        box-sizing: border-box;
+        border-radius: 50%;
+        vertical-align: middle;
+    }
+
+    input {
+
+        .sp-tablet-device & {
+            min-height: 27px !important;
+            font-size: .85em;
+        }
+    }
+
+    .task-list {
+        color: @spatText;
+        background: transparent;
+        padding: 5px;
+        padding-right: 10px;
+        margin-right: 5px;
+        border-radius: 3px;
+        border: none;
+        cursor: pointer;
+        font-weight: 500;
+
+        &:hover {
+            background: rgba(0,0,0,0.05);
+        }
+    }
+
+    .task-name {
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 20px;
+        font-weight: 500;
+    }
+
+    .completed-comment {
+    }
+
+    .task-count {
+        display: inline-block;
+        float: left;
+        position: absolute;
+        width: 26px;
+        padding: 0px;
+        margin-top: -10px;
+        margin-left: -14px;
+        color: #ffffff;
+        text-align: center;
+        text-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+        background-color: #79d16b;
+        border-radius: 13px;
+        box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    }
+
+    .completed-date {
+    }
+
+    .sp-task-buttons {
+        display: inline-block;
+
+        button {
+            .btn_lighten;
+            min-width: @spatMinButtonWidth;
+            height: 25px;
+            padding-top: 2px;
+            font-size: 12px;
+            line-height: normal;
+            letter-spacing: 0.02em;
+            border-radius: 14px;
+        }
+    }
+}

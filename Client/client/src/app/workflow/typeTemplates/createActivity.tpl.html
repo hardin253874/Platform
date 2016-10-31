@@ -1,0 +1,24 @@
+<div ng-controller="sp.workflow.activityController">
+	
+    <div ng-controller="sp.workflow.updateEntityActivityController">
+
+        <form class="form-horizontal">
+
+            <!--this template handles the createActivity and the updateActivity-->
+
+            <sp-workflow-expression-control parameter="activityParameters['core:createActivityResourceArgument']"
+                show-label="false"
+                actions="typeChooser,exprEditor"></sp-workflow-expression-control>
+
+            <sp-workflow-expression-control parameter="activityParameters['core:updateFieldActivityResourceArgument']"
+                show-label="false"
+                actions="resourceChooser,parameterChooser,exprEditor"></sp-workflow-expression-control>
+
+
+
+        </form>
+
+        <sp-replace source="'workflow/typeTemplates/dynamicFieldUpdate.tpl.html'"></sp-replace>
+
+    </div>
+</div>

@@ -1,0 +1,20 @@
+<span class="sp-date-time-mobile-control">
+	
+    <span class="prefix">{{model.prefix}}</span>
+
+    <span ng-if="model.isReadOnly" class="fieldValue">{{model.value | spDateAndTimeControlFilter}}</span>
+    <span ng-if="!model.isReadOnly">
+        
+        <input 
+            ng-disabled="model.disableControl"
+            type="datetime-local"
+            ng-model="model.value"
+            sp-date-control-validation="validationModel"
+            ng-required="model.isRequired"
+            placeholder="{{model.format}}"
+           />
+    </span>
+    
+    <span class="suffix">{{model.suffix}}</span>
+
+</span>

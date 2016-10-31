@@ -1,0 +1,143 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+﻿.workflow-builder-view {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+
+    .workflow-header {
+        background-color:#fff;
+        .workflow-app-toolbar {
+            .builder-ToolBar;
+            position: relative;
+            display: block;
+            margin-bottom: 0;
+
+            &:before {
+                display:none;
+            }
+
+            button[disabled] {
+                background-color: transparent;
+                border: none;
+                box-shadow: none;
+                opacity: 0.4;
+            }
+        }
+
+        .workflow-title-bar {
+            margin: 11px 0px 0 35px;
+            height:49px;
+
+            .workflow-title {
+                display: inline-block;
+                vertical-align: middle;
+                font-size: 26px;
+                color: @textTitle;
+                font-weight: lighter;
+
+                input {
+                    height: inherit;
+                    margin: -5px -2px;
+                    font-weight: lighter;
+                }
+            }
+
+            .dirty-true {
+                color: red;
+            }
+
+            .dirty-false {
+                display: none;
+            }
+
+            .workflow-toolbar {
+                display: inline-block;
+                margin-left: 20px;
+
+                & > .workflow-toolbar-div {
+                    display: inline-block;
+                }
+
+                img {
+                    background-color: @btnBg_darken;
+                    border-radius: 2px;
+                    cursor: pointer;
+                    width: 16px;
+                    height: 16px;
+
+                    &:hover {
+                        background-color: lighten(@btnBg_darken, 5%);
+                    }
+
+                    &[src*='zoom.svg'] {
+                        background: none;
+                        opacity: 0.5;
+                    }
+                }
+            }
+
+             div[edit-mode="nameEditMode"]{
+                    display:inline-block !important;
+                }
+        }
+
+        button.btn-link {
+            .btn_lighten;
+        }
+    }
+
+    .workflow-design-surface {
+        overflow: scroll;
+        height: 100%;
+        //to revisit this.... need to do in concert with the RaphaelJS/SVG handling we have in js code
+        //background:url(data:image/gif;base64,R0lGODlhFAAUAIAAAMDAwP///yH5BAEAAAEALAAAAAAUABQAAAImhI+pwe3vAJxQ0hssnnq/7jVgmJGfGaGiyoyh68GbjNGXTeEcGxQAOw==);
+    }
+
+    .workflow-debug-pane {
+        background-color: grey;
+        color: white;
+        display: block;
+        font-weight: lighter;
+        font-size: .8em;
+        font-weight: normal;
+        height: 80%;
+        line-height: 1.2em;
+        max-width: 30%;
+        opacity: .9;
+        overflow-y: auto;
+        padding: 2px 2px;
+        position: fixed;
+        right: 20px;
+        top: 100px;
+        z-index: 1000;
+
+        ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+
+            li {
+                padding: 0 0 0 5px;
+                line-height: 1.2em;
+
+                &.list-section-header {
+                    font-style: italic;
+                    font-weight: bolder;
+                    padding: 0;
+                }
+            }
+        }
+
+        div.btn-link {
+            color: white;
+            cursor: pointer;
+            display: inline;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+}

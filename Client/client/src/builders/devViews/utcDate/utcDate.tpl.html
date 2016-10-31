@@ -1,0 +1,36 @@
+<div class="dateTestPage-view container-fluid">
+	
+    <div class="row-fluid">
+        <br/>
+
+        <h2>Timezone Test page</h2>
+
+        <div>This is a test page to test detecting the time zone from browser and passing it to server. <br/> The server
+            then returns the corresponding windows timezone name.
+        </div>
+
+        <br/>
+        <br/>
+
+        <form>
+
+            <button id="Button1" ng-click="getMsTzFromHeader()">Click Me (Timezone info passed to server in a custom
+                header)
+            </button>
+            <br/>
+            <br/>
+            <button id="Button2" ng-click="getMsTzFromUrl()">Click Me (Timezone info passed in query string)</button>
+
+        </form>
+        <div>
+            Today's Date: <b>{{ model.dateTime}}</b>
+            <br/>
+            <br/>
+            Olson Time Zone Name (Detected from the browser): <b>{{model.tzTime}}</b>
+
+            <br/>
+            <br/>
+
+        </div>
+    </div>
+</div>

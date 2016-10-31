@@ -1,0 +1,35 @@
+<div ng-controller="valueEditorTestController">    
+	
+     <div style="height: 25px">
+         Value Editor: <sp-value-editor  type="model.type.value" options="model.options" value="model.value"></sp-value-editor>                        
+    </div>
+    <div style="height: 25px">
+        Value Editor2: <sp-value-editor2 type="model.type.value" options="model.options" value="model.value"></sp-value-editor2>
+    </div>
+   
+    <fieldset style="border: 1px solid silver; border-radius: 2px; margin: 8px; padding: 8px;">
+        <legend style="border-bottom: 0; font-size: small; line-height: normal; margin-bottom: auto; padding: 2px; width: auto;">model</legend>
+        <table>
+            <tr>
+                <td>
+                    Type:
+                </td>
+                <td>
+                    <select ng-model="model.type" ng-options="t.name for t in model.types"></select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Value:
+                </td>
+                <td>
+                    <input type="text" ng-model="model.value" style="margin-left: 5px" />
+                </td>
+            </tr>
+        </table>
+    </fieldset>   
+    
+    <div>
+        <button ng-click="open()" class="btn">Open in Modal</button>
+    </div>
+</div>

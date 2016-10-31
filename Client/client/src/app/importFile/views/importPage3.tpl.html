@@ -1,0 +1,14 @@
+<div class="container-fluid page3">
+
+    <!-- Selected object -->
+    <div class="displayLabel">
+        <label>Object:</label>
+        <div>{{model.selectedResourceName}}</div>
+    </div>
+
+    <p class="message">Note: All mandatory fields(*) need to be mapped to start the import process</p>
+
+    <!-- Mapping grid -->
+    <div class="mappingGrid" sp-busy-indicator-popup="model.mapping.busyIndicator" ng-grid="mappingGridOptions"></div>
+
+</div>

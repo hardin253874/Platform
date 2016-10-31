@@ -1,0 +1,185 @@
+<div>
+
+
+    <sp-search-control sp-model="model.search" class="sp-search"></sp-search-control>
+
+
+    <div class="fieldGroup-title" ng-hide="!spFormBuilderService.selectedLookup" uib-tooltip="{{getLabelTooltip()}}"
+         tooltip-placement="top" tooltip-trigger="mouseenter" tooltip-popup-delay='500'>
+        {{getTargetType(spFormBuilderService.selectedLookup).getName()}}
+    </div>
+
+    <div class="text-right" style="margin-top: 5px; margin-bottom: -10px" ng-hide="spFormBuilderService.selectedLookup">
+        <div uib-popover-template="'formBuilder/directives/spFormBuilderToolbox/directives/spFormBuilderToolboxFields/newFieldPopover.tpl.html'"
+             popover-placement="right" popover-trigger="none"
+             ng-click="popover.isOpen = !popover.isOpen"
+             sp-popover-auto-close popover-options="popover" popover-is-open="popover.isOpen"
+             class="fb-toolbox-control fb-middle fb-popover">
+            <img src="assets/images/relationship_add.png" style="vertical-align: middle; margin: 0">
+        </div>
+    </div>
+
+    <div class="fb-loading" ng-show="spFormBuilderService.definitionFieldsLoading">
+        <img class="spinner" src="assets/images/refresh_light.png"/>
+    </div>
+
+    <div ng-repeat="fieldGroup in model.fieldGroups" style="margin-top: 5px" class="fb-toolbox-group-drop"
+         sp-droppable="dropOptions" sp-droppable-data="this" sp-draggable="dragOptions" sp-draggable-data="fieldGroup"
+         ng-show="!spFormBuilderService.definitionFieldsLoading">
+        <table style="width: 100%">
+            <tr class="fb-toolbox-group fb-toolbox-adornment-hover" uib-tooltip="{{getFieldGroupTooltip()}}"
+                tooltip-placement="top" tooltip-trigger="mouseenter" tooltip-popup-delay='500'>
+                <td align="left" style="width: 1%; min-width: 15px" colspan="3">
+                    <div class="fb-inline fb-toolbox-toggle" ng-click="fieldGroup.hidden = !fieldGroup.hidden"
+                         sp-back-image="{{&quot;assets/images/&quot; + (fieldGroup.hidden ? &quot;fieldgroup_collapsed.png&quot; : &quot;fieldgroup_opened.png&quot;)}}"
+                         style="vertical-align: middle"></div>
+                </td>
+                <td style="height: 1.6em">
+                    <sp-editable-label value="fieldGroup.getEntity().name" readonly="!canModifyFieldGroup()"
+                                       pre-update-callback="isValidFieldGroupName" update-callback="fieldGroupRenamed"
+                                       key-down-callback="validateinput" change-callback="changeValidate"
+                                       class="fb-toolbox-itemname-light fb-middle fb-editable-definition-label"
+                                       ng-style="getLabelStyle(canModifyFieldGroup())"></sp-editable-label>
+                </td>
+                <td style="white-space: nowrap; width: 1%">
+                    <div ng-hide="!isEditable()">
+                        <span ng-hide="!canModifyFieldGroup()"
+                              class="ui-icon ui-icon-lightgray ui-icon-close fb-toolbox-adornment fb-toolbox-adornment-light ui-icon-hover-darkgray"
+                              style="display: inline-block; float: none" ng-click="removeFieldGroup()"></span>
+                    </div>
+                </td>
+            </tr>
+            <tr class="fb-toolbox-groupitems"
+                ng-repeat="field in model.fields | filterFieldByFieldGroup:fieldGroup | filter:filterBySearchBox | filter:filterByDataState"
+                ng-hide="fieldGroup.hidden">
+                <td>
+                    <div class="fb-cell fb-child-background" style="height: 1px"></div>
+                </td>
+                <td>
+                    <!--<span style="width: 2px; height: 18px; background-color: red; display: block" ng-show="isMandatory(field)"></span>-->
+                </td>
+                <td>
+                    <span style="width: 2px; height: 18px; background-color: #6ae8ff; display: block"
+                          ng-show="isOnForm(field)"></span>
+                </td>
+                <td colspan="2">
+                    <div class="fb-toolbox-item" uib-tooltip="{{field.description}}" tooltip-placement="top"
+                         tooltip-trigger="mouseenter" tooltip-popup-delay='500'
+                         style="cursor: move; width: 100%; padding: 0" sp-draggable="dragOptions"
+                         sp-draggable-data="field">
+                        <table style="width: 100%">
+                            <tr class="fb-toolbox-adornment-hover">
+                                <td style="white-space: nowrap; width: 20px;">
+                                    <span class="fb-toolbox-cell" sp-back-image="{{getFieldTypeIcon()}}"
+                                          style="display:block; width:16px; height:16px;"></span>
+                                </td>
+                                <td>
+                                    <sp-editable-label value="field.name" readonly="!canModifyField()"
+                                                       pre-update-callback="isValidFieldName"
+                                                       update-callback="fieldRenamed" key-down-callback="validateinput"
+                                                       change-callback="changeValidate" additional-data="field"
+                                                       class="fb-inline fb-middle fb-editable-field-label"
+                                                       ng-style="getLabelStyle(canModifyField())"></sp-editable-label>
+                                </td>
+                                <td style="white-space: nowrap; width: 1%">
+                                    <div style="font-size: 0">
+                                        <span ng-hide="!canModifyField()"
+                                              class="ui-icon ui-icon-darkgray ui-icon-wrench fb-toolbox-adornment fb-toolbox-adornment-light"
+                                              style="display: inline-block; float: none"
+                                              ng-click="configureField()"></span>
+                                        <span ng-hide="!canModifyField()"
+                                              class="ui-icon ui-icon-darkgray ui-icon-close fb-toolbox-adornment fb-toolbox-adornment-light"
+                                              style="display: inline-block; float: none" ng-click="removeClick()"
+                                              ng-hide="field.isMandatory"></span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div ng-repeat="fieldGroup in model.additionalFieldGroups" style="margin-top: 5px" class="fb-toolbox-group-drop"
+         sp-droppable="dropOptions" sp-droppable-data="this"
+         ng-hide="!fieldGroup.visible || spFormBuilderService.definitionFieldsLoading">
+        <table style="width: 100%">
+            <tr class="fb-toolbox-group fb-toolbox-adornment-hover">
+                <td align="left" style="width: 1%; min-width: 15px" colspan="3">
+                    <div class="fb-inline fb-toolbox-toggle" ng-click="fieldGroup.hidden = !fieldGroup.hidden"
+                         sp-back-image="{{&quot;assets/images/&quot; + (fieldGroup.hidden ? &quot;fieldgroup_collapsed.png&quot; : &quot;fieldgroup_opened.png&quot;)}}"
+                         style="vertical-align: middle"></div>
+                </td>
+                <td style="height: 1.6em">
+                    <sp-editable-label value="fieldGroup.name" readonly="true"
+                                       class="fb-toolbox-itemname-light fb-middle fb-readonly-definition-label"
+                                       ng-style="getLabelStyle(false)"></sp-editable-label>
+                </td>
+                <td style="white-space: nowrap; width: 1%">
+
+                </td>
+            </tr>
+            <tr class="fb-toolbox-groupitems"
+                ng-repeat="field in model.fields | filter:filterFieldByUnallocated | filter:filterBySearchBox"
+                ng-hide="fieldGroup.hidden">
+                <td>
+                    <div class="fb-cell fb-child-background" style="height: 1px"></div>
+                </td>
+                <td>
+                    <!--<span style="width: 2px; height: 18px; background-color: red; display: block" ng-show="isMandatory(field)"></span>-->
+                </td>
+                <td>
+                    <span style="width: 2px; height: 18px; background-color: #6ae8ff; display: block"
+                          ng-show="isOnForm(field)"></span>
+                </td>
+                <td colspan="2">
+                    <div class="fb-toolbox-item" uib-tooltip="{{field.description}}" tooltip-placement="top"
+                         tooltip-trigger="mouseenter" tooltip-popup-delay='500'
+                         style="cursor: move; width: 100%; padding: 0" sp-draggable="dragOptions"
+                         sp-draggable-data="field">
+                        <table style="width: 100%">
+                            <tr class="fb-toolbox-adornment-hover">
+                                <td style="white-space: nowrap; width: 20px; height: 24px">
+                                    <span class="fb-toolbox-cell" sp-back-image="{{getFieldTypeIcon()}}"
+                                          style="display:block; width: 16px; height: 16px"></span>
+                                </td>
+                                <td>
+                                    <sp-editable-label value="field.name" readonly="!canModifyField()"
+                                                       pre-update-callback="isValidFieldName"
+                                                       update-callback="fieldRenamed" key-down-callback="validateinput"
+                                                       change-callback="changeValidate" additional-data="field"
+                                                       class="fb-inline fb-middle fb-editable-field-label"
+                                                       ng-style="getLabelStyle(canModifyField())"></sp-editable-label>
+                                </td>
+                                <td style="white-space: nowrap; width: 1%">
+                                    <div style="font-size: 0">
+                                        <span ng-hide="!canModifyField()"
+                                              class="ui-icon ui-icon-darkgray ui-icon-wrench fb-toolbox-adornment fb-toolbox-adornment-light"
+                                              style="display: inline-block; float: none"
+                                              ng-click="configureField()"></span>
+                                        <span ng-hide="!canModifyField()"
+                                              class="ui-icon ui-icon-darkgray ui-icon-close fb-toolbox-adornment fb-toolbox-adornment-light"
+                                              style="display: inline-block; float: none" ng-click="removeClick()"
+                                              ng-hide="field.isMandatory"></span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <table ng-hide="!isEditable() || spFormBuilderService.definitionFieldsLoading" style="width: 100%; margin-top: 5px">
+        <tr>
+            <td align="left">
+                <div class="fb-toolbox-control" ng-click="newFieldGroupClick()" title="fieldgroup">
+                    <img src="assets/images/relationship_add.png">
+                    <span class="fb-inline"> New Field Group</span>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>

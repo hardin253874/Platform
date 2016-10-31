@@ -1,0 +1,12 @@
+<div modal="isOpen" close="closeDetail()" options="modalOpts">
+    <div class="modal-header">
+        <h6>{{model.fieldTitle}}</h6>
+    </div>
+
+    <div class="modal-body">
+        <textarea class="multiLineTextField-modalText" readonly name="input">{{model.fieldValue}}</textarea>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" ng-click="closeDetail()">OK</button>
+    </div>
+</div>

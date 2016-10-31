@@ -1,0 +1,23 @@
+<div ng-controller="sp.workflow.activityController">
+    <div ng-controller="generateDocActivityController">
+        
+        <form class="form-horizontal">
+            <div class="form-group">
+                <sp-workflow-expression-control parameter="activityParameters['core:inGenerateDocTemplate']" show-label="true"
+                                                actions="parameterChooser,resourceChooser,exprEditor"></sp-workflow-expression-control>
+            </div>
+
+            <div class="form-group">
+
+                <sp-workflow-expression-control parameter="activityParameters['core:inGenerateDocSource']" show-label="true"
+                                                actions="parameterChooser,resourceChooser,exprEditor"></sp-workflow-expression-control>
+            </div>
+
+            <div class="form-group">
+
+                <sp-workflow-expression-control parameter="activityParameters['core:inGenerateDocName']" show-label="true"
+                                                actions="exprEditor"></sp-workflow-expression-control>
+            </div>
+        </form>
+    </div>
+</div>

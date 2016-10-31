@@ -1,0 +1,21 @@
+﻿<div class="modal-header">
+    <h6>{{model.title}}</h6>
+</div>
+<div class="modal-body">
+    <p>{{model.message}}</p>
+    <div>
+        <label style="min-width: 50px; margin-top: 4px; margin-left: 10px">Name:</label>
+        <input type="text" style="min-width: 220px" ng-model="model.name" />
+    </div>
+
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-hide="model.okDisabled" ng-disabled="!model.name"
+            data-ng-click="model.close(true);">
+        {{model.okText}}
+    </button>
+    <button type="button" class="btn"
+            data-ng-click="model.close(false)">
+        {{model.cancelText}}
+    </button>
+</div>

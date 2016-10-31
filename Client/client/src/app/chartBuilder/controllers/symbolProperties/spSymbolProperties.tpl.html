@@ -1,0 +1,41 @@
+<div sp-moveable-modal sp-set-focus-dialog-input>
+
+    <div class="modal-header">
+        <h6>Symbol Properties</h6>
+    </div>
+    <div class="modal-body overflowModalBody">
+        <div class="table">
+            <div class="row">
+                <div class="cell">Marker:</div>
+                <div class="cell">
+                    <select ng-model="model.series.lookupAsProp('markerShape', 'markerShapeNone').value">
+                        <option value="markerShapeNone">None</option>
+                        <option value="markerShapeCircle">Circle</option>
+                        <option value="markerShapeFilledCircle">Circle (Filled)</option>
+                        <option value="markerShapeSquare">Square</option>
+                        <option value="markerShapeFilledSquare">Square (Filled)</option>
+                        <option value="markerShapeTriangleUp">Triangle</option>
+                        <option value="markerShapeFilledTriangleUp">Triangle (Filled)</option>
+                        <option value="markerShapeDiamond">Diamond</option>
+                        <option value="markerShapeFilledDiamond">Diamond (Filled)</option>
+                        <option value="markerShapeCross">Cross</option>
+                        <option value="markerShapeFilledCross">Cross (Filled)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="cell">Size:</div>
+                <div class="cell">
+                    <select ng-model="model.series.lookupAsProp('markerSize', 'sizeMedium').value">
+                        <option value="sizeSmall">Small</option>
+                        <option value="sizeMedium">Medium</option>
+                        <option value="sizeLarge">Large</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn" ng-click="ok()">OK</button><button type="button" class="btn" ng-click="cancel()">Cancel</button>
+    </div>
+</div>

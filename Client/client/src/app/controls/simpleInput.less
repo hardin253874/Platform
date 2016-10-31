@@ -1,0 +1,95 @@
+﻿// Copyright 2011-2016 Global Software Innovation Pty Ltd
+
+@import (reference) "../editForm/editForm.less";
+
+/////
+// Styles for a simple stacked input controls layout.
+/////
+
+.input-container {
+    min-width: 350px;
+    width: 100%;
+    margin-left: 0;
+    margin-right: auto;    
+    padding: 0;
+}
+
+.input-row {
+    display: table-row;
+    height: 30px;
+    
+    .sp-tablet-device &, .sp-mobile-device & {
+        height: 45px;
+    }
+}
+
+.input-label {
+    width: 120px;
+    float: left;
+    padding-top: 6px;
+    color: @editFormLabelColor;
+    font-size: 12px;
+    
+    .sp-tablet-device &, .sp-mobile-device & {
+        font-size: 13px;
+    }
+}
+
+.input-label-colon {
+    float: right;
+    margin-right: 2px
+}
+
+.input-label-colon-after {
+    display: none;
+}
+
+.input-mandatory {
+    float: left;
+    width: 4px;
+    height: 18px;
+    margin-top: 4px;
+
+    > img {
+        width: 2px;
+        height: 100%;
+    }
+
+    .sp-tablet-device &, .sp-mobile-device & {
+        height: 25px;
+    }
+}
+
+.input-field {
+    min-width: 225px;
+    width: calc(~'100% - 125px');
+    float: left;
+}
+
+@media (max-width: 349px) {
+    .input-container {
+        width: 100%;
+        margin-top: 0;
+    }
+
+    .input-label {
+        width: auto;
+        float: none;
+        margin-top: 20px;
+        margin-left: 5px;
+    }
+
+    .input-field {
+        width: 300px;
+        float: none;
+        margin-left: 5px;
+    }
+
+    .input-label-colon {
+        display: none;
+    }
+
+    .input-label-colon-after {
+        display: inline-block;
+    }
+}

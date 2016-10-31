@@ -1,0 +1,109 @@
+<p class="question" ng-if="model.ui.relCardinality === 'manyToOne'">If <b>{{model.ui.toName}}</b> is deleted or duplicated, what happens to the <b>linked {{model.ui.fromName}}(s)</b>?</p>
+<p class="question" ng-if="model.ui.relCardinality === 'oneToOne'">If <b>{{model.ui.toName}}</b> or <b>{{model.ui.fromName}}</b> is deleted or duplicated, what happens to the linked record?</p>
+<p class="question" ng-if="model.ui.relCardinality === 'oneToMany'">If <b>{{model.ui.fromName}}</b> is deleted or duplicated, what happens to the <b>linked {{model.ui.toName}}(s)</b>?</p>
+
+
+<div style="display: table; width: 100%">
+    <!-- No Ownership -->
+    <div ng-class="{ 'ownershiptype': true, 'selected': model.ui.relOwnership === 'none' }">
+        <div class="ownershiptype-header">
+            <input type="radio" name="relOwnership" ng-model="model.ui.relOwnership" value="none" ng-disabled="!model.canModifyRelationship">No Ownership
+        </div>
+        <div ng-if="model.ui.relCardinality === 'oneToOne'" name="dummyDiv"/>
+        
+        <div class="ownershiptype-each">
+            <div class="ownershiptype-title">
+                <img src="assets/images/remove_w.png" alt="Not Deleted" />Not Deleted</div>
+            <svg-relationship-info options="model.noOwnershipDeletedSvgConfig" />
+        </div>
+
+        <div class="ownershiptype-each" style="border-top: 1px solid #ccc;">
+            <div class="ownershiptype-title">
+                <img class="ownershiptype-icon" src="assets/images/remove_w.png" alt="Not Duplicated" />Not Duplicated</div>
+            <svg-relationship-info options="model.noOwnershipDuplicatedSvgConfig" />
+        </div>
+
+        <div class="ownershiptype-explan">
+            <div ng-if="model.ui.relCardinality === 'manyToOne'">
+                <p name="Not">If <b>{{model.ui.toName}}</b> is deleted, linked <b>{{model.ui.fromName}}(s) </b>are NOT deleted</p>
+                <p name="Not">If <b>{{model.ui.toName}}</b> is duplicated, linked <b>{{model.ui.fromName}}(s)</b> are NOT duplicated</p>
+            </div>
+            <div ng-if="model.ui.relCardinality === 'oneToOne'">
+                <p name="Not">If <b>{{model.ui.toName}}</b> or <b>{{model.ui.fromName}}</b> is deleted, the Other is NOT deleted</p>
+                <p name="Not">If <b>{{model.ui.toName}}</b> or <b>{{model.ui.fromName}}</b> is duplicated, the Other is NOT duplicated</p>
+            </div>
+            <div ng-if="model.ui.relCardinality === 'oneToMany'">
+                <p name="Not">If <b>{{model.ui.fromName}}</b> is deleted, linked <b>{{model.ui.toName}}(s)</b> are NOT deleted</p>
+                <p name="Not">If <b>{{model.ui.fromName}}</b> is duplicated, linked <b>{{model.ui.toName}}(s)</b> are NOT duplicated</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Part Ownership -->
+    <div ng-class="{ 'ownershiptype': true, 'selected': model.ui.relOwnership === 'part' }" ng-if="model.ui.relCardinality !== 'oneToOne'">
+        <div class="ownershiptype-header">
+            <input type="radio" name="relOwnership" ng-model="model.ui.relOwnership" value="part" ng-disabled="!model.canModifyRelationship">Part Ownership
+        </div>
+        <div class="ownershiptype-each">
+            <div class="ownershiptype-title">
+                <img class="ownershiptype-icon" src="assets/images/alert_success.png" alt="Deleted" />Deleted</div>
+            <svg-relationship-info options="model.partOwnershipDeletedSvgConfig" />
+        </div>
+
+        <div class="ownershiptype-each" style="border-top: 1px dotted #ccc;">
+            <div class="ownershiptype-title">
+                <img class="ownershiptype-icon" src="assets/images/remove_w.png" alt="Not Duplicated" />Not Duplicated</div>
+            <svg-relationship-info options="model.partOwnershipDuplicatedSvgConfig" />
+        </div>
+        <div class="ownershiptype-explan">
+            <div ng-if="model.ui.relCardinality === 'manyToOne'">
+                <p>If <b>{{model.ui.toName}}</b> is deleted, linked <b>{{model.ui.fromName}}(s)</b> are also deleted</p>
+                <p name="Not">If <b>{{model.ui.toName}}</b> is duplicated, linked <b>{{model.ui.fromName}}(s)</b> are NOT duplicated</p>
+            </div>
+            <div ng-if="model.ui.relCardinality === 'oneToMany'">
+                <p >If <b>{{model.ui.fromName}}</b> is deleted, linked <b>{{model.ui.toName}}(s) </b>are also deleted</p>
+                <p name="Not">If <b>{{model.ui.fromName}}</b> linked <b>{{model.ui.toName}}(s)</b> are NOT duplicated</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Full Ownership -->
+    <div ng-class="{ 'ownershiptype': true, 'selected': model.ui.relOwnership === 'full' }">
+        <div class="ownershiptype-header">
+            <input type="radio" name="relOwnership" ng-model="model.ui.relOwnership" value="full" ng-disabled="!model.canModifyRelationship">Full Ownership
+        </div>
+        <div ng-if="model.ui.relCardinality === 'oneToOne'">
+            <select ng-model="model.ui.relOwner" ng-options="f as f.name for f in model.oneToOneOwnerOptions" ng-disabled="model.ui.relOwnership !== 'full'" />
+        </div>
+
+        <div class="ownershiptype-each">
+            <div class="ownershiptype-title">
+                <img class="ownershiptype-icon" src="assets/images/alert_success.png" alt="Deleted" />Deleted</div>
+            <svg-relationship-info options="model.fullOwnershipDeletedSvgConfig" />
+        </div>
+
+        <div class="ownershiptype-each" style="border-top: 1px dotted #ccc;">
+            <div class="ownershiptype-title">
+                <img class="ownershiptype-icon" src="assets/images/alert_success.png" alt="Duplicated" />Duplicated</div>
+            <svg-relationship-info options="model.fullOwnershipDuplicatedSvgConfig" />
+        </div>
+
+        <div class="ownershiptype-explan">
+            <div ng-if="model.ui.relCardinality === 'manyToOne'">
+                <p>If <b>{{model.ui.toName}}</b> is deleted, linked <b>{{model.ui.fromName}}</b>(s) are also deleted</p>
+                <p>If <b>{{model.ui.toName}}</b> is duplicated, linked <b>{{model.ui.fromName}}</b>(s) are also duplicated</p>
+            </div>
+            <div ng-if="model.ui.relCardinality === 'oneToOne'">
+                <p>If <b>{{model.ui.relOwnerText}}</b> is deleted, linked <b>{{model.ui.relNonOwnerText}}</b> is also deleted</p>
+                <p>If <b>{{model.ui.relOwnerText}}</b> is duplicated, linked <b>{{model.ui.relNonOwnerText}}</b> is also duplicated</p>
+            </div>
+            <div ng-if="model.ui.relCardinality === 'oneToMany'">
+                <p>If <b>{{model.ui.fromName}}</b> is deleted, linked <b>{{model.ui.toName}}</b>(s) are also deleted</p>
+                <p>If <b>{{model.ui.fromName}}</b> is duplicated, linked <b>{{model.ui.toName}}</b>(s) are also duplicated</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

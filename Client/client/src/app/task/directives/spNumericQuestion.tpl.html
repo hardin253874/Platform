@@ -1,0 +1,5 @@
+<div class="user-survey-number-question">
+    <!-- Warning, changing these to use the html5 type=number is problematic if you try to enter negative numbers in a keyboard. It's a problem with the angular default parser. -->
+    <input ng-if="question.numericQuestionIsInteger" type="text" sp-integer-input ng-model="answer.surveyAnswerNumber" ng-disabled="::isReadOnly" />
+    <input ng-if="!question.numericQuestionIsInteger" type="text" sp-floating-point-input ng-model="answer.surveyAnswerNumber" ng-disabled="::isReadOnly" />
+</div>

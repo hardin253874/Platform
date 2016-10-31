@@ -1,0 +1,19 @@
+<div ng-controller="sp.workflow.activityController">
+	
+    <div ng-controller="sp.workflow.updateEntityActivityController">
+
+        <form class="form-horizontal">
+            <div class="form-group">
+                <sp-workflow-expression-control parameter="activityParameters['core:resourceToCloneArgument']" show-label="true"
+                                                actions="parameterChooser,resourceChooser"></sp-workflow-expression-control>
+            </div>
+            <div class="form-group">
+                <sp-workflow-expression-control parameter="activityParameters['core:newDefinitionCloneArgument']" show-label="true"
+                                                actions="typeChooser"></sp-workflow-expression-control>
+            </div>
+        </form>
+
+        <sp-replace source="'workflow/typeTemplates/dynamicFieldUpdate.tpl.html'"></sp-replace>
+
+    </div>
+</div>

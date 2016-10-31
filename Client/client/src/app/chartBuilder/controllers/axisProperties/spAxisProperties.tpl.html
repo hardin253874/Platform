@@ -1,0 +1,48 @@
+<div class="axis-properties" sp-moveable-modal sp-set-focus-dialog-input>
+
+    <div class="modal-header">
+        <h6>{{model.title}}</h6>
+    </div>
+    <div class="modal-body overflowModalBody">
+        <div class="table">
+            <div class="row">
+                <div class="cell">Axis label:</div>
+                <div class="cell"><input type="text" ng-model="model.name" style="width: 100%"/></div>
+            </div>
+            <sp-axis-type-properties model="model" ng-show="showAxisType()"></sp-axis-type-properties>
+            <div class="row" ng-show="model.isRange">
+                <div class="cell">Minimum:</div>
+                <div class="cell">
+                    <input type="radio" name="min" ng-model="model.minMode" value="auto" />Auto
+                    <input type="radio" name="min" ng-model="model.minMode" value="manual" />Manual
+                    <input type="text" ng-model="model.minValue" ng-disabled="model.minMode=='auto'" />
+                </div>
+            </div>
+            <div class="row" ng-show="model.isRange">
+                <div class="cell">Maximum:</div>
+                <div class="cell">
+                    <input type="radio" name="max" ng-model="model.maxMode" value="auto" />Auto
+                    <input type="radio" name="max" ng-model="model.maxMode" value="manual" />Manual
+                    <input type="text" ng-model="model.maxValue" ng-disabled="model.maxMode=='auto'" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="cell">Show grid:</div>
+                <div class="cell">
+                    <input type="checkbox" name="grid" ng-model="model.showGridLines" />
+                </div>
+            </div>
+            <div class="row" ng-if="model.isResource">
+                <div class="cell">Show all values:</div>
+                <div class="cell">
+                    <input type="checkbox" name="grid" ng-model="model.showAllValues" />
+                </div>
+            </div>
+            <sp-data-label-properties model="model" ng-show="showDataLabelPos()"></sp-data-label-properties>
+            <sp-stack-properties model="model" ng-show="showStack()"></sp-stack-properties>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn" ng-click="ok()">OK</button><button type="button" class="btn" ng-click="cancel()">Cancel</button>
+    </div>
+</div>

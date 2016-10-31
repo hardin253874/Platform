@@ -1,0 +1,26 @@
+<div ng-controller="colorPickerTestController">
+	
+    
+    <h3>Inline Picker</h3>
+    <sp-color-picker color="inlineColor"></sp-color-picker>
+
+    {{inlineColor}}
+    
+    <h3>Popup Picker</h3>
+    <button sp-color-picker-popup="popupColorOptions" ng-click="open()">Choose Color</button>    
+
+    {{popupColorOptions}}
+    
+    <div style="width:170px;height:20px">
+        <sp-color-picker-fg-bg-dropdown></sp-color-picker-fg-bg-dropdown>
+    </div>
+    
+    <br/>
+    <br/>
+    <h3>Color Picker with popup</h3>
+    <br/>
+    <sp-color-picker-dropdown color="pickercolor" showcustom="true"></sp-color-picker-dropdown>
+    
+    
+    {{pickercolor}}
+</div>

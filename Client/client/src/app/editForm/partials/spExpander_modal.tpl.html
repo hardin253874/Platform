@@ -1,0 +1,17 @@
+﻿<div class="expanderDialog" sp-moveable-modal sp-event-relay sp-mobile-context>
+    
+    <div class="modal-header">
+        <h6>{{model.title}}</h6>
+    </div>
+
+    <div class="modal-body" >
+        <ul>
+            <li ng-repeat="entity in model.displayEntities">
+                <a style="cursor: pointer;" class="fieldValue" ng-href="" ng-click="linkClicked(entity.idP);">{{entity.name ? entity.name: 'Unnamed Resource'}}</a>
+            </li>
+        </ul>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" ng-click="closeDetail()">Close</button>
+    </div>
+</div>

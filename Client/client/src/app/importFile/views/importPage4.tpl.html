@@ -1,0 +1,35 @@
+﻿<div class="container-fluid page4">
+
+    <!-- Name -->
+    <div class="displayLabel">
+        <label>Save configuration as</label>
+        <input id="configName" type="text" ng-model="model.configName"/>
+    </div>
+    
+    <!-- Test import -->
+    <div class="displayLabel">
+        <label>Test import</label>
+        <input id="testRun" type="checkbox" ng-model="model.options.testRun" />Do not save data (this run only)
+    </div>
+
+    <!-- Update existing -->
+    <div class="displayLabel" ng-hide="model.resource.mergeOptionDisabled">
+        <label>Update Existing:</label>
+        <input type="checkbox"
+               ng-class="{'disabled':model.resource.mergeOptionDisabled}"
+               ng-model="model.resource.mergeExistingData"/>
+        {{model.resource.mergeOptionText}}
+    </div>
+
+    <!-- Suppress workflows -->
+    <div class="displayLabel">
+        <label>Workflows</label>
+        <input id="suppressWorkflows" type="checkbox" ng-model="model.options.suppressWorkflows" />Suppress workflows
+    </div>
+
+    <!-- Save now -->
+    <div class="displayLabel">
+        <a id="saveConfig" href="" ng-click="saveConfig()">Save configuration without importing</a>
+    </div>
+
+</div>

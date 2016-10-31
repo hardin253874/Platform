@@ -1,0 +1,286 @@
+// This is the styling of the inline edit form which is a container for
+// a form control in the context of being inline edited on in a report grid.
+// Do any CSS based tweaking of form controls for this context.
+
+// This quite a mess ... is the consolidation of a bunch of css tweaks
+// added as we support more and more controls for inline editing, and now there
+// is css here that should be merged, rationalised etc
+
+// Or better might be to move the styling for the controls themselves to near
+// the main definition of the control, adding in the inline specifics there.
+// But to do that once we remove the feature switch maybe.
+
+sp-inline-edit-form {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    vertical-align: top;
+
+    .edit-form-title {
+        display: none;
+    }
+
+    select,
+    textarea,
+    input,
+    input[type="text"],
+    input[type="password"],
+    input[type="datetime"],
+    input[type="datetime-local"],
+    input[type="date"],
+    input[type="month"],
+    input[type="time"],
+    input[type="week"],
+    input[type="number"],
+    input[type="email"],
+    input[type="url"],
+    input[type="search"],
+    input[type="tel"],
+    input[type="color"],
+    input[type="file"] {
+        padding: 0 0 0 2px;
+        margin: 0;
+        min-height: 24px; // dependant grid sizing
+        width: 100%;
+    }
+
+    input[type="checkbox"] {
+        margin: 0;
+    }
+
+    input {
+        display: inline-block;
+        width: 100%;
+    }
+
+    .inlineRelPicker .inlineRelPicker-button {
+        min-height: 24px;
+        padding: 0;
+    }
+
+    .dropDownRelPicker .dropDownRelPicker-button {
+        min-width: 10px;
+
+        &[uib-popover=New] {
+            display: none;
+        }
+    }
+
+    .sp-date-control .date-input {
+        width: 100% !important;
+    }
+
+    .sp-time-control .time-input {
+        width: 100% !important;
+    }
+
+    button,
+    .sp-date-control button,
+    .sp-time-control .btn-time {
+        height: 24px !important;
+    }
+
+    button,
+    .dropdownButton {
+        min-height: 24px;
+        padding: 0;
+    }    
+
+    .multiLineTextField-text {
+        background-color: white;
+    }
+
+    .multiLineTextField-text, .multitext-expander {
+        min-height: 24px !important;
+        max-height: none !important;
+        height: 100%;
+    }
+
+    .multiLineTextField-text-read {
+        textarea {
+            padding-top: 5px;            
+
+            &[readonly="readonly"] + .multitext-expander {
+                min-height: 24px;
+
+                img {
+                    margin-top: 5px;
+                }
+            }
+        }
+    }
+
+    .sp-currency-control .sp-currency-control-prefix {
+        top: 4px;
+        line-height: initial;
+    }
+
+    .sp-checkbox-control input[type="checkbox"].sp-checkbox-control-input {
+        margin-top: 5px;
+    }
+
+    .edit-form-control-container {
+        height: 100%;
+
+        .edit-form-value {
+            padding: 0 !important;
+            margin: 0;
+
+            .auto-number {
+                display: inline-block;
+                vertical-align: middle;
+                margin-top: 4px;
+            }
+        }
+
+        .editForm-view & {
+            .edit-form-value {
+                input{ margin-top:0;}
+        }
+        }
+    }
+
+
+    .fieldValue,
+    .sp-currency-control > span.currency-read {
+        display: inline-block;
+        margin-top: 3px;
+    }
+
+    .fieldValue {
+        // unfortunately need to !important as there are inline styles to override
+        // todo: fix so we don't need to do this
+        display: inline-block !important;
+        width: 100%;
+    }
+
+    sp-choice-relationship-render-control .edit-form-value .relControl {
+        min-width: 100%;
+
+    }
+
+    sp-checkbox-k-field-render-control .edit-form-value {
+        display: flex;
+
+        > :first-child {
+            flex: 1;
+        }
+    }
+
+    .currency-read {
+        width: 100%;
+
+        .fieldValue {
+            // allow for width of the $ prefix
+            width: calc(~'100% - 10px');
+        }
+    }
+
+    &.align-right {
+        input {
+            text-align: right;
+            padding-right: 3px;
+        }
+
+        sp-checkbox-k-field-render-control .edit-form-value > :first-child,
+        .fieldValue {
+            text-align: right;
+        }
+    }
+
+    &.align-left {
+        input {
+            text-align: left;
+        }
+
+        sp-checkbox-k-field-render-control .edit-form-value > :first-child,
+        .fieldValue {
+            text-align: left;
+        }
+    }
+
+    &.align-center {
+        input {
+            text-align: center;
+        }
+
+        sp-checkbox-k-field-render-control .edit-form-value > :first-child,
+        .fieldValue {
+            text-align: center;
+        }
+    }
+    // overriding the screen styling of forms
+    // - selector need to be more specific than the screen specific styling for form controls
+    // - hate that have to bring in all this external context knowledge... anyhoo
+    .screen .repeater .rn-inline-changed & .edit-form-value {
+        padding: 2px 0 1px 0;
+        font-size: 12px;
+    }
+
+    .screen & {
+        .edit-form-control-container {
+            .edit-form-value {
+                input {
+                    margin-top: 0;
+                }
+
+                input[type=checkbox] {
+                    margin-top: 5px;
+                }
+            }
+        }
+    }
+
+    sp-custom-validation-message {
+        position: absolute;
+        top: 0;
+        right: 1px;
+        opacity: .5;
+
+        img {
+            background-color: darkorange;
+            margin-top: 1px;
+            border-radius: 4px;
+            padding: 0px 0 1px;
+            width: 12px;
+            margin-right: 3px;
+        }
+
+        .sp-mobile-device & {
+            top: 4px;
+            right: 6px;
+
+            img {
+                margin: 0;
+                margin-top: 6px;
+                width: 20px;
+                padding: 0;
+                border-radius: 50%;
+            }
+        }
+
+        &.dateAndTimeKFieldRenderControl {
+            right: 40px; // to clear the date picker button
+        }
+
+        &.dateKFieldRenderControl {
+            right: 40px; // to clear the date picker button
+        }
+
+        &.timeKFieldRenderControl {
+            right: 40px; // to clear the time picker button
+        }
+
+        &.inlineRelationshipRenderControl {
+            right: 40px; // to clear the lookup's buttons
+        }
+
+        &.choiceRelationshipRenderControl {
+            right: 13px; // to clear the dropdown button
+        }
+
+        &.dropDownRelationshipRenderControl {
+            right: 13px; // to clear the dropdown button
+        }
+    }
+}

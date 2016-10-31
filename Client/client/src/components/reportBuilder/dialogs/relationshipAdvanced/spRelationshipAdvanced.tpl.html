@@ -1,0 +1,43 @@
+<div class="relationshipadvanced-view" sp-moveable-modal sp-set-focus-dialog-input>
+
+    <div class="modal-header">
+        <h6>Advanced Options: {{model.resourceName}}</h6>
+    </div>
+    <div class="modal-body">
+        <ul style="padding:0;">
+
+            <li ng-show="model.isResourceReportNode">
+                <input type="checkbox" ng-model="model.selectedNodeExactType" ng-readonly="model.isExactTypeEnabled" ng-disabled="model.isExactTypeEnabled" />
+                Show records that are only of object '{{model.resourceName}}'
+            </li>
+            <li ng-show="!model.isResourceReportNode">
+                Join type <select ng-model="model.selectedNodeExistMode" ng-disabled="model.isJoinTypeEnabled">
+                    <option value="automatic">Automatic</option>
+                    <option value="recordMustExist">Record must exist</option>
+                    <option value="recordMayNotExist">Record may not exist</option>
+                </select>
+            </li>
+            <!-- <li>
+                 <input type="checkbox" ng-model="selectedNodeResourceMustExist" ng-readonly="isResourceMustExistEnabled" ng-disabled="isResourceMustExistEnabled" />
+                 Resource must Exist</li>-->
+            <!-- <li>
+                 <input type="checkbox" ng-model="model.selectedNodeResourceMustExist" ng-readonly="model.isResourceMustExistEnabled" ng-disabled="model.isResourceMustExistEnabled" />
+                 Node must Exist</li>-->
+            <li ng-show="!model.isResourceReportNode">
+                <input type="checkbox" ng-model="model.selectedNodeCheckExistenceOnly" ng-readonly="model.isCheckExistenceOnlyEnabled" ng-disabled="model.isCheckExistenceOnlyEnabled" />
+                Follow recursion (Show indirect relationships):
+            </li>
+            <ul ng-show="!model.isResourceReportNode">
+                <li>
+                    <select ng-model="model.selectedNodeRecursionMode" ng-disabled="!model.selectedNodeCheckExistenceOnly">
+                        <option value="Recursive">Don't include self</option>
+                        <option value="RecursiveWithSelf">Include self</option>
+                    </select>
+                </li>
+            </ul>
+        </ul>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" ng-click="ok()">OK</button><button class="btn" ng-click="cancel()">Cancel</button>
+    </div>
+</div>

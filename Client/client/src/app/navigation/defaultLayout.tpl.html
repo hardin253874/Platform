@@ -1,0 +1,81 @@
+<div class="appLayout" ng-controller="AppController">
+	
+
+    <div ng-if="hideApplication" sp-include="'navigation/loading.tpl.html'"></div>
+
+    <div ng-if="!hideApplication">
+
+        <div ng-if="!loginService.isSignedIn() " class="login-form-section">
+
+            <div sp-include="'login/login.tpl.html'"></div>
+
+        </div>
+
+        <div ng-if="loginService.isSignedIn()" class="app-view-section">
+
+            <div ng-controller="NavController">
+
+                <div sp-layout class="layout-container">
+
+                    <div class="layout-top navheader" sp-include="'navigation/header.tpl.html'"></div>
+                    <div class="layout-top" sp-include="'navigation/tabs.tpl.html'"></div>
+
+                    <div class="layout-left layout-animate autosizing-container" data-debug-id="nav-tree"
+                         ng-class="{ 'layout-open': navData.showNav, 'layout-hide' : navData.hideNav }"
+                         data-layout-width="240" data-layout-closed-width="30" ng-style="consoleThemeModel.leftNavStyle">
+
+                        
+
+                        <div class="layout-content  layout-animate autosizing-content"
+                             sp-droppable="dropOptions" sp-droppable-data="'navTreeRoot'">
+                            <div class="layout-thumb">
+                                <img src="assets/images/icon_collapse_leftmenu.png" ng-click="toggleShowNav()" />
+                            </div>
+                            <div sp-include="'navigation/nav.tpl.html'"></div>
+                        </div>
+                    </div>
+
+                    <div class="layout-left layout-animate" data-debug-id="content-toolbox"
+                         ng-class="{ 'layout-open': !!spState.data.leftPanelTemplate, 'layout-hide' : !spState.data.leftPanelTemplate }"
+                         data-layout-width="240" data-layout-closed-width="30">
+
+                        <div class="layout-content layout-hide layout-animate">
+                            <div ng-if="!!spState.data.leftPanelTemplate" ng-include="spState.data.leftPanelTemplate" class="left-panel"></div>
+                        </div>
+                    </div>
+
+                    <div class="layout-middle layout-animate autosizing-container" sp-busy-indicator-popup="middleBusy">
+
+                        <div class="content-toolbar-region" data-debug-id="content-toolbar">
+                            <div ng-if="spState.data.region['content-toolbar'].templateUrl"
+                                 ng-include="spState.data.region['content-toolbar'].templateUrl"></div>
+                        </div>
+                        
+                        <sp-nav-pending-panel></sp-nav-pending-panel>
+
+                        <div class="content-header-region content-header-shadow" ng-style="contentHeaderShadowStyle">
+                            <div ng-if="spState.data.region['content-header'].templateUrl"
+                                 ng-include="spState.data.region['content-header'].templateUrl"></div>
+                        </div>
+
+                        <div class="client-view-content content-view-region autosizing-content" ng-if="!spAppError.haveErrors()" sp-droppable="viewDropOptions">
+                            <!--the following div must be empty, no space, no newline-->
+                            <!--or it causes errors and blanks views on IE-->
+                            <div ui-view class="view"></div>
+                        </div>
+
+                        <div class="content-footer-region">
+                            <div ng-if="spState.data.region['content-footer'].templateUrl"
+                                 ng-include="spState.data.region['content-footer'].templateUrl"></div>
+                        </div>
+                    </div>
+
+                    <div class="layout-bottom" sp-include="'navigation/footer.tpl.html'"></div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>

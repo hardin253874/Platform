@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="../lib/bootstrap/css/bootstrap.css"/>
+    <!--here's the place for any css and less you may need-->
+    <!--<link rel="stylesheet/less" type="text/css" href="../src/components/layout/layout.less"/>-->
+    <!--<script src="../lib/less/less-1.5.0.min.js" type="text/javascript"></script>-->
+
+<style>
+    .layout-animate {
+        transition: all 200ms linear;
+    }
+
+    .layout-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
+    .layout-top {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        background-color: grey;
+    }
+
+    .layout-bottom {
+        position: absolute;
+        top: 200px;
+        width: 100%;
+        background-color: lightslategray;
+    }
+
+    .layout-left {
+        position: absolute;
+        background-color: orangered;
+    }
+
+    .layout-right {
+        position: absolute;
+        background-color: mediumpurple;
+    }
+
+    .layout-middle {
+        position: absolute;
+        top: 50px; /* recalculated in javascript */
+        height: 100%; /* recalculated in javascript */
+        overflow: hidden; /* means never showing a scroll bar */
+        background-color: yellowgreen;
+    }
+
+    .content-container {
+        position: absolute;
+        overflow: auto;
+        width: 100%;
+        height: 100%;
+        background-color: lightpink;
+    }
+
+    .view-header {
+        background-color: lightpink;
+    }
+
+    .view-body {
+        background-color: teal;
+        overflow: auto;
+    }
+
+    .view-body2 {
+        background-color: rosybrown;
+        overflow: auto;
+    }
+
+    .view-body3 {
+        background-color: coral;
+        padding: 10px;
+
+        position: relative;
+        height: 100%;
+        width: 100%;
+    }
+
+</style>
+
+</head>
+<body ng-app="app">
+
+<div sp-layout class="layout-container">
+<div class="layout-top">
+    <h1>header</h1>
+</div>
+<div class="layout-top" style="background-color: moccasin">
+    <button ng-click="showNav=!showNav;$root.$broadcast('app.layout')">show nav</button>
+    <button ng-click="hideNav=!hideNav;$root.$broadcast('app.layout')">hide nav</button>
+    <button class="pull-right" ng-click="showTools=!showTools;$root.$broadcast('app.layout')">show tools</button>
+</div>
+<div class="layout-left layout-animate"
+     ng-class="{'layout-open': showNav, 'layout-hide': hideNav}"
+     data-layout-width="200" data-layout-closed-width="20">
+    <div class="clearfix">
+        <button class="pull-right" ng-click="showNav=!showNav;$root.$broadcast('app.layout')">...</button>
+    </div>
+    <div class="layout-hide layout-animate">
+        <ul>
+            <li>item 1</li>
+            <li>item 2</li>
+            <li>item 2</li>
+            <li>item 2</li>
+            <li>item 2</li>
+            <li>item 2</li>
+            <li>item 2</li>
+            <li>item 2</li>
+            <li>item 2</li>
+            <li>item 2</li>
+            <li>item 2</li>
+            <li>item 2</li>
+            <li>item 2</li>
+        </ul>
+    </div>
+</div>
+<div class="layout-right layout-animate" ng-class="{'layout-open': showTools}"
+     data-layout-width="150">
+    <div class="layout-hide">toolbox</div>
+    <ul class="layout-hide" ng-show="showTools">
+        <li>item 1</li>
+        <li>item 2</li>
+        <li>item 2</li>
+        <li>item 2</li>
+    </ul>
+</div>
+<div class="layout-bottom">
+    footer
+    <pre>appData: {{appData}}</pre>
+</div>
+<div class="layout-middle layout-animate">
+    <div class="content-container" style="background-color: greenyellow">
+        <div class="view-header">
+            <h1>content</h1>
+        </div>
+        <div class="view-header">
+            arbitrary text
+        </div>
+        <div class="view-body" sp-auto-height>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse scelerisque nunc vitae elit
+                tempor,
+                et pharetra ligula tempus. Praesent interdum sed dolor in aliquet. Vivamus congue scelerisque risus
+                pellentesque molestie. Fusce sem velit, facilisis ac sodales ut, suscipit vel nisl. Nulla iaculis,
+                enim
+                quis adipiscing dictum, augue nisl bibendum augue, adipiscing tempor lorem leo vitae lorem. Etiam at
+                mi
+                nunc. Duis dictum justo augue, vitae gravida justo porta ut. Nunc pulvinar mauris neque, auctor
+                fermentum quam congue vel. Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget nisl ut
+                sapien cursus porttitor. Mauris vitae metus ipsum. Maecenas porta lacus non est pulvinar, sed
+                elementum
+                mauris euismod. In facilisis ipsum vel nisi egestas, vitae tempus purus ornare. Cras non molestie
+                leo.
+            </p>
+
+            <p>
+                Duis quam est, tempor in vestibulum eget, posuere at massa. Curabitur eu fermentum elit. In dapibus
+                libero nec lacus rhoncus auctor. Nulla pretium elementum turpis non facilisis. In at urna vel velit
+                vehicula lobortis. Donec ut lacinia libero. Suspendisse consequat lobortis justo, non porta neque
+                dapibus vel. Morbi hendrerit turpis sapien, ac sagittis magna dictum dignissim. Integer eget enim
+                urna.
+                Morbi turpis purus, viverra in consequat et, fermentum nec orci. Phasellus ut aliquam odio. In hac
+                habitasse platea dictumst. Donec at pellentesque diam. Mauris vitae ipsum vel lectus tincidunt
+                accumsan.
+                In hac habitasse platea dictumst. Donec ac arcu urna.
+            </p>
+
+            <p>
+                Mauris vitae consectetur diam, id molestie dolor. Donec vulputate facilisis ipsum sed rhoncus. Proin
+                porttitor tellus sit amet nisl tincidunt cursus. Duis egestas leo non purus interdum, eu volutpat
+                diam
+                semper. Fusce et facilisis elit. Quisque ut tincidunt dolor. Morbi quis est nec massa venenatis
+                ornare
+                id a enim. Quisque elementum, neque ut condimentum dignissim, sem leo feugiat nisl, vitae placerat
+                dolor
+                tortor nec massa. Integer mollis, lectus rhoncus eleifend placerat, lorem justo rutrum sem, id
+                fermentum
+                enim orci in eros. Fusce viverra risus non leo tempor, sed aliquam libero tristique. Vestibulum a
+                enim
+                non ligula viverra accumsan. Nulla facilisi. Suspendisse at sollicitudin purus.
+            </p>
+
+            <p>
+                Pellentesque eu dolor justo. In ut sem vel leo volutpat gravida id sed purus. Praesent congue enim
+                sapien, non posuere diam rutrum vitae. Suspendisse non lorem quis leo porta lacinia. Nulla
+                adipiscing,
+                tellus ut convallis vulputate, justo lacus faucibus ipsum, et vulputate felis nisi ut velit.
+                Praesent et
+                commodo risus. Pellentesque scelerisque est quis nisl feugiat euismod. Pellentesque sagittis
+                malesuada
+                enim non commodo.</p>
+        </div>
+        <div class="view-body2">
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse scelerisque nunc vitae elit
+                tempor,
+                et pharetra ligula tempus. Praesent interdum sed dolor in aliquet. Vivamus congue scelerisque risus
+                pellentesque molestie. Fusce sem velit, facilisis ac sodales ut, suscipit vel nisl. Nulla iaculis,
+                enim
+                quis adipiscing dictum, augue nisl bibendum augue, adipiscing tempor lorem leo vitae lorem. Etiam at
+                mi
+                nunc. Duis dictum justo augue, vitae gravida justo porta ut. Nunc pulvinar mauris neque, auctor
+                fermentum quam congue vel. Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget nisl ut
+                sapien cursus porttitor. Mauris vitae metus ipsum. Maecenas porta lacus non est pulvinar, sed
+                elementum
+                mauris euismod. In facilisis ipsum vel nisi egestas, vitae tempus purus ornare. Cras non molestie
+                leo.
+            </p>
+
+            <p>
+                Duis quam est, tempor in vestibulum eget, posuere at massa. Curabitur eu fermentum elit. In dapibus
+                libero nec lacus rhoncus auctor. Nulla pretium elementum turpis non facilisis. In at urna vel velit
+                vehicula lobortis. Donec ut lacinia libero. Suspendisse consequat lobortis justo, non porta neque
+                dapibus vel. Morbi hendrerit turpis sapien, ac sagittis magna dictum dignissim. Integer eget enim
+                urna.
+                Morbi turpis purus, viverra in consequat et, fermentum nec orci. Phasellus ut aliquam odio. In hac
+                habitasse platea dictumst. Donec at pellentesque diam. Mauris vitae ipsum vel lectus tincidunt
+                accumsan.
+                In hac habitasse platea dictumst. Donec ac arcu urna.
+            </p>
+        </div>
+    </div>
+</div>
+<div class="layout-middle layout-animate">
+
+    <div ng-if="false" class="aaa1" style="position: relative; height: 100%; padding: 10px;">
+
+        <div class="aaa2" style="position: relative; height: 100%; ">
+
+            <div>
+                hello
+            </div>
+            <div class="aaa3" sp-auto-height style="background-color: lightcyan; position: relative; overflow: auto">
+
+                <div style="height: 500px; width: 900px; background-color: teal; border: 3px solid grey">
+                    inside the box
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div ng-if="true" class="view-body3" >
+        <div sp-layout class="layout-container">
+            <div class="layout-top">
+                <h1>internal header</h1>
+                <button class="pull-right" ng-click="showTools1=!showTools1;$root.$broadcast('app.layout')">show
+                    tools
+                </button>
+            </div>
+            <div class="layout-right layout-animate" ng-class="{'layout-open': showTools1}"
+                 data-layout-width="150">
+                <div>toolbox</div>
+                <ul>
+                    <li>item 1</li>
+                    <li>item 2</li>
+                    <li>item 2</li>
+                    <li>item 2</li>
+                </ul>
+            </div>
+            <div class="layout-middle layout-animate">
+                <div class="content-container" style="background-color: #f5f5f5">
+                    internal content
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse scelerisque nunc vitae
+                        elit tempor,
+                        et pharetra ligula tempus. Praesent interdum sed dolor in aliquet. Vivamus congue
+                        scelerisque risus
+                        pellentesque molestie. Fusce sem velit, facilisis ac sodales ut, suscipit vel nisl. Nulla
+                        iaculis, enim
+                        quis adipiscing dictum, augue nisl bibendum augue, adipiscing tempor lorem leo vitae lorem.
+                        Etiam at mi
+                        nunc. Duis dictum justo augue, vitae gravida justo porta ut. Nunc pulvinar mauris neque,
+                        auctor
+                        fermentum quam congue vel. Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget
+                        nisl ut
+                        sapien cursus porttitor. Mauris vitae metus ipsum. Maecenas porta lacus non est pulvinar,
+                        sed elementum
+                        mauris euismod. In facilisis ipsum vel nisi egestas, vitae tempus purus ornare. Cras non
+                        molestie leo.
+                    </p>
+
+                    <p>
+
+                        Duis quam est, tempor in vestibulum eget, posuere at massa. Curabitur eu fermentum elit. In
+                        dapibus
+                        libero nec lacus rhoncus auctor. Nulla pretium elementum turpis non facilisis. In at urna
+                        vel velit
+                        vehicula lobortis. Donec ut lacinia libero. Suspendisse consequat lobortis justo, non porta
+                        neque
+                        dapibus vel. Morbi hendrerit turpis sapien, ac sagittis magna dictum dignissim. Integer eget
+                        enim urna.
+                        Morbi turpis purus, viverra in consequat et, fermentum nec orci. Phasellus ut aliquam odio.
+                        In hac
+                        habitasse platea dictumst. Donec at pellentesque diam. Mauris vitae ipsum vel lectus
+                        tincidunt accumsan.
+                        In hac habitasse platea dictumst. Donec ac arcu urna.
+                    </p>
+
+                    <p>
+
+                        Mauris vitae consectetur diam, id molestie dolor. Donec vulputate facilisis ipsum sed
+                        rhoncus. Proin
+                        porttitor tellus sit amet nisl tincidunt cursus. Duis egestas leo non purus interdum, eu
+                        volutpat diam
+                        semper. Fusce et facilisis elit. Quisque ut tincidunt dolor. Morbi quis est nec massa
+                        venenatis ornare
+                        id a enim. Quisque elementum, neque ut condimentum dignissim, sem leo feugiat nisl, vitae
+                        placerat dolor
+                        tortor nec massa. Integer mollis, lectus rhoncus eleifend placerat, lorem justo rutrum sem,
+                        id fermentum
+                        enim orci in eros. Fusce viverra risus non leo tempor, sed aliquam libero tristique.
+                        Vestibulum a enim
+                        non ligula viverra accumsan. Nulla facilisi. Suspendisse at sollicitudin purus.
+                    </p>
+
+                    <p>
+
+                        Pellentesque eu dolor justo. In ut sem vel leo volutpat gravida id sed purus. Praesent
+                        congue enim
+                        sapien, non posuere diam rutrum vitae. Suspendisse non lorem quis leo porta lacinia. Nulla
+                        adipiscing,
+                        tellus ut convallis vulputate, justo lacus faucibus ipsum, et vulputate felis nisi ut velit.
+                        Praesent et
+                        commodo risus. Pellentesque scelerisque est quis nisl feugiat euismod. Pellentesque sagittis
+                        malesuada
+                        enim non commodo.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</div>
+
+<script src="../lib/angular/angular.js"></script>
+<script src="../lib/lodash/lodash.js"></script>
+<script src="../src/components/layout/layout.js"></script>
+<script>
+    angular.module('app', ['mod.common.ui.layout']);
+</script>
+
+</body>
+</html>

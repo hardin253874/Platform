@@ -1,0 +1,40 @@
+<div>
+	
+    <!-- Default value (for schema) -->
+    <div class="edit-form-control-container">
+        <div class="edit-form-title"><label class="form-label">Default Value: </label></div>
+        <div class="edit-form-value"><sp-inline-relationship-picker options="model.defaultValuePickerOptions" is-read-only="!model.canModifyRelationship"/></div>
+    </div>
+    
+    <div class="edit-form-control-container" style="padding-left: 5px; padding-bottom: 5px; margin-top: -4px;" ng-if="model.showUseCurrentUserOption">
+        <div class="edit-form-title"><label class="form-label"></label></div>
+        <div class="edit-form-value">
+            <input type="checkbox" ng-model="model.useCurrentUserAsDefault" ng-disabled="!model.canModifyRelationship"/>
+            <label >{{model.currentUserDisplayText}}</label>
+        </div>
+    </div>
+
+    <!-- Relationship schema entity name -->
+    <div>
+        <sp-control-on-form form-data="model.relationshipToRender" form-control="model.relNameControl" form-mode="model.formMode" is-read-only="!model.canModifyRelationship" />
+    </div>
+
+    <!-- Script name -->
+    <div>
+        <sp-control-on-form form-data="model.relationshipToRender" form-control="model.scriptNameControl" form-mode="model.formMode" is-read-only="!model.canModifyRelationship"/>
+    </div>
+
+    <!-- Reverse name -->
+    <div>
+        <sp-control-on-form form-data="model.relationshipToRender" form-control="model.reverseNameControl" form-mode="model.formMode"  is-read-only="!model.canModifyRelationship"/>
+    </div>
+
+    <!-- Navigate to/from reverse -->
+    <div ng-show="!model.isReverseRelationship" class="edit-form-control-container">
+       <div class="edit-form-title"> <label class="form-label">Hide in Reverse: </label></div>
+        <div class="edit-form-value"><input type="checkbox" ng-model="model.relationshipToRender.hideOnToType" ng-disabled="!model.canModifyRelationship"/></div>
+    </div>
+    <div ng-if="!options.showInReverse">
+        <a style="cursor:pointer;" ng-href="" ng-click="handleLinkClick();">Show Properties in Reverse Direction</a>
+    </div>
+</div>

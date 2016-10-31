@@ -1,0 +1,20 @@
+<div class="sp-applicable-tasks" ng-show="task" >
+	
+    <img src="assets/images/run.svg" title="Actions">
+    <span class="task-name" ng-show="taskList.length === 1">{{task.name}}</span>
+
+    <span ng-show="taskList.length > 1">        
+        <span class="task-count" ng-show="notificationCount > 1">{{notificationCount}}</span>
+        <select class="task-list"
+                ng-options="record.name for record in taskList" ng-model="task"
+                ng-disabled="disabled">
+        </select>
+    </span>
+    <!-- task exit points -->
+    <span class="completed-date" ng-show="task.userTaskIsComplete">Completed: {{task.userTaskCompletedOn | spDate:dateShort }}</span>
+
+    <sp-task-buttons ng-hide="task.userTaskIsComplete" in-wizard="inWizard" return-on-completion="returnOnCompletion" task="task" before-save="beforeTransition()" ></sp-task-buttons>
+
+    <input ng-hide="task.userTaskIsComplete || task.hideComment" ng-model='task.taskComment' placeholder="Comment" />
+    <span class="completed-comment" ng-show="task.userTaskIsComplete && task.taskComment"><img src="assets/images/icon_comment.png">{{task.description}}</span>
+</div>

@@ -1,0 +1,33 @@
+<span class="sp-currency-control" >
+	
+    
+    
+    <span ng-if="!(!model.isReadOnly || model.isInDesign)" class="currency-read">
+        <span ng-if="model.showPrefix" class="prefix">{{model.prefix}}</span>
+        <span class="fieldValue" style="margin-top:0;">{{model.value | spCurrencyControlFilter:model.decimalPlaces}}</span>
+    </span>
+
+    <span ng-if="!model.isReadOnly || model.isInDesign" style="position: relative">
+        
+        <span style="position: absolute; display: block; left: 5px; height: 24px; padding-top: 5px; z-index: 9" once-style="getPrefixStyle()" ng-click="focusInput($event)">{{model.prefix}}</span>
+
+        <input  
+            type="{{ isMobile || isTablet ? 'number' : 'text' }}"
+            sp-floating-point-input="validationModel.getDecimalPlaces"
+            sp-currency-control-validation="validationModel"
+            ng-model="model.value"
+            ng-required="model.isRequired"
+            ng-trim="false"
+            uib-tooltip="{{validationModel.message}}"
+            tooltip-placement="right"
+            tooltip-trigger="mouseenter" 
+            ng-disabled="model.isInDesign"
+            once-style="getInputStyle()"
+            ng-click="onClick($event)"/>
+        
+    </span>
+            
+    <span class="suffix">{{model.suffix}}</span>
+           
+       
+</span>

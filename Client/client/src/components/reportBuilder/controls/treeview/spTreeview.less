@@ -1,0 +1,256 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+.report-Builder-Treeview {
+    .builder-Treeview;
+
+    ul {
+        padding: 0;
+        margin-left: 0px;
+        list-style-type: none;
+    }
+
+    .report-Builder-Treeview-Rootnode {
+        .builder-Treeview-Rootnode;
+
+        .rootnodename_defualt {
+            border-radius: @borderRadiusSmall + 1px;
+            padding: 0px 10px 0px 5px;
+            cursor: pointer;
+            overflow: hidden;
+            display:table-cell;
+            line-height: 13px;
+        }
+
+        .rootnodename {
+            .rootnodename_defualt;
+            &:hover {
+                background: darken(@buildertoolBg, 5%);
+            }
+        }
+
+        .selectedrootnodename {            
+            .rootnodename_defualt;
+            background: transparent;
+        }
+
+		 .displayremovebutton {
+            display: block;
+            width: 16px;
+            height: 16px;
+            float: right;
+            border: 0;
+            padding: 0;
+            background-color: transparent;
+            transition: opacity ease .2s;
+            -webkit-transition: opacity ease .2s;
+            margin-top:-6px;
+
+            & > img {
+                padding: 0;
+                margin: 0;
+                opacity: .5;
+                vertical-align:top;
+
+                &:hover {
+                    opacity: 1;
+                }
+            }
+        }
+
+        .hideremovebutton {
+            display: none;
+            width: 16px;
+            height: 16px;
+            float: right;
+            border: 0;
+            padding: 0;
+            background-color: transparent;
+        }
+    }
+
+
+    .report-Builder-Treeview-Toggle {
+        .builder-Toggle;
+    }
+}
+
+.report-Builder-Treeview-Item {
+    border-radius: @borderRadiusSmall + 1px;
+    margin-bottom: 3px;
+    margin-left: 5px;
+
+    ul {
+        padding: 0;
+        margin-left: 10px;
+        list-style-type: none;
+    }
+
+        li:last-child {
+        margin-bottom: 0px;
+    }
+
+    .childnodename {
+        color: lighten(@buildertoolBg, 40%);
+        cursor: pointer;
+        padding-left: 6px;
+        vertical-align: middle;
+        font-size: 11px;
+        display: table-cell;
+    }
+
+    .selectedchildnodename {
+        .childnodename;
+        color: lighten(@buildertoolBg, 50%);
+    }
+
+    .rootnodearea {
+        display: table;
+        width: 100%;
+        border-radius: @borderRadiusSmall + 1px;
+        background-color: darken(@buildertoolBg,5%);
+        cursor: pointer;
+        margin-bottom: 3px;
+        padding: 7px 0;
+
+        &:hover {
+            background-color: darken(@buildertoolBg,10%);
+        }
+    }
+
+    .selectedrootnodearea {
+        .rootnodearea;
+        border-radius: @borderRadiusSmall + 1px;
+        background-color: darken(@buildertoolBg,17%);
+
+        &:hover {
+            background-color: darken(@buildertoolBg,20%);
+        }
+    }
+
+    .childnodearea {
+        border-radius: @borderRadiusSmall + 1px;
+        background-color: darken(@buildertoolBg,5%);
+        cursor: pointer;
+        line-height: initial;
+        padding: 5px 2px;
+        display: table;
+        width: 100%;
+
+        &:hover {
+            background-color: darken(@buildertoolBg,10%);
+        }
+
+        &:before {
+            content: url('images/fielditem_child.png');
+            margin-left: -13px;
+            margin-right: 5px;
+            padding-bottom: 0;
+            margin-bottom: 5px;
+            vertical-align: middle;
+            display: inline-block;
+            line-height: 0px;
+        }
+    }
+
+    .selectedchildnodearea {
+        .childnodearea;
+        background-color: darken(@buildertoolBg,17%);
+
+        &:hover {
+            background-color: darken(@buildertoolBg,20%);
+        }
+    }
+
+    .nodetypeimage {
+        width: 18px;
+        height: 18px;
+        vertical-align: middle;
+        display: table-cell;
+    }
+
+    .noderelationshipstypeimage {
+        .nodetypeimage;
+        background: url('../assets/images/relationshipstype.png') no-repeat;
+    }
+
+    .nodelookupstypeimage {
+        .nodetypeimage;
+        background: url('../assets/images/lookupstype.png') no-repeat;
+    }
+
+    .nodederivedResourcestypeimage {
+        .nodetypeimage;
+        background: url('../assets/images/derivedResourcestype.png') no-repeat;
+    }
+
+    .noderelationshipInstancetypeimage {
+        .nodetypeimage;
+        background: url('../assets/images/relationshipstype.png') no-repeat;
+    }
+
+    .itemIcon {
+        display: table-cell;
+        width: 25%;
+        text-align:right;
+    }
+
+    .displayremovebutton {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        border: 0;
+        padding: 0;
+        background-color: transparent;
+        transition: opacity ease .2s;
+        -webkit-transition: opacity ease .2s;
+
+        & > img {
+            padding: 0;
+            margin: 0;
+            opacity: .5;
+            vertical-align: top;
+            margin-top: -1px;
+
+            &:hover {
+                opacity: 1;
+            }
+        }
+    }
+
+    .hideremovebutton {
+        display: none;
+        width: 16px;
+        height: 16px;
+        border: 0;
+        padding: 0;
+        background-color: transparent;
+    }
+
+    .displaysummariseicon {
+        display: inline-block;
+        width: auto;
+        height: auto;
+        border: 0;
+        padding: 0;
+        background-color: transparent;
+        transition: opacity ease .2s;
+        -webkit-transition: opacity ease .2s;
+    }
+
+    .hiddensummariseicon {
+        display: none;
+        width: auto;
+        height: auto;
+        vertical-align: top;
+        border: 0;
+        padding: 0;
+        background-color: transparent;
+    }
+
+    .childTreeviewItemNode {
+        margin-left: 10px;
+    }
+
+    .report-Builder-Treeview-Toggle {
+        .builder-Toggle;
+    }
+}

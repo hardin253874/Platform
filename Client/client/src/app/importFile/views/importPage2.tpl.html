@@ -1,0 +1,18 @@
+<div class="container-fluid page2">
+
+    <!-- Import type -->
+    <div class="displayLabel">
+        <label>Import type</label>
+        <select id="importType" ng-model="model.typePickerOptions.pickerReportId">
+            <option value="console:importableTypesReport">Objects</option>
+            <option value="console:enumReport">Choice field values</option>
+        </select>
+    </div>
+
+    <!-- Select object -->
+    <div class="displayLabel">
+        <label>Import as existing object</label>
+        <sp-inline-relationship-picker options="model.typePickerOptions" />
+    </div>
+
+</div>

@@ -1,0 +1,66 @@
+﻿<div class="expression-sheet container-fluid" ng-controller="expressionSheetController">
+
+    <div class="row-fluid">
+
+        <h1>Expression Sheet</h1>
+
+        <div>
+            <h3>Summary</h3>
+            Tests a filtered call to get entities by type.
+        </div>
+
+        <br/>
+
+        <div>
+
+            <div>
+                <!--<table>
+                    <tr>
+                        <td><img src="assets/images/icon_resource.png"/></td>
+                        <td class="context-expression-cell"><textarea ui-codemirror ng-model="context" rows="1"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td><img src="assets/images/icon_info.png"/></td>
+                        <td class="context-expression-cell"><textarea ui-codemirror ng-model="contextQuery" rows="1"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td><img src="assets/images/icon_function.png"/></td>
+                        <td class="context-expression-cell"><textarea ui-codemirror ng-model="contextFilter" rows="1"></textarea></td>
+                    </tr>
+                </table>-->
+
+                <br/>
+
+                <span ng-if="results.length === 0">
+                    <span ng-show="busy">Loading...</span>
+                    <span ng-hide="busy">
+                        <span ng-show="status" style="color: red;">{{status}}</span>
+                        <span ng-hide="status">No results to show.</span>
+                    </span>
+                </span>
+
+                <table class="result-table" ng-if="results.length > 0">
+                    <tr>
+                        <th style="width: 50px;">id</th>
+                        <th ng-repeat="field in fields"><span once-text="field"></span></th>
+                    </tr>
+                    <tr ng-repeat="result in results | limitTo:10">
+                        <td><span once-text="result.idP"></span></td>
+                        <td ng-repeat="field in fields"><span once-text="getValue(result, field)"></span></td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+
+    <br />
+
+    <div class="expression-sheet-container">
+        
+        <sp-expression-sheet options="worksheet"></sp-expression-sheet>
+
+    </div>
+
+</div>

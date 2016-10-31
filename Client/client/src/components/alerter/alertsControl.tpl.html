@@ -1,0 +1,10 @@
+<ul>
+	
+    <li ng-repeat="a in alerts()" class="alert-{{a.severity}}">
+            <div style="display:table; width:100%;">
+                <div></div>
+                <div>{{a.message}}</div>
+                <div style="min-width:1%; text-align:right;"><button class="btn" ng-click="remove(a)"><img src="assets/images/toolbar_close.png" /></button></div>
+            </div>
+    </li>
+</ul>

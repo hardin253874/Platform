@@ -1,0 +1,124 @@
+/**
+   * This is the main application stylesheet. It should include or import all
+   * stylesheets used throughout the application as this is the only stylesheet in
+   * the Grunt configuration that is automatically processed.
+   * 
+   * Copyright 2011-2016 Global Software Innovation Pty Ltd
+   */
+
+// are we using this....? it was part of the initial project scaffolding
+
+@import 'font-awesome.less';
+
+// import our bootstrap customizations and overrides
+@import 'customBootstrap/bootstrap';
+
+// import our app side variables
+@import 'variables.less';
+
+
+//the common style for all builders
+@import 'builder.less';
+
+// Add here imports of component less files
+@import "../components/feedback/feedback";
+@import '../components/dataGrid/spDataGrid.less';
+@import '../components/reports/spReport.less';
+@import '../components/reports/spReportMobile.less';
+@import '../components/reportBuilder/spReportBuilder.less';
+@import '../components/editableLabel/spEditableLabel.less';
+@import '../components/analyzer/spAnalyzer.less';
+@import '../components/deleteService/spDeleteService.less';
+@import '../components/reportBuilder/controls/treeview/spTreeview.less';
+@import '../components/dragDrop/spDragDrop.less';
+@import '../components/dialogService/spDialogService.less';
+@import '../components/reportBuilder/controls/fieldsManager/spFieldsManager.less';
+@import '../components/fieldValidator/spFieldValidator.less';
+@import '../components/fileUpload/spFileUpload.less';
+@import '../components/contextMenu/spContextMenu.less';
+@import '../components/reports/dialogs/sortOptionsDialog/spSortOptionsDialog.less';
+@import '../components/relationshipPicker/spRelationshipPicker.less';
+@import '../components/reportBuilder/dialogs/relationshipAdvanced/spRelationshipAdvanced.less';
+@import '../components/reportBuilder/dialogs/CalculatedField/spCalculatedField.less';
+@import '../components/reportBuilder/dialogs/summariseOption/spSummariseOption.less';
+@import '../components/reportBuilder/dialogs/summariseFieldOption/spSummariseFieldOption.less';
+@import '../components/reportBuilder/dialogs/aggregateOptionsDialog/spAggregateOptionsDialog.less';
+@import '../components/reportBuilder/dialogs/renameColumn/spRenameColumn.less';
+@import '../components/visualSettings/spVisualSettingsToggleButtons.less';
+@import '../components/infoButton/rnInfoButton.less';
+
+@import '../components/busyIndicator/spBusyIndicator.less';
+@import '../components/colorPicker/spColorPicker.less';
+@import '../components/editSaveCancel/spEditSaveCancel.less';
+@import '../components/conditionalFormatting/spConditionalFormattingDialog.less';
+@import '../components/iconPicker/spIconPicker.less';
+@import '../components/entityPickers/entityPickers.less';
+@import '../components/expressionEditor/expressionEditor.less';
+@import '../components/directives/generalDirectives.less';
+@import '../components/refreshButton/spRefreshButton.less';
+@import '../components/valueEditor/spValueEditor.less';
+@import '../components/imageViewer/spImageViewerDialog.less';
+@import '../components/security/spUserPasswordDialog/spUserPasswordDialog.less';
+
+// Add here imports for directives acting as controls
+@import '../app/editForm/custom/customDirectives.less';
+
+// Add here imports of app and view specific less
+@import '../app/app.less';
+@import '../app/home/home.less';
+@import '../app/workflow/workflow.less';
+@import '../app/report/report.less';
+@import '../app/report/report-mobile.less';
+@import '../app/reportBuilder/reportBuilder.less';
+@import '../app/reportBuilder/dialogs/reportActions/reportActionsDialog.less';
+@import '../app/reportBuilder/dialogs/reportProperty/reportProperty.less';
+@import '../app/reportBuilder/dialogs/reportSaveAs/reportSaveAs.less';
+@import '../app/editForm/editForm.less';
+@import '../app/editForm/editFormMobile.less';
+@import '../app/editForm/flex/flexEditForm.less';
+@import '../app/editForm/directives/spFlowContainer/spFlowContainer.less';
+@import '../app/editForm/directives/spPageSelector/spPageSelector.less';
+@import '../app/editForm/directives/spHeroTextControl/spHeroTextControl.less';
+@import '../app/editForm/partials/imageController.less';
+@import '../app/editForm/partials/spDropdownRelationshipPicker.less';
+@import '../app/editForm/partials/spInlineRelationshipPicker.less';
+@import '../app/login/login.less';
+@import '../app/board/rnBoard.less';
+@import '../app/controls/controls.less';
+@import '../app/controls/summaryValidation/demoSummaryValidation.less';
+@import '../app/login/directives/openId.less';
+@import '../app/chart/spChart.less';
+@import '../app/chartBuilder/styles/chartBuilder.less';
+@import '../app/connector/connector.less';
+@import '../app/formBuilder/styles/formBuilder.less';
+@import '../app/settings/settings.less';
+@import '../app/controls/dialog/entityNameDescriptionControl.less';
+@import '../app/importFile/importFile.less';
+@import '../app/importXml/importXml.less';
+@import '../app/controls/dialog/demoDialog.less';
+@import '../app/controls/reportbuilder/demoReportBuilder.less';
+@import '../app/controls/spApplicableTasks/spApplicableTasks.less';
+@import '../app/controls/spApplicableTasks/spApplicableTasksMobile.less';
+@import '../app/applicationConfiguration/styles/applicationConfiguration.less';
+@import '../app/applicationManager/styles/applicationManager.less';
+@import '../app/settings/tenantRollback/styles/tenantRollback.less';
+@import '../app/configDialogs/configureDialog.less';
+@import '../app/configDialogs/relationshipsProperties/svgRelationshipInfo/svgRelationshipInfo.less';
+@import '../app/navigation/spNavigationElementDialog/appElementDialog.less';
+@import '../app/navigation/spNavigationElementDialog/spNavigationElementDialog.less';
+@import '../app/chart/views/chart.less';
+@import '../app/documentLibrary/documentLibrary.less';
+@import '../app/reportTemplate/reportTemplate.less';
+@import '../app/security/securityCustomiseUI.less';
+@import '../app/task/userSurveyTask.less';
+@import '../app/security/directives/spSecurityAllowDisplayControl/spSecurityAllowDisplayControl.less';
+@import '../app/security/directives/spSecurityAccessControl/spSecurityAccessControl.less';
+@import '../app/configDialogs/relationshipsProperties/spRelationshipFilters/spRelationshipFilters.less';
+@import '../app/controls/dialog/entitySaveAsDialog/spEntitySaveAsDialog.less';
+@import '../app/controls/spNavContainerPicker/spNavContainerPicker.less';
+@import '../app/controls/dialog/spNavContainerPickerDialog/spNavContainerPickerDialog.less';
+@import '../app/formBuilder/controllers/spFormSaveAsDialog/spFormSaveAsDialog.less';
+
+// Builders
+@import '../builders/workflowBuilder/workflowBuilder.less';
+@import '../builders/devViews/devViews.less';

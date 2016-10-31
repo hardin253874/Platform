@@ -1,0 +1,27 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+.fileUpload {
+    position: relative;
+    display: inline-block;
+
+    .image-uploader & {
+        display: block;
+    }
+
+    input.upload {
+        position: absolute;
+        cursor: pointer;
+        opacity: 0;
+        overflow: hidden;
+        z-index: 2;
+    }
+
+    .fakeUpload {
+        sp-file-name-upload-control & {
+        }
+    }
+
+    button {
+        .btn_lighten;
+        min-height: 27px;
+    }
+}

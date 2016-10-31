@@ -1,0 +1,23 @@
+﻿<div class="spreport-view reportHeaderRow">
+    <div style="width: 100%;" ng-if="!isLegacy">
+        <div style="display: inline-block; width: 140px; padding-top: 5px;">Fields:</div>
+        <div style="display: inline-block; width: 80px;"><label><input type="radio" name="existingSetRadio" ng-model="isExisting" ng-value="false" ng-change="isExistingChange(false)" ng-disabled="isReadOnly || isInDesign" />New</label></div>
+        <div style="display: inline-block; width: 110px;"><label><input type="radio" name="existingSetRadio" ng-model="isExisting" ng-value="true" ng-change="isExistingChange(true)" ng-disabled="isReadOnly || isInDesign" />Use Existing</label>
+        </div>
+        <div style="float: right;">
+            <div ng-hide="isExisting"><label>Name: <input type="text" style="min-width: 170px;" ng-model="model.choiceOptionSet.name" placeholder="Untitled" ng-disabled="isReadOnly || isInDesign" /></label></div>
+            <div ng-show="isExisting"><sp-inline-relationship-picker options="model.choiceOptionPickerOptions" style="width: 220px;" /></div>
+        </div>
+    </div>
+    <div style="margin-top: 8px;">
+        <div class="choice-question-options">
+            <div>
+                <button title="New option" ng-click="newOption()" ng-disabled="isReadOnly || isInDesign"><img src="assets/images/icon_new.png"/></button>
+                <button title="Move up" ng-click="moveUpOption()" ng-disabled="isReadOnly || isInDesign"><img src="assets/images/arrow_up.png"/></button>
+                <button title="Move down" ng-click="moveDownOption()" ng-disabled="isReadOnly || isInDesign"><img src="assets/images/arrow_down.png"/></button>
+                <button title="Remove option" ng-click="removeOption()" ng-disabled="isReadOnly || isInDesign"><img src="assets/images/icon_remove.png"/></button>
+            </div>
+            <div class="choice-question-options-grid dataGridHeight" ng-if="gridLoaded" ng-grid="model.choiceOptionGridOptions" ng-disabled="isReadOnly || isInDesign"></div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,11 @@
+<div class="client-footer-panel" ng-if="!$state.current.data.fullScreen">
+
+    <a class="footer-right" ng-hide="!submitABugEnabled" ng-click="submitBug()" tabindex="-1">{{appData.feedbackLabel || 'Submit issue/Feature request'}}</a>
+
+    <span class="footer-left">
+        <span title="Server version">{{appData.settings.initialSettings.platformVersionDisplay}}</span> / <span
+            title="Client version">C: <%=grunt.config('buildLabel')%></span>
+    </span>
+
+    <span class="footer-center">Powered By ReadiNow</span>
+</div>

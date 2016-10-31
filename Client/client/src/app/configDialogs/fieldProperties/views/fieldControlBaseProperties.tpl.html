@@ -1,0 +1,53 @@
+ <div class="fieldproperties-base">
+     
+     <!-- Field name -->
+     <div>
+         <sp-control-on-form form-data="model.fieldData" form-control="model.fieldNameControl" form-mode="model.formMode"  is-read-only="!model.canModifyField" is-in-test-mode="model.isInTestMode" >
+    
+         </sp-control-on-form>
+     </div>
+     
+     <!-- Control label name -->
+     <div ng-show="model.isFieldControl || model.calc.showDisplayName">
+         <sp-control-on-form form-data="model.formData" form-control="model.fieldDisplayNameControl" form-mode="model.formMode" is-read-only="model.isReadOnly" is-in-test-mode="model.isInTestMode">
+
+         </sp-control-on-form>
+     </div>
+
+     <!-- Field description -->
+     <div ng-if="!model.isFieldControl">
+         <sp-control-on-form form-data="model.fieldData" form-control="model.fieldDescriptionControl" form-mode="model.formMode" is-read-only="!model.canModifyField" is-in-test-mode="model.isInTestMode">
+
+         </sp-control-on-form>
+     </div>
+     <div ng-if="model.isFieldControl">
+         <sp-control-on-form form-data="model.formData" form-control="model.fieldDescriptionControl" form-mode="model.formMode" is-read-only="model.isReadOnly" is-in-test-mode="model.isInTestMode">
+
+         </sp-control-on-form>
+     </div>
+
+     <!-- Field Type -->
+     <div ng-show="model.isCalculated" class="calcprop-field-type">
+         <div class="edit-form-title">
+             <label for="calcResult">Field Type: </label>
+         </div>
+         <div class="edit-form-value">
+             <select id="calcResult" name="calcResult" ng-model="model.calc.resultType" ng-disabled="model.calc.typeLocked || !model.canModifyField"
+                     ng-options="ft.typeAlias as ft.name for ft in model.calc.resultTypes">
+             </select>
+         </div>
+     </div>
+
+     <!-- Calculation -->
+     <div ng-show="model.isCalculated" class="calcprop-calculation">
+         <div class="edit-form-title">
+             <label>Calculation: </label>
+         </div>
+         <div class="edit-form-value">
+             <div style="margin:3px 0">
+                 <sp-expression-editor ng-model="model.calc.script" context="model.calc.context" host="model.calc.host" options="model.calc.options"></sp-expression-editor>
+             </div>
+         </div>
+     </div>
+
+ </div>

@@ -1,0 +1,34 @@
+<div class="color-properties" sp-moveable-modal sp-set-focus-dialog-input>
+
+    <div class="modal-header">
+        <h6>Colour Properties</h6>
+    </div>
+    <div class="modal-body overflowModalBody">
+        <div class="table">
+            <div class="row">
+                <div class="cell">Colour:</div>
+                <div class="cell"><sp-color-picker-dropdown color="model.color"></sp-color-picker-dropdown></div>
+            </div>
+            <div class="row" ng-show="model.allowNegatives">
+                <div class="cell">Negatives:</div>
+                <div class="cell"><sp-color-picker-dropdown color="model.negColor"></sp-color-picker-dropdown></div>
+            </div>
+            <div class="row">
+                <div class="cell">Hide legend:</div>
+                <div class="cell">
+                    <input type="checkbox" name="grid" ng-model="model.series.hideColorLegend" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="cell">Conditional formatting:</div>
+                <div class="cell">
+                    <input type="checkbox" name="grid" ng-model="model.series.useConditionalFormattingColor" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div style="float:left"><a style="cursor:pointer" ng-click="defaults()">Defaults</a></div>
+        <button type="button" class="btn" ng-click="ok()">OK</button><button type="button" class="btn" ng-click="cancel()">Cancel</button>
+    </div>
+</div>

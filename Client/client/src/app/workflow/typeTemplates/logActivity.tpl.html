@@ -1,0 +1,13 @@
+<div ng-controller="sp.workflow.activityController">
+	
+    <form class="form-horizontal">
+        <div class="form-group">
+            <sp-workflow-expression-control parameter="activityParameters['core:inLogActivityMessage']" show-label="true"
+                                            actions="exprEditor"></sp-workflow-expression-control>
+        </div>
+        <div class="form-group">
+            <sp-workflow-expression-control parameter="activityParameters['core:inLogActivityObject']"
+                                            show-label="true" actions="parameterChooser,resourceChooser"></sp-workflow-expression-control>
+        </div>
+    </form>
+</div>

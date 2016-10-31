@@ -1,0 +1,12 @@
+<div ng-class="col.colIndex()">
+	
+    <div class="fullSizeTable" ng-hide="showValueControls(row)">        
+    </div>    
+    <div ng-show="showValueControls(row)" style="width:100%;height:100%;position:relative">
+        <div class="valueTable" >
+            <div class="centeredTableCell">
+                <sp-value-editor class="valueEditorStyle" type="getRuleArgType(row)" value="row.entity.value" options="row.entity.valueEditorOptions"></sp-value-editor>
+            </div>                        
+        </div>      
+    </div>    
+</div>

@@ -1,0 +1,12 @@
+<div ng-controller="editFormDesignerController" class="editForm-design">
+	
+    <div class="text-right editForm-design_top">
+        <span style="color: salmon; margin-right: 15px;">{{status}}</span>
+        <button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="!isDirty()">Save</button>
+        <button type="button" class="btn btn-primary" ng-click="cancel()">Cancel</button>
+    </div>
+
+    <sp-hover-adornment src="editForm/partials/designerAdornment.tpl.html">
+        <sp-custom-edit-form form-data="formData" form-control="formControl" form-mode="'design'" />
+    </sp-hover-adornment>
+</div>

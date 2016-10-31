@@ -1,0 +1,64 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+.workflow-builder-toolbox {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: @buildertoolBg;
+    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+  .header {
+    .builder-Header;
+    background-color:@workflowBg;
+  }
+
+  .body {
+
+    ul {
+      margin: 0;
+      padding: 0;
+
+      li {
+        margin: 0 10px 3px;
+        background-color: @fielditemBg;
+        line-height: 12px;
+        list-style: none;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        padding: 4px;
+        border-radius: @borderRadiusSmall;
+
+        &:last-child {
+          margin-bottom: 10px;
+        }
+
+        img {
+          margin: 0 5px 0 0;
+        }
+
+        &.menu-header {
+          background-color: @buildertoolBg;
+          color: @gray_C;
+          font-weight: lighter;
+          padding: 13px 10px 3px;
+          margin: 0;
+          margin-bottom: 2px;
+        }
+
+        &:not(.menu-header) {
+          cursor: pointer;
+
+          &:hover {
+            background-color: lighten(@fielditemBg, 5%);
+          }
+        }
+      }
+    }
+  }
+}
+
+

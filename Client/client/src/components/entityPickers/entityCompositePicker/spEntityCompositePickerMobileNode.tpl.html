@@ -1,0 +1,30 @@
+﻿<div ng-if="!filterActive">
+    <div class="{{getNodeClass(nodeId)}}">
+        <img ng-if="navigateToParentVisible(nodeId)" src="assets/images/hierarchy_upper.png" ng-click="navigateToParentNode(nodeId)">
+        <span ng-click="onMobileNodeClicked(nodeId)">
+            {{model.nodes[nodeId].name}}
+        </span>
+        <img ng-if="navigateToChildVisible(nodeId)" src="assets/images/hierarchy_under.png" ng-click="navigateToChildNode(nodeId, parentId)">
+    </div>
+    
+    <ul ng-if="showChildren(nodeId)" ng-init="parentId = nodeId">
+        <li ng-repeat="nodeId in model.nodes[nodeId].children">
+            <div sp-include="'entityPickers/entityCompositePicker/spEntityCompositePickerMobileNode.tpl.html'"></div>
+        </li>
+    </ul>
+</div>
+
+<div ng-if="filterActive" class="structureItem_searched">
+    <span ng-click="onFilteredNodeClicked(nodeId)" class="parentStructreItem">
+        {{model.nodes[model.nodes[nodeId].parentId].name}}
+    </span>
+
+    <div class="matchedContainer">
+        <span ng-click="onFilteredNodeClicked(nodeId)" ng-class="{matched: model.nodes[nodeId].isMatch}">
+            {{model.nodes[nodeId].name}}
+        </span>
+        <img src="assets/images/locationPoint.png" ng-click="navigateToFilteredNode(nodeId)">
+    </div>
+</div>
+
+

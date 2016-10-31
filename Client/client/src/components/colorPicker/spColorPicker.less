@@ -1,0 +1,394 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+.spColorPicker-view {
+
+    @colorBoxWidth: 30px;
+    @colorBoxHeight: 20px;
+
+    @saturationValuePickerWidth: 100px;
+    @saturationValuePickerHeight: 100px;
+
+    @sliderHandleOpacity: 0.8;
+
+    .fullSize {
+        width: 100%;
+        height: 100%;
+    }
+
+    .fullWidth {
+        width: 100%;
+    }
+
+    .fullWidthTable {
+        .fullWidth;
+        display: table;
+    }
+
+    .fullSizeTable {
+        .fullSize;
+        display: table;
+    }
+
+    .tableCell {
+        text-align: left;
+        display: table-cell;
+    }
+
+    .saturationValuePicker {
+        width: @saturationValuePickerWidth;
+        height: @saturationValuePickerHeight;
+        display: inline-block;
+        vertical-align: top;
+        border: 1px solid black;
+        cursor: crosshair;
+        user-select: none;
+    }
+
+    .gradSat {
+
+        background-image: linear-gradient(to right, #fff, rgba(204, 154, 129, 0));
+        filter: progid:DXImageTransform.Microsoft.gradient(GradientType = 1, startColorstr='#FFFFFFFF', endColorstr='#00CC9A81');
+    }
+
+    .gradVal {
+        position: relative;
+        background-image: linear-gradient(to top, #000, rgba(204, 154, 129, 0));
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00CC9A81', endColorstr='#FF000000');
+    }
+
+    .gradHue {
+        background: linear-gradient(top, #ff0000 0%, #ffff00 17%, #00ff00 33%, #00ffff 50%, #0000ff 67%, #ff00ff 83%, #ff0000 100%);
+    }
+
+    #hueSlider {
+        width: 20px;
+        height: @saturationValuePickerHeight;
+        display: inline-block;
+        vertical-align: top;
+        position: relative;
+
+        .ui-slider-handle {
+            opacity: @sliderHandleOpacity;
+            left: 0;
+            height: 0.4em;
+            margin-bottom: -0.2em;
+            border-radius: 0;
+            box-sizing: border-box;
+            width: 100%;
+        }
+    }
+
+        #hueSlider.ui-slider {
+            .gradHue;
+            border-radius: 0;
+            border-color: black;
+        }
+
+    .colorInputGroupContainer {
+        height: @saturationValuePickerHeight;
+        display: inline-block;
+        vertical-align: top;
+        margin-left: 2px;
+    }
+
+    .colorNumberInputContainer {
+        height: 25%;
+        position: relative;
+        width:auto;
+    }
+
+    .colorNumberInput {
+        width: 45px !important;
+        vertical-align: middle;
+        margin-bottom: 0;
+        margin-left: 5px;
+    }
+
+    .colorSliderHandle {
+        opacity: @sliderHandleOpacity;
+        width: 0.4em;
+        margin-left: -0.2em;
+        border-radius: 0;
+    }
+
+    .rgbaSliderContainer {
+        width: 100px;
+        height: 11px;
+        display: inline-block;
+        vertical-align: middle;
+        margin-left: 2px;
+    }
+
+    .aImage {
+        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAChJREFUeNpiPHPmDAMMGBsbw9lMDDgA6RKM%2F%2F%2F%2Fh3POnj1LCzsAAgwAQtYIcFfEyzkAAAAASUVORK5CYII%3D);
+    }
+
+    .previewContainer {
+        .aImage;
+        width: 100px;
+        height: 20px;
+    }
+
+    .aSliderContainer {
+        .rgbaSliderContainer;
+        .aImage;
+    }
+
+    #aSlider {
+        .fullSize;
+
+        .ui-slider-handle {
+            .colorSliderHandle;
+        }
+    }
+
+        #aSlider.ui-slider {
+            border-radius: 0;
+            background: linear-gradient(to right, rgba(0,0,0,0) 0%,rgba(0,0,0,1) 100%);
+        }
+
+    .colorGradient (@r: 0, @g: 0, @b: 0) {
+        background-image: linear-gradient(left, rgb(0,0,0) 0%, rgb(@r, @g, @b) 100%);
+    }
+
+    #rSlider {
+        .fullSize;
+
+        .ui-slider-handle {
+            .colorSliderHandle;
+        }
+    }
+
+        #rSlider.ui-slider {
+            border-radius: 0;
+            .colorGradient(255,0,0);
+        }
+
+    #gSlider {
+        .fullSize;
+
+        .ui-slider-handle {
+            .colorSliderHandle;
+        }
+    }
+
+        #gSlider.ui-slider {
+            border-radius: 0;
+            .colorGradient(0,255,0);
+        }
+
+
+    #bSlider {
+        .fullSize;
+
+        .ui-slider-handle {
+            .colorSliderHandle;
+        }
+    }
+
+        #bSlider.ui-slider {
+            border-radius: 0;
+            .colorGradient(0,0,255);
+        }
+
+    .colorLabel {
+        display: inline-block;
+        width: 10px;
+        vertical-align: middle;
+    }
+
+    .saturationValueDragger {
+        border-radius: 6px;
+        height: 6px;
+        width: 6px;
+        border: 1px solid #fff;
+        background: rgba(0, 0, 0, 0.00);
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: none;
+    }
+
+    .fgBgDropdownIcon {
+        padding: 0px;
+        display: table-cell;
+        width: 15px;
+        height: 16px;
+        vertical-align: middle;
+        background-image: url('images/16x16/DownArrow.png');
+        background-repeat: no-repeat;
+        background-position-x: -1px;
+    }
+
+    .colorDropdownMenu {
+        max-height: 250px;
+        overflow-y: scroll;
+    }    
+
+    .dropdownButton{
+        width:100%;
+        padding:2px;
+        background-color:#fff;
+
+        .dropdownIcon{
+            margin-bottom: -5px;
+            float: right;
+        }
+    }
+
+    .selectedColorAColorBox {
+        .aImage;
+        border: 1px solid lightgrey;
+        display: inline-block;
+        width: @colorBoxWidth;
+        height: @colorBoxHeight;
+        margin-right: 2px;
+        vertical-align: middle;
+    }
+
+    .colorBox {
+        .aImage;
+        border: 1px solid lightgrey;
+        display: table-cell;
+        width: @colorBoxWidth;
+        height: @colorBoxHeight;
+        margin-right: 2px;
+        vertical-align: middle;
+    }
+
+    .colorDropdownColorBox {
+        border: 1px solid lightgrey;
+        display: inline-block;
+        width: @colorBoxWidth;
+        height: @colorBoxHeight;
+        margin-right: 2px;
+        vertical-align: middle;
+    }
+
+    .fgBgColorDropdownItem {
+        border: 0px solid lightgrey;
+        display: inline-block;
+        width: 100%;
+        box-sizing: border-box;
+        margin-right: 2px;
+        vertical-align: middle;
+        font-size: 12px;
+        cursor: pointer;
+    }
+
+    .fgBgDropdownMenuItem {
+        padding: 1px 2px;
+        cursor: pointer;
+    }
+
+    .alignMiddle {
+        vertical-align: middle;
+    }
+
+    .dropdownMenuItem {
+        padding: 2px 3px;
+        font-size: 12px;
+        cursor: pointer;
+    }
+
+    .colorDropDownContainer {
+        margin-top: 3px;
+    }
+
+    .dropdownSelectedItemName {
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .popupPickerContainer {
+        padding: 0;
+        white-space: nowrap;
+    }
+
+    .popupButtonContainer {
+        padding: 0;
+        .btn {
+            margin-left: 3px;
+        }
+    }
+
+    .overflowModalBody {
+        overflow: visible;
+    }
+
+    .leftMargin {
+        margin-left: 5px;
+    }
+
+    .topMarginSmall {
+        margin-top: 5px;
+    }
+
+    .displayInlineBlock {
+        display: inline-block;
+    }
+
+    .verticalAlignMiddle {
+        vertical-align: middle;
+    }
+
+    .centeredInlineBlock {
+        .verticalAlignMiddle;
+        .displayInlineBlock;
+    }
+
+    .labelBlock {
+        .centeredInlineBlock;
+        width: 120px;
+    }
+
+    .colorDropdownButton {
+        width: 220px;
+        text-align: left;
+    }
+
+    .floatRight {
+        float: right;
+    }
+
+    .previewBox {
+        .leftMargin;
+        .topMarginSmall;
+        .aImage;
+        height: 50px;
+        border: 1px solid black;
+        text-align: center;
+    }
+
+    .tableCellMiddle {
+        vertical-align: middle;
+        display: table-cell;
+    }
+
+    .modal-body {
+        text-align: left;
+    }
+}
+
+
+.fgBgColorDropdownMenu {
+    box-sizing: content-box;
+    z-index: 10000;
+}
+
+.colorPickerDropdownMenu {        
+        max-height: 250px;
+        overflow-y: scroll;
+        z-index: 10000;
+}   
+
+@colorPickerFgBgDialogWidth: 400px;
+
+.spColorPickerFgBgDialog {
+    .modal;
+    .modal-body {
+        text-align: left;
+    }
+    .modal-dialog {
+        width: @colorPickerFgBgDialogWidth;        
+    }     
+} 

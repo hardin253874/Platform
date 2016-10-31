@@ -1,0 +1,25 @@
+<div class="report-view container-fluid" ng-controller="ReportController">
+    <span ng-if="!isMobile">
+        <div class="report-config-panel" ng-if="nav.canShowConfigMenu(entity)">
+            <span class="report-config-panel-button report-config-panel-button-light"
+                  sp-context-menu-trigger="leftclick" sp-context-menu="model.configContextMenu"
+                  sp-context-menu-append-to-body>
+                <img src="assets/images/icon_configure_w.png"/>
+            </span>
+        </div>
+
+        <div class="report-header" ng-if="!isTablet">
+            <span ng-if="model.headerIconUrl" class="headertype" ng-style="model.headerIconStyle" ><img ng-src="{{model.headerIconUrl}}" ng-style="model.headerIconStyle"/></span>
+
+            <h1 ng-style="consoleThemeModel.titleStyle">{{entity.name}}</h1>
+        </div>
+
+        <div class="report-content">
+            <sp-report options="model.reportOptions" host-id="eid"></sp-report>
+        </div>        
+    </span>
+
+    <span ng-if="isMobile">
+         <sp-report options="model.reportOptions"></sp-report>
+    </span>
+</div>

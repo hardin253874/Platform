@@ -1,0 +1,32 @@
+﻿<p class="question">If I have access to <b>{{model.securityUi.fromName}}</b> do I also have access to the linked <b>{{model.securityUi.toName}}(s)</b>?</p>
+
+<table class="security-table">
+    <tbody>
+        <tr>
+            <td>
+                <div class="security-option">
+                    <input ng-if="!model.securityUi.toFromSwapped" class="security-checkbox" type="checkbox" ng-model="model.relationshipToRender.securesTo" value="false" ng-disabled="!model.canModifyRelationship">
+                    <input ng-if="model.securityUi.toFromSwapped" class="security-checkbox" type="checkbox" ng-model="model.relationshipToRender.securesFrom" value="false" ng-disabled="!model.canModifyRelationship">
+                    <p>
+                        If I have access to <b>{{model.securityUi.fromName}}</b> I should
+                        <br />
+                        also have access to <b>{{model.securityUi.toName}}</b>
+                    </p>
+                </div>
+                <div><svg-relationship-info options="model.securesToSvgConfig" /></div>
+            </td>
+            <td>
+                <div class="security-option">
+                    <input ng-if="!model.securityUi.toFromSwapped" class="security-checkbox" type="checkbox" ng-model="model.relationshipToRender.securesFrom" value="false" ng-disabled="!model.canModifyRelationship">
+                    <input ng-if="model.securityUi.toFromSwapped" class="security-checkbox" type="checkbox" ng-model="model.relationshipToRender.securesTo" value="false" ng-disabled="!model.canModifyRelationship">
+                    <p>
+                        If I have access to <b>{{model.securityUi.toName}}</b> I should
+                        <br />
+                        also have access to <b>{{model.securityUi.fromName}}</b>
+                    </p>
+                </div>
+                <div><svg-relationship-info options="model.securesFromSvgConfig" /></div>
+            </td>
+        </tr>
+    </tbody>    
+</table>

@@ -1,0 +1,35 @@
+﻿<div class="spNavContainerPickerDialog" sp-moveable-modal sp-set-focus-dialog-input>
+    <sp-resizable-dialog dialog-id="spNavContainerPickerDialog" min-width="500" min-height="350" persist-size="true" initial-width="500" initial-height="350"></sp-resizable-dialog>
+    <div class="modal-header">
+        <h6>Select Section</h6>
+    </div>
+    <div class="modal-body spNavContainerPickerDialogBody">
+        <div class="filterBlock">
+            <div class="labelBlockMedium">Application:</div>
+            <div class="displayInlineBlock">
+                <select id="navAccessApp" class="centeredDropDown applicationsDropdown"
+                        ng-model="model.selectedTopMenuNode"
+                        ng-options="node.item.name for node in model.menuNodes"
+                        ng-change="onTopMenuNodeChanged()">
+                    <option value="">[Select]</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="navNodeBlock">
+            <ul class="navNodeList">
+                <li ng-repeat="i in model.selectedNavTreeItems.children">
+                    <div sp-include="'controls/dialog/spNavContainerPickerDialog/spNavContainerPickerDialogNavNode.tpl.html'"></div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="currentPathBlock">
+            Selected path: {{getCurrentPath()}}
+        </div>
+    </div>
+    <div class="modal-footer spNavContainerPickerDialogFooter">
+        <button class="btn" ng-click="ok()" ng-disabled="isOkDisabled()">OK</button>
+        <button class="btn" ng-click="close()">Close</button>
+    </div>
+</div>

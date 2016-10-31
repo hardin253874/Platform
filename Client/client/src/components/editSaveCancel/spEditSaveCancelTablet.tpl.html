@@ -1,0 +1,19 @@
+<span class="sp-edit-save-cancel">
+    
+    <button type="button" ng-show="!areEditing && backClick" ng-disabled="isDisabled" ng-click="backClick()" test-id="back" tabindex="3" title="Back">
+        <img src="assets/images/toolbar_back.png" title="Back" tabindex="-1" /><span>Back</span>
+    </button>
+    <button type="button" ng-show="areEditing && cancelClick" ng-disabled="isDisabled" ng-click="cancelClick()" test-id="cancel" tabindex="3" title="Cancel">
+        <img src="assets/images/toolbar_close.png" title="Cancel" tabindex="-1" />
+    </button>
+    <button type="button" ng-show="((areEditing && saveClick && hasModifyAccess) || (areCreating && hasCreateAccess))" ng-disabled="isDisabled" ng-click="saveClick()" test-id="save" tabindex="3" title="Save">
+        <img src="assets/images/toolbar_save.png" title="Save" tabindex="-1" />
+    </button>
+    <button type="button" ng-show="areCreating && savePlusClick && hasCreateAccess" ng-disabled="isDisabled" ng-click="savePlusClick()" test-id="savePlus" tabindex="3" title="Save and New">
+        <img src="assets/images/toolbar_saveas.png" title="Save and New" tabindex="-1" />
+    </button>
+    <button type="button" ng-if="hasModifyAccess" ng-show="!areEditing && editClick" ng-disabled="isDisabled" ng-click="editClick()" test-id="edit" tabindex="3" title="Edit">
+        <img src="assets/images/toolbar_edit.png" title="Edit" tabindex="-1" />
+    </button>
+    <span class="form-title">{{title}}</span>
+</span>

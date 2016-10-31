@@ -1,0 +1,14 @@
+<div ng-style="getStyle(item)"
+     class="container depth-{{item.depth}}"
+     title="{{item.depth}}: {{item.name}}"
+     ng-class="{selected:selectedItem === item, container: !item.template}"
+     ng-click="selectItem(item); $event.stopPropagation()">
+    <div ng-repeat="item in item.items"
+         ng-style="getStyle(item)"
+         class="item {{item.template}} depth-{{item.depth}}"
+         title="{{item.depth}}: {{item.name}}"
+         ng-class="{selected:selectedItem === item, container: !item.template}"
+         ng-click="selectItem(item); $event.stopPropagation()"
+         ng-include="getTemplate(item)">
+    </div>
+</div>

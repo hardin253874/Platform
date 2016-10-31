@@ -1,0 +1,24 @@
+<div class="report-Builder-Toolbox" ng-show="options">
+	
+
+        <div class="report-Builder-Header" ng-show="options" sp-droppable="dropOptions">
+            <h1>Report</h1>
+            <h2><span>Readi</span> Builder</h2>
+        </div>
+        
+        <uib-accordion class="report-Builder-Accordion" close-others="false">
+            <uib-accordion-group heading="Relationship viewer" class="report-Builder-Section" is-open="true">
+                <div class="report-Builder-Controls">
+                    <button ng-click="summariseOption()" ng-show="options && !reportBuilderModel.isParentAggregated" uib-tooltip="Summarise" tooltip-trigger tooltip-placement="top" class="report-Builder-Control-Summary"><img src="assets/images/relationship_summary.png" /></button>
+                    <button ng-click="calculationEditor()" ng-show="options && showCalculationEditor(reportBuilderModel.selectedTreeNode)" uib-tooltip="Calculated" tooltip-trigger tooltip-placement="top" class="report-Builder-Control-Calculate"><img src="assets/images/relationship_calculate.png" /></button>
+                    <button ng-click="advanced()" ng-show="options" uib-tooltip="Advanced" tooltip-trigger tooltip-placement="top" class="report-Builder-Control-Advanced"><img src="assets/images/relationship_advance.png" /></button>
+                    <button ng-click="pickRelationship()" ng-show="options" uib-tooltip="Add Relationship" tooltip-trigger tooltip-placement="top" class="report-Builder-Control-Add"><img src="assets/images/relationship_add.png" /></button>
+                </div>
+                <sp-tree options="reportBuilderModel.treeviewOptions"></sp-tree>
+            </uib-accordion-group>
+
+            <uib-accordion-group heading="Fields & Related Objects" class="report-Builder-Section" is-open="true">
+                <sp-fields-manager options="reportBuilderModel.fileManagerOptions" />    
+            </uib-accordion-group>
+        </uib-accordion>
+</div>

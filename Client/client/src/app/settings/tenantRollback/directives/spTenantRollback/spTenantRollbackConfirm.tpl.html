@@ -1,0 +1,23 @@
+﻿<div class="modal-header">
+    <h6>{{model.title}}</h6>
+</div>
+<div class="modal-body">
+    <p style="font-weight: 500">{{model.message}}</p>
+    <div>
+        <b>NOTE:</b> all data and metadata additions, deletions and changes that occurred between now and the selected restore point will be reverted. This includes records, audit log entries, user password resets and schema changes.
+    </div>
+    <div>
+        <label style="margin-top: 10px"><input type="checkbox" ng-model="model.proceed" style="margin-right: 6px; vertical-align: text-bottom" />Proceed with rollback</label>
+    </div>
+    
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-hide="model.okDisabled" ng-disabled="!model.proceed"
+            data-ng-click="model.close(true);">
+        {{model.okText}}
+    </button>
+    <button type="button" class="btn"
+            data-ng-click="model.close(false)">
+        {{model.cancelText}}
+    </button>
+</div>

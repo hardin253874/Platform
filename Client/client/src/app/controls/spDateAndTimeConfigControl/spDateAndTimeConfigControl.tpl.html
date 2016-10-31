@@ -1,0 +1,17 @@
+
+<span class="sp-date-and-time-config-control">
+
+    <div class="edit-form-control-container">
+        <div class="edit-form-title">
+            <sp-title-plus-markers is-read-only="model.isReadOnly" is-required="model.isRequired" messages="customValidationMessages" title-model="titleModel"></sp-title-plus-markers>
+            <span class="prefix">{{model.prefix}}</span>
+        </div>
+        <div class="edit-form-value">
+            <div style="display:table; width:100%;">
+                <div style="display:table-cell"><sp-date-and-time-control model="model" ng-disabled="model.useNow"></sp-date-and-time-control></div>
+                <div style="display: inline-block; width: 80px; padding-top: 6px; padding-left: 5px;"><input type="checkbox" ng-model="model.useNow" ng-change="setNow()" autofocus /> Now</div>
+                <span class="suffix" style="display:table-cell">{{model.suffix}}</span>
+            </div>
+            </div>
+    </div>
+</span>

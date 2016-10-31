@@ -1,0 +1,33 @@
+<div class="fieldControl" style="height:100%">
+    
+    <div ng-if="isReadOnly" style="height:100%; width:100%" class="multiLineTextField-read">
+        <div class="multiLineTextField-text-read">
+            <textarea rows="3" readonly="readonly" ellipsis="{{displayString}}" callback="ShowExpandButton" name="input"> </textarea>
+            <div class="multitext-expander" ng-click="openDetail('editForm/partials/multiLineTextControl_read_modal.tpl.html')">
+                <img class="expand-textbox" src="assets/images/btn_expand_textbox.png" />
+            </div>
+        </div>
+    </div>
+
+    <div ng-if="!isReadOnly" class="fieldValue" style="height:calc(100% - 2px);width:100%;margin-top:0;">
+        <textarea class="multiLineTextField-text"
+                  rows="3"
+                  name="input"
+                  sp-custom-validator="customValidator"
+                  ng-model="model.fieldValue"
+                  ng-trim='false'
+                  ng-focus="onMultiLineTextControlFocus($event)"
+                  ng-change="cleanFieldValue();"
+                  ng-attr-placeholder="{{model.watermark}}"
+                  ng-disabled="isInDesign"> </textarea>
+
+        <div class="multitext-expander" once-style="getExpanderStyle()" ng-if="!isInDesign" ng-click="openDetail('editForm/partials/multiLineTextControl_modal.tpl.html')" ng-disabled="isInDesign">
+            <img class="expand-textbox" once-style="getExpanderImageStyle()" src="assets/images/btn_expand_textbox.png" />
+        </div>
+
+        <div class="multitext-expander" ng-if="isInDesign" ng-disabled="isInDesign">
+            <img class="expand-textbox" src="assets/images/btn_expand_textbox.png" />
+        </div>
+    </div>
+
+</div>

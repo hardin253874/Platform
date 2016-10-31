@@ -1,0 +1,23 @@
+<div ng-controller="sp.workflow.activityController">
+    <div ng-controller="exportToActivityController">
+        
+        <form class="form-horizontal">
+            <div class="form-group">
+                <sp-workflow-expression-control parameter="activityParameters['core:inExportToReport']" show-label="true"
+                                                actions="parameterChooser,resourceChooser,exprEditor"></sp-workflow-expression-control>
+            </div>
+
+            <div class="form-group">
+
+                <sp-workflow-expression-control parameter="activityParameters['core:inExportToName']" show-label="true"
+                                                actions="exprEditor"></sp-workflow-expression-control>
+            </div>
+
+            <div class="form-group">
+
+                <sp-workflow-expression-control parameter="activityParameters['core:inExportToFormat']" show-label="true"
+                                                actions="resourceChooser"></sp-workflow-expression-control>
+            </div>
+        </form>
+    </div>
+</div>

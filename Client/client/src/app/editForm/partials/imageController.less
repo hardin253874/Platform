@@ -1,0 +1,105 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+.image-upload {
+
+    .sp-mobile-device & {
+        display: block !important;
+    }
+
+    .image-preview {
+        box-sizing: border-box;
+        width: 100%;
+        min-width: 50px;
+        min-height: 150px;
+        overflow: hidden;
+        vertical-align: middle;
+        .editForm-edit &{
+            background-image: url(../assets/images/imagepreviewBg.png);
+        }
+
+        .sp-mobile-device & {
+            min-height: 150px;
+        }
+    }
+
+    .image-preview-background {
+        background-image: none;
+    }
+
+    .image-preview-readonly {
+        background-image: url(../assets/images/imagepreviewBg.png);
+        box-shadow: 0 0 0 1px @gray_D inset;
+        margin-bottom: 5px;
+        overflow: hidden;
+    }
+
+    sp-file-upload{width:inherit;}
+
+    .image-uploader {
+            display: flex;  
+            justify-content:space-between;
+            flex-wrap: nowrap;
+            margin-top:1px;
+            width:auto !important;
+
+        input {
+            margin: 0;
+            background-color: #f5f5f5;    
+            width:100% !important;
+            max-width:calc(~'100% - 100px');
+            &.upload{
+                max-width:inherit;
+            }
+        }
+
+        button {
+            .btn_lighten;
+            padding: 0 5px;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            border-top-left-radius: 3px;
+            border-bottom-left-radius: 3px;
+            width:100% !important;
+            min-height:27px;
+
+            .sp-mobile-device & {
+                    min-height: 40px !important;
+
+            }
+            .sp-tablet-device & {
+                    min-height: inherit;
+                    height: 40px !important;
+                }
+            
+            &[name="contextMenuButton"] {
+                padding: 0;
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+                border-top-right-radius: 3px;
+                border-bottom-right-radius: 3px;
+                border-left: 0px solid #bdbdbd;
+                width:20px !important;
+
+                .sp-mobile-device &,
+                .sp-tablet-device &  {
+                    width:30px !important;
+                }
+
+            }
+
+            &[name="imagedownload"]{
+                border-radius:3px;
+            }
+
+            &:focus {
+                outline: none;
+            }
+        }
+
+        .uploader-btn{
+            display: flex;
+            margin-left:2px; 
+            flex-wrap: nowrap;
+            justify-content:space-between;
+        }
+    }
+}

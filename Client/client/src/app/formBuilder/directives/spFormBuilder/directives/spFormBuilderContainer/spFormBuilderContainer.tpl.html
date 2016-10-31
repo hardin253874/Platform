@@ -1,0 +1,37 @@
+<div class="container-marker" ng-class="getClass()" sp-hover-child-selector="hoverOptions" sp-resizable="resizeOptions"
+     sp-droppable="dropOptions" once-style="getOnceStyle()" once-class="getPaddingClass()"
+     style="display: inline-block; vertical-align: top">
+    <div class="sp-form-builder-padding-target">
+        <div class="sp-form-builder-toolbar" ng-if="explicitContainer || fieldContainer || showLabel">
+            <span ng-if="transcludeCloseButton" sp-multi-transclude="transcludeClose"></span>
+            <span ng-if="!transcludeCloseButton">
+                <span class="sp-form-builder-adornment" ng-click="onCloseClick()" ng-hide="!parentControl">
+                    <img src="assets/images/icon_remove_w.png"/>
+                </span>
+            </span>
+            <span ng-if="transcludeConfigureButton" sp-multi-transclude="transcludeConfigure"></span>
+            <span ng-if="!transcludeConfigureButton">
+                <span class="sp-form-builder-adornment" ng-click="onConfigureClick()">
+                    <img src="assets/images/icon_configure_w.png"/>
+                </span>
+            </span>
+        </div>
+        <div class="sp-form-builder-container-content">
+            <div ng-if="fieldContainer || tabContainer" sp-multi-transclude='transcludeField'></div>
+            <div ng-if="!fieldContainer && !tabContainer" class="sp-form-builder-container-content-child"
+                 style="height:100%;">
+                <div ng-if="explicitContainer && showLabel" class="sp-form-builder-container-label">
+                    <sp-editable-label value="control.name" class="sp-form-builder-container-header"
+                                       pre-update-callback="isValidContainerName" help-text="control.description"
+                                       show-help-text="control.showControlHelpText"></sp-editable-label>
+                </div>
+                <div ng-repeat="containedControl in getContainedControls()"
+                     style="vertical-align: top; width:calc(100% - 20px)"
+                     class="child-container vertical-repeater ord-{{containedControl.renderingOrdinal}}">
+                    <span sp-include="getFieldRenderControl(containedControl)"></span>
+                </div>
+            </div>
+        </div>
+        <!-- Removed for the moment. Will look at it again after the builder has been refactored <rn-info-button ng-if="showHelp(control)" disabled="true"></rn-info-button> -->
+    </div>
+</div>

@@ -1,0 +1,14 @@
+<div ng-controller="demoAlerter">
+	
+    Message: <input ng-model="message"/>
+    <button ng-click="raiseError(message)">Raise Error</button>
+    <button ng-click="raiseInfo(message)">Raise Info</button>
+    <button ng-click="raiseSuccess(message)">Raise Success</button>
+    <button ng-click="raiseCountdown()">Raise Countdown</button>
+    <br />
+    <input type="checkbox" ng-model="canClose">Can close</input><br />
+    <input type="checkbox" ng-model="expires">Expires</input>
+    <hr/>
+    <alerter></alerter>
+
+</div>

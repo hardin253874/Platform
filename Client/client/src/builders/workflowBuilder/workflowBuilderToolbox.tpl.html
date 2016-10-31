@@ -1,0 +1,19 @@
+<div class="workflow-builder-toolbox" ng-controller="workflowBuilderToolboxController">
+	
+    <div class="header">
+        <h1>Workflow</h1>
+        <h2><span>Readi</span> Builder</h2>
+    </div>
+    <div class="body">
+        <ul>
+            <li ng-repeat="a in addMenu" ng-class="{'menu-header': a.isHeader}"
+                title="{{a.description}}"
+                data-item-name="{{a.name}}"
+                ng-click="menuItemClicked(a)"
+                ng-init="dragOpts=getDragOptions(a)" sp-draggable="dragOpts" sp-draggable-data="a" >
+
+                <img ng-src="{{a.menuImage}}" ng-show="!a.isHeader" />{{a.name}}
+            </li>
+        </ul>
+    </div>
+</div>

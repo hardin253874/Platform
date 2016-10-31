@@ -1,0 +1,17 @@
+
+<span sp-busy-indicator-popup="busyIndicatorOptions">
+
+    <!-- selected file name -->
+    <input ng-if="showFileName" type="text" readonly="readonly" ng-model="fileDisplayName" />
+
+    <div class="fileUpload" title="{{btnLabel}}">
+        <input type="file" accept="{{filterEx}}" class="upload" />
+        <button type="button" class="fakeUpload" >
+        <span ng-if="!btnImageUrl" ng-bind="btnLabel"></span>
+        <img ng-if="btnImageUrl" ng-src="{{btnImageUrl}}" alt="{{btnLabel}}"/></button>
+    </div>
+
+    <!-- upload message -->
+    <span ng-show="showMessage">{{message}}</span>
+    <span>{{errorMessage}}</span>
+</span>

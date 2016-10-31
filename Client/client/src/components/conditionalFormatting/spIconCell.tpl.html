@@ -1,0 +1,13 @@
+<div ng-class="col.colIndex()">
+	
+    <div class="ruleIconCellTable">
+        <div class="iconRuleIconCellDropdown">
+            <sp-icon-picker-dropdown options="row.getProperty('icon')"></sp-icon-picker-dropdown>  
+        </div>        
+        <div class="iconRuleIconCellRemove">
+            <button type="button" class="removeRuleButton" ng-click="removeIconRule(row)" ng-hide="isElseRule(row)">
+                <img src="assets/images/remove_r.png" class="verticalAlignMiddle" />
+            </button>
+        </div>
+    </div>        
+</div>

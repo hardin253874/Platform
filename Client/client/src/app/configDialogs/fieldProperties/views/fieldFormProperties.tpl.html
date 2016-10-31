@@ -1,0 +1,38 @@
+<div>
+    <!-- Mandatory on form -->
+    <div ng-hide="model.isCalculated || model.isBoolField">
+        <div class="edit-form-title">
+            <label class="form-label">Mandatory: </label>
+        </div>
+        <div class="edit-form-value">
+            <input type="checkbox" ng-model="model.mandatoryControl" ng-disabled="model.readOnlyControl" />
+        </div>
+    </div>
+    
+    <!-- Read-only on form -->
+    <div ng-hide="model.isCalculated">
+        <div class="edit-form-title">
+            <label class="form-label">Read Only: </label>
+        </div>
+        <div class="edit-form-value">
+            <input type="checkbox" ng-model="model.readOnlyControl" ng-disabled="model.mandatoryControl" />
+        </div>        
+    </div>
+
+    <div>
+        <div class="edit-form-title">
+            <label class="form-label">Show Help: </label>
+        </div>
+        <div class="edit-form-value">
+            <input type="checkbox" ng-model="model.showControlHelpText" />
+        </div>
+    </div>
+    
+    <!-- No options -->
+    <div ng-show="model.isCalculated">
+        <div class="edit-form-title message">
+            <label class="form-label">Form options are unavailable for this field.</label>
+        </div>
+    </div>
+
+</div>

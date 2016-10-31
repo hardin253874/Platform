@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Page</title>
+    <link rel="stylesheet" type="text/css" href="../../lib/bootstrap/css/bootstrap.css"/>
+
+    <style>
+
+        .my-page {
+            margin: 5px;
+            background-color: #d3d3d3;
+        }
+
+        li {
+            list-style: none;
+        }
+
+        li a {
+            text-decoration: none;
+            color: #000;
+            margin: 10px;
+            width: 150px;
+            border: 3px dashed #999;
+            background: #eee;
+            padding: 10px;
+            display: block;
+        }
+
+        *[draggable=true] {
+            -moz-user-select:none;
+            -khtml-user-drag: element;
+            cursor: move;
+        }
+
+        li a:hover:after {
+            content: ' (drag me)';
+        }
+
+        ul {
+            margin-left: 200px;
+            min-height: 300px;
+        }
+
+        li.over {
+            border-color: #333;
+            background: #ccc;
+        }
+
+        #bin {
+            background-color: #ffffe0;
+            height: 250px;
+            width: 166px;
+            float: left;
+            border: 5px solid #000;
+            position: relative;
+            margin-top: 0;
+        }
+
+        #bin.over {
+            background: lightblue;
+        }
+
+        #bin p {
+            font-weight: bold;
+            text-align: center;
+            position: absolute;
+            bottom: 20px;
+            width: 166px;
+            font-size: 32px;
+            color: #fff;
+            text-shadow: #000 2px 2px 2px;
+        }
+    </style>
+</head>
+
+<body ng-app="app">
+
+<p>Simple page ready to go to test stuff without being the the full client app.
+    Copy this file to something like index-mytests.html, pull in any additional scripts
+    and add your code at the bottom.</p>
+
+<div class="my-page" ng-controller="myController">
+
+    <div>{{myTitle}}</div>
+
+    <rn-diagram-block my-data="pokemon go!"></rn-diagram-block>
+
+    <input type="range" name="points" min="1" max="10" value="1">
+
+</div>
+
+<article>
+    <p>Drag the list items over the dustbin, and drop them to have the bin eat the item</p>
+    <div id="bin"></div>
+    <ul>
+        <li><a id="one" href="#">one</a></li>
+        <li><a href="#" id="two">two</a></li>
+        <li><a href="#" id="three">three</a></li>
+        <li><a href="#" id="four">four</a></li>
+        <li><a href="#" id="five">five</a></li>
+    </ul>
+</article>
+
+<script src="../../src/components/utils/console.js"></script>
+<script src="../../lib/jquery/jquery.js"></script>
+<script src="../../lib/angular/angular.js"></script>
+<script src="../../lib/angular/angular-animate.js"></script>
+<script src="../../lib/bootstrap/js/bootstrap.js"></script>
+<script src="../../lib/lodash/lodash.js"></script>
+
+<!--include any other source files you need here-->
+
+<script>
+    var addEvent = (function () {
+        if (document.addEventListener) {
+            return function (el, type, fn) {
+                if (el && el.nodeName || el === window) {
+                    el.addEventListener(type, fn, false);
+                } else if (el && el.length) {
+                    for (var i = 0; i < el.length; i++) {
+                        addEvent(el[i], type, fn);
+                    }
+                }
+            };
+        } else {
+            return function (el, type, fn) {
+                if (el && el.nodeName || el === window) {
+                    el.attachEvent('on' + type, function () { return fn.call(el, window.event); });
+                } else if (el && el.length) {
+                    for (var i = 0; i < el.length; i++) {
+                        addEvent(el[i], type, fn);
+                    }
+                }
+            };
+        }
+    })();
+
+    var eat = ['yum!', 'gulp', 'burp!', 'nom'];
+    var yum = document.createElement('p');
+    var msie = /*@cc_on!@*/0;
+    yum.style.opacity = 1;
+
+    var links = document.querySelectorAll('li > a'), el = null;
+    for (var i = 0; i < links.length; i++) {
+        el = links[i];
+
+        el.setAttribute('draggable', 'true');
+
+        console.log('adding dnd handlers for ' + el.id);
+
+        addEvent(el, 'dragstart', function (e) {
+            console.log('dragstart');
+            e.dataTransfer.effectAllowed = 'copy'; // only dropEffect='copy' will be dropable
+            e.dataTransfer.setData('Text', this.id); // required otherwise doesn't work
+        });
+
+        addEvent(el, 'dragend', function (e) {
+            console.log('dragend');
+        });
+    }
+
+    var bin = document.querySelector('#bin');
+
+    addEvent(bin, 'mouseover', function (e) {
+        console.log('mouseover');
+    })
+
+    addEvent(bin, 'click', function (e) {
+        console.log('click');
+    })
+
+    addEvent(bin, 'dragover', function (e) {
+        console.log('dragover');
+        if (e.preventDefault) e.preventDefault(); // allows us to drop
+        this.className = 'over';
+        e.dataTransfer.dropEffect = 'copy';
+        return false;
+    });
+
+    // to get IE to work
+    addEvent(bin, 'dragenter', function (e) {
+        console.log('dragenter');
+        this.className = 'over';
+        return false;
+    });
+
+    addEvent(bin, 'dragleave', function () {
+        console.log('dragleave');
+        this.className = '';
+    });
+
+    addEvent(bin, 'drop', function (e) {
+        console.log('drop');
+        if (e.stopPropagation) e.stopPropagation(); // stops the browser from redirecting...why???
+
+        var el = document.getElementById(e.dataTransfer.getData('Text'));
+
+        el.parentNode.removeChild(el);
+
+        // stupid nom text + fade effect
+        bin.className = '';
+        yum.innerHTML = eat[parseInt(Math.random() * eat.length)];
+
+        var y = yum.cloneNode(true);
+        bin.appendChild(y);
+
+        setTimeout(function () {
+            var t = setInterval(function () {
+                if (y.style.opacity <= 0) {
+                    if (msie) { // don't bother with the animation
+                        y.style.display = 'none';
+                    }
+                    clearInterval(t);
+                } else {
+                    y.style.opacity -= 0.1;
+                }
+            }, 50);
+        }, 250);
+
+        return false;
+    });
+
+</script>
+
+<script>
+    function BlockController() {
+        console.log('hello');
+            this.style = {'width': '200px'};
+    }
+</script>
+
+<script>
+    'use strict';
+
+    console.log('script loading');
+
+    angular.module('app', ['ngAnimate'])
+            .run(function ($rootScope) {
+                $rootScope.$watch(function () {
+                    //console.log('$rootScope.$watch');
+                });
+                console.log('angular started');
+            })
+            .controller('myController', function ($scope) {
+                $scope.myTitle = 'hello world!!';
+            })
+            .component('rnDiagramBlock', {
+                bindings: {myData: '@'},
+                template: `<div ng-style="$ctrl.style">{{$ctrl.myData}}</div>`,
+                controller: BlockController
+            });
+</script>
+
+</body>
+</html>

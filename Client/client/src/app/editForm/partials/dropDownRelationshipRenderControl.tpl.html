@@ -1,0 +1,12 @@
+<div ng-controller="singlePickerController">
+	
+    <div class="edit-form-control-container">
+        <div class="edit-form-title" ng-if="!isInlineEditing">
+            <sp-title-plus-markers is-read-only="isReadOnly" is-required="isMandatory" messages="customValidationMessages" title-model="titleModel"></sp-title-plus-markers>
+        </div>
+
+        <div class="edit-form-value">
+            <sp-dropdown-relationship-picker options="pickerOptions" />
+        </div>
+    </div>
+</div>

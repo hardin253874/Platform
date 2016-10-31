@@ -1,0 +1,22 @@
+﻿<div class="sp-subject-record-access-summary" sp-busy-indicator-popup="model.busyIndicator">
+    <div class="rasTitle">
+        Access Summary
+    </div>
+    <div class="rasDesc">
+        Summary of all record types that may be accessible for the {{model.subjectName}} role.
+        Including inherited objects, included role, and implicitly secured relationships.
+    </div>
+    
+    <!-- Search -->
+    <div class="rasAdvanced">
+        <input type="checkbox" ng-model="model.showAdvanced" ng-change="refreshReport()" /> Advanced
+    </div>
+    <div class="rasSearch">
+        <sp-search-control sp-model="model.search"></sp-search-control>
+    </div>
+    <!-- Refresh -->
+    <div class="sp-refresh-area"><div class="sp-refresh"><sp-refresh-button options="model.refreshOptions"></sp-refresh-button></div></div>
+
+    <!-- Grid -->
+    <div ng-grid="model.objectSummaryGrid" ng-if="model.gridLoaded"></div>
+</div>

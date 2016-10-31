@@ -1,0 +1,67 @@
+// Styling related to the inline editing and the inline editing control in the report
+// This is about the styling of the tools and header
+// Styling related to the form controls in the report's inline control should
+// be with the inline edit form.
+
+.rn-inlineEditToolbar {
+  display: inline-block;
+}
+
+sp-data-grid-row {
+
+  .rn-inline-changed {
+    height: 100%;
+    background-color: #e1ffb1;
+
+    sp-inline-edit-form {
+    }
+  }
+
+  .rn-inline-saved {
+    height: 100%;
+    background-color: rgba(202, 255, 202, 0.3);
+    box-shadow: 5px 0px 0 0 green inset;
+  }
+
+  .rn-inline-edit {
+    height: 100%;
+    background-color: #d5eeff;
+
+    .dataGridCell,
+    .dataGridImageCell {
+      padding: 2px 5px;
+    }
+  }
+
+  .rn-inline-error {
+    height: 100%;
+    background-color: rgba(255, 202, 202, 0.3);
+    box-shadow: 5px 0px 0 0 red inset;
+  }
+}
+
+sp-inline-edit-control {
+  display: inline-block;
+  width: 100%;
+  height:100%;
+
+  .rn-inline-edit-value {
+    margin-top: 4px;
+  }
+
+  .spreport-view .headerPanel {
+    height: auto;
+
+    button {
+      height: 24px;
+    }
+
+    .headerPanel-right .searchContainer {
+      vertical-align: top;
+
+      .sp-search-control .sp-search-control-input {
+        height: 24px;
+      }
+    }
+  }
+}

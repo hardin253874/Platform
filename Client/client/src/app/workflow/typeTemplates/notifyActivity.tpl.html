@@ -1,0 +1,72 @@
+<div ng-controller="sp.workflow.activityController">
+    <div ng-controller="notifyActivityController">
+        
+        <form class="form-horizontal">
+            <div class="form-group">
+                <sp-workflow-expression-control parameter="activityParameters['core:inPeople']" show-label="true"
+                                                actions="resourceChooser,exprEditor"></sp-workflow-expression-control>
+            </div>
+
+            <div class="form-group">
+
+                <sp-workflow-expression-control parameter="activityParameters['core:inMessage']" show-label="true"
+                                                actions="exprEditor"></sp-workflow-expression-control>
+            </div>
+
+            <div class="form-group">
+
+                <sp-workflow-expression-control parameter="activityParameters['core:inLinkToRecord']" show-label="true"
+                                                actions="exprEditor"></sp-workflow-expression-control>
+            </div>
+
+            <div class="form-group">
+
+                <sp-workflow-parameter-bool-input parameter="'core:inWaitForReplies'"></sp-workflow-parameter-bool-input>
+            </div>
+
+            <div class="form-group">
+                <div class="workflow-expression-control">
+                    <label class="control-label" title="{{activityParameters['core:inAcceptRepliesFor'].argument.description}}">
+                        {{activityParameters['core:inAcceptRepliesFor'].argument.name}}
+                    </label>
+                    <sp-workflow-timespan-input class="sp-workflow-timespan-input"
+                                                model="acceptRepliesForValue"></sp-workflow-timespan-input>
+                </div>
+            </div>
+
+            <div class="form-group" ng-show="waitForReplies">
+                <div class="workflow-form-control">
+                    <label class="control-label" title="{{activityParameters['core:inNotifyTimeOut'].argument.description}}">
+                        {{activityParameters['core:inNotifyTimeOut'].argument.name}}
+                    </label>
+                    <sp-workflow-timespan-input class="sp-workflow-timespan-input"
+                                                model="notifyTimeoutValue"></sp-workflow-timespan-input>
+                </div>
+            </div>
+
+            
+            <fieldset>
+                <legend>Workflows to run on replies</legend>
+
+                <div ng-repeat="e in entity.nReplyMap | orderBy: rmeOrder" class="form-group">
+
+                    <div class="workflow-expression-control">
+                        <button type="button" ng-click="deleteReplyWorkflow(e)"><img src="assets/images/icon_remove.png" /></button>
+                        <input type="text" class="form-control" ng-model="e.name" placeholder="Reply contains" />
+                        <i class="icon-arrow-right icon-white"></i>
+
+                        <input type="text" ng-model="e.rmeWorkflow.name" ng-readonly="true" placeholder="Workflow to run" />
+                        <sp-parameter-expression-context-menu tools="resourceChooser" parameter="{{e.rmeOrder}}"></sp-parameter-expression-context-menu>
+                    </div>
+
+                </div>
+                <div class="form-group form-group-container">
+                    <button type="button" ng-click="addReplyWorkflow()" style="vertical-align: middle;" title="Add a workflow which will be triggered on a reply which containsd the given word or phrase">
+                        <img src="assets/images/icon_new.png" title="Add reply workflow" />
+                    </button>
+                    Add reply workflow
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>

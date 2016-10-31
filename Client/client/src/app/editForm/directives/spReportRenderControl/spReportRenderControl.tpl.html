@@ -1,0 +1,12 @@
+﻿<span class="report-render-control">
+
+    <div once-if="!formControl.hideLabel" class="form-title" ng-style="getTitleStyle(formControl)">{{formTitle}}</div>
+
+    <sp-report ng-if="!hideReport" options="model.reportOptions" host-id="formControl.idP"
+               once-style="getControlStyle(formControl)"></sp-report>
+
+    <div ng-if="isMobile && model.reportOptions.moreDataAvailable" class="rrc-full-report-button">
+        <button type="button" ng-click="viewFullReport()">View full report</button>
+    </div>
+
+</span>

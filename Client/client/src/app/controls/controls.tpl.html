@@ -1,0 +1,13 @@
+<div class="controls-view"  ng-controller="controlsController">
+	
+    <div class="top-view"><h3>Control display page</h3></div>
+    <div class="consoletest-left-view">
+        <ul>
+            <li ng-repeat="control in controls">
+                <a ng-click="openControl(control)" style="text-wrap:none">{{control.title}}</a>
+            </li>           
+        </ul>
+    </div>
+           
+     <div ng-include="currentControlUrl" class="consoletest-right-view"></div>
+</div>

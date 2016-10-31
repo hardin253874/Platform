@@ -1,0 +1,107 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+/////
+// SoftwarePlatform bootstrap button overrides.
+/////
+.btn {
+  padding: 3px 12px;
+  font-size: (@font-size-base - 2);
+  line-height: 1em;
+  cursor: pointer;
+  background-color:@btnBg_darken;
+  color:@btnText_darken;
+  /*.buttonBackground(@btnBackground, @btnBackgroundHighlight, @textTitle, 0 1px 1px rgba(255,255,255,0));*/
+  border: 1px solid darken(@btnBg_darken, 2%);
+  *border: 0; // Remove the border to prevent IE7's black border on input:focus
+  border-bottom-color: darken(@btnBg_darken, 5%);
+  .border-radius(@baseBorderRadius);
+
+  // Hover/focus state
+  &:hover,
+  &:focus {
+    color:lighten(@btnText_darken,100%);
+    text-decoration: none;
+    background-color: darken(@btnBg_darken, 5%);
+    // transition is only when going to hover/focus, otherwise the background
+    // behind the gradient (there for IE<=9 fallback) gets mismatched
+    .transition(background-color .1s linear);
+    outline:none;
+  }
+
+  // Focus state for keyboard and accessibility
+  &:focus {
+      outline:none;
+      border:1px solid rgba(82,167,238,1); 
+    .tab-focus();
+  }
+
+  // Active state
+  &.active,
+  &:active {
+    background-image: none;
+    outline: 0;
+    .box-shadow(~"inset 0 2px 4px rgba(0,0,0,.15), 0 1px 2px rgba(0,0,0,.05)");
+  }
+
+  // Disabled state
+  &.disabled,
+  &[disabled] {
+    cursor: default;
+    background-image: none;
+    border:1px solid transparent;
+    color:darken(@btnText_darken, 40%);
+    .opacity(0.5);
+    .box-shadow(none);
+    img {
+        opacity:.4;
+        }
+  }
+
+  .sp-mobile-device &,
+  .sp-tablet-device &{
+      min-height:40px;
+      min-width:40px;
+      font-size: initial;
+  }
+}
+
+.btn_lighten {
+    .btn;
+    background-color:@btnBg_lighten;
+    border-color:darken(@btnBg_lighten, 20%);
+    border-bottom-color:multiply(@btnBg_lighten,#ccc);
+    color:multiply(@btnBg_lighten,#666);
+    // Hover/focus state
+    &:hover,
+    &:focus {
+        color: darken(@btnText_lighten,10%);
+        text-decoration: none;
+        background-color: darken(@btnBg_lighten, 5%);
+        // transition is only when going to hover/focus, otherwise the background
+        // behind the gradient (there for IE<=9 fallback) gets mismatched
+        .transition(background-color .1s linear);
+    }
+    // Focus state for keyboard and accessibility
+    &:focus {
+        background-color: @btnBg_lighten;
+        outline: none;
+        border:1px solid darken(@btnBg_lighten, 20%);
+    }
+    // Active state
+    &.active,
+    &:active {
+        background-image: none;
+        background-color: darken(@btnBg_lighten, 5%);
+        outline: 0;
+        .box-shadow(~"inset 0 0px 2px rgba(0,0,0,.15), 0 0 0 rgba(0,0,0,1)");
+    }
+    // Disabled state
+    &.disabled,
+    &[disabled] {
+        cursor: default;
+        .opacity(0.5);
+        .box-shadow(none);
+        img {
+            opacity:.4;
+        }
+    }
+}

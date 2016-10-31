@@ -1,0 +1,148 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+.sp-Form-Builder {
+    height: 100%;
+
+    .sp-Form-Builder-ToolBar {
+        .builder-ToolBar;
+        /*.sp-Form-Builder-Toolbar-Button {
+            height: 22px;
+            width: 25px;
+            display: inline-block;
+            text-align: center;
+            vertical-align: middle;
+            cursor: pointer;
+
+            &:hover {
+                background-color: darken(#f0efef, 5%);
+            }
+        }
+
+        .sp-Form-Builder-Toolbar-Button-Cancel {
+            .sp-Form-Builder-Toolbar-Button;
+            background-color: #f8dcdb;
+            width: 28px;
+
+            img {
+                opacity: .5;
+            }
+
+            &:hover {
+                background-color: #f29590;
+                opacity: 1;
+
+                img {
+                    opacity: 1;
+                }
+            }
+        }
+
+        .sp-Form-Builder-Toolbar-Right {
+            float: right;
+        }
+
+        .sp-Form-Builder-Toolbar-Right + * {
+                clear: right;
+            }*/
+    }
+
+    .sp-Form-Builder-Action {
+        position: absolute;
+        display: inline-block;
+        top: 60px;
+        right: 30px;
+        z-index: 3;
+
+        button {
+            display: inline-block;
+            border: 1px solid #aaa;
+            text-transform: uppercase;
+            color: #444;
+            background-color: transparent;
+            border-radius: 13px;
+            cursor: pointer;
+            padding: 4px 15px 4px 7px;
+            line-height: 1em;
+            font-size: 11px;
+            font-weight: bold;
+            transition: all ease .2s;
+            span{
+                vertical-align: middle;
+                display: inline-block;
+            }
+            img {
+                vertical-align: middle;
+                display: inline-block;
+                margin-right:3px;
+                margin-bottom: -1px;
+                width:16px;
+                height:16px;
+                }
+
+            &:hover {
+                background-color: rgba(0,0,0,0.1);
+                border-color: #c0c0c0;
+                color: #000;
+            }
+            &:focus { outline:none;}
+            &:disabled{
+                pointer-events:none;
+            }
+        }
+
+        & > div {display:inline-block;}
+
+        .sp-Form-Builder-actions {
+                button {margin-left:3px;}
+            }
+
+    }
+
+    .sp-Form-Builder-Canvas {
+
+        .sp-Form-Builder-Row {
+            display: table-row;
+
+            .sp-Form-Builder-Cell {
+                display: table-cell;
+                vertical-align: middle;
+            }
+
+            .sp-Form-Builder-Cell-Left {
+                .sp-Form-Builder-Cell;
+                width: 99%;
+            }
+
+            .sp-Form-Builder-Cell-Right {
+                .sp-Form-Builder-Cell;
+                width: 1%;
+            }
+        }
+
+        .sp-Form-Builder-Heading {
+            font-size: large;
+        }
+    }
+
+    .sp-Form-Builder-Tool-Button {
+        background-color: @formbuilderBg;
+        position: relative;
+        width: 22px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: lighten(@formbuilderBg, 20%);
+        }
+
+        .sp-Form-Builder-Tool-Button-Content {
+            margin-left: auto;
+            margin-right: auto;
+            position: absolute;
+            top: 3px;
+            left: 3px;
+        }
+    }
+
+    .editable-label-edit-container {
+        margin-bottom: 0px;
+    }
+}

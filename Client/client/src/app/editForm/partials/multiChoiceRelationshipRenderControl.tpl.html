@@ -1,0 +1,10 @@
+<div ng-controller="multiPickerController">
+    <div class="edit-form-control-container">
+        <div class="edit-form-title" ng-if="!isInlineEditing">
+            <sp-title-plus-markers title-model="titleModel" is-read-only="isReadOnly" messages="customValidationMessages" is-required="isMandatory"></sp-title-plus-markers>
+        </div>
+        <div class="edit-form-value">
+            <sp-entity-multi-combo-picker options="pickerOptions" form-control="formControl" parent-control="parentControl" />
+        </div>
+    </div>
+</div>

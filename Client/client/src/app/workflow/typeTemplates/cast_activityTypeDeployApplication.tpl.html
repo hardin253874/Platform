@@ -1,0 +1,22 @@
+﻿<div ng-controller="sp.workflow.activityController">
+    <form class="form-horizontal">
+        <div class="form-group">
+            <sp-workflow-expression-control parameter="activityParameters['cast:inDeployApplicationActivityApplicationId']" show-label="true"
+                                            actions="exprEditor"></sp-workflow-expression-control>
+        </div>
+        <div class="form-group">
+            <sp-workflow-expression-control parameter="activityParameters['cast:inDeployApplicationActivityApplicationVersion']" show-label="true"
+                                            actions="exprEditor"></sp-workflow-expression-control>
+        </div>
+        <div class="form-group">
+            <sp-workflow-expression-control parameter="activityParameters['cast:inDeployApplicationActivityApplicationTenant']" show-label="true"
+                                            actions="exprEditor"></sp-workflow-expression-control>
+        </div>
+        <div class="form-horizontal divide">
+            <div class="form-group">
+                <sp-workflow-expression-control parameter="activityParameters['cast:inDeployApplicationActivityDatabaseId']" show-label="true"
+                                                actions="exprEditor"></sp-workflow-expression-control>
+            </div>
+        </div>
+    </form>
+</div>

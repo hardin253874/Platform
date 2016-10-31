@@ -1,0 +1,64 @@
+﻿<div class="spreport-view reportHeaderRow">
+    <div class="headerPanel">
+        <span ng-class="getHeaderClass()" style="min-width: 100%;">
+            <button type="button" ng-disabled="!canModify || !canCreateSections" title="New section" ng-click="newSection()">
+                <img src="assets/images/16x16/add.svg" />Section
+            </button>
+            <button type="button" ng-disabled="!canModify || !canCreateQuestions" title="New question" sp-context-menu-placement="alignleft" sp-context-menu-trigger="leftclick" sp-context-menu="model.contextMenu" sp-context-menu-is-open="model.showContextMenu">
+                <img src="assets/images/16x16/add.svg" />Question<img src="assets/images/arrow_navsection_closed.png" name="viewmore" />
+            </button>
+            <button type="button" ng-disabled="!canModify || !canCreateSections" title="New break" ng-click="newBreak()">
+                <img src="assets/images/16x16/add.svg" />Break
+            </button>
+            <button type="button" ng-disabled="!canModify || !canViewLibraries" title="Add existing question" ng-click="addQuestion()">
+                <img src="assets/images/16x16/linkExisting.svg" />
+            </button>
+        </span>
+    </div>
+
+    <div class="user-survey-body ordered-form-rows-area" sp-droppable="model.dropOptions">
+        <div class="user-survey-section ordered-form-rows drag-item" ng-repeat="section in model.sections | orderBy: 'surveySectionOrder'" sp-draggable="model.dragOptions" sp-draggable-data="section" sp-droppable="model.dropOptions" sp-droppable-data="section">
+            <div ng-if="section.surveyBreak" class="user-survey-break ordered-form-rows-header" id="survey-break-{{section.idP}}">
+                <hr />
+                <span class="user-survey-break-text">Page Break</span>
+                <span class="user-survey-break-button" ng-click="removeSection(section)" ng-show="canModify && canDelete">
+                    <button><img src="assets/images/16x16/close.svg" title="Remove break" /></button>
+                </span>
+            </div>
+            <div ng-if="!section.surveyBreak" class="user-survey-section-heading ordered-form-rows-header titleClass" id="survey-section-{{section.idP}}">
+                <div style="width: 100%; max-width: 745px; min-width: 745px;">
+                    <sp-editable-label value="section.name" readonly="!canModify" placeholder="'Untitled Section'" pre-update-callback="isValidSectionName" update-callback="updateSectionName" key-down-callback="filterSectionNameCharacters" change-callback="changeSectionNameValidate"></sp-editable-label>
+                </div>
+                <div style="text-align: center;" ng-show="canModify && canDelete">
+                    <button><img src="assets/images/16x16/close.svg" title="Remove section" ng-click="removeSection(section)" /></button>
+                </div>
+            </div>
+            <div class="ordered-form-row drag-item" ng-repeat="question in section.surveyQuestions | orderBy: ['questionOrder','questionId']" sp-draggable="model.dragOptions" sp-draggable-data="question" sp-droppable="model.dropOptions" sp-droppable-data="question">
+                
+                <div class="user-survey-q-id-and-text">
+                    <div class="user-survey-q-id" id="survey-question-{{question.idP}}">
+                        {{question.questionId || (($index + 1) + '.')}}
+                    </div>
+                    <div class="user-survey-q-text" style="width: 100%; max-width: 350px; min-width: 350px; overflow-x: hidden; text-overflow: ellipsis;">
+                        {{question.name}}
+                    </div>
+                </div>
+                <div class="user-survey-q-answer">
+                    <sp-question question="question" answer is-read-only="true" style="padding-left: 10px;"></sp-question>
+                    <div>
+                        <sp-icon-checkbox title="Allow notes" icon="assets/images/icon_note.svg" is-checked="question.questionAllowNotes" is-read-only="isReadOnly" is-disabled="!canModify"></sp-icon-checkbox>
+                        <sp-icon-checkbox title="Allow attachments" icon="assets/images/icon_attachment.svg" is-checked="question.questionAllowAttachments" is-read-only="isReadOnly" is-disabled="!canModify"></sp-icon-checkbox>
+                    </div>
+                </div>
+                <div class="user-survey-q-property">
+                    <button ng-click="editQuestion(question)"><img src="assets/images/16x16/properties.svg" title="Properties" /></button>
+                    <span ng-click="removeQuestion(section, question)" ng-show="canModify && canDelete">
+                        <button><img src="assets/images/16x16/remove.svg" title="Remove question" /></button>
+                    </span>
+                </div>
+
+            </div>
+        </div>
+        <div class="drag-placeholder drag-item"></div>
+    </div>
+</div>

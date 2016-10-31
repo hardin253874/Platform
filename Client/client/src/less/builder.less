@@ -1,0 +1,461 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+@import 'variables.less';
+
+.builder-Toolbox {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: @buildertoolBg;
+
+    .builder-Accordion {
+        .panel-group {
+            background-color: @buildertoolBg;
+
+            .panel {
+                box-shadow: none;
+
+                + .panel {
+                    margin-top: 0px;
+                }
+            }
+        }
+    }
+
+    .builder-Section {
+        border: none;
+        border-radius: inherit;
+
+        .panel-heading {
+            background-color: darken(@buildertoolBg, 10%);
+            padding: 0;
+            border-radius: 0;
+            cursor: pointer;
+
+            &:hover {
+                background-color: darken(@buildertoolBg, 12%);
+            }
+
+
+            & + .panel-collapse .panel-body {
+                border-top: 0px solid @panel-inner-border;
+            }
+
+
+            .accordion-toggle {
+                display: block;
+                padding: 10px;
+                vertical-align: middle;
+                color: #aaa;
+                font-size: 14px;
+                box-shadow: 0 1px 0 0 rgba(47, 47, 47, 0) inset, 0 -1px 0 0 #2f2f2f inset;
+                font-weight: normal;
+                text-decoration: none;
+                background-color: #3a3a3a;
+            }
+        }
+
+        .panel-body {
+            border: none;
+            padding: 5px 10px 10px;
+            background-color: @buildertoolBg;
+        }
+    }
+
+    .builder-Controls {
+        margin-bottom: 5px;
+        text-align: right;
+        display: block;
+        line-height: 0;
+    }
+
+    .builder-Treeview {
+    }
+}
+
+.builder-Control-Button {
+    border: 1px solid darken(@buildertoolBg, 5%);
+    background-color: lighten(@buildertoolBg, 10%);
+    box-shadow: 0 0 0 1px lighten(@buildertoolBg, 20%) inset;
+    color: #ddd;
+    display: inline-block;
+    font-size: 11px;
+    cursor: pointer;
+    padding: 1px;
+    vertical-align: middle;
+    line-height: 0;
+
+    img {
+        opacity: .5;
+        margin: 0;
+    }
+
+    &:hover {
+        background-color: lighten(@buildertoolBg, 20%);
+
+        img {
+            opacity: 1;
+        }
+    }
+
+    &:focus {
+        outline: none;
+    }
+}
+
+.builder-ToolBar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    padding-bottom: 0px;
+    text-align: right;
+    height: 30px;
+    overflow: hidden;
+    z-index: 2;
+
+    &:before {
+        content: "Drag and Drop items from left menu to page";
+        float: left;
+        font-size: 0.9em;
+        font-weight: normal;
+        color: #777;
+        padding: 8px 35px 0 30px;
+        height: 30px;
+        display: inline-block;
+        background: url('../assets/images/dragdrop.png') no-repeat right;
+
+
+        .applicationToolbox & {
+            display: none;
+        }
+    }
+
+    button {
+        background-color: transparent;
+        height: 30px;
+        min-width: 35px;
+        border: none;
+        opacity: .85;
+        margin: 0;
+        transition: background-color linear .2s;
+
+        &:hover, &:focus, &:active {
+            opacity: 1;
+            outline: none;
+            border: none;
+            background-color: rgba(0,0,0,0.03);
+        }
+
+        img {
+            margin-right: 4px;
+            width: 16px;
+            height: 16px;
+
+            &:focus {
+                outline: none;
+            }
+        }
+
+        span {
+            display: inline-block;
+            vertical-align: middle;
+            font-weight: bold;
+            font-size: 10px;
+            text-transform: uppercase;
+            color: #404040;
+        }
+
+        &.builder-ToolBar-Close, &[title="close"], &[title="Close"] {
+            background-color: #f8dcdb;
+            width: 42px;
+            box-shadow: none;
+
+            &:hover {
+                background-color: #f29590;
+                opacity: 1;
+            }
+        }
+
+        &[tooltip="Properties"] {
+            img {
+                margin-bottom: -2px;
+                margin-top: -2px;
+            }
+        }
+
+        & + button {
+            margin: 0 0 0 -3px;
+        }
+    }
+}
+
+.builder-Header {
+    height: 90px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0,0,0, .5) inset;
+
+    h1 {
+        font-size: 26px;
+        margin-top: 45px;
+        color: #fff;
+        display: inline-block;
+        width: 100%;
+        font-weight: lighter;
+    }
+
+    h2 {
+        font-size: .85em;
+        box-sizing: border-box;
+        padding: 11px 7px 7px 3px;
+        position: absolute;
+        right: 0;
+        left: 0;
+        top: 0;
+        color: rgba(255, 255, 255, 0.75);
+        font-weight: lighter;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        background-color: rgba(0,0,0,0.2);
+
+        span {
+            font-family: sans;
+            font-style: italic;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-transform: initial;
+        }
+    }
+}
+
+.builder-Treeview {
+
+    .builder-Treeview-Rootnode {
+        color: @gray_nine;
+        font-size: .9em;
+    }
+}
+
+.builder-Toggle {
+    display: inline-block;
+    width: 13px;
+    height: 19px;
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 5px 2px 0;
+    vertical-align: top;
+    opacity: .5;
+
+    img {
+        vertical-align: top;
+    }
+
+    &:hover, &:active {
+        opacity: 1;
+    }
+}
+
+.builder-Group {
+    color: #aaa;
+
+    .toggleButton {
+        .builder-Toggle;
+        display: table-cell;
+    }
+
+    .groupname {
+        display: inline-block;
+        font-size: 11px;
+        color: #aaa;
+        height: 18px;
+        display: table-cell;
+        width: 100%;
+        padding-left: 3px;
+        word-break: break-all;
+    }
+
+    .readonlygroupname {
+        .groupname;
+        font-style: italic;
+    }
+
+    .groupitems {
+        margin-bottom: 10px;
+
+        .itemcontainer {
+            display: table;
+            width: 100%;
+            margin-bottom: 3px;
+
+            .isrequireimage {
+                width: 2px;
+                height: 17px;
+                background: #ff0000;
+                display: inline-block;
+                vertical-align: top;
+                margin-right: -2px;
+                margin-left: -3px;
+            }
+        }
+
+        .subgroup {
+            background-color: @subgroupBg;
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+            margin-left: 15px;
+            margin-top: 2px;
+            margin-bottom: 1px;
+            padding: 2px;
+            cursor: pointer;
+
+            &:before {
+                content: '';
+                margin-top: -5px;
+                position: absolute;
+                left: 12px;
+            }
+
+            button {
+                .builder-Control-Button;
+                float: right;
+                line-height: 0;
+                height: 17px;
+                width: 17px;
+
+                img {
+                    margin-top: -1px;
+                    margin-left: -1px;
+                }
+            }
+
+            .subgroupname {
+                color: @subgroupFg;
+                cursor: default;
+                display: inline-block;
+                text-overflow: ellipsis;
+                min-width: 100px;
+            }
+        }
+
+        .item {
+            .draggable-item-raw;
+            margin-left: 15px;
+            display: table;
+            width: calc(~'100% - 15px');
+
+            & > .itemname, & > .itemicon {
+                display: table-cell;
+
+                &.fb-inline {
+                    padding: 5px 8px;
+                    border-radius: 2px;
+                }
+            }
+
+            &:before {
+                content: url('images/fielditem_child.png');
+                margin-top: -5px;
+                position: absolute;
+                left: 12px;
+            }
+
+            .itemname {
+                .draggable-item-raw.itemname
+            }
+        }
+
+        .item.is-default .itemname:after {
+            content: " *";
+            color: darkblue;
+        }
+    }
+
+    .fb-toolbox-config {
+        margin-bottom: -5px;
+
+        img {
+            margin-top: -2px;
+        }
+    }
+}
+
+.builder-board {
+    border-radius: 3px;
+    background-color: #dfdfdf;
+    box-shadow: rgba(0,0,0,0.3) 0px 0px 15px inset;
+    background-image: url(../assets/images/home_bg.png);
+}
+
+.builder-Edit-Name {
+    display: inline-block;
+    font-weight: lighter;
+    font-size: 26px;
+    color: @textTitle;
+    line-height: initial;
+}
+
+.builder-Edit-Description {
+    font-size: 1em;
+    color: #888;
+    display: inline-block;
+}
+
+.droppable-item-raw {
+    .builder-board;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px 0px inset;
+    border-radius: @borderRadiusSmall + 1px;
+
+    &:before {
+        content: "Drop items here";
+        display: inline-block;
+        float: left;
+        padding: 12px 5px 0;
+        line-height: 0;
+        opacity: .5;
+        font-size: .85em;
+        text-transform: uppercase;
+    }
+}
+
+.draggable-item-raw {
+    background-color: @fielditemBg;
+    padding: 3px;
+    cursor: move;
+
+    &:hover {
+        background-color: lighten(@fielditemBg, 8%);
+        transition: background-color ease-out .15s;
+        box-shadow: 0 1px 3px rgba(0,0,0,.5);
+    }
+
+    .itemicon {
+        display: table-cell;
+        vertical-align: top;
+        padding-right: 5px;
+        width: 16px;
+        line-height: 0;
+    }
+
+    .itemname {
+        display: table-cell;
+        color: @fielditemFg;
+        text-overflow: ellipsis;
+        padding-right: 3px;
+        font-size: 12px;
+        vertical-align: top;
+        word-break: break-all;
+    }
+
+    .readonlyitemname {
+        .itemname;
+        font-style: italic;
+    }
+
+    .fieldcheckbox {
+        display: table-cell;
+        width: 0.1%;
+        cursor: default;
+    }
+}

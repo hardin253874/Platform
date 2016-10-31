@@ -1,0 +1,147 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+
+.report-view {
+    position: relative;
+    height: 100%;
+    width: 100%;
+
+    .action-panel {
+        position: absolute;
+        right: -30px;
+        left: -30px;
+        height: 30px;
+        padding-right: 45px;
+        padding-bottom: 0px;
+        text-align: right;
+
+
+        button {
+            width: 30px;
+            height: 30px;
+            padding: inherit;
+            line-height: inherit;
+            border: none;
+            background-color: transparent;
+            border-radius: 0;
+
+            &:hover, &:active {
+                color: #2b2b2b;
+                text-decoration: none;
+                -webkit-transition: background-color 0.1s linear;
+                transition: background-color 0.1s linear;
+                background-color: #f0f0f0;
+                border: none;
+                outline: none;
+                opacity: 1;
+            }
+
+            & + button {
+                margin-left: -2px;
+            }
+
+            &[title="close"], &[title="cancel"] {
+                width: 35px;
+                height: 30px;
+                background-color: #f8dcdb;
+                border-radius: inherit;
+                margin-right: -35px;
+
+                &:hover, &:active {
+                    background-color: #f29590;
+                    opacity: 1;
+                }
+            }
+        }
+    }
+
+    .report-config-panel {
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        z-index: 1;
+        font-size: 0;
+        background-color: #1dd000;
+        border: none;
+        border-radius: 4px;
+        outline: none;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.35);
+
+        .report-config-panel-button {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            padding: 12px;
+            line-height: 0;
+            text-align: center;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            border-radius: 4px;
+            outline: none;
+        }
+
+        .report-config-panel-button-light {
+            border-radius: 4px;
+            &:hover {
+                margin-top: 0px;
+                background-color: darken(#1dd000, 3%);
+            }
+
+            img {
+                display: inline-block !important;
+            }
+        }
+    }
+
+    .report-header {
+        position: absolute;
+        min-height: 30px;
+
+        .sp-mobile-device & {
+        }
+
+        .sp-tablet-device & {
+            width: auto;
+
+            h1 {
+                font-size: 1.8em;
+                margin-top: 1.5em;
+                margin-left: 5px;
+            }
+        }
+
+        select.sp-combo-picker {
+            height: 24px;
+            font-size: 12px !important;
+            vertical-align: top;
+        }
+    }
+
+    .spreport-view {
+        min-height: 100px;
+        position: absolute;
+        top: 60px;
+        bottom: 0px;
+        width: 100%;
+        height:inherit;
+
+        .sp-mobile-device &,
+        .sp-tablet-device & {
+                top: 0;
+            }
+    }
+
+    .gridStyle {
+        border: 0px solid #d4d4d4;
+        background: none;
+
+        &.ngGrid {
+            background-color: none;
+        }
+    }
+}
+
+// The following has been moved out of the navigation.less file
+// It should probably be included inside the report-view above
+// unless it is meant to be global.... and in that case we should move it
+// to a standalone file, say gridStyle.less and import into app.less

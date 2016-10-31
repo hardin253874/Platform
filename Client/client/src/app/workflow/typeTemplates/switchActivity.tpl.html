@@ -1,0 +1,20 @@
+<div ng-controller="switchActivityController">
+	
+    <form class="form-horizontal">
+        <div ng-repeat="e in entity.exitPoints" class="form-group">
+            <div class="workflow-expression-control">
+                <button type="button" ng-click="removeExit(e)"><img src="assets/images/icon_remove.png" /></button>
+                <sp-expression-editor ng-model="conditionExpressions[e.id()]" params="parameterHints" host="'Evaluate'" options="{hideHintsButtons:true}"></sp-expression-editor>
+                <sp-parameter-expression-context-menu tools="exprEditor" parameter="{{e.idP}}"></sp-parameter-expression-context-menu>
+                <i class="icon-arrow-right icon-white"></i>
+                <input type="text" class="form-control" ng-model="e.name" placeholder="name" edc-enter="addExit()" />
+            </div>
+        </div>
+        <div class="form-group form-group-container">
+            <button type="button" ng-click="addExit()" style="vertical-align: middle;" title="Add a field, lookup, choice or relationship to set">
+                <img src="assets/images/icon_new.png" title="Add new condition and path name" />
+            </button>
+            Add new condition and path name
+        </div>
+    </form>
+</div>

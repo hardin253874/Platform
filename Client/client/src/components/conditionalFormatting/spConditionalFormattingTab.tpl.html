@@ -1,0 +1,43 @@
+<div class="leftMargin topMarginSmall">
+	
+    <div class="labelBlock">Format:</div>
+    <div class="displayInlineBlock">
+        <select class="centeredDropDown" ng-model="model.condFormatting.selectedFormatType" ng-options="ft as ft.name for ft in model.condFormatting.formatTypes" ng-change="onFormatTypeChanged()"/>    
+    </div>
+    <div class="displayInlineBlock leftMargin">
+        <input class="verticalAlignMiddle" type="checkbox" ng-change="clearErrors()" ng-model="model.condFormatting.displayText"><div class="centeredInlineBlock leftMargin">Display text</div>
+    </div>            
+</div>
+<div class="leftMargin topMarginSmall">
+    <div class="labelBlock">Scheme:</div>    
+    <div class="displayInlineBlock">
+        <select class="centeredDropDown" ng-model="model.condFormatting.selectedScheme" ng-options="s as s.name for s in model.condFormatting.selectedFormatType.schemes" ng-change="onSchemeChanged()"/>        
+    </div>        
+</div>
+<div class="rulesContainerHeader">
+    <div class="rulesContainerHeaderTable">
+        <div class="rulesContainerHeaderCell">
+            <span class="leftMargin">Rules</span>
+        </div>        
+        <div class="rulesContainerHeaderCell">            
+            <button class="btn_lighten addRulesButton" type="button" ng-show="canShowAddRulesButton()" ng-click="addRule()">            
+                <div class="addRulesButtonIcon"></div>
+            </button>         
+        </div>                
+    </div>    
+</div>
+<div class="rulesContainer" style="position:relative">    
+    <div style="width:100%;height:100%" ng-switch on="model.condFormatting.selectedFormatType.id">
+        <div ng-switch-when="Highlight">
+            <ng-include src="'conditionalFormatting/spHighlightFormattingRules.tpl.html'"></ng-include>
+        </div>
+        <div ng-switch-when="Icon">
+            <ng-include src="'conditionalFormatting/spIconFormattingRules.tpl.html'"></ng-include>
+        </div>
+        <div ng-switch-when="ProgressBar">
+            <ng-include src="'conditionalFormatting/spProgressBarFormatting.tpl.html'"></ng-include>
+        </div>
+        <div ng-switch-when="None"></div>
+        <div ng-switch-when-default></div>
+    </div>
+</div>

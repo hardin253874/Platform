@@ -1,0 +1,13 @@
+<div class="importStepContainer">
+	
+    <div class="importstep" ng-class="{'importstep_selected':isCurrentPage(1)}">Upload Document</div>
+    <div class="importstep" ng-class="{'importstep_selected':isCurrentPage(2)}">Select Object</div>
+    <div class="importstep" ng-class="{'importstep_selected':isCurrentPage(3)}">Select Columns</div>
+    <div class="importstep" ng-class="{'importstep_selected':isCurrentPage(4)}">Options</div>
+    <div class="importstep" ng-class="{'importstep_selected':isCurrentPage(5)}">Import</div>
+
+    <div class="pull-right">
+        <a class="btn" ng-click="handlePrevious()" ng-show="!isFirstPage()" ng-disabled="isBackButtonDisabled()" >{{getBackLabel()}}</a>
+        <a class="btn" ng-click="handleNext()" ng-disabled="isNextButtonDisabled()">{{getNextLabel()}}</a>
+    </div>   
+</div>

@@ -1,0 +1,49 @@
+<h3>Data Grid</h3>
+<div ng-controller="dataGridTestController">
+    <div style="width:700px;height:500px">
+        <sp-data-grid grid-options="gridOptions"></sp-data-grid>        
+    </div>                
+    <span ng-show="loadingData">Loading...</span>
+    <br/>
+    Definition: <sp-entity-combo-picker options="definitionOptions"></sp-entity-combo-picker>    
+    <br/>    
+    Page Sizes: <select ng-model="pageSize" ng-options="p for p in pageSizes"></select>
+    <br />
+    Selected Items: {{gridOptions.selectedItems}}
+    <button ng-click="group()">Group</button>
+    <br/>
+    <div style="float: left;width:50%">
+        <h4>Columns</h4>
+        <ul>
+            <li ng-repeat="columnDefinition in columnDefinitions">
+                <h5>{{columnDefinition.displayName}}</h5>
+                <ul>                    
+                    <li>Hide Value: <input type="checkbox" ng-model="columnDefinition.hideValue" ng-change="refreshGrid()"></li>
+                    <li>Image Size: <sp-entity-combo-picker options="columnDefinition.imageSizeOptions"></sp-entity-combo-picker></li>
+                    <li>Image Scale: <sp-entity-combo-picker options="columnDefinition.imageScaleOptions"></sp-entity-combo-picker></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div style="float: left;width:50%">
+        <h4>Conditions</h4>
+        <ul>
+            <li ng-repeat="condition in conditions">
+                When value is <input type="text" ng-model="condition.value" ng-change="refreshGrid()">
+                <ul>
+                    <li>Background colour: <input type="color" ng-model="condition.backgroundColor" ng-change="refreshGrid()">&nbsp;Value:{{condition.backgroundColor}}</li>
+                    <li>Foreground colour: <input type="color" ng-model="condition.foregroundColor" ng-change="refreshGrid()">&nbsp;Value:{{condition.foregroundColor}}</li>
+                    <li>Bounds Lower: <input type="number" ng-model="condition.bounds.lower" ng-change="refreshGrid()"></li>                    
+                    <li>Bounds Upper: <input type="number" ng-model="condition.bounds.upper" ng-change="refreshGrid()"></li>                    
+                    <li>Alignment: <select ng-model="condition.alignment" ng-options="a for a in alignmentOptions" ng-change="refreshGrid()"></select></li>
+                    <li>Image: <sp-entity-combo-picker options="condition.imagePickerOptions"></sp-entity-combo-picker></li>
+                    [<a href ng-click="conditions.splice($index, 1)">X</a>]
+                </ul>
+            </li>
+            <li>
+                [<a href ng-click="createNewCondition()">New</a>]
+            </li>
+        </ul>    
+    </div>
+    
+</div>

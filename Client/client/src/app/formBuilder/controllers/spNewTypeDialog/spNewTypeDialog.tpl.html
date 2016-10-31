@@ -1,0 +1,22 @@
+<div class="sp-new-type-dialog" sp-moveable-modal sp-measure-arrange="measureArrangeOptions" sp-set-focus-dialog-input>
+    <div class="modal-header">
+        <h6>{{model.title}}</h6>
+    </div>
+    <div class="modal-body overflowModalBody">
+        <sp-custom-edit-form form-control="model.formControl" form-data="model.formData" form-mode="model.formMode"></sp-custom-edit-form>
+        <div style="display: table">
+            <div style="display: table-row">
+                <div style="display: table-cell"><label class="field-title">Icon:</label></div>
+                <div style="display: table-cell"><sp-inline-relationship-picker options="model.definitionIconPickerOptions" /></div>
+            </div>
+        </div>
+    </div>
+    <div class="has-error" ng-show="!model.isFormValid">
+        <ul ng-repeat="error in model.errors" style="color: red">
+            <li>{{error.msg}}</li>
+        </ul>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn" ng-click="ok()">OK</button><button type="button" class="btn" ng-click="cancel()">Cancel</button>
+    </div>
+</div>

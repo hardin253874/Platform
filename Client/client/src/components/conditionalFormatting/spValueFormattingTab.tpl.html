@@ -1,0 +1,50 @@
+
+<div class="leftMargin topMarginSmall">
+    <div class="labelBlockMedium">Alignment:</div>
+    <div class="displayInlineBlock">
+        <select class="centeredDropDown valueFormattingDropdown" ng-model="model.valueFormatting.selectedAlignmentOption" ng-options="ao as ao.name for ao in model.valueFormatting.alignmentOptions" ng-change="onValueFormattingOptionsChanged()" />
+    </div>
+</div>
+
+<div class="leftMargin topMarginSmall" ng-show="model.valueFormatting.isString || model.valueFormatting.isResource">
+    <div class="labelBlockMedium">Lines:</div>
+    <div class="displayInlineBlock">
+        <sp-number-control class="centeredNumberControl" model="model.valueFormatting.linesModel"></sp-number-control>
+    </div>
+</div>
+<div class="leftMargin topMarginSmall" ng-show="model.valueFormatting.isFloatingPointNumeric">
+    <div class="labelBlockMedium">Decimal places:</div>    
+    <div class="displayInlineBlock">
+        <sp-number-control class="centeredNumberControl" model="model.valueFormatting.decimalPlacesModel"></sp-number-control>
+    </div>        
+</div>
+<div class="leftMargin topMarginSmall" ng-show="model.valueFormatting.isNumeric">
+    <div class="labelBlockMedium">Prefix:</div>    
+    <div class="displayInlineBlock">
+        <input class="centeredInput" type="text" ng-model="model.valueFormatting.prefix" ng-change="onValueFormattingOptionsChanged()" ng-trim="false"/>
+    </div>        
+</div>
+<div class="leftMargin topMarginSmall" ng-show="model.valueFormatting.isNumeric">
+    <div class="labelBlockMedium">Suffix:</div>    
+    <div class="displayInlineBlock">
+        <input class="centeredInput" type="text" ng-model="model.valueFormatting.suffix" ng-change="onValueFormattingOptionsChanged()" ng-trim="false"/>
+    </div>        
+</div>
+<div class="leftMargin topMarginSmall" ng-show="model.valueFormatting.isDateOrTime">
+    <div class="labelBlockMedium">{{model.valueFormatting.dateOrTimeLabel}}:</div>    
+    <div class="displayInlineBlock">
+        <select class="centeredDropDown valueFormattingDropdown" ng-model="model.valueFormatting.selectedDateTimeFormat" ng-options="dtf as dtf.name for dtf in model.valueFormatting.dateTimeFormats" ng-change="onValueFormattingOptionsChanged()" />        
+    </div>        
+</div>
+<div class="leftMargin topMarginSmall" ng-show="model.valueFormatting.showStructureView">
+    <div class="labelBlockMedium">Hierarchy:</div>
+    <div class="displayInlineBlock">
+        <sp-entity-combo-picker options="model.valueFormatting.structureViewPicker"></sp-entity-combo-picker>
+    </div>
+</div>
+<div class="leftMargin topMarginSmall" ng-show="model.valueFormatting.showSampleText">
+    <div class="labelBlockMedium">Sample:</div>    
+    <div class="displayInlineBlock valueFormattingSampleText" ng-style="getValueFormattingSampleTextStyle()">
+        {{model.valueFormatting.sampleText}}
+    </div>        
+</div>

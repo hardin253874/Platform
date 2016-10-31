@@ -1,0 +1,276 @@
+﻿<div class="appConfig-main">
+    <div class="appConfig-appList">
+        <div ng-class="application === model.selectedApplication ? 'appConfig-selectedApp' : 'appConfig-app'" ng-repeat="application in model.applications" ng-click="selectApplication(application)" ng-style="getApplicationStyle(application)">
+            <img ng-src="{{application === model.selectedApplication ? 'assets/images/16x16/HoverAppInvert.png' : 'assets/images/16x16/HoverApp.png'}}">
+            <span>{{application.name}}</span>
+        </div>
+    </div>
+
+    <div class="appConfig-appDetail">
+        <!-- Properties -->
+        <div class="appConfig-props">
+            <div class="heading">
+                <img src="assets/images/16x16/HoverApp.png">
+                <span>
+                    <div class="title">{{model.selectedApplication.name}}</div>
+                    <div class="desc">{{model.selectedApplication.description || "No description available"}}</div>
+                </span>
+            </div>
+            
+            <div class="panel">
+                <span class="primaryProperties floatLeft">
+                    <div class="property" ng-repeat="property in model.primaryProperties">
+                        <span class="key-primary key">{{property.name}}</span>
+                        <span class="value-primary value"><a ng-if="property.isLink" href="{{property.value}}">{{property.value}}</a><span ng-if="!property.isLink">{{property.value}}</span><span ng-if="property.isBreak">&nbsp;</span></span>
+                    </div>
+                </span>
+                <span class="secondaryProperties floatRight">
+                    <div class="property" ng-repeat="property in model.secondaryProperties">
+                        <span class="key-secondary key">{{property.name}}</span>
+                        <span class="value-secondary value">{{property.value}}</span>
+                    </div>
+                </span>
+                <div class="floatClear"></div>
+            </div>
+
+        </div>
+        
+        <!-- Resources -->
+        <div class="appConfig-resources">
+            <div class="heading">
+                <div class="left">
+                    <div class="title">Resources</div>
+                    <div class="desc">Resources owned by {{model.selectedApplication.name}}</div>
+                </div>
+                <div class="right" style="white-space: nowrap; visibility: hidden; display: none">
+                    <span style="margin-right: 5px; vertical-align: middle">Group By</span>
+                    <select class="groupBy">
+                        <option value="GroupByType">Type</option>
+                        <option value="GroupByCreatedDate">Created Date</option>
+                        <option value="GroupByModifiedDate">Modified Date</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="panel">
+                <ul class="typeList">
+                    <li class="type" ng-repeat="type in model.types"><input type="checkbox" id="{{type.name}}" ng-model="type.expanded" ng-change="typeExpand(type)" /><label for="{{type.name}}">{{type.name}}</label>
+                        <div class="grow" ng-class="{'open' : type.expanded, 'closed' : !type.expanded}">
+                            <div style="margin-left: 15px" ng-if="!type.instances">
+                                Loading...
+                            </div>
+                            <div style="margin-left: 15px" ng-if="type.instances">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <th style="padding: 2px 10px">Name</th>
+                                        <th style="padding: 2px 10px">Created Date</th>
+                                        <th style="padding: 2px 10px">Modified Date</th>
+                                        <th style="padding: 2px 10px">In Solution</th>
+                                    </tr>
+                                    <tr ng-repeat="instance in type.instances" title="Id: {{instance.id()}}\nDescription: {{instance.description}}">
+                                        <td style="padding: 2px 10px">
+                                            <a ng-if="!isCoreApp()" ng-href ng-click="linkClicked(instance, type.alias)" style="cursor: pointer">{{instance.name}}</a>
+                                            <span ng-if="isCoreApp()">{{instance.name}}</span>
+                                        </td>
+                                        <td style="padding: 2px 10px">
+                                            {{processDate(instance.createdDate)}}
+                                        </td>
+                                        <td style="padding: 2px 10px">
+                                            {{processDate(instance.modifiedDate)}}
+                                        </td>
+                                        <td style="padding: 2px 10px">
+                                            {{instance.inSolution ? 'Explicitly' : 'Implicitly'}}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Depends on -->
+        <div class="appConfig-dependsOn">
+            <div class="heading">
+                <div class="left">
+                    <div class="title">Depends on</div>
+                    <div class="desc">Applications that {{model.selectedApplication.name}} depends on</div>
+                </div>
+                <div class="right" style="white-space: nowrap">
+                    <span style="margin-right: 5px; vertical-align: middle">View</span>
+                    <select class="viewSelect" ng-model="model.dependsOnView">
+                        <option value="dependsOnViewTable">Table</option>
+                        <option value="dependsOnViewDiagram">Diagram</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="panel">
+                <table class="dependsOnTable" ng-if="model.dependsOnView === 'dependsOnViewTable'">
+                    <tr>
+                        <th style="width: 1%; min-width: 32px"></th>
+                        <th style="width: 38%">Name</th>
+                        <th style="width: 15%">Type</th>
+                        <th style="width: 15%">Minimum Version</th>
+                        <th style="width: 15%">Maximum Version</th>
+                        <th style="width: 15%">Is Required</th>
+                        <th style="width: 1%"></th>
+                    </tr>
+                    <tr ng-repeat="dependsOn in model.dependsOn" ng-class="{'direct' : dependsOn.isDirect, 'indirect' : !dependsOn.isDirect}">
+                        <td style="padding-right: 15px">
+                            <img ng-if="!dependsOn.isEditing && dependsOn.isDirect" src="assets/images/icon_edit.png" title="Edit dependency" style="cursor: pointer" ng-click="editDependency(dependsOn)" />
+                            <img ng-if="dependsOn.isEditing && dependsOn.isDirect" src="assets/images/toolbar_save.png" ng-attr-title="{{canSaveDependency(dependsOn) ? 'Save dependency' : ''}}" ng-class="canSaveDependency(dependsOn) ? 'canSave' : 'cannotSave'" ng-click="saveDependency(dependsOn, true)" />
+                        </td>
+                        <td>
+                            <div ng-if="!dependsOn.isEditing">
+                                {{dependsOn.name}}
+                            </div>
+                            <div ng-if="dependsOn.isEditing">
+                                <select ng-options="option.name for option in dependsOn.availableApplications track by option.id" ng-model="dependsOn.selectedApp" class="appSelect" ></select>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                {{dependsOn.isDirect ? 'Direct' : 'Indirect'}}
+                            </div>
+                        </td>
+                        <td>
+                            <div ng-if="!dependsOn.isEditing">
+                                {{dependsOn.minimumVersion}}
+                            </div>
+                            <div ng-if="dependsOn.isEditing" class="select-editable">
+                                <select ng-options="option.value as option.name for option in dependsOn.selectedApp.availableVersions" ng-model="dependsOn.minimumVersion"></select>
+                                <input type="text" ng-model="dependsOn.minimumVersion" onClick="this.select();" ng-keypress="validateVersion($event)" />
+                            </div>
+                        </td>
+                        <td>
+                            <div ng-if="!dependsOn.isEditing">
+                                {{dependsOn.maximumVersion}}
+                            </div>
+                            <div ng-if="dependsOn.isEditing" class="select-editable">
+                                <select ng-options="option.value as option.name for option in dependsOn.selectedApp.availableVersions" ng-model="dependsOn.maximumVersion"></select>
+                                <input type="text" ng-model="dependsOn.maximumVersion" onClick="this.select();" ng-keypress="validateVersion($event)" />
+                            </div>
+                        </td>
+                        <td>
+                            <div ng-if="!dependsOn.isEditing">
+                                {{dependsOn.isRequired ? 'True' : 'False'}}
+                            </div>
+                            <div ng-if="dependsOn.isEditing">
+                                <input type="checkbox" ng-model="dependsOn.isRequired" style="margin-top: -3px;" />
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <img ng-if="dependsOn.isDirect" src="assets/images/delete_red.png" title="{{getDeleteTitle(dependsOn)}}" style="cursor: pointer" ng-click="removeDependency(dependsOn, model.dependsOn)" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="cursor: pointer" colspan="7" ng-click="addDependency(model.dependsOn)">
+                            <div>
+                                <img src="assets/images/icon_new.png" title="Add dependency" />
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <div class="dependsOnDiagram diagram" ng-if="model.dependsOnView === 'dependsOnViewDiagram'" style="min-height: 400px">
+                    
+                </div>
+            </div>
+        </div>
+        
+        <!-- Depended on by -->
+        <div class="appConfig-requiredBy">
+            <div class="heading">
+                <div class="left">
+                    <div class="title">Required by</div>
+                    <div class="desc">Applications that require {{model.selectedApplication.name}} to be present</div>
+                </div>
+                <div class="right" style="white-space: nowrap">
+                    <span style="margin-right: 5px; vertical-align: middle">View</span>
+                    <select class="viewSelect" ng-model="model.requiredByView">
+                        <option value="requiredByViewTable">Table</option>
+                        <option value="requiredByViewDiagram">Diagram</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="panel">
+                <table class="requiredByTable" ng-if="model.requiredByView === 'requiredByViewTable'">
+                    <tr>
+                        <th style="width: 1%; min-width: 32px"></th>
+                        <th style="width: 38%">Name</th>
+                        <th style="width: 15%">Type</th>
+                        <th style="width: 15%">Minimum Version</th>
+                        <th style="width: 15%">Maximum Version</th>
+                        <th style="width: 15%">Is Required</th>
+                        <th style="width: 1%"></th>
+                    </tr>
+                    <tr ng-repeat="requiredBy in model.requiredBy" ng-class="{'direct' : requiredBy.isDirect, 'indirect' : !requiredBy.isDirect}">
+                        <td style="cursor: pointer; padding-right: 15px">
+                            <img ng-if="!requiredBy.isEditing && requiredBy.isDirect" src="assets/images/icon_edit.png" title="Edit dependency" style="cursor: pointer" ng-click="editDependency(requiredBy)" />
+                            <img ng-if="requiredBy.isEditing && requiredBy.isDirect" src="assets/images/toolbar_save.png" ng-attr-title="{{canSaveDependency(requiredBy) ? 'Save dependency' : ''}}" ng-class="canSaveDependency(requiredBy) ? 'canSave' : 'cannotSave'" ng-click="saveDependency(requiredBy, false)" />
+                        </td>
+                        <td>
+                            <div ng-if="!requiredBy.isEditing">
+                                {{requiredBy.name}}
+                            </div>
+                            <div ng-if="requiredBy.isEditing">
+                                <select ng-options="option.name for option in requiredBy.availableApplications track by option.id" ng-model="requiredBy.selectedApp" class="appSelect"></select>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                {{requiredBy.isDirect ? 'Direct' : 'Indirect'}}
+                            </div>
+                        </td>
+                        <td>
+                            <div ng-if="!requiredBy.isEditing">
+                                {{requiredBy.minimumVersion}}
+                            </div>
+                            <div ng-if="requiredBy.isEditing" class="select-editable">
+                                <select ng-options="option.value as option.name for option in requiredBy.selectedApp.availableVersions" ng-model="requiredBy.minimumVersion"></select>
+                                <input type="text" ng-model="requiredBy.minimumVersion" onClick="this.select();" ng-keypress="validateVersion($event)" />
+                            </div>
+                        </td>
+                        <td>
+                            <div ng-if="!requiredBy.isEditing">
+                                {{requiredBy.maximumVersion}}
+                            </div>
+                            <div ng-if="requiredBy.isEditing" class="select-editable">
+                                <select ng-options="option.value as option.name for option in requiredBy.selectedApp.availableVersions" ng-model="requiredBy.maximumVersion"></select>
+                                <input type="text" ng-model="requiredBy.maximumVersion" onClick="this.select();" ng-keypress="validateVersion($event)" />
+                            </div>
+                        </td>
+                        <td>
+                            <div ng-if="!requiredBy.isEditing">
+                                {{requiredBy.isRequired ? 'True' : 'False'}}
+                            </div>
+                            <div ng-if="requiredBy.isEditing">
+                                <input type="checkbox" ng-model="requiredBy.isRequired" style="margin-top: -3px;" />
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <img ng-if="requiredBy.isDirect" src="assets/images/delete_red.png" title="{{getDeleteTitle(requiredBy)}}" style="cursor: pointer" ng-click="removeDependency(requiredBy, model.requiredBy)" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="cursor: pointer; padding-right: 15px" colspan="7" ng-click="addDependency(model.requiredBy)">
+                            <div>
+                                <img src="assets/images/icon_new.png" title="Add dependency" />
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <div class="requiredByDiagram diagram" ng-if="model.requiredByView === 'requiredByViewDiagram'" style="min-height: 400px">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

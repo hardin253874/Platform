@@ -1,0 +1,30 @@
+﻿<div class="spSecurityAllowDisplay-view container-fluid" sp-busy-indicator-popup="model.busyIndicator">
+    <div class="securityAllowDisplay-appSelection">
+        <div class="labelBlockMedium">Application:</div>
+        <div class="displayInlineBlock">
+            <select id="navAccessApp" class="centeredDropDown securityOptionsDropdown"
+                    ng-model="model.selectedTopMenuNode"
+                    ng-options="node.item.name for node in getMenuNodes()"
+                    ng-change="onTopMenuNodeChanged()"
+                    ng-disabled="options.isInDesign">
+                <option value="">[Select]</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="securityAllowDisplay-subjectSelection" ng-if="!options.hideSubjectSelection && !options.isInDesign">
+        <div class="labelBlockMedium">Role or User:</div>
+        <div class="displayInlineBlock">
+            <select id="navAccessRoles" class="centeredDropDown securityOptionsDropdown"
+                    ng-model="model.selectedSubject" ng-options="s.displayName for s in model.filteredSubjects">
+                <option value="">[Select]</option>
+            </select>
+        </div>
+        <input class="includeUsersCheckbox" type="checkbox" ng-model="model.includeUsers"
+               ng-change="onIncludeUsersChanged()" />Include Users
+    </div>
+
+    <div ng-class="(options.hideSubjectSelection || options.isInDesign) ? 'securityAllowDisplay-contentAppOnly' : 'securityAllowDisplay-content'">
+        <div ng-grid="model.gridOptions" class="securityGrid"></div>
+    </div>
+</div>

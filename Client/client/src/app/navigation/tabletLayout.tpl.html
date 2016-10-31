@@ -1,0 +1,53 @@
+<div class="tablet-layout" ng-controller="AppController" sp-mobile-deny-unapproved-drags>
+    
+
+    <div ng-if="hideApplication" sp-include="'navigation/loading.tpl.html'"></div>
+
+    <div ng-if="!hideApplication" class="layout-container">
+
+        <div ng-if="!loginService.isSignedIn()">
+            <div sp-include="'login/login.tpl.html'"></div>
+        </div>
+
+        <div ng-if="loginService.isSignedIn()" class="layout-container" ng-controller="MobileNavController"
+             hm-swiperight="swipeRight($event)" hm-swipeleft="swipeLeft($event)"
+             hm-dragleft="$event.gesture.preventDefault()" hm-dragright=" $event.gesture.preventdefault()"
+             hm-manager-options='{"touchAction":"pan-y"}'> 
+
+            <div ng-class="{open: navData.showNav}" class="layout-container navigator-container">
+                <div sp-include="'navigation/mobileNav.tpl.html'"></div>
+            </div>
+             
+            <div class="alerts-control-box"><sp-alerts-control></sp-alerts-control></div>
+
+            <div class="layout-container page-container" ng-class="{faded: navData.showNav}">
+
+                <div class="content-height-container" sp-mobile-allow-default-drag ng-style="consoleThemeModel.navBarStyle">
+                    <div ng-if="spState.data.region['content-header'].templateUrl"
+                         class="content-header"
+                         ng-include="spState.data.region['content-header'].templateUrl"></div>
+
+                    <!--temporary until we get the various pages defining a decent toolbar-->
+                    <div ng-if="!spState.data.region['content-header'].templateUrl && !isAppLauncher()" class="layout-thumb content-header"  ng-style="consoleThemeModel.navBarStyle">
+                        <a><img src="assets/images/mobile/mobile_toolbar_toggle_leftnav.png" ng-click="toggleShowNav()" /></a>
+                        <span class="layout-thumb-title" style="padding:0;">{{$state.current.data.leftPanelTitle}}</span>
+                    </div>
+
+                </div>
+
+                <sp-nav-pending-panel></sp-nav-pending-panel>
+
+                <div sp-auto-height class="available-height-layout-container">
+                    <div ui-view class="view"></div>
+                </div>
+
+                <div class="content-height-container" ng-style="navBarStyle">
+                    <div ng-if="spState.data.region['content-footer'].templateUrl"
+                         class="content-footer"
+                         ng-include="spState.data.region['content-footer'].templateUrl"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

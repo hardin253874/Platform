@@ -1,0 +1,32 @@
+<div class="sp-new-type-dialog" sp-moveable-modal sp-set-focus-dialog-input>
+
+    <div class="modal-header">
+        <h6>New Access Rule</h6>
+    </div>
+    <div class="modal-body overflowModalBody">
+        <div class="edit-form-control-container" ng-if="subjects.length > 1">
+            <div class="edit-form-title"><label for="roles">Role or User:</label></div>
+            <div class="edit-form-value"><select id="roles" ng-options="subject.displayName for subject in subjects"
+                                                 ng-model="options.selectedSubject"></select></div>
+        </div>
+        <div class="edit-form-control-container" ng-if="subjects.length > 1">
+            <div class="edit-form-title"><label for="includeUsers">Include Users:</label></div>
+            <div class="edit-form-value"><input type="checkbox" ng-model="options.includeUsers" id="includeUsers"
+                                                ng-change="toggleIncludeUsers()"></div>
+        </div>
+        <div class="edit-form-control-container">
+            <div class="edit-form-title">
+                <label for="objects">Object:</label>
+            </div>
+            <div class="edit-form-value">
+                <select id="objects"
+                        ng-options="securableEntity.nameAnnotated for securableEntity in options.securableEntitiesAnnotated"
+                        ng-model="options.selectedSecurableEntity"></select>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn" ng-click="ok()">OK</button>
+        <button type="button" class="btn" ng-click="cancel()">Cancel</button>
+    </div>
+</div>

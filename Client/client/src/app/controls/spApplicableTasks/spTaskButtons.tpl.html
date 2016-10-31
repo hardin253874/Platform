@@ -1,0 +1,16 @@
+<span class="sp-task-buttons">
+	
+    
+    <!-- task exit points -->
+    <span class="sp-task-button"  ng-repeat="ep in orderedTrans "> 
+        <button type="button"
+                ng-click="selectExit(ep)"
+                ng-disabled="disabled"
+                in-wizard="inWizard"
+                return-on-completion="returnOnCompletion"
+                test-id="{{'exit' + $index}}"
+                title="{{ep.fromExitPoint.getName()}}">
+            {{(ep.fromExitPoint.getName() || $index) }}
+        </button>
+    </span>
+</span>

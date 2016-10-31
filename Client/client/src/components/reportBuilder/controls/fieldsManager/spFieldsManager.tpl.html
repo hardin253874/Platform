@@ -1,0 +1,33 @@
+<div>
+    <sp-search-control sp-model="model.search" class="sp-search"></sp-search-control>
+    <div class="report-Builder-Fieldmanager">
+        <div class="fieldstableheader">
+            <span class="report-Builder-AddToAnalyzer" title="Add to Analyzer"></span>
+            <span class="report-Builder-AddToReport" title="Add to Report"></span>
+        </div>
+        <div ng-repeat="group in groupedNodeFields" isoatom ng-show="groupedNodeFields" class="report-Builder-Fieldmanager-Group">
+
+            <!-- Field group title -->
+            <div style="display:table; width:100%">
+                <button type="button" class="toggleButton" ng-click="toggleChildren($index)" ng-show="group"><img ng-src="{{getToggleImage($index)}}" /></button>
+                <div class="{{getGroupNameStyleClass(group)}}">{{group.name}}</div>
+            </div>
+
+
+            <!-- Fields -->
+
+            <div class="groupitems" ng-show="groupShowFields[$index]">
+                <div ng-repeat="field in group.fields  | range:0:group.fields.length" class="itemcontainer">
+                    <div class="item" sp-draggable="dragOptions" sp-draggable-data="field" ng-mouseenter="onMouseMove()" ng-mouseleave="onMouseMove()" title="{{field.fname}}">
+                        <!--<span class="isrequireimage" ng-show="field.isreq"></span>-->
+                        <div class="itemicon"><img ng-src="{{convertTypeToImageUrl(field.ftype)}}" /></div>
+                        <div class="{{getItemNameStyleClass(field)}}">{{field.fname}}</div>
+                        <div class="fieldcheckbox"><input type="checkbox" ng-model="field.inrep" title="{{field.fname}}" ng-show="!isAggregateNode" ng-disabled="isAggregateNode || field.isAggregated" ng-click="processReportColumnChanged(field, $event)" ng-mouseenter="onMouseMove()" ng-mouseleave="onMouseMove()" /></div>
+                        <div class="fieldcheckbox"><input type="checkbox" ng-model="field.inanal" title="{{field.fname}}" ng-show="field" ng-click="processAnalyzerColumnChanged(field, $event)" ng-mouseenter="onMouseMove()" ng-mouseleave="onMouseMove()" /></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

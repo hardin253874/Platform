@@ -1,0 +1,20 @@
+<div ng-repeat="displayOptionGroup in model.displayOptionGroups">
+    <div class="fb-toolbox-group">
+        <div style="display:table; width:100%">
+            <button type="button" class="toggleButton" ng-click="displayOptionGroup.hidden = !displayOptionGroup.hidden">
+                <img ng-src="{{'assets/images/' + (displayOptionGroup.hidden ? 'fieldgroup_collapsed.png' : 'fieldgroup_opened.png')}}" />
+            </button>
+            <div class="groupname" onselectstart="return false;">{{displayOptionGroup.name}}</div>
+        </div>
+        <div class="fb-toolbox-groupitems" ng-hide="displayOptionGroup.hidden">
+            <div class="itemcontainer" ng-repeat="displayOption in displayOptionGroup.displayOptions" style="margin-bottom: 2px;">
+                <div class="fb-cell fb-child-background"> 
+                </div>
+                <div class="item fb-toolbox-item fb-cell" uib-tooltip="{{displayOption.description}}" tooltip-placement="top" tooltip-trigger="mouseenter" tooltip-popup-delay='500' style="cursor: move; width: 100%" sp-draggable="displayOption.dragOptions" sp-draggable-data="displayOption">
+                    <div class="itemicon"><img ng-src="{{displayOption.icon}}"/></div>
+                    <div class="itemname fb-toolbox-itemname" onselectstart="return false;">{{displayOption.name}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

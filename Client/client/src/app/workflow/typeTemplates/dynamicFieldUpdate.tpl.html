@@ -1,0 +1,47 @@
+
+        <form class="form-horizontal divide">
+            <div ng-repeat="g in groups track by g.key" class="form-group">
+
+                <button ng-click="removeGroup(g)">
+                    <img src="assets/images/icon_remove.png" /></button>
+
+                <div class="form-control-stack">
+                    <sp-workflow-expression-control parameter="activityParameters[getGroupArg(g).idP]"
+                        show-label="false"
+                        actions="fieldChooser,relChooser,exprEditor"></sp-workflow-expression-control>
+                </div>
+
+                <div ng-hide="g.memberType == 'rel'" class="form-control-stack">
+                    <sp-workflow-expression-control parameter="activityParameters[getGroupArg(g, 'value').idP]"
+                        show-label="false"
+                        actions="{{g.memberType == 'field' ? 'parameterChooser,exprEditor' : 'parameterChooser,resourceChooser,exprEditor'}}"></sp-workflow-expression-control>
+                </div>
+
+                <div ng-show="g.memberType == 'rel'" class="form-control-stack">
+                    <div ng-repeat="a in getGroupArgs(g, 'value')">
+                        <sp-workflow-expression-control parameter="activityParameters[a.idP]"
+                            show-label="false"
+                            actions="parameterChooser,resourceChooser,exprEditor"></sp-workflow-expression-control>
+                    </div>
+                    <div class="btn-link" ng-click="addRelValueArg(g.key)" title="Add related record">add related record</div>
+                </div>
+
+                <sp-workflow-parameter-bool-input class="form-control-stack"
+                    ng-show="getGroupArg(g, 'replace')"
+                    label="replace"
+                    parameter="getGroupArg(g, 'replace').idP"></sp-workflow-parameter-bool-input>
+
+                <!--<sp-workflow-parameter-bool-input class="form-control-stack"-->
+                <!--ng-show="getGroupArg(g, 'reverse')"-->
+                <!--label="reverse (debug)" readonly="true"-->
+                <!--parameter="getGroupArg(g, 'reverse').id()"></sp-workflow-parameter-bool-input>-->
+
+            </div>
+
+            <div class="form-group form-group-container">
+                <button ng-click="addMemberArg()" style="vertical-align: middle;" title="Add a field, lookup, choice or relationship to set">
+                    <img src="assets/images/icon_new.png" /></button>
+                Add Field or Relationship
+            </div>
+        </form>
+ 

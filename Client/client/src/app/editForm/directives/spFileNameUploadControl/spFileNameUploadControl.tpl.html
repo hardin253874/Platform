@@ -1,0 +1,35 @@
+﻿<span ng-controller="fileNameUploadController">
+
+    <div class="edit-form-control-container">
+        <div class="edit-form-title">
+            <sp-title-plus-markers title-model="titleModel" is-read-only="isReadOnlyControl" messages="customValidationMessages" is-required="isMandatory"></sp-title-plus-markers>
+        </div>
+        <div class="edit-form-value">
+
+            <table style="border-collapse: collapse;border: solid 0px transparent;" cellpadding="0" cellspacing="0" ng-hide="isReadOnlyControl">
+                <tbody>
+                    <tr>
+                        <td style="padding: 0;">
+                            <input type="text" readonly="readonly" ng-hide="isReadOnlyControl" ng-model="uploadDisplayName">
+                        </td><td style="padding: 0; padding-left:3px; width: 1%;">
+                                 <sp-file-upload ng-hide="isReadOnlyControl"
+                                                 button-label="uploadButtonLabel"
+                                                 upload-session="uploadSession"
+                                                 message="uploadMessage"
+                                                 busy-indicator-options="uploadBusyIndicatorOptions"
+                                                 filter="{{uploadFileTypeFilter}}"
+                                                 callback="uploadOnComplete"
+                                                 instant-upload="false"
+                                                 image-preview-src="uploadImagePreviewSrc"></sp-file-upload>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <a href="{{downloadUri}}" target="_self" ng-show="isReadOnlyControl" ng-if="isSafari">{{uploadDisplayName}}</a>
+            <a href="{{downloadUri}}" download ng-show="isReadOnlyControl" ng-if="!isSafari">{{uploadDisplayName}}</a>
+            
+        </div>
+    </div>
+
+</span>

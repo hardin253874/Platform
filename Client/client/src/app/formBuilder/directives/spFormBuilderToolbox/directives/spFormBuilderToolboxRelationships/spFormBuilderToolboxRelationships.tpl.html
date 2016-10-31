@@ -1,0 +1,67 @@
+<div class="fb-toolbox-group">
+
+
+    <div>
+        <table style="width: 100%">
+            <tr>
+                <td style="white-space: nowrap; width: 1%; text-align:right">
+                    <span uib-popover-template="'formBuilder/directives/spFormBuilderToolbox/directives/spFormBuilderToolboxRelationships/newRelationshipPopover.tpl.html'"
+                          popover-placement="right" popover-trigger="manual"
+                          class="fb-toolbox-control fb-popover-rel" style="font-size: 11px">
+                        <img src="assets/images/relationship_add.png"/>
+                    </span>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <table class="fb-toolbox-groupitems" ng-hide="model.relationshipsHidden" style="width: 100%">
+        <tr>
+            <td colspan="2">
+                <div ng-style="getItemStyle(spFormBuilderService.definition, false)" ng-click="setSelectedLookup(null)"
+                     style="cursor: pointer; border-radius: 2px;"
+                     class="fb-toolbox-item fb-toolbox-item-dark fb-toolbox-adornment-hover"
+                     uib-tooltip="{{definition.description}}" tooltip-placement="top" tooltip-trigger="mouseenter"
+                     tooltip-popup-delay='500'>
+                    <div class="fb-inline">
+                        <sp-editable-label value="spFormBuilderService.definition.name"
+                                           key-down-callback="validateinput" change-callback="changeValidate"
+                                           class="fb-toolbox-itemname fb-toolbox-itemname-light fb-middle fb-editable-definition-label"
+                                           readonly="true" style="vertical-align: middle"></sp-editable-label>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr ng-repeat="lookup in model.lookups | filterLookups">
+            <td align="left" style="width: 1%">
+                <div class="fb-child-background" style="height: 1px">
+                </div>
+            </td>
+            <td>
+                <div ng-style="getItemStyle(lookup.getEntity(), true)"
+                     style="cursor: pointer; position: relative; border-radius:2px;"
+                     ng-click="setSelectedChildLookup(lookup)"
+                     class="fb-toolbox-item-nested fb-toolbox-item-dark fb-toolbox-adornment-hover"
+                     uib-tooltip="{{lookup.getDescription()}}" tooltip-placement="top" tooltip-trigger="mouseenter"
+                     tooltip-popup-delay='500'>
+                    <table style="width: 100%">
+                        <tr>
+                            <td style="width: 1%">
+                                <img class="fb-toolbox-icon" ng-src="{{'assets/images/' + getLookupIcon()}}"/>
+                            </td>
+                            <td>
+                                <span class="fb-toolbox-itemname fb-toolbox-itemname-light fb-middle"
+                                      onselectstart="return false;">{{lookup.getName()}}</span>
+                            </td>
+                            <td style="white-space: nowrap; width: 1%">
+                                <div>
+                                    <span class="ui-icon ui-icon-close ui-icon-lightgray fb-toolbox-adornment fb-toolbox-adornment-light ui-icon-hover-darkgray"
+                                          style="display: inline-block; float: none" ng-click="removeLookup()"/>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>

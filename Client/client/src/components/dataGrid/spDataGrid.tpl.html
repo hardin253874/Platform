@@ -1,0 +1,10 @@
+<div class="dataGrid-view">
+    <div ng-grid="model.ngGridOptions"
+         class="dataGridStyle" ng-class="getReportStyle()"
+         ng-dblclick="onGridDoubleClicked()"
+         ng-keypress="onKeyPress($event)"
+         sp-context-menu="contextMenu" sp-context-menu-trigger="rightclick"
+         sp-context-menu-create="getContextMenuActions" sp-context-menu-placement="mouse"
+         sp-context-menu-execution-context="getActionExecutionContext" sp-context-menu-append-to-body
+         sp-context-menu-is-open="model.contextMenuIsOpen" tabindex="0"></div>
+</div>

@@ -1,0 +1,39 @@
+.rn-flex-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+
+  &>.rn-flex-item {
+    flex: 1 1 0%;
+    overflow: auto;
+  }
+}
+
+.rn-flex-column {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+
+  &>.rn-flex-item {
+    flex: 1 1 auto;
+    overflow: auto;
+  }
+}
+
+.rn-field-control {
+  .form-group;
+
+  .rn-label {
+
+  }
+
+  .rn-value {
+    .form-control;
+  }
+
+}
+
+.rn-control {
+  font-size: 13px; // temp til can work out why they are 0
+}
+

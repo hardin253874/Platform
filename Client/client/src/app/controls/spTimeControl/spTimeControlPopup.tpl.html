@@ -1,0 +1,8 @@
+﻿<div class="sp-time-control-popup-view dropdown-menu" ng-style="getPopupStyle()">
+    <div class="sp-time-control-popup-body">
+        <div uib-timepicker ng-model="model.value" hour-step="model.timeOptions.hstep" minute-step="model.timeOptions.mstep" show-meridian="model.timeOptions.ismeridian"></div>
+        <div class="sp-time-control-popup-button-container">
+            <button type="button" class="btn btn-sm btn-success pull-right button-done" ng-click="onDoneClick()" ng-disabled="!model.value">Done</button>
+        </div>
+    </div>
+</div>

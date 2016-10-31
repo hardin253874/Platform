@@ -1,0 +1,31 @@
+<div ng-controller="reportTestController" style="height:100%">
+
+    Report Page Size: <input type="number" min="1" ng-model="model.reportPageSize"/>
+    <br/>
+    <button ng-click="setPageSize()">Set Page Size</button>
+    <br/>
+
+    <hr/>
+    Mode: <select ng-model="model.mode" ng-options="m for m in model.modes"></select>
+    <br/>
+    Reports:
+    <sp-entity-combo-picker options="reportPickerOptions"></sp-entity-combo-picker>
+    <br/>
+    Report id: {{reportPickerOptions.selectedEntityId}}
+
+    <hr/>
+    <div class="flex-column" style="height:100%">
+        <label>
+            Select row #:<input type="text" ng-model="rowNumber">
+        </label>
+        <div class="flex-item">
+            <sp-report options="model.reportOptions"></sp-report>
+        </div>
+        <div class="flex-item">
+            Selected Items:
+            <pre>{{model.reportOptions.selectedItems}}</pre>
+            Options:
+            <pre>{{model.reportOptions}}</pre>
+        </div>
+    </div>
+</div>

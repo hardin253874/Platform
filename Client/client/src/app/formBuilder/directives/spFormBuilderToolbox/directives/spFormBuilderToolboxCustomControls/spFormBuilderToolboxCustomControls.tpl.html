@@ -1,0 +1,26 @@
+﻿<div ng-repeat="customControlsGroup in customControlsGroups">
+    <div class="fb-loading" ng-show="customControlsLoading">
+        <img class="spinner" src="assets/images/refresh_light.png"/>
+    </div>
+
+    <div class="fb-toolbox-group" ng-hide="customControlsLoading">
+        <div style="display: table; width: 100%">
+            <button type="button" class="toggleButton" ng-click="customControlsGroup.hidden = !customControlsGroup.hidden">
+                <img ng-src="{{'assets/images/' + (customControlsGroup.hidden ? 'fieldgroup_collapsed.png' : 'fieldgroup_opened.png')}}"/>
+            </button>
+            <div class="groupname" onselectstart="return false;">{{customControlsGroup.name}}</div>
+        </div>
+        <div class="fb-toolbox-groupitems" ng-hide="customControlsGroup.hidden">
+            <div class="itemcontainer" ng-repeat="controlOption in customControlsGroup.customControls" style="margin-bottom: 2px;">
+                <div class="fb-cell fb-child-background">
+                </div>
+                <div class="item fb-toolbox-item fb-cell" uib-tooltip="{{controlOption.customInfo.description}}" tooltip-placement="top" tooltip-trigger="mouseenter" tooltip-popup-delay='500' style="cursor: move; width: 100%" sp-draggable="controlOption.dragOptions" sp-draggable-data="controlOption">
+                    <div class="itemicon">
+                        <img ng-src="{{controlOption.customInfo.icon}}"/>
+                    </div>
+                    <div class="itemname fb-toolbox-itemname" onselectstart="return false;">{{controlOption.customInfo.name}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

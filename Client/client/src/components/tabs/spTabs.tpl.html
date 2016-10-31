@@ -1,0 +1,34 @@
+<uib-tabset id="spTabSet" style="position:relative;">
+
+    <uib-tab sp-draggable="dragOptions" sp-draggable-data="tabItem" sp-droppable="dropOptions" sp-droppable-data="tabItem"
+         ng-repeat="tabItem in items | filter:filterByDataState | orderBy: 'ordinal'"
+         heading="{{tabItem.name}}" active="tabItem.isActive" select="selectionChanged(tabItem)"
+         class="{{getTabStyleClass(tabItem)}}" ng-style="getTabStyle(tabItem)">
+
+        <uib-tab-heading ng-style="getTabHeadingStyle(tabItem)">
+            {{tabItem.name}}
+
+            <rn-info-button ng-if="::showHelp(tabItem)" heading="{{::tabItem.name}}" text="{{::tabItem.tooltip}}"> </rn-info-button>
+            
+            <span ng-if="tabItem.model.isInDesign && !tabItem.model.isPlaceholder"
+                  ng-click="configureTab(tabItem)" onclick="event.preventDefault()">
+                <img src="assets/images/icon_configure_w.png">
+            </span>
+            <span ng-if="tabItem.model.isInDesign && !tabItem.model.isPlaceholder"
+                  ng-click="removeTab(tabItem)" onclick="event.preventDefault()">
+                <img src="assets/images/icon_remove_w.png">
+            </span>
+
+
+        </uib-tab-heading>
+        
+        <span ng-if="tabVisited(tabItem)" sp-include="tabItem.url" 
+              style="position:inherit !important"></span>
+    </uib-tab>
+    
+    <span name="newtab" ng-if="isInDesign" ng-click="addTab()" uib-popover="New Tab"
+          popover-trigger="mouseenter" popover-placement="top">
+        <img src="assets/images/icon_add_w.png">
+    </span>
+
+</uib-tabset>

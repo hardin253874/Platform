@@ -1,0 +1,51 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+.demoreportbuilder-view {
+    background-color: @white;
+
+.header_reportbuilder {
+    background-color: @white;
+    height: 65px;
+    color: @white;
+    padding: 10px 10px 0 57px;
+    background: url('../assets/images/reportbuildericon.png') no-repeat 10px 10px;
+
+    h5 {
+        font-size: 14.5px;
+        font-weight: 300;
+        font-weight: lighter;
+        margin: 0;
+    }
+
+    p {
+        font-size: 9.5px;
+        color: screen(@white, @gray_six);
+        line-height: 12px;
+        margin-top: 5px;
+        width: 111px;
+        display: inline-block;
+
+        &::after {
+            content: url('../assets/images/dragdrop.png');
+            float: right;
+            margin-right: -43px;
+        }
+    }
+}
+
+}
+
+.buildertoolbtn {
+    border:1px solid darken(@white, 5%);
+    background-color: lighten(@white, 10%);
+    box-shadow:0 0 0 1px lighten(@white, 20%) inset;
+    color:@white;
+    border-radius:@borderRadiusSmall + 1px;
+    display:block;
+    margin-left:195x;
+    font-size:12px;
+    line-height:13px;
+    padding:0 3px;
+    margin-top: 41px;
+    margin-bottom: -56px;
+
+}

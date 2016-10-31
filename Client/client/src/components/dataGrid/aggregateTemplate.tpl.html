@@ -1,0 +1,14 @@
+<div ng-click="aggregateRowToggleExpand(row)" ng-style="rowStyle(row)" class="ngAggregate {{getAggregateCellTemplateClass(row, true, isAggRowLeftContextMenuOpen)}}" sp-context-menu="model.aggregateInfo.contextMenu" sp-context-menu-placement="mouse" sp-context-menu-append-to-body sp-context-menu-trigger="rightclick" sp-right-click="stopEventPropagation($event)">        
+    <div class="dataGridAggregateTextRow">
+        <div class="dataGridAggregateText">
+            {{getAggregateRowLabel(row, columns)}}
+        </div>      
+        <div class="aggregateHeaderContextMenuPanel" ng-click="$event.stopPropagation()" ng-show="model.aggregateInfo.contextMenu">
+            <button sp-context-menu="model.aggregateInfo.contextMenu" class="btn_lighten aggregateHeaderContextMenuButton" type="button" sp-context-menu-placement="alignRight" sp-context-menu-append-to-body sp-context-menu-trigger="leftclick" sp-context-menu-is-open="isAggRowLeftContextMenuOpen">
+                <div class="columnHeaderDropDownIcon"></div>
+            </button>
+        </div>
+    </div>
+    <div class="{{row.aggClass()}} dataGridAggregateArrow"></div>    
+    <sp-data-grid-aggregate-row></sp-data-grid-aggregate-row>         
+</div>

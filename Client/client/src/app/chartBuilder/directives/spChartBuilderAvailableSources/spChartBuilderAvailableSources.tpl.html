@@ -1,0 +1,14 @@
+<div class="builder-Group">
+	
+    <div class="groupname" style="display:block; margin-bottom:5px;">Report: <a class="report-name" href="#/{{appData.tenant}}/{{reportId()}}/report">{{reportName()}}</a>
+    <img src="assets/images/toolbar_reload_w.png" ng-click="refreshSources()" />
+    </div>
+    <div class="groupitems">
+        <div class="itemcontainer" ng-repeat="source in sources" sp-draggable="dragOptions" sp-draggable-data="source.getDrag" test-source="{{source.name}}">
+            <div class="item">
+                <div class="itemicon"><img ng-src="{{convertTypeToImageUrl(source.type, source.cardinality)}}" /></div>
+                <div class="itemname">{{source.name}}</div>
+            </div>
+        </div>
+    </div>
+</div>

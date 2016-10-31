@@ -1,0 +1,111 @@
+<div ng-controller="workflowPropertiesController" class="workflow-activity-form">
+
+
+    <div class="tabs clearfix">
+        <ul>
+            <li ng-class="{active: tab == 'i' || !tab}" ng-click="tab='i'; notifyUiRefresh()">Inputs</li>
+            <li ng-class="{active: tab == 'v'}" ng-click="tab='v'; notifyUiRefresh()">Variables</li>
+            <li ng-class="{active: tab == 'o'}" ng-click="tab='o'; notifyUiRefresh()">Outputs</li>
+            <li ng-class="{active: tab == 's'}" ng-click="tab='s'; notifyUiRefresh()">Security</li>
+        </ul>
+    </div>
+
+    <div ng-show="tab == 'i' || !tab" class="tab">
+
+        <form class="form-horizontal">
+            <div ng-repeat="argEntity in entity.inputArguments | orderBy:'__spTempSortKey'" class="form-group">
+
+                <button ng-click="removeArgument(argEntity)"><img src="assets/images/icon_remove.png" /></button>
+                <span class="form-group-forms">
+                    <input type="text" class="form-control" ng-model="argEntity.name" placeholder="name" />
+
+                    <sp-workflow-argument-type-selector></sp-workflow-argument-type-selector>
+                    <sp-workflow-argument-conforms-to-type></sp-workflow-argument-conforms-to-type>
+                </span>
+
+            </div>
+            <div class="form-group form-group-container">
+                <button ng-click="addInputArgument()"><img src="assets/images/icon_new.png" /></button>
+                <span class="form-group-forms"></span>
+            </div> 
+        </form>
+
+        <form class="form-horizontal divide">
+            <div>
+                <label class="control-label"
+                       title="If the workflow is to be available as a resource action then choose the resource argument to be used.">
+                    Triggering Input:
+                </label>
+                <select class="form-control" ng-model="actionArgumentId"
+                        ng-options="a.idP as a.name for a in entity.inputArguments | filter: filterResourceArgs | filter: filterRelatedArg">
+                    <option value="">none</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="control-label"
+                       title="If the workflow requires additional information about in addition to the Triggering Input, choose the resource argument to be used.">
+                    Related Resource:
+                </label>
+                <select class="form-control" ng-model="relatedResourceArgumentId"
+                        ng-options="a.idP as a.name for a in entity.inputArguments | filter: filterResourceArgs | filter: filterActionArg">
+                    <option value="">none</option>
+                </select>
+            </div>
+        </form>
+
+    </div>
+
+    <div ng-show="tab == 'o'" class="tab">
+
+        <form class="form-horizontal">
+            <div ng-repeat="argEntity in entity.outputArguments | orderBy:'__spTempSortKey'"
+                 class="form-group">
+
+                <button ng-click="removeArgument(argEntity)"><img src="assets/images/icon_remove.png" /></button>
+                <span class="form-group-forms">
+                    <input type="text" class="form-control" ng-model="argEntity.name" placeholder="name" />
+
+                    <sp-workflow-argument-type-selector></sp-workflow-argument-type-selector>
+                    <sp-workflow-argument-conforms-to-type></sp-workflow-argument-conforms-to-type>
+
+               <!--     <sp-workflow-expression-control parameter="outputParameters[argEntity.id()]"
+                                                    actions="parameterChooser,exprEditor"></sp-workflow-expression-control>
+                   -->
+                </span>
+
+            </div>
+            <div class="form-group form-group-container">
+                <button ng-click="addOutputArgument()"><img src="assets/images/icon_new.png" /></button>
+            </div>
+        </form>
+    </div>
+
+    <div ng-show="tab == 'v'" class="tab">
+        <form class="form-horizontal">
+            <div ng-repeat="argEntity in entity.variables | orderBy:'__spTempSortKey'"
+                 class="form-group">
+
+                <button ng-click="removeArgument(argEntity)"><img src="assets/images/icon_remove.png" /></button>
+                <span class="form-group-forms">
+                    <input type="text" class="form-control" ng-model="argEntity.name" placeholder="name" />
+
+                    <sp-workflow-argument-type-selector></sp-workflow-argument-type-selector>
+                    <sp-workflow-argument-conforms-to-type></sp-workflow-argument-conforms-to-type>
+
+                    <sp-workflow-expression-control parameter="variableParameters[argEntity.id()]"
+                                                    actions="parameterChooser,exprEditor"></sp-workflow-expression-control>
+                </span>
+            </div>
+            <div class="form-group form-group-container">
+                <button ng-click="addVariable()"><img src="assets/images/icon_new.png" /></button>
+            </div>
+        </form>
+    </div>
+    <div ng-show="tab == 's'" class="tab">
+        <form class="form-horizontal">
+            <input type="checkbox" ng-model="entity.workflowRunAsOwner">Run as workflow owner</input>
+        </form>
+    </div>
+
+</div>

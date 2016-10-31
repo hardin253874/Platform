@@ -1,0 +1,12 @@
+<span class="editable-label">
+	
+    <div ng-show="editing" style="display:inline-block" class="editable-label-edit-container">
+        <input class="editable-label-edit" ng-model="labelValue" placeholder="{{placeholder}}" ng-blur="onBlur()" sp-focus="'editing'" ng-focus="onFocus($event)" ng-keydown="onKeyDown($event)" ng-change="onChange()" />
+    </div>
+    <div ng-hide="editing" ng-click="onClick()" class="editable-label-readonly-container" >
+        <span ng-if="!!labelValue" ng-class="{'editable-label-readonly-readonly': readonly, 'editable-label-readonly-editable': !readonly}">{{labelValue}}</span>
+        <span ng-if="!labelValue" class="editable-label-readonly-placeholder">{{placeholder}}</span>
+        <span ng-if="!!suffix" class='editable-label-suffix' ng-class="{'editable-label-readonly-readonly': readonly, 'editable-label-readonly-editable': !readonly}">{{suffix}}</span>
+        <!-- Removed until the form builder is refactored <rn-info-button ng-if="showHelpText" disabled="true"></rn-info-button>-->
+    </div>      
+</span>

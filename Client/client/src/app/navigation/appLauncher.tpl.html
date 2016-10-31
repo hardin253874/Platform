@@ -1,0 +1,48 @@
+<div class="app-launcher-page layout-container" ng-controller="AppLauncherController">
+
+    <div ng-show="loginService.isSignedIn()" class="app-launcher-head" ng-style="consoleThemeModel.appLauncherStyle">
+        <button ng-if="isTouchDevice" type="button" class="btn pull-right signout" ng-click="signOut()"><img src="assets/images/Signout.png" /><br />Sign out</button>
+        <span ng-click="toggleVersion()">
+            <span name="welcome">Welcome,</span>
+
+            <h1>{{spLoginService.loggedInAccountDisplayText}}</h1>
+        </span>
+
+    </div>
+
+    <div ng-if="showVersion && isTouchDevice" ng-click="toggleVersion()">
+    <span>
+        Server/Client version: {{appData.settings.initialSettings.platformVersion}}/<%=grunt.config('buildVer')%>
+    </span>
+        <a ng-click="switchToDesktop()">Switch to desktop site</a>
+    <span>
+    </span></div>
+
+    <div class="app-launcher-layout">
+        <div class="app-launcher-tile-container" sp-mobile-allow-default-drag ng-style="consoleThemeModel.menuStyle">
+
+            <div ng-repeat="i in appItems | orderBy:'order'" class="app-launcher-tile" ng-click="go(i)" ng-if="!i.hiddenByConfig">
+                <img ng-src="{{i.appImageUrl || i.iconUrl}}" alt="{{i.name}}" ng-style="getIconStyle(i)"/>
+
+                <div>{{i.name}}</div>
+            </div>
+
+            <div ng-if="nav.isFullEditMode" class="app-launcher-tile createApp" ng-click="navBuilderProvider.addNewApplication()">
+                <img ng-src="assets/images/icon_add_app.png" alt="Create application" />
+
+                <div>New Application</div>
+            </div>
+
+        </div>
+
+        <div ng-show="!isMobileDevice" class="getting-started-box">
+            <h2>Getting started</h2>
+            <ul>
+                <li><a><img src="assets/images/getstart_videos.png" />Videos & Tutorials</a></li>
+                <li><a><img src="assets/images/getstart_documentation.png" />Documentation</a></li>
+                <li><a><img src="assets/images/getstart_contactsupport.png" />Contact Support</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+

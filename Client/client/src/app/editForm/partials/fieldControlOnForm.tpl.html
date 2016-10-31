@@ -1,0 +1,54 @@
+<span class="fieldControl" ng-class="fieldDisplayType">
+    
+    <span ng-if="!isReadOnly || isInDesign">
+         <span ng-class="fieldDisplayValue" ng-if="fieldDisplayType !== 'color'">
+             <input type="{{fieldInputType}}"
+                    name="fieldValue"
+                    class="value"
+                    spellcheck="true"
+                    sp-custom-validator="customValidator"
+                    ng-model="model.fieldValue"
+                    ng-required="fieldToRender.getIsRequired()"
+                    ng-trim='false'
+                    ng-change="cleanFieldValue();"
+                    test-id="{{::testId}}"
+                    ng-disabled="isInDesign"
+                    ng-click="onClick($event)"
+                    ng-attr-placeholder="{{model.watermark}}"/>
+          </span>
+        <span ng-class="fieldDisplayValue" ng-if="fieldDisplayType === 'color'">
+            <sp-color-render-control colorstring="model.fieldValue"></sp-color-render-control>
+        </span>
+    </span>
+    
+    <span ng-if="!(!isReadOnly || isInDesign)">
+    
+        <span ng-class="fieldDisplayValue" ng-if="fieldDisplayType === 'url'" class="fieldValue">
+            <a href="{{httperizeUrl(model.fieldValue)}}" target="_blank">{{model.fieldValue}}</a>
+        </span>                
+                
+        <span ng-class="fieldDisplayValue" ng-if="fieldDisplayType === 'email'" class="fieldValue">
+            <a href="mailto:{{model.fieldValue}}">{{model.fieldValue}}</a>
+        </span>     
+                                
+        <span ng-class="fieldDisplayValue" ng-if="fieldDisplayType === 'phoneNumber'" class="fieldValue">
+            <a href="tel:{{model.fieldValue}}">{{model.fieldValue}}</a>
+        </span>       
+        
+        <span ng-class="fieldDisplayValue" ng-if="fieldDisplayType === 'color'" class="fieldValue">
+            <div ng-style="getCssColorFromColorString(displayString)"/>
+        </span>                                 
+
+        <div ng-class="fieldDisplayValue"
+             ng-if="fieldDisplayType !== 'url' && fieldDisplayType !== 'email' && fieldDisplayType !== 'phoneNumber' && fieldDisplayType !== 'color' && fieldDisplayType !== 'password'"
+             class="fieldValue" style="display: flex">
+            <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" uib-tooltip="{{displayString}}" tooltip-trigger tooltip-placement="top">
+                {{displayString}}&nbsp;
+            </div>
+        </div>
+
+		<span ng-class="fieldDisplayValue" ng-if="fieldDisplayType === 'password'" class="fieldValue">
+            <input type="password" ng-model="model.fieldValue" ng-readonly="true"/>
+        </span>
+    </span>
+</span>

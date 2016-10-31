@@ -1,0 +1,64 @@
+<div ng-controller="editFormTestPageController" ng-class="'editForm-' + formMode">
+	
+    <table width="99%">
+        <tr>
+            <td width="50%" vertical-align="top">
+                <label>Custom Forms</label>
+                <select size="10" ng-model="selectedForm" ng-options="f as f.getName() for f in customForms | orderBy:'getName()'"></select>
+                <br/>
+                <button ng-click="navigateToCreatePage()">Navigate to create page</button>
+                <br/>
+                <button ng-click="navigateToDesigner()">Navigate to Designer</button>
+                <br />
+                <label>Resources</label>
+                <select size="10" ng-model="selectedResource" ng-options="r as r.getName() for r in formResources"></select>
+                <br/>
+                <!--
+                    <button ng-show="selectedResource" ng-click="openModal()">Open in modal</button>
+                    <br/> -->
+                <button ng-show="selectedResource" ng-click="navigateToPage()">Navigate to page</button>
+                <br/>
+                <div style="color: red">{{error}}</div>
+            </td>
+            <td width="50%" >
+                <label>Definition</label>
+                <select  size="10" ng-model="selectedDefinition" ng-options="f as f.getName() for f in definitions | orderBy:'getName()'"></select>
+                <br/>
+                <button ng-click="navigateToDefaultCreatePage(false)">Create with default form</button>
+                <br/>
+                <button ng-click="navigateToDefaultCreatePage(true)">Create with generated form</button>
+                <br/>
+                <br/>
+                <select size="10" ng-model="selectedDefResource" ng-options="f as f.getName() for f in defResources | orderBy:'getName()'"></select>
+                <br/>
+                <button ng-click="navigateToDefaultEditPage(false)">Edit with default form</button>
+                <br/>
+                <button ng-click="navigateToDefaultEditPage(true)">Edit with generated form</button>
+            </td>
+        </tr>
+    <!--
+        <tr>
+            <td>
+                <div modal="modalInfo.isOpen" options="modalInfo.modalOpts">
+                    <div class="modal-header"></div>
+                    <div class="modal-body">
+                        <sp-custom-edit-form form-data="modalInfo.formData" form-control="modalInfo.formControl" form-mode="'edit'" />
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-warning cancel" ng-click="closeModal()">Close</button>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        -->
+        <tr>
+            <td>
+                Form Alias: {{formControl.getAlias()}}
+                <br />
+                Resource Alias: {{formData.getAlias()}}
+                <hr />
+            </td>
+        </tr>
+
+    </table>
+</div>

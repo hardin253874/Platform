@@ -1,0 +1,13 @@
+﻿<div class="dataGridCell" once-class="col.colIndex()">
+    <div class="dataGridCellText" ng-style="getProgressBarCellLabelStyle(row,col)"
+         sp-evt-style="getProgressBarCellLabelStyle(row,col)" sp-evt-text="getCellText(row, col)"
+         sp-evt-name="updateGridMsg"></div>
+
+    <div class="dataGridFormattedCell" ng-style="getProgressBarCellStyle(col)">
+        <div sp-evt-style="getProgressBarCellBackgroundStyle(row,col)"
+             sp-evt-class="getFormattedCellTemplateClass(row,col)" sp-evt-name="updateGridMsg">
+            <div ng-style="getProgressBarFormattedInnerCellForegroundStyle(row,col)" sp-evt-text="getCellText(row, col)"
+                 sp-evt-name="updateGridMsg"></div>
+        </div>
+    </div>
+</div>

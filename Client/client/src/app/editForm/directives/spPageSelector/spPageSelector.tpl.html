@@ -1,0 +1,16 @@
+<div class="sp-page-selector">
+
+    <button type="button" class="details-link" ng-click="openDetailsPage()"
+            ng-class="{selected: isSelected(0)}">
+        <img src="assets/images/home.svg" title="Details"/>
+    </button>
+
+    <select class="related-list" ng-model="selectedPageOption"
+            ng-options="page.name for page in visiblePages">
+    </select>
+
+    <button type="button" class="tasks-link" ng-disabled="!haveTaskPage" ng-click="openTaskPage()"
+            ng-class="{selected: isSelected(pages.length - 1)}">
+        <img src="assets/images/action.svg" title="Actions"/>
+    </button>
+</div>

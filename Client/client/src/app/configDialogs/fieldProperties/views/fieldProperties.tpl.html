@@ -1,0 +1,57 @@
+ <div class="fieldProperties-view" sp-busy-indicator-popup="model.busyIndicator" sp-moveable-modal sp-set-focus-dialog-input>
+
+    <form name="form">
+        <!-- Header -->
+        <div class="modal-header">
+            <h6> {{formHeader}}</h6>
+        </div>
+
+        <!-- Body -->
+        <div class="modal-body">
+            <div>
+                <span ng-include="baseControlTemplate"></span>
+            </div>
+            
+            <!-- Options section -->
+            <div class="btn_lighten option" ng-click="isCollapsed = !isCollapsed" ng-show="showOptions()">
+                <a><img ng-src="{{imageUrl}}" /></a>
+                {{getOptionsText()}}
+            </div>
+            <div uib-collapse="isCollapsed">
+                <uib-tabset class="tabarea">
+                    <uib-tab heading="Form Detail" ng-show="model.isFormDetailEnabled" disabled="!model.isFieldControl">
+                        <div class="tab-container" ng-show="model.isFieldControl">
+                            <span>
+                                <span ng-include="formControlFile"></span>
+                            </span>
+                        </div>
+                    </uib-tab>
+                    <uib-tab heading="Object Detail" active="model.isObjectTabActive" disabled="!model.canModifyField">
+                        <div class="tab-container">
+                            <span>
+                                <span ng-include="definitionControlTemplate"></span>
+                            </span>
+                        </div>
+                    </uib-tab>
+                    <uib-tab heading="Format" ng-show="model.isFieldControl" active="model.isFormatTabActive" disabled="!model.isFieldControl">
+                        <div class="tab-container">
+                            <span ng-include="formatControlFile"></span>
+                        </div>
+                    </uib-tab>
+                </uib-tabset>
+            </div>
+        </div>
+
+        <!-- Errors -->
+        <div class="has-error" ng-show="model.errors.length>0">
+            <ul ng-repeat="error in model.errors">
+                <li>{{error.msg}}</li>
+            </ul>
+        </div>
+
+        <!-- Footer -->
+        <div class="modal-footer">
+            <button type="button" class="btn" ng-click="ok()" ng-disabled="disableOk()">OK</button><button type="button" class="btn" ng-click="cancel()">Cancel</button>
+        </div>
+    </form>
+</div> 

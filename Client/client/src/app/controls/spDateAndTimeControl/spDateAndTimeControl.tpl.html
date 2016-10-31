@@ -1,0 +1,11 @@
+<span class="sp-date-and-time-control">
+	
+    <span class="prefix">{{model.prefix}}</span>
+    
+    <span ng-if="model.isReadOnly && !model.isInDesign" class="fieldValue">{{model.value | spDateAndTimeControlFilter}}</span>
+    <span ng-show="!model.isReadOnly || model.isInDesign" style="display:table; width:100%;">
+        <sp-date-control model="dateCtrlModel" style="display:table-cell; padding-right:2px; width:calc(50% - 5px);"></sp-date-control>
+        <sp-time-control model="timeCtrlModel" style="display:table-cell; vertical-align:top; width:50%;"></sp-time-control>
+    </span>
+    <span class="suffix">{{model.suffix}}</span>    
+</span>

@@ -1,0 +1,170 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+.relationshippicker-view {
+    .leftContainer {
+        width: 345px;
+        height: auto;
+        display: inline-block;
+        padding-right: 6px;
+        border-right: 1px dotted #aaa;
+
+        .relationshipFieldText {
+            display: inline-block;
+            width: 80px;
+            color: lighten(@textContents,5%);
+        }
+
+        input {
+            margin-bottom: 3px;
+            margin-left: 3px;
+            height: 20px;
+        }
+
+        select {
+            margin-bottom: 3px;
+            height: 22px;
+        }
+
+        .tabarea {
+            margin-top: 15px;
+            height: 264px;
+            overflow-y: auto;
+
+            .nav-tabs {
+                margin: 0;
+                cursor: pointer;
+                border-bottom: 1px solid #999;
+
+                li a {
+                    padding: 3px 6px 2px;
+                    margin-bottom: -1px;
+                }
+
+                .active a {
+                    padding: 3px 6px;
+                    background: @tabBgActive;
+                    color: white;
+                }
+            }
+
+            table {
+                font-size: .95em;
+
+                thead {
+                    font-weight: normal;
+                    background-color: #e8e8e8;
+
+                    th {
+                        border-right: 1px solid #ddd;
+
+                        &:last-child {
+                            border-right: none;
+                        }
+                    }
+                }
+
+                td {
+                    padding: 3px;
+
+                    &.selectedtrue {
+                        background-color: #dbdbdb;
+                        border-bottom: 1px solid #dbdbdb;
+                    }
+                }
+
+                .btn_lighten {
+                    padding: 1px 6px;
+
+                    &:focus {
+                        outline: none;
+                    }
+                }
+            }
+        }
+
+        .btnAdvancedOptions {
+            margin-top: 5px;
+            box-shadow: 0 1px 0px white inset;
+
+            &:focus {
+                outline: none;
+            }
+        }
+
+        .advancedOptionContainer {
+            background-color: #e8e8e8;
+            border-radius: 5px;
+            padding: 0px;
+            box-shadow: 0 1px 3px #999 inset;
+
+            div[collapse="isAdvCollapsed"] {
+                margin-top:3px;
+            }
+
+            input[type="checkbox"] {
+                display: inline-block;
+                min-height: 0px;
+                height: 13px;
+                width: auto;
+                padding: 0;
+                margin: 5px 0 0 5px;
+
+                & + label {
+                    display: inline-block;
+                    margin: 0px;
+                    font-size: .95em;
+                    margin: 5px 0 0 5px;
+
+                    &:last-child {
+                        margin-bottom: 5px;
+                    }
+                }
+            }
+        }
+    }
+
+    .rightContainer {
+        height: 385px;
+        padding: 0px 0 0 10px;
+        display: inline-block;
+        vertical-align: top;
+        overflow-y: auto;
+        overflow-x: hidden;
+        background-image: url('../assets/images/grid.png');
+
+        image:last-child {
+            opacity: 0.5;
+
+            &:hover {
+                opacity: 1;
+            }
+        }
+
+        .noImageRect {
+            width: 16px;
+            height: 16px;
+        }
+
+        .relationshipsRect {
+            .noImageRect;
+            background: url('../assets/images/relationshipstype.png') no-repeat;
+        }
+
+        .lookupsRect {
+            .noImageRect;
+            background: url('../assets/images/lookupstype.png') no-repeat;
+        }
+
+        .derivedResourcesRect {
+            .noImageRect;
+            background: url('../assets/images/derivedResourcestype.png') no-repeat;
+        }
+    }
+
+
+
+    .selectedfalse {
+    }
+
+    .selected {
+    }
+}

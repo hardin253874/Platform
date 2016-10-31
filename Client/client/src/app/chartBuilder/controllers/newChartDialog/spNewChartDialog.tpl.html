@@ -1,0 +1,63 @@
+<div class="sp-new-type-dialog" sp-moveable-modal sp-busy-indicator-popup="model.busyIndicator" sp-measure-arrange="measureArrangeOptions" sp-set-focus-dialog-input>
+
+    <div class="modal-header">
+        <h6>{{model.title}}</h6>
+    </div>
+
+    <div class="modal-body overflowModalBody">
+        <sp-custom-edit-form form-control="model.formControl" form-data="model.chartModel.chart" form-mode="model.formMode"></sp-custom-edit-form>
+        <div style="display:table" class="chartType">
+            <div style="display:table-row">
+                <div style="display:table-cell"><label class="field-title">Report:</label></div>
+                <div style="display:table-cell">
+                    <sp-inline-relationship-picker options="model.reportPickerOptions" ng-disabled="existingChart" ng-readonly="existingChart" />
+                </div>
+            </div>
+            <div style="display:table-row">
+                <div style="display:table-cell"><label class="field-title">Chart type:</label></div>
+                <div style="display:table-cell"><sp-chart-types chart-type="model.chartType"></sp-chart-types></div>
+            </div>
+
+        </div>
+
+        <div class="btn_lighten option" ng-click="isCollapsed = !isCollapsed">
+            <a><img ng-src="{{imageUrl}}" /></a>
+            {{getOptionsText()}}
+        </div>
+        <div uib-collapse="isCollapsed">
+            <uib-tabset class="tabarea">
+                <uib-tab heading="Advanced" ng-show="model.showAdvanced">
+                    <div class="tab-container" ng-show="model.showAdvanced">
+                        <div style="display:table-cell"><label class="field-title">Applications:</label></div>
+                        <div style="display:table-cell">
+                            <sp-inline-relationship-picker options="model.applicationPickerOptions" />
+                        </div>
+                    </div>
+                </uib-tab>
+                <uib-tab heading="Format" active="model.formatTabActiveByDefault">
+                    <div class="tab-container">
+                        <div style="display:table-cell; width:120px;"><label class="field-title">Icon:</label></div>
+                        <div style="display:table-cell">
+                            <sp-inline-relationship-picker options="model.iconPickerOptions" />
+                        </div>
+                    </div>
+                </uib-tab>
+                <uib-tab heading="Deploy">
+                    <div class="tab-container">
+                        <sp-visual-settings-toggle-buttons options="model.visualSettingsOptions" />
+                    </div>
+                </uib-tab>
+            </uib-tabset>
+        </div>
+
+    </div>
+
+    <div class="has-error" ng-show="!model.isFormValid">
+        <ul ng-repeat="error in model.errors" style="color: red">
+            <li>{{error.msg}}</li>
+        </ul>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn" ng-click="ok()">OK</button><button type="button" class="btn" ng-click="cancel()">Cancel</button>
+    </div>
+</div>

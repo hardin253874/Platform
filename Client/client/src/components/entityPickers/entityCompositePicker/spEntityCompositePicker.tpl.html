@@ -1,0 +1,34 @@
+﻿<div class="entityCompositePicker" ng-class="{entityCompositePickerDesktop: isDesktop}">
+    <!-- Report picker -->
+    <sp-entity-report-picker ng-if="isReport" options="options"></sp-entity-report-picker>
+
+    <!-- Structure view picker (desktop) -->
+    <div ng-if="isStructureView && !isMobile" class="structureViewPickerContent">
+        <div class="searchContainer structureSearch">
+            <sp-search-control sp-model="search"></sp-search-control>
+            <!--<input type="text" placeholder="Search" class="sp-search-control-input" ng-model="search.value" />-->
+        </div>
+        <div class="structureViewPickerNodes" ng-init="parentId = 0">
+            <ul>
+                <li ng-repeat="nodeId in model.root" ng-include="'entityPickers/entityCompositePicker/spEntityCompositePickerNode.tpl.html'"></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Structure view picker (mobile) -->
+    <div ng-if="isStructureView && isMobile" >
+        <div ng-if="!spMobileContext.isMobile" class="modal-header">
+            <h6>Select {{options.objectName}}</h6>
+        </div>
+        <!--<div>
+            <sp-search-control sp-model="model.search"></sp-search-control>
+        </div>-->
+        <div class="searchContainer structureSearch">
+            <sp-search-control sp-model="search"></sp-search-control>
+            <!--<input type="text" placeholder="Search" class="sp-search-control-input" ng-model="filterText" />-->
+        </div>
+        <ul ng-init="parentId = 0">
+            <li ng-repeat="nodeId in model.currentNodes" ng-include="'entityPickers/entityCompositePicker/spEntityCompositePickerMobileNode.tpl.html'"></li>
+        </ul>
+    </div>
+</div>

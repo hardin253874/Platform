@@ -1,0 +1,463 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+@import (reference) "../../editForm/editForm.less";
+@import 'toolbox.less';
+@import 'canvas.less';
+
+.sp-form-builder-container {
+    overflow: auto;
+    position: relative;
+    display: block;
+    line-height: normal;
+    margin-bottom: 3px;
+
+    // These were SPANs but now DIVs.
+    // But styling is stuffed so restore span like handling until fixed.
+    .child-container {
+        display: inline;
+
+        // enable for places we want and have fixed up for block like handling
+        .verticalStackContainer & {
+            display: inline-block;
+        }
+    }
+
+    .sp-form-builder-toolbar {
+        position: absolute;
+        right: 0;
+        top: 7px;
+        opacity: 0;
+        z-index: 90;
+        transition: opacity 0.2s ease-in-out;
+        background-color: #1dd000;
+        border-radius: 2px;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+
+        img {
+            cursor: pointer;
+        }
+
+        .sp-form-builder-adornment {
+            float: right;
+            cursor: pointer;
+        }
+    }
+
+    .sp-form-builder-container-content {
+        overflow: auto;
+        height: 100%;
+        width: 100%;
+        border-radius: 2px;
+        background-color: transparent;
+        overflow-x: hidden;
+        font-size: .813rem;
+
+        .repeater {
+            &.horizontalStack-repeater {
+            }
+        }
+
+        .form-builder-form-render-control {
+            box-shadow: none;
+        }
+
+        .edit-form-control-container {
+            vertical-align: top;
+            display: table;
+            width: 100%;
+            height: 100%;
+
+            .edit-form-title {
+                display: table-cell;
+                width: 1%;
+                vertical-align: top;
+                color: #888;
+                padding: 10px 0 0 3px;
+
+                .editable-label-readonly-container {
+                    white-space: nowrap;
+
+                    .editable-label-readonly-editable {
+                        white-space: nowrap;
+                        display: inline-block;
+                        max-width: 115px;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+
+                    .editable-label-suffix {
+                        font-weight: lighter;
+                    }
+                }
+
+                .editable-label-edit-container {
+                    margin-top: -4px;
+                    vertical-align: top;
+
+                    .editable-label-edit {
+                        min-height: inherit;
+                        height: 22px;
+                    }
+                }
+            }
+
+            .edit-form-value {
+                display: table-cell;
+                vertical-align: top;
+                padding-top: 6px;
+
+                input, select {
+                    width: 100%;
+
+                    &[type="checkbox"] {
+                        width: auto;
+                    }
+                }
+
+                textarea {
+                    width: 100%;
+                    height: 100%;
+                }
+
+                sp-time-control, sp-date-control {
+                    display: inline-block;
+                    width: 100%;                    
+                }
+
+                sp-date-and-time-control {
+                    span {
+                        width: auto !important;
+                    }
+
+                    sp-time-control, sp-date-control {
+                        width: 120px !important;
+                        padding-right: 5px !important;
+
+
+                        input {                            
+                            &.date-input, &.time-input {
+                                width: 73px;
+                            }
+                        }
+                    }
+                }
+
+                .entityCheckBoxPickerContainer {
+                    color: #ccc;
+                }
+
+                .imageviewer {
+                    margin: 0;
+                    opacity: .5;
+
+                    .image-preview-background {
+                        background-image: url(../assets/images/imagepreviewBg.png);
+                        min-width: 224px;
+                    }
+                }
+
+                .sp-checkbox-control {
+                    display: block;
+                    margin-top: 5px;
+                }
+            }
+        }
+
+        .spreport-view {
+            min-height: 130px;
+            height: 100%;
+
+            .reportDataGridStyle {
+                .dataGrid-view {
+                    .dataGridStyle {
+                        .ngViewport {
+                            min-height: 70px !important; // ! DO NOT REMOVE - lets the grid shrink more in forms and screens
+                        }
+                    }
+                }
+            }
+        }
+
+        .nav-tabs {
+            li {
+                uib-tab-heading {
+                    padding-right: 12px;
+                }
+            }
+        }
+    }
+    // PLEASE NOTE: This is here to try and remove the spaces that occur due to whitespace
+    // present between inline elements nested withing block elements (i.e. from using <span>
+    // inside <div> as we do for our "wrap content" behavior. If we rebuild formbuilder this
+    // can go!
+    .sp-form-builder-container-content-child {
+        height: 100%;
+        background-color: transparent;
+        font-size: 0;
+
+        .edit-form-title,
+        .edit-form-value,
+        .form-title,
+        .structure-control-header,
+        .sp-form-builder-container-header,
+        sp-chart-render-control,
+        sp-form-render-control,
+        sp-report-render-control,
+        sp-tab-container-control,
+        sp-tab-relationship-render-control {
+            font-size: @editFormBaseFontSize !important;
+            line-height: 1.3em;
+
+            .sp-tablet-device & {
+                font-size: (@editFormBaseFontSize + 2px) !important;
+            }
+        }
+
+        .edit-form-value {
+            .sp-tablet-device & {
+                font-size: (@editFormBaseFontSize + 6px) !important;
+            }
+        }
+    }
+
+    .ui-resizable-se {
+        opacity: 0;
+        transition: opacity 0.2s ease-in-out;
+
+        &:hover {
+            background-color: rgba(0,0,0,0.1);
+        }
+
+        &:active, &:focus {
+            background-color: #688d94;
+        }
+    }
+
+    .ui-resizable-e {
+        right: 0px;
+
+        &:hover {
+            background-color: rgba(0,0,0,0.1);
+        }
+
+        &:active, &:focus {
+            background-color: #688d94;
+        }
+    }
+
+    .ui-resizable-s {
+        bottom: 0px;
+
+        &:hover {
+            background-color: rgba(0,0,0,0.1);
+        }
+
+        &:active, &:focus {
+            background-color: #688d94;
+        }
+    }
+
+    .field-title {
+        width: 120px;
+        vertical-align: top;
+        word-wrap: break-word;
+    }
+    // duplicated from editform.less (should be reconciled)
+    .structure-control-header {
+        padding: 10px 0 0 0;
+        color: @pointcolour_sp;
+        display: block;
+        border-bottom: 1px screen(@pointcolour_sp, #777) solid;
+        word-break: break-all;
+        text-transform: uppercase;
+        height: 29px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        font-weight: 600;
+
+        &:empty {
+            display: none;
+        }
+
+        .sp-tablet-device &, .sp-mobile-device & {
+            height: 40px;
+            padding-top: 20px;
+
+            &:empty {
+                height: 40px;
+            }
+        }
+    }
+}
+
+.sp-form-builder-container-hidden {
+}
+
+.sp-form-builder-edit-form-control {
+}
+
+.sp-form-builder-margined-control {
+    //padding: 3px;
+    margin-right: 3px;
+}
+
+.sp-form-builder-non-margined-control {
+}
+
+.sp-form-builder-header-content-control {
+}
+
+.sp-form-builder-report-render-control {
+}
+
+.sp-form-builder-chart {
+    .sp-form-builder-padding-target {
+        .sp-form-builder-container-content {
+            overflow: hidden;
+        }
+    }
+}
+
+.sp-form-builder-field-control {
+    margin-bottom: 5px;
+
+    .sp-form-builder-margined-control &, .sp-form-builder-header-content-control &, .form-builder-form-render-control & {
+        margin-bottom: 0px;
+        box-shadow: none;
+        padding: 0px;
+        display: block !important;
+    }
+}
+
+.sp-form-builder-container-tab {
+}
+
+.sp-form-builder-hover {
+    opacity: 1 !important;
+}
+
+.sp-form-builder-form-control {
+    cursor: move;
+
+    .field-title {
+        cursor: move;
+        word-wrap: break-word;
+        width: 120px;
+        font-size: 12px !important;
+        letter-spacing: -0.04em;
+    }
+    /*> .sp-form-builder-field-control{ 
+         padding:0 !important;
+         min-height:inherit !important;
+         .sp-form-builder-container-content{
+             box-shadow:none !important;
+         }
+     }*/
+}
+
+.sp-form-builder-padding-target {
+    height: 100%;
+    background-color: transparent;
+}
+
+.sp-form-builder-chart-control {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.sp-form-builder-container-header {
+    display: block;
+    color: @pointcolour_sp;
+    border-bottom: 1px @pointcolour_sp solid;
+    text-transform: uppercase;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 500;
+
+    .sp-form-builder-header-content-control & {
+    }
+
+    .editable-label-edit-container {
+        padding: 2px 0 1px;
+
+        .editable-label-edit {
+            vertical-align: top;
+        }
+    }
+
+    .editable-label-readonly-container {
+        padding: 0;
+
+        > span {
+            padding: 7px 3px 0;
+            display: inline-block;
+            height: 30px;
+
+            &:empty {
+                padding: 0;
+                display: inline;
+            }
+        }
+    }
+}
+
+.sp-form-builder-container-selected {
+    border: 1px dashed #0092ff;
+}
+
+.sp-form-builder-assign-parent {
+    div[title="field-title"] {
+        min-width: 120px;
+    }
+
+    div[title="row"] {
+        height: 26px;
+    }
+}
+
+.form-builder-form-render-control {
+    border-radius: 4px;
+    box-shadow: rgba(0,0,0,0.3) 0px 0px 5px;
+    height: 100%;
+
+    .tabbable {
+        padding: 0 !important;
+    }
+}
+
+.ui-icon-gripsmall-diagonal-se {
+    background-position: -68px -228px;
+    height: 8px;
+    width: 8px;
+}
+
+.fieldGroup-title {
+    margin: 5px 0 -3px;
+    padding: 3px 0 3px 15px;
+    border-bottom: 1px dotted #777;
+    color: #aaa;
+    font-size: 1em;
+}
+
+.fb-text-control {
+
+    textarea[disabled] {
+        border: 1px solid #d3d3d3;
+        cursor: default;
+        background-color: rgb(235, 235, 228);
+        max-height: 57px;
+    }
+
+    .multitext-expander {
+        cursor: default;
+    }
+}
+
+sp-tab-render-control {
+    .sp-form-builder-container-content-child {
+        height: calc(~'100% - 5px') !important; // IE scrollbar avoidance
+    }
+}

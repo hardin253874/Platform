@@ -1,0 +1,16 @@
+<span class="fieldControl" test-id="{{::testId}}">
+    <div class="edit-form-control-container" ng-if="!version2">
+        <div class="edit-form-title" ng-if="!model.isInlineEditing">
+            <sp-title-plus-markers is-read-only="isReadOnly" is-required="isRequired" messages="customValidationMessages" title-model="titleModel"></sp-title-plus-markers>
+        </div>
+
+        <div class="edit-form-value" once-style="getFormValueStyle()">
+            <div ng-if="allowMultiline" style="height:100%;" sp-include="'editForm/partials/multiLineTextControl.tpl.html'"></div>
+
+            <span ng-if="!allowMultiline">
+                <span sp-include="'editForm/partials/fieldControlOnForm.tpl.html'"></span>
+            </span>
+        </div>
+    </div>
+
+</span>

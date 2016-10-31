@@ -1,0 +1,8 @@
+<div>
+
+    <select ng-options="f as f.memberName group by f.fieldGroup for f in model.targetMembers"
+            ng-model="row.entity.targetMember" ng-change="row.entity.handleChange()">
+        <option value="">--select--</option>
+    </select>
+
+</div>

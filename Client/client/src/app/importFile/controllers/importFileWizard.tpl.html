@@ -1,0 +1,30 @@
+﻿<div class="importspreadsheet-view container-fluid" ng-controller="importFileWizardController">
+
+    <h1>Import Spreadsheet <!--(Step {{model.nav.curPage}} of 4)--></h1>
+
+    <span ng-include="'importFile/views/wizardNavigation.tpl.html'"></span>
+    
+    <!-- TODO !! -->
+    <!--<span ng-include="'importSpreadsheet/errorControl.tpl.html'"></span>  -->
+
+    <span ng-switch="model.nav.curPage">
+        <span ng-switch-when="1">
+            <span ng-include="'importFile/views/importPage1.tpl.html'"></span>
+        </span>
+        <span ng-switch-when="2">
+            <span ng-include="'importFile/views/importPage2.tpl.html'"></span>
+        </span>
+        <span ng-switch-when="3">
+            <span ng-include="'importFile/views/importPage3.tpl.html'"></span>
+        </span>
+        <span ng-switch-when="4">
+            <span ng-include="'importFile/views/importPage4.tpl.html'"></span>
+        </span>
+        <span ng-switch-when="5">
+            <span ng-include="'importFile/views/importPage5.tpl.html'"></span>
+        </span>
+        <span ng-switch-default>
+            <span></span>
+        </span>
+    </span>
+</div>

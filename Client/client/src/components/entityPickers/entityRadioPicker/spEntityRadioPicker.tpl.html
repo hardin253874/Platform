@@ -1,0 +1,9 @@
+<span class="entityPickers-view">
+    <div ng-repeat="entity in entities | orderBy:orderEntities">
+        <input type="radio" ng-value="entity" ng-model="$parent.selectedEntity" class="entityRadioInput" ng-disabled="disabled">
+        <div class="entityRadioLabels">
+            <div>{{entity.getName()}}</div>
+            <div class="entityDescription" ng-show="entity.getDescription()">{{entity.getDescription()}}</div>
+        </div>        
+    </div>
+</span>

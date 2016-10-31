@@ -1,0 +1,137 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+.sp-mobile-device {
+
+    .spreport-view {
+
+        .headerPanel {
+            height: 50px;
+            padding: 10px 5px 0;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: nowrap;
+            align-items: center;
+
+            .headerPanel-left {
+                display: block;
+                width: inherit;
+                max-width: inherit;
+                flex: 1;
+                text-overflow:ellipsis;
+
+                .reportName {
+                    margin: 0;
+                    font-size: 18px;
+                    overflow: hidden;
+                }
+            }
+
+            .headerPanel-right {
+                display: block;
+                float: inherit;
+                min-width: 40%;
+                width: auto;
+                flex: 1;
+
+                button {
+                    height: 40px;
+                    min-width: 40px;
+                    padding: 5px;
+                    font-size: 13px;
+                    border-radius: 6px;
+                    opacity: .8;
+
+                    &.ng-hide {
+                        margin: 0;
+                    }
+
+                    &:hover, &:focus {
+                        box-shadow: none !important;
+                        opacity: 1;
+                    }
+
+                    &:active {
+                        transition: background-color linear .2s;
+                        -webkit-transition: background-color linear .2s;
+                        box-shadow: none !important;
+                        opacity: 1;
+                    }
+
+                    img {
+                        width: 24px;
+                        height: 24px;
+                    }
+
+                    &[name="actionButton"] {
+                        position: absolute;
+                        left: 35px;
+                    }
+
+                    & + span, & + ul + div + span {
+                        margin-left: -3px;
+                    }
+                }
+            }
+
+            &:before {
+                display: inline-block;
+                height: 100%;
+                vertical-align: middle;
+            }
+        }
+
+        .reportDataGridStyle {
+            height: calc(~'100% - 50px') !important;
+            min-height: 100px;
+            position: absolute;
+            top: 50px;
+            width: 100%;
+
+            .dataGrid-view {
+                .dataGridStyle {
+                    .ngViewport {
+                        min-height: inherit;
+                    }
+                }
+            }
+        }
+    }
+
+    .spmobile-report-view-container {
+        height: 100%;
+
+        .headerPanel {
+            height: 50px;
+        }
+    }
+
+    .screen {
+        // the following are about not scrolling a report grid on mobile and sizing to the loaded rows
+        margin-right: 0px;
+
+        sp-report-render-control, .report-render-control, .spmobile-report-view-container {
+            height: auto !important;
+
+            .spreport-view {
+                height: auto !important;
+
+                .reportDataGridStyle, .ngGrid {
+                    height: auto !important;
+                    position: relative;
+                    top: inherit;
+                }
+
+                .ngViewport {
+                    height: auto !important;
+                }
+
+                .ngCanvas, .ngViewport, .ngRow, .ngFooterPanel, .ngTopPanel {
+                    width: 100% !important;
+                }
+
+                .ngRow {
+                    /*border-bottom: none !important;*/
+                }
+            }
+        }
+    }
+}

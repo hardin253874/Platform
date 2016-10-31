@@ -1,0 +1,114 @@
+<div class="nav-demo-page">
+    
+    <h1>Nav Demo - {{spState.name}}</h1>
+
+    <p>Simple page exercising various navigation related operations</p>
+
+    <ul>
+        <li>
+            <button class="btn-link" ng-click="navToParent()">nav to parent</button>
+        </li>
+        <li>
+            <button class="btn-link" ng-click="navBack()">nav back</button>
+        </li>
+        <li>
+            <button class="btn-link" ng-click="navToChild()">nav to child page</button>
+        </li>
+        <li>
+            <button class="btn-link" ng-click="navToSibling()">nav to sibling page</button>
+        </li>
+    </ul>
+
+    <div class="messages-box" ng-class="{open : navDemoLogs.open}">
+        <input ng-show="navDemoLogs.open" ng-model="navDemoLogs.filterText" />
+        <div ng-click="navDemoLogs.open=!navDemoLogs.open">
+            <img ng-show="navDemoLogs.open" src="assets/images/16x16/ArrowRight.png" />
+            <img ng-show="!navDemoLogs.open" src="assets/images/16x16/ArrowLeft.png" />
+            <h2>Events and things</h2>
+        </div>
+        <ul>
+            <li ng-repeat="m in navDemoLogs.logs | filter:navDemoLogs.filterText"
+                title="{{m[0]}}" ng-class-even="'alt'">{{m[0].getMinutes() + '.' + m[0].getSeconds()}}: {{m[1]}}</li>
+        </ul>
+    </div>
+
+    <h2>Navigation path (aka breadcrumbs)</h2>
+    <table>
+        <thead>
+            <tr>
+                <td>Entity Id</td>
+                <td>Entity Name</td>
+                <td>State Name</td>
+                <td>Url</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="i in pathItems">
+                <td>{{i.id}}</td>
+                <td>{{i.name}}</td>
+                <td>{{i.state.name}}</td>
+                <td>{{i.href}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Nav Item... more details</h2>
+    <table>
+        <thead>
+            <tr>
+                <td>Name</td>
+                <td>Value</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="k in navItemProps">
+                <td>{{k}}</td>
+                <td>{{navItem[k]}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Nav Item... more details</h2>
+    <table>
+        <thead>
+            <tr>
+                <td>Name</td>
+                <td>Value</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="k in navItemDataProps">
+                <td>data.{{k}}</td>
+                <td>{{navItem.data[k]}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Nav Item Scope</h2>
+    <p>number is parenthesis means inherited</p>
+    <table>
+        <thead>
+            <tr>
+                <td>Name</td>
+                <td>Value</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="k in navItemScopeProps">
+                <td>scope.{{k}}</td>
+                <td>{{navItem.scope[k.split(' ')[0]]}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Nav Item DataObject (passed to child)</h2>
+    <pre>{{navItem.dataObject}}</pre>
+
+    <h2>Get nav item scope (potentially inheritied) properties</h2>
+    <form>
+        <label>Scope property:</label>
+        <input ng-model="scopeKey">
+        <span>Value: {{navItem.scope[scopeKey]}}</span>
+    </form>
+
+</div>

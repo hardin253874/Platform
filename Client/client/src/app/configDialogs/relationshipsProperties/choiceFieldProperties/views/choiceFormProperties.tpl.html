@@ -1,0 +1,48 @@
+<div>
+
+    <!--<div>
+        <label class="form-label">Display As </label>
+        <select ng-selected="model.selectedDisplayOption" ng-options="option.name for option in model.displayAsOptions" ng-model="model.selectedDisplayOption" ng-disabled="!isNewRelationship"></select>
+    </div>-->
+    <div class="edit-form-control-container">
+        <div class="edit-form-title">
+            <label class="form-label">Mandatory: </label>
+        </div>
+        <div class="edit-form-value">
+            <input type="checkbox" ng-model="model.formControl.mandatoryControl" ng-disabled="model.formControl.readOnlyControl" />
+        </div>
+    </div>
+    <div class="edit-form-control-container">
+        <div class="edit-form-title">
+            <label class="form-label">Read Only: </label>
+        </div>
+        <div class="edit-form-value">
+            <input type="checkbox" ng-model="model.formControl.readOnlyControl" ng-disabled="model.formControl.mandatoryControl" />
+        </div>
+    </div>
+    <div class="edit-form-control-container" ng-if="options.isFormControl">
+        <div class="edit-form-title">
+            <label class="form-label">Show Help: </label>
+        </div>
+        <div class="edit-form-value">
+            <input type="checkbox" ng-model="model.formControl.showControlHelpText" />
+        </div>
+    </div>
+
+    <div class="edit-form-control-container" ng-if="!options.isFormControl">
+        <div class="edit-form-title">
+            <label class="form-label">Show Help: </label>
+        </div>
+        <div class="edit-form-value">
+            <input type="checkbox" ng-model="model.relationshipToRender.showRelationshipHelpText" />
+        </div>
+    </div>
+    <div class="edit-form-control-container">
+        <div class="edit-form-title">
+            <label class="form-label">Filter By: </label>
+        </div>
+        <div class="edit-form-value">
+            <sp-relationship-filters-control form-control="model.formControl"></sp-relationship-filters-control>
+        </div>
+    </div>
+</div>

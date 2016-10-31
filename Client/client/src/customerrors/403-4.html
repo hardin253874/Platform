@@ -1,0 +1,20 @@
+<!--// Copyright 2011-2016 Global Software Innovation Pty Ltd //-->
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+	<head>  
+		<script type="text/javascript"> 
+function redirectToHttps() { 		
+	// Redirect if current protocol is http and current page is not the error page
+	if (window.location.protocol.toLowerCase() === 'http:' &&
+		window.location.pathname.toLowerCase() !== '/sperrors/403-4.html') {			
+		window.location = 'https://' + window.location.hostname + window.location.pathname;  
+	}
+}
+ 
+redirectToHttps(); 
+		</script>
+	</head>
+	<body>  	
+	</body>
+</html>

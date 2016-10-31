@@ -1,0 +1,9 @@
+<div ng-style="card.getLegendStyle(card)">
+    <div ng-if="card.id" class="card-header">
+        <a href="" ng-click="card.executeAction(card.item)">{{card.id}}</a></div>
+    <div class="card-title" title="{{card.descr}}"><a href="" ng-click="card.executeAction(card.item)">{{card.title}}</a></div>
+    <div class="card-field" ng-repeat="f in card.fields">
+        <div title="{{f.title}}">{{f.value}}</div>
+        <img ng-src="{{f.imageUri}}" ng-show="f.imageUri">
+    </div>
+</div>

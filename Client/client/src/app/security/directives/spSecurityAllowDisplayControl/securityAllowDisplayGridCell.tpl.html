@@ -1,0 +1,5 @@
+﻿<div class="ngCellText" ng-class="col.colIndex()" sp-context-menu="model.contextMenu" sp-context-menu-trigger="rightclick" sp-context-menu-placement="mouse" sp-context-menu-append-to-body>
+    <input class="securityUICheck" type="checkbox" ng-model="row.entity.selected" ng-disabled="!canModifySelections()" ng-change="onNodeSelectedChanged(row.entity)" />
+    <img class="valignMiddle" ng-src="{{row.entity.item.iconUrl}}" alt="" ng-style="{'margin-left': row.entity.depth * 10}" width="16" height="16"/>
+    <span class="valignMiddle" ng-cell-text uib-tooltip="{{getNodePath(row.entity)}}" tooltip-trigger tooltip-placement="top">{{COL_FIELD}}</span>
+</div>

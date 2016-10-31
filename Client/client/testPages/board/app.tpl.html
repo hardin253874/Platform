@@ -1,0 +1,42 @@
+<my-app-layout>
+    <header><img src="../../src/assets/images/logo_SP.png" height="23"></header>
+    <div class='main' ng-controller="MyController as x">
+        <div class="content" ng-if="templatesReady">
+            <rn-board report-id="x.reportId"></rn-board>
+        </div>
+        <div class="show-nav-button" ng-click="toggleNav()"> {{appState.showNav ? '<' : '>'}}</div>
+        <nav ng-class="{'show-nav': appState.showNav}">
+            <div class="report-header">
+                <div>{{x.meta.title}}</div>
+                <select ng-model="x.partitionColumnOrd" ng-options="c.ord as c.title for c in x.cols"></select>
+                <hr>
+            </div>
+            <div class="report-filter"><input ng-model="x.reportFilter" placeholder="filter"></div>
+            <ul class="report-list">
+                <li ng-repeat="r in x.reports" ng-click="x.loadReport(r)" title="{{r.id}}">{{r.name}}</li>
+            </ul>
+        </nav>
+        <aside>
+            <div class="toolbox-panel">
+                <div>{{x.meta.title}}</div>
+                <select ng-model="x.partitionColumnOrd" ng-options="c.ord as c.title for c in x.cols"></select>
+                <ul>
+                    <li ng-repeat="c in x.cols" ng-click="x.setPartitionColumn(c)">
+                        {{c.__canPartition && '* ' || ''}}{{c.title}}
+                    </li>
+                </ul>
+                <!--<ul>-->
+                <!--<li ng-repeat="c in x.boardColumns">{{c.value}}</li>-->
+                <!--</ul>-->
+            </div>
+            <div class="properties-panel">
+                <ul>
+                    <li ng-repeat="e in x.debugService.entities">{{e.debugString}}</li>
+                </ul>
+                <pre>META={{x.meta  | json:' '}}</pre>
+                <pre>DATA={{x.data  | json:' '}}</pre>
+            </div>
+        </aside>
+    </div>
+    <footer>footer</footer>
+</my-app-layout>

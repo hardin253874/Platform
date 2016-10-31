@@ -1,0 +1,9 @@
+﻿<div class="dataGridCell" once-class="col.colIndex()">
+    <div class="dataGridFormattedCell">
+
+        <!--TODO avoid the use of ng-init as it apparently isn't meant to be used outside of ng-repeat-->
+        <div sp-include="getInlineEditingTemplate(row, col)" style="height:100%"
+             ng-init="rowIndex=row.entity.rowIndex; colIndex=col.colDef.index;
+             cellStyle=getDefaultCellStyle(row, col); cellText=getCellText(row, col)"></div>
+    </div>
+</div>

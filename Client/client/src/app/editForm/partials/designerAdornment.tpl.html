@@ -1,0 +1,11 @@
+<div ng-controller="designerAdornmentController" class="adornment" sp-draggable sp-resizable="resizableOptions" sp-resizable-data="formControl" sp-droppable="dropOptions" ng-style="applyStyle(formControl)">
+	
+    <div class="adornment-content adornment-icon-parent">
+        <!--<span class="adornment-icon ui-icon ui-icon-wrench" ng-click="configure_click()"uib-tooltip="Configure..." data-container="body" />
+        <span class="adornment-icon ui-icon ui-icon-circle-close" ng-click="remove_click()" uib-tooltip="Remove" /> -->
+        <img src="assets/images/icon_configure.png" ng-click="configure_click()" uib-tooltip="Configure..." tooltip-trigger tooltip-placement="top" data-container="body" style="padding:4px;" />
+        <img src="assets/images/icon_remove.png" ng-click="remove_click()" uib-tooltip="Remove" tooltip-trigger tooltip-placement="top" />
+    </div>
+    
+    <div class="adornment-transclude" ng-transclude></div>
+</div>

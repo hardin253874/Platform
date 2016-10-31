@@ -1,0 +1,17 @@
+<div class="summarisefieldoptiondialog-view" sp-moveable-modal sp-set-focus-dialog-input>
+
+    <div class="modal-header">
+        <h6>Summarise Options</h6>
+    </div>
+    <div class="modal-body">
+        Summarise '{{model.fieldName}}' by:
+        <br />
+        <br />
+        <div class="ngSelectionCell" ng-repeat="option in model.aggregateMethodOptions">
+            <input tabindex="-1" class="ngSelectionCheckbox" type="checkbox" ng-model="option.isChecked" ng-click="clickAggregate(option)" />{{option.name}}
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" ng-click="ok()">OK</button><button class="btn" ng-click="cancel()">Cancel</button>
+    </div>
+</div>

@@ -1,0 +1,111 @@
+﻿// Copyright 2011-2016 Global Software Innovation Pty Ltd
+
+.sample-hero-text {
+    background: white;
+    border: solid 1px #ccc;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+.hero-text-control {
+    min-width: 50px;
+    padding: 0 20px;
+    box-sizing: border-box;
+
+    .sp-form-builder-container-content & {
+        padding: 5px;
+        border-radius: inherit;
+        box-shadow: inherit;
+    }
+
+    .hero-title {
+        font-size: 15px;
+        color: #888;
+    }
+
+    .hero-data {
+        color: #404040;
+        font-size: 3.5rem;
+        cursor: pointer;
+        &:hover {
+            color: #000;
+            background-color: rgba(0,0,0,0.02);
+        }
+    }
+}
+
+.hero-text-control.hero-text-style1 {
+    .hero-title {
+    }
+
+    .hero-data {
+    }
+}
+
+.hero-text-control.hero-text-style2 {
+    border-left: 1px solid #ddd;
+
+    .hero-title {
+        border-left: 5px solid currentcolor;
+        margin: 0 -20px;
+        padding: 0 20px;
+    }
+
+    .hero-data {
+    }
+}
+
+.hero-text-control.hero-text-style3 {
+    background-color: #fafafa;
+    border: 1px solid #dfdfdf;
+    border-radius: 3px;
+    padding: 0 20px;
+
+    .hero-title {
+            font-size: 13px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #ddd;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+    }
+
+    .hero-data {
+    }
+}
+
+.hero-text-control.hero-text-style4 {
+    width:100%;
+    padding: 0;
+    text-align:center;
+
+    & > div {
+        vertical-align:top;
+        padding:0 10px;
+    }
+    .hero-title {  
+        font-size: 12px; 
+        padding:0;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .hero-data {
+    }
+}
+
+.hero-text-control.hero-text-style5 {
+    display: flex;
+    flex-direction: column;
+
+    .hero-title {
+        order: 2;
+        border-top: 1px dotted #ddd;
+    }
+
+    .hero-data {
+        order: 1;
+        padding-bottom: 5px;
+        border: none;
+    }
+}

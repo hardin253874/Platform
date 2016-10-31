@@ -1,0 +1,20 @@
+<div ng-controller="entityRequestTestController">                            
+	
+
+    <h3>Entity Request</h3>
+    <b>Resource: </b><input type="text" ng-model="resource"/><button ng-click="runRequest()">Go</button><br />
+    <b>Request: </b><br />
+    <textarea ng-model="request"/>
+    
+    <div>
+        <h3>URL</h3>
+        <div>{{url}}</div>
+
+        <h3>Raw Response</h3>    
+        <textarea ng-model="rawResponse" style="font-family:'Courier New'; min-width:800px; min-height:300px" />
+
+        <h3>Mock JSON</h3>    
+        <textarea ng-model="mockJSON" style="font-family:'Courier New'; min-width:800px; min-height:300px" />
+    </div>
+
+</div>

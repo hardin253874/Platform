@@ -1,0 +1,45 @@
+<div class="headerPanel">
+    <div class="headerPanel-left">
+        <sp-refresh-button options="model.refreshButtonOptions" ng-show="!model.isEditMode"></sp-refresh-button>
+
+        <div class="divider" ng-show="!model.isEditMode"></div>
+
+        <button type="button"
+                ng-if="showEditActionsButton()" ng-disabled="disabledActions()"
+                ng-click="showActionsDialog()" title="Action">
+            Actions<img src="assets/images/icon_configure.png"/>
+        </button>
+        <button type="button"
+                ng-if="showActionsMenu()" ng-disabled="disabledActions()"
+                sp-context-menu="model.actionsMenu" sp-context-menu-placement="alignleft"
+                sp-context-menu-trigger="leftclick" sp-context-menu-create="getActionMenuItems"
+                sp-context-menu-execution-context="getActionExecutionContext" title="Action">
+            Action<img src="assets/images/arrow_navsection_closed.png" name="viewmore"/>
+        </button>
+
+        <div class="tool-wrapper" sp-include="'reports/spReportHeaderPanelNewButton.tpl.html'"></div>
+
+        <div class="tool-wrapper" sp-include="'reports/spReportHeaderPanelExportButton.tpl.html'"></div>
+
+        <button type="button" ng-repeat="ab in model.actionButtons"
+                ng-if="showActionButtons()" ng-disabled="disabledActionButtons(ab)"
+                ng-click="ab.execute()"
+                name="newReport" title="{{ab.name || ab.displayname}}">
+            <img ng-src="{{ab.icon}}" width="16" height="16"/><span
+                ng-show="ab.action.state === 'createForm' || ab.action.method === 'run' || ab.action.method === 'generate'|| ab.action.method === 'navigate'">{{ab.nameshort}}</span>
+        </button>
+
+        <div class="tool-wrapper rn-inline-edit-toolbar"
+             ng-if="showInlineEditingButtons()"
+             ng-include="'reports/inline/inlineEditButtons.tpl.html'"></div>
+    </div>
+
+    <div class="headerPanel-right">
+        <sp-analyzer-button options="model.analyzerOptions" on-button-clicked="onAnalyzerButtonClicked(isOpen)"
+                            sp-droppable="dropOptions"></sp-analyzer-button>
+
+        <div class="searchContainer" ng-if="!model.isEditMode">
+            <sp-search-control sp-model="model.quickSearch"></sp-search-control>
+        </div>
+    </div>
+</div>

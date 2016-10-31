@@ -1,0 +1,34 @@
+<my-app-layout>
+    <header><img src="../../src/assets/images/logo_SP.png" height="23"></header>
+    <div class='main' ng-controller="MyController as x">
+        <div class="content">
+            <h1>{{x.greeting}}</h1>
+            <div>
+                <p>An image to show that the paths needed to find our source assets:</p>
+                <img src="../../src/assets/images/logo.png">
+            </div>
+            <div>
+                <p>A directive to demo how to show one:</p>
+                <sp-search-control sp-model="x.reportFilter"></sp-search-control>
+                <div>{{x.reportFilter}}</div>
+            </div>
+            <pre>ENTITY={{x.reportJson  | json:' '}}</pre>
+        </div>
+        <div class="show-nav-button" ng-click="toggleNav()"> {{appState.showNav ? '<' : '>'}}</div>
+        <nav ng-class="{'show-nav': appState.showNav}">
+            <ul class="report-list">
+                <li ng-repeat="r in x.reports" ng-click="x.loadReport(r)" title="{{r.id}}">{{r.name}}</li>
+            </ul>
+        </nav>
+        <aside>
+            <div class="toolbox-panel">
+                <div>{{x.reportEntity.debugString}}</div>
+            </div>
+            <div class="properties-panel">
+                <pre>META={{x.meta  | json:' '}}</pre>
+                <pre>DATA={{x.data  | json:' '}}</pre>
+            </div>
+        </aside>
+    </div>
+    <footer>footer</footer>
+</my-app-layout>

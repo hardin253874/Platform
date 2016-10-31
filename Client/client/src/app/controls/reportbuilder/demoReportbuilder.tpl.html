@@ -1,0 +1,136 @@
+<div ng-controller="reportbuilderController" class="demoreportbuilder-view">
+	
+    <div>
+        <h4>Report Builder test page</h4>
+    </div>
+   
+    Reports:
+    <sp-entity-combo-picker options="reportPickerOptions"></sp-entity-combo-picker>
+    <br />
+    <div>
+        <span style="display: inline-block">Report id: {{reportPickerOptions.selectedEntityId}}</span>
+        <button ng-click="getReportModel(reportPickerOptions.selectedEntityId)" ng-show="reportModel">Reload Report</button>
+        <button ng-click="saveReportModel()">Save</button>
+    </div>
+    
+    <div>
+        <div ng-show="reportBuilderMode.treeviewOptions">
+            <sp-tree options="reportBuilderMode.treeviewOptions" items="reportBuilderMode.treeviewOptions.treeNodes" selectedNodeId="reportBuilderMode.treeviewOptions.selectedNodeId"></sp-tree>
+        </div><br/>
+        <div>
+            <sp-fields-manager node-fields="nodeFields" options="reportBuilderMode.fileManagerOptions" />   
+        </div>
+        
+
+    </div>
+    
+    
+    
+
+    <hr />
+    
+    
+    <div>
+        <h4>Relationship Picker Test</h4>
+        Entity:
+        <sp-entity-combo-picker options="entityPickerOptions"></sp-entity-combo-picker> 
+        <br/>
+        <div ng-show="selectedEntity">
+        Selected RelationshipIds (split by ','):
+            <input type="text" ng-model="selectedRelationshipIds"/> &nbsp;
+            <button ng-click="pickRelationship()">Pick Relationship</button>
+            <br/>
+            <span style="display: inline-block">Return relationship ids: {{retRelationshipIds}}</span>
+        </div>
+        <br />
+    <br />
+    </div>
+
+    <br />
+    <hr />
+    <div>
+        <h4>Create Report</h4>
+        <table width="600">
+        <tr>
+            <td>Report name</td>
+            <td><input type="text" ng-model="reportPropertyMode.reportName"/> *</td>
+        </tr>
+        <tr>
+            <td>Description</td>
+            <td><textarea>{{reportPropertyMode.reportDescription}}</textarea></td>
+        </tr>
+        <tr>
+            <td>Report based on</td>
+            <td>
+                <sp-entity-combo-picker options="rootEntityPickerOptions"></sp-entity-combo-picker> *
+                <br/>
+                <input type="checkbox" ng-model="reportPropertyMode.showAll"/> Show all
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                 <button ng-click="createReport()" ng-disabled="reportPropertyMode.disableOkButton">OK</button>
+            </td>   
+        </tr>    
+
+        </table>
+    </div>
+    
+
+    <!-- Treeview -->
+  <!--  <div class="buildercontroller" ng-show="treeNode">
+        <div class="header_reportbuilder" ng-show="treeNode">
+            <h5>Report Builder</h5>
+            <p>Drag and Drop items from left munu to page</p>
+        </div>
+        <button ng-click="pickRelationship()" ng-show="treeNode" class="buildertoolbtn">+</button>
+        <treeview style="display:block" node="treeNode" selected-node-id="selectedNodeId"></treeview>
+        <sp-fields-manager node-fields="nodeFields">            
+        </sp-fields-manager>
+    </div>-->
+    <br />
+    
+    
+
+    <!--
+    <div>
+         <sp-treeview tree-data="treeFamily" node-id="nid" node-name="name" node-state="expand"
+                 expand-icon="assets/images/16x16/DownArrow.png"
+                 collapse-icon="assets/images/16x16/ToolbarNext.png"
+                 child-icon="">
+            
+        </sp-treeview>   
+
+    </div> 
+    
+
+    <div>
+        <h6>Settings</h6>
+        <em>
+            {{reportSettingsJason}}
+        </em>
+    </div>
+    <br/>  
+    <div>
+        <h6>Query</h6>
+        <em>
+            {{reportQueryJason}}
+        </em>
+    </div>
+    <br/>
+    <div>
+        <h6>TreeNode</h6>
+        <em>
+            {{treeNodeJason}}
+        </em>
+    </div>
+    <br/>  
+    <div>
+        <h6>selectednode</h6>
+        <em>
+            {{selectdnodeJason}}
+        </em>
+    </div>
+    -->
+</div>
+

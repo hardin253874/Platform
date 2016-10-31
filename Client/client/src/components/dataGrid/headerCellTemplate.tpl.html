@@ -1,0 +1,13 @@
+<div class="ngHeaderSortColumn {{col.headerClass}}" ng-style="{'cursor': col.cursor}" ng-class="{ 'ngSorted': !noSortVisible, dataGridColumnHeader: !isContextMenuOpen, dataGridColumnHeaderMenuOpened: isContextMenuOpen }" sp-draggable="dragOptions" sp-draggable-data="col" once-show="!dataGridOptions.hideReportHeader">    
+    <div ng-style="consoleThemeModel.headerStyle">
+        <div ng-click="sortColumnToggle(col)" once-class="'colt' + col.index" class="ngHeaderText" sp-droppable="dropOptions" sp-droppable-data="col" once-style="getHeaderStyle(col)">{{col.displayName}}</div>
+        <div class="ngSortButtonDown" ng-if="col.showSortButtonDown() && showColumnSortedCue(col)"></div>
+        <div class="ngSortButtonUp" ng-if="col.showSortButtonUp() && showColumnSortedCue(col)"></div>
+        <div class="headerContextMenuPanel" ng-show="col.colDef.spColumnDefinition.contextMenu && !dataGridOptions.isMobile">
+            <button sp-context-menu="col.colDef.spColumnDefinition.contextMenu" class="btn_lighten headerContextMenuButton" type="button" sp-context-menu-placement="alignRight" sp-context-menu-trigger="leftclick" sp-context-menu-append-to-body sp-context-menu-is-open="isContextMenuOpen">
+                <div class="columnHeaderDropDownIcon"></div>
+            </button>
+        </div>
+    </div>
+</div>
+<div ng-show="col.resizable" class="ngHeaderGrip" ng-click="col.gripClick($event)" ng-mousedown="col.gripOnMouseDown($event)"></div>

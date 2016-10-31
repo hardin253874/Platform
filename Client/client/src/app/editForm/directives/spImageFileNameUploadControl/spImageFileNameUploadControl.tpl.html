@@ -1,0 +1,62 @@
+﻿<span class="image-upload" ng-controller="imageController">
+
+    <div class="edit-form-control-container">
+        <div class="edit-form-title">
+            <sp-title-plus-markers is-read-only="isReadOnlyControl" is-required="isMandatory"
+                                   messages="customValidationMessages" title-model="titleModel"></sp-title-plus-markers>
+        </div>
+
+        <div class="edit-form-value">
+            <span class="imageviewer">
+                <div>
+                    <div class="image-preview {{imageAvailable && !isInDesign ? '' : 'image-preview-background'}}">
+                        <img ng-src="{{imageUrl}}" ng-click="openModal()" ng-show="imageAvailable"
+                             ng-style="getImageStyle()"/>
+                    </div>
+                </div>
+                <!-- Note: only visible when this control is used in custom image forms -->
+                <div ng-show="isCustomImageForm && !canUploadImage" class="image-uploader">
+                    <input uib-popover="{{displayString}}" popover-trigger="mouseenter" popover-placement="top"
+                           type="text" ng-model="displayString" readonly="readonly"/>
+                    <div style="width:100px; margin-left:2px;">
+                        <button ng-click="downloadImageFromCustomImageForm()" name="imagedownload">
+                            <img src="assets/images/16x16/Download.png"/>Download
+                        </button>
+                    </div>
+                </div>
+
+                <div ng-style="inputCtrlsContainerDivWidth()" ng-show="canUploadImage" class="image-uploader">
+                    <input uib-popover="{{displayString}}" popover-trigger="mouseenter" popover-placement="top"
+                           name="imageName" ng-style="imageNameInputWidth()" style="width:auto"
+                           type="text" ng-model="displayString" readonly="readonly"/>
+                    <div class="uploader-btn" ng-style="{width: isCustomImageForm ? '100%' : '98px'}">
+                        <button ng-show="selectedEntity && !isCustomImageForm" ng-style="browseButtonWidth()"
+                                name="browseButton"
+                                ng-click="browse()" ng-disabled="isReadOnlyControl" style="width:100% !important">
+                            {{buttonText}}
+                        </button>
+                        <sp-file-upload
+                                ng-show="((!selectedEntity && canCreateType) || (isCustomImageForm && selectedEntity && (selectedEntity.dataState === 'create')))"
+                                upload-session="imageUploadSession"
+                                message="imageUploadMessage"
+                                filter="{{imageUploadFilter}}"
+                                callback="imageUploadOnFileUploadComplete"
+                                busy-indicator-options="imageUploadBusyIndicatorOptions"
+                                instant-upload="imageInstantUpload"
+                                image-preview-src="imageUploadImagePreviewSrc">
+                        </sp-file-upload>
+                        <button ng-style="contextMenuButtonWidth()" name="contextMenuButton"
+                                ng-disabled="isReadOnlyControl" ng-show="!isCustomImageForm"
+                                sp-context-menu="contextMenu"
+                                sp-context-menu-placement="alignleft"
+                                sp-context-menu-trigger="leftclick"
+                                sp-context-menu-is-open="isMenu1Open"
+                                sp-context-menu-append-to-body>
+                            <img src="assets/images/16x16/DownArrow.png"/>
+                        </button>
+                    </div>
+                </div>
+            </span>
+        </div>
+    </div>    
+</span>

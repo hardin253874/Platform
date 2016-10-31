@@ -1,0 +1,132 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+
+@import (reference) "../../../less/builder.less";
+@import (reference) "../../controls/simpleInput.less";
+
+.workflow-input {
+    padding: 20px;
+
+    .workflow-input-toolbar {
+        .builder-ToolBar;
+
+        &:before {
+            display: none;
+        }
+    }
+
+    .workflow-input-header {
+    }
+
+    .workflow-input-prompt {
+
+        h2 {
+            font-size: 1.1em;
+        }
+
+        span {
+            display: inline-block;
+            padding: 10px 0;
+            &:empty{
+                padding:0;
+            }
+        }
+    }
+
+    .workflow-input-container {
+        .input-container;
+        display: inline-block;
+        width: 50%; // BUG #27817
+        width: auto;
+        padding: 10px;
+        background-color: #fafafa;
+        border: 1px solid #e0e0e0;
+        border-radius: 3px;
+
+        &:empty{
+                padding:0;
+                border:none;
+            }
+    }
+
+    .workflow-input-row {
+        .input-row;
+    }
+
+    .workflow-input-label {
+        .input-label;
+    }
+
+    .workflow-input-label-colon {
+        .input-label-colon;
+    }
+
+    .workflow-input-label-colon-after {
+        .input-label-colon-after;
+    }
+
+    .workflow-input-mandatory {
+        .input-mandatory;
+    }
+
+    .workflow-input-field {
+        .input-field;
+        // BUG #27817: hack against the fixed widths in form controls
+        input[type="text"], input[type="date"], input[type="time"], input[type="number"] {
+            width: 100% !important;
+        }
+    }
+
+    .workflow-input-accept {
+        text-align: right;
+        border-top: 1px solid #ddd;
+        padding-top: 10px;
+        margin-top: 10px;
+
+        button {
+            .btn_lighten;
+            font-size: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+            color: #333;
+        }
+    }
+
+    .workflow-input-accept-button {
+        height: 26px;
+    }
+
+    @media (max-width: 349px) {
+
+        .workflow-input-toolbar {
+            display: none;
+        }
+
+        .workflow-input-header {
+            display: none;
+        }
+
+        .workflow-input-prompt {
+            margin-top: 10px;
+            margin-left: 5px;
+        }
+
+        .workflow-input-prompt > h2 {
+            font-size: 20px;
+        }
+
+        .workflow-input-accept {
+            float: none;
+        }
+
+        .workflow-input-accept-button {
+            width: 100%;
+        }
+    }
+}
+
+@media (max-width: 349px) {
+
+    .workflow-input {
+        padding: 5px;
+    }
+}

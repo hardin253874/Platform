@@ -1,0 +1,11 @@
+<div class="app-splash">
+    <p ng-show="!spAppError.haveErrors()">Loading...</p>
+    <p>{{appData.appStartMessage}}</p>
+
+    <div ng-if="spAppError.haveErrors()" class="app-errors-list" >
+        <h1>Loading Error</h1>
+        <ul>
+            <li ng-repeat="e in spAppError.errors">{{e}}</li>
+        </ul>
+    </div>
+</div>

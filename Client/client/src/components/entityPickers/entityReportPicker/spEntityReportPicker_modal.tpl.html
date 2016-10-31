@@ -1,0 +1,12 @@
+<div class="entityReportPickerDialog" sp-moveable-modal style="height:100%" sp-event-relay sp-mobile-context>
+    <sp-resizable-dialog dialog-id="entityReportPickerDialog" min-width="600" min-height="326" persist-size="true"></sp-resizable-dialog>
+    <div ng-if="!spMobileContext.isMobile" class="modal-header ">
+        <h6>Select {{model.reportOptions.objectName}}</h6>
+    </div>
+    <div class="modal-body entityReportPickerDialog">
+        <sp-entity-report-picker options="model.reportOptions"></sp-entity-report-picker>
+    </div>
+    <span class="modal-footer">
+        <button class="btn" ng-click="ok()">OK</button><button class="btn" ng-click="cancel()">Cancel</button>
+    </span>
+</div>

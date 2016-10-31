@@ -1,0 +1,7 @@
+<div>
+    <div class="reportactionsdialog-toolbar">
+        <button type="button" ng-show="tabItem.canMoveUp" ng-click="tabItem.up()" title="Move up"><img src="assets/images/arrow_up.png" /></button>
+        <button type="button" ng-show="tabItem.canMoveDown" ng-click="tabItem.down()" title="Move down"><img src="assets/images/arrow_down.png" /></button>
+    </div>
+    <div ng-grid="tabItem.gridOptions" class="dataGridHeight" style="width: 570px; height: 180px;"></div>
+</div>

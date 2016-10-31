@@ -1,0 +1,18 @@
+﻿<div ng-if="!i.item.hiddenByConfig && !i.item.hidden"
+     ng-style="getNodeStyle(i)">
+    <a class="{{getAClass(i)}}"
+       tabindex="-1"
+       sp-focus="getNodeFocusId(i)"
+       ng-click="onNodeClick(i)"
+       ng-dblclick="toggleIsOpen(i)"
+       title="{{i.item.name}}">
+        <img ng-src="{{getOpenClosedIcon(i)}}" alt="" width="16" height="16" ng-click="toggleIsOpen(i)" ng-style="getOpenClosedIconStyle(i)"/>
+        <img class="typeIcon" ng-src="{{i.item.iconUrl}}" alt="" width="16" height="16"/>
+        {{i.item.name}}
+    </a>
+</div>
+<ul class="nav" ng-if="i.isOpen">
+    <li ng-repeat="i in i.children" ng-if="!(i.item.hiddenByConfig && i.item.hidden)">
+        <div sp-include="'controls/dialog/spNavContainerPickerDialog/spNavContainerPickerDialogNavNode.tpl.html'"></div>
+    </li>
+</ul>

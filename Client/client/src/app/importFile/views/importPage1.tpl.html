@@ -1,0 +1,81 @@
+<div class="container-fluid page1">
+
+    <!-- File upload -->
+    <div class="importfileUpload">
+        <label class="fileUploadLabel">File</label>
+        <sp-file-upload upload-session="model.upload.uploadSession"
+                        message="model.upload.message" filter="{{model.upload.fileFilter}}"
+                        callback="model.upload.onFileUploadComplete"
+                        busy-indicator-options="model.upload.busyIndicator"
+                        display-name="model.upload.displayName"
+                        instant-upload="true"
+                        show-file-name="true"></sp-file-upload>
+        <div ng-show="model.isDocumentReady" class="importUploadState">
+            <img src="assets/images/16x16/tick.png"/>
+            <label class="uploadMessageLabel">{{model.documentMessage}}</label>
+        </div>
+    </div>
+
+    <!-- Options after file uploaded -->
+    <div class="control-group">
+
+        <!-- Sheet settings -->
+        <div ng-show="model.showSheetSettings">
+            <h2>Sheet Settings</h2>
+            <div class="import-settings">
+                <!-- Heading row -->
+                <div class="import-settings-item">
+                    <label class="sheetSettingLabel" for="hRowNo">Row number contains heading</label>
+                    <input id="hRowNo" type="number" ng-model="model.headingRow" min="0" ng-blur="headingRowChanged()" ng-disabled="model.noHeadingRow" />
+                    <input id="noHeadingRow" style="margin: 0;" type="checkbox" ng-model="model.noHeadingRow" ng-click="noHeadingChanged()" />
+                    No heading row
+                </div>
+                <!-- Data row -->
+                <div class="import-settings-item">
+                    <label class="sheetSettingLabel" for="dRowNo">Row number to start reading data</label>
+                    <input id="dRowNo" type="number" ng-model="model.dataRow" ng-blur="dataRowChanged()"/>
+                </div>
+                <!-- Last row -->
+                <div class="import-settings-item">
+                    <label class="sheetSettingLabel" for="lastRowNo">Last row number to read</label>
+                    <input id="lastRowNo" type="number" ng-model="model.lastRow" ng-blur="lastRowChanged()" /> (optional)
+                </div>
+                <!-- Worksheet selection -->
+                <div class="import-settings-item" ng-show="model.file.fileFormat === 'Excel'">
+                    <label class="sheetSettingLabel">Worksheet to import</label>
+                    <select id="sheetName" ng-model="model.sheetName" ng-options="s.sheetId as s.sheetName for s in model.sheets"></select>
+                </div>
+                <!-- Separator selection -->
+                <div class="import-settings-item" ng-show="model.file.fileFormat === 'Csv' || model.file.fileFormat === 'Tab'">
+                    <label class="sheetSettingLabel">Separator</label>
+                    <select id="fileSep" ng-model="model.file.fileFormat" ng-change="separatorChanged()">
+                        <option value="Csv">Comma</option>
+                        <option value="Tab">Tab</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sample preview -->
+        <div ng-show="model.isDocumentReady">
+            <div class="importPreview"><img src="assets/images/preview.png"/>Preview
+            </div>
+            <div class="previewTable">
+                <table class="table table-striped table-condensed">
+                    <thead>
+                        <tr>
+                            <td style="background-color: #dddddd; font-size: 12px; color: #333" ng-repeat="c in model.sampleDataTable.columns">{{c.colName}}</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="r in model.sampleDataTable.rows">
+                            <td ng-repeat="val in r.vals track by $index">{{val}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+</div>

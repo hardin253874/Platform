@@ -1,0 +1,374 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+.control-configure-dialog {
+
+    .message label {
+        width:400px;
+    }
+
+    .aImage {
+        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAChJREFUeNpiPHPmDAMMGBsbw9lMDDgA6RKM%2F%2F%2F%2Fh3POnj1LCzsAAgwAQtYIcFfEyzkAAAAASUVORK5CYII%3D);
+    }
+
+    .edit-form-control-container {
+        vertical-align: top;
+        display: table;
+        width: 100%;
+        height:100%;
+    }
+
+    .edit-form-title {
+        vertical-align: top;
+        display: table-cell;
+        width: 1%;
+        min-width: 140px;
+        padding-top:5px;
+    }
+
+    .edit-form-value {
+        display: table-cell;
+    }
+
+    .inlineRelPicker {
+        display: inline-block;
+        vertical-align: top;
+        input {
+            width: 100%;
+        }
+
+    }
+
+    .fieldProperties-view {
+        .fullSize {
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    .fieldproperties-base, .relationshipProperties-base {
+
+        sp-control-on-form > *{ width:100% !important}
+    }
+
+    .fieldControl {
+
+        input{
+            background-color: #fff;
+            width: 100%;
+            padding: 0 2px;
+        }
+
+        textarea{&[readonly="readonly"]{background-color:transparent;}}
+
+        .field-validation-message {
+            font-size: 11px;
+            color: #fff;
+            display: block;
+            margin-left: 123px;
+            left: 0;
+            right: 0;
+            padding: 3px 10px;
+            background-color: rgb(255, 100, 100);
+            border-radius: 3px;
+            margin-bottom: 5px;
+            /*width: 400px;*/
+            &:empty {
+                padding: 0;
+            }
+        }
+    }
+
+    label, label.field-title {
+        vertical-align: top;
+        word-wrap: break-word;
+        width:inherit;
+    }
+
+    .title-plus-markers-markers {
+        margin-right: 2px;
+    }
+
+
+    button.btn-colorpicker {
+        background: none;
+        border: 1px solid #ddd;
+        padding: 0 2px 2px 0;
+        border-radius: 3px;
+
+        img {
+            margin-top: -2px;
+        }
+
+        &:hover, &:focus {
+            background: #ededed;
+            border: 1px solid #ddd;
+        }
+    }
+
+    .has-error {
+        font-size: 11px;
+        color: #fff;
+        right: 20px;
+        left: 20px;
+        position: absolute;
+        padding: 0px 10px;
+        margin-top: -10px;
+        background-color: rgb(255, 100, 100);
+        border-radius: 3px;
+
+    }
+
+    .fullWidthTable {
+        .fullWidth;
+        display: table;
+    }
+
+    .fullWidth {
+        width: 100%;
+    }
+
+    .tableCell {
+        text-align: left;
+        display: table-cell;
+    }
+
+    input[type="radio"] {
+        display: inline-block;
+    }
+
+    .choicetable {
+        display: inline-block;
+        width: 615px;        
+        text-align: left;
+        vertical-align: top;
+
+        button {
+            .btn_lighten;
+            padding: 0px 5px;
+        }
+
+        .choiceValuesGrid {
+            border: 1px solid #ccc;
+            margin-top: 2px;
+            margin-right:-1px;            
+            height:180px;           
+        }
+
+        .note {
+            font-style:italic;
+            color:#999;
+        }
+    }
+}
+
+
+
+
+.modal.sp-relationship-properties-modal {
+    .modal-dialog {
+        width: 800px;
+    }
+
+    .field-title {
+        word-wrap:break-word;
+    }
+
+    input[type="text"], textarea, select {
+    }
+
+    input.date-input[type="text"], input.time-input[type="text"] {
+        width: 100%;
+        min-width:80px;
+    }    
+
+    p.question {
+        margin-top: 5px;
+        vertical-align: middle;
+        font-size: 1em;
+
+        b {
+            font-weight:bold;
+            padding: 2px 3px;
+            font-size:11px;
+        }
+    }
+
+    .relationshiptype {
+        display: table-cell;
+        width: 50%;
+        padding: 0 2px;
+        border-radius:2px;
+
+        .relationshiptype-header {
+            background-color: rgba(136, 150, 158, .25);
+            padding: 5px 6px;
+            vertical-align: middle;
+
+            input[type="radio"] {
+                margin-right: 3px;
+                margin: 0;
+                padding: 0;
+                vertical-align: middle;
+                cursor: pointer;
+            }
+        }
+    }
+
+    .relationshiptype.selected {
+        background-color: #2C69C7;
+        color:#fff;
+    }
+
+    .ownershiptype.selected {
+        background-color: transparent !important;
+        color:#fff;
+        box-shadow: 0 0 0 2px #2C69C7 inset;  
+
+        .ownershiptype-header {
+            background-color: #2C69C7;
+        }
+    }
+
+    .ownershiptype {
+        display: table-cell;
+        border-radius:2px;
+
+        .ownershiptype-header {
+            background-color: rgba(136, 150, 158, .25);
+            padding: 5px 6px;
+            vertical-align: middle;
+            border-top-left-radius: 2px;
+            border-top-right-radius: 2px;
+
+            input[type="radio"] {
+                margin: 0;
+                margin-right: 5px;                
+                padding: 0;
+                vertical-align: middle;
+                cursor: pointer;
+                &:focus{
+                    outline:none;
+                }
+            }
+
+            & + div[name="dummyDiv"]{
+                min-height:27px; 
+                background-color:rgba(0,0,0,0.01);                
+            }
+            & + div select {
+                width:98%;
+                margin-left:1%;
+                margin-top:2px;
+            }
+        }
+
+        .ownershiptype-explan {
+            padding: 0;
+
+            p {
+                background-color: rgba(136, 150, 158, .08);
+                border-left: 3px solid #47C27C;
+                padding: 3px 6px 0 10px;
+                font-size: .85em;
+                color: #666;
+                margin: 3px;
+                font-weight:bold;
+
+                &[name="Not"] {
+                    border-left: 3px solid #DA6969;
+                }
+
+                b {
+                    color: #222;
+                }
+            }
+        }
+    }
+   
+    .ownershiptype-each {
+        padding: 5px;
+
+        .ownershiptype-title {
+            vertical-align: middle;
+            font-size: 1.1em;
+            color:inherit !important;
+
+
+            img {
+                display: inline-block;
+                padding:5px;
+                border-radius: 50%;
+                box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+                background-color: #47C27C;
+                border-bottom: 1px solid #41B273;
+                vertical-align: middle;
+                margin-right: 5px;
+
+                &[alt^="Not"] {
+                    background-color: #DA6969;
+                    border-bottom: 1px solid #BD4343;
+                }
+            }
+        }
+    }
+
+    .security-table {
+        width: 100%;     
+        
+        td{
+            border: 1px lightgray solid;
+        }   
+
+        .security-row {
+            display:table-row;                 
+        }
+        
+        .security-checkbox {
+            vertical-align: top;
+            margin: 10px;
+        }
+
+        .security-row-divider {
+            height: 1px;
+            margin-left: 10px;
+            margin-right: 10px;
+            background: #ccc;
+        }
+
+        .security-option {
+            display: inline-block;
+            padding: 0;
+
+            p {
+                display: inline-block;
+                padding: 3px 6px 0;                
+                color: #666;
+                margin: 3px;
+                font-weight:bold;
+                font-size:11px;            
+
+                b {
+                    color: #222;
+                }
+            }
+        }
+    }    
+}
+
+.format-properties {
+    display:table;
+    width:100%;
+    > .fp-row {
+        display:table-row;
+        width:100%;
+
+        > .fp-cell {
+            display:table-cell; width:1%; min-width:120px;
+            & +div.fp-cell {
+                display:table-cell; width:100%;
+                select{
+                    width:100%;
+                }
+            }
+        }
+    }
+}

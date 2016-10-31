@@ -1,0 +1,19 @@
+ <div ng-switch="getFieldType()">
+	
+     <!-- Script name -->
+     <div>
+         <sp-control-on-form form-data="model.fieldData" form-control="model.fieldScriptNameControl" form-mode="model.formMode" is-read-only="!model.canModifyField" is-in-test-mode="model.isInTestMode">
+
+         </sp-control-on-form>
+     </div>
+
+    <div ng-switch-when="core:autoNumberField">
+        <span ng-include="'configDialogs/fieldProperties/views/fieldAutoNumberDefinitionProperties.tpl.html'"></span>
+    </div>
+    <div ng-switch-when="core:boolField">
+        <span ng-include="'configDialogs/fieldProperties/views/fieldBooleanDefinitionProperties.tpl.html'"></span>
+    </div>
+    <div ng-switch-default>
+        <span ng-include="'configDialogs/fieldProperties/views/fieldDefinitionProperties.tpl.html'"></span>
+    </div>
+</div>

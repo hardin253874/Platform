@@ -1,0 +1,73 @@
+﻿<div class="modal-header">
+    <script type="text/ng-template" id="group-template.html">
+        <div class="panel {{panelClass || 'panel-default'}}">
+            <div class="panel-heading" ng-click="toggleOpen()">
+                <h4 class="panel-title">
+                    <a href tabindex="0" class="accordion-toggle" uib-accordion-transclude="heading">
+                        <span uib-accordion-header ng-class="{'text-muted': isDisabled}">
+                            {{heading}}
+                        </span>
+                        <i ng-class="isOpen ? 'expanded' : 'collapsed'"></i>
+                    </a>
+                </h4>
+            </div>
+            <div class="panel-collapse collapse" uib-collapse="!isOpen">
+                <div class="panel-body" style="max-height: 200px; overflow-y: auto; padding: 5px 15px 5px 15px; font-size: 11px;" ng-transclude></div>
+            </div>
+        </div>
+    </script>
+
+    <h6>{{model.title}}</h6>
+</div>
+<div class="modal-body sp-delete-service">
+    <p>{{model.message}}</p>
+    <p ng-show="!model.dependentsDisabled">The following resources will also be deleted:</p>
+    <uib-accordion close-others="true" class="accordion" ng-show="!model.dependentsDisabled">
+        <uib-accordion-group heading="{{model.dependentString}}" template-url="group-template.html" title="Shows the resources that will also be removed when deleting the selected resource(s)" is-disabled="model.dependentsDisabled" ng-style="{'pointer-events': model.dependentsDisabled ? 'none' : 'all'}">
+            <div ng-repeat="(key,val) in model.dependents">
+                <div style="font-weight: bold">
+                    {{key}}
+                </div>
+                <table style="margin-left: 20px">
+                    <tr ng-repeat="dependent in val">
+                        <td nowrap> 
+                            {{dependent.name}}
+                        </td>
+                        <td style="padding-left: 50px">
+                            {{dependent.description}}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </uib-accordion-group>
+        <!-- Hide for now as per #28003
+        <uib-accordion-group heading="{{model.relatedString}}" template-url="group-template.html" title="Shows the resources that may be affected by the deletion of the selected resource(s)" is-disabled="model.relatedDisabled" ng-style="{'pointer-events': model.relatedDisabled ? 'none' : 'all'}">
+            <div ng-repeat="(key,val) in model.related">
+                <div style="font-weight: bold">
+                    {{key}}
+                </div>
+                <table style="margin-left: 20px">
+                    <tr ng-repeat="relative in val">
+                        <td>
+                            {{relative.name}}
+                        </td>
+                        <td style="padding-left: 50px">
+                            {{relative.description}}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </uib-accordion-group>
+        -->
+    </uib-accordion>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary"
+            data-ng-click="model.close(true);">
+        {{model.okText}}
+    </button>
+    <button type="button" class="btn"
+            data-ng-click="model.close(false)">
+        {{model.cancelText}}
+    </button>
+</div>

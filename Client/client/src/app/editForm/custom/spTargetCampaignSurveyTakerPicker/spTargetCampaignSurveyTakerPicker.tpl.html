@@ -1,0 +1,17 @@
+﻿<span class="fieldControl">
+    <div class="edit-form-control-container">
+        <div class="edit-form-title">
+            <sp-title-plus-markers is-read-only="isReadOnly" is-required="isMandatory" messages="customValidationMessages" title-model="titleModel"></sp-title-plus-markers>
+        </div>
+        <div class="edit-form-value">
+            <a ng-if="isReadOnly && !isInDesign" style="cursor: pointer;" class="fieldValue" ng-href="" ng-click="handleLinkClick();">{{model.selectedOption.name}}</a>
+            <div ng-if="!isReadOnly || isInDesign" style="height: 100%;">
+                <span class="fieldControl">
+                    <select class="dropDownRelPicker-select" ng-model="model.selectedOption" ng-options="e as e.name for e in model.options track by e.id" ng-disabled="isInDesign">
+                        <option value="">[Select]</option>
+                    </select>
+                </span>
+            </div>
+        </div>
+    </div>
+</span>

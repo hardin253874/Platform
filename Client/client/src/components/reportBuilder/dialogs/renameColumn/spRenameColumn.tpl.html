@@ -1,0 +1,17 @@
+<div class="spRenameColumnDialog-view" sp-moveable-modal sp-set-focus-dialog-input>
+
+    <div class="modal-header">
+        <h6>Rename Column</h6>
+    </div>
+    <div class="modal-body" sp-busy-indicator-popup="model.gridBusyIndicator">
+
+        <form>
+            <label for="textfield">Column name</label>
+            <input type="text" id="textfield" ng-model="model.columnName" /><br />
+        </form>
+
+    </div>
+    <div class="modal-footer">
+        <button class="btn" ng-click="ok()" ng-disabled="model.disableOkButton">OK</button><button class="btn" ng-click="cancel()">Cancel</button>
+    </div>
+</div>

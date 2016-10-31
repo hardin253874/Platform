@@ -1,0 +1,39 @@
+<div ng-controller="sp.workflow.activityController">
+	
+
+    <form class="form-horizontal">
+        <div class="col-md-6">
+            <div class="form-group">
+                <sp-workflow-expression-control parameter="activityParameters['core:sendEmailRecipientList']" show-label="true"
+                                                actions="parameterChooser,resourceChooser,exprEditor"></sp-workflow-expression-control>
+            </div>
+            <div class="form-group">
+                <sp-workflow-expression-control parameter="activityParameters['core:sendEmailRecipientField']" show-label="true"
+                                                actions="fieldChooser"></sp-workflow-expression-control>
+            </div>
+            <div class="form-group">
+                <sp-workflow-expression-control parameter="activityParameters['core:sendEmailInbox']" show-label="true"
+                                                actions="parameterChooser,resourceChooser,exprEditor"></sp-workflow-expression-control>
+            </div>
+            <div class="form-group">
+                <sp-workflow-expression-control parameter="activityParameters['core:sendEmailRecipientArgument']" show-label="true"
+                                                actions="exprEditor"></sp-workflow-expression-control>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <sp-workflow-expression-control parameter="activityParameters['core:sendEmailSubjectArgument']" show-label="true"
+                                                actions="exprEditor"></sp-workflow-expression-control>
+            </div>
+            <div class="form-group">
+                <sp-workflow-expression-control parameter="activityParameters['core:sendEmailBodyArgument']" show-label="true"
+                                                actions="exprEditor"></sp-workflow-expression-control>
+            </div>
+            <div class="form-group">
+                <sp-workflow-expression-control parameter="activityParameters['core:sendEmailAttachments']" show-label="true"
+                                                actions="parameterChooser,resourceChooser,exprEditor"></sp-workflow-expression-control>
+            </div>
+         </div>
+    </form>
+
+</div>

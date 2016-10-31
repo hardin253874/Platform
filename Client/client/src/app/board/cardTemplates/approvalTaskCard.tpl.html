@@ -1,0 +1,38 @@
+<div ng-style="card.getLegendStyle(card)">
+    <div class="card-header clearfix">
+        <div class="pull-right priority-indicator">
+            <span title="asap" class="priority-asap" ng-if="card.values['priority'] === 'ASAP'"><img
+                    src="assets/images/16x16/priorityAsap.png"></span>
+            <span title="high" class="priority-high" ng-if="card.values['priority'] === 'High'"><img
+                    src="assets/images/16x16/priorityHigh.png"></span>
+        </div>
+        <div class="card-title" title="{{card.descr}}"><a href="" ng-click="card.executeAction(card.item)">{{card.title}}</a></div>
+    </div>
+    <div class="card-body clearfix">
+        <div class="card-field" ng-repeat="f in card.fields"
+        ng-hide="'owner,approver,% complete,risk status'.indexOf(f.title.toLowerCase()) >= 0">
+            <label>{{f.title}}:</label>
+            <div>{{f.value}}</div>
+            <img ng-src="{{f.imageUri}}" ng-show="f.imageUri">
+        </div>
+    </div>
+    <div class="card-footer clearfix">
+        <div class="pull-right">
+            <span ng-if="card.values['approver']" title="approver - {{card.values['approver']}}">
+                <ng-letter-avatar height="14" width="20" fontsize="12" charCount="2"
+                                  data="{{card.values['approver']}}"></ng-letter-avatar>
+            </span>
+        </div>
+        <div class="pull-left">
+            <span ng-if="card.values['owner']" title="owner - {{card.values['owner']}}">
+                <ng-letter-avatar height="14" width="20" fontsize="12" charCount="2"
+                                  data="{{card.values['owner']}}"></ng-letter-avatar>
+            </span>
+        </div>
+    </div>
+    <div class="card-footer clearfix">
+        <div class="pull-right" ng-if="card.values['next review date']">{{card.values['next review date']}}</div>
+        <div class="pull-left" ng-if="card.values['% completed']">{{card.values['% completed']}}</div>
+        <div class="pull-left" ng-if="card.values['risk status']">{{card.values['risk status']}}</div>
+    </div>
+</div>

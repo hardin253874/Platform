@@ -1,0 +1,243 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+.workflow-parameter-view-region {
+    .layout-container;
+    position: absolute;
+    top: 0;
+    left: 100%;
+    width: 50%;
+    height: 100%;
+    z-index: 1000;
+    background-color:transparent;
+    background-color: #f6f6f6;
+    transition: left 350ms linear;
+
+    &.open {
+        left: 50%;
+        padding-left:10px;
+        box-shadow: -2px 0 3px rgba(0,0,0,0.5);
+    }
+
+    &.zoomed {
+        position: fixed;
+        top: 10%;
+        left: 10%;
+        height: 80%;
+        width: 80%;
+        padding: 5px 5px 0;
+        background-color: @workflowpropertyBg;
+        box-shadow: 0 3px 8px rgba(0,0,0,.6);
+
+         button.icon-zoom {
+            width: 36px;
+            height: 34px;
+            margin: -6px -5px -8px 0;
+            border-radius:3px;
+            img{
+                margin-bottom:-1px;
+                margin-right:-1px;
+            }
+        }
+
+        .body {
+            table {
+                tr {
+                    line-height: 2em;
+                }
+            }
+        }
+
+        .footer {
+            margin: 0px -5px;
+            padding:10px;
+
+            button {
+                padding: 4px 12px;
+                img {
+                    margin:-2px 5px 0 -5px;
+                }
+            }
+        }
+    }
+}
+
+.workflow-chooser-view {
+    .layout-container;
+
+    button {
+        .btn_lighten;
+        padding: 1px 10px 3px;
+            }
+
+    .header {
+        background-color: @workflowpropertyBg;
+        padding: 5px;
+
+        label {
+            margin-bottom: inherit;            
+        }
+
+        input[type=text] {
+            border-radius: 10px;
+            outline: none;
+            padding: 0px 5px;
+            min-height:22px;
+            height: 20px;
+        }
+
+        button.icon-zoom {
+            background-color: transparent;
+            width: 40px;
+            height: 30px;
+            margin: -5px -6px -8px 0;
+            border-radius: 0;
+            border: none;
+
+            &:hover, &:focus {
+                background-color: darken(@workflowpropertyBg, 5%);
+                border: none;
+                outline: none;
+            }
+        }
+    }
+
+    .body {
+        .layout-container;
+        overflow: auto;
+        background-color: @workflowpropertyBg;
+        color: #666;
+
+        table {
+            tr {
+                cursor: default;
+                font-size: 0.9em;
+
+                &:nth-child(odd) {
+                    background-color: darken(@workflowpropertyBg, 2.5%);
+                }
+
+                &:hover {
+                    background-color: darken(@workflowpropertyBg, 10%);
+                    color: #414141;
+                }
+            }
+
+            thead {
+                border-bottom: 1px solid darken(@workflowpropertyBg, 25%);
+
+                & > tr {
+                    background-color: darken(@workflowpropertyBg, 18%)!important;
+                    font-weight: normal;
+                }
+            }
+        }
+    }
+
+    .footer {
+        text-align: right;
+        background-color: darken(@workflowpropertyBg, 20%);
+        padding: 5px 10px;
+        margin-left: -10px;
+
+        button {
+            .btn;
+            padding: 3px 10px 3px;
+        }
+
+        span {
+            float: left;
+            display: inline-block;
+
+            button {
+                .btn_lighten;
+                padding: 0 10px 3px;
+                img {
+                    margin:-2px 5px 0 -5px;
+                }
+            }
+        }
+    }
+}
+
+.workflow-expression-editor-view {
+    .layout-container;    
+
+    .header {
+        background-color: darken(@workflowpropertyBg, 5%);
+        padding: 0px;
+    }
+
+    .body {
+        .layout-container;
+        overflow: auto;
+        padding: 10px;
+        padding-left:0;
+        background-color:transparent;
+
+        button {
+            .btn_lighten;
+            padding: 3px 10px 6px;
+
+            &[title|="expression"] {
+                background-image: inherit;
+                background-position: left center;
+                background-repeat: no-repeat;
+                padding-left: 20px;
+            }
+
+            &[title="expression-parameter"] {
+                background-image: url(images/icon_parameter.png);
+            }
+
+            &[title="expression-function"] {
+                background-image: url(images/icon_function.png);
+            }
+
+            &[title="expression-property"] {
+                background-image: url(images/icon_property.png);
+            }
+
+            &[title="expression-record"] {
+                background-image: url(images/icon_record.png);
+            }
+        }
+        .error{color:#ff4343;}
+
+        .expression-editor-control{
+            height:100%;
+            .control-row{
+                height:50%;
+                .CodeMirror{
+                    height:100%;
+                }
+            }
+        }
+    }
+
+
+    .footer {
+        text-align: right;
+        background-color: darken(@workflowpropertyBg, 20%);
+        padding: 5px 10px;
+        margin-left: -10px;
+
+        button {
+            .btn;
+            padding: 0px 10px 3px;
+        }
+
+        span {
+            float: left;
+            display: inline-block;
+
+            button {
+                .btn_lighten;
+                padding: 0px 10px 3px;
+
+                img {
+                    margin:-2px 5px 0 -5px;
+                }
+            }
+        }
+    }
+}
+

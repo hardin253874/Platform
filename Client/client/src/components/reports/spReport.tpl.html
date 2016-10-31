@@ -1,0 +1,10 @@
+<div class="spreport-view" ng-class="{'sp-tablet-device': isTablet}">
+    <!-- Report header panel -->
+    <div class="reportHeaderRow" sp-include="'reports/spReportHeaderPanel.tpl.html'" ng-if="isReady"
+         ng-show="!model.hideActionBar"
+         sp-busy-indicator-popup="model.inlineEditBusy" ></div>
+
+    <div class="reportDataGridStyle" sp-busy-indicator-popup="model.gridBusyIndicator" ng-if="isReady">
+        <sp-data-grid grid-options="model.gridOptions"></sp-data-grid>
+    </div>
+</div>

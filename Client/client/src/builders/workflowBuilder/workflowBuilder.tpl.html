@@ -1,0 +1,138 @@
+<div class="workflow-builder-view">
+	
+
+    <div sp-layout class="layout-container" sp-busy-indicator-popup="busyIndicator">
+
+        <div class="layout-top">
+            <div class="workflow-header">
+                <div class="workflow-app-toolbar">
+                    <!--
+                        <button title="debug (will be removed), updateCount={{workflow.updateCount}}"
+                            ng-click="$broadcast('toolbar.clicked', 'debug')">
+                        <img src="assets/images/debug.png"/>
+                    </button>
+                        -->
+                    <button title="Run" ng-click="$broadcast('toolbar.clicked', 'run')" ng-disabled="!canRun()">
+                        <img src="assets/images/run.svg"/>
+                    </button>
+                    <button title="Delete" ng-click="$broadcast('toolbar.clicked', 'delete')">
+                        <img src="assets/images/delete.svg"/>
+                    </button>
+                    <button title="Undo" ng-click="$broadcast('toolbar.clicked', 'undo')">
+                        <img src="assets/images/undo.svg"/>
+                    </button>
+                    <button title="Redo" ng-click="$broadcast('toolbar.clicked', 'redo')">
+                        <img src="assets/images/redo.svg"/>
+                    </button>
+                    <button title="Properties" ng-click="$broadcast('toolbar.clicked', 'info')">
+                        <img src="assets/images/properties.svg"/>
+                    </button>
+                    <button title="Save" ng-click="$broadcast('toolbar.clicked', 'save')" ng-disabled="!canSave()">
+                        <img src="assets/images/save.svg"/>
+                    </button>
+                    <button title="Save As" ng-click="$broadcast('toolbar.clicked', 'saveas')">
+                        <img src="assets/images/toolbar_saveas.png"/>
+                    </button>
+                    <button title="Close" ng-click="$broadcast('toolbar.clicked', 'close')">
+                        <img src="assets/images/toolbar_close.png"/>
+                    </button>
+                </div>
+                <div class="workflow-title-bar">
+                    <div class="workflow-title">
+                        <sp-custom-validation-message ng-show="workflow.validationMessageStrings.length"
+                                                      messages="workflow.validationMessageStrings"></sp-custom-validation-message>
+                        <sp-custom-validation-message ng-show="workflow.serverValidationMessages.length"
+                                                      messages="workflow.serverValidationMessages"></sp-custom-validation-message>
+                        <span ng-show="hasNewerVersion">Superseded:</span>
+                        <sp-click-to-edit model="workflowName" edit-mode="nameEditMode" placeholder="enter name here"></sp-click-to-edit>
+
+                        <span class="dirty-{{!!navItem.isDirty()}}">*</span>
+                    </div>
+                    <!-- Zoom toolbar -->
+                    <div class="workflow-toolbar">
+                        <img src="assets/images/zoom.svg"/>
+
+                        <div class="inline-block" title="zoom out" ng-click="$broadcast('toolbar.clicked', 'zoomout')">
+                            <img src="assets/images/zoomout.svg"/>
+                        </div>
+
+                        <span title="click to reset zoom"
+                              ng-click="$broadcast('toolbar.clicked', 'zoomreset')">{{zoom * 100 | number:0}}%</span>
+
+                        <div class="inline-block" title="zoom in" ng-click="$broadcast('toolbar.clicked', 'zoomin')">
+                            <img src="assets/images/zoomin.svg"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layout-middle">
+
+            <div class="workflow-design-surface">
+                <div ng-controller="workflowDiagramController">
+
+                    <diagram-widget diagram="diagram" width="diagramWidth" height="diagramHeight" zoom="zoom"></diagram-widget>
+
+                    <div ng-if="showDebugDiagram" class="workflow-debug-pane">
+                        <em>developer tool... please ignore (click 'undo' toolbar to toggle)</em>
+                        <simple-diagram-widget diagram="diagram"></simple-diagram-widget>
+                    </div>
+
+                    <div ng-if="debugEntity && showDebugEntity" class="workflow-debug-pane">
+                        <em>developer tool... please ignore (click 'undo' toolbar to toggle)</em>
+
+                        <div>workflow: {{workflow.entity.debugString}}</div>
+                        <div>selected: {{workflow.selectedEntity.debugString}}</div>
+                        <div>updateCount: {{workflow.updateCount}}</div>
+                        <div>processState: {{workflow.processState}}</div>
+                        <div class="btn-link" ng-click="doProcess()">process workflow now</div>
+
+                        <div ng-include="'workflow/entityExplorer/entityExplorer.tpl.html'"></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="layout-bottom layout-animate" data-layout-height="{{propsViewHeight || 250}}" data-layout-closed-height="40"
+             ng-class="{'layout-open': showPropertiesPane}">
+
+            <div class="workflow-properties">
+
+                <div class="workflow-properties-header">
+                    <div class="inline-block icon-close" ng-click="toggleShowProperties()">
+                        <img ng-show="showPropertiesPane" src="assets/images/arrow_workflow.png"/>
+                        <img ng-hide="showPropertiesPane" src="assets/images/arrow_workflow.png"/>
+                    </div>
+                    <div class="inline-block entity-type-name">{{selectedEntityTypeName}}</div>
+                    <div class="inline-block properties-header">
+                        <sp-custom-validation-message messages="workflow.activities[workflow.selectedEntity.idP].validationMessages"></sp-custom-validation-message>
+
+                        <sp-workflow-field-input class="name-property"
+                                                 entity="workflow.selectedEntity" field="name"
+                                                 placeholder="click to edit name"
+                                                 changed="selectedEntityUpdated()"></sp-workflow-field-input>
+                        <sp-workflow-field-input class="description-property"
+                                                 entity="workflow.selectedEntity" field="description"
+                                                 placeholder="click to edit description"
+                                                 changed="selectedEntityUpdated()"></sp-workflow-field-input>
+                    </div>
+                </div>
+
+                <div class="workflow-properties-body" sp-auto-height>
+
+                    <sp-workflow-properties-form class="workflow-properties-form"
+                                                 workflow="workflow"></sp-workflow-properties-form>
+
+                    <!-- Slide in expression editor pane - controlled by the view region service -->
+                    <sp-view-region-container class="workflow-parameter-view-region"
+                                              region="workflow-properties-sidepanel"></sp-view-region-container>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+

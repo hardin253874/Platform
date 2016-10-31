@@ -1,0 +1,18 @@
+<div class="builder-Toolbox fb-toolbox">
+    
+    <div class="{{'fb-toolbox-header' + (mode === 'screen' ? ' fb-toolbox-screen' : ( mode === 'adminToolbox' ? ' fb-toolbox-admin' : ''))}}">
+        <h1>{{toolboxTitle}}</h1>
+        <h2><span>Readi</span> Builder</h2>
+    </div>
+
+    <uib-accordion class="fb-toolbox-accordion" close-others="false">
+        <uib-accordion-group ng-repeat="group in model.groups" is-open="group.isOpen" class="fb-toolbox-section" ng-hide="group.hidden">
+            <uib-accordion-heading>
+                <span onselectstart="return false;">{{group.name}}</span>
+            </uib-accordion-heading>
+
+            <div sp-include="group.template"></div>
+        </uib-accordion-group>
+    </uib-accordion>
+
+</div>

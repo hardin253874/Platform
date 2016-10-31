@@ -1,0 +1,28 @@
+<div class="editForm-view" ng-controller="allFormControlsController">
+	
+    
+    <h1>This is not a real page</h1>
+                                    
+     <p>This page list all of the render controls in the database and attempts to display them in view or edit modes.</p>
+
+    <table class="table">
+        <thead>
+            <th>File</th>
+            <th>Name</th>
+            <th>View Mode</th>
+            <th>Edit Mode</th>
+        </thead>
+        <tbody>
+            <tr ng-repeat="control in controlList">
+                <td>{{control._id._alias}}.tpl.html</td>
+                <td>{{control.name}}</td>
+                <td ng-repeat="viewMode in ['view', 'edit']">
+                    <div ng-init="isReadOnly = !(viewMode == 'edit')">
+                        <div ng-include="'editForm/partials/' + control._id._alias + '.tpl.html'"></div>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

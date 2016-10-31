@@ -1,0 +1,17 @@
+<div ng-switch='questionType'>
+    <div ng-switch-when='text'>
+        <sp-text-question question="question" answer="answer" is-read-only="::isReadOnly" />
+    </div>    
+    
+    <div ng-switch-when='numeric'>
+        <sp-numeric-question question="question" answer="answer" is-read-only="::isReadOnly" />
+    </div>    
+
+    <div ng-switch-when='singlechoice'>
+        <sp-choice-question question="question" answer="answer" is-read-only="::isReadOnly" />
+    </div>
+
+    <div ng-switch-when='multichoice'>
+        <sp-multi-choice-question question="question" answer="answer" is-read-only="::isReadOnly" />
+    </div>
+</div>

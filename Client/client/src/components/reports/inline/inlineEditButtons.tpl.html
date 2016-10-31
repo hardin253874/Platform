@@ -1,0 +1,11 @@
+<button ng-if="!model.isInlineEditing" class="btn-link" ng-click="enterInlineEditMode()" ng-disabled="model.isEditMode">
+    <img src="assets/images/16x16/edit.svg" />Edit Inline
+</button>
+<button ng-if="model.isInlineEditing" class="btn-link" ng-click="saveInlineEdits()"
+        title="Save Changes">
+    <img src="assets/images/16x16/save_inline.svg">Save Changes
+</button>
+<button ng-if="model.isInlineEditing" class="btn-link" ng-click="cancelInlineEdits()"
+        title="Discard Changes">
+    <img src="assets/images/16x16/discard_inline.svg">Discard Changes
+</button>

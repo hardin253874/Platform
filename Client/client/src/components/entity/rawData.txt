@@ -1,0 +1,54 @@
+﻿Notes on the raw data returned from the WebAPI
+
+ * It is all about an Entity that exists in the response from our version of the EntityInfo service.
+ * That data is a flattened out EntityData object graph to suit a JSON formatted exchange.
+ *
+ * The format of the entityData is expected to be { ids, entityRefs, entities }
+ * ids is an array of the int64 id of the root entity
+ * idRefs is an array of { id, ns, alias }
+ * entities is an array of { id, typeIds, fields, relationships }
+ * typeIds is an array of int64
+ * fields is an array of { fieldId, value, typeName }
+ * relationships is an array of { relTypeId, instances, isReverse, shouldDelete }
+ * instances is an array of { entity, relEntity }
+
+The following is from the TypeScript that was originally used.
+
+export interface RawEntityData {
+    ids: number[];
+    entities: RawEntity[];
+    entityRefs: RawEntityRef[];
+}
+
+export interface RawEntityRef {
+    id?: number;
+    ns?: string;
+    alias?: string;
+}
+
+export interface RawEntity {
+    id: number;
+    typeIds: number[];
+    fields: RawField[];
+    relationships: RawRelationshipType[];
+    dataState: number;
+}
+
+export interface RawField {
+    fieldId: number;
+    value: any;
+    typeName: string;
+}
+
+export interface RawRelationshipType {
+    relTypeId: RawEntityRef;
+    instances: RawRelationshipInstance[];
+    removeExisting?: bool;
+    isReverse?: bool;
+}
+
+export interface RawRelationshipInstance {
+    entity: number;
+    relEntity: number;
+    dataState: number;
+}

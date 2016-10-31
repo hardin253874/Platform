@@ -1,0 +1,6 @@
+<div class="analyzerButton-view">
+	
+    <button type="button" ng-click="analyzerButtonClick($event)" sp-analyzer-popup="model.popupOptions" ng-disabled="model.isInDesign">   
+        <div ng-class="{analyzerButtonNoFilters: !model.areAnalyzerFiltersActive, analyzerButtonActiveFilters: model.areAnalyzerFiltersActive}"></div>
+    </button>
+</div>

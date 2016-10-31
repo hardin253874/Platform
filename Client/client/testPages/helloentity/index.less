@@ -1,0 +1,190 @@
+
+/* apply a natural box layout model to all elements */
+*, *:before, *:after {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    overflow-y: hidden;
+}
+
+pre {
+    white-space: pre-wrap;
+}
+
+.full-height {
+    height: 100%;
+}
+
+.flex-column {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+}
+
+.flex-row {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+}
+
+.flex-row-wrap {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-flow: row wrap;
+    flex-flow: row wrap;
+}
+
+.flex-center {
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+}
+
+.flex-item {
+    -webkit-flex: 1 1 auto;
+    flex: 1 1 auto;
+}
+
+.panel {
+    margin: 4px;
+    padding: 5px;
+    border: 1px solid #cccc33;
+    border-radius: 3pt;
+}
+
+.app-layout {
+    .flex-column;
+
+    height: 100%;
+    width: 100%;
+    //background: #b2dfdb;
+
+    .main {
+        -webkit-flex: 1 1 auto;
+        flex: 1 1 auto;
+        overflow-y: auto;
+        min-height: 0px;
+
+        display: -webkit-flex;
+        display: flex;
+        -webkit-flex-direction: row;
+        flex-direction: row;
+    }
+
+    footer {
+        padding: 5px;
+        background-color: lightgrey;
+        min-height: 1.5rem;
+        color: #777;
+    }
+
+    header {
+        padding: 5px;
+        background-color: #31a89f;
+        min-height: 3rem;
+        img {
+            margin: 5px;
+        }
+    }
+
+    .main > .content {
+        .panel;
+        background: #fbe9e7;
+
+        -webkit-flex: 3 1 40%;
+        flex: 3 1 40%;
+        -webkit-order: 2;
+        order: 2;
+
+        overflow-y: auto;
+        min-height: 0;
+
+        //.flex-row;
+    }
+
+    .main > nav {
+        border-color: #8888bb;
+        //background: #535353;
+
+        -webkit-flex: 0 0 0;
+        flex: 0 0 0;
+        -webkit-order: 1;
+        order: 1;
+
+        transition: all 0.3s ease-out;
+
+        overflow-y: auto;
+        min-height: 0;
+
+        &.show-nav {
+            .panel;
+            -webkit-flex: 0 0 15rem;
+            flex: 0 0 15rem;
+        }
+    }
+
+    .main > aside {
+        .flex-column;
+        //background: #b2dfdb;
+        min-width: 10rem;
+
+        -webkit-flex: 1 6 30%;
+        flex: 1 6 30%;
+        -webkit-order: 3;
+        order: 3;
+
+    }
+}
+
+.toolbox-panel {
+    .flex-item;
+    -webkit-flex: 1 0 auto;
+    flex: 1 0 auto;
+    .panel;
+    overflow-y: auto;
+    min-height: 0;
+}
+
+.properties-panel {
+    .flex-item;
+    .panel;
+    overflow-y: auto;
+    min-height: 0;
+}
+
+.report-header {
+    padding: 5px;
+    margin-bottom: 2px;
+
+    > div {
+        font-weight: bold;
+        font-size: larger;
+        color: white;
+    }
+
+    > select {
+        width: 100%;
+    }
+}
+
+//.report-filter {
+//    > input {
+//        width: 100%;
+//    }
+//    padding: 5px;
+//}
+
+// import our app side variables
+// maybe we don't need this....
+//@import '../../src/less/variables';
+
+// Import the LESS for the components you are using
+@import '../../src/app/controls/spSearchControl/spSearchControl';
+

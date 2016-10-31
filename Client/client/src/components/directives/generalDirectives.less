@@ -1,0 +1,43 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+
+.sp-tool-box {
+    
+    img {
+        display: inline-block;
+        opacity: .7;
+        padding: 4px 3px;
+        color: @topMenu;
+
+        &:hover {
+            text-decoration: none;
+            opacity: 1;
+            background-color: rgba(0,0,0,0.1);
+
+        }
+    }
+}
+.directive {
+    margin: 5px 0 25px;
+
+    .spProgress {
+        height: 16px;
+        z-index: 99998;
+        background-color: @pointGreen;
+        border-radius: 5px;
+        border-bottom: 1px solid darken(@pointGreen, 10%);
+        box-shadow: 0 1px 0 lighten(@pointGreen, 10%) inset;
+        transition: all 0.5s ease-in-out;
+    }
+    /* Styling for the ngProgress-container */
+    .spProgress-container {
+        background-color: #f5f5f5;
+        box-shadow: 0 1px 2px #ccc inset;
+        border-radius: 6px;
+        width: 100%;
+    }
+
+    Progress {
+        opacity:.7;
+    }
+}
+

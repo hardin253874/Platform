@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Controls Test Page</title>
+    <link rel="stylesheet" type="text/css" href="../../lib/boilerplate/normalize.css"/>
+
+    <link rel="stylesheet/less" type="text/css" href="index.less"/>
+
+    <script>less = {env: 'development', rootpath: '../../src/assets/'};</script>
+    <script src="../../lib/less/less-2.5.0.min.js" type="text/javascript"></script>
+    <script>less.watch();</script>
+
+    <!-- IOS mobile support -->
+    <link rel="apple-touch-icon" href="../../src/assets/images/favicon.png">
+    <link rel="apple-touch-startup-image" href="../../src/assets/images/favicon.png">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, minimal-ui"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <!-- Chrome Android support -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <style>
+    </style>
+</head>
+
+<body ng-app="app">
+
+<header>header</header>
+<div class="main">
+    <div class="content" ng-controller="myController">
+
+        <div>{{myTitle}}</div>
+
+        <div class="search-control-container">
+            <sp-search-control sp-model="searchData"></sp-search-control>
+            <div class="sp-mobile-device">
+                <sp-search-control sp-model="searchData"></sp-search-control>
+            </div>
+            <input type="button" value="toggle isBusy" ng-click="searchData.isBusy=!searchData.isBusy"
+                   class="search-control-container-busy-button">
+        </div>
+
+    </div>
+    <nav>
+        <ul>
+            <li ng-repeat="n in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]">{{$index}}</li>
+            <li ng-repeat="n in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]">{{$index}}</li>
+            <li ng-repeat="n in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]">{{$index}}</li>
+        </ul>
+    </nav>
+</div>
+<div class="debug-pane" ng-show="showDebug">
+    <pre>{{debugString}}</pre>
+</div>
+<footer>
+    footer
+    <a href="#" class="debug-button"
+       ng-show="debugString" ng-click="showDebug=!showDebug">debug</a>
+</footer>
+
+<script src="../../src/components/utils/console.js"></script>
+<script src="../../lib/jquery/jquery.js"></script>
+<script src="../../lib/angular/angular.js"></script>
+<script src="../../lib/angular/angular-animate.js"></script>
+<script src="../../lib/bootstrap/js/bootstrap.js"></script>
+<script src="../../lib/lodash/lodash.js"></script>
+<script src="../../src/components/utils/spUtils.js"></script>
+
+<!--include any other source files you need here-->
+<script src="../../src/app/controls/spSearchControl/spSearchControl.js"></script>
+
+<!--the following includes support such as adding and finding angular templates-->
+<script src="../testPagesAppHelper.js"></script>
+
+<script>
+    'use strict';
+
+    angular.module('app', ['ngAnimate', 'testPagesAppHelper', 'app.controls.spSearchControl'])
+            .run(function (testPagesAppHelper) {
+                // add your app and component templates here...
+                // this is needed to get the paths correct since we aren't using the build system
+                testPagesAppHelper.basePath = '../../';
+                testPagesAppHelper.appTemplate('src/app/controls/spSearchControl/spSearchControl.tpl.html');
+            })
+            .factory('spDebug', function ($rootScope) {
+                var debugFn = function (message) {
+                    $rootScope.debugString = ($rootScope.debugString || '') + message;
+                    if ($rootScope.debugString.length > 1000) {
+                        $rootScope.debugString = $rootScope.debugString.substr($rootScope.debugString.length - 500);
+                    }
+                };
+
+                debugFn.isEmpty = function () {
+                    return !$rootScope.debugString;
+                };
+
+                return debugFn;
+            })
+            .controller('myController', function ($scope, spDebug) {
+                $scope.myTitle = 'hello world';
+                $scope.searchData = {value: '', isBusy: false};
+            });
+</script>
+
+</body>
+</html>

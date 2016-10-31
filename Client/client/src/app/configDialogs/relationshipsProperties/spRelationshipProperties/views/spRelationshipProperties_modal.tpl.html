@@ -1,0 +1,74 @@
+<div class="sp-relationship-properties-modal" sp-busy-indicator-popup="model.busyIndicator" sp-moveable-modal sp-set-focus-dialog-input>
+
+    <form name="form">
+        <div class="modal-header">
+            <h6>{{model.ui.dialogTitle}}</h6>
+        </div>
+        <div class="modal-body overflowModalBody">
+            <!-- base properties -->
+            <div ng-if="controlsLoaded" ng-include="'configDialogs/relationshipsProperties/spRelationshipProperties/views/spRelationshipBaseProperties.tpl.html'"></div>
+
+            <!-- relationship type -->
+            <button class="btn_lighten option" ng-click="toggleSection('relType');">
+                <img ng-src="{{relTypeToggleImageUrl}}"/>Relationship Type
+            </button><br/>
+            <div uib-collapse="isRelTypeSectionCollapsed">
+                <span ng-if="controlsLoaded" ng-include="'configDialogs/relationshipsProperties/spRelationshipProperties/views/spRelationshipTypeProperties.tpl.html'"></span>
+            </div>
+
+            <!-- ownership -->
+            <div ng-if="model.ui.relCardinality !== 'manyToMany'">
+                <button class="btn_lighten option" ng-click="toggleSection('ownership');">
+                    <img ng-src="{{ownershipToggleImageUrl}}"/> Ownership
+                </button>
+                <div uib-collapse="isOwnershipSectionCollapsed">
+                    <span ng-if="controlsLoaded" ng-include="'configDialogs/relationshipsProperties/spRelationshipProperties/views/spRelOwnershipProperties.tpl.html'"></span>
+                </div>
+            </div>
+
+            <!-- security -->
+            <button class="btn_lighten option" ng-click="toggleSection('security');">
+                <img ng-src="{{securityToggleImageUrl}}"/> Security
+            </button><br/>
+            <div uib-collapse="isSecuritySectionCollapsed">
+                <span ng-if="controlsLoaded" ng-include="'configDialogs/relationshipsProperties/spRelationshipProperties/views/spRelationshipSecurityProperties.tpl.html'"></span>
+            </div>
+
+            <!-- general -->
+            <button class="btn_lighten option" ng-click="toggleSection('general');">
+                <img ng-src="{{generalToggleImageUrl}}"/>Options
+            </button>
+            <div uib-collapse="isGeneralSectionCollapsed">
+                <uib-tabset class="tabarea">
+                    <uib-tab heading="Form Detail" ng-if="options.isFormControl && !options.showInReverse" active="model.isControlTabActive" ng-click="model.isControlTabActive = true">
+                        <div class="tab-container">
+                            <span ng-if="controlsLoaded" ng-include="'configDialogs/relationshipsProperties/spRelationshipProperties/views/spRelFormProperties.tpl.html'"></span>
+                        </div>
+                    </uib-tab>
+                    <uib-tab heading="Object Detail" active="model.isRelDetailTabActive" ng-click="model.isRelDetailTabActive = true">
+                        <div class="tab-container">
+                            <span ng-if="controlsLoaded" ng-include="'configDialogs/relationshipsProperties/spRelationshipProperties/views/spRelDefinitionProperties.tpl.html'"></span>
+                        </div>
+                    </uib-tab>
+                    <uib-tab heading="Format" ng-if="options.isFormControl && !options.showInReverse">
+                        <div class="tab-container">
+                            <span ng-if="controlsLoaded" ng-include="'configDialogs/relationshipsProperties/spRelationshipProperties/views/spRelationshipFormatProperties.tpl.html'"></span>
+                        </div>
+                    </uib-tab>
+                </uib-tabset>
+            </div>
+        </div>
+
+        <!-- errors -->
+        <div class="has-error" ng-show="!model.isFormValid && model.errors && model.errors.length > 0">
+            <ul ng-repeat="error in model.errors">
+                <li>{{error.msg}}</li>
+            </ul>
+        </div>
+
+        <span class="modal-footer">
+            <button class="btn" ng-click="ok()">OK</button><button class="btn" ng-click="cancel()">Cancel</button>
+        </span>
+    </form>
+</div>
+

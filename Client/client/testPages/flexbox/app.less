@@ -1,0 +1,142 @@
+
+.properties-panel {
+  input, textarea, label, select {
+    width: 100%;
+  }
+}
+
+.toolbox-panel {
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  li {
+    text-decoration: underline;
+
+    &.selected {
+      background-color: #79d16b;
+    }
+  }
+}
+
+.depth-0 {
+}
+
+.depth-1 {
+}
+
+.depth-2 {
+}
+
+.depth-3 {
+}
+
+.item {
+  &:hover {
+    background-color: lightyellow;
+  }
+  overflow: auto;
+
+  &.selected {
+    background-color: lightcyan;
+  }
+
+  .title {
+    width: 100%;
+    text-align: center;
+  }
+
+}
+
+.report {
+  padding: 5px;
+  min-height: 100px;
+  min-width: 100px;
+
+  .title {
+    font-size: 1.5rem;
+    text-align: left;
+    margin-bottom: 10px;
+  }
+
+  table {
+    width: 100%;
+    font-family: verdana,arial,sans-serif;
+    font-size:11px;
+    color:#333333;
+    border-width: 1px;
+    border-color: #666666;
+    border-collapse: collapse;
+  }
+  table th {
+    border-width: 1px;
+    padding: 8px;
+    border-style: solid;
+    border-color: #666666;
+    background-color: #dedede;
+  }
+  table td {
+    border-width: 1px;
+    padding: 8px;
+    border-style: solid;
+    border-color: #666666;
+    background-color: #ffffff;
+  }
+}
+
+.chart {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  min-height: 50px;
+  min-width: 100px;
+
+  .the-chart {
+    flex: 1 1 100%;
+  }
+}
+
+.form {
+  padding: 5px;
+  min-height: 2rem;
+  min-width: 100px;
+
+  .title {
+    font-size: 1.5rem;
+    text-align: left;
+    margin-bottom: 10px;
+  }
+
+  label {
+    min-width: 10rem;
+  }
+}
+
+.action {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  button {
+    height: 50px;
+    width: 50px;
+
+    img {
+      height: 35px;
+    }
+  }
+}
+
+.hero,.hero2 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .hero-main {
+    font-size: 40px;
+  }
+}
+

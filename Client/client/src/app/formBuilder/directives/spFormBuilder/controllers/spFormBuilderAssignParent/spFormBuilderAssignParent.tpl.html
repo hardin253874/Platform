@@ -1,0 +1,38 @@
+<div class="sp-form-builder-assign-parent" sp-moveable-modal sp-set-focus-dialog-input>
+
+    <div class="modal-header">
+        <h6>Assign Parent</h6>
+    </div>
+    <div class="modal-body overflowModalBody">
+        <div style="display:table">
+            <div style="display:table-row" title="row">
+                <div style="display:table-cell" title="field-title">Parent Element:</div>
+                <div style="display:table-cell">
+                    <select ng-model="model.selectedParent" ng-options="p.id as p.text for p in model.parents"></select>
+                </div>
+                <div style="display:table-cell">
+                    <button class="btn_lighten" style="min-height:27px; margin-left:3px;" ng-click="clearParent()"><img src="assets/images/icon_remove.png" uib-tooltip="Clear" tooltip-trigger tooltip-placement="top" /></button>
+                </div>
+            </div>
+            <!--<div style="display:table-row">
+                <div style="display:table-cell">Parent Column:</div>
+                <div style="display:table-cell">TODO</div>
+            </div>-->
+            <div style="display:table-row" title="row">
+                <div style="display:table-cell" title="field-title">Parent Object:</div>
+                <div style="display:table-cell">{{getParentTypeName(model.selectedParent)}}</div>
+            </div>
+            <div style="display:table-row" title="row">
+                <div style="display:table-cell" title="field-title">Child Element:</div>
+                <div style="display:table-cell">{{model.targetName}}</div>
+            </div>
+            <div style="display:table-row" title="row">
+                <div style="display:table-cell" title="field-title">Child Object:</div>
+                <div style="display:table-cell">{{model.targetTypeName}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn" ng-click="ok()">OK</button><button type="button" class="btn" ng-click="cancel()">Cancel</button>
+    </div>
+</div>

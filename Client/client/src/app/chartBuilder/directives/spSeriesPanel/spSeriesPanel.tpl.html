@@ -1,0 +1,100 @@
+<div class="box series-panel">
+
+
+    <button class="add" ng-click="addSeries()"><img src="assets/images/icon_add_w.png"/> Add Series</button>
+
+    <uib-accordion close-others="false">
+        <uib-accordion-group ng-repeat="series in spChartService.getSeriesOrdered(model.chart)"
+                             is-open="isOpen[series.idP]" test-series="{{getSeriesName(series)}}">
+            <!-- Series header -->
+            <uib-accordion-heading>
+                <div sp-draggable-data="svc.getSeriesDragData(model, series)" sp-draggable="dragOptions"
+                     sp-droppable-data="svc.getSeriesDropData(model, series)" sp-droppable="dropOptions">
+                    <span class="ui-icon fb-inline"
+                          ng-class="{'ui-icon-triangle-1-e': !isOpen[series.idP], 'ui-icon-triangle-1-s': isOpen[series.idP]}"></span>
+                    <!-- Name -->
+                    <sp-editable-label value="sp.asProp(getSeriesName, setSeriesName, series).value"
+                                       placeholder="'series123'"></sp-editable-label>
+
+                    <div class="series-icons">
+                        <div uib-dropdown class="dropdown pull-right charttype-dropdown series-icons-div"
+                             is-open="isChartTypeOpen" ng-click="onChartTypeClick($event)">
+                            <!-- Chart Type -->
+                            <img uib-dropdown-toggle src="assets/images/chartType.png" class="dropdown-toggle"/>
+                            <!-- Delete -->
+                            <img src="assets/images/icon_remove.png" ng-click="removeSeries(series)"/>
+                            <!-- Chart Type drop down-->
+                            <div uib-dropdown-menu class="dropdown-menu">
+                                <sp-chart-types
+                                        chart-type="sp.asProp(getChartType, setChartType, series).value"></sp-chart-types>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </uib-accordion-heading>
+
+            <!-- Content area -->
+            <!-- Targets -->
+            <div style="display:table; width:100%">
+                <div ng-repeat="cst in spChartService.getChartSourceTypes()" ng-show="cst.displayCt(series.chartType)"
+                     style="display:table-row" test-target="{{cst.name}}">
+                    <!-- Target -->
+                    <label style="width:30%; display:table-cell; white-space:nowrap; vertical-align:top; color:#666;">{{cst.name}}</label>
+                    <div style="display:table-cell; text-align:right;">
+                        <div ng-show="svc.getSourceInfo(model, series, cst)==null"
+                             sp-draggable-data="svc.getCstDragData(model, series, cst)" sp-draggable="dragOptions"
+                             sp-droppable-data="svc.getCstDropData(model, series, cst)" sp-droppable="dropOptions"
+                             class="dropArea" style="text-align:left;">
+                        </div>
+
+                        <div ng-show="svc.getSourceInfo(model, series, cst)!=null"
+                             sp-draggable-data="svc.getCstDragData(model, series, cst)" sp-draggable="dragOptions"
+                             sp-droppable-data="svc.getCstDropData(model, series, cst)" sp-droppable="dropOptions"
+                             class="chartSource" style="text-align:left;">
+                            <div style="display:table; margin:0; padding:0; width:100%">
+                                <div style="display:table-row; margin:0; padding:0">
+                                    <div class="itemicon" style="margin:0;vertical-align: middle;">
+                                        <!-- Field type icon -->
+                                        <img ng-src="{{sp.convertTypeToImageUrl(svc.getSourceInfo(model, series, cst).type, svc.getSourceInfo(model, series, cst).cardinality)}}"/>
+                                    </div>
+                                    <div style="display:table-cell; margin:0; padding:0;vertical-align: middle;">
+                                        <span style="float:right"
+                                              ng-show="sp.asProp(isAggregate, null, series, cst).value"><img class="agg"
+                                                                                                             src="assets/images/relationship_summary_darken.png"
+                                                                                                             alt="Summary"/></span>
+                                        <!-- Field type name -->
+                                        <span class="itemname">{{svc.getSourceInfo(model, series, cst).name}}</span>
+                                    </div>
+                                    <div style="display:table-cell; width:20px; margin:0; padding:0;vertical-align: middle;">
+                                        <!-- Field type icon -->
+                                        <img class="sourceicon" src="assets/images/chartsource_arrow.png"
+                                             sp-context-menu-trigger="leftclick"
+                                             sp-context-menu="sp.asProp(getSourceContextMenu, null, series, cst).value"
+                                             ng-if="showSourceOptions(series, cst)"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display:table-cell; vertical-align:top; width:27px;text-align:right; padding-left:2px;">
+                        <button class="btn_lighten" style="vertical-align:top; width:25px; padding:3px 0;"
+                                ng-click="showProps(series, cst)" ng-show="cst.hasProps"><img
+                                src="assets/images/icon_property.png"/></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Axis sharing -->
+            <div ng-hide="series === firstSeries()" style="display:table; width:100%; margin-top:5px;"
+                 class="axis-sharing">
+                <div style="display:table-cell; width:50%"><input type="checkbox"
+                                                                  ng-model="sp.asProp(getSharedAxis, setSharedAxis, series, 'primaryAxis').value">Share
+                    primary</input></div>
+                <div style="display:table-cell; width:50%"><input type="checkbox"
+                                                                  ng-model="sp.asProp(getSharedAxis, setSharedAxis, series, 'valueAxis').value">Share
+                    values</input></div>
+            </div>
+        </uib-accordion-group>
+    </uib-accordion>
+
+</div>

@@ -1,0 +1,28 @@
+<form name="form" class="editForm" ng-controller="editFormController" test-id="{{model.formData.id()}}" >
+    
+    <div class="editForm-config-panel" ng-if="nav.isFullEditMode && formMode === 'view'" >
+        <!--<span class="ui-icon ui-icon-lightgray ui-icon-wrench editForm-config-panel-button editForm-config-panel-button-light ui-icon-hover-darkgray" ng-click="configureForm()"></span>       -->
+        <img src="assets/images/icon_configure_w.png" class="editForm-config-panel-button editForm-config-panel-button-light" sp-context-menu-trigger="leftclick" sp-context-menu="model.configContextMenu" sp-context-menu-append-to-body>    
+    </div>
+    
+    <sp-applicable-tasks record-id="(model.taskInfo.taskId || model.formControl.displayTasks) && model.formData.idP"
+                         task-id="model.taskInfo.taskId"
+                         task-list='model.taskInfo.taskList'
+                         navigate-as-child="!model.returnOnCompletion"
+                         return-on-completion="true"
+                         before-transition="saveIfEditing()"></sp-applicable-tasks>
+
+    
+    <span class="form-title" ng-if="!isMobile">{{model.formTitle}}</span>
+
+    <sp-custom-edit-form
+        form-data="model.formData" form-control="model.formControl" form-theme="model.consoleTheme" form-mode="formMode" 
+        
+        request-strings="requestStrings" 
+        is-in-test-mode="isInTestMode"
+        pager-options="pagerOptions">
+        
+    </sp-custom-edit-form>
+
+</form>
+

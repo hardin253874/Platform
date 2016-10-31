@@ -1,0 +1,104 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+.login-layout-view {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('../assets/images/backgroundLogin.jpg') no-repeat left top #4e4e50;
+    background-size: cover;
+
+    .login-top {
+    }
+
+    .login-view {
+        position: absolute;
+        right: 0;
+        top: 0;
+        text-align: center;
+        bottom: 0;        
+        background: url('../assets/images/home_bg.png') repeat top left #fff;
+        padding: 90px 60px 0 60px;
+        overflow: auto;
+
+
+        .sp-mobile-device & {
+            left: 0;
+            padding: 20px;
+        }
+
+        .content {
+            margin: 0 auto;
+            display: inline-block;
+            width: 312px;
+
+            .sp-mobile-device & {
+                display: block;
+                min-width: inherit;
+                width: 100%;
+            }
+
+            .sp-tablet-device & {
+                margin-top: 15%;
+                display: block;
+                padding-bottom: 30px;
+            }
+        }
+
+        .floatClear {
+            clear: both;
+        }
+
+        .content-div {
+            & > h1 {
+                font-size: x-large;
+                margin-bottom: 25px;
+                color: @topBg;
+            }
+        }
+
+        &.ng-hide-remove {
+            transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 1s;
+            display: block !important;
+            opacity: 0;
+
+            &.ng-hide-remove-active {
+                opacity: 1;
+            }
+        }
+
+        .poweredby {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 30px;
+            display: inline-block;
+            text-align: center;
+            background-color: rgba(0,0,0,0.07);
+            display:none !important;
+
+
+            .sp-mobile-device & {
+                position: initial;
+                display: block;
+                background-color: transparent;
+                margin-top: 20px;
+            }
+
+            span {
+                display: block;
+                font-size: 11px;
+                margin-bottom: 10px;
+                color: #777;
+                letter-spacing: 0.1em;
+            }
+
+            img {
+                height: 20px;
+                display: inline-block;
+            }
+        }
+    }
+
+}

@@ -1,0 +1,26 @@
+<div class="fb-popover-fields">
+	
+    <uib-accordion close-others="true">
+        <uib-accordion-group ng-repeat="popoverGroup in model.popoverGroups" is-open="popoverGroup.isOpen">
+            <uib-accordion-heading>
+                <div>
+                    <span class="ui-icon fb-inline" ng-class="{'ui-icon-triangle-1-e': !popoverGroup.isOpen, 'ui-icon-triangle-1-s': popoverGroup.isOpen}"></span>
+                    <span onselectstart="return false;">{{popoverGroup.name}}</span>
+                </div>
+            </uib-accordion-heading>
+            
+            <table style="width: 100%">
+                <tr class="fb-field" ng-repeat="field in popoverGroup.fields">
+                    <td sp-draggable sp-draggable-data="field">
+                        <div>
+                            <div class="fb-inline fb-middle fb-icon" style="background-image: url('{{field.icon}}'); background-repeat: no-repeat; background-position-x: center; background-position-y: center; margin: 0.3em"></div>    
+                            <div class="fb-inline fb-middle">{{field.name}}</div>        
+                        </div>
+                        
+                    </td>
+                </tr>
+            </table>
+            
+        </uib-accordion-group>
+    </uib-accordion>
+</div>

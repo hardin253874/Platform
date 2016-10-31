@@ -1,0 +1,83 @@
+﻿<div class="applicationToolbox">
+
+    <div class="builder-ToolBar">
+        <button class="builder-ToolBar-Close" ng-click="onCancelClick()" uib-tooltip="Close" tooltip-trigger tooltip-placement="left">
+            <img src="assets/images/toolbar_close.png" />
+        </button>
+    </div>
+    <h2>Administration</h2>
+    <div style="display: table; width: 100%;">
+
+        <div style="display: table-cell; vertical-align:top">
+            <h5 style="margin-right:3px;">Quick Links</h5>
+            <div class="quicklinkArea">
+                <div>
+                    <!-- Resource links-->
+                    <div class="quicklinkHeader"><img src="assets/images/icon_resource.png" />Resources</div>
+                    <ul>
+                        <li ng-repeat="i in model.resourcesLinks | orderBy:i.order" ng-show="!i.hidden"><a ng-href="" ng-click="linkClicked(i.link)">{{i.text}}</a></li>
+                    </ul>
+
+                </div>
+                <div>
+                    <!-- Settings links-->
+                    <div class="quicklinkHeader"><img src="assets/images/icon_setting.png" />Settings</div>
+                    <ul>
+                        <li ng-repeat="i in model.settingsLinks | orderBy:i.order" ng-show="!i.hidden"><a ng-href="" ng-click="linkClicked(i.link)">{{i.text}}</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <!-- Security links-->
+                    <div class="quicklinkHeader"><img src="assets/images/icon_secure.png" />Security</div>
+                    <ul>
+                        <li ng-repeat="i in model.securityLinks | orderBy:i.order" ng-show="!i.hidden"><a ng-href="" ng-click="linkClicked(i.link)">{{i.text}}</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <!-- Workflow links-->
+                    <div class="quicklinkHeader"><img src="assets/images/icon_workflows.png" />Workflows</div>
+                    <ul>
+                        <li ng-repeat="i in model.workflowsLinks | orderBy:i.order" ng-show="!i.hidden"><a ng-href="" ng-click="linkClicked(i.link)">{{i.text}}</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <!-- Application links-->
+                    <div class="quicklinkHeader"><img src="assets/images/icon_application.png" />Applications</div>
+                    <ul>
+                        <li ng-repeat="i in model.applicationLinks | orderBy:i.order" ng-show="!i.hidden"><a ng-href="" ng-click="linkClicked(i.link)">{{i.text}}</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <!-- Tools links-->
+                    <div class="quicklinkHeader"><img src="assets/images/icon_tool.png" />Audit</div>
+                    <ul>
+                        <li ng-repeat="i in model.toolsLinks | orderBy:i.order" ng-show="!i.hidden"><a ng-href="" ng-click="linkClicked(i.link)">{{i.text}}</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <!-- Application links-->
+                    <div class="quicklinkHeader"><img src="assets/images/integration.png" />Integration</div>
+                    <ul>
+                        <li ng-repeat="i in model.integrationsLinks | orderBy:i.order" ng-show="!i.hidden"><a ng-href="" ng-click="linkClicked(i.link)">{{i.text}}</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <!-- Tools links-->
+                    <div class="quicklinkHeader"><img src="assets/images/survey.png" />Surveys</div>
+                    <ul>
+                        <li ng-repeat="i in model.surveysLinks | orderBy:i.order" ng-show="!i.hidden"><a ng-href="" ng-click="linkClicked(i.link)">{{i.text}}</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div style="display: table-cell;width:10px;"></div>
+        <div class="getting-started-box">
+            <h5>Help & Support</h5>
+            <ul>
+                <li><a><img src="assets/images/getstart_videos.png" />Videos & Tutorials</a></li>
+                <li><a><img src="assets/images/getstart_documentation.png" />Documentation</a></li>
+                <li><a><img src="assets/images/getstart_contactsupport.png" />Contact Support</a></li>
+            </ul>
+        </div>
+    </div>
+</div>

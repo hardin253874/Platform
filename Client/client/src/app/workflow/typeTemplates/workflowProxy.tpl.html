@@ -1,0 +1,23 @@
+<div ng-controller="sp.workflow.activityController">
+	
+    <div ng-controller="workflowProxyController">
+
+        <div class="workflow-expression-control">
+
+            <label class="control-label" title="{{workflowToProxyField.description}}">{{workflowToProxyField.name}}</label>
+
+            <input type="text" ng-model="entity.workflowToProxy.name" ng-readonly="true"/>
+
+            <sp-parameter-expression-context-menu tools="resourceChooser"></sp-parameter-expression-context-menu>
+
+        </div>
+        
+        <div class="form-horizontal divide">
+            <div class="form-group" ng-repeat="p in activityParameters">
+                <sp-workflow-expression-control parameter="p" show-label="true" actions="parameterChooser,exprEditor"></sp-workflow-expression-control>
+            </div>
+        </div>
+    
+    </div>
+</div>
+

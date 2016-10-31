@@ -1,0 +1,14 @@
+<div class="refreshbutton-view">
+    <button class="btn refreshButton" ng-click="onRefreshClicked()"
+            ng-disabled="options.disabled || model.isInDesign">
+        <img ng-src="assets/images/toolbar_reload.png"
+             src="assets/images/toolbar_reload.png">{{model.selectedMenuItem.buttonText}}
+    </button>
+    <button class="btn refreshButton" ng-disabled="options.disabled || model.isInDesign"
+            sp-context-menu="model.contextMenu"
+            sp-context-menu-trigger="leftclick"
+            sp-context-menu-placement="alignleft"
+            sp-context-menu-append-to-body>
+        <img src="assets/images/arrow_navsection_closed.png" ng-disabled="model.isInDesign" name="viewmore">
+    </button>
+</div>

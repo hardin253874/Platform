@@ -1,0 +1,22 @@
+﻿<div class="spNavContainerPicker-view">
+    <div class="spNavContainerPicker-body">
+        <input class="spNavContainerPicker-input"
+               ng-model="$ctrl.selectedContainerPath"
+               ng-click="$ctrl.onBrowseClick()"
+               readonly="readonly"/>
+        <button class="spNavContainerPicker-button"
+                ng-click="$ctrl.onBrowseClick()"
+                uib-popover="Browse"
+                popover-trigger="mouseenter"
+                popover-placement="top">
+            <img src="assets/images/icon_edit.png"/>
+        </button>
+        <button class="spNavContainerPicker-button"
+                ng-click="$ctrl.onClearClick()"
+                uib-popover="Clear"
+                popover-trigger="mouseenter"
+                popover-placement="top">
+            <img src="assets/images/icon_remove.png"/>
+        </button>
+    </div>
+</div>

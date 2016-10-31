@@ -1,0 +1,26 @@
+<div class="report-Builder-Page  container-fluid"  ng-controller="reportBuilderPageController">      
+	
+       <div class="report-Builder-ToolBar">
+                <!--<span style="display: inline-block">Report id: {{reportId}}</span>-->
+                <button ng-click="reloadReportEntity()" ng-show="reportBuilderModel.reportEntity" title="Reload"><img src="assets/images/toolbar_reload.png" /><span>Reload</span></button>    
+                <button ng-click="updateReportProperty()" ng-show="reportBuilderModel.reportEntity" title="Properties"><img src="assets/images/toolbar_property.png" /><span>Properties</span></button>            
+                <button ng-click="saveReportEntity()"  ng-show="reportBuilderModel.reportEntity" title="Save" ng-disabled="isSavingReport"><img src="assets/images/toolbar_save.png" /><span>Save</span></button>
+                <button ng-click="saveAsReportEntity()" ng-show="reportBuilderModel.reportEntity" title="Save As"><img src="assets/images/toolbar_saveas.png" /><span>Save As</span></button>
+                <button ng-click="close()" ng-show="reportBuilderModel.reportEntity" title="Close"><img src="assets/images/toolbar_close.png" /></button>
+               <!-- <button ng-click="createReport()" ng-show="reportModel">Create Report</button>-->
+        </div>
+       <div class="report-header">
+           <h1 ng-style="consoleThemeModel.titleStyle">
+               <sp-editable-label value="reportName" pre-update-callback="isValidReportName" update-callback="reportRenamed" key-down-callback="validateinput" change-callback="changeValidate"></sp-editable-label>                 
+           </h1>   
+            <div class="description">{{reportDescription}}</div>                    
+        </div>
+        <div sp-busy-indicator-popup="reportBuilderModel.gridBusyIndicator" class="report-content">        
+            <sp-report options="reportBuilderModel.reportOptions" ng-show="reportBuilderModel.reportEntity"></sp-report>
+        </div>
+        <div class="report-footer">        
+                
+        </div>
+       
+    
+</div>

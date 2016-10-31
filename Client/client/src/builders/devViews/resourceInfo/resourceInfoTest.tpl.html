@@ -1,0 +1,66 @@
+<div ng-controller="resourceInfoTestController">                            
+	
+
+    <h3>Type Inheritance</h3>
+    <b>Type id: </b><input type="text" ng-model="entityType"/>
+    
+    <div style="color:red">{{message}}</div>
+    
+    <h5>{{name}}</h5>
+    <div>{{description}}</div>
+
+    <uib-accordion close-others="false">
+        
+        <uib-accordion-group heading="Fields">
+            <h5>Fields:</h5>
+            <ul>
+                <li ng-repeat="f in fields">{{f.getName()}}</li>
+            </ul>
+        </uib-accordion-group>
+
+        <uib-accordion-group heading="Relationships">
+            <h5>Lookups:</h5>
+            <ul>
+                <li ng-repeat="f in lookups">{{f.getName()}} <em>{{f.isReverse() ? '(rev)' : ''}}</em></li>
+            </ul>
+
+            <h5>Relationships:</h5>
+            <ul>
+                <li ng-repeat="f in relationships">{{f.getName()}} <em>{{f.isReverse() ? '(rev)' : ''}}</em></li>
+            </ul>
+
+            <h5>Choice Fields:</h5>
+            <ul>
+                <li ng-repeat="f in choiceFields">{{f.getName()}} <em>{{f.isReverse() ? '(rev)' : ''}}</em></li>
+            </ul>
+        </uib-accordion-group>
+
+        <uib-accordion-group heading="Field Groups">
+            <div ng-repeat="fg in fieldGroups">
+                <h5>{{fg.getName()}}</h5>
+                <ul>
+                    <li ng-repeat="f in fg.getAllMembers()">{{f.getName()}} <em>{{f.isReverse() ? '(rev)' : ''}}</em></li>
+                </ul>                
+            </div>
+        </uib-accordion-group>
+
+        <uib-accordion-group heading="Inheritance">
+            <h5>Ancestors (and self):</h5>
+            <ul>
+                <li ng-repeat="t in ancestors">{{t.getName()}}</li>
+            </ul>
+
+            <h5>Derived types (and self):</h5>
+            <ul>
+                <li ng-repeat="t in derivedTypes">{{t.getName()}}</li>
+            </ul>
+        </uib-accordion-group>
+
+    </uib-accordion>
+    
+
+    
+    
+    
+
+</div>

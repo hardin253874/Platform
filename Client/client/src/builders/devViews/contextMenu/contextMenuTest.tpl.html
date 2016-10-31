@@ -1,0 +1,17 @@
+<div ng-controller="contextMenuTestController">
+	
+    Disable Menu Items: <input type="checkbox" ng-model="disableMenuItems"/>
+    Placement: <select ng-model="placement" ng-options="p for p in placements"></select>
+    Trigger: <select ng-model="trigger" ng-options="t for t in triggers"></select>
+    <h3>Show Context Menu - Button</h3>
+    Is Open: {{isMenu1Open}}
+    <br/>
+    <button sp-context-menu="contextMenu" sp-context-menu-placement="{{placement}}" sp-context-menu-trigger="{{trigger}}" sp-context-menu-is-open="isMenu1Open">Click Me</button>
+    <br/>    
+
+    <h3>Show Context Menu - Div</h3>
+    Is Open: {{isMenu2Open}}
+    <div style="width:500px;height:500px;background-color:skyblue;text-align: center" sp-context-menu="contextMenu" sp-context-menu-placement="{{placement}}" sp-context-menu-trigger="{{trigger}}" sp-context-menu-is-open="isMenu2Open">
+        <span>Click Me</span>
+    </div>            
+</div>

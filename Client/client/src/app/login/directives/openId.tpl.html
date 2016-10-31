@@ -1,0 +1,215 @@
+<div class="openid" ng-show="model.showSignin">    
+
+    <div class="fade-frame">        
+
+        <h4 ng-show="spMobileContext.isMobile" style="margin: 15px 15px 0">Login</h4>                        
+
+        <div class="openid-providerDetails fade-animate">
+            <form name="spForm" novalidate ng-submit="loginClick()" ng-if="!(model.changingPassword || model.forgetPasswordEmail || model.resetPassword)">
+
+                <img src="assets/images/logo_RN_login.svg" class="provider-logo" />                
+
+                <div class="floatClear"></div>
+
+                <span class="formattedLine" ng-class="{disabledOpacity: !model.isReadiNowIdentityProvider}">
+                    <span class="login-indicator"><img src="assets/images/loginUser.svg" /></span>
+                    <input id="username" class="input-large" type="text" name="username" placeholder="Username" ng-model="model.username" ng-required="model.isReadiNowIdentityProvider" ng-disabled="!model.isReadiNowIdentityProvider"/>
+                </span>
+
+                <div class="floatClear"></div>
+
+                <div class="custom-error" ng-show="spForm.username.$dirty && spForm.username.$invalid && model.isReadiNowIdentityProvider">
+                    <span ng-show="spForm.username.$error.required">Username is required.</span>
+                </div>
+
+                <span class="formattedLine" ng-class="{disabledOpacity: !model.isReadiNowIdentityProvider}">
+                    <span class="login-indicator"><img src="assets/images/loginPassword.svg" /></span>
+                    <input class="input-large" type="password" name="password" placeholder="Password" ng-model="model.password" ng-disabled="!model.isReadiNowIdentityProvider"/>
+                </span>
+
+                <div class="floatClear"></div>                                
+
+                <span class="formattedLine">
+                    <span class="login-indicator"><img src="assets/images/loginTenant.svg" /></span>
+                    <input class="input-large" type="text" name="tenant" placeholder="Tenant" ng-model="model.tenant" required ng-change="onTenantChanged()" />
+                </span>                
+
+                <div class="floatClear"></div>
+
+                <div class="custom-error" ng-show="spForm.tenant.$dirty && spForm.tenant.$invalid">
+                    <span ng-show="spForm.tenant.$error.required">Tenant is required.</span>
+                </div>
+
+                <div class="floatClear"></div>
+
+                <span class="formattedLine" ng-show="model.identityProviders.length > 1">                    
+                    <select name="idProvider"
+                            class="input-large"
+                            style="width:100%"
+                            ng-model="model.identityProvider"
+                            ng-options="p.name for p in model.identityProviders"
+                            ng-change="onIdentityProviderChanged(model.identityProvider)">
+                        <option value="">[Select Identity Provider]</option>
+                    </select>
+                </span>
+
+                <div class="keepSignedIn" ng-hide='model.kmsiHidden'>
+                    <input type="checkbox" ng-model="model.persistent" id="remember_login" />
+                    <label for="remember_login">Keep me signed in</label>
+                </div>
+
+                <!--<input type="submit" class="btn" style="float: none" value="Sign in" ng-disabled="spForm.username.$pristine || spForm.tenant.$pristine || ( spForm.username.$dirty && spForm.username.$invalid ) || ( spForm.tenant.$dirty && spForm.tenant.$invalid )" />-->
+                <!--removed the ng-disable for the moment as I (steve) pre-loading the form controls and
+                    so with pristine values the button is disabled... but i want to press it ;)-->
+                <div class="submitarea">
+                    <button type="submit" class="submit">Sign in</button>
+                    <div ng-show="model.signingIn" class="fade-animate">
+                        <span class="signinIn">
+                            <span class="spinner" ></span>
+                            <label>Contacting {{model.identityProvider.name}} ...</label>
+                        </span>
+                    </div>
+                    <span ng-show="model.loginError" class="fade-animate">
+                        <label class="custom-error">{{model.loginError}}</label>
+                    </span>
+                    <div ng-show="model.showForgetPasswordLink">
+                        <Label class="forget-password" ng-click="showForgetPasswordEmail()">Forgot your username or password?</Label>
+                    </div>
+                </div>
+            </form>
+            
+            <div ng-if="model.forgetPasswordEmail" ng-class="{mobileChangePasswordForm: spMobileContext.isMobile}">
+                <img ng-show="!spMobileContext.isMobile" src="assets/images/logo_RN_login.svg" class="provider-logo" />
+                <div class="floatClear"></div>
+                <div class="resetPasswordMessage">                    
+                    <label>We will email you a link to reset your password:</label>
+                </div>
+                <span class="formattedLine">
+                    <span class="login-indicator"><img src="assets/images/loginEmail.svg" /></span>
+                    <input id="email" class="input-large" type="text" name="email" placeholder="Email" ng-model="model.email" />
+                </span>
+                <div class="floatClear"></div>
+                <div class="submitarea">
+                    <button ng-click="submitForgetPasswordEmailClick()" ng-disabled="model.disableSubmit" class="submit">Submit</button>                   
+                    <div ng-show="model.signingIn" class="fade-animate">
+                        <span class="signinIn">
+                            <span class="spinner" ></span>
+                            <label>Contacting ReadiNow ...</label>
+                        </span>
+                    </div>
+                    <span ng-show="model.loginError" class="fade-animate">
+                        <label class="custom-error">{{model.loginError}}</label>
+                    </span>
+                </div>
+            </div>
+
+            <form name="spForm" novalidate ng-submit="readiNowChangePasswordClick()" ng-if="model.changingPassword" ng-class="{mobileChangePasswordForm: spMobileContext.isMobile}">
+
+                <img ng-show="!spMobileContext.isMobile" src="assets/images/logo_RN_login.svg" class="provider-logo" />
+
+                <div class="floatClear"></div>
+
+                <span class="formattedLine">
+                    <span class="login-indicator"><img src="assets/images/loginUser.svg" /></span>
+                    <input id="username" class="input-large" type="text" name="username" placeholder="Username" ng-model="model.username" ng-readonly="true" />
+                </span>
+
+                <div class="floatClear"></div>                
+
+                <span class="formattedLine">
+                    <span class="login-indicator"><img src="assets/images/loginPassword.svg" /></span>
+                    <input class="input-large" type="password" name="password" placeholder="Old password" ng-model="model.password" />
+                </span>
+
+                <div class="floatClear"></div>
+
+                <span class="formattedLine">
+                    <span class="login-indicator"><img src="assets/images/loginPassword.svg" /></span>
+                    <input class="input-large" type="password" name="newPassword" placeholder="New password" ng-model="model.newPassword" required/>
+                </span>
+
+                <div class="floatClear"></div>
+
+                <div class="custom-error" ng-show="spForm.newPassword.$dirty && spForm.newPassword.$invalid">
+                    <span ng-show="spForm.newPassword.$error.required">New password is required.</span>
+                </div>
+
+                <span class="formattedLine">
+                    <span class="login-indicator"><img src="assets/images/loginPassword.svg" /></span>
+                    <input class="input-large" type="password" name="confirmNewPassword" placeholder="Confirm password" ng-model="model.confirmNewPassword" required/>
+                </span>
+
+                <div class="floatClear"></div>
+
+                <div class="custom-error" ng-show="spForm.confirmNewPassword.$dirty && spForm.confirmNewPassword.$invalid">
+                    <span ng-show="spForm.confirmNewPassword.$error.required">Confirm password is required.</span>
+                </div>
+
+                <span class="formattedLine">
+                    <span class="login-indicator"><img src="assets/images/loginTenant.svg" /></span>
+                    <input class="input-large" type="text" name="tenant" placeholder="Tenant" ng-model="model.tenant" ng-readonly="true" />
+                </span>
+
+                <div class="floatClear"></div>                
+                
+                <div class="submitarea">
+                    <button type="submit" class="submit">Change password</button>
+                    <div ng-show="model.signingIn" class="fade-animate">
+                        <span class="signinIn">
+                            <span class="spinner" ></span>
+                            <label>Contacting ReadiNow ...</label>
+                        </span>
+                    </div>
+                    <span ng-show="model.loginError" class="fade-animate">
+                        <label class="custom-error">{{model.loginError}}</label>
+                    </span>
+                </div>
+            </form>
+
+            <form name="spForm" novalidate ng-submit="readiNowResetPasswordClick()" ng-if="model.resetPassword" ng-class="{mobileChangePasswordForm: spMobileContext.isMobile}">
+                <img ng-show="!spMobileContext.isMobile" src="assets/images/logo_RN_login.svg" class="provider-logo" />               
+
+                <div class="floatClear"></div>
+
+                <span class="formattedLine">
+                    <span class="login-indicator"><img src="assets/images/loginPassword.svg" /></span>
+                    <input class="input-large" type="password" name="newPassword" placeholder="New password" ng-model="model.newPassword" required />
+                </span>
+
+                <div class="floatClear"></div>
+
+                <div class="custom-error" ng-show="spForm.newPassword.$dirty && spForm.newPassword.$invalid">
+                    <span ng-show="spForm.newPassword.$error.required">New password is required.</span>
+                </div>
+
+                <span class="formattedLine">
+                    <span class="login-indicator"><img src="assets/images/loginPassword.svg" /></span>
+                    <input class="input-large" type="password" name="confirmNewPassword" placeholder="Confirm password" ng-model="model.confirmNewPassword" required />
+                </span>
+
+                <div class="floatClear"></div>
+
+                <div class="custom-error" ng-show="spForm.confirmNewPassword.$dirty && spForm.confirmNewPassword.$invalid">
+                    <span ng-show="spForm.confirmNewPassword.$error.required">Confirm password is required.</span>
+                </div>
+
+                <div class="floatClear"></div>
+
+                <div class="submitarea">
+                    <button type="submit" class="submit">Reset password</button>
+                    <div ng-show="model.signingIn" class="fade-animate">
+                        <span class="signinIn">
+                            <span class="spinner" ></span>
+                            <label>Contacting ReadiNow ...</label>
+                        </span>
+                    </div>
+                    <span ng-show="model.loginError" class="fade-animate">
+                        <label class="custom-error">{{model.loginError}}</label>
+                    </span>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+</div>

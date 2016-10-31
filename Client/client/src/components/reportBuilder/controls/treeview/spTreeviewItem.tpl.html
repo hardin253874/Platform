@@ -1,0 +1,13 @@
+
+    <div class="{{getNodeClass(node)}}">
+	
+        <div class="{{getSelectedNodeStatusClass(node)}}" ng-click="selectChildNode(node)">
+           <!-- <button type="button" class="report-Builder-Treeview-Toggle" ng-click="toggleChildren()" ng-show="nodeToggleImage"><img ng-src="{{nodeToggleImage}}"  /></button>  -->
+            <span class="{{getNodeTypeImageClass(node)}}" ng-show="node"></span>                               
+            <span class="{{getSelectedStatusClass(node)}}"  >{{node.name}}</span>
+            <div class="itemIcon">                
+                <img class="{{getSummarizeClass(node)}}" src="assets/images/relationship_summary.png" />
+                <button class="{{getRemoveButtonClass(node, model.selectedNodeId)}}" ng-click="removeChildNode(node)"><img src="assets/images/remove_w.png"/></button>                       
+            </div>     
+        </div>
+    </div>

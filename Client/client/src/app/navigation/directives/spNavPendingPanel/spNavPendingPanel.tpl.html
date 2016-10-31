@@ -1,0 +1,13 @@
+<div class="sp-nav-pending-panel">
+    <sp-nav-pending condition="nav.isNavigationPending() && nav.isNavigationPending().reason == 'dirty'"
+                    message="nav.isNavigationPending().message"
+                    on-continue="nav.continueNavigation"
+                    on-cancel="nav.cancelNavigation">
+    </sp-nav-pending>
+
+    <sp-nav-pending condition="nav.isInternalNavigationPending()"
+                    message="nav.isInternalNavigationPending().message"
+                    on-continue="nav.isInternalNavigationPending().onContinue"
+                    on-cancel="nav.isInternalNavigationPending().onCancel">
+    </sp-nav-pending>
+</div>

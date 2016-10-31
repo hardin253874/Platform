@@ -1,0 +1,29 @@
+<div once-class="getContentsClass(formControl)" class="vertical-stack">
+
+    <span class="action-panel" ng-if="structureDepth==1 && actionPanelFile" sp-include="actionPanelFile"/>
+
+    <!-- hide the header on structureDepth 1 -->
+    <div class="structure-control-header structure-depth-{{structureDepth}}" ng-class='titleClass'
+         ng-if="structureDepth !== 1 && !formControl.hideLabel" ng-style="getTitleStyle(structureDepth)">
+        <span ng-style="getTitleStyle(structureDepth)">{{formControl.name}}</span>
+        <rn-info-button ng-if="::showHelp(formControl)" heading="{{::formControl.name}}" text="{{::formControl.description}}"></rn-info-button>
+    </div>
+
+    <div once-style="getControlStyle(formControl)" style="width: 100%; height: 100%;">
+        <div class="repeater-wrapper">
+            <div class="repeater {{repeaterClass}} vertical-repeater" 
+                  ng-repeat="childFormControl in getFormControls() track by childFormControl.idP">
+
+                <sp-control-on-form form-data="formData" form-control="childFormControl" parent-control="formControl"
+                                    form-theme="formTheme" form-mode="formMode" is-read-only="isReadOnly"
+                                    structure-depth="structureDepth" is-in-test-mode="isInTestMode"
+                                    is-in-design="isInDesign" is-embedded="isEmbedded">
+                </sp-control-on-form>
+
+                <rn-info-button ng-if="::showHelp(childFormControl)" heading="{{::getChildControlTitle(childFormControl)}}" text="{{::childFormControl.description}}"></rn-info-button>
+                
+            </div>
+        </div>
+    </div>
+
+</div>

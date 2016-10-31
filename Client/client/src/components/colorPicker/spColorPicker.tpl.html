@@ -1,0 +1,44 @@
+<div class="spColorPicker-view">    
+	
+    <div id="saturationValuePickerId" class="saturationValuePicker" ng-style="getHueColorAsStyle()">
+        <div class="gradSat fullSize">
+            <div class="gradVal fullSize">                
+                <div id="saturationValueDraggerId" class="saturationValueDragger" />
+            </div>
+        </div>
+    </div>            
+    <div id="hueSlider"></div>
+    <div class="colorInputGroupContainer">
+        <div class="colorNumberInputContainer">
+            <div class="colorLabel">A</div>
+            <div class="aSliderContainer">            
+                <div id="aSlider"/>
+            </div>                                                    
+            <input type="number" class="colorNumberInput" min="0" max="255" ng-model="model.rgbColor.a" ng-change="onRgbColorANumberChanged()"/>
+        </div>
+        <div class="colorNumberInputContainer">
+            <div class="colorLabel">R</div>
+            <div class="rgbaSliderContainer">
+                <div id="rSlider"></div>
+            </div>
+            <input type="number" class="colorNumberInput" min="0" max="255" ng-model="model.rgbColor.r" ng-change="onRgbColorRNumberChanged()"/>
+        </div>
+        <div class="colorNumberInputContainer">
+            <div class="colorLabel">G</div>
+            <div class="rgbaSliderContainer">
+                <div id="gSlider"></div>
+            </div>
+            <input type="number" class="colorNumberInput" min="0" max="255" ng-model="model.rgbColor.g" ng-change="onRgbColorGNumberChanged()"/>
+        </div>
+        <div class="colorNumberInputContainer">
+            <div class="colorLabel">B</div>
+            <div class="rgbaSliderContainer">
+                <div id="bSlider"></div>
+            </div>
+            <input type="number" class="colorNumberInput" min="0" max="255" ng-model="model.rgbColor.b" ng-change="onRgbColorBNumberChanged()"/>
+        </div>                                       
+    </div>                
+    <div class="colorDropDownContainer">
+        <sp-color-picker-dropdown color="model.rgbColorDropdown"></sp-color-picker-dropdown>
+    </div>
+</div>

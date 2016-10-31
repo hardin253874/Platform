@@ -1,0 +1,8 @@
+<div class="chart-types">
+
+    <div ng-repeat="ct in chartTypes" ng-class="{ 'chart-type': true, 'selected': ct.alias === chartType }">
+        <img ng-src="assets/images/chartTypes/{{ct.alias}}.png"
+             uib-tooltip="{{ct.name}}" tooltip-placement="top"
+             ng-click="onSelect(ct.alias)">
+    </div>
+</div>

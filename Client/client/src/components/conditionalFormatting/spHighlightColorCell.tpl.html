@@ -1,0 +1,13 @@
+<div ng-class="col.colIndex()">
+	
+    <div class="ruleColourCellTable">
+        <div class="highlightRuleColorCellDropdown">
+            <sp-color-picker-fg-bg-dropdown color="row.getProperty('color')"></sp-color-picker-fg-bg-dropdown>  
+        </div>        
+        <div class="highlightRuleColorCellRemove">
+            <button type="button" class="removeRuleButton" ng-click="removeHighlightRule(row)" ng-hide="isElseRule(row)">
+                <img src="assets/images/remove_r.png" class="verticalAlignMiddle" />
+            </button>
+        </div>
+    </div>        
+</div>

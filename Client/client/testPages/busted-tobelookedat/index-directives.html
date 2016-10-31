@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="../lib/bootstrap/css/bootstrap.css"/>
+
+<style>
+</style>
+
+</head>
+<body ng-app="app">
+
+<div ng-controller="myController">
+    <button ng-click="add()">add</button>
+    <ul>
+        <li ng-repeat="item in list">
+            {{item.id}} - {{item.name}}:
+            <input ng-model="item.value"/>
+        </li>
+    </ul>
+    <div>
+        <div edc-click-to-edit model="myTitle"></div>
+        <div edc-click-to-edit model="myTitle2"></div>
+        <sp-click-to-edit class="mytitle" model="myTitle"></sp-click-to-edit>
+        <div ng-repeat="i in items"><div ng-click="removeItem(i)">{{i}}</div></div>
+    </div>
+    <hr/>
+    <p>testing tabs and tabPane and directive "require"</p>
+    <div>
+        <tabs>
+            <tab-pane>hey there</tab-pane>
+            <tab-pane>bye</tab-pane>
+        </tabs>
+    </div>
+    <hr/>
+    <p>testing props and binding</p>
+    <div>myObj={{myObj}}</div>
+    <div>myObj.myTitle{{myObj.myTitle}}</div>
+    myTitle=<input ng-model="myObj.myTitle"/>
+</div>
+
+<script type="text/javascript" src="../lib/jquery/jquery.js"></script>
+<script src="../lib/angular/angular.js"></script>
+<script src="../lib/angular/angular-animate.js"></script>
+<script type="text/javascript" src="../lib/jquery-ellipsis/jquery.dotdotdot.js"></script>
+<script type="text/javascript" src="../lib/bootstrap/js/bootstrap.js"></script>
+<script type="text/javascript" src="../lib/jquery-ui-touch-punch/jquery.ui.touch-punch.js"></script>
+
+<script src="../lib/lodash/lodash.js"></script>
+<script src="../src/components/utils/console.js"></script>
+<script src="../src/components/layout/spLayout.js"></script>
+<script src="../src/components/entity/spEntity.js"></script>
+<script src="../src/components/entity/spEntity.Field.js"></script>
+<script src="../src/components/utils/spUtils.js"></script>
+<script>
+angular.module('app', ['ngAnimate'])
+        .run(function ($rootScope) {
+            $rootScope.$watch(function () {
+                //console.log('$rootScope.$watch');
+            })
+        })
+        .controller('tabPaneController', function ($scope) {
+            console.log('tabPaneController controller', $scope);
+            this.sayHi = this.sayHi1 = function() { console.log('tabPaneController sayHi: ', $scope, this); };
+        })
+        .controller('tabsController', function ($scope) {
+            console.log('tabsController controller', $scope);
+            this.sayHi = this.sayHi2 = function() { console.log('tabsController2 sayHi: ', $scope, this); };
+            $scope.aa1 = 11;
+        })
+        .directive('tabs', function () {
+            return {
+                restrict: 'E',
+                replace: true,
+                scope: {},
+                transclude: true,
+                template: '<div><div>tabs</div><div ng-transclude></div></div>',
+//                template: '<div><div ng-controller="tabsController">tabs</div><tab-pane>AAA</tab-pane><tab-pane>BBB</tab-pane></div>',
+                controller: 'tabsController',
+//                controller: function ($scope) {
+//                    console.log('tabs controller', $scope);
+//                    this.sayHi1 = function() { console.log('tabsController sayHi: ', $scope); };
+//                },
+                link: function (scope, el, attrs) {
+                    console.log('tabs link', scope);
+                    scope.aa2 = 11;
+                }
+            };
+        })
+        .directive('tabPane', function () {
+            return {
+                restrict: 'E',
+                scope: {},
+                transclude: true,
+                template: '<div ng-transclude>tab A</div>',
+                controller: 'tabPaneController',
+                require: '^tabs',
+                link: function (scope, el, attrs, tabsController) {
+                    console.log('tabPane link', scope, tabsController);
+                    tabsController.sayHi();
+                }
+            };
+        })
+        .directive('spClickToEdit', function ($compile, $timeout) {
+            return {
+                restrict: 'E',
+                scope: {
+                    model: '='
+                },
+                replace: true,
+                template: '<div></div>',
+                link: function (scope, el, attrs) {
+
+                    scope.$watch('editMode', function () {
+
+                        var inner;
+
+                        scope.value = scope.model;
+
+                        if (scope.editMode) {
+                            inner = $compile('<input ng-model="value"/>')(scope);
+                            inner.bind('keyup', function (e) {
+                                if (e.keyCode === 27) {
+                                    scope.$apply('editMode = false');
+                                }
+                            });
+                            inner.bind('keypress', function (e) {
+                                if (e.which === 13) {
+                                    scope.$apply('model = value; editMode = false');
+                                }
+                            });
+                            inner.bind('blur', function (e) {
+                                if (scope.editMode) {
+                                    scope.$apply('model = value; editMode = false');
+                                }
+                            });
+                            $timeout(function () {
+                                inner.focus();
+                                inner.select();
+                            }, 0)
+
+                        } else {
+                            inner = $compile('<div ng-click="editMode = true">{{model}} - {{editMode}}</div>')(scope);
+                        }
+                        el.empty();
+                        el.append(inner);
+                    });
+                }
+            };
+        })
+        .directive('edcEnter', function () {
+            return function (scope, el, attrs) {
+                el.bind('keypress', function (e) {
+                    if (e.which === 13) {
+                        //console.log('edcEnter.enter pressed');
+                        scope.$apply(attrs.edcEnter);
+                    }
+                });
+                el.bind('blur', function (e) {
+                    //console.log('edcEnter.blur, editMode=', scope.isEditMode);
+                    if (scope.isEditMode) {
+                        scope.$apply(attrs.edcEnter);
+                    }
+                });
+            };
+        })
+        .directive('edcCancel', function () {
+            return function (scope, el, attrs) {
+                el.bind('keyup', function (e) {
+                    if (e.keyCode === 27) {
+                        scope.$apply(attrs.edcCancel);
+                    }
+                });
+            };
+        })
+        .directive('edcFocus', function ($timeout) {
+            return function (scope, el, attrs) {
+                scope.$watch(attrs.edcFocus, function (val) {
+                    if (angular.isDefined(val) && val) {
+                        $timeout(function () {
+                            el[0].focus();
+                        }, 250);
+                    }
+                });
+            };
+        })
+        .directive('edcClickToEdit', function ($timeout) {
+
+            function link(scope, element, attrs) {
+
+                var inputEl = element.find('input')[0];
+                if (!inputEl) {
+                    console.warn('edcClickToEdit: can\'t find expected INPUT element');
+                }
+
+                scope.$watch('isEditMode', function (isEditMode) {
+                    //console.log('clicktoedit isEditMode=%o model=%o value=%o inputEl=%o', isEditMode, scope.model, scope.value, [inputEl]);
+                    if (isEditMode && inputEl) {
+                        inputEl.focus();
+                        inputEl.select();
+                    }
+                });
+                scope.$watch('model', function (model) {
+                    //console.log('clicktoedit model', model, scope.value, scope);
+                    scope.isEditMode = false;
+                });
+            }
+
+            return {
+                restrict: 'A',
+                replace: true,
+                template: '<div><div ng-hide="isEditMode" ng-click="value = model; isEditMode = true" >' +
+                        '<div class="{{class}}" >{{model || placeholder}}</div>' +
+                        '</div><input ng-show="isEditMode" class="{{class}}" type="text" ng-model="value"' +
+                        '    edc-enter="isEditMode = false; model = value;" edc-cancel="isEditMode = false; value = model" /></div>',
+                scope: {
+                    model: '=',
+                    'class': '@',
+                    placeholder: '@'
+                },
+                link: link
+            };
+        })
+        .controller('myController', function ($scope) {
+
+
+            $scope.items = [2, 3, 4, 5];
+            $scope.removeItem = function (i) {
+                console.log('remove item ', i, $scope);
+                $scope.items = _.without($scope.items, i);
+            }
+
+            $scope.updateCount = 0;
+
+            $scope.list = [
+                { id: 1, name: 'aaa', value: 'bbb'}
+            ];
+            $scope.add = function () {
+                $scope.list.push({ id: 0, name: 'yyy', value: 'zzz'});
+            };
+            $scope.$watch('list', function (list) {
+                console.log('$scope.$watch list', list);
+                $scope.updateCount += 1;
+            }, true);
+
+            $scope.$watch('updateCount', function (value) {
+                console.log('$scope.$watch count', value);
+                $scope.list = _.map($scope.list, function (item) {
+                    return _.extend({}, {
+                        id: item.id || 1 + _.reduce($scope.list, function (a, o) {
+                            return Math.max(a, o.id);
+                        }, 0),
+                        name: item.name,
+                        value: item.value,
+                        $$hashKey: item.$$hashKey
+                    });
+                });
+            });
+
+            $scope.myTitle = 'hello world';
+            $scope.myTitle2 = 'goodbye cruel world';
+
+            $scope.myObj = {
+                get myTitle() { return $scope.myTitle; },
+                set myTitle(value) { $scope.myTitle = value; }
+            };
+
+        });
+</script>
+
+</body>
+</html>

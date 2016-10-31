@@ -1,0 +1,170 @@
+/* apply a natural box layout model to all elements */
+*, *:before, *:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  overflow-y: hidden;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.flex-item {
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: auto;
+}
+
+.panel {
+  padding: 2px;
+  border: 1px solid #cccc33;
+}
+
+.app-layout {
+  .flex-column;
+
+  height: 100%;
+  width: 100%;
+  //background-color: lightblue;
+}
+
+.toolbox-panel {
+  .flex-item;
+  .panel;
+  background: #dddd88;
+}
+
+.properties-panel {
+  .flex-item;
+  .panel;
+  background: #dddd88;
+}
+
+.app-layout header {
+  background-color: gray;
+  min-height: 2em;
+}
+
+.app-layout .main {
+  .flex-item;
+  .flex-row;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.app-layout footer {
+  background-color: gray;
+  min-height: 1em;
+}
+
+.app-layout .main > .content {
+  .panel;
+
+  //background: #dddd88;
+  flex: 3 1 60%;
+  order: 2;
+}
+
+.app-layout .main > nav {
+  //.panel;
+  border-color: #8888bb;
+
+  background: #ccccff;
+
+  flex: 0 0 0;
+  order: 1;
+
+  transition: all 0.3s ease-out;
+
+  overflow-y: auto;
+  min-height: 0;
+
+  &.show-nav {
+    .panel;
+    flex: 0 0 10rem;
+  }
+}
+
+.app-layout .main > aside {
+  .panel;
+  border-color: #8888bb;
+
+  background: #ccccff;
+  flex: 1 6 20%;
+  order: 3;
+}
+
+.content {
+  .flex-row;
+
+  .mobile-layout {
+    flex: 0 0 320px;
+    height: 640px;
+  }
+}
+
+/* Too narrow to support three columns */
+@media all and (max-width: 500px) {
+
+  .app-layout > .main {
+    flex-direction: column;
+  }
+
+  .app-layout .main > .content, .app-layout .main > nav, .app-layout .main > aside {
+    /* Return them to document order */
+    order: 0;
+  }
+
+  .app-layout .main > nav, .app-layout .main > aside {
+    min-height: 2em;
+    max-height: 2em;
+  }
+
+  .show-nav-button {
+    display: none;
+  }
+}
+
+.mobile-layout {
+  .panel {
+    margin: 0;
+    padding: 0;
+    border: 1px solid black;
+    border-radius: 0;
+  }
+
+  .app-layout > .main {
+    flex-direction: column;
+  }
+
+  .app-layout .main > .content, .app-layout .main > nav, .app-layout .main > aside {
+    /* Return them to document order */
+    order: 0;
+
+    &.content {
+      background-color: #2d8dbe;
+    }
+
+    .panel;
+  }
+
+  .app-layout .main > nav, .app-layout .main > aside {
+    min-height: 2em;
+    max-height: 2em;
+  }
+}
+
+@import 'app';

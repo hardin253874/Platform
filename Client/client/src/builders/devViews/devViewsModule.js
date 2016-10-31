@@ -1,0 +1,31 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+angular.module('app.devViews', [
+    'app.entityPickersTest',
+    'app.resourceInfoTest',
+    'app.entityRequestTest',
+    'app.utcDate',
+    'app.demo',
+    'app.entityExplorer',
+    'app.reportTest',
+    'app.chartTest',
+    'app.contextMenuTest',
+    'app.fileUploadTest',
+    'app.demoAlerter',
+    'app.dataGridTest',
+    'app.colorPickerTest',
+    'app.busyIndicatorTest',
+    'app.workflowDiagram',
+    'app.expressionEditor',
+    'app.editFormControlsTest',
+    'app.editableLabelTest',
+    'app.valueEditorTest',
+    'app.formBuilderTestPage',
+	'app.tabsTest',
+    'app.refreshButtonTest',
+    'app.fieldPropertiesTest',
+    'app.applicableTasksTest',
+    'app.expressionSheet',
+    'app.reportRunnerTest',
+    'app.navDemo'
+]);
+

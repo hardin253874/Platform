@@ -1,0 +1,95 @@
+<div class="fb-toolbox-objectsviewer">
+
+
+    <sp-search-control sp-model="model.search" class="sp-search"></sp-search-control>
+
+
+    <div style="display:table; width:100%;">
+        <div class="sp-picker">
+            <select ng-model="selectedApp" ng-options="e as e.name for e in applications" class="sp-combo-picker">
+                <option value="" ng-style="selectOptionStyle">[Select]</option>
+            </select>
+        </div>
+        <!-- New Type -->
+        <div class="fb-screen-add-button" style="width:1%;">
+            <div ng-if="model.disableAddNew" class="addButtonPlaceHolder">
+                <div class="addButtonPlaceHolderLeftBorder"></div>
+            </div>
+            <button ng-if="!model.disableAddNew" class="add" sp-context-menu-trigger="leftclick" sp-context-menu="addContextMenu" sp-context-menu-append-to-body>
+                <img class="itemicon" src="assets/images/relationship_add.png" />
+            </button>
+        </div>
+    </div>
+
+    <!-- Show all/public/private -->
+    <button class="btn-link component-filter" ng-click="toggleComponentFilter()" ng-show="spAppSettings.selfServeNonAdmin">{{getComponentFilterText()}}</button>
+
+    <!-- Show system types -->
+    <div style="color:#ccc; padding: 5px 0" ng-show="showTypesVisible()"><input ng-model="model.showTypes" type="checkbox" />Show types (dev only)</div>
+
+    <div class="fb-loading" ng-show="spFormBuilderService.screenObjectsLoading">
+        <img class="spinner" src="assets/images/refresh_light.png" />
+    </div>
+
+    <!-- Each type/definition/object -->
+    <div ng-repeat="type in model.types | filter:filterType" class="fb-toolbox-group" ng-show="!spFormBuilderService.screenObjectsLoading">
+
+        <div style="display: table; width: 100%;">
+            <button type="button" class="toggleButton" sp-context-menu-trigger="rightclick" sp-context-menu="toggleContextMenu" sp-context-menu-append-to-body ng-click="type.expanded = !type.expanded"><img ng-src="{{'assets/images/' + (type.expanded ? 'fieldgroup_opened.png' : 'fieldgroup_collapsed.png')}}" /></button>
+            <div class="groupname" uib-tooltip="{{type.description}}">{{type.name}}</div>
+            <span class="fb-toolbox-config" sp-context-menu-trigger="leftclick" sp-context-menu="type.contextMenu" sp-context-menu-append-to-body ng-show="spAppSettings.fullConfig">
+                <img src="assets/images/icon_configure_w.png" />
+            </span>
+        </div>
+
+        <div class="groupitems" ng-if="type.expanded"> <!--NOTE: Not using ngIf here as there can be a large number of elements that are almost always closed. See ticket 27415 -->
+
+            <!-- Reports -->
+            <div class="subgroup">
+                <span class="subgroupname">Reports</span>
+                <button class="add" ng-click="newReport(type)"><img class="itemicon" src="assets/images/relationship_add.png" /></button>
+            </div>
+            <div class="itemcontainer" ng-repeat="report in getReportsForType(type.entity)" sp-draggable="dragOptions" sp-draggable-data="getReportDragData(report)">
+                <div ng-class="report.itemClass">
+                    <div class="itemicon"><img src="assets/images/itemicon/Reports.png" />  </div>
+                    <div class="itemname" uib-tooltip="{{report.description}}">{{report.name}}</div>
+                    <span class="fb-toolbox-config" sp-context-menu-trigger="leftclick" sp-context-menu="report.contextMenu" sp-context-menu-append-to-body>
+                        <img src="assets/images/icon_configure_w.png" />
+                    </span>
+                </div>
+            </div>
+
+            <!-- Charts -->
+            <div class="subgroup">
+                <span class="subgroupname">Charts</span>
+                <button class="add" ng-click="newChart(type)"><img class="itemicon" src="assets/images/relationship_add.png" /></button>
+            </div>
+            <div class="itemcontainer" ng-repeat="chart in getChartsForType(type.entity)" sp-draggable="dragOptions" sp-draggable-data="getChartDragData(chart)">
+                <div ng-class="chart.itemClass">
+                    <div class="itemicon"><img src="assets/images/itemicon/Charts.png" />   </div>
+                    <div class="itemname" uib-tooltip="{{chart.description}}">{{chart.name}}</div>
+                    <span class="fb-toolbox-config" sp-context-menu-trigger="leftclick" sp-context-menu="chart.contextMenu" sp-context-menu-append-to-body>
+                        <img src="assets/images/icon_configure_w.png" />
+                    </span>
+                </div>
+            </div>
+
+            <!-- Forms -->
+            <div class="subgroup" ng-show="spAppSettings.fullConfig">
+                <span class="subgroupname">Forms</span>
+                <button class="add" ng-click="newForm(type)" ng-show="spAppSettings.fullConfig"><img class="itemicon" src="assets/images/relationship_add.png" /></button>
+            </div>
+            <div class="itemcontainer" ng-repeat="form in getFormsForType(type.entity)" sp-draggable="dragOptions" sp-draggable-data="getFormDragData(form)" ng-show="spAppSettings.fullConfig">
+                <div ng-class="form.itemClass">
+                    <div class="itemicon"><img src="assets/images/itemicon/Forms.png" /></div>
+                    <div class="itemname" uib-tooltip="{{form.description}}">{{form.name}}</div>
+                    <span class="fb-toolbox-config" sp-context-menu-trigger="leftclick" sp-context-menu="form.contextMenu" sp-context-menu-append-to-body>
+                        <img src="assets/images/icon_configure_w.png" />
+                    </span>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>

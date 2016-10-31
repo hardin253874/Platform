@@ -1,0 +1,3 @@
+﻿....
+If you are putting new code in partials, then you are putting it in the wrong place.
+Use directives instead.

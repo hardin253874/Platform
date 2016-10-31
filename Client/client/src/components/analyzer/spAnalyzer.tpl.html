@@ -1,0 +1,23 @@
+<div class="analyzer-view">
+	
+    <div class="conditionsPanel">
+        <div id="analyserFieldsPanel" class="conditionsColumnLeft">            
+            <sp-analyzer-field field="af" is-edit-mode="model.isEditMode" ng-repeat="af in model.analyzerFields" sp-droppable="dropOptions" sp-droppable-data="af" class="spAnalyzerFieldContainer"></sp-analyzer-field>
+            <div ng-show="model.showDropArea">
+                <img src="assets/images/drop_area.png" sp-droppable="dropOptions"/>
+            </div>
+        </div>
+    </div>      
+    
+    <div class="divider"></div>    
+
+    <div class="footerPanel">               
+        <div class="analyzerCentered">
+            <button type="button" class="btn btn-primary analyzerButton" ng-click="model.onApplyClicked()">Apply</button>    
+            <button type="button" class="btn_lighten analyzerButton" ng-click="model.onResetClicked()">
+                <div class="analyzerResetButtonIcon"></div>                
+                <span class="analyzerButtonText">Reset</span>
+            </button>            
+        </div>            
+    </div>
+</div>

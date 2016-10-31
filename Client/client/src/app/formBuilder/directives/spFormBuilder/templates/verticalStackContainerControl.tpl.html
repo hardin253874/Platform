@@ -1,0 +1,12 @@
+<span class="verticalStackContainer">
+    <span ng-if="containedControl.name">
+        <sp-form-builder-container control="containedControl" parent-control="control" parent-tab="tab" sp-draggable="dragOptions" sp-draggable-data="containedControl"
+                                   style="height: 80px; width: 400px; min-height: 80px; min-width: 400px; max-width: 100%;">
+        </sp-form-builder-container>
+    </span>
+    <span ng-if="!containedControl.name" style="display: inline-block;">
+        <sp-form-builder-container control="containedControl" parent-control="control" parent-tab="tab" sp-draggable="dragOptions" sp-draggable-data="containedControl"
+                                   style="background-color: transparent !important; padding: 0px !important; margin: 0px !important; border: none !important; box-shadow: none;">
+        </sp-form-builder-container>
+    </span>
+</span>

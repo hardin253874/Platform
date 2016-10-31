@@ -1,0 +1,37 @@
+
+<div class="summaryValidation-view"  ng-controller="summaryValidationController">
+	
+    <form name="form" novalidate ng-model="user">
+        <h4>Validation summary</h4>
+        <div validation-summary ng-show="showValidation"></div>
+        <div validation-set-alert ng-show="validationNumbers > 0"></div>
+        <div validation-alert ng-show="showAlert" id="alert-region" class="errorwatch"></div>
+        <fieldset>
+            <legend>Form</legend>
+            <div>
+                <label for="fullname">Fullname</label>
+                <input type="text" name="fullname" id="fullname" placeholder="Fullname" required ng-model="user.fullname" />
+                <ul>
+                    <li validation-message ng-show="form.fullname.$error.required">Fullname is required</li>
+                </ul>
+            </div>
+            <div>
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" placeholder="Email address" required ng-model="user.email" />
+                <ul>
+                    <li validation-message ng-show="form.email.$error.required">Email is required</li>
+                    <li validation-message ng-show="form.email.$error.email">Email is not valid</li>
+                </ul>
+            </div>		
+            <div>
+                <label for="onlyHelloWorld">Hello World</label>
+                <input type="text" name="onlyHelloWorld" id="onlyHelloWorld" placeholder="Only 'Hello World'" validate-only-hello-world ng-model="helloWorld" />
+                <ul>                    
+                    <li validation-message ng-show="form.onlyHelloWorld.$error.validateOnlyHelloWorld">Hello World should only contain "Hello World"</li>
+                </ul>
+            </div>	
+            
+             <div ng-include="fieldControlUrl"></div>
+        </fieldset>
+    </form>  
+</div>

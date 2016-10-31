@@ -1,0 +1,9 @@
+<ul class="spColorPicker-view colorPickerDropdownMenu dropdown-menu">
+	
+    <li ng-repeat="color in model.availableColors">
+        <a ng-click="selectColor(color, true)" class="dropdownMenuItem">
+            <div class="colorDropdownColorBox" ng-style="getCssColor(color)"></div>
+            <span class="alignMiddle">{{color.name}}</span>            
+        </a>
+    </li>
+</ul>

@@ -1,0 +1,35 @@
+<div class="dropDownRelPicker">
+
+    <table style="height: 100%; width: 100%">
+        <tbody>
+        <tr>
+            <td style=" padding: 0">
+                <select class="dropDownRelPicker-select" ng-blur="validateRelationship();" ng-model="selectedEntity"
+                        ng-options="e as e.getName() for e in options.entities" ng-disabled="canModifyDisabled">
+                    <option value="">[Select]</option>
+                </select>
+            </td>
+
+            <td style=" padding: 0; width:0.1%">
+                <button class="dropDownRelPicker-button" ng-disabled="canCreateDisabled" ng-click="addClicked($event)"
+                        uib-popover="New" popover-trigger="mouseenter" popover-placement="top"
+                        sp-context-menu="contextMenu"
+                        sp-context-menu-placement="alignleft"
+                        sp-context-menu-is-open="$parent.model.isAddMenuOpen"
+                        sp-context-menu-append-to-body
+                >
+                    <img src="assets/images/icon_New.png"/>
+                </button>
+            </td>
+
+            <td style=" padding: 0; width:0.1%">
+                <button class="dropDownRelPicker-button" name="clearBtn" ng-click="clear()" uib-popover="Clear"
+                        popover-trigger="mouseenter" popover-placement="top"
+                        ng-disabled="canModifyDisabled || !selectedEntity">
+                    <img src="assets/images/icon_remove.png"/>
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

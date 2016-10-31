@@ -1,0 +1,25 @@
+<div class="createEntity-View">
+	
+    <div class="modal-header">
+        <h6>{{mode}} {{entityType}}</h6>
+    </div>
+    <form name="createEntityForm">
+        <div class="modal-body">
+            <fieldset>
+                <div>
+                    <label for="fullname">Name</label>
+                    <input type="text" name="name" id="name" placeholder="Name" required ng-model="nameValue" sp-validate-field="nameField" sp-validation-message="true"/> 
+                </div>
+                <div>
+                    <label for="description">Description</label>
+                 <textarea name="description" id="description" placeholder="description" ng-model="descriptionValue" sp-validate-field="descriptionField" sp-validation-message="true"></textarea>
+            </div>
+                </fieldset>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="submit" id="btnSave" name="Save" ng-click="saveEntity()" ng-disabled="createEntityForm.$invalid || isDisabled">Save</button>
+            <button class="btn" type="button" id="btnCancel" name="Cancel" ng-click="closeDialog()">Cancel</button>
+        </div>
+        <div class="error" ng-show="show-error">{{errorMessage}}</div>
+    </form>
+</div>

@@ -1,0 +1,515 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+
+
+.entityPickers-view {
+    .alignMiddle {
+        vertical-align: middle;
+    }
+
+    .marginLeft {
+        margin-left: 2px;
+    }
+
+    .fullWidth {
+        width: 100%;
+    }
+
+    .fullWidthTable {
+        .fullWidth;
+        display: table;
+    }
+
+    .tableCell {
+        text-align: left;
+        display: table-cell;
+    }
+
+    .dropdownButton {
+        width: 100%;
+        background-color: white;
+
+        &[disabled="disabled"]{
+            opacity:.5;
+        }
+
+        .sp-form-builder-container-content & {
+            width: 221px;
+        }
+    }
+
+    .dropdownButtonLabel {
+        display: inline-block;
+        width: calc(~'100% - 26px');
+        overflow: hidden;
+        margin-left: 3px;
+        margin-right: 0;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        vertical-align: middle;
+        height: auto;
+    }
+
+    .sp-desktop-device & .dropdownButtonLabel {
+        padding-top: 0px;
+    }
+
+    .sp-tablet-device & .dropdownButtonLabel {
+        padding-top: 0px;
+    }
+
+    .sp-mobile-device & .dropdownButtonLabel {
+
+    }
+
+    .entityDescription {
+        font-size: smaller;
+    }
+
+    .entityRadioInput {
+        margin: 0;
+        vertical-align: top;
+    }
+
+    .entityRadioLabels {
+        display: inline-block;
+    }
+
+    .entityMenuItem {
+        font-size: 12px;
+
+        .sp-tablet-device & {
+            font-size: 1em;
+        }
+    }
+}
+
+.entityMultiComboPickerDropdownPopupMenu {
+    max-height: 250px;
+    overflow-y: scroll;
+    z-index: 5000;
+    background-color: #fafafa;
+}
+
+.entityCheckBoxPickerContainer {
+    display: inline-block;
+    width: 100%;
+    border-left: 1px solid #ddd;
+    padding-left: 3px;
+    border-radius: 1px;
+    border-bottom: 1px dotted #e5e5e5;
+
+    &:last-child {
+        border-bottom: none;
+    }
+}
+
+
+.entityReportPickerDialog {
+    height: calc(~'100% - 90px');
+    min-height: 235px;
+
+    .reportDataGridStyle {
+        height: 200px;
+        display: block;
+    }
+
+    button.inlineRelPicker-button {
+        .report-header-toolbar-button;
+
+        img {
+            margin-top: -2px;
+        }
+    }
+
+    .sp-tablet-device & {
+        height: calc(~'100% - 55px'); // use up all the screen
+        .inlineRelPicker-buttonGroup {
+            left: 68px !important;
+            margin-top: 5px !important;
+
+            button {
+                height: 40px;
+                padding: 5px 15px 0;
+            }
+        }
+    }
+
+    .sp-mobile-device & {
+        /*min-height: 275px;*/
+        height: calc(~'100% - 55px'); // use up all the screen
+        overflow-y: hidden;
+
+        .modal-header {
+            display: block;
+            padding: 15px;
+        }
+
+        .inlineRelPicker-buttonGroup {
+            float: right;
+            margin-top: -5px;
+
+            button {
+                background-color: transparent;
+                outline: none;
+                height: 38px;
+                margin-left: 3px;
+                font-size: inherit;
+
+                &:active {
+                    transition: box-shadow linear .2s;
+                    -webkit-transition: box-shadow linear .2s;
+                    box-shadow: 0 0px 0px #bbb;
+                }
+
+
+                &[name="actionButton"] {
+                    position: absolute;
+                    left: 35px;
+                }
+
+                img {
+                    margin-top: -2px;
+
+                    &[name="viewmore"] {
+                        margin-left: 5px;
+                    }
+                }
+            }
+        }
+
+        .spmobile-report-view-container {
+            height: calc(~'100% - 105px');
+        }
+
+        .spreport-view {
+
+            .headerPanel {
+                display: block;
+                padding: 0;
+                margin: 0;
+                height: auto;
+                min-height:0;
+                line-height: 0;
+
+                .reportName, .headerPanel-left {
+                    display: inline;
+                    padding: 0;
+                    margin: 0;
+                    line-height: 0;
+
+                    &:empty {
+                        display: none;
+                    }
+                }
+            }
+        }
+
+        .reportDataGridStyle {
+            top: 0;
+            overflow-y: auto;
+            position: inherit !important;
+
+            .ngViewport {
+                height: calc(~'100% - 60px') !important;
+            }
+        }
+
+        .entityCompositePicker {
+            height: 100%;            
+
+            div[ng-if="isStructureView && isMobile"] {
+                height: 100%;
+            }
+        }
+    }
+}
+
+.entityCompositePicker {
+
+    .structureViewPickerContent {
+        position: relative;
+        height: 100%;
+    }
+
+    .structureViewPickerNodes {
+        position: absolute;                
+        left: 0;
+        right: 0;
+
+        .sp-desktop-device & {
+            top: 35px;
+        }
+
+        .sp-tablet-device & {
+            top: 45px;
+            bottom: 5px;
+        }
+    }
+
+    .structureSearch {
+        text-align: right;
+        padding-bottom: 3px;
+        margin-bottom: 3px;
+        border-bottom: 1px solid rgba(0,0,0,0.1);
+
+        .sp-search-control .sp-search-control-input {
+            display: inline-block;
+            width: 200px;
+
+            .sp-mobile-device & {
+                display: block;
+                width: 100%;
+            }
+        }
+
+        .sp-mobile-device & {
+            border-bottom: none;
+        }
+    }
+
+    ul {
+        padding: 0;
+        margin: 0;
+        font-size: 13px;
+        height: 100%;
+        overflow-y: auto;
+
+        .sp-mobile-device & {
+            font-size: initial;
+            max-height: inherit;
+            height: calc(~'100% - 111px');
+        }
+
+        ul {
+            padding: 0;
+            padding-left: 20px;
+            max-height: inherit;
+
+            .sp-mobile-device & {
+                padding-left: 0px;
+
+                span {
+                    padding: 10px 0 10px 20px !important;
+                }
+            }
+        }
+    }
+
+    .structureItem_default {
+        display: flex;
+        align-items: center;
+        flex-wrap: nowrap;
+        margin-bottom: 1px;
+        border-radius: 4px;
+
+        .sp-mobile-device & {
+            border-radius: 0;
+            margin-bottom: 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            padding: 0 0 0 20px;
+        }
+
+        &:hover {
+            background-color: rgba(0,0,0,0.03);
+        }
+
+        img {
+            width: 22px;
+            padding: 3px;
+            cursor: pointer;
+
+            &[ng-if="navigateToParentVisible(nodeId)"] {
+                & + span {
+                    opacity: .75;
+                }
+
+                .sp-mobile-device & {
+                    margin-left: -20px;
+                }
+            }
+
+            .sp-mobile-device & {
+                padding: 12px 16px 12px 15px;
+                width: 40px;
+                height: 40px;
+            }
+        }
+
+        span {
+            display: block;
+            padding: 6px 0;
+            cursor: default;
+            width: 99%;
+
+            .sp-mobile-device & {
+                padding: 10px 0;
+            }
+
+            &.matched {
+                color: #000;
+                font-style: italic;
+            }
+        }
+    }
+
+    .structureItem {
+        .structureItem_default;
+    }
+
+    .structureItem_selected {
+        .structureItem_default;
+        color: #009999;
+        background-color: #eaf6f5;
+        box-shadow: 0 0 0 1px #CBEFED inset;
+        opacity: 1 !important;
+
+        .sp-mobile-device & {
+            box-shadow: none;
+            margin-top: -1px;
+            border-top: 1px solid #9CE4E0;
+            border-bottom: 1px solid #9CE4E0;
+        }
+
+        &:hover {
+            background-color: #e0f2f1;
+        }
+
+        span.matched {
+            color: #009999;
+        }
+    }
+
+    .structureItem_searched {
+        .structureItem_default;
+        display: block;
+
+        .sp-mobile-device & {
+            span {
+                padding: 0 0 10px 0;
+
+                &.parentStructreItem {
+                    padding: 5px 0 0;
+                    font-size: 11px;
+                    opacity: .6;
+                }
+            }
+
+            .matchedContainer {
+                display: flex;
+                align-items: center;
+                flex-wrap: nowrap;
+            }
+
+            img {
+                padding: 10px 11px 11px 10px;
+                margin-top: -20px;
+                margin-right: 5px;
+            }
+        }
+    }
+
+
+
+    .sp-tablet-device & {
+        height: calc(~'100% - 55px'); // use up all the screen
+        .inlineRelPicker-buttonGroup {
+            left: 68px !important;
+            margin-top: 5px !important;
+
+            button {
+                height: 40px;
+                padding: 5px 15px 0;
+            }
+        }
+    }
+
+    .sp-mobile-device & {
+        /*min-height: 275px;*/
+        height: calc(~'100% - 55px'); // use up all the screen
+        overflow-y: hidden;
+
+        .modal-header {
+            display: block;
+            padding: 15px;
+        }
+
+        .inlineRelPicker-buttonGroup {
+            float: right;
+            margin-top: -8px;
+
+            button {
+                background-color: transparent;
+                outline: none;
+                height: 38px;
+                margin-left: 3px;
+                font-size: inherit;
+
+                &:active {
+                    transition: box-shadow linear .2s;
+                    -webkit-transition: box-shadow linear .2s;
+                    box-shadow: 0 0px 0px #bbb;
+                }
+
+
+                &[name="actionButton"] {
+                    position: absolute;
+                    left: 35px;
+                }
+
+                img {
+                    margin-top: -2px;
+
+                    &[name="viewmore"] {
+                        margin-left: 5px;
+                    }
+                }
+            }
+        }
+
+        .spmobile-report-view-container {
+            height: calc(~'100% - 40px');
+        }
+
+        .spreport-view {
+
+            .headerPanel {
+                height: initial;
+                display: block;
+                padding: 0;
+                margin: 0;
+                line-height: 0;
+
+                .reportName, .headerPanel-left {
+                    display: inline;
+                    padding: 0;
+                    margin: 0;
+                    line-height: 0;
+
+                    &:empty {
+                        display: none;
+                    }
+                }
+            }
+        }
+
+        .reportDataGridStyle {
+            top: 0;
+            overflow-y: auto;
+            position: inherit !important;
+        }
+    }
+}
+
+.entityCompositePickerDesktop {
+    height: 100%;
+    width: 100%;
+    position: relative;
+
+    .spreport-view {
+            position: absolute;
+            top: 0px;
+            bottom: 0px;
+            left: 0px;
+            right: 0px;
+    }
+}

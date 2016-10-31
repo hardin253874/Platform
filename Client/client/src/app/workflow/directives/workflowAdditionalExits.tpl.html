@@ -1,0 +1,22 @@
+<div class="workflow-additional-exits">
+    <legend>User responses</legend>
+
+    <div ng-repeat="e in activity.exitPoints | orderBy:'exitPointOrdinal'" class="form-group">
+        <button ng-click="removeExitPoint(e)" title="Remove this response"><img src="assets/images/icon_remove.png" /></button>
+        <input type="text" class="form-control" ng-model="e.name" placeholder="Label">
+
+        <input  ng-if="!includeActionSummary" type="text" class="form-control" ng-model="e.description" placeholder="Description" edc-enter="addExitPoint()">
+
+        <span ng-if="includeActionSummary">
+            <input type="text" class="form-control" ng-model="e.description" placeholder="Description">
+            <input ng-show="includeActionSummary" type="text" class="form-control" ng-model="e.exitPointActionSummary" placeholder="Action summary" edc-enter="addExitPoint()">
+        </span>
+    </div>
+
+    <div class="form-group form-group-container">
+        <button type="button" ng-click="addExitPoint()" title="Add a new response">
+            <img src="assets/images/icon_new.png" title="Add new condition and path name" />
+        </button>
+        Add user response
+    </div>
+</div>

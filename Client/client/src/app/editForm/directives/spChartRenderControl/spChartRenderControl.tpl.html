@@ -1,0 +1,9 @@
+﻿<div class="chart-render-control-container">
+
+    <div once-if="!formControl.hideLabel" class="form-title" ng-style="getTitleStyle(formControl)">{{formTitle}}</div>
+
+    <div class="chart-render-control" once-style="getControlStyle(formControl)">
+        <sp-chart options="model.chartOptions" chart-id="model.chartOptions.chartId"></sp-chart>
+    </div>
+
+</div>

@@ -1,0 +1,26 @@
+<div>
+	
+    <!-- Auto-number seed -->
+    <div>
+        <sp-control-on-form form-data="model.fieldData" form-control="model.autoSeedControl" form-mode="model.formMode"  is-read-only="isAutoseedReadOnlyControl()" is-in-test-mode="model.isInTestMode" >
+    
+        </sp-control-on-form>
+    </div>
+
+    <!-- Auto-number pattern -->
+    <div>
+        <sp-control-on-form form-data="model.fieldData" form-control="model.autoPatternControl" form-mode="model.formMode"  is-read-only="model.isReadOnly" is-in-test-mode="model.isInTestMode" >
+    
+        </sp-control-on-form>
+    </div>
+    <div>
+        <table style="border: 1px solid silver; margin-top: 8px; width:100%; background-color:#fff;">
+        <tr ng-repeat="string in model.fieldProperties.patternHelpStrings">
+            <td>{{string.value}}</td>
+            <td>{{string.description}}</td>
+             <td>{{string.example}}</td>
+        </tr>
+        </table>
+    </div>
+
+</div>

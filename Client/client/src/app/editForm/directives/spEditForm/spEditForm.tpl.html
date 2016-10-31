@@ -1,0 +1,15 @@
+<div class="sp-Edit-Form">
+    <div class="sp-Edit-Form-Header">
+        <div class="sp-Edit-Form-Heading">
+            <sp-editable-label value="spFormBuilderService.form.name" pre-update-callback="isValidName" key-down-callback="validateinput" change-callback="changeValidate" placeholder="'Name'"></sp-editable-label>
+            <!-- Leaving until the builder is refactored <rn-info-button ng-if="showHelp()" disabled="true"></rn-info-button>-->
+        </div><br>
+        <div class="sp-Edit-Form-Description">
+            <sp-editable-label value="spFormBuilderService.form.description" key-down-callback="validateinput" change-callback="changeValidate" placeholder="'Description'"></sp-editable-label>
+        </div>
+    </div>
+    <div class="sp-Edit-Form-Body">
+        <sp-form-builder-container class="sp-form-builder sp-form-builder-edit-form-control" control="spFormBuilderService.form" parent-control="" sp-measure-arrange="measureArrangeOptions">
+        </sp-form-builder-container>
+    </div>
+</div>

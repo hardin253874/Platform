@@ -1,0 +1,52 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+.chartView {
+    padding: 30PX 0;
+
+    .sp-mobile-device & {
+        padding: 3%;
+    }
+
+    .chart-config-panel {
+        position: relative;
+        right: 2px;
+        top: 2px;
+        z-index: 1;
+        display: inline-block;
+        float: right;
+        font-size: 0;
+        background-color: #1dd000;
+        border: none;
+        border-radius: 4px;
+        outline: none;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.35);
+
+        .chart-config-panel-button {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            padding: 12px;
+            line-height: 0;
+            text-align: center;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            border-radius: 4px;
+            outline: none;
+        }
+
+        .chart-config-panel-button-light {
+            border-radius: 4px;
+            &:hover {
+                margin-top: 0px;
+                background-color: darken(#1dd000, 3%);
+            }
+
+            img {
+                display: inline-block !important;
+            }
+        }
+    }
+}
+
+
+

@@ -1,0 +1,42 @@
+<div id="formBuilder" class="sp-Form-Builder" sp-busy-indicator-popup="windowBusy">
+	
+    <div class="sp-Form-Builder-ToolBar">
+        <span class="sp-Form-Builder-Toolbar-Right">
+
+            <button class="btn-link" ng-click="toggleFormStructureEditor()" ng-if="allowFlexForm">
+                toggle adv
+            </button>
+
+            <button ng-click="onPropertiesClick()" uib-tooltip="Properties" tooltip-trigger tooltip-placement="top">
+                <img src="assets/images/properties.svg" /><span>Properties</span>
+            </button>
+            <button ng-click="onSaveClick()" uib-tooltip="Save" tooltip-trigger tooltip-placement="top">
+                <img src="assets/images/toolbar_save.png" /><span>Save</span>
+            </button>
+            <button ng-click="onSaveAsClick()" uib-tooltip="Save As" tooltip-trigger tooltip-placement="top" ng-hide="isNewForm">
+                <img src="assets/images/toolbar_saveas.png" /><span>Save as</span>
+            </button>
+            <button class="builder-ToolBar-Close" ng-click="onCancelClick()" uib-tooltip="Cancel" tooltip-trigger tooltip-placement="top">
+                <img src="assets/images/toolbar_close.png" />
+            </button>
+        </span>
+    </div>
+
+    <div class="sp-Form-Builder-Action">
+
+        <div ng-if="model.actionButtons.length > 0" class="sp-Form-Builder-actions">
+            <button type="button" ng-click="ab.execute()" ng-repeat="ab in model.actionButtons" ng-disabled="ab.disabled || model.isInDesign || model.disableActions" title="{{ab.name || ab.displayname}}">
+                <img ng-src="{{ab.icon}}" width="16" height="16" /><span ng-show="ab.action.state === 'createForm' || ab.action.method === 'run' || ab.action.method === 'generate'">{{ab.nameshort}}</span>
+            </button>
+        </div>
+
+        <button ng-if="showActionButton()" type="button" ng-click="showActionsDialog()" title="Action">
+            <img src="assets/images/16x16/add.svg" /><span>Actions</span>
+        </button>
+    </div>
+
+    <rn-form-structure-editor ng-if="showStructureEditor" form-entity="spFormBuilderService.form"></rn-form-structure-editor>
+
+    <sp-edit-form style="height: calc(100% - 5px);"></sp-edit-form>
+    
+</div>

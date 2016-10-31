@@ -1,0 +1,26 @@
+<div class="dataGridImageCell" once-class="col.colIndex()" sp-droppable="dropOptions" sp-droppable-data="col" >
+    <div class="dataGridImageCellContent" sp-evt-style="getFormattedCellImageAlignmentStyle(row,col)"
+         sp-evt-name="updateGridMsg" ng-switch on="formattedCellTypeIsAlignRight(col)">
+        <div ng-switch-when="false">
+            <div class="dataGridImageCellLeft" once-style="{'width':col.colDef.spColumnDefinition.imageWidth+'px'}">
+                <div class="dataGridCellVerticalAlign" sp-evt-style="getFormattedCellImageStyle(row,col)"
+                     ng-click="showImageViewerDialog(row,col)" sp-evt-name="updateGridMsg"></div>
+            </div>
+            <div class="dataGridImageCellRight" once-hide="col.colDef.spColumnDefinition.hideValue">
+                <div class="dataGridCellImageText" once-style="getFormattedCellImageForegroundStyle(col)"
+                     sp-evt-text="getCellText(row, col)" sp-evt-name="updateGridMsg"></div>
+            </div>
+        </div>
+
+        <div ng-switch-when="true">
+            <div class="dataGridImageCellRight" once-hide="col.colDef.spColumnDefinition.hideValue">
+                <div class="dataGridCellImageText" once-style="getFormattedCellImageForegroundStyle(col)"
+                     sp-evt-text="getCellText(row, col)" sp-evt-name="updateGridMsg"></div>
+            </div>
+            <div class="dataGridImageCellLeft" once-style="{'width':col.colDef.spColumnDefinition.imageWidth+'px'}">
+                <div class="dataGridCellVerticalAlign" sp-evt-style="getFormattedCellImageStyle(row,col)"
+                     ng-click="showImageViewerDialog(row,col)" sp-evt-name="updateGridMsg"></div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,38 @@
+<div style="width:800px" ng-controller="applicableTasksTest">
+	
+<h2>Applicable Tasks</h2>
+    <div>
+        <ul>
+            <li>Only the records that have outstanding tasks for the current user will be shown. </li>
+            <li>
+                Hit the 'Add Task' button to populate some tasks against the manager records. These are dummy tasks so have a stupid name and are not actually related to a workflow.
+            </li>
+            <li>
+                To get multiple tasks for a manager (to expose the drop-down) just keep hitting the 'Add Task' button.
+                To remove a task hit one the exit buttons.
+            </li>
+        </ul>
+    </div>
+    <br/>
+    Select a record with open tasks:
+    <select ng-options="record.name for record in recordList" ng-model="selectedRecord">
+        <option value="">[Select]</option>
+    </select>
+    <br />
+    (optionally) Select a tasks:
+    <select ng-options="record.name for record in taskList" ng-model="selectedTask">
+        <option value="">[Select]</option>
+    </select>
+
+    <br/>
+    Add Random Task For Shared:Manager <button ng-click="addTask()">Add Task</button>
+    <br>
+    Style below this line <hr/>
+    <div style="width:90%; height:400px; background: #ffffe0">
+        <div>
+            <sp-applicable-tasks task-list="taskList" task-id="selectedTask.idP"></sp-applicable-tasks>
+        </div>
+        <br>
+        <div >Edit Form for: {{selectedRecord.name}}</div>
+    </div>
+</div>

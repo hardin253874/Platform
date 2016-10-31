@@ -1,0 +1,48 @@
+<div ng-controller="sp.workflow.activityController">
+    <div ng-controller="reviewSurveyActivityController">
+        <form class="form-horizontal">
+            <div class="form-group">
+                <sp-workflow-expression-control parameter="activityParameters['core:inReviewSurveyResponse']" show-label="true"
+                                                actions="parameterChooser"></sp-workflow-expression-control>
+            </div>
+
+            <div class="form-group">
+
+                <sp-workflow-expression-control parameter="activityParameters['core:inReviewSurveyReviewer']" show-label="true"
+                                                actions="parameterChooser,resourceChooser,exprEditor"></sp-workflow-expression-control>
+            </div>
+
+            <div class="form-group">
+
+                <sp-workflow-expression-control parameter="activityParameters['core:inReviewSurveyTaskName']" show-label="true"
+                                                actions="exprEditor"></sp-workflow-expression-control>
+            </div>
+
+            <div class="form-group">
+                <sp-workflow-expression-control parameter="activityParameters['core:inReviewSurveyEntryState']"
+                                                show-label="true" actions="parameterChooser,resourceChooser"></sp-workflow-expression-control>
+            </div>
+
+            <div class="form-group">
+                <div class="workflow-form-control">
+                    <label class="control-label" title="{{activityParameters['core:inReviewSurveyDueInDays'].argument.description}}">
+                        {{activityParameters['core:inReviewSurveyDueInDays'].argument.name}}
+                    </label>
+                    <sp-workflow-timespan-input class="sp-workflow-timespan-input"
+                                                model="formTimeoutValue"></sp-workflow-timespan-input>
+                </div>
+            </div>
+
+            <div class="form-group">
+
+                <sp-workflow-parameter-bool-input parameter="'core:inReviewSurveyAllowComments'"></sp-workflow-parameter-bool-input>
+
+            </div>
+
+            <fieldset>
+                <sp-workflow-additional-exits workflow="workflow" activity="entity" />
+            </fieldset>
+
+        </form>
+    </div>
+</div>

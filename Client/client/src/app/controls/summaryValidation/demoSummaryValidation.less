@@ -1,0 +1,58 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+.summaryValidation{
+	background-color: lightyellow;
+    padding: 10px;
+
+	#alert-region {
+		position: fixed;
+		top: 30px; /* note - we recalc this in script */
+		right: 0;
+		width: 100%;
+		z-index: 500;
+	}
+
+	.alert-indicators {
+		position: absolute;
+		right: 0;
+		margin: 0;
+		padding: 0;
+		line-height: 0;
+		z-index: 501;
+	}
+
+	.alert-items {
+		position: absolute;
+		right: 0;
+		width: 30%;
+		margin: 0;
+	}
+
+	.alert-items, .alert-indicators li {
+		list-style: none;
+	}
+
+	.alert-indicators li {
+		padding: 3px 4px 3px 4px;
+	}
+
+	.alert-items li {
+		padding: 2px 20px 2px 10px;
+		font-weight: lighter;
+		font-size: smaller;
+		font-weight: 600;
+		background-color: #c62121;
+		color: white;
+	}
+
+	.alert-items li.error, .alert-indicators li.error { background-color: #c62121; }
+
+	.alert-items li.info, .alert-indicators li.info { background-color: #1f5ca7; }
+
+	.alert-items li.warn, .alert-indicators li.warn { background-color: #ff7e00; }
+
+	.alert-items img { background-color: white; }
+
+	.errorwatch{
+		background-color: #c62121;
+	}
+}

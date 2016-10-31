@@ -1,0 +1,23 @@
+<div class="sp-applicable-tasks-mobile">
+    <div class="tasks-mobile-actions">
+        <div ng-repeat="ab in actionButtons">
+            <button type="button" ng-click="ab.execute()" ng-disabled="ab.action.disabled || model.isInDesign || model.disableActions" title="{{ab.action.name || ab.action.displayname}}">
+                <img ng-src="{{ab.action.icon}}" width="16" height="16" /><span ng-show="ab.action.state === 'createForm' || ab.action.method === 'run' || ab.action.method === 'generate'">{{ab.action.nameshort}}</span>
+            </button>
+        </div>
+    </div>
+
+    <div ng-repeat="task in taskList">
+        <span class="task-name" >{{task.name}}</span>
+
+        <textarea ng-hide="task.userTaskIsComplete || task.hideComment" ng-model='task.taskComment' placeholder="Comment"/>
+
+        <span class="completed-comment" ng-show="task.userTaskIsComplete && task.taskComment"><img src="assets/images/icon_comment.png">{{task.description}}</span>
+
+        <span class="completed-date" ng-show="task.userTaskIsComplete">Completed: {{task.userTaskCompletedOn | spDate:dateShort }}</span>
+
+        <sp-task-buttons ng-hide="task.userTaskIsComplete" navigate-as-child="navigateAsChild" return-on-completion="false" task="task" before-save="beforeTransition()"></sp-task-buttons>
+
+
+    </div>
+</div>

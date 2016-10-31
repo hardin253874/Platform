@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>App State (and Nav) Test Page</title>
+    <link rel="stylesheet" type="text/css" href="../lib/bootstrap/css/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="../lib/angular-ui/angular-ui.css" />
+    <link rel="stylesheet" type="text/css" href="../lib/jquery-ui/css/jquery-ui.css" />
+
+    <!--here's the place for any css and less you may need-->
+    <link rel="stylesheet/less" type="text/css" href="../src/less/main.less"/>
+    <!--<link rel="stylesheet/less" type="text/css" href="../src/app/login/login.less"/>-->
+    <script src="../lib/less/less-1.5.0.min.js" type="text/javascript"></script>
+
+    <style>
+        .my-page {
+            /*margin: 5px;*/
+            /*background-color: #d3d3d3;*/
+        }
+
+    </style>
+
+</head>
+
+<body ng-app="app">
+
+<p>Test Page</p>
+
+<div class="my-page" ng-controller="myController">
+
+    <div ng-switch="!!appData.layoutTemplate">
+        <div ng-switch-when="true">
+            <div ng-include="appData.layoutTemplate"></div>
+        </div>
+        <div ng-switch-default>
+            <div ui-view></div>
+        </div>
+    </div>
+
+
+    <h1>{{appData.myTitle}}</h1>
+
+    <pre>{{appData}}</pre>
+
+</div>
+
+<script type="text/ng-template" id="layout.tpl.html">
+    <div>
+        <div ng-include="'login/login.tpl.html'"></div>
+    </div>
+</script>
+
+
+<script src="../src/components/utils/console.js"></script>
+<script src="../lib/jquery/jquery.js"></script>
+<script src="../lib/angular/angular.js"></script>
+<script src="../lib/angular/angular-animate.js"></script>
+<script src="../lib/angular-ui-router/angular-ui-router.js"></script>
+<script src="../lib/bootstrap/js/bootstrap.js"></script>
+<script src="../lib/lodash/lodash.js"></script>
+<script src="../lib/jsTimezoneDetect/jstz.js"></script>
+
+<!--include any other source files you need here-->
+<script src="../src/components/titleService/titleService.js"></script>
+<script src="../src/components/entity/spEntity.js"></script>
+<script src="../src/components/entity/spEntity.Field.js"></script>
+<script src="../src/components/utils/spUtils.js"></script>
+<script src="../src/components/utils/spWebService.js"></script>
+<script src="../src/components/loginService/loginService.js"></script>
+<script src="../src/components/localStorage/localStorage.js"></script>
+<script src="../src/app/login/directives/openId.js"></script>
+<script src="../src/app/login/login.js"></script>
+<script src="../src/app/appSettings.js"></script>
+
+
+<script>
+'use strict';
+
+var mappedTemplateUrls = {};
+
+angular.module('app', ['ngAnimate', 'ui.router', 'titleService',
+            'mod.common.spLocalStorage', 'sp.common.loginService', 'mod.common.spWebService', 'app.login',
+            'sp.app.settings'])
+        .config(function ($provide, $httpProvider) {
+            $httpProvider.interceptors.push(function ($q) {
+                return {
+                    'request': function (config) {
+                        //console.log('http request', config.url);
+                        if (config.url.match(/\.tpl\.html/) && mappedTemplateUrls[config.url]) {
+                            config.url = mappedTemplateUrls[config.url];
+                            console.log('MAPPED to', config.url);
+                        }
+                        return config;
+                    }
+                };
+            });
+        })
+        .run(function (spWebService) {
+            function appTemplate(templateUrl) {
+                mappedTemplateUrls[templateUrl.substring('src/app/'.length)] = '../' + templateUrl;
+            }
+
+            function componentTemplate(templateUrl) {
+                mappedTemplateUrls[templateUrl.substring('src/components/'.length)] = '../' + templateUrl;
+            }
+
+            // add your app and component templates here...
+            // this is needed to get the paths correct since we aren't using the build system
+            appTemplate('src/app/login/login.tpl.html');
+            appTemplate('src/app/login/directives/openId.tpl.html');
+
+            // authenticate with test account, if you need it...
+            spWebService.setHeader('Authorization', 'Basic RURDXEFkbWluaXN0cmF0b3I6UGFzc3dvcmQ=');
+            spWebService.setWebApiRoot('https://syd1dev24.entdata.local/');
+        })
+        .controller('myController', function ($scope) {
+
+            $scope.appData = {
+                myTitle: 'hello world',
+                layoutTemplate: 'layout.tpl.html'
+            };
+
+        });
+</script>
+
+</body>
+</html>

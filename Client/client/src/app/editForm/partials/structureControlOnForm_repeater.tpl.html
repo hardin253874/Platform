@@ -1,0 +1,16 @@
+<span ng-controller="structureControlOnFormRepeaterController" test-id={{::testId}}>
+
+    <sp-replace source="'editForm/partials/fieldTitle.tpl.html'" ng-if="controlNeedsTitle(formControl)"></sp-replace>
+    
+    <sp-vertical-stack-container-control ng-if="isVerticalStackContainerControl(formControl)" form-data="formData"
+                                         form-control="formControl" parent-control="parentControl"
+                                         form-theme="formTheme" form-mode="formMode" is-read-only="isReadOnly"
+                                         is-in-test-mode="isInTestMode" is-embedded="isEmbedded"
+                                         structure-depth="structureDepth"
+                                         class="structure-depth-{{structureDepth}}"
+                                         style="border: none; padding: 0px; margin: 0px; padding-right:30px; min-width: 395px;"></sp-vertical-stack-container-control>
+
+    <span ng-if="!isVerticalStackContainerControl(formControl)"
+          sp-include="getFormControlFile(formControl, formMode, (isReadOnly || formControl.getReadOnlyControl()))"></span>
+
+</span>

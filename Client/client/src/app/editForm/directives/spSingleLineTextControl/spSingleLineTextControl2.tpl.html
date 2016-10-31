@@ -1,0 +1,58 @@
+<div class="rn-control" eid="{{eid}}">
+
+    <rn-control-title class="rn-control-title"
+                      value="titleModel.name" description="titleModel.description"
+                      is-read-only="isReadOnly" is-required="isRequired"
+                      messages="customValidationMessages"></rn-control-title>
+
+    <div class="rn-control-value">
+        <div class="fieldControl" ng-class="fieldDisplayType">
+            <div ng-if="!isReadOnly || isInDesign">
+                <div ng-if="fieldDisplayType !== 'color'" ng-class="fieldDisplayValue">
+                    <input type="{{fieldInputType}}"
+                           name="fieldValue"
+                           class="value"
+                           spellcheck="true"
+                           sp-custom-validator="customValidator"
+                           ng-model="model.fieldValue"
+                           ng-required="fieldToRender.getIsRequired()"
+                           ng-trim='false'
+                           ng-change="cleanFieldValue();"
+                           test-id="{{::testId}}"
+                           ng-disabled="isInDesign"
+                           ng-attr-placeholder="{{model.watermark}}"/>
+                </div>
+                <div ng-if="fieldDisplayType === 'color'" ng-class="fieldDisplayValue">
+                    <sp-color-render-control colorstring="model.fieldValue"></sp-color-render-control>
+                </div>
+            </div>
+
+            <div ng-if="!(!isReadOnly || isInDesign)">
+
+                <div ng-switch="fieldDisplayType">
+                    <a ng-switch-when="url"
+                       href="{{httperizeUrl(model.fieldValue)}}" target="_blank">{{model.fieldValue}}</a>
+
+                    <a ng-switch-when="email"
+                       href="mailto:{{model.fieldValue}}">{{model.fieldValue}}</a>
+
+                    <a ng-switch-when="phoneNumber"
+                       href="tel:{{model.fieldValue}}">{{model.fieldValue}}</a>
+
+                    <div ng-switch-when="color"
+                         ng-style="getCssColorFromColorString(displayString)"></div>
+
+                    <input ng-switch-when="password"
+                           type="password" ng-model="model.fieldValue" ng-readonly="true">
+
+                    <div ng-switch-default
+                         ng-class="fieldDisplayValue" class="fieldValue"
+                         uib-tooltip="{{displayString}}" tooltip-trigger tooltip-placement="top">
+                        {{displayString}}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

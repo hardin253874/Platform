@@ -1,0 +1,74 @@
+<div> <h2>Field Properties test.</h2></div>
+
+<div ng-controller="fieldPropertiesTestController" >
+    <div>
+        <input type="text" ng-model="model.formId"/>
+        <button type="button" class="btn" ng-click="getFormDefinition(model.formId)">Get Form Fields</button>
+        <label class="has-error">{{errorMessage}}</label>
+    </div>
+
+    <div style="display:table-row;width: 100%; border-bottom: 1px solid #a4a4a4">
+        <div class="structure-control-header" ng-class='titleClass'>{{formControl.getName()}}</div>
+    </div>
+    <div class="text-right editForm-design_top">
+        <button type="button" class="btn" ng-click="save()" ng-disabled="!isDirty()">Save</button>
+    </div>
+    
+    <div style="padding-left: 20px"><h1>Fields</h1>
+        <div class="contents">
+            <fieldset style="border: 1px solid silver; border-radius: 2px; margin: 8px; padding: 8px;">
+                <table>
+                    <tr class="repeater {{repeaterClass}}" ng-repeat="fieldFormControl in getFormControls() | orderBy:renderingOrdinal">
+                        <td style="min-width: 50px"> <sp-control-on-form form-data="formData" form-control="fieldFormControl" form-mode="View" is-read-only="isReadOnly" is-in-test-mode="isInTestMode"></sp-control-on-form></td>
+                        <td><button class="btn-primary" ng-click="onClick(fieldFormControl)">control</button></td>
+                        <td>   </td><td style="min-width: 20px"></td>
+                        <td><button class="btn-primary" ng-click="onFieldClick(fieldFormControl)">field</button></td>
+                    </tr>
+                        
+                </table>
+            </fieldset>
+        </div>
+    </div>
+    <div style="padding-left: 20px"><h1>Relationships</h1>
+        <div class="contents">
+            <fieldset style="border: 1px solid silver; border-radius: 2px; margin: 8px; padding: 8px;">
+                <table>
+                    <tr class="repeater {{repeaterClass}}" ng-repeat="relationshipControl in getRelationshipControls()">
+                        <td style="min-width: 50px">
+                            <label>{{getRelationshipName(relationshipControl)}}</label>
+                            <sp-control-on-form form-data="formData" form-control="fieldFormControl" form-mode="View" is-read-only="isReadOnly" is-in-test-mode="isInTestMode"></sp-control-on-form>
+                        </td>
+                        <td><button class="btn-primary" ng-click="onRelationshipControlClick(relationshipControl)">Form control</button></td>
+                        <td>   </td><td style="min-width: 20px"></td>
+                        <td><button class="btn-primary" ng-click="onRelationshipClick(relationshipControl)">relationship</button></td>
+                    </tr>
+                        
+                </table>
+            </fieldset>
+        </div>
+    </div>
+    
+    <div>
+        <div>select new entity</div>
+        <div> <select ng-options="type.name for type in fieldType" ng-model="selectedType">
+                  <option value="">[Select]</option>
+              </select></div>
+        <button ng-click="addNewField()">Add</button>
+    </div>
+    
+    <div>List of new fields</div>
+    <div ng-repeat="field in fields">
+        <div>{{field.name}}</div>
+        <div>{{field.description}}</div>
+        <button ng-click="onNewFieldClick(field)">configure</button>
+    </div>
+    
+    <button ng-click="configureNewControl()">new form control</button>
+    
+    <button ng-click="onNewChoiceFieldClick()">configure new choice field</button>
+    <button ng-click="onNewChoiceFieldControlClick()">configure new choice field control</button>
+    
+    <div>
+        <svg-relationship-info options="svgSettings" />
+    </div>
+</div>

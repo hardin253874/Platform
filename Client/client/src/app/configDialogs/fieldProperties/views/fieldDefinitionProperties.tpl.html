@@ -1,0 +1,60 @@
+<div>
+    <div>
+        <!-- Mandatory -->
+        <div ng-hide="model.isCalculated">
+            <div class="edit-form-title">
+                <label>Mandatory: </label>
+            </div>
+            <div class="edit-form-value">
+                <input type="checkbox" ng-model="model.isFieldRequired" ng-disabled="model.isReadOnly || !model.canModifyField" />
+            </div>
+        </div>
+
+        <!-- Minimum Value -->
+        <div ng-hide="model.isCalculated">
+            <sp-control-on-form form-data="model.fieldData" form-control="model.fieldMinimumControl" form-mode="model.formMode" is-read-only="model.isReadOnly || !model.canModifyField" is-in-test-mode="model.isInTestMode">
+            </sp-control-on-form>
+        </div>
+
+        <!-- Maximum Value -->
+        <div ng-hide="model.isCalculated">
+            <sp-control-on-form form-data="model.fieldData" form-control="model.fieldMaximumControl" form-mode="model.formMode" is-read-only="model.isReadOnly || !model.canModifyField" is-in-test-mode="model.isInTestMode">
+            </sp-control-on-form>
+        </div>
+
+        <!-- Default Value -->
+        <div ng-hide="model.isCalculated">
+            <sp-control-on-form form-data="model.fieldDefaultData" form-control="model.fieldDefaultControl" form-mode="model.formMode" is-read-only="model.isReadOnly || !model.canModifyField" is-in-test-mode="true">
+            </sp-control-on-form>
+        </div>
+
+        <!-- Decimal Places-->
+        <div ng-show="model.showDecimalPlaces">
+            <sp-control-on-form form-data="model.fieldData" form-control="model.fieldDecimalPlacesControl" form-mode="model.formMode" is-read-only="model.isReadOnly || !model.canModifyField" is-in-test-mode="model.isInTestMode">
+            </sp-control-on-form>
+        </div>
+
+        <!-- Text Pattern -->
+        <div ng-show="model.showStringPattern">
+            <div class="edit-form-control-container">
+                <div class="edit-form-title">
+                    <label>Text pattern: </label>
+                </div>
+                <div class="edit-form-value">
+                    <select ng-options="pattern.getName() for pattern in stringPatterns" ng-model="model.pattern" ng-change="updateDefaultField()" ng-disabled="model.isReadOnly || !model.canModifyField">
+                        <option value="">[Select]</option>
+                    </select>
+                </div>
+            </div>
+
+        </div>
+        
+        <!-- No options -->
+        <div ng-show="model.isCalculated && !model.showDecimalPlaces && !model.showStringPattern">
+            <div class="edit-form-title message">
+                <label class="form-label">Object options are unavailable for this field.</label>
+            </div>
+        </div>
+
+    </div>
+</div>

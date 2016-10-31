@@ -1,0 +1,26 @@
+<div class="fb-popover-relationships" once-style="getPopoverMinHeight()">
+
+    <div class="fb-popover-header">
+        <div class="fb-inline fb-popover-close" style="position: absolute; right: 3px; top: 3px; cursor: pointer"
+             ng-click="popover.isOpen = false">
+            <span class="ui-icon ui-icon-darkgray ui-icon-close"></span>
+        </div>
+        Lookups
+    </div>
+    <div class="fb-popover-body">
+        <div ng-repeat="lookup in model.lookups" class="fb-popover-body-hover"
+             style="padding-bottom: 3px; cursor: pointer" uib-tooltip="{{lookup.getDescription()}}" tooltip-placement="top"
+             tooltip-trigger="mouseenter" tooltip-popup-delay='500' ng-click="lookupCheckboxClicked(true, $event)">
+            <div class="fb-inline fb-middle" style="margin-right: 3px; cursor: default">
+                <img ng-src="{{'assets/images/' + getLookupIcon()}}"/>
+            </div>
+            <div class="fb-inline fb-middle">
+                <input type="checkbox" style="cursor: pointer;" ng-model="lookup.selected"
+                       ng-change="lookupCheckboxClicked(false, $event)" class="click-bypass"/>
+            </div>
+            <div class="fb-inline fb-middle">
+                <label style="margin-bottom: 0; cursor: pointer">{{lookup.getName()}}</label>
+            </div>
+        </div>
+    </div>
+</div>

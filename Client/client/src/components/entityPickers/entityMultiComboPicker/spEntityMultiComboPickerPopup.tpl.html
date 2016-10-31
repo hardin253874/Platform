@@ -1,0 +1,9 @@
+<ul class="entityPickers-view dropdown-menu entityMultiComboPickerDropdownPopupMenu">
+	
+    <li ng-repeat="entityCheckBoxItem in entityCheckBoxItems">
+        <div>
+            <input class="alignMiddle marginLeft" type="checkbox" ng-checked="entityCheckBoxItem.selected" ng-model="entityCheckBoxItem.selected" ng-change="selectionChanged()">
+            <span class="alignMiddle entityMenuItem">{{entityCheckBoxItem.entity.getName()}}</span>
+        </div>        
+    </li>
+</ul>    

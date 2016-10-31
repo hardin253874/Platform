@@ -1,0 +1,36 @@
+<div class="spmobile-report-view-container">
+    
+    <div class="spreport-view" hm-drag-down="pullDownRefresh()">
+
+        <div class="headerPanel">
+            <div class="headerPanel-left">
+                <span class="reportName" ng-style="getTitleTheme()">{{model.title}}</span>
+            </div>
+
+            <div class="headerPanel-right">
+                <div class="tool-wrapper rn-inline-edit-toolbar"
+                     ng-if="!model.isInPicker && !model.isEditMode && inlineEditingFeatureIsOn"
+                     ng-include="'reports/inline/inlineEditButtons.tpl.html'"></div>
+
+                <div class="tool-wrapper" sp-include="'reports/spReportHeaderPanelNewButton.tpl.html'"></div>
+
+                <div class="tool-wrapper">
+                    <button type="button" ng-repeat="ab in model.actionButtons"
+                            ng-if="showActionButtons()" ng-disabled="disabledActionButtons(ab)"
+                            ng-click="ab.execute()"
+                            name="newReport" title="{{ab.description || ab.displayname}}">
+                        <img ng-src="{{ab.icon}}" />
+                        <span ng-show="ab.action.state === 'createForm' || ab.action.method === 'run' || ab.action.method === 'generate'">{{ab.nameshort}}</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="reportDataGridStyle" sp-busy-indicator-popup="model.gridBusyIndicator" >
+            <sp-data-grid grid-options="model.gridOptions"></sp-data-grid>
+        </div>
+
+    </div>
+
+    <!-- <div class="reportLoadMore" ng-show="model.moreDataAvailable" hm-touch="loadMore()">Load more</div> -->
+</div>

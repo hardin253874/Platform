@@ -1,0 +1,98 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+.workflow-properties {
+    .layout-container;
+    overflow: auto;
+    background-color: @workflowpropertyBg;
+
+    .workflow-properties-header {
+        .layout-container;
+        height: auto;
+        background-color: darken(@workflowpropertyheaderBg, 5%);
+        padding: 7px 0 0 20px;
+        min-height: 47px;
+
+        input {
+            height: 23px;
+            min-height: inherit;
+            padding: 0 2px;
+            display: inline-block;
+        }
+
+        .properties-header {
+            width: 70%;
+
+            .custom-validation-messages {
+                background-color: @pointRed;
+                display: inline-block;
+                border-radius: 2px;
+                margin-left: 3px;
+                box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+
+                img {
+                    display: inline-block;
+                    margin: -2px;
+                    margin-bottom: 1px;
+                }
+            }
+        }
+
+        .name-property {
+            font-size: 1.1em;
+            margin-right: 5px;
+            color: #eee;
+
+            input {
+                height: 20px;
+                min-height: inherit;
+                margin-top: -8px;
+            }
+        }
+
+        .description-property {
+            color: @gray_nine;
+
+            input {
+                height: 17px;
+                min-height: inherit;
+            }
+        }
+
+        .entity-type-name {
+            display: inline-block;
+            float: right;
+            margin-right: 10px;
+            margin-top: -1px;
+            color: darken(@workflowpropertyBg, 50%);
+        }
+
+        .icon-close {
+            float: right;
+            cursor: pointer;
+            margin-top: -7px;
+
+            img {
+                padding: 15px 10px 16px;
+                opacity: inherit;
+                border-radius: inherit;
+                -webkit-border-radius: inherit;
+                box-shadow: 0px 3px 2px @workflowpropertyheaderBg inset;
+                -webkit-box-shadow: 0px 3px 2px @workflowpropertyheaderBg inset;
+                background-color: lighten(@workflowpropertyheaderBg, 10%);
+
+                &:hover {
+                    background-color: lighten(@workflowpropertyheaderBg, 15%);
+                }
+            }
+        }
+
+        sp-custom-validation-message {
+            position: absolute;
+            left: 0;
+        }
+    }
+
+    .workflow-properties-body {
+        .layout-container;
+        overflow: hidden;
+    }
+}

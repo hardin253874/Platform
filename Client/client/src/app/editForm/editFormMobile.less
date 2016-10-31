@@ -1,0 +1,389 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+
+//
+// Base styling for all the edit forms
+//
+
+
+.sp-mobile-device {
+    margin-top: 0;
+    height: 98%;
+
+    .view form[name="form"] {
+        &.editForm {
+            padding: 0 2% 0;
+        }
+    }
+
+    .custom-edit-form {
+
+        .sp-page-container {
+            height: 100%;
+        }
+    }
+
+    .sp-new-type-dialog {
+
+        .custom-edit-form {
+            height: auto;
+
+            .sp-page-container {
+                height: auto;
+            }
+        }
+    }
+}
+
+.editForm .form-title {
+    display: inline-block;
+}
+
+// reset the fixed widths so the page can flow naturally.
+.mobileFormStyle {
+
+    .fieldControl {
+        span {
+        }
+    }
+
+    .pager {
+        width: 100%;
+        text-align: center;
+        background-color: #e6e6e6;
+    }
+
+    .repeater {
+        width: initial; // prevent horizontal scrolling
+        min-width: initial;
+        width: 100% !important;
+
+        .horizontalStack-repeater {
+            margin-right: inherit;
+            width: 100% !important;
+        }
+    }
+
+    sp-date-time-mobile-control {
+        // font-size: 1.5em;
+    }
+
+    .edit-form-control-container {
+        vertical-align: top;
+        display: block;
+
+        .edit-form-title {
+            display: block;
+            width: 100%;
+            border-bottom: none;
+            padding: 5px 0 0 3px;
+            font-size: 15px !important;
+            height: 24px;
+            line-height: initial;
+        }
+
+        .edit-form-value {
+            display: block;
+            padding: 0 1px 0 3px;
+            font-size: (@editFormBaseFontSize + 4px) !important;
+            width: 100%;
+            max-width: inherit;
+
+            span {
+                display: block;
+            }
+
+            .entityCheckBoxPickerContainer {
+                border-left: none;
+
+                & > .entityCheckBoxPicker-item {
+                    padding: 0;
+                    border-bottom: 1px dotted #e5e5e5;
+
+                    &:last-child {
+                        border-bottom: none;
+                    }
+
+                    span {
+                        display: inline-block;
+                        font-size: .7em;
+                    }
+                }
+            }
+
+            input {
+                margin: 0;
+            }
+        }
+    }
+
+    .imageviewer {
+    }
+
+    .structure-control-on-form {
+
+        .contents {
+        }
+
+        .contents-implicit {
+        }
+
+        .title1 {
+        }
+
+        .repeater-wrapper {
+        }
+    }
+
+    .vertical-stack-container-control {
+        .structure-control-on-form;
+    }
+
+    .horizontal-stack-container-control {
+        .structure-control-on-form;
+    }
+
+    .horizontalStack-repeater {
+        display: block;
+    }
+
+    .inlineRel {
+        display: block;
+    }
+
+    .multilineRel {
+        display: block;
+    }
+
+    .tabContainer {
+        // display: none;
+    }
+
+    .tabRelRenderCtrl {
+    }
+
+    .sp-currency-control {
+        display: block;
+
+        span {
+            display: inline !important;
+        }
+    }
+
+    .sp-date-mobile-control {
+        display: block;
+
+        span {
+            display: block !important;
+        }
+    }
+
+    sp-date-and-time-control, sp-date-control {
+        display: none;
+    }
+
+    .sp-date-and-time-mobile-control {
+        display: block;
+
+        span {
+            display: block !important;
+        }
+    }
+
+    .sp-decimal-control {
+        display: block;
+
+        span {
+            display: block !important;
+        }
+    }
+
+    .sp-number-control {
+        display: block;
+
+        span {
+            display: block !important;
+        }
+    }
+
+    .sp-time-control {
+        width: 100%;
+        display: block;
+
+        span {
+            display: block !important;
+        }
+    }
+
+    .inlineRelPicker {
+        display: block !important;
+
+        button {
+            width: 40px;
+            height: 40px;
+        }
+    }
+
+    .mobile-footer {
+        height: 30px;
+        vertical-align: middle;
+        text-align: center;
+
+        ul {
+            padding: 0;
+        }
+    }
+
+    .editable-label-suffix {
+        padding-left: 1px;
+        position: inherit;
+    }
+}
+
+.sp-mobile-device .editForm {
+    .mobileFormStyle;
+}
+
+.sp-mobile-device .form-render-control {
+    .mobileFormStyle;
+}
+
+
+@media screen and (orientation : portrait) {
+
+    .sp-tablet-device .editForm .horizontalStack-repeater,
+    .sp-tablet-device .screen .horizontalStack-repeater {
+        width: calc(~'50% - 7.5px') !important;
+
+        &:nth-child(even) {
+            margin-right: 0px !important;
+        }
+    }
+
+    .sp-tablet-device .available-height-layout-container .view form[name="form"].editForm {
+        padding: 3% 2% 0;
+    }
+}
+
+@media screen and (orientation : landscape) {
+
+    .sp-tablet-device .editForm .horizontalStack-repeater,
+    .sp-tablet-device .screen .horizontalStack-repeater {
+        width: calc(~'50% - 7.5px') !important;
+
+        &:nth-child(even) {
+            margin-right: 0px !important;
+        }
+    }
+}
+
+
+.sp-mobile-device {
+    .action-panel {
+        font-size: 1.8em;
+
+        button {
+            height: 50px;
+        }
+
+        button[title="Back"],
+        button[title="Cancel"] {
+            float: left;
+            margin: 0;
+            background-color: transparent;
+        }
+    }
+
+    .sp-edit-save-cancel {
+        width: 100%;
+
+        .form-title {
+            position: absolute;
+            left: 50px;
+            color: #fff;
+            right: 50px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: .8em;
+            text-align: center;
+            margin: 14px 0 0;
+            padding: 0;
+            height:inherit;
+        }
+
+        button:hover,
+        button[title="Cancel"]:hover {
+            background-color: rgba(0,0,0,0.2);
+            box-shadow: none;
+        }
+
+        button:focus {
+            background-color: transparent;
+        }
+    }
+}
+
+.sp-tablet-device {
+    .editForm .form-title {
+    }
+
+    .structure-control-header {
+        height: auto;
+    }
+}
+
+.sp-mobile-device .screen {
+    height: 100%;
+    padding: 5px;
+
+    .repeater {
+        min-width: 0;
+        width: 100%;
+        height: auto !important;
+    }
+
+    .report-render-control {
+
+        .spmobile-report-view-container {
+            height: 93.5%;
+
+            .spreport-view {
+                .headerPanel {
+                    margin-top: 0;
+                    position: relative;
+                    height: 50px;
+
+                    & + .reportDataGridStyle {
+
+                        .dataGrid-view {
+                            .dataGridStyle {
+                                .ngViewport {
+                                    .ngCanvas {
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .rrc-full-report-button {
+            button {
+                display: block;
+                border-radius: 2px;
+                border: none;
+                color: #eee;
+                background-color: #666;
+                padding: 10px;
+                width: 100%;
+                height: auto;
+
+                &:empty {
+                    padding: 0;
+                    height: 0;
+                    display: none;
+                }
+            }
+        }
+    }
+}

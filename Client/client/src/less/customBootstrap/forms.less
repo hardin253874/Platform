@@ -1,0 +1,256 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+/////
+// SoftwarePlatform bootstrap form overrides.
+/////
+
+select,
+textarea,
+input,
+input[type="text"],
+input[type="password"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="date"],
+input[type="month"],
+input[type="time"],
+input[type="week"],
+input[type="number"],
+input[type="email"],
+input[type="url"],
+input[type="search"],
+input[type="tel"],
+input[type="color"],
+input[type="file"],
+.dropdownButton,
+.uneditable-input {
+    padding: 0 0 0 2px;
+    margin: 0;
+    min-height: 27px;
+    border: 1px solid #d3d3d3;
+    border-radius: 2px;
+    box-shadow: none;
+    text-align: left;
+    width: 225px;
+
+    .sp-mobile-device & {
+        width: 100%;
+        min-height: 40px;
+        padding-left: 5px;
+        border-radius: 6px;
+        background-color: #fefefe;
+        box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1) inset;
+        -webkit-appearance: none;
+    }
+
+    .sp-tablet-device & {
+        min-height: inherit;
+        border-radius: 6px;
+        min-height: 40px;
+        background-color: #fefefe;
+        box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25) inset;
+        -webkit-appearance: none;
+    }
+}
+
+select,
+.dropdownButton {
+    .sp-mobile-device & {
+        border: 1px solid #bbb;
+        box-shadow: 0px -2px 3px rgba(0, 0, 0, 0.15) inset;
+        background-color: inherit;
+        padding-left: 5px;
+    }
+
+    .sp-tablet-device & {
+        font-weight: lighter;
+        box-shadow: 0px -2px 3px rgba(0, 0, 0, 0.15) inset;
+        background-color: inherit;
+        padding-left: 5px;
+        border-radius: 6px;
+    }
+}
+
+input[type="checkbox"], input[type="radio"] {
+    min-height: inherit;
+    margin: 0;
+    width: auto;
+    min-height: 0;
+    vertical-align: middle;
+    margin-right: 3px;
+    box-shadow: none;
+
+    .sp-tablet-device &, .sp-mobile-device & {
+        width: 25px;
+        height: 25px;
+        min-height: inherit !important;
+        -webkit-appearance: checkbox;
+        box-shadow: none;
+        vertical-align: middle;
+
+        &:focus {
+            outline: none;
+        }
+    }
+}
+
+
+input[disabled],
+select[disabled],
+textarea[disabled] {
+    cursor: default;
+    opacity: .5;
+    background-color: rgb(235, 235, 228);
+
+    &:focus {
+        box-shadow: none;
+    }
+}
+
+input[type="checkbox"][disabled], input[type="radio"][disabled] {
+    opacity: 1;
+}
+
+input[readonly],
+select[readonly] {
+    border: 1px solid #d3d3d3;
+
+    &:focus {
+        box-shadow: none;
+    }
+}
+
+textarea[readonly] {
+    border: none;
+    background-color: none;
+    box-shadow: none;
+
+    &:focus {
+        outline: none;
+        border: none;
+        background-color: none;
+        box-shadow: none;
+    }
+}
+
+select:focus,
+input:focus,
+textarea:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="datetime"]:focus,
+input[type="datetime-local"]:focus,
+input[type="date"]:focus,
+input[type="month"]:focus,
+input[type="time"]:focus,
+input[type="week"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="color"]:focus,
+input[type="file"]:focus,
+.uneditable-input:focus {
+    box-shadow: none;
+    border: 1px solid #30c5c5;
+    outline: none;
+}
+
+
+input[type="radio"]:focus,
+input[type="checkbox"]:focus {
+    /*outline: thin dotted #333;
+    outline: 5px auto -webkit-focus-ring-color;*/
+    outline-offset: -2px;
+    box-shadow: none;
+    outline: 1px solid #30c5c5;
+}
+
+label {
+    font-weight: normal;
+}
+
+// General classes for quick sizes
+.input-mini {
+    width: 60px;
+}
+
+.input-small {
+    width: 90px;
+}
+
+.input-medium {
+    width: 150px;
+}
+
+.input-large {
+    width: 210px;
+}
+
+.input-xlarge {
+    width: 270px;
+}
+
+.input-xxlarge {
+    width: 530px;
+}
+
+
+
+.dropdownButton {
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+    padding-top: 2px;
+    //color: #333333;
+    .sp-mobile-device &, .sp-tablet-device & {
+        height: 40px;
+        width: 100%;
+        text-align: left;
+        vertical-align: middle;
+        padding-right: 9px;
+        padding-top: 6px;
+    }
+
+    &:hover,
+    &:active,
+    &.active,
+    &.disabled,
+    &[disabled] {
+        color: #333333;
+        background-color: #e6e6e6;
+        *background-color: #d9d9d9;
+    }
+
+    &.disabled,
+    &[disabled] {
+        opacity: .5;
+    }
+
+    &:active,
+    &.active {
+        background-color: #cccccc \9;
+    }
+
+    &:first-child {
+        *margin-left: 0;
+    }
+
+    &:hover {
+        color: #333333;
+        text-decoration: none;
+        background-position: 0 -15px;
+        transition: background-position 0.1s linear;
+    }
+
+    .dropdownIcon {
+        margin: 2px 0 -2px 0;
+        display: inline-block;
+        vertical-align: middle;
+        width: 6px;
+        height: 5px;
+        border-left: 4px solid transparent;
+        border-right: 4px solid transparent;
+        border-top: 5px solid #222;
+    }
+}

@@ -1,0 +1,34 @@
+<div class="workflow-expression-control" ng-show="!!parameter">
+	
+
+    <label ng-show="showLabel" class="control-label" title="{{parameter.argument.description}}">
+        {{parameter.argument.name}}
+        <span ng-show="parameter.argument.argumentIsMandatory" style="color:red">*</span>
+    </label>
+
+    <div class="expression-input-control">
+
+        <sp-custom-validation-message messages="errors"></sp-custom-validation-message>
+
+        <sp-expression-editor
+            ng-model="parameter.expression.expressionString"
+            context="" host="'Evaluate'"
+            params="parameter.exprParamHints"
+            options="{hideHintsButtons:true,hideErrors:true}">
+        </sp-expression-editor>
+
+    </div>
+
+    <!--<div class="validation-messages">-->
+        <!--<sp-custom-validation-message messages="[parameter.compileResult.error]"></sp-custom-validation-message>-->
+    <!--</div>-->
+
+    <sp-parameter-expression-context-menu parameter="{{parameter.argument.nsAliasOrId}}"
+                                          tools="{{tools}}" tool-labels="{{toolLabels}}"></sp-parameter-expression-context-menu>
+
+    <!--<span>-->
+        <!--expression type: {{parameter.compileResult.resultType + ' ' + (parameter.compileResult.entityTypeId || '')}}-->
+        <!--parameter type: {{parameterType}}-->
+    <!--</span>-->
+
+</div>

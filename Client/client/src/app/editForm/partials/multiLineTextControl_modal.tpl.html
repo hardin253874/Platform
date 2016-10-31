@@ -1,0 +1,16 @@
+<div close="closeDetail()" options="modalOpts">
+    <div class="modal-header">
+        <h6>{{model.fieldTitle}}</h6>
+    </div>
+    <div class="modal-body">
+        <textarea class="multiLineTextField-modalText"
+                  name="input"
+                  ng-model="model.fieldValue"
+                  ng-trim='false'
+                  ng-change="cleanFieldValue();">
+                </textarea>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" ng-click="clearFieldValue()">Clear All</button><button class="btn" ng-click="closeDetail()">OK</button>
+    </div>
+</div>

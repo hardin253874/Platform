@@ -1,0 +1,11 @@
+<sp-applicable-tasks record-id="(model.taskInfo.taskId || model.formControl.displayTasks) && model.formData.idP"
+                     task-id="model.taskInfo.taskId"
+                     task-list='model.taskInfo.taskList'
+                     action-buttons="model.actionButtons"
+                     navigate-as-child="!model.returnOnCompletion"
+                     return-on-completion="true"
+                     before-transition="saveIfEditing()"></sp-applicable-tasks>
+
+    
+    
+

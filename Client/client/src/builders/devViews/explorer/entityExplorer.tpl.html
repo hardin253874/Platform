@@ -1,0 +1,238 @@
+<div class="entity-explorer-view container-fluid" ng-controller="EntityExplorerController">
+	
+
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="col-lg-12 col-md-12">
+            <div class="pull-right">
+                <a ng-show="hasDirty" ng-click="toggleDirty()">toggle dirty (nav testing)</a>
+
+                <div ng-show="parentResources">
+                    {{parentItem.data.selectedIndex + 1}} of {{parentResources.length}} resources
+                    | <a href="{{parentItem.data.prev().href}}">prev</a>
+                    | <a href="{{parentItem.data.next().href}}">next</a>
+                </div>
+            </div>
+
+            <a class="btn-link" ng-click="home()">home ({{rootEntityName}})</a>
+            | <a class="btn-link" ng-click="back()">back</a>
+            | <a class="btn-link" ng-click="showJson = !showJson">json</a>
+
+            <div ng-show="showJson">
+                <pre>{{entityJson | json:' '}}</pre>
+            </div>
+
+            | <input ng-model="aliasOrId" />
+            <button class="btn-link" ng-click="onEntityIdEntered()">go</button>
+
+        </div>
+        <div class="col-lg-12 col-md-12">
+
+            <table class="table table-condensed">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td title="{{entity.idP}}">
+                        Name
+                    </td>
+                    <td>
+                        <strong>{{entity.name || entity.debugString}}</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td title="{{entity.idP}}">
+                        Type
+                    </td>
+                    <td>
+                        <div ng-repeat="t in entity.isOfType">
+                            <a class="btn-link" ng-click="go(t.idP)">{{t.name}}</a>
+                        </div>
+                    </td>
+                </tr>
+                <tr ng-show="entity.getDescription()">
+                    <td></td>
+                    <td>
+                        <div ng-show="showDocHtml">
+                            <div ng-bind-html-unsafe="entity.docHtml"></div>
+                        </div>
+                        <div ng-hide="showDocHtml">
+                            <div>{{entity.description}}</div>
+                        </div>
+                        <a class="btn-link" ng-click="showDocHtml=!showDocHtml">
+                            <small>flip render mode</small>
+                        </a>
+                    </td>
+                </tr>
+                <tr ng-repeat="f in fields | orderBy:'name'"
+                    ng-hide="f.alias==='core:name' || f.alias==='core:description'">
+                    <td>{{f.name}}</td>
+                    <td>{{f.value}}</td>
+                </tr>
+                <tr ng-show="entityMeta.inherited.length || entityMeta.derived.length">
+                    <td>Inherits</td>
+                    <td>
+                        <div ng-repeat="i in entityMeta.inherited"><a ng-click="go(i.id())">{{i.getName()}}</a>
+                        </div>
+                    </td>
+                </tr>
+                <tr ng-show="entityMeta.inherited.length || entityMeta.derived.length">
+                    <td>Derived</td>
+                    <td>
+                        <div ng-repeat="i in entityMeta.derived"><a ng-click="go(i.id())">{{i.getName()}}</a>
+                        </div>
+                    </td>
+                </tr>
+                <tr ng-show="entityMeta.inherited.length || entityMeta.derived.length">
+                    <td>Instance Count</td>
+                    <td>{{entity.getInstancesOfType().length}}</td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-9 col-md-9">
+            <table class="table table-striped table-condensed">
+                <thead>
+                <tr>
+                    <th colspan="2">Relationships - click to see instances
+                    | hide empty: <input type="checkbox" ng-model="withInstancesFilter" /></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr><td colspan="2"><em>forward</em></td></tr>
+                <tr ng-repeat="i in filteredRelationships() | filter:{reverse:false} | orderBy:'rel.name'"
+                    title="{{i.rel.name || i.rel.alias() || i.rel.id()}}">
+                    <td><a class="btn-link" ng-click="getRelated(i)">{{i.name}}
+                        <span ng-show="i.instanceCount">({{i.instanceCount}})</span></a>
+                    </td>
+                    <td>{{i.rel.getFromType().name}} -> {{i.rel.getToType().name}},
+                        {{i.rel.getFromName()}} / {{i.rel.getToName()}},
+                        <div>{{i.rel.getDescription()}}</div>
+                    </td>
+                </tr>
+                <tr><td colspan="2"><em>reverse</em></td></tr>
+                <tr ng-repeat="i in filteredRelationships() | filter:{reverse:true} | orderBy:'rel.name'"
+                    title="{{i.rel.name || i.rel.alias() || i.rel.id()}}">
+                    <td><a class="btn-link" ng-click="getRelated(i)">{{i.name}}
+                        <span ng-show="i.instanceCount">({{i.instanceCount}})</span></a>
+                    </td>
+                    <td>{{i.rel.getFromType().name}} -> {{i.rel.getToType().name}},
+                        {{i.rel.getFromName()}} / {{i.rel.getToName()}},
+                        <div>{{i.rel.getDescription()}}</div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-lg-3 col-md-3">
+            <table class="table table-striped table-condensed col-lg-3 col-md-3">
+                <thead>
+                <tr>
+                    <th>Related (click on a rel)
+                    | auto: <input type="checkbox" ng-model="autoGetRelated" />
+                    </th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr><td>{{currentRel.rel.name}}</td></tr>
+                <tr ng-repeat="r in related | orderBy:'getName()'">
+                    <td title="{{r.id()}}"><a class="btn-link" ng-click="go(r.id())">
+                        {{r.name || r.alias() || r.id()}}</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <div class="row">
+
+        <table class="table table-striped table-condensed" ng-show="instances.length">
+            <thead>
+            <tr>
+                <th colspan="2">Instances of {{entity.name}}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="i in instances | orderBy:'name'" title="{{i.id()}}">
+                <td><a class="btn-link" ng-click="go(i.id())">{{i.name || i.alias() || i.id()}}</a></td>
+                <td>{{i.description}}</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <table class="table table-striped table-condensed" ng-show="entityMeta.fields.length">
+            <thead>
+            <tr>
+                <th colspan="2">Fields of {{entity.name}}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="i in entityMeta.fields | orderBy:'name'">
+                <td><a class="btn-link" ng-click="go(i.id())">{{i.name || i.alias() || i.id()}}</a></td>
+                <td>{{i.description}}</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <table class="table table-striped table-condensed" ng-show="entityMeta.relationships.length">
+            <thead>
+            <tr>
+                <th colspan="2">Lookups of {{entity.name}} - click to view its definition</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="i in toOneRelationships() | orderBy:'name'">
+                <td><a class="btn-link" ng-click="go(i.id())">{{i.name || i.alias() || i.id()}}</a></td>
+                <td>{{i.description}}</td>
+                <td>{{i.toType.name}}</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <table class="table table-striped table-condensed" ng-show="entityMeta.relationships.length">
+            <thead>
+            <tr>
+                <th colspan="2">Choices of {{entity.name}} - click to view its definition</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="i in choiceRelationships() | orderBy:'name'">
+                <td><a class="btn-link" ng-click="go(i.id())">{{i.name || i.alias() || i.id()}}</a></td>
+                <td>{{i.description}}</td>
+                <td>{{i.toType.name}}</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <table class="table table-striped table-condensed" ng-show="entityMeta.relationships.length">
+            <thead>
+            <tr>
+                <th colspan="2">Relationships of {{entity.name}} - click to view its definition</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="i in toManyRelationships() | orderBy:'name'">
+                <td><a class="btn-link" ng-click="go(i.id())">{{i.name || i.alias() || i.id()}}</a></td>
+                <td>{{i.description}}</td>
+                <td>{{i.toType.name}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!--<pre>{{entity}}</pre>-->
+    <!--<pre>{{typeInfo | json:' '}}</pre>-->
+
+</div>

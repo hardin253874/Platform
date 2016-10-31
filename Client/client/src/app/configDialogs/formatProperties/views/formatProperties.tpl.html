@@ -1,0 +1,29 @@
+<div class="format-properties">
+    <div class="fp-row edit-form-control-container">
+        <div class="fp-cell edit-form-title">
+            <label for="ColorBox">Background Color: </label>
+        </div>
+        <div class="fp-cell edit-form-value">
+            <sp-color-picker-dropdown color="model.popupColorOptions.color" showcustom="true"></sp-color-picker-dropdown>
+        </div>
+
+    </div>
+
+    <div class="fp-row edit-form-control-container">
+        <div class="fp-cell edit-form-title">
+            <label>Horizontal Resize: </label>
+        </div>
+        <div class="fp-cell edit-form-value">
+            <select ng-disabled="resizeOptions.isHresizeModeDisabled" ng-selected="model.selectedHorizontalMode" ng-options="mode.name for mode in resizeOptions.resizeModes" ng-model="model.selectedHorizontalMode"></select>
+        </div>
+    </div>
+
+    <div class="fp-row edit-form-control-container">
+        <div class="fp-cell edit-form-title">
+            <label>Vertical Resize: </label>
+        </div>
+        <div class="fp-cell edit-form-value">
+            <select ng-disabled="resizeOptions.isVresizeModeDisabled" ng-selected="model.selectedVerticalMode" ng-options="mode.name for mode in resizeOptions.resizeModes" ng-model="model.selectedVerticalMode"></select>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,23 @@
+<span class="relControl multilineRel" ng-controller="singlePickerController">
+    <div class="edit-form-control-container">
+        <div class="edit-form-title" ng-if="!isInlineEditing">
+            <sp-title-plus-markers title-model="titleModel"></sp-title-plus-markers>
+        </div>
+        <div class="edit-form-value">
+            <div>
+                <a ng-if="!isInlineEditing"
+                   ng-repeat="entity in displayEntities" style="cursor: pointer;" class="fieldValue" ng-href=""
+                   ng-click="handleLinkClick(entity.idP);">{{entity.name ? entity.name : 'Unnamed Resource'}}{{$last ? '' : ', '}}</a>
+
+                <div ng-if="isInlineEditing" ng-repeat="entity in displayEntities" class="fieldValue">
+                    {{entity.name ? entity.name : 'Unnamed Resource'}}{{$last ? '' : ', '}}
+                </div>
+            </div>
+        </div>
+        <button ng-if="showExpander" class="btn_lighten" style="padding: 0 4px; height: 16px; margin-top: 9px;"
+                ng-click="openDetail('editForm/partials/spExpander_modal.tpl.html')">
+            <img style="height: 7px; width: 7px; margin-top: -4px" class="expand-textbox"
+                 src="assets/images/btn_expand_textbox.png"/>
+        </button>
+    </div>
+</span>

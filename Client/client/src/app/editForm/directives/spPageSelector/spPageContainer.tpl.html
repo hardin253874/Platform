@@ -1,0 +1,5 @@
+<div class="sp-page-container" hm-swiperight="swipeRight($event)" hm-swipeleft="swipeLeft($event)" hm-manager-options='{"touchAction":"pan-y"}' >
+    <span ng-repeat="page in pagerOptions.pages" ng-show="selectedPage === $index" ng-if="isRendered[$index]">
+        <sp-replace source="page.template" scope="page.scope"></sp-replace>
+    </span>
+</div>

@@ -1,0 +1,49 @@
+<div class="expression-editor-page container-fluid" ng-controller="expressionEditorController">
+	
+
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <h5>Expression Editor Test Page</h5>
+            <p>
+                To add some info here about how to use....
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <hr/>
+        <div class="col-lg-6 col-md-6 col-sm-6">
+            <div>expression1: (has no context, with params)</div>
+            <div ng-if="showExpr1">
+                <sp-expression-editor class="name-expression  full-editor" ng-model="data.expressionText"
+                                  context="" params="data.params" mode="'full'"></sp-expression-editor>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6">
+            <div>expression2: (test:employee context, no params)</div>
+            <div ng-if="showExpr2">
+                <sp-expression-editor class="name-expression full-editor" ng-model="data.expressionText2"
+                                  context="data.contextId" params="" mode="'full'"></sp-expression-editor>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <hr/>
+        <div class="col-lg-6 col-md-6 col-sm-6">
+            <button ng-click="showExpr1 = !showExpr1">Open in page</button>
+            <button ng-click="showDialog()">Open as dialog</button>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6">
+            <button ng-click="showExpr2 = !showExpr2">Open in page</button>
+            <button ng-click="showDialog2()">Open as dialog</button>
+        </div>
+    </div>
+    <div class="row">
+        <hr/>
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <p>Debug for the hosting page:</p>
+            <pre>{{data.expressionText}}</pre>
+            <pre>{{data.expressionText2}}</pre>
+        </div>
+    </div>
+
+</div>

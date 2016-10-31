@@ -1,0 +1,138 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+
+.sp-page-selector {
+    white-space: nowrap;
+    box-shadow: 0 -5px 8px rgba(0,0,0,0.1) inset;
+    padding: 0 10px;
+    box-sizing:border-box;
+
+    ul {
+        display: inline;
+        padding: 0;
+        margin: 0;
+        vertical-align: middle;
+    }
+
+    li {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        padding-top: 19px;
+        margin: 4px;
+        font-size: 1.2em;
+        line-height: 0;
+        text-align: center;
+        vertical-align: middle;
+        cursor: pointer;
+        border-radius: 50%;
+    }
+
+    li.selected {
+        background: #31a89f;
+        color: #eee;
+    }
+
+    li.unselected {
+        color: #999;
+    }
+
+    select.related-list {
+            width: calc(~'100% - 84px');
+            height: 48px;
+            color: #333;
+            border-radius: 0;
+            border: none;
+            font-size: 18px;
+            box-shadow: none;
+            overflow: hidden;
+            background: transparent url('../assets/images/arrow_bottom_select.svg') no-repeat 5px center;
+            background-size: 16px;
+            text-overflow: ellipsis;
+            padding-left: 24px;
+            box-sizing: border-box;
+    }
+
+    & > button {
+        border: 0;
+        width: 38px;
+        border-radius: 50%;
+        height: 38px;
+        background-color: #EEE;
+        text-align: center;
+        vertical-align: middle;
+        display: inline-block;
+        box-sizing: border-box;
+        padding: 0;
+
+        &:disabled {
+            opacity: 0.3;
+            box-shadow: none;
+        }
+
+        img {
+            width: 16px;
+            height: 16px;
+            margin-top: -3px;
+        }
+
+        &.details-link {
+            background-color: #626F77;
+
+            .selected {
+                background-color: #31a89f; // this isn't working at the moment, needs to be updated when the task icon is changed.
+            }
+
+            &:disabled {
+                background-color: #e2e2e2;
+            }
+        }
+
+        &.tasks-link {
+            background-color: #E4A03A;
+
+            .selected {
+                background-color: #31a89f; // this isn't working at the moment, needs to be updated when the task icon is changed.
+            }
+
+            &:disabled {
+                background-color: #e2e2e2;
+            }
+        }
+    }
+
+    .page-name {
+        display: none;
+
+        &.show {
+            position: absolute;
+            background-color: pink;
+            padding-top: 10px;
+            top: -30px;
+            bottom: 50px;
+            color: black;
+            left: 25%;
+            right: 25%;
+        }
+    }
+
+    .page-list {
+        position: absolute;
+        background-color: pink;
+        padding-top: 10px;
+        top: -200px;
+        bottom: 50px;
+        color: black;
+        left: 50%;
+        right: 0;
+
+        li {
+            display: list-item;
+            width: auto;
+            height: 2rem;
+            font-size: 1rem;
+            padding: 0;
+            margin: 2px 0 0 0;
+            line-height: 1rem;
+        }
+    }
+}

@@ -1,0 +1,14 @@
+<span class="sp-date-config-control">
+
+    <div class="edit-form-control-container">
+        <div class="edit-form-title">
+            <sp-title-plus-markers is-read-only="model.isReadOnly" is-required="model.isRequired" messages="customValidationMessages" title-model="titleModel"></sp-title-plus-markers>
+        </div>
+        <div class="edit-form-value">
+            <div style="display:table; width:100%;">
+                <div style="display:table-cell"><sp-date-control model="model"></sp-date-control></div>
+                <div style="display: inline-block; width: 80px; margin-right: -80px; padding-top: 6px; padding-left: 5px;"><input type="checkbox" ng-model="model.useToday" ng-change="setToday()" autofocus /> Today</div>
+            </div>
+        </div>
+    </div>
+</span>

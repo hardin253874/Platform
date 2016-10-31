@@ -1,0 +1,25 @@
+<div class="client-tabs-panel" ng-show="getTabNodes().length > 1 || navBuilderProvider.canAddNewTab()" ng-style="consoleThemeModel.tabStyle">
+
+    <div ng-if="!$state.current.data.fullScreen && !$state.current.data.hideAppTabs">
+
+        <!--getTabItems() returns a list of navItem that represents the child nav elements of the selected app.-->
+        <!--Each item has id, name, and link. They also have a depth, typeAlias and selected properties-->
+        <!--that can be used to drive styling.-->
+
+        <ul class="nav application-tabs {{getApplicationTabStyleClass()}}" >
+            <li ng-repeat="i in getTabNodes(true)" ng-if="!i.item.hiddenByConfig"
+                sp-droppable="dropOptions" sp-droppable-data="i" sp-draggable="dragOptions" sp-draggable-data="i"
+                class="{{getTabItemClass(i)}}">
+                <a draggable="false" tabindex="-1" once-href="i.item.href" ng-style="getTabItemStyle(i.item.id === getSelectedTabItem().id)">
+                    <sp-nav-config-panel ng-if="nav.isFullEditMode" entity="i.item.entity" nav-builder-provider="navBuilderProvider" parent-item="i.parent"></sp-nav-config-panel>
+                    {{i.item.name}}
+                </a>
+            </li>       
+            <li title="Add a new tab" ng-if="navBuilderProvider.canAddNewTab()">
+                <a draggable="false" tabindex="-1" href="" ng-click="navBuilderProvider.addNewTab()" title="Add a new tab"><img src="assets/images/icon_add_w.png" /></a>                                
+            </li>    
+        </ul>
+    </div>
+
+</div>
+

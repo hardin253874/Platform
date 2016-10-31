@@ -1,0 +1,130 @@
+<!--<pre>-->
+<!--the board: {{board.boardId}}, fields = {{board.model.cols.length}}, items = {{board.model.data.length}}-->
+<!--col dimension = {{board.model.colDimension.col.title | json:' '}} {{board.model.colDimension.values.length}}-->
+<!--row dimension = {{board.model.rowDimension.col.title | json:' '}} {{board.model.rowDimension.values | json:''}}-->
+<!--row dimension' = {{board.model.rowDimension.col.title | json:' '}} {{board.rowValues | json:''}}-->
+<!--style dimension = {{board.model.styleDimension.col.title | json:' '}} {{board.model.styleDimension.values.length}}-->
+<!--dimensions = {{board.model.dimensions | json:' '}}-->
+<!--data = {{board.model.data[0] | json:''}}-->
+<!--template = {{board.cardTemplate}}-->
+<!--isAdmin = {{board.isAdmin}}-->
+<!--</pre>-->
+<span ng-if="!board.isMobile" sp-busy-indicator-popup="board.busyIndicator">
+    <div class="board-config-panel" ng-if="board.canShowConfigMenu">
+        <span class="board-config-panel-button board-config-panel-button-light"
+              sp-context-menu-trigger="leftclick"
+              sp-context-menu="board.configContextMenu"
+              sp-context-menu-append-to-body>
+            <img src="assets/images/icon_configure_w.png" />
+        </span>
+    </div>
+    <div class="board-header" ng-if="!board.isTablet">
+        <span ng-if="board.iconInfo.headerIconUrl" class="headertype" ng-style="board.iconInfo.headerIconStyle" class="headertype">
+            <img ng-src="{{board.iconInfo.headerIconUrl}}" ng-style="board.iconInfo.headerIconStyle" />
+        </span>
+        
+        <h1 ng-style="consoleThemeModel.titleStyle">{{board.title}}</h1>
+    </div>
+    <div class="overflow-message">{{board.overflowMessage}}</div>
+    <div class="board-content">
+        <div class="board">
+            <div class="headerPanel">
+                <div class="headerPanel-left">
+
+                    <button ng-click="board.refresh()" title="Refresh">
+                        <img src="assets/images/toolbar_reload.png" alt="reload">
+                    </button>
+                    
+                    <div ng-if="board.showQuickAdd">
+                        <div class="divider"></div>
+
+                        <input type="text" ng-model="board.newItemExpression" placeholder="New item"
+                               edc-enter="board.addItem()" />
+                        <button ng-if="board.showQuickAdd" ng-click="board.addItem()">
+                            <img src="assets/images/16x16/add.svg" alt="New" />
+                        </button>
+                    </div>
+
+                </div>
+                <div class="headerPanel-right">
+
+                    <button ng-click="board.showConfig = !board.showConfig" title="Settings">
+                        <img src="assets/images/16x16/gear.svg" alt="Settings">
+                        <span>Settings</span>
+                    </button>
+                    
+                    <div style="width: 150px">
+                        <sp-search-control sp-model="board.search"></sp-search-control>
+                    </div>
+
+                </div>
+            </div>
+            <div ng-show="board.showConfig" ng-include="'board/templates/rnBoardConfig.tpl.html'"></div>
+            <div class="board-legend" ng-show="board.showLegend()">
+                <ul>
+                    <li class="board-legend-item"
+                        ng-repeat="s in board.styleValues"
+                        ng-if="s.show !== false"
+                        ng-style="board.getLegendStyle(s,board)"
+                        sp-droppable="board.dropOptions"
+                        sp-droppable-data="[[board.model.styleDimension,s]]"
+                        sp-draggable="board.dragOptions"
+                        sp-draggable-data="[[board.model.styleDimension,s]]"><span>{{s.value || 'Undefined'}}</span> <span ng-if="board.legend[s.rid].count" class="counter">{{board.legend[s.rid].count}}</span></li>
+                </ul>
+            </div>
+            <div class="board-column-header-container" ng-show="board.showHeaders()">
+                <div class="board-column-header">
+                    <div class="board-column-header-item"
+                         ng-repeat="col in board.colValues"
+                         ng-if="col.show !== false"
+                         ng-style="board.getColumnStyle(col,board,true)"
+                         sp-droppable="board.dropOptions"
+                         sp-droppable-data="[[board.model.colDimension,col]]"
+                         title="{{col.description}}">{{col.value || 'Undefined'}}<br />({{board.cards[col.rid].count || 0}})</div>
+                </div>
+            </div>
+            <div class="board-rows"
+                 ng-init="board.setupScrolling()"
+                 sp-context-menu="board.cardContextMenu"
+                 sp-context-menu-is-open="board.contextMenuIsOpen"
+                 sp-context-menu-create="board.getContextMenuActions"
+                 sp-context-menu-execution-context="board.getActionExecutionContext"
+                 sp-context-menu-trigger="rightclick"
+                 sp-context-menu-placement="mouse"
+                 sp-context-menu-append-to-body>
+                <div class="board-row"
+                     ng-repeat="row in board.rowValues track by row.rid"
+                     ng-if="row.show !== false">
+                    <div class="board-row-title"
+                         ng-show="row.value || board.rowValues.length > 1"
+                         sp-droppable="board.dropOptions"
+                         sp-droppable-data="[[board.model.rowDimension,row]]">{{row.value || 'Undefined'}}</div>
+                    <div class="board-dimensions">
+                        <div class="board-dimension-item"
+                             ng-repeat="col in board.colValues track by col.rid"
+                             ng-if="col.show !== false"
+                             ng-style="board.getColumnStyle(col,board,false)"
+                             sp-droppable="board.dropOptions"
+                             sp-droppable-data="[[board.model.rowDimension,row],[board.model.colDimension,col]]">
+                            <div class="board-card-container">
+                                <div class="card card-type-{{item.type}} board-card-item"
+                                     ng-repeat="item in board.cards[col.rid][row.rid]"
+                                     sp-draggable="board.dragOptions" sp-draggable-data="item"
+                                     sp-droppable="board.dropOptions"
+                                     sp-droppable-data="[[board.model.rowDimension,row],[board.model.colDimension,col],[null,item]]">
+                                    <rn-board-card board="board" item="item" sp-right-click="board.cardRightClick($event, item)"></rn-board-card>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+<span ng-if="board.isMobile">
+    <div class="board-nosupport">
+        <div>Boards are currently not supported on mobile devices, this will be implemented in a future release</div>
+    </div>
+</span>

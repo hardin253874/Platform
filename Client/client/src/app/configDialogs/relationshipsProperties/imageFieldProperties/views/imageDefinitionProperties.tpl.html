@@ -1,0 +1,18 @@
+<div>
+    <div class="edit-form-title">
+        <label>Mandatory: </label>
+    </div>
+    <div class="edit-form-value">
+        <input type="checkbox" ng-model="model.relationshipIsMandatory" />
+    </div>
+</div>
+
+<div class="edit-form-control-container">
+    <div class="edit-form-title">
+        <label>Default Value: </label>
+    </div>
+    <div class="edit-form-value">
+        <sp-inline-relationship-picker options="model.defaultValuePickerOptions" />
+    </div>
+</div>
+

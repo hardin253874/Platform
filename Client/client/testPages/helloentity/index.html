@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+<!--
+
+    README
+
+    Checklist for adding a directive: (see searchControl as an example)
+    1 - import less in the index.less file (not in this html file)
+    2 - add js source file
+    3 - add mapping for any templates - see testPageHelper code below
+    4 - add any needed dependencies to the app module deps
+
+-->
+
+<head>
+    <title>Test Page</title>
+    <link rel="stylesheet" type="text/css" href="../../lib/boilerplate/normalize.css"/>
+
+    <link rel="stylesheet/less" type="text/css" href="index.less"/>
+
+    <script>less = {env: 'development', rootpath: '../../src/assets/'};</script>
+    <script src="../../lib/less/less-2.5.0.min.js" type="text/javascript"></script>
+    <script>less.watch();</script>
+
+    <!-- IOS mobile support -->
+    <link rel="apple-touch-icon" href="../../src/assets/images/logo.png">
+    <link rel="apple-touch-startup-image" href="../../src/assets/images/logo.png">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, minimal-ui"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <!-- Chrome Android support -->
+    <meta name="mobile-web-app-capable" content="yes">
+</head>
+
+<body ng-app="app">
+<div class="full-height" ng-include="'app.tpl.html'"></div>
+
+<script src="../../src/components/utils/console.js"></script>
+<script src="../../lib/globalize/globalize.js"></script>
+
+<script src="../../lib/jquery/jquery.js"></script>
+<script src="../../lib/angular/angular.js"></script>
+<script src="../../lib/angular/angular-animate.js"></script>
+<script src="../../lib/angular-load/angular-load.js"></script>
+<script src="../../lib/angular-http-auth/http-auth-interceptor.js"></script>
+<script src="../../lib/angular-ui-router/angular-ui-router.js"></script>
+<script src="../../lib/jsTimezoneDetect/jstz.js"></script>
+
+<!--ignore errors about attempts to load these after login... we'll load them now-->
+<!--todo: add ability to configure a base path in the spAppSettings object to use when loading these-->
+<script src="../../lib/angular/i18n/angular-locale_en-au.js"></script>
+<script src="../../lib/globalize/cultures/globalize.culture.en-AU.js"></script>
+
+<!--<script src="../../lib/bootstrap/js/bootstrap.js"></script>-->
+<script src="../../lib/lodash/lodash.js"></script>
+<script src="../../src/components/utils/spUtils.js"></script>
+<script src="../../src/components/utils/history.js"></script>
+
+<!--the following assumes you have done a "grunt setServer" to-->
+<!--configure the spapi server to use-->
+<script src="../../karma/testSupport/spapiBasePath.js"></script>
+
+<script src="../../src/components/utils/xsrf.js"></script>
+<script src="../../src/components/utils/spWebService.js"></script>
+<script src="../../src/components/localStorage/localStorage.js"></script>
+<script src="../../src/components/console/spConsoleService.js"></script>
+<script src="../../src/components/dragDrop/spDragDropService.js"></script>
+<script src="../../src/components/dragDrop/spDraggable.js"></script>
+<script src="../../src/components/dragDrop/spDroppable.js"></script>
+<script src="../../src/components/utils/uuid.js"></script>
+<script src="../../src/components/filters/filters.js"></script>
+<script src="../../src/components/utils/spTenantSettings.js"></script>
+<script src="../../src/components/loginService/loginService.js"></script>
+<script src="../../src/components/loginService/rnLoginService.js"></script>
+<script src="../../src/components/entity/aliases.js"></script>
+<script src="../../src/components/entity/spEntity.js"></script>
+<script src="../../src/components/entity/spEntity.Entity.js"></script>
+<script src="../../src/components/entity/spEntity.EntityRef.js"></script>
+<script src="../../src/components/entity/spEntity.fromRawV2.js"></script>
+<script src="../../src/components/entity/spEntity.Dict.js"></script>
+<script src="../../src/components/entity/spEntity.JSON.js"></script>
+<script src="../../src/components/entity/spEntity.Field.js"></script>
+<script src="../../src/components/entity/spEntity.Relationship.js"></script>
+<script src="../../src/components/entity/spEntityService.js"></script>
+<script src="../../src/components/reports/spReportService.js"></script>
+<script src="../../src/components/reports/spReportDataCacheService.js"></script>
+<script src="../../src/app/appSettings.js"></script>
+
+<script src="../../src/app/controls/spSearchControl/spSearchControl.js"></script>
+
+<!--the following includes support such as adding and finding angular templates-->
+<script src="../testPagesAppHelper.js"></script>
+
+<!--test page code-->
+<script src="app.js"></script>
+<script src="layout.js"></script>
+
+</body>
+</html>

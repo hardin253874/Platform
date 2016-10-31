@@ -1,0 +1,11 @@
+<div class="rowDataHeaderRow" ng-style="{ height: rowDataHeaderHeight }">
+    
+    <div ng-style="{ height: rowDataHeaderHeight }" ng-repeat="col in renderedColumns" ng-class="col.colIndex()" class="ngCell {{col.cellClass}} rowDataHeaderCell">
+        <div ng-show="model.aggregateInfo.showGrandTotals">
+            <div class="rowDataHeaderCellTotalCell" ng-repeat="t in col.colDef.spColumnDefinition.totals | orderBy:'order'" once-style="getTotalRowStyle(col)">
+                {{getAggregateOptionLabel(t)}}&nbsp;{{getAggregateCellGrandTotalValue(col, t)}}
+            </div>
+        </div>
+    </div>
+    <div class="rowDataHeaderTotal">Total&nbsp;{{getAggregateCellGrandTotalCount()}}</div>
+</div>

@@ -1,0 +1,43 @@
+﻿// Copyright 2011-2015 Global Software Innovation Pty Ltd
+
+sp-expression-cell {
+
+}
+
+.sp-expression-cell {
+    position: relative;
+
+    .ex-cell {
+        background-color: white;
+        border-left: solid 1px #e1e1e1;
+        border-top: solid 1px #e1e1e1;
+        padding: 5px 0 0 5px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        width: 100px;
+        height: 30px;
+
+        &:hover {
+            background-color: darken(white, 3%);
+        }
+
+        &.ex-cell-error {
+            //pointer-events: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: solid 2px red;
+            color: red;
+            padding: 0;
+            &:before {
+                content: "ERR!";
+            }
+        }
+        
+        &.ex-selected-cell {
+            //pointer-events: none;
+            border: solid 2px #31a89f;
+        }        
+    }
+}

@@ -1,0 +1,45 @@
+<h3>Entity Radio Picker</h3>
+<div ng-controller="entityRadioPickerTestController">                            
+    <b>Type id: </b><input type="text" ng-model="radioPickerOptions.entityTypeId"/>  <br/>
+    <sp-entity-radio-picker options="radioPickerOptions"></sp-entity-radio-picker>        
+    <br/>
+    Selected id: {{radioPickerOptions.selectedEntityId}}
+    <br/>
+    Selected entity: {{radioPickerOptions.selectedEntity}}
+    <hr/>
+</div>
+
+<h3>Entity Multi-Choice Combo Picker</h3>
+<div ng-controller="entityMultiComboPickerTestController">                            
+    <b>Type id: </b><input type="text" ng-model="multiComboPickerOptions.entityTypeId"/>  <br/>
+    <div style="width:150px">
+        <sp-entity-multi-combo-picker options="multiComboPickerOptions"></sp-entity-multi-combo-picker>        
+    </div>
+    <br/>
+    Selected id: {{multiComboPickerOptions.selectedEntityIds}}
+    <br/>
+    Selected entities: {{multiComboPickerOptions.selectedEntities}}
+    <hr/>
+</div>
+
+<h3>Entity Combo Picker</h3>
+<div ng-controller="entityComboPickerTestController">                        
+    <b>Type id: </b><input type="text" ng-model="comboPickerOptions.entityTypeId"/>  <br/>
+    <sp-entity-combo-picker options="comboPickerOptions"></sp-entity-combo-picker>        
+    <br/>
+    Selected id: {{comboPickerOptions.selectedEntityId}}
+    <br/>
+    Selected entity: {{comboPickerOptions.selectedEntity}}
+    <hr/>    
+</div>
+
+<h3>Entity CheckBox Picker</h3>
+<div ng-controller="entityCheckBoxPickerTestController">                        
+    <b>Type id: </b><input type="text" ng-model="checkBoxPickerOptions.entityTypeId"/>  <br/>
+    <sp-entity-check-box-picker options="checkBoxPickerOptions"></sp-entity-check-box-picker>        
+    <br/>
+    Selected ids: {{checkBoxPickerOptions.selectedEntityIds}}
+    <br/>
+    Selected entities: {{checkBoxPickerOptions.selectedEntities}}
+    <hr/>
+</div>

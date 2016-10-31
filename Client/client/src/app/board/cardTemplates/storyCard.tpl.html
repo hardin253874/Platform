@@ -1,0 +1,50 @@
+<div ng-style="card.getLegendStyle(card)">
+    <div class="card-header clearfix">
+        <div class="pull-right priority-indicator">
+            <span title="asap" class="priority-asap" ng-if="card.values['priority'] === 'ASAP'"><img
+                    src="assets/images/16x16/priorityAsap.png"></span>
+            <span title="high" class="priority-high" ng-if="card.values['priority'] === 'High'"><img
+                    src="assets/images/16x16/priorityHigh.png"></span>
+        </div>
+        <div class="card-title" title="{{card.descr}}"><a href="" ng-click="card.executeAction(card.item)">{{card.title}}</a></div>
+    </div>
+    <div class="card-body clearfix">
+        <div class="card-doc" ng-if="!!card.descrHtml" ng-bind-html="card.descrHtml | toTrustedHtml"></div>
+    </div>
+    <div class="card-footer clearfix">
+        <div class="pull-right">
+            <ul class="task-assignees pull-right">
+                <li ng-repeat="cc in card.childCardPerUniqAssignee">
+                    <img ng-if="!!cc.imageUris['avatar']" ng-src="{{cc.imageUris['avatar']}}" height="24px">
+                    <span ng-if="!cc.imageUris['avatar']"
+                          title="{{cc.values['assigned'] || 'unassigned'}} - {{cc.values['summary']}}">
+                        <ng-letter-avatar height="14" width="20" fontsize="12" charCount="2"
+                                          data="{{cc.values['assigned']}}"></ng-letter-avatar>
+                    </span>
+                </li>
+            </ul>
+            <span ng-if="card.values['assigned']" title="assigned - {{card.values['assigned']}}">
+                <ng-letter-avatar height="14" width="20" fontsize="12" charCount="2"
+                                  data="{{card.values['assigned']}}"></ng-letter-avatar>
+            </span>
+        </div>
+        <div class="pull-left">
+            <span ng-if="card.values['owner']" title="owner - {{card.values['owner']}}">
+                <ng-letter-avatar height="14" width="20" fontsize="12" charCount="2"
+                                  data="{{card.values['owner']}}"></ng-letter-avatar>
+            </span>
+        </div>
+        <div ng-if="card.board.model.rowDimension.col.title !== 'Story'">{{card.values['story']}}</div>
+    </div>
+    <div class="card-footer clearfix">
+        <div class="pull-right">
+            <span title="tasks" ng-click="card.board.drilldown(card.item)">{{card.values['tasks']}}</span>
+        </div>
+        <div ng-if="card.id" class="pull-left card-id" title="{{card.debugString}}"><a href="" ng-click="card.executeAction(card.item)">#{{card.id}}</a>
+        </div>
+        <div ng-if="card.values['days in state'] || card.values['days old']"
+             class="pull-left" title="days in this column / on the board">
+            {{card.values['days in state']}}/{{card.values['days old']}}
+        </div>
+    </div>
+</div>

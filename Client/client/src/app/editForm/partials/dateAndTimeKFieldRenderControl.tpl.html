@@ -1,0 +1,19 @@
+<span ng-controller="fieldControlOnFormController" class="fieldControl"  style="white-space:nowrap;">
+	
+
+    
+    
+    <!--<input ng-model="fieldValue" type="datetime" />-->
+    <sp-date-time-picker allow-dynamic-mode="false"
+                         in-date="fieldValue"
+                         in-date-string="fieldValueString" 
+                         min-date=""  
+                         max-date=""
+                         ng-model="fieldValue"
+                        field="formControl.getFieldToRender()"
+                        is-mandatory-on-form="isMandatoryOnForm"
+                        sp-validate-field='field'
+                         sp-validation-message="true"> 
+    </sp-date-time-picker>
+
+</span>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="../lib/bootstrap/css/bootstrap.css"/>
+
+    <style>
+    </style>
+
+</head>
+
+<body ng-app="app">
+
+<div ng-controller="myController">
+    <button ng-click="nextDiagram()">next</button>
+    <diagram-widget diagram="diagram" width="1000" height="500"></diagram-widget>
+    <pre>{{diagram.connections | json:' '}}</pre>
+    <pre>{{diagram.elements | json:' '}}</pre>
+</div>
+
+<script type="text/javascript" src="../lib/jquery/jquery.js"></script>
+<script src="../lib/angular/angular.js"></script>
+<script type="text/javascript" src="../lib/jquery-ellipsis/jquery.dotdotdot.js"></script>
+<script type="text/javascript" src="../lib/bootstrap/js/bootstrap.js"></script>
+<script type="text/javascript" src="../lib/jquery-ui-touch-punch/jquery.ui.touch-punch.js"></script>
+
+<script src="../lib/lodash/lodash.js"></script>
+<script src="../lib/raphael/raphael.js"></script>
+<script src="../src/components/utils/console.js"></script>
+<script src="../src/components/entity/spEntity.js"></script>
+<script src="../src/components/entity/spEntity.Field.js"></script>
+<script src="../src/components/utils/spUtils.js"></script>
+<script src="../src/components/workflow/diagrammer/diagramWidgets.js"></script>
+<script src="../src/components/workflow/diagrammer/element.js"></script>
+<script src="../src/components/workflow/diagrammer/connection.js"></script>
+<script src="../src/components/workflow/diagrammer/diagram.js"></script>
+<script src="../src/components/workflow/diagrammer/tool.js"></script>
+<script src="../src/components/workflow/workflowConfiguration.js"></script>
+<script>
+angular.module('app', ['sp.common.workflow.diagramDirectives', 'mod.services.workflowConfiguration'])
+        .controller('myController', function ($scope) {
+
+            function handler() {
+                console.log.apply(console, ['event %o'].concat(arguments));
+            }
+
+            function selectHandler(id) {
+                console.log('event "addToSelection"', id);
+                var o = _.find($scope.diagram.elements, { id: id });
+                o = o || _.find($scope.diagram.connections, { id: id });
+                if (o) o.selected = true;
+
+//                $scope.diagrams['cloned'] = _.cloneDeep($scope.diagram);
+            }
+
+            function createDiagram1(numElems) {
+
+                var diagram = {
+                    elements: [],
+                    connections: [],
+                    tools: [],
+                    elementClicked: _.partial(handler, 'clicked'),
+                    elementMoved: _.partial(handler, 'moved'),
+                    toolClicked: _.partial(handler, 'tool clicked'),
+                    portClicked: _.partial(handler, 'port clicked'),
+                    connectionChanged: _.partial(handler, 'conn changed'),
+                    newConnection: _.partial(handler, 'new conn'),
+                    clearSelection: _.partial(handler, 'clear selected'),
+                    addToSelection: _.partial(handler, 'selected')
+                };
+
+                diagram.elements.push({
+                    type: 'event',
+                    id: 1000,
+                    name: 'start',
+                    template: 'startTemplate',
+                    x: 50,
+                    y: 50,
+                    movable: true,
+                    inPorts: [],
+                    outPorts: [
+                        { id: 0, name: '' }
+                    ],
+                    tools: []
+                });
+                diagram.elements.push({
+                    type: 'event',
+                    id: 9000,
+                    name: 'end',
+                    template: 'endTemplate',
+                    x: 700,
+                    y: 50,
+                    movable: true,
+                    outPorts: [],
+                    tools: []
+                });
+
+                var firstId = 5000, lastId, numRows = 5;
+                _.each(_.range(numElems || 10), function (n) {
+                    diagram.elements.push({
+                        type: 'activity',
+                        id: firstId + n,
+                        name: 'Activity ' + (n + 1),
+                        help: '',
+                        outPorts: [
+                            { id: 10000 + n, name: '', ordinal: 0 }
+                        ],
+                        template: 'activityTemplate',
+                        imageSrc: '../src/assets/images/activities/cloneActivity.svg',
+                        x: 50 + Math.floor(n / numRows) * 75,
+                        y: 150 + (n % numRows) * 75,
+                        movable: true,
+                        tools: []
+                    });
+                    if (n > 0) {
+                        diagram.connections.push({
+                            type: 'trans',
+                            id: 100000 + n,
+                            from: firstId + n - 1,
+                            to: firstId + n
+                        });
+                    }
+                    lastId = firstId + n;
+                })
+
+                diagram.connections.push({
+                    type: 'first',
+                    id: 1100,
+                    from: 1000,
+                    to: firstId
+                });
+                diagram.connections.push({
+                    type: 'term',
+                    id: 1101,
+                    from: lastId,
+                    to: 9000
+                });
+
+                return diagram;
+            }
+
+            function createDiagram2() {
+                var diagram = {
+                    elements: [],
+                    connections: [],
+                    tools: [],
+                    elementClicked: _.partial(handler, 'clicked'),
+                    elementMoved: _.partial(handler, 'moved'),
+                    toolClicked: _.partial(handler, 'tool clicked'),
+                    portClicked: _.partial(handler, 'port clicked'),
+                    connectionChanged: _.partial(handler, 'conn changed'),
+                    newConnection: _.partial(handler, 'new conn'),
+                    clearSelection: _.partial(handler, 'clear selected'),
+                    addToSelection: selectHandler
+                };
+
+                diagram.elements.push({
+                    type: 'event',
+                    id: 1000,
+                    name: 'start',
+                    template: 'startTemplate',
+                    x: 50,
+                    y: 50,
+                    movable: true,
+                    inPorts: [],
+                    outPorts: [
+                        { id: 0, name: '' }
+                    ],
+                    tools: []
+                });
+                diagram.elements.push({
+                    type: 'event',
+                    id: 9000,
+                    name: 'end',
+                    template: 'endTemplate',
+                    x: 700,
+                    y: 50,
+                    movable: true,
+                    outPorts: [],
+                    tools: []
+                });
+
+                var numElems = 3, switchId = 4000, firstId = 5000, numRows = 10;
+
+                diagram.elements.push({
+                    type: 'activity',
+                    id: switchId,
+                    name: 'Switch ',
+                    help: '',
+                    outPorts: _.map(_.range(numElems), function (n) {
+                                return { id: switchId + n, name: 'exit' + (n + 1), ordinal: n };
+                            }),
+                    template: 'activityTemplate',
+                    imageSrc: '../src/assets/images/activities/switchActivity.svg',
+                    x: 50,
+                    y: 150,
+                    movable: true,
+                    tools: []
+                });
+
+                diagram.connections.push({
+                    type: 'first',
+                    id: 1100,
+                    from: 1000,
+                    to: switchId
+                });
+
+                _.each(_.range(numElems), function (n) {
+                    diagram.elements.push({
+                        type: 'activity',
+                        id: firstId + n,
+                        name: 'Activity ' + (n + 1),
+                        help: '',
+                        outPorts: [
+                            { id: 10000 + n, name: '', ordinal: 0 }
+                        ],
+                        template: 'activityTemplate',
+                        imageSrc: '../src/assets/images/activities/cloneActivity.svg',
+                        x: 250 + Math.floor(n / numRows) * 75,
+                        y: 150 + (n % numRows) * 75,
+                        movable: true,
+                        tools: []
+                    });
+                    diagram.connections.push({
+                        type: 'trans',
+                        id: 100000 + n,
+                        from: switchId,
+                        fromPort: switchId + n,
+                        to: firstId + n
+                    });
+                    diagram.connections.push({
+                        type: 'term',
+                        id: 1200 + n,
+                        from: firstId + n,
+                        to: 9000
+                    });
+
+                })
+
+                return diagram;
+            }
+
+            $scope.nextDiagram = function () {
+                var diagrams = _.values($scope.diagrams);
+                $scope.diagram = diagrams[(_.indexOf(diagrams, $scope.diagram) + 1) % diagrams.length];
+            };
+
+            $scope.diagrams = {
+                'diagram 1' : createDiagram1(20),
+                'diagram 2' : createDiagram2()
+            };
+
+            $scope.nextDiagram();
+
+        });
+</script>
+
+</body>
+</html>

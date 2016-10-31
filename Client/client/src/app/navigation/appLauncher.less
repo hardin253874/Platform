@@ -1,0 +1,280 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+.app-launcher-page {
+    padding: 0;
+    position: absolute;
+    left: 0;
+    right:0;
+    bottom:0;
+    top:0;
+    background-color: #fff;
+
+    .app-launcher-head {
+        padding-left: 80px;
+        height:180px;
+        background-color: #31a89f;
+
+        .sp-mobile-device & {
+            margin: 0;
+            padding: 0 20px;
+            height:100px;
+            border-bottom:none;
+        }
+
+        .sp-tablet-device & {
+            padding: 0 20px 0 30px;
+            height:inherit;
+            height:150px;
+        }    
+
+        .signout {            
+            background-color: rgba(0,0,0,0.1);
+            height:100%;
+            border:none;
+            color: #FFD884;                        
+            transition: all .3s ease-out;   
+            margin-right:-20px;
+            border-radius:0;
+            .sp-tablet-device & {
+                width:220px;
+                img{width:32px; height:32px; margin-bottom:10px;}
+                font-size:1em;
+            }
+            
+            img{width:16px; height:16px;display:inline-block;margin-bottom:5px;}         
+
+            &:active {
+                transition:none;         
+                background-color: rgba(0,0,0,0.3);
+            }
+
+            &:focus {
+                outline: none;
+            }        
+        }
+
+        span[name="welcome"] {
+            color: rgba(255,255,255,0.5);
+            display: block;
+            padding-top:60px;
+            letter-spacing: 0.12em;
+
+            .sp-mobile-device & {
+                padding-top:20px;
+                 margin-bottom: 10px;
+                 font-weight: lighter;
+            }
+            .sp-tablet-device & {
+                padding-top:70px;
+                font-weight: lighter;
+            }
+        }
+
+        h1 {
+            font-size: 4em;
+            color: white;
+            padding: 0;
+
+            .sp-mobile-device &,
+            .sp-tablet-device & {
+                font-size: 1.8em;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+    }
+}
+
+.app-launcher-layout {
+    padding-left: 40px; display: table; width: 100%; height: calc(~'100% - 180px'); background-color:#f5f5f5;
+    
+    .sp-mobile-device & {
+        padding-left: 0;
+        display: inherit;
+        padding:0px;
+        margin-top:0px;
+        height: calc(~'100% - 100px');
+    }
+    .sp-tablet-device & {
+        padding-left: 2%;
+        height: calc(~'100% - 150px');
+    }
+}
+
+.app-launcher-tile-container {
+    display: table-cell;
+    vertical-align: top;
+    padding-top:2%;
+
+    .sp-mobile-device & {
+        display: block;
+        padding-top:0;
+        background-color:#f5f5f5;
+    }
+
+}
+
+.app-launcher-tile {
+    display: inline-block;
+    width: 126px;
+    height: auto;
+    margin: 0 0 10px 0;
+    cursor: pointer;
+    padding: 0;
+    padding-bottom: 10px;
+    text-align: center;
+    font-size: 1.1em;
+    color: #666;
+    border: 1px solid transparent;
+    vertical-align: top;
+    background-color:transparent;
+    transition: all linear .3s;
+    box-sizing: border-box;
+    position:relative;
+
+        &:hover {
+                background-color: rgba(255,255,255,.65);
+                border-radius: 5px;
+                font-weight: 400;
+                border: 1px solid #ddd;
+                box-shadow: 0 0 10px rgba(0,0,0,0.15);
+            }
+
+        &:after {
+            content: '';
+            display: inline-block;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: -2px;
+            width: 1px;
+            background-color: #E6E6E6;
+            }
+
+    &:last-child {
+        &:after {display:none;}
+    }
+
+    .sp-mobile-device & {
+        text-align: left;
+        width: 100%;
+        height: auto;
+        padding: 10px;
+        margin: 0;
+        border-radius: 0px;
+        display: block !important;
+        border:none;
+        border-bottom:1px solid #ededed;
+        vertical-align: middle;
+        &:after {display:none;}
+
+        &:hover, &:active {
+            border:none;
+            border-bottom:1px solid #ddd;
+            box-shadow:none;
+        }
+    }
+    .sp-tablet-device &{font-size: 0.85em;}
+
+    img {
+        height: 70px;
+        width: 70px;
+        margin: 10px;
+        border-radius: 2px;
+
+        .sp-mobile-device & {
+            width: 50px;
+            height: 50px;
+            margin: 0;
+            padding:0;
+            vertical-align: middle;
+            background-color:transparent;
+            border: none;
+
+            &:hover {
+                background-color: transparent;
+                box-shadow: none;
+            }
+
+            & + div {
+                margin-left: 10px;
+                display: inline-block;
+                vertical-align: middle;
+            }
+        }
+    }
+
+    &.createApp {
+        background-color: orange;
+        border-radius: 3px;
+        color: black;
+        img {
+            width: 80px;
+            height: 80px;
+            margin-top: 10px;
+            padding: 30px;
+            opacity: .65;
+            &:hover {
+                opacity:1;
+            }
+        }
+    }
+}
+
+.getting-started-box {
+    display: table-cell;
+    width: 220px;
+    padding: 20px;
+    background-color: rgba(0,0,0,0.03);
+
+
+    .sp-tablet-device & {
+        padding: 20px 0;
+    }
+
+    ul {
+        padding: 0;
+
+        li {
+            a {
+                display: block;
+                color: #999;
+                padding: 5px 0;
+                cursor: pointer;
+                border-radius: 2px;
+
+                .sp-tablet-device & {
+                    line-height:3em;
+                    border-bottom: 1px solid #ededed;
+                    padding:0 20px;
+                    font-size: 0.85em;
+                }
+
+                &:hover, &:active {
+                    text-decoration: none;
+                    background-color: rgba(0,0,0,0.05);
+                }
+
+                img {
+                    margin-right: 5px;
+                    margin-top: -2px;
+                }
+            }
+        }
+    }
+
+    h2 {
+        color: #7f7f7f;
+        margin-bottom: 10px;
+        font-size: 1.3em;
+        letter-spacing: .04em;
+
+        .sp-tablet-device & {
+            font-size:1em;
+            font-weight: lighter;
+            color: #7f7f7f;
+            margin-bottom: 10px;
+            padding:0 20px;
+        }
+    }
+}

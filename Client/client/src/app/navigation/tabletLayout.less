@@ -1,0 +1,328 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+.tablet-layout {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    -webkit-overflow-scrolling: touch;
+    //redefine in pages as required
+    .content-header {
+        height: 40px;
+        background-color: @topBg;
+        box-shadow: 0px -3px 2px rgba(0,0,0,0.05) inset;
+        color: #fff;
+        font-size: .85em;
+        font-weight: lighter;
+
+        .form-title {
+            display: inline-block;
+            color: #fff;
+            font-size:1.5em;
+            margin:inherit;
+            height: 40px;
+            padding-top: 9px;
+            min-height:inherit;
+            line-height: initial;
+        }
+
+        a {
+            display: inline-block;
+            height: 40px;
+            width: 40px;
+            text-align: center;
+            padding-top: 9px;
+            outline: none;
+            vertical-align: top;
+            &:active{
+                background-color:rgba(0,0,0,.3);
+            }
+
+            img {
+                display: inline-block;
+                vertical-align: middle;
+                width: 24px;
+                height: 24px;
+                opacity: 1;
+            }
+        }
+    }
+    //redefine in pages as required
+    .content-footer {
+        height: 30px;
+        background-color: #d3d3d3;
+    }
+
+    .client-footer-panel {
+        height: auto;
+    }
+
+    .navigator-container {
+        position: absolute;
+        z-index: 1000;
+        background-color: #fafafa;
+        overflow-x: hidden;
+        width: 0;
+
+        &.open {
+            width: 250px;
+            box-shadow: 5px 0 5px rgba(0,0,0,0.4);
+        }
+
+        transition: width 0.2s ease-in-out;
+    }
+
+    .page-container.faded {
+        opacity: 0.5;
+    }
+
+    .layout-thumb-title {
+        color: #666;
+        vertical-align: middle;
+        margin-left: 5px;
+        display: inline-block;
+    }
+
+    .nav-title-bar {
+        &.navtohome {
+            text-align: center;
+
+            a {
+                background-color: rgba(0,0,0,0);
+
+                &:active {
+                    background-color: rgba(0,0,0,0.2);
+                }
+            }
+        }
+
+         .content-header;
+         .form-title {
+             font-size: 1.4em;
+         }
+
+        a {
+            &.back-to-apps{
+                margin:inherit;
+            }
+            img {
+                &[title="upperlevel"] {
+                    transform: rotate(90deg);
+                    -webkit-transform: rotate(90deg);
+                }
+            }
+        }
+
+        .close-nav {
+            margin-right: 0px;
+        }
+    }
+
+    .inlineRelPicker {
+        display: block !important;
+
+        input {
+        }
+
+        button {
+            height: 30px;
+        }
+    }
+
+    sp-tab-container-control {
+        .nav-tabs {
+            height:40px;
+            border:none;
+
+            li {
+                margin: 0;
+                margin-top: 1px;
+                border: none;
+                height: 39px;            
+
+                a {
+                    margin-right: 0;
+                    padding: 0;
+                    border: none;
+                    font-size: .95em;
+                    line-height:initial;
+                    border-radius:0;
+                }
+
+                uib-tab-heading {
+                    padding: 10px 15px 9px;
+                    display: inline-block;
+                    color: #777;
+                    border-bottom: 1px solid #bbb;
+                    text-transform: uppercase;
+                    border-radius: 0;
+                    height:39px;
+                    font-weight: bold;
+                    font-size: 12px;
+                }
+
+                &.active {
+
+                    a {
+                        border: none;
+                    }
+
+                    uib-tab-heading {
+                        color: @pointcolour_sp;
+                        height: 39px;
+                        border-bottom: 3px solid @pointcolour_sp;
+                    }
+                }
+            }
+            & + span[name="newtab"] {
+                cursor: pointer;
+                padding: 4px 5px 7px;
+                background-color: #888;
+                display: inline-block;
+                margin-top: 1px;
+                margin-left: 1px;
+                margin-bottom: -1px;
+                border-top-left-radius: 2px;
+                border-top-right-radius: 2px;
+
+                &:hover {
+                    background-color: #7db438;
+                }
+            }
+
+            span {
+                cursor: pointer;
+                background-color: rgba(0,0,0,.5);
+                padding: 0px;
+                margin-left: 4px;
+                display: inline-block;
+
+                &:hover {
+                    background-color: rgba(0,0,0,.7);
+                }
+
+                img {
+                    vertical-align: top;
+                }
+
+                + span {
+                    margin-left: -2px;
+                    margin-right: -12px;
+                }
+            }
+        }
+    }
+}
+
+.sp-tablet-device {
+
+    .dropdown-menu {
+        border: none;
+        border-radius: 4px;
+        vertical-align: middle;
+        box-shadow: 0px 3px 8px 1px rgba(0, 0, 0, 0.6);
+        background-color:#fff;
+
+        li {
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        a.menuItem {
+            vertical-align: middle;
+            padding: 0 10px 0 0;
+            color: #333;
+            line-height: 2.8em;
+            overflow:hidden;
+            text-overflow: ellipsis;
+
+            &:hover {
+                background-color: rgba(0,0,0,0.05);
+            }
+            &.submenuItemTouch{
+                    padding: 5px 5px 2px;
+                    font-size: .7em;
+                    text-transform: uppercase;
+                    font-weight: bold;
+                    border-bottom: 1px solid rgba(0,0,0,0.2);
+                    line-height: 2.4em;
+                    margin-bottom:-1px;
+                    background-color: rgba(0,0,0,0.08);
+
+                .menuIcon{
+                    display: none;
+                }
+            }
+
+            div.iconPanel {
+                border-radius: 0;
+                background-color: transparent;
+            }
+
+            div.menuIcon {
+                width:24px;
+                height:20px;
+                margin: 5px 10px;
+                border-radius:10px;
+                background-size: contain;
+                vertical-align: middle;
+            }
+        }
+
+        .dropdown-submenu > a:after {
+            margin-top: 12px;
+        }
+
+        .contextMenuDivider{
+            .contextMenuDividerInner{
+                height: 1px;
+                margin-top: -1px;
+                background-color: #B5B5B5;
+                border-bottom:none;
+            }
+        }
+        
+        .iconPanelVerticalDivider {
+            display: none;
+        }
+
+
+        &.analyzerPopup-view {
+            background-color: #efefef;
+            width: 556px;
+            min-height:250px;
+
+            .analyzer-view {
+                .valueEditorContainerStyle{
+                    width:290px;
+                }
+                .conditionsPanel {
+                height: calc(~'100% - 40px');
+
+                #analyserFieldsPanel > div{
+                    margin-bottom:4px;
+                    height:40px;
+
+                    .dropdownButtonLabel {
+                        margin: 0;
+                    }
+                }
+
+                }
+            }
+
+            input, .dropdownButton {
+                min-height: inherit;
+                height: 27px;  
+            }
+
+            .analyzerCentered button {
+                height: inherit;
+                padding: 7px 15px 9px;
+            }
+        }
+    }
+
+    .dropdown-menu.entityMultiComboPickerDropdownPopupMenu {
+        background-color: #fafafa;
+    }
+}

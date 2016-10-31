@@ -1,0 +1,183 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+.modal.summariseoptiondialog-view {
+    overflow: auto;
+
+    .modal-dialog {
+        width: 1024px;
+        height: inherit;
+    }
+
+
+    .AdvanceOptionarea {
+        background-color: darken(@modal-content-bg, 2%);
+        padding: 10px;
+        box-shadow: 0 2px 3px darken(@modal-content-bg, 10%) inset;
+        margin: 5px 0;
+        border-radius: 3px;
+
+        ul {
+            padding: 0;
+            list-style-type: none;
+            max-width: 300px;
+
+            .summariseNode {
+                background: none;
+                border: none;
+            }
+        }
+
+        .summariseNode_default {
+            background-color: #ddd;
+            margin-bottom: 3px;
+            border-radius: 3px;
+            padding: 1px 3px;
+            border: 1px solid darken(@modal-content-bg, 10%);
+
+            &:before {
+                content: url('images/fielditem_child.png');
+                margin-left: -15px;
+                margin-top: -4px;
+                float: left;
+            }
+
+            &:hover {
+                background-color: #fff;
+            }
+        }
+
+
+        li {
+            padding-left: 15px;
+
+            .summariseNode {
+                .summariseNode_default;
+            }
+
+            .summariseSelectedNode {
+                .summariseNode_default;
+                background-color: #444;
+                color: #fff;
+                border: 1px solid #444;
+                &:hover {
+                background-color: #414141;
+            }
+            }
+
+            .underSummariseNode {
+                .summariseNode_default;
+                color: rgb(212,212,212);
+            }
+
+            .displaysummariseicon {
+                float: right;
+                display: inline-block;
+                width: auto;
+                height: auto;
+                border: 0;
+                padding: 0;
+                background-color: transparent;
+                transition: opacity ease .2s;
+                -webkit-transition: opacity ease .2s;
+            }
+
+            .hiddensummariseicon {
+                float: right;
+                display: none;
+                width: auto;
+                height: auto;
+                vertical-align: top;
+                border: 0;
+                padding: 0;
+                background-color: transparent;
+            }
+        }
+
+        ul[treeitems="childitem.children"] {
+            padding-left: 15px;
+
+            .summariseNode {
+                .summariseNode_default;
+            }
+
+            .summariseSelectedNode {
+                .summariseNode_default;
+                background-color: #444;
+                color: #fff;
+                border: 1px solid #444;
+                &:hover {
+                background-color: #414141;
+            }
+            }
+
+            .underSummariseNode {
+                .summariseNode_default;
+                color: rgb(212,212,212);
+            }
+
+            .displaysummariseicon {
+                float: right;
+                display: inline-block;
+                width: auto;
+                height: auto;
+                border: 0;
+                padding: 0;
+                background-color: transparent;
+                transition: opacity ease .2s;
+                -webkit-transition: opacity ease .2s;
+            }
+
+            .hiddensummariseicon {
+                float: right;
+                display: none;
+                width: auto;
+                height: auto;
+                vertical-align: top;
+                border: 0;
+                padding: 0;
+                background-color: transparent;
+            }
+        }
+    }
+
+    .gridStyle {
+        margin-top: 10px;
+        border: 1px solid rgb(212,212,212);
+        min-height: 282px;
+        overflow-x: auto;
+
+        .ngTopPanel{}
+
+        .ngHeaderContainer {
+            border-bottom: 1px solid #ccc;           
+        }
+
+        .ngSelectionCell {
+            vertical-align: middle;
+            margin: 0;
+            padding: 6px 4px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .ngViewport {
+            height: 255px !important;
+            
+
+            .ngRow:hover {
+                background-color: transparent;
+            }
+        }
+
+        .ngRow {
+            border-bottom: none;
+
+            .ngCell {
+                input[type="checkbox"] {
+                    margin-top: 0px;
+                    margin-right: 5px;
+                    vertical-align: middle;
+                    margin-top: -1px;
+                }
+            }
+        }
+    }
+}

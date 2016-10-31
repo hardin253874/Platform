@@ -1,0 +1,29 @@
+<div class="spAggregateOptionsDialog-view" sp-moveable-modal sp-set-focus-dialog-input>
+
+    <div class="modal-header">
+        <h6>Totals</h6>
+    </div>
+    <div class="modal-body">
+        <h7 class="aggSubTitle">This Report:</h7>
+        <div class="aggSubTotalsBlock" ng-show="model.haveGroups">
+            <input type="checkbox" ng-model="model.showSubTotals" />
+            <span class="aggVertCentreLabel">Show sub totals</span>
+        </div>
+        <div class="aggGrandTotalsBlock">
+            <input type="checkbox" ng-model="model.showGrandTotals" />
+            <span class="aggVertCentreLabel">Show grand totals</span>
+        </div>
+        <div class="aggGrandTotalsBlock">
+            <input type="checkbox" ng-model="model.showOptionLabels" ng-disabled="model.disableOptionLabel" />
+            <span class="aggVertCentreLabel">Show option labels</span>
+        </div>
+        <h7 class="aggSubTitle">Summarise &apos;{{model.name}}&apos; by:</h7>
+        <div class="aggAggMethodPickerBox">
+            <sp-entity-check-box-picker options="model.aggregateMethodPickerOptions"></sp-entity-check-box-picker>
+        </div>
+        <uib-alert ng-repeat="error in model.errors" type="error.type">{{error.msg}}</uib-alert>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn" ng-click="ok()">OK</button><button type="button" class="btn" ng-click="cancel()">Cancel</button>
+    </div>
+</div>

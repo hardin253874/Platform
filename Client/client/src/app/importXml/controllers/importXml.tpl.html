@@ -1,0 +1,30 @@
+﻿<div class="importxml-view container-fluid" ng-controller="importXmlController">
+
+    <h1>Import Resource</h1>
+
+    <p class="message">
+        Please select a ReadiNow resource XML file to import.
+    </p>
+
+    <div class="upload">
+        <label class="fileUploadLabel">File:</label>
+        <sp-file-upload upload-session="model.uploadSession"
+                        message="model.message" filter="{{model.fileFilter}}"
+                        callback="model.onFileUploadComplete"
+                        busy-indicator-options="model.busyIndicator"
+                        display-name="model.displayName"
+                        instant-upload="true"
+                        show-file-name="true"></sp-file-upload>
+
+    </div>
+
+    <p class="further">
+        Further information:
+        <ul>
+            <li>ReadiNow resources can be exported by members of the 'Export/Import' role.</li>
+            <li>Right click on a resource in a resource report to export the resource.</li>
+            <li>Other data such as Excel and CSV can be imported via Integration.</li>
+        </ul>
+    </p>
+
+</div>

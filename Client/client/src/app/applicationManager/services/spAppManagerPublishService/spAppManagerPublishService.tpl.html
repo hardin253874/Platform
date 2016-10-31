@@ -1,0 +1,105 @@
+<div class="appManager-publish" sp-moveable-modal sp-set-focus-dialog-input>
+
+    <div class="modal-header">
+        <h6>{{model.title}}</h6>
+    </div>
+    <div class="modal-body overflowModalBody">
+        <div ng-if="model.busyIndicator.isBusy" sp-busy-indicator-popup="model.busyIndicator" class="busy">
+
+        </div>
+        <div>
+            <div class="head">
+                <div class="image">
+                    <img src="assets/images/publish.png" />
+                </div>
+                <div class="heading">
+                    <div class="title">
+                        {{model.appName}}
+                    </div>
+                    <div class="description">
+                        {{model.app.solutionVersion}}
+                    </div>
+                </div>
+            </div>
+            <div class="details">
+                <div class="detailBlurb">
+                    Publishes the selected application to the ReadiNow Application Library.
+                </div>
+                <div class="detailProperties">
+                    <table>
+                        <tr>
+                            <td>
+                                Name:
+                            </td>
+                            <td class="detail">
+                                {{model.appName}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Version:
+                            </td>
+                            <td class="detail">
+                                {{model.app.solutionVersion}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Publisher:
+                            </td>
+                            <td class="detail">
+                                {{model.app.publisher || 'N/A'}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Publisher Url:
+                            </td>
+                            <td class="detail">
+                                {{model.app.publisherUrl || 'N/A'}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Release Date:
+                            </td>
+                            <td class="detail">
+                                {{emptyDate(model.app.releaseDate) ? 'N/A' : model.app.releaseDate}}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <table class="toolbar">
+                <tr>
+                    <td class="narrow">
+                        <button title="Stage application" ng-click="stageApp()" ng-disabled="!model.notStaged">Stage</button>
+                    </td>
+                    <td>
+                        <input type="checkbox" style="margin-left: 20px" ng-model="model.showDiffOnly" ng-change="showDiffOnly()" id="showDiffOnly" title="Only show the resources that have been added/removed or modified" ng-disabled="model.notStaged" /> <label for="showDiffOnly" ng-disabled="model.notStaged">Only show differences</label>
+                    </td>
+                    <td class="narrow">
+                        <div style="width: 200px">
+                            <sp-search-control sp-model="model.search"></sp-search-control>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <div ng-grid="gridOptions" class="entity-data"></div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <table style="width: 100%">
+            <tr>
+                <td style="text-align: left">
+                    <label style="color: #ee0000" ng-show="model.errorMessage">{{model.errorMessage}}</label>
+                    <a style="color: #ee0000; cursor: pointer" ng-show="model.clickErrorMessage" ng-click="clickError()">{{model.clickErrorMessage}}</a>
+                </td>
+                <td class="narrow" style="white-space: nowrap">
+                    <button type="button" class="btn" ng-click="ok()" ng-disabled="model.busyIndicator.isBusy">Publish</button>
+                    <button type="button" class="btn" ng-click="cancel()">Cancel</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

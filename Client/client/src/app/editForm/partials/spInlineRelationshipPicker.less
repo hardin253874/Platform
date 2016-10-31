@@ -1,0 +1,29 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+.inlineRelPicker {
+    display:table;
+    width:100%;
+
+    > div {
+        display:table-cell;
+        padding: 0;
+        vertical-align:top;
+
+         &:nth-child(2),
+         &:nth-child(3) {
+             width:1%;
+         }
+    }
+
+    input {
+        min-width:inherit;
+        width:100%;
+    }
+
+    .inlineRelPicker-button,
+    .inlineRelPicker-select {
+        .btn_lighten;
+        margin-left:3px;
+        padding: 0px 7px; 
+        min-height:27px;   
+    }
+}

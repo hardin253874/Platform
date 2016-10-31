@@ -1,0 +1,40 @@
+<span ng-controller="fieldControlOnFormController" class="fieldControl" >
+	
+
+    
+    <!--<input ng-model="fieldValue" type="date"/>-->
+    <sp-date-picker name="spdatecontrol"
+                    in-date="fieldValue" 
+                    in-date-string=""
+                    allow-dynamic-mode="false"
+                    translate-date="true"
+                    min-date="" 
+                    max-date=""
+                    ng-model="fieldValue"
+                    field="formControl.getFieldToRender()"
+                    is-mandatory-on-form="isMandatoryOnForm"
+                    sp-validate-field='field'
+                    sp-validation-message="true">
+    </sp-date-picker>
+   <!--val{{fieldValue}}-->
+   <!-- <sp-date-picker name="spdatecontrol" 
+                    ng-model="fieldValue"
+                    in-date="fieldValue" 
+                    in-date-string=""
+                    allow-dynamic-mode="false"
+                    translate-date="true"
+                    min-date="" 
+                    max-date=""
+                    field="formControl.getFieldToRender()"
+                    is-mandatory-on-form="isMandatoryOnForm"
+                    form-control="formControl"
+                    field-value="fieldValue"
+                    sp-validate-field='field'
+                    sp-validation-message="true"
+                    sp-return-invalid-value="true"
+                    ng-trim='false'
+                    ng-change="cleanFieldValue();"
+                    >
+    </sp-date-picker>-->
+    <!--{{formControl.getFieldToRender()}}-->
+</span>

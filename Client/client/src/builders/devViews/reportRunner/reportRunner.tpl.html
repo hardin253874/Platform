@@ -1,0 +1,46 @@
+﻿<div class="report-runner container-fluid" ng-controller="reportRunnerController">
+
+    <div class="row-fluid">
+
+        <h1>Report Runner</h1>
+
+        <div class="description">
+            <h3>Summary</h3>
+            Run yourself some reports.
+        </div>
+
+        <div class="settings">
+            <div>
+                <div>Application</div>
+                <sp-entity-combo-picker options="applications"></sp-entity-combo-picker>
+            </div>
+            <div>
+                <input type="button" ng-click="run()" value="Run" ng-hide="isRunning" /><span ng-show="isRunning">Running... ({{nRun}} of {{nRunTotal}})</span>
+            </div>
+        </div>
+
+        <br />
+        <table>
+            <tr>
+                <th>Id</th>
+                <th style="width: 100%;">Name</th>
+                <th style="min-width: 500px">Info <span ng-show="nRunErrors > 0" style="color: red;"> - {{nRunErrors}} error(s)</span></th>
+                <th>Rows</th>
+                <th>Result (ms)</th>
+                <th></th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="result in results | orderBy:'runTime':true">
+                <td><a once-href="result.reportUri" target="_blank"><span once-text="result.reportId"></span></a></td>
+                <td><span style="white-space: nowrap;" once-text="result.reportName"></span></td>
+                <td><span style="font-style: italic; color: red; white-space: nowrap;" once-text="result.info"></span></td>
+                <td><span once-hide="result.error" once-text="result.rowCount"></span><span once-show="result.error"><img src="assets/images/icon_error.png" /></span></td>
+                <td><span once-text="result.runTime.toFixed(3)"></span></td>
+                <td><a once-href="result.debugUri" target="_blank"><img src="assets/images/16x16/Debug.png" /></a></td>
+                <td><img src="assets/images/16x16/properties.png" style="cursor: pointer;" ng-click="openXml(result.reportId)" /></td>
+            </tr>
+        </table>
+        
+    </div>
+
+</div>

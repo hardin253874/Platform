@@ -1,0 +1,73 @@
+<div class="{{options.disabled ? 'expression-editor-control disabled' : 'expression-editor-control'}}">
+
+    <div class="control-row">
+
+        <!--the following textarea is used by our directive to make a Codemirror box -->
+        <textarea></textarea>
+
+        <div ng-show="!options.hideHintsButtons && !options.useHintLinks" class="btnCalc">
+            <button class="btn_lighten" ng-click="showHints()"><img src="assets/images/icon_hint.png" /></button>
+            <button class="btn_lighten" ng-click="showFunctions()"><img src="assets/images/icon_function.png" /></button>
+        </div>
+
+    </div>
+
+    <div class="error" ng-hide="options.hideErrors">{{compileResult.error}}</div>
+
+    <div ng-show="!options.hideHintsButtons && options.useHintLinks" style="margin-top:5px;">
+        <button ng-click="showParameters()" title="expression-parameter">parameter</button>
+        <button ng-click="showFunctions()"  title="expression-function">function</button>
+        <button ng-click="showProperties()" title="expression-property">property</button>
+        <button ng-click="showResources()"  title="expression-record">record</button>
+    </div>
+
+    <div class="backdrop" ng-if="visualState.showFunctionsList || visualState.showParametersList"></div>
+
+    <div class="functions" ng-if="visualState.showFunctionsList">
+        <div class="clearfix">
+            <input type="text" ng-model="visualState.functionFilterText" edc-focus="visualState.showFunctionsList"/>
+            <button class="btn" ng-click="visualState.showFunctionsList = false"><img src="assets/images/icon_picker_close.png" /></button>
+        </div>
+        <div class="content">
+            <table>
+                <tr ng-repeat="f in functions | filter:visualState.functionFilterText"
+                    ng-click="functionClicked(f.signature)" class="{{f.cssClass}}">
+
+                    <td class="name" colspan="{{f.description ? 1 : 2}}">{{f.name}}</td>
+                    <td class="description">{{f.description}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+
+    <div class="parameters" ng-if="visualState.showParametersList">
+        <div class="clearfix">
+            <input type="text" ng-model="visualState.parameterFilterText" edc-focus="visualState.showParametersList"/>
+            <button class="btn-link pull-right" ng-click="visualState.showParametersList = false">x</button>
+            <button ng-show="options.choosers.resourceChooser" class="btn-link pull-right" ng-click="showResources()">choose record</button>
+        </div>
+        <div class="content">
+            <table>
+                <tr ng-repeat="p in params | filter:visualState.parameterFilterText" ng-click="parameterClicked(p)"
+                    class="{{p.cssClass}}" ng-class-even="'alt-row'">
+
+                    <td class="name" colspan="{{p.description ? 1 : 2}}">{{p.name}}</td>
+                    <td class="description">{{p.description}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!--Use the following to help debug styling for the popup hint list-->
+    <!--<ul class="CodeMirror-hints">-->
+    <!--<li class="CodeMirror-hint">hello</li>-->
+    <!--<li class="CodeMirror-hint">hello</li>-->
+    <!--</ul>-->
+
+    <!--<pre>{{compileResult | json:" "}}</pre>-->
+    <!--<pre>{{entityTypeHints | json:" "}}</pre>-->
+    <!--<pre>{{params | json:" "}}</pre>-->
+    <!--<pre ng-show="debug" style="position:fixed;right:0;bottom:0;width:50%;height:50%;opacity:0.5;z-index:990">{{debug | json:" "}}</pre>-->
+
+</div>

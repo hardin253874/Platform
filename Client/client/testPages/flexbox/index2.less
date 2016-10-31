@@ -1,0 +1,257 @@
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
+.rn-flex-row {
+  display: flex;
+  flex-flow: row;
+}
+
+.rn-flex-row-wrap {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.rn-flex-column {
+  display: flex;
+  flex-flow: column;
+}
+
+.rn-flex-item {
+  flex: 1 1 auto;
+}
+
+.rn-flex-center-it {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.table-scrollable() {
+  @scrollbar-width: 0.9em;
+  display: flex;
+  flex-flow: column;
+
+  thead, tbody tr {
+    display: table;
+    table-layout: fixed;
+  }
+
+  thead {
+    flex: 0 0 auto;
+    width: ~"calc(100% - @{scrollbar-width})";
+  }
+
+  tbody {
+    display: block;
+    flex: 1 1 auto;
+    overflow-y: scroll;
+
+    tr {
+      width: 100%;
+    }
+  }
+}
+
+my-flex-app {
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+
+  header, footer {
+    background-color: lightgrey;
+  }
+
+  .main {
+    flex: 1;
+    display: flex;
+    flex-flow: row;
+
+    .content {
+      flex: 1;
+      order: 2;
+      overflow: auto;
+    }
+
+    nav {
+      order: 1;
+      width: 10em;
+      overflow: auto;
+
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+    }
+
+    aside {
+      order: 3;
+      width: 10em;
+      overflow: auto;
+    }
+  }
+}
+
+app2-content {
+}
+
+app2-screen1 {
+  .rn-flex-column;
+  height: 100%;
+
+  > .item-container {
+    .rn-flex-column;
+    flex: 1;
+
+    > * {
+      display: block;
+      flex: 0 1 auto;
+    }
+  }
+}
+
+app2-screen2 {
+
+}
+
+app2-report {
+  //min-height: 5em;
+  //min-width: 15em;
+
+  table {
+    //.table-scrollable();
+    width: 100%;
+    table-layout: fixed;
+  }
+
+  thead, tbody tr {
+    table-layout: fixed;
+  }
+}
+
+app2-form2 {
+  display: flex;
+  flex-flow: column;
+
+  > .item-container {
+    flex: 1 0 50%;
+    display: flex;
+    flex-flow: column nowrap;
+  }
+
+  field1 {
+//    min-width: 10em;
+  }
+}
+
+app2-form1 {
+  flex: 0 0 auto;
+  min-height: 5em;
+  min-width: 15em;
+}
+
+horz-container {
+  .rn-flex-column;
+
+  .item-container {
+    .rn-flex-row-wrap;
+    .rn-flex-item;
+
+    > * {
+      .rn-flex-item;
+    }
+  }
+}
+
+vert-container {
+  display: block;
+}
+
+field1 {
+  .rn-flex-row-wrap;
+  //padding: .25em .5em .25em .5em;
+
+  label {
+    flex: 1 1;
+    flex-basis: calc(~'30% - 1em');
+    min-width: 8em;
+  }
+
+  input {
+    flex: 1 1;
+    flex-basis: calc(~'70% - 1em');
+    min-width: 12em;
+  }
+}
+
+field2 {
+  >.item-container {
+    .rn-flex-row-wrap;
+  }
+
+  label {
+    flex: 1 1;
+    flex-basis: 30%;
+    min-width: 8em;
+  }
+
+  input {
+    flex: 1 1;
+    flex-basis: 70%;
+    min-width: 12em;
+  }
+}
+
+@media screen and (min-width: 28.75em) {
+  app2-screen1 {
+    .rn-flex-column;
+    height: 100%;
+
+    > .item-container {
+      .rn-flex-row;
+      flex: 1;
+
+      > * {
+        display: block;
+        flex: 1 1 30%;
+        overflow: auto;
+      }
+    }
+  }
+}
+
+.main > aside {
+  display: none;
+}
+
+@media all and (max-width: 64em) {
+  .main > aside {
+    display: none;
+  }
+}
+
+@media all and (max-width: 43.125em) {
+  .main > aside {
+    display: none;
+  }
+}
+
+@media all and (max-width: 28.75em) {
+  .main > nav, .main > aside {
+    display: none;
+  }
+}
+
+@media all and (max-height: 35em) {
+  my-flex-app footer {
+    display: none;
+  }
+}
+
+

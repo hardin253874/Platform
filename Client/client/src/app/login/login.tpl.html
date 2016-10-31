@@ -1,0 +1,37 @@
+<div class="login-layout-view">
+	
+
+    <div ng-if="!spMobileContext.isMobile && !spMobileContext.isTablet" class="login-top"></div>
+
+    <div class="login-view" ng-controller="LoginController">
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div ng-show="redirectPath">
+                    You need to sign in. Then you'll be redirected to {{redirectPath}}
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <div class="floatClear"></div>
+            <div class="content-div" sp-mobile-allow-default-drag>
+
+                <sp-open-id></sp-open-id>
+            </div>
+        </div>
+        <div class="poweredby">
+            <span>POWERED BY READINOW</span>
+            <img src="assets/images/logo_poweredby.png" />
+        </div>
+    </div>
+
+    <div class="row-fluid">
+        <div>
+            {{error.loginError}}
+            <div ng-show="error.loginError">
+                Also check your server and tenant settings
+                <a href="#/settings">here</a>
+            </div>
+        </div>
+    </div>
+
+</div>

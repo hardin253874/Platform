@@ -1,0 +1,18 @@
+<div ng-controller="refreshButtonTestController">
+	
+    <h3>Refresh Button</h3>
+    <sp-refresh-button options="options"></sp-refresh-button>
+    <br/>
+    Selected Timeout: {{options.autoRefreshTimeoutMin}}
+    <br/>
+    Refresh Counter: {{counter}}
+    <br/>    
+    Refresh Time: {{time}}
+    <br/>
+    <h3>Refresh Button Config</h3>
+    <select ng-model="selectedMenuItemConfig" ng-options="mc.menuItemText for mc in refreshMenuItemConfig.menuItemConfig"></select><br/>
+    Timeout Min: <input type="number" ng-model="selectedMenuItemConfig.timeoutMin" min="0"><br/>
+    Button Text: <input ng-model="selectedMenuItemConfig.buttonText"><br/>
+    Menu Text: <input ng-model="selectedMenuItemConfig.menuItemText"><br/>
+    <button ng-click="applyConfigChanges()">Apply Changes</button>
+</div>

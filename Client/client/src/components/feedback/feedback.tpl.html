@@ -1,0 +1,44 @@
+﻿<div ng-show="isVisible()" class="feedback-form-bg"></div>
+<div ng-show="isVisible()" class="feedback-form" ng-style="getStyle()">
+    <div class="title modal-header"><h6>Report an issue</h6></div>
+    <div class="body">
+        <div class="field">
+            <div class="title">
+                Email:
+            </div>
+            <div class="content">
+                <input placeholder="your contact email address" ng-model="model.email">
+            </div>
+        </div>
+        <div class="field">
+            <div class="title">
+                Phone:
+            </div>
+            <div class="content">
+                <input placeholder="your contact phone number" ng-model="model.phone">
+            </div>
+        </div>
+        <div class="field">
+            <div class="title">
+                Description:
+            </div>
+            <div class="comments">
+                <textarea placeholder="enter incident description" ng-model="model.comments"></textarea>
+            </div>
+        </div>
+        <div class="field">
+            <div class="title">
+                Attachments:
+            </div>
+            <!--the ng-if below forces the input to be created new each time we show the dialog
+            and this is the way we clear the input value ... otherwise it remembers it -->
+            <div class="content" ng-if="isVisible()">
+                <input type="file" sp-feedback-file-upload multiple accept="image/*"/>
+            </div>
+        </div>
+    </div>
+
+    <div class="buttons footer">
+        <button class="btn" ng-click=" submitClick()">Submit</button><button class="btn" ng-click="cancelClick()">Cancel</button>
+    </div>
+</div>

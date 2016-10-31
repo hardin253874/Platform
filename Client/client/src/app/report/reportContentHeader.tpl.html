@@ -1,0 +1,14 @@
+<span ng-controller="reportContentHeaderController" class="sp-default-content-header">
+    <div ng-if="spMobileContext.isMobile" class="layout-thumb content-header" ng-style="consoleThemeModel.navBarStyle">
+
+        <a ng-if="haveParent" ng-click="navigateToParent()"><img src="assets/images/mobile/mobile_toolbar_back.svg" /></a>
+        <a ng-if="!haveParent" ng-click="toggleNavigation()"><img src="assets/images/mobile/mobile_toolbar_toggle_leftnav.svg" /></a>
+
+        <sp-search-control sp-model="currentNavItem.data.quickSearch"></sp-search-control>
+    </div>
+
+    <div ng-if="spMobileContext.isTablet" class="layout-thumb content-header" ng-style="consoleThemeModel.navBarStyle">
+        <a ng-click="toggleNavigation()"><img src="assets/images/mobile/mobile_toolbar_toggle_leftnav.svg" /></a>
+        <span class="form-title">{{currentNavItem.name}}</span>
+    </div>
+</span>

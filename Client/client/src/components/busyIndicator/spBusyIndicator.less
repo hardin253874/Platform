@@ -1,0 +1,83 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+.busyIndicator-view {    
+
+    .fullSize {
+        width: 100%;
+        height: 100%;
+    }
+
+    .busyIndicatorProgressBar {
+        margin-bottom: 2px;
+        margin-top: 0;
+        padding: 0;
+    }
+
+    .centerText {
+        text-align: center;
+    }
+
+    .spinnerText {
+        margin-left: 5px;
+        text-align: center;
+    }
+
+    .spinnerTextContainer {
+        display: table-cell;
+        vertical-align: middle;
+    }       
+
+    .busyIndicatorBackdropPlacement {
+        z-index: @busyBackdropZindex;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: white;
+        position: absolute;
+    }
+
+    .busyIndicatorBackdropPlacement.fade {
+        opacity: 0;
+    }
+
+    .busyIndicatorBackdropPlacement,
+    .busyIndicatorBackdropPlacement.fade.in {
+        opacity: 0.5;
+        filter: alpha(opacity=50);
+    }    
+
+    .progressIndicatorContainer {
+        display: block;
+        vertical-align: middle;
+        padding: 5px;
+    }    
+
+    .busyIndicatorPopupPlacement {
+        z-index: @busyPopupZindex;
+        width: 150px;
+        padding: 5px;
+        background-color: #ffffff;
+        border: 1px solid #999;
+        border: 1px solid rgba(0, 0, 0, 0.3);
+        *border: 1px solid #999;        
+        /* IE6-7 */
+        border-radius: 6px;
+        box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+        background-clip: padding-box;
+        outline: none;
+    }    
+}
+
+.biCenteringContainer {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: absolute;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+}

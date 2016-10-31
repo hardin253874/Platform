@@ -1,0 +1,13 @@
+<div ng-controller="structureControlOnFormController" ng-class="getStructureControlClass(formMode)">
+
+    <div class="structure-control-header structure-depth-{{structureDepth}}" ng-class='titleClass'
+         ng-style="getTitleStyle(formControl)">{{formControl.getName()}}
+    </div>
+    
+    <span class="repeater-wrapper">
+        <span class="repeater {{repeaterClass}}" ng-repeat="childFormControl in controlsOnForm">
+            <sp-replace source="getStructureControlFile(childFormControl, formMode, isReadOnly)"></sp-replace>
+        </span>
+    </span>
+
+</div>

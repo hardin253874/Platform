@@ -1,0 +1,212 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+// These fonts we are only doing ttf as they are already on Windows (without the "My" bit),
+// and thus available for IE (which doesn't work with ttf)
+// so we only need the following for non-Windows... clear as mud....
+
+html {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    max-height: 100%;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    // set the body to enough padding to allow for the
+    // height of the top fixed navbar
+    body {
+        overflow: hidden;
+        margin: 0;
+        padding-bottom: 0;
+        height: 100%;
+        max-height: 100%;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+        font-size: .75em;
+        color: #000;
+
+        &.sp-tablet-device, &.sp-mobile-device {
+            font-size: .9em;
+        }
+    }
+
+    #root {
+        position: relative;
+        margin: 0;
+        padding: 0;
+        min-height: 100%;
+    }
+
+    .view {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 0 30px 0;
+    }
+}
+
+.app-splash {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /*height: 100%;
+    width: 100%;*/
+    text-align: center;
+    background-color: #31a89f;
+
+    .app-splash-bg {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+
+    .splashlogo {
+        display: inline-block;
+        margin: 15% auto 0;
+        z-index: 7;
+    }
+
+
+    p {
+        margin-top: 30px;
+        font-size: .9em;
+        color: white;
+        opacity: .9;
+    }
+
+
+    .app-errors-list {
+        color: red;
+        opacity: .9;
+
+        h1 {
+            margin-top: 30px;
+            font-size: 2.1em;
+        }
+
+        ul {
+        }
+    }
+}
+
+.sp-mobile-device .view {
+    padding: 0;
+}
+
+.sp-tablet-device .view {
+    padding: 0px;
+}
+
+.notransition {
+    transition: none !important;
+}
+
+.content-header-shadow {
+    //box-shadow: rgba(0, 0, 0, 0.35) 0px 2px 5px;
+    z-index: 1;
+}
+
+/////
+// To generate a new sprite map in a different colour, goto:
+// http://download.jqueryui.com/themeroller/images/ui-icons_*COLOR*_256x240.png
+// and specify the COLOR value.
+/////
+.ui-icon-white {
+    background-image: url("lib/jquery-ui/css/images/ui-icons_ffffff_256x240.png");
+}
+
+.ui-icon-lightgray {
+    background-image: url("lib/jquery-ui/css/images/ui-icons_cccccc_256x240.png");
+}
+
+.ui-icon-gray {
+    background-image: url("lib/jquery-ui/css/images/ui-icons_999999_256x240.png");
+}
+
+.ui-icon-darkgray {
+    background-image: url("lib/jquery-ui/css/images/ui-icons_535353_256x240.png");
+}
+
+.ui-icon-gold {
+    background-image: url("lib/jquery-ui/css/images/ui-icons_ffc800_256x240.png");
+}
+
+.ui-icon-hover-darkgray {
+    &:hover {
+        background-image: url("lib/jquery-ui/css/images/ui-icons_535353_256x240.png");
+    }
+}
+
+/* Common */
+h1, h2, h3, h4, h5, h6 {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    margin: 0;
+}
+
+input, textarea, select, button, .dropdownButton {
+    font-size: 1em;
+}
+
+body {
+    font-size: .75em;
+    word-break: normal;
+}
+
+img, fieldset, iframe {
+    border: 0;
+}
+
+img:focus {
+    box-shadow: none;
+    border: none;
+    outline: none;
+}
+
+li {
+    list-style: none;
+}
+
+input, select, button {
+    vertical-align: middle;
+}
+
+header, footer, section, article, aside, nav, hgroup, details, menu, figure, figcaption {
+    display: block;
+}
+
+.tooltip {
+    transition-delay: .9s;
+}
+
+.inline-block {
+    display: inline-block;
+}
+
+// some classes for using flexbox
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.flex-center {
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-item {
+    flex: 1 1 auto;
+}
+
+
+@import "navigation/layout.less";
+@import "navigation/mobileLayout.less";
+@import "navigation/tabletLayout.less";
+@import "navigation/navigation.less";
+@import "navigation/appLauncher";

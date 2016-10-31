@@ -1,0 +1,19 @@
+<!--<div class="leftMargin topMarginSmall">
+	
+    <div class="labelBlockMedium">Alignment:</div>    
+    <div class="displayInlineBlock">
+        <select class="centeredDropDown" ng-model="model.imageFormatting.selectedAlignmentOption" ng-options="ao as ao.name for ao in model.imageFormatting.alignmentOptions" ng-change="onValueFormattingOptionsChanged()" />        
+    </div>        
+</div>-->
+<div class="leftMargin topMarginSmall">
+    <div class="labelBlockMedium">Thumbnail Size:</div>
+    <div class="displayInlineBlock">
+        <sp-entity-combo-picker options="model.imageFormatting.thumbnailSizePicker"></sp-entity-combo-picker>  
+    </div>             
+</div>
+<div class="leftMargin topMarginSmall">
+    <div class="labelBlockMediumAlignTop">Thumbnail Scaling:</div>    
+    <div class="displayInlineBlock">
+        <sp-entity-radio-picker options="model.imageFormatting.thumbnailScalingPicker"></sp-entity-radio-picker>    
+    </div>        
+</div>

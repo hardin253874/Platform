@@ -1,0 +1,86 @@
+<div class="reportPropertyDialog-view" sp-moveable-modal sp-set-focus-dialog-input ng-keypress="onKeyPress($event)">
+
+    <div class="modal-header">
+        <h6>{{dialogName}}</h6>
+    </div>
+    <div class="modal-body">
+        <div class="edit-form-control-container">
+            <div class="edit-form-title"><label>Report name</label></div>
+            <div class="edit-form-value"><input type="text" ng-model="model.reportName" /></div>
+        </div>
+        <div class="edit-form-control-container">
+            <div class="edit-form-title"><label>Description</label></div>
+            <div class="edit-form-value"><textarea ng-model="model.reportDescription" /></div>
+        </div>
+        <div class="edit-form-control-container">
+            <div class="edit-form-title"><label>Report based on</label></div>
+            <div class="edit-form-value"><sp-inline-relationship-picker options="pickerOptions" ng-disabled="isExistReport" ng-readonly="isExistReport" /></div>
+        </div>
+        <div class="edit-form-control-container" ng-show="canShowAllTypes">
+            <div class="edit-form-title"></div>
+            <div class="edit-form-value"><input type="checkbox" style="margin-left:inherit" ng-model="model.showAll" /> <label>Show all</label></div>
+        </div>
+        <div class="btn_lighten option" ng-click="isCollapsed = !isCollapsed">
+            <a><img ng-src="{{imageUrl}}" /></a>
+            {{getOptionsText()}}
+        </div>
+        <div uib-collapse="isCollapsed">
+            <uib-tabset class="tabarea" active="activeTab">
+                <uib-tab heading="Advanced" ng-show="model.showAdvanced">
+                    <div class="tab-container" ng-show="model.showAdvanced">
+                        <div class="edit-form-control-container">
+                            <div class="edit-form-title"><label>Applications</label></div>
+                            <div class="edit-form-value"><sp-inline-relationship-picker options="applicationPickerOptions" /></div>
+                        </div>
+                        <div class="edit-form-control-container">
+                            <div class="edit-form-title"><label>Report form</label></div>
+                            <div class="edit-form-value"><sp-entity-combo-picker options="model.formOptions"></sp-entity-combo-picker></div>
+                        </div>
+                        <div class="edit-form-control-container">
+                            <div class="edit-form-title"></div>
+                            <div class="edit-form-value"><input type="checkbox" style="margin-left:inherit" ng-model="model.defaultDisplayReport" />
+                                <label>Default Display Report</label></div>
+                        </div>
+                        <div class="edit-form-control-container">
+                            <div class="edit-form-title"></div>
+                            <div class="edit-form-value"><input type="checkbox" style="margin-left:inherit" ng-model="model.defaultPickerReport" />
+                                <label>Default Picker Report</label></div>
+                        </div>
+                    </div>
+                </uib-tab>
+                <uib-tab heading="Format" active="model.formatTabActiveByDefault">
+                    <div class="tab-container">
+                        <div class="edit-form-control-container">
+                            <div class="edit-form-title"><label>Icon</label></div>
+                            <div class="edit-form-value"><sp-inline-relationship-picker options="iconPickerOptions" /></div>
+                        </div>
+                        <div class="edit-form-control-container">
+                            <div class="edit-form-title"><label>Style</label></div>
+                            <div class="edit-form-value"><sp-entity-combo-picker options="model.styleOptions"></sp-entity-combo-picker></div>
+                        </div>
+                        <div class="edit-form-control-container">
+                            <div class="edit-form-title"></div>
+                            <div class="edit-form-value"><input type="checkbox" style="margin-left:inherit" ng-model="model.hideActionBar" />
+                                <label>Hide Action Bar</label></div>
+                        </div>
+                        <div class="edit-form-control-container">
+                            <div class="edit-form-title"></div>
+                            <div class="edit-form-value"><input type="checkbox" style="margin-left:inherit" ng-model="model.hideReportHeader" />
+                                <label>Hide Report Header</label></div>
+                        </div>
+                    </div>
+                </uib-tab>
+                <uib-tab heading="Deploy">
+                    <div class="tab-container">
+                        <sp-visual-settings-toggle-buttons options="model.visualSettingsOptions" />
+                    </div>
+                </uib-tab>
+            </uib-tabset>
+        </div>
+
+        <uib-alert class="alerter" ng-repeat="error in model.errors" type="error.type">{{error.msg}}</uib-alert>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" ng-click="ok()" ng-disabled="disableOkButton">OK</button><button class="btn" ng-click="cancel()">Cancel</button>
+    </div>
+</div>

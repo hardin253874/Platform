@@ -1,0 +1,78 @@
+﻿// Copyright 2011-2016 Global Software Innovation Pty Ltd
+
+label.icon-checkbox {
+    margin: 0;
+    display: inline-block;
+    vertical-align: middle;
+    padding: 6px 8px 0;
+    min-height: 27px;
+    box-sizing: border-box;
+    position: relative;
+    white-space: nowrap;
+
+    .sp-mobile-device & {
+        padding: 5px;
+        margin-top: 10px;
+    }
+
+    .ng-valid-required & {
+        cursor: pointer;
+    }
+
+    input[type=checkbox] {
+        //display: none; // This breaks IE
+        opacity: 0;
+        position: absolute;
+    }
+
+    span {
+        opacity: .5;
+        transition: all ease .3s;
+
+        &:after {
+            display: inline-block;
+            margin-left: 2px;
+            font-size: 9px;
+            text-transform: uppercase;
+            font-weight: bold;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+
+            .sp-mobile-device & {
+                font-size: 12px;
+                vertical-align: middle;
+            }
+        }
+
+        &[title="Allow notes"]:after {
+            content: "notes";
+        }
+
+        &[title="Allow attachments"]:after {
+            content: "attachments";
+        }
+
+        img {
+            pointer-events: none;
+            width: 16px;
+            height: 16px;
+
+            .sp-mobile-device & {
+                width: 24px;
+                height: 24px;
+                vertical-align: middle;
+            }
+        }
+    }
+
+    input[type=checkbox]:disabled + span {
+        opacity: .85 !important;
+    }
+
+    input[type=checkbox]:checked + span {
+        opacity: 1;
+
+        &:after {
+            color: #333;
+        }
+    }
+}

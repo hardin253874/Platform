@@ -1,0 +1,18 @@
+﻿<div ng-controller="sp.workflow.activityController">
+    <form class="form-horizontal">
+        <div class="form-group">
+            <sp-workflow-expression-control parameter="activityParameters['cast:inDeleteUserActivityUserName']" show-label="true"
+                                            actions="exprEditor"></sp-workflow-expression-control>
+        </div>
+        <div class="form-group">
+            <sp-workflow-expression-control parameter="activityParameters['cast:inDeleteUserActivityUserTenant']" show-label="true"
+                                            actions="exprEditor"></sp-workflow-expression-control>
+        </div>
+        <div class="form-horizontal divide">
+            <div class="form-group">
+                <sp-workflow-expression-control parameter="activityParameters['cast:inDeleteUserActivityDatabaseId']" show-label="true"
+                                                actions="exprEditor"></sp-workflow-expression-control>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,20 @@
+<div ng-controller="chartTestController" style="margin:3em">
+
+    Charts:
+    <sp-entity-combo-picker options="chartPickerOptions"></sp-entity-combo-picker>
+    <button ng-click="builder()">Builder</button>
+    <button ng-click="builderNew()">New</button>
+    <button ng-click="refresh()">Refresh</button>
+    <button ng-click="delete()">Delete</button>
+    <div>
+        Height: <input type="range" min="0" max="480" ng-model="containerHeight" >
+    </div>
+    <div>
+        Width: <input type="range" min="0" max="1024" ng-model="containerWidth">
+    </div>
+    <br/>
+    <div style="width:{{containerWidth + 'px'}}; height:{{containerHeight + 'px'}}; padding-top:1em">
+        <sp-chart options="chartOptions" chart-id="chartOptions.chartId"></sp-chart>
+    </div>
+
+</div>

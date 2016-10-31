@@ -1,0 +1,108 @@
+<div class="client-header-panel">
+
+    <div ng-switch="!$state.current.data.fullScreen">
+        <div ng-switch-when="true">
+            <div class="navbar" role="navigation" ng-style="consoleThemeModel.navBarStyle">
+                <div class="navbar-inner">
+                    <!--The logo-->
+                    <a class="navbar-brand" ng-href="#/{{appData.tenant}}/home" tabindex="-1">
+                        <img ng-src="{{consoleThemeModel.defaultLogo}}" tabindex="-1" />
+                    </a>
+
+                    <!--<div style="position: absolute; top: 5px; left: 150px; display: inline;">-->
+                    <!--<pre title="{{nav.debug()}}">hover for debug</pre>-->
+                    <!--</div>-->
+
+                    <div class="navbar-right navbar-right-area" ng-style="isHomePageHeader()">
+                        <div class="navbar-right btn-fullscreen" ng-click="$root.$broadcast('toggle-fullscreen')"></div>
+                        <a class="btn-link btn-small btn-help"><img src="assets/images/help.png" /></a>
+
+                        <!--The sign in control/menu -->
+                        <div class="dropdown navbar-right" uib-dropdown>
+                            <a class="btn-link btn-small dropdown-toggle btn-login" uib-dropdown-toggle>
+                                <img src="assets/images/login.png" />
+                                <span ng-if="!appData.authenticated">login</span>
+                            </a>
+                            <ul class="dropdown-menu signout" uib-dropdown-menu style="margin-left:-100px;">
+                                <li class="user-account">{{appData.tenant}}\\{{appData.username}}</li>
+                                <li><a ng-click="showChangePasswordDialog()">Change password</a></li>
+                                <li><a ng-click="loginService.logout()">Sign out</a></li>
+                            </ul>
+                        </div>
+
+                        <!--getMenuItems() returns a list of navItem that represents the child nav elements of the selected app.-->
+                        <!--Each item has id, name, and link. They also have a depth, typeAlias and selected properties-->
+                        <!--that can be used to drive styling.-->
+                        <div class="dropdown pull-right application-menu" is-open="appMenu.isAppMenuOpen" uib-dropdown>
+                            <a class="btn-link btn-small dropdown-toggle btn-consolemenu"
+                               uib-dropdown-toggle ng-style="consoleThemeModel.menuStyle">
+                                <span ng-if="!getSelectedMenuItem()">Choose Application</span>
+                                <span ng-if="getSelectedMenuItem().name" class="appMenuItem"
+                                      style="display: inline-block"><img ng-src="{{getSelectedMenuItemIconUrl()}}" alt="" />&nbsp;{{getSelectedMenuItem().name}}</span>
+                                <span><img title="Expend" src="assets/images/leftNav_collapse_white.png" /></span>
+                            </a>
+                            <ul class="dropdown-menu appMenuDropDown" uib-dropdown-menu>
+                                <li ng-repeat="i in getMenuNodes(true)" ng-if="!i.item.hiddenByConfig"
+                                    sp-droppable="dropOptions" sp-droppable-data="i" sp-draggable="dragOptions"
+                                    sp-draggable-data="i"
+                                    class="{{getAppMenuItemClass(i)}}">
+                                    <a draggable="false" once-href="i.item.href" class="appMenuItem">
+                                        <img ng-src="{{i.item.iconUrl}}" alt="" />
+                                        <sp-nav-config-panel ng-if="nav.isFullEditMode" entity="i.item.entity"
+                                                             nav-builder-provider="navBuilderProvider"
+                                                             emit-menu-messages="true"
+                                                             parent-item="i.parent"></sp-nav-config-panel>
+                                        {{i.item.name}}
+                                    </a>
+                                </li>
+                                <li ng-if="nav.isFullEditMode">
+                                    <a draggable="false" tabindex="-1" href=""
+                                       ng-click="navBuilderProvider.addNewApplication()" class="appMenuItem">
+                                        <img src="assets/images/icon_add_w.png">
+                                        Create New Application
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- The app toolbox is populated by the page -->
+
+                        <sp-tool-box class="navbar-right" buttons="$state.current.data.appTools"></sp-tool-box>
+
+                        <span class="navbar-right-img" ng-style="isHomePageTopNav()">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 99 42" xml:space="preserve">
+                                    <defs>
+                                        <pattern id="topBgImage" x="0" y="0" width="1" height="1" patternUnits="objectBoundingBox" patternContentUnits="objectBoundingBox"
+                                                 viewBox="0 0 1 1" preserveAspectRatio="xMidYMid slice">
+                                            
+                                        </pattern>
+                                    </defs>
+                                   <g>
+                                    <path class="st0" ng-style="isHomePageTopNav()" d="M86.9,0c0,0-60.7,35.5-64.4,37.7C18.7,39.9,6.5,42,0,42c20.8,0,84.7,0,99,0V0H86.9z" />
+                                    </g>
+                                <image xlink:href="{{getTopBgImage()}}" preserveAspectRatio="xMinYMin slice" width="1" height="1" />
+                            </svg>
+
+                            <!--<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 99 42" xml:space="preserve">
+
+                                   <g>
+                                    <path class="st0" ng-style="isHomePageTopNav()" d="M86.9,0c0,0-60.7,35.5-64.4,37.7C18.7,39.9,6.5,42,0,42c20.8,0,84.7,0,99,0V0H86.9z" />
+                                    </g>
+                            
+                            </svg> -->
+
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <!-- A general alert display -->
+            <div class="alerts-control-box">
+                <sp-alerts-control></sp-alerts-control>
+            </div>
+        </div>
+        <div ng-switch-default>
+            <div class="fullscreen-bar" ng-click="$root.$broadcast('toggle-fullscreen')"></div>
+        </div>
+    </div>
+</div>
+

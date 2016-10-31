@@ -1,0 +1,27 @@
+<div class="dialog-view"  ng-controller="dialogController">
+	
+    <div><h4>Dialog window test page</h4></div>
+
+    <div>
+        <h5>Open dialog message box1</h5>
+        Title: <input type="text" ng-model="dialogTitle"/>  <br/>
+        Content: <input type="text" ng-model="dialogContent"/> <br/>
+        <button  ng-click="openMessageBox(dialogTitle,dialogContent)">Open Message Box</button>
+    </div>
+    <br/><br/>
+     <div>
+        <h5>Open dialog message box and post to server</h5>
+        Title: <input type="text" ng-model="postDialogTitle"/>  <br/>
+        Content: <input type="text" ng-model="postDialogContent"/> <br/>
+        <button  ng-click="openMessageBoxPostServer(postDialogTitle,postDialogContent)">Open Message Box</button>
+    </div>
+    <br/><br/>
+    <div>
+        <h5>Open confirm message box</h5>
+        Title: <input type="text" ng-model="messageTitle"/>  <br/>
+        Content: <input type="text" ng-model="messageBody"/> <br/>
+        <button ng-click="openConfirmMessageBox(messageTitle,messageBody)">Open Confirm Message Box</button>                
+    </div>
+   
+
+</div>

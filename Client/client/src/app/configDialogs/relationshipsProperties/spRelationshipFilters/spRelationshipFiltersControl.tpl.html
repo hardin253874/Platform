@@ -1,0 +1,24 @@
+﻿<div class="spRelationshipFiltersControl">
+    <table style="height: 100%; width: 100%">
+        <tr>
+            <td style="padding: 0">
+                <input ng-model="model.displayString" uib-popover="Edit" popover-trigger="mouseenter"
+                       popover-placement="top" style="cursor: pointer;" ng-click="showFiltersDialog()"/>
+            </td>
+
+            <td style="padding: 0; width: 1%">
+                <button class="inlineRelPicker-button" ng-click="showFiltersDialog()" uib-popover="Edit"
+                        popover-trigger="mouseenter" popover-placement="top">
+                    <img src="assets/images/icon_edit.png"/>
+                </button>
+            </td>
+
+            <td style="padding: 0; width: 1%;">
+                <button class="inlineRelPicker-button" ng-click="clear()" uib-popover="Clear"
+                        popover-trigger="mouseenter" popover-placement="top">
+                    <img src="assets/images/icon_remove.png"/>
+                </button>
+            </td>
+        </tr>
+    </table>
+</div>

@@ -1,0 +1,16 @@
+<div>
+	
+    <ul>
+        <li class="list-section-header">Elements</li>
+        <li ng-repeat="i in diagram.elements" ng-click="setSelectedItems(i.id)" title="{{i}}">
+            <div class="btn-link" ng-click="diagram.toolClicked('delete', i.id)"><i class="icon-remove icon-white"></i></div>
+            #{{$index+1}} {{i.type}} {{i.id}} {{i.name}} selected={{!!i.selected}}
+        </li>
+        <li class="list-section-header">Connections</li>
+        <li ng-repeat="i in diagram.connections" title="{{i}}" >
+            <div class="btn-link" ng-click="diagram.toolClicked('delete', i.id)"><i class="icon-remove icon-white"></i></div>
+            #{{$index+1}} {{i.type}} {{i.id}} connects {{i.from}} ({{i.fromPort}}) to {{i.to}}
+        </li>
+    </ul>
+</div>
+

@@ -1,0 +1,15 @@
+<span class="sp-form-builder-form-control">	
+    <sp-form-builder-container class="sp-form-builder-report-render-control sp-form-builder-field-control"
+                               control="containedControl" parent-control="control" parent-tab="tab"
+                               field-container="true" transclude-configure-button='true' sp-draggable="dragOptions"
+                               sp-draggable-data="containedControl"
+                               style="height: 200px; min-width: 400px; min-height: 200px; max-width: 100%;">
+        <span class="transcludeConfigure">
+            <sp-form-builder-report-context control="control"></sp-form-builder-report-context>
+        </span>
+
+        <div class="form-builder-form-render-control transcludeField" style="height:100%">
+            <sp-form-builder-report-control control="control"></sp-form-builder-report-control>
+        </div>
+    </sp-form-builder-container>
+</span>

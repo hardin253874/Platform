@@ -1,0 +1,20 @@
+<div ng-controller="editFormActionPanelController" class="editForm">
+	
+    <div class="action-panel">
+        <sp-edit-save-cancel
+                are-editing="actionPanelOptions.areEditing"
+                are-creating="actionPanelOptions.areCreating"
+                edit-click="actionPanelOptions.toEditMode()"
+                cancel-click="actionPanelOptions.cancel()"
+                save-click="actionPanelOptions.save()"
+                save-plus-click="actionPanelOptions.savePlus()"
+                back-click="actionPanelOptions.back()"
+                actions-click="actionPanelOptions.actions()"
+                title="actionPanelOptions.title"
+                has-modify-access="actionPanelOptions.hasModifyAccess"
+                has-delete-access="actionPanelOptions.hasDeleteAccess"
+                has-create-access="actionPanelOptions.hasCreateAccess"
+                pager-options="actionPanelOptions.pagerOptions">
+        </sp-edit-save-cancel>
+    </div>
+</div>

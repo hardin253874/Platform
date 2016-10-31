@@ -1,0 +1,10 @@
+<div class="client-nav-pending-panel" ng-if="condition">
+    <div class="alert alert-danger">
+        <span></span>
+        <span>{{message}}</span>
+        <span>
+            <button ng-click="onContinue()" test-id="navContinue">Leave</button>
+            <button ng-click="onCancel()" test-id="navCancel">Stay</button>
+        </span>
+    </div>
+</div>

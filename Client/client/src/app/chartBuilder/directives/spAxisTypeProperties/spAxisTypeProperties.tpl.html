@@ -1,0 +1,15 @@
+﻿<div class="row">
+
+    <div class="cell">Axis Type:</div>
+    <div class="cell">
+        <div>
+            <select ng-model="model.axis.lookupAsProp('axisScaleType', 'automaticScaleType').value">
+                <option value="automaticScaleType">Automatic</option>
+                <option value="dateTimeScaleType" ng-show="model.canSeeDateTimeType">Date/Time</option>
+                <option value="categoryScaleType">Category</option>
+                <option value="linearScaleType">Linear</option>
+                <option value="logScaleType" ng-show="model.canSeeLogType">Log</option>
+            </select>
+        </div>
+    </div>
+</div>

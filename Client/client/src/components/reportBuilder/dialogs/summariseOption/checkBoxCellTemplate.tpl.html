@@ -1,0 +1,4 @@
+
+<div class="ngSelectionCell" ng-repeat="option in row.entity[col.colDef.field].aggregateMethodOptions">
+   <input tabindex="-1" class="ngSelectionCheckbox" type="checkbox" ng-model="option.isChecked" ng-disabled="option.isDisabled" ng-click="clickAggregate(option)" title="{{option.columnName}}" />{{option.name}}
+</div>

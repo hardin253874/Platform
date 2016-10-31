@@ -1,0 +1,13 @@
+Is in edit mode: <input type="checkbox"  title="areEditing" ng-model="areEditing" /> 
+	
+Is disabled: <input type="checkbox"  title="isDisabled" ng-model="isDisabled" /> 
+<br/>
+{{message}}
+<hr/>
+
+<sp-edit-save-cancel
+    are-editing="areEditing"
+    is-disabled="isDisabled"
+    cancel-click="message='Cancelled'"
+    save-click="message='Saved'"
+    edit-click="message='Editing'"></sp-edit-save-cancel>

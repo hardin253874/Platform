@@ -1,0 +1,79 @@
+﻿<div class="workflow-input">
+    <div class="workflow-input-toolbar">
+        <button ng-click="saveInput()" ng-disabled="requiresInput" uib-tooltip="Save" tooltip-trigger tooltip-placement="left">
+            <img src="assets/images/toolbar_save.png" />
+        </button>
+        <button ng-click="cancelInput()" uib-tooltip="Close" title="close" tooltip-trigger tooltip-placement="left">
+            <img src="assets/images/toolbar_close.png" />
+        </button>
+    </div>
+    <div class="header workflow-input-header">
+        <div class="title">
+            <h1><span once-text="model.name"></span></h1>
+        </div>
+    </div>
+    <div class="body">
+        <div once-show="model.message.length" class="workflow-input-prompt">
+            <h2><span once-text="model.message"></span></h2>
+        </div>
+        <div once-show="model.inputs.length" class="container workflow-input-container">
+            <div ng-repeat="i in model.inputs | orderBy: 'displayOrder'" class="workflow-input-row">
+                <div class="workflow-input-label">
+                    <div class="title-plus-markers">
+                        <span class="workflow-input-label-colon">:</span>
+                        <span once-text="i.name" title="{{i.description}}"></span>
+                        <span class="workflow-input-label-colon-after">:</span>
+                        <sp-custom-validation-message messages="i.messages"></sp-custom-validation-message>
+                    </div>
+                </div>
+                <div class="workflow-input-mandatory">
+                    <img src="assets/images/16x16/MandatoryIndicator.png" ng-show="i.isRequired" alt="Field is mandatory" />
+                </div>
+                <div class="workflow-input-field" ng-switch on="i.type">
+                    <span ng-switch-default>
+                        <input type="text" ng-model="i.value" ng-change="checkRequiresInput()" />
+                    </span>
+                    <span ng-switch-when="core:decimalArgument">
+                        <sp-decimal-control model="i.value"></sp-decimal-control>
+                    </span>
+                    <span ng-switch-when="core:currencyArgument">
+                        <sp-currency-control model="i.value"></sp-currency-control>
+                    </span>
+                    <span ng-switch-when="core:integerArgument">
+                        <sp-number-control model="i.value"></sp-number-control>
+                    </span>
+                    <span ng-switch-when="core:boolArgument">
+                        <sp-checkbox-control model="i.value" style="display: block; margin-top: 5px;"></sp-checkbox-control>
+                    </span>
+                    <span ng-switch-when="core:dateTimeArgument">
+                        <sp-date-and-time-control model="i.value"></sp-date-and-time-control>
+                    </span>
+                    <span ng-switch-when="core:dateArgument">
+                        <sp-date-mobile-control model="i.value" ng-show="isPortableDevice()"></sp-date-mobile-control>
+                        <sp-date-control model="i.value" ng-hide="isPortableDevice()"></sp-date-control>
+                    </span>
+                    <span ng-switch-when="core:timeArgument">
+                        <sp-time-control model="i.value" style="max-width: 110px;"></sp-time-control>
+                    </span>
+                    <span ng-switch-when="core:resourceArgument">
+                        <sp-inline-relationship-picker ng-if="!i.isChoiceField" options="i.value"></sp-inline-relationship-picker>
+                        <sp-entity-combo-picker ng-if="i.isChoiceField" options="i.value"></sp-entity-combo-picker>
+                    </span>
+                    <span ng-switch-when="core:resourceListArgument">
+                        <sp-inline-relationship-picker ng-if="!i.isChoiceField" options="i.value"></sp-inline-relationship-picker>
+                        <sp-entity-multi-combo-picker ng-if="i.isChoiceField" options="i.value"></sp-entity-multi-combo-picker>
+                    </span>
+                </div>
+            </div>
+            <div class="workflow-input-accept">
+                <button class="btn workflow-input-accept-button" ng-click="saveInput()">Done</button>
+            </div>
+        </div>
+        <span>
+            <span ng-include="valueEditor/entityCheckBoxPicker.tpl.html"></span>
+            <span ng-include="valueEditor/entityComboPicker.tpl.html"></span>
+            <span ng-include="valueEditor/entityMultiComboPicker.tpl.html"></span>
+            <span ng-include="valueEditor/entityMultiPicker.tpl.html"></span>
+        </span>
+    </div>
+</div>

@@ -1,0 +1,121 @@
+
+module.exports = function (config) {
+    config.set({
+        basePath: './',
+        frameworks: ['jasmine'],
+        plugins: [
+            'karma-teamcity-reporter',
+            'karma-jasmine',
+            'karma-coverage',
+            'karma-chrome-launcher',
+            'karma-firefox-launcher',
+            'karma-ie-launcher',
+            'karma-junit-reporter'
+        ],
+
+        /**
+         * This is the list of file patterns to load into the browser during testing.
+         */
+        files: [
+			'testSupport/googleApi.js',
+<%
+        var isDEV = grunt.config('DEV');
+        if (!isDEV) {
+            print("			'../js/libs.min.js',\n");
+            print("			'../js/" + grunt.config.get('pkg.name') + "_components.min.js',\n");
+            print("			'../js/" + grunt.config.get('pkg.name') + "_app.min.js',\n");
+            print("			'../js/" + grunt.config.get('pkg.name') + "_app2.min.js',\n");
+            print("			'../js/" + grunt.config.get('pkg.name') + "_builders.min.js',\n");
+
+        } else {
+            print("			'../js/libs.js',\n");
+            print("			'../js/" + grunt.config.get('pkg.name') + "_components.js',\n");
+            print("			'../js/" + grunt.config.get('pkg.name') + "_app.js',\n");
+            print("			'../js/" + grunt.config.get('pkg.name') + "_app2.js',\n");
+            print("			'../js/" + grunt.config.get('pkg.name') + "_builders.js',\n");
+        }
+%>
+            'lib/angular/angular-mocks.js',
+            'testSupport/testSupport.js',
+
+<%
+		var cover = grunt.config('COVER');
+		if (cover) {
+			print("			'src/**/mocked*.spec.js',\n");
+			print("			'src/**/" + cover + "/**/*.spec.js',\n");
+		} else {
+			print("			'src/**/*.spec.js',\n");
+		}
+%>
+        ],
+
+        exclude: [
+            'src/**/*.intg.js'
+        ],
+
+        reporters: [
+            'teamcity',
+            'progress',
+            'junit',
+            'dots'
+        ],
+
+        preprocessors: {
+          '../js/**/!(libs).js': 'coverage'
+        },
+
+        coverageReporter: {
+          type : 'html',
+          dir : '../testOut/coverage/'
+        },
+
+        junitReporter: {
+            outputFile: '../testOut/unit.xml',
+            suite: 'unit'
+        },
+
+        /**
+         * On which port should the browser connect, on which port is the test runner
+         * operating, and what is the URL path for the browser to use.
+         */
+        port: 9018,
+        runnerPort: 9100,
+        urlRoot: '/',
+
+        /**
+         * Defaults...
+         */
+        logLevel: config.LOG_INFO,
+        autoWatch: false,
+        singleRun: true,
+
+        captureTimeout: 60000,
+   		browserNoActivityTimeout: 90000,
+   		browserDisconnectTimeout: 20000,
+
+   		//client: {captureConsole: true},
+
+        /**
+         * The list of browsers to launch to test on. This includes only "Firefox" by
+         * default, but other browser names include:
+         * Chrome, ChromeCanary, Firefox, Opera, Safari, PhantomJS
+         *
+         * Note that you can also use the executable name of the browser, like "chromium"
+         * or "firefox", but that these vary based on your operating system.
+         *
+         * You may also leave this blank and manually navigate your browser to
+         * http://localhost:9018/ when you're running tests. The window/tab can be left
+         * open and the tests will automatically occur there during the build. This has
+         * the aesthetic advantage of not launching a browser every time you save.
+         */
+        customLaunchers: {
+            Chrome1: {
+                base: 'Chrome',
+                flags: ['--window-size=800,600']
+            }
+        },
+        browsers: [
+          'Chrome1'
+        ]
+    });
+};

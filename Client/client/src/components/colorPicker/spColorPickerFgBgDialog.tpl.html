@@ -1,0 +1,43 @@
+<div class="spColorPicker-view" sp-moveable-modal sp-set-focus-dialog-input>
+
+    <div class="modal-header">
+        <h6>Custom colour</h6>
+    </div>
+    <div class="modal-body overflowModalBody">
+        <div class="leftMargin topMarginSmall">
+            <div class="labelBlock">Foreground Colour:</div>
+            <div class="displayInlineBlock leftMargin">
+                <button class="dropdownButton colorDropdownButton" sp-color-picker-popup="model.fgColorPopupOptions" ng-click="fgColorClick()">
+                    <div class="selectedColorAColorBox">
+                        <div class="fullSize" ng-style="getCssBackgroundColor(model.fgColorPopupOptions.color)" />
+                    </div>
+                    <div class="dropdownSelectedItemName">{{model.fgColorPopupOptions.color.name}}</div>
+                    <div class="dropdownIcon floatRight"></div>
+                </button>
+            </div>
+        </div>
+        <div class="leftMargin topMarginSmall">
+            <div class="labelBlock">Background Colour:</div>
+            <div class="displayInlineBlock leftMargin">
+                <button class="dropdownButton colorDropdownButton" sp-color-picker-popup="model.bgColorPopupOptions" ng-click="bgColorClick()">
+                    <div class="selectedColorAColorBox">
+                        <div class="fullSize" ng-style="getCssBackgroundColor(model.bgColorPopupOptions.color)" />
+                    </div>
+                    <div class="dropdownSelectedItemName">{{model.bgColorPopupOptions.color.name}}</div>
+                    <div class="dropdownIcon floatRight"></div>
+                </button>
+            </div>
+        </div>
+        <div class="leftMargin topMarginSmall">
+            <div class="labelBlock">Preview:</div>
+        </div>
+        <div class="previewBox">
+            <div class="fullSizeTable" ng-style="getCssBackgroundColor(model.bgColorPopupOptions.color)">
+                <div class="tableCellMiddle" ng-style="getCssForegroundColor(model.fgColorPopupOptions.color)">Sample Text sample text</div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn" ng-click="ok()">OK</button><button type="button" class="btn" ng-click="cancel()">Cancel</button>
+    </div>
+</div>

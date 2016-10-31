@@ -1,0 +1,29 @@
+<div>
+    <sp-control-on-form form-data="model.formData" form-control="model.formNameControl" form-mode="model.formMode"  is-read-only="model.isReadOnly" is-in-test-mode="model.isInTestMode"></sp-control-on-form>
+</div>
+ <!-- Field description -->
+<div >
+    <div class="edit-form-title">
+        <label>Description: </label>
+    </div>
+    <div class="edit-form-value">
+        <div style="margin:3px 0">
+            <textarea class="multiLineTextField-text"
+                      rows="3"
+                      name="input"
+                      is-read-only="model.isReadOnly"
+                      ng-model="model.formControl.description"
+                      ng-trim='false'></textarea>
+        </div>
+    </div>
+</div>
+
+<div once-if="!options.tabContainer">
+    <label class="form-label">Hide Label: </label>
+    <input type="checkbox" ng-model="model.formControl.hideLabel" />
+</div>
+<div>
+    <label class="form-label">Show Help: </label>
+    <input type="checkbox" ng-model="model.formControl.showControlHelpText" />
+</div>
+<div><form-control-format form-control="model.formControl" resize-options="model.resizeOptions"></form-control-format></div>

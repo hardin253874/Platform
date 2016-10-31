@@ -1,0 +1,88 @@
+<div class="relationshipProperties-base">
+	
+    <!-- Name -->
+    <div>
+        <sp-control-on-form form-data="model.relationshipToRender" form-control="model.nameControl" form-mode="model.formMode" is-read-only="!model.canModifyRelationship"/>
+    </div>
+    
+    <!-- Display Name -->
+    <div ng-if="options.isFormControl">
+        <sp-control-on-form form-data="model.formControl" form-control="model.formCtrlNameControl" form-mode="model.formMode"  />
+    </div>
+    
+    <!-- Description -->
+    <div ng-if="!options.isFormControl">
+        <sp-control-on-form form-data="model.relationshipToRender" form-control="model.relDescriptionControl" form-mode="model.formMode" is-read-only="!model.canModifyRelationship"/>
+    </div>
+
+    <div ng-if="options.isFormControl">
+        <sp-control-on-form form-data="model.formControl" form-control="model.relDescriptionControl" form-mode="model.formMode" />
+    </div>
+
+    <!-- Object -->
+    <div>
+        <div class="edit-form-control-container">
+            <div class="edit-form-title">
+                <label class="form-label field-title">Object: </label>
+            </div>
+   
+            <div class="edit-form-value">
+                <sp-inline-relationship-picker options="model.objectTypePickerOptions" />
+            </div>
+        </div>
+    </div>
+    <div ng-if="model.actualRelType.alias() === 'core:relCustom' || model.actualRelType.alias() === 'relCustom'">
+        <label/>
+        <span style="color:#d14f4c; background-color: #f2dede;">This is a custom relationship. Any changes made will not be saved!</span>
+    </div>
+    <div ng-if="!model.debugInfoVisible && model.isErrorMsgVisible">
+        <label/>
+        <span style="color:#d14f4c; background-color: #f2dede;">Please select an 'Object' to continue...</span>
+    </div>
+    
+    <!--   Debug info popup style - remove once the testing is complete -->
+    <div ng-if="model.debugInfoVisible">
+        <label class="form-label field-title">Debug: </label>
+        <button class="btn_lighten" style="margin: 3px 0 0px -2px; height: 27px;" ng-click="openDetail()">Debug Info</button>
+        <span ng-if="model.isErrorMsgVisible" style="color:#d14f4c; background-color: #f2dede;">Please select an 'Object' to continue...</span>
+        <style>
+            #relTypeDebugInfo
+            {
+            font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+            width:100%;
+            border-collapse:collapse;
+                background: white;
+            }
+            #relTypeDebugInfo td, #relTypeDebugInfo th 
+            {
+            font-size:1em;
+            border:1px solid #98bf21;
+            padding:3px 7px 2px 7px;
+            }
+            #relTypeDebugInfo th 
+            {
+            font-size:1.1em;
+            text-align:left;
+            padding-top:5px;
+            padding-bottom:4px;
+            background-color:#A7C942;
+            color:#ffffff;
+            }
+            #relTypeDebugInfo tr.alt td 
+            {
+            color:#000000;
+            background-color:#EAF2D3;
+            }
+
+            .modal-dialog {
+                width: 800px;
+            }
+
+            .modal.sp-relationship-properties-modal-debug {
+                width: auto;
+                min-width: 1200px;
+            }
+    
+        </style>
+    </div>
+</div>

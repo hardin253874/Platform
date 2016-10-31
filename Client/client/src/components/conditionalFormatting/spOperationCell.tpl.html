@@ -1,0 +1,13 @@
+<div ng-class="col.colIndex()">
+	
+    <div class="fullSizeTable" ng-show="isElseRule(row)">
+        <div class="centeredTableCell">
+            <span class="leftMargin">Else</span>
+        </div>        
+    </div>    
+    <div class="fullSizeTable" ng-hide="isElseRule(row)">
+        <div class="centeredTableCell">
+            <select class="ruleOperator" ng-model="row.entity.operator" ng-options="o as o.name for o in model.condFormatting.operators" ng-change="ruleOperationChanged(row)"></select>
+        </div>                
+    </div>  
+</div>

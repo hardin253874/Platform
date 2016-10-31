@@ -1,0 +1,52 @@
+﻿// Copyright 2011-2016 Global Software Innovation Pty Ltd
+.securityUI-dataGrid-view {
+    width: 100%;
+    background-color: transparent;
+
+    .ngGrid
+    {
+        background-color: transparent;
+    }
+
+    .ngViewport
+    {
+        .ngCanvas
+        {
+            .ngRow
+            {
+                border-bottom: darken(#fff, 1%);
+                background-color: #fff;
+                cursor: pointer;
+
+                .even, .odd
+                {
+                    background-color: #fff;
+                }
+
+                &:hover
+                {
+                    background-color: darken(#fff, 3%);
+                }
+            }
+
+            .ngRow.selected
+            {
+                background-color: rgba(0,0,0,0.07);
+
+                &:hover
+                {
+                    background-color: darken(rgba(0,0,0,0.07), 10%);
+                }
+            }
+
+            .ngRow.canSelect
+            {
+                cursor: pointer;
+            }
+        }
+    }
+
+    .ngVerticalBarVisible {
+        background-color: transparent;
+    }
+}

@@ -1,0 +1,26 @@
+<div class="spSortOptionsDialog-view" sp-moveable-modal sp-set-focus-dialog-input>
+
+    <div class="modal-header">
+        <h6>Report Sorting Options</h6>
+    </div>
+    <div class="modal-body">
+        <button type="button" class="btn pull-right" ng-click="addSortInfo()" ng-disabled="!canAddSortInfo()">Add Sorting</button>
+        <div class="horizontalDivider"></div>
+        <div ng-repeat="si in model.sortInfo" class="sortItem">
+            <div class="sortItemLabel">{{$first ? 'Sort by' : 'Then by'}}: </div>
+            <div class="sortItemValues">
+                <select ng-model="si.column" ng-options="c as c.name for c in model.columns" class="sortItemColumn" ng-change="model.clearErrors()">
+                    <option value="">[Select]</option>
+                </select>
+                <select ng-model="si.sortDirection" ng-options="c for c in model.sortDirections" class="sortItemDirection" ng-change="model.clearErrors()"></select>
+                <button type="button" class="removeSortItemButton" ng-click="removeSortInfo($index)">
+                    <img src="assets/images/remove_r.png" class="verticalAlignMiddle" />
+                </button>
+            </div>
+        </div>
+        <uib-alert ng-repeat="error in model.errors" type="error.type">{{error.msg}}</uib-alert>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn" ng-click="ok()">OK</button><button type="button" class="btn" ng-click="cancel()">Cancel</button>
+    </div>
+</div>

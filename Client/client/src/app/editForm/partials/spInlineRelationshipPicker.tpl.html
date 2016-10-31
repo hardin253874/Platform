@@ -1,0 +1,21 @@
+<div class="inlineRelPicker">
+    <div>
+        <input ng-model="displayString" ng-blur="validateRelationship();" readonly="readonly" ng-disabled="isDisabled"
+               uib-popover="Edit" popover-trigger="mouseenter" popover-placement="top" style="cursor: pointer;"
+               ng-click="openDetail('entityPickers/entityCompositePicker/spEntityCompositePickerModal.tpl.html')"
+               sp-focus="controlId"/>
+    </div>
+    <div>
+        <button class="inlineRelPicker-button"
+                ng-click="openDetail('entityPickers/entityCompositePicker/spEntityCompositePickerModal.tpl.html')"
+                uib-popover="Edit" popover-trigger="mouseenter" popover-placement="top" ng-disabled="isDisabled">
+            <img src="assets/images/icon_edit.png"/>
+        </button>
+    </div>
+    <div>
+        <button class="inlineRelPicker-button" ng-click="clear()" ng-disabled="isDisabled" uib-popover="Clear"
+                popover-trigger="mouseenter" popover-placement="top">
+            <img src="assets/images/icon_remove.png"/>
+        </button>
+    </div>
+</div>

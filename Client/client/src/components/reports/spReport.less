@@ -1,0 +1,408 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+
+@reportDesktopRightPanelSize: 186px;
+@reportTabletRightPanelSize: 197px;
+@reportPhoneRightPanelSize: 80px;
+
+.report-header-toolbar-button {
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    height: 30px;
+    padding: 3px 4px 0;
+    color: #212121;
+    box-shadow: none;
+    text-transform: uppercase;
+    transition: all .3s ease;
+    font-size: 10px;
+    line-height: 0;
+    vertical-align: middle;
+    box-shadow: 0 0px 0 rgba(0,0,0,0) inset;
+    outline: none;
+    font-weight: bold;
+    -webkit-appearance:inherit !important;
+
+    img {
+        width: 16px;
+        height: 16px;
+        opacity: .9;
+
+        &[name="viewmore"] {
+
+        }
+
+        .sp-tablet-device & {
+            width: 18px;
+            height: 18px;
+        }
+    }
+
+    &:hover, &:active, &:focus {
+        outline: none;
+        color: #212121;
+        box-shadow: 0 -2px 0 rgba(0,0,0,.5) inset;
+        border: none;
+        background-color: #fdfdfd;
+        text-decoration: none;
+
+        img {
+            opacity: 1;
+        }
+    }
+
+    &:disabled {
+        background-color: transparent;
+        border: none;
+        box-shadow: none;
+        opacity: 0.4;
+    }
+}
+
+.tab-relationship-render-control {
+    .spreport-view {
+        height: calc(~'100% - 30px') !important;
+    }
+}
+
+.spreport-view {
+    width: 100%;
+    position: relative;
+    min-height: 100px;
+    height: 100%;
+
+    .headerPanel {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+        height: 30px;
+        vertical-align: middle;
+
+        .sp-tablet-device & {
+            height: 50px;
+            padding: 5px;
+
+            sp-report-render-control & {
+                padding: 5px 0;
+            }
+        }
+
+        &:before {
+            display: inline-block;
+            height: 100%;
+            vertical-align: middle;
+        }
+
+        .headerPanel-left {
+            display: inline-block;
+            width: 100%;
+            max-width: calc(~'100%' - @reportDesktopRightPanelSize);
+            white-space: nowrap;
+            overflow: hidden;
+            vertical-align: middle;
+
+            .sp-tablet-device & {
+                max-width: calc(~'100%' - @reportTabletRightPanelSize);
+            }
+        }
+
+        .headerPanel-right {
+            float: right;
+            display: inline-block;
+            width: @reportDesktopRightPanelSize;
+            text-align: right;
+
+            .sp-tablet-device & {
+                    width: @reportTabletRightPanelSize;
+                }
+
+            .headerPanel-left {
+                display: inline-block;
+                width:100%;
+                max-width: calc(~'100%' - @reportDesktopRightPanelSize);
+                white-space: nowrap;
+                overflow: hidden;
+                vertical-align: middle;
+
+                .sp-tablet-device & {
+                    max-width: calc(~'100%' - @reportTabletRightPanelSize);
+                }
+            }
+
+            .searchContainer {
+                display: inline-block;
+                width: 150px;
+
+                .sp-tablet-device & {
+                    height: 40px;
+
+                    .sp-search-control-input {
+                        background-color: transparent;
+                        box-shadow: none;
+                    }
+                }
+            }
+        }
+
+        .divider {
+            height: 20px;
+            display: inline-block;
+            margin: 0 2px -7px;
+            border-left: 1px dotted #ccc;
+        }
+
+        .tool-wrapper {
+            display: inline-block;
+        }
+
+        select.headerPanelSelect {
+            padding: 0px;
+            margin: 0px;
+            width: 100px;
+            min-height: inherit;
+            height: 20px;
+            line-height: 0;
+            box-sizing: content-box;
+
+            .sp-tablet-device & {
+                height: 40px;
+            }
+        }
+
+        button {
+            .report-header-toolbar-button;
+
+            &[name="newReport"] {
+                &:hover, &:active, &:focus {
+                    box-shadow: 0 -2px 0 #A4CC5E inset;
+                }
+            }
+
+            &[title="Remove"], &[title="Delete"] {
+
+                &:hover, &:active, &:focus {
+                    box-shadow: 0 -2px 0 #F75959 inset;
+                }
+            }
+
+            &[title="Add"] {
+                &:hover, &:active, &:focus {
+                    box-shadow: 0 -2px 0 #68A3CA inset;
+                }
+            }
+
+            &[title="New"] {
+                &:hover, &:active, &:focus {
+                    box-shadow: 0 -2px 0 #A4CC5E inset;
+                }
+            }
+
+            &[title="Add Link"] {
+                &:hover, &:active, &:focus {
+                    box-shadow: 0 -2px 0 #53c3db inset;
+                }
+            }
+
+            &[title="Action"] {
+                transition:none;
+                &:hover, &:active, &:focus {
+                    box-shadow: 0 -2px 0 #FF7A00 inset;
+                }
+            }
+
+            &[title="View"] {
+                &:hover, &:active, &:focus {
+                    box-shadow: 0 -2px 0 #5AAFA1 inset;
+                }
+            }
+
+            &[title="Debug"] {
+                &:hover, &:active, &:focus {
+                    box-shadow: 0 -2px 0 #884648 inset;
+                }
+            }
+
+            &[title="Edit"] {
+                &:hover, &:active, &:focus {
+                    box-shadow: 0 -2px 0 #D68D54 inset;
+                }
+            }
+
+            &[title="Export"] {
+                &:hover, &:active, &:focus {
+                    box-shadow: 0 -2px 0 #bd5252 inset;
+                }
+            }
+
+            &[title="CSV"] {
+                &:hover, &:active, &:focus {
+                    box-shadow: 0 -2px 0 #ffb400 inset;
+                }
+            }
+
+            &[title="Word"] {
+                &:hover, &:active, &:focus {
+                    box-shadow: 0 -2px 0 #0054d1 inset;
+                }
+            }
+
+            &[title="Excel"] {
+                &:hover, &:active, &:focus {
+                    box-shadow: 0 -2px 0 #00991d inset;
+                }
+            }
+
+            &.refreshButton {
+                &:hover, &:active, &:focus {
+                    box-shadow: 0 -2px 0 #2d8dbe inset;
+                }
+            }
+
+            &[title="save changes"] {
+                color: multiply(@pointGreen, #ddd);
+
+                &:hover, &:active, &:focus {
+                    box-shadow: 0 -2px 0 @pointGreen inset;
+                }
+            }
+
+            &[title="discard changes"] {
+                color: @pointRed;
+
+                &:hover, &:active, &:focus {
+                    box-shadow: 0 -2px 0 @pointRed inset;
+                }
+            }
+
+            img {
+                margin-top: -3px;
+                vertical-align: middle;
+            }
+
+
+            .sp-tablet-device & {
+                height: 40px;
+                min-width: 40px;
+                text-align: center;
+                opacity: .9;
+                font-size: 0.85em;
+
+                &.ng-hide {
+                    margin: 0;
+                }
+
+                &:hover, &:focus {
+                    box-shadow: none;
+                }
+
+                &:active {
+                    transition: box-shadow linear .2s;
+                    -webkit-transition: box-shadow linear .2s;
+                    box-shadow: none;
+                }
+            }
+
+            &[name="actionButton"] {
+                position: absolute;
+                left: 35px;
+            }
+
+            & + span, & + ul + div + span {
+                margin-left: -3px;
+            }
+        }
+
+        span + span {
+            margin-left: -3px;
+        }
+
+        span + button {
+
+            &[title="Create a new workflow"] {
+                margin-left: 0;
+            }
+        }
+
+        span.divider + button {
+            margin-left: 0;
+        }
+
+        .analyzerButton-view button {
+            width: 30px;
+
+            .sp-tablet-device & {
+                height: 40px;
+                width: 40px;
+            }
+
+            &:hover, &:active {
+                outline: none;
+            }
+        }
+    }
+
+    .reportDataGridStyle {
+        height: calc(~'100% - 30px') !important;
+        top: 30px;
+
+        .sp-tablet-device & {
+            top: 50px;
+            height: calc(~'100% - 50px') !important;
+        }
+
+        .dataGrid-view {
+            .dataGridStyle {
+                .ngViewport {
+                    min-height: 150px; // ! dont remove unless you want to fix squashed entity pickers
+                }
+            }
+        }
+    }
+
+    .reportHeaderRow.ng-hide + .reportDataGridStyle {
+        height: 100% !important;
+    }
+
+    .centeredCheckBox {
+        vertical-align: middle;
+        margin: 0px;
+    }
+
+    .searchContainer {
+        display: inline-block;
+        width: 150px;
+
+        .sp-tablet-device & {
+            height: 40px;
+        }
+    }
+}
+
+
+.inlineRelPickerButtonContainer {
+    float: left;
+    margin-top: 3px;
+    position: relative;
+    z-index: 104;
+
+    & > button.inlineRelPicker-header-button {
+        .report-header-toolbar-button;
+    }
+}
+
+//
+// Mobile
+//
+.sp-mobile-device {
+    .dropdown-menu {
+    }
+
+    .reportLoadMore {
+        width: 100%;
+        text-align: right;
+    }
+    //.dataGrid-view .dataGridStyle {
+    // position: relative;
+    //}
+}
+
+@import 'inline/spInlineEditControl';

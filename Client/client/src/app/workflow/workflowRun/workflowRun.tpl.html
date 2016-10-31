@@ -1,0 +1,16 @@
+<div class="workflow-builder-view" >
+	
+    <div class="workflow-header">
+        <!-- Title editor -->
+        <div class="workflow-app-toolbar">
+            <button title="run" ng-click="$broadcast('toolbar.clicked', 'edit')">
+                <img src="assets/images/toolbar_edit.png" />
+            </button>
+            <button title="close" ng-click="$broadcast('toolbar.clicked', 'close')">
+                <img src="assets/images/toolbar_close.png" />
+            </button>
+        </div>
+    </div>
+
+    <sp-workflow-run-control workflow="workflow"></sp-workflow-run-control>
+</div>

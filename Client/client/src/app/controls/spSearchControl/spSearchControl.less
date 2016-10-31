@@ -1,0 +1,164 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+
+.sp-search-control {
+    // undo inappropriate global styling on INPUTs
+    // urg
+    INPUT {
+        padding: 1px 6px;
+        width: auto;
+        min-height: 0 !important;
+    }
+
+    position: relative;
+
+    .sp-search-control-input {
+        background-color: rgba(0,0,0,0.05);
+        min-height: inherit;
+        width: 100%;
+        height: 26px;
+        display: inline-block;
+        color: #666;
+        padding-left: 5px;
+        padding-right: 25px;
+        border: 1px solid transparent;
+
+        .sp-tablet-device & {
+            height: 40px !important;
+            background-color: #eee;
+        }
+
+        .sp-mobile-device & {
+            border-radius: 0;
+            background-color: transparent;
+            border-bottom: 1px solid #ddd;
+            background-position: center right 9px;
+            box-shadow: none;
+            height: 40px !important;
+
+            &:focus {
+                border: 1px solid transparent;
+                border-bottom: 1px solid #30c5c5;
+            }
+        }
+        // urg... not sure this is how we want to handle context specific styling
+        // (talking about the putting the styles in this file... is meant to reusable...)
+        .builder-Toolbox &, .report-Builder-Toolbox & {
+            background-color: rgba(0,0,0,0.5);
+            color: #ddd;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, .8) inset;
+            background-size: 10px 10px;
+            border: none;
+        }
+    }
+
+    .sp-search-control-input:not(:valid) {
+        background: rgba(0,0,0,0.05) url(images/16x16/SearchIcon.png) no-repeat scroll;
+        background-position: 99% center;
+
+        .sp-mobile-device & {
+            background-color: transparent;
+        }
+
+        .builder-Toolbox &, .report-Builder-Toolbox & {
+            background-color: rgba(0,0,0,0.5);
+        }
+    }
+
+    .sp-search-control-busy ~ .sp-search-control-input:not(:valid) {
+        background: rgba(0,0,0,0.05) none;
+    }
+
+    .sp-search-control-clear {
+        background: transparent url(images/16x16/SearchClear.png) no-repeat center;
+        border: none;
+        position: absolute;
+        right: 5px;
+        top: 3px;
+
+        .sp-mobile-device & {
+            background: #fff url(images/mobile/delete.svg) no-repeat;
+            top: 8px;
+            right: 10px;
+            width: 24px;
+            box-shadow: none;
+            background-size: 24px 24px;
+        }
+    }
+
+    .sp-search-control-input:not(:valid) ~ .sp-search-control-clear {
+        display: none;
+    }
+
+    .sp-search-control-busy ~ .sp-search-control-clear {
+        display: none;
+    }
+
+    .sp-search-control-busy {
+        display: inline-block;
+        position: absolute;
+        height: 16px;
+        width: 16px;
+        right: 2px;
+        top: 4px;
+        margin: 0px auto;
+        border-left: 2px solid rgba(174, 174, 174, .15);
+        border-right: 2px solid rgba(174, 174, 174, .15);
+        border-bottom: 2px solid rgba(174, 174, 174, .15);
+        border-top: 2px solid rgba(174, 174, 174, .8);
+        border-radius: 100%;
+        animation: sp-search-rotate .6s infinite linear;
+    }
+
+    .sp-mobile-device & {
+        width: calc(~'100% - 20px');
+        margin: 5px 10px;
+        z-index: 100; // needed to keep the report with hidden headers from making the search control untouchable.
+        .sp-search-control-busy {
+            top: 8px;
+            right: 4px;
+            pointer-events: none;
+        }
+    }
+}
+
+/*
+@-webkit-keyframes sp-search-rotate {
+    from {
+        -webkit-transform: rotate(0deg);
+    }
+
+    to {
+        -webkit-transform: rotate(359deg);
+    }
+}
+
+@-moz-keyframes sp-search-rotate {
+    from {
+        -moz-transform: rotate(0deg);
+    }
+
+    to {
+        -moz-transform: rotate(359deg);
+    }
+}
+
+@-o-keyframes sp-search-rotate {
+    from {
+        -o-transform: rotate(0deg);
+    }
+
+    to {
+        -o-transform: rotate(359deg);
+    }
+}
+    */
+
+@keyframes sp-search-rotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(359deg);
+    }
+}

@@ -1,0 +1,106 @@
+﻿<div class="resourceEndpointView" style="height:100%" ng-controller="resourceEndpointController">
+    
+    <!-- Toolbar -->
+    <div class="action-panel">
+        <span ng-repeat="i in toolbar | orderBy:'order'" ng-show="!i.hidden">
+            <button ng-click="i.click()" title="{{i.text}}" class="{{i.cssClass}}">
+                <img ng-if="i.icon" ng-src="{{i.icon}}" />
+                <span ng-if="!i.icon">{{i.text}}</span>
+            </button>
+        </span>
+    </div>
+
+    <!-- Main header -->
+    <div>
+        <h1>API Resource Endpoint</h1>
+    </div>
+
+    <div class="table">
+
+        <!-- Object -->
+        <div class="row">
+            <div class="cell connector-label">Object:</div>
+            <div class="cell" style="width:200px">
+                <sp-inline-relationship-picker options="model.objectPickerOptions" />
+            </div>
+        </div>
+
+        <!-- Address -->
+        <div class="row">
+            <div class="cell connector-label">Address:</div>
+            <div class="cell address-edit">
+                <span class="address-prefix">{{model.addressPrefix}}/</span><input type="text" ng-model="model.endpoint.apiEndpointAddress" />
+            </div>
+        </div>
+
+        <!-- Enabled -->
+        <div class="row">
+            <div class="cell connector-label">Enabled:</div>
+            <div class="cell">
+                <input type="checkbox" ng-model="model.endpoint.apiEndpointEnabled" />
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Field list -->
+    <div>
+        <h1>Field List</h1>
+    </div>
+    <div class="connector-label">Choose fields:</div>
+
+    <table class="scrollable">
+        <thead>
+            <tr>
+                <th>Field / Relationship</th> 
+                <th>Type</th>
+                <th>JSON name</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="member in model.typeMembers">
+                <td>
+                    <input type="checkbox" ng-model="member.selected" ng-change="member.change()" ng-disabled="member.disableCheck" /> {{member.name}}
+                </td>
+                <td>{{ member.memberType }}</td>
+                <td>{{ member.getJsonName() }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Advanced -->
+    <div>
+        <h1>Options</h1>
+    </div>
+    <div class="connector-label">Allowed methods:</div>
+    <div>
+        <input type="checkbox" ng-model="model.endpoint.endpointCanCreate" ng-change="svc.updateSampleVerb(model)" />Create
+        <input type="checkbox" ng-model="model.endpoint.endpointCanUpdate" ng-change="svc.updateSampleVerb(model)" />Update
+        <input type="checkbox" ng-model="model.endpoint.endpointCanDelete" ng-change="svc.updateSampleVerb(model)" />Delete
+    </div>
+
+    <div class="connector-label">Advanced:</div>
+    <div>
+        <input type="checkbox" ng-model="model.endpoint.endpointResourceMapping.mappingSuppressWorkflows" />Suppress workflows
+    </div>
+    
+    <!-- Sample -->
+    <div ng-show="svc.sampleReady(model)">
+        <h1>Sample</h1>
+    </div>
+    <div ng-show="svc.sampleReady(model)" style="margin-bottom:1em">
+        Show sample for:
+        <input type="radio" ng-model="model.sample.verb" ng-disabled="!model.endpoint.endpointCanCreate" value="POST" />Create
+        <input type="radio" ng-model="model.sample.verb" ng-disabled="!model.endpoint.endpointCanUpdate" value="PUT" />Update
+        <input type="radio" ng-model="model.sample.verb" ng-disabled="!model.endpoint.endpointCanDelete" value="DELETE" />Delete
+    </div>
+    <div class="row" ng-show="svc.sampleReady(model)">
+        <div class="cell connector-label">REST Request:</div>
+        <div class="cell" ng-bind-html="svc.getSampleAddress(model)"></div>
+    </div>
+    <div class="row" ng-show="svc.sampleReady(model)">
+        <div class="cell connector-label">JSON:</div>
+        <div class="cell"><pre ng-bind-html="svc.getSamplePayload(model)"></pre></div>
+    </div>
+
+</div>

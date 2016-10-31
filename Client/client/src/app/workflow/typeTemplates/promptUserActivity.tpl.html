@@ -1,0 +1,33 @@
+﻿<div ng-controller="sp.workflow.activityController">
+    <form class="form-horizontal">
+        <div ng-controller="promptUserActivityController">
+            <div class="form-group">
+                <sp-workflow-expression-control parameter="activityParameters['core:inPromptUserForPerson']"
+                                                show-label="true" actions="parameterChooser,resourceChooser,exprEditor"></sp-workflow-expression-control>
+            </div>
+            <div class="form-group">
+                <sp-workflow-expression-control parameter="activityParameters['core:inPromptUserMessage']"
+                                                show-label="true" actions="exprEditor"></sp-workflow-expression-control>
+            </div>
+            <div class="form-horizontal divide">
+                <div ng-repeat="v in variables | orderBy: 'order' track by v.id" class="form-group">
+                    <div class="form-group">
+                        <button ng-click="removeVariable(v)"><img src="assets/images/icon_remove.png" /></button>
+                        <select class="form-control" ng-model="v.id" ng-change="updatePromptForArguments(v, {{v.id}})" ng-options="a.id as a.name for a in getAllVariables(v)" title="choose variable"></select>
+                        <span class="workflow-expression-control" ng-if="showReportsForType(v)">
+                            <input class="form-control" readonly="true" ng-model="v.report.name" ng-if="v.report" title="Picker Report" />
+                            <input class="form-control" readonly="true" value="[Default]" ng-if="!v.report" title="Picker Report" />
+                            <sp-parameter-expression-context-menu parameter="{{v.id}}" tools="reportChooser" title="Select a custom picker report"></sp-parameter-expression-context-menu>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group form-group-container">
+                    <button ng-click="addVariable()" ng-disabled="noMoreVariables" style="vertical-align: middle;" title="Add a variable to prompt for">
+                        <img src="assets/images/icon_new.png" />
+                    </button>
+                    Add Workflow Inputs or Variables
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,30 @@
+<div class="client-nav-panel" ng-style="consoleThemeModel.leftNavStyle">
+
+    <div class="nav-title-bar navtohome" ng-show="!parentNode.item || parentNode == appNode" ng-style="consoleThemeModel.navBarStyle">
+        <a class="back-to-apps pull-left" ui-sref="landinghome" tabindex="-1" ><img src="assets/images/mobile/mobile_toolbar_home.svg"/></a>
+
+        <span class="form-title" ng-style="consoleThemeModel.titleStyle">{{appNode.item.name}}</span>
+        <a class="close-nav pull-right" ng-click="hideNav()"><img src="assets/images/mobile/mobile_toolbar_close.svg" /></a>
+
+        <!--{{appNode.item.name}}-->
+    </div>
+    <div class="nav-title-bar" ng-hide="!parentNode.item || parentNode == appNode" ng-style="consoleThemeModel.navBarStyle">
+        <a ng-href="{{parentNode.item.href}}" tabindex="-1"><img title="upperlevel" src="assets/images/mobile/mobile_toolbar_back.svg" /></a>
+            {{appNode.item.name}}
+        <a class="close-nav pull-right" ng-click="hideNav()"><img src="assets/images/mobile/mobile_toolbar_toggle_leftnav.svg" /></a>
+    </div>
+
+    <ul class="nav nav-list-mob">
+        <li ng-repeat="i in itemList"
+            ng-init="itemState=navTreeItemState[i.id]"
+            class="{{itemState.cssClass}}"
+            hm-tap="itemTapped(i)"
+            hm-press="itemTapped(i)"
+            ng-style="isSelected(i) ? getLeftNavItemStyle(true) : getLeftNavItemStyle(false)" >
+
+            <span ng-class="isSelected(i) ? 'selected' : ''"  ng-style="isSelected(i) ? getLeftNavFontStyle(true) : getLeftNavFontStyle(false)">
+                <img ng-src=" {{i.iconUrl}}" alt="" class="first-level" ng-style="getIconStyle(i)"/>{{i.name}}
+            </span>
+        </li>
+    </ul>
+</div>

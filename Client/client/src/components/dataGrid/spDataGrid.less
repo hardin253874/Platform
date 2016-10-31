@@ -1,0 +1,1164 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+.dataGridStyle {
+    border: 0px solid rgb(212,212,212);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    outline: none;
+
+    .ngViewport:first-child {
+        height: 100% !important;
+    }
+}
+
+.dataGridImageCellLeft {
+    position: relative;
+    height: 100%;
+    display: inline-block;
+    vertical-align: middle;
+    min-height: 16px;
+}
+
+.dataGridImageCellRight {
+    position: relative;
+    margin-left: 3px;
+    height: 100%;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.dataGridFormattedCell {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.dataGridCellProgressBarGradient {
+    background: linear-gradient(to bottom, rgba(255,255,255,.5) 0%,rgba(255,255,255,.25) 50%,rgba(255,255,255,.125) 51%,rgba(0,0,0,.2) 100%); /* W3C */
+}
+
+.dataGridCellVerticalAlign {
+    bottom: 0;
+    left: 0;
+    margin-top: auto;
+    margin-bottom: auto;
+    position: absolute;
+    top: 0;
+    vertical-align: middle;
+    right: 0;
+
+    &.dataGridCellProgressBarGradient {
+        & + .dataGridCellText {
+        }
+    }
+}
+
+.dataGridCellText {
+    vertical-align: middle;
+    display: inline-block;
+    padding: 0;
+    position: absolute;
+}
+
+.dataGridCellImageText {
+    vertical-align: middle;
+    display: inline-block;
+    padding: 0;
+}
+
+.dataGridCell {
+    padding: 3px 5px;
+    box-sizing: border-box;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.dataGridImageCellContent {
+    display: table-cell;
+    height: 100%;
+}
+
+.dataGridImageCell {
+    padding: 3px;
+    box-sizing: border-box;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: table;
+
+    .sp-mobile-device & {
+        padding: 3px 3px 2px;
+    }
+}
+
+.dataGrid-view {
+    width: 100%;
+    height: 100%;
+    position: relative;
+
+    .ngGrid {
+        background-color: transparent;
+    }
+
+    .sp-tablet-device & {
+        padding: 3px 10px;
+    }
+    /******** Rows ********/
+    /** Override the default row style */
+    .ngRow {
+        border-bottom: darken(@datagridRow, 1%);
+        background-color: @datagridRow;
+        cursor: pointer;
+
+        &:hover {
+            background-color: darken(@datagridRow, 3%);
+        }
+    }
+
+    .ngRow.selected {
+        background-color: @datagridRowSelected;
+
+        &:hover {
+            background-color: darken(@datagridRowSelected, 10%);
+        }
+    }
+
+    .ngRow.canSelect {
+        cursor: pointer;
+    }
+
+    .headerContextMenuPanel {
+        top: 5px;
+        right: 5px;
+        position: absolute;
+        display: block;
+    }
+
+    .headerContextMenuButton {
+        padding: 0px;
+        line-height: 0px;
+        margin-top: 3px;
+        height: 16px;
+        width: 16px;
+        display: none;
+        background-color: #fff;
+        border: 1px solid #fff;
+        box-shadow: 0px 1px 2px rgba(0,0,0,0.3);
+        border-radius: 3px;
+        min-height: inherit;
+
+        &:hover {
+            border: 1px solid #999;
+            background-color: #eee;
+        }
+
+        &:focus {
+            outline: none;
+            border: 1px solid #aaa;
+        }
+
+        .sp-mobile-device &,
+        .sp-tablet-device & {
+            min-height: 30px;
+            width: 30px;
+        }
+    }
+
+    .ngAggregate {
+        background-color: inherit;
+        border-bottom: 1px solid transparent;
+    }
+
+    .aggregateHeaderContextMenuButton {
+        padding: 0px;
+        line-height: 0px;
+        height: 16px;
+        width: 16px;
+        min-height: inherit;
+        display: none;
+        background-color: #fff;
+        border: 1px solid #fff;
+        box-shadow: 0px 1px 2px rgba(0,0,0,0.2);
+        border-radius: 3px;
+
+        &:hover {
+            border: 1px solid #999;
+            background-color: #eee;
+            box-shadow: 0px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        &:focus {
+            outline: none;
+            border: 1px solid #aaa;
+        }
+
+        .sp-mobile-device &,
+        .sp-tablet-device & {
+            height: 19px;
+            width: 32px;
+        }
+    }
+
+    .dataGridColumnHeader:hover .headerContextMenuButton {
+        display: inherit;
+    }
+
+    .dataGridColumnHeaderMenuOpened .headerContextMenuButton {
+        display: inherit;
+    }
+
+    .dataGridAggregateHeader:hover .aggregateHeaderContextMenuButton {
+        display: inherit;
+    }
+
+    .dataGridAggregateHeaderMenuOpened .aggregateHeaderContextMenuButton {
+        display: inherit;
+    }
+
+    .aggregateHeaderContextMenuPanel {
+        display: inline-block;
+        position: absolute;
+        margin-left: 3px;
+    }
+
+    .columnHeaderDropDownIcon {
+        padding: 0px;
+        display: inline-block;
+        width: 15px;
+        height: 16px;
+        background-image: url('images/16x16/DownArrow.png');
+        background-position-x: -1px;
+        vertical-align: middle;
+
+        .sp-mobile-device &,
+        .sp-tablet-device & {
+            width: 32px;
+            background: url('images/16x16/DownArrow.png') no-repeat center center;
+        }
+    }
+
+    .dataGridAggregateTextRow {
+        position: absolute;
+        display: inline-block;
+        left: 20px;
+        right: 0;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        padding: 6px 0 0;
+    }
+
+    .dataGridAggregateText {
+        display: inline-block;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        max-width: 95%;
+        font-size: 11px;
+        font-weight:bold;
+    }
+
+    .dataGridAggregateLoadMoreData {
+        display: inline-block;
+        right: 2px;
+        position: absolute;
+        cursor: pointer;
+    }
+
+    .dataGridAggregateArrow {
+        bottom: auto;
+        top: 5px;
+    }
+
+    .aggRowDepth0 {
+        background-color: #d4d4d4;
+        color: #333 !important;
+        transition: background-color ease-out .15s;
+        cursor: pointer;
+        border-bottom:none;
+        box-shadow: 0 -1px 0 rgba(0,0,0,0.05) inset;
+
+        &:hover {
+            background-color: #ddd;
+        }
+
+        &.dataGridAggregateText {
+            background-color: inherit;
+        }
+
+        .aggregateRowCell {
+            pointer-events: none;
+        }
+    }
+
+    .aggRowDepth1,
+    .aggRowDepth2,
+    .aggRowDepthElse {
+        background-color: #e0e0e0;
+        color: #505050 !important;
+        cursor: pointer;
+        overflow: initial;
+        border-bottom:none;
+        box-shadow: -100px 0px 0px #e0e0e0;
+
+        &:hover {
+            background-color: #e9e9e9;
+            box-shadow: -100px 0px 0px #e9e9e9;
+        }
+
+        &.dataGridAggregateText {
+            background-color: inherit;
+        }
+
+        .aggregateRowCell {
+            pointer-events: none;
+        }
+    }
+
+    .rowDataHeaderRow {
+        overflow: hidden;
+        color: #444;
+        font-size: 11px;
+        font-weight: bold;
+    }
+
+    .ngVerticalBarVisible {
+        color: #c5c5c5;
+
+        .sp-tablet-device &,
+        .sp-mobile-device & {
+            background-color: transparent;
+        }
+    }
+
+    .rowDataHeaderCell {
+        padding-top: 0px;
+    }
+
+    .rowDataHeaderTotal {
+        text-transform: uppercase;
+        height: 100%;
+        border-bottom: 1px solid #888;
+        padding: 5px 0 0 5px;
+        background-color: #F9F9F9;
+    }
+
+    .rowDataHeaderCellTotalCell {
+        text-align: right;
+        padding: 5px 5px 0;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        height: 20px;
+
+        .sp-mobile-device &,
+        .sp-tablet-device & {
+            padding: 0 5px;
+        }
+    }
+
+    .aggregateRowCell {
+        position: absolute;
+        pointer-events: none;
+    }
+
+    .aggregateRowCellTotalCell {
+        text-align: right;
+        padding: 0 6px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        height: 16px;
+        font-size: 12px;
+    }
+
+    .aggregateLoadMoreDataCell {
+        pointer-events: auto;
+    }
+}
+
+.dataGridUnselectable {
+    user-select: none;
+}
+
+
+.ngAggArrowExpanded {
+    position: absolute;
+    left: 8px;
+    bottom: 10px;
+    width: 0;
+    height: 0;
+    margin-top: 6px;
+    border-style: solid;
+    border-width: 0 0 6px 6px;
+    border-color: transparent transparent #a0a0a0 transparent;
+
+    &:hover {
+        border-color: transparent transparent #bbb transparent;
+    }
+
+    .aggRowDepth0 & {
+        border-color: transparent transparent #404040 transparent;
+    }
+
+    .aggRowDepth1 &,
+    .aggRowDepth2 &,
+    .aggRowDepthElse & {
+        border-color: transparent transparent #666 transparent;
+    }
+}
+
+.ngAggArrowCollapsed {
+    position: absolute;
+    left: 8px;
+    bottom: 10px;
+    width: 0;
+    height: 0;
+    margin-top: 6px;
+    border-style: solid;
+    border-width: 3px 0 3px 6px;
+    border-color: transparent transparent transparent #000000;
+
+    .aggRowDepth0 & {
+        border-color: transparent transparent transparent #404040;
+    }
+
+    .aggRowDepth1 &,
+    .aggRowDepth2 &,
+    .aggRowDepthElse & {
+        border-color: transparent transparent transparent #666;
+    }
+}
+
+.dataGridHeight {
+    min-height: 100px;
+}
+
+
+
+// Default DataGrid Style //
+.ngTopPanel {
+    background-color: rgba(0,0,0,0.005);
+    transition: width ease .3s;
+
+    .ngGroupPanel {
+        background-color: #94989B;
+        overflow: hidden;
+        box-shadow: 0px 0px 8px #484A50 inset;
+        color: #FFF;
+        padding: 2px 0;
+        text-align: center;
+        border-radius: 3px;
+        border-bottom-left-radius: 0px;
+        border-bottom-right-radius: 0px;
+        border: none;
+
+        .ngGroupName {
+            border: none;
+            box-shadow: 1px 1px 5px #98989B;
+            font-weight: lighter;
+
+            .ngRemoveGroup {
+                padding: 5px;
+                margin-top: -5px;
+                margin-right: -5px;
+            }
+        }
+    }
+
+    .ngHeaderContainer {
+
+        .ngHeaderCell {
+
+            .sp-tablet-device &,
+            .sp-mobile-device & {
+                border-top: 1px solid #c9c9c9;
+                border-bottom: 1px solid #bdbdbd;
+                background-color: #f8f8f8;
+                box-shadow: none;
+            }
+
+            &:last-child {
+                .sp-tablet-device &,
+                .sp-mobile-device & {
+                    box-shadow: none;
+                }
+            }
+
+            &:hover {
+                background-color: rgba(0,0,0,0.03);
+
+                .sp-tablet-device &,
+                .sp-mobile-device & {
+                    background-color: #e5e5e5;
+                }
+            }
+
+            .ngHeaderText {
+                padding: 8px 5px 5px;
+                font-weight: normal;
+                color: #808080;
+
+                .sp-mobile-device & {
+                    padding: 15px 5px 8px;
+                    font-size: 13px;
+                }
+
+                .sp-tablet-device & {
+                    padding: 15px 5px 8px;
+                    font-size: 14px;
+                }
+            }
+        }
+    }
+
+    .ngColMenu {
+        border: none;
+        background-color: #333;
+        top: 34px;
+        right: 0;
+        border-radius: 0;
+    }
+
+    .ngHeaderButton {
+        position: absolute;
+        right: 10px;
+        top: 8px;
+        border-radius: 50%;
+        width: 14px;
+        height: 14px;
+        z-index: 1;
+        background-color: rgb(236, 236, 236);
+        cursor: pointer;
+    }
+}
+
+.ngSortButtonDown {
+    position: absolute;
+    bottom: 1px;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    border-color: rgba(100, 100, 100, .5) transparent;
+    border-style: solid;
+    border-width: 0 5px 5px 5px;
+    height: 0;
+    width: 0;
+}
+
+.ngSortButtonUp {
+    position: absolute;
+    bottom: 1px;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    border-color: rgba(100, 100, 100, .5) transparent;
+    border-style: solid;
+    border-width: 5px 5px 0 5px;
+    height: 0;
+    width: 0;
+}
+
+.ngViewport {
+    overflow: auto;
+    height: calc(~'100% - 30px') !important;
+    min-height: 30px;
+    transition: width ease .3s;
+
+    .sp-mobile-device &,
+    .sp-tablet-device & {
+        height: calc(~'100% - 46px') !important;
+    }
+
+    &:focus {
+        outline: 0;
+    }
+
+    .ngRow {
+        position: absolute;
+        background: transparent;
+        color: #666;
+
+        .sp-mobile-device &,
+        .sp-tablet-device & {
+            border-bottom: 1px solid #eee;
+        }
+
+        &:hover {
+            background-color: rgba(0,0,0,0.03);
+        }
+
+        &.even {
+            background-color: transparent;
+        }
+
+        &.selected {
+            background-color: @datagridRowSelected;
+            color: #414141;
+        }
+
+        .dataGridCell {
+            font-size: 12px !important;
+
+            .sp-tablet-device &,
+            .sp-mobile-device & {
+                font-size: 1em !important;
+            }
+
+            .dataGridCellVerticalAlign {
+                border-radius: 6px;
+                background: none;
+                height: 22px !important;
+
+                & + .dataGridCellText {
+                }
+
+                &.dataGridCellProgressBarGradient {
+                    line-height: 1.25;
+                    border-radius: 0;
+                    height: 15px !important;
+
+                    .sp-tablet-device &,
+                    .sp-mobile-device & {
+                        height: 20px !important;
+                        line-height: 1.4em;
+                    }
+                }
+            }
+        }
+
+        .dataGridImageCell {
+            .dataGridCellVerticalAlign {
+                margin-left: 0px;
+            }
+
+            .dataGridImageCellContent {
+                vertical-align: middle;
+            }
+
+            .dataGridFormattedCell {
+
+                .dataGridCellProgressBarGradient {
+                    background: none;
+                    height: 12px !important;
+                    border-radius: 0;
+                    line-height: 1.428571429;
+                }
+            }
+        }
+    }
+}
+
+.ngTopPanel.ng-hide {
+    & + .ngViewport {
+        height: 100% !important;
+    }
+}
+
+
+// DataGrid Style1 Rows//
+.dataGridStyle.Rows {
+
+    .ngTopPanel {
+        border-bottom: none;
+
+        .ngHeaderContainer {
+            border-bottom: 1px solid transparent;
+
+            .ngHeaderScroller {
+
+                .ngHeaderCell {
+                    height: 27px;
+                    background-color: transparent;
+                    padding: 0;
+
+                    .ngHeaderSortColumn {
+
+                        .headerContextMenuPanel {
+                            top: 0px;
+                        }
+                    }
+
+                    .ngVerticalBar, .ngVerticalBarVisible {
+                        background-color: transparent;
+                    }
+
+                    .ngHeaderText {
+                        text-overflow: ellipsis;
+
+                        .sp-mobile-device &,
+                        .sp-tablet-device {
+                            padding: 16px 5px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .ngCanvas {
+        height: auto !important;
+    }
+
+    .ngRow {
+        position: inherit;
+        top: 0 !important;
+        box-shadow: 0 0 0 1px rgba(0,0,0,0.1) inset;
+        margin-bottom: 1px;
+
+
+        .dataGridCellVerticalAlign {
+            & + .dataGridCellText {
+                padding-left: 5px;
+            }
+        }
+    }
+
+    .dataGridCell {
+        padding: 0 !important;
+    }
+
+    .ngCell {
+    }
+
+    .dataGridCellText {
+        padding: 1px 5px;
+    }
+
+    .dataGridImageCell {
+        .dataGridImageCellContent {
+            vertical-align: middle;
+
+            .dataGridImageCellLeft {
+
+
+                .dataGridCellVerticalAlign {
+                }
+            }
+        }
+    }
+}
+
+
+// DataGrid Style3 KPI//
+.dataGridStyle.KPI {
+    border-top: 1px solid rgba(0,0,0,0.1);
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+
+    .ngTopPanel {
+
+        .ngHeaderContainer {
+
+            .ngHeaderScroller {
+                background-color: rgba(250, 250, 250, 1);
+
+                .ngHeaderCell {
+                    background-color: transparent;
+                    text-align: center;
+
+                    &:first-child {
+                        border-left: 1px solid rgba(0,0,0,0.1);
+                    }
+
+                    &:last-child {
+                        border-right: 1px solid rgba(0,0,0,0.1);
+                    }
+
+                    &:hover {
+                        background-color: rgba(245, 245, 245, 1);
+                    }
+
+                    .ngHeaderSortColumn {
+                        text-align: center;
+                        width: 100%;
+                    }
+
+                    .ngVerticalBar, .ngVerticalBarVisible {
+                        display: none;
+                    }
+
+                    .ngHeaderText {
+                        width: 100%;
+                        text-align: center;
+                        text-overflow: ellipsis;
+                    }
+                }
+            }
+        }
+    }
+
+    .ngCanvas {
+        height: auto !important;
+    }
+
+    .ngRow {
+        top: 0 !important;
+        height: auto !important;
+        position: inherit !important;
+        padding: 0;
+
+        .sp-mobile-device & {
+            border-bottom: 1px solid rgba(0,0,0,0.02);
+        }
+
+        &.selected {
+            .sp-mobile-device & {
+                border-bottom: 1px solid transparent;
+            }
+        }
+    }
+
+    .ngCell {
+        padding: 0;
+        position: inherit;
+        display: inline-block;
+        height: 100% !important;
+        text-align: center;
+        min-height: 60px;
+        box-shadow: -1px 0 0 0 rgba(0,0,0,0.1) inset;
+        vertical-align: middle;
+
+        &:first-child {
+            box-shadow: 1px 0 0 0 rgba(0,0,0,0.1) inset;
+        }
+
+        .sp-mobile-device & {
+            .ngRow.selected & {
+                box-shadow: -1px 0 0 0 @datagridRowSelectedDevice inset;
+
+                &:first-child {
+                    box-shadow: 1px 0 0 0 @datagridRowSelectedDevice inset;
+                }
+            }
+        }
+    }
+
+    .dataGridCell {
+        padding: 0;
+        height: 60px;
+
+        .dataGridCellVerticalAlign {
+            border-radius: 10px;
+            height: calc(~'100% - 12px') !important;
+            width: calc(~'100% - 3px') !important;
+            left: 1px;
+        }
+
+        .dataGridFormattedCell {
+            padding-top: 18px;
+
+            .sp-mobile-device & {
+                padding-top: 10px;
+            }
+        }
+    }
+
+    .dataGridCellText {
+        position: inherit;
+        line-height: inherit !important;
+        font-size: 1.53em;
+        padding: 0 5px;
+    }
+
+    .dataGridImageCell {
+        padding: 0;
+        height: 60px;
+        text-align: left;
+    }
+
+    .dataGridCellImageText {
+        position: inherit;
+        line-height: initial !important;
+        font-size: 1.53em;
+        text-overflow: ellipsis;
+    }
+}
+
+
+// DataGrid Style7 Tiles//
+.dataGridStyle.Tiles {
+
+    .ngTopPanel {
+        border-bottom: none;
+
+        .ngHeaderContainer {
+
+            .ngHeaderScroller {
+
+                .ngHeaderCell {
+                    background-color: transparent;
+                    text-align: center;
+
+                    .ngHeaderSortColumn {
+                        text-align: center;
+                        position: inherit;
+                        text-overflow: ellipsis;
+                    }
+
+                    .ngHeaderText {
+                        width: 100%;
+                        text-align: center;
+                        text-overflow: ellipsis;
+                    }
+                }
+            }
+        }
+    }
+
+    .ngCanvas {
+        height: auto !important;
+    }
+
+    .ngRow {
+        top: 0 !important;
+        height: auto !important;
+        display: inline-block !important;
+        max-width: 180px;
+        border: 1px solid rgba(0,0,0,0);
+        border-bottom: 1px solid rgba(0,0,0,0.1);
+        position: inherit !important;
+        margin: 5px 5px 0 0;
+        padding: 10px;
+        vertical-align: top;
+        text-align: left;
+        border-radius: 6px;
+        background-color: rgba(0,0,0,0.035);
+
+        &.selected {
+            background-color: rgba(255,255,255,0.05);
+            border-bottom: none;
+            box-shadow: 0 0 0 1px rgba(0,0,0,0.25) inset;
+        }
+
+        .sp-mobile-device & {
+            max-width: calc(~'50% - 6px');
+            margin: 5px 3px 0;
+        }
+
+        &:hover {
+            background-color: rgba(0,0,0,0.07);
+        }
+    }
+
+
+    .ngCell {
+        position: inherit !important;
+        top: inherit !important;
+        height: auto !important;
+        min-height: 20px;
+        padding: 0;
+        display: block;
+        vertical-align: top;
+        border-bottom: 1px dotted rgba(0,0,0,0.1);
+        width: 100%;
+
+        &:first-child {
+            font-size: 1em;
+            padding: 0 !important;
+            border-bottom: 1px solid rgba(0,0,0,0.15);
+            margin-bottom: 5px;
+            font-weight: bolder;
+            font-family: verdana,arial,helvetica;
+        }
+
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+
+    .dataGridCell {
+        padding: 0;
+        height: auto !important;
+        border-bottom: none;
+        width: 100%;
+    }
+
+    .dataGridFormattedCell {
+        position: relative;
+        width: auto;
+        height: 100%;
+    }
+
+    .dataGridCellText {
+        width: auto !important;
+        position: inherit !important;
+        display: inline-block;
+        line-height: inherit !important;
+        white-space: normal;
+        text-overflow: ellipsis;
+        height: 20px;
+        padding: 0 5px;
+    }
+
+    .dataGridImageCell {
+        width: 100% !important;
+        height: auto !important;
+        padding: 0;
+
+        .dataGridImageCellContent {
+            text-align: left !important;
+        }
+
+        .dataGridCellVerticalAlign {
+            position: inherit;
+            border-radius: 50%;
+            max-width: 65px;
+            max-height: 65px;
+            background-size: cover;
+            display: inline-block;
+        }
+    }
+
+    .dataGridImageCellRight {
+        .dataGridCellImageText {
+            line-height: initial !important;
+        }
+    }
+}
+
+// DataGrid Style Conversation//
+.dataGridStyle.Conversation {
+
+    .ngTopPanel {
+        border-bottom: none;
+
+        .ngHeaderContainer {
+
+            .ngHeaderScroller {
+
+                .ngHeaderCell {
+                    background-color: transparent;
+                    text-align: center;
+
+                    .ngHeaderSortColumn {
+                        text-align: center;
+                        position: inherit;
+                        text-overflow: ellipsis;
+                    }
+
+                    .ngHeaderText {
+                        width: 100%;
+                        text-align: center;
+                        text-overflow: ellipsis;
+                    }
+                }
+            }
+        }
+    }
+
+    .ngCanvas {
+        height: auto !important;
+    }
+
+    .ngRow {
+        top: 0 !important;
+        height: auto !important;
+        display: block !important;
+        max-width: nones;
+        border: 1px solid rgba(0,0,0,0);
+        position: inherit !important;
+        margin: 20px 0;
+        padding: 10px;
+        vertical-align: top;
+        text-align: left;
+        border-radius: 6px;
+        background-color: rgb(254,254,240);
+
+        box-shadow: 0 0 0 1px rgba(0,0,0,0.25) inset;
+        
+        &.selected {
+            box-shadow: 0 0 0 1px rgba(0,0,0,0.5) inset;
+        }
+
+        .sp-mobile-device & {
+            max-width: calc(~'50% - 6px');
+            margin: 5px 3px 0;
+        }
+
+        &:hover {
+            background-color: rgba(0,0,0,0.07);
+        }
+    }
+
+
+    .ngCell {
+        position: inherit !important;
+        top: inherit !important;
+        height: auto !important;
+        max-height: none !important;
+        overflow-y: visible !important;
+        height:auto !important;
+        padding: 0;
+        display: block;
+        vertical-align: top;
+        width: 100%;
+        color: rgb(160, 160, 160);
+
+        &:first-child {
+            font-size: 1em;
+            padding: 0 !important;
+            border-bottom: 1px solid rgba(0,0,0,0.15);
+            margin-bottom: 5px;
+            font-weight: bolder;
+            font-family: verdana,arial,helvetica;
+            border-bottom: 1px dotted rgba(0,0,0,0.1);
+            color: rgb(65, 65, 65);
+        }
+
+        &:last-child {
+            padding-top:4px;
+            color: rgb(65, 65, 65);
+        }
+    }
+
+    .dataGridCell {
+        padding: 0;
+        height: auto !important;
+        border-bottom: none;
+        width: 100%;
+    }
+
+    .dataGridFormattedCell {
+        position: relative;
+        width: auto;
+        height: 100%;
+    }
+
+    .dataGridCellText {
+        width: auto !important;
+        position: inherit !important;
+        display: inline-block;
+        line-height: inherit !important;
+        white-space: normal;
+        text-overflow: ellipsis;
+        padding: 0 5px;
+    }
+
+    .dataGridImageCell {
+        width: 100% !important;
+        height: auto !important;
+        padding: 0;
+
+        .dataGridImageCellContent {
+            text-align: left !important;
+        }
+
+        .dataGridCellVerticalAlign {
+            position: inherit;
+            border-radius: 50%;
+            max-width: 65px;
+            max-height: 65px;
+            background-size: cover;
+            display: inline-block;
+        }
+    }
+
+    .dataGridImageCellRight {
+        .dataGridCellImageText {
+            line-height: initial !important;
+        }
+    }
+}

@@ -1,0 +1,21 @@
+<!--navTreeItems is a list of navItem for the top level of the tree.-->
+	
+<!--Each item has id, name, children, iconUrl and an href. Tree specific data is stored in navTreeItemState, such as open and depth. -->
+<!--Expects to be part of an ngRepeat transclude with i set to the current item-->
+
+<div ng-if="!i.item.hiddenByConfig && !i.item.hidden" class="{{getNavItemClass(i)}}" ng-mouseenter="i.item.isMouseIn = true;" ng-mouseleave="i.item.isMouseIn = false;"
+     sp-droppable="dropOptions" sp-droppable-data="i" sp-draggable="dragOptions" sp-draggable-data="i"
+     ng-style="getLeftNavItemStyle(i.item.id == getActiveItem().id)">
+    <a draggable="false" class="{{getNavItemAClass(i)}}" sp-focus="getNodeFocusId(i.item.state)"
+       tabindex="-1" once-href="i.item.href" ng-click="toggleOpen(i)" ng-style="getLeftNavFontStyle(i.item.id == getActiveItem().id)" title="{{i.item.name}}">
+        <img ng-src="{{i.item.iconUrl}}" alt="" ng-style="(i.item.id == getActiveItem().id) ? getSelectedIconStyle(i.item) : getUnSelectedIconStyle(i.item)" />
+        <sp-nav-config-panel ng-if="nav.canShowConfigMenu(i.item.entity)" entity="i.item.entity" nav-builder-provider="navBuilderProvider" parent-item="i.parent"></sp-nav-config-panel>
+        {{i.item.name}}
+    </a>
+</div>
+<ul class="nav nav-list" ng-if="isNavItemOpen(i)">
+    <li ng-repeat="i in i.children" ng-if="!(i.item.hiddenByConfig && i.item.hidden)">
+        <div sp-include="'navigation/nav.item.tpl.html'"></div>
+    </li>
+</ul>
+

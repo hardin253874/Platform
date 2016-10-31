@@ -1,0 +1,15 @@
+﻿<form ng-if="!isMobile" name="renderedForm" class="form-render-control" novalidate>
+
+    <sp-applicable-tasks ng-if="!isMobile"
+                         task-id="model.taskInfo.taskId"
+                         task-list='model.taskInfo.taskList'
+                         before-transition="onBeforeTransition()"></sp-applicable-tasks>
+
+    <div class="form-title" ng-style="getTitleStyle(formControl)">
+        <sp-tool-box class="sp-edit-save-cancel" buttons="editSaveButtons"></sp-tool-box>
+        <span ng-if="!formControl.hideLabel">{{formTitle}}</span>
+    </div>
+
+    <sp-custom-edit-form form-data="formData" form-control="formToRender" parent-control="" form-mode="formMode" once-style="getControlStyle(formControl)" />
+
+</form>

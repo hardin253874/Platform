@@ -1,0 +1,104 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+.chart-builder-toolbox {
+    // Left-hand builder toolbox
+    .builder-Header {
+        .builder-Header;
+        background-color: @chartbuilderBg;
+    }
+
+    .builder-Group {
+        margin-bottom: 5px;
+
+        .report-name {
+            cursor: pointer;
+            color: white;
+
+            & + img {
+                float: right;
+                opacity: 0.7;
+                cursor: pointer;
+
+                &:hover {
+                    opacity: 1;
+                }
+            }
+        }
+    }
+}
+
+
+.applicationToolbox {
+    h2 {
+        font-size: 26px;
+        margin-top: 60px;
+        font-weight: lighter;
+    }
+
+    h5 {
+        color: #444;
+        margin: 30px 0 0px;
+        padding-top: 5px;
+        border-bottom: 1px solid #ccc;
+        display: block;
+        height: 30px;
+        font-weight: normal;
+    }
+
+    .quicklinkArea {
+        & > div {
+            display: inline-block;
+            margin: 0 0 40px -3px;
+            width: 25%;
+            max-width: 400px;
+            vertical-align: top;
+            font-size: 13px;
+        }
+
+        .quicklinkHeader {
+            font-weight: 500;
+            padding: 10px 0 5px;
+
+            img {
+                margin-right: 5px;
+                margin-left: 3px;
+            }
+        }
+
+        ul {
+            padding: 0;
+            margin-bottom: 0;
+            margin-left: 24px;
+
+            li {
+
+                a {
+                    display: block;
+                    padding: 3px;
+                    cursor: pointer;
+                    color: #666;
+                    border-radius: 3px;
+
+                    &:hover {
+                        color: #31a89f;
+                        text-decoration: none;
+                        background-color: rgb(246, 255, 254);
+                    }
+                }
+            }
+        }
+    }
+
+    .getting-started-box {
+        display: table-cell;
+        width: 220px;
+        padding: 0 10px;
+
+        h5 {
+            color: #666;
+            margin: 30px 0 0px;
+            padding-top: 5px;
+            border-bottom: 1px solid #ccc;
+            display: block;
+        }
+    }
+}

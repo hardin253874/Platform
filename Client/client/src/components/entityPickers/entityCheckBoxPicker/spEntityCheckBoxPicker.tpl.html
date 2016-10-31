@@ -1,0 +1,12 @@
+<span class="entityCheckBoxPickerContainer">
+    <div class="entityCheckBoxPicker-item" ng-repeat="entityCheckBoxItem in entityCheckBoxItems">
+        <input type="checkbox" ng-checked="entityCheckBoxItem.selected" ng-model="entityCheckBoxItem.selected" ng-change="$parent.selectionChanged()" style="margin: 0;vertical-align: middle" ng-disabled="disabled">
+       
+        <span style="vertical-align: middle; word-break:break-all" ng-click="entityCheckBoxItem.selected = disabled ? entityCheckBoxItem.selected : !entityCheckBoxItem.selected">{{entityCheckBoxItem.entity.getName()}}</span>
+        <span ng-show="!hideDescription">
+            <span style="vertical-align: middle" ng-show="entityCheckBoxItem.entity.getDescription()" ng-disabled="disabled"> - </span>
+            <span style="vertical-align: middle;font-size: small;" ng-disabled="disabled">{{entityCheckBoxItem.entity.getDescription()}}</span>
+        </span>
+        <br>
+    </div>
+</span>

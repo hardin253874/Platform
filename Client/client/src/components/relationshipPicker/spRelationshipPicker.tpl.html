@@ -1,0 +1,81 @@
+<div class="relationshippicker-view" sp-moveable-modal sp-set-focus-dialog-input>
+
+
+    <div class="modal-header">
+        <h6>Add Relationship</h6>
+    </div>
+
+    <div class="modal-body">
+
+        <div class="leftContainer">
+            <!--<span class="relationshipFieldText">Application</span>
+            <sp-entity-combo-picker options="model.solutionPickerOptions"></sp-entity-combo-picker>
+            <br />-->
+
+            <span class="relationshipFieldText">Type:</span>
+            <select ng-model="model.relationshipType" ng-options="m for m in model.relationshipTypes"></select>
+            <br />
+
+            <span class="relationshipFieldText">Search:</span><input type="text" id='relationshipSearch' ng-model="model.searchText" ng-model-options="{ updateOn: 'default blur'}" ng-mouseup="clean($event)" />
+            <alerter></alerter>
+                      
+
+            <div sp-busy-indicator-popup="model.gridBusyIndicator" class="tabarea">
+                <uib-tabset>
+                    <uib-tab heading="Relationships" style="margin:0">
+                        <table class="table table-striped table-condensed" ng-show="relationships.length">
+                            <thead>
+                                <tr>
+                                    <th style="width: 145px !important;word-break: break-word;">Relationship Name</th>                                  
+                                    <th style="width: 145px !important;word-break: break-word;">Resource Name</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="rel in filteredRelationships | orderBy:'relationshipType':true">                                    
+                                    <td class="selected{{rel.isSelected}}" style="width: 145px !important;word-break: break-word;">{{rel.resourceName}}</td>
+                                    <td class="selected{{rel.isSelected}}" style="width: 145px !important;word-break: break-word;">{{rel.typeName}}</td>
+                                    <td class="selected{{rel.isSelected}}"><button class="btn_lighten" ng-click="addRelationship(rel)">Add</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </uib-tab>
+                    <uib-tab heading="Derived Types" disabled="hideAdvTab" ng-show="!hideAdvTab" style="margin:0">
+                        <table class="table table-striped table-condensed" ng-show="filteredDerivedResources.length">
+                            <thead>
+                                <tr>
+                                    <th>Relationship Name</th>
+                                    <th>Resource Name</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="relder in filteredDerivedResources">
+                                    <td class="selected{{relder.isSelected}}">{{relder.relationshipName}}</td>
+                                    <td class="selected{{relder.isSelected}}">{{relder.resourceName}}</td>
+                                    <td class="selected{{relder.isSelected}}"><button class="btn_lighten" ng-click="addRelationship(relder)" title="{{relder.relationshipName}}">Add</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </uib-tab>
+                </uib-tabset>
+            </div>
+
+            <button class="btn_lighten btnAdvancedOptions" ng-click="isAdvCollapsed = !isAdvCollapsed">Advanced Options</button>
+            <div class="advancedOptionContainer">
+                <div uib-collapse="isAdvCollapsed">
+                    <input type="checkbox" ng-model="model.addName"><label>Add name field to the report</label><br />
+                    <input type="checkbox" ng-model="model.showHidden"><label>Show hidden relationships</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="rightContainer" id="canvasDiagram"></div>
+
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn" ng-disabled="!showButton" ng-click="ok()">OK</button><button class="btn" ng-click="cancel()">Cancel</button>
+    </div>
+
+</div>

@@ -1,0 +1,26 @@
+﻿<div ng-controller="sp.workflow.activityController">
+    <form class="form-horizontal">
+        <div class="form-group">
+            <sp-workflow-expression-control parameter="activityParameters['cast:inCreateUserActivityUserName']" show-label="true"
+                                            actions="exprEditor"></sp-workflow-expression-control>
+        </div>
+        <div class="form-group">
+            <sp-workflow-expression-control parameter="activityParameters['cast:inCreateUserActivityUserPassword']" show-label="true"
+                                            actions="exprEditor"></sp-workflow-expression-control>
+        </div>
+        <div class="form-group">
+            <sp-workflow-expression-control parameter="activityParameters['cast:inCreateUserActivityUserTenant']" show-label="true"
+                                            actions="exprEditor"></sp-workflow-expression-control>
+        </div>
+        <div class="form-group">
+            <sp-workflow-expression-control parameter="activityParameters['cast:inCreateUserActivityUserRoles']" show-label="true"
+                                            actions="parameterChooser,exprEditor"></sp-workflow-expression-control>
+        </div>
+        <div class="form-horizontal divide">
+            <div class="form-group">
+                <sp-workflow-expression-control parameter="activityParameters['cast:inCreateUserActivityDatabaseId']" show-label="true"
+                                                actions="exprEditor"></sp-workflow-expression-control>
+            </div>
+        </div>
+    </form>
+</div>

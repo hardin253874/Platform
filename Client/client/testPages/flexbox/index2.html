@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<!--
+
+Playing with using flex box to do the various layouts that we use in the RN Client.
+
+Reason is that flexbox is now an option with the browsers we support, and that it
+might mean simpler code than our javascript based methods we presently use.
+
+-->
+
+<head>
+    <title>FlexBox Test Page</title>
+    <link rel="stylesheet" type="text/css" href="../../lib/boilerplate/normalize.css"/>
+
+    <link rel="stylesheet/less" type="text/css" href="index2.less"/>
+
+    <script>less = {env: 'development', rootpath: '../../src/assets/'};</script>
+    <script src="../../lib/less/less-2.5.0.min.js" type="text/javascript"></script>
+    <script>less.watch();</script>
+
+    <!-- IOS mobile support -->
+    <link rel="apple-touch-icon" href="../../src/assets/images/favicon.png">
+    <link rel="apple-touch-startup-image" href="../../src/assets/images/favicon.png">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, minimal-ui"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <!-- Chrome Android support -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <script type="text/ng-template" id="app2.tpl.html">
+        <header>header</header>
+        <div class='main'>
+            <app2-content class="content" random-bgc></app2-content>
+            <nav random-bgc>
+                <app2-nav></app2-nav>
+            </nav>
+            <aside random-bgc>
+                <app2-aside></app2-aside>
+            </aside>
+        </div>
+        <footer>footer</footer>
+    </script>
+
+    <script type="text/ng-template" id="app2-content.tpl.html">
+        <!--<app2-screen1 random-bgc watch-dimensions></app2-screen1>-->
+        <!--<app2-screen2 random-bgc watch-dimensions></app2-screen2>-->
+        <app2-form2 random-bgc watch-dimensions></app2-form2>
+    </script>
+
+    <script type="text/ng-template" id="app2-screen1.tpl.html">
+        <div>screen name</div>
+        <div class="item-container">
+            <app2-report row-count="3" random-bgc></app2-report>
+            <app2-form1 random-bgc></app2-form1>
+            <app2-report row-count="999" random-bgc></app2-report>
+        </div>
+    </script>
+
+    <script type="text/ng-template" id="app2-screen2.tpl.html">
+        <div style="display:flex; flex-flow: row wrap; height: 100%" random-bgc>
+            <div style="flex:1 1 50%; min-width: 30em; display:flex; flex-flow: row wrap" random-bgc>
+                <div style="flex:1 1 50%; min-width: 11em" random-bgc>
+                    some text
+                <pre>
+                    fixed
+                    layout
+                </pre>
+                </div>
+                <div style="flex:1 1 50%; min-width: 11em" random-bgc>
+                    <hero></hero>
+                </div>
+            </div>
+            <div style="flex:1 1 50%; min-width: 30em; display:flex; flex-flow: row wrap" random-bgc>
+                <div style="flex:1 1 50%; min-width: 11em; min-height: 14em" random-bgc>
+                    more text
+                <pre>
+    other fixed
+    layout
+                </pre>
+                </div>
+                <div style="flex:1 1 50%; min-width: 11em; min-height: 14em"
+                     class="rn-flex-center-it" random-bgc>
+                    <div style="margin: 2em; width: 10em; height: 10em" random-bgc>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/ng-template" id="app2-report.tpl.html">
+        <div>report header</div>
+        <div>report toolbar</div>
+        <table random-bgc>
+            <thead>
+            <tr>
+                <th ng-repeat="header in $ctrl.headers">{{header}}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="data in $ctrl.data">
+                <td ng-repeat="header in $ctrl.headers">{{data[header]}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </script>
+
+    <script type="text/ng-template" id="app2-form1.tpl.html">
+        <div>form header</div>
+        <div>form toolbar</div>
+        <horz-container random-bgc></horz-container>
+    </script>
+
+    <script type="text/ng-template" id="app2-form2.tpl.html">
+        <div>form header</div>
+        <div>form toolbar</div>
+        <div class="item-container">
+            <field2></field2>
+            <field2></field2>
+            <field2></field2>
+            <field2></field2>
+            <field2></field2>
+            <field2></field2>
+            <field2></field2>
+            <field2></field2>
+            <field2></field2>
+            <field2></field2>
+            <field2></field2>
+            <field2></field2>
+            <field2></field2>
+            <field2></field2>
+            <field2></field2>
+            <field2></field2>
+            <field2></field2>
+            <field2></field2>
+            <field2></field2>
+            <field2></field2>
+        </div>
+    </script>
+
+    <script type="text/ng-template" id="horz-container.tpl.html">
+        <div>horizontal container header</div>
+        <div class="item-container">
+            <vert-container random-bgc></vert-container>
+            <vert-container random-bgc></vert-container>
+        </div>
+    </script>
+
+    <script type="text/ng-template" id="vert-container.tpl.html">
+        <div>vertical container header</div>
+        <field1></field1>
+        <field1></field1>
+        <field1></field1>
+        <field1></field1>
+    </script>
+
+    <script type="text/ng-template" id="hero.tpl.html">
+        <div class="rn-flex-center-it">
+            <div style="font-size: 20vh">99</div>
+        </div>
+    </script>
+
+    <script type="text/ng-template" id="field1.tpl.html">
+        <label for="{{$ctrl.tempId}}">{{$ctrl.label}}:</label>
+        <input id="{{$ctrl.tempId}}" ng-model="$ctrl.value">
+    </script>
+
+    <script type="text/ng-template" id="field2.tpl.html">
+        <div class="item-container">
+            <label for="{{$ctrl.tempId}}">{{$ctrl.label}}:</label>
+            <input id="{{$ctrl.tempId}}" ng-model="$ctrl.value">
+        </div>
+    </script>
+
+
+    <script type="text/ng-template" id="app2-nav.tpl.html">
+        <ul ng-style="$ctrl.style">
+            <li ng-repeat="link in ::$ctrl.links">{{link}}</li>
+        </ul>
+    </script>
+
+    <script type="text/ng-template" id="app2-aside.tpl.html">
+        <div>text on the side</div>
+    </script>
+
+</head>
+
+<body>
+
+<my-flex-app></my-flex-app>
+
+<script src="../../lib/angular/angular.js"></script>
+<script src="../../lib/lodash/lodash.js"></script>
+<script src="app2-converted.js"></script>
+
+</body>
+</html>

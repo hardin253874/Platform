@@ -1,0 +1,17 @@
+<div class="workflow-list-view" ng-controller="WorkflowListController">
+	
+    <div>
+        <h1>Workflow Manager</h1>
+        <p>This page is for development purposes and will be removed before production.</p>
+        <hr />
+        <p>
+            <a href="#/{{appData.tenant}}/{{workflowTypeId}}/workflow/new">create new workflow...</a>
+        </p>
+        <div ng-repeat='w in workflows'>
+            <a ng-click="delete(w.id)"><i class="icon-remove"></i></a>
+            <a href="#/{{appData.tenant}}/{{w.id}}/workflow" title="{{w.id}}">{{w.name}}</a>
+            <a href="#/{{appData.tenant}}/{{w.id}}/workflow"><i class="icon-pencil"></i></a>
+            <a href="#/{{appData.tenant}}/{{w.id}}/workflow/run"><i class="icon-play"></i></a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,14 @@
+<div class="user-survey-choice-question">
+
+    <div ng-switch="style">
+
+        <select ng-switch-when="dropdown" class="dropDownRelPicker-select" ng-model="dropDownOptions.selected"
+                ng-options="e as e.name for e in choices | orderBy:'choiceOptionOrder'" ng-disabled="::isReadOnly">
+            <option value="">[Select]</option>
+        </select>
+
+        <sp-entity-radio-picker options="radioPickerOptions"></sp-entity-radio-picker>
+
+    </div>
+
+</div>

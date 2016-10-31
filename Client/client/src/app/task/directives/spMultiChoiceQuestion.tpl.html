@@ -1,0 +1,8 @@
+<div class="user-survey-multi-choice-question">
+    <div ng-repeat="choice in choices | orderBy:'entity.choiceOptionOrder'">
+        <input type="checkbox" ng-checked="choice.selected" ng-model="choice.selected" ng-change="updateSelected(choice)"  ng-disabled="::isReadOnly">
+
+        <span style="vertical-align: middle; word-break:break-all" ng-click="choice.selected = !choice.selected">{{choice.name}}</span>
+        <br>
+    </div>
+</div>

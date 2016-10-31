@@ -1,0 +1,89 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+.visual-settings {
+    display: table;
+    width: 100%;
+    padding: 8px 0;
+
+    .visual-settings-item {
+        display: table-cell;
+        padding: 0 3px;
+        width: 33.333%;
+
+        button {
+            text-transform: uppercase;
+            width: 100%;
+            height: 100%;
+            border: none;
+            padding: 0;
+            border-radius: 4px;
+
+            span {
+                display: block;
+                text-align: center;
+                margin-top: 90px;
+                padding-bottom: 10px;
+            }
+
+            &:focus {
+                outline: none;
+            }
+        }
+    }
+
+    .checked {
+        box-shadow: 0 2px 5px rgba(0,0,0,0.3) inset;
+        transition: background-image .4s ease-out;
+        border-top: 2px solid #fafafa;
+
+        &:after {
+            content: url('../assets/images/deploy_checked.png');
+            margin-top: -40px;
+            float: right;
+            height: 40px;
+        }
+
+        &:hover {
+            background-color: rgba(0,0,0,0.1);
+        }
+    }
+
+    .unchecked {
+        opacity: .6;
+        box-shadow: 0 -1px 1px 1px rgba(0, 0, 0, 0.2) inset;
+        border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+
+        &:hover {
+            background-color: rgba(0,0,0,0.05);
+        }
+    }
+
+    .desktop-checked {
+        .checked;
+        background: url('../assets/images/deploy_desktop_on.png') no-repeat center 20px rgba(0,0,0,0.075);
+    }
+
+    .desktop-unchecked {
+        .unchecked;
+        background: url('../assets/images/deploy_desktop_off.png') no-repeat center 20px rgba(0,0,0,0.03);
+    }
+
+    .tablet-checked {
+        .checked;
+        background: url('../assets/images/deploy_tablet_on.png') no-repeat center 20px rgba(0,0,0,0.075);
+    }
+
+    .tablet-unchecked {
+        .unchecked;
+        background: url('../assets/images/deploy_tablet_off.png') no-repeat center 20px rgba(0,0,0,0.03);
+    }
+
+    .mobile-checked {
+        .checked;
+        background: url('../assets/images/deploy_mobile_on.png') no-repeat center 20px rgba(0,0,0,0.075);
+    }
+
+    .mobile-unchecked {
+        .unchecked;
+        background: url('../assets/images/deploy_mobile_off.png') no-repeat center 20px rgba(0,0,0,0.03);
+    }
+}

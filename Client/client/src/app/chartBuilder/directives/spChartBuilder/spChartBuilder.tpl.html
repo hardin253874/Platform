@@ -1,0 +1,34 @@
+<div class="sp-Chart-Builder" sp-droppable="dropOptions" sp-droppable-data="svc.getBackgroundDropData(modelCallback)" sp-busy-indicator-popup="model.windowBusy">
+	
+    <div class="builder-ToolBar">
+        <button ng-click="refreshChart()" title="Refresh"><img src="assets/images/toolbar_reload.png" style="margin-top:-3px;" /><span>Refresh</span></button>
+        <button ng-click="onProps()" title="Properties"><img src="assets/images/properties.svg" /><span>Properties</span></button>
+        <button ng-click="svc.undo(model)" title="Undo"><img src="assets/images/undo.svg" /><span>Undo</span></button>
+        <button ng-click="svc.redo(model)" title="Redo"><img src="assets/images/redo.svg" /><span>Redo</span></button>
+        <button ng-click="onSave()" title="Save"><img src="assets/images/toolbar_save.png" /><span>Save</span></button>
+        <button ng-click="onSaveAs()" title="Save As"><img src="assets/images/toolbar_saveas.png" /><span>Save As</span></button>
+        <button ng-click="onClose()" class="builder-ToolBar-Close" title="Close"><img src="assets/images/toolbar_close.png" /></button>
+    </div>
+
+    <div class="builder-Edit-Name">
+        <!-- Name -->
+        <sp-editable-label value="model.chart.name" pre-update-callback="isValidName" key-down-callback="validateinput" change-callback="changeValidate" placeholder="'Name'"></sp-editable-label>
+    </div>
+    <div class="builder-Edit-Description" style="margin-bottom: 10px;">
+        <!-- Description -->
+        <sp-editable-label value="model.chart.description" key-down-callback="validateinput" change-callback="changeValidate" placeholder="'Description'"></sp-editable-label>
+    </div>
+
+    <div class="sp-chart-builder-pane">
+        <section class="chart-series">
+            <!-- Series panel -->
+            <sp-series-panel model="model"></sp-series-panel>
+            <!--<sp-groups-panel shared="shared"></sp-groups-panel>-->
+        </section>
+
+        <section class="chart-view" style="height:auto">
+            <!-- Chart -->
+            <sp-chart options="viewerOptions" chart-entity="model.chart"></sp-chart>
+        </section>
+    </div>
+</div>

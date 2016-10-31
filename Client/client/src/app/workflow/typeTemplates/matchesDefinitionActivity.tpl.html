@@ -1,0 +1,14 @@
+<div ng-controller="sp.workflow.activityController">
+	
+    <form class="form-horizontal">
+        <div class="form-group">
+            <sp-workflow-expression-control parameter="activityParameters['core:matchesDefinitionResourceArgument']" show-label="true"
+                                            actions="parameterChooser,exprEditor"></sp-workflow-expression-control>
+        </div>
+        <div class="form-group">
+            <sp-workflow-expression-control parameter="activityParameters['core:matchesDefinitionDefinitionArgument']" show-label="true"
+                                            actions="typeChooser,exprEditor"></sp-workflow-expression-control>
+        </div>
+    </form>
+</div>
+

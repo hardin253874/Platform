@@ -1,0 +1,12 @@
+<div class="nb-popover-entries">
+    <table style="width: 100%">
+        <tr class="nb-entry" ng-repeat="entry in newNavItemPopoverEntries" sp-draggable sp-draggable-data="entry">
+            <td>
+                <div class="nb-inline nb-middle nb-icon" style="background-image: url('{{entry.icon}}'); background-repeat: no-repeat; margin-left: 5px"></div>
+            </td>
+            <td>
+                <div class="nb-inline nb-middle" style="margin-right: 5px">{{entry.name}}</div>        
+            </td>
+        </tr>
+    </table>         
+</div>

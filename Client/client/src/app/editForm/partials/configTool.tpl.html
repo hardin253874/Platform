@@ -1,0 +1,30 @@
+<!-- 
+    When included in a controls view this will add a configuration control button. Pressing the button in design mode will display the 
+    defaultEditForm for the type of the control. When edited the configuration control updates the display control model immediately. (There is no 'save' or 'apply'.)
+   
+    --> 
+	
+
+<div  ng-controller="configToolController">
+    <div ng-if="showTool">
+        <img class="configButton" src="assets/images/report_edit.png" ng-click="openModal()"/>
+            
+        <!-- NOTE: this modal should probably be moved up to the page and opened and closed using a service -->
+
+        <div  modal="modalInfo.isOpen" options="modalInfo.modalOpts">
+                     
+            <div class="modal-header"></div>
+            <div class="modal-body">
+                <div class="editForm-modal">
+                    <sp-custom-edit-form form-data="modalInfo.formData" form-control="modalInfo.formControl" form-mode="'edit'" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-warning cancel" ng-click="closeModal()">Close</button>
+            </div>
+    
+        </div>
+    </div>
+</div>
+
+

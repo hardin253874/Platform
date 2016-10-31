@@ -1,0 +1,117 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+.sp-mobile-device .sp-applicable-tasks-mobile {
+
+    @spatMBackground: white;
+    @spatMTitleBackground: #bb9a72;
+    @spatMText: #B38143;
+    @spatButtonWidth: 80%;
+    @spatButtonHeight: 3em;
+
+    border-radius: inherit;
+    box-shadow: inherit;
+    padding: inherit;
+    background: @spatMBackground;
+
+
+    .tasks-mobile-actions {
+        margin-bottom: 10px;
+
+        button {
+            display: block;
+            width: 100%;
+            border: none;
+            border-bottom: 1px solid #ccc;
+            border-radius: 0;
+            text-transform: uppercase;
+            color: #444;
+            background-color: rgba(0,0,0,0.03);
+            cursor: pointer;
+            padding: 5px;
+            line-height: 1em;
+            font-size: 12px;
+            font-weight: bold;
+            transition: all ease .2s;
+            height: 50px;
+            box-sizing: border-box;
+            text-align: left;
+
+            &:hover {
+                background-color: rgba(0,0,0,0.05);
+                border-color: #c0c0c0;
+                color: #000;
+            }
+
+            &:focus {
+                outline: none;
+            }
+
+            &:disabled {
+                pointer-events: none;
+            }
+
+            img {
+                display: inline-block;
+                margin-right: 10px;
+                width: 22px;
+                height: 22px;
+                border: 1px solid #ccc;
+                padding: 1px 0 0 1px;
+                border-radius: 50%;
+            }
+
+            span {
+                display: inline-block;
+                vertical-align: middle;
+            }
+        }
+    }
+
+    .task-name {
+        display: block;
+        padding: 10px 0 5px;
+        color: #000;
+        font-size: 17px;
+    }
+
+    textarea {
+        height: 5em;
+        font-size: 16px;
+    }
+
+    .completed-comment {
+    }
+
+
+    .completed-date {
+    }
+
+    sp-task-buttons {
+        text-align: right;
+        display:block;
+
+        .sp-task-button {
+            display: inline-block;
+            margin-top: 10px;
+            margin-left: 5px;
+            width: calc(~'25% - 5px');
+
+            &:first-child {
+                margin-left: 0;
+                width: 25%;
+            }
+
+            button {
+                .btn_lighten;
+                min-height: 40px;
+                vertical-align: middle;
+                width: 100%;
+                overflow: hidden;
+                text-overflow:ellipsis;
+                white-space:nowrap;
+                font-size: 13px;
+                border-radius: 20px;
+                letter-spacing: 0.03em;
+            }
+        }
+    }
+}

@@ -1,0 +1,12 @@
+<div class="spColorPicker-view">
+	
+    <div class="dropdown">
+        <a class="dropdownButton" ng-click="dropDownButtonClicked($event)">
+            <div class="selectedColorAColorBox">
+                <div class="fullSize" ng-style="getCssColor(model.selectedColor)"/>    
+            </div>                                                    
+            <div class="dropdownSelectedItemName">{{model.selectedColor.name}}</div>            
+            <div class="dropdownIcon"></div>  
+        </a>       
+    </div>
+</div>

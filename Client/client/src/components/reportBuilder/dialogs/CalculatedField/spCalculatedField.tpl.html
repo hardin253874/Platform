@@ -1,0 +1,20 @@
+<div class="calculatedfielddialog-view" sp-moveable-modal sp-set-focus-dialog-input>
+
+    <div class="modal-header">
+        <h6>Calculation Editor</h6>
+    </div>
+    <div class="modal-body">
+        <div style="margin-bottom:4px;">
+            <label>Column Name:</label><input style="width:418px;" type="text" ng-model="model.columnName" />
+        </div>
+        <!--  <textarea ui-codemirror ng-model="model.script" style="height:2em"></textarea>
+
+            <div id="errorMessage" class="ced-label">{{message}}</div>
+            <div ng-include="'calcEditor/functionBrowser.tpl.html'" class="functionBrowser"></div>-->
+        <label style="float:left;">Enter Calculation</label>
+        <sp-expression-editor ng-model="model.script" context="model.context" host="model.host"></sp-expression-editor>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" ng-click="ok()" ng-disabled="model.columnName.length === 0 || model.script.length === 0">OK</button><button class="btn" ng-click="cancel()">Cancel</button>
+    </div>
+</div>

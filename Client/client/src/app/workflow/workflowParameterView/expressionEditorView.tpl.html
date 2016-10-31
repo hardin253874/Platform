@@ -1,0 +1,25 @@
+<div class="workflow-expression-editor-view" ng-controller="workflowExpressionEditorViewController">
+	
+
+    <div class="header">
+        <label ng-show="view.label">{{view.label}}</label>
+    </div>
+
+    <div class="body" sp_auto-height>
+        <sp-expression-editor class="multiline-expression"
+                              ng-model="view.model" context="view.contextId" params="view.params" host="'Evaluate'"
+                              mode="'full'" options="view.expressionInputOptions">
+        </sp-expression-editor>
+    </div>
+
+    <div class="footer clearfix">
+        <button ng-click="view.apply(); close()">ok</button>
+        <button ng-click="view.cancel(); close()">cancel</button>        
+
+        <!--the following are disabled as I have an issue - an oversight with the view region stuff and promises-->
+        <span>
+        <button title="devnote - disabled due to bug" disabled ng-click="view.cancel()"><img src="assets/images/reset.png"/>reset</button>
+        <button title="devnote - disabled due to bug" disabled ng-click="view.apply()">apply</button>
+            </span>
+    </div>
+</div>

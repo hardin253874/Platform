@@ -1,0 +1,8 @@
+﻿<div class="container-fluid page5">
+
+    <div class="showDetails">{{model.importSummary}}</div>
+    <uib-progressbar value="model.importPercent" type="info"></uib-progressbar>
+
+    <h2>Results:</h2>
+    <textarea import-spread-sheet-auto-resize class="importResultText" readonly>{{model.importMessage}}</textarea>
+</div>

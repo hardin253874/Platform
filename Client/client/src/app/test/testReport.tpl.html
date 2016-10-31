@@ -1,0 +1,31 @@
+<div class="report-view container-fluid" ng-controller="TestReportController">
+	
+    <div class="report-config-panel" ng-if="nav.isSelfServeEditMode">
+        <span class="ui-icon ui-icon-lightgray ui-icon-wrench report-config-panel-button report-config-panel-button-light ui-icon-hover-darkgray" ng-click="configureReport()"></span>
+    </div>
+
+    <div class="report-header">
+        <h1>All <sp-entity-combo-picker options="entityPickerOptions"></sp-entity-combo-picker></h1>
+    </div>
+
+    <div class="report-content">
+        <div class="spreport-view reportHeaderRow">
+            <div class="headerPanel">
+                <button ng-click="refresh()" uib-tooltip="Refresh">
+                    <img src="assets/images/toolbar_reload.png" />
+                </button>
+                <button ng-click="invalidateCache()" uib-tooltip="Invalidate Cache">
+                    <img src="assets/images/toolbar_property.png" />
+                </button>
+                <div class="headerPanel-right">
+                    <div class="searchContainer sp-search-control">
+                        <input type="text" placeholder="Search" class="sp-search-control-input" ng-model="filterText"/>
+                    </div>
+                </div>
+            </div>
+            <div class="reportDataGridStyle">
+                <div data-ng-grid="gridOptions" sp-busy-indicator-popup="busyIndicator" class="dataGrid-view"></div>
+            </div>
+        </div>        
+    </div>
+</div>

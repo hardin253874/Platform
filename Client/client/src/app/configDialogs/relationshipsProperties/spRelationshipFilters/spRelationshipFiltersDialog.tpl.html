@@ -1,0 +1,22 @@
+﻿<div class="spRelationshipFiltersDialog-view" sp-moveable-modal sp-busy-indicator-popup="model.busyIndicator" sp-set-focus-dialog-input>
+    <div class="modal-header">
+        <h6>Relationship Filters</h6>
+    </div>
+    <div class="modal-body">
+        <button type="button" class="btn pull-right" ng-click="addFilter()" ng-disabled="!canAddFilter()">Add Filter</button>
+        <div class="horizontalDivider"></div>
+        <div ng-repeat="rf in model.relationshipControlFilters" class="filterItem">
+            <div class="filterItemLabel">{{$first ? 'Filter by field' : 'And by field'}}: </div>
+            <select ng-model="rf.selectedRelationshipControlFilter" ng-options="c as c.name for c in model.availableRelationshipControlFilters" class="filterItemField" ng-change="onRelationshipControlFilterChanges(rf)"></select>
+            <div class="filterItemLabel">Relationship:</div>
+            <select ng-model="rf.selectedRelationshipFilter" ng-options="f as f.name for f in rf.availableRelationshipFilters" class="filterItemRelationship" ng-change="clearErrors()"></select>
+            <button type="button" class="removeFilterItemButton" ng-click="removeFilter($index)">
+                <img src="assets/images/remove_r.png" class="verticalAlignMiddle" />
+            </button>
+        </div>
+        <uib-alert ng-repeat="error in model.errors" type="error.type">{{error.msg}}</uib-alert>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn" ng-click="ok()">OK</button><button type="button" class="btn" ng-click="cancel()">Cancel</button>
+    </div>
+</div>

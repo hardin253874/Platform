@@ -1,0 +1,6 @@
+﻿<div class="ngCellText" ng-class="col.colIndex()">
+    <span ng-cell-text>
+        <button id="editBtn{{ row.rowIndex }}" type="button" class="btn btn-primary" ng-click="edit(row)" ng-disabled="isDisabled()">Edit</button>&nbsp;
+        <button id="deleteBtn{{ row.rowIndex }}" type="button" class="btn btn-primary" ng-click="delete(row)" ng-disabled="isDisabled()">Delete</button>
+    </span>
+</div>

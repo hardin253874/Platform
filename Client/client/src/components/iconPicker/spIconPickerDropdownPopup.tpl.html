@@ -1,0 +1,10 @@
+<ul class="spIconPicker-view dropdown-menu iconDropdownPopup">
+	
+    <li>
+        <div class="iconsContainer">
+            <a class="iconContainer" ng-click="selectIcon(iconId)" ng-repeat="iconId in model.iconIds">
+                <div class="iconCell" ng-style="getIconStyle(iconId)" title="{{getIconName(iconId)}}"></div>
+            </a>                                    
+        </div>        
+    </li>
+</ul>    

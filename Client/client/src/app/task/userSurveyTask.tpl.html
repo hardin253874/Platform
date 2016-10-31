@@ -1,0 +1,95 @@
+<div class="user-survey-view" ng-controller="UserSurveyTaskController as model">
+
+    <div class="user-survey-buttons" ng-show="!model.readOnly">
+        <button type="button" ng-click="model.save()"><img src="assets/images/toolbar_save.png" title="Save"><span>Save</span></button>
+        <button type="button" ng-click="model.complete()" ng-disabled="model.progress != 100"><img src="assets/images/toolbar_complete.png" title="Complete"><span>Complete</span></button>
+    </div>
+
+    <div class="user-survey-intro">
+        <div class="survey-header">
+            <span class="headertype" title="formheadertype"><img src="assets/images/formheadertype.png"></span>
+            <h1>{{model.title}}</h1>
+            <rn-info-button ng-if="model.helpText" heading="{{::model.title}}" text="{{::model.helpText}}"></rn-info-button>
+        </div>
+
+        <div class="survey-intro">
+
+            <div ng-if="model.dueDate" title="item">Due Date: </div>
+            <div ng-if="model.dueDate"><strong>{{model.dueDate | spDateControlFilter}}</strong></div>
+
+            <div ng-if="model.showProgress" title="item">Progress</div>
+            <div ng-if="model.showProgress" width="100px">
+                <uib-progressbar animate="false" value="model.progress" max="100" type="success">
+                    <b>{{model.progress}}%</b>
+                </uib-progressbar>
+            </div>
+
+            <div title="item"><span>{{model.targetTitle}}</span></div>
+            <div ng-switch="model.targetMode">
+                <span ng-switch-when="view" ng-bind="model.results.surveyTarget.name">: xxx</span>
+                <sp-inline-relationship-picker ng-switch-when="edit" options="model.targetPickerOptions" style="width: 250px;"></sp-inline-relationship-picker>
+            </div>
+
+            <div ng-if="!model.showProgress" title="item">State</div>
+            <div ng-if="!model.showProgress">: {{model.results.surveyStatus.name}}</div>
+
+        </div>
+
+        <div class="user-survey-buttons" ng-show="model.readOnly">
+            <sp-task-buttons task="model.task" before-save="model.beforeSave()" after-save="model.afterSave()"
+                             return-on-completion="true"></sp-task-buttons>
+        </div>
+
+        <div class="user-survey-comments" ng-switch="model.commentMode">
+            <div ng-switch-when="edit">
+                <strong>Comments</strong>
+                <textarea ng-model="model.results.surveyResponseComments"></textarea>
+            </div>
+
+            <div ng-switch-when="view">
+                <strong>Comments</strong>
+                <div ng-bind="model.results.surveyResponseComments"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="user-survey-body">
+        <div class="user-survey-section" ng-repeat="section in model.displayStructure | filter:model.sectionsByPage">
+            <div class="user-survey-section-heading">{{section.name}}</div>
+            <table>
+                <thead>
+                    <tr>
+                        <td>Id</td>
+                        <td>Question</td>
+                        <td>Answer</td>
+                        <td ng-if="model.allowNotes">Notes</td>
+                        <td ng-if="model.allowAttachments">Attachments</td>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="answer in section.answers" ng-init="question = answer.questionBeingAnswered">
+                        <td class="user-survey-q-id-and-text">
+                            <span title="Id" class="user-survey-q-id">{{question.questionId || (($index + 1) + '.')}}</span>
+                            <span class="user-survey-q-text">{{answer.surveyAnswerOriginalQuestionText || question.name}}</span>
+                        </td>
+                        <td class="user-survey-q-answer">
+                            <span ng-if="model.readOnly">{{model.getAnswerText(answer)}}</span>
+                            <sp-question ng-if="!model.readOnly" question="question" answer="answer"></sp-question>
+                            <span title="Notes" ng-if="model.allowNotes"><sp-question-notes ng-if="question.questionAllowNotes" notes="answer.surveyAnswerNotes" read-only="model.readOnly" /></span>
+                            <span title="Attachments" ng-if="model.allowAttachments"><sp-question-attachments ng-if="question.questionAllowAttachments" attachments="answer.surveyAnswerAttachments" read-only="model.readOnly" /></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="user-survey-paging">
+        <div class="pull-right" ng-if="model.hasPages()">
+            <a class="btn" ng-disabled="!model.canPageBack()" ng-click="model.pageBack()">Back</a>
+            <a class="btn" ng-disabled="!model.canPageNext()" ng-click="model.pageNext()">Next</a>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,55 @@
+<form name="form" class="editForm" novalidate
+      ng-controller="editFormController" test-id="{{model.formData.id()}}"
+      sp-mobile-allow-default-drag sp-measure-arrange="measureArrangeOptions">
+
+    <button class="pull-right btn-link" ng-click="toggleFlexForm()" ng-if="allowFlexForm">toggle flex</button>
+    <button class="pull-right btn-link" ng-click="toggleFormStructureEditor()" ng-if="allowFlexForm">toggle adv</button>
+
+    <div class="editForm-config-panel" ng-if="nav.isFullEditMode && model.formMode === 'view'">
+        <!--<span class="ui-icon ui-icon-lightgray ui-icon-wrench editForm-config-panel-button -->
+        <!--editForm-config-panel-button-light ui-icon-hover-darkgray" ng-click="configureForm()"></span>       -->
+        <img src="assets/images/icon_configure_w.png"
+             class="editForm-config-panel-button editForm-config-panel-button-light" sp-context-menu-trigger="leftclick"
+             sp-context-menu="model.configContextMenu" sp-context-menu-append-to-body>
+    </div>
+
+    <sp-applicable-tasks ng-if="!isMobile"
+                         task-id="model.taskInfo.taskId"
+                         task-list='model.taskInfo.taskList'
+                         in-wizard="model.inWizard"
+                         return-on-completion="true"
+                         before-transition="saveIfEditing()"></sp-applicable-tasks>
+
+    <div class="form-title" ng-if="!(isMobile || isTablet)" ng-style="model.titleStyle">
+        <div ng-if="model.headerIconUrl" class="headertype" ng-style="model.headerIconStyle" >
+            <img  ng-src="{{model.headerIconUrl}}" ng-style="model.headerIconStyle" />
+        </div>
+        {{model.formTitle}}
+        <rn-info-button ng-if="model.formControl.showFormHelpText && model.formControl.description" heading="{{::model.formTitle}}" text="{{::model.formControl.description}}"></rn-info-button>
+    </div>
+
+    <div class="editForm-Action">
+        <button type="button" ng-if="!isMobile" ng-click="ab.execute()" ng-repeat="ab in model.actionButtons"
+                ng-disabled="ab.action.disabled || model.isInDesign || model.disableActions"
+                title="{{ab.action.name || ab.action.displayname}}">
+            <img ng-src="{{ab.action.icon}}" width="16" height="16"/><span
+                ng-show="ab.action.state === 'createForm' || ab.action.method === 'run' || ab.action.method === 'generate'">{{ab.action.nameshort}}</span>
+        </button>
+    </div>
+
+    <rn-form-structure-editor ng-if="showStructureEditor" form-entity="model.formControl"></rn-form-structure-editor>
+
+    <sp-custom-edit-form ng-if="!useFlexForm"
+                         form-data="model.formData" form-control="model.formControl"
+                         form-theme="model.consoleTheme" form-mode="model.formMode"
+                         is-in-test-mode="isInTestMode" pager-options="pagerOptions">
+    </sp-custom-edit-form>
+
+    <sp-flex-edit-form ng-if="useFlexForm"
+                       form-data="model.formData" form-control="model.formControl"
+                       form-theme="model.consoleTheme" form-mode="model.formMode"
+                       is-in-test-mode="isInTestMode" pager-options="pagerOptions">
+    </sp-flex-edit-form>
+
+</form>
+

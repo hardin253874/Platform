@@ -1,0 +1,18 @@
+<span class="sp-date-mobile-control">
+	
+    <span class="prefix">{{model.prefix}}</span>
+
+    <span ng-if="model.isReadOnly" class="fieldValue">{{model.value | spDateControlFilter}}</span>
+    <span ng-if="!model.isReadOnly">
+        
+        <input ng-disabled="model.disableControl"
+               type="date"
+               ng-model="model.value"
+               sp-date-control-validation="validationModel"
+               ng-required="model.isRequired"
+               placeholder="{{model.format}}" />
+    </span>
+    
+    <span class="suffix">{{model.suffix}}</span>
+
+</span>

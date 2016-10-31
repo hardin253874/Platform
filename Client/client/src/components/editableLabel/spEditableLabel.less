@@ -1,0 +1,49 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+.editable-label {
+    display: inline-block;
+
+    .editable-label-edit-container {
+        margin-bottom: 4px;
+
+        .report-Builder-Page &{
+            width: 700px;
+        } 
+
+
+        .editable-label-edit {
+            width: 100% !important;
+            font-size: inherit;
+            padding: 0 2px;
+            .sp-tablet-device &{
+                font-size: .7em;
+            }
+        }
+    }
+
+    .editable-label-readonly-container {
+
+        .editable-label-readonly {
+            -ms-word-break: normal;
+            word-wrap:break-word;
+            .sp-tablet-device &{
+                font-size: .8em;
+            }
+        }
+
+        .editable-label-readonly-readonly {
+            .editable-label-readonly;
+            cursor: text;
+        }
+
+        .editable-label-readonly-editable {
+            .editable-label-readonly;
+            cursor: pointer;
+        }
+
+
+        .editable-label-readonly-placeholder {
+            .editable-label-readonly;
+            opacity: 0.6;
+        }
+    }
+}

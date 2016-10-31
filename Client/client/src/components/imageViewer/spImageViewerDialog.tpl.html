@@ -1,0 +1,13 @@
+<div class="spImageViewerDialog-view" sp-moveable-modal sp-image-viewer-dialog-dom-helper>    
+    <div class="modal-header">
+        <h6>Image</h6>       
+    </div>
+    <div class="modal-body">        
+        <div ng-style="getImageContainerStyle()" class="imageContainer">
+            <img ng-src="{{model.imageUrl}}" class="image" ng-style="getImageStyle()"/>            
+        </div>
+    </div>
+    <div class="modal-footer">        
+        <button type="button" class="btn" ng-click="ok()">OK</button>
+    </div>
+</div>

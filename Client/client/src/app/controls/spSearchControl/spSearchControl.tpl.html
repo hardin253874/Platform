@@ -1,0 +1,7 @@
+<div class="sp-search-control">
+    <div ng-class="{'sp-search-control-busy': spModel.isBusy}"></div>
+    <!--border style inline here as can't readily get it to work just in css sheet-->
+    <input required type="text" ng-model="spModel.value" placeholder="Search" class="sp-search-control-input"
+           ng-change="changed()" ng-focus="show()" ng-blur="onBlur()">
+    <input type="button" value="" class="sp-search-control-clear" ng-click="clear()">
+</div>

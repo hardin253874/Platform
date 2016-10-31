@@ -1,0 +1,20 @@
+<div class="user-survey-question-attach">
+    <div ng-if="!readOnly" class="user-survey-question-attach-add">
+        <sp-file-upload upload-session="fileUploadSession"
+                        message="fileUploadMessage"
+                        callback="fileUploadOnFileUploadComplete"
+                        busy-indicator-options="fileUploadBusyIndicatorOptions"
+                        image-preview-src="fileUpdateImagePreviewSrc"
+                        button-label="'Add attachment'"
+                        button-image-url="'assets/images/icon_attachment.png'">
+        </sp-file-upload>
+
+    </div>
+
+    <div class="user-survey-question-attach-filearea">
+        <div class="user-survey-question-attach-file" ng-repeat="attachment in attachments">
+            <a href="{{getAttachmentUrl(attachment)}}" download="{{attachment.name}}" target="_blank">{{attachment.name}}</a>
+            <button ng-if="!readOnly" ng-click="deleteAttachment(attachment)" title="Delete"><img src="assets/images/remove_r.png" /></button>
+        </div>
+    </div>
+</div>

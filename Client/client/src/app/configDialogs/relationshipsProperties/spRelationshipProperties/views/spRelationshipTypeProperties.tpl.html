@@ -1,0 +1,41 @@
+<p class="question" ng-if="isLookup">Can each {{model.ui.toName}} have <b>MANY {{model.ui.fromName}}(s)</b> or only <b>ONE {{model.ui.fromName}}?</b></p>
+<p class="question" ng-if="!isLookup">Can each {{model.ui.toName}} have only <b>ONE {{model.ui.fromName}}</b> or <b>MANY {{model.ui.fromName}}(s)?</b></p>
+
+<div ng-if="isLookup">
+    <div style="display:table; width:100%;">
+        <div ng-class="{ 'relationshiptype': true, 'selected': model.ui.relCardinality === 'manyToOne' }">
+            <div class="relationshiptype-header">
+                <input type="radio" name="relType" ng-model="model.ui.relCardinality" value="manyToOne" ng-disabled="!model.isNewRelationship || (model.isNewRelationship && options.showInReverse) || !model.canModifyRelationship">
+                MANY {{model.ui.fromName}}(s) in every {{model.ui.toName}}
+            </div>
+            <svg-relationship-info options="model.manyToOneSvgConfig" />
+        </div>
+        <div ng-class="{ 'relationshiptype': true, 'selected': model.ui.relCardinality === 'oneToOne' }">
+            <div class="relationshiptype-header">
+                <input type="radio" name="relType" ng-model="model.ui.relCardinality" value="oneToOne" ng-disabled="!model.isNewRelationship || (model.isNewRelationship && options.showInReverse) || !model.canModifyRelationship">
+                ONE {{model.ui.fromName}} in every {{model.ui.toName}}
+            </div>
+            <svg-relationship-info options="model.oneToOneSvgConfig" />
+        </div>
+    </div>
+</div>
+
+<div ng-if="!isLookup">
+    <div style="display:table; width:100%;">
+        <div ng-class="{ 'relationshiptype': true, 'selected': model.ui.relCardinality === 'oneToMany' }">
+            <div class="relationshiptype-header">
+                <input type="radio" name="relType" ng-model="model.ui.relCardinality" value="oneToMany" ng-disabled="!model.isNewRelationship || (model.isNewRelationship && options.showInReverse) || !model.canModifyRelationship">
+                ONE {{model.ui.fromName}} for every {{model.ui.toName}}
+            </div>
+            <svg-relationship-info options="model.oneToManySvgConfig" />
+        </div>
+        <div ng-class="{ 'relationshiptype': true, 'selected': model.ui.relCardinality === 'manyToMany' }">
+            <div class="relationshiptype-header">
+                <input type="radio" name="relType" ng-model="model.ui.relCardinality" value="manyToMany" ng-disabled="!model.isNewRelationship || (model.isNewRelationship && options.showInReverse) || !model.canModifyRelationship">
+                Many {{model.ui.fromName}}(s) for every {{model.ui.toName}}
+            </div>
+            <svg-relationship-info options="model.manyToManySvgConfig" />
+        </div>
+    </div>
+</div>
+

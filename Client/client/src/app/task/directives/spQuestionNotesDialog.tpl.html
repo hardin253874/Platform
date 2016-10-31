@@ -1,0 +1,13 @@
+<div class="user-survey-question-notes-dialog" options="modalOpts">
+
+    <div class="modal-header"><h6>Notes</h6></div>
+
+    <div class="notebody">
+        <textarea ng-if="!model.readOnly" rows="20" ng-model="model.notes" />
+        <span ng-if="model.readOnly">{{model.notes}}</span>
+    </div>
+    
+    <div class="modal-footer">
+        <button class="btn" ng-click="closeNotes()">Close</button>
+    </div>
+</div>

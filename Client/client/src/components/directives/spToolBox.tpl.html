@@ -1,0 +1,8 @@
+<div class="sp-tool-box">
+	
+    
+    <span ng-repeat="i in buttons | orderBy:'order'" ng-show="!i.hidden" >
+        <img ng-if="i.icon" ng-src="{{i.icon}}" ng-click="i.click()" ng-disabled="i.disabled" title="{{i.text}}" class="{{i.cssClass}}"  />
+        <button ng-if="!i.icon" ng-click="i.click()" ng-disabled="i.disabled" title="{{i.text}}" class="{{i.cssClass}}"><span>{{i.text}}</span></button>  
+    </span>
+</div>

@@ -1,0 +1,14 @@
+<div class="sp-form-builder-report-control" sp-hover-child-selector="hoverOptions" style="height:100%; width:100%">
+    <table style="height: 100%; width: 100%">
+        <tr ng-if="!control.hideLabel">
+            <td style="padding:0">
+                <sp-editable-label value="name" class="sp-form-builder-container-header" readonly="true"></sp-editable-label>
+            </td>
+        </tr>
+        <tr style="height:100%">
+            <td style="padding:0">
+                <sp-report options="model.reportOptions"></sp-report>
+            </td>
+        </tr>
+    </table>
+</div>

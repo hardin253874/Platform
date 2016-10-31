@@ -1,0 +1,18 @@
+﻿<div class="spreport-view reportHeaderRow" sp-busy-indicator-popup="model.busy">
+    <div class="headerPanel">
+        <div class="headerPanel-left">
+            <button type="button" ng-disabled="!canModify || !canAdd" title="Add existing" ng-click="add()">
+                <img src="assets/images/16x16/linkExisting.svg"/> Add existing
+            </button>
+            <button type="button" ng-disabled="!canModify || !canRemove" title="Remove" ng-click="remove()">
+                <img src="assets/images/16x16/linkRemove.svg"/> Remove
+            </button>
+        </div>
+        <div class="headerPanel-right">
+            <div class="searchContainer">
+                <sp-search-control sp-model="model.search"></sp-search-control>
+            </div>
+        </div>
+    </div>
+    <div class="targets-grid dataGridHeight" ng-if="gridLoaded && containerLoaded" ng-grid="model.gridOptions" ng-disabled="!canModify"></div>
+</div>

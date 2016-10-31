@@ -1,0 +1,16 @@
+<div sp-busy-indicator-popup="model.busyIndicator" sp-moveable-modal sp-set-focus-dialog-input>
+
+    <form name="form">
+        <div class="modal-header">
+            <h6>Container Properties</h6>
+        </div>
+        <div class="modal-body">
+            <div>
+                <span ng-include="controlsFile"></span>
+            </div>            
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn" ng-click="ok()">OK</button><button type="button" class="btn" ng-click="cancel()">Cancel</button>
+        </div>
+    </form>
+</div> 

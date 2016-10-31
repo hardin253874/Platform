@@ -1,0 +1,59 @@
+<div class="{{board.getConfigStyleClass()}}">
+    <div class="config-body">
+        <div class="control-group" ng-if="board.isAdmin()">
+            <div class="control">
+                <label>Card template:</label>
+                <select ng-model="board.cardTemplateName" ng-options="n.key as n.displayName for n in board.cardTemplates | filter:{hidden: '!true'}"></select>
+                <div ng-show="board.cardTemplateName === 'custom'" style="width: 100%;">
+                    <textarea ng-model="board.customTemplate" rows="10"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="control">
+                <label>Show columns for:</label>
+                <select ng-model="board.colDimOrd"
+                        ng-options="d.col.ord as d.col.title for d in board.model.dimensions">
+                    <option value=""></option>
+                </select>
+                <ul>
+                    <li ng-repeat="v in board.model.colDimension.values">
+                        <label><input type="checkbox" ng-model="v.show" ng-change="board.onShowColDimChanged(v)">{{v.value || 'Undefined'}}</label>
+                    </li>
+                </ul>
+            </div>
+            <div class="control">
+                <label>Show rows for:</label>
+                <select ng-model="board.rowDimOrd"
+                        ng-options="d.col.ord as d.col.title for d in board.model.dimensions">
+                    <option value=""></option>
+                </select>
+                <ul>
+                    <li ng-repeat="v in board.model.rowDimension.values">
+                        <label><input type="checkbox" ng-model="v.show" ng-change="board.onShowRowDimChanged(v)">{{v.value || 'Undefined'}}</label>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="control">
+                <label>Use colours for:</label>
+                <select ng-model="board.styleDimOrd"
+                        ng-options="d.col.ord as d.col.title for d in board.model.dimensions">
+                    <option value=""></option>
+                </select>
+                <ul>
+                    <li ng-repeat="v in board.model.styleDimension.values">
+                        <label><input type="checkbox" ng-model="v.show">{{v.value || 'Undefined'}}</label>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="config-footer">
+        <button ng-click="board.save(); board.showConfig = false" title="save the board configuration" ng-disabled="!board.isAdmin()">
+            <span>Save</span>
+        </button>
+        <button ng-click="board.showConfig = !board.showConfig" title="Close">Close</button>
+    </div>
+</div>

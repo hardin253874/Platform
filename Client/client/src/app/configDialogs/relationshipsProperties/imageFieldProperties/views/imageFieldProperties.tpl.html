@@ -1,0 +1,46 @@
+<div sp-busy-indicator-popup="model.busyIndicator" sp-moveable-modal sp-set-focus-dialog-input>
+
+    <form name="form">
+        <div class="modal-header">
+            <h6>Image Field Properties</h6>
+        </div>
+        <div class="modal-body">
+            <div>
+                <span ng-include="baseControlsFile"></span>
+            </div>
+            <div class="btn_lighten option" ng-click="isCollapsed = !isCollapsed">
+                <a><img ng-src="{{imageUrl}}" /></a>
+                {{getOptionsText()}}
+            </div>
+            <div uib-collapse="isCollapsed">
+                <uib-tabset class="tabarea">
+                    <uib-tab heading="Form Detail" ng-show="model.isFormControl">
+                        <div class="tab-container">
+                            <span>
+                                <span ng-include="formControlFile"></span>
+                            </span>
+                        </div>
+                    </uib-tab>
+                    <uib-tab heading="Object Detail" active="model.isObjectTabActive">
+                        <div class="tab-container">
+                            <span ng-include="definitionControlFile"></span>
+                        </div>
+                    </uib-tab>
+                    <uib-tab heading="Format" ng-show="model.isFormControl">
+                        <div class="tab-container">
+                            <span ng-include="formatControlFile"></span>
+                        </div>
+                    </uib-tab>
+                </uib-tabset>
+            </div>
+        </div>
+        <div class="has-error" ng-show="!model.isFormValid">
+            <ul ng-repeat="error in model.errors">
+                <li>{{error.msg}}</li>
+            </ul>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn" ng-click="ok()">OK</button><button type="button" class="btn" ng-click="cancel()">Cancel</button>
+        </div>
+    </form>
+</div>

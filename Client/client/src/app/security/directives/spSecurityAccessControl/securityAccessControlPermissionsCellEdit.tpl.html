@@ -1,0 +1,13 @@
+﻿<div class="ngCellText" ng-class="col.colIndex()">
+    <span ng-cell-text>
+        <select size="1" ng-model="row.entity.permissions" ng-disabled="isDisabled()" style="min-height: 20px; max-height: 20px;">
+            <option value="">None</option>
+            <option value="core:read">View</option>
+            <option value="core:modify,core:read">View and Edit</option>
+            <option value="core:delete,core:modify,core:read">View, Edit and Delete</option>
+            <option value="core:create,core:modify,core:read">Create, View and Edit</option>
+            <option value="core:create" ng-show="row.entity.permissions  === 'core:create'">Create</option> <!-- Don't show, except on the system rule that uses this option -->
+            <option value="core:create,core:delete,core:modify,core:read">Full (Create, View, Edit and Delete)</option>
+        </select>
+    </span>
+</div>

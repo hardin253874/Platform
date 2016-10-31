@@ -1,0 +1,57 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+.nav-demo-page {
+
+    h2 {
+        margin-top: 10px;
+    }
+
+    .messages-box {
+        position: fixed;
+        top: 20%;
+        height: 60%;
+        right: -48%;
+        width: 50%;
+        opacity: 0.3;
+        padding: 3px;
+        overflow: auto;
+
+        border-radius: 5px;
+        background-color: #e5e5e5;
+        box-shadow: 0 3px 10px rgba(0,0,0,.5);
+
+        transition: all 200ms ease;
+
+        &:hover {
+            right: -40%;
+            opacity: 0.7;
+        }
+
+        &.open {
+            right: 0;
+            opacity: 0.9;
+
+            h2 {
+                display: inline-block;
+            }
+        }
+
+        input {
+            float: right;
+        }
+
+        ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+
+            li {
+                background-color: #eaeaea;
+            }
+
+            li.alt {
+                background-color: #f8f8f8;
+            }
+        }
+    }
+}
+

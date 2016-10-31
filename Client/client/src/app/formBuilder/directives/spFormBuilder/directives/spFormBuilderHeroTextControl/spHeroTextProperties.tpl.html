@@ -1,0 +1,56 @@
+﻿<div class="hero-text-properties" sp-moveable-modal sp-set-focus-dialog-input>
+
+    <div class="modal-header">
+        <h6>Hero Text Properties</h6>
+    </div>
+    <div class="modal-body overflowModalBody">
+        <div class="table">
+            <div class="row">
+                <div class="cell">Label:</div>
+                <div class="cell"><input type="text" ng-model="model.name" style="width: 330px" ng-change="svc.updateSampleVisuals(model)" /></div>
+            </div>
+            <div class="row">
+                <div class="cell">Report:</div>
+                <div class="cell"><sp-inline-relationship-picker options="model.reportPickerOptions" /></div>
+            </div>
+            <div class="row">
+                <div class="cell">Column:</div>
+                <div class="cell">
+                    <select ng-model="model.column" ng-options="c as c.name for c in model.columns | orderBy:c.ord" ng-change="svc.columnChanged(model)">
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="cell">Method:</div>
+                <div class="cell">
+                    <select ng-model="model.method" ng-options="m as m.name for m in model.methods" ng-change="svc.updateSample(model)">
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="cell">Style:</div>
+                <div class="cell">
+                    <select ng-model="model.style" ng-change="svc.updateSampleVisuals(model)">
+                        <option value="style1">Style 1</option>
+                        <option value="style2">Style 2</option>
+                        <option value="style3">Style 3</option>
+                        <option value="style4">Style 4</option>
+                        <option value="style5">Style 5</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="cell">Sample:</div>
+                <div class="cell">
+                    <div class="sample-hero-text">
+                        <sp-hero-text-control form-control="model.sampleControl"></sp-hero-text-control>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn" ng-disabled="okDisabled()" ng-click="ok()">OK</button>
+        <button type="button" class="btn" ng-click="cancel()">Cancel</button>
+    </div>
+</div>

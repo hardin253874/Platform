@@ -1,0 +1,74 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+.feedback-form-bg {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 99999;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.feedback-form {
+  .modal-content;
+  position: absolute;
+  bottom: 4%;
+  right: 4%;
+  z-index: 100000;
+  height: auto !important;
+  width: 400px!important;
+
+ .body {
+    position: relative;
+    padding: 10px 15px;
+    overflow-y: auto;
+    vertical-align: middle;
+    width: 100%;
+  }
+ 
+  .footer {
+    padding: 10px;
+    display: block;
+    margin-top: 0;
+    text-align: right;
+    border-top: none;
+    background-color: #dddddd;
+    border-radius: 0;
+
+    button{
+        height:27px;
+        margin-right:3px;
+        &:last-child{
+            margin-right:0;
+        }
+    }
+  }
+
+  .comments {
+    width: 100%;
+
+    textarea {
+        width: 100%;
+        height: 150px;
+        resize: none;
+      }
+    }
+ 
+  .field {
+
+    .title {
+      font-size: 14px;
+      margin-top: 10px;
+    }
+
+    .content {
+        input[type="file"]{
+            width:100%;
+            padding:2px;
+            vertical-align:middle;
+        }
+    }
+  }
+}

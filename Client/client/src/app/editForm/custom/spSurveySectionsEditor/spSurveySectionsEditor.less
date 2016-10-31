@@ -1,0 +1,192 @@
+﻿// Copyright 2011-2016 Global Software Innovation Pty Ltd
+
+@import (reference) "../../../../less/font-awesome.less";
+@import (reference) "../../../../less/customBootstrap/bootstrap.less";
+@import (reference) "../../../../less/variables.less";
+@import (reference) "../../../controls/controls.less";
+@import (reference) "../../editForm.less";
+
+sp-survey-sections-editor {
+    overflow: hidden;
+
+    .headerPanel-left > button {
+        font-size: 10px !important;
+    }
+}
+
+.user-survey-section {
+    width: 100% !important;
+}
+
+.user-survey-break {
+    height: 40px;
+
+    > hr {
+        position: relative;
+        top: 20px;
+        border: 0;
+        border-top: 1px solid #adadad;
+        margin: 0;
+    }
+
+    .user-survey-break-text {
+        position: relative;
+        top: 10px;
+        left: calc(~'50% - 50px');
+        padding: 0 5px;
+        font-size: 10px;
+        text-transform: uppercase;
+        background-color: white;
+        color: #adadad;        
+    }
+
+    .user-survey-break-button {
+        position: relative;
+        top: 10px;
+        float: right;
+
+        > button {
+            background-color: white;
+            border: none;
+            border-radius: 0;
+            display: inline-block;
+
+            &:hover, &:focus {
+                background-color: #ffebe7;
+                border: none;
+                outline: none;
+            }
+
+            > img {
+                width: 16px;
+                height: 16px;
+            }
+        }
+    }
+}
+
+.ordered-form-cell {
+    display: table-cell;
+
+    > img {
+        width: 16px;
+        height: 16px;
+    }
+
+    .sp-mobile-device & {
+        display: block;
+
+        img {
+            width: 24px;
+            height: 24px;
+        }
+    }
+}
+
+.ordered-form-rows {
+    padding-bottom: 5px;
+}
+
+.ordered-form-rows-header {
+    display: table;
+    word-break: break-all;
+    text-transform: uppercase;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    box-sizing: border-box;
+    padding: 0;
+    height: 31px;
+    width: 100%;
+    min-width: 640px;
+
+    &:hover {
+        cursor: move;
+    }
+
+    > div {
+        .ordered-form-cell;
+    }
+
+    sp-editable-label div {
+        margin-bottom: 0 !important;
+    }
+
+    .sp-mobile-device & {
+        display:block;
+        min-width:inherit;
+
+        > div {
+            display:inline-block;
+            min-width:inherit !important;
+            max-width:inherit !important;
+            width:auto !important;
+
+            &:last-child{
+                float:right;
+            }
+        }
+
+        sp-editable-label div {
+            margin-bottom: -5px !important;
+        }
+    }
+}
+
+.ordered-form-rows-area {
+    width: 100%;
+    height: calc(~'100% - 50px');
+    overflow: auto;
+    margin: 0 !important;
+}
+
+.ordered-form-row {
+    display: table;
+    width: 100%;
+    border-bottom: 1px dotted #d5d5d5;
+    margin: 0;
+    color: #404040;
+    font-size: @editFormBaseFontSize;
+    padding: 5px 0;
+
+    .sp-mobile-device & {
+        display: block;
+        border-bottom: 1px dotted #aaa;
+        padding-bottom: 15px
+    }
+
+    &:hover {
+        cursor: move;
+    }
+
+    &:last-child {
+        border-bottom-width: 0;
+    }
+
+    > div {
+        .ordered-form-cell;
+        vertical-align: top;
+
+        .sp-mobile-device & {
+            margin-top: 5px;
+        }
+    }
+}
+
+.drag-item {
+}
+
+.drag-source {
+    display: none;
+}
+
+.drag-target {
+    //border: solid 1px cyan;
+}
+
+.drag-placeholder {
+    min-height: 5px;
+    background-color: lightgrey;
+    opacity: 0.2;
+    border-radius: 3px;
+    pointer-events: none;
+}

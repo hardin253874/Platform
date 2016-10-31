@@ -1,0 +1,77 @@
+    <div class="edit-form-control-container">
+        <div class="edit-form-title"><label class="form-label">Display As: </label></div>
+        <div class="edit-form-value"><select ng-model="model.selectedDisplayAs" ng-options="e as e.name for e in displayAsComboOptions" ng-disabled="disabled" /></div>
+    </div>
+
+    <div class="edit-form-control-container" ng-if="!options.isFormControl">
+        <div class="edit-form-title"><label class="form-label">Show Help: </label></div>
+        <div class="edit-form-value"><input type="checkbox" ng-model="model.relationshipToRender.showRelationshipHelpText" /></div>
+    </div>
+
+    <div class="edit-form-control-container" ng-if="options.isFormControl">
+        <div class="edit-form-title"><label class="form-label">Show Help: </label></div>
+        <div class="edit-form-value"><input type="checkbox" ng-model="model.formControl.showControlHelpText" /></div>
+    </div>
+
+    <div ng-if="!isLookup && !isRelationshipWithInlineDisplay" class="edit-form-control-container">
+        <div class="edit-form-title">
+            <label class="form-label">Display Report: </label>
+        </div>
+        <div class="edit-form-value">
+            <select ng-model="model.selectedDisplayReport" ng-options="rpt as rpt.name for rpt in typeReports" ng-disabled="disabled">
+                <option value="" ng-style="selectOptionStyle">[Default]</option>
+            </select>
+        </div>
+    </div>
+    <div class="edit-form-control-container">
+        <div class="edit-form-title">
+            <label class="form-label">Picker Report: </label>
+        </div>
+        <div class="edit-form-value">
+            <select ng-model="model.selectedPickerReport" ng-options="rpt as rpt.name for rpt in typeResourcePickers" ng-disabled="disabled">
+                <option value="" ng-style="selectOptionStyle">[Default]</option>
+            </select>
+        </div>
+    </div>
+    <div class="edit-form-control-container">
+        <div class="edit-form-title">
+            <label class="form-label">Display Form: </label>
+        </div>
+        <div class="edit-form-value">
+            <select ng-model="model.selectedConsoleForm" ng-options="f as f.name for f in typeForms" ng-disabled="disabled">
+                <option value="" ng-style="selectOptionStyle">[Default]</option>
+            </select>
+        </div>
+    </div>
+    <div ng-if="isLookup" class="edit-form-control-container">
+    <div class="edit-form-title">
+        <label class="form-label">Enable New: </label>
+    </div>
+    <div class="edit-form-value">
+        <select ng-model="model.selectedCanCreate" ng-options="f as f.name for f in relCanCreateComboOptions" ng-disabled="disabled" />
+    </div>
+</div>
+    <div ng-if="isLookup" class="edit-form-control-container">
+    <div class="edit-form-title">
+        <label class=" form-label">Mandatory: </label>
+    </div>
+    <div class="edit-form-value">
+        <input type="checkbox" ng-model="model.formControl.mandatoryControl" ng-disabled="model.formControl.readOnlyControl" />
+    </div>
+</div>
+    <div ng-if="isLookup" class="edit-form-control-container">
+    <div class="edit-form-title">
+        <label class=" form-label">Read Only: </label>
+    </div>
+    <div class="edit-form-value">
+        <input type="checkbox" ng-model="model.formControl.readOnlyControl" ng-disabled="model.formControl.mandatoryControl" />
+    </div>
+</div>
+    <div class="edit-form-control-container">
+    <div class="edit-form-title">
+        <label class="form-label">Filter By: </label>
+    </div>
+    <div class="edit-form-value">
+        <sp-relationship-filters-control form-control="model.formControl"></sp-relationship-filters-control>
+    </div>
+</div>

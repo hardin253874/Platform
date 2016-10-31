@@ -1,0 +1,91 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+@import 'page.less';
+@import 'toolbox.less';
+
+.chart-types {
+    width: 247px;
+    padding: 5px;
+
+    .chart-type {
+        background-color: #fafafa;
+        display: inline-block;
+        border-radius: 3px;
+        border: solid 2px transparent;
+        margin: 0 1px 1px 0;
+
+        &:hover {
+            background-color: #fff;
+            box-shadow: 0 2px 2px rgba(0,0,0,0.25);
+        }
+
+        &.selected {
+            border-radius: 3px;
+            background-color: #fff;
+            border: solid 2px #f67c76 !important;
+
+            .series-icons img {
+                opacity: 1;
+            }
+        }
+    }
+}
+
+
+.sp-new-type-dialog {
+    .modal-body.overflowModalBody {
+        .field-title {
+            word-wrap: break-word;
+        }
+    }
+
+    .repeater {
+        width: auto !important;
+    }
+
+    .field-title {
+        color: #999;
+        font-size: .95em;
+    }
+
+    .inlineRelPicker {
+        input {
+            width: 100%;
+        }
+    }
+
+    .structure-control-header {
+        background-color: none;
+        border-bottom: none;
+        box-shadow: none;
+        display: none;
+    }
+
+    .chartType {
+        margin-top: 3px;
+        width: 100%;
+
+        & > div > div {
+            vertical-align: top;
+        }
+
+        .chart-types {
+            width: 100%;
+            padding: 5px 0;
+
+            .chart-type {
+                margin: 0px 8px 6px 0;
+                border: solid 2px rgba(0,0,0,0.2);
+            }
+        }
+
+        label.field-title {
+            padding-top: 4px;
+        }
+
+        .inlineRelPicker {
+            button {
+                margin-left: 3px;
+            }
+        }
+    }
+}

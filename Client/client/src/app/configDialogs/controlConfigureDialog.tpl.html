@@ -1,0 +1,26 @@
+<div class="control-configure-dialog">
+	
+    <div ng-switch="entityType">
+         <div ng-switch-when="field">
+            <field-properties options="options" modal-instance="modalInstance"></field-properties>
+        </div>
+        <div ng-switch-when="lookup">
+            <sp-relationship-properties options="options" modal-instance="modalInstance" ></sp-relationship-properties>
+        </div>
+        <div ng-switch-when="choice">
+             <choice-properties options="options" modal-instance="modalInstance"></choice-properties>
+        </div>
+        <div ng-switch-when="image">
+          <image-properties options="options" modal-instance="modalInstance"></image-properties>
+        </div>
+        <div ng-switch-when="relationship">
+            <sp-relationship-properties options="options" modal-instance="modalInstance" ></sp-relationship-properties>
+        </div>
+        <div ng-switch-when="container">
+            <container-properties options="options" modal-instance="modalInstance"></container-properties>
+        </div>
+        <div ng-switch-default>
+           <div>Not Implemented</div>
+        </div>
+    </div>
+</div>

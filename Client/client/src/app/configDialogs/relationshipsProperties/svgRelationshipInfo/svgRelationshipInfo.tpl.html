@@ -1,0 +1,66 @@
+<div class="svg-relationship-info">
+	
+    <svg ng-attr-height="{{model.height}}" ng-attr-width="{{model.width}}" style="padding:1px;">
+        <marker ng-if="model.showLineMarkers" id="triangleTo" viewBox="0 0 10 10" refX="10" refY="5" markerUnits="strokeWidth" markerWidth="7" markerHeight="7" orient="auto">
+            <path d="M 0 0 L 10 5 L 0 10 z"></path>
+        </marker>
+        <marker ng-if="model.showLineMarkers" id="triangleFrom" viewBox="0 0 10 10" refX="0" refY="5" markerUnits="strokeWidth" markerWidth="7" markerHeight="7" orient="auto">
+            <path d="M 10 0 L 0 5 L 10 10 z"></path>
+        </marker>
+
+        <!-- svg 1 -->
+        <!-- left side rectangles -->
+        <g ng-repeat="rect in model.svg1.leftRects">
+            <rect class="{{rect.rectStyle}}" ng-attr-width="{{rect.rectWidth}}" ng-attr-height="{{rect.rectHeight}}" ng-attr-x="{{rect.x}}" ng-attr-y="{{rect.y}}" rx="3" ry="3" />
+
+            <text class="{{rect.textStyle}}" ng-attr-x="{{rect.textX}}" ng-attr-y="{{rect.textY}}">{{rect.text}}</text>
+        </g>
+        
+        <!-- right side rectangles -->
+        <g ng-repeat="rect in model.svg1.rightRects">
+            <rect class="{{rect.rectStyle}}" ng-attr-width="{{rect.rectWidth}}" ng-attr-height="{{rect.rectHeight}}" ng-attr-x="{{rect.x}}" ng-attr-y="{{rect.y}}" rx="3" ry="3" />
+
+            <text class="{{rect.textStyle}}" ng-attr-x="{{rect.textX}}" ng-attr-y="{{rect.textY}}">{{rect.text}}</text>
+        </g>
+        
+        <!-- connectors -->
+        <g ng-repeat="connector in model.svg1.connectors">
+            <line class="{{connector.style}}"
+                  ng-attr-x1="{{connector.x1}}"
+                  ng-attr-y1="{{connector.y1}}"
+                  ng-attr-x2="{{connector.x2}}"
+                  ng-attr-y2="{{connector.y2}}"
+                  ng-attr-marker-start="{{connector.markerStart}}"
+                  ng-attr-marker-end="{{connector.markerEnd}}">
+            </line>
+        </g>
+        
+        <!-- svg 2 -->
+        <!-- left side rectangles -->
+        <g ng-repeat="rect in model.svg2.leftRects">
+            <rect class="{{rect.rectStyle}}" ng-attr-width="{{rect.rectWidth}}" ng-attr-height="{{rect.rectHeight}}" ng-attr-x="{{rect.x}}" ng-attr-y="{{rect.y}}" rx="3" ry="3" />
+
+            <text class="{{rect.textStyle}}" ng-attr-x="{{rect.textX}}" ng-attr-y="{{rect.textY}}">{{rect.text}}</text>
+        </g>
+        
+        <!-- right side rectangles -->
+        <g ng-repeat="rect in model.svg2.rightRects">
+            <rect class="{{rect.rectStyle}}" ng-attr-width="{{rect.rectWidth}}" ng-attr-height="{{rect.rectHeight}}" ng-attr-x="{{rect.x}}" ng-attr-y="{{rect.y}}" rx="3" ry="3" />
+
+            <text class="{{rect.textStyle}}" ng-attr-x="{{rect.textX}}" ng-attr-y="{{rect.textY}}">{{rect.text}}</text>
+        </g>
+        
+        <!-- connectors -->
+        <g ng-repeat="connector in model.svg2.connectors">
+            <line class="{{connector.style}}"
+                  ng-attr-x1="{{connector.x1}}"
+                  ng-attr-y1="{{connector.y1}}"
+                  ng-attr-x2="{{connector.x2}}"
+                  ng-attr-y2="{{connector.y2}}"
+                  ng-attr-marker-start="{{connector.markerStart}}"
+                  ng-attr-marker-end="{{connector.markerEnd}}">
+            </line>
+        </g>
+    </svg>
+</div>
+

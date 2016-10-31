@@ -1,0 +1,26 @@
+<span class="sp-checkbox-control">
+	
+    <span class="prefix">{{model.prefix}}</span>
+    
+    <span>
+        
+        <label ng-if="model.label" ng-disabled="model.isReadOnly" class="sp-checkbox-control-label" ng-class="{'sp-checkbox-control-label-disabled': model.isReadOnly}">
+            <input class="sp-checkbox-control-input"
+                   type="checkbox"
+                   ng-disabled="model.isReadOnly"
+                   ng-model="model.value"
+                   ng-change="validate()" /> {{model.label}}
+        </label>
+        
+        <input ng-if="!model.label" 
+               class="sp-checkbox-control-input"
+               type="checkbox"
+               ng-disabled="model.isReadOnly"
+               ng-model="model.value"
+               ng-change="validate()" /> 
+
+    </span>
+    
+    <span class="suffix">{{model.suffix}}</span>
+
+</span>

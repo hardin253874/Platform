@@ -1,0 +1,60 @@
+﻿<div class="tenantRollback-main">
+    <div class="tenantRollback-desc">
+        The tenant rollback feature allows you to rollback changes to your tenant to a selected restore point. Generally you can rollback up to 4 calendar days or until the last ReadiNow platform upgrade. In some circumstances a rollback may not be possible due to quantity of changes in a given period.
+    </div>
+    <br />
+    <div class="tenantRollback-warn">
+        <b>NOTE:</b> all data and metadata additions, deletions and changes that occurred between now and the selected restore point will be reverted. This includes records, audit log entries, user password resets and schema changes.
+    </div>
+    <br />
+    <table class="tenantRollback-table">
+        <thead>
+            <tr>
+                <th>Rollback Date</th>
+                <th>Restore Points<button class="btn_lighten" ng-click="createRestorePoint()"><img src="assets/images/16x16/add.svg" />New Restore Point</button></th>
+                <th>Changes By</th>
+            </tr>
+        </thead>
+        <tr>
+            <td>
+                <select size="10" ng-model="model.selectedRollbackDate" ng-options="rollbackDate.dateString for rollbackDate in model.rollbackDates" class="tenantRollback-select"></select>
+            </td>
+            <td>
+                <select size="10" ng-model="model.selectedRestorePoint" ng-options="restorePoint.name for restorePoint in model.restorePoints" class="tenantRollback-select"></select>
+                <button class="btn_rollback" type="button" value="New Restore Point" ng-click="startRollback()">
+                    Start Rollback
+                </button>
+            </td>
+            <td>
+                <p>The following users made changes to the system between the selected restore point and the next restore point</p>
+                <div style="background-color: #f6f6f6; min-height: 150px; overflow-y: auto; padding: 10px; color:#333;">
+                    <div style="margin-bottom: 3px" ng-repeat="changeBy in model.changesBy">{{changeBy}}</div>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <div style="font-weight: 500; font-size: 1.2em; color: black">
+        Rollback Log
+    </div>
+    <table class="tenantRollback-log">
+        <thead>
+            <tr>
+                <th>
+                    Date
+                </th>
+                <th>
+                    Rollback to Date
+                </th>
+                <th>
+                    Started by user
+                </th>
+            </tr>
+            <tr ng-repeat="rollbackLog in model.rollbackLogs">
+                <td>{{rollbackLog.date}}</td>
+                <td>{{rollbackLog.rollbackDate}}</td>
+                <td>{{rollbackLog.userName}}</td>
+            </tr>
+        </thead>
+    </table>
+</div>

@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
+<meta charset="utf-8">
+<html>
+<head>
+    <title>Jasmine Spec Runner</title>
+
+    <link rel="shortcut icon" type="image/png" href="lib/jasmine/jasmine_favicon.png">
+    <link rel="stylesheet" type="text/css" href="lib/jasmine/jasmine.css">
+    <script type="text/javascript" src="lib/jasmine/jasmine.js"></script>
+    <script type="text/javascript" src="lib/jasmine/jasmine-html.js"></script>
+	<script src='https://maps.googleapis.com/maps/api/js?sensor=false'></script>
+
+    <%
+    var isDEV = grunt.config('DEV');
+    if (!isDEV) {
+        print('<script src="../js/libs.min.js"> </script>\n');
+        print('<script src="../js/' + grunt.config.get('pkg.name') + '_components.min.js"></script>\n');
+        print('<script src="../js/' + grunt.config.get('pkg.name') + '_app.min.js"></script>\n');
+        print('<script src="../js/' + grunt.config.get('pkg.name') + '_app2.min.js"></script>\n');
+        print('<script src="../js/' + grunt.config.get('pkg.name') + '_builders.min.js"></script>\n');
+
+    } else {
+        print('<script src="../js/libs.js"> </script>\n');
+        print('<script src="../js/' + grunt.config.get('pkg.name') + '_components.js"></script>\n');
+        print('<script src="../js/' + grunt.config.get('pkg.name') + '_app.js"></script>\n');
+        print('<script src="../js/' + grunt.config.get('pkg.name') + '_app2.js"></script>\n');
+        print('<script src="../js/' + grunt.config.get('pkg.name') + '_builders.js"></script>\n');
+    }
+    %>
+    <script src="lib/angular/angular-mocks.js"></script>
+    <script src="testSupport/testSupport.js"></script>
+
+    <!-- ### list here the specific test files ### -->
+    <%
+    var jsFiles, f;
+
+    jsFiles = grunt.file.expand({ cwd: '.'}, 'src/**/*.spec.js');
+    for (var i = 0, len = jsFiles.length; i < len; i++) {
+        print('<script type="text/javascript" src="' + jsFiles[i] + '"></script>\n');
+    }
+    %>
+
+    <script type="text/javascript">
+        (function () {
+
+            function focusedSpecName() {
+                var specName;
+
+                (function memoizeFocusedSpec() {
+                    if (specName) {
+                        return;
+                    }
+
+                    var paramMap = [];
+                    var params = document.location.search.substring(1).split('&');
+
+                    for (var i = 0; i < params.length; i++) {
+                        var p = params[i].split('=');
+                        paramMap[decodeURIComponent(p[0])] = decodeURIComponent(p[1]);
+                    }
+
+                    specName = paramMap.spec;
+                })();
+
+                return specName;
+            }
+
+            function focusedSpecRe() {
+                var specName;
+
+                (function memoizeFocusedSpec() {
+                    if (specName) {
+                        return;
+                    }
+
+                    var paramMap = [];
+                    var params = document.location.search.substring(1).split('&');
+
+                    for (var i = 0; i < params.length; i++) {
+                        var p = params[i].split('=');
+                        paramMap[decodeURIComponent(p[0]).toLowerCase()] = decodeURIComponent(p[1]);
+                    }
+
+                    specName = paramMap.specre;
+                })();
+
+                return specName;
+            }
+
+            function specFilter(spec) {
+                if (focusedSpecName()) {
+                    return spec.getFullName().indexOf(focusedSpecName()) === 0;
+                }
+                if (focusedSpecRe()) {
+                    return !!spec.getFullName().match(focusedSpecRe());
+                }
+                return true;
+            };
+
+            var jasmineEnv = jasmine.getEnv();
+            jasmineEnv.updateInterval = 1000;
+
+            var htmlReporter = new jasmine.HtmlReporter();
+
+            jasmineEnv.addReporter(htmlReporter);
+
+            jasmineEnv.specFilter = function (spec) {
+                return specFilter(spec);
+            };
+
+            var currentWindowOnload = window.onload;
+
+            window.onload = function () {
+                if (currentWindowOnload) {
+                    currentWindowOnload();
+                }
+                execJasmine();
+            };
+
+            function execJasmine() {
+                jasmineEnv.execute();
+            }
+
+        })();
+    </script>
+
+</head>
+
+<body>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<div ng-controller="busyIndicatorTestController">
+	
+    Inline Progress: <input type="checkbox" ng-model="progressIndicator.isBusy"/>    
+    <div style="height:50px;width:100px;background-color: white;position:relative;display:table">
+        <div style="display:table-cell;vertical-align: middle;padding:5px">
+            <sp-busy-indicator options="progressIndicator"></sp-busy-indicator>
+        </div>
+    </div>
+    <br/>
+    Percent <input type="number" ng-model="progressIndicator.percent"/>
+    <br />
+    
+    Inline spinner bottom: <input type="checkbox" ng-model="spinnerIndicatorBottom.isBusy"/>    
+    <div style="height:50px;width:100px;background-color: white;position:relative;display:table">
+        <div style="display:table-cell;vertical-align: middle;padding:5px">
+            <sp-busy-indicator options="spinnerIndicatorBottom"></sp-busy-indicator>
+        </div>
+    </div>
+    <br/>
+    
+     Inline spinner right: <input type="checkbox" ng-model="spinnerIndicatorRight.isBusy"/>    
+    <div style="height:50px;width:100px;background-color: white;position:relative;display:table">
+        <div style="display:table-cell;vertical-align: middle;padding:5px">
+            <sp-busy-indicator options="spinnerIndicatorRight"></sp-busy-indicator>
+        </div>
+    </div>
+    <br/>
+    
+    Popup element <input type="checkbox" ng-model="indicatorElementpopup.isBusy"/>    
+    <div style="width:100px;height:100px;background-color: yellowgreen" sp-busy-indicator-popup="indicatorElementpopup"></div>    
+    <br/>
+    Percent <input type="number" ng-model="indicatorElementpopup.percent"/>
+    <br />
+    
+    Popup window <button ng-click="showWindowPopup()">Show Window Popup</button>
+    <div style="width:100px;height:100px;background-color: yellowgreen" sp-busy-indicator-popup="indicatorWindowpopup"></div>    
+    <br />
+</div>

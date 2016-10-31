@@ -1,0 +1,86 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+.spSecurityAllowDisplay-view {
+    position: relative;
+    height: 100%;
+    width: 100%;
+
+    .verticalAlignMiddle {
+        vertical-align: middle;
+    }
+
+    .displayInlineBlock {
+        display: inline-block;
+    }
+
+    .centeredInlineBlock {
+        .verticalAlignMiddle;
+        .displayInlineBlock;
+    }
+   
+    .labelBlockMedium {
+        .centeredInlineBlock;
+        width: 120px;
+        margin-top: 8px;
+        margin-bottom: 8px;
+    }
+   
+    .centeredDropDown {
+        .verticalAlignMiddle;        
+    }         
+        
+    .securityOptionsDropdown {
+        width: 200px;
+    }        
+    
+    .securityAllowDisplay-appSelection {
+        position: absolute;
+        top: 0;
+        height: 30px;       
+        width: 100%;        
+    }
+
+    .securityAllowDisplay-subjectSelection {
+        position: absolute;
+        top: 30px;
+        height: 30px;       
+        width: 100%;        
+    }
+     
+    .securityAllowDisplay-content {
+        position: absolute;
+        top: 70px;
+        bottom: 0;
+        width: 100%;        
+    }
+
+    .securityAllowDisplay-contentAppOnly {
+        position: absolute;
+        top: 40px;
+        bottom: 0;
+        width: 100%;        
+    }
+
+    .securityGrid {
+        height: 100%;
+        width: 100%;
+        border: 1px solid rgb(212,212,212);        
+
+        .ngRow {
+            border-bottom: none !important;
+        }                
+
+        .valignMiddle {
+            vertical-align: middle;
+        }
+
+        .securityUICheck {
+            margin-top: 0 !important;
+            .valignMiddle;
+        }        
+    }
+
+    .includeUsersCheckbox {
+        .verticalAlignMiddle;
+        margin-left: 5px;
+    }
+}

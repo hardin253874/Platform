@@ -1,0 +1,93 @@
+<div ng-controller="editFormControlsTestController" id="home">
+	
+    <!--<ul class="editFormControlContents">
+        <li><a class="scroll-link" href="#spNumberControl">spNumberControl</a></li>
+        <li><a class="scroll-link" href="#spNumericKFieldRenderControl">spNumericKFieldRenderControl</a></li>
+        <li><a class="scroll-link" href="#spCurrencyControl">spCurrencyControl</a></li>
+        <li><a class="scroll-link" href="#spCurrencyKFieldRenderControl">spCurrencyKFieldRenderControl</a></li>
+        <li><a class="scroll-link" href="#spDecimalControl">spDecimalControl</a></li>
+        <li><a class="scroll-link" href="#spDecimalKFieldRenderControl">spDecimalKFieldRenderControl</a></li>
+        <li><a class="scroll-link" href="#spAutoNumberControl">spAutoNumberControl</a></li>
+        <li><a class="scroll-link" href="#spAutoNumberKFieldRenderControl">spAutoNumberKFieldRenderControl</a></li>
+        <li><a class="scroll-link" href="#spCheckboxControl">spCheckboxControl</a></li>
+        <li><a class="scroll-link" href="#spCheckboxKFieldRenderControl">spCheckboxKFieldRenderControl</a></li>
+        <li><a class="scroll-link" href="#spDateControl">spDateControl</a></li>
+        <li><a class="scroll-link" href="#spDateKFieldRenderControl">spDateKFieldRenderControl</a></li>
+        <li><a class="scroll-link" href="#spSingleLineTextControl">spSingleLineTextControl</a></li>
+        <li><a class="scroll-link" href="#spDateConfigControl">spDateConfigControl</a></li>
+        <li><a class="scroll-link" href="#spTimeControl">spTimeControl</a></li>
+        <li><a class="scroll-link" href="#spTimeKFieldRenderControl">spTimeKFieldRenderControl</a></li>
+         <li><a class="scroll-link" href="#spDateAndTimeControl">spDateAndTimeControl</a></li>
+        <li><a class="scroll-link" href="#spDateAndTimeKFieldRenderControl">spDateAndTimeKFieldRenderControl</a></li>
+        <li><a class="scroll-link" href="#spDateAndTimeConfigControl">spDateAndTimeConfigControl</a></li>
+
+    </ul>-->
+                <div>
+                Validation message: <sp-custom-validation-message></sp-custom-validation-message>
+            </div>
+    <div>
+        <div id="spNumberControl">
+            <h1><b>spNumberControl</b></h1>
+            <div  >
+                <sp-number-control model="spNumberControlModel"></sp-number-control>
+            </div>
+
+            <fieldset style="border: 1px solid silver; border-radius: 2px; margin: 8px; padding: 8px;">
+                <legend style="border-bottom: 0; font-size: small; line-height: normal; margin-bottom: auto; padding: 2px; width: auto;">model</legend>
+                <table>
+                    <tr>
+                        <td>
+                            Minimum:
+                        </td>
+                        <td>
+                            <input type="number" ng-model="spNumberControlModel.minimumValue" style="margin-left: 5px" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Maximum:
+                        </td>
+                        <td>
+                            <input type="number" ng-model="spNumberControlModel.maximumValue" style="margin-left: 5px" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Prefix:
+                        </td>
+                        <td>
+                            <input type="text" ng-model="spNumberControlModel.prefix" style="margin-left: 5px" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Suffix:
+                        </td>
+                        <td>
+                            <input type="text" ng-model="spNumberControlModel.suffix" style="margin-left: 5px" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Is Read Only:
+                        </td>
+                        <td>
+                            <input type="checkbox" ng-model="spNumberControlModel.isReadOnly" style="margin-left: 5px" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Is Required:
+                        </td>
+                        <td>
+                            <input type="checkbox" ng-model="spNumberControlModel.isRequired" style="margin-left: 5px" />
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+        </div>
+    </div>
+
+    <hr />
+    
+</div>

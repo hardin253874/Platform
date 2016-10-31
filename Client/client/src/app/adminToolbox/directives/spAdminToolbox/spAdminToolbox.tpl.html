@@ -1,0 +1,59 @@
+<div class="applicationToolbox">
+	
+    <div class="builder-ToolBar">
+        <button class="builder-ToolBar-Close" ng-click="onCancelClick()" uib-tooltip="Close" tooltip-trigger tooltip-placement="left">
+            <img src="assets/images/toolbar_close.png" />
+        </button>
+    </div>
+
+    <h2>Welcome to the Toolbox</h2>
+    <div style="display: table; width: 100%;">
+            <div style="display: table-cell; vertical-align:top">
+                <h5 style="margin-right:3px;">Quick Links</h5>
+                <div style="display: table; width: 100%;" class="quicklinkArea">
+                    <div style="display: table-row;">
+                        <div style="display: table-cell;  padding-bottom:30px;">
+                            <!-- Application links-->
+                            <div class="quicklinkHeader"><img src="assets/images/icon_application.png" />Application</div>
+                            <ul ng-repeat="i in model.applicationLinks | orderBy:i.order" ng-show="!i.hidden" >
+                                <li><a ng-href="" ng-click="linkClicked(i.link)">{{i.text}}</a></li>
+                            </ul>
+                        </div>
+                        <div style="display: table-cell; padding-bottom:30px;">
+                            <!-- Settings links-->
+                            <div class="quicklinkHeader"><img src="assets/images/icon_setting.png" />Settings</div>
+                            <ul ng-repeat="i in model.settingsLinks | orderBy:i.order" ng-show="!i.hidden" >
+                                <li><a ng-href="" ng-click="linkClicked(i.link)">{{i.text}}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div style="display: table-row;">
+                        <div style="display: table-cell; padding-bottom:30px;" >
+                            <!-- Security links-->
+                            <div class="quicklinkHeader"><img src="assets/images/icon_secure.png" />Security</div>
+                            <ul ng-repeat="i in model.securityLinks | orderBy:i.order" ng-show="!i.hidden" >
+                                <li><a ng-href="" ng-click="linkClicked(i.link)">{{i.text}}</a></li>
+                            </ul>
+                        </div>
+                        <div style="display: table-cell; padding-bottom:30px;">
+                            <!-- Tools links-->
+                            <div class="quicklinkHeader"><img src="assets/images/icon_tool.png" />Tools</div>
+                            <ul ng-repeat="i in model.toolsLinks | orderBy:i.order" ng-show="!i.hidden" >
+                                <li><a ng-href="" ng-click="linkClicked(i.link)">{{i.text}}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="display: table-cell;width:10px;"></div>
+            <div class="getting-started-box">
+                    <h5>Help & Support</h5>
+                    <ul>
+                        <li><a><img src="assets/images/getstart_videos.png" />Videos & Tutorials</a></li>
+                        <li><a><img src="assets/images/getstart_documentation.png" />Documentation</a></li>
+                        <li><a><img src="assets/images/getstart_contactsupport.png" />Contact Support</a></li>
+                    </ul>
+                </div>
+        </div>
+</div>

@@ -1,0 +1,14 @@
+﻿<div class="spreport-view securityUI-content" sp-busy-indicator-popup="model.busyIndicator">
+    <div class="headerPanel">
+        <button ng-click="refresh()" title="Refresh"><img src="assets/images/toolbar_reload.png" /></button>
+        <button ng-click="new()" title="New Access Rule" ng-disabled="disableNew()"><img src="assets/images/16x16/add.svg" style="margin-bottom:2px;" />New</button>
+        <div class="headerPanel-right">
+            <div class="searchContainer">
+                <sp-search-control sp-model="model.quickSearch"></sp-search-control>
+            </div>
+        </div>
+    </div>
+    <div class="reportDataGridStyle">
+        <div data-ng-grid="model.gridOptions" ng-if="gridLoaded && options.containerLoaded" class="dataGrid-view securityUI-dataGrid-view"></div>
+    </div>
+</div>

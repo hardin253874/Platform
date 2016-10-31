@@ -1,0 +1,122 @@
+﻿// Copyright 2011-2016 Global Software Innovation Pty Ltd
+.spNavContainerPickerDialog {
+    height: 100%;
+    width: 100%;
+    position: relative;
+
+    .spNavContainerPickerDialogBody {
+        height: calc(~'100% - 90px');        
+        position: relative;
+    }
+
+    .spNavContainerPickerDialogFooter {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }     
+
+    .filterBlock {
+        position: absolute;
+        top: 5px;
+        left: 15px;
+        right: 15px;
+    }    
+
+    .verticalAlignMiddle {
+        vertical-align: middle;
+    }
+
+    .displayInlineBlock {
+        display: inline-block;
+    }
+
+    .centeredInlineBlock {
+        .verticalAlignMiddle;
+        .displayInlineBlock;
+    }
+
+    .centeredDropDown {
+        .verticalAlignMiddle;        
+    }         
+        
+    .applicationsDropdown {
+        width: 200px;
+    }  
+
+    .labelBlockMedium {
+        .centeredInlineBlock;
+        width: 120px;
+        margin-top: 8px;
+        margin-bottom: 8px;
+    }
+
+    .navLink {
+        margin: 0;
+        text-shadow: none;
+        text-decoration: none;        
+        display: block;
+        color: #555;
+        white-space: nowrap;
+        line-height: normal;
+        transition: all ease-out .15s;
+        text-overflow: ellipsis;
+        overflow: hidden;        
+        font-size: 14px;
+        box-sizing: border-box;        
+        outline: none;
+        cursor: pointer;
+        -webkit-user-select: none;  
+        -moz-user-select: none;     
+        -ms-user-select: none;      
+        user-select: none;
+
+        .typeIcon {
+            margin-top: -4px;
+            margin-right: 10px;
+            width: 30px;
+            height: 30px;
+            padding: 6px;
+            border-radius: 2px;
+        }  
+
+        &:hover {                    
+            font-style: italic;                    
+        }       
+    }                            
+    
+    .selectedNode {
+        font-weight: bold;
+    }
+
+    .navNodeBlock {
+        overflow-y: auto;        
+        position: absolute;
+        top: 50px;
+        left: 10px;
+        right: 10px;
+        bottom: 25px;
+        border-top: 1px solid #ddd;
+    }
+
+    .currentPathBlock {
+        position: absolute;
+        background-color: #ddd;
+        bottom: 0px;
+        left: 0px;
+        right: 0px;    
+        padding-left: 10px;
+        padding-top: 5px;
+        height: 25px;
+    }
+
+    .navNodeList {
+        margin-bottom: 0;
+        margin-top: 10px;
+        padding-left: 0;
+        list-style: none;
+    } 
+}
+
+.spNavContainerPickerDialogWindow {
+}

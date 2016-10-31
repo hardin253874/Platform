@@ -1,0 +1,185 @@
+<div ng-controller="formBuilderTestPageController">
+	
+    <span style="vertical-align: middle">
+        <select ng-model="model.selectedOption" ng-options="option.name for option in model.options" style="width: 300px" ng-change="onOptionChanged()"></select>
+    </span>
+    
+    <br />
+    
+    <div ng-if="model.selectedOption.ordinal === 0">
+        <fieldset style="border: 1px solid silver; border-radius: 2px; margin: 8px; padding: 8px;">
+            <legend style="border-bottom: 0; font-size: small; line-height: normal; margin-bottom: auto; padding: 2px; width: auto;">Definition Properties</legend>
+            <table>
+                <tr>
+                    <td>
+                        Name:
+                    </td>
+                    <td>
+                        <input type="text" ng-model="createNewDefinitionModel.name" style="margin-left: 5px" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Description:
+                    </td>
+                    <td>
+                        <input type="text" ng-model="createNewDefinitionModel.description" style="margin-left: 5px" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Is Abstract:
+                    </td>
+                    <td>
+                        <input type="checkbox" ng-model="createNewDefinitionModel.isAbstract" style="margin-left: 5px" />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <br />
+                        <input type="button" ng-click="createNewDefinition()" ng-disabled="!createNewDefinitionModel.name" value="Create" />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="color: red">
+                        <br />
+                        {{createNewDefinitionModel.errorMessage}}
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+    </div>
+    
+    <div ng-if="model.selectedOption.ordinal === 1">
+        <fieldset style="border: 1px solid silver; border-radius: 2px; margin: 8px; padding: 8px;">
+            <legend style="border-bottom: 0; font-size: small; line-height: normal; margin-bottom: auto; padding: 2px; width: auto;">Screen Properties</legend>
+            <table>
+                <tr>
+                    <td>
+                        Name:
+                    </td>
+                    <td>
+                        <input type="text" ng-model="createNewScreenModel.name" style="margin-left: 5px" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Description:
+                    </td>
+                    <td>
+                        <input type="text" ng-model="createNewScreenModel.description" style="margin-left: 5px" />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <br />
+                        <input type="button" ng-click="createNewScreen()" ng-disabled="!createNewScreenModel.name" value="Create" />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="color: red">
+                        <br />
+                        {{createNewScreenModel.errorMessage}}
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+    </div>
+    
+    <div ng-if="model.selectedOption.ordinal === 2">
+        <fieldset style="border: 1px solid silver; border-radius: 2px; margin: 8px; padding: 8px;">
+            <legend style="border-bottom: 0; font-size: small; line-height: normal; margin-bottom: auto; padding: 2px; width: auto;">Select existing definition</legend>
+            
+            <table>
+                <tr>
+                    <td colspan="2">
+                        <select size="10" ng-model="existingDefinitionsModel.selectedDefinition" ng-options="definition as definition.getName() for definition in existingDefinitionsModel.definitions | orderBy:'getName()'" style="width: 100%" ng-change="existingDefinitionsModel.name = 'New ' + existingDefinitionsModel.selectedDefinition.getName() + ' form'"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <br />
+                        Name:
+                    </td>
+                    <td>
+                        <input type="text" ng-model="existingDefinitionsModel.name" style="margin-left: 5px" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Description:
+                    </td>
+                    <td>
+                        <input type="text" ng-model="existingDefinitionsModel.description" style="margin-left: 5px" />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <br />
+                        <input type="button" ng-click="createNewFormForDefinition()" ng-disabled="!existingDefinitionsModel.selectedDefinition" value="Create" style="margin-top: 5px" />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="color: red">
+                        <br />
+                        {{existingDefinitionsModel.errorMessage}}
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+        
+    </div>
+    
+    <div ng-if="model.selectedOption.ordinal === 3">
+        <fieldset style="border: 1px solid silver; border-radius: 2px; margin: 8px; padding: 8px;">
+            <legend style="border-bottom: 0; font-size: small; line-height: normal; margin-bottom: auto; padding: 2px; width: auto;">Select existing form</legend>
+            
+            <table>
+                <tr>
+                    <td>
+                        Definition
+                    </td>
+                    <td>
+                        Form
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <select size="10" ng-model="existingFormsModel.selectedDefinition" ng-options="definition as definition.getName() for definition in existingFormsModel.definitions | orderBy:'getName()'" ng-change="existingFormsModel.selectedForm = undefined"></select>
+                        <br />
+                    </td>
+                    <td>
+                        <select size="10" ng-model="existingFormsModel.selectedForm" ng-options="form as getName(form) for form in existingFormsModel.forms | orderBy:'getName()' | filter:filterByDefinition"></select>
+                        <br />
+                    </td>
+                </tr>
+            </table>
+            
+            <input type="button" ng-click="editExistingForm()" ng-disabled="!(existingFormsModel.selectedDefinition && existingFormsModel.selectedForm)" value="Edit" style="margin-top: 5px" />
+
+        </fieldset>
+    </div>
+    
+    <div ng-if="model.selectedOption.ordinal === 4">
+        <fieldset style="border: 1px solid silver; border-radius: 2px; margin: 8px; padding: 8px;">
+            <legend style="border-bottom: 0; font-size: small; line-height: normal; margin-bottom: auto; padding: 2px; width: auto;">Select existing screen</legend>
+            
+            <table>
+                <tr>
+                    <td>
+                        Screen
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <select size="10" ng-model="existingScreensModel.selectedScreen" ng-options="screen as getName(screen) for screen in existingScreensModel.screens | orderBy:'getName()'"></select>
+                        <br />
+                    </td>
+                </tr>
+            </table>
+            
+            <input type="button" ng-click="editExistingScreen()" ng-disabled="!(existingScreensModel.selectedScreen)" value="Edit" style="margin-top: 5px" />
+
+        </fieldset>
+    </div>
+</div>

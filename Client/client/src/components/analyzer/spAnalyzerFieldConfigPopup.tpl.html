@@ -1,0 +1,21 @@
+﻿<div class="spAnalyzerFieldConfigDialog-view" sp-moveable-modal sp-set-focus-dialog-input>
+    <div class="modal-header">
+        <h6>{{model.field.name}}</h6>
+    </div>
+    <div class="modal-body">
+        <div class="edit-form-control-container">
+            <div class="edit-form-title">
+                <label class="form-label">Picker Report: </label>
+            </div>
+            <div class="edit-form-value">
+                <select ng-model="model.selectedPickerReport" ng-options="rpt as rpt.name for rpt in model.typeResourcePickers" ng-disabled="disabled">
+                    <option value="" ng-style="selectOptionStyle">[Default]</option>
+                </select>
+            </div>
+        </div>
+        <uib-alert ng-repeat="error in model.errors" type="error.type">{{error.msg}}</uib-alert>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn" ng-click="ok()">OK</button><button type="button" class="btn" ng-click="cancel()">Cancel</button>
+    </div>
+</div>

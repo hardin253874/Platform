@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html>
+<html ng-app="desktop-app">
+
+<!--//
+<%=grunt.config('meta.banner')%>
+//-->
+
+<head>
+    <!--
+    <%=grunt.config('generatedHtmlFileHeader')%>
+    -->
+    <title>ReadiNow</title>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" type="image/png" href="assets/images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="assets/lib/angular-grid/ng-grid.css" />
+    <link rel="stylesheet" type="text/css" href="assets/lib/codemirror/codemirror.css" />
+    <link rel="stylesheet" type="text/css" href="assets/lib/codemirror/show-hint.css" />
+    <link rel="stylesheet" type="text/css" href="assets/lib/jquery-ui/css/jquery-ui.css" />
+    <link rel="stylesheet" type="text/css" href="assets/<%= grunt.config('pkg.name') %>.css?<%=grunt.config('buildVer')%>" />
+
+    <!-- turn off user scale to remove the delay with clicks. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, minimal-ui" />
+
+    <!-- If the user adds to the home screen on IOS it will be a full screen app -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+
+
+    <link rel="apple-touch-icon" href="assets/images/favicon.png" />
+    <link rel="apple-touch-icon" href="assets/images/favicon.png" sizes="76x76" />
+    <link rel="apple-touch-icon" href="assets/images/favicon.png" sizes="120x120"/>
+    <link rel="apple-touch-icon" href="assets/images/favicon.png" sizes="152x152"/>
+    <link rel="apple-touch-startup-image" href="assets/images/splash_iphone.png" />
+    <!-- TODO add the size specific icons -->
+
+    <meta name="HandheldFriendly" content="True">
+
+    <!-- stop caching -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+
+</head>
+<body data-client-version="<%=grunt.config('buildLabel')%>"
+      data-server-version="{{appData.settings.initialSettings.platformVersionDisplay}}">
+
+<!--
+    Ideally we'd only have the ng-include as that template includes the ui-view
+    that we care about. But that doesn't work - we don't get the initial state.
+    This rigmarole seems to resolve that.
+-->
+<div ng-switch="!!appData.layoutTemplate">
+
+    <div ng-switch-when="true">
+        <div ng-include="appData.layoutTemplate"></div>
+    </div>
+
+    <div ng-switch-default>
+
+        <div class="app-splash" ng-include="'navigation/loading.tpl.html'">
+            <div class="app-splash-bg"></div>
+            <img class="splashlogo" src="assets/images/logo_RN.svg" width="215" />
+        </div>
+
+        <div ui-view></div>
+    </div>
+</div>
+
+<%
+var isDEV = grunt.config('DEV');
+var isDesktop = true;
+var pkgName = grunt.config.get('pkg.name');
+var version = grunt.config('buildVer');
+
+var addScript = function addScript(path) {
+    print('<script type="text/javascript" src="' + path + '"></script>\n');
+}
+
+if (!isDEV) {
+    addScript('js/libs.min.js');
+    addScript('js/' + pkgName + '_components.min.js?' + version);
+    addScript('js/' + pkgName + '_app.min.js?' + version);
+    addScript('js/' + pkgName + '_app2.min.js?' + version);
+    if (isDesktop) {
+        addScript('js/' + pkgName + '_builders.min.js?' + version);
+    }
+} else {
+    addScript('js/libs.js');
+    addScript('js/' + pkgName + '_components.js?' + version);
+    addScript('js/' + pkgName + '_app.js?' + version);
+    addScript('js/' + pkgName + '_app2.js?' + version);
+    if (isDesktop) {
+        addScript('js/' + grunt.config.get('pkg.name') + '_builders.js?' + version);
+    }
+}
+%>
+
+<script>
+    console.log('APP LOADING: ' + window.location.href);
+    //
+    // Bootstrap angular after we load the optional script files
+    //
+    //TEMP removal as we are seeing some obscure issues when manually bootstrapping
+    //        angular.element(document).ready(function() {
+    //            angular.bootstrap(document, ['app', 'app-builders'])});
+
+    angular.module('desktop-app', ['app', 'app-builders']);
+
+    angular.module('sp.app.settings').value('clientVersion', '<%= grunt.config("buildVer") %>');
+
+</script>
+
+<sp-diagnostics></sp-diagnostics>
+<sp-feedback></sp-feedback>
+</body>
+</html>

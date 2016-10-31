@@ -1,0 +1,45 @@
+﻿<div class="ex-input">
+    <table>
+        <tr>
+            <td><img src="assets/images/icon_function.png"/></td>
+            <td style="padding: 0;">
+                <div class="ex-cell-editor" sp-droppable="model.dropOptions">
+                    <textarea ui-codemirror="model.editorOptions" ng-model="model.selectedCell.expression" rows="1"></textarea>
+                </div>
+            </td>
+        </tr>
+        <tr ng-if="model.selectedCell.error || model.selectedCell.result.error">
+            <td style="padding: 0 0 0 4px;"><img src="assets/images/icon_error.png"/></td>
+            <td><span style="color: red; padding: 5px;">{{model.selectedCell.error || model.selectedCell.result.error}}</span></td>
+        </tr>
+    </table>
+</div>
+<div class="ex-container" sp-busy-indicator-popup="model.busyIndicator">
+    <div class="ex-row-hdr-container">
+        <div class="ex-row-hdr">
+            <div class="ex-row-hdr-item"
+                 ng-repeat="row in model.visibleRows track by $index"
+                 ng-style="model.getRowStyle(row)">{{row}}</div>
+        </div>
+    </div>
+    <div class="ex-row-container">
+        <div class="ex-col-hdr-container">
+            <div class="ex-col-hdr">
+                <div class="ex-col-hdr-item"
+                     ng-repeat="col in model.visibleCols track by $index"
+                     ng-style="model.getColumnStyle(col,true)">{{model.getColumnText(col)}}</div>
+            </div>
+        </div>
+        <div class="ex-cells">
+            <div ng-style="model.getStyle()" ng-init="model.init()">
+                <div ng-repeat="row in model.visibleRows track by $index" class="ex-row" row-id="{{row}}">
+                    <div ng-repeat="col in model.visibleCols track by $index" class="ex-col">
+                        <div sp-draggable="model.dragOptions" sp-draggable-data="[row,col]" ng-mousedown="model.preselect(row, col)" class="ex-cell-container">
+                            <sp-expression-cell cell="model.cells[row][col]" ng-click="model.select(row, col)"></sp-expression-cell>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

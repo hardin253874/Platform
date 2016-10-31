@@ -1,0 +1,101 @@
+<div ng-controller="FileUploadCtrl">
+	
+    
+    <!-- Spreadsheet upload -->
+    <span>
+        <h5>Spreadsheet upload</h5>
+        <sp-file-upload upload-session="uploadSession" message="message" filter="{{spreadSheetFilter}}" 
+                        callback="onFileUploadComplete"
+                        busy-indicator-options="busyIndicatorOptions" ></sp-file-upload>
+    </span>
+    <br/>
+    <br/>
+    Progress: {{uploadSession.progress}}%
+    <br/>
+    Message: {{message}}
+    <br/>
+    fileName: {{fileName}}
+    <br/>
+    fileHash: {{fileId}}
+   
+    <!-- Image upload -->
+    <span>
+        <h5>Image upload</h5>
+        <sp-file-upload upload-session="imageUploadSession" 
+                        message="imageUploadMessage" 
+                        filter="{{imageUploadFilter}}" 
+                        callback="imageUploadOnFileUploadComplete"
+                        busy-indicator-options="imageUploadBusyIndicatorOptions" 
+                        image-preview-src="imageUploadImagePreviewSrc" ></sp-file-upload>
+        
+    </span>
+    <br/>
+    <!-- proportional image size -->
+    <img src="{{imageUploadImagePreviewSrc}}"/><!-- style="width:150px; height:150px; position: relative; margin: 0 auto; border:1px solid lightgrey;"-->   
+    
+    <!-- fixed image size -->
+    <!-- <div width="150px;" height="150px;" style="border:1px solid lightgrey; min-height:150px; max-width:150px; vertical-align: middle;">
+        <img src="{{imageUploadImagePreviewSrc}}" width="150px;" height="150px;" style="max-width: 100%; max-height: 100%;"   />
+    </div>-->
+
+    <br/>
+    <br/>
+    Progress: {{imageUploadSession.progress}}%
+    <br/>
+    Message: {{imageUploadMessage}}
+    <br/>
+    fileName: {{imageUploadFileName}}
+    <br/>
+    fileHash: {{imageUploadFileId}}
+    
+    <!-- File upload -->
+    <span>
+        <h5>File upload</h5>
+        <sp-file-upload upload-session="fileUploadSession" 
+                        message="fileUploadMessage" 
+                        callback="fileUploadOnFileUploadComplete"
+                        busy-indicator-options="fileUploadBusyIndicatorOptions" 
+                        image-preview-src="fileUploadImagePreviewSrc" ></sp-file-upload>
+    </span>
+    <br/>
+    <br/>
+    Progress: {{fileUploadSession.progress}}%
+    <br/>
+    Message: {{fileUploadMessage}}
+    <br/>
+    fileName: {{fileUploadFileName}}
+    <br/>
+    fileHash: {{fileUploadFileId}}
+
+
+    <br />
+    <br />
+
+    <span>
+        <h5>Alternative text on button</h5>
+        <sp-file-upload upload-session="fileUploadSession"
+                        message="fileUploadMessage"
+                        callback="fileUploadOnFileUploadComplete"
+                        busy-indicator-options="fileUploadBusyIndicatorOptions"
+                        image-preview-src="fileUploadImagePreviewSrc"
+                        button-label="'Add attachment'"></sp-file-upload>
+    </span>
+
+
+    <br />
+    <br />
+
+    <span>
+        <h5>Image on button </h5>
+        <sp-file-upload upload-session="fileUploadSession"
+                        message="fileUploadMessage"
+                        callback="fileUploadOnFileUploadComplete"
+                        busy-indicator-options="fileUploadBusyIndicatorOptions"
+                        image-preview-src="fileUploadImagePreviewSrc"
+                        button-label="'Add attachment'"
+                        button-image-url="'assets/images/16x16/Add.png'">
+        </sp-file-upload>
+    </span>
+
+
+</div>

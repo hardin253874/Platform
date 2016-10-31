@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body ng-app="app">
+
+<script type="text/ng-template" id="login.tpl.html">
+    <div>
+        <p class="login-form">login</p>
+        <a ui-sref="home">home</a>
+    </div>
+</script>
+<script type="text/ng-template" id="home.tpl.html">
+    <div>
+        <p>home</p>
+        <a ui-sref="login">login</a>
+    </div>
+</script>
+
+<h1>Testing App States</h1>
+
+<div ui-view></div>
+
+
+<script src="../../lib/angular/angular.js"></script>
+<script src="../../lib/angular-ui-router/angular-ui-router.js"></script>
+
+<script>
+    'use strict';
+
+    angular.module('app', ['ui.router'])
+            .config(function ($stateProvider, $urlRouterProvider) {
+
+                $urlRouterProvider.when('/', '/login');
+
+                $stateProvider.state('login', {
+                    url: '/login',
+                    templateUrl: 'login.tpl.html',
+                    controller: function ($scope) {
+                        console.log('login: ctor');
+                        $scope.$on('$destroy', function () { console.log('login: $destroy'); });
+                    }
+                });
+
+                $stateProvider.state('home', {
+                    url: '/home',
+                    templateUrl: 'home.tpl.html',
+                    controller: function ($scope) {
+                        console.log('home: ctor');
+                        $scope.$on('$destroy', function () { console.log('home: $destroy'); });
+                    }
+                });
+
+            })
+            .run(function () {
+                console.log('app initialised');
+            });
+
+</script>
+
+</body>
+</html>

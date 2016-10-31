@@ -1,0 +1,24 @@
+<div class="home-view container-fluid" ng-controller="HomeController">
+	
+
+    <div ng-switch="entity.typeAlias">
+
+        <div ng-switch-when="console:topMenu">
+
+            <h1 title="{{entity}}">{{entity.name}}</h1>
+        </div>
+
+
+        <div ng-switch-when="console:navSection">
+        </div>
+
+        <div ng-switch-when="core:folder">
+        </div>
+
+        <div ng-switch-default>
+
+            <h1 title="{{entity}}">{{entity.name}}</h1>
+
+        </div>
+    </div>
+</div>

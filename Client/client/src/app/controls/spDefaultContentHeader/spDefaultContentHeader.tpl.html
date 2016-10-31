@@ -1,0 +1,9 @@
+
+
+<div ng-controller="defaultContentHeaderController" ng-style="navBarStyle">
+    <div ng-if="isMobile || isTablet" class="layout-thumb content-header" ng-style="navBarStyle">
+        <a ng-click="toggleNavigation()"><img src="assets/images/mobile/mobile_toolbar_toggle_leftnav.png" /></a>
+        <span class="form-title" ng-style="titleStyle">{{currentNavItem.name}}</span>
+    </div>
+       
+</div>

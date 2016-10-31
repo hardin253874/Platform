@@ -1,0 +1,177 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+.workflow-run-view {
+
+    padding: 0 30px 0;
+
+    .header {
+
+        .title {
+            display: inline-block;
+            vertical-align: middle;
+
+            &.dirty:after {
+                content: '*';
+            }
+
+            input {
+                height: inherit;
+                font-size: 20px;
+                margin: -5px -2px;
+            }
+
+            hi {
+                padding:0;
+                margin:0;
+                height: auto;
+                line-height: 26px;
+            }
+        }
+
+        button.btn-run {
+            padding-right: 20px;
+            margin-left: 10px;
+            background-color: @workflowBg;
+            border: 1px solid darken(@workflowBg, 5%);
+            border-radius: 3px;
+            color: #fff;
+            background-image: url('../assets/images/arrow_folder_active_closed.png');
+            background-position: right 10px center;
+            background-repeat: no-repeat;
+            height:26px;
+            min-width:70px;
+            text-transform: uppercase;
+            font-weight: 600;
+
+            &:hover {
+                background-color: lighten(@workflowBg, 5%);
+            }
+
+            &:focus {
+                background-color: darken(@workflowBg, 5%);
+                border-color: darken(@workflowBg, 5%);
+            }
+        }
+    }
+
+    .body {
+        overflow: auto;
+        position: relative;
+        color: #666;
+
+        .selectResourceId {
+            padding: 8px 0px;
+            border-bottom:2px solid #777;
+
+            ul.form-sections {
+                padding: 5px 0 3px;
+                font-size: .95em;
+                vertical-align: top;
+                margin-bottom:0;
+
+                li {
+                    list-style: none;
+                    white-space: nowrap;
+                }
+
+                ul.form-section-controls {
+                    padding:0;
+                    padding-top: 5px;
+                    margin-top: 5px;
+                    border-top: 1px dotted #ccc;
+                    color: #666;
+                    font-size: 1.2em;
+
+                    li {
+                        list-style: none;
+                        white-space: nowrap;
+                    }
+                }
+
+                .run-argument-label {
+                    min-width: 10em;
+                }
+                
+                .run-argument-value {
+
+                }
+            }
+
+            input, select {
+                box-sizing: border-box;
+                font-size: 1em;
+            }
+
+            .run-options {
+                input {
+                    width: inherit;
+                    vertical-align: middle;
+
+                    & + span {
+                        margin-right: 10px;
+                    }
+                }
+                label {
+                    vertical-align:middle;
+                    margin-bottom:0;
+                    margin-right:7px;
+                }
+            }
+        }
+
+        .validation-section {
+            .validation-messages {
+                margin-top: 10px;
+                color: red;
+
+                li {
+                    list-style-type: square;
+                }
+            }
+        }
+
+    }
+
+
+
+    .workflow-run-results {
+
+        .form-search {
+            height: 30px;
+            padding-top:2px;
+
+            span {
+                color: @pointRed;
+                vertical-align:middle;
+                display:inline-block;
+            }
+
+            .refreshButton {
+                .btn_lighten;
+                height:26px;
+                padding: 0 7px;
+                line-height: initial;
+                color: #7d7d7d;
+                background-color: transparent;
+                border: none;
+                box-shadow: none;
+
+                img {
+                    margin-top:-3px;
+                }                
+            }
+        }
+
+        table {
+            background-color: @gray_E;
+
+            thead {
+
+                tr > th {
+                    border-right: 1px solid @gray_D;
+                    font-weight: normal;
+                    border-bottom: 0;
+                }
+            }
+        }
+    }
+}

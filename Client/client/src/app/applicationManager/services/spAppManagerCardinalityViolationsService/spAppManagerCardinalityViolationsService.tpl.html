@@ -1,0 +1,25 @@
+﻿<div class="appManager-cardinality" sp-moveable-modal sp-set-focus-dialog-input>
+
+    <div class="modal-header">
+        <h6>{{model.title}}</h6>
+    </div>
+    <div class="modal-body overflowModalBody">
+        <div>
+            <div class="details">
+                <div class="detailBlurb">
+                    The following relationships will not be published as part of this application due to cardinality violations.
+                </div>
+            </div>
+            <div ng-grid="gridOptions" class="entity-data"></div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <table style="width: 100%">
+            <tr>
+                <td class="narrow" style="white-space: nowrap">
+                    <button type="button" class="btn" ng-click="ok()">OK</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

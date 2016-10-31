@@ -1,0 +1,17 @@
+<div class="summariseoptiondialog-view" sp-moveable-modal sp-set-focus-dialog-input>
+
+    <div class="modal-header">
+        <h6>Summarise</h6>
+    </div>
+    <div class="modal-body">
+        <p>Select how to summarise all columns in report</p>
+        <button class="btn_lighten" ng-click="showAdvance()">{{buttonText}}</button>
+        <div ng-show="showAdvancedOption" class="AdvanceOptionarea">
+            <summarise-tree treeitems="model.treeNode"></summarise-tree>
+        </div>
+        <div class="gridStyle" ng-grid="gridOptions"></div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" ng-click="removeSummarise()" ng-disabled="!model.isSummarised">Remove Summarise</button><button class="btn" ng-click="ok()">OK</button><button class="btn" ng-click="cancel()">Cancel</button>
+    </div>
+</div>

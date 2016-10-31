@@ -1,0 +1,119 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+
+.resourceEndpointView {
+    position: relative;
+    width: 100%;
+
+    .val {
+        color:darkred;
+        font-style:italic;
+    }
+
+    .address-edit {
+        white-space:nowrap;
+    }
+    .address-edit input {
+        display:inline-block;
+    }
+
+    .connector-label {
+        color:#999;
+    }
+
+    .table {
+        display:table;
+        width:auto;
+    }
+    .row {
+        display:table-row;
+    }
+    .cell {
+        display:table-cell;
+        padding:0 1em 0 0;
+    }
+
+    table.scrollable {
+        display: table;
+        border:solid 1px #ccc;
+        padding-bottom:1em;
+    }
+    table.scrollable thead {
+        border-bottom:solid 1px #ccc;
+        background:#eee;
+    }
+    table.scrollable thead, table.scrollable tbody {
+        float: left;
+        width: 100%;
+    }
+    table.scrollable tbody {
+        overflow: auto;
+        height: 150px;
+    }
+    table.scrollable tr {
+        width: 100%;
+        display: table;
+        text-align: left;
+    }
+    table.scrollable th, table.scrollable td {
+        width: 33%;
+        padding:3px;
+    }
+    h1 {
+        margin:0.8em 0 0.5em 0;
+        color: #31a89f;
+        border-bottom: solid 1px #91d1cc;
+        text-transform: uppercase;
+        font-size: 16px !important;
+        font-family: Ubuntu;
+        white-space: nowrap;
+    }
+
+    .action-panel {
+        position: absolute;
+        right: -35px;
+        left: -35px;
+        height: 30px;
+        padding-right: 35px;
+        padding-bottom: 0px;
+        text-align: right;
+
+        button {
+            width: 30px;
+            height: 30px;
+            padding: inherit;
+            line-height: inherit;
+            border: none;
+            background-color: transparent;
+            border-radius: 0;
+
+            &:hover, &:active {
+                color: #2b2b2b;
+                text-decoration: none;
+                -webkit-transition: background-color 0.1s linear;
+                transition: background-color 0.1s linear;
+                background-color: #f0f0f0;
+                border: none;
+                outline: none;
+                opacity: 1;
+            }
+
+            & + button {
+                margin-left: -2px;
+            }
+
+            &[title="Close"], &[title="Cancel"] {
+                width: 35px;
+                height: 30px;
+                background-color: #f8dcdb;
+                border-radius: inherit;
+                margin-right: -35px;
+
+                &:hover, &:active {
+                    background-color: #f29590;
+                    opacity: 1;
+                }
+            }
+        }
+    }
+
+}

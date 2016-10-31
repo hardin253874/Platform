@@ -1,0 +1,239 @@
+// Copyright 2011-2016 Global Software Innovation Pty Ltd
+.workflow-properties-form {
+    .layout-container;
+    overflow: auto;
+    padding: 10px 20px 0;
+
+    .sp-tablet-device & {
+        button, select, input {
+            height: inherit;
+            min-height: 21px;
+            vertical-align: top;
+        }
+    }
+
+    .tabs {
+        margin: 0;
+        padding: 0;
+        border-bottom: 1px solid darken(@workflowpropertyBg, 30%);
+
+        ul {
+            margin: inherit;
+            list-style: none;
+            padding: 0;
+
+            li {
+                display: block;
+                float: left;
+                padding: 3px 15px;
+                border: 1px solid darken(@workflowpropertyBg, 7%);
+                border-bottom: 0px;
+                border-top-left-radius: 2px;
+                border-top-right-radius: 2px;
+                background-color: darken(@workflowpropertyBg, 5%);
+                cursor: pointer;
+                margin-bottom: -1px;
+                color: #414141;
+
+                &:hover {
+                    background-color: darken(@workflowpropertyBg, 10%);
+                }
+
+                &.active {
+                    background-color: #414141;
+                    border: 1px solid rgba(0, 0, 0, 0);
+                    color: @white;
+
+                    &:hover {
+                        background-color: darken(#414141, 10%);
+                    }
+                }
+            }
+        }
+    }
+
+    .tab {
+        padding-top: 5px;
+    }
+
+    .form-control {
+        display: inline-block;
+        width: 150px;
+        font-size: 1em;
+        padding: 0;
+        padding-left: 2px;
+        border-radius: 2px;
+        border: 1px solid #abadb3;
+    }
+
+    .form-horizontal {
+
+        button {
+            .btn_lighten;
+            height: 24px;
+            padding: 0px 4px;
+            vertical-align: middle;
+        }
+
+        .form-group-container {
+            margin: 0;
+            padding: 2px;
+            background-color: darken(@workflowpropertyBg, 12%);
+            box-shadow: 0px 1px 2px rgba(0,0,0,0.2) inset;
+            border-radius: 3px;
+            margin-bottom: 2px;
+            width: 100%;
+        }
+
+        .form-group.ng-scope {
+            background-color: inherit;
+            box-shadow: inherit;
+            padding: 0 2px;
+        }
+
+        .form-group {
+            margin: 0 0 3px 0;
+        }
+
+        .control-label, label {
+            padding-top: 0;
+            width: 150px;
+            vertical-align: middle;
+            text-align: left;
+        }
+
+        .form-control-stack {
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        input[type="radio"] {
+            width: auto;
+            margin: 0;
+            display: inline-block;
+            vertical-align: top;
+            margin: 0;
+            padding: 0;
+        }
+
+        .checkbox {
+            min-height: inherit;
+            padding-top: inherit;
+            padding-left: inherit;
+            vertical-align: middle;
+            display: inline-block;
+            color: #666;
+
+            input[type="checkbox"] {
+                margin-left: inherit;
+                float: inherit;
+                vertical-align: text-bottom;
+            }
+
+            lable {
+                vertical-align: middle;
+            }
+
+            & + .checkbox {
+                margin-left: 5px;
+            }
+        }
+
+        &.divide, .divide {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed #c0c0c0;
+        }
+
+        fieldset {
+            legend {
+                margin-bottom: 5px;
+                font-size: 1.5em;
+                border-bottom: 1px solid darken(@workflowpropertyBg, 15%);
+            }
+        }
+    }
+
+    .btn-icon {
+        img {
+            background-color: #414141;
+            opacity: .95;
+            padding: 5px;
+            border-radius: 2px;
+
+            &:hover {
+                background-color: #333;
+                cursor: pointer;
+                opacity: 1;
+            }
+        }
+    }
+
+    .workflow-expression-control {
+        position: relative;
+        display: inline-block;
+
+
+        .expression-editor-control {
+            display: inline-block;
+            width: 200px;
+            vertical-align: middle;
+
+            .CodeMirror {
+                min-height: 28px;
+            }
+        }
+
+        .validation-messages {
+            width: 16px;
+            display: inline-block;
+        }
+
+        .expression-input-control {
+            position: relative;
+            display: inline-block;
+            width: 200px;
+            vertical-align: middle;
+
+            .expression-editor-control {
+                display: inline-block;
+                width: 100%;
+                vertical-align: middle;
+            }
+
+            .custom-validation-messages {
+                display: inline-block;
+                position: absolute;
+                right: 0;
+                width: 16px;
+                z-index: 999;
+            }
+        }
+    }
+
+    .sp-workflow-timespan-input {
+        display: inline;
+
+        input {
+            width: 48px;
+            text-align: center;
+        }
+
+        select {
+            margin-left: 5px;
+            width: 70px;
+        }
+        // the following is needed to undo the global [class*="span"] setting.... to be looked at
+        float: none;
+        margin: 0;
+        padding: 0;
+    }
+    // activity type specific forms
+    .workflow-activity-form {
+        form {
+            & > div {
+                margin-bottom: 3px;
+            }
+        }
+    }
+}

@@ -1,0 +1,126 @@
+/**
+   * This is the main application stylesheet. It should include or import all
+   * stylesheets used throughout the application as this is the only stylesheet in
+   * the Grunt configuration that is automatically processed.
+   * 
+   * Copyright 2011-2014 Global Software Innovation Pty Ltd
+   */
+
+//@import '../src/less/font-awesome';
+
+// import our bootstrap customizations and overrides
+//@import '../src/less/customBootstrap/bootstrap';
+@import "../../lib/bootstrap/less/variables.less";
+
+// import our app side variables
+@import '../../src/less/variables';
+
+// don't want to be using these.... controls should be standalone
+//@import '../src/app/app';
+//@import '../src/app/controls/controls';
+//@import '../src/components/reports/spReport';
+//@import '../src/components/reports/spReportMobile';
+
+@import '../../src/app/controls/spSearchControl/spSearchControl';
+
+/* apply a natural box layout model to all elements */
+*, *:before, *:after {
+    box-sizing: border-box;
+}
+
+html, body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    background-color: lightblue;
+}
+
+body > .main {
+    flex: 1 1 100%;
+    overflow-y: auto;
+    min-height: 0;
+
+    display: -webkit-flex;
+    display: flex;
+    flex-direction: row;
+}
+
+body > .debug-pane {
+    margin: 2px;
+    padding: 3px;
+    border: 1px solid #cccc33;
+    border-radius: 2pt;
+    overflow-y: scroll;
+
+    flex: 1 1 auto;
+
+    background-color: goldenrod;
+}
+
+.debug-pane > pre {
+    margin: 0;
+    white-space: pre-wrap;
+    height: 100%;
+}
+
+.debug-button {
+    float: right;
+    height: 1em;
+}
+
+body > header {
+    margin: 2px;
+    padding: 3px;
+    border: 1px solid #cccc33;
+    border-radius: 2pt;
+
+    background-color: gray;
+    min-height: 2em;
+}
+
+body > footer {
+    margin: 2px;
+    padding: 3px;
+    border: 1px solid #cccc33;
+    border-radius: 2pt;
+
+    background-color: gray;
+    min-height: 1.5em;
+}
+
+.main > .content {
+    margin: 2px;
+    padding: 3px;
+    border: 1px solid #cccc33;
+    border-radius: 2pt;
+    background: #dddd88;
+    -webkit-flex: 3 1 60%;
+    flex: 3 1 80%;
+    order: 2;
+}
+
+.main > nav {
+    margin: 2px;
+    padding: 3px;
+    border: 1px solid #8888bb;
+    border-radius: 2pt;
+    background: #ccccff;
+    flex: 1 6 20%;
+    order: 1;
+
+    overflow-y: auto;
+    min-height: 0px;
+}
+
+.search-control-container {
+    float: right;
+    width: 200px;
+    padding: 5px;
+    border: 1px solid grey;
+}
+
+.search-control-container-busy-button {
+    margin-top: 10px;
+}
+

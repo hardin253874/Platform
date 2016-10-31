@@ -1,0 +1,54 @@
+<div class="relationshipProperties-base">
+
+    <div>
+        <sp-control-on-form form-data="model.formData" form-control="model.choiceNameControl" form-mode="model.formMode" is-read-only="model.isReadOnly" is-in-test-mode="model.isInTestMode">
+
+        </sp-control-on-form>
+    </div>
+    <div ng-show="model.isFormControl">
+        <sp-control-on-form form-data="model.formControlData" form-control="model.choiceDisplayNameControl" form-mode="model.formMode" is-read-only="model.isReadOnly" is-in-test-mode="model.isInTestMode">
+
+        </sp-control-on-form>
+    </div>
+    <div ng-if="!options.isFormControl">
+        <sp-control-on-form form-data="model.formData" form-control="model.choiceDescriptionControl" form-mode="model.formMode" is-read-only="model.isReadOnly" is-in-test-mode="model.isInTestMode">
+
+        </sp-control-on-form>
+    </div>
+
+    <div ng-if="options.isFormControl">
+        <sp-control-on-form form-data="model.formControlData" form-control="model.choiceDescriptionControl" form-mode="model.formMode" is-read-only="model.isReadOnly" is-in-test-mode="model.isInTestMode">
+
+        </sp-control-on-form>
+    </div>
+
+    <div style="margin-top:8px;">
+        <label>Choice Fields</label>
+        <span ng-repeat="option in model.choiceFieldOptions">
+            <input type="radio" name="option" ng-model="$parent.model.selectedOption" ng-value="option" ng-disabled="!isNewRelationship" />{{option.name}}
+        </span>
+    </div>
+    <div ng-show="isPickerVisible()" class="edit-form-control-container">
+        <div class="edit-form-title">
+            <label></label>
+        </div>
+        <div class="edit-form-value">
+            <sp-inline-relationship-picker options="model.choiceValuePickerOptions" />
+        </div>
+    </div>
+    <div style="margin-top:8px;">
+        <label>Choice Values</label>
+        <div class="choicetable">
+            <div>
+                <button ng-click="addChoiceFieldValue()" ng-disabled="isNewButtonDisabled()"><img src="assets/images/icon_new.png" /></button>
+                <!--  <button ng-click="editChoiceFieldValue()"  ng-disabled="isButtonDisabled()"><img src="assets/images/icon_edit.png"/></button>-->
+                <button ng-click="moveUpChoiceFieldValue()" ng-disabled="isUpButtonDisabled()"><img src="assets/images/arrow_up.png" /></button>
+                <button ng-click="moveDownChoiceFieldValue()" ng-disabled="isDownButtonDisabled()"><img src="assets/images/arrow_down.png" /></button>
+                <button ng-click="deleteChoiceFieldValue()" ng-disabled="isDeleteButtonDisabled()"><img src="assets/images/icon_remove.png" /></button>
+            </div>
+            <div class="choiceValuesGrid dataGridHeight" ng-grid="model.choiceValuesGridOptions">
+            </div>
+            <div class="note">Order from minimum to maximum.</div>
+        </div>
+    </div>
+</div>

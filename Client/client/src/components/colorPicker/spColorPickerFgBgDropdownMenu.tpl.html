@@ -1,0 +1,8 @@
+<ul class="spColorPicker-view fgBgColorDropdownMenu dropdown-menu ">
+	
+    <li ng-repeat="color in model.availableColors">
+        <a ng-click="selectColor(color, true)" class="fgBgDropdownMenuItem">
+            <div class="fgBgColorDropdownItem" ng-style="getCssFgBgColor(color)">{{color.name}}</div>                            
+        </a>
+    </li>
+</ul>    

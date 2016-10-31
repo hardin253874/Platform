@@ -1,0 +1,38 @@
+<div ng-class="{analyzerField: !isEditMode, analyzerFieldEditMode: isEditMode}">
+
+    <div class="analyzerFieldContainer">
+        <div class="analyzerFieldLeftContainer" sp-draggable="dragOptions" sp-draggable-data="field">
+            <div class="analyzerFieldTable">
+                <div class="analyzerFieldTableCell">
+                    <div class="analyzerFieldText" popover-popup-delay="500" popover-append-to-body="true"
+                         popover-trigger="mouseenter" popover-placement="top">{{field.name}}
+                    </div>
+                    <span class="analyzerFieldText">:</span>
+                </div>
+            </div>
+        </div>
+        <div class="analyzerFieldRightContainer">
+            <div class="analyzerFieldTable">
+                <div class="analyzerFieldTableCell">
+                    <select class="operatorSelect" ng-options="o as o.name for o in field.operators track by o.id"
+                            ng-model="model.selectedOperator" ng-change="onFieldOperationChanged()"/>
+                    <div class="valueEditorContainerStyle">
+                        <sp-value-editor class="valueEditorStyle" type="getFieldArgType()" value="field.value"
+                                         options="model.valueEditorOptions"
+                                         ng-show="showValueControls()"></sp-value-editor>
+                    </div>
+
+                    <button type="button" class="analyzerRemoveFieldButton" ng-show="isEditMode"
+                            ng-click="removeAnalyzerField()">
+                        <img src="assets/images/remove_r.png" class="verticalAlignMiddle"/>
+                    </button>
+                    <button type="button" class="analyzerConfigFieldButton"
+                            ng-if="isEditMode && (field.operatorsType === 'InlineRelationship' || field.operatorsType === 'StructureLevels')"
+                            ng-click="configureAnalyzerField()">
+                        <img src="assets/images/settings.png" class="verticalAlignMiddle"/>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

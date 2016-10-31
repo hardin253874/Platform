@@ -1,0 +1,23 @@
+<div ng-if="showButtons()"
+     class="inlineRelPicker-buttonGroup"
+     style="position: absolute; z-index: 1; left: 64px;">
+
+    <button class="btn inlineRelPicker-button" ng-show="options.newButtonInfo.singleOptionAvailable" title="New"
+            uib-popover="{{newBtnTooltip}}" popover-trigger="mouseenter" popover-placement="top"
+            ng-click="singleOptionClick()">
+        <img src="assets/images/icon_new.png"/>
+        New
+    </button>
+    <button class="btn inlineRelPicker-button" ng-show="options.newButtonInfo.multiOptionsAvailable"
+            uib-popover="{{newBtnTooltip}}" popover-trigger="mouseenter" popover-placement="top" title="New"
+            name="multiOptionsButton"
+            sp-context-menu="options.newButtonInfo.contextMenu"
+            sp-context-menu-placement="alignleft"
+            sp-context-menu-trigger="leftclick"
+            sp-context-menu-is-open="isMenu1Open"
+            sp-context-menu-append-to-body>
+        <img src="assets/images/icon_new.png"/>
+        New
+    </button>
+</div>
+<sp-report options="options"></sp-report>

@@ -1,0 +1,107 @@
+<div id="diagnostics" style="position: absolute; top: 50%; left: 50%; background-color: lightgray; opacity: 0.5; border: 1px solid gray; border-radius: 3px; cursor: move; display: none">
+	
+    <div style="margin: 5px;">
+        <table style="width: 100%">
+            <tr>
+                <td colspan="2" style="text-align: center">
+                    <b>Diagnostics Window</b>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <br />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Current Scope Count:
+                </td>
+                <td>
+                    &nbsp;<b>{{scopeCount}}</b>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Active Watchers Count:
+                </td>
+                <td>
+                    &nbsp;<b>{{watcherCount}}</b>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    $digest cycle time (ms):
+                </td>
+                <td>
+                    &nbsp;<b>{{cycleTime}}</b>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Instrument watchers:
+                </td>
+                <td>
+                    <input type="checkbox" ng-model="instrument" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Watchers:
+                </td>
+                <td>
+                    <input type="button" ng-click="dump()" value="Dump" style="width:50px" />
+                    <input type="button" ng-click="clear()" value="Clear" style="width:50px" />
+                </td>
+            </tr>
+            <tr ng-if="showDump">
+                <td colspan="2">
+                    <div style="height: 200px; width: 500px; overflow: auto">
+                        <table>
+                            <tr>
+                                <td style="width: 400px">
+                                    <b>Watcher</b>
+                                </td>
+                                <td style="width: 100px">
+                                    <b>Duration (ms)</b>
+                                </td>
+                            </tr>
+                        <tr ng-repeat="dumpedWatcher in dumpedWatchers | orderBy:'-duration'" style="cursor: default; border-bottom:1px dotted gray" ng-mouseover="watcherHover(dumpedWatcher)" once-title="getTooltip(dumpedWatcher)">
+                                <td>
+                                    <span once-text="dumpedWatcher.name"></span>
+                                </td>
+                                <td>
+                                    <span once-text="dumpedWatcher.duration"></span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Digest rate (/s): 
+                </td>
+                <td>
+                    {{digestRate}}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Disable batching:
+                </td>
+                <td>
+                    <input type="checkbox" ng-model="spEntityService.disableBatching" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Reports - Server Only:
+                </td>
+                <td>
+                    <input type="checkbox" ng-model="spReportDataCacheService.disabled" />
+                    <input type="button" ng-click="clearReportData()" value="Clear" style="width:50px;min-height:20px;" />
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

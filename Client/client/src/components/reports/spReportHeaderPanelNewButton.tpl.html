@@ -1,0 +1,9 @@
+<button type="button" ng-show="showNewToolMenu()" ng-disabled="disabledNewTool()"
+        sp-context-menu="model.newMenu" sp-context-menu-placement="alignleft" sp-context-menu-trigger="leftclick"
+        sp-context-menu-execution-context="getActionExecutionContext" title="New">
+    <img src="assets/images/16x16/add.svg"/>New<img src="assets/images/arrow_navsection_closed.png" name="viewmore"/>
+</button>
+<button type="button" ng-show="showNewToolButton()" ng-disabled="disabledNewTool()"
+        ng-click="executeNewAction()" title="New">
+    <img src="assets/images/16x16/add.svg"/>New
+</button>

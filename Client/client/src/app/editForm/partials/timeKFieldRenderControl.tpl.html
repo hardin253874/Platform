@@ -1,0 +1,13 @@
+<span  ng-controller="fieldControlOnFormController"  class="fieldControl">
+	
+    
+    <!--<input ng-model="fieldValue" type="time" />-->
+    <sp-time-picker in-date="fieldValue" 
+                    translate-date="true"
+                    ng-model="fieldValue"
+                    field="formControl.getFieldToRender()"
+                    is-mandatory-on-form="isMandatoryOnForm"
+                    sp-validate-field='field'
+                    sp-validation-message="true">
+    </sp-time-picker>
+</span>

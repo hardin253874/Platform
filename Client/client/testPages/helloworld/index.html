@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+<!--
+
+    README
+
+    Checklist for adding a directive: (see searchControl as an example)
+    1 - import less in the index.less file (not in this html file)
+    2 - add js source file
+    3 - add mapping for any templates - see testPageHelper code below
+    4 - add any needed dependencies to the app module deps
+
+-->
+
+<head>
+    <title>Test Page</title>
+    <link rel="stylesheet" type="text/css" href="../../lib/boilerplate/normalize.css"/>
+
+    <link rel="stylesheet/less" type="text/css" href="index.less"/>
+
+    <script>less = {env: 'development', rootpath: '../../src/assets/'};</script>
+    <script src="../../lib/less/less-2.5.0.min.js" type="text/javascript"></script>
+    <script>less.watch();</script>
+
+    <!-- IOS mobile support -->
+    <link rel="apple-touch-icon" href="../../src/assets/images/favicon.png">
+    <link rel="apple-touch-startup-image" href="../../src/assets/images/favicon.png">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, minimal-ui"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <!-- Chrome Android support -->
+    <meta name="mobile-web-app-capable" content="yes">
+</head>
+
+<body ng-app="app">
+
+<div ng-if="templatesReady">
+
+    <h1 ng-controller="MyController as x">{{x.greeting}}</h1>
+
+    <div>
+        <p>An image to show that the paths needed to find our source assets:</p>
+        <img src="../../src/assets/images/favicon.png">
+    </div>
+
+    <div ng-controller="MyController as x">
+        <p>A directive to demo how to show one:</p>
+        <sp-search-control sp-model="x.searchData"></sp-search-control>
+    </div>
+
+    <div style="height:auto;background:yellow;width:200px;min-height:200px">
+
+        <div style="background:red;width:100px">A</div>
+        <div style="background:blue;width:100%">B</div>
+        <div style="background:green;height:100%;width:30px">C</div>
+        <div style="background:blue;width:100%">B</div>
+
+    </div>
+</div>
+</body>
+
+<script src="../../src/components/utils/console.js"></script>
+<script src="../../lib/jquery/jquery.js"></script>
+<script src="../../lib/angular/angular.js"></script>
+<script src="../../lib/angular/angular-animate.js"></script>
+<script src="../../lib/bootstrap/js/bootstrap.js"></script>
+<script src="../../lib/lodash/lodash.js"></script>
+
+<script src="../../src/components/utils/spUtils.js"></script>
+
+<!--include any other source files you need here-->
+<script src="../../src/components/utils/spCachingCompile.js"></script>
+<script src="../../src/components/utils/spMobile.js"></script>
+<script src="../../src/app/controls/spSearchControl/spSearchControl.js"></script>
+
+<!--the following includes support such as adding and finding angular templates-->
+<script src="../testPagesAppHelper.js"></script>
+
+<script>
+    'use strict';
+
+    angular.module('app', ['testPagesAppHelper', 'app.controls.spSearchControl'])
+            .run(function (testPagesAppHelper, $rootScope) {
+                // add your app and component templates here...
+                // this is needed to get the paths correct since we aren't using the build system
+                testPagesAppHelper.basePath = '../../';
+                testPagesAppHelper.appTemplate('src/app/controls/spSearchControl/spSearchControl.tpl.html');
+                testPagesAppHelper.requestTemplates().then(function() {
+                    $rootScope.templatesReady = true;
+                })
+            })
+            .controller('MyController', MyController);
+
+    /* @ngInject */
+    function MyController() {
+        this.greeting = 'Hello World!';
+        this.searchData = {value: 'initial search text', isBusy: false};
+    }
+
+</script>
+
+</body>
+</html>
