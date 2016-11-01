@@ -1,0 +1,203 @@
+﻿<UserControl x:Class="ReadiMon.Plugin.Application.PlatformHistory"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:controls="clr-namespace:ReadiMon.Shared.Controls;assembly=ReadiMon.Shared"
+             xmlns:converters="clr-namespace:ReadiMon.Shared.Converters;assembly=ReadiMon.Shared"
+             xmlns:local="clr-namespace:ReadiMon.Plugin.Application"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             d:DataContext="{d:DesignInstance local:PlatformHistoryViewModel}">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/PresentationFramework.Aero, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, ProcessorArchitecture=MSIL;component/themes/aero.normalcolor.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <converters:FilterConverter x:Key="FilterConverter"/>
+            <converters:NotFilterConverter x:Key="NotFilterConverter"/>
+            <converters:BoolVisibilityConverter x:Key="IsErrorConverter"/>
+            <converters:NullBooleanConverter x:Key="NullBooleanConverter" />
+            <Style TargetType="{x:Type GridViewColumnHeader}" x:Key="DefaultHeaderStyle">
+                <Setter Property="HorizontalAlignment" Value="Stretch" />
+                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            </Style>
+            <SolidColorBrush x:Key="Alice" Color="AliceBlue" Opacity="0.5" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.Resources>
+            <Style TargetType="ListViewItem">
+                <Style.Triggers>
+                    <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                        <Setter Property="Background" Value="{StaticResource Alice}" />
+                    </Trigger>
+                    <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                        <Setter Property="Background" Value="Transparent" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <Style x:Key="FilterButton" TargetType="Button" BasedOn="{StaticResource ResourceKey={x:Type Button}}">
+                <Setter Property="Width" Value="Auto" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <ContentPresenter Content="{TemplateBinding Content}"
+											  ContentTemplate="{TemplateBinding  ContentTemplate}"
+											  VerticalAlignment="Center">
+                                <ContentPresenter.Resources>
+                                    <Style TargetType="{x:Type TextBlock}">
+                                        <Setter Property="TextDecorations" Value="Underline" />
+                                    </Style>
+                                </ContentPresenter.Resources>
+                            </ContentPresenter>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Cursor" Value="Hand" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+            </Style>
+        </Grid.Resources>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <Image Grid.Row="0"
+			   Grid.Column="0"
+			   Width="64"
+			   Height="64"
+			   Source="pack://application:,,,/ReadiMon.Plugin.Application;component/Resources/PlatformHistory.png"
+			   HorizontalAlignment="Left"
+			   Margin="10" />
+
+        <StackPanel Grid.Column="1"
+					Grid.Row="0"
+					VerticalAlignment="Center">
+            <TextBlock VerticalAlignment="Center"
+					   Text="Platform History"
+					   FontWeight="Bold"
+					   FontSize="20" />
+            <TextBlock VerticalAlignment="Center"
+					   FontSize="14"
+					   Text="A log of Application Management tasks relevant to a tenant." />
+        </StackPanel>
+
+        <Button Grid.Row="0"
+				Grid.Column="4"
+				HorizontalAlignment="Right"
+				Content="Refresh"
+				Height="22"
+				Command="{Binding RefreshCommand}"
+				Width="80"
+				Margin="0 0 20 0" />
+
+        <controls:ReadiMonListView Grid.Row="1"
+								   Grid.ColumnSpan="5"
+								   Grid.Column="0"
+                                   AlternationCount="2"
+		                           ItemsSource="{Binding FilteredHistoryItems}">
+
+            <ListView.ItemContainerStyle>
+                <Style TargetType="{x:Type ListViewItem}">
+                    <Setter Property="ToolTip">
+                        <Setter.Value>
+                            <TextBlock>
+                                <Run FontWeight="Bold" Text="Tenant ID: "/>
+                                <Run Text="{Binding TenantId}" />
+                                <LineBreak />
+                                <Run FontWeight="Bold" Text="Machine: "/>
+                                <Run Text="{Binding Machine}" />
+                                <LineBreak />
+                                <Run FontWeight="Bold" Text="User: "/>
+                                <Run Text="{Binding User}" />
+                                <LineBreak />
+                                <Run FontWeight="Bold" Text="Process: "/>
+                                <Run Text="{Binding Process}" />
+                                <LineBreak />
+                                <Run FontWeight="Bold" Text="Arguments: "/>
+                                <LineBreak />
+                                <Run Text="{Binding Arguments}" />
+                            </TextBlock>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListView.ItemContainerStyle>
+
+            <ListView.View>
+                <GridView AllowsColumnReorder="False" ColumnHeaderContainerStyle="{StaticResource DefaultHeaderStyle}">
+                    <controls:ReadiMonGridViewColumn Header="Timestamp" DisplayMemberBinding="{Binding Timestamp}" />
+                    <controls:ReadiMonGridViewColumn DisplayMemberBinding="{Binding TenantName}">
+                        <GridViewColumn.Header>
+                            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Text="Tenant" />
+                                
+                                <Button Grid.Column="1" Style="{StaticResource FilterButton}" Command="{Binding FilterTenantCommand}">
+                                    <DockPanel>
+                                        <Image Width="12" Height="12" Source="pack://application:,,,/ReadiMon.Plugin.Application;component/Resources/noFilter.png" Margin="0 0 5 0" Cursor="Hand" Visibility="{Binding Path=TenantFilters, Converter={StaticResource FilterConverter}}" />
+                                        <Image Width="12" Height="12" Source="pack://application:,,,/ReadiMon.Plugin.Application;component/Resources/filter.png" Margin="0 0 5 0" Cursor="Hand" Visibility="{Binding Path=TenantFilters, Converter={StaticResource NotFilterConverter}}" />
+                                    </DockPanel>
+                                </Button>
+                            </Grid>
+                        </GridViewColumn.Header>
+                    </controls:ReadiMonGridViewColumn>
+                    <controls:ReadiMonGridViewColumn Header="Application" DisplayMemberBinding="{Binding PackageName}" />
+                    <controls:ReadiMonGridViewColumn Header="Package ID" DisplayMemberBinding="{Binding PackageId}" />
+                    <controls:ReadiMonGridViewColumn Header="Operation" DisplayMemberBinding="{Binding Operation}" />
+                    <controls:ReadiMonGridViewColumn Header="Error">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsEnabled="False"
+                                          IsChecked="True"
+                                          Visibility="{Binding IsError, Mode=OneWay, Converter={StaticResource IsErrorConverter}}"
+                                          ToolTipService.ShowOnDisabled="True"
+                                          ToolTipService.IsEnabled="True"
+                                          ToolTip="{Binding Exception}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </controls:ReadiMonGridViewColumn>
+                </GridView>
+            </ListView.View>
+
+            <ListView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Copy"
+							  IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.(Selector.SelectedItem), Converter={StaticResource NullBooleanConverter}, FallbackValue=False}"
+							  Command="{Binding CopyCommand}"
+							  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.(Selector.SelectedItem)}" />
+                </ContextMenu>
+            </ListView.ContextMenu>
+
+        </controls:ReadiMonListView>
+
+        <Popup Grid.Row="0" Grid.Column="0" IsOpen="{Binding TenantFilterOpen}" StaysOpen="False" Placement="MousePoint">
+            <Grid Background="White" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <ListBox ItemsSource="{Binding TenantFilters}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <CheckBox IsChecked="{Binding IsFiltered}" Width="20" />
+                                <TextBlock Text="{Binding Value}" Margin="0 0 10 0" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+        </Popup>
+    </Grid>
+</UserControl>

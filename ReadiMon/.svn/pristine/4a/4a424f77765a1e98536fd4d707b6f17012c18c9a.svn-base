@@ -1,0 +1,347 @@
+﻿// Copyright 2011-2016 Global Software Innovation Pty Ltd
+
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Windows;
+using System.Windows.Input;
+using ReadiMon.Shared;
+using ReadiMon.Shared.Core;
+using ReadiMon.Shared.Data;
+using ReadiMon.Shared.Messages;
+
+namespace ReadiMon.Plugin.Application
+{
+    /// <summary>
+    ///     PlatformHistoryViewModel class.
+    /// </summary>
+    /// <seealso cref="ReadiMon.Shared.Core.ViewModelBase" />
+    public class PlatformHistoryViewModel : ViewModelBase
+    {
+        /// <summary>
+        ///     The plugin settings
+        /// </summary>
+        private IPluginSettings _pluginSettings;
+
+        /// <summary>
+        ///     The history items
+        /// </summary>
+        private List<PlatformHistoryItem> _historyItems;
+
+        /// <summary>
+        ///     The filtered history items
+        /// </summary>
+        private List<PlatformHistoryItem> _filteredHistoryItems;
+
+        /// <summary>
+        ///     The tenant filter open
+        /// </summary>
+        private bool _tenantFilterOpen;
+
+        /// <summary>
+        ///     The tenant filter open time
+        /// </summary>
+        private DateTime _tenantFilterOpenTime;
+
+        /// <summary>
+        ///     Gets or sets the plugin settings.
+        /// </summary>
+        /// <value>
+        ///     The plugin settings.
+        /// </value>
+        public IPluginSettings PluginSettings
+        {
+            private get
+            {
+                return _pluginSettings;
+            }
+            set
+            {
+                _pluginSettings = value;
+
+                Refresh();
+            }
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="PlatformHistoryViewModel" /> class.
+        /// </summary>
+        /// <param name="settings">The settings.</param>
+        public PlatformHistoryViewModel(IPluginSettings settings)
+        {
+            PluginSettings = settings;
+
+            RefreshCommand = new DelegateCommand(Refresh);
+            CopyCommand = new DelegateCommand<PlatformHistoryItem>(CopyClick);
+            FilterTenantCommand = new DelegateCommand(FilterTenantClick);
+        }
+
+        /// <summary>
+        ///     Gets or sets the platform history items.
+        /// </summary>
+        /// <value>
+        ///     The history items.
+        /// </value>
+        private List<PlatformHistoryItem> HistoryItems
+        {
+            get
+            {
+                return _historyItems;
+            }
+            set
+            {
+                SetProperty(ref _historyItems, value);
+            }
+        }
+
+        /// <summary>
+        ///     Gets or sets the filtered platform history items.
+        /// </summary>
+        /// <value>
+        ///     The filtered history items.
+        /// </value>
+        public List<PlatformHistoryItem> FilteredHistoryItems
+        {
+            get
+            {
+                return _filteredHistoryItems;
+            }
+            set
+            {
+                SetProperty(ref _filteredHistoryItems, value);
+            }
+        }
+
+        /// <summary>
+        ///     Gets the refresh command.
+        /// </summary>
+        /// <value>
+        ///     The refresh command.
+        /// </value>
+        public ICommand RefreshCommand
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        ///     Gets or sets the copy command.
+        /// </summary>
+        /// <value>
+        ///     The copy command.
+        /// </value>
+        public ICommand CopyCommand { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the filter tenant command.
+        /// </summary>
+        /// <value>
+        ///     The filter tenant command.
+        /// </value>
+        public ICommand FilterTenantCommand { get; set; }
+        
+        /// <summary>
+        ///     Gets or sets the tenant filters.
+        /// </summary>
+        /// <value>
+        ///     The tenant filters.
+        /// </value>
+        public List<FilterObject> TenantFilters
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        ///     Refreshes this instance.
+        /// </summary>
+        private void Refresh()
+        {
+            LoadHistory();
+        }
+
+        /// <summary>
+        ///     Copies the click.
+        /// </summary>
+        /// <param name="item">The history item.</param>
+        private void CopyClick(PlatformHistoryItem item)
+        {
+            const string format = @"Timestamp:             {0}
+Tenant Id:             {1}
+Tenant Name:           {2}
+Package Id:            {3}
+Package Name:          {4}
+Operation:             {5}
+Machine:               {6}
+User:                  {7}
+Process:               {8}
+Arguments:             {9}
+Exception:
+{10}";
+
+            RetryHandler.Retry(() =>
+            {
+                Clipboard.SetData(DataFormats.Text, string.Format(format, item.Timestamp, item.TenantId, item.TenantName, item.PackageId.ToString("B"), item.PackageName, item.Operation, item.Machine, item.User, item.Process, item.Arguments, item.Exception));
+                PluginSettings.Channel.SendMessage(new StatusTextMessage(@"Data copied to clipboard...", 2000).ToString());
+            }, exceptionHandler: e => PluginSettings.EventLog.WriteException(e));
+        }
+
+        /// <summary>
+        ///     Tenants the filter update.
+        /// </summary>
+        private void TenantFilterUpdate()
+        {
+            FilterUpdate();
+
+            OnPropertyChanged("TenantFilters");
+        }
+
+        /// <summary>
+        ///     Filters the tenant click.
+        /// </summary>
+        private void FilterTenantClick()
+        {
+            TenantFilterOpen = true;
+        }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether [tenant filter open].
+        /// </summary>
+        /// <value>
+        ///     <c>true</c> if [tenant filter open]; otherwise, <c>false</c>.
+        /// </value>
+        public bool TenantFilterOpen
+        {
+            get
+            {
+                return _tenantFilterOpen;
+            }
+            set
+            {
+                if (_tenantFilterOpen != value && _tenantFilterOpenTime.AddMilliseconds(500) < DateTime.UtcNow)
+                {
+                    SetProperty(ref _tenantFilterOpen, value);
+
+                    _tenantFilterOpenTime = DateTime.UtcNow;
+                }
+            }
+        }
+
+        /// <summary>
+        ///     Filters the update.
+        /// </summary>
+        private void FilterUpdate()
+        {
+            var filteredItems = new List<PlatformHistoryItem>();
+
+            foreach (var item in HistoryItems)
+            {
+                var tenantFilterObject = TenantFilters.FirstOrDefault(f => f.Value.ToString() == item.TenantName);
+
+                if (tenantFilterObject == null || tenantFilterObject.IsFiltered)
+                {
+                    filteredItems.Add(item);
+                }
+            }
+
+            FilteredHistoryItems = filteredItems;
+        }
+
+        /// <summary>
+		///     Loads the history.
+		/// </summary>
+		private void LoadHistory()
+        {
+            var databaseManager = new DatabaseManager(PluginSettings.DatabaseSettings);
+
+            const string commandText = @"--ReadiMon - LoadHistory
+SELECT
+    [Timestamp],
+    [TenantName],
+    [TenantId],
+    [PackageId],
+    [PackageName],
+    [Operation],
+    [Machine],
+    [User],
+    [Process],
+    [Arguments],
+    [Exception]
+FROM [dbo].[PlatformHistory]";
+
+            try
+            {
+                using (IDbCommand command = databaseManager.CreateCommand(commandText))
+                {
+                    using (var reader = command.ExecuteReader())
+                    {
+                        var historyItems = new List<PlatformHistoryItem>();
+
+                        var tenants = new HashSet<string>();
+
+                        do
+                        {
+                            do
+                            {
+                                while (reader.Read())
+                                {
+                                    var timestamp = reader.GetDateTime(0, DateTime.MinValue);
+                                    var tenantName = reader.GetString(1, "");
+                                    var tenantId = reader.GetInt64(2, 0);
+                                    var packageId = reader.GetGuid(3, Guid.Empty);
+                                    var packageName = reader.GetString(4, "");
+                                    var operation = reader.GetString(5, "Unknown");
+                                    var machine = reader.GetString(6, "");
+                                    var user = reader.GetString(7, "");
+                                    var process = reader.GetString(8, "");
+                                    var args = reader.GetString(9, "");
+                                    var err = reader.GetString(10, "");
+
+                                    var historyItem = new PlatformHistoryItem
+                                    {
+                                        Timestamp = timestamp.ToLocalTime(),
+                                        TenantName = tenantName,
+                                        TenantId = tenantId,
+                                        PackageId = packageId,
+                                        PackageName = packageName,
+                                        Operation = operation,
+                                        Machine = machine,
+                                        User = user,
+                                        Process = process,
+                                        Arguments = args,
+                                        Exception = err,
+                                        IsError = !string.IsNullOrEmpty(err)
+                                    };
+
+                                    tenants.Add(tenantName);
+
+                                    historyItems.Add(historyItem);
+                                }
+                            }
+                            while (reader.NextResult());
+                        }
+                        while (reader.NextResult());
+
+                        HistoryItems = historyItems.OrderByDescending(x => x.Timestamp).ToList();
+
+                        TenantFilters = new List<FilterObject>();
+
+                        foreach (string ten in tenants.OrderBy(k => k))
+                        {
+                            TenantFilters.Add(new FilterObject(ten, true, TenantFilterUpdate));
+                        }
+
+                        OnPropertyChanged("TenantFilters");
+
+                        FilteredHistoryItems = new List<PlatformHistoryItem>(HistoryItems);
+                    }
+                }
+            }
+            catch (Exception exc)
+            {
+                PluginSettings.EventLog.WriteException(exc);
+            }
+        }
+    }
+}

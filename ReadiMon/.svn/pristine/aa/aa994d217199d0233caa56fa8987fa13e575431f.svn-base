@@ -1,0 +1,1184 @@
+﻿// Copyright 2011-2015 Global Software Innovation Pty Ltd
+
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Data;
+using System.Windows.Input;
+using System.Windows.Threading;
+using ReadiMon.Core;
+using ReadiMon.Properties;
+using ReadiMon.Shared.Core;
+using ReadiMon.Shared.Messages;
+using ReadiMon.Shared.Support;
+using EventLog = ReadiMon.Shared.Core.EventLog;
+
+namespace ReadiMon
+{
+	/// <summary>
+	///     MainWindow view model.
+	/// </summary>
+	public class MainWindowViewModel : ViewModelBase
+	{
+		/// <summary>
+		///     The tool bar map
+		/// </summary>
+		private readonly Dictionary<string, FrameworkElement> _toolBarMap = new Dictionary<string, FrameworkElement>( );
+
+		/// <summary>
+		///     The _current view
+		/// </summary>
+		private FrameworkElement _currentView;
+
+		/// <summary>
+		///     The sections
+		/// </summary>
+		private ObservableCollection<Section> _sections = new ObservableCollection<Section>( );
+
+		/// <summary>
+		///     The sections view.
+		/// </summary>
+		private CollectionViewSource _sectionsView;
+
+		/// <summary>
+		///     The selected section.
+		/// </summary>
+		private Section _selectedSection;
+
+		/// <summary>
+		/// The _update available
+		/// </summary>
+		private bool _updateAvailable;
+
+		/// <summary>
+		/// The _update available close
+		/// </summary>
+		private bool _updateAvailableClose;
+
+		/// <summary>
+		///     The status text.
+		/// </summary>
+		private string _statusText = "Ready...";
+
+		/// <summary>
+		///     The tool bar items
+		/// </summary>
+		private ObservableCollection<FrameworkElement> _toolBarItems = new ObservableCollection<FrameworkElement>( );
+
+		/// <summary>
+		///     Initializes a new instance of the <see cref="MainWindowViewModel" /> class.
+		/// </summary>
+		/// <param name="parentWindow">The parent window.</param>
+		/// <param name="refreshAccordion">The refresh accordion.</param>
+		/// <exception cref="System.ArgumentNullException">parentWindow</exception>
+		public MainWindowViewModel( Window parentWindow, Action refreshAccordion )
+		{
+			if ( parentWindow == null )
+			{
+				throw new ArgumentNullException( "parentWindow" );
+			}
+
+			if ( refreshAccordion == null )
+			{
+				throw new ArgumentNullException( "refreshAccordion" );
+			}
+
+			RefreshAccordion = refreshAccordion;
+
+			ParentWindow = parentWindow;
+
+			Channel.OnStatusTextMessage += Channel_OnStatusTextMessage;
+			Channel.OnEntityBrowserMessage += Channel_OnEntityBrowserMessage;
+			Channel.OnRestoreUiMessage += Channel_OnRestoreUiMessage;
+			Channel.OnExitMessage += Channel_OnExitMessage;
+			Channel.OnHideWhenMinimizedMessage += Channel_OnHideWhenMinimizedMessage;
+			Channel.OnShowWhenMinimizedMessage += Channel_OnShowWhenMinimizedMessage;
+			Channel.OnBalloonSettingsMessage += Channel_OnBalloonSettingsMessage;
+            Channel.OnPerfGraphMessage += Channel_OnPerfGraphMessage;
+            Channel.OnMetricsUpdateMessage += Channel_OnMetricsUpdateMessage;
+
+			ExitCommand = new DelegateCommand( Exit );
+			OptionsCommand = new DelegateCommand( ShowOptions );
+			SqlServerCommand = new DelegateCommand( ShowSqlServer );
+			RedisServerCommand = new DelegateCommand( ShowRedisServer );
+			AboutCommand = new DelegateCommand( ShowAbout );
+			CheckForUpdateCommand = new DelegateCommand( OnCheckForUpdate );
+
+			Status.StatusChanged += Status_StatusChanged;
+
+			string configFile = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
+#if DEBUG
+			configFile = configFile.Replace( "vshost.", "" );
+#endif
+
+			PluginSettings = new PluginSettings
+			{
+				ConfigurationFile = configFile,
+				InteropMessageId = Application.WmMyMsg,
+				EventLog = EventLog.Instance,
+				DatabaseSettings = DatabaseSettings,
+				RedisSettings = RedisSettings,
+				Channel = new Channel( )
+			};
+
+			SectionsView = new CollectionViewSource
+			{
+				Source = Sections
+			};
+
+			SectionsView.Filter += SectionsView_Filter;
+
+			var ordinalSort = new SortDescription( "Ordinal", ListSortDirection.Ascending );
+			var nameSort = new SortDescription( "Name", ListSortDirection.Ascending );
+
+			SectionsView.SortDescriptions.Add( ordinalSort );
+			SectionsView.SortDescriptions.Add( nameSort );
+
+			var timer = new DispatcherTimer( TimeSpan.FromMilliseconds( 5000 ), DispatcherPriority.Background, IsUpdateAvailable, System.Windows.Application.Current.Dispatcher );
+
+			CloseUpdateAvailable = new DelegateCommand( ( ) => UpdateAvailableClose = true );
+		}
+
+		/// <summary>
+		/// Gets or sets the close update available.
+		/// </summary>
+		/// <value>
+		/// The close update available.
+		/// </value>
+		public ICommand CloseUpdateAvailable
+		{
+			get;
+			set;
+		}
+
+		/// <summary>
+		/// Determines whether [is update available] [the specified sender].
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+		private void IsUpdateAvailable( object sender, EventArgs e )
+		{
+			DispatcherTimer timer = sender as DispatcherTimer;
+
+			timer?.Stop( );
+
+			if ( UpdateHelper.DoesUpdateExist( ) )
+			{
+				UpdateAvailable = true;
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the height of the update.
+		/// </summary>
+		/// <value>
+		/// The height of the update.
+		/// </value>
+		public bool UpdateAvailable
+		{
+			get
+			{
+				return _updateAvailable;
+			}
+			set
+			{
+				SetProperty( ref _updateAvailable, value );
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets a value indicating whether [update available close].
+		/// </summary>
+		/// <value>
+		/// <c>true</c> if [update available close]; otherwise, <c>false</c>.
+		/// </value>
+		public bool UpdateAvailableClose
+		{
+			get
+			{
+				return _updateAvailableClose;
+			}
+			set
+			{
+				SetProperty( ref _updateAvailableClose, value );
+			}
+		}
+
+		/// <summary>
+		///     Gets or sets the about command.
+		/// </summary>
+		/// <value>
+		///     The about command.
+		/// </value>
+		public ICommand AboutCommand
+		{
+			get;
+			set;
+		}
+
+		/// <summary>
+		///     Gets or sets the check for update command.
+		/// </summary>
+		/// <value>
+		///     The check for update command.
+		/// </value>
+		public ICommand CheckForUpdateCommand
+		{
+			get;
+			set;
+		}
+
+		/// <summary>
+		///     Gets the current view.
+		/// </summary>
+		/// <value>
+		///     The current view.
+		/// </value>
+		public FrameworkElement CurrentView
+		{
+			get
+			{
+				return _currentView;
+			}
+			private set
+			{
+				SetProperty( ref _currentView, value );
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets a value indicating whether [automatic update].
+		/// </summary>
+		/// <value>
+		///   <c>true</c> if [automatic update]; otherwise, <c>false</c>.
+		/// </value>
+		public bool AutoUpdate
+		{
+			get
+			{
+				return Settings.Default.AutoUpdate;
+			}
+			set
+			{
+				Settings.Default.AutoUpdate = value;
+
+				OnPropertyChanged( "AutoUpdate" );
+			}
+		}
+
+		/// <summary>
+		///     Gets or sets the database settings.
+		/// </summary>
+		/// <value>
+		///     The database settings.
+		/// </value>
+		public DatabaseSettings DatabaseSettings
+		{
+			get;
+			set;
+		}
+
+		/// <summary>
+		///     Gets or sets the exit command.
+		/// </summary>
+		/// <value>
+		///     The exit command.
+		/// </value>
+		public ICommand ExitCommand
+		{
+			get;
+			set;
+		}
+
+		/// <summary>
+		///     Gets the main window title.
+		/// </summary>
+		/// <value>
+		///     The main window title.
+		/// </value>
+		public string MainWindowTitle
+		{
+			get
+			{
+				return Resources.ApplicationName + " - " + Assembly.GetEntryAssembly( ).GetName( ).Version.ToString( 3 );
+			}
+		}
+
+		/// <summary>
+		///     Gets or sets the options command.
+		/// </summary>
+		/// <value>
+		///     The options command.
+		/// </value>
+		public ICommand OptionsCommand
+		{
+			get;
+			set;
+		}
+
+		/// <summary>
+		///     Gets or sets the parent window.
+		/// </summary>
+		/// <value>
+		///     The parent window.
+		/// </value>
+		private Window ParentWindow
+		{
+			get;
+			set;
+		}
+
+		/// <summary>
+		///     Gets or sets the plugin settings.
+		/// </summary>
+		/// <value>
+		///     The plugin settings.
+		/// </value>
+		private PluginSettings PluginSettings
+		{
+			get;
+			set;
+		}
+
+		/// <summary>
+		///     Gets or sets the redis server command.
+		/// </summary>
+		/// <value>
+		///     The redis server command.
+		/// </value>
+		public ICommand RedisServerCommand
+		{
+			get;
+			set;
+		}
+
+		/// <summary>
+		///     Gets or sets the redis settings.
+		/// </summary>
+		/// <value>
+		///     The redis settings.
+		/// </value>
+		public RedisSettings RedisSettings
+		{
+			get;
+			set;
+		}
+
+		/// <summary>
+		///     Gets or sets the refresh accordion.
+		/// </summary>
+		/// <value>
+		///     The refresh accordion.
+		/// </value>
+		public Action RefreshAccordion
+		{
+			get;
+			private set;
+		}
+
+		/// <summary>
+		///     Gets or sets the sections.
+		/// </summary>
+		/// <value>
+		///     The sections.
+		/// </value>
+		public ObservableCollection<Section> Sections
+		{
+			get
+			{
+				return _sections;
+			}
+			set
+			{
+				SetProperty( ref _sections, value );
+			}
+		}
+
+		/// <summary>
+		///     Gets or sets the sections view.
+		/// </summary>
+		/// <value>
+		///     The sections view.
+		/// </value>
+		public CollectionViewSource SectionsView
+		{
+			get
+			{
+				return _sectionsView;
+			}
+			set
+			{
+				SetProperty( ref _sectionsView, value );
+			}
+		}
+
+		/// <summary>
+		///     Gets or sets the selected section.
+		/// </summary>
+		/// <value>
+		///     The selected section.
+		/// </value>
+		public Section SelectedSection
+		{
+			get
+			{
+				return _selectedSection;
+			}
+			set
+			{
+				if ( _selectedSection == value )
+				{
+					return;
+				}
+
+				if ( value != null && value.SelectedEntry == null )
+				{
+					if ( value.EntriesView != null && !value.EntriesView.View.IsEmpty )
+					{
+						value.EntriesView.View.MoveCurrentToFirst( );
+						value.SelectedEntry = ( Entry ) value.EntriesView.View.CurrentItem;
+					}
+				}
+
+				Status status = null;
+				MouseCursor cursor = null;
+
+				try
+				{
+					if ( value?.SelectedEntry != null && !value.SelectedEntry.UserInterfaceLoaded )
+					{
+						status = Status.Set( $"Loading Plugin '{value.Name}'..." );
+						cursor = MouseCursor.Set( Cursors.Wait );
+					}
+
+					SetProperty( ref _selectedSection, value );
+
+					if ( value?.SelectedEntry != null )
+					{
+						CurrentView = value.SelectedEntry.UserInterface;
+					}
+
+				}
+				finally
+				{
+					status?.Dispose( );
+
+					cursor?.Dispose( );
+				}
+			}
+		}
+
+		/// <summary>
+		///     Gets or sets the SQL server command.
+		/// </summary>
+		/// <value>
+		///     The SQL server command.
+		/// </value>
+		public ICommand SqlServerCommand
+		{
+			get;
+			set;
+		}
+
+		/// <summary>
+		///     Gets or sets the status text.
+		/// </summary>
+		/// <value>
+		///     The status text.
+		/// </value>
+		public string StatusText
+		{
+			get
+			{
+				return _statusText;
+			}
+			set
+			{
+				SetProperty( ref _statusText, value );
+			}
+		}
+
+		/// <summary>
+		///     Gets the tool bars.
+		/// </summary>
+		/// <value>
+		///     The tool bars.
+		/// </value>
+		public ObservableCollection<FrameworkElement> ToolbarItems
+		{
+			get
+			{
+				return _toolBarItems;
+			}
+			set
+			{
+				SetProperty( ref _toolBarItems, value );
+			}
+		}
+
+		/// <summary>
+		///     Adds the plugin to the collection.
+		/// </summary>
+		/// <param name="plugin">The plugin.</param>
+		/// <param name="addedSections">The added sections.</param>
+		/// <returns></returns>
+		private Section AddPlugin( PluginWrapper plugin, IEnumerable<Section> addedSections )
+		{
+			Section newSection = null;
+
+			if ( addedSections == null )
+			{
+				throw new ArgumentNullException( "addedSections" );
+			}
+
+			if ( !string.IsNullOrEmpty( plugin.Plugin.SectionName ) )
+			{
+				Section section = addedSections.FirstOrDefault( s => s.Name == plugin.Plugin.SectionName );
+
+				if ( section == null )
+				{
+					section = new Section( plugin );
+
+					newSection = section;
+				}
+
+				Entry entry = section.Entries.FirstOrDefault( e => e.Name == plugin.Plugin.EntryName );
+
+				if ( entry == null )
+				{
+					entry = new Entry( plugin );
+
+					section.Entries.Add( entry );
+				}
+			}
+
+			if ( plugin.Enabled )
+			{
+				plugin.Plugin.OnStartup( );
+
+				RefreshAccordion( );
+
+				FrameworkElement toolbarItem = plugin.Plugin.GetToolBar( );
+
+				if ( toolbarItem != null )
+				{
+					ToolbarItems.Add( toolbarItem );
+
+					_toolBarMap[ plugin.Token.AddInFullName ] = toolbarItem;
+				}
+			}
+
+			return newSection;
+		}
+
+        /// <summary>
+        /// Channels the metrics update message.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event args.</param>
+        private void Channel_OnMetricsUpdateMessage(object sender, MetricsUpdateMessage e)
+        {
+            string message = e.ToString();
+
+            PropagateMessageToPlugins(message);
+        }
+
+        /// <summary>
+        /// Channels the perf graph message.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event args.</param>
+        private void Channel_OnPerfGraphMessage(object sender, PerfGraphMessage e)
+        {
+            string message = e.ToString();
+
+            PropagateMessageToPlugins(message);
+        }
+
+		/// <summary>
+		///     Channel_s the on balloon settings message.
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="e">The e.</param>
+		private void Channel_OnBalloonSettingsMessage( object sender, BalloonSettingsMessage e )
+		{
+			string message = e.ToString( );
+
+			PropagateMessageToPlugins( message );
+		}
+
+		/// <summary>
+		///     Channel the on entity browser message.
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="e">The e.</param>
+		private void Channel_OnEntityBrowserMessage( object sender, EntityBrowserMessage e )
+		{
+			string message = e.ToString( );
+
+			PropagateMessageToPlugins( message );
+		}
+
+		/// <summary>
+		///     Channel_s the on exit message.
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="e">The e.</param>
+		private void Channel_OnExitMessage( object sender, ExitMessage e )
+		{
+			Exit( );
+		}
+
+		/// <summary>
+		///     Channel_s the on hide when minimized message.
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="e">The e.</param>
+		private void Channel_OnHideWhenMinimizedMessage( object sender, HideWhenMinimizedMessage e )
+		{
+			var evt = HideWhenMinimized;
+
+			if ( evt != null )
+			{
+				evt( this, null );
+			}
+		}
+
+		/// <summary>
+		///     Channel_s the on restore UI message.
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="e">The e.</param>
+		private void Channel_OnRestoreUiMessage( object sender, RestoreUiMessage e )
+		{
+		    var defaultSection = "Entity";
+		    var defaultEntry = "Entity Browser";
+			var evt = RestoreUi;
+
+			if ( evt != null )
+			{
+				evt( this, new EventArgs( ) );
+			}
+
+		    var sectionName = e.Section ?? defaultSection;
+		    var entryName = e.Entry ?? defaultEntry;
+
+            if (!e.ShowEntityBrowser && sectionName == defaultSection && entryName == defaultEntry)
+                return;
+
+			var foundSection = Sections.FirstOrDefault( section => section.Name == sectionName );
+
+			if ( foundSection != null )
+			{
+				SelectedSection = foundSection;
+
+				var foundEntry = SelectedSection.Entries.FirstOrDefault( entry => entry.Name == entryName );
+
+				if ( foundEntry != null )
+				{
+					SelectedSection.SelectedEntry = foundEntry;
+				}
+			}
+		}
+
+		/// <summary>
+		///     Channel_s the on show when minimized message.
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="e">The e.</param>
+		private void Channel_OnShowWhenMinimizedMessage( object sender, ShowWhenMinimizedMessage e )
+		{
+			var evt = ShowWhenMinimized;
+
+			if ( evt != null )
+			{
+				evt( this, null );
+			}
+		}
+
+		/// <summary>
+		///     Channels on status text message.
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="e">The e.</param>
+		private void Channel_OnStatusTextMessage( object sender, StatusTextMessage e )
+		{
+			Status.Set( e.StatusText, false ).Dispose( );
+
+			if ( e.Timeout > 0 )
+			{
+				Execute( ( ) => Status.Set( "Ready..." ).Dispose( ), e.Timeout );
+			}
+		}
+
+		/// <summary>
+		/// Checks for update.
+		/// </summary>
+		/// <returns></returns>
+		public bool? CheckForUpdate( )
+		{
+			if ( UpdateHelper.DoesUpdateExist( ) )
+			{
+				Application.App.UpdatePresent = true;
+
+				var result = MessageBox.Show( "ReadiMon Update available.\nDo you wish to update now?", "Update Available", MessageBoxButton.YesNo );
+
+				if ( result == MessageBoxResult.Yes )
+				{
+					Application.App.RestartReadiMonAfterUpdate = true;
+
+					System.Windows.Application.Current.Shutdown( );
+
+					return true;
+				}
+				return null;
+			}
+
+			return false;
+		}
+
+		/// <summary>
+		///     Executes the specified action.
+		/// </summary>
+		/// <param name="action">The action.</param>
+		/// <param name="timeoutInMilliseconds">The timeout in milliseconds.</param>
+		private async void Execute( Action action, int timeoutInMilliseconds )
+		{
+			await Task.Delay( timeoutInMilliseconds );
+			action( );
+		}
+
+		/// <summary>
+		///     Exits this instance.
+		/// </summary>
+		private void Exit( )
+		{
+			System.Windows.Application.Current.Shutdown( 0 );
+		}
+
+		/// <summary>
+		///     Initialize all the available plugins.
+		/// </summary>
+		public void InitializePlugins( )
+		{
+			var addedSections = new List<Section>( );
+
+			PluginSettings.DatabaseSettings = DatabaseSettings;
+			PluginSettings.RedisSettings = RedisSettings;
+
+			foreach ( PluginWrapper plugin in PluginManager.Plugins )
+			{
+				plugin.Initialize( PluginSettings );
+
+				Section section = AddPlugin( plugin, addedSections );
+
+				if ( section != null )
+				{
+					addedSections.Add( section );
+				}
+
+				plugin.OnEnable = PluginEnabled;
+				plugin.OnDisable = PluginDisabled;
+			}
+
+			foreach ( Section addedSection in addedSections )
+			{
+				Sections.Add( addedSection );
+			}
+
+			if ( !SectionsView.View.IsEmpty )
+			{
+				SectionsView.View.MoveCurrentToFirst( );
+
+				SelectedSection = ( Section ) SectionsView.View.CurrentItem;
+
+				if ( !SelectedSection.EntriesView.View.IsEmpty )
+				{
+					SelectedSection.EntriesView.View.MoveCurrentToFirst( );
+
+					SelectedSection.SelectedEntry = ( Entry ) SelectedSection.EntriesView.View.CurrentItem;
+				}
+			}
+
+			foreach ( PluginWrapper plugin in PluginManager.Plugins )
+			{
+				if ( plugin.Enabled )
+				{
+					plugin.Plugin.OnStartupComplete( );
+				}
+			}
+
+			SelectedSection = Sections.First( s => s.Name == "Entity" );
+			SelectedSection.SelectedEntry = SelectedSection.Entries.First( e => e.Name == "Entity Browser" );
+		}
+
+		/// <summary>
+		///     Called when [check for update].
+		/// </summary>
+		private void OnCheckForUpdate( )
+		{
+			var update = CheckForUpdate( );
+
+			if ( update != null && !update.Value )
+			{
+				MessageBox.Show( "No update available.", "Update", MessageBoxButton.OK, MessageBoxImage.Information );
+			}
+		}
+
+		/// <summary>
+		///     Called when [restore UI].
+		/// </summary>
+		protected void OnRestoreUi( )
+		{
+			var evt = RestoreUi;
+
+			if ( evt != null )
+			{
+				evt( this, new EventArgs( ) );
+			}
+		}
+
+		/// <summary>
+		///     Filters the entries.
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="e">The <see cref="FilterEventArgs" /> instance containing the event data.</param>
+		/// <exception cref="System.ArgumentException">Invalid entry.</exception>
+		private void OptionsEntriesFilter( object sender, FilterEventArgs e )
+		{
+			var entry = e.Item as Entry;
+
+			if ( entry == null )
+			{
+				throw new ArgumentException( "Invalid entry." );
+			}
+
+			e.Accepted = entry.Plugin.Enabled && entry.Plugin.Plugin.HasOptionsUserInterface;
+		}
+
+
+		/// <summary>
+		///     Plugin has been disabled.
+		/// </summary>
+		/// <param name="plugin">The plugin.</param>
+		private void PluginDisabled( PluginWrapper plugin )
+		{
+			if ( plugin == null )
+			{
+				return;
+			}
+
+			plugin.Plugin.OnShutdown( );
+
+			Refresh( plugin, true );
+		}
+
+		/// <summary>
+		///     Plugin has been enabled.
+		/// </summary>
+		/// <param name="plugin">The plugin.</param>
+		private void PluginEnabled( PluginWrapper plugin )
+		{
+			if ( plugin == null )
+			{
+				return;
+			}
+
+			plugin.Plugin.OnStartup( );
+
+			Refresh( plugin );
+		}
+
+		/// <summary>
+		///     Propagates the message to plugins.
+		/// </summary>
+		/// <param name="message">The message.</param>
+		private void PropagateMessageToPlugins( string message )
+		{
+			foreach ( Section section in SectionsView.View )
+			{
+				foreach ( Entry entry in section.EntriesView.View )
+				{
+					if ( entry.Plugin.Plugin.OnMessageReceived( message ) )
+					{
+						return;
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		///     Refreshes this instance.
+		/// </summary>
+		private void Refresh( PluginWrapper plugin, bool removing = false )
+		{
+			bool found = false;
+
+			foreach ( Section section in SectionsView.View )
+			{
+				if ( section.Name == plugin.Plugin.SectionName )
+				{
+					found = true;
+
+					var view = section.EntriesView.View as ListCollectionView;
+
+					if ( view == null )
+					{
+						throw new InvalidCastException( );
+					}
+
+					if ( !removing || view.Count > 1 )
+					{
+						if ( section.SelectedEntry != null && section.SelectedEntry.Name == plugin.Plugin.EntryName )
+						{
+							section.SelectedEntry = null;
+						}
+
+						section.EntriesView.View.Refresh( );
+						break;
+					}
+
+					if ( view.Count == 1 )
+					{
+						if ( SelectedSection != null && SelectedSection.Name == plugin.Plugin.SectionName )
+						{
+							SelectedSection = null;
+						}
+
+						SectionsView.View.Refresh( );
+						break;
+					}
+				}
+			}
+
+			if ( !found )
+			{
+				SelectedSection = null;
+
+				SectionsView.View.Refresh( );
+			}
+
+			if ( SelectedSection == null && !SectionsView.View.IsEmpty )
+			{
+				SectionsView.View.MoveCurrentToFirst( );
+				SelectedSection = ( Section ) SectionsView.View.CurrentItem;
+
+				if ( !found )
+				{
+					SelectedSection.EntriesView.View.Refresh( );
+				}
+			}
+
+			if ( SelectedSection != null && SelectedSection.SelectedEntry == null && !SelectedSection.EntriesView.View.IsEmpty )
+			{
+				SelectedSection.EntriesView.View.MoveCurrentToFirst( );
+				SelectedSection.SelectedEntry = ( Entry ) SelectedSection.EntriesView.View.CurrentItem;
+			}
+
+			RefreshAccordion( );
+
+			if ( removing )
+			{
+				FrameworkElement toolbar;
+
+				if ( _toolBarMap.TryGetValue( plugin.Token.AddInFullName, out toolbar ) )
+				{
+					ToolbarItems.Remove( toolbar );
+
+					_toolBarMap.Remove( plugin.Token.AddInFullName );
+				}
+			}
+			else
+			{
+				FrameworkElement toolbar = plugin.Plugin.GetToolBar( );
+
+				if ( toolbar != null )
+				{
+					ToolbarItems.Add( toolbar );
+
+					_toolBarMap[ plugin.Token.AddInFullName ] = toolbar;
+				}
+			}
+		}
+
+		/// <summary>
+		///     Handles the Filter event of the SectionsView control.
+		/// </summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="FilterEventArgs" /> instance containing the event data.</param>
+		/// <exception cref="System.ArgumentException">Invalid section.</exception>
+		private void SectionsView_Filter( object sender, FilterEventArgs e )
+		{
+			var section = e.Item as Section;
+
+			if ( section == null )
+			{
+				throw new ArgumentException( "Invalid section." );
+			}
+
+			e.Accepted = section.Entries.Any( en => en.Plugin.Enabled && en.Plugin.Plugin.HasUserInterface );
+		}
+
+		/// <summary>
+		///     Shows the about box.
+		/// </summary>
+		public void ShowAbout( )
+		{
+			var about = new AboutWindow
+			{
+				Owner = Window.GetWindow( ParentWindow ),
+			};
+
+			about.ShowDialog( );
+		}
+
+		/// <summary>
+		///     Shows the options.
+		/// </summary>
+		public void ShowOptions( )
+		{
+			var sections = new ObservableCollection<Section>( );
+
+			foreach ( var section in Sections )
+			{
+				var newSection = new Section( section, OptionsEntriesFilter );
+
+				foreach ( Entry entry in section.Entries )
+				{
+					var newEntry = new Entry( entry );
+
+					newSection.Entries.Add( newEntry );
+				}
+
+				sections.Add( newSection );
+			}
+
+			var options = new OptionsWindow( sections )
+			{
+				Owner = Window.GetWindow( ParentWindow ),
+			};
+
+			options.ShowDialog( );
+		}
+
+		/// <summary>
+		///     Shows the redis server.
+		/// </summary>
+		private void ShowRedisServer( )
+		{
+			var properties = new RedisProperties( );
+			properties.ShowDialog( );
+
+			var vm = properties.DataContext as RedisPropertiesViewModel;
+
+			if ( vm != null && vm.OkClicked )
+			{
+				RedisSettings redisSettings = vm.RedisInfo;
+
+				if ( redisSettings.ServerName != Settings.Default.RedisServer ||
+				     redisSettings.Port != Settings.Default.RedisPort )
+				{
+					RedisSettings = redisSettings;
+
+					PluginSettings.RedisSettings = RedisSettings;
+
+					Settings.Default.RedisServer = redisSettings.ServerName;
+					Settings.Default.RedisPort = redisSettings.Port;
+					Settings.Default.Save( );
+
+					foreach ( PluginWrapper plugin in PluginManager.Plugins )
+					{
+						plugin.Plugin.OnUpdateSettings( PluginSettings );
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		///     Shows the SQL server.
+		/// </summary>
+		private void ShowSqlServer( )
+		{
+			var properties = new DatabaseProperties( );
+			properties.ShowDialog( );
+
+			var vm = properties.DataContext as DatabasePropertiesViewModel;
+
+			if ( vm != null && vm.OkClicked )
+			{
+				DatabaseSettings databaseSettings = vm.DatabaseInfo;
+
+				var manager = new DatabaseManager( databaseSettings );
+
+				if ( !manager.TestConnection( ) )
+				{
+					MessageBox.Show( "Selected server/database does not appear to be compatible with ReadiMon", "Invalid settings", MessageBoxButton.OK, MessageBoxImage.Error );
+					return;
+				}
+
+				if ( databaseSettings.ServerName != Settings.Default.DatabaseServer ||
+				     databaseSettings.CatalogName != Settings.Default.DatabaseCatalog ||
+				     databaseSettings.UseIntegratedSecurity != Settings.Default.DatabaseUseIntegratedSecurity ||
+				     databaseSettings.Username != Settings.Default.DatabaseUsername ||
+				     databaseSettings.Password != Settings.Default.DatabasePassword )
+				{
+					DatabaseSettings = databaseSettings;
+
+					PluginSettings.DatabaseSettings = DatabaseSettings;
+
+					Settings.Default.DatabaseServer = databaseSettings.ServerName;
+					Settings.Default.DatabaseCatalog = databaseSettings.CatalogName;
+					Settings.Default.DatabaseUseIntegratedSecurity = databaseSettings.UseIntegratedSecurity;
+					Settings.Default.DatabaseUsername = databaseSettings.Username;
+					Settings.Default.DatabasePassword = databaseSettings.Password;
+					Settings.Default.Save( );
+
+					foreach ( PluginWrapper plugin in PluginManager.Plugins )
+					{
+						plugin.Plugin.OnUpdateSettings( PluginSettings );
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		///     Starts this instance.
+		/// </summary>
+		public void Start( )
+		{
+			InitializePlugins( );
+		}
+
+		/// <summary>
+		///     Status_s the status changed.
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="e">The e.</param>
+		private void Status_StatusChanged( object sender, string e )
+		{
+			StatusText = e;
+		}
+
+		/// <summary>
+		///     Occurs when [restore UI].
+		/// </summary>
+		public event EventHandler RestoreUi;
+
+		/// <summary>
+		///     Occurs when [hide when minimized].
+		/// </summary>
+		public event EventHandler HideWhenMinimized;
+
+		/// <summary>
+		///     Occurs when [show when minimized].
+		/// </summary>
+		public event EventHandler ShowWhenMinimized;
+	}
+}

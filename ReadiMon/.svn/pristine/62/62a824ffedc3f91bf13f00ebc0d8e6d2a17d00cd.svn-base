@@ -1,0 +1,87 @@
+﻿<Window x:Class="ReadiMon.Plugin.Security.NewPassword"
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+		xmlns:attachedProperties="clr-namespace:ReadiMon.Shared.AttachedProperties;assembly=ReadiMon.Shared"
+		xmlns:security="clr-namespace:ReadiMon.Plugin.Security"
+		mc:Ignorable="d"
+		d:DesignHeight="300"
+		d:DesignWidth="300"
+		d:DataContext="{d:DesignInstance security:NewPasswordViewModel}"
+		Width="340"
+		Height="150"
+		WindowStyle="ToolWindow"
+		ResizeMode="NoResize"
+		WindowStartupLocation="CenterScreen"
+		Title="Set Password"
+		attachedProperties:WindowAttachedProperties.CloseWindow="{Binding CloseWindow}">
+	<Window.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="/PresentationFramework.Aero, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, ProcessorArchitecture=MSIL;component/themes/aero.normalcolor.xaml" />
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</Window.Resources>
+
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+
+		<Grid Grid.Row="0"
+			  Margin="10">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="*" />
+			</Grid.ColumnDefinitions>
+
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
+			</Grid.RowDefinitions>
+
+			<Label Content="New Password:"
+				   Grid.Row="0"
+				   Grid.Column="0"
+				   VerticalAlignment="Center"></Label>
+			<PasswordBox Width="180"
+						 Margin="10 0 0 10"
+						 attachedProperties:PasswordHelper.Attach="True"
+						 attachedProperties:PasswordHelper.Password="{Binding Password1, Mode=TwoWay}"
+						 Grid.Row="0"
+						 HorizontalAlignment="Left"
+						 VerticalAlignment="Center"
+						 Grid.Column="1"></PasswordBox>
+
+			<Label Content="Re-enter Password:"
+				   Grid.Row="1"
+				   Grid.Column="0"
+				   VerticalAlignment="Center"></Label>
+			<PasswordBox Width="180"
+						 HorizontalAlignment="Left"
+						 attachedProperties:PasswordHelper.Attach="True"
+						 attachedProperties:PasswordHelper.Password="{Binding Password2, Mode=TwoWay}"
+						 VerticalAlignment="Center"
+						 Grid.Row="1"
+						 Margin="10 0 0 10"
+						 Grid.Column="1"></PasswordBox>
+		</Grid>
+
+		<StackPanel Orientation="Horizontal"
+					Margin="10 0 15 10"
+					HorizontalAlignment="Right"
+					Grid.Row="1">
+			<Button Content="Ok" IsEnabled="{Binding OkEnabled}"
+					Height="22"
+					IsDefault="True" Command="{Binding OkCommand}"
+					Margin="0 0 10 0"
+					Width="80" />
+			<Button Content="Cancel"
+					IsCancel="True"
+					Height="22"
+					Width="80" />
+		</StackPanel>
+	</Grid>
+</Window>

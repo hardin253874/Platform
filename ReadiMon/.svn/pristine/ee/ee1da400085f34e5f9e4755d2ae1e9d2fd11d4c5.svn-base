@@ -1,0 +1,54 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:chart="clr-namespace:De.TorstenMandelkow.MetroChart;assembly=De.TorstenMandelkow.MetroChart">
+    <chart:ResourceDictionaryCollection x:Key="CustomColors">
+        <ResourceDictionary>
+            <SolidColorBrush x:Key="Brush1" Color="#FF007898" />
+        </ResourceDictionary>
+        <ResourceDictionary>
+            <SolidColorBrush x:Key="Brush2" Color="#FF009AC4" />
+        </ResourceDictionary>
+        <ResourceDictionary>
+            <SolidColorBrush x:Key="Brush3" Color="#FF00ACDA" />
+        </ResourceDictionary>
+        <ResourceDictionary>
+            <SolidColorBrush x:Key="Brush4" Color="#FF66CDE9" />
+        </ResourceDictionary>
+        <ResourceDictionary>
+            <SolidColorBrush x:Key="Brush5" Color="#FFBBDD8C" />
+        </ResourceDictionary>
+        <ResourceDictionary>
+            <SolidColorBrush x:Key="Brush6" Color="#FF8DC63F" />
+        </ResourceDictionary>
+        <ResourceDictionary>
+            <SolidColorBrush x:Key="Brush7" Color="#FF7FB239" />
+        </ResourceDictionary>
+        <ResourceDictionary>
+            <SolidColorBrush x:Key="Brush8" Color="#FF628A2C" />
+        </ResourceDictionary>
+        <ResourceDictionary>
+            <SolidColorBrush x:Key="Brush9" Color="#FF4B8F8A" />
+        </ResourceDictionary>
+        <ResourceDictionary>
+            <SolidColorBrush x:Key="Brush10" Color="#FF62B9B2" />
+        </ResourceDictionary>
+        <ResourceDictionary>
+            <SolidColorBrush x:Key="Brush11" Color="#FF6CCFC7" />
+        </ResourceDictionary>
+        <ResourceDictionary>
+            <SolidColorBrush x:Key="Brush12" Color="#FFB4EFEB" />
+        </ResourceDictionary>
+        <ResourceDictionary>
+            <SolidColorBrush x:Key="Brush13" Color="#FFCF89E9" />
+        </ResourceDictionary>
+        <ResourceDictionary>
+            <SolidColorBrush x:Key="Brush14" Color="#FFAD52C4" />
+        </ResourceDictionary>
+        <ResourceDictionary>
+            <SolidColorBrush x:Key="Brush15" Color="#FF8823B1" />
+        </ResourceDictionary>
+        <ResourceDictionary>
+            <SolidColorBrush x:Key="Brush16" Color="#FF691A88" />
+        </ResourceDictionary>
+    </chart:ResourceDictionaryCollection>
+</ResourceDictionary>

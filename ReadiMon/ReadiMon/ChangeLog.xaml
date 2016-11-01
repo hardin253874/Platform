@@ -1,0 +1,32 @@
+﻿<Window x:Class="ReadiMon.ChangeLog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		Title="{Binding WindowTitle}" Height="300" Width="500" WindowStartupLocation="CenterOwner" WindowStyle="ToolWindow">
+    <Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*" />
+			<RowDefinition Height="44" />
+		</Grid.RowDefinitions>
+		
+		<TextBox Grid.Row="0"
+				 Margin="10,10,10,0"
+				 IsReadOnly="True"
+				 Background="#EFEFEF"
+				 Text="{Binding Text}" TextWrapping="Wrap"
+				 VerticalScrollBarVisibility="Auto" />
+		
+		<CheckBox Grid.Row="1"
+				  Margin="10, 10, 10, 0"
+				  IsChecked="{Binding NeverShowThisAgain}"
+				  Content="Never show this again" />
+		
+		<Button Grid.Row="1"
+				HorizontalAlignment="Right"
+				Margin="10"
+				Height="24"
+				Width="60"
+				Content="Close"
+				IsCancel="True"
+				IsDefault="True" />
+	</Grid>
+</Window>

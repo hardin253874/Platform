@@ -1,0 +1,6160 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<tests>
+  <test name="HE001 - Entity tenant is not a valid tenant" description="Ensure that the tenant assigned to each entity is a valid tenant." type="test" entityColumns="0,1">
+    <query>
+      <![CDATA[
+SET NOCOUNT ON
+
+SELECT
+	[Entity Upgrade Id] = e.UpgradeId,
+	[Tenant Id] = e.TenantId
+	
+FROM
+	Entity e
+LEFT JOIN
+	_vTenant t ON
+	  e.TenantId = t.Id
+WHERE
+	t.Id IS NULL AND
+	e.TenantId <> 0
+]]>
+    </query>
+  </test>
+  <test name="HE002 - Entity types must exist" description="Ensure that each entity has one or more types associated with it." type="test" entityColumns="1" tenantColumn="0">
+    <query>
+      <![CDATA[
+SET NOCOUNT ON
+
+DECLARE @isOfType BIGINT
+DECLARE @name BIGINT
+DECLARE @inSolution BIGINT
+
+DECLARE @tenantId BIGINT
+DECLARE @tenantName NVARCHAR( 100 )
+
+CREATE TABLE #results ( [Tenant] NVARCHAR( 100 ), [Entity Upgrade Id] UNIQUEIDENTIFIER, [Entity Name] NVARCHAR ( 100 ), [Solution Name] NVARCHAR( 100 ) )
+
+DECLARE cur CURSOR FORWARD_ONLY FOR
+SELECT
+	0,
+	'Global'
+UNION 
+SELECT
+	Id,
+	name
+FROM
+	_vTenant
+
+OPEN cur
+
+FETCH NEXT FROM
+	cur
+INTO
+	@tenantId,
+	@tenantName
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+	SELECT @isOfType = dbo.fnAliasNsId( 'isOfType', 'core', @tenantId )
+	SELECT @name = dbo.fnAliasNsId( 'name', 'core', @tenantId )
+	SELECT @inSolution = dbo.fnAliasNsId( 'inSolution', 'core', @tenantId )
+
+	INSERT INTO
+		#results
+	SELECT
+		[Tenant] = @tenantName,
+		[Entity Upgrade Id] = e.UpgradeId,
+		[Entity Name] = en.Data_StartsWith,
+		[Solution Name] = sn.Data_StartsWith
+	FROM
+		Entity e
+	LEFT JOIN (
+		SELECT
+			r.TenantId,
+			r.FromId,
+			r.ToId
+		FROM
+			Relationship r
+		WHERE
+			r.TenantId = @tenantId AND
+			r.TypeId = @isOfType
+	) r ON
+		r.TenantId = e.TenantId AND
+		r.FromId = e.Id
+	LEFT JOIN
+		Data_NVarChar en ON
+			en.TenantId = e.TenantId AND
+			en.EntityId = e.Id AND
+			en.FieldId = @name
+	LEFT JOIN
+		Relationship s ON
+			s.TenantId = e.TenantId AND
+			s.FromId = e.Id AND
+			s.TypeId = @inSolution
+	LEFT JOIN
+		Data_NVarChar sn ON
+			sn.TenantId = s.TenantId AND
+			sn.EntityId = s.ToId AND
+			sn.FieldId = @name
+	WHERE
+		e.TenantId = @tenantId AND
+		r.ToId IS NULL
+
+	FETCH NEXT FROM
+		cur
+	INTO
+		@tenantId,
+		@tenantName
+END 
+CLOSE cur;
+DEALLOCATE cur;
+
+SELECT
+	*
+FROM
+	#results
+ORDER BY
+	[Tenant],
+	[Entity Name],
+	[Solution Name]
+
+DROP TABLE
+  #results
+]]>
+    </query>
+    <resolution>
+      <![CDATA[
+BEGIN TRANSACTION
+
+DECLARE @tenantId BIGINT
+DECLARE @entityId BIGINT
+
+SELECT
+  @tenantId = Id
+FROM (
+	SELECT
+		Id,
+		name
+	FROM
+		_vTenant
+	UNION
+	SELECT
+		0,
+		'Global'
+) t	
+WHERE
+  name = '{0}'
+  
+SELECT
+  @entityId = Id
+FROM
+  Entity
+WHERE
+  TenantId = @tenantId AND
+  UpgradeId = '{1}'
+  
+EXEC spDelete @entityId, @tenantId
+
+COMMIT TRANSACTION
+      ]]>
+    </resolution>
+  </test>
+  <test name="HE003 - Entity types must be valid types" description="Ensure that the types associated with each entity are valid types." type="test" entityColumns="1,3" tenantColumn="0">
+    <query>
+      <![CDATA[
+SET NOCOUNT ON
+
+DECLARE @isOfType BIGINT
+DECLARE @name BIGINT
+DECLARE @inSolution BIGINT
+DECLARE @type BIGINT
+
+DECLARE @tenantId BIGINT
+DECLARE @tenantName NVARCHAR( 100 )
+
+CREATE TABLE #results ( [Tenant] NVARCHAR( 100 ), [Entity Upgrade Id] UNIQUEIDENTIFIER, [Entity Name] NVARCHAR ( 100 ), [Type Upgrade Id] UNIQUEIDENTIFIER, [Type Name] NVARCHAR ( 100 ), [Solution Name] NVARCHAR( 100 ) )
+
+DECLARE cur CURSOR FORWARD_ONLY FOR
+SELECT
+	0,
+	'Global'
+UNION 
+SELECT
+	Id,
+	name
+FROM
+	_vTenant
+
+OPEN cur
+
+FETCH NEXT FROM
+	cur
+INTO
+	@tenantId,
+	@tenantName
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+	SELECT @isOfType = dbo.fnAliasNsId( 'isOfType', 'core', @tenantId )
+	SELECT @name = dbo.fnAliasNsId( 'name', 'core', @tenantId )
+	SELECT @inSolution = dbo.fnAliasNsId( 'inSolution', 'core', @tenantId )
+	SELECT @type = dbo.fnAliasNsId( 'type', 'core', @tenantId )
+
+	INSERT INTO
+		#results
+	SELECT
+		[Tenant] = @tenantName,
+		[Entity Upgrade Id] = e.UpgradeId,
+		[Entity Name] = en.Data_StartsWith,
+		[Type Upgrade Id] = et.UpgradeId,
+		[Type Name] = tn.Data_StartsWith,
+		[Solution Name] = sn.Data_StartsWith
+	FROM
+		Entity e
+	LEFT JOIN
+		Relationship r ON
+			r.TenantId = e.TenantId AND
+			r.FromId = e.Id AND
+			r.TypeId = @isOfType
+	LEFT JOIN (
+		SELECT
+			e.Id
+		FROM
+			dbo.fnDerivedTypes( @type, @tenantId ) dt
+		JOIN
+			Relationship r ON
+				r.TenantId = @tenantId AND
+				r.ToId = dt.Id AND
+				r.TypeId = @isOfType
+		JOIN
+			Entity e ON
+				e.Id = r.FromId AND
+				e.TenantId = r.TenantId
+	) t ON r.ToId = t.Id
+	LEFT JOIN
+		Data_NVarChar en ON
+			en.TenantId = e.TenantId AND
+			en.EntityId = e.Id AND
+			en.FieldId = @name
+	LEFT JOIN
+		Entity et ON
+			et.TenantId = e.TenantId AND
+			et.Id = r.ToId
+	LEFT JOIN
+		Data_NVarChar tn ON
+			tn.TenantId = et.TenantId AND
+			tn.EntityId = et.Id AND
+			tn.FieldId = @name
+	LEFT JOIN
+		Relationship s ON
+			s.TenantId = e.TenantId AND
+			s.FromId = e.Id AND
+			s.TypeId = @inSolution
+	LEFT JOIN
+		Data_NVarChar sn ON
+			sn.TenantId = s.TenantId AND
+			sn.EntityId = s.ToId AND
+			sn.FieldId = @name
+	WHERE
+		e.TenantId = @tenantId AND
+		t.Id IS NULL
+
+	FETCH NEXT FROM
+		cur 
+	INTO
+		@tenantId,
+		@tenantName
+END 
+CLOSE cur;
+DEALLOCATE cur;
+
+SELECT
+	*
+FROM
+	#results
+ORDER BY
+	[Tenant],
+	[Entity Name],
+	[Solution Name]
+
+DROP TABLE #results
+]]>
+    </query>
+    <resolution>
+      <![CDATA[
+BEGIN TRANSACTION
+
+DECLARE @tenantId BIGINT
+DECLARE @entityId BIGINT
+
+SELECT
+  @tenantId = Id
+FROM (
+	SELECT
+		Id,
+		name
+	FROM
+		_vTenant
+	UNION
+	SELECT
+		0,
+		'Global'
+) t	
+WHERE
+  name = '{0}'
+  
+SELECT
+  @entityId = Id
+FROM
+  Entity
+WHERE
+  TenantId = @tenantId AND
+  UpgradeId = '{1}'
+  
+EXEC spDelete @entityId, @tenantId
+
+COMMIT TRANSACTION
+      ]]>
+    </resolution>
+  </test>
+  <test name="HE005 - Entities must not be of abstract type" description="Ensure that each entity is of a non-abstract type." type="test" entityColumns="1,3" tenantColumn="0">
+    <query>
+      <![CDATA[
+SET NOCOUNT ON
+
+DECLARE @isOfType BIGINT
+DECLARE @name BIGINT
+DECLARE @inSolution BIGINT
+DECLARE @isAbstract BIGINT
+
+DECLARE @tenantId BIGINT
+DECLARE @tenantName NVARCHAR( 100 )
+
+CREATE TABLE #results ( [Tenant] NVARCHAR( 100 ), [Entity Upgrade Id] UNIQUEIDENTIFIER, [Entity Name] NVARCHAR ( 100 ), [Type Upgrade Id] UNIQUEIDENTIFIER, [Type Name] NVARCHAR ( 100 ), [Solution Name] NVARCHAR( 100 ) )
+
+DECLARE cur CURSOR FORWARD_ONLY FOR
+SELECT
+	0,
+	'Global'
+UNION 
+SELECT
+	Id,
+	name
+FROM
+	_vTenant
+
+OPEN cur
+
+FETCH NEXT FROM
+	cur
+INTO
+	@tenantId,
+	@tenantName
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+	SELECT @isOfType = dbo.fnAliasNsId( 'isOfType', 'core', @tenantId )
+	SELECT @name = dbo.fnAliasNsId( 'name', 'core', @tenantId )
+	SELECT @inSolution = dbo.fnAliasNsId( 'inSolution', 'core', @tenantId )
+	SELECT @isAbstract = dbo.fnAliasNsId( 'isAbstract', 'core', @tenantId )
+
+	INSERT INTO
+		#results
+	SELECT
+		[Tenant] = @tenantName,
+		[Entity Upgrade Id] = e.UpgradeId,
+		[Entity Name] = en.Data_StartsWith,
+		[Type Upgrade Id] = te.UpgradeId,
+		[Type Name] = tn.Data_StartsWith,
+		[Solution Name] = sn.Data_StartsWith
+	FROM
+		Entity e
+	JOIN
+		Relationship r ON
+			r.FromId = e.Id AND
+			r.TenantId = e.TenantId AND
+			r.TypeId = @isOfType
+	JOIN
+		Data_Bit b ON
+			b.TenantId = r.TenantId AND
+			b.EntityId = r.ToId AND
+			b.FieldId = @isAbstract
+	LEFT JOIN
+		Data_NVarChar en ON
+			en.TenantId = e.TenantId AND
+			en.EntityId = e.Id AND
+			en.FieldId = @name
+	LEFT JOIN
+			Entity te ON
+				te.TenantId = r.TenantId AND
+				te.Id = r.ToId
+	LEFT JOIN
+		Data_NVarChar tn ON
+			tn.TenantId = r.TenantId AND
+			tn.EntityId = r.ToId AND
+			tn.FieldId = @name
+	LEFT JOIN
+		Relationship s ON
+			s.TenantId = e.TenantId AND
+			s.FromId = e.Id AND
+			s.TypeId = @inSolution
+	LEFT JOIN
+		Data_NVarChar sn ON
+			sn.TenantId = s.TenantId AND
+			sn.EntityId = s.ToId AND
+			sn.FieldId = @name
+WHERE
+	e.TenantId = @tenantId AND
+	b.Data = 1
+
+	FETCH NEXT FROM
+		cur 
+	INTO
+		@tenantId,
+		@tenantName
+END 
+CLOSE cur;
+DEALLOCATE cur;
+
+SELECT
+	*
+FROM
+	#results
+ORDER BY
+	[Tenant],
+	[Entity Name],
+	[Solution Name]
+
+DROP TABLE #results
+]]>
+    </query>
+    <resolution>
+      <![CDATA[
+BEGIN TRANSACTION
+
+DECLARE @tenantId BIGINT
+DECLARE @entityId BIGINT
+
+SELECT
+  @tenantId = Id
+FROM (
+	SELECT
+		Id,
+		name
+	FROM
+		_vTenant
+	UNION
+	SELECT
+		0,
+		'Global'
+) t	
+WHERE
+  name = '{0}'
+  
+SELECT
+  @entityId = Id
+FROM
+  Entity
+WHERE
+  TenantId = @tenantId AND
+  UpgradeId = '{1}'
+  
+EXEC spDelete @entityId, @tenantId
+
+COMMIT TRANSACTION
+      ]]>
+    </resolution>
+  </test>
+  <test name="HR001 - Relationship 'tenant' entry is not a valid tenant" description="Ensure that the tenant assigned to each relationship is a valid tenant." type="test" entityColumns="0,1,2,3">
+    <query>
+      <![CDATA[
+SET NOCOUNT ON
+
+SELECT
+  [Tenant Id] = r.TenantId,
+  [Type Upgrade Id] = e1.UpgradeId,
+  [From Upgrade Id] = e2.UpgradeId,
+  [To Upgrade Id] = e3.UpgradeId
+FROM
+  Relationship r
+LEFT JOIN
+	_vTenant t ON
+		r.TenantId = t.Id
+LEFT JOIN
+	Entity e1 ON
+		e1.TenantId = r.TenantId AND
+		e1.Id = r.TypeId
+LEFT JOIN
+	Entity e2 ON
+		e2.TenantId = r.TenantId AND
+		e2.Id = r.FromId
+LEFT JOIN
+	Entity e3 ON
+		e3.TenantId = r.TenantId AND
+		e3.Id = r.ToId
+WHERE
+	r.TenantId <> 0 AND
+	t.Id IS NULL
+      ]]>
+    </query>
+  </test>
+  <test name="HR002 - Relationship 'type' entity does not exist" description="Ensure that the types associated with each relationship are valid types." type="test" entityColumns="1,3,5" tenantColumn="0">
+    <query>
+      <![CDATA[
+SET NOCOUNT ON
+
+DECLARE @isOfType BIGINT
+DECLARE @name BIGINT
+DECLARE @inSolution BIGINT
+DECLARE @type BIGINT
+
+DECLARE @tenantId BIGINT
+DECLARE @tenantName NVARCHAR( 100 )
+
+CREATE TABLE #results ( [Tenant] NVARCHAR( 100 ), [Type Upgrade Id] UNIQUEIDENTIFIER, [Type Name] NVARCHAR ( 100 ), [From Upgrade Id] UNIQUEIDENTIFIER, [From Name] NVARCHAR ( 100 ), [To Upgrade Id] UNIQUEIDENTIFIER, [To Name] NVARCHAR( 100 ) )
+
+DECLARE cur CURSOR FORWARD_ONLY FOR
+SELECT
+	0,
+	'Global'
+UNION 
+SELECT
+	Id,
+	name
+FROM
+	_vTenant
+
+OPEN cur
+
+FETCH NEXT FROM
+	cur
+INTO
+	@tenantId,
+	@tenantName
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+	SELECT @isOfType = dbo.fnAliasNsId( 'isOfType', 'core', @tenantId )
+	SELECT @name = dbo.fnAliasNsId( 'name', 'core', @tenantId )
+	SELECT @inSolution = dbo.fnAliasNsId( 'inSolution', 'core', @tenantId )
+	SELECT @type = dbo.fnAliasNsId( 'type', 'core', @tenantId )
+
+	INSERT INTO
+		#results
+	SELECT
+		[Tenant] = @tenantName,
+		[Type Upgrade Id] = e1.UpgradeId,
+		[Type Name] = n1.Data_StartsWith,
+		[From Upgrade Id] = e2.UpgradeId,
+		[From Name] = n2.Data_StartsWith,
+		[To Upgrade Id] = e3.UpgradeId,	
+		[To Name] = n3.Data_StartsWith
+	FROM
+		Relationship rel
+	LEFT JOIN
+		Relationship r ON
+			rel.TypeId = r.FromId AND
+			r.TypeId = @isOfType AND
+			r.TenantId = rel.TenantId
+	LEFT JOIN (
+		SELECT
+			e.Id
+		FROM
+			dbo.fnDerivedTypes( @type, @tenantId ) dt
+		JOIN
+			Relationship r ON
+				r.TenantId = @tenantId AND
+				r.ToId = dt.Id AND
+				r.TypeId = @isOfType
+		JOIN
+			Entity e ON
+				e.Id = r.FromId AND
+				e.TenantId = r.TenantId
+	) tt ON r.ToId = tt.Id
+	LEFT JOIN
+		Entity e1 ON
+			e1.TenantId = rel.TenantId AND
+			e1.Id = rel.TypeId
+	LEFT JOIN
+		Entity e2 ON
+			e2.TenantId = rel.TenantId AND
+			e2.Id = rel.FromId
+	LEFT JOIN
+		Entity e3 ON
+			e3.TenantId = rel.TenantId AND
+			e3.Id = rel.ToId
+	LEFT JOIN
+		Data_NVarChar n1 ON
+			n1.TenantId = rel.TenantId AND
+			n1.EntityId = rel.TypeId AND
+			n1.FieldId = @name
+	LEFT JOIN
+		Data_NVarChar n2 ON
+			n2.TenantId = rel.TenantId AND
+			n2.EntityId = rel.FromId AND
+			n2.FieldId = @name
+	LEFT JOIN
+		Data_NVarChar n3 ON
+			n3.TenantId = rel.TenantId AND
+			n3.EntityId = rel.ToId AND
+			n3.FieldId = @name
+	WHERE
+		rel.TenantId = @tenantId AND
+		tt.Id IS NULL
+
+	FETCH NEXT FROM
+		cur 
+	INTO
+		@tenantId,
+		@tenantName
+END 
+CLOSE cur;
+DEALLOCATE cur;
+
+SELECT
+	*
+FROM
+	#results
+ORDER BY
+	[Tenant],
+	[Type Name],
+	[From Name]
+
+DROP TABLE #results
+      ]]>
+    </query>
+    <resolution>
+      <![CDATA[
+BEGIN TRANSACTION
+
+DECLARE @tenantId BIGINT
+
+SELECT
+  @tenantId = Id
+FROM (
+	SELECT
+		Id,
+		name
+	FROM
+		_vTenant
+	UNION
+	SELECT
+		0,
+		'Global'
+) t	
+WHERE
+  name = '{0}'
+  
+DELETE
+  Relationship
+FROM
+  Relationship r
+JOIN
+  Entity ety ON
+    ety.TenantId = r.TenantId AND
+    ety.Id = r.TypeId
+JOIN
+  Entity efr ON
+    efr.TenantId = r.TenantId AND
+    efr.Id = r.FromId
+JOIN
+  Entity eto ON
+    eto.TenantId = r.TenantId AND
+    eto.Id = r.ToId
+WHERE
+  r.TenantId = @tenantId AND
+  ety.UpgradeId = '{1}' AND
+  efr.UpgradeId = '{3}' AND
+  eto.UpgradeId = '{5}'
+
+COMMIT TRANSACTION
+      ]]>
+    </resolution>
+  </test>
+  <test name="HR003 - Relationship 'from' entity does not exist" description="Ensure that the from entity associated with each relationship are valid entities." type="test" entityColumns="1,3,5" tenantColumn="0">
+    <query>
+      <![CDATA[
+SET NOCOUNT ON
+
+DECLARE @isOfType BIGINT
+DECLARE @name BIGINT
+DECLARE @inSolution BIGINT
+DECLARE @type BIGINT
+
+DECLARE @tenantId BIGINT
+DECLARE @tenantName NVARCHAR( 100 )
+
+CREATE TABLE #results ( [Tenant] NVARCHAR( 100 ), [Type Upgrade Id] UNIQUEIDENTIFIER, [Type Name] NVARCHAR ( 100 ), [From Upgrade Id] UNIQUEIDENTIFIER, [From Name] NVARCHAR ( 100 ), [To Upgrade Id] UNIQUEIDENTIFIER, [To Name] NVARCHAR( 100 ) )
+
+DECLARE cur CURSOR FORWARD_ONLY FOR
+SELECT
+	0,
+	'Global'
+UNION 
+SELECT
+	Id,
+	name
+FROM
+	_vTenant
+
+OPEN cur
+
+FETCH NEXT FROM
+	cur
+INTO
+	@tenantId,
+	@tenantName
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+	SELECT @isOfType = dbo.fnAliasNsId( 'isOfType', 'core', @tenantId )
+	SELECT @name = dbo.fnAliasNsId( 'name', 'core', @tenantId )
+	SELECT @inSolution = dbo.fnAliasNsId( 'inSolution', 'core', @tenantId )
+	SELECT @type = dbo.fnAliasNsId( 'type', 'core', @tenantId )
+
+	INSERT INTO
+		#results
+	SELECT
+		[Tenant] = @tenantName,
+		[Type Upgrade Id] = e1.UpgradeId,
+		[Type Name] = n1.Data_StartsWith,
+		[From Upgrade Id] = e2.UpgradeId,
+		[From Name] = n2.Data_StartsWith,
+		[To Upgrade Id] = e3.UpgradeId,	
+		[To Name] = n3.Data_StartsWith
+	FROM
+		Relationship rel
+	LEFT JOIN
+		Relationship r ON
+			rel.FromId = r.FromId AND
+			r.TypeId = @isOfType AND
+			r.TenantId = rel.TenantId
+	LEFT JOIN (
+		SELECT
+			e.Id
+		FROM
+			dbo.fnDerivedTypes( @type, @tenantId ) dt
+		JOIN
+			Relationship r ON
+				r.TenantId = @tenantId AND
+				r.ToId = dt.Id AND
+				r.TypeId = @isOfType
+		JOIN
+			Entity e ON
+				e.Id = r.FromId AND
+				e.TenantId = r.TenantId
+	) tt ON r.ToId = tt.Id
+	LEFT JOIN
+		Entity e1 ON
+			e1.TenantId = rel.TenantId AND
+			e1.Id = rel.TypeId
+	LEFT JOIN
+		Entity e2 ON
+			e2.TenantId = rel.TenantId AND
+			e2.Id = rel.FromId
+	LEFT JOIN
+		Entity e3 ON
+			e3.TenantId = rel.TenantId AND
+			e3.Id = rel.ToId
+	LEFT JOIN
+		Data_NVarChar n1 ON
+			n1.TenantId = rel.TenantId AND
+			n1.EntityId = rel.TypeId AND
+			n1.FieldId = @name
+	LEFT JOIN
+		Data_NVarChar n2 ON
+			n2.TenantId = rel.TenantId AND
+			n2.EntityId = rel.FromId AND
+			n2.FieldId = @name
+	LEFT JOIN
+		Data_NVarChar n3 ON
+			n3.TenantId = rel.TenantId AND
+			n3.EntityId = rel.ToId AND
+			n3.FieldId = @name
+	WHERE
+		rel.TenantId = @tenantId AND
+		tt.Id IS NULL
+
+	FETCH NEXT FROM
+		cur 
+	INTO
+		@tenantId,
+		@tenantName
+END 
+CLOSE cur;
+DEALLOCATE cur;
+
+SELECT
+	*
+FROM
+	#results
+ORDER BY
+	[Tenant],
+	[Type Name],
+	[From Name]
+
+DROP TABLE #results
+      ]]>
+    </query>
+    <resolution>
+      <![CDATA[
+BEGIN TRANSACTION
+
+DECLARE @tenantId BIGINT
+
+SELECT
+  @tenantId = Id
+FROM (
+	SELECT
+		Id,
+		name
+	FROM
+		_vTenant
+	UNION
+	SELECT
+		0,
+		'Global'
+) t	
+WHERE
+  name = '{0}'
+
+DELETE
+  Relationship
+FROM
+  Relationship r
+JOIN
+  Entity ety ON
+    ety.TenantId = r.TenantId AND
+    ety.Id = r.TypeId
+JOIN
+  Entity efr ON
+    efr.TenantId = r.TenantId AND
+    efr.Id = r.FromId
+JOIN
+  Entity eto ON
+    eto.TenantId = r.TenantId AND
+    eto.Id = r.ToId
+WHERE
+  r.TenantId = @tenantId AND
+  ety.UpgradeId = '{1}' AND
+  efr.UpgradeId = '{3}' AND
+  eto.UpgradeId = '{5}'
+
+COMMIT TRANSACTION
+      ]]>
+    </resolution>
+  </test>
+  <test name="HR004 - Relationship 'to' entity does not exist" description="Ensure that the to entity associated with each relationship are valid entities." type="test" entityColumns="1,3,5" tenantColumn="0">
+    <query>
+      <![CDATA[
+SET NOCOUNT ON
+
+DECLARE @isOfType BIGINT
+DECLARE @name BIGINT
+DECLARE @inSolution BIGINT
+DECLARE @type BIGINT
+
+DECLARE @tenantId BIGINT
+DECLARE @tenantName NVARCHAR( 100 )
+
+CREATE TABLE #results ( [Tenant] NVARCHAR( 100 ), [Type Upgrade Id] UNIQUEIDENTIFIER, [Type Name] NVARCHAR ( 100 ), [From Upgrade Id] UNIQUEIDENTIFIER, [From Name] NVARCHAR ( 100 ), [To Upgrade Id] UNIQUEIDENTIFIER, [To Name] NVARCHAR( 100 ) )
+
+DECLARE cur CURSOR FORWARD_ONLY FOR
+SELECT
+	0,
+	'Global'
+UNION 
+SELECT
+	Id,
+	name
+FROM
+	_vTenant
+
+OPEN cur
+
+FETCH NEXT FROM
+	cur
+INTO
+	@tenantId,
+	@tenantName
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+	SELECT @isOfType = dbo.fnAliasNsId( 'isOfType', 'core', @tenantId )
+	SELECT @name = dbo.fnAliasNsId( 'name', 'core', @tenantId )
+	SELECT @inSolution = dbo.fnAliasNsId( 'inSolution', 'core', @tenantId )
+	SELECT @type = dbo.fnAliasNsId( 'type', 'core', @tenantId )
+
+	INSERT INTO
+		#results
+	SELECT
+		[Tenant] = @tenantName,
+		[Type Upgrade Id] = e1.UpgradeId,
+		[Type Name] = n1.Data_StartsWith,
+		[From Upgrade Id] = e2.UpgradeId,
+		[From Name] = n2.Data_StartsWith,
+		[To Upgrade Id] = e3.UpgradeId,	
+		[To Name] = n3.Data_StartsWith
+	FROM
+		Relationship rel
+	LEFT JOIN
+		Relationship r ON
+			rel.ToId = r.FromId AND
+			r.TypeId = @isOfType AND
+			r.TenantId = rel.TenantId
+	LEFT JOIN (
+		SELECT
+			e.Id
+		FROM
+			dbo.fnDerivedTypes( @type, @tenantId ) dt
+		JOIN
+			Relationship r ON
+				r.TenantId = @tenantId AND
+				r.ToId = dt.Id AND
+				r.TypeId = @isOfType
+		JOIN
+			Entity e ON
+				e.Id = r.FromId AND
+				e.TenantId = r.TenantId
+	) tt ON r.ToId = tt.Id
+	LEFT JOIN
+		Entity e1 ON
+			e1.TenantId = rel.TenantId AND
+			e1.Id = rel.TypeId
+	LEFT JOIN
+		Entity e2 ON
+			e2.TenantId = rel.TenantId AND
+			e2.Id = rel.FromId
+	LEFT JOIN
+		Entity e3 ON
+			e3.TenantId = rel.TenantId AND
+			e3.Id = rel.ToId
+	LEFT JOIN
+		Data_NVarChar n1 ON
+			n1.TenantId = rel.TenantId AND
+			n1.EntityId = rel.TypeId AND
+			n1.FieldId = @name
+	LEFT JOIN
+		Data_NVarChar n2 ON
+			n2.TenantId = rel.TenantId AND
+			n2.EntityId = rel.FromId AND
+			n2.FieldId = @name
+	LEFT JOIN
+		Data_NVarChar n3 ON
+			n3.TenantId = rel.TenantId AND
+			n3.EntityId = rel.ToId AND
+			n3.FieldId = @name
+	WHERE
+		rel.TenantId = @tenantId AND
+		tt.Id IS NULL
+
+	FETCH NEXT FROM
+		cur 
+	INTO
+		@tenantId,
+		@tenantName
+END 
+CLOSE cur;
+DEALLOCATE cur;
+
+SELECT
+	*
+FROM
+	#results
+ORDER BY
+	[Tenant],
+	[Type Name],
+	[From Name]
+
+DROP TABLE #results
+      ]]>
+    </query>
+    <resolution>
+      <![CDATA[
+BEGIN TRANSACTION
+
+DECLARE @tenantId BIGINT
+
+SELECT
+  @tenantId = Id
+FROM (
+	SELECT
+		Id,
+		name
+	FROM
+		_vTenant
+	UNION
+	SELECT
+		0,
+		'Global'
+) t	
+WHERE
+  name = '{0}'
+
+DELETE
+  Relationship
+FROM
+  Relationship r
+JOIN
+  Entity ety ON
+    ety.TenantId = r.TenantId AND
+    ety.Id = r.TypeId
+JOIN
+  Entity efr ON
+    efr.TenantId = r.TenantId AND
+    efr.Id = r.FromId
+JOIN
+  Entity eto ON
+    eto.TenantId = r.TenantId AND
+    eto.Id = r.ToId
+WHERE
+  r.TenantId = @tenantId AND
+  ety.UpgradeId = '{1}' AND
+  efr.UpgradeId = '{3}' AND
+  eto.UpgradeId = '{5}'
+  
+COMMIT TRANSACTION
+      ]]>
+    </resolution>
+  </test>
+  <test name="HR005 - Relationship 'type' entity is not a valid relationship" description="Ensure that the type entity associated with each relationship are valid relationship types." type="test" entityColumns="1,3,5" tenantColumn="0">
+    <query>
+      <![CDATA[
+SET NOCOUNT ON
+
+DECLARE @isOfType BIGINT
+DECLARE @name BIGINT
+DECLARE @type BIGINT
+DECLARE @relationship BIGINT
+
+DECLARE @tenantId BIGINT
+DECLARE @tenantName NVARCHAR( 100 )
+
+CREATE TABLE #results ( [Tenant] NVARCHAR( 100 ), [Type Upgrade Id] UNIQUEIDENTIFIER, [Type Name] NVARCHAR ( 100 ), [From Upgrade Id] UNIQUEIDENTIFIER, [From Name] NVARCHAR ( 100 ), [To Upgrade Id] UNIQUEIDENTIFIER, [To Name] NVARCHAR( 100 ) )
+
+DECLARE cur CURSOR FORWARD_ONLY FOR
+SELECT
+	0,
+	'Global'
+UNION 
+SELECT
+	Id,
+	name
+FROM
+	_vTenant
+
+OPEN cur
+
+FETCH NEXT FROM
+	cur
+INTO
+	@tenantId,
+	@tenantName
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+	SELECT @isOfType = dbo.fnAliasNsId( 'isOfType', 'core', @tenantId )
+	SELECT @name = dbo.fnAliasNsId( 'name', 'core', @tenantId )
+	SELECT @type = dbo.fnAliasNsId( 'type', 'core', @tenantId )
+	SELECT @relationship = dbo.fnAliasNsId( 'relationship', 'core', @tenantId )
+
+	INSERT INTO
+		#results
+	SELECT
+		[Tenant] = @tenantName,
+		[Type Upgrade Id] = e1.UpgradeId,
+		[Type Name] = n1.Data_StartsWith,
+		[From Upgrade Id] = e2.UpgradeId,
+		[From Name] = n2.Data_StartsWith,
+		[To Upgrade Id] = e3.UpgradeId,	
+		[To Name] = n3.Data_StartsWith
+	FROM
+		Relationship rel
+	LEFT JOIN
+		Relationship r ON
+			r.FromId = rel.TypeId AND
+			r.TypeId = @isOfType AND
+			r.TenantId = rel.TenantId
+	LEFT JOIN (
+		SELECT
+			e.Id
+		FROM
+			dbo.fnDerivedTypes( @type, @tenantId ) dt
+		JOIN
+			Relationship r ON
+				r.TenantId = @tenantId AND
+				r.ToId = dt.Id AND
+				r.TypeId = @isOfType
+		JOIN
+			Entity e ON
+				e.Id = r.FromId AND
+				e.TenantId = r.TenantId
+		) t ON r.ToId = t.Id
+	LEFT JOIN
+		dbo.fnDerivedTypes( @relationship, @tenantId ) rt ON
+			rt.Id = t.Id
+	LEFT JOIN
+		Entity e1 ON
+			e1.TenantId = rel.TenantId AND
+			e1.Id = rel.TypeId
+	LEFT JOIN
+		Entity e2 ON
+			e2.TenantId = rel.TenantId AND
+			e2.Id = rel.FromId
+	LEFT JOIN
+		Entity e3 ON
+			e3.TenantId = rel.TenantId AND
+			e3.Id = rel.ToId
+	LEFT JOIN
+		Data_NVarChar n1 ON
+			n1.TenantId = rel.TenantId AND
+			n1.EntityId = rel.TypeId AND
+			n1.FieldId = @name
+	LEFT JOIN
+		Data_NVarChar n2 ON
+			n2.TenantId = rel.TenantId AND
+			n2.EntityId = rel.FromId AND
+			n2.FieldId = @name
+	LEFT JOIN
+		Data_NVarChar n3 ON
+			n3.TenantId = rel.TenantId AND
+			n3.EntityId = rel.ToId AND
+			n3.FieldId = @name
+	WHERE
+		rel.TenantId = @tenantId AND
+		rt.Id IS NULL
+
+	FETCH NEXT FROM
+		cur 
+	INTO
+		@tenantId,
+		@tenantName
+END 
+CLOSE cur;
+DEALLOCATE cur;
+
+SELECT
+	*
+FROM
+	#results
+ORDER BY
+	[Tenant],
+	[Type Name],
+	[From Name]
+
+DROP TABLE #results
+      ]]>
+    </query>
+    <resolution>
+      <![CDATA[
+BEGIN TRANSACTION
+
+DECLARE @tenantId BIGINT
+
+SELECT
+  @tenantId = Id
+FROM (
+	SELECT
+		Id,
+		name
+	FROM
+		_vTenant
+	UNION
+	SELECT
+		0,
+		'Global'
+) t	
+WHERE
+  name = '{0}'
+
+DELETE
+  Relationship
+FROM
+  Relationship r
+JOIN
+  Entity ety ON
+    ety.TenantId = r.TenantId AND
+    ety.Id = r.TypeId
+JOIN
+  Entity efr ON
+    efr.TenantId = r.TenantId AND
+    efr.Id = r.FromId
+JOIN
+  Entity eto ON
+    eto.TenantId = r.TenantId AND
+    eto.Id = r.ToId
+WHERE
+  r.TenantId = @tenantId AND
+  ety.UpgradeId = '{1}' AND
+  efr.UpgradeId = '{3}' AND
+  eto.UpgradeId = '{5}'
+  
+COMMIT TRANSACTION
+      ]]>
+    </resolution>
+  </test>
+  <test name="HR006 - The entity type of the 'from' instance is not equal to the 'from type' of the relationship" description="Ensure that the entity type of the from instance of the relationship row is applicable to the relationship definition's from type." type="test" entityColumns="1,3,5" tenantColumn="0">
+    <query>
+      <![CDATA[
+SET NOCOUNT ON
+
+DECLARE @tenantId BIGINT
+DECLARE @tenantName NVARCHAR( 100 )
+
+DECLARE @isOfType BIGINT
+DECLARE @name BIGINT
+DECLARE @inherits BIGINT
+DECLARE @inSolution BIGINT
+DECLARE @fromType BIGINT
+
+CREATE TABLE #entityToTypeId (EntityId BIGINT, TypeId BIGINT, PRIMARY KEY (EntityId, TypeId))
+
+CREATE TABLE #results ( [Tenant] NVARCHAR( 100 ), [Type Upgrade Id] UNIQUEIDENTIFIER, [Type Name] NVARCHAR ( 100 ), [From Upgrade Id] UNIQUEIDENTIFIER, [From Name] NVARCHAR( 100 ), [To Upgrade Id] UNIQUEIDENTIFIER, [To Name] NVARCHAR( 100 ), [Solution Name] NVARCHAR ( 100 ) )
+
+DECLARE cur CURSOR FORWARD_ONLY FOR
+SELECT
+	0,
+	'Global'
+UNION 
+SELECT
+	Id,
+	name
+FROM
+	_vTenant
+
+OPEN cur
+
+FETCH NEXT FROM
+	cur
+INTO
+	@tenantId,
+	@tenantName
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+	SELECT @isOfType = dbo.fnAliasNsId('isOfType', 'core', @tenantId)
+	SELECT @name = dbo.fnAliasNsId('name', 'core', @tenantId)
+	SELECT @inherits = dbo.fnAliasNsId('inherits', 'core', @tenantId)	
+	SELECT @inSolution = dbo.fnAliasNsId('inSolution', 'core', @tenantId)	
+	SELECT @fromType = dbo.fnAliasNsId('fromType', 'core', @tenantId)	
+
+	INSERT INTO
+    #entityToTypeId
+	SELECT DISTINCT
+    r.FromId,
+    rel2.ToId
+  FROM
+    Relationship r
+  LEFT JOIN
+    dbo.tblFnRelationshipRecWithSelf( @tenantId, @inherits, DEFAULT, DEFAULT, DEFAULT ) rel2 ON
+      rel2.FromId = r.ToId AND
+      rel2.TypeId = @inherits AND
+      rel2.TenantId = @tenantId    
+		WHERE 
+			r.TenantId = @tenantId AND 
+      r.TypeId = @isOfType AND
+			rel2.ToId IS NOT NULL
+
+	INSERT INTO
+		#results
+	SELECT
+		[Tenant] = @tenantName,
+		[Type Upgrade Id] = e1.UpgradeId,
+		[Type Name] = n1.Data_StartsWith,
+		[From Upgrade Id] = e2.UpgradeId,
+		[From Name] = n2.Data_StartsWith,
+		[To Upgrade Id] = e3.UpgradeId,
+		[To Name] = n3.Data_StartsWith,
+		[Solution Name] = sn.Data_StartsWith
+	FROM
+		Relationship r
+	JOIN
+		Relationship rr ON rr.FromId = r.TypeId AND rr.TenantId = r.TenantId AND rr.TypeId = @fromType
+	LEFT JOIN
+		Entity e1 ON
+			e1.TenantId = r.TenantId AND
+			e1.Id = r.TypeId
+	LEFT JOIN
+		Entity e2 ON
+			e2.TenantId = r.TenantId AND
+			e2.Id = r.FromId
+	LEFT JOIN
+		Entity e3 ON
+			e3.TenantId = r.TenantId AND
+			e3.Id = r.ToId	
+	LEFT JOIN
+		Data_NVarChar n1 ON
+			n1.TenantId = e1.TenantId AND
+			n1.EntityId = e1.Id AND
+			n1.FieldId = @name
+	LEFT JOIN
+		Data_NVarChar n2 ON
+			n2.TenantId = e2.TenantId AND
+			n2.EntityId = e2.Id AND
+			n2.FieldId = @name
+	LEFT JOIN
+		Data_NVarChar n3 ON
+			n3.TenantId = e3.TenantId AND
+			n3.EntityId = e3.Id AND
+			n3.FieldId = @name
+	LEFT JOIN
+		Relationship s ON
+			s.TenantId = r.TenantId AND
+			s.FromId = r.FromId AND
+			s.TypeId = @inSolution
+	LEFT JOIN
+		Data_NVarChar sn ON
+			sn.TenantId = s.TenantId AND
+			sn.EntityId = s.ToId AND
+			sn.FieldId = @name
+	WHERE
+		NOT EXISTS (
+			SELECT
+				1
+			FROM
+				#entityToTypeId ett
+			WHERE
+				ett.EntityId = r.FromId AND 
+				ett.TypeId = rr.ToId
+		) AND
+	r.TenantId = @tenantId
+
+	FETCH NEXT FROM
+		cur
+	INTO
+		@tenantId,
+		@tenantName
+END 
+CLOSE cur;
+DEALLOCATE cur;
+
+SELECT
+	*
+FROM
+	#results
+ORDER BY
+	[Tenant],
+	[Type Name],
+	[From Name]
+
+DROP TABLE #entityToTypeId
+DROP TABLE #results
+      ]]>
+    </query>
+    <resolution>
+      <![CDATA[
+BEGIN TRANSACTION
+
+DECLARE @tenantId BIGINT
+
+SELECT
+  @tenantId = Id
+FROM (
+	SELECT
+		Id,
+		name
+	FROM
+		_vTenant
+	UNION
+	SELECT
+		0,
+		'Global'
+) t	
+WHERE
+  name = '{0}'
+
+DELETE
+  Relationship
+FROM
+  Relationship r
+JOIN
+  Entity ety ON
+    ety.TenantId = r.TenantId AND
+    ety.Id = r.TypeId
+JOIN
+  Entity efr ON
+    efr.TenantId = r.TenantId AND
+    efr.Id = r.FromId
+JOIN
+  Entity eto ON
+    eto.TenantId = r.TenantId AND
+    eto.Id = r.ToId
+WHERE
+  r.TenantId = @tenantId AND
+  ety.UpgradeId = '{1}' AND
+  efr.UpgradeId = '{3}' AND
+  eto.UpgradeId = '{5}'
+  
+COMMIT TRANSACTION
+      ]]>
+    </resolution>
+  </test>
+  <test name="HR007 - The entity type of the 'to' instance is not equal to the 'to type' of the relationship" description="Ensure that the entity type of the to instance of the relationship row is applicable to the relationship definition's to type." type="test" entityColumns="1,3,5" tenantColumn="0">
+    <query>
+      <![CDATA[
+SET NOCOUNT ON
+
+DECLARE @tenantId BIGINT
+DECLARE @tenantName NVARCHAR( 100 )
+
+DECLARE @isOfType BIGINT
+DECLARE @name BIGINT
+DECLARE @inherits BIGINT
+DECLARE @inSolution BIGINT
+DECLARE @toType BIGINT
+
+CREATE TABLE #entityToTypeId (EntityId BIGINT, TypeId BIGINT, PRIMARY KEY (EntityId, TypeId))
+
+CREATE TABLE #results ( [Tenant] NVARCHAR( 100 ), [Type Upgrade Id] UNIQUEIDENTIFIER, [Type Name] NVARCHAR ( 100 ), [From Upgrade Id] UNIQUEIDENTIFIER, [From Name] NVARCHAR( 100 ), [To Upgrade Id] UNIQUEIDENTIFIER, [To Name] NVARCHAR( 100 ), [Solution Name] NVARCHAR ( 100 ) )
+
+DECLARE cur CURSOR FORWARD_ONLY FOR
+SELECT
+	0,
+	'Global'
+UNION 
+SELECT
+	Id,
+	name
+FROM
+	_vTenant
+
+OPEN cur
+
+FETCH NEXT FROM
+  cur
+INTO
+  @tenantId,
+  @tenantName
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+	SELECT @isOfType = dbo.fnAliasNsId('isOfType', 'core', @tenantId)
+	SELECT @name = dbo.fnAliasNsId('name', 'core', @tenantId)
+	SELECT @inherits = dbo.fnAliasNsId('inherits', 'core', @tenantId)	
+	SELECT @inSolution = dbo.fnAliasNsId('inSolution', 'core', @tenantId)	
+	SELECT @toType = dbo.fnAliasNsId('toType', 'core', @tenantId)	
+
+	INSERT INTO
+    #entityToTypeId
+  SELECT DISTINCT
+    r.FromId,
+    rel2.ToId
+  FROM
+    Relationship r
+  LEFT JOIN
+    dbo.tblFnRelationshipRecWithSelf( @tenantId, @inherits, DEFAULT, DEFAULT, DEFAULT ) rel2 ON
+      rel2.FromId = r.ToId AND
+      rel2.TypeId = @inherits AND
+      rel2.TenantId = @tenantId    
+		WHERE 
+			r.TenantId = @tenantId AND 
+      r.TypeId = @isOfType AND
+			rel2.ToId IS NOT NULL
+
+	INSERT INTO
+		#results
+	SELECT
+		[Tenant] = @tenantName,
+		[Type Upgrade Id] = e1.UpgradeId,
+		[Type Name] = n1.Data_StartsWith,
+		[From Upgrade Id] = e2.UpgradeId,
+		[From Name] = n2.Data_StartsWith,
+		[To Upgrade Id] = e3.UpgradeId,
+		[To Name] = n3.Data_StartsWith,
+		[Solution Name] = sn.Data_StartsWith
+	FROM
+		Relationship r
+	JOIN
+		Relationship rr ON rr.FromId = r.TypeId AND rr.TenantId = r.TenantId AND rr.TypeId = @toType
+	LEFT JOIN
+		Entity e1 ON
+			e1.TenantId = r.TenantId AND
+			e1.Id = r.TypeId
+	LEFT JOIN
+		Entity e2 ON
+			e2.TenantId = r.TenantId AND
+			e2.Id = r.FromId
+	LEFT JOIN
+		Entity e3 ON
+			e3.TenantId = r.TenantId AND
+			e3.Id = r.ToId	
+	LEFT JOIN
+		Data_NVarChar n1 ON
+			n1.TenantId = e1.TenantId AND
+			n1.EntityId = e1.Id AND
+			n1.FieldId = @name
+	LEFT JOIN
+		Data_NVarChar n2 ON
+			n2.TenantId = e2.TenantId AND
+			n2.EntityId = e2.Id AND
+			n2.FieldId = @name
+	LEFT JOIN
+		Data_NVarChar n3 ON
+			n3.TenantId = e3.TenantId AND
+			n3.EntityId = e3.Id AND
+			n3.FieldId = @name
+	LEFT JOIN
+		Relationship s ON
+			s.TenantId = r.TenantId AND
+			s.FromId = r.FromId AND
+			s.TypeId = @inSolution
+	LEFT JOIN
+		Data_NVarChar sn ON
+			sn.TenantId = s.TenantId AND
+			sn.EntityId = s.ToId AND
+			sn.FieldId = @name
+	WHERE
+		NOT EXISTS (
+			SELECT
+				1
+			FROM
+				#entityToTypeId ett
+			WHERE
+				ett.EntityId = r.ToId AND 
+				ett.TypeId = rr.ToId
+		) AND
+	r.TenantId = @tenantId
+
+	FETCH NEXT FROM
+    cur
+	INTO
+    @tenantId,
+    @tenantName
+END 
+CLOSE cur;
+DEALLOCATE cur;
+
+SELECT
+	*
+FROM
+	#results
+ORDER BY
+	[Tenant],
+	[Type Name],
+	[From Name]
+
+DROP TABLE #entityToTypeId
+DROP TABLE #results
+      ]]>
+    </query>
+    <resolution>
+      <![CDATA[
+BEGIN TRANSACTION
+
+DECLARE @tenantId BIGINT
+
+SELECT
+  @tenantId = Id
+FROM (
+	SELECT
+		Id,
+		name
+	FROM
+		_vTenant
+	UNION
+	SELECT
+		0,
+		'Global'
+) t	
+WHERE
+  name = '{0}'
+
+DELETE
+  Relationship
+FROM
+  Relationship r
+JOIN
+  Entity ety ON
+    ety.TenantId = r.TenantId AND
+    ety.Id = r.TypeId
+JOIN
+  Entity efr ON
+    efr.TenantId = r.TenantId AND
+    efr.Id = r.FromId
+JOIN
+  Entity eto ON
+    eto.TenantId = r.TenantId AND
+    eto.Id = r.ToId
+WHERE
+  r.TenantId = @tenantId AND
+  ety.UpgradeId = '{1}' AND
+  efr.UpgradeId = '{3}' AND
+  eto.UpgradeId = '{5}'
+  
+COMMIT TRANSACTION
+      ]]>
+    </resolution>
+  </test>
+  <test name="HR008 - Violations of cardinality in the forward direction" description="Detects any cardinality violations in the forward direction." type="test" entityColumns="1,3,5" tenantColumn="0">
+    <query>
+      <![CDATA[
+SET NOCOUNT ON
+
+DECLARE @tenantId BIGINT
+DECLARE @tenantName NVARCHAR( 100 )
+
+DECLARE @cardinality BIGINT
+DECLARE @oneToOne BIGINT
+DECLARE @oneToMany BIGINT
+DECLARE @manyToOne BIGINT
+DECLARE @name BIGINT
+DECLARE @inSolution BIGINT
+
+CREATE TABLE #results ( [Tenant] NVARCHAR( 100 ), [Type Upgrade Id] UNIQUEIDENTIFIER, [Type Name] NVARCHAR ( 100 ), [From Upgrade Id] UNIQUEIDENTIFIER, [From Name] NVARCHAR( 100 ), [To Upgrade Id] UNIQUEIDENTIFIER, [To Name] NVARCHAR( 100 ), [Solution Name] NVARCHAR ( 100 ) )
+
+SET NOCOUNT ON
+
+DECLARE cur CURSOR FORWARD_ONLY FOR
+SELECT
+	0,
+	'Global'
+UNION
+SELECT
+	Id,
+	name
+FROM
+	_vTenant
+
+OPEN cur
+
+FETCH NEXT FROM
+	cur
+INTO
+	@tenantId,
+	@tenantName
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+
+	SELECT @cardinality = dbo.fnAliasNsId('cardinality', 'core', @tenantId)
+	SELECT @oneToOne = dbo.fnAliasNsId('oneToOne', 'core', @tenantId)
+	SELECT @oneToMany = dbo.fnAliasNsId('oneToMany', 'core', @tenantId)
+	SELECT @manyToOne = dbo.fnAliasNsId('manyToOne', 'core', @tenantId)
+	SELECT @inSolution = dbo.fnAliasNsId('inSolution', 'core', @tenantId)	
+	SELECT @name = dbo.fnAliasNsId('name', 'core', @tenantId)
+
+	INSERT INTO
+		#results
+	SELECT
+		[Tenant] = @tenantName,
+		[Type Upgrade Id] = e1.UpgradeId,
+		[Type Name] = n1.Data_StartsWith,
+		[From Upgrade Id] = e2.UpgradeId,
+		[From Name] = n2.Data_StartsWith,
+		[To Upgrade Id] = e3.UpgradeId,
+		[To Name] = n3.Data_StartsWith,
+		[Solution Name] = sn.Data_StartsWith
+	FROM
+		Relationship r
+	JOIN (
+		SELECT
+			TypeId,
+			FromId
+		FROM
+			Relationship
+		WHERE
+			TenantId = @tenantId AND
+			TypeId IN
+			(
+				SELECT
+					FromId
+				FROM
+					Relationship
+				WHERE
+					TenantId = @tenantId AND
+					TypeId = @cardinality AND (
+						ToId = @oneToOne OR
+						ToId = @manyToOne )
+			)
+		GROUP BY
+			TypeId,
+			FromId
+		HAVING
+			COUNT ( FromId ) > 1
+	) d ON
+		r.TypeId = d.TypeId AND
+		r.FromId = d.FromId AND
+		r.TenantId = @tenantId
+	LEFT JOIN
+		Entity e1 ON
+			e1.TenantId = r.TenantId AND
+			e1.Id = r.TypeId
+	LEFT JOIN
+		Entity e2 ON
+			e2.TenantId = r.TenantId AND
+			e2.Id = r.FromId
+	LEFT JOIN
+		Entity e3 ON
+			e3.TenantId = r.TenantId AND
+			e3.Id = r.ToId	
+	LEFT JOIN
+		Data_NVarChar n1 ON
+			n1.TenantId = e1.TenantId AND
+			n1.EntityId = e1.Id AND
+			n1.FieldId = @name
+	LEFT JOIN
+		Data_NVarChar n2 ON
+			n2.TenantId = e2.TenantId AND
+			n2.EntityId = e2.Id AND
+			n2.FieldId = @name
+	LEFT JOIN
+		Data_NVarChar n3 ON
+			n3.TenantId = e3.TenantId AND
+			n3.EntityId = e3.Id AND
+			n3.FieldId = @name
+	LEFT JOIN
+		Relationship s ON
+			s.TenantId = r.TenantId AND
+			s.FromId = r.FromId AND
+			s.TypeId = @inSolution
+	LEFT JOIN
+		Data_NVarChar sn ON
+			sn.TenantId = s.TenantId AND
+			sn.EntityId = s.ToId AND
+			sn.FieldId = @name
+	ORDER BY
+		r.TenantId,
+		r.TypeId,
+		r.FromId,
+		r.ToId
+
+	FETCH NEXT FROM
+		cur
+	INTO
+		@tenantId,
+		@tenantName
+END 
+CLOSE cur;
+DEALLOCATE cur;
+
+SELECT
+	*
+FROM
+	#results
+ORDER BY
+	[Tenant],
+	[Type Upgrade Id],
+	[From Upgrade Id]
+
+DROP TABLE #results
+]]>
+    </query>
+    <resolution>
+      <![CDATA[
+BEGIN TRANSACTION
+
+DECLARE @tenantId BIGINT
+
+SELECT
+  @tenantId = Id
+FROM (
+	SELECT
+		Id,
+		name
+	FROM
+		_vTenant
+	UNION
+	SELECT
+		0,
+		'Global'
+) t	
+WHERE
+  name = '{0}'
+
+DELETE
+  Relationship
+FROM
+  Relationship r
+JOIN
+  Entity ety ON
+    ety.TenantId = r.TenantId AND
+    ety.Id = r.TypeId
+JOIN
+  Entity efr ON
+    efr.TenantId = r.TenantId AND
+    efr.Id = r.FromId
+JOIN
+  Entity eto ON
+    eto.TenantId = r.TenantId AND
+    eto.Id = r.ToId
+WHERE
+  r.TenantId = @tenantId AND
+  ety.UpgradeId = '{1}' AND
+  efr.UpgradeId = '{3}' AND
+  eto.UpgradeId = '{5}'
+  
+COMMIT TRANSACTION
+      ]]>
+    </resolution>
+  </test>
+  <test name="HR009 - Violations of cardinality in the reverse direction" description="Detects any cardinality violations in the reverse direction." type="test" entityColumns="1,3,5" tenantColumn="0">
+    <query>
+      <![CDATA[
+SET NOCOUNT ON
+
+DECLARE @tenantId BIGINT
+DECLARE @tenantName NVARCHAR( 100 )
+
+DECLARE @cardinality BIGINT
+DECLARE @oneToOne BIGINT
+DECLARE @oneToMany BIGINT
+DECLARE @manyToOne BIGINT
+DECLARE @name BIGINT
+DECLARE @inSolution BIGINT
+
+CREATE TABLE #results ( [Tenant] NVARCHAR( 100 ), [Type Upgrade Id] UNIQUEIDENTIFIER, [Type Name] NVARCHAR ( 100 ), [From Upgrade Id] UNIQUEIDENTIFIER, [From Name] NVARCHAR( 100 ), [To Upgrade Id] UNIQUEIDENTIFIER, [To Name] NVARCHAR( 100 ), [Solution Name] NVARCHAR ( 100 ) )
+
+SET NOCOUNT ON
+
+DECLARE cur CURSOR FORWARD_ONLY FOR
+SELECT
+	0,
+	'Global'
+UNION
+SELECT
+	Id,
+	name
+FROM
+	_vTenant
+
+OPEN cur
+
+FETCH NEXT FROM
+	cur
+INTO
+	@tenantId,
+	@tenantName
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+
+	SELECT @cardinality = dbo.fnAliasNsId('cardinality', 'core', @tenantId)
+	SELECT @oneToOne = dbo.fnAliasNsId('oneToOne', 'core', @tenantId)
+	SELECT @oneToMany = dbo.fnAliasNsId('oneToMany', 'core', @tenantId)
+	SELECT @manyToOne = dbo.fnAliasNsId('manyToOne', 'core', @tenantId)
+	
+
+	INSERT INTO
+		#results
+	SELECT
+		[Tenant] = @tenantName,
+		[Type Upgrade Id] = e1.UpgradeId,
+		[Type Name] = n1.Data_StartsWith,
+		[From Upgrade Id] = e2.UpgradeId,
+		[From Name] = n2.Data_StartsWith,
+		[To Upgrade Id] = e3.UpgradeId,
+		[To Name] = n3.Data_StartsWith,
+		[Solution Name] = sn.Data_StartsWith
+	FROM
+		dbgRelationship r
+	JOIN (
+		SELECT
+			TypeId,
+			ToId
+		FROM
+			Relationship
+		WHERE
+      TenantId = @tenantId AND
+			TypeId IN
+			(
+				SELECT
+					FromId
+				FROM
+					Relationship
+				WHERE
+					TenantId = @tenantId AND
+					TypeId = @cardinality AND (
+						ToId = @oneToOne OR
+						ToId = @oneToMany )
+			)
+			GROUP BY
+				TypeId,
+				ToId
+		HAVING COUNT ( ToId ) > 1
+	) d ON
+		r.TypeId = d.TypeId AND
+		r.ToId = d.ToId AND
+		r.TenantId = @tenantId
+	LEFT JOIN
+		Entity e1 ON
+			e1.TenantId = r.TenantId AND
+			e1.Id = r.TypeId
+	LEFT JOIN
+		Entity e2 ON
+			e2.TenantId = r.TenantId AND
+			e2.Id = r.FromId
+	LEFT JOIN
+		Entity e3 ON
+			e3.TenantId = r.TenantId AND
+			e3.Id = r.ToId	
+	LEFT JOIN
+		Data_NVarChar n1 ON
+			n1.TenantId = e1.TenantId AND
+			n1.EntityId = e1.Id AND
+			n1.FieldId = @name
+	LEFT JOIN
+		Data_NVarChar n2 ON
+			n2.TenantId = e2.TenantId AND
+			n2.EntityId = e2.Id AND
+			n2.FieldId = @name
+	LEFT JOIN
+		Data_NVarChar n3 ON
+			n3.TenantId = e3.TenantId AND
+			n3.EntityId = e3.Id AND
+			n3.FieldId = @name
+	LEFT JOIN
+		Relationship s ON
+			s.TenantId = r.TenantId AND
+			s.FromId = r.FromId AND
+			s.TypeId = @inSolution
+	LEFT JOIN
+		Data_NVarChar sn ON
+			sn.TenantId = s.TenantId AND
+			sn.EntityId = s.ToId AND
+			sn.FieldId = @name
+	ORDER BY
+		r.TenantId,
+		r.TypeId,
+		r.ToId,
+		r.FromId
+
+	FETCH NEXT FROM
+		cur
+	INTO
+		@tenantId,
+		@tenantName
+END
+
+CLOSE cur;
+DEALLOCATE cur;
+
+SELECT
+	*
+FROM
+	#results
+ORDER BY
+	[Tenant],
+	[Type Upgrade Id],
+	[From Upgrade Id]
+
+DROP TABLE #results
+]]>
+    </query>
+    <resolution>
+      <![CDATA[
+BEGIN TRANSACTION
+
+DECLARE @tenantId BIGINT
+
+SELECT
+  @tenantId = Id
+FROM (
+	SELECT
+		Id,
+		name
+	FROM
+		_vTenant
+	UNION
+	SELECT
+		0,
+		'Global'
+) t	
+WHERE
+  name = '{0}'
+
+DELETE
+  Relationship
+FROM
+  Relationship r
+JOIN
+  Entity ety ON
+    ety.TenantId = r.TenantId AND
+    ety.Id = r.TypeId
+JOIN
+  Entity efr ON
+    efr.TenantId = r.TenantId AND
+    efr.Id = r.FromId
+JOIN
+  Entity eto ON
+    eto.TenantId = r.TenantId AND
+    eto.Id = r.ToId
+WHERE
+  r.TenantId = @tenantId AND
+  ety.UpgradeId = '{1}' AND
+  efr.UpgradeId = '{3}' AND
+  eto.UpgradeId = '{5}'
+  
+COMMIT TRANSACTION
+      ]]>
+    </resolution>
+  </test>
+  <test name="HST002 - Type inheritance must not contain cycles" description="Detects any cycles in the object/type inheritance structure." type="test" entityColumns="1,2">
+    <query>
+      <![CDATA[
+SET NOCOUNT ON
+
+DECLARE @tenantId BIGINT
+DECLARE @tenantName NVARCHAR( 100 )
+
+DECLARE @name BIGINT
+DECLARE @inherits BIGINT
+
+CREATE TABLE #results ( [Tenant] NVARCHAR( 100 ), [Parent Id] UNIQUEIDENTIFIER, [Child Id] UNIQUEIDENTIFIER, [Parent Name] NVARCHAR ( 100 ), [Child Name] NVARCHAR ( 100 ) )
+
+SET NOCOUNT ON
+
+DECLARE cur CURSOR FORWARD_ONLY FOR
+SELECT
+	0,
+	'Global'
+UNION
+SELECT
+	Id,
+	name
+FROM
+	_vTenant
+
+OPEN cur
+
+FETCH NEXT FROM
+	cur
+INTO
+	@tenantId,
+	@tenantName
+
+DECLARE @LinkTable table (Parent bigint, Child bigint);
+DECLARE @Cycles table (Parent bigint, Child bigint);
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+
+	SELECT @inherits = dbo.fnAliasNsId('inherits', 'core', @tenantId)
+	SELECT @name = dbo.fnAliasNsId('name', 'core', @tenantId)	
+
+	DELETE FROM @LinkTable
+	DELETE FROM @Cycles
+
+	INSERT INTO
+		@LinkTable
+	SELECT
+		ToId, FromId
+	FROM
+		Relationship
+	WHERE
+		TenantId=@tenantId AND TypeId=@inherits;
+
+	WITH cte AS (
+		SELECT lt1.Parent, lt1.Child, 1 Depth
+		FROM @LinkTable lt1
+		UNION ALL
+		SELECT cte.Parent, lt1.Child, cte.Depth+1
+		FROM cte
+		INNER JOIN @LinkTable lt1 ON lt1.Parent = cte.Child
+		WHERE cte.Child <> cte.Parent AND cte.Depth<100
+	)
+	INSERT INTO
+		@Cycles
+	SELECT DISTINCT
+		Parent ParentId, Child ChildId
+	FROM
+		cte
+	WHERE
+		Parent = Child;
+
+	INSERT INTO
+		#results
+	SELECT
+		[Tenant] = @tenantName,
+		e1.UpgradeId [Parent Id],
+		e2.UpgradeId [Child Id],
+		r1.Data [Parent Name],
+		r2.Data [Child Name]
+	FROM
+		@Cycles c
+	LEFT JOIN
+		Data_NVarChar r1 ON r1.EntityId = c.Parent and r1.TenantId = @tenantId and r1.FieldId = @name
+	LEFT JOIN
+		Data_NVarChar r2 ON r2.EntityId = c.Child and r2.TenantId = @tenantId and r2.FieldId = @name
+	LEFT JOIN
+		Entity e1 ON e1.Id = c.Parent and e1.TenantId = @tenantId
+	LEFT JOIN
+		Entity e2 ON e2.Id = c.Child and e2.TenantId = @tenantId
+
+	FETCH NEXT FROM
+		cur
+	INTO
+		@tenantId,
+		@tenantName
+END
+
+CLOSE cur;
+DEALLOCATE cur;
+
+SELECT
+	*
+FROM
+	#results
+ORDER BY
+	[Tenant],
+	[Parent Name],
+	[Child Name]
+
+DROP TABLE #results
+]]>
+    </query>
+    <resolution>
+    </resolution>
+  </test>
+  <test name="HSR013 - Forward cardinality violations in the Application Library" description="Detects any cardinality violations in the forward direction that exist in the application library." type="test" entityColumns="0,2,4,6">
+    <query>
+      <![CDATA[
+SET NOCOUNT ON
+
+DECLARE @cardinality UNIQUEIDENTIFIER
+DECLARE @oneToOne UNIQUEIDENTIFIER
+DECLARE @oneToMany UNIQUEIDENTIFIER
+DECLARE @manyToOne UNIQUEIDENTIFIER
+
+SELECT
+	@cardinality = EntityUid
+FROM
+	AppData_Alias
+WHERE
+	Data = 'cardinality' AND
+	Namespace = 'core'
+
+SELECT
+	@oneToOne = EntityUid
+FROM
+	AppData_Alias
+WHERE
+	Data = 'oneToOne' AND
+	Namespace = 'core'
+
+SELECT
+	@oneToMany = EntityUid
+FROM
+	AppData_Alias
+WHERE
+	Data = 'oneToMany' AND
+	Namespace = 'core'
+
+SELECT
+	@manyToOne = EntityUid
+FROM
+	AppData_Alias
+WHERE
+	Data = 'manyToOne' AND
+	Namespace = 'core'
+
+SELECT
+	[Application Package Id] = r.AppVerUid,
+	[Application] = r.AppVer,
+	[Type Upgrade Id] = r.TypeUid,
+	[Type Name ] = r.[Type],
+	[From Upgrade Id] = r.FromUid,
+	[From Name] = r.[From],
+	[To Upgrade Id] = r.ToUid,
+	[To Name] = r.[To],
+	CASE WHEN
+		rr.[To] = 'core:manyToOne' THEN 'Many To One'
+	WHEN
+		rr.[To] = 'core:oneToOne' THEN 'One To One'
+	ELSE
+		rr.[To]
+	END [Cardinality],
+	[Application] = r.AppVer
+FROM
+	dbgAppRelationship r
+JOIN (
+    SELECT
+		AppVerUid,
+		TypeUid,
+		FromUid
+    FROM
+		AppRelationship ar
+    WHERE
+		TypeUid IN
+		(
+			SELECT
+				FromUid
+			FROM
+				AppRelationship c
+			WHERE
+			    c.AppVerUid = ar.AppVerUid
+				AND TypeUid = @cardinality
+				AND ( ToUid = @oneToOne OR
+					  ToUid = @manyToOne )
+		)
+		GROUP BY
+			AppVerUid,
+			TypeUid,
+			FromUid
+    HAVING COUNT ( FromUid ) > 1
+) d ON
+	r.AppVerUid = d.AppVerUid AND
+	r.TypeUid = d.TypeUid AND
+	r.FromUid = d.FromUid
+JOIN
+	dbgAppRelationship rr ON
+		r.AppVerUid = rr.AppVerUid AND
+		r.TypeUid = rr.FromUid AND
+		rr.TypeUid = @cardinality
+ORDER BY
+	r.AppVerUid,
+	r.TypeUid,
+	r.FromUid,
+	r.ToUid
+]]>
+    </query>
+    <resolution>
+      <![CDATA[
+BEGIN TRANSACTION
+
+DELETE
+  AppRelationship
+FROM
+  AppRelationship r
+WHERE
+  r.AppVerUid = '{0}' AND
+  r.TypeUid = '{2}' AND
+  r.FromUid = '{4}' AND
+  r.ToUid = '{6}'
+  
+COMMIT TRANSACTION
+      ]]>
+    </resolution>
+  </test>
+  <test name="HSR014 - Reverse cardinality violations in the Application Library" description="Detects any cardinality violations in the reverse direction that exist in the application library." type="test" entityColumns="0,2,4,6">
+    <query>
+      <![CDATA[
+SET NOCOUNT ON
+
+DECLARE @cardinality UNIQUEIDENTIFIER
+DECLARE @oneToOne UNIQUEIDENTIFIER
+DECLARE @oneToMany UNIQUEIDENTIFIER
+DECLARE @manyToOne UNIQUEIDENTIFIER
+
+SELECT
+	@cardinality = EntityUid
+FROM
+	AppData_Alias
+WHERE
+	Data = 'cardinality' AND
+	Namespace = 'core'
+
+SELECT
+	@oneToOne = EntityUid
+FROM
+	AppData_Alias
+WHERE
+	Data = 'oneToOne' AND
+	Namespace = 'core'
+
+SELECT
+	@oneToMany = EntityUid
+FROM
+	AppData_Alias
+WHERE
+	Data = 'oneToMany' AND
+	Namespace = 'core'
+
+SELECT
+	@manyToOne = EntityUid
+FROM
+	AppData_Alias
+WHERE
+	Data = 'manyToOne' AND
+	Namespace = 'core'
+
+SELECT
+	[Application Package Id] = r.AppVerUid,
+  [Application] = r.AppVer,
+	[Type Upgrade Id] = r.TypeUid,
+	[Type Name] = r.[Type],
+	[From Upgrade Id] = r.FromUid,
+	[From Name] = r.[From],
+	[To Upgrade Id] = r.ToUid,
+	[To Name] = r.[To],
+	CASE WHEN
+		rr.[To] = 'core:manyToOne' THEN 'Many To One'
+	WHEN
+		rr.[To] = 'core:oneToOne' THEN 'One To One'
+	ELSE
+		rr.[To]
+	END [Cardinality],
+	[Application] = r.AppVer
+FROM
+	dbgAppRelationship r
+JOIN (
+    SELECT
+		  AppVerUid,
+		  TypeUid,
+		  ToUid
+    FROM
+		  AppRelationship ar
+    WHERE
+		  TypeUid IN
+		  (
+			  SELECT
+				  FromUid
+			  FROM
+				  AppRelationship c
+			  WHERE
+			      c.AppVerUid = ar.AppVerUid
+				  AND TypeUid = @cardinality
+				  AND ( ToUid = @oneToOne OR
+					    ToUid = @oneToMany )
+		  )
+    GROUP BY
+		  AppVerUid,
+		  TypeUid,
+		  ToUid
+    HAVING COUNT ( ToUid ) > 1
+) d ON
+	r.AppVerUid = d.AppVerUid AND
+	r.TypeUid = d.TypeUid AND
+	r.ToUid = d.ToUid
+JOIN
+	dbgAppRelationship rr ON
+		r.AppVerUid = rr.AppVerUid AND
+		r.TypeUid = rr.FromUid AND
+		rr.TypeUid = @cardinality
+ORDER BY
+	r.AppVerUid,
+	r.TypeUid,
+	r.ToUid,
+	r.FromUid
+]]>
+    </query>
+    <resolution>
+      <![CDATA[
+BEGIN TRANSACTION
+
+DELETE
+  AppRelationship
+FROM
+  AppRelationship r
+WHERE
+  r.AppVerUid = '{0}' AND
+  r.TypeUid = '{2}' AND
+  r.FromUid = '{4}' AND
+  r.ToUid = '{6}'
+  
+COMMIT TRANSACTION
+      ]]>
+    </resolution>
+  </test>
+  <test name="HR010 - Missing relationships where relationship is mandatory (on the from type)" description="Detects any missing mandatory relationships in the from direction." type="test" entityColumns="1,3" tenantColumn="0">
+    <query>
+      <![CDATA[
+SET NOCOUNT ON
+
+DECLARE @tenantId BIGINT
+DECLARE @tenantName NVARCHAR( MAX )
+
+DECLARE @relationshipIsMandatory BIGINT
+DECLARE @relationship BIGINT
+DECLARE @relationshipUid UNIQUEIDENTIFIER
+DECLARE @relationshipName NVARCHAR( MAX )
+DECLARE @fromType BIGINT
+DECLARE @from BIGINT
+DECLARE @isOfType BIGINT
+DECLARE @name BIGINT
+DECLARE @inSolution BIGINT
+
+CREATE TABLE #results ( [Tenant] NVARCHAR( MAX ), [Entity Upgrade Id] UNIQUEIDENTIFIER, [Entity Name] NVARCHAR( 100 ), [Relationship Upgrade Id] UNIQUEIDENTIFIER, [Relationship Name] NVARCHAR( 100 ), [Solution Name] NVARCHAR ( 100 ) )
+
+SET NOCOUNT ON
+
+DECLARE cur CURSOR FORWARD_ONLY FOR
+SELECT
+	0,
+	'Global'
+UNION
+SELECT
+	Id,
+	name
+FROM
+	_vTenant
+
+OPEN cur
+
+FETCH NEXT FROM
+	cur
+INTO
+	@tenantId,
+	@tenantName
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+
+	SELECT @relationshipIsMandatory = dbo.fnAliasNsId( 'relationshipIsMandatory', 'core', @tenantId )
+	SELECT @fromType = dbo.fnAliasNsId( 'fromType', 'core', @tenantId )
+	SELECT @isOfType = dbo.fnAliasNsId( 'isOfType', 'core', @tenantId )
+	SELECT @name = dbo.fnAliasNsId( 'name', 'core', @tenantId )
+	SELECT @inSolution = dbo.fnAliasNsId( 'inSolution', 'core', @tenantId )
+
+	DECLARE cur2 CURSOR FORWARD_ONLY FOR
+	SELECT
+		EntityId,
+		Entity,
+		e.UpgradeId
+	FROM
+		dbgData_Bit b
+	JOIN
+		Entity e ON
+			e.TenantId = b.TenantId AND
+			e.Id = b.EntityId
+	WHERE
+		b.TenantId = @tenantId AND
+		FieldId = @relationshipIsMandatory AND
+		Data = 1
+
+	OPEN cur2
+
+	FETCH NEXT FROM cur2
+	INTO @relationship, @relationshipName, @relationshipUid
+
+	WHILE @@FETCH_STATUS = 0
+	BEGIN
+
+		SELECT
+			@from = ToId
+		FROM
+			Relationship
+		WHERE
+			FromId = @relationship AND
+			TypeId = @fromType
+
+		INSERT INTO
+			#results
+		SELECT
+			[Tenant] = @tenantName,
+			[Entity Upgrade Id] = e.UpgradeId,
+			[Entity Name] = r.[From],
+			[Relationship Upgrade Id] = @relationshipUid,
+			[Relationship Name] = @relationshipName,
+			[Solution Name] = sn.Data_StartsWith
+		FROM
+			dbgRelationship r
+		JOIN
+			Entity e ON
+				e.TenantId = e.TenantId AND
+				e.Id = r.FromId
+		LEFT JOIN
+			dbgRelationship r2 ON
+				r.TenantId = r2.TenantId AND
+				r.FromId = r2.FromId AND
+				r2.TypeId = @relationship
+		LEFT JOIN
+			Relationship s ON
+				s.TenantId = e.TenantId AND
+				s.FromId = e.Id AND
+				s.TypeId = @inSolution
+		LEFT JOIN
+			Data_NVarChar sn ON
+				sn.TenantId = s.TenantId AND
+				sn.EntityId = s.ToId AND
+				sn.FieldId = @name
+		WHERE
+			r.TenantId = @tenantId AND
+			r.TypeId = @isOfType AND
+			r.ToId = @from AND
+			r2.ToId IS NULL
+
+		FETCH NEXT FROM
+			cur2
+		INTO
+			@relationship,
+			@relationshipName,
+			@relationshipUid
+	END 
+
+	CLOSE cur2;
+	DEALLOCATE cur2;
+
+	FETCH NEXT FROM
+		cur 
+	INTO
+		@tenantId,
+		@tenantName
+END
+
+CLOSE cur;
+DEALLOCATE cur;
+
+SELECT
+	*
+FROM
+	#results
+
+DROP TABLE #results
+]]>
+    </query>
+  </test>
+  <test name="HR011 - Missing relationships where relationship is mandatory (on the to-type)" description="Detects any missing mandatory relationships in the to direction." type="test" entityColumns="1,3" tenantColumn="0">
+    <query>
+      <![CDATA[
+SET NOCOUNT ON
+
+DECLARE @tenantId BIGINT
+DECLARE @tenantName NVARCHAR( MAX )
+
+DECLARE @relationshipIsMandatory BIGINT
+DECLARE @relationship BIGINT
+DECLARE @relationshipUid UNIQUEIDENTIFIER
+DECLARE @relationshipName NVARCHAR( MAX )
+DECLARE @toType BIGINT
+DECLARE @from BIGINT
+DECLARE @isOfType BIGINT
+DECLARE @name BIGINT
+DECLARE @inSolution BIGINT
+
+CREATE TABLE #results ( [Tenant] NVARCHAR( MAX ), [Entity Upgrade Id] UNIQUEIDENTIFIER, [Entity Name] NVARCHAR( 100 ), [Relationship Upgrade Id] UNIQUEIDENTIFIER, [Relationship Name] NVARCHAR( 100 ), [Solution Name] NVARCHAR ( 100 ) )
+
+SET NOCOUNT ON
+
+DECLARE cur CURSOR FORWARD_ONLY FOR
+SELECT
+	0,
+	'Global'
+UNION
+SELECT
+	Id,
+	name
+FROM
+	_vTenant
+
+OPEN cur
+
+FETCH NEXT FROM
+	cur
+INTO
+	@tenantId,
+	@tenantName
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+
+	SELECT @relationshipIsMandatory = dbo.fnAliasNsId( 'revRelationshipIsMandatory', 'core', @tenantId )
+	SELECT @toType = dbo.fnAliasNsId( 'toType', 'core', @tenantId )
+	SELECT @isOfType = dbo.fnAliasNsId( 'isOfType', 'core', @tenantId )
+	SELECT @name = dbo.fnAliasNsId( 'name', 'core', @tenantId )
+	SELECT @inSolution = dbo.fnAliasNsId( 'inSolution', 'core', @tenantId )
+
+	DECLARE cur2 CURSOR FORWARD_ONLY FOR
+	SELECT
+		d.EntityId,
+		d.Entity,
+		e.UpgradeId
+	FROM
+		dbgData_Bit d
+	LEFT JOIN
+		Entity e ON e.Id = d.EntityId AND e.TenantId = @tenantId
+	WHERE
+		d.TenantId = @tenantId AND
+		d.FieldId = @relationshipIsMandatory AND
+		d.Data = 1
+
+	OPEN cur2
+
+	FETCH NEXT FROM cur2
+	INTO @relationship, @relationshipName, @relationshipUid
+
+	WHILE @@FETCH_STATUS = 0
+	BEGIN
+
+		SELECT
+			@from = ToId
+		FROM
+			dbgRelationship
+		WHERE
+			FromId = @relationship AND
+			TypeId = @toType
+
+		INSERT INTO
+			#results
+		SELECT
+			[Tenant] = @tenantName,
+			[Entity Upgrade Id] = e.UpgradeId,
+			[Entity Name] = r.[From],
+			[Relationship Upgrade Id] = @relationshipUid,
+			[Relationship Name] = @relationshipName,
+			[Solution Name] = sn.Data_StartsWith
+		FROM
+			dbgRelationship r
+		JOIN
+			Entity e ON
+				e.TenantId = e.TenantId AND
+				e.Id = r.FromId
+		LEFT JOIN
+			dbgRelationship r2 ON
+				r.TenantId = r2.TenantId AND
+				r.FromId = r2.ToId AND
+				r2.TypeId = @relationship
+		LEFT JOIN
+			Relationship s ON
+				s.TenantId = e.TenantId AND
+				s.FromId = e.Id AND
+				s.TypeId = @inSolution
+		LEFT JOIN
+			Data_NVarChar sn ON
+				sn.TenantId = s.TenantId AND
+				sn.EntityId = s.ToId AND
+				sn.FieldId = @name
+		WHERE
+			r.TenantId = @tenantId AND
+			r.TypeId = @isOfType AND
+			r.ToId = @from AND
+			r2.ToId IS NULL
+
+		FETCH NEXT FROM
+			cur2
+		INTO
+			@relationship,
+			@relationshipName,
+			@relationshipUid
+	END 
+
+	CLOSE cur2;
+	DEALLOCATE cur2;
+
+	FETCH NEXT FROM cur 
+	INTO @tenantId, @tenantName
+END
+
+CLOSE cur;
+DEALLOCATE cur;
+
+SELECT
+	*
+FROM
+	#results
+
+DROP TABLE #results
+]]>
+    </query>
+  </test>
+  <test name="HF001 - Field 'tenant' entry is not a valid tenant" description="Ensure that the tenant assigned to each field is a valid tenant." type="test" entityColumns="0,1,2">
+    <query>
+      <![CDATA[
+SELECT
+  [Entity Id] = d.EntityId,
+  [Tenant Id] = d.TenantId,
+  [Field Id] = d.FieldId  
+FROM (
+	SELECT EntityId, TenantId, FieldId FROM Data_Alias
+		UNION ALL
+	SELECT EntityId, TenantId, FieldId FROM	Data_Bit
+		UNION ALL
+	SELECT EntityId, TenantId, FieldId FROM Data_DateTime
+		UNION ALL
+	SELECT EntityId, TenantId, FieldId FROM	Data_Decimal
+		UNION ALL
+	SELECT EntityId, TenantId, FieldId FROM	Data_Guid
+		UNION ALL
+	SELECT EntityId, TenantId, FieldId FROM	Data_Int
+		UNION ALL
+	SELECT EntityId, TenantId, FieldId FROM	Data_NVarChar	
+		UNION ALL
+	SELECT EntityId, TenantId, FieldId FROM	Data_Xml
+   ) d  
+LEFT JOIN
+  _vTenant t ON d.TenantId = t.Id
+WHERE
+  d.TenantId <> 0 AND
+  t.Id IS NULL
+      ]]>
+    </query>
+  </test>
+  <test name="HF002 - Field 'FieldId' entry does not exist" description="Ensure that all fields are valid entities (Ie. have a type)." type="test" entityColumns="1,3" tenantColumn="0">
+    <query>
+      <![CDATA[
+SET NOCOUNT ON
+
+DECLARE @isOfType BIGINT
+DECLARE @name BIGINT
+DECLARE @inSolution BIGINT
+
+DECLARE @tenantId BIGINT
+DECLARE @tenantName NVARCHAR( 100 )
+
+CREATE TABLE #results ( [Tenant] NVARCHAR( 100 ), [Entity Upgrade Id] UNIQUEIDENTIFIER, [Entity Name] NVARCHAR ( 100 ), [Field Upgrade Id] UNIQUEIDENTIFIER, [Field Name] NVARCHAR( 100 ), [Field Type] NVARCHAR( 100 ), [Solution Name] NVARCHAR( 100 ) )
+
+DECLARE cur CURSOR FORWARD_ONLY FOR
+SELECT
+	0, 'Global'
+	UNION 
+SELECT
+	Id, name
+FROM
+	_vTenant
+
+OPEN cur
+
+FETCH NEXT FROM
+	cur
+INTO
+	@tenantId,
+	@tenantName
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+	SELECT @isOfType = dbo.fnAliasNsId( 'isOfType', 'core', @tenantId )
+	SELECT @name = dbo.fnAliasNsId( 'name', 'core', @tenantId )
+	SELECT @inSolution = dbo.fnAliasNsId( 'inSolution', 'core', @tenantId )
+
+	INSERT INTO
+		#results
+	SELECT
+		[Tenant] = @tenantName,
+		[Entity Upgrade Id] = e.UpgradeId,
+		[Entity Name] = en.Data_StartsWith,
+		[Field Upgrade Id] = f.UpgradeId,
+		[Field Name] = fn.Data_StartsWith,
+		[Field Type] = d.FieldType,
+		[Solution Name] = sn.Data_StartsWith
+	FROM (
+		SELECT
+			EntityId,
+			TenantId,
+			FieldId,
+			'Alias'
+		FROM
+			Data_Alias
+		UNION ALL
+		SELECT
+			EntityId,
+			TenantId,
+			FieldId,
+			'Bit'
+		FROM
+			Data_Bit
+		UNION ALL
+		SELECT
+			EntityId,
+			TenantId,
+			FieldId,
+			'DateTime'
+		FROM
+			Data_DateTime
+		UNION ALL
+		SELECT
+			EntityId,
+			TenantId,
+			FieldId,
+			'Decimal'
+		FROM
+			Data_Decimal
+		UNION ALL
+		SELECT
+			EntityId,
+			TenantId,
+			FieldId,
+			'Guid'
+		FROM
+			Data_Guid
+		UNION ALL
+		SELECT
+			EntityId,
+			TenantId,
+			FieldId,
+			'Int'
+		FROM
+			Data_Int
+		UNION ALL
+		SELECT
+			EntityId,
+			TenantId,
+			FieldId,
+			'NVarChar'
+		FROM
+			Data_NVarChar	
+		UNION ALL
+		SELECT
+			EntityId,
+			TenantId,
+			FieldId,
+			'Xml'
+		FROM
+			Data_Xml
+	   ) d ( EntityId, TenantId, FieldId, FieldType )
+	JOIN
+		Entity f ON
+		f.TenantId = d.TenantId AND
+		f.Id = d.FieldId
+	JOIN
+		Entity e ON
+			e.TenantId = d.TenantId AND
+			e.Id = d.EntityId
+	LEFT JOIN
+		Relationship r ON
+			r.TenantId = f.TenantId AND
+			r.TypeId = @isOfType AND
+			r.FromId = f.Id
+	LEFT JOIN
+		Data_NVarChar en ON
+			en.TenantId = e.TenantId AND
+			en.EntityId = e.Id AND
+			en.FieldId = @name
+	LEFT JOIN
+		Data_NVarChar fn ON
+			fn.TenantId = f.TenantId AND
+			fn.EntityId = f.Id AND
+			fn.FieldId = @name
+	LEFT JOIN
+		Relationship s ON
+			s.TenantId = e.TenantId AND
+			s.FromId = e.Id AND
+			s.TypeId = @inSolution
+	LEFT JOIN
+		Data_NVarChar sn ON
+			sn.TenantId = s.TenantId AND
+			sn.EntityId = s.ToId AND
+			sn.FieldId = @name
+	WHERE
+		d.TenantId = @tenantId AND
+		r.ToId IS NULL
+
+	FETCH NEXT FROM
+		cur
+	INTO
+		@tenantId,
+		@tenantName
+END 
+CLOSE cur;
+DEALLOCATE cur;
+
+SELECT
+	*
+FROM
+	#results
+ORDER BY
+	[Tenant],
+	[Entity Name],
+	[Solution Name]
+
+DROP TABLE #results
+      ]]>
+    </query>
+    <resolution>
+      <![CDATA[
+BEGIN TRANSACTION
+
+DECLARE @tenantId BIGINT
+
+SELECT
+  @tenantId = Id
+FROM (
+	SELECT
+		Id,
+		name
+	FROM
+		_vTenant
+	UNION
+	SELECT
+		0,
+		'Global'
+) t	
+WHERE
+  name = '{0}'
+  
+SELECT
+  @entityId = Id
+FROM
+  Entity
+WHERE
+  TenantId = @tenantId AND
+  UpgradeId = '{1}'
+  
+DELETE
+  Data_{5}
+FROM
+  Data_{5} d
+JOIN
+  Entity ee ON
+    ee.TenantId = d.TenantId AND
+    ee.Id = d.EntityId
+JOIN
+  Entity ef ON
+    ef.TenantId = d.TenantId AND
+    ef.Id = d.FieldId
+WHERE
+  d.TenantId = @tenantId AND
+  ee.UpgradeId = '{1}' AND
+  ef.UpgradeId = '{3}'
+
+COMMIT TRANSACTION
+      ]]>
+    </resolution>
+  </test>
+  <test name="HF003 - Field 'EntityId' entry does not exist" description="Ensure that all field entities are valid entities (Ie. have a type)." type="test" entityColumns="1,3" tenantColumn="0">
+    <query>
+      <![CDATA[
+SET NOCOUNT ON
+
+DECLARE @tenantId BIGINT
+DECLARE @tenantName NVARCHAR( 100 )
+
+DECLARE @isOfType BIGINT
+DECLARE @name BIGINT
+DECLARE @inSolution BIGINT
+
+CREATE TABLE #results ( [Tenant] NVARCHAR( 100 ), [Entity Upgrade Id] UNIQUEIDENTIFIER, [Entity Name] NVARCHAR ( 100 ), [Field Upgrade Id] UNIQUEIDENTIFIER, [Field Name] NVARCHAR( 100 ), [Field Type] NVARCHAR( 100 ), [Solution Name] NVARCHAR( 100 ) )
+
+DECLARE cur CURSOR FORWARD_ONLY FOR
+SELECT
+	0, 'Global'
+	UNION 
+SELECT
+	Id, name
+FROM
+	_vTenant
+
+OPEN cur
+
+FETCH NEXT FROM
+	cur
+INTO
+	@tenantId,
+	@tenantName
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+	SELECT @isOfType = dbo.fnAliasNsId( 'isOfType', 'core', @tenantId )
+	SELECT @name = dbo.fnAliasNsId( 'name', 'core', @tenantId )
+	SELECT @inSolution = dbo.fnAliasNsId( 'inSolution', 'core', @tenantId )
+
+	INSERT INTO
+		#results
+	SELECT
+		[Tenant] = @tenantName,
+		[Entity Upgrade Id] = e.UpgradeId,
+		[Entity Name] = en.Data_StartsWith,
+		[Field Upgrade Id] = f.UpgradeId,
+		[Field Name] = fn.Data_StartsWith,
+		[Field Type] = d.FieldType,
+		[Solution Name] = sn.Data_StartsWith
+	FROM (
+		SELECT
+			EntityId,
+			TenantId,
+			FieldId,
+			'Alias'
+		FROM
+			Data_Alias
+		UNION ALL
+		SELECT
+			EntityId,
+			TenantId,
+			FieldId,
+			'Bit'
+		FROM
+			Data_Bit
+		UNION ALL
+		SELECT
+			EntityId,
+			TenantId,
+			FieldId,
+			'DateTime'
+		FROM
+			Data_DateTime
+		UNION ALL
+		SELECT
+			EntityId,
+			TenantId,
+			FieldId,
+			'Decimal'
+		FROM
+			Data_Decimal
+		UNION ALL
+		SELECT
+			EntityId,
+			TenantId,
+			FieldId,
+			'Guid'
+		FROM
+			Data_Guid
+		UNION ALL
+		SELECT
+			EntityId,
+			TenantId,
+			FieldId,
+			'Int'
+		FROM
+			Data_Int
+		UNION ALL
+		SELECT
+			EntityId,
+			TenantId,
+			FieldId,
+			'NVarChar'
+		FROM
+			Data_NVarChar	
+		UNION ALL
+		SELECT
+			EntityId,
+			TenantId,
+			FieldId,
+			'Xml'
+		FROM
+			Data_Xml
+	   ) d ( EntityId, TenantId, FieldId, FieldType )
+	JOIN
+		Entity f ON
+		f.TenantId = d.TenantId AND
+		f.Id = d.FieldId
+	JOIN
+		Entity e ON
+			e.TenantId = d.TenantId AND
+			e.Id = d.EntityId
+	LEFT JOIN
+		Relationship r ON
+			r.TenantId = e.TenantId AND
+			r.TypeId = @isOfType AND
+			r.FromId = e.Id
+	LEFT JOIN
+		Data_NVarChar en ON
+			en.TenantId = e.TenantId AND
+			en.EntityId = e.Id AND
+			en.FieldId = @name
+	LEFT JOIN
+		Data_NVarChar fn ON
+			fn.TenantId = f.TenantId AND
+			fn.EntityId = f.Id AND
+			fn.FieldId = @name
+	LEFT JOIN
+		Relationship s ON
+			s.TenantId = e.TenantId AND
+			s.FromId = e.Id AND
+			s.TypeId = @inSolution
+	LEFT JOIN
+		Data_NVarChar sn ON
+			sn.TenantId = s.TenantId AND
+			sn.EntityId = s.ToId AND
+			sn.FieldId = @name
+	WHERE
+		d.TenantId = @tenantId AND
+		r.ToId IS NULL
+
+	FETCH NEXT FROM
+		cur
+	INTO
+		@tenantId,
+		@tenantName
+END 
+CLOSE cur;
+DEALLOCATE cur;
+
+SELECT
+	*
+FROM
+	#results
+ORDER BY
+	[Tenant],
+	[Entity Name],
+	[Solution Name]
+
+DROP TABLE #results
+      ]]>
+    </query>
+    <resolution>
+      <![CDATA[
+BEGIN TRANSACTION
+
+DECLARE @tenantId BIGINT
+
+SELECT
+  @tenantId = Id
+FROM (
+	SELECT
+		Id,
+		name
+	FROM
+		_vTenant
+	UNION
+	SELECT
+		0,
+		'Global'
+) t	
+WHERE
+  name = '{0}'
+  
+SELECT
+  @entityId = Id
+FROM
+  Entity
+WHERE
+  TenantId = @tenantId AND
+  UpgradeId = '{1}'
+  
+DELETE
+  Data_{5}
+FROM
+  Data_{5} d
+JOIN
+  Entity ee ON
+    ee.TenantId = d.TenantId AND
+    ee.Id = d.EntityId
+JOIN
+  Entity ef ON
+    ef.TenantId = d.TenantId AND
+    ef.Id = d.FieldId
+WHERE
+  d.TenantId = @tenantId AND
+  ee.UpgradeId = '{1}' AND
+  ef.UpgradeId = '{3}'
+
+COMMIT TRANSACTION
+      ]]>
+    </resolution>
+  </test>
+  <test name="HF004 - Field is not applicable to the type of the entity" description="Ensure that fields are assigned to an entities of the correct type." type="test" entityColumns="1,4" hiddenColumns="8" tenantColumn="0">
+    <query>
+      <![CDATA[
+SET NOCOUNT ON
+
+DECLARE @tenantId BIGINT
+DECLARE @tenantName NVARCHAR( 100 )
+
+DECLARE @fieldIsOnType BIGINT
+DECLARE @isOfType BIGINT
+DECLARE @inherits BIGINT
+DECLARE @name BIGINT
+DECLARE @inSolution BIGINT
+
+CREATE TABLE #entityToTypeId (EntityId BIGINT, TypeId BIGINT, PRIMARY KEY (EntityId, TypeId))
+
+CREATE TABLE #results ( [Tenant] NVARCHAR( 100 ), [Entity Upgrade Id] UNIQUEIDENTIFIER, [Entity Name] NVARCHAR( 100 ), [Entity Type] NVARCHAR( 100 ), [Field Upgrade Id] UNIQUEIDENTIFIER, [Field Name] NVARCHAR( 100 ), [Field Type] NVARCHAR( 100 ), [Solution Name] NVARCHAR( 100 ), [DataTable] NVARCHAR( 100 ) )
+
+SET NOCOUNT ON
+
+DECLARE cur CURSOR FORWARD_ONLY FOR
+SELECT
+	0,
+	'Global'
+UNION 
+SELECT
+	Id,
+	name
+FROM
+	_vTenant
+
+OPEN cur
+
+FETCH NEXT FROM
+	cur
+INTO
+	@tenantId,
+	@tenantName
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+	SELECT @fieldIsOnType = dbo.fnAliasNsId( 'fieldIsOnType', 'core', @tenantId)
+	SELECT @isOfType = dbo.fnAliasNsId('isOfType', 'core', @tenantId)
+	SELECT @inherits = dbo.fnAliasNsId('inherits', 'core', @tenantId)
+	SELECT @name = dbo.fnAliasNsId( 'name', 'core', @tenantId )
+	SELECT @inSolution = dbo.fnAliasNsId( 'inSolution', 'core', @tenantId )
+
+	INSERT INTO
+		#entityToTypeId
+	SELECT DISTINCT
+		r.FromId,
+		rel2.ToId
+	FROM
+		Relationship r
+	LEFT JOIN
+		dbo.tblFnRelationshipRecWithSelf( @tenantId, @inherits, DEFAULT, DEFAULT, DEFAULT ) rel2 ON
+			rel2.FromId = r.ToId AND
+			rel2.TypeId = @inherits AND
+			rel2.TenantId = @tenantId    
+	WHERE 
+		r.TenantId = @tenantId AND 
+    r.TypeId = @isOfType AND
+		rel2.ToId IS NOT NULL
+
+	INSERT INTO
+		#results
+	SELECT
+		[Tenant] = @tenantName,
+		[Entity Upgrade Id] = e.UpgradeId,
+		[Entity Name] = en.Data_StartsWith,
+		[Entity Type] = etn.Data_StartsWith,
+		[Field Upgrade Id] = f.UpgradeId,
+		[Field Name] = fn.Data_StartsWith,
+		[Field Type] = ftn.Data_StartsWith,
+		[Solution Name] = sn.Data_StartsWith,
+    [DataTable] = d.DataTable
+	FROM (
+		SELECT
+			EntityId,
+			TenantId,
+			FieldId,
+      [DataTable] = 'Alias'
+		FROM
+			Data_Alias
+		WHERE
+			TenantId = @tenantId
+
+		UNION ALL
+
+		SELECT
+			EntityId,
+			TenantId,
+			FieldId,
+      'Bit'
+		FROM
+			Data_Bit
+		WHERE
+			TenantId = @tenantId
+
+		UNION ALL
+
+		SELECT
+			EntityId,
+			TenantId,
+			FieldId,
+      'DateTime'
+		FROM
+			Data_DateTime
+		WHERE
+			TenantId = @tenantId
+
+		UNION ALL
+
+		SELECT
+			EntityId,
+			TenantId,
+			FieldId,
+      'Decimal'
+		FROM
+			Data_Decimal
+		WHERE
+			TenantId = @tenantId
+
+		UNION ALL
+
+		SELECT
+			EntityId,
+			TenantId,
+			FieldId,
+      'Guid'
+		FROM
+			Data_Guid
+		WHERE
+			TenantId = @tenantId
+
+		UNION ALL
+
+		SELECT
+			EntityId,
+			TenantId,
+			FieldId,
+      'Int'
+		FROM
+			Data_Int
+		WHERE
+			TenantId = @tenantId
+
+		UNION ALL
+
+		SELECT
+			EntityId,
+			TenantId,
+			FieldId,
+      'NVarChar'
+		FROM
+			Data_NVarChar
+		WHERE
+			TenantId = @tenantId
+
+		UNION ALL
+
+		SELECT
+			EntityId,
+			TenantId,
+			FieldId,
+      'Xml'
+		FROM
+			Data_Xml
+		WHERE
+			TenantId = @tenantId
+	   ) d  
+	JOIN
+		Relationship rFieldType ON
+			rFieldType.TenantId = @tenantId
+			AND rFieldType.FromId = d.FieldId
+			AND rFieldType.TypeId = @fieldIsOnType
+	JOIN
+		Entity e ON
+			e.TenantId = d.TenantId AND
+			e.Id = d.EntityId
+	JOIN
+		Entity f ON
+			f.TenantId = d.TenantId AND
+			f.Id = d.FieldId
+	LEFT JOIN
+		Data_NVarChar en ON
+			en.TenantId = e.TenantId AND
+			en.EntityId = e.Id AND
+			en.FieldId = @name
+	LEFT JOIN
+		Data_NVarChar fn ON
+			fn.TenantId = f.TenantId AND
+			fn.EntityId = f.Id AND
+			fn.FieldId = @name
+	LEFT JOIN
+		Relationship s ON
+			s.TenantId = e.TenantId AND
+			s.FromId = e.Id AND
+			s.TypeId = @inSolution
+	LEFT JOIN
+		Data_NVarChar sn ON
+			sn.TenantId = s.TenantId AND
+			sn.EntityId = s.ToId AND
+			sn.FieldId = @name
+	LEFT JOIN
+		Relationship et ON
+			et.TenantId = e.TenantId AND
+			et.FromId = e.Id AND
+			et.TypeId = @isOfType
+	LEFT JOIN
+		Data_NVarChar etn ON
+			etn.TenantId = et.TenantId AND
+			etn.EntityId = et.ToId AND
+			etn.FieldId = @name
+	LEFT JOIN
+		Relationship ft ON
+			ft.TenantId = f.TenantId AND
+			ft.FromId = f.Id AND
+			ft.TypeId = @isOfType
+	LEFT JOIN
+		Data_NVarChar ftn ON
+			ftn.TenantId = ft.TenantId AND
+			ftn.EntityId = ft.ToId AND
+			ftn.FieldId = @name
+	WHERE NOT EXISTS (
+		SELECT
+			1
+		FROM
+			#entityToTypeId ett
+		WHERE
+			ett.EntityId = d.EntityId
+			AND ett.TypeId = rFieldType.ToId
+			AND rFieldType.TenantId = @tenantId
+	) AND
+	d.TenantId = @tenantId
+
+	FETCH NEXT FROM
+		cur
+	INTO
+		@tenantId,
+		@tenantName
+END 
+CLOSE cur;
+DEALLOCATE cur;
+
+SELECT
+	*
+FROM
+	#results
+ORDER BY
+	[Tenant],
+	[Entity Upgrade Id],
+	[Field Upgrade Id]
+
+DROP TABLE #entityToTypeId
+DROP TABLE #results
+      ]]>
+    </query>
+    <resolution>
+      <![CDATA[
+BEGIN TRANSACTION
+
+DECLARE @tenantId BIGINT
+
+SELECT
+  @tenantId = Id
+FROM (
+	SELECT
+		Id,
+		name
+	FROM
+		_vTenant
+	UNION
+	SELECT
+		0,
+		'Global'
+) t	
+WHERE
+  name = '{0}'
+
+DELETE
+  Data_{8}
+FROM
+  Data_{8} d
+JOIN
+  Entity ee ON
+    ee.TenantId = d.TenantId AND
+    ee.Id = d.EntityId
+JOIN
+  Entity ef ON
+    ef.TenantId = d.TenantId AND
+    ef.Id = d.FieldId
+WHERE
+  d.TenantId = @tenantId AND
+  ee.UpgradeId = '{1}' AND
+  ef.UpgradeId = '{4}'
+  
+COMMIT TRANSACTION
+]]>
+    </resolution>
+  </test>
+  <test name="HF006 - Alias fields have a marker of 0 or 1" description="Ensure that alias fields have the correct marker id." type="test" entityColumns="1,3" tenantColumn="0">
+    <query>
+      <![CDATA[
+SET NOCOUNT ON
+
+DECLARE @tenantId BIGINT
+DECLARE @tenantName NVARCHAR( 100 )
+
+DECLARE @name BIGINT
+DECLARE @alias BIGINT
+DECLARE @reverseAlias BIGINT
+DECLARE @inSolution BIGINT
+
+CREATE TABLE #results ( [Tenant] NVARCHAR( 100 ), [Entity Upgrade Id] UNIQUEIDENTIFIER, [Entity Name] NVARCHAR( 100 ), [Field Upgrade Id] UNIQUEIDENTIFIER, [Field Name] NVARCHAR( 100 ), [Alias] NVARCHAR( 100 ), [Namespace] NVARCHAR( 100 ), [Alias Marker Id] INT, [Solution Name] NVARCHAR( 100 ) )
+
+SET NOCOUNT ON
+
+DECLARE cur CURSOR FORWARD_ONLY FOR
+SELECT
+	0,
+	'Global'
+UNION 
+SELECT
+	Id,
+	name
+FROM
+	_vTenant
+
+OPEN cur
+
+FETCH NEXT FROM
+	cur
+INTO
+	@tenantId,
+	@tenantName
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+	SELECT @name = dbo.fnAliasNsId( 'name', 'core', @tenantId )
+	SELECT @alias = dbo.fnAliasNsId( 'alias', 'core', @tenantId )
+	SELECT @reverseAlias = dbo.fnAliasNsId( 'reverseAlias', 'core', @tenantId )
+	SELECT @inSolution = dbo.fnAliasNsId( 'inSolution', 'core', @tenantId )
+
+  INSERT INTO
+		#results
+	SELECT
+		[Tenant] = @tenantName,
+		[Entity Upgrade Id] = e.UpgradeId,
+		[Entity Name] = en.Data_StartsWith,
+		[Field Upgrade Id] = f.UpgradeId,
+		[Field Name] = fn.Data_StartsWith,
+		[Alias] = d.Data,
+		[Namespace] = d.[Namespace],
+		[Alias Marker Id] = d.AliasMarkerId,
+		[Solution Name] = sn.Data_StartsWith
+	FROM
+		Data_Alias d
+	JOIN
+		Entity e ON
+			e.TenantId = d.TenantId AND
+			e.Id = d.EntityId
+	LEFT JOIN
+		Data_NVarChar en ON
+			en.TenantId = e.TenantId AND
+			en.EntityId = e.Id AND
+			en.FieldId = @name
+	JOIN
+		Entity f ON
+			f.TenantId = d.TenantId AND
+			f.Id = d.FieldId
+	LEFT JOIN
+		Data_NVarChar fn ON
+			fn.TenantId = f.TenantId AND
+			fn.EntityId = f.Id AND
+			fn.FieldId = @name
+	LEFT JOIN
+		Relationship s ON
+			s.TenantId = e.TenantId AND
+			s.FromId = e.Id AND
+			s.TypeId = @inSolution
+	LEFT JOIN
+		Data_NVarChar sn ON
+			sn.TenantId = s.TenantId AND
+			sn.EntityId = s.ToId AND
+			sn.FieldId = @name
+	WHERE
+		d.TenantId = @tenantId AND
+		d.FieldId = @reverseAlias AND
+		d.AliasMarkerId != 1
+
+	UNION ALL
+
+	SELECT
+		[Tenant] = @tenantName,
+		[Entity Upgrade Id] = e.UpgradeId,
+		[Entity Name] = en.Data_StartsWith,
+		[Field Upgrade Id] = f.UpgradeId,
+		[Field Name] = fn.Data_StartsWith,
+		[Alias] = d.Data,
+		[Namespace] = d.[Namespace],
+		[Alias Marker Id] = d.AliasMarkerId,
+		[Solution Name] = sn.Data_StartsWith
+	FROM
+		Data_Alias d
+	JOIN
+		Entity e ON
+			e.TenantId = d.TenantId AND
+			e.Id = d.EntityId
+	LEFT JOIN
+		Data_NVarChar en ON
+			en.TenantId = e.TenantId AND
+			en.EntityId = e.Id AND
+			en.FieldId = @name
+	JOIN
+		Entity f ON
+			f.TenantId = d.TenantId AND
+			f.Id = d.FieldId
+	LEFT JOIN
+		Data_NVarChar fn ON
+			fn.TenantId = f.TenantId AND
+			fn.EntityId = f.Id AND
+			fn.FieldId = @name
+	LEFT JOIN
+		Relationship s ON
+			s.TenantId = e.TenantId AND
+			s.FromId = e.Id AND
+			s.TypeId = @inSolution
+	LEFT JOIN
+		Data_NVarChar sn ON
+			sn.TenantId = s.TenantId AND
+			sn.EntityId = s.ToId AND
+			sn.FieldId = @name
+	WHERE
+		d.TenantId = @tenantId AND
+		d.FieldId = @alias AND
+		d.AliasMarkerId != 0
+
+	FETCH NEXT FROM
+		cur
+	INTO
+		@tenantId,
+		@tenantName
+END 
+CLOSE cur;
+DEALLOCATE cur;
+
+SELECT
+	*
+FROM
+	#results
+ORDER BY
+	[Tenant],
+	[Entity Upgrade Id],
+	[Field Upgrade Id]
+
+DROP TABLE #results
+      ]]>
+    </query>
+  </test>
+  <test name="Missing Indexes" description="Detects any missing indexes in the database." type="info">
+    <query>
+      <![CDATA[
+SELECT
+  OBJECT_NAME( id.object_id ) AS [Object Name],
+  id.[equality_columns] AS [Equality Columns],
+  id.[inequality_columns] AS [InEquality Columns],
+  id.[included_columns] AS [Included Columns],
+  gs.[unique_compiles] AS [Unique Compiles],
+  gs.[user_seeks] AS [User Seeks],
+  gs.[user_scans] AS [User Scans],
+  gs.[last_user_seek] AS [Last User Seek Time],
+  gs.[last_user_scan] AS [Last User Scan Time],
+  gs.[avg_total_user_cost] AS [Avg Total User Cost],
+  gs.[avg_user_impact] AS [Avg User Impact],
+  gs.[user_seeks] * gs.[avg_total_user_cost] * (gs.[avg_user_impact] * 0.01) AS [Index Advantage],
+	'CREATE INDEX [Missing_IXNC_' + OBJECT_NAME(id.[object_id], db.[database_id]) + '_' + REPLACE(REPLACE(REPLACE(ISNULL(id.[equality_columns], ''), ', ', '_'), '[', ''), ']', '') + CASE
+		WHEN id.[equality_columns] IS NOT NULL
+			AND id.[inequality_columns] IS NOT NULL
+			THEN '_'
+		ELSE ''
+		END + REPLACE(REPLACE(REPLACE(ISNULL(id.[inequality_columns], ''), ', ', '_'), '[', ''), ']', '') + '_' + LEFT(CAST(NEWID() AS [nvarchar](64)), 5) + ']' + ' ON ' + id.[statement] + ' (' + ISNULL(id.[equality_columns], '') + CASE
+		WHEN id.[equality_columns] IS NOT NULL
+			AND id.[inequality_columns] IS NOT NULL
+			THEN ','
+		ELSE ''
+		END + ISNULL(id.[inequality_columns], '') + ')' + ISNULL(' INCLUDE (' + id.[included_columns] + ')', '') AS [Proposed Index],
+	CAST(CURRENT_TIMESTAMP AS [smalldatetime]) AS [Collection Date]
+FROM
+  [sys].[dm_db_missing_index_group_stats] gs WITH (NOLOCK)
+INNER JOIN
+  [sys].[dm_db_missing_index_groups] ig WITH (NOLOCK) ON
+    gs.[group_handle] = ig.[index_group_handle]
+INNER JOIN
+  [sys].[dm_db_missing_index_details] id WITH (NOLOCK) ON
+    ig.[index_handle] = id.[index_handle]
+INNER JOIN
+  [sys].[databases] db WITH (NOLOCK) ON
+    db.[database_id] = id.[database_id]
+WHERE
+  id.[database_id] = DB_ID()
+ORDER BY
+  [Index Advantage] DESC
+OPTION ( RECOMPILE );]]>
+    </query>
+  </test>
+  <test name="Query Plans - Cached" description="Shows the cacahed query plans and their execution count." type="info">
+    <query>
+      <![CDATA[
+SELECT
+  c.cacheobjtype [Type],
+  c.objtype [Object Type],
+  c.usecounts [User Count],
+  c.size_in_bytes [Size in Bytes],
+  t.text [Text]
+FROM
+  sys.dm_exec_cached_plans as c
+CROSS APPLY
+  sys.dm_exec_sql_text(plan_handle) as t
+WHERE
+  c.cacheobjtype = 'Compiled Plan' AND
+  t.dbid = DB_ID()
+ORDER BY
+  c.usecounts DESC]]>
+    </query>
+  </test>
+  <test name="Top 20 Most Expensive SQL Statments (by total logical reads)" description="Gets the top 20 most expensive SQL statements by total logical reads." type="info">
+    <query>
+      <![CDATA[
+SELECT TOP 20
+  SUBSTRING( qt.TEXT, ( qs.statement_start_offset / 2 ) + 1, ( ( CASE qs.statement_end_offset WHEN -1 THEN DATALENGTH( qt.TEXT ) ELSE qs.statement_end_offset END - qs.statement_start_offset ) / 2 ) + 1 ) [Statement],
+  qs.execution_count [Execution Count],
+  qs.total_logical_reads [Total Logical Reads],
+  qs.last_logical_reads [Last Logical Reads],
+  qs.total_logical_writes [Total Logical Writes],
+  qs.last_logical_writes [Last Logical Writes],
+  qs.total_worker_time [Total Worker Time],
+  qs.last_worker_time [Last Worker Time],
+  qs.total_elapsed_time/1000000 [Total Elapsed Time (s)],
+  qs.last_elapsed_time/1000000 [Last Elapsed Time (s)],
+  qs.last_execution_time [Last Execution Time]
+FROM
+  sys.dm_exec_query_stats qs
+CROSS APPLY
+  sys.dm_exec_sql_text( qs.sql_handle ) qt
+WHERE
+  qt.text NOT LIKE 'SELECT TOP 20 %' AND
+  qt.dbid = DB_ID()
+ORDER BY
+  qs.total_logical_reads DESC
+    ]]>
+    </query>
+  </test>
+  <test name="Top 20 Most Expensive SQL Statments (by total logical writes)" description="Gets the top 20 most expensive SQL statements by total logical writes." type="info">
+    <query>
+      <![CDATA[
+SELECT TOP 20
+  SUBSTRING( qt.TEXT, ( qs.statement_start_offset / 2 ) + 1, ( ( CASE qs.statement_end_offset WHEN -1 THEN DATALENGTH( qt.TEXT ) ELSE qs.statement_end_offset END - qs.statement_start_offset ) / 2 ) + 1 ) [Statement],
+  qs.execution_count [Execution Count],
+  qs.total_logical_reads [Total Logical Reads],
+  qs.last_logical_reads [Last Logical Reads],
+  qs.total_logical_writes [Total Logical Writes],
+  qs.last_logical_writes [Last Logical Writes],
+  qs.total_worker_time [Total Worker Time],
+  qs.last_worker_time [Last Worker Time],
+  qs.total_elapsed_time/1000000 [Total Elapsed Time (s)],
+  qs.last_elapsed_time/1000000 [Last Elapsed Time (s)],
+  qs.last_execution_time [Last Execution Time]
+FROM
+  sys.dm_exec_query_stats qs
+CROSS APPLY
+  sys.dm_exec_sql_text(qs.sql_handle) qt
+WHERE
+  qt.text NOT LIKE 'SELECT TOP 20 %' AND
+  qt.dbid = DB_ID()
+ORDER BY
+  qs.total_logical_writes DESC
+    ]]>
+    </query>
+  </test>
+  <test name="Top 20 Most Expensive SQL Statments (by total worker time)" description="Gets the top 20 most expensive SQL statements by total worker time." type="info">
+    <query>
+      <![CDATA[
+SELECT TOP 20
+  SUBSTRING( qt.TEXT, ( qs.statement_start_offset / 2 ) + 1, ( ( CASE qs.statement_end_offset WHEN -1 THEN DATALENGTH( qt.TEXT ) ELSE qs.statement_end_offset END - qs.statement_start_offset ) / 2 ) + 1 ) [Statement],
+  qs.execution_count [Execution Count],
+  qs.total_logical_reads [Total Logical Reads],
+  qs.last_logical_reads [Last Logical Reads],
+  qs.total_logical_writes [Total Logical Writes],
+  qs.last_logical_writes [Last Logical Writes],
+  qs.total_worker_time [Total Worker Time],
+  qs.last_worker_time [Last Worker Time],
+  qs.total_elapsed_time/1000000 [Total Elapsed Time (s)],
+  qs.last_elapsed_time/1000000 [Last Elapsed Time (s)],
+  qs.last_execution_time [Last Execution Time]
+FROM
+  sys.dm_exec_query_stats qs
+CROSS APPLY
+  sys.dm_exec_sql_text( qs.sql_handle ) qt
+WHERE
+  qt.text NOT LIKE 'SELECT TOP 20 %' AND
+  qt.dbid = DB_ID()
+ORDER BY
+  qs.total_worker_time DESC
+    ]]>
+    </query>
+  </test>
+  <test name="Top 20 Most Expensive SQL Statments (by execution count)" description="Gets the top 20 most expensive SQL statements by execution count." type="info">
+    <query>
+      <![CDATA[
+SELECT TOP 20
+  SUBSTRING( qt.TEXT, ( qs.statement_start_offset / 2 ) + 1, ( ( CASE qs.statement_end_offset WHEN -1 THEN DATALENGTH( qt.TEXT ) ELSE qs.statement_end_offset END - qs.statement_start_offset ) / 2 ) + 1 ) [Statement],
+  qs.execution_count [Execution Count],
+  qs.total_logical_reads [Total Logical Reads],
+  qs.last_logical_reads [Last Logical Reads],
+  qs.total_logical_writes [Total Logical Writes],
+  qs.last_logical_writes [Last Logical Writes],
+  qs.total_worker_time [Total Worker Time],
+  qs.last_worker_time [Last Worker Time],
+  qs.total_elapsed_time/1000000 [Total Elapsed Time (s)],
+  qs.last_elapsed_time/1000000 [Last Elapsed Time (s)],
+  qs.last_execution_time [Last Execution Time]
+FROM
+  sys.dm_exec_query_stats qs
+CROSS APPLY
+  sys.dm_exec_sql_text( qs.sql_handle ) qt
+WHERE
+  qt.text NOT LIKE 'SELECT TOP 20 %' AND
+  qt.dbid = DB_ID( )
+ORDER BY
+  qs.execution_count DESC -- execution count
+    ]]>
+    </query>
+  </test>
+  <test name="Top 20 Stored Procedures/Functions calls (by execution count)" description="Gets the top 20 stored procedures/function by execution count." type="info">
+    <query>
+      <![CDATA[
+SELECT TOP 20
+  OBJECT_NAME( qt.objectid ) AS 'Name',
+  qs.execution_count AS 'Execution Count',  
+  qs.execution_count / DATEDIFF( Second, qs.creation_time, GetDate( ) ) AS 'Calls/Second',
+  qs.total_worker_time / qs.execution_count AS 'Avg Worker Time',
+  qs.total_worker_time AS 'Total Worker Time',
+  qs.total_elapsed_time / qs.execution_count AS 'Avg Elapsed Time',
+  qs.max_logical_reads [Max Logical Reads],
+  qs.max_logical_writes [Max Logical Writes],
+  qs.total_physical_reads [Total Physical Reads], 
+  DATEDIFF ( Minute, qs.creation_time, GetDate( ) ) AS 'Age in Cache'
+FROM
+  sys.dm_exec_query_stats AS qs
+CROSS APPLY
+  sys.dm_exec_sql_text( qs.sql_handle ) AS qt
+WHERE
+  qt.dbid = db_id( )
+ORDER BY
+  qs.execution_count DESC
+    ]]>
+    </query>
+  </test>
+  <test name="Top 20 Stored Procedures/Functions calls (causing CPU pressure)" description="Gets the top 20 stored procedures/function causing CPU pressure." type="info">
+    <query>
+      <![CDATA[
+SELECT TOP 20
+  OBJECT_NAME( qt.objectid ) AS 'Name',
+  qs.total_worker_time AS 'Total Worker Time', 
+  qs.total_worker_time / qs.execution_count AS 'AvgWorkerTime',
+  qs.execution_count AS 'Execution Count', 
+  ISNULL( qs.execution_count / DATEDIFF ( Second, qs.creation_time, GetDate ( ) ), 0 ) AS 'Calls/Second',
+  ISNULL( qs.total_elapsed_time / qs.execution_count, 0 ) AS 'Avg Elapsed Time', 
+  qs.max_logical_reads [Max Logical Reads],
+  qs.max_logical_writes [Max Logical Writes],
+  DATEDIFF( Minute, qs.creation_time, GetDate ( ) ) AS 'Age in Cache'
+FROM
+  sys.dm_exec_query_stats AS qs
+CROSS APPLY
+  sys.dm_exec_sql_text( qs.sql_handle ) AS qt
+WHERE
+  qt.dbid = db_id( )
+ORDER BY
+  qs.total_worker_time DESC
+    ]]>
+    </query>
+  </test>
+  <test name="Top 20 Stored Procedures/Functions calls (causing Memory pressure)" description="Gets the top 20 stored procedures/function causing Memory pressure." type="info">
+    <query>
+      <![CDATA[
+SELECT TOP 20
+  OBJECT_NAME( qt.objectid ) AS 'Name',
+  qs.total_worker_time AS 'Total Worker Time', 
+  qs.total_worker_time / qs.execution_count AS 'AvgWorkerTime',
+  qs.execution_count AS 'Execution Count', 
+  ISNULL( qs.execution_count / DATEDIFF ( Second, qs.creation_time, GetDate ( ) ), 0 ) AS 'Calls/Second',
+  ISNULL( qs.total_elapsed_time / qs.execution_count, 0 ) AS 'Avg Elapsed Time', 
+  qs.max_logical_reads [Max Logical Reads],
+  qs.max_logical_writes [Max Logical Writes],
+  DATEDIFF( Minute, qs.creation_time, GetDate ( ) ) AS 'Age in Cache'
+FROM
+  sys.dm_exec_query_stats AS qs
+CROSS APPLY
+  sys.dm_exec_sql_text( qs.sql_handle ) AS qt
+WHERE
+  qt.dbid = db_id( )
+ORDER BY
+  total_logical_reads DESC
+    ]]>
+    </query>
+  </test>
+  <test name="Table Row Counts" description="The number of rows in each table" type="info">
+    <query>
+      <![CDATA[
+SELECT
+	OBJECT_NAME( s.object_id) [Table Name],
+	s.row_count [Row Count]
+FROM
+	sys.dm_db_partition_stats s
+JOIN
+	sys.objects o ON s.object_id = o.object_id
+WHERE
+	s.index_id < 2 AND 
+	o.type = 'U'
+ORDER BY
+	s.row_count DESC
+    ]]>
+    </query>
+  </test>
+  <test name="Index Usage" description="Shows the index usage including Seeks, Scans, Lookups and Updates" type="info">
+    <query>
+      <![CDATA[
+SELECT
+	OBJECT_NAME(s.object_id) [Table Name], 
+	(
+		SELECT
+			name 
+		FROM
+			sys.indexes i
+		WHERE
+			i.object_id = s.object_id AND
+			i.index_id = s.index_id
+	) [Index Name], 
+	user_seeks [User Seeks],
+	user_scans [User Scans],
+	user_lookups [User Lookups],
+	user_updates [User Updates]
+FROM
+	sys.dm_db_index_usage_stats s
+INNER JOIN
+	sys.objects o ON
+		s.object_id = o.object_id 
+WHERE
+	database_id = DB_ID() AND
+	o.type <> 'S'
+ORDER BY
+	[Table Name],
+	[Index Name]
+    ]]>
+    </query>
+  </test>
+  <test name="Unused Indexes" description="Shows the indexes that have never been used for seeks, scans or lookups." type="info">
+    <query>
+      <![CDATA[
+WITH partitionCTE ( object_id, index_id, row_count, partition_count) 
+AS
+(
+    SELECT
+		[object_id],
+		index_id,
+		SUM ( [rows] ) [Row Count],
+        COUNT( partition_id ) [Partition Count]
+    FROM
+		sys.partitions
+    GROUP BY
+		[object_id],
+        index_id
+) 
+SELECT
+	OBJECT_NAME( i.[object_id] ) [Table Name],
+	i.name [Index Name],
+	CASE WHEN
+		i.is_unique = 1 
+	THEN
+		'UNIQUE ' 
+	ELSE
+		'' 
+	END + i.type_desc [Index Type],
+	ddius.user_seeks [User Seeks],
+	ddius.user_scans [User Scans],
+	ddius.user_lookups [User Lookups],
+	ddius.user_updates [User Updates],
+	cte.row_count [Row Count],
+	CASE WHEN
+		partition_count > 1
+	THEN
+		'yes' 
+	ELSE
+		'no'
+	END [Partitioned],
+	CASE WHEN
+		i.type = 2 AND i.is_unique_constraint = 0
+	THEN
+		'Drop Index ' + i.name 
+				+ ' On ' + DB_NAME( ) 
+				+ '.dbo.' + Object_Name(ddius.[object_id]) + ';'
+	WHEN
+		i.type = 2 AND i.is_unique_constraint = 1
+	THEN
+		'Alter Table ' + DB_NAME( ) 
+				+ '.dbo.' + Object_Name(ddius.[object_id]) 
+				+ ' Drop Constraint ' + i.name + ';'
+	ELSE
+		'' 
+	END [SQL Drop Statement]
+FROM
+	sys.indexes i
+JOIN
+	sys.dm_db_index_usage_stats ddius ON
+		i.object_id = ddius.object_id AND
+		i.index_id = ddius.index_id
+JOIN
+	partitionCTE cte ON
+		i.object_id = cte.object_id AND
+		i.index_id = cte.index_id
+WHERE
+	ddius.database_id = DB_ID( ) AND
+	ddius.user_seeks = 0 AND
+	ddius.user_scans = 0 AND
+	ddius.user_lookups = 0
+ORDER BY 
+    Object_Name( i.[object_id] ),
+	i.name
+      ]]>
+    </query>
+  </test>
+  <test name="Query Plans - Include Table/Index Scans" description="Shows the cached queries that include full table/index scans (excluding #temp table and @table variable scans)." type="info">
+    <query>
+      <![CDATA[
+
+;WITH XMLNAMESPACES
+	( DEFAULT N'http://schemas.microsoft.com/sqlserver/2004/07/showplan', N'http://schemas.microsoft.com/sqlserver/2004/07/showplan' AS ShowPlan ),
+	EQS
+AS (
+	SELECT
+		EQS.plan_handle,
+		SUM ( EQS.execution_count ) AS ExecutionCount,
+		SUM ( EQS.total_worker_time ) AS TotalWorkTime,
+		SUM ( EQS.total_logical_reads ) AS TotalLogicalReads,
+		SUM ( EQS.total_logical_writes ) AS TotalLogicalWrites,
+		SUM ( EQS.total_elapsed_time ) AS TotalElapsedTime,
+		MAX ( EQS.last_execution_time ) AS LastExecutionTime
+FROM
+	sys.dm_exec_query_stats AS EQS 
+GROUP BY
+	EQS.plan_handle )
+SELECT
+	EQS.[ExecutionCount],
+	EQS.[TotalWorkTime],
+	EQS.[TotalLogicalReads],
+	EQS.[TotalLogicalWrites],
+	EQS.[TotalElapsedTime],
+	EQS.[LastExecutionTime],
+	ECP.[objtype] AS [ObjectType],
+	ECP.[cacheobjtype] AS [CacheObjectType],
+	DB_NAME ( EST.[dbid] ) AS [DatabaseName],
+	OBJECT_NAME ( EST.[objectid], EST.[dbid] ) AS [ObjectName],
+	EST.[text] AS [Statement],
+	EQP.[query_plan] AS [QueryPlan]
+FROM
+	sys.dm_exec_cached_plans AS ECP 
+INNER JOIN
+	EQS ON
+		ECP.plan_handle = EQS.plan_handle      
+INNER JOIN (
+  SELECT DISTINCT
+	  ECP.[plan_handle]
+  FROM
+	  sys.dm_exec_cached_plans AS ECP 
+  CROSS APPLY
+	  sys.dm_exec_query_plan( ECP.[plan_handle] ) AS EQP
+  OUTER APPLY
+	  EQP.query_plan.nodes( '//RelOp[@PhysicalOp = "Index Scan"]/IndexScan/Object[@Schema = "[dbo]"]' ) Ind( node )
+  OUTER APPLY
+	  EQP.query_plan.nodes( '//RelOp[@PhysicalOp = "Table Scan"]/TableScan/Object' ) Tab( node )
+  WHERE
+	  EQP.dbid = DB_ID( ) AND (
+		  Ind.node.value( '(./@Table)[1]', 'nvarchar(max)' ) NOT LIKE '[[]#%' AND
+		  Ind.node.value( '(./@Table)[1]', 'nvarchar(max)' ) NOT LIKE '[[]@%' ) OR ( 
+		  Tab.node.value( '(./@Table)[1]', 'nvarchar(max)' ) NOT LIKE '[[]#%' AND
+		  Tab.node.value( '(./@Table)[1]', 'nvarchar(max)' ) NOT LIKE '[[]@%' )
+  ) ep ON ECP.[plan_handle] = ep.[plan_handle]
+CROSS APPLY
+	sys.dm_exec_sql_text( ECP.[plan_handle] ) AS EST 
+CROSS APPLY
+	sys.dm_exec_query_plan( ECP.[plan_handle] ) AS EQP 
+WHERE
+	EQP.dbid = DB_ID( )
+ORDER BY
+	EQS.TotalElapsedTime DESC,
+	EQS.ExecutionCount DESC;
+      ]]>
+    </query>
+  </test>
+  <test name="Duplicate Indexes" description="Detect duplicate indexes (including partial duplicates)" type="info">
+    <query>
+      <![CDATA[
+WITH indexcols AS
+(
+  SELECT
+    object_id AS id,
+    index_id AS indid,
+    name,
+    (
+      SELECT
+        CASE
+          keyno
+        WHEN 0
+        THEN NULL
+        ELSE colid
+        END AS [data()]
+      FROM
+        sys.sysindexkeys AS k
+      WHERE
+        k.id = i.object_id AND
+        k.indid = i.index_id
+      ORDER BY
+        keyno,
+        colid
+      FOR xml path('')
+    ) as cols
+  FROM
+    sys.indexes AS i
+)
+SELECT
+  object_schema_name( c1.id ) + '.' + object_name( c1.id ) AS 'Table',
+  c1.name AS 'Index',
+  c2.name AS 'Partial Duplicate'
+FROM
+  indexcols AS c1
+JOIN
+  indexcols AS c2
+    ON
+      c1.id = c2.id AND
+      c1.indid < c2.indid AND (
+        c1.cols LIKE c2.cols + '%' OR
+        c2.cols LIKE c1.cols + '%' );
+      ]]>
+    </query>
+  </test>
+  <test name="Dr Greg - Trace Flags" description="Query the status of trace flags 1117, 1118 and 4199" type="info">
+    <query>
+      <![CDATA[
+DECLARE @traceFlags TABLE ( TraceFlag INT, [Status] BIT, [Global] BIT, [Session] BIT, [Description] NVARCHAR( 255 ) )
+
+INSERT INTO
+  @traceFlags ( TraceFlag, [Status], [Global], [Session] )
+EXEC ('DBCC TRACESTATUS(1117)')
+
+UPDATE
+  @traceFlags
+SET
+  [Description] = 'Full Extents Only'
+WHERE
+  TraceFlag = 1117
+
+INSERT INTO @traceFlags ( TraceFlag, [Status], [Global], [Session] )
+EXEC ('DBCC TRACESTATUS(1118)')
+
+UPDATE
+  @traceFlags
+SET
+  [Description] = 'Grow All Files in a FileGroup Equally'
+WHERE
+  TraceFlag = 1118
+
+INSERT INTO @traceFlags ( TraceFlag, [Status], [Global], [Session] )
+EXEC ('DBCC TRACESTATUS(4199)')
+
+UPDATE
+  @traceFlags
+SET
+  [Description] = 'Enable cumulative query optimizer enhancements'
+WHERE
+  TraceFlag = 4199
+
+SELECT
+  *
+FROM
+  @traceFlags
+WHERE
+	[Status] = 0
+      ]]>
+    </query>
+  </test>
+  <test name="Dr Greg - TempDb Data File Allocations" description="Query the data files in use by TempDb" type="info">
+    <query>
+      <![CDATA[
+SELECT
+	mf.[Count] AS [Current]
+	,si.cpu_count AS Recommended
+	,'TempDb data file count should match the number of logical processors' AS [Description]
+FROM
+	sys.dm_os_sys_info si
+	, (
+	SELECT
+		COUNT( * ) AS [Count]
+	FROM
+		sys.master_files
+	WHERE
+		database_id = DB_ID('tempdb') AND
+		[type] = 0 ) mf
+WHERE
+	mf.[Count] <> si.cpu_count
+      ]]>
+    </query>
+  </test>
+  <test name="Dr Greg - TempDb Initial File Size" description="TempDb files sizes should be 2GB each for DATA and 4GB each for LOG" type="info">
+    <query>
+      <![CDATA[
+SELECT
+  name AS [Filename]
+	,CAST( size / 128 AS NVARCHAR( 50 ) ) + ' Mb' AS [Current]
+	,'2048 Mb' AS Recommended
+FROM
+	sys.master_files
+WHERE
+	database_id = DB_ID('tempdb')
+	AND [type] = 0
+	AND size / 128 < 2048
+UNION
+SELECT
+  name AS [Filename]
+	,CAST( size / 128 AS NVARCHAR( 50 ) ) + ' Mb' AS [Current]
+	,'4096 Mb' AS Recommended
+FROM
+	sys.master_files
+WHERE
+	database_id = DB_ID('tempdb')
+	AND [type] = 1
+	AND size / 128 < 4096
+      ]]>
+    </query>
+  </test>
+  <test name="Dr Greg - TempDb File Growth Settings" description="TempDb files should grow at a fixed size of 100Mb" type="info">
+    <query>
+      <![CDATA[
+SELECT
+  name AS [Filename]
+	,CASE WHEN is_percent_growth = 1
+	THEN
+		CAST( growth AS NVARCHAR( 50 ) ) + ' %'
+	ELSE
+		CAST( growth / 128 AS NVARCHAR( 50 ) ) + ' Mb'
+	END AS [Current]
+	,'100 Mb' AS Recommended
+FROM
+	sys.master_files
+WHERE
+	database_id = DB_ID('tempdb')
+  AND ( is_percent_growth = 1 OR growth / 128 < 100 )
+      ]]>
+    </query>
+  </test>
+  <test name="Dr Greg - Collations" description="Both SoftwarePlatform and TempDb should be set to the 'Latin1_General_CS_AS' collation" type="info">
+    <query>
+      <![CDATA[
+SELECT
+	name AS [Database]
+	,collation_name AS [Current]
+	,'Latin1_General_CS_AS' AS Recommended
+FROM
+	sys.databases
+WHERE
+	collation_name <> 'Latin1_General_CS_AS'
+  AND name IN ('SoftwarePlatform', 'tempdb')
+ORDER BY
+	database_id
+      ]]>
+    </query>
+  </test>
+  <test name="Dr Greg - Remote Admin Connections" description="Remote administrator connections should be enabled" type="info">
+    <query>
+      <![CDATA[
+SELECT
+	name AS Setting
+	,CAST( value AS NVARCHAR( 100 ) ) AS [Current]
+	,1 AS Recommended
+	,[description] AS [Description]
+FROM
+	sys.configurations
+WHERE
+	name = 'remote admin connections'
+  AND value <> 1
+      ]]>
+    </query>
+  </test>
+  <test name="Dr Greg - Physical Server Memory" description="The server should have at least 16GB of physical memory" type="info">
+    <query>
+      <![CDATA[
+SELECT
+	'server physical memory' AS Setting
+	,CAST( total_physical_memory_kb AS NVARCHAR( 100 ) ) AS [Current]
+	,16567908 AS Recommended
+	,'Server should be configured to use at least 16 (GB) of RAM' AS [Description]
+FROM
+	sys.dm_os_sys_memory
+WHERE
+	total_physical_memory_kb < 16567908
+      ]]>
+    </query>
+  </test>
+  <test name="Dr Greg - Maximum Configured Memory" description="SQL Server should not be limited in the amount of memory it can consume" type="info">
+    <query>
+      <![CDATA[
+SELECT
+	name AS Setting
+	,CAST( value AS NVARCHAR( 100 ) ) AS [Current]
+	,2147483647 AS Recommended
+	,[description] AS [Description]
+FROM
+	sys.configurations
+WHERE
+	name = 'max server memory (MB)'
+  AND value < 2147483647
+      ]]>
+    </query>
+  </test>
+  <test name="Dr Greg - Configured CPU cores" description="The server should have at least 8 cores" type="info">
+    <query>
+      <![CDATA[
+SELECT
+	'server processor count' AS Setting
+	,CAST( cpu_count AS NVARCHAR( 100 ) ) AS [Current]
+	,8 AS Recommended
+	,'Server should be configured to use at least 8 cores' AS [Description]
+FROM
+	sys.dm_os_sys_info
+WHERE
+	cpu_count < 8
+      ]]>
+    </query>
+  </test>
+  <test name="Dr Greg - Agent XP Enabled" description="SQL Server Agent should not be able to execute extended stored procedures" type="info">
+    <query>
+      <![CDATA[
+SELECT
+	name AS Setting
+	,CAST( value AS NVARCHAR( 100 ) ) AS [Current]
+	,0 AS Recommended
+	,[description] AS [Description]
+FROM
+	sys.configurations
+WHERE
+	name = 'Agent XPs'
+  AND value <> 0
+      ]]>
+    </query>
+  </test>
+  <test name="Dr Greg - SoftwarePlatform Initial File Size" description="The SoftwarePlatform database should have an initial file size of 2GB for DATA and 4GB for LOG" type="info">
+    <query>
+      <![CDATA[
+SELECT
+  name AS [Filename]
+	,CAST( size / 128 AS NVARCHAR( 50 ) ) + ' Mb' AS [Current]
+	,'2048 Mb' AS Recommended
+FROM
+	sys.master_files
+WHERE
+	database_id = DB_ID('SoftwarePlatform') AND
+	[type] = 0
+	AND size / 128 < 2048
+UNION
+SELECT
+  name AS [Filename]
+	,CAST( size / 128 AS NVARCHAR( 50 ) ) + ' Mb' AS [Current]
+	,'4096 Mb' AS Recommended
+FROM
+	sys.master_files
+WHERE
+	database_id = DB_ID('SoftwarePlatform') AND
+	[type] = 1
+	AND size / 128 < 4096
+      ]]>
+    </query>
+  </test>
+  <test name="Dr Greg - SoftwarePlatform File Growth Settings" description="SoftwarePlatform DATA and LOG files should grow at a fixed rate of 100MB while FILESTREAM files have no growth rate" type="info">
+    <query>
+      <![CDATA[
+SELECT
+	name AS [Filename]
+	,CASE WHEN is_percent_growth = 1
+	THEN
+		CAST( growth AS NVARCHAR( 50 ) ) + ' %'
+	ELSE
+		CAST( growth / 128 AS NVARCHAR( 50 ) ) + ' Mb'
+	END AS [Current]
+	,CASE WHEN [type] = 2 THEN
+		'0 Mb'
+	ELSE
+		'100 Mb'
+	END AS Recommended
+FROM
+	sys.master_files
+WHERE
+	database_id = DB_ID('SoftwarePlatform')
+	AND ( is_percent_growth = 1 OR ( [type] = 2 AND growth / 128 > 0 ) OR ( growth / 128 < 100 AND ( [type] = 0 OR [type] = 1 ) ) )
+
+      ]]>
+    </query>
+  </test>
+  <test name="Dr Greg - SQL Server Patch Level" description="The SQL Servers patch level should be 12.0.4422.0 (CU2)" type="info">
+    <query>
+      <![CDATA[
+SELECT
+	SERVERPROPERTY ('edition') AS [Edition]
+	,SERVERPROPERTY ('productlevel') AS [ProductLevel]
+	,SERVERPROPERTY('productversion') AS [Current]
+	,'12.0.4422.0' AS [Recommended] -- CU2
+WHERE
+	CAST( SERVERPROPERTY('productversion') AS NVARCHAR( 100 ) ) <> '12.0.4422.0'
+      ]]>
+    </query>
+  </test>
+  <test name="Dr Greg - Heap Tables" description="There should be no heap tables." type="info">
+    <query>
+      <![CDATA[
+SELECT
+	SCH.name + '.' + TBL.name AS TableName 
+FROM
+	sys.tables AS TBL 
+INNER JOIN
+	sys.schemas AS SCH ON
+		TBL.schema_id = SCH.schema_id 
+INNER JOIN
+	sys.indexes AS IDX ON
+		TBL.object_id = IDX.object_id 
+		AND IDX.type = 0 -- = Heap 
+ORDER BY
+	TableName
+      ]]>
+    </query>
+  </test>
+  <test name="Dr Greg - Recovery Model" description="The database recovery model for SoftwarePlatform should be set to SIMPLE." type="info">
+    <query>
+      <![CDATA[
+SELECT
+	name AS Name
+	,recovery_model_desc AS [Current]
+	,'SIMPLE' AS 'Recommended'
+FROM
+	sys.databases
+WHERE
+	database_id = DB_ID( 'SoftwarePlatform' )
+  AND recovery_model_desc <> 'SIMPLE'
+      ]]>
+    </query>
+  </test>
+  <test name="Dr Greg - Trustworth" description="The database should not be marked as trustworthy." type="info">
+    <query>
+      <![CDATA[
+SELECT
+	name AS Name
+	,CAST(is_trustworthy_on AS NVARCHAR( 10 ) ) AS [Current]
+	,'0' AS 'Recommended'
+FROM
+	sys.databases
+WHERE
+	database_id = DB_ID( 'SoftwarePlatform' )
+  AND is_trustworthy_on <> 0
+      ]]>
+    </query>
+  </test>
+  <test name="Dr Greg - Deprecated Data Types" description="Determine our use of deprecated data types." type="info">
+    <query>
+      <![CDATA[
+SELECT
+	OBJECT_NAME( c.object_id ) AS TableName
+	,c.name AS ColumnName
+	,t.name AS [Type]
+FROM
+	sys.columns c
+JOIN
+	sys.types t ON
+		c.system_type_id = t.system_type_id
+WHERE
+	t.name IN ( 'image', 'text', 'ntext' )
+      ]]>
+    </query>
+  </test>
+  <test name="Dr Greg - Untrusted Foreign Keys" description="There should be no untrusted foreign keys." type="info">
+    <query>
+      <![CDATA[
+SELECT
+	SCH.name AS [Schema]
+	,TBL.name AS TableName
+	,FK.name AS KeyName
+FROM
+	sys.foreign_keys AS FK 
+INNER JOIN
+	sys.objects AS TBL ON
+		FK.parent_object_id = TBL.object_id 
+INNER JOIN
+	sys.schemas AS SCH ON
+		FK.schema_id = SCH.schema_id 
+	WHERE
+	FK.is_not_trusted = 1 
+	ORDER BY
+	SCH.name
+	,TBL.name
+	,FK.name
+      ]]>
+    </query>
+  </test>
+  <test name="Dr Greg - Optimize for Adhoc Workloads" description="The server should be configured for adhoc workloads." type="info">
+    <query>
+      <![CDATA[
+SELECT
+	name AS Setting
+	,CAST( value AS NVARCHAR( 100 ) ) AS [Current]
+	,1 AS Recommended
+	,[description] AS [Description]
+FROM
+	sys.configurations
+WHERE
+	name = 'optimize for ad hoc workloads'
+  AND value <> 1
+      ]]>
+    </query>
+  </test>
+  <test name="HSR011 - Orphaned expression entities" description="'Expression Entities' that are not referenced by the 'Known entities' relationship." type="test"  entityColumns="1,3" tenantColumn="0">
+	<query>
+	  <![CDATA[
+SET NOCOUNT ON
+
+DECLARE @tenantId BIGINT
+DECLARE @tenantName NVARCHAR( 100 )
+
+DECLARE @isOfType BIGINT
+DECLARE @name BIGINT
+DECLARE @inSolution BIGINT
+DECLARE @expressionEntity BIGINT
+DECLARE @knownEntity BIGINT
+
+CREATE TABLE #results ( [Tenant] NVARCHAR( 100 ), [Entity Upgrade Id] UNIQUEIDENTIFIER, [Entity Name] NVARCHAR( 100 ), [Type Upgrade Id] UNIQUEIDENTIFIER, [Type Name] NVARCHAR( 100 ), [Solution Name] NVARCHAR( 100 ) )
+
+SET NOCOUNT ON
+
+DECLARE cur CURSOR FORWARD_ONLY FOR
+SELECT
+	0,
+	'Global'
+UNION 
+SELECT
+	Id,
+	name
+FROM
+	_vTenant
+
+OPEN cur
+
+FETCH NEXT FROM
+	cur
+INTO
+	@tenantId,
+	@tenantName
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+	SELECT @isOfType = dbo.fnAliasNsId('isOfType', 'core', @tenantId)
+	SELECT @name = dbo.fnAliasNsId( 'name', 'core', @tenantId )
+	SELECT @inSolution = dbo.fnAliasNsId( 'inSolution', 'core', @tenantId )
+	SELECT @expressionEntity = dbo.fnAliasNsId('namedReference', 'core', 0 )
+	SELECT @knownEntity = dbo.fnAliasNsId('wfExpressionKnownEntities', 'core', 0 )
+
+	INSERT INTO
+		#results
+	SELECT
+		[Tenant] = @tenantName,
+		[Entity Upgrade Id] = e.UpgradeId,
+		[Entity Name] = en.Data_StartsWith,
+		[Type Upgrade Id] = t.UpgradeId,
+		[Type Name] = tn.Data_StartsWith,
+		[Solution Name] = sn.Data_StartsWith
+	FROM
+		Relationship r
+	LEFT JOIN
+		(
+			SELECT
+				r.TenantId,
+				r.ToId
+			FROM
+				Relationship r
+			WHERE
+				r.TenantId = @tenantId AND
+				r.TypeId = @knownEntity
+		) k ON
+			r.FromId = k.ToId
+	JOIN
+		Entity e ON
+			e.TenantId = @tenantId AND
+			e.Id = r.FromId
+	JOIN
+		Entity t ON
+			t.TenantId = @tenantId AND
+			t.Id = r.ToId
+	LEFT JOIN
+		Data_NVarChar en ON
+			en.TenantId = e.TenantId AND
+			en.EntityId = e.Id AND
+			en.FieldId = @name
+	LEFT JOIN
+		Data_NVarChar tn ON
+			tn.TenantId = t.TenantId AND
+			tn.EntityId = t.Id AND
+			tn.FieldId = @name
+	LEFT JOIN
+		Relationship s ON
+			s.TenantId = e.TenantId AND
+			s.FromId = e.Id AND
+			s.TypeId = @inSolution
+	LEFT JOIN
+		Data_NVarChar sn ON
+			sn.TenantId = s.TenantId AND
+			sn.EntityId = s.ToId AND
+			sn.FieldId = @name
+	WHERE
+		r.TenantId = @tenantId AND
+		r.TypeId = @isOfType AND
+		r.ToId = @expressionEntity AND
+		k.ToId IS NULL
+
+	FETCH NEXT FROM
+		cur
+	INTO
+		@tenantId,
+		@tenantName
+END 
+CLOSE cur;
+DEALLOCATE cur;
+
+SELECT
+	*
+FROM
+	#results
+ORDER BY
+	[Tenant],
+	[Entity Upgrade Id]
+
+DROP TABLE #results
+	  ]]>
+	</query>
+    <resolution>
+      <![CDATA[
+BEGIN TRANSACTION
+
+DECLARE @tenantId BIGINT
+DECLARE @entityId BIGINT
+
+SELECT
+  @tenantId = Id
+FROM (
+	SELECT
+		Id,
+		name
+	FROM
+		_vTenant
+	UNION
+	SELECT
+		0,
+		'Global'
+) t	
+WHERE
+  name = '{0}'
+  
+SELECT
+  @entityId = Id
+FROM
+  Entity
+WHERE
+  TenantId = @tenantId AND
+  UpgradeId = '{1}'
+  
+EXEC spDelete @entityId, @tenantId
+
+COMMIT TRANSACTION
+      ]]>
+    </resolution>
+  </test>
+  <test name="HSR010 - Orphaned fields" description="Fields that do not belong to any type." type="test" entityColumns="1,3" tenantColumn="0">
+    <query>
+      <![CDATA[
+SET NOCOUNT ON
+
+DECLARE @tenantId BIGINT
+DECLARE @tenantName NVARCHAR( 100 )
+
+DECLARE @isOfType BIGINT
+DECLARE @field BIGINT
+DECLARE @fieldIsOnType BIGINT
+DECLARE @inherits BIGINT
+DECLARE @name BIGINT
+DECLARE @inSolution BIGINT
+
+CREATE TABLE #types ( TypeId BIGINT PRIMARY KEY )
+CREATE TABLE #exclusions ( Id BIGINT PRIMARY KEY )
+
+CREATE TABLE #results ( [Tenant] NVARCHAR( 100 ), [Entity Upgrade Id] UNIQUEIDENTIFIER, [Entity Name] NVARCHAR( 100 ), [Type Upgrade Id] UNIQUEIDENTIFIER, [Type Name] NVARCHAR ( 100 ), [Solution Name] NVARCHAR( 100 ) )
+
+DECLARE cur CURSOR FORWARD_ONLY FOR
+SELECT
+	0,
+	'Global'
+UNION 
+SELECT
+	Id,
+	name
+FROM
+	_vTenant
+
+OPEN cur
+
+FETCH NEXT FROM
+	cur
+INTO
+	@tenantId,
+	@tenantName
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+	DELETE FROM #types
+	DELETE FROM #exclusions
+
+	SELECT @isOfType = dbo.fnAliasNsId('isOfType', 'core', @tenantId)
+	SELECT @field = dbo.fnAliasNsId('field', 'core', @tenantId)
+	SELECT @fieldIsOnType = dbo.fnAliasNsId('fieldIsOnType', 'core', @tenantId)
+	SELECT @inherits = dbo.fnAliasNsId('inherits', 'core', @tenantId)
+	SELECT @name = dbo.fnAliasNsId( 'name', 'core', @tenantId )
+	SELECT @inSolution = dbo.fnAliasNsId( 'inSolution', 'core', @tenantId )
+
+	INSERT INTO #exclusions
+	SELECT
+		EntityId
+	FROM
+		dbo.tblFnAliasNsId( 'appVersionString', 'core', @tenantId )
+	UNION
+	SELECT
+		EntityId
+	FROM
+		dbo.tblFnAliasNsId( 'publisher', 'core', @tenantId )
+	UNION
+	SELECT
+		EntityId
+	FROM
+		dbo.tblFnAliasNsId( 'publisherUrl', 'core', @tenantId )
+	UNION
+	SELECT
+		EntityId
+	FROM
+		dbo.tblFnAliasNsId( 'releaseDate', 'core', @tenantId )
+	UNION
+	SELECT
+		EntityId
+	FROM
+		dbo.tblFnAliasNsId( 'publishDate', 'core', @tenantId )
+	UNION
+	SELECT
+		EntityId
+	FROM
+		dbo.tblFnAliasNsId( 'appVerId', 'core', @tenantId )
+	UNION
+	SELECT
+		EntityId
+	FROM
+		dbo.tblFnAliasNsId( 'applicationId', 'core', @tenantId )
+
+	INSERT INTO
+		#types
+	SELECT
+		Id
+	FROM
+		dbo.fnDescendantsAndSelf( @inherits, @field, @tenantId )
+
+	INSERT INTO
+		#results
+	SELECT
+		[Tenant] = @tenantName,
+		[Entity Upgrade Id] = ee.UpgradeId,
+		[Entity Name] = en.Data_StartsWith,
+		[Type Upgrade Id] = et.UpgradeId,
+		[Type Name] = tn.Data_StartsWith,
+		[Solution Name] = sn.Data_StartsWith
+	FROM
+		Relationship r
+	INNER JOIN
+		#types t ON
+			r.ToId = t.TypeId
+	JOIN
+		Entity ee ON
+			ee.TenantId = r.TenantId AND
+			ee.Id = r.FromId
+	JOIN
+		Entity et ON
+			et.TenantId = r.TenantId AND
+			et.Id = r.ToId
+	LEFT JOIN
+		#exclusions e ON
+			r.FromId = e.Id
+	LEFT JOIN
+		Relationship r2 ON
+			r.TenantId = r2.TenantId AND
+			r2.TypeId = @fieldIsOnType AND
+			r.FromId = r2.FromId
+	LEFT JOIN
+		Data_NVarChar en ON
+			en.TenantId = ee.TenantId AND
+			en.EntityId = ee.Id AND
+			en.FieldId = @name
+	LEFT JOIN
+		Data_NVarChar tn ON
+			tn.TenantId = et.TenantId AND
+			tn.EntityId = et.Id AND
+			tn.FieldId = @name
+	LEFT JOIN
+		Relationship s ON
+			s.TenantId = ee.TenantId AND
+			s.FromId = e.Id AND
+			s.TypeId = @inSolution
+	LEFT JOIN
+		Data_NVarChar sn ON
+			sn.TenantId = s.TenantId AND
+			sn.EntityId = s.ToId AND
+			sn.FieldId = @name
+	WHERE
+		r.TenantId = @tenantId AND
+		r.TypeId = @isOfType AND
+		r2.ToId IS NULL AND
+		e.Id IS NULL
+
+	FETCH NEXT FROM
+		cur 
+	INTO
+		@tenantId,
+		@tenantName
+END 
+CLOSE cur;
+DEALLOCATE cur;
+
+SELECT
+	*
+FROM
+	#results
+ORDER BY
+	[Tenant],
+	[Entity Name],
+	[Type Name]
+
+DROP TABLE #types
+DROP TABLE #exclusions
+DROP TABLE #results
+	  ]]>
+    </query>
+    <resolution>
+      <![CDATA[
+BEGIN TRANSACTION
+
+DECLARE @tenantId BIGINT
+DECLARE @entityId BIGINT
+
+SELECT
+  @tenantId = Id
+FROM (
+	SELECT
+		Id,
+		name
+	FROM
+		_vTenant
+	UNION
+	SELECT
+		0,
+		'Global'
+) t	
+WHERE
+  name = '{0}'
+  
+SELECT
+  @entityId = Id
+FROM
+  Entity
+WHERE
+  TenantId = @tenantId AND
+  UpgradeId = '{1}'
+  
+EXEC spDelete @entityId, @tenantId
+
+COMMIT TRANSACTION
+      ]]>
+    </resolution>
+  </test>
+  <test name="HSR012 - Orphaned controls on form" description="Controls that do not belong to any form/screen." type="test" entityColumns="1,3" tenantColumn="0">
+    <query>
+      <![CDATA[
+SET NOCOUNT ON
+
+DECLARE @tenantId BIGINT
+DECLARE @tenantName NVARCHAR( 100 )
+
+DECLARE @isOfType BIGINT
+DECLARE @name BIGINT
+DECLARE @inSolution BIGINT
+DECLARE @controlOnForm BIGINT
+DECLARE @containedControlsOnForm BIGINT
+DECLARE @customEditForm BIGINT
+DECLARE @screen BIGINT
+
+CREATE TABLE #results ( [Tenant] NVARCHAR( 100 ), [Entity Upgrade Id] UNIQUEIDENTIFIER, [Entity Name] NVARCHAR( 100 ), [Type Upgrade Id] UNIQUEIDENTIFIER, [Type Name] NVARCHAR ( 100 ), [Solution Name] NVARCHAR( 100 ) )
+
+DECLARE cur CURSOR FORWARD_ONLY FOR
+SELECT
+	0,
+	'Global'
+UNION 
+SELECT
+	Id,
+	name
+FROM
+	_vTenant
+
+OPEN cur
+
+FETCH NEXT FROM
+	cur
+INTO
+	@tenantId,
+	@tenantName
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+
+	SELECT @isOfType = dbo.fnAliasNsId('isOfType', 'core', @tenantId)
+	SELECT @name = dbo.fnAliasNsId( 'name', 'core', @tenantId )
+	SELECT @inSolution = dbo.fnAliasNsId( 'inSolution', 'core', @tenantId )
+	SET @controlOnForm = dbo.fnAliasNsId( 'controlOnForm', 'console', @tenantId )
+	SET @containedControlsOnForm = dbo.fnAliasNsId( 'containedControlsOnForm', 'console', @tenantId )
+	SET @customEditForm = dbo.fnAliasNsId( 'customEditForm', 'console', @tenantId )
+	SET @screen = dbo.fnAliasNsId( 'screen', 'console', @tenantId )
+
+	INSERT INTO
+		#results
+	SELECT
+		[Tenant] = @tenantName,
+		[Entity Upgrade Id] = e.UpgradeId,
+		[Entity Name] = n.Data_StartsWith,
+		[Type Upgrade Id] = et.UpgradeId,
+		[Type Name] = tn.Data_StartsWith,
+		[Solution Name] = sn.Data_StartsWith
+	FROM
+		dbo.fnDerivedTypes( @controlOnForm, @tenantId ) t
+	JOIN
+		Relationship r ON
+			r.ToId = t.Id AND
+			r.TenantId = @tenantId AND
+			r.TypeId = @isOfType
+	JOIN
+		Entity e ON
+			e.TenantId = r.TenantId AND
+			e.Id = r.FromId
+	JOIN
+		Entity et ON
+			et.TenantId = r.TenantId AND
+			et.Id = r.ToId
+	LEFT JOIN
+		Relationship s ON
+			s.TenantId = r.TenantId AND
+			s.FromId = r.FromId AND
+			s.TypeId = @inSolution
+	LEFT JOIN
+		Relationship r2 ON
+			r2.TenantId = r.TenantId AND
+			r2.ToId = r.FromId AND
+			r2.TypeId = @containedControlsOnForm
+	LEFT JOIN
+		Data_NVarChar n ON
+			n.TenantId = r.TenantId AND
+			n.EntityId = r.FromId AND
+			n.FieldId = @name
+	LEFT JOIN
+		Data_NVarChar tn ON
+			tn.TenantId = r.TenantId AND
+			tn.EntityId = r.ToId AND
+			tn.FieldId = @name
+	LEFT JOIN
+		Data_NVarChar sn ON
+			sn.TenantId = r.TenantId AND
+			sn.EntityId = s.ToId AND
+			sn.FieldId = @name
+	WHERE
+		r.ToId <> @customEditForm AND
+		r.ToId <> @screen AND
+		r2.FromId IS NULL
+
+	FETCH NEXT FROM
+		cur
+	INTO
+		@tenantId,
+		@tenantName
+END 
+CLOSE cur;
+DEALLOCATE cur;
+
+SELECT
+	*
+FROM
+	#results
+ORDER BY
+	[Tenant],
+	[Entity Name],
+	[Type Name]
+
+DROP TABLE #results
+	  ]]>
+    </query>
+    <resolution>
+      <![CDATA[
+BEGIN TRANSACTION
+
+DECLARE @tenantId BIGINT
+DECLARE @entityId BIGINT
+
+SELECT
+  @tenantId = Id
+FROM (
+	SELECT
+		Id,
+		name
+	FROM
+		_vTenant
+	UNION
+	SELECT
+		0,
+		'Global'
+) t	
+WHERE
+  name = '{0}'
+  
+SELECT
+  @entityId = Id
+FROM
+  Entity
+WHERE
+  TenantId = @tenantId AND
+  UpgradeId = '{1}'
+  
+EXEC spDelete @entityId, @tenantId
+
+COMMIT TRANSACTION
+      ]]>
+    </resolution>
+  </test>
+  <test name="HSR015 - Field control missing field reference" description="All field controls should reference a field to render." type="test" entityColumns="1,3" tenantColumn="0">
+    <query>
+      <![CDATA[
+SET NOCOUNT ON
+
+DECLARE @tenantId BIGINT
+DECLARE @tenantName NVARCHAR( 100 )
+
+DECLARE @isOfType BIGINT
+DECLARE @inherits BIGINT
+DECLARE @name BIGINT
+DECLARE @inSolution BIGINT
+DECLARE @fieldControlOnForm BIGINT
+DECLARE @fieldToRender BIGINT
+
+CREATE TABLE #results ( [Tenant] NVARCHAR( 100 ), [Entity Upgrade Id] UNIQUEIDENTIFIER, [Entity Name] NVARCHAR( 100 ), [Type Upgrade Id] UNIQUEIDENTIFIER, [Type Name] NVARCHAR ( 100 ), [Solution Name] NVARCHAR( 100 ) )
+
+DECLARE cur CURSOR FORWARD_ONLY FOR
+SELECT
+	0,
+	'Global'
+UNION 
+SELECT
+	Id,
+	name
+FROM
+	_vTenant
+
+OPEN cur
+
+FETCH NEXT FROM
+	cur
+INTO
+	@tenantId,
+	@tenantName
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+
+	SELECT @isOfType = dbo.fnAliasNsId('isOfType', 'core', @tenantId)
+	SELECT @inherits = dbo.fnAliasNsId('inherits', 'core', @tenantId)
+	SELECT @name = dbo.fnAliasNsId( 'name', 'core', @tenantId )
+	SELECT @inSolution = dbo.fnAliasNsId( 'inSolution', 'core', @tenantId )
+	SELECT @fieldControlOnForm = dbo.fnAliasNsId( 'fieldControlOnForm', 'console', @tenantId )
+	SELECT @fieldToRender = dbo.fnAliasNsId( 'fieldToRender', 'console', @tenantId )
+
+	INSERT INTO
+		#results
+	SELECT
+		[Tenant] = @tenantName,
+		[Entity Upgrade Id] = e.UpgradeId,
+		[Entity Name] = n.Data_StartsWith,
+		[Type Upgrade Id] = et.UpgradeId,
+		[Type Name] = tn.Data_StartsWith,
+		[Solution Name] = sn.Data_StartsWith
+	FROM
+		Relationship r
+	JOIN
+		Entity e ON
+			r.TenantId = e.TenantId AND
+			r.FromId = e.Id
+	JOIN
+		Entity et ON
+			r.TenantId = et.TenantId AND
+			r.ToId = et.Id
+	JOIN
+		dbo.fnDescendantsAndSelf( @inherits, @fieldControlOnForm, @tenantId ) t ON
+			r.TenantId = @tenantId AND
+			r.ToId = t.Id AND
+			r.TypeId = @isOfType
+	LEFT JOIN
+		Relationship f ON
+			r.TenantId = f.TenantId AND
+			r.FromId = f.FromId AND
+			f.TypeId = @fieldToRender
+	LEFT JOIN
+		Data_NVarChar n ON
+			n.TenantId = e.TenantId AND
+			n.EntityId = e.Id AND
+			n.FieldId = @name
+	LEFT JOIN
+		Data_NVarChar tn ON
+			tn.TenantId = et.TenantId AND
+			tn.EntityId = et.Id AND
+			tn.FieldId = @name
+	LEFT JOIN
+		Relationship s ON
+			r.TenantId = s.TenantId AND
+			r.FromId = s.FromId AND
+			s.TypeId = @inSolution
+	LEFT JOIN
+		Data_NVarChar sn ON
+			sn.TenantId = s.TenantId AND
+			sn.EntityId = s.ToId AND
+			sn.FieldId = @name
+	WHERE
+		f.ToId IS NULL
+
+	FETCH NEXT FROM
+		cur
+	INTO
+		@tenantId,
+		@tenantName
+END 
+CLOSE cur;
+DEALLOCATE cur;
+
+SELECT
+	*
+FROM
+	#results
+ORDER BY
+	[Tenant],
+	[Entity Name],
+	[Type Name]
+
+DROP TABLE #results
+]]>
+    </query>
+    <resolution>
+      <![CDATA[
+BEGIN TRANSACTION
+
+DECLARE @tenantId BIGINT
+DECLARE @entityId BIGINT
+
+SELECT
+  @tenantId = Id
+FROM (
+	SELECT
+		Id,
+		name
+	FROM
+		_vTenant
+	UNION
+	SELECT
+		0,
+		'Global'
+) t	
+WHERE
+  name = '{0}'
+  
+SELECT
+  @entityId = Id
+FROM
+  Entity
+WHERE
+  TenantId = @tenantId AND
+  UpgradeId = '{1}'
+  
+EXEC spDelete @entityId, @tenantId
+
+COMMIT TRANSACTION
+      ]]>
+    </resolution>
+  </test>
+  <test name="HSR016 - Relationship control missing relationship reference" description="All relationship controls should reference a relationship to render." type="test" entityColumns="1,3" tenantColumn="0">
+    <query>
+      <![CDATA[
+SET NOCOUNT ON
+
+DECLARE @tenantId BIGINT
+DECLARE @tenantName NVARCHAR( 100 )
+
+DECLARE @isOfType BIGINT
+DECLARE @inherits BIGINT
+DECLARE @name BIGINT
+DECLARE @inSolution BIGINT
+DECLARE @relationshipControlOnForm BIGINT
+DECLARE @relationshipToRender BIGINT
+
+CREATE TABLE #results ( [Tenant] NVARCHAR( 100 ), [Entity Upgrade Id] UNIQUEIDENTIFIER, [Entity Name] NVARCHAR( 100 ), [Type Upgrade Id] UNIQUEIDENTIFIER, [Type Name] NVARCHAR ( 100 ), [Solution Name] NVARCHAR( 100 ) )
+
+DECLARE cur CURSOR FORWARD_ONLY FOR
+SELECT
+	0,
+	'Global'
+UNION 
+SELECT
+	Id,
+	name
+FROM
+	_vTenant
+
+OPEN cur
+
+FETCH NEXT FROM
+	cur
+INTO
+	@tenantId,
+	@tenantName
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+
+	SELECT @isOfType = dbo.fnAliasNsId('isOfType', 'core', @tenantId)
+	SELECT @inherits = dbo.fnAliasNsId('inherits', 'core', @tenantId)
+	SELECT @name = dbo.fnAliasNsId( 'name', 'core', @tenantId )
+	SELECT @inSolution = dbo.fnAliasNsId( 'inSolution', 'core', @tenantId )
+	SELECT @relationshipControlOnForm = dbo.fnAliasNsId( 'relationshipControlOnForm', 'console', @tenantId )
+	SELECT @relationshipToRender = dbo.fnAliasNsId( 'relationshipToRender', 'console', @tenantId )
+
+	INSERT INTO
+		#results
+	SELECT
+		@tenantName,
+		e.UpgradeId,
+		n.Data_StartsWith,
+		et.UpgradeId,
+		tn.Data_StartsWith,
+		sn.Data_StartsWith
+	FROM
+		Relationship r
+	JOIN
+		Entity e ON
+			r.TenantId = e.TenantId AND
+			r.FromId = e.Id
+	JOIN
+		Entity et ON
+			r.TenantId = et.TenantId AND
+			r.ToId = et.Id
+	JOIN
+		dbo.fnDescendantsAndSelf( @inherits, @relationshipControlOnForm, @tenantId ) t ON
+			r.TenantId = @tenantId AND
+			r.ToId = t.Id AND
+			r.TypeId = @isOfType
+	LEFT JOIN
+		Relationship f ON
+			r.TenantId = f.TenantId AND
+			r.FromId = f.FromId AND
+			f.TypeId = @relationshipToRender
+	LEFT JOIN
+		Data_NVarChar n ON
+			n.TenantId = e.TenantId AND
+			n.EntityId = e.Id AND
+			n.FieldId = @name
+	LEFT JOIN
+		Data_NVarChar tn ON
+			tn.TenantId = et.TenantId AND
+			tn.EntityId = et.Id AND
+			tn.FieldId = @name
+	LEFT JOIN
+		Relationship s ON
+			r.TenantId = s.TenantId AND
+			r.FromId = s.FromId AND
+			s.TypeId = @inSolution
+	LEFT JOIN
+		Data_NVarChar sn ON
+			sn.TenantId = s.TenantId AND
+			sn.EntityId = s.ToId AND
+			sn.FieldId = @name
+	WHERE
+		f.ToId IS NULL
+
+	FETCH NEXT FROM
+		cur
+	INTO
+		@tenantId,
+		@tenantName
+END 
+CLOSE cur;
+DEALLOCATE cur;
+
+SELECT
+	*
+FROM
+	#results
+ORDER BY
+	[Tenant],
+	[Entity Name],
+	[Type Name]
+
+DROP TABLE #results
+	  ]]>
+    </query>
+    <resolution>
+      <![CDATA[
+BEGIN TRANSACTION
+
+DECLARE @tenantId BIGINT
+DECLARE @entityId BIGINT
+
+SELECT
+  @tenantId = Id
+FROM (
+	SELECT
+		Id,
+		name
+	FROM
+		_vTenant
+	UNION
+	SELECT
+		0,
+		'Global'
+) t	
+WHERE
+  name = '{0}'
+  
+SELECT
+  @entityId = Id
+FROM
+  Entity
+WHERE
+  TenantId = @tenantId AND
+  UpgradeId = '{1}'
+  
+EXEC spDelete @entityId, @tenantId
+
+COMMIT TRANSACTION
+      ]]>
+    </resolution>
+  </test>
+  <test name="HSF004 - Aliases must be camel case" description="All aliases should be in camel case." type="test" entityColumns="1" tenantColumn="0">
+    <query>
+      <![CDATA[
+SET NOCOUNT ON
+
+DECLARE @tenantId BIGINT
+DECLARE @tenantName NVARCHAR( 100 )
+
+DECLARE @name BIGINT
+DECLARE @inSolution BIGINT
+
+CREATE TABLE #results ( [Tenant] NVARCHAR( 100 ), [Entity Upgrade Id] UNIQUEIDENTIFIER, [Entity Name] NVARCHAR( 100 ), [Alias] NVARCHAR( 100 ), [Namespace] NVARCHAR( 100 ), [Solution Name] NVARCHAR( 100 ) )
+
+DECLARE cur CURSOR FORWARD_ONLY FOR
+SELECT
+	0,
+	'Global'
+UNION 
+SELECT
+	Id,
+	name
+FROM
+	_vTenant
+
+OPEN cur
+
+FETCH NEXT FROM
+	cur
+INTO
+	@tenantId,
+	@tenantName
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+
+	SELECT @name = dbo.fnAliasNsId( 'name', 'core', @tenantId )
+	SELECT @inSolution = dbo.fnAliasNsId( 'inSolution', 'core', @tenantId )
+
+	INSERT INTO
+		#results
+	SELECT
+		[Tenant] = @tenantName,
+		[Entity Upgrade Id] = ee.UpgradeId,
+		[Entity Name] = en.Data_StartsWith,
+		[Alias] = a.Data,
+		[Namespace] = a.[Namespace],
+		[Solution Name] = sn.Data_StartsWith
+	FROM
+		Data_Alias a
+	JOIN
+		Entity ee ON
+			ee.TenantId = a.TenantId AND
+			ee.Id = a.EntityId
+	LEFT JOIN
+		Relationship r ON
+			r.TenantId = a.TenantId AND
+			r.FromId = a.EntityId AND
+			r.TypeId = @inSolution
+	LEFT JOIN
+		Entity se ON
+			se.TenantId = r.TenantId AND
+			se.Id = r.ToId
+	LEFT JOIN
+		Data_NVarChar sn ON
+			sn.TenantId = se.TenantId AND
+			sn.EntityId = se.Id AND
+			sn.FieldId = @name
+	LEFT JOIN
+		Data_NVarChar en ON
+			en.TenantId = a.TenantId AND
+			en.EntityId = a.EntityId AND
+			en.FieldId = @name
+	WHERE
+		a.TenantId = @tenantId AND
+		SUBSTRING( a.Data, 1, 1 ) <> LOWER( SUBSTRING( a.Data, 1, 1 ) ) COLLATE Latin1_General_CS_AI
+
+	FETCH NEXT FROM
+		cur
+	INTO
+		@tenantId,
+		@tenantName
+END 
+CLOSE cur;
+DEALLOCATE cur;
+
+SELECT
+	*
+FROM
+	#results
+ORDER BY
+	[Tenant],
+	[Entity Name]
+
+DROP TABLE #results
+	  ]]>
+    </query>
+    <resolution>
+      <![CDATA[
+BEGIN TRANSACTION
+
+DECLARE @tenantId BIGINT
+DECLARE @entityId BIGINT
+
+SELECT
+  @tenantId = Id
+FROM (
+	SELECT
+		Id,
+		name
+	FROM
+		_vTenant
+	UNION
+	SELECT
+		0,
+		'Global'
+) t	
+WHERE
+  name = '{0}'
+  
+SELECT
+  @entityId = Id
+FROM
+  Entity
+WHERE
+  TenantId = @tenantId AND
+  UpgradeId = '{1}'
+  
+UPDATE
+	Data_Alias
+SET
+	Data = LOWER( SUBSTRING( Data, 1, 1 ) ) + SUBSTRING( Data, 2, LEN( Data ) )
+WHERE
+	TenantId = @tenantId AND
+	EntityId = @entityId AND
+	Data = '{3}'
+
+COMMIT TRANSACTION
+      ]]>
+    </resolution>
+  </test>
+  <test name="HSF005 - Alias table can only contain 'alias' and 'reverseAlias' values" description="Ensure that no fields other than 'alias' and 'reverseAlias' appear in the Alias table." type="test" entityColumns="1,3" tenantColumn="0">
+    <query>
+      <![CDATA[
+SET NOCOUNT ON
+
+DECLARE @tenantId BIGINT
+DECLARE @tenantName NVARCHAR( 100 )
+
+DECLARE @name BIGINT
+DECLARE @inSolution BIGINT
+DECLARE @alias BIGINT
+DECLARE @reverseAlias BIGINT
+
+CREATE TABLE #results ( [Tenant] NVARCHAR( 100 ), [Entity Upgrade Id] UNIQUEIDENTIFIER, [Entity Name] NVARCHAR( 100 ), [Field Upgrade Id] UNIQUEIDENTIFIER, [Field Name] NVARCHAR ( 100 ), [Solution Name] NVARCHAR( 100 ) )
+
+DECLARE cur CURSOR FORWARD_ONLY FOR
+SELECT
+	0,
+	'Global'
+UNION 
+SELECT
+	Id,
+	name
+FROM
+	_vTenant
+
+OPEN cur
+
+FETCH NEXT FROM
+	cur
+INTO
+	@tenantId,
+	@tenantName
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+
+	SELECT @name = dbo.fnAliasNsId( 'name', 'core', @tenantId )
+	SELECT @inSolution = dbo.fnAliasNsId( 'inSolution', 'core', @tenantId )
+	SELECT @alias = dbo.fnAliasNsId( 'alias', 'core', @tenantId )
+	SELECT @reverseAlias = dbo.fnAliasNsId( 'reverseAlias', 'core', @tenantId )
+
+	INSERT INTO
+		#results
+	SELECT
+		[Tenant] = @tenantName,
+		[Entity Upgrade Id] = ee.UpgradeId,
+		[Entity Name] = en.Data_StartsWith,
+		[Field Upgrade Id] = fe.UpgradeId,
+		[Field Name] = fn.Data_StartsWith,
+		[Solution Name] = sn.Data_StartsWith
+	FROM
+		Data_Alias a
+	JOIN
+		Entity ee ON
+			ee.TenantId = a.TenantId AND
+			ee.Id = a.EntityId
+	JOIN
+		Entity fe ON
+			fe.TenantId = a.TenantId AND
+			fe.Id = a.FieldId
+	LEFT JOIN
+		Relationship r ON
+			r.TenantId = a.TenantId AND
+			r.FromId = a.EntityId AND
+			r.TypeId = @inSolution
+	LEFT JOIN
+		Entity se ON
+			se.TenantId = r.TenantId AND
+			se.Id = r.ToId
+	LEFT JOIN
+		Data_NVarChar sn ON
+			sn.TenantId = se.TenantId AND
+			sn.EntityId = se.Id AND
+			sn.FieldId = @name
+	LEFT JOIN
+		Data_NVarChar en ON
+			en.TenantId = a.TenantId AND
+			en.EntityId = a.EntityId AND
+			en.FieldId = @name
+	LEFT JOIN
+		Data_NVarChar fn ON
+			fn.TenantId = fe.TenantId AND
+			fn.EntityId = fe.Id AND
+			fn.FieldId = @name
+	WHERE
+		a.TenantId = @tenantId AND
+		( ( a.AliasMarkerId = 0 AND a.FieldId <> @alias ) OR ( a.AliasMarkerId = 1 AND a.FieldId <> @reverseAlias ) )
+
+	FETCH NEXT FROM
+		cur
+	INTO
+		@tenantId,
+		@tenantName
+END 
+CLOSE cur;
+DEALLOCATE cur;
+
+SELECT
+	*
+FROM
+	#results
+ORDER BY
+	[Tenant],
+	[Entity Name],
+	[Field Name]
+
+DROP TABLE #results
+	  ]]>
+    </query>
+    <resolution>
+      <![CDATA[
+BEGIN TRANSACTION
+
+DECLARE @tenantId BIGINT
+
+SELECT
+  @tenantId = Id
+FROM (
+	SELECT
+		Id,
+		name
+	FROM
+		_vTenant
+	UNION
+	SELECT
+		0,
+		'Global'
+) t	
+WHERE
+  name = '{0}'
+
+DELETE
+  Data_Alias
+FROM
+  Data_Alias d
+JOIN
+  Entity ee ON
+    ee.TenantId = d.TenantId AND
+    ee.Id = d.EntityId
+JOIN
+  Entity ef ON
+    ef.TenantId = d.TenantId AND
+    ef.Id = d.FieldId
+WHERE
+  d.TenantId = @tenantId AND
+  ee.UpgradeId = '{1}' AND
+  ef.UpgradeId = '{3}'
+  
+COMMIT TRANSACTION
+      ]]>
+    </resolution>
+  </test>
+  <test name="HSR017 - Orphaned Resource Key Data Hash instances" description="Detect resource key data hash instances that are not associated to an entity." type="test" entityColumns="1" tenantColumn="0">
+    <query>
+      <![CDATA[
+SET NOCOUNT ON
+
+DECLARE @tenantId BIGINT
+DECLARE @tenantName NVARCHAR( 100 )
+
+DECLARE @isOfType BIGINT
+DECLARE @name BIGINT
+DECLARE @inSolution BIGINT
+DECLARE @dataHash BIGINT
+DECLARE @resourceKeyDataHash BIGINT
+DECLARE @resourceHasResourceKeyDataHashes BIGINT
+
+CREATE TABLE #results ( [Tenant] NVARCHAR( 100 ), [Entity Upgrade Id] UNIQUEIDENTIFIER, [Entity Name] NVARCHAR( 100 ), [DataHash] NVARCHAR( 100 ), [Solution Name] NVARCHAR( 100 ) )
+
+DECLARE cur CURSOR FORWARD_ONLY FOR
+SELECT
+	0,
+	'Global'
+UNION 
+SELECT
+	Id,
+	name
+FROM
+	_vTenant
+
+OPEN cur
+
+FETCH NEXT FROM
+	cur
+INTO
+	@tenantId,
+	@tenantName
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+
+	SELECT @isOfType = dbo.fnAliasNsId('isOfType', 'core', @tenantId)
+	SELECT @name = dbo.fnAliasNsId( 'name', 'core', @tenantId )
+	SELECT @inSolution = dbo.fnAliasNsId( 'inSolution', 'core', @tenantId )
+	SELECT @dataHash = dbo.fnAliasNsId( 'dataHash', 'core', @tenantId )
+	SELECT @resourceKeyDataHash = dbo.fnAliasNsId( 'resourceKeyDataHash', 'core', @tenantId )
+	SELECT @resourceHasResourceKeyDataHashes = dbo.fnAliasNsId( 'resourceHasResourceKeyDataHashes', 'core', @tenantId )
+
+	INSERT INTO
+		#results
+	SELECT
+		[Tenant] = @tenantName,
+		[Entity Upgrade Id] = e.UpgradeId,
+		[Entity Name] = n.Data_StartsWith,
+		[Data Hash] = h.Data_StartsWith,
+		[Solution Name] = sn.Data_StartsWith
+	FROM
+		Relationship r
+	JOIN
+		Entity e ON
+			e.TenantId = r.TenantId AND
+			e.Id = r.FromId
+	LEFT JOIN
+		Relationship rr ON
+			rr.TenantId = r.TenantId AND
+			rr.ToId = r.FromId AND
+			rr.TypeId = @resourceHasResourceKeyDataHashes
+	LEFT JOIN
+		Data_NVarChar n ON
+			n.TenantId = r.TenantId AND
+			n.EntityId = r.FromId AND
+			n.FieldId = @name
+	LEFT JOIN
+		Data_NVarChar h ON
+			h.TenantId = r.TenantId AND
+			h.EntityId = r.FromId AND
+			h.FieldId = @dataHash
+	LEFT JOIN
+		Relationship s ON
+			s.TenantId = r.TenantId AND
+			s.FromId = r.FromId AND
+			s.TypeId = @inSolution
+	LEFT JOIN
+		Entity se ON
+			se.TenantId = s.TenantId AND
+			se.Id = s.ToId
+	LEFT JOIN
+		Data_NVarChar sn ON
+			sn.TenantId = r.TenantId AND
+			sn.EntityId = s.ToId AND
+			sn.FieldId = @name
+	WHERE
+		r.TenantId = @tenantId AND
+		r.TypeId = @isOfType AND
+		r.ToId = @resourceKeyDataHash AND
+		rr.FromId IS NULL
+
+	FETCH NEXT FROM
+		cur
+	INTO
+		@tenantId,
+		@tenantName
+END 
+CLOSE cur;
+DEALLOCATE cur;
+
+SELECT
+	*
+FROM
+	#results
+ORDER BY
+	[Tenant],
+	[Entity Name]
+
+DROP TABLE #results
+	  ]]>
+    </query>
+    <resolution>
+      <![CDATA[
+BEGIN TRANSACTION
+
+DECLARE @tenantId BIGINT
+DECLARE @entityId BIGINT
+
+SELECT
+  @tenantId = Id
+FROM (
+	SELECT
+		Id,
+		name
+	FROM
+		_vTenant
+	UNION
+	SELECT
+		0,
+		'Global'
+) t	
+WHERE
+  name = '{0}'
+  
+SELECT
+  @entityId = Id
+FROM
+  Entity
+WHERE
+  TenantId = @tenantId AND
+  UpgradeId = '{1}'
+  
+EXEC spDelete @entityId, @tenantId
+
+COMMIT TRANSACTION
+      ]]>
+    </resolution>
+  </test>
+  <test name="HSR018 - Resource Key Data Hash instances not linked to a Resource Key" description="Detect resource key data hash instnaces that are not associated with a Resource Key." type="test" entityColumns="1" tenantColumn="0">
+    <query>
+      <![CDATA[
+SET NOCOUNT ON
+
+DECLARE @tenantId BIGINT
+DECLARE @tenantName NVARCHAR( 100 )
+
+DECLARE @isOfType BIGINT
+DECLARE @name BIGINT
+DECLARE @inSolution BIGINT
+DECLARE @dataHash BIGINT
+DECLARE @resourceKeyDataHash BIGINT
+DECLARE @resourceKeyDataHashAppliesToResourceKey BIGINT
+
+CREATE TABLE #results ( [Tenant] NVARCHAR( 100 ), [Entity Upgrade Id] UNIQUEIDENTIFIER, [Entity Name] NVARCHAR( 100 ), [DataHash] NVARCHAR( 100 ), [Solution Name] NVARCHAR( 100 ) )
+
+DECLARE cur CURSOR FORWARD_ONLY FOR
+SELECT
+	0,
+	'Global'
+UNION 
+SELECT
+	Id,
+	name
+FROM
+	_vTenant
+
+OPEN cur
+
+FETCH NEXT FROM
+	cur
+INTO
+	@tenantId,
+	@tenantName
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+
+	SELECT @isOfType = dbo.fnAliasNsId('isOfType', 'core', @tenantId)
+	SELECT @name = dbo.fnAliasNsId( 'name', 'core', @tenantId )
+	SELECT @inSolution = dbo.fnAliasNsId( 'inSolution', 'core', @tenantId )
+	SELECT @dataHash = dbo.fnAliasNsId( 'dataHash', 'core', @tenantId )
+	SELECT @resourceKeyDataHash = dbo.fnAliasNsId( 'resourceKeyDataHash', 'core', @tenantId )
+	SELECT @resourceKeyDataHashAppliesToResourceKey = dbo.fnAliasNsId( 'resourceKeyDataHashAppliesToResourceKey', 'core', @tenantId )
+
+	INSERT INTO
+		#results
+	SELECT
+		[Tenant] = @tenantName,
+		[Entity Upgrade Id] = e.UpgradeId,
+		[Entity Name] = n.Data_StartsWith,
+		[Data Hash] = h.Data_StartsWith,
+		[Solution Name] = sn.Data_StartsWith
+	FROM
+		Relationship r
+	JOIN
+		Entity e ON
+			e.TenantId = r.TenantId AND
+			e.Id = r.FromId
+	LEFT JOIN
+		Relationship rr ON
+			rr.TenantId = r.TenantId AND
+			rr.FromId = r.FromId AND
+			rr.TypeId = @resourceKeyDataHashAppliesToResourceKey
+	LEFT JOIN
+		Data_NVarChar n ON
+			n.TenantId = r.TenantId AND
+			n.EntityId = r.FromId AND
+			n.FieldId = @name
+	LEFT JOIN
+		Data_NVarChar h ON
+			h.TenantId = r.TenantId AND
+			h.EntityId = r.FromId AND
+			h.FieldId = @dataHash
+	LEFT JOIN
+		Relationship s ON
+			s.TenantId = r.TenantId AND
+			s.FromId = r.FromId AND
+			s.TypeId = @inSolution
+	LEFT JOIN
+		Entity se ON
+			se.TenantId = s.TenantId AND
+			se.Id = s.ToId
+	LEFT JOIN
+		Data_NVarChar sn ON
+			sn.TenantId = r.TenantId AND
+			sn.EntityId = s.ToId AND
+			sn.FieldId = @name
+	WHERE
+		r.TenantId = @tenantId AND
+		r.TypeId = @isOfType AND
+		r.ToId = @resourceKeyDataHash AND
+		rr.FromId IS NULL
+
+	FETCH NEXT FROM
+		cur
+	INTO
+		@tenantId,
+		@tenantName
+END 
+CLOSE cur;
+DEALLOCATE cur;
+
+SELECT
+	*
+FROM
+	#results
+ORDER BY
+	[Tenant],
+	[Entity Name]
+
+DROP TABLE #results
+	  ]]>
+    </query>
+    <resolution>
+      <![CDATA[
+BEGIN TRANSACTION
+
+DECLARE @tenantId BIGINT
+DECLARE @entityId BIGINT
+
+SELECT
+  @tenantId = Id
+FROM (
+	SELECT
+		Id,
+		name
+	FROM
+		_vTenant
+	UNION
+	SELECT
+		0,
+		'Global'
+) t	
+WHERE
+  name = '{0}'
+  
+SELECT
+  @entityId = Id
+FROM
+  Entity
+WHERE
+  TenantId = @tenantId AND
+  UpgradeId = '{1}'
+  
+EXEC spDelete @entityId, @tenantId
+
+COMMIT TRANSACTION
+      ]]>
+    </resolution>
+  </test>
+  <test name="HRK002 - There must not be two instances with equal resource keys" description="Detect resource key violations." type="test" entityColumns="1,4" tenantColumn="0">
+    <query>
+      <![CDATA[
+SET NOCOUNT ON
+
+DECLARE @tenantId BIGINT
+DECLARE @tenantName NVARCHAR( 100 )
+
+DECLARE @isOfType BIGINT
+DECLARE @name BIGINT
+DECLARE @inSolution BIGINT
+DECLARE @dataHash BIGINT
+DECLARE @resourceKeyDataHash BIGINT
+DECLARE @resourceHasResourceKeyDataHashes BIGINT
+DECLARE @resourceKeyDataHashAppliesToResourceKey BIGINT
+
+CREATE TABLE #results ( [Tenant] NVARCHAR( 100 ), [Entity Upgrade Id] UNIQUEIDENTIFIER, [Entity Name] NVARCHAR( 100 ), [DataHash] NVARCHAR( 100 ), [Resource Upgrade Id] UNIQUEIDENTIFIER, [Resource Name] NVARCHAR ( 100 ), [Solution Name] NVARCHAR( 100 ) )
+
+DECLARE cur CURSOR FORWARD_ONLY FOR
+SELECT
+	0,
+	'Global'
+UNION 
+SELECT
+	Id,
+	name
+FROM
+	_vTenant
+
+OPEN cur
+
+FETCH NEXT FROM
+	cur
+INTO
+	@tenantId,
+	@tenantName
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+
+	SELECT @isOfType = dbo.fnAliasNsId('isOfType', 'core', @tenantId)
+	SELECT @name = dbo.fnAliasNsId( 'name', 'core', @tenantId )
+	SELECT @inSolution = dbo.fnAliasNsId( 'inSolution', 'core', @tenantId )
+	SELECT @dataHash = dbo.fnAliasNsId( 'dataHash', 'core', @tenantId )
+	SELECT @resourceKeyDataHash = dbo.fnAliasNsId( 'resourceKeyDataHash', 'core', @tenantId )
+	SELECT @resourceHasResourceKeyDataHashes = dbo.fnAliasNsId( 'resourceHasResourceKeyDataHashes', 'core', @tenantId )
+	SELECT @resourceKeyDataHashAppliesToResourceKey = dbo.fnAliasNsId( 'resourceKeyDataHashAppliesToResourceKey', 'core', @tenantId )
+
+	INSERT INTO
+		#results
+	SELECT
+		[Tenant] = @tenantName,
+		[Entity Upgrade Id] = e.UpgradeId,
+		[Entity Name] = n.Data_StartsWith,
+		[Data Hash] = a.DataHash,
+		[Resource Upgrade Id] = re.UpgradeId,
+		[Resource Name] = rn.Data_StartsWith,
+		[Solution Name] = sn.Data_StartsWith
+	FROM (
+	SELECT h.EntityId, h.TenantId, s.FromId, d.DataHash
+	FROM
+		Data_NVarChar h
+	JOIN (
+		SELECT
+			h.TenantId,
+			h.Data_StartsWith,
+			k.ToId
+		FROM
+			Relationship r
+		JOIN
+			Relationship k ON
+				r.TenantId = k.TenantId AND
+				r.FromId = k.FromId AND
+				k.TypeId = @resourceKeyDataHashAppliesToResourceKey
+		JOIN
+			Data_NVarChar h ON
+				r.TenantId = h.TenantId AND
+				r.FromId = h.EntityId AND
+				h.FieldId = @dataHash
+		WHERE
+			r.TenantId = @tenantId AND
+			r.ToId = @resourceKeyDataHash AND
+			r.TypeId = @isOfType
+		GROUP BY
+			h.TenantId,
+			h.Data_StartsWith,
+			k.ToId
+		HAVING
+			COUNT( h.Data_StartsWith ) > 1
+	) d ( TenantId, DataHash, [Key] ) ON
+		h.TenantId = d.TenantId AND
+		h.Data_StartsWith = d.DataHash
+	LEFT JOIN
+		Relationship s ON
+			h.TenantId = s.TenantId AND
+			h.EntityId = s.ToId AND
+			s.TypeId = @resourceHasResourceKeyDataHashes
+	GROUP BY
+		h.EntityId, h.TenantId, s.FromId, d.DataHash
+		) a
+	JOIN
+		Entity e ON
+			e.TenantId = a.TenantId AND
+			e.Id = a.EntityId
+	LEFT JOIN
+		Data_NVarChar n ON
+			n.TenantId = a.TenantId AND
+			n.EntityId = a.EntityId AND
+			n.FieldId = @name
+	LEFT JOIN Entity re ON
+		re.TenantId = a.TenantId AND
+		re.Id = a.FromId
+	LEFT JOIN Data_NVarChar rn ON
+		rn.TenantId = re.TenantId AND
+		rn.EntityId = re.Id AND
+		rn.FieldId = @name
+	LEFT JOIN
+		Relationship sl ON
+			a.TenantId = sl.TenantId AND
+			a.EntityId = sl.FromId AND
+			sl.TypeId = @inSolution
+	LEFT JOIN
+		Data_NVarChar sn ON
+			sn.TenantId = sl.TenantId AND
+			sn.EntityId = sl.ToId AND
+			sn.FieldId = @name
+
+	FETCH NEXT FROM
+		cur
+	INTO
+		@tenantId,
+		@tenantName
+END 
+CLOSE cur;
+DEALLOCATE cur;
+
+SELECT
+	*
+FROM
+	#results
+ORDER BY
+	[Tenant],
+	[DataHash],
+	[Entity Name]
+
+DROP TABLE #results
+	  ]]>
+    </query>
+    <resolution>
+      <![CDATA[
+BEGIN TRANSACTION
+
+DECLARE @tenantId BIGINT
+DECLARE @dataHash BIGINT
+
+SELECT
+  @tenantId = Id
+FROM (
+	SELECT
+		Id,
+		name
+	FROM
+		_vTenant
+	UNION
+	SELECT
+		0,
+		'Global'
+) t	
+WHERE
+  name = '{0}'
+  
+SELECT
+  @entityId = Id
+FROM
+  Entity
+WHERE
+  TenantId = @tenantId AND
+  UpgradeId = '{1}'
+  
+SELECT @dataHash = dbo.fnAliasNsId( 'dataHash', 'core', @tenantId )
+  
+DELETE
+  Data_NVarChar
+FROM
+  Data_NVarChar d
+JOIN
+  Entity ee ON
+    ee.TenantId = d.TenantId AND
+    ee.Id = d.EntityId
+WHERE
+  d.TenantId = @tenantId AND
+  ee.UpgradeId = '{1}' AND
+  d.FieldId = @dataHash
+
+COMMIT TRANSACTION
+      ]]>
+    </resolution>
+  </test>
+  <test name="HAL001 - Non-core applications must not define same aliases as core applications" description="Detect alias re-use." type="test" entityColumns="2" tenantColumn="">
+    <query>
+      <![CDATA[
+DECLARE @name BIGINT = dbo.fnAliasNsId( 'name', 'core', DEFAULT )
+DECLARE @packageForApplication BIGINT = dbo.fnAliasNsId( 'packageForApplication', 'core', DEFAULT )
+DECLARE @appVersionString BIGINT = dbo.fnAliasNsId( 'appVersionString', 'core', DEFAULT )
+DECLARE @appVerId BIGINT = dbo.fnAliasNsId( 'appVerId', 'core', DEFAULT )
+
+DECLARE @packages TABLE
+(
+  AppName nvarchar(max),
+  PackageGuid uniqueidentifier
+)
+
+INSERT
+	INTO @packages
+SELECT
+	an.Data,
+	pid.Data PackageGuid
+FROM
+(
+	SELECT
+		ROW_NUMBER( ) OVER
+		(
+			PARTITION BY
+				r.ToId
+			ORDER BY
+				CAST( '/' + REPLACE( dbo.fnSanitiseVersion( v.Data ), '.', '/' ) + '/' AS HIERARCHYID ) DESC
+		) AS 'RowNumber',
+		PackageId = r.FromId,
+		ApplicationId = r.ToId,
+		Version = v.Data
+	FROM
+		Relationship r
+	JOIN
+		Data_NVarChar v ON
+			v.TenantId = 0
+			AND v.EntityId = r.FromId
+			AND r.TypeId = @packageForApplication
+			AND	v.FieldId = @appVersionString
+	WHERE
+		r.TenantId = 0
+) dt
+JOIN
+	Data_NVarChar an ON
+		an.TenantId = 0
+		AND an.FieldId = @name
+		AND an.EntityId = dt.ApplicationId
+JOIN
+	Data_Guid pid ON
+		pid.TenantId = 0
+		AND pid.EntityId = dt.PackageId
+		AND	pid.FieldId = @appVerId
+WHERE
+	dt.RowNumber = 1
+  
+DECLARE @core uniqueidentifier = ( SELECT PackageGuid FROM @packages WHERE AppName = 'ReadiNow Core' )
+DECLARE @console uniqueidentifier = ( SELECT PackageGuid FROM @packages WHERE AppName = 'ReadiNow Console' )
+DECLARE @coreData uniqueidentifier = ( SELECT PackageGuid FROM @packages WHERE AppName = 'ReadiNow Core Data' )
+DECLARE @shared uniqueidentifier = ( SELECT PackageGuid FROM @packages WHERE AppName = 'Shared' )
+DECLARE @system uniqueidentifier = ( SELECT PackageGuid FROM @packages WHERE AppName = 'ReadiNow System' )
+
+SELECT
+  p.AppName, p.PackageGuid, a.EntityUid, a.Namespace + ':' + a.Data Alias
+FROM
+	@packages p
+JOIN
+	AppData_Alias a ON
+	a.AppVerUid = p.PackageGuid
+	AND EntityUid IN
+	(
+		SELECT
+			EntityUid
+		FROM
+			AppData_Alias
+		WHERE
+			AppVerUid IN (@core, @console, @coreData, @shared, @system)			
+	)
+WHERE 
+	a.AppVerUid NOT IN (@core, @console, @coreData, @shared, @system)
+ORDER BY
+  p.AppName, a.Data
+	  ]]>
+    </query>
+  </test>
+</tests>

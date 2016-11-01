@@ -1,0 +1,1077 @@
+﻿// Copyright 2011-2015 Global Software Innovation Pty Ltd
+
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+using ReadiMon.Shared;
+using ReadiMon.Shared.Core;
+using ReadiMon.Shared.Data;
+using ReadiMon.Shared.Model;
+
+namespace ReadiMon.Plugin.Entity
+{
+	/// <summary>
+	///     Entity View Model
+	/// </summary>
+	public abstract class EntityViewModel : ViewModelBase
+	{
+		/// <summary>
+		///     The database manager.
+		/// </summary>
+		protected DatabaseManager DatabaseManager;
+
+		private IPluginSettings _pluginSettings;
+
+		/// <summary>
+		///     The selected tenant.
+		/// </summary>
+		private TenantInfo _selectedTenant;
+
+		/// <summary>
+		///     The selected text
+		/// </summary>
+		private string _selectedText;
+
+		/// <summary>
+		///     The tenants
+		/// </summary>
+		private List<TenantInfo> _tenants;
+
+		/// <summary>
+		///     Initializes a new instance of the <see cref="EntityViewModel" /> class.
+		/// </summary>
+		/// <param name="settings">The settings.</param>
+		protected EntityViewModel( IPluginSettings settings )
+		{
+			AliasMap = new Dictionary<long, string>( );
+
+			PluginSettings = settings;
+		}
+
+		/// <summary>
+		///     Gets or sets the alias map.
+		/// </summary>
+		/// <value>
+		///     The alias map.
+		/// </value>
+		protected Dictionary<long, string> AliasMap
+		{
+			get;
+			set;
+		}
+
+		/// <summary>
+		///     Gets or sets the plugin settings.
+		/// </summary>
+		/// <value>
+		///     The plugin settings.
+		/// </value>
+		public IPluginSettings PluginSettings
+		{
+			get
+			{
+				return _pluginSettings;
+			}
+			set
+			{
+				_pluginSettings = value;
+
+				DatabaseManager = new DatabaseManager( PluginSettings.DatabaseSettings );
+
+				LoadSearchStrings( );
+				LoadTenants( );
+			}
+		}
+
+		/// <summary>
+		///     Gets the search strings.
+		/// </summary>
+		/// <value>
+		///     The search strings.
+		/// </value>
+		public List<string> SearchStrings
+		{
+			get;
+			private set;
+		}
+
+		/// <summary>
+		///     Gets or sets the selected entity identifier.
+		/// </summary>
+		/// <value>
+		///     The selected entity identifier.
+		/// </value>
+		public long SelectedEntityId
+		{
+			get;
+			set;
+		}
+
+		/// <summary>
+		///     Gets or sets the selected tenant.
+		/// </summary>
+		/// <value>
+		///     The selected tenant.
+		/// </value>
+		public virtual TenantInfo SelectedTenant
+		{
+			get
+			{
+				return _selectedTenant;
+			}
+			set
+			{
+				SetProperty( ref _selectedTenant, value );
+			}
+		}
+
+		/// <summary>
+		///     Gets or sets the selected text.
+		/// </summary>
+		/// <value>
+		///     The selected text.
+		/// </value>
+		public virtual string SelectedText
+		{
+			get
+			{
+				return _selectedText;
+			}
+			set
+			{
+				SetProperty( ref _selectedText, value );
+			}
+		}
+
+		/// <summary>
+		///     Gets the tenants.
+		/// </summary>
+		/// <value>
+		///     The tenants.
+		/// </value>
+		public List<TenantInfo> Tenants
+		{
+			get
+			{
+				return _tenants;
+			}
+			private set
+			{
+				SetProperty( ref _tenants, value );
+			}
+		}
+
+		/// <summary>
+		///     Checks the entity exists.
+		/// </summary>
+		/// <param name="id">The identifier.</param>
+		/// <param name="upgradeId"></param>
+		/// <param name="enforceTenantId">if set to <c>true</c> [enforce tenant identifier].</param>
+		/// <returns></returns>
+		protected bool CheckEntityExists( long id, out Guid upgradeId, bool enforceTenantId = false )
+		{
+			upgradeId = Guid.Empty;
+
+			string commandText = enforceTenantId ? @"--ReadiMon - CheckEntityExists
+SELECT Id, TenantId, UpgradeId FROM Entity WHERE Id = @id AND TenantId = @tenantId" : @"--ReadiMon - CheckEntityExists
+SELECT Id, TenantId, UpgradeId FROM Entity WHERE Id = @id";
+
+			try
+			{
+				using ( var command = DatabaseManager.CreateCommand( commandText ) )
+				{
+					DatabaseManager.AddParameter( command, "@id", id );
+
+					if ( enforceTenantId )
+					{
+						DatabaseManager.AddParameter( command, "@tenantId", SelectedTenant.Id );
+					}
+
+					long entityId = -1;
+					long tenantId = -1;
+
+					using ( IDataReader reader = command.ExecuteReader( ) )
+					{
+						if ( reader.Read( ) )
+						{
+							if ( !reader.IsDBNull( 0 ) )
+							{
+								entityId = reader.GetInt64( 0 );
+							}
+
+							if ( !reader.IsDBNull( 1 ) )
+							{
+								tenantId = reader.GetInt64( 1 );
+							}
+
+							if ( !reader.IsDBNull( 2 ) )
+							{
+								upgradeId = reader.GetGuid( 2 );
+							}
+						}
+					}
+
+					if ( tenantId >= 0 )
+					{
+						if ( SelectedTenant != null && SelectedTenant.Id != tenantId )
+						{
+							var tenantInfo = Tenants.FirstOrDefault( t => t.Id == tenantId );
+
+							if ( tenantInfo != null )
+							{
+								SelectedTenant = tenantInfo;
+							}
+							else
+							{
+								_tenants = null;
+								LoadTenants( );
+							}
+						}
+					}
+
+					return entityId >= 0;
+				}
+			}
+			catch ( Exception exc )
+			{
+				PluginSettings.EventLog.WriteException( exc );
+			}
+
+			return false;
+		}
+
+		/// <summary>
+		///     Gets the entity details.
+		/// </summary>
+		/// <param name="identifier">The identifier.</param>
+		/// <param name="id">The identifier.</param>
+		/// <param name="tenantId">The tenant identifier.</param>
+		/// <param name="upgradeId">The upgrade identifier.</param>
+		/// <param name="name">The name.</param>
+		/// <param name="description">The description.</param>
+		/// <param name="tenant">The tenant.</param>
+		/// <param name="solution">The solution.</param>
+		/// <param name="type">The type.</param>
+		/// <returns></returns>
+		public bool GetEntityDetails( string identifier, out long id, out long tenantId, out Guid upgradeId, out string name, out string description, out string tenant, out string solution, out string type )
+		{
+			id = -1;
+			tenantId = -1;
+			upgradeId = Guid.Empty;
+			name = null;
+			description = null;
+			tenant = null;
+			solution = null;
+			type = null;
+
+			if ( !string.IsNullOrEmpty( identifier ) )
+			{
+				Guid guid;
+
+				if ( Guid.TryParse( identifier, out guid ) )
+				{
+					id = GetEntityIdByGuid( guid, true );
+
+					if ( id < 0 )
+					{
+						id = GetEntityIdByGuid( guid );
+					}
+				}
+				else
+				{
+					if ( !long.TryParse( identifier, out id ) )
+					{
+						id = GetEntityIdByAlias( identifier, true );
+
+						if ( id < 0 )
+						{
+							id = GetEntityIdByAlias( identifier );
+						}
+					}
+				}
+
+				if ( id >= 0 )
+				{
+					return GetEntityDetails( id, out tenantId, out upgradeId, out name, out description, out tenant, out solution, out type );
+				}
+			}
+
+			return false;
+		}
+
+		/// <summary>
+		///     Gets the entity details.
+		/// </summary>
+		/// <param name="id">The identifier.</param>
+		/// <param name="tenantId">The tenant identifier.</param>
+		/// <param name="upgradeId">The upgrade identifier.</param>
+		/// <param name="name">The name.</param>
+		/// <param name="description">The description.</param>
+		/// <param name="tenant">The tenant.</param>
+		/// <param name="solution">The solution.</param>
+		/// <param name="type">The type.</param>
+		/// <returns></returns>
+		public bool GetEntityDetails( long id, out long tenantId, out Guid upgradeId, out string name, out string description, out string tenant, out string solution, out string type )
+		{
+			tenantId = -1;
+			upgradeId = Guid.Empty;
+			name = null;
+			description = null;
+			tenant = null;
+			solution = null;
+			type = null;
+
+			if ( id < 0 )
+			{
+				return false;
+			}
+
+			const string commandText = @"--ReadiMon - GetEntityDetails
+DECLARE @tenantId BIGINT
+
+SELECT @tenantId = TenantId FROM Entity WHERE Id = @id
+
+DECLARE @description BIGINT = dbo.fnAliasNsId( 'description', 'core', @tenantId )
+DECLARE @inSolution BIGINT = dbo.fnAliasNsId( 'inSolution', 'core', @tenantId )
+DECLARE @isOfType BIGINT = dbo.fnAliasNsId( 'isOfType', 'core', @tenantId )
+
+SELECT
+	e.Id,
+	e.TenantId,
+	e.UpgradeId,
+	Name = dbo.fnName( @id ),
+	Description = dbo.fnFieldNVarChar( @id, @description ),
+	Tenant = dbo.fnName( e.TenantId ),
+	Solution = dbo.fnNameAlias( r.ToId, r.TenantId ),
+	Type = dbo.fnNameAlias( t.ToId, t.TenantId )
+FROM
+	Entity e
+LEFT JOIN
+	Relationship r ON
+		r.TenantId = e.TenantId
+		AND r.FromId = e.Id
+		AND r.TypeId = @inSolution
+LEFT JOIN
+	Relationship t ON
+		t.TenantId = e.TenantId
+		AND t.FromId = e.Id
+		AND t.TypeId = @isOfType
+WHERE
+	e.Id = @id
+	AND e.TenantId = @tenantId
+";
+
+			try
+			{
+				using ( var command = DatabaseManager.CreateCommand( commandText ) )
+				{
+					DatabaseManager.AddParameter( command, "@id", id );
+
+					using ( IDataReader reader = command.ExecuteReader( ) )
+					{
+						if ( reader.Read( ) )
+						{
+							tenantId = reader.GetInt64( 1 );
+							upgradeId = reader.GetGuid( 2 );
+							name = reader.GetString( 3, "<Unnamed>", "<Unnamed>" );
+							description = reader.GetString( 4, string.Empty );
+							tenant = reader.GetString( 5, "<Unnamed>" );
+							solution = reader.GetString( 6, "<Unnamed>" );
+							type = reader.GetString( 7, "<Unnamed>" );
+
+							return true;
+						}
+					}
+				}
+			}
+			catch ( Exception exc )
+			{
+				PluginSettings.EventLog.WriteException( exc );
+			}
+
+			return false;
+		}
+
+		/// <summary>
+		///     Gets the entity identifier by alias.
+		/// </summary>
+		/// <param name="value">The value.</param>
+		/// <param name="enforceTenantId">if set to <c>true</c> [enforce tenant identifier].</param>
+		/// <returns></returns>
+		protected long GetEntityIdByAlias( string value, bool enforceTenantId = false )
+		{
+			string nameSpace;
+			string alias;
+
+			if ( string.IsNullOrWhiteSpace( value ) )
+			{
+				return -1;
+			}
+
+			int lineFeed = value.IndexOf( '\n' );
+
+			if ( lineFeed > 0 )
+			{
+				value = value.Substring( 0, lineFeed - 1 );
+			}
+
+			if ( value.GetNamespaceAlias( out nameSpace, out alias ) )
+			{
+				string commandText = enforceTenantId ? @"--ReadiMon - GetEntityIdByAlias
+SELECT TOP 1 EntityId FROM Data_Alias WHERE Data = @alias COLLATE SQL_Latin1_General_CP1_CI_AS AND Namespace = @namespace COLLATE SQL_Latin1_General_CP1_CI_AS AND TenantId = @tenantId" : @"--ReadiMon - GetEntityIdByAlias
+SELECT TOP 1 EntityId FROM Data_Alias WHERE Data = @alias COLLATE SQL_Latin1_General_CP1_CI_AS AND Namespace = @namespace COLLATE SQL_Latin1_General_CP1_CI_AS";
+
+				try
+				{
+					using ( var command = DatabaseManager.CreateCommand( commandText ) )
+					{
+						DatabaseManager.AddParameter( command, "@alias", alias );
+						DatabaseManager.AddParameter( command, "@namespace", nameSpace );
+
+						if ( enforceTenantId )
+						{
+							DatabaseManager.AddParameter( command, "@tenantId", SelectedTenant.Id );
+						}
+
+						var scalar = command.ExecuteScalar( );
+
+						if ( scalar != null && scalar != DBNull.Value )
+						{
+							var id = ( long ) scalar;
+
+							return id;
+						}
+					}
+				}
+				catch ( Exception exc )
+				{
+					PluginSettings.EventLog.WriteException( exc );
+				}
+			}
+
+			return -1;
+		}
+
+		/// <summary>
+		/// Gets the name of the entity identifier by.
+		/// </summary>
+		/// <param name="value">The value.</param>
+		/// <param name="enforceTenantId">if set to <c>true</c> [enforce tenant identifier].</param>
+		/// <returns></returns>
+		protected long GetEntityIdByName( string value, bool enforceTenantId = false )
+		{
+			if ( string.IsNullOrWhiteSpace( value ) )
+			{
+				return -1;
+			}
+
+			int lineFeed = value.IndexOf( '\n' );
+
+			if ( lineFeed > 0 )
+			{
+				value = value.Substring( 0, lineFeed - 1 );
+			}
+
+			string commandText = enforceTenantId ? @"--ReadiMon - GetEntityIdByName
+DECLARE @nameId BIGINT = dbo.fnAliasNsId( 'core', 'name', @tenantId )
+SELECT TOP 1 EntityId FROM Data_NVarChar WHERE FieldId = @nameId AND Data_StartsWith LIKE @name AND TenantId = @tenantId" : @"--ReadiMon - GetEntityIdByName
+SELECT TOP 1 n.EntityId FROM Data_NVarChar n JOIN Data_Alias a ON n.TenantId = a.TenantId AND n.FieldId = a.EntityId AND a.AliasMarkerId = 0 AND a.Data = 'name' AND a.Namespace = 'core' WHERE n.Data_StartsWith LIKE @name";
+
+			try
+			{
+				using ( var command = DatabaseManager.CreateCommand( commandText ) )
+				{
+					SqlParameter param = DatabaseManager.AddParameter( command, "@name", value );
+
+					if ( enforceTenantId )
+					{
+						DatabaseManager.AddParameter( command, "@tenantId", SelectedTenant.Id );
+					}
+
+					var scalar = command.ExecuteScalar( );
+
+					if ( scalar != null && scalar != DBNull.Value )
+					{
+						var id = ( long ) scalar;
+
+						return id;
+					}
+					else
+					{
+						if ( !value.EndsWith( "%" ) )
+						{
+							param.Value = param.Value + "%";
+
+							scalar = command.ExecuteScalar( );
+
+							if ( scalar != null && scalar != DBNull.Value )
+							{
+								var id = ( long ) scalar;
+
+								return id;
+							}
+							else
+							{
+								if ( !value.StartsWith( "%" ) )
+								{
+									param.Value = "%" + param.Value + "%";
+
+									scalar = command.ExecuteScalar( );
+
+									if ( scalar != null && scalar != DBNull.Value )
+									{
+										var id = ( long ) scalar;
+
+										return id;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			catch ( Exception exc )
+			{
+				PluginSettings.EventLog.WriteException( exc );
+			}
+
+			return -1;
+		}
+
+		/// <summary>
+		///     Gets the entity identifier by unique identifier.
+		/// </summary>
+		/// <param name="value">The value.</param>
+		/// <param name="enforceTenantId">if set to <c>true</c> [enforce tenant identifier].</param>
+		/// <returns></returns>
+		protected long GetEntityIdByGuid( Guid value, bool enforceTenantId = false )
+		{
+			string commandText = enforceTenantId ? @"--ReadiMon - GetEntityIdByGuid
+SELECT TOP 1 Id FROM Entity WHERE UpgradeId = @guid AND TenantId = @tenantId" : @"--ReadiMon - GetEntityIdByGuid
+SELECT TOP 1 Id FROM Entity WHERE UpgradeId = @guid";
+
+			try
+			{
+				using ( var command = DatabaseManager.CreateCommand( commandText ) )
+				{
+					DatabaseManager.AddParameter( command, "@guid", value );
+
+					if ( enforceTenantId )
+					{
+						DatabaseManager.AddParameter( command, "@tenantId", SelectedTenant.Id );
+					}
+
+					var scalar = command.ExecuteScalar( );
+
+					if ( scalar != null && scalar != DBNull.Value )
+					{
+						var id = ( long ) scalar;
+
+						return id;
+					}
+				}
+			}
+			catch ( Exception exc )
+			{
+				PluginSettings.EventLog.WriteException( exc );
+			}
+
+			return -1;
+		}
+
+		/// <summary>
+		///     Gets the field data.
+		/// </summary>
+		/// <typeparam name="TFieldType">The type of the field type.</typeparam>
+		/// <typeparam name="TInfoType">The type of the information type.</typeparam>
+		/// <param name="id">The identifier.</param>
+		/// <param name="tableName">Name of the table.</param>
+		/// <param name="dataOverride">The data override.</param>
+		/// <param name="createInfo">The create information.</param>
+		/// <param name="fields">The fields.</param>
+		/// <param name="commandOverride">The command override.</param>
+		protected void GetFieldData<TFieldType, TInfoType>( long id, string tableName, Func<IDataReader, TFieldType> dataOverride, Func<long, long, long, Guid, string, string, TFieldType, string, TInfoType> createInfo, List<IFieldInfo> fields, string commandOverride = null )
+			where TInfoType : IFieldInfo
+		{
+			string commandText = commandOverride ?? string.Format( @"--ReadiMon - GetFieldData
+DECLARE @name BIGINT = dbo.fnAliasNsId( 'name', 'core', @tenantId );
+DECLARE @alias BIGINT = dbo.fnAliasNsId( 'alias', 'core', @tenantId );
+DECLARE @description BIGINT = dbo.fnAliasNsId( 'description', 'core', @tenantId );
+
+SELECT
+	d.EntityId,
+	d.TenantId,
+	d.FieldId,
+	fe.UpgradeId,
+	FieldName = fn.Data,
+	FieldAlias = fa.Data,
+	d.Data,
+	dd.Data
+FROM
+	{0} d
+JOIN
+	Entity fe ON
+		d.FieldId = fe.Id AND
+		d.TenantId = fe.TenantId
+LEFT JOIN
+	Data_NVarChar fn ON
+		d.FieldId = fn.EntityId AND
+		d.TenantId = fn.TenantId AND
+		fn.FieldId = @name
+LEFT JOIN
+	Data_Alias fa ON
+		d.FieldId = fa.EntityId AND
+		d.TenantId = fa.TenantId AND
+		fa.FieldId = @alias
+LEFT JOIN
+	Data_NVarChar dd ON
+		d.FieldId = dd.EntityId AND
+		d.TenantId = dd.TenantId AND
+		dd.FieldId = @description
+WHERE
+	d.TenantId = @tenantId
+	AND d.EntityId = @id", tableName );
+
+			try
+			{
+				using ( var command = DatabaseManager.CreateCommand( commandText ) )
+				{
+					DatabaseManager.AddParameter( command, "@id", id );
+					DatabaseManager.AddParameter( command, "@tenantId", SelectedTenant.Id );
+
+					using ( IDataReader reader = command.ExecuteReader( ) )
+					{
+						while ( reader.Read( ) )
+						{
+							long entityId = reader.GetInt64( 0, 0 );
+							long tenantId = reader.GetInt64( 1, 0 );
+							long fieldId = reader.GetInt64( 2, 0 );
+							Guid fieldUpgradeId = reader.GetGuid( 3 );
+							string name = reader.GetString( 4, "<Unnamed>" );
+							string alias = reader.GetString( 5, null );
+							TFieldType data = dataOverride( reader );
+							string description = reader.GetString( 7, null );
+
+							fields.Add( createInfo( entityId, tenantId, fieldId, fieldUpgradeId, name, alias, data, description ) );
+						}
+					}
+				}
+			}
+			catch ( Exception exc )
+			{
+				PluginSettings.EventLog.WriteException( exc );
+			}
+		}
+
+		/// <summary>
+		///     Gets the forward relationships.
+		/// </summary>
+		/// <param name="id">The identifier.</param>
+		/// <returns></returns>
+		protected List<ForwardRelationship> GetForwardRelationships( long id )
+		{
+			var relationships = new List<ForwardRelationship>( );
+
+			const string commandText = @"--ReadiMon - GetForwardRelationships
+DECLARE @name BIGINT = dbo.fnAliasNsId( 'name', 'core', @tenantId )
+DECLARE @toName BIGINT = dbo.fnAliasNsId( 'toName', 'core', @tenantId )
+DECLARE @alias BIGINT = dbo.fnAliasNsId( 'alias', 'core', @tenantId )
+DECLARE @description BIGINT = dbo.fnAliasNsId( 'description', 'core', @tenantId )
+
+SELECT
+	r.TenantId,
+	r.TypeId,
+	te.UpgradeId,
+	[Type] = ISNULL( ttn.Data_StartsWith, ISNULL( tn.Data_StartsWith, ta.Data ) ),
+	r.ToId,
+	de.UpgradeId,
+	[To] = ISNULL( dn.Data_StartsWith, da.Data),
+	[TypeDescription] = td.Data_StartsWith,
+	[Description] = dd.Data_StartsWith
+FROM
+	Relationship r
+JOIN
+	Entity te ON
+		r.TypeId = te.Id AND
+		r.TenantId = te.TenantId
+JOIN
+	Entity de ON
+		r.ToId = de.Id AND
+		r.TenantId = de.TenantId
+LEFT JOIN
+	Data_NVarChar ttn ON
+		r.TypeId = ttn.EntityId AND
+		r.TenantId = ttn.TenantId AND
+		ttn.FieldId = @toName
+LEFT JOIN
+	Data_NVarChar tn ON
+		r.TypeId = tn.EntityId AND
+		r.TenantId = tn.TenantId AND
+		tn.FieldId = @name
+LEFT JOIN
+	Data_Alias ta ON
+		r.TypeId = ta.EntityId AND
+		r.TenantId = ta.TenantId AND
+		ta.FieldId = @alias
+LEFT JOIN
+	Data_NVarChar dn ON
+		r.ToId = dn.EntityId AND
+		r.TenantId = dn.TenantId AND
+		dn.FieldId = @name
+LEFT JOIN
+	Data_Alias da ON
+		r.ToId = da.EntityId AND
+		r.TenantId = da.TenantId AND
+		da.FieldId = @alias
+LEFT JOIN
+	Data_NVarChar td ON
+		r.TypeId = td.EntityId AND
+		r.TenantId = td.TenantId AND
+		td.FieldId = @description
+LEFT JOIN
+	Data_NVarChar dd ON
+		r.ToId = dd.EntityId AND
+		r.TenantId = dd.TenantId AND
+		dd.FieldId = @description
+WHERE
+	r.TenantId = @tenantId
+	AND r.FromId = @fromId
+ORDER BY
+	[To]";
+
+			try
+			{
+				using ( var command = DatabaseManager.CreateCommand( commandText ) )
+				{
+					DatabaseManager.AddParameter( command, "@fromId", id );
+					DatabaseManager.AddParameter( command, "@tenantId", SelectedTenant.Id );
+
+					using ( IDataReader reader = command.ExecuteReader( ) )
+					{
+						while ( reader.Read( ) )
+						{
+							long tenantId = reader.GetInt64( 0, 0 );
+							long typeId = reader.GetInt64( 1, 0 );
+							Guid typeUpgradeId = reader.GetGuid( 2 );
+							string type = FormatAlias( reader.GetString( 3, null ) );
+							long toId = reader.GetInt64( 4, 0 );
+							Guid toUpgradeId = reader.GetGuid( 5 );
+							string to = reader.GetString( 6, string.Format( "<Unnamed:{0}>", toId ), string.Format( "<Unnamed:{0}>", toId ) );
+							string typeDesc = reader.GetString( 7, null );
+							string desc = reader.GetString( 8, null );
+
+							relationships.Add( new ForwardRelationship( DatabaseManager, tenantId, typeId, typeUpgradeId, type, toId, toUpgradeId, to, typeDesc, desc ) );
+						}
+					}
+				}
+			}
+			catch ( Exception exc )
+			{
+				PluginSettings.EventLog.WriteException( exc );
+			}
+
+			return relationships;
+		}
+
+		/// <summary>
+		///     Gets the reverse relationships.
+		/// </summary>
+		/// <param name="id">The identifier.</param>
+		/// <returns></returns>
+		protected List<ReverseRelationship> GetReverseRelationships( long id )
+		{
+			var relationships = new List<ReverseRelationship>( );
+
+			const string commandText = @"--ReadiMon - GetReverseRelationships
+DECLARE @name BIGINT = dbo.fnAliasNsId( 'name', 'core', @tenantId );
+DECLARE @fromName BIGINT = dbo.fnAliasNsId( 'fromName', 'core', @tenantId )
+DECLARE @alias BIGINT = dbo.fnAliasNsId( 'reverseAlias', 'core', @tenantId );
+DECLARE @description BIGINT = dbo.fnAliasNsId( 'description', 'core', @tenantId );
+
+SELECT
+	r.TenantId,
+	r.TypeId,
+	te.UpgradeId,
+	[Type] = ISNULL( tfn.Data_StartsWith, ISNULL( tn.Data_StartsWith, ta.Data ) ),
+	r.FromId,
+	de.UpgradeId,
+	[From] = ISNULL( dn.Data_StartsWith, da.Data ),
+	[TypeDescription] = td.Data_StartsWith,
+	[Description] = dd.Data_StartsWith
+FROM
+	Relationship r
+JOIN
+	Entity te ON
+		r.TypeId = te.Id AND
+		r.TenantId = te.TenantId
+JOIN
+	Entity de ON
+		r.FromId = de.Id AND
+		r.TenantId = de.TenantId
+LEFT JOIN
+	Data_Alias ta ON
+		r.TypeId = ta.EntityId AND
+		r.TenantId = ta.TenantId AND
+		ta.FieldId = @alias
+LEFT JOIN
+	Data_NVarChar tfn ON
+		r.TypeId = tfn.EntityId AND
+		r.TenantId = tfn.TenantId AND
+		tfn.FieldId = @fromName
+LEFT JOIN
+	Data_NVarChar tn ON
+		r.TypeId = tn.EntityId AND
+		r.TenantId = tn.TenantId AND
+		tn.FieldId = @name
+LEFT JOIN
+	Data_NVarChar dn ON
+		r.FromId = dn.EntityId AND
+		r.TenantId = dn.TenantId AND
+		dn.FieldId = @name
+LEFT JOIN
+	Data_Alias da ON
+		r.FromId = da.EntityId AND
+		r.TenantId = da.TenantId AND
+		da.FieldId = @alias
+LEFT JOIN
+	Data_NVarChar td ON
+		r.TypeId = td.EntityId AND
+		r.TenantId = td.TenantId AND
+		td.FieldId = @description
+LEFT JOIN
+	Data_NVarChar dd ON
+		r.FromId = dd.EntityId AND
+		r.TenantId = dd.TenantId AND
+		dd.FieldId = @description
+WHERE
+	r.TenantId = @tenantId
+	AND r.ToId = @toId
+ORDER BY
+	[From]";
+
+			try
+			{
+				using ( var command = DatabaseManager.CreateCommand( commandText ) )
+				{
+					DatabaseManager.AddParameter( command, "@toId", id );
+					DatabaseManager.AddParameter( command, "@tenantId", SelectedTenant.Id );
+
+					using ( IDataReader reader = command.ExecuteReader( ) )
+					{
+						while ( reader.Read( ) )
+						{
+							long tenantId = reader.GetInt64( 0, 0 );
+							long typeId = reader.GetInt64( 1, 0 );
+							Guid typeUpgradeId = reader.GetGuid( 2 );
+							string type = FormatAlias( reader.GetString( 3, null ) );
+							long fromId = reader.GetInt64( 4, 0 );
+							Guid fromUpgradeId = reader.GetGuid( 5 );
+							string from = reader.GetString( 6, string.Format( "<Unnamed:{0}>", fromId ), string.Format( "<Unnamed:{0}>", fromId ) );
+							string typeDesc = reader.GetString( 7, null );
+							string desc = reader.GetString( 8, null );
+
+							relationships.Add( new ReverseRelationship( DatabaseManager, tenantId, typeId, typeUpgradeId, type, fromId, fromUpgradeId, from, typeDesc, desc ) );
+						}
+					}
+				}
+			}
+			catch ( Exception exc )
+			{
+				PluginSettings.EventLog.WriteException( exc );
+			}
+
+			return relationships;
+		}
+
+		/// <summary>
+		/// Formats the alias.
+		/// </summary>
+		/// <param name="alias">The alias.</param>
+		/// <returns></returns>
+		public static string FormatAlias( string alias )
+		{
+			if ( alias == null )
+			{
+				return null;
+			}
+
+			if ( alias.Contains( ' ' ) )
+			{
+				return alias;
+			}
+
+			var sb = new StringBuilder( );
+
+			foreach ( char letter in alias )
+			{
+				if ( Char.IsUpper( letter ) && sb.Length > 0 )
+				{
+					sb.AppendFormat( " {0}", letter );
+				}
+				else if ( sb.Length <= 0 )
+				{
+					sb.Append( letter.ToString( CultureInfo.InvariantCulture ).ToUpper( ) );
+				}
+
+				else
+				{
+					sb.Append( letter );
+				}
+			}
+
+			return sb.ToString( );
+		}
+
+		/// <summary>
+		///     Gets the name of the tenant.
+		/// </summary>
+		/// <param name="tenantId">The tenant identifier.</param>
+		/// <returns></returns>
+		public string GetTenantName( long tenantId )
+		{
+			var tenantInfo = Tenants.FirstOrDefault( t => t.Id == tenantId );
+
+			if ( tenantInfo == null )
+			{
+				return tenantId.ToString( CultureInfo.InvariantCulture );
+			}
+
+			return tenantInfo.Name;
+		}
+
+		/// <summary>
+		///     Determines whether the entity is valid.
+		/// </summary>
+		/// <param name="identifier">The identifier.</param>
+		/// <param name="id">The identifier.</param>
+		/// <returns></returns>
+		protected bool IsEntityValid( string identifier, out long id )
+		{
+			if ( !string.IsNullOrEmpty( identifier ) )
+			{
+				Guid guid;
+
+				if ( Guid.TryParse( identifier, out guid ) )
+				{
+					id = GetEntityIdByGuid( guid, true );
+
+					if ( id < 0 )
+					{
+						id = GetEntityIdByGuid( guid );
+					}
+				}
+				else
+				{
+					if ( !long.TryParse( identifier, out id ) )
+					{
+						id = GetEntityIdByAlias( identifier, true );
+
+						if ( id < 0 )
+						{
+							id = GetEntityIdByAlias( identifier );
+
+							if ( id < 0 )
+							{
+								id = GetEntityIdByName( identifier );
+
+								if ( id < 0 )
+								{
+									id = GetEntityIdByName( identifier, true );
+								}
+							}
+						}
+					}
+				}
+
+				if ( id >= 0 )
+				{
+					Guid upgradeId;
+
+					if ( CheckEntityExists( id, out upgradeId ) )
+					{
+						return true;
+					}
+				}
+			}
+
+			id = -1;
+			return false;
+		}
+
+		/// <summary>
+		///     Loads the search strings.
+		/// </summary>
+		protected void LoadSearchStrings( )
+		{
+			var searchStrings = new HashSet<string>( );
+			AliasMap = new Dictionary<long, string>( );
+
+			try
+			{
+				using ( var command = DatabaseManager.CreateCommand( @"--ReadiMon - LoadSearchStrings
+SELECT
+	EntityId
+	, Namespace + ':' + Data
+FROM
+	Data_Alias
+WHERE
+	TenantId IN (
+		SELECT
+			Id
+		FROM
+			_vTenant
+
+		UNION
+
+		SELECT
+			0 )
+ORDER BY
+	Namespace + ':' + Data" ) )
+				{
+					using ( IDataReader reader = command.ExecuteReader( ) )
+					{
+						while ( reader.Read( ) )
+						{
+							long id = reader.GetInt64( 0 );
+							string alias = reader.GetString( 1 );
+
+							searchStrings.Add( alias );
+
+							AliasMap[ id ] = alias;
+						}
+					}
+				}
+			}
+			catch ( Exception exc )
+			{
+				PluginSettings.EventLog.WriteException( exc );
+			}
+
+			SearchStrings = searchStrings.ToList( );
+		}
+
+		/// <summary>
+		///     Gets the search strings.
+		/// </summary>
+		/// <value>
+		///     The search strings.
+		/// </value>
+		public void LoadTenants( )
+		{            
+            try
+			{
+                Tenants = TenantInfo.LoadTenants( DatabaseManager );
+            }
+			catch ( Exception exc )
+			{
+				PluginSettings.EventLog.WriteException( exc );
+			}
+
+			SelectedTenant = _tenants[ _tenants.Count - 1 ];
+		}
+	}
+}

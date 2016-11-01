@@ -1,0 +1,53 @@
+﻿<UserControl x:Class="ReadiMon.Plugin.Misc.ClipboardMonitorOptions"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:controls="clr-namespace:ReadiMon.Shared.Controls;assembly=ReadiMon.Shared"
+			 mc:Ignorable="d"
+			 d:DesignHeight="300"
+			 d:DesignWidth="300">
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+
+		<GroupBox Header="Clipboard Monitoring"
+				  Grid.Row="0"
+				  Margin="10, 10, 10, 0"
+				  Padding="10">
+			<StackPanel Orientation="Vertical">
+				<CheckBox Content="Monitor clipboard for entity ids"
+						  Margin="0 0 0 5"
+						  ToolTip="Show tool-tip window when a valid entity id is detected on the clipboard"
+						  IsChecked="{Binding MonitorLong, Mode=TwoWay}" />
+				<CheckBox Content="Monitor clipboard for upgrade ids"
+						  Margin="0 0 0 5"
+						  ToolTip="Show tool-tip window when a valid upgrade id is detected on the clipboard"
+						  IsChecked="{Binding MonitorGuid, Mode=TwoWay}" />
+				<CheckBox Content="Monitor clipboard for entity aliases"
+						  Margin="0 0 0 5"
+						  ToolTip="Show tool-tip window when a valid entity alias is detected on the clipboard"
+						  IsChecked="{Binding MonitorAlias, Mode=TwoWay}" />
+                <CheckBox Content="Monitor clipboard for perf logs"
+                          Margin="0 0 0 5"
+                          ToolTip="Show tool-tip window when perf log json is detected in the clipboard"
+                          IsChecked="{Binding MonitorPerfLog, Mode=TwoWay}"></CheckBox>
+			</StackPanel>
+		</GroupBox>
+		<GroupBox Header="Balloon Options"
+				  Grid.Row="1"
+				  Margin="10 10 10 0"
+				  Padding="10">
+			<StackPanel Orientation="Horizontal">
+				<Label Content="Display Time:" />
+				<controls:NumericTextBox Text="{Binding BalloonTimeout, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+										 Width="50"
+										 Height="22"
+										 MaxLength="5" />
+				<Label Content=" ms" />
+			</StackPanel>
+		</GroupBox>
+	</Grid>
+</UserControl>

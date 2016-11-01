@@ -1,0 +1,335 @@
+﻿<UserControl x:Class="ReadiMon.Plugin.Database.DatabaseHealth"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:database="clr-namespace:ReadiMon.Plugin.Database"
+			 xmlns:controls="clr-namespace:ReadiMon.Shared.Controls;assembly=ReadiMon.Shared"
+			 xmlns:converters="clr-namespace:ReadiMon.Plugin.Database.Converters"
+			 mc:Ignorable="d"
+			 d:DesignHeight="300"
+			 d:DesignWidth="300"
+			 d:DataContext="{d:DesignInstance database:DatabaseHealthViewModel}">
+	<UserControl.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="/PresentationFramework.Aero, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, ProcessorArchitecture=MSIL;component/themes/aero.normalcolor.xaml" />
+			</ResourceDictionary.MergedDictionaries>
+
+			<converters:SpinnerVisibilityConverter x:Key="SpinnerVisibilityConverter" />
+            <converters:PassedVisibilityConverter x:Key="PassedVisibilityConverter" />
+            <converters:SkippedVisibilityConverter x:Key="SkippedVisibilityConverter" />
+			<converters:FailedVisibilityConverter x:Key="FailedVisibilityConverter" />
+			<converters:InfoVisibilityConverter x:Key="InfoVisibilityConverter" />
+
+			<SolidColorBrush x:Key="Alice"
+							 Color="AliceBlue"
+							 Opacity="0.5" />
+
+			<Style x:Key="LinkButton"
+				   TargetType="Button"
+				   BasedOn="{StaticResource ResourceKey={x:Type Button}}">
+
+				<Setter Property="Width"
+						Value="Auto" />
+
+				<Setter Property="Template">
+					<Setter.Value>
+						<ControlTemplate TargetType="Button">
+							<ContentPresenter Content="{TemplateBinding Content}"
+											  ContentTemplate="{TemplateBinding  ContentTemplate}"
+											  VerticalAlignment="Center">
+								<ContentPresenter.Resources>
+									<Style TargetType="{x:Type TextBlock}">
+										<Setter Property="TextDecorations"
+												Value="Underline" />
+									</Style>
+								</ContentPresenter.Resources>
+							</ContentPresenter>
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+				<Setter Property="Foreground"
+						Value="#FF5555" />
+				<Setter Property="Cursor"
+						Value="Hand" />
+				<Style.Triggers>
+					<Trigger Property="IsMouseOver"
+							 Value="true">
+						<Setter Property="Foreground"
+								Value="Red" />
+					</Trigger>
+				</Style.Triggers>
+			</Style>
+
+			<Style x:Key="InfoLinkButton"
+				   TargetType="Button"
+				   BasedOn="{StaticResource ResourceKey={x:Type Button}}">
+
+				<Setter Property="Width"
+						Value="Auto" />
+
+				<Setter Property="Template">
+					<Setter.Value>
+						<ControlTemplate TargetType="Button">
+							<ContentPresenter Content="{TemplateBinding Content}"
+											  ContentTemplate="{TemplateBinding  ContentTemplate}"
+											  VerticalAlignment="Center">
+								<ContentPresenter.Resources>
+									<Style TargetType="{x:Type TextBlock}">
+										<Setter Property="TextDecorations"
+												Value="Underline" />
+									</Style>
+								</ContentPresenter.Resources>
+							</ContentPresenter>
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+				<Setter Property="Foreground"
+						Value="#5555FF" />
+				<Setter Property="Cursor"
+						Value="Hand" />
+				<Style.Triggers>
+					<Trigger Property="IsMouseOver"
+							 Value="true">
+						<Setter Property="Foreground"
+								Value="Blue" />
+					</Trigger>
+				</Style.Triggers>
+			</Style>
+		</ResourceDictionary>
+	</UserControl.Resources>
+
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*" />
+		</Grid.RowDefinitions>
+
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="Auto" />
+			<ColumnDefinition Width="*" />
+			<ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+		<Image Grid.Row="0"
+			   Grid.Column="0"
+			   Width="64"
+			   Height="64"
+			   Source="pack://application:,,,/ReadiMon.Plugin.Database;component/Resources/db_status.png"
+			   HorizontalAlignment="Left"
+			   Margin="10" />
+
+		<StackPanel Grid.Column="1"
+					Grid.Row="0"
+					VerticalAlignment="Center">
+			<TextBlock VerticalAlignment="Center"
+					   Text="Database Health Check"
+					   FontWeight="Bold"
+					   FontSize="20" />
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="Auto" />
+				</Grid.ColumnDefinitions>
+
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+				</Grid.RowDefinitions>
+
+				<TextBlock Grid.Row="0"
+						   Grid.Column="0"
+						   VerticalAlignment="Center"
+						   Margin="0 0 10 0"
+						   Text="Server:"
+						   FontSize="14"
+						   FontWeight="Bold" />
+				<TextBlock Grid.Row="0"
+						   Grid.Column="1"
+						   FontSize="14"
+						   VerticalAlignment="Center"
+						   Text="{Binding Server}" />
+
+				<TextBlock VerticalAlignment="Center"
+						   Grid.Column="0"
+						   Grid.Row="1"
+						   Margin="0 0 10 0"
+						   Text="Catalog:"
+						   FontSize="14"
+						   FontWeight="Bold" />
+				<TextBlock VerticalAlignment="Center"
+						   Grid.Column="1"
+						   FontSize="14"
+						   Grid.Row="1"
+						   Text="{Binding Catalog}" />
+			</Grid>
+		</StackPanel>
+
+		<ComboBox Grid.Column="2" Grid.Row="0" Height="22" Width="100" Margin="5" SelectedIndex="{Binding SelectedSuite, Mode=TwoWay}">
+			<ComboBoxItem Content="Run All"/>
+			<ComboBoxItem Content="Info Only"/>
+			<ComboBoxItem Content="Tests Only"/>
+			<ComboBoxItem Content="Failures Only"/>
+        </ComboBox>
+
+		<ComboBox Grid.Column="3" Grid.Row="0" Height="22" Width="100" Margin="5"
+                  ItemsSource="{Binding Path=Tenants}"
+                  DisplayMemberPath="Name" 
+                  SelectedValuePath="Id" 
+                  SelectedValue="{Binding Path=FilterTenantId}"
+                  />
+
+        <Button Grid.Column="4"
+				Content="{Binding ButtonText, Mode=OneWay}"
+				Grid.Row="0"
+				Margin="5 5 20 5"
+				Height="22"
+				Width="80"
+				Command="{Binding RunTests}"
+				HorizontalAlignment="Right"></Button>
+
+		<controls:ReadiMonListView Grid.Row="1"
+								   Grid.ColumnSpan="5"
+								   Grid.Column="0"
+		                           ItemsSource="{Binding Tests}"
+								   HorizontalContentAlignment="Stretch"
+								   AlternationCount="2"
+								   GridViewColumnHeader.Click="ReadiMonListView_Click">
+
+			<ListView.ItemContainerStyle>
+				<Style TargetType="{x:Type ListViewItem}">
+					<Setter Property="HorizontalContentAlignment"
+							Value="Stretch" />
+					<Setter Property="VerticalContentAlignment"
+							Value="Stretch" />
+					<Setter Property="IsSelected" Value="{Binding Path=(database:DatabaseTest.IsSelected)}" />
+					<Style.Triggers>
+						<Trigger Property="ItemsControl.AlternationIndex"
+								 Value="0">
+							<Setter Property="Background"
+									Value="{StaticResource Alice}" />
+						</Trigger>
+						<Trigger Property="ItemsControl.AlternationIndex"
+								 Value="1">
+							<Setter Property="Background"
+									Value="Transparent" />
+						</Trigger>
+					</Style.Triggers>
+				</Style>
+			</ListView.ItemContainerStyle>
+			
+			<ListView.View>
+				<GridView AllowsColumnReorder="False">
+					<controls:ReadiMonGridViewColumn Width="50"
+													 Header="Enabled"
+													 UserResized="True">
+						<GridViewColumn.CellTemplate>
+							<DataTemplate>
+								<CheckBox IsChecked="{Binding Path=(database:DatabaseTest.SelectedToRun), Mode=TwoWay}"
+										  IsEnabled="{Binding Path=(database:DatabaseTest.Enabled)}"
+										  HorizontalAlignment="Center"
+										  VerticalAlignment="Center"></CheckBox>
+							</DataTemplate>
+						</GridViewColumn.CellTemplate>
+					</controls:ReadiMonGridViewColumn>
+					<controls:ReadiMonGridViewColumn Width="300"
+													 Header="Test">
+						<GridViewColumn.CellTemplate>
+							<DataTemplate>
+								<Grid>
+									<Grid.RowDefinitions>
+										<RowDefinition Height="Auto" />
+										<RowDefinition Height="Auto" />
+									</Grid.RowDefinitions>
+
+									<Grid.Resources>
+										<SolidColorBrush x:Key="MouseOverColor"
+														 Color="#07c" />
+										<Style TargetType="TextBlock"
+											   x:Key="MouseOverStyle">
+											<Style.Triggers>
+												<Trigger Property="IsMouseOver"
+														 Value="True">
+													<Setter Property="Foreground"
+															Value="{StaticResource MouseOverColor}" />
+												</Trigger>
+											</Style.Triggers>
+										</Style>
+									</Grid.Resources>
+
+									<TextBlock Grid.Row="0"
+											   Text="{Binding Path=(database:DatabaseTest.Name)}"
+											   Cursor="Hand"
+											   IsEnabled="{Binding Path=(database:DatabaseTest.Enabled)}"
+											   HorizontalAlignment="Left"
+											   VerticalAlignment="Center"
+											   Style="{StaticResource MouseOverStyle}"
+											   FontWeight="Bold">
+										<TextBlock.InputBindings>
+											<MouseBinding Gesture="LeftClick"
+														  Command="{Binding Path=(database:DatabaseTest.ShowEditorCommand)}" />
+										</TextBlock.InputBindings>
+									</TextBlock>
+
+									<TextBlock Grid.Row="1"
+											   Text="{Binding Path=(database:DatabaseTest.Description)}"
+											   IsEnabled="{Binding Path=(database:DatabaseTest.Enabled)}"
+											   HorizontalAlignment="Left"
+											   VerticalAlignment="Center"
+											   FontSize="10"
+											   Margin="5 0 0 0"></TextBlock>
+								</Grid>
+
+							</DataTemplate>
+						</GridViewColumn.CellTemplate>
+					</controls:ReadiMonGridViewColumn>
+					<controls:ReadiMonGridViewColumn Width="100"
+													 Header="Result"
+													 UserResized="True">
+						<GridViewColumn.CellTemplate>
+							<DataTemplate>
+								<Grid>
+									<Viewbox Stretch="Uniform"
+											 Height="20"
+											 Width="20"
+											 VerticalAlignment="Center"
+											 HorizontalAlignment="Center"
+											 Visibility="{Binding Path=(database:DatabaseTest.State), Converter={StaticResource ResourceKey=SpinnerVisibilityConverter}}">
+										<database:BusyControl></database:BusyControl>
+									</Viewbox>
+                                    <TextBlock VerticalAlignment="Center"
+											   HorizontalAlignment="Center"
+											   Foreground="Green"
+											   Visibility="{Binding Path=(database:DatabaseTest.State), Converter={StaticResource ResourceKey=PassedVisibilityConverter}}">Passed</TextBlock>
+                                    <TextBlock VerticalAlignment="Center"
+											   HorizontalAlignment="Center"
+											   Foreground="Black"
+											   Visibility="{Binding Path=(database:DatabaseTest.State), Converter={StaticResource ResourceKey=SkippedVisibilityConverter}}">Skipped</TextBlock>
+									<Button VerticalAlignment="Center"
+											HorizontalAlignment="Center"
+											Command="{Binding Path=(database:DatabaseTest.FailedClick)}"
+											Style="{StaticResource LinkButton}"
+											Content="Failed"
+											Visibility="{Binding Path=(database:DatabaseTest.State), Converter={StaticResource ResourceKey=FailedVisibilityConverter}}"
+											ToolTip="Show Details"></Button>
+									<Button VerticalAlignment="Center"
+											HorizontalAlignment="Center"
+											Command="{Binding Path=(database:DatabaseTest.FailedClick)}"
+											Style="{StaticResource InfoLinkButton}"
+											Content="Info"
+											Visibility="{Binding Path=(database:DatabaseTest.State), Converter={StaticResource ResourceKey=InfoVisibilityConverter}}"
+											ToolTip="Show Details"></Button>
+								</Grid>
+
+							</DataTemplate>
+						</GridViewColumn.CellTemplate>
+					</controls:ReadiMonGridViewColumn>
+				</GridView>
+			</ListView.View>
+
+		</controls:ReadiMonListView>
+	</Grid>
+</UserControl>

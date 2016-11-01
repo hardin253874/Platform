@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+        <script type="text/javascript">
+/* D3_V3_MIN_JS */
+        </script>
+        <script type="text/javascript">
+/* D3_TIP_JS */
+        </script>
+        <script type="text/javascript">
+/* D3_PERF_JS */
+        </script>
+        <style type="text/css">
+/* PERFORMANCE_CSS */
+        </style>
+    </head>
+    <body>
+        <div id="d3-perf-graph" style="width: 100%; background-size: 100% 100%;"></div>
+        <script type="text/javascript">
+            var perfGraph;
+
+            window.onresize = resize;
+
+            function update() {
+                perf();
+            }
+
+            function perfData() {
+                return JSON.parse('/* _LOGS_ */');
+            }
+            
+            function perf() {
+                var tooltip = function (d) { return d.label + " <br /><br /> " + d.ownMs + "ms<br /> " + d.totalMs + "ms total"; };
+                var data = perfData();
+                perfGraph = d3.perfGraph().data(data).tooltip(tooltip).size([getWidth(), getHeight()]).render('#d3-perf-graph');
+            }
+
+            function getWidth() {
+                return document.documentElement.clientWidth - 10;
+            }
+
+            function getHeight() {
+                return document.documentElement.clientHeight - 10;
+            }
+
+            function resize() {
+                if (perfGraph) {
+                    perfGraph.size([getWidth(), getHeight()]).render('#d3-perf-graph');
+                }
+            }
+
+            update();
+        </script>
+    </body>
+</html>

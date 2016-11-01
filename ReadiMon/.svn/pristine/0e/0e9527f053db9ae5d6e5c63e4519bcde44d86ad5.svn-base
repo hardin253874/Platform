@@ -1,0 +1,279 @@
+﻿<UserControl x:Class="ReadiMon.Plugin.Application.LibraryApplications"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:controls="clr-namespace:ReadiMon.Shared.Controls;assembly=ReadiMon.Shared"
+             xmlns:converters="clr-namespace:ReadiMon.Shared.Converters;assembly=ReadiMon.Shared"
+             xmlns:application="clr-namespace:ReadiMon.Plugin.Application"
+             mc:Ignorable="d" 
+             d:DesignHeight="300"
+			 d:DesignWidth="300"
+			 d:DataContext="{d:DesignInstance application:LibraryApplicationsViewModel}">
+	<UserControl.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="/PresentationFramework.Aero, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, ProcessorArchitecture=MSIL;component/themes/aero.normalcolor.xaml" />
+			</ResourceDictionary.MergedDictionaries>
+
+			<converters:DateTimeToStringConverter x:Key="DateTimeToStringConverter" />
+			<converters:NullBooleanConverter  x:Key="NullBooleanConverter" />
+			<converters:GuidToStringConverter x:Key="GuidToStringConverter" />
+			<converters:FilterConverter x:Key="FilterConverter"/>
+			<converters:NotFilterConverter x:Key="NotFilterConverter"/>
+
+
+			<Style TargetType="{x:Type GridViewColumnHeader}" x:Key="MyHeaderStyle">
+				<Setter Property="HorizontalAlignment" Value="Stretch" />
+				<Setter Property="HorizontalContentAlignment" Value="Stretch" />
+			</Style>
+
+			<Style x:Key="FilterButton"
+				   TargetType="Button"
+				   BasedOn="{StaticResource ResourceKey={x:Type Button}}">
+
+				<Setter Property="Width"
+						Value="Auto" />
+
+				<Setter Property="Template">
+					<Setter.Value>
+						<ControlTemplate TargetType="Button">
+							<ContentPresenter Content="{TemplateBinding Content}"
+											  ContentTemplate="{TemplateBinding  ContentTemplate}"
+											  VerticalAlignment="Center">
+								<ContentPresenter.Resources>
+									<Style TargetType="{x:Type TextBlock}">
+										<Setter Property="TextDecorations"
+												Value="Underline" />
+									</Style>
+								</ContentPresenter.Resources>
+							</ContentPresenter>
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+				<Setter Property="Cursor"
+						Value="Hand" />
+				<Setter Property="VerticalAlignment"
+						Value="Center" />
+				<Setter Property="VerticalContentAlignment"
+						Value="Center" />
+			</Style>
+		</ResourceDictionary>
+	</UserControl.Resources>
+
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*" />
+		</Grid.RowDefinitions>
+
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="Auto" />
+			<ColumnDefinition Width="*" />
+			<ColumnDefinition Width="Auto" />
+			<ColumnDefinition Width="Auto" />
+		</Grid.ColumnDefinitions>
+
+		<Image Grid.Row="0"
+			   Grid.Column="0"
+			   Width="64"
+			   Height="64"
+			   Source="pack://application:,,,/ReadiMon.Plugin.Application;component/Resources/Applications.png"
+			   HorizontalAlignment="Left"
+			   Margin="10" />
+
+		<StackPanel Grid.Column="1"
+					Grid.Row="0"
+					VerticalAlignment="Center">
+			<TextBlock VerticalAlignment="Center"
+					   Text="Application Library"
+					   FontWeight="Bold"
+					   FontSize="20" />
+			<TextBlock VerticalAlignment="Center"
+					   FontSize="14"
+					   Text="View the applications in the application library." />
+		</StackPanel>
+
+		<CheckBox Grid.Column="2" Grid.Row="0" Content="Latest Versions Only" VerticalAlignment="Center" IsChecked="{Binding LatestVersionsOnly, Mode=TwoWay}" Margin="0 0 20 0" />
+
+		<Button Grid.Row="0"
+				Grid.Column="3"
+				HorizontalAlignment="Right"
+				Content="Refresh"
+				Height="22"
+				Command="{Binding RefreshCommand}"
+				Width="80"
+				Margin="0 0 20 0" />
+
+		<controls:ReadiMonListView Grid.Row="1"
+								   Grid.Column="0"
+								   Grid.ColumnSpan="4"
+								   ItemsSource="{Binding FilteredAppLibraryApps}">
+
+			<ListView.ItemContainerStyle>
+				<Style TargetType="{x:Type ListViewItem}">
+					<Setter Property="ToolTip"
+							Value="{Binding (application:AppLibraryApp.Tooltip)}" />
+				</Style>
+			</ListView.ItemContainerStyle>
+
+			<ListView.View>
+				<GridView AllowsColumnReorder="False" ColumnHeaderContainerStyle="{StaticResource MyHeaderStyle}">
+					<controls:ReadiMonGridViewColumn DisplayMemberBinding="{Binding Application}">
+						<GridViewColumn.Header>
+							<Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="*"/>
+									<ColumnDefinition Width="Auto"/>
+								</Grid.ColumnDefinitions>
+
+								<TextBlock Text="Application" Grid.Column="0" HorizontalAlignment="Center"/>
+								<Button Grid.Column="1" Style="{StaticResource FilterButton}" Command="{Binding FilterApplicationCommand}">
+									<DockPanel>
+										<Image Width="12" Height="12" Source="pack://application:,,,/ReadiMon.Plugin.Application;component/Resources/noFilter.png" Margin="0 0 5 0" Cursor="Hand" Visibility="{Binding Path=ApplicationFilters, Converter={StaticResource FilterConverter}}" />
+										<Image Width="12" Height="12" Source="pack://application:,,,/ReadiMon.Plugin.Application;component/Resources/filter.png" Margin="0 0 5 0" Cursor="Hand" Visibility="{Binding Path=ApplicationFilters, Converter={StaticResource NotFilterConverter}}" />
+									</DockPanel>
+								</Button>
+							</Grid>
+						</GridViewColumn.Header>
+					</controls:ReadiMonGridViewColumn>
+					<controls:ReadiMonGridViewColumn DisplayMemberBinding="{Binding Version}" Width="70" UserResized="True">
+						<GridViewColumn.Header>
+							<Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="*"/>
+									<ColumnDefinition Width="Auto"/>
+								</Grid.ColumnDefinitions>
+
+								<TextBlock Text="Version" Grid.Column="0" HorizontalAlignment="Center"/>
+								<Button Grid.Column="1" Style="{StaticResource FilterButton}" Command="{Binding FilterVersionCommand}">
+									<DockPanel>
+										<Image Width="12" Height="12" Source="pack://application:,,,/ReadiMon.Plugin.Application;component/Resources/noFilter.png" Margin="0 0 5 0" Cursor="Hand" Visibility="{Binding Path=VersionFilters, Converter={StaticResource FilterConverter}}" />
+										<Image Width="12" Height="12" Source="pack://application:,,,/ReadiMon.Plugin.Application;component/Resources/filter.png" Margin="0 0 5 0" Cursor="Hand" Visibility="{Binding Path=VersionFilters, Converter={StaticResource NotFilterConverter}}" />
+									</DockPanel>
+								</Button>
+							</Grid>
+						</GridViewColumn.Header>
+					</controls:ReadiMonGridViewColumn>
+					<controls:ReadiMonGridViewColumn DisplayMemberBinding="{Binding Publisher}">
+						<GridViewColumn.Header>
+							<Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="*"/>
+									<ColumnDefinition Width="Auto"/>
+								</Grid.ColumnDefinitions>
+
+								<TextBlock Text="Publisher" Grid.Column="0" HorizontalAlignment="Center"/>
+								<Button Grid.Column="1" Style="{StaticResource FilterButton}" Command="{Binding FilterPublisherCommand}">
+									<DockPanel>
+										<Image Width="12" Height="12" Source="pack://application:,,,/ReadiMon.Plugin.Application;component/Resources/noFilter.png" Margin="0 0 5 0" Cursor="Hand" Visibility="{Binding Path=PublisherFilters, Converter={StaticResource FilterConverter}}" />
+										<Image Width="12" Height="12" Source="pack://application:,,,/ReadiMon.Plugin.Application;component/Resources/filter.png" Margin="0 0 5 0" Cursor="Hand" Visibility="{Binding Path=PublisherFilters, Converter={StaticResource NotFilterConverter}}" />
+									</DockPanel>
+								</Button>
+							</Grid>
+						</GridViewColumn.Header>
+					</controls:ReadiMonGridViewColumn>
+					<controls:ReadiMonGridViewColumn DisplayMemberBinding="{Binding PublisherUrl}">
+						<GridViewColumn.Header>
+							<Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="*"/>
+									<ColumnDefinition Width="Auto"/>
+								</Grid.ColumnDefinitions>
+
+								<TextBlock Text="Publisher Url" Grid.Column="0" HorizontalAlignment="Center"/>
+								<Button Grid.Column="1" Style="{StaticResource FilterButton}" Command="{Binding FilterPublisherUrlCommand}">
+									<DockPanel>
+										<Image Width="12" Height="12" Source="pack://application:,,,/ReadiMon.Plugin.Application;component/Resources/noFilter.png" Margin="0 0 5 0" Cursor="Hand" Visibility="{Binding Path=PublisherUrlFilters, Converter={StaticResource FilterConverter}}" />
+										<Image Width="12" Height="12" Source="pack://application:,,,/ReadiMon.Plugin.Application;component/Resources/filter.png" Margin="0 0 5 0" Cursor="Hand" Visibility="{Binding Path=PublisherUrlFilters, Converter={StaticResource NotFilterConverter}}" />
+									</DockPanel>
+								</Button>
+							</Grid>
+						</GridViewColumn.Header>
+					</controls:ReadiMonGridViewColumn>
+					<controls:ReadiMonGridViewColumn Header="Release Date"
+													 DisplayMemberBinding="{Binding ReleaseDate, Converter={StaticResource ResourceKey=DateTimeToStringConverter}}" />
+					<controls:ReadiMonGridViewColumn Header="Application Id"
+													 DisplayMemberBinding="{Binding ApplicationId, Converter={StaticResource ResourceKey=GuidToStringConverter}}" />
+					<controls:ReadiMonGridViewColumn Header="Package Id"
+													 DisplayMemberBinding="{Binding PackageId, Converter={StaticResource ResourceKey=GuidToStringConverter}}" />
+				</GridView>
+			</ListView.View>
+
+			<ListView.ContextMenu>
+				<ContextMenu>
+					<MenuItem Header="Copy"
+							  IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.(Selector.SelectedItem), Converter={StaticResource NullBooleanConverter}, FallbackValue=False}"
+							  Command="{Binding CopyCommand}"
+							  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.(Selector.SelectedItem)}" />
+					<MenuItem Header="Copy Application Id"
+							  IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.(Selector.SelectedItem), Converter={StaticResource NullBooleanConverter}, FallbackValue=False}"
+							  Command="{Binding CopyAppValueCommand}"
+							  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.(Selector.SelectedItem)}" />
+					<MenuItem Header="Copy Package Id"
+							  IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.(Selector.SelectedItem), Converter={StaticResource NullBooleanConverter}, FallbackValue=False}"
+							  Command="{Binding CopyValueCommand}"
+							  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.(Selector.SelectedItem)}" />
+				</ContextMenu>
+			</ListView.ContextMenu>
+
+		</controls:ReadiMonListView>
+
+		<Popup Grid.Row="0" Grid.Column="0" IsOpen="{Binding ApplicationFilterOpen}" StaysOpen="False" Placement="MousePoint">
+			<Grid Background="White" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+				<ListBox ItemsSource="{Binding ApplicationFilters}">
+					<ListBox.ItemTemplate>
+						<DataTemplate>
+							<StackPanel Orientation="Horizontal">
+								<CheckBox IsChecked="{Binding IsFiltered}" Width="20" />
+								<TextBlock Text="{Binding Value}" Margin="0 0 10 0" />
+							</StackPanel>
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+				</ListBox>
+			</Grid>
+		</Popup>
+		<Popup Grid.Row="0" Grid.Column="0" IsOpen="{Binding VersionFilterOpen}" StaysOpen="False" Placement="MousePoint">
+			<Grid Background="White" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+				<ListBox ItemsSource="{Binding VersionFilters}">
+					<ListBox.ItemTemplate>
+						<DataTemplate>
+							<StackPanel Orientation="Horizontal">
+								<CheckBox IsChecked="{Binding IsFiltered}" Width="20" />
+								<TextBlock Text="{Binding Value}" Margin="0 0 10 0" />
+							</StackPanel>
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+				</ListBox>
+			</Grid>
+		</Popup>
+		<Popup Grid.Row="0" Grid.Column="0" IsOpen="{Binding PublisherFilterOpen}" StaysOpen="False"  Placement="MousePoint">
+			<Grid Background="White" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+				<ListBox ItemsSource="{Binding PublisherFilters}">
+					<ListBox.ItemTemplate>
+						<DataTemplate>
+							<StackPanel Orientation="Horizontal">
+								<CheckBox IsChecked="{Binding IsFiltered}" Width="20" />
+								<TextBlock Text="{Binding Value}" Margin="0 0 10 0" />
+							</StackPanel>
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+				</ListBox>
+			</Grid>
+		</Popup>
+		<Popup Grid.Row="0" Grid.Column="0" IsOpen="{Binding PublisherUrlFilterOpen}" StaysOpen="False"  Placement="MousePoint">
+			<Grid Background="White" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+				<ListBox ItemsSource="{Binding PublisherUrlFilters}">
+					<ListBox.ItemTemplate>
+						<DataTemplate>
+							<StackPanel Orientation="Horizontal">
+								<CheckBox IsChecked="{Binding IsFiltered}" Width="20" />
+								<TextBlock Text="{Binding Value}" Margin="0 0 10 0" />
+							</StackPanel>
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+				</ListBox>
+			</Grid>
+		</Popup>
+	</Grid>
+</UserControl>

@@ -1,0 +1,194 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{31B9D462-D3EE-476C-BCAE-291C2D2AB22F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ReadiMon.Plugin.Graphs</RootNamespace>
+    <AssemblyName>ReadiMon.Plugin.Graphs</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>31587504</NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DocumentationFile>bin\Debug\ReadiMon.Plugin.Graphs.XML</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemGroup>
+    <Reference Include="De.TorstenMandelkow.MetroChart">
+      <HintPath>..\..\packages\ModernUICharts.1.0.2\lib\De.TorstenMandelkow.MetroChart.dll</HintPath>
+    </Reference>
+    <Reference Include="Hardcodet.Wpf.TaskbarNotification">
+      <HintPath>..\..\packages\Hardcodet.NotifyIcon.Wpf.1.0.5\lib\net45\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Expression.Interaction.3.0.40218.0\lib\net45\Microsoft.Expression.Interactions.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="PresentationFramework.Aero">
+      <HintPath>..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\PresentationFramework.Aero.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.AddIn" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Expression.Interaction.3.0.40218.0\lib\net46\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BrowserBehavior.cs" />
+    <Compile Include="IndexData.cs" />
+    <Compile Include="LicensingMetrics\LicensingMetrics.xaml.cs">
+      <DependentUpon>LicensingMetrics.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LicensingMetrics\LicensingMetricsPlugin.cs" />
+    <Compile Include="LicensingMetrics\LicensingMetricsViewModel.cs" />
+    <Compile Include="PerfGraph.xaml.cs">
+      <DependentUpon>PerfGraph.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PerfGraphPlugin.cs" />
+    <Compile Include="PerfGraphPopup.xaml.cs">
+      <DependentUpon>PerfGraphPopup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PerfGraphPopupViewModel.cs" />
+    <Compile Include="PerfGraphViewModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TableSizes\TableSizeData.cs" />
+    <Compile Include="TableSizes\TableSizes.xaml.cs">
+      <DependentUpon>TableSizes.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TableSizes\TableSizesPlugin.cs" />
+    <Compile Include="TableSizes\TableSizesViewModel.cs" />
+    <Compile Include="TenantsTrend\TenantsData.cs" />
+    <Compile Include="TenantsTrend\TenantsTrend.xaml.cs">
+      <DependentUpon>TenantsTrend.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TenantsTrend\TenantsTrendData.cs" />
+    <Compile Include="TenantsTrend\TenantsTrendPlugin.cs" />
+    <Compile Include="TenantsTrend\TenantsTrendSeries.cs" />
+    <Compile Include="TenantsTrend\TenantsTrendViewModel.cs" />
+    <Compile Include="TestClass.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\ReadiMon.AddinView\ReadiMon.AddinView.csproj">
+      <Project>{54819021-310a-4d9f-9683-84b6ff314f80}</Project>
+      <Name>ReadiMon.AddinView</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ReadiMon.Shared\ReadiMon.Shared.csproj">
+      <Project>{ac04294b-a2ac-4a49-85a0-847d69b8dbca}</Project>
+      <Name>ReadiMon.Shared</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="LicensingMetrics\LicensingMetrics.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PerfGraph.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PerfGraphPopup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\SharedResources.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="TableSizes\TableSizes.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TenantsTrend\TenantsTrend.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+    <EmbeddedResource Include="Resources\data.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\fire.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\d3.v3.min.js" />
+    <EmbeddedResource Include="Resources\performance.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\close.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\d3-tip.js" />
+    <EmbeddedResource Include="Resources\d3.perf.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\performance.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\trend.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\gears.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\examine.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /v /q /y $(ProjectDir)$(OutDir)$(TargetName).dll $(SolutionDir)$(SolutionName)\$(OutDir)Pipeline\Addins\Graphs\*.*
+xcopy /v /q /y $(ProjectDir)$(OutDir)$(TargetName).dll.config $(SolutionDir)$(SolutionName)\$(OutDir)Pipeline\Addins\Graphs\*.*
+xcopy /v /q /y $(ProjectDir)$(OutDir)Newtonsoft.Json.dll $(SolutionDir)$(SolutionName)\$(OutDir)Pipeline\Contracts\*.*
+xcopy /v /q /y $(ProjectDir)$(OutDir)Hardcodet.Wpf.TaskbarNotification.dll $(SolutionDir)$(SolutionName)\$(OutDir)Pipeline\Addins\Graphs\*.*
+xcopy /v /q /y $(ProjectDir)$(OutDir)De.TorstenMandelkow.MetroChart.dll $(SolutionDir)$(SolutionName)\$(OutDir)Pipeline\Addins\Graphs\*.*</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

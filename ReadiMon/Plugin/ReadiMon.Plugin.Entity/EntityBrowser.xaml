@@ -1,0 +1,742 @@
+﻿<UserControl x:Class="ReadiMon.Plugin.Entity.EntityBrowser"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+			 xmlns:controls="clr-namespace:ReadiMon.Shared.Controls;assembly=ReadiMon.Shared"
+			 xmlns:entity="clr-namespace:ReadiMon.Plugin.Entity"
+			 xmlns:core="clr-namespace:ReadiMon.Shared.Core;assembly=ReadiMon.Shared"
+			 xmlns:converters="clr-namespace:ReadiMon.Shared.Converters;assembly=ReadiMon.Shared"
+			 xmlns:attached="clr-namespace:ReadiMon.Shared.AttachedProperties;assembly=ReadiMon.Shared"
+			 mc:Ignorable="d"
+			 d:DesignHeight="300"
+			 d:DesignWidth="300">
+	<UserControl.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="/PresentationFramework.Aero, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, ProcessorArchitecture=MSIL;component/themes/aero.normalcolor.xaml" />
+			</ResourceDictionary.MergedDictionaries>
+
+			<converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+			<converters:NullBooleanConverter  x:Key="NullBooleanConverter" />
+
+			<Style x:Key="LinkButton"
+				   TargetType="Button"
+				   BasedOn="{StaticResource ResourceKey={x:Type Button}}">
+
+				<Setter Property="Width"
+						Value="Auto" />
+
+				<Setter Property="Template">
+					<Setter.Value>
+						<ControlTemplate TargetType="Button">
+							<ContentPresenter Content="{TemplateBinding Content}"
+											  ContentTemplate="{TemplateBinding  ContentTemplate}"
+											  VerticalAlignment="Center">
+								<ContentPresenter.Resources>
+									<Style TargetType="{x:Type TextBlock}">
+										<Setter Property="TextDecorations"
+												Value="Underline" />
+									</Style>
+								</ContentPresenter.Resources>
+							</ContentPresenter>
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+				<Setter Property="Foreground"
+						Value="#07c" />
+				<Setter Property="Cursor"
+						Value="Hand" />
+				<Setter Property="VerticalAlignment"
+						Value="Center" />
+				<Setter Property="VerticalContentAlignment"
+						Value="Center" />
+				<Style.Triggers>
+					<Trigger Property="IsMouseOver"
+							 Value="true">
+						<Setter Property="Foreground"
+								Value="#55AAFF" />
+					</Trigger>
+				</Style.Triggers>
+			</Style>
+
+			<core:EditConverter x:Key="editConverter" />
+			<core:ViewConverter x:Key="viewConverter" />
+
+			<DataTemplate x:Key="aliasTemplate">
+				<Grid>
+					<ContentControl Content="{Binding Data}"
+						   Margin="5 0 0 0"
+						   Cursor="Hand"
+						   Visibility="{Binding Path=EditViewMode, Converter={StaticResource viewConverter}}"
+						   MinWidth="100" >
+						<ContentControl.InputBindings>
+							<MouseBinding Gesture="LeftDoubleClick"
+										  Command="{Binding EditCommand}" />
+						</ContentControl.InputBindings>
+					</ContentControl>
+					<TextBox Text="{Binding Path=Data, Mode=TwoWay}"
+							 Visibility="{Binding Path=EditViewMode, Converter={StaticResource editConverter}}"
+							 core:FocusExtension.IsFocused="{Binding Focused}"
+							 Height="26" 
+							 Padding="1 3 0 0"
+							 MinWidth="100">
+						<TextBox.InputBindings>
+							<KeyBinding Command="{Binding UndoCommand}" CommandParameter="{Binding RelativeSource=
+                                   {RelativeSource
+                                    Mode=FindAncestor,
+                                    AncestorType={x:Type TextBox}}}" Key="Escape"/>
+							<KeyBinding Command="{Binding EnterCommand}" Key="Enter"/>
+						</TextBox.InputBindings>
+						<i:Interaction.Triggers>
+							<i:EventTrigger EventName="LostFocus">
+								<i:InvokeCommandAction Command="{Binding DoneCommand}" />
+							</i:EventTrigger>
+						</i:Interaction.Triggers>
+					</TextBox>
+				</Grid>
+			</DataTemplate>
+
+			<DataTemplate x:Key="bitTemplate">
+				<Grid VerticalAlignment="Stretch">
+					<ContentControl Content="{Binding Data}"
+						   Margin="5 0 0 0"
+						   Cursor="Hand"
+						   Visibility="{Binding Path=EditViewMode, Converter={StaticResource viewConverter}}"
+						   MinWidth="100" >
+						<ContentControl.InputBindings>
+							<MouseBinding Gesture="LeftDoubleClick"
+										  Command="{Binding EditCommand}" />
+						</ContentControl.InputBindings>
+					</ContentControl>
+				</Grid>
+			</DataTemplate>
+
+			<DataTemplate x:Key="dateTimeTemplate">
+				<Grid>
+					<ContentControl Content="{Binding Data}"
+						   Margin="5 0 0 0"
+						   Cursor="Hand"
+						   Visibility="{Binding Path=EditViewMode, Converter={StaticResource viewConverter}}"
+						   ContentStringFormat="{}{0}"
+						   MinWidth="100" >
+						<ContentControl.InputBindings>
+							<MouseBinding Gesture="LeftDoubleClick"
+										  Command="{Binding EditCommand}" />
+						</ContentControl.InputBindings>
+					</ContentControl>
+					<TextBox Text="{Binding Path=Data, Mode=TwoWay}"
+							 Visibility="{Binding Path=EditViewMode, Converter={StaticResource editConverter}}"
+							 core:FocusExtension.IsFocused="{Binding Focused}"
+							 Height="26"
+							 Padding="1 3 0 0"
+							 MinWidth="100">
+						<i:Interaction.Triggers>
+							<i:EventTrigger EventName="LostFocus">
+								<i:InvokeCommandAction Command="{Binding DoneCommand}" />
+							</i:EventTrigger>
+						</i:Interaction.Triggers>
+						<TextBox.InputBindings>
+							<KeyBinding Command="{Binding EnterCommand}"
+										Key="Enter" />
+							<KeyBinding Command="{Binding UndoCommand}" CommandParameter="{Binding RelativeSource=
+                                   {RelativeSource
+                                    Mode=FindAncestor,
+                                    AncestorType={x:Type TextBox}}}" Key="Escape"/>
+						</TextBox.InputBindings>
+					</TextBox>
+				</Grid>
+			</DataTemplate>
+
+			<DataTemplate x:Key="decimalTemplate">
+				<Grid>
+					<ContentControl Content="{Binding Data}"
+						   Margin="5 0 0 0"
+						   Cursor="Hand"
+						   Visibility="{Binding Path=EditViewMode, Converter={StaticResource viewConverter}}"
+						   ContentStringFormat="{}{0}"
+						   MinWidth="100" >
+						<ContentControl.InputBindings>
+							<MouseBinding Gesture="LeftDoubleClick"
+										  Command="{Binding EditCommand}" />
+						</ContentControl.InputBindings>
+					</ContentControl>
+					<TextBox Text="{Binding Path=Data, Mode=TwoWay}"
+							 Visibility="{Binding Path=EditViewMode, Converter={StaticResource editConverter}}"
+							 core:FocusExtension.IsFocused="{Binding Focused}"
+							 Height="26"
+							 Padding="1 3 0 0"
+							 MinWidth="100">
+						<i:Interaction.Triggers>
+							<i:EventTrigger EventName="LostFocus">
+								<i:InvokeCommandAction Command="{Binding DoneCommand}" />
+							</i:EventTrigger>
+						</i:Interaction.Triggers>
+						<TextBox.InputBindings>
+							<KeyBinding Command="{Binding EnterCommand}"
+										Key="Enter" />
+							<KeyBinding Command="{Binding UndoCommand}" CommandParameter="{Binding RelativeSource=
+                                   {RelativeSource
+                                    Mode=FindAncestor,
+                                    AncestorType={x:Type TextBox}}}" Key="Escape"/>
+						</TextBox.InputBindings>
+					</TextBox>
+				</Grid>
+			</DataTemplate>
+
+			<DataTemplate x:Key="guidTemplate">
+				<Grid>
+					<ContentControl Content="{Binding Data}"
+						   Margin="5 0 0 0"
+						   Cursor="Hand"
+						   Visibility="{Binding Path=EditViewMode, Converter={StaticResource viewConverter}}"
+						   ContentStringFormat="{}{0}"
+						   MinWidth="100" >
+						<ContentControl.InputBindings>
+							<MouseBinding Gesture="LeftDoubleClick"
+										  Command="{Binding EditCommand}" />
+						</ContentControl.InputBindings>
+					</ContentControl>
+					<TextBox Text="{Binding Path=Data, Mode=TwoWay}"
+							 Visibility="{Binding Path=EditViewMode, Converter={StaticResource editConverter}}"
+							 core:FocusExtension.IsFocused="{Binding Focused}"
+							 Height="26"
+							 Padding="1 3 0 0"
+							 MinWidth="100">
+						<i:Interaction.Triggers>
+							<i:EventTrigger EventName="LostFocus">
+								<i:InvokeCommandAction Command="{Binding DoneCommand}" />
+							</i:EventTrigger>
+						</i:Interaction.Triggers>
+						<TextBox.InputBindings>
+							<KeyBinding Command="{Binding EnterCommand}"
+										Key="Enter" />
+							<KeyBinding Command="{Binding UndoCommand}" CommandParameter="{Binding RelativeSource=
+                                   {RelativeSource
+                                    Mode=FindAncestor,
+                                    AncestorType={x:Type TextBox}}}" Key="Escape"/>
+						</TextBox.InputBindings>
+					</TextBox>
+				</Grid>
+			</DataTemplate>
+
+			<DataTemplate x:Key="intTemplate">
+				<Grid>
+					<ContentControl Content="{Binding Data}"
+						   Margin="5 0 0 0"
+						   Cursor="Hand"
+						   Visibility="{Binding Path=EditViewMode, Converter={StaticResource viewConverter}}"
+						   ContentStringFormat="{}{0}"
+						   MinWidth="100" >
+						<ContentControl.InputBindings>
+							<MouseBinding Gesture="LeftDoubleClick"
+										  Command="{Binding EditCommand}" />
+						</ContentControl.InputBindings>
+					</ContentControl>
+					<TextBox Text="{Binding Path=Data, Mode=TwoWay}"
+							 Visibility="{Binding Path=EditViewMode, Converter={StaticResource editConverter}}"
+							 core:FocusExtension.IsFocused="{Binding Focused}"
+							 Height="26"
+							 Padding="1 3 0 0"
+							 MinWidth="100">
+						<i:Interaction.Triggers>
+							<i:EventTrigger EventName="LostFocus">
+								<i:InvokeCommandAction Command="{Binding DoneCommand}" />
+							</i:EventTrigger>
+						</i:Interaction.Triggers>
+						<TextBox.InputBindings>
+							<KeyBinding Command="{Binding EnterCommand}"
+										Key="Enter" />
+							<KeyBinding Command="{Binding UndoCommand}" CommandParameter="{Binding RelativeSource=
+                                   {RelativeSource
+                                    Mode=FindAncestor,
+                                    AncestorType={x:Type TextBox}}}" Key="Escape"/>
+						</TextBox.InputBindings>
+					</TextBox>
+				</Grid>
+			</DataTemplate>
+
+			<DataTemplate x:Key="stringTemplate">
+				<Grid>
+					<ContentControl Content="{Binding Data}"
+						   Margin="5 0 0 0"
+						   Cursor="Hand"
+						   Visibility="{Binding Path=EditViewMode, Converter={StaticResource viewConverter}}"
+						   ContentStringFormat="{}{0}"
+						   MinWidth="100" >
+						<ContentControl.InputBindings>
+							<MouseBinding Gesture="LeftDoubleClick"
+										  Command="{Binding EditCommand}" />
+						</ContentControl.InputBindings>
+					</ContentControl>
+					<TextBox Text="{Binding Path=Data, Mode=TwoWay}"
+							 Visibility="{Binding Path=EditViewMode, Converter={StaticResource editConverter}}"
+							 core:FocusExtension.IsFocused="{Binding Focused}"
+							 Height="26"
+							 Padding="1 3 0 0"
+							 MinWidth="100">
+						<i:Interaction.Triggers>
+							<i:EventTrigger EventName="LostFocus">
+								<i:InvokeCommandAction Command="{Binding DoneCommand}" />
+							</i:EventTrigger>
+						</i:Interaction.Triggers>
+						<TextBox.InputBindings>
+							<KeyBinding Command="{Binding EnterCommand}"
+										Key="Enter" />
+							<KeyBinding Command="{Binding UndoCommand}" CommandParameter="{Binding RelativeSource=
+                                   {RelativeSource
+                                    Mode=FindAncestor,
+                                    AncestorType={x:Type TextBox}}}" Key="Escape"/>
+						</TextBox.InputBindings>
+					</TextBox>
+				</Grid>
+			</DataTemplate>
+
+			<DataTemplate x:Key="xmlTemplate">
+				<Grid>
+					<ContentControl Content="{Binding Data}"
+						   Margin="5 0 0 0"
+						   Cursor="Hand"
+						   Visibility="{Binding Path=EditViewMode, Converter={StaticResource viewConverter}}"
+						   ContentStringFormat="{}{0}"
+						   MinWidth="100" >
+						<ContentControl.InputBindings>
+							<MouseBinding Gesture="LeftDoubleClick"
+										  Command="{Binding EditCommand}" />
+						</ContentControl.InputBindings>
+					</ContentControl>
+					<TextBox Text="{Binding Path=Data, Mode=TwoWay}"
+							 Visibility="{Binding Path=EditViewMode, Converter={StaticResource editConverter}}"
+							 core:FocusExtension.IsFocused="{Binding Focused}"
+							 Height="26"
+							 Padding="1 3 0 0"
+							 MinWidth="100">
+						<i:Interaction.Triggers>
+							<i:EventTrigger EventName="LostFocus">
+								<i:InvokeCommandAction Command="{Binding DoneCommand}" />
+							</i:EventTrigger>
+						</i:Interaction.Triggers>
+						<TextBox.InputBindings>
+							<KeyBinding Command="{Binding EnterCommand}"
+										Key="Enter" />
+							<KeyBinding Command="{Binding UndoCommand}" CommandParameter="{Binding RelativeSource=
+                                   {RelativeSource
+                                    Mode=FindAncestor,
+                                    AncestorType={x:Type TextBox}}}" Key="Escape"/>
+						</TextBox.InputBindings>
+					</TextBox>
+				</Grid>
+			</DataTemplate>
+
+			<DataTemplate x:Key="readOnlyDataTemplate">
+				<Grid>
+					<ContentControl Content="{Binding Data}"
+						   Margin="5 0 0 0"
+						   ContentStringFormat="{}{0}" />
+				</Grid>
+			</DataTemplate>
+
+			<DataTemplate x:Key="readOnlyNameTemplate">
+				<Grid>
+					<ContentControl Content="{Binding Name, TargetNullValue=&lt;Unnamed&gt;}"
+						   ContentStringFormat="{}{0}"
+						   Margin="5 0 0 0"
+						   ToolTip="{Binding Tooltip}" />
+				</Grid>
+			</DataTemplate>
+
+			<DataTemplate x:Key="entityTemplate">
+				<Button Content="{Binding Name, TargetNullValue=&lt;Unnamed&gt;}"
+						Style="{StaticResource LinkButton}"
+						Margin="0 0 0 0"
+						VerticalAlignment="Center"
+						ToolTip="{Binding Tooltip}"
+						Command="{Binding NavigateCommand}" />
+			</DataTemplate>
+
+			<DataTemplate x:Key="relationshipTypeTemplate">
+				<Button Content="{Binding Type, TargetNullValue=&lt;Unnamed&gt;}"
+						Style="{StaticResource LinkButton}"
+						Margin="0 0 0 5"
+						ToolTip="{Binding TypeTooltip}"
+						Command="{Binding NavigateCommand}" />
+			</DataTemplate>
+
+			<DataTemplate x:Key="forwardRelationshipTemplate">
+				<Button Content="{Binding To, TargetNullValue=&lt;Unnamed&gt;}"
+						Style="{StaticResource LinkButton}"
+						Margin="0 0 0 0"
+						ToolTip="{Binding Tooltip}"
+						Command="{Binding NavigateToCommand}" />
+			</DataTemplate>
+
+			<DataTemplate x:Key="reverseRelationshipTemplate">
+				<Button Content="{Binding From, TargetNullValue=&lt;Unnamed&gt;}"
+						Style="{StaticResource LinkButton}"
+						Margin="0 0 0 0"
+						ToolTip="{Binding Tooltip}"
+						Command="{Binding NavigateFromCommand}" />
+			</DataTemplate>
+
+			<entity:FieldTemplateSelector ReadOnlyTemplate="{StaticResource readOnlyNameTemplate}"
+										  EntityTemplate="{StaticResource entityTemplate}"
+										  x:Key="FieldTemplateSelector" />
+			<entity:EntityTemplateSelector AliasTemplate="{StaticResource aliasTemplate}"
+										   BitTemplate="{StaticResource bitTemplate}"
+										   DateTimeTemplate="{StaticResource dateTimeTemplate}"
+										   DecimalTemplate="{StaticResource decimalTemplate}"
+										   GuidTemplate="{StaticResource guidTemplate}"
+										   IntegerTemplate="{StaticResource intTemplate}"
+										   StringTemplate="{StaticResource stringTemplate}"
+										   XmlTemplate="{StaticResource xmlTemplate}"
+										   ReadOnlyTemplate="{StaticResource readOnlyDataTemplate}"
+										   x:Key="EntityTemplateSelector" />
+
+			<SolidColorBrush x:Key="Alice"
+							 Color="AliceBlue"
+							 Opacity="0.5" />
+
+		</ResourceDictionary>
+	</UserControl.Resources>
+
+	<Grid>
+		<Grid.Resources>
+			<Style TargetType="ListViewItem">
+				<Style.Triggers>
+					<Trigger Property="ItemsControl.AlternationIndex"
+							 Value="0">
+						<Setter Property="Background"
+								Value="{StaticResource Alice}" />
+					</Trigger>
+					<Trigger Property="ItemsControl.AlternationIndex"
+							 Value="1">
+						<Setter Property="Background"
+								Value="Transparent" />
+					</Trigger>
+				</Style.Triggers>
+				<Setter Property="HorizontalContentAlignment"
+						Value="Stretch" />
+			</Style>
+			<Style x:Key="ListBoxItemStyle"
+				   TargetType="ListBoxItem">
+				<Setter Property="HorizontalContentAlignment"
+						Value="Stretch" />
+				<Setter Property="VerticalContentAlignment"
+						Value="Stretch" />
+			</Style>
+			<Style x:Key="DisableButton"
+				   TargetType="{x:Type Button}">
+				<Setter Property="Template">
+					<Setter.Value>
+						<ControlTemplate TargetType="Button">
+							<Border x:Name="Overlay"
+									CornerRadius="3"
+									Padding="5 0 5 0">
+								<ContentPresenter />
+							</Border>
+							<ControlTemplate.Triggers>
+								<Trigger Property="IsEnabled"
+										 Value="false">
+									<Setter TargetName="Overlay"
+											Property="Background"
+											Value="Transparent" />
+									<Setter TargetName="Overlay"
+											Property="Opacity"
+											Value="0.25" />
+								</Trigger>
+								<Trigger Property="Border.IsMouseOver"
+										 Value="True">
+									<Setter TargetName="Overlay"
+											Property="Background">
+										<Setter.Value>
+											<LinearGradientBrush StartPoint="0,0"
+																 EndPoint="0,1">
+												<GradientStop Color="white"
+															  Offset="0" />
+												<GradientStop Color="#FFADD8E6"
+															  Offset="1" />
+											</LinearGradientBrush>
+										</Setter.Value>
+									</Setter>
+								</Trigger>
+							</ControlTemplate.Triggers>
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+			</Style>
+		</Grid.Resources>
+
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="50" />
+			<RowDefinition Height="*"
+						   MinHeight="100" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*"
+						   MinHeight="100" />
+		</Grid.RowDefinitions>
+
+		<Border Grid.Row="0"
+				BorderBrush="LightGray"
+				BorderThickness="0 0 0 1">
+			<StackPanel Orientation="Horizontal">
+				<Image Width="48"
+					   Margin="10"
+					   Height="48"
+					   Source="pack://application:,,,/ReadiMon.Plugin.Entity;component/Resources/viewmag.png" />
+
+				<StackPanel Margin="20 0 0 0"
+							VerticalAlignment="Center">
+					<TextBlock VerticalAlignment="Center"
+							   Text="Entity Browser"
+							   FontWeight="Bold"
+							   FontSize="20" />
+					<TextBlock VerticalAlignment="Center"
+							   FontSize="14"
+							   Text="Inspect entities and follow relationships..." />
+				</StackPanel>
+			</StackPanel>
+		</Border>
+
+		<Grid Grid.Row="1">
+			<Grid Margin="5">
+				<Grid.ColumnDefinitions>
+					<!-- Back -->
+					<ColumnDefinition Width="Auto" />
+					<!-- Forward -->
+					<ColumnDefinition Width="Auto" />
+					<!-- Reload -->
+					<ColumnDefinition Width="Auto" />
+					<!-- Address Bar -->
+					<ColumnDefinition Width="*" />
+					<!-- Tenant -->
+					<ColumnDefinition Width="Auto" />
+				</Grid.ColumnDefinitions>
+
+				<Button Grid.Column="0"
+						Margin="5 0 0 0"
+						Background="Transparent"
+						Foreground="White"
+						BorderBrush="Transparent"
+						BorderThickness="0"
+						Focusable="False"
+						ToolTip="Back"
+						Command="{Binding BackCommand}"
+						IsEnabled="{Binding CanNavigateBack}"
+						Style="{StaticResource DisableButton}">
+					<Image Width="32"
+						   Height="32"
+						   Source="pack://application:,,,/ReadiMon.Plugin.Entity;component/Resources/back.png" />
+				</Button>
+				<Button Grid.Column="1"
+						Margin="0 0 0 0"
+						Background="Transparent"
+						Foreground="White"
+						BorderBrush="Transparent"
+						BorderThickness="0"
+						Focusable="False"
+						ToolTip="Forward"
+						Command="{Binding ForwardCommand}"
+						IsEnabled="{Binding CanNavigateForward}"
+						Style="{StaticResource DisableButton}">
+					<Image Width="32"
+						   Height="32"
+						   Source="pack://application:,,,/ReadiMon.Plugin.Entity;component/Resources/forward.png" />
+				</Button>
+				<Button Grid.Column="2"
+						Margin="0 0 5 0"
+						Background="Transparent"
+						Foreground="White"
+						BorderBrush="Transparent"
+						BorderThickness="0"
+						Focusable="False"
+						ToolTip="Reload"
+						Command="{Binding ReloadCommand}"
+						IsEnabled="{Binding CanReload}"
+						Style="{StaticResource DisableButton}">
+					<Image Width="32"
+						   Height="32"
+						   Source="pack://application:,,,/ReadiMon.Plugin.Entity;component/Resources/reload.png" />
+				</Button>
+
+				<ComboBox Grid.Column="3"
+						  ItemsSource="{Binding SearchStrings}"
+						  IsTextSearchEnabled="True"
+						  IsTextSearchCaseSensitive="False"
+						  IsEditable="True"
+						  Height="25"
+						  Margin="5 0 5 0"
+						  x:Name="SearchBox"
+						  Text="{Binding SelectedText, Mode=TwoWay, Delay=300}"
+						  ItemContainerStyle="{StaticResource ListBoxItemStyle}">
+					<ComboBox.ItemsPanel>
+						<ItemsPanelTemplate>
+							<VirtualizingStackPanel />
+						</ItemsPanelTemplate>
+					</ComboBox.ItemsPanel>
+				</ComboBox>
+
+				<ComboBox Grid.Column="4"
+						  ItemsSource="{Binding Tenants}"
+						  Height="22"
+						  Margin="5 0 5 0"
+						  SelectedItem="{Binding SelectedTenant, Mode=TwoWay}"
+						  DisplayMemberPath="Name"
+						  ItemContainerStyle="{StaticResource ListBoxItemStyle}"
+						  ToolTip="The currently selected tenant.">
+					<ComboBox.ItemsPanel>
+						<ItemsPanelTemplate>
+							<VirtualizingStackPanel />
+						</ItemsPanelTemplate>
+					</ComboBox.ItemsPanel>
+				</ComboBox>
+			</Grid>
+		</Grid>
+
+		<controls:ReadiMonListView Grid.Column="0"
+								   Grid.Row="2"
+								   HorizontalAlignment="Stretch"
+								   VerticalAlignment="Stretch"
+								   AlternationCount="2"
+								   ItemsSource="{Binding Fields, IsAsync=True}">
+
+			<ListView.ItemContainerStyle>
+				<Style TargetType="{x:Type ListViewItem}">
+					<Setter Property="VerticalContentAlignment" Value="Center" />
+				</Style>
+			</ListView.ItemContainerStyle>
+			
+			<ListView.View>
+				<GridView AllowsColumnReorder="False">
+					<controls:ReadiMonGridViewColumn Header="Field"
+													 CellTemplateSelector="{StaticResource FieldTemplateSelector}" />
+					<controls:ReadiMonGridViewColumn Header="Value"
+													 CellTemplateSelector="{StaticResource EntityTemplateSelector}" />
+				</GridView>
+			</ListView.View>
+
+			<ListView.ContextMenu>
+				<ContextMenu>
+					<MenuItem Header="Remove"
+							  IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem.IsReadOnly, Converter={StaticResource InverseBooleanConverter}, FallbackValue=False}"
+							  Command="{Binding RemoveFieldCommand}"
+							  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem}" />
+					<MenuItem Header="Copy"
+							  IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem, Converter={StaticResource NullBooleanConverter}, FallbackValue=False}"
+							  Command="{Binding CopyCommand}"
+							  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem}" />
+					<MenuItem Header="Copy Value"
+							  IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem, Converter={StaticResource NullBooleanConverter}, FallbackValue=False}"
+							  Command="{Binding CopyValueCommand}"
+							  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem}" />
+					<Separator />
+					<MenuItem Header="Add Field..."
+							  IsEnabled="{Binding AddFieldEnabled}"
+							  Command="{Binding AddFieldCommand}" />
+					<Separator />
+					<MenuItem Header="Delete Entity..."
+							  IsEnabled="{Binding DeleteEntityEnabled}"
+							  Command="{Binding DeleteEntityCommand}" />
+				</ContextMenu>
+			</ListView.ContextMenu>
+
+		</controls:ReadiMonListView>
+
+		<GridSplitter Grid.Column="0"
+					  Grid.Row="3"
+					  HorizontalAlignment="Stretch"
+					  VerticalAlignment="Center"
+					  Background="DarkGray"
+					  Height="3" />
+
+		<Grid Grid.Column="0"
+			  Grid.Row="4">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"
+								  MinWidth="100" />
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="*"
+								  MinWidth="100" />
+			</Grid.ColumnDefinitions>
+
+			<controls:ReadiMonListView Grid.Column="0"
+									   HorizontalAlignment="Stretch"
+									   VerticalAlignment="Stretch"
+									   AlternationCount="2"
+									   ItemsSource="{Binding ReverseRelationships, IsAsync=True}"
+									   attached:ListViewBackGroundImage.AlignmentX="Left"
+									   attached:ListViewBackGroundImage.AlignmentY="Bottom"
+									   attached:ListViewBackGroundImage.ImageSourceUri="pack://application:,,,/ReadiMon.Plugin.Entity;component/Resources/rev.png">
+				<ListView.View>
+					<GridView AllowsColumnReorder="False">
+						<controls:ReadiMonGridViewColumn Header="Reverse Relationship"
+														 CellTemplate="{StaticResource relationshipTypeTemplate}" />
+						<controls:ReadiMonGridViewColumn Header="Value"
+														 CellTemplate="{StaticResource reverseRelationshipTemplate}" />
+					</GridView>
+				</ListView.View>
+
+				<ListView.ContextMenu>
+					<ContextMenu>
+						<MenuItem Header="Remove"
+								  IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem, Converter={StaticResource NullBooleanConverter}, FallbackValue=False}"
+								  Command="{Binding RemoveReverseRelationshipCommand}"
+								  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem}" />
+						<MenuItem Header="Copy"
+								  IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem, Converter={StaticResource NullBooleanConverter}, FallbackValue=False}"
+								  Command="{Binding CopyReverseRelationshipCommand}"
+								  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem}" />
+						<Separator />
+						<MenuItem Header="Add Reverse Relationship..."
+							  IsEnabled="{Binding AddReverseRelationshipEnabled}"
+							  Command="{Binding AddReverseRelationshipCommand}" />
+					</ContextMenu>
+				</ListView.ContextMenu>
+
+			</controls:ReadiMonListView>
+
+			<GridSplitter Grid.Column="1"
+						  HorizontalAlignment="Center"
+						  VerticalAlignment="Stretch"
+						  Background="DarkGray"
+						  Width="3" />
+
+			<controls:ReadiMonListView Grid.Column="2"
+									   HorizontalAlignment="Stretch"
+									   VerticalAlignment="Stretch"
+									   AlternationCount="2"
+									   ItemsSource="{Binding ForwardRelationships, IsAsync=True}"
+									   attached:ListViewBackGroundImage.AlignmentX="Right"
+									   attached:ListViewBackGroundImage.AlignmentY="Bottom"
+									   attached:ListViewBackGroundImage.ImageSourceUri="pack://application:,,,/ReadiMon.Plugin.Entity;component/Resources/fwd.png">
+				<ListView.View>
+					<GridView AllowsColumnReorder="False">
+						<controls:ReadiMonGridViewColumn Header="Forward Relationship"
+														 CellTemplate="{StaticResource relationshipTypeTemplate}" />
+						<controls:ReadiMonGridViewColumn Header="Value"
+														 CellTemplate="{StaticResource forwardRelationshipTemplate}" />
+					</GridView>
+				</ListView.View>
+
+				<ListView.ContextMenu>
+					<ContextMenu>
+						<MenuItem Header="Remove"
+								  IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem, Converter={StaticResource NullBooleanConverter}, FallbackValue=False}"
+								  Command="{Binding RemoveForwardRelationshipCommand}"
+								  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem}" />
+						<MenuItem Header="Copy"
+								  IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem, Converter={StaticResource NullBooleanConverter}, FallbackValue=False}"
+								  Command="{Binding CopyForwardRelationshipCommand}"
+								  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem}" />
+						<Separator />
+						<MenuItem Header="Add Forward Relationship..."
+							  IsEnabled="{Binding AddForwardRelationshipEnabled}"
+							  Command="{Binding AddForwardRelationshipCommand}" />
+					</ContextMenu>
+				</ListView.ContextMenu>
+
+			</controls:ReadiMonListView>
+		</Grid>
+	</Grid>
+</UserControl>

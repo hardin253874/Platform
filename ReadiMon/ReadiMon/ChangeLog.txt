@@ -1,0 +1,270 @@
+﻿1.0.6148
+	* Update list of system applications for db test HAL001
+	* Fix 'copy to clipboard' for database test results so they copy to notepad correctly
+1.0.6142
+	* Only show RevertTo if the selected transaction is NOT the last transaction in the list
+	* If any transaction is for tenant -1 (multiple tenants) do not show specific RevertTo entries.
+1.0.6137
+	* When updating, ensure all other instances are closed.
+	* Restrict columns returned from Database Time Machine.
+1.0.6135
+	* Fix broken Platform History page. Now handles null package Ids.
+1.0.6134
+	* ReadiMon itself now injects context information into the database when making changes.
+	* Only show tenant names in the 'Revert To' menu when appearing in transactions later than the current transaction.
+1.0.6131
+	* Database Time Machine requires trunk server 2.80.46.0 (at minimum)
+	* Show User column in Database Time Machine
+	* Replace tenant id with tenant name in Database Time Machine
+	* Added Server and Process information to the Workflow plug in (the info will may not be populated with an old version of the server.)
+1.0.6129
+	* Database transaction folding
+	* General cleanup
+1.0.6128
+	* Added support for reverting non-consecutive transactions.
+	* Show Utc dates in Local time
+	* Transaction window update
+	* Set the default transaction tab
+1.0.6127
+	* Cleanup Database Transaction viewer
+1.0.6124
+	* Database Time Machine
+1.0.6121
+	* Added option to specify which tenants get included in command line DB health test
+1.0.6113
+	* Added Application/Package Ids to library/tenant application plugins
+1.0.6109
+	* Add HST002 - Type inheritance must not contain cycles
+	* Added Platform History item under Application section
+1.0.6103
+	* Fix another SQL for DB health checks HSR013 and HSR014
+	* Add a 'Save' option to the DbHealth test results window
+	* Add a 'Rerun' option to the DbHealth test results window
+1.0.6100
+	* Fix SQL for DB health checks HSR013 and HSR014
+1.0.6099
+	* Entity lookup will now match on name (along with id, guid, alias).
+	* Entity lookup by alias is no longer case sensitive.
+	* Alias map now validates each call to handle database reinstalls better.
+1.0.6093
+	* Fix database properties page - sometimes shows SoftwarePlatform instead of selected catalog.
+	* Add HAL001 database check
+1.0.6092
+	* Fix reference to System.Windows.Interactivity.dll
+1.0.6088
+	* Removed List Tenants report (from Applications)
+	* Added 'Enabled' column to Tenants plugin (in Security)
+	* Fixed Database Heath display problem
+1.0.6087
+	* Add Tenants report.
+	* Add IsProtected column to tenant applications report.
+1.0.6086
+	* Ability to run database health checks on a selected tenant.
+1.0.6074
+	* Ability to filter Application Library applications by Name/Version/Publisher and Publisher Url.
+	* Ability to filter Application Library applications to only show the latest versions of each application.
+1.0.6072
+	* Ability to filter tenant applications by Tenant/Solution/Version/Publisher and Publisher Url.
+1.0.6005
+	* Update available notification
+	* Run database tests now available again after force stop.
+	* Database health checks now have resolution capabilities where appropriate
+	* Filter database health checks by tenant where appropriate
+	* Database health chacks now show resolution progress while running
+1.0.6002
+	* Fixed User Account Refresh after switching SQL Servers.
+	* Improved SQL Server properties dialog functionality.
+1.0.6001
+	* Added ability to cleanup failed database checks (where applicable)
+1.0.5990
+	* Fix several database health checks.
+1.0.5988
+	* Provide more information with fialing database tests
+1.0.5984
+	* Added 'HSF004 - Aliases must be camel case'
+	* Added 'HSF005 - Alias table can only contain 'alias' and 'reverseAlias' values'
+	* Added 'HSR017 - Orphaned Resource Key Data Hash instances'
+	* Added 'HSR018 - Resource Key Data Hash instances not linked to a Resource Key'
+	* Added 'HRK002 - There must not be two instances with equal resource keys'
+	* Format database output to align columns
+1.0.5980
+	* Fix deadlock in auto updater.
+1.0.5976
+	* Fix SSL handshake issue when running database health checks.
+	* Added "HSR015 - Field control missing field reference" database test
+	* Added "HSR016 - Relationship control missing relationship reference" database test
+1.0.5975
+	* Ability to cancel running database tests
+	* Control which tests are run
+	* Enable/Disable all tests
+1.0.5970
+	* Added aliases to relationship names when establishing new relationships from the entity browser.
+	* Added aliases to field names when establishing new field from the entity browser.
+	* Added row count to database test results dialog
+1.0.5969
+	* Detect orphaned controls on form
+1.0.5968
+	* Added entity columns to the 'Detect orphaned expression entities' database health check
+1.0.5967
+	* Show the database health checks window in the taskbar
+1.0.5966
+	* Added ability to delete entities from within the Entity Browser
+1.0.5963
+	* Added new context menus to Application Library plugin
+	* Added new context menus to Tenant Application plugin
+1.0.5955
+	* Added 'Copy Id' to User Accounts plugin
+	* Added 'Copy Id' to Tenants plugin
+	* Fixed bug when refreshing User Accounts
+1.0.5955
+	* Auto update.
+1.0.5952
+	* Support multiple instances running simultaneously.
+1.0.5946
+	* Added command-line support.
+1.0.5914
+	* Fix addition of boolean fields with non-default values to entities.
+1.0.5913
+	* Show toName/fromName in forward/reverse relationships where available in the entity browser.
+	* Add Application Id to TenantApp report.
+	* Add 'Copy Id' entry to Tenant Application report context menu.
+1.0.5912
+	* No longer opens full screen.
+	* Fixed issue when updating tenant applications.
+1.0.5910
+	* Can now add relationships to an entity via the entity browser (right click->Add Forward/Reverse Relationship). Cardinality is respected.
+1.0.5906
+	* Can now add (applicable) fields to an entity via the entity browser (right click->Add Field).
+1.0.5905
+	* Modifying and entities fields can now be undone via Escape.
+1.0.5896
+	* Added ability to filter applications by tenant.
+1.0.5893
+	* Added Orphan Detection Plugin (Entity->Orphan Detection).
+	* Set default plugin to 'Entity Browser'.
+	* Added ability to filter user accounts by tenant.
+	* Update HR011 database health test
+1.0.5886
+	* Added database test to detect orphaned fields (not belonging to a type).
+1.0.5885
+	* Adding comment in remote execution for adding assembly references.
+1.0.5884
+	* Prompt to enable remote execution when target server is the local host.
+1.0.5883
+	* Added database test to detect orphaned expression entities.
+	* Added ability to bulk select/deselect database tests.
+1.0.5871
+	* Added the RemoteExec diagnostics page.
+1.0.5870
+	* Show type name when alias is not available.
+	* Change label to ContentControl so that underscores are not interpreted as alt characters.
+1.0.5819
+	* Show formatted reverse alias in entity explorer rather than name.
+1.0.5814
+	* Fixed issue with diagnostics streaming data from multiple processes and app domains.
+1.0.5811
+	* New Diagnostics section (requires latest trunk server)
+	* View call stack of running threads within ReadiNow (where possible)
+	* View CPU usage of running threads within ReadiNow
+	* Monitor workflow runs in real-time.
+1.0.5808
+	* New Diagnostics section (requires latest trunk server)
+	* View call stack of running threads within ReadiNow (where possible)
+	* View CPU usage of running threads within ReadiNow
+1.0.5802
+	* SQL Performance improvements.
+	* UI Performance improvements.
+1.0.5799
+	* Simple support for managing and visualizing licensing metrics.
+1.0.5794
+	* Remember previous settings after update.
+	* Remove redundant serialization contracts.
+1.0.5793
+	* EntityFieldCache serializable message payload was updated.
+1.0.5791
+	* Zoom and styling changes for Perf Graph
+1.0.5781
+	* Updated serialization contracts to match those in trunk
+	* Compression algorithm has been updated.
+	* Application Library now shows Package Id
+	* Application Library entries now show a tool-tip with extended information
+	* Ability to copy Application Library information to clipboard
+	* Ability to copy Application Library Package Id to clipboard
+	* Tenant Applications now shows Application Id
+	* Tenant Application entries now show a tool-tip with extended information
+	* Ability to copy Tenant Application information to clipboard
+	* Ability to copy Tenant Application Id to clipboard
+1.0.5767
+	* Adding a Graphs module to ReadiMon for visualization related tools
+		- Perf Graph "ported" in to ReadiMon with tray notifications
+1.0.5766
+	* Redis channel messages now contain the host tenant Id
+	* Added ability to decode redis messages sent on the following channels:
+		- Query Result Cache
+		- User to Role Cache
+		- Entity Member Request Cache
+1.0.5765
+	* Added ability to decode redis messages sent on the following channels:
+		- Bulk SQL Query Cache
+1.0.5764
+	* Added ability to decode redis messages sent on the following channels:
+		- PerTenantEntityTypeCache Descendants Cache
+		- PerTenantEntityTypeCache Ancestors Cache
+		- PerTenantEntityTypeCache StrongTypeIdCache Cache
+		- Bulk SQL Query Cache
+	* Selected plugin remains active upon restore of UI from minimized state.
+1.0.5763
+	* Added ability to decode redis messages sent on the following channels:
+		- Bulk Result Cache
+		- Access Control Query Cache
+		- Security Cache
+		- Access rule-only security cache
+		- Query SQL Cache
+		- Tenant ID Cache
+		- Report To Query Cache
+	* Redis messages now show their transmission size in the tooltip.
+1.0.5758
+	* Show redis message compression rates
+1.0.5752
+	* Added ability to decode binary Redis messages
+1.0.5751
+	* Add some more checks to the Database Health plugin.
+		- HR006 - The entity type of the 'from' instance is not equal to the 'from type' of the relationship
+		- HR007 - The entity type of the 'to' instance is not equal to the 'to type' of the relationship
+		- HF001 - Field 'tenant' entry is not a valid tenant
+		- HF002 - Field 'FieldId' entry does not exist
+		- HF003 - Field 'EntityId' entry does not exist
+		- HF004 - Field is not applicable to the type of the entity
+		- HF006 - Alias fields have a marker of 0 or 1
+1.0.5737
+	* Add some more checks to the Database Health plugin.
+		- HR001 - Relationship 'tenant' entry is not a valid tenant
+		- HR002 - Relationship 'type' entity does not exist
+		- HR003 - Relationship 'from' entity does not exist
+		- HR004 - Relationship 'to' entity does not exist
+		- HR005 - Relationship 'type' entity is not a valid relationship
+1.0.5731
+	* Added remainder of Dr Greg's recommendations to the Database Health plugin.
+		- Heap tables
+		- Recovery Model
+		- Trustworthy
+		- Deprecated Data Types
+		- Untrusted foreign keys
+		- Optimize for adhoc workloads
+1.0.5729
+	* Added some of Dr Greg's recommendations to the Database Health plugin.
+		- Trace Flags
+		- TempDb Data File Allocations
+		- TempDb Initial File Size
+		- TempDb File Growth Settings
+		- Collations
+		- Remote Admin Connections
+		- Physical Server Memory
+		- Maximum Configured Memory
+		- Configured CPU cores
+		- Agent XP Enabled
+		- SoftwarePlatform Initial File Size
+		- SoftwarePlatform File Growth Settings
+		- SQL Server Patch Level
+1.0.5708
+	* Dates now reflect the System regional settings.

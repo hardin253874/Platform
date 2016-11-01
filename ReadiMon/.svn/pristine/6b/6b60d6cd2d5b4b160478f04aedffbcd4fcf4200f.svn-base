@@ -1,0 +1,214 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{60F5F339-4067-49D1-B5B2-606C11BA9B89}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ReadiMon.Plugin.Redis</RootNamespace>
+    <AssemblyName>ReadiMon.Plugin.Redis</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\ReadiMon.Plugin.Redis.XML</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ICSharpCode.AvalonEdit">
+      <HintPath>..\..\packages\AvalonEdit.5.0.2\lib\Net40\ICSharpCode.AvalonEdit.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="protobuf-net, Version=2.0.0.668, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\protobuf-net.2.0.0.668\lib\net40\protobuf-net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="StackExchange.Redis, Version=1.0.316.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\StackExchange.Redis.1.0.450\lib\net45\StackExchange.Redis.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.AddIn" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Expression.Interaction.3.0.40218.0\lib\net46\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CallStackConverter.cs" />
+    <Compile Include="Contracts\ChannelMessage.cs" />
+    <Compile Include="Contracts\Direction.cs" />
+    <Compile Include="Contracts\EntityCacheMessage.cs" />
+    <Compile Include="Contracts\EntityFieldCacheMessage.cs" />
+    <Compile Include="Contracts\EntityRelationshipCacheKey.cs" />
+    <Compile Include="Contracts\EntityRelationshipCacheMessage.cs" />
+    <Compile Include="Contracts\EntityRelationshipCacheTypeKey.cs" />
+    <Compile Include="Contracts\FieldEntityCacheMessage.cs" />
+    <Compile Include="Contracts\SerializableEntityId.cs" />
+    <Compile Include="Contracts\SerializableEntityRelationshipCacheKey.cs" />
+    <Compile Include="Contracts\SerializableEntityRelationshipCacheTypeKey.cs" />
+    <Compile Include="CpuConverter.cs" />
+    <Compile Include="Diagnostics\RemoteExecRequest.cs" />
+    <Compile Include="Diagnostics\RemoteExecResponse.cs" />
+    <Compile Include="Diagnostics\ThreadRequest.cs" />
+    <Compile Include="Diagnostics\ThreadResponse.cs" />
+    <Compile Include="RemoteExecControl.xaml.cs">
+      <DependentUpon>RemoteExecControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="RemoteExecData.cs" />
+    <Compile Include="RemoteExecMessage.cs" />
+    <Compile Include="RemoteExecPlugin.cs" />
+    <Compile Include="RemoteExecViewModel.cs" />
+    <Compile Include="Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="ThreadData.cs" />
+    <Compile Include="ThreadInfo.cs" />
+    <Compile Include="ThreadKey.cs" />
+    <Compile Include="ThreadMessage.cs" />
+    <Compile Include="ThreadMonitor.xaml.cs">
+      <DependentUpon>ThreadMonitor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ThreadMonitorOptions.xaml.cs">
+      <DependentUpon>ThreadMonitorOptions.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ThreadMonitorOptionsViewModel.cs" />
+    <Compile Include="ThreadMonitorViewModel.cs" />
+    <Compile Include="ThreadsPlugin.cs" />
+    <Compile Include="Profiling\ImageConverter.cs" />
+    <Compile Include="PluginConfiguration.cs" />
+    <Compile Include="Profiling\ProfilerMessage.cs" />
+    <Compile Include="ProfilerMonitor.xaml.cs">
+      <DependentUpon>ProfilerMonitor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProfilerMonitorViewModel.cs" />
+    <Compile Include="ProfilerPlugin.cs" />
+    <Compile Include="Profiling\ProfilerTrace.cs" />
+    <Compile Include="Profiling\ProfilerTraceModel.cs" />
+    <Compile Include="Profiling\ProfilerTraceTooltipConverter.cs" />
+    <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="PubSubMessage.cs" />
+    <Compile Include="RedisMessage.cs" />
+    <Compile Include="RedisPlugin.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Profiling\RedisProfilerTrace.cs" />
+    <Compile Include="RedisPubSubMonitor.xaml.cs">
+      <DependentUpon>RedisPubSubMonitor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="RedisPubSubMonitorViewModel.cs" />
+    <Compile Include="Profiling\SqlProfilerTrace.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\ReadiMon.AddinView\ReadiMon.AddinView.csproj">
+      <Project>{54819021-310a-4d9f-9683-84b6ff314f80}</Project>
+      <Name>ReadiMon.AddinView</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ReadiMon.Shared\ReadiMon.Shared.csproj">
+      <Project>{ac04294b-a2ac-4a49-85a0-847d69b8dbca}</Project>
+      <Name>ReadiMon.Shared</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+    <None Include="redisSyntax.xshd" />
+    <None Include="Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="ProfilerMonitor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="RedisPubSubMonitor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="RemoteExecControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ThreadMonitor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ThreadMonitorOptions.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\redis.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\web.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\sql.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\call.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\red.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\profiler.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\remoteexec.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\thread.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /v /q /y $(ProjectDir)$(OutDir)$(TargetName).dll $(SolutionDir)$(SolutionName)\$(OutDir)Pipeline\Addins\Redis\*.*
+xcopy /v /q /y $(ProjectDir)$(OutDir)$(TargetName).dll.config $(SolutionDir)$(SolutionName)\$(OutDir)Pipeline\Addins\Redis\*.*
+xcopy /v /q /y $(ProjectDir)$(OutDir)StackExchange.Redis.dll $(SolutionDir)$(SolutionName)\$(OutDir)Pipeline\Contracts\*.*
+xcopy /v /q /y $(ProjectDir)$(OutDir)protobuf-net.dll $(SolutionDir)$(SolutionName)\$(OutDir)Pipeline\Contracts\*.*
+xcopy /v /q /y $(ProjectDir)$(OutDir)ICSharpCode.AvalonEdit.dll $(SolutionDir)$(SolutionName)\$(OutDir)Pipeline\Contracts\*.*
+xcopy /v /q /y $(ProjectDir)redisSyntax.xshd $(SolutionDir)$(SolutionName)\$(OutDir)Pipeline\Addins\Redis\*.*</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

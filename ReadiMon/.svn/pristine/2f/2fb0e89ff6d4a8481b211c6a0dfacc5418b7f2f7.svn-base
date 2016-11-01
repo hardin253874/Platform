@@ -1,0 +1,85 @@
+﻿// Copyright 2011-2015 Global Software Innovation Pty Ltd
+
+using System;
+using System.Text.RegularExpressions;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+
+namespace ReadiMon.Shared.Controls
+{
+	/// <summary>
+	///     Numeric only text box.
+	/// </summary>
+	public class NumericTextBox : TextBox
+	{
+		/// <summary>
+		///     Initializes a new instance of the <see cref="NumericTextBox" /> class.
+		/// </summary>
+		public NumericTextBox( )
+		{
+			DataObject.AddPastingHandler( this, OnPaste );
+		}
+
+		/// <summary>
+		///     Determines whether [is text allowed] [the specified text].
+		/// </summary>
+		/// <param name="text">The text.</param>
+		/// <returns></returns>
+		private static bool IsTextAllowed( string text )
+		{
+			var regex = new Regex( "[^0-9.-]+" ); //regular expression that matches disallowed text
+
+			return !regex.IsMatch( text );
+		}
+
+		/// <summary>
+		///     Called when [paste].
+		/// </summary>
+		/// <param name="dependencyObject">The dependency object.</param>
+		/// <param name="e">The <see cref="DataObjectPastingEventArgs" /> instance containing the event data.</param>
+		private void OnPaste( object dependencyObject, DataObjectPastingEventArgs e )
+		{
+			if ( e.DataObject.GetDataPresent( typeof ( String ) ) )
+			{
+				var text = ( String ) e.DataObject.GetData( typeof ( String ) );
+
+				if ( !IsTextAllowed( text ) )
+				{
+					e.CancelCommand( );
+				}
+			}
+			else
+			{
+				e.CancelCommand( );
+			}
+		}
+
+		/// <summary>
+		///     Called when the <see cref="E:System.Windows.UIElement.KeyDown" /> occurs.
+		/// </summary>
+		/// <param name="e">The event data.</param>
+		protected override void OnPreviewKeyDown( KeyEventArgs e )
+		{
+			if ( e.Key == Key.Space )
+			{
+				e.Handled = true;
+				return;
+			}
+
+			base.OnPreviewKeyDown( e );
+		}
+
+		/// <summary>
+		///     Invoked when an unhandled <see cref="E:System.Windows.Input.TextCompositionManager.PreviewTextInput" /> attached
+		///     event reaches an element in its route that is derived from this class. Implement this method to add class handling
+		///     for this event.
+		/// </summary>
+		/// <param name="e">The <see cref="T:System.Windows.Input.TextCompositionEventArgs" /> that contains the event data.</param>
+		protected override void OnPreviewTextInput( TextCompositionEventArgs e )
+		{
+			e.Handled = !IsTextAllowed( e.Text );
+			base.OnPreviewTextInput( e );
+		}
+	}
+}

@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+    <configSections>
+        <sectionGroup name="userSettings" type="System.Configuration.UserSettingsGroup, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" >
+            <section name="ReadiMon.Plugin.Redis.Settings" type="System.Configuration.ClientSettingsSection, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" allowExeDefinition="MachineToLocalUser" requirePermission="false" />
+        </sectionGroup>
+    </configSections>
+    <userSettings>
+        <ReadiMon.Plugin.Redis.Settings>
+            <setting name="Server" serializeAs="String">
+                <value>localhost</value>
+            </setting>
+            <setting name="Port" serializeAs="String">
+                <value>6379</value>
+            </setting>
+            <setting name="ShowUnmanagedThreads" serializeAs="String">
+                <value>True</value>
+            </setting>
+            <setting name="RefreshDuration" serializeAs="String">
+                <value>2500</value>
+            </setting>
+        </ReadiMon.Plugin.Redis.Settings>
+    </userSettings>
+</configuration>

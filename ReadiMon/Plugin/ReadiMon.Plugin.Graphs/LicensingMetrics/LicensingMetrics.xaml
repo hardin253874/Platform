@@ -1,0 +1,104 @@
+﻿<UserControl x:Class="ReadiMon.Plugin.Graphs.LicensingMetrics.LicensingMetrics"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/PresentationFramework.Aero, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, ProcessorArchitecture=MSIL;component/themes/aero.normalcolor.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <SolidColorBrush x:Key="Alice"
+							 Color="AliceBlue"
+							 Opacity="0.5" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*"
+						   MinHeight="350" />
+        </Grid.RowDefinitions>
+
+        <Image Grid.Row="0"
+			   Grid.Column="0"
+			   Width="48"
+			   Height="48"
+               Margin="10"
+			   Source="pack://application:,,,/ReadiMon.Plugin.Graphs;component/Resources/examine.png" />
+
+        <StackPanel Grid.Row="0"
+                    Grid.Column="1"
+					Margin="20 0 0 0"
+					VerticalAlignment="Center">
+            <TextBlock VerticalAlignment="Center"
+					   Text="Licensing Metrics"
+					   FontWeight="Bold"
+					   FontSize="20" />
+            <TextBlock VerticalAlignment="Center"
+                       FontSize="12"
+                       FontStyle="Italic"
+                       Text="History of when licensing metrics have been gathered." />
+        </StackPanel>
+        
+        <Grid Grid.Row="1"
+              Grid.Column="0"
+              Grid.ColumnSpan="3"
+              Background="#eeeeee">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Padding="5" Text="Status:" FontWeight="Bold" />
+            <TextBlock Grid.Column="1" Padding="5" Text="{Binding Message, FallbackValue='Unknown'}" />
+            <Button Grid.Column="2"
+                    HorizontalAlignment="Right"
+                    Content="Gather"
+                    Height="22"
+                    Width="80"
+                    Margin="0 0 5 0"
+                    IsEnabled="{Binding CanRun, FallbackValue=False}"
+                    Command="{Binding RunCommand}" />
+        </Grid>
+
+        <DataGrid Name="IndexGrid"
+                  Grid.Row="2"
+                  Grid.Column="0"
+                  Grid.ColumnSpan="3"
+                  IsReadOnly="True"
+                  Margin="0"
+                  HeadersVisibility="None"
+                  GridLinesVisibility="None"
+                  AutoGenerateColumns="False"
+                  ItemsSource="{Binding Jobs}"
+                  BorderBrush="Transparent"
+                  Background="White"
+                  AlternatingRowBackground="AliceBlue">
+            <DataGrid.Resources>
+                <DataTemplate x:Key="IdTemplate">
+                    <TextBlock Text="{Binding Id}" Padding="5" Margin="20 0 20 0" FontWeight="Bold" />
+                </DataTemplate>
+                <DataTemplate x:Key="TimeStampTemplate">
+                    <TextBlock Text="{Binding TimeStamp, StringFormat='F'}" Padding="5" Margin="20 0 20 0" HorizontalAlignment="Right" />
+                </DataTemplate>
+            </DataGrid.Resources>
+            <DataGrid.Columns>
+                <DataGridTemplateColumn CellTemplate="{StaticResource IdTemplate}" />
+                <DataGridTemplateColumn Width="*" CellTemplate="{StaticResource TimeStampTemplate}" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+    </Grid>
+</UserControl>

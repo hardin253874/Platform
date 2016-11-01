@@ -1,0 +1,412 @@
+﻿<UserControl x:Class="ReadiMon.Plugin.Entity.OrphanDetection"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:converters="clr-namespace:ReadiMon.Shared.Converters;assembly=ReadiMon.Shared"
+             xmlns:core="clr-namespace:ReadiMon.Shared.Core;assembly=ReadiMon.Shared"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:entity="clr-namespace:ReadiMon.Plugin.Entity"
+             xmlns:controls="clr-namespace:ReadiMon.Shared.Controls;assembly=ReadiMon.Shared"
+             xmlns:attachedProperties="clr-namespace:ReadiMon.Shared.AttachedProperties;assembly=ReadiMon.Shared"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+	<UserControl.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="/PresentationFramework.Aero, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, ProcessorArchitecture=MSIL;component/themes/aero.normalcolor.xaml" />
+			</ResourceDictionary.MergedDictionaries>
+
+			<converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+			<converters:NullBooleanConverter  x:Key="NullBooleanConverter" />
+
+			<Style x:Key="LinkButton"
+				   TargetType="Button"
+				   BasedOn="{StaticResource ResourceKey={x:Type Button}}">
+
+				<Setter Property="Width"
+						Value="Auto" />
+
+				<Setter Property="Template">
+					<Setter.Value>
+						<ControlTemplate TargetType="Button">
+							<ContentPresenter Content="{TemplateBinding Content}"
+											  ContentTemplate="{TemplateBinding  ContentTemplate}"
+											  VerticalAlignment="Center">
+								<ContentPresenter.Resources>
+									<Style TargetType="{x:Type TextBlock}">
+										<Setter Property="TextDecorations"
+												Value="Underline" />
+									</Style>
+								</ContentPresenter.Resources>
+							</ContentPresenter>
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+				<Setter Property="Foreground"
+						Value="#07c" />
+				<Setter Property="Cursor"
+						Value="Hand" />
+				<Setter Property="VerticalAlignment"
+						Value="Center" />
+				<Setter Property="VerticalContentAlignment"
+						Value="Center" />
+				<Style.Triggers>
+					<Trigger Property="IsMouseOver"
+							 Value="true">
+						<Setter Property="Foreground"
+								Value="#55AAFF" />
+					</Trigger>
+				</Style.Triggers>
+			</Style>
+
+			<DataTemplate x:Key="entityTemplate">
+				<Button Content="{Binding Name, TargetNullValue=&lt;Unnamed&gt;}"
+						Style="{StaticResource LinkButton}"
+						Margin="0 0 0 0"
+						VerticalAlignment="Center"
+						Command="{Binding NavigateCommand}"></Button>
+			</DataTemplate>
+
+			<DataTemplate x:Key="relationshipTypeTemplate">
+				<CheckBox Content="{Binding Name}"
+						Margin="0 0 0 5"
+						ToolTip="{Binding Tooltip}"
+						IsChecked="{Binding Selected, Mode=TwoWay}"></CheckBox>
+			</DataTemplate>
+
+			<SolidColorBrush x:Key="Alice"
+							 Color="AliceBlue"
+							 Opacity="0.5" />
+
+		</ResourceDictionary>
+	</UserControl.Resources>
+
+	<Grid>
+		<Grid.Resources>
+			<Style TargetType="ListViewItem">
+				<Style.Triggers>
+					<Trigger Property="ItemsControl.AlternationIndex"
+							 Value="0">
+						<Setter Property="Background"
+								Value="{StaticResource Alice}" />
+					</Trigger>
+					<Trigger Property="ItemsControl.AlternationIndex"
+							 Value="1">
+						<Setter Property="Background"
+								Value="Transparent" />
+					</Trigger>
+				</Style.Triggers>
+				<Setter Property="HorizontalContentAlignment"
+						Value="Stretch" />
+			</Style>
+			<Style x:Key="ListBoxItemStyle"
+				   TargetType="ListBoxItem">
+				<Setter Property="HorizontalContentAlignment"
+						Value="Stretch" />
+				<Setter Property="VerticalContentAlignment"
+						Value="Stretch" />
+			</Style>
+			<Style x:Key="DisableButton"
+				   TargetType="{x:Type Button}">
+				<Setter Property="Template">
+					<Setter.Value>
+						<ControlTemplate TargetType="Button">
+							<Border x:Name="Overlay"
+									CornerRadius="3"
+									Padding="5 0 5 0">
+								<ContentPresenter />
+							</Border>
+							<ControlTemplate.Triggers>
+								<Trigger Property="IsEnabled"
+										 Value="false">
+									<Setter TargetName="Overlay"
+											Property="Background"
+											Value="Transparent" />
+									<Setter TargetName="Overlay"
+											Property="Opacity"
+											Value="0.25" />
+								</Trigger>
+								<Trigger Property="Border.IsMouseOver"
+										 Value="True">
+									<Setter TargetName="Overlay"
+											Property="Background">
+										<Setter.Value>
+											<LinearGradientBrush StartPoint="0,0"
+																 EndPoint="0,1">
+												<GradientStop Color="white"
+															  Offset="0" />
+												<GradientStop Color="#FFADD8E6"
+															  Offset="1" />
+											</LinearGradientBrush>
+										</Setter.Value>
+									</Setter>
+								</Trigger>
+							</ControlTemplate.Triggers>
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+			</Style>
+		</Grid.Resources>
+
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*" MinHeight="100" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*"
+						   MinHeight="100" />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+
+		<Border Grid.Row="0"
+				BorderBrush="LightGray"
+				BorderThickness="0 0 0 1">
+			<StackPanel Orientation="Horizontal">
+				<Image Width="48"
+					   Margin="10"
+					   Height="48"
+					   Source="pack://application:,,,/ReadiMon.Plugin.Entity;component/Resources/orphan.png" />
+
+				<StackPanel Margin="20 0 0 0"
+							VerticalAlignment="Center">
+					<TextBlock VerticalAlignment="Center"
+							   Text="Orphan Detection"
+							   FontWeight="Bold"
+							   FontSize="20" />
+					<TextBlock VerticalAlignment="Center"
+							   FontSize="14"
+							   Text="Detect orphaned instances..." />
+				</StackPanel>
+			</StackPanel>
+		</Border>
+
+		<Grid Grid.Row="1">
+			<Grid Margin="10">
+				<Grid.ColumnDefinitions>
+					<!-- Tenant Label -->
+					<ColumnDefinition Width="Auto" />
+					<!-- Tenant -->
+					<ColumnDefinition Width="Auto" />
+					<!-- Type Label -->
+					<ColumnDefinition Width="Auto" />
+					<!-- Type -->
+					<ColumnDefinition Width="Auto" />
+					<!-- Application Label -->
+					<ColumnDefinition Width="Auto" />
+					<!-- Application -->
+					<ColumnDefinition Width="Auto" />
+					<!-- Hide System -->
+					<ColumnDefinition Width="Auto" />
+				</Grid.ColumnDefinitions>
+
+				<Label Grid.Column="0" Grid.Row="0" Content="Tenant:" VerticalAlignment="Center"></Label>
+				
+				<ComboBox Grid.Column="1" Grid.Row="0"
+						  ItemsSource="{Binding Tenants}"
+						  Height="25"
+						  Margin="0 0 10 0"
+						  SelectedItem="{Binding SelectedTenant, Mode=TwoWay}"
+						  DisplayMemberPath="Name"
+						  ItemContainerStyle="{StaticResource ListBoxItemStyle}"
+						  ToolTip="The currently selected tenant." MinWidth="100">
+					<ComboBox.ItemsPanel>
+						<ItemsPanelTemplate>
+							<VirtualizingStackPanel />
+						</ItemsPanelTemplate>
+					</ComboBox.ItemsPanel>
+				</ComboBox>
+
+				<Label Grid.Column="2" Grid.Row="0" Content="Application:" VerticalAlignment="Center"></Label>
+
+				<ComboBox Grid.Column="3" Grid.Row="0"
+						  ItemsSource="{Binding Applications}"
+						  Height="25"
+						  Margin="0 0 10 0"
+						  SelectedItem="{Binding SelectedApplication, Mode=TwoWay}"
+						  DisplayMemberPath="Name"
+						  ToolTip="{Binding Path=SelectedItem.Tooltip, RelativeSource={RelativeSource Self}}" MinWidth="150">
+					<ComboBox.ItemContainerStyle>
+						<Style>
+							<Setter Property="Control.ToolTip" Value="{Binding Tooltip}" />
+							<Setter Property="Control.HorizontalContentAlignment" Value="Stretch" />
+							<Setter Property="Control.VerticalContentAlignment" Value="Stretch" />
+						</Style>
+					</ComboBox.ItemContainerStyle>
+					<ComboBox.ItemsPanel>
+						<ItemsPanelTemplate>
+							<VirtualizingStackPanel />
+						</ItemsPanelTemplate>
+					</ComboBox.ItemsPanel>
+				</ComboBox>
+				
+				<Label Grid.Column="4" Grid.Row="0" Content="Type:" VerticalAlignment="Center"></Label>
+
+				<ComboBox Grid.Column="5" Grid.Row="0"
+						  ItemsSource="{Binding Types}"
+						  Height="25"
+						  Margin="0 0 10 0"
+						  SelectedItem="{Binding SelectedType, Mode=TwoWay}"
+						  DisplayMemberPath="Name"
+						  ToolTip="{Binding Path=SelectedItem.Tooltip, RelativeSource={RelativeSource Self}}" MinWidth="400">
+					<ComboBox.ItemContainerStyle>
+						<Style>
+							<Setter Property="Control.ToolTip" Value="{Binding Tooltip}" />
+							<Setter Property="Control.HorizontalContentAlignment" Value="Stretch" />
+							<Setter Property="Control.VerticalContentAlignment" Value="Stretch" />
+						</Style>
+					</ComboBox.ItemContainerStyle>
+					<ComboBox.ItemsPanel>
+						<ItemsPanelTemplate>
+							<VirtualizingStackPanel />
+						</ItemsPanelTemplate>
+					</ComboBox.ItemsPanel>
+				</ComboBox>
+				
+				<CheckBox Grid.Column="6" Grid.Row="0" Margin="0 10 0 5" Content="Hide system instances" ToolTip="Hide instances that have an alias defined." IsChecked="{Binding FilterSystemInstances, Mode=TwoWay}" />
+
+			</Grid>
+		</Grid>
+
+		<Grid Grid.Column="0"
+			  Grid.Row="2">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"
+								  MinWidth="100" />
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="*"
+								  MinWidth="100" />
+			</Grid.ColumnDefinitions>
+
+			<controls:ReadiMonListView Grid.Column="0"
+									   HorizontalAlignment="Stretch"
+									   VerticalAlignment="Stretch"
+									   AlternationCount="2"
+									   ItemsSource="{Binding ReverseRelationships, IsAsync=True}"
+									   attachedProperties:ListViewBackGroundImage.AlignmentX="Left"
+									   attachedProperties:ListViewBackGroundImage.AlignmentY="Bottom"
+									   attachedProperties:ListViewBackGroundImage.ImageSourceUri="pack://application:,,,/ReadiMon.Plugin.Entity;component/Resources/rev.png">
+				<ListView.View>
+					<GridView AllowsColumnReorder="False">
+						<controls:ReadiMonGridViewColumn Header="Reverse Relationships"
+														 CellTemplate="{StaticResource relationshipTypeTemplate}" />
+					</GridView>
+				</ListView.View>
+
+				<ListView.ContextMenu>
+					<ContextMenu>
+						<MenuItem Header="Remove"
+								  IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem, Converter={StaticResource NullBooleanConverter}, FallbackValue=False}"
+								  Command="{Binding RemoveReverseRelationshipCommand}"
+								  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem}" />
+						<MenuItem Header="Copy"
+								  IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem, Converter={StaticResource NullBooleanConverter}, FallbackValue=False}"
+								  Command="{Binding CopyReverseRelationshipCommand}"
+								  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem}" />
+					</ContextMenu>
+				</ListView.ContextMenu>
+
+			</controls:ReadiMonListView>
+
+			<GridSplitter Grid.Column="1"
+						  HorizontalAlignment="Center"
+						  VerticalAlignment="Stretch"
+						  Background="DarkGray"
+						  Width="3" />
+
+			<controls:ReadiMonListView Grid.Column="2"
+									   HorizontalAlignment="Stretch"
+									   VerticalAlignment="Stretch"
+									   AlternationCount="2"
+									   ItemsSource="{Binding ForwardRelationships, IsAsync=True}"
+									   attachedProperties:ListViewBackGroundImage.AlignmentX="Right"
+									   attachedProperties:ListViewBackGroundImage.AlignmentY="Bottom"
+									   attachedProperties:ListViewBackGroundImage.ImageSourceUri="pack://application:,,,/ReadiMon.Plugin.Entity;component/Resources/fwd.png">
+				<ListView.View>
+					<GridView AllowsColumnReorder="False">
+						<controls:ReadiMonGridViewColumn Header="Forward Relationships"
+														 CellTemplate="{StaticResource relationshipTypeTemplate}" />
+					</GridView>
+				</ListView.View>
+
+				<ListView.ContextMenu>
+					<ContextMenu>
+						<MenuItem Header="Remove"
+								  IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem, Converter={StaticResource NullBooleanConverter}, FallbackValue=False}"
+								  Command="{Binding RemoveForwardRelationshipCommand}"
+								  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem}" />
+						<MenuItem Header="Copy"
+								  IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem, Converter={StaticResource NullBooleanConverter}, FallbackValue=False}"
+								  Command="{Binding CopyForwardRelationshipCommand}"
+								  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem}" />
+					</ContextMenu>
+				</ListView.ContextMenu>
+
+			</controls:ReadiMonListView>
+		</Grid>
+
+		<GridSplitter Grid.Column="0"
+					  Grid.Row="3"
+					  HorizontalAlignment="Stretch"
+					  VerticalAlignment="Center"
+					  Background="DarkGray"
+					  Height="3" />
+		
+		<controls:ReadiMonListView Grid.Column="0"
+								   Grid.Row="4"
+								   HorizontalAlignment="Stretch"
+								   VerticalAlignment="Stretch"
+								   AlternationCount="2"
+								   ItemsSource="{Binding FilteredInstances, IsAsync=True}">
+			<ListView.View>
+				<GridView AllowsColumnReorder="False">
+					<controls:ReadiMonGridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}" />
+					<controls:ReadiMonGridViewColumn Header="Name" CellTemplate="{StaticResource entityTemplate}" />
+					<controls:ReadiMonGridViewColumn Header="Description" DisplayMemberBinding="{Binding Description}" />
+					<controls:ReadiMonGridViewColumn Header="Type Name" DisplayMemberBinding="{Binding TypeName}" />
+					<controls:ReadiMonGridViewColumn Header="Created Date" DisplayMemberBinding="{Binding CreatedDate}" />
+					<controls:ReadiMonGridViewColumn Header="Modified Date" DisplayMemberBinding="{Binding ModifiedDate}" />
+					<controls:ReadiMonGridViewColumn Header="Applications" DisplayMemberBinding="{Binding Applications}" />
+				</GridView>
+			</ListView.View>
+		</controls:ReadiMonListView>
+
+		<Grid Grid.Row="5" Grid.Column="0">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="Auto"/>
+			</Grid.ColumnDefinitions>
+
+			<Label Content="Filtered Instances:" Grid.Column="0" VerticalAlignment="Center" Margin="10 10 0 10"></Label>
+			<Label Content="{Binding FilterCount}" Grid.Column="1" VerticalAlignment="Center" Margin="0 10 10 10" FontWeight="Bold"></Label>
+			<Label Content="Show Instances belonging to:" Grid.Column="2" VerticalAlignment="Center" Margin="10 10 0 10" HorizontalAlignment="Right"></Label>
+			<ComboBox Grid.Column="3" Grid.Row="0"
+						  ItemsSource="{Binding FilteredApplications}"
+						  Height="25"
+						  Margin="0 0 10 0"
+						  SelectedItem="{Binding FilteredApplication, Mode=TwoWay}"
+						  DisplayMemberPath="Name"
+						  MinWidth="150" HorizontalAlignment="Left">
+				<ComboBox.ItemContainerStyle>
+					<Style>
+						<Setter Property="Control.ToolTip" Value="{Binding Tooltip}" />
+						<Setter Property="Control.HorizontalContentAlignment" Value="Stretch" />
+						<Setter Property="Control.VerticalContentAlignment" Value="Stretch" />
+					</Style>
+				</ComboBox.ItemContainerStyle>
+				<ComboBox.ItemsPanel>
+					<ItemsPanelTemplate>
+						<VirtualizingStackPanel />
+					</ItemsPanelTemplate>
+				</ComboBox.ItemsPanel>
+			</ComboBox>
+			<Button Content="Save..." Grid.Column="4" Width="100" Height="25" Margin="5 10 5 10" ToolTip="Save the current list of orphans to a text file." IsEnabled="{Binding SaveEnabled}" Command="{Binding SaveCommand}"></Button>
+			<Button Content="Delete..." Grid.Column="5" Width="100" Height="25" Margin="5 10 5 10" ToolTip="Delete the current list of orphans from the database." IsEnabled="{Binding DeleteEnabled}" Command="{Binding DeleteCommand}"></Button>
+		</Grid>
+		
+	</Grid>
+</UserControl>

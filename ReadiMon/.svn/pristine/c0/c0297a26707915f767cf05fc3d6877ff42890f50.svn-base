@@ -1,0 +1,65 @@
+﻿<Window x:Class="ReadiMon.OptionsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:behaviors="clr-namespace:ReadiMon.Behaviors"
+		xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" 
+        Height="400"
+		Width="700"
+		Title="Options"
+		WindowStartupLocation="CenterOwner"
+		WindowStyle="ToolWindow">
+	
+	<Window.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="Resources/Resources.xaml" />
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</Window.Resources>
+	
+    <Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="200"></ColumnDefinition>
+			<ColumnDefinition Width="*"></ColumnDefinition>
+		</Grid.ColumnDefinitions>
+		
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*"></RowDefinition>
+			<RowDefinition Height="50"></RowDefinition>
+		</Grid.RowDefinitions>
+
+		<TreeView Grid.Column="0" Grid.Row="0" ItemsSource="{Binding SectionsView.View}" >
+			<i:Interaction.Behaviors>
+				<behaviors:BindableTreeViewSelectedItemBehavior SelectedItem="{Binding SelectedItem, Mode=TwoWay}" />
+			</i:Interaction.Behaviors>
+			<TreeView.ItemContainerStyle>
+				<Style TargetType="{x:Type TreeViewItem}">
+					<Setter Property="IsExpanded" Value="True"/>
+				</Style>
+			</TreeView.ItemContainerStyle>
+			<TreeView.ItemTemplate>
+				<HierarchicalDataTemplate ItemsSource="{Binding EntriesView.View}">
+					<TextBlock Text="{Binding Name}"></TextBlock>
+				</HierarchicalDataTemplate>
+			</TreeView.ItemTemplate>
+		</TreeView>
+
+		<ContentControl Grid.Column="1" Grid.Row="0" Content="{Binding CurrentView}">
+
+		</ContentControl>
+		
+		<Grid Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="Auto" />
+			</Grid.ColumnDefinitions>
+
+			<Button Grid.Column="0" HorizontalAlignment="Right" Content="OK" Height="25" Width="90" Margin="5" Command="{Binding OkCommand}" IsDefault="True" />
+
+			<Button Grid.Column="1" HorizontalAlignment="Right" Content="Cancel" Height="25" Width="90" Margin="5,5,10,5" Command="{Binding CancelCommand}" IsCancel="True" />
+		</Grid>
+		
+
+		
+	</Grid>
+</Window>

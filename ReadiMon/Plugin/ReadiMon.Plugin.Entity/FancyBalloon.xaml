@@ -1,0 +1,210 @@
+﻿<UserControl x:Class="ReadiMon.Plugin.Entity.FancyBalloon"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:tb="http://www.hardcodet.net/taskbar"
+             mc:Ignorable="d" 
+             d:DesignHeight="300"
+			 d:DesignWidth="300"
+			 Width="400">
+	<UserControl.Resources>
+		<Storyboard x:Key="FadeIn">
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                           Storyboard.TargetName="grid"
+                                           Storyboard.TargetProperty="(UIElement.Opacity)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00"
+                                      Value="0" />
+				<SplineDoubleKeyFrame KeyTime="00:00:01"
+                                      Value="0.95" />
+				<SplineDoubleKeyFrame KeyTime="00:00:03"
+                                      Value="0.95" />
+				<!--				<SplineDoubleKeyFrame KeyTime="00:00:05" Value="0"/>-->
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+		<Storyboard x:Key="HighlightCloseButton">
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                           Storyboard.TargetName="imgClose"
+                                           Storyboard.TargetProperty="(UIElement.Opacity)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00"
+                                      Value="0.4" />
+				<SplineDoubleKeyFrame KeyTime="00:00:00.3000000"
+                                      Value="1" />
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+		<Storyboard x:Key="FadeCloseButton">
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                           Storyboard.TargetName="imgClose"
+                                           Storyboard.TargetProperty="(UIElement.Opacity)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00"
+                                      Value="1" />
+				<SplineDoubleKeyFrame KeyTime="00:00:00.3000000"
+                                      Value="0.4" />
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+		<Storyboard x:Key="FadeBack">
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                           Storyboard.TargetName="grid"
+                                           Storyboard.TargetProperty="(UIElement.Opacity)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00"
+                                      Value="1" />
+				<SplineDoubleKeyFrame KeyTime="00:00:00.3000000"
+                                      Value="1" />
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+		<Storyboard x:Key="FadeOut"
+                    Completed="OnFadeOutCompleted">
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                           Storyboard.TargetName="grid"
+                                           Storyboard.TargetProperty="(UIElement.Opacity)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00"
+                                      Value="1" />
+				<SplineDoubleKeyFrame KeyTime="00:00:00.3000000"
+                                      Value="0.2" />
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+	</UserControl.Resources>
+	<UserControl.Triggers>
+		<EventTrigger RoutedEvent="tb:TaskbarIcon.BalloonShowing">
+			<BeginStoryboard Storyboard="{StaticResource FadeIn}"
+                             x:Name="FadeIn_BeginStoryboard" />
+		</EventTrigger>
+		<EventTrigger RoutedEvent="Mouse.MouseEnter"
+                      SourceName="imgClose">
+			<BeginStoryboard Storyboard="{StaticResource HighlightCloseButton}"
+                             x:Name="HighlightCloseButton_BeginStoryboard" />
+		</EventTrigger>
+		<EventTrigger RoutedEvent="Mouse.MouseLeave"
+                      SourceName="imgClose">
+			<BeginStoryboard Storyboard="{StaticResource FadeCloseButton}"
+                             x:Name="FadeCloseButton_BeginStoryboard" />
+		</EventTrigger>
+		<EventTrigger RoutedEvent="Mouse.MouseEnter">
+			<StopStoryboard BeginStoryboardName="FadeIn_BeginStoryboard" />
+			<BeginStoryboard x:Name="FadeBack_BeginStoryboard1"
+                             Storyboard="{StaticResource FadeBack}" />
+		</EventTrigger>
+		<EventTrigger RoutedEvent="tb:TaskbarIcon.BalloonClosing">
+			<BeginStoryboard Storyboard="{StaticResource FadeOut}"
+                             x:Name="FadeOut_BeginStoryboard" />
+		</EventTrigger>
+	</UserControl.Triggers>
+	<Grid x:Name="grid"
+          MouseEnter="grid_MouseEnter" Cursor="Hand" MouseLeftButtonUp="grid_MouseLeftButtonUp">
+		<Grid.InputBindings>
+			<MouseBinding Gesture="LeftClick" Command="{Binding BalloonClick}" />
+		</Grid.InputBindings>
+		<Border HorizontalAlignment="Stretch"
+                Margin="5,5,5,5"
+                BorderThickness="1,1,1,1"
+                BorderBrush="#004938">
+			<Border.Effect>
+				<DropShadowEffect Color="#FF747474" />
+			</Border.Effect>
+			<Border.Background>
+				<LinearGradientBrush EndPoint="0.5,1"
+                                     StartPoint="0.5,0">
+					<GradientStop Color="#004938"
+                                  Offset="0" />
+					<GradientStop Color="#008686"
+                                  Offset="1" />
+				</LinearGradientBrush>
+			</Border.Background>
+		</Border>
+		<Grid>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="72" />
+				<ColumnDefinition Width="*" />
+			</Grid.ColumnDefinitions>
+
+			<Image HorizontalAlignment="Left"
+				   Grid.Column="0"
+               Width="72"
+               Source="pack://application:,,,/ReadiMon.Plugin.Entity;component/Resources/Info.png"
+               Stretch="Fill"
+               Height="72"
+				   Margin="0 20 0 0"
+               VerticalAlignment="Top" />
+			
+			<Grid Grid.Column="1">
+				
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="*" />
+				</Grid.ColumnDefinitions>
+				
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+				</Grid.RowDefinitions>
+
+				<TextBlock Grid.Row="0" Grid.ColumnSpan="2"
+                   Height="23.2"
+                   Text="{Binding Path=BalloonTitle, Mode=Default}"
+                   TextWrapping="Wrap"
+                   Foreground="#31A89F"
+                   FontWeight="Bold"
+				   FontSize="16"
+						   Margin="0 10 0 0"/>
+				
+				<Image Grid.Row="0" Grid.ColumnSpan="2"
+					HorizontalAlignment="Right"
+				   Margin="0,10,10,0"
+				   Width="16"
+				   Height="16"
+				   Source="pack://application:,,,/ReadiMon.Plugin.Entity;component/Resources/Close.png"
+				   Stretch="Fill"
+				   Opacity="0.4"
+				   ToolTip="Close Balloon"
+				   x:Name="imgClose"
+				   MouseDown="imgClose_MouseDown" />
+
+				<Path Grid.Row="1" Grid.ColumnSpan="2" Fill="#FFFFFFFF"
+				  Stretch="Fill"
+				  Height="1" Margin="0 2 10 0"
+				  Data="M26,107 L220.04123,107"
+				  SnapsToDevicePixels="True">
+					<Path.Stroke>
+						<LinearGradientBrush EndPoint="0.973,0.5"
+                                     StartPoint="0.005,0.5">
+							<GradientStop Color="#008686"
+                                  Offset="1" />
+							<GradientStop Color="#31A89F"
+                                  Offset="0" />
+						</LinearGradientBrush>
+					</Path.Stroke>
+				</Path>
+
+				<TextBlock Grid.Row="2" Grid.Column="0" Margin="0 2 5 0" Foreground="#83CBC5" HorizontalAlignment="Left" TextWrapping="Wrap" FontWeight="Bold" Text="Name: " />
+				<TextBlock Grid.Row="2" Grid.Column="1" Margin="0 2 5 0" Foreground="#83CBC5" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Name}" />
+
+				<TextBlock Grid.Row="3" Grid.Column="0" Margin="0 2 5 0" Foreground="#83CBC5" HorizontalAlignment="Left" TextWrapping="Wrap" FontWeight="Bold" Text="Description: " />
+				<TextBlock Grid.Row="3" Grid.Column="1" Margin="0 2 5 0" Foreground="#83CBC5" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Description}" />
+
+				<TextBlock Grid.Row="4" Grid.Column="0" Margin="0 2 5 0" Foreground="#83CBC5" HorizontalAlignment="Left" TextWrapping="Wrap" FontWeight="Bold" Text="Type: " />
+				<TextBlock Grid.Row="4" Grid.Column="1" Margin="0 2 5 0" Foreground="#83CBC5" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Type}" />
+
+				<TextBlock Grid.Row="5" Grid.Column="0" Margin="0 2 5 0" Foreground="#83CBC5" HorizontalAlignment="Left" TextWrapping="Wrap" FontWeight="Bold" Text="Entity Id: " />
+				<TextBlock Grid.Row="5" Grid.Column="1" Margin="0 2 5 0" Foreground="#83CBC5" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding EntityId}" />
+
+				<TextBlock Grid.Row="6" Grid.Column="0" Margin="0 2 5 0" Foreground="#83CBC5" HorizontalAlignment="Left" TextWrapping="Wrap" FontWeight="Bold" Text="Tenant: " />
+				<TextBlock Grid.Row="6" Grid.Column="1" Margin="0 2 5 0" Foreground="#83CBC5" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding TenantId}" />
+
+				<TextBlock Grid.Row="7" Grid.Column="0" Margin="0 2 5 0" Foreground="#83CBC5" HorizontalAlignment="Left" TextWrapping="Wrap" FontWeight="Bold" Text="Upgrade Id: " />
+				<TextBlock Grid.Row="7" Grid.Column="1" Margin="0 2 5 0" Foreground="#83CBC5" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding UpgradeId}" />
+
+				<TextBlock Grid.Row="8" Grid.Column="0" Margin="0 2 5 10" Foreground="#83CBC5" HorizontalAlignment="Left" TextWrapping="Wrap" FontWeight="Bold" Text="Solution: " />
+				<TextBlock Grid.Row="8" Grid.Column="1" Margin="0 2 5 10" Foreground="#83CBC5" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Solution}" />
+				
+			</Grid>
+		</Grid>
+
+	</Grid>
+</UserControl>
