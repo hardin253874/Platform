@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="EDC.ReadiNow.Security.AccessControl.EntityAccessControlCacheInvalidator">
+    <Position X="7" Y="10.25" Width="2.75" />
+    <Members>
+      <Property Name="AccessControlCacheInvalidationCounters" Hidden="true" />
+      <Method Name="EntityAccessControlCacheInvalidator" Hidden="true" />
+      <Property Name="Trace" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAACAAAkIAAAAAAAAQAEAAAAAAAAABkAAAAABAAAAAA=</HashCode>
+      <FileName>Security\AccessControl\EntityAccessControlCacheInvalidator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="EDC.ReadiNow.Security.AccessControl.EntityAccessControlService">
+    <Position X="7" Y="2.25" Width="2.25" />
+    <Members>
+      <Method Name="EntityAccessControlService" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Security\AccessControl\EntityAccessControlService.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="EntityAccessControlChecker" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="EDC.ReadiNow.Security.AccessControl.EntityAccessControlFactory">
+    <Position X="0.5" Y="6.25" Width="2.25" />
+    <Members>
+      <Field Name="entityAccessControlCacheInvalidator" Hidden="true" />
+      <Field Name="entityAccessControlChecker" Hidden="true" />
+      <Method Name="EntityAccessControlFactory" Hidden="true" />
+      <Field Name="entityAccessControlService" Hidden="true" />
+    </Members>
+    <AssociationLine Name="Service" Type="EDC.ReadiNow.Security.AccessControl.IEntityAccessControlService" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="2.75" Y="6.495" />
+        <Point X="3.125" Y="6.495" />
+        <Point X="3.125" Y="2.5" />
+        <Point X="4.75" Y="2.5" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="CacheInvalidator" Type="EDC.ReadiNow.Security.AccessControl.IEntityAccessControlCacheInvalidator" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="2.75" Y="7.062" />
+        <Point X="3.125" Y="7.062" />
+        <Point X="3.125" Y="10.5" />
+        <Point X="4.75" Y="10.5" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAAAAAAAAAAAQIAAQAIAAAAAAAAAAAI=</HashCode>
+      <FileName>Security\AccessControl\EntityAccessControlFactory.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Service" />
+      <Property Name="CacheInvalidator" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="EDC.ReadiNow.Security.AccessControl.CachingEntityAccessControlChecker">
+    <Position X="13.75" Y="7" Width="2.75" />
+    <Members>
+      <Field Name="_syncRoot" Hidden="true" />
+      <Method Name="CachingEntityAccessControlChecker" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>CAAAAAAgAAAAAAAAAAAgAAAAAAAIAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Security\AccessControl\CachingEntityAccessControlChecker.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Cache" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="EDC.ReadiNow.Security.AccessControl.EntityAccessControlChecker">
+    <Position X="13.75" Y="9.25" Width="2.25" />
+    <Members>
+      <Method Name="AllowAccessToTemporaryIds" Hidden="true" />
+      <Method Name="AllowAccessToTypelessIds" Hidden="true" />
+      <Method Name="CollateAccess" Hidden="true" />
+      <Method Name="CreateEntityCheckCondition" Hidden="true" />
+      <Method Name="DoQueryAccessControlCheck" Hidden="true" />
+      <Method Name="DoRelationshipAccessControlCheck" Hidden="true" />
+      <Method Name="EntityAccessControlChecker" Hidden="true" />
+      <Property Name="EntityTypeRepository" Hidden="true" />
+      <Method Name="IsGlobalTenant" Hidden="true" />
+      <Property Name="QueryRepository" Hidden="true" />
+      <Property Name="RoleRepository" Hidden="true" />
+      <Method Name="SetAll" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>CABAACAgAIAAAAEAAAABAAABAAAACgAAAAAAAQAIAAA=</HashCode>
+      <FileName>Security\AccessControl\EntityAccessControlChecker.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="EDC.ReadiNow.Security.AccessControl.LoggingEntityAccessControlChecker">
+    <Position X="13.75" Y="2.25" Width="3.5" />
+    <Members>
+      <Method Name="LoggingEntityAccessControlChecker" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAAAAAAAAAgAAAAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>Security\AccessControl\LoggingEntityAccessControlChecker.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Trace" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="EDC.ReadiNow.Security.AccessControl.StringEntityAccessControlCheckTrace">
+    <Position X="21.25" Y="2.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Security\AccessControl\StringEntityAccessControlCheckTrace.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="EDC.ReadiNow.Security.AccessControl.UserEntityAccessCache" Collapsed="true">
+    <Position X="18.5" Y="7" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Security\AccessControl\UserEntityAccessCache.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EDC.ReadiNow.Security.AccessControl.CounterEntityAccessControlChecker">
+    <Position X="13.75" Y="4.25" Width="2.75" />
+    <Members>
+      <Method Name="CounterEntityAccessControlChecker" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>CAAAIAAAAAAAAAAAAAAgAAAAAAAAAAAAABAAAAAAAAA=</HashCode>
+      <FileName>Security\AccessControl\CounterEntityAccessControlChecker.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="EDC.ReadiNow.Security.AccessControl.IEntityAccessControlChecker" Collapsed="true">
+    <Position X="11.25" Y="2.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Security\AccessControl\IEntityAccessControlChecker.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="EDC.ReadiNow.Security.AccessControl.IEntityAccessControlCacheInvalidator" Collapsed="true">
+    <Position X="4.75" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAkIAAAAAAAAQAEAAAAAAAAAAkAAAAAAAAAAAA=</HashCode>
+      <FileName>Security\AccessControl\IEntityAccessControlCacheInvalidator.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="EDC.ReadiNow.Security.AccessControl.IEntityAccessControlService" Collapsed="true">
+    <Position X="4.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Security\AccessControl\IEntityAccessControlService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="EDC.ReadiNow.Security.AccessControl.IEntityAccessControlCheckTrace">
+    <Position X="18.5" Y="2.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Security\AccessControl\IEntityAccessControlCheckTrace.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

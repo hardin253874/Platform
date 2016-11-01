@@ -1,0 +1,66 @@
+<!-- Copyright 2011-2016 Global Software Innovation Pty Ltd -->
+<Window x:Class="LogViewer.FiltersWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:lvm="clr-namespace:LogViewer.ViewModels" 
+        xmlns:lvc="clr-namespace:LogViewer.Common" 
+        xmlns:lv="clr-namespace:LogViewer" 
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        Title="Filters" Height="300" Width="614" Icon="/Resources/EventLog.ico">
+    <Window.Resources>
+        <lvc:ComparisonOperatorsListToStringListConverter x:Key="comparisonOperatorsListToStringListConverter"></lvc:ComparisonOperatorsListToStringListConverter>
+        <lvc:ComparisonOperatorToStringConverter x:Key="comparisonOperatorToStringConverter"></lvc:ComparisonOperatorToStringConverter>
+        <lvc:ActionToImageConverter x:Key="actionToImageConverter"></lvc:ActionToImageConverter>
+    </Window.Resources>    
+    <DockPanel>
+        <Label DockPanel.Dock="Top">Display the following matching log entries:</Label>
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Margin="3" Command="{Binding OKButtonCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">OK</Button>
+            <Button Margin="3" Command="{Binding CancelButtonCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">Cancel</Button>
+            <Button Margin="3" Command="{Binding ApplyButtonCommand}">Apply</Button>
+        </StackPanel>
+        <Grid DockPanel.Dock="Top">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="2*"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <ComboBox Grid.Row="0" Grid.Column="0" Margin="2" ItemsSource="{Binding ColumnFilterDefinitions}" DisplayMemberPath="ColumnName" SelectedItem="{Binding SelectedColumnFilterDefinition}"></ComboBox>
+            <ComboBox Grid.Row="0" Grid.Column="1" Margin="2" ItemsSource="{Binding SelectedColumnFilterDefinition.ApplicableComparisonOperators, Converter={StaticResource comparisonOperatorsListToStringListConverter}}" SelectedItem="{Binding SelectedOperator, Converter={StaticResource comparisonOperatorToStringConverter}}"></ComboBox>
+            <lv:ComparisonValueEditor Grid.Row="0" Grid.Column="2" Margin="3" DataType="{Binding SelectedColumnFilterDefinition.ColumnType}" MinValue="{Binding MinFilterValue, Mode=TwoWay}" MaxValue="{Binding MaxFilterValue, Mode=TwoWay}" IsRangeComparison="{Binding IsRangeComparison}"></lv:ComparisonValueEditor>
+            <Label Grid.Row="0" Grid.Column="3">then</Label>
+            <ComboBox Grid.Row="0" Grid.Column="4" Margin="2" SelectedIndex="0" ItemsSource="{Binding FilterActions}" SelectedItem="{Binding SelectedAction}"></ComboBox>
+            <DockPanel Grid.Row="1" Grid.ColumnSpan="5">
+                <Button Margin="3" Command="{Binding ClearFiltersCommand}" DockPanel.Dock="Left">Clear</Button>
+                <StackPanel HorizontalAlignment="Right" DockPanel.Dock="Right" Orientation="Horizontal">
+                    <Button Margin="3" Command="{Binding AddFilterCommand}">Add</Button>
+                    <Button Margin="3" Command="{Binding RemoveFilterCommand}">Remove</Button>
+                </StackPanel>
+            </DockPanel>            
+        </Grid>
+        <DataGrid Margin="3" ItemsSource="{Binding ColumnFilters.View}" IsSynchronizedWithCurrentItem="True" AlternatingRowBackground="Lavender" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" HorizontalGridLinesBrush="LightGray" VerticalGridLinesBrush="LightGray" HeadersVisibility="Column">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="Enabled" Width="0.5*" IsReadOnly="False" CanUserSort="False">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <CheckBox IsChecked="{Binding Path=IsEnabled, UpdateSourceTrigger=PropertyChanged}"></CheckBox>
+                                <Image Margin="2,0" Source="{Binding Path=Action, Converter={StaticResource actionToImageConverter}}" Width="16" Height="16" VerticalAlignment="Center" HorizontalAlignment="Center"></Image>
+                            </StackPanel>                            
+                        </DataTemplate>                        
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>                
+                <DataGridTextColumn Header="Column" Width="0.7*" Binding="{Binding ColumnName}" CanUserSort="False" IsReadOnly="True"></DataGridTextColumn>
+                <DataGridTextColumn Header="Operator" Width="0.7*" Binding="{Binding Operator, Converter={StaticResource comparisonOperatorToStringConverter}}" CanUserSort="False" IsReadOnly="True"></DataGridTextColumn>
+                <DataGridTextColumn Header="Value" Width="2*" Binding="{Binding ValueDescription}" CanUserSort="False" IsReadOnly="True"></DataGridTextColumn>
+                <DataGridTextColumn Header="Action" Width="0.5*" Binding="{Binding Action}" CanUserSort="False" IsReadOnly="True"></DataGridTextColumn>                
+            </DataGrid.Columns>
+        </DataGrid>        
+    </DockPanel>
+</Window>

@@ -1,0 +1,837 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="core" xsi:schemaLocation=". ../Core.xsd" defaultSolution="coreSolution">
+  <!--Copyright 2011-2016 Global Software Innovation Pty Ltd-->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    TYPES                                                         -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- Root 'Resource' type. Equivalent to 'System.Object'. -->
+  <type>
+    <name>Resource</name>
+    <alias>resource</alias>
+    <description>The root resource type from which all other types inherit.</description>
+    <isAbstract>true</isAbstract>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Default</name>
+        <alias>default</alias>
+        <description>Contains Name and Description Fields</description>
+      </fieldGroup>
+      <fieldGroup>
+        <name>System</name>
+        <alias>system</alias>
+        <description>Contains System Fields</description>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <name>Name</name>
+        <description>The 'name' field of every resource.</description>
+        <alias>name</alias>
+        <maxLength>200</maxLength>
+        <pattern>namePattern</pattern>
+        <fieldInGroup>default</fieldInGroup>
+      </stringField>
+      <stringField>
+        <name>Description</name>
+        <description>The 'description' field of every resource.</description>
+        <alias>description</alias>
+        <maxLength>10000</maxLength>
+        <allowMultiLines>true</allowMultiLines>
+        <fieldInGroup>default</fieldInGroup>
+      </stringField>
+      <dateTimeField>
+        <name>Created date</name>
+        <description>The date/time when this resource was created or imported.</description>
+        <alias>createdDate</alias>
+        <isFieldReadOnly>true</isFieldReadOnly>
+        <hideFieldDefaultForm>true</hideFieldDefaultForm>
+        <excludeFieldFromPublish>true</excludeFieldFromPublish>
+        <fieldInGroup>system</fieldInGroup>
+      </dateTimeField>
+      <dateTimeField>
+        <name>Modified date</name>
+        <description>The date/time when this resource was last modified.</description>
+        <alias>modifiedDate</alias>
+        <isFieldReadOnly>true</isFieldReadOnly>
+        <hideFieldDefaultForm>true</hideFieldDefaultForm>
+        <excludeFieldFromPublish>true</excludeFieldFromPublish>
+        <fieldInGroup>system</fieldInGroup>
+      </dateTimeField>
+      <aliasField>
+        <name>Alias</name>
+        <description>The 'alias' field of every resource.</description>
+        <alias>alias</alias>
+        <aliasMarkerId>0</aliasMarkerId>
+        <hideField>true</hideField>
+        <hideFieldDefaultForm>true</hideFieldDefaultForm>
+      </aliasField>
+      <boolField>
+        <alias>canModify</alias>
+        <name>Can modify access</name>
+        <description>If the field is set to true, then the context user has modify access for a given entity.</description>
+        <isFieldVirtual>true</isFieldVirtual>
+        <hideField>true</hideField>
+        <hideFieldDefaultForm>true</hideFieldDefaultForm>
+        <fieldInGroup>system</fieldInGroup>
+      </boolField>
+      <boolField>
+        <alias>canDelete</alias>
+        <name>Can delete access</name>
+        <description>If the field is set to true, then context user has delete access for a given entity.</description>
+        <isFieldVirtual>true</isFieldVirtual>
+        <hideField>true</hideField>
+        <hideFieldDefaultForm>true</hideFieldDefaultForm>
+        <fieldInGroup>system</fieldInGroup>
+      </boolField>
+    </fields>
+    <onBeforeDelete>resourceEventTarget,cacheInvalidationEventTarget,resourceTriggerFilterEventTarget</onBeforeDelete>
+    <onBeforeSave>resourceEventTarget,cacheInvalidationEventTarget,resourceTriggerFilterEventTarget</onBeforeSave>
+    <onAfterDelete>resourceEventTarget,resourceTriggerFilterEventTarget</onAfterDelete>
+    <onAfterSave>resourceEventTarget,cacheInvalidationEventTarget,resourceTriggerFilterEventTarget</onAfterSave>
+  </type>
+  <target>
+    <alias>resourceEventTarget</alias>
+    <typeName>EDC.ReadiNow.Model.EventClasses.ResourceEventTarget</typeName>
+    <assemblyName>EDC.ReadiNow.Common, Version=1.0.0.0, Culture=neutral</assemblyName>
+    <ordinal>0</ordinal>
+  </target>
+  <!-- Used for access control -->
+  <type>
+    <name>Securable Entity</name>
+    <alias>securableEntity</alias>
+    <description>Base type for securable entities.</description>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Securable Entity Details</name>
+        <alias>securableEntityDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <boolField>
+        <alias>allowEveryoneRead</alias>
+        <name>Allow everyone read</name>
+        <description>If set to true, gives everyone read access to instances of this type.</description>
+        <defaultValue>false</defaultValue>
+        <fieldInGroup>system</fieldInGroup>
+        <hideField>true</hideField>
+      </boolField>
+    </fields>
+  </type>
+  <!-- 'Schema' type. Base type of various types. -->
+  <type>
+    <name>Schema</name>
+    <alias>schema</alias>
+    <description>A base type for all schema types.</description>
+    <generateCode>true</generateCode>
+    <isMetadata>true</isMetadata>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Schema Details</name>
+        <alias>schemaDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <boolField>
+        <alias>generateCode</alias>
+        <name>Generate code</name>
+        <defaultValue>false</defaultValue>
+        <description>Flag to indicate that C# code should be generated for this type.</description>
+        <fieldInGroup>schemaDetails</fieldInGroup>
+        <hideField>true</hideField>
+        <hideFieldDefaultForm>true</hideFieldDefaultForm>
+      </boolField>
+      <boolField>
+        <alias>systemTenantOnly</alias>
+        <name>System tenant</name>
+        <description>Flag to indicate that the type applies to the system only, and is not copied to other tenants.</description>
+        <fieldInGroup>schemaDetails</fieldInGroup>
+        <hideField>true</hideField>
+        <hideFieldDefaultForm>true</hideFieldDefaultForm>
+      </boolField>
+    </fields>
+  </type>
+  <!-- 'Type' type. Equivalent to 'System.Type'. -->
+  <type>
+    <name>Type</name>
+    <alias>type</alias>
+    <description>The 'Type' type</description>
+    <generateCode>true</generateCode>
+    <className>EntityType</className>
+    <inherits>schema,securableEntity</inherits>
+    <isMetadata>true</isMetadata>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Object Details</name>
+        <alias>typeDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <boolField>
+        <alias>isAbstract</alias>
+        <name>Is abstract</name>
+        <description>If the field is set to true, then the type cannot be instantiated.</description>
+        <defaultValue>false</defaultValue>
+        <fieldInGroup>typeDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <alias>isSealed</alias>
+        <name>Is sealed</name>
+        <description>If the field is set to true, then the type cannot be inherited.</description>
+        <defaultValue>false</defaultValue>
+        <fieldInGroup>typeDetails</fieldInGroup>
+        <hideField>true</hideField> <!-- hide for now, until we know its future -->
+        <hideFieldDefaultForm>true</hideFieldDefaultForm>
+      </boolField>
+      <boolField>
+        <alias>supportMultiTypes</alias>
+        <name>Support multiple types</name>
+        <description>If the field is set to true, then the type and its derived types support multiple types.</description>
+        <defaultValue>false</defaultValue>
+        <fieldInGroup>typeDetails</fieldInGroup>
+        <hideField>true</hideField> <!-- hide for now, until we know its future -->
+        <hideFieldDefaultForm>true</hideFieldDefaultForm>
+      </boolField>
+      <stringField>
+        <alias>className</alias>
+        <name>Class name</name>
+        <description>Name of the class to be created.</description>
+        <fieldInGroup>typeDetails</fieldInGroup>
+        <hideField>true</hideField>
+        <hideFieldDefaultForm>true</hideFieldDefaultForm>
+      </stringField>
+      <stringField>
+        <alias>classType</alias>
+        <name>Class type</name>
+        <description>Type of the class to be created.</description>
+        <fieldInGroup>typeDetails</fieldInGroup>
+        <hideField>true</hideField>
+        <hideFieldDefaultForm>true</hideFieldDefaultForm>
+      </stringField>
+      <boolField>
+        <alias>canCreateType</alias>
+        <name>Can create type access</name>
+        <description>If the field is set to true, then the context user has create access for a given type.</description>
+        <isFieldVirtual>true</isFieldVirtual>
+        <fieldInGroup>typeDetails</fieldInGroup>
+        <hideField>true</hideField>
+        <hideFieldDefaultForm>true</hideFieldDefaultForm>
+      </boolField>
+      <boolField>
+        <alias>isMetadata</alias>
+        <name>Is metadata</name>
+        <description>Is this type considered metadata (schema) rather than data.</description>
+        <fieldInGroup>typeDetails</fieldInGroup>
+        <hideField>true</hideField>
+        <hideFieldDefaultForm>true</hideFieldDefaultForm>
+      </boolField>
+      <stringField>
+        <alias>typeScriptName</alias>
+        <name>Script name</name>
+        <maxLength>200</maxLength>
+        <pattern>scriptNamePattern</pattern>
+        <description>The name to use when referring to this object or type in scripts.</description>
+        <fieldInGroup>typeDetails</fieldInGroup>
+      </stringField>
+      <boolField>
+        <alias>isAdvancedType</alias>
+        <name>Advanced object</name>
+        <description>This calculated field returns true for system types that should not be shown by default.</description>
+        <fieldInGroup>typeDetails</fieldInGroup>
+        <hideField>false</hideField>
+        <isCalculatedField>true</isCalculatedField>
+        <fieldCalculation>[Resource Type]&lt;&gt;'Definition'</fieldCalculation>
+      </boolField>
+    </fields>
+    <onBeforeSave>addResourceBaseType</onBeforeSave>
+  </type>
+
+  <!-- Managed Type -->
+  <type>
+    <name>Managed Type</name>
+    <alias>managedType</alias>
+    <inherits>type</inherits>
+    <generateCode>true</generateCode>
+    <description>A type that the user can manage for creating reports and triggers</description>
+  </type>
+
+  <!-- Importable Type -->
+  <type>
+    <name>Importable Type</name>
+    <alias>importableType</alias>
+    <inherits>managedType</inherits>
+    <generateCode>true</generateCode>
+    <description>A type that the user can import data into</description>
+  </type>
+
+  <!-- 'Definition' type. Distinct from a type in that this represents types of the form that the user recognises. -->
+  <type>
+    <name>Definition</name>
+    <alias>definition</alias>
+    <inherits>type, managedType, importableType, protectableType</inherits>
+    <generateCode>true</generateCode>
+    <description>A resource definition.</description>
+    <isMetadata>true</isMetadata>
+    <resourceKeys>
+      <resourceKey>
+        <alias>definitionUniqueNameKey</alias>
+        <name>Unique name per definition</name>
+        <resourceKeyMessage>There is another object with the same name.</resourceKeyMessage>
+        <keyFields>name</keyFields>
+      </resourceKey>
+    </resourceKeys>
+  </type>
+  
+  <!-- Type security cache target -->
+  <target>
+    <alias>cacheInvalidationEventTarget</alias>
+    <typeName>EDC.ReadiNow.Model.EventClasses.CacheInvalidationEventTarget</typeName>
+    <assemblyName>EDC.ReadiNow.Common, Version=1.0.0.0, Culture=neutral</assemblyName>
+    <ordinal>0</ordinal>
+  </target>
+  
+  <!-- Resource Filtered Targets -->
+  <target>
+    <alias>resourceTriggerFilterEventTarget</alias>
+    <typeName>EDC.ReadiNow.Model.EventClasses.ResourceTriggerFilter.ResourceTriggerFilterEventTarget</typeName>
+    <assemblyName>EDC.ReadiNow.Common, Version=1.0.0.0, Culture=neutral</assemblyName>
+    <ordinal>0</ordinal>
+  </target>
+  
+  <!-- Ensure all types inherit from resource -->
+  <target>
+    <alias>addResourceBaseType</alias>
+    <typeName>EDC.ReadiNow.Model.EventClasses.TypeAddResourceBaseTypeEventTarget</typeName>
+    <assemblyName>EDC.ReadiNow.Common, Version=1.0.0.0, Culture=neutral</assemblyName>
+    <ordinal>10</ordinal>
+  </target>
+  <!-- The 'type inherits type' relationship definition -->
+  <relationship>
+    <name>Type inherits type</name>
+    <alias>inherits</alias>
+    <reverseAlias>derivedTypes</reverseAlias>
+    <relType>relSharedDependantsOf</relType>
+    <fromType>type</fromType>
+    <fromName>Derived types</fromName>
+    <toType>type</toType>
+    <toName>Inherited types</toName>
+    <securesTo>true</securesTo>
+    <securesToReadOnly>true</securesToReadOnly>
+    <cardinality>manyToMany</cardinality>
+    <generateCode>true</generateCode>
+    <defaultPointTo>resource</defaultPointTo>
+    <implicitInSolution>false</implicitInSolution>
+    <relationshipInFromTypeGroup>typeDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>typeDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- Used for types of types (e.g. enumType) -->
+  <relationship>
+    <name>Type to inherit by default</name>
+    <alias>instancesInheritByDefault</alias>
+    <relType>relLookup</relType>
+    <fromType>type</fromType>
+    <fromName>Inherited by default for type</fromName>
+    <toType>type</toType>
+    <toName>Instances inherit by default</toName>
+    <generateCode>true</generateCode>
+    <relationshipInFromTypeGroup>typeDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>typeDetails</relationshipInToTypeGroup>
+    <hideOnFromType>true</hideOnFromType>
+  </relationship>
+  <!-- The 'resource is of type' relationship definition -->
+  <!-- Note: should only be needed when specifying multiple types -->
+  <relationship>
+    <name>Resource is of type</name>
+    <alias>isOfType</alias>
+    <reverseAlias>instancesOfType</reverseAlias>
+    <fromType>resource</fromType>
+    <fromName>Instances</fromName>
+    <toType>type</toType>
+    <toName>Resource type</toName>
+    <cardinality>manyToMany</cardinality>
+    <cascadeDelete>true</cascadeDelete>
+    <cascadeDeleteTo>false</cascadeDeleteTo>
+    <generateCode>true</generateCode>
+    <hideOnFromType>false</hideOnFromType>
+    <hideOnFromTypeDefaultForm>true</hideOnFromTypeDefaultForm>
+    <hideOnToType>false</hideOnToType>
+    <hideOnToTypeDefaultForm>true</hideOnToTypeDefaultForm>
+    <cloneAction>cloneReferences</cloneAction>
+    <reverseCloneAction>drop</reverseCloneAction>
+    <!-- hmm.. clone references might be nice for choice fields, but in general drop -->
+    <relationshipInFromTypeGroup>system</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>typeDetails</relationshipInToTypeGroup>
+    <relType>relCustom</relType>
+    <!-- <securesTo>true</securesTo> Note: this is hard-coded in the BulkRequestRunner for now, do we want to add it here though? -->
+    <!-- <relType>relManyToMany</relType> TODO: do we want relDependsOnMulti -->
+  </relationship>
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    CLASS                                                         -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <type>
+    <alias>class</alias>
+    <name>Class</name>
+    <description>An internal code class.</description>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Class Details</name>
+        <alias>classDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <name>Type name</name>
+        <alias>typeName</alias>
+        <fieldInGroup>classDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <name>Assembly name</name>
+        <alias>assemblyName</alias>
+        <fieldInGroup>classDetails</fieldInGroup>
+      </stringField>
+    </fields>
+  </type>
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    FIELDS AND GROUPS                                             -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- The 'type defines field' relationship definition -->
+  <relationship>
+    <name>Type has field</name>
+    <description>The 'Type has field' relationship definition.</description>
+    <alias>fieldIsOnType</alias>
+    <reverseAlias>fields</reverseAlias>
+    <relType>relComponentOf</relType>
+    <fromType>field</fromType>
+    <fromName>Fields</fromName>
+    <toType>type</toType>
+    <toName>Definition</toName>
+    <generateCode>true</generateCode>
+    <securesFrom>true</securesFrom>
+    <!-- For now .. may need to discuss -->
+    <relationshipInToTypeGroup>typeDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- Field groups -->
+  <!-- Note: not strictly required as part of the bootstrap. -->
+  <type>
+    <alias>fieldGroup</alias>
+    <name>Field Group</name>
+    <description>A group of related fields.</description>
+    <generateCode>true</generateCode>
+    <isMetadata>true</isMetadata>
+    <inherits>protectableType</inherits>
+  </type>
+  <relationship>
+    <name>Type has field group</name>
+    <alias>fieldGroupBelongsToType</alias>
+    <reverseAlias>fieldGroups</reverseAlias>
+    <relType>relComponentOf</relType>
+    <fromType>fieldGroup</fromType>
+    <fromName>Field groups</fromName>
+    <toType>type</toType>
+    <securesFrom>true</securesFrom>
+    <toName>Definition</toName>
+    <generateCode>true</generateCode>
+    <relationshipInToTypeGroup>typeDetails</relationshipInToTypeGroup>
+  </relationship>
+  <relationship>
+    <name>Field belongs to group</name>
+    <alias>fieldInGroup</alias>
+    <reverseAlias>fieldGroupFields</reverseAlias>
+    <relType>relLookup</relType>
+    <fromType>field</fromType>
+    <toType>fieldGroup</toType>
+    <securesTo>true</securesTo>
+    <generateCode>true</generateCode>
+  </relationship>
+  <!-- Resource Key -->
+  <!-- Note: not strictly required as part of the bootstrap. -->
+  <type>
+    <alias>resourceKey</alias>
+    <name>Resource Key</name>
+    <description>Fields to consist a key of a resource .</description>
+    <isMetadata>true</isMetadata>
+    <inherits>protectableType</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Resource Key Details</name>
+        <alias>resourceKeyDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <boolField>
+        <alias>mergeDuplicates</alias>
+        <name>Merge duplicate</name>
+        <description>If the field is set to true, then the duplicated data can be merged.</description>
+        <defaultValue>false</defaultValue>
+        <fieldInGroup>resourceKeyDetails</fieldInGroup>
+      </boolField>
+      <stringField>
+        <alias>resourceKeyMessage</alias>
+        <name>Message</name>
+        <description>A customizable error message that is shown whenever a duplicate key is detected.</description>
+        <fieldInGroup>resourceKeyDetails</fieldInGroup>
+      </stringField>
+    </fields>
+    <generateCode>true</generateCode>
+    <onBeforeSave>
+      <target>
+        <alias>resourceKeyEventTarget</alias>
+        <typeName>EDC.ReadiNow.Model.EventClasses.ResourceKeyEventTarget</typeName>
+        <assemblyName>EDC.ReadiNow.Common, Version=1.0.0.0, Culture=neutral</assemblyName>
+        <ordinal>0</ordinal>
+      </target>
+    </onBeforeSave>
+  </type>
+  <relationship>
+    <alias>keyAppliesToType</alias>
+    <name>Resource key applies to definition</name>
+    <description>Associates a resource key with a definition.</description>
+    <relType>relComponentOf</relType>
+    <reverseAlias>resourceKeys</reverseAlias>
+    <fromType>resourceKey</fromType>
+    <toType>type</toType>
+    <securesFrom>true</securesFrom>
+    <generateCode>true</generateCode>
+    <relationshipInFromTypeGroup>resourceKeyDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>typeDetails</relationshipInToTypeGroup>
+  </relationship>
+  <relationship>
+    <alias>fieldInKey</alias>
+    <name>Resource key fields</name>
+    <description>Describes which fields are in each resource key.</description>
+    <reverseAlias>keyFields</reverseAlias>
+    <relType>relManyToMany</relType>
+    <fromType>field</fromType>
+    <toType>resourceKey</toType>
+    <generateCode>true</generateCode>
+    <relationshipInToTypeGroup>resourceKeyDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- A relationship that defines what relationships are in a key -->
+  <relationship>
+    <alias>relationshipInResourceKey</alias>
+    <name>Resource key relationships</name>
+    <description>Describes which relationships are in each resource key.</description>
+    <relType>relComponentOf</relType>
+    <reverseAlias>resourceKeyRelationships</reverseAlias>
+    <fromType>resourceKeyRelationship</fromType>
+    <toType>resourceKey</toType>
+    <generateCode>true</generateCode>
+    <relationshipInToTypeGroup>resourceKeyDetails</relationshipInToTypeGroup>
+    <relationshipInFromTypeGroup>resourceKeyRelationshipDetails</relationshipInFromTypeGroup>
+  </relationship>
+  <!-- A type that represents a relationship + direction that is part of a key -->
+  <type>
+    <alias>resourceKeyRelationship</alias>
+    <name>Resource Key Relationship</name>
+    <description>Represents a relationship and direction that are are part of a resource key.</description>
+    <inherits>protectableType</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Resource Key Relationship Details</name>
+        <alias>resourceKeyRelationshipDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <generateCode>true</generateCode>
+    <relationships>
+      <relationship>
+        <name>Resource key relationship direction</name>
+        <alias>keyRelationshipDirection</alias>
+        <relType>relChoiceField</relType>
+        <toType>directionEnum</toType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>resourceKeyRelationshipDetails</relationshipInFromTypeGroup>
+      </relationship>
+      <relationship>
+        <name>Resource key relationship</name>
+        <alias>keyRelationship</alias>
+        <reverseAlias>relationshipInKey</reverseAlias>
+        <relType>relDependantOf</relType>
+        <toType>relationship</toType>
+        <generateCode>true</generateCode>
+        <relationshipInToTypeGroup>relationshipDetails</relationshipInToTypeGroup>
+        <relationshipInFromTypeGroup>resourceKeyRelationshipDetails</relationshipInFromTypeGroup>
+      </relationship>
+      <relationship>
+        <name>Resource key relationship field</name>
+        <alias>fieldsInRelationshipKey</alias>
+        <description>Specifies fields to key the relationship on rather than the id of the related entity.</description>
+        <reverseAlias>keyRelationshipFields</reverseAlias>
+        <relType>relManyToMany</relType>
+        <toType>field</toType>
+        <generateCode>true</generateCode>
+        <relationshipInToTypeGroup>fieldDetails</relationshipInToTypeGroup>
+        <relationshipInFromTypeGroup>resourceKeyRelationshipDetails</relationshipInFromTypeGroup>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- A value that represents the hash of all the fields for a resource key for a resource -->
+  <type>
+    <alias>resourceKeyDataHash</alias>
+    <name>Resource Key Data Hash</name>
+    <description>The hash of the fields for a particular resource key and resource.</description>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Resource Key Data Hash Details</name>
+        <alias>resourceKeyDataHashDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>dataHash</alias>
+        <name>Data hash</name>
+        <description>The hash of all the data fields that define a key.</description>
+        <fieldInGroup>resourceKeyDataHashDetails</fieldInGroup>
+      </stringField>
+    </fields>
+    <generateCode>true</generateCode>
+  </type>
+  <!-- A relationship from a key data hash to a resource key -->
+  <relationship>
+    <alias>resourceKeyDataHashAppliesToResourceKey</alias>
+    <name>Resource key data hashes</name>
+    <description>Associates a resource key hash with a resource key.</description>
+    <reverseAlias>resourceKeyDataHashes</reverseAlias>
+    <fromType>resourceKeyDataHash</fromType>
+    <toType>resourceKey</toType>
+    <securesFrom>true</securesFrom>
+    <hideOnToType>true</hideOnToType>
+    <generateCode>true</generateCode>
+    <relType>relDependantOf</relType>
+    <relationshipInFromTypeGroup>resourceKeyDataHashDetails</relationshipInFromTypeGroup>
+  </relationship>
+  <!-- A relationship from a resource to a key data hash -->
+  <relationship>
+    <alias>resourceHasResourceKeyDataHashes</alias>
+    <name>Resource has resource key data hash</name>
+    <reverseAlias>resourceKeyDataHashAppliesToResource</reverseAlias>
+    <description>Associates a resource key data hash with a resource.</description>
+    <fromType>resource</fromType>
+    <hideOnFromType>true</hideOnFromType>
+    <toType>resourceKeyDataHash</toType>
+    <securesTo>true</securesTo>
+    <generateCode>true</generateCode>
+    <relType>relComponents</relType>
+    <relationshipInToTypeGroup>resourceKeyDataHashDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- Direction Enumeration type -->
+  <enumType>
+    <alias>directionEnum</alias>
+    <name>Direction</name>
+    <inherits>enumValue</inherits>
+    <enumValues>
+      <directionEnum>
+        <name>Forward</name>
+        <alias>forward</alias>
+        <enumOrder>1</enumOrder>
+      </directionEnum>
+      <directionEnum>
+        <name>Reverse</name>
+        <alias>reverse</alias>
+        <enumOrder>2</enumOrder>
+      </directionEnum>
+    </enumValues>
+    <generateCode>true</generateCode>
+  </enumType>
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    EVENTS                                                        -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <type>
+    <alias>target</alias>
+    <name>Entity Event Target Class</name>
+    <description>Entity event target class (must implement IEntityEvent).</description>
+    <inherits>class</inherits>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Event Target Details</name>
+        <alias>targetDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <intField>
+        <name>Ordinal</name>
+        <alias>ordinal</alias>
+        <fieldInGroup>targetDetails</fieldInGroup>
+      </intField>
+    </fields>
+  </type>
+  <!-- The relationship 'onBeforeDelete' relationship -->
+  <relationship>
+    <alias>onBeforeDelete</alias>
+    <reverseAlias>onBeforeDeleteTarget</reverseAlias>
+    <name>On before delete</name>
+    <description>Describes the 'OnBeforeDelete' relationship definition.</description>
+    <relType>relManyToMany</relType>
+    <fromType>type</fromType>
+    <toType>target</toType>
+    <generateCode>true</generateCode>
+    <hideOnFromType>true</hideOnFromType>
+    <relationshipInToTypeGroup>targetDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- The relationship 'onAfterDelete' relationship -->
+  <relationship>
+    <alias>onAfterDelete</alias>
+    <reverseAlias>onAfterDeleteTarget</reverseAlias>
+    <name>On after delete</name>
+    <description>Describes the 'OnAfterDelete' relationship definition.</description>
+    <relType>relManyToMany</relType>
+    <fromType>type</fromType>
+    <toType>target</toType>
+    <generateCode>true</generateCode>
+    <hideOnFromType>true</hideOnFromType>
+    <relationshipInToTypeGroup>targetDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- The relationship 'onBeforeSave' relationship -->
+  <relationship>
+    <alias>onBeforeSave</alias>
+    <reverseAlias>onBeforeSaveTarget</reverseAlias>
+    <name>On before save</name>
+    <description>Describes the 'OnBeforeSave' relationship definition.</description>
+    <relType>relManyToMany</relType>
+    <fromType>type</fromType>
+    <toType>target</toType>
+    <generateCode>true</generateCode>
+    <hideOnFromType>true</hideOnFromType>
+    <relationshipInToTypeGroup>targetDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- The relationship 'onAfterSave' relationship -->
+  <relationship>
+    <alias>onAfterSave</alias>
+    <reverseAlias>onAfterSaveTarget</reverseAlias>
+    <name>On after save</name>
+    <description>Describes the 'OnAfterSave' relationship definition.</description>
+    <relType>relManyToMany</relType>
+    <fromType>type</fromType>
+    <toType>target</toType>
+    <generateCode>true</generateCode>
+    <hideOnFromType>true</hideOnFromType>
+    <relationshipInToTypeGroup>targetDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- The relationship 'onSaveFailed' relationship -->
+  <relationship>
+    <alias>onSaveFailed</alias>
+    <reverseAlias>onSaveFailedTarget</reverseAlias>
+    <name>On save failed</name>
+    <description>Describes the 'OnSaveFailed' relationship definition.</description>
+    <relType>relManyToMany</relType>
+    <fromType>type</fromType>
+    <toType>target</toType>
+    <generateCode>true</generateCode>
+    <hideOnFromType>true</hideOnFromType>
+    <relationshipInToTypeGroup>targetDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- The relationship 'onDeleteFailed' relationship -->
+  <relationship>
+    <alias>onDeleteFailed</alias>
+    <reverseAlias>onDeleteFailedTarget</reverseAlias>
+    <name>On delete failed</name>
+    <description>Describes the 'OnDeleteFailed' relationship definition.</description>
+    <relType>relManyToMany</relType>
+    <fromType>type</fromType>
+    <toType>target</toType>
+    <generateCode>true</generateCode>
+    <hideOnFromType>true</hideOnFromType>
+    <relationshipInToTypeGroup>targetDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- The relationship 'onAfterDeploy' relationship (This is for a new installation that has been deployed). -->
+  <relationship>
+    <alias>onAfterDeploy</alias>
+    <reverseAlias>onAfterSolutionDeploy</reverseAlias>
+    <name>On after deploy</name>
+    <description>Describes the 'OnAfterDeploy' relationship definition.</description>
+    <relType>relComponents</relType>
+    <fromType>type</fromType>
+    <toType>target</toType>
+    <generateCode>true</generateCode>
+    <hideOnFromType>true</hideOnFromType>
+    <relationshipInToTypeGroup>targetDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- The relationship 'onDeployFailed' relationship (This is for a new installation that has been deployed). -->
+  <relationship>
+    <alias>onDeployFailed</alias>
+    <reverseAlias>onSolutionDeployFailed</reverseAlias>
+    <name>On deploy failed</name>
+    <description>Describes the 'OnDeployFailed' relationship definition.</description>
+    <relType>relComponents</relType>
+    <fromType>type</fromType>
+    <toType>target</toType>
+    <generateCode>true</generateCode>
+    <hideOnFromType>true</hideOnFromType>
+    <relationshipInToTypeGroup>targetDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- The relationship 'onAfterPublish' relationship (This is for an application that has been published). -->
+  <relationship>
+    <alias>onAfterPublish</alias>
+    <reverseAlias>onAfterSolutionPublish</reverseAlias>
+    <name>On after publish</name>
+    <description>Describes the 'OnAfterPublish' relationship definition.</description>
+    <relType>relComponents</relType>
+    <fromType>type</fromType>
+    <toType>target</toType>
+    <generateCode>true</generateCode>
+    <hideOnFromType>true</hideOnFromType>
+    <relationshipInToTypeGroup>targetDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- The relationship 'onPublishFailed' relationship (This is for an application that has been published). -->
+  <relationship>
+    <alias>onPublishFailed</alias>
+    <reverseAlias>onSolutionPublishFailed</reverseAlias>
+    <name>On publish failed</name>
+    <description>Describes the 'OnPublishFailed' relationship definition.</description>
+    <relType>relComponents</relType>
+    <fromType>type</fromType>
+    <toType>target</toType>
+    <generateCode>true</generateCode>
+    <hideOnFromType>true</hideOnFromType>
+    <relationshipInToTypeGroup>targetDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- The relationship 'onBeforeUpgrade' relationship (This is for an existing solution that is about upgraded). -->
+  <relationship>
+    <alias>onBeforeUpgrade</alias>
+    <reverseAlias>onBeforeSolutionUpgrade</reverseAlias>
+    <name>On before upgrade</name>
+    <description>Describes the 'OnBeforeUpgrade' relationship definition.</description>
+    <relType>relComponents</relType>
+    <fromType>type</fromType>
+    <toType>target</toType>
+    <generateCode>true</generateCode>
+    <hideOnFromType>true</hideOnFromType>
+    <relationshipInToTypeGroup>targetDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- The relationship 'onAfterUpgrade' relationship (This is for an existing solution that has just been upgraded). -->
+  <relationship>
+    <alias>onAfterUpgrade</alias>
+    <reverseAlias>onAfterSolutionUpgrade</reverseAlias>
+    <name>On after upgrade</name>
+    <description>Describes the 'OnAfterUpgrade' relationship definition.</description>
+    <relType>relComponents</relType>
+    <fromType>type</fromType>
+    <toType>target</toType>
+    <generateCode>true</generateCode>
+    <hideOnFromType>true</hideOnFromType>
+    <relationshipInToTypeGroup>targetDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- Clone Action enumeration -->
+  <enumType>
+    <alias>cloneActionEnum</alias>
+    <name>Clone Action</name>
+    <inherits>enumValue</inherits>
+    <enumValues>
+      <cloneActionEnum>
+        <name>Drop</name>
+        <alias>drop</alias>
+      </cloneActionEnum>
+      <cloneActionEnum>
+        <name>Clone References</name>
+        <alias>cloneReferences</alias>
+      </cloneActionEnum>
+      <cloneActionEnum>
+        <name>Clone Entities</name>
+        <alias>cloneEntities</alias>
+      </cloneActionEnum>
+    </enumValues>
+    <generateCode>true</generateCode>
+  </enumType>
+</resources>

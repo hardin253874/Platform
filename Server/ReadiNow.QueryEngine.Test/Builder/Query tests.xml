@@ -1,0 +1,3746 @@
+<QueryTests>
+  <!--Copyright 2011-2016 Global Software Innovation Pty Ltd-->
+  <Test name="SelectSingleColumn">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="c5df347b-5fb6-4752-b49e-aaa4e4cae4f2">
+        <ExactType>false</ExactType>
+        <EntityTypeId entityRef="true">test:person</EntityTypeId>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <ColumnName>FirstName</ColumnName>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>c5df347b-5fb6-4752-b49e-aaa4e4cae4f2</NodeId>
+            <FieldId entityRef="true">test:firstName</FieldId>
+          </Expression>
+        </Column>
+      </Columns>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+create table #derived ( Id bigint primary key )
+insert into #derived select Id from dbo.fnDerivedTypes(@param2, @tenant)
+
+select
+    d.Data [FirstName]
+from
+    [dbo].[Relationship] e
+    join #derived dt on dt.Id = e.ToId
+    left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param3 and d.TenantId = @tenant
+where
+    e.TypeId = @param1
+    and e.TenantId = @tenant
+
+drop table #derived]]></Expect>
+  </Test>
+  <Test name="SelectAllResources">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="c5df347b-5fb6-4752-b49e-aaa4e4cae4f2">
+        <ExactType>false</ExactType>
+        <EntityTypeId entityRef="true">core:resource</EntityTypeId>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <ColumnName>Name</ColumnName>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>c5df347b-5fb6-4752-b49e-aaa4e4cae4f2</NodeId>
+            <FieldId entityRef="true">core:name</FieldId>
+          </Expression>
+        </Column>
+      </Columns>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+select
+    d.Data [Name]
+from
+    [dbo].[Entity] e
+    left join [dbo].[Data_NVarChar] d on d.EntityId = e.Id and d.FieldId = @param1 and d.TenantId = @tenant
+where
+    e.TenantId = @tenant]]></Expect>
+  </Test>
+  <Test name="SelectTwoColumnsFromSameTable">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="c5df347b-5fb6-4752-b49e-aaa4e4cae4f2">
+        <ExactType>false</ExactType>
+        <EntityTypeId entityRef="true">test:person</EntityTypeId>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>c5df347b-5fb6-4752-b49e-aaa4e4cae4f2</NodeId>
+            <FieldId entityRef="true">test:firstName</FieldId>
+          </Expression>
+        </Column>
+        <Column>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>c5df347b-5fb6-4752-b49e-aaa4e4cae4f2</NodeId>
+            <FieldId entityRef="true">test:lastName</FieldId>
+          </Expression>
+        </Column>
+      </Columns>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+create table #derived ( Id bigint primary key )
+insert into #derived select Id from dbo.fnDerivedTypes(@param2, @tenant)
+
+select
+    d.Data,
+    d2.Data
+from
+    [dbo].[Relationship] e
+    join #derived dt on dt.Id = e.ToId
+    left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param3 and d.TenantId = @tenant
+    left join [dbo].[Data_NVarChar] d2 on d2.EntityId = e.FromId and d2.FieldId = @param4 and d2.TenantId = @tenant
+where
+    e.TypeId = @param1
+    and e.TenantId = @tenant
+
+drop table #derived]]></Expect>
+  </Test>
+  <Test name="SelectTwoColumnsFromDifferentTables">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="c5df347b-5fb6-4752-b49e-aaa4e4cae4f2">
+        <ExactType>false</ExactType>
+        <EntityTypeId entityRef="true">test:person</EntityTypeId>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>c5df347b-5fb6-4752-b49e-aaa4e4cae4f2</NodeId>
+            <FieldId entityRef="true">test:firstName</FieldId>
+          </Expression>
+        </Column>
+        <Column>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>c5df347b-5fb6-4752-b49e-aaa4e4cae4f2</NodeId>
+            <FieldId entityRef="true">test:age</FieldId>
+          </Expression>
+        </Column>
+      </Columns>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+create table #derived ( Id bigint primary key )
+insert into #derived select Id from dbo.fnDerivedTypes(@param2, @tenant)
+
+select
+    d.Data,
+    d2.Data
+from
+    [dbo].[Relationship] e
+    join #derived dt on dt.Id = e.ToId
+    left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param3 and d.TenantId = @tenant
+    left join [dbo].[Data_Int] d2 on d2.EntityId = e.FromId and d2.FieldId = @param4 and d2.TenantId = @tenant
+where
+    e.TypeId = @param1
+    and e.TenantId = @tenant
+
+drop table #derived]]></Expect>
+  </Test>
+  <Test name="FollowForwardRelationship">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="1f9d6264-d4b1-45d5-8238-50ab2417c962">
+        <RelatedEntities>
+          <Entity xsi:type="RelatedResource" id="52e65518-00ff-4571-80b2-e158dcab7aaf">
+            <RelationshipDirection>Forward</RelationshipDirection>
+            <RelationshipTypeId entityRef="true">test:empDepartment</RelationshipTypeId>
+          </Entity>
+        </RelatedEntities>
+        <EntityTypeId entityRef="true">test:employee</EntityTypeId>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>1f9d6264-d4b1-45d5-8238-50ab2417c962</NodeId>
+            <FieldId entityRef="true">test:firstName</FieldId>
+          </Expression>
+        </Column>
+        <Column>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>52e65518-00ff-4571-80b2-e158dcab7aaf</NodeId>
+            <FieldId entityRef="true">core:name</FieldId>
+          </Expression>
+        </Column>
+      </Columns>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+create table #derived ( Id bigint primary key )
+insert into #derived select Id from dbo.fnDerivedTypes(@param2, @tenant)
+
+select
+    d.Data,
+    d2.Data
+from
+    [dbo].[Relationship] e
+    join #derived dt on dt.Id = e.ToId
+    left join [dbo].[Relationship] rel on rel.FromId = e.FromId and rel.TypeId = @param3 and rel.TenantId = @tenant
+    left join [dbo].[Data_NVarChar] d2 on d2.EntityId = rel.ToId and d2.FieldId = @param5 and d2.TenantId = @tenant
+    left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param4 and d.TenantId = @tenant
+where
+    e.TypeId = @param1
+    and e.TenantId = @tenant
+
+drop table #derived]]></Expect>
+  </Test>
+  <Test name="FollowForwardRelationshipWithResourceMustExist">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="1f9d6264-d4b1-45d5-8238-50ab2417c962">
+        <RelatedEntities>
+          <Entity xsi:type="RelatedResource" id="52e65518-00ff-4571-80b2-e158dcab7aaf">
+            <RelationshipDirection>Forward</RelationshipDirection>
+            <ResourceMustExist>true</ResourceMustExist>
+            <RelationshipTypeId entityRef="true">test:empDepartment</RelationshipTypeId>
+          </Entity>
+        </RelatedEntities>
+        <EntityTypeId entityRef="true">test:employee</EntityTypeId>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>1f9d6264-d4b1-45d5-8238-50ab2417c962</NodeId>
+            <FieldId entityRef="true">test:firstName</FieldId>
+          </Expression>
+        </Column>
+        <Column>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>52e65518-00ff-4571-80b2-e158dcab7aaf</NodeId>
+            <FieldId entityRef="true">core:name</FieldId>
+          </Expression>
+        </Column>
+      </Columns>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+create table #derived ( Id bigint primary key )
+insert into #derived select Id from dbo.fnDerivedTypes(@param2, @tenant)
+
+select
+    d.Data,
+    d2.Data
+from
+    [dbo].[Relationship] e
+    join #derived dt on dt.Id = e.ToId
+    join [dbo].[Relationship] rel on rel.FromId = e.FromId and rel.TypeId = @param3 and rel.TenantId = @tenant
+    left join [dbo].[Data_NVarChar] d2 on d2.EntityId = rel.ToId and d2.FieldId = @param5 and d2.TenantId = @tenant
+    left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param4 and d.TenantId = @tenant
+where
+    e.TypeId = @param1
+    and e.TenantId = @tenant
+
+drop table #derived]]></Expect>
+  </Test>
+  <Test name="FollowForwardRelationshipWithResourceMayNotExistWithIsNotNull">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="1f9d6264-d4b1-45d5-8238-50ab2417c962">
+        <RelatedEntities>
+          <Entity xsi:type="RelatedResource" id="52e65518-00ff-4571-80b2-e158dcab7aaf">
+            <RelationshipDirection>Forward</RelationshipDirection>
+            <ResourceNeedNotExist>true</ResourceNeedNotExist>
+            <RelationshipTypeId entityRef="true">test:empDepartment</RelationshipTypeId>
+          </Entity>
+        </RelatedEntities>
+        <EntityTypeId entityRef="true">test:employee</EntityTypeId>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>1f9d6264-d4b1-45d5-8238-50ab2417c962</NodeId>
+            <FieldId entityRef="true">core:name</FieldId>
+          </Expression>
+        </Column>
+      </Columns>
+      <Conditions>
+        <Condition>
+          <Expression xsi:type="ResourceExpression">
+            <NodeId>52e65518-00ff-4571-80b2-e158dcab7aaf</NodeId>
+            <FieldId entityRef="true">core:name</FieldId>
+          </Expression>
+          <Operator>IsNotNull</Operator>
+          <Arguments>
+          </Arguments>
+        </Condition>
+      </Conditions>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+create table #derived ( Id bigint primary key )
+insert into #derived select Id from dbo.fnDerivedTypes(@param2, @tenant)
+
+select
+    d.Data
+from
+    [dbo].[Relationship] e
+    join #derived dt on dt.Id = e.ToId
+    left join [dbo].[Relationship] rel on rel.FromId = e.FromId and rel.TypeId = @param3 and rel.ToId is not null and rel.TenantId = @tenant
+    left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param4 and d.TenantId = @tenant
+where
+    e.TypeId = @param1
+    and e.TenantId = @tenant
+
+drop table #derived]]></Expect>
+  </Test>
+  <Test name="FollowReverseRelationship">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="1f9d6264-d4b1-45d5-8238-50ab2417c962">
+        <RelatedEntities>
+          <Entity xsi:type="RelatedResource" id="52e65518-00ff-4571-80b2-e158dcab7aaf">
+            <RelationshipDirection>Reverse</RelationshipDirection>
+            <RelationshipTypeId entityRef="true">test:empDepartment</RelationshipTypeId>
+          </Entity>
+        </RelatedEntities>
+        <EntityTypeId entityRef="true">test:department</EntityTypeId>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>1f9d6264-d4b1-45d5-8238-50ab2417c962</NodeId>
+            <FieldId entityRef="true">core:name</FieldId>
+          </Expression>
+        </Column>
+        <Column>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>52e65518-00ff-4571-80b2-e158dcab7aaf</NodeId>
+            <FieldId entityRef="true">test:firstName</FieldId>
+          </Expression>
+        </Column>
+      </Columns>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+select
+    d.Data,
+    d2.Data
+from
+    [dbo].[Relationship] e
+    left join [dbo].[Relationship] rel on rel.ToId = e.FromId and rel.TypeId = @param3 and rel.TenantId = @tenant
+    left join [dbo].[Data_NVarChar] d2 on d2.EntityId = rel.FromId and d2.FieldId = @param5 and d2.TenantId = @tenant
+    left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param4 and d.TenantId = @tenant
+where
+    e.TypeId = @param1
+    and e.ToId = @param2
+    and e.TenantId = @tenant]]></Expect>
+  </Test>
+  <Test name="FollowForwardRelationshipForwardRelationship">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="1f9d6264-d4b1-45d5-8238-50ab2417c962">
+        <RelatedEntities>
+          <Entity xsi:type="RelatedResource" id="52e65518-00ff-4571-80b2-e158dcab7aaf">
+            <RelatedEntities>
+              <Entity xsi:type="RelatedResource" id="0d9aef90-10a1-4b0f-9418-246a49ed76ad">
+                <RelationshipDirection>Forward</RelationshipDirection>
+                <RelationshipTypeId entityRef="true">test:empDepartment</RelationshipTypeId>
+              </Entity>
+            </RelatedEntities>
+            <RelationshipDirection>Forward</RelationshipDirection>
+            <RelationshipTypeId entityRef="true">test:allFieldsEmployee</RelationshipTypeId>
+          </Entity>
+        </RelatedEntities>
+        <EntityTypeId entityRef="true">test:allFields</EntityTypeId>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>1f9d6264-d4b1-45d5-8238-50ab2417c962</NodeId>
+            <FieldId entityRef="true">test:afString</FieldId>
+          </Expression>
+        </Column>
+        <Column>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>52e65518-00ff-4571-80b2-e158dcab7aaf</NodeId>
+            <FieldId entityRef="true">core:name</FieldId>
+          </Expression>
+        </Column>
+        <Column>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>0d9aef90-10a1-4b0f-9418-246a49ed76ad</NodeId>
+            <FieldId entityRef="true">core:name</FieldId>
+          </Expression>
+        </Column>
+      </Columns>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+select
+    d.Data,
+    d2.Data,
+    d3.Data
+from
+    [dbo].[Relationship] e
+    left join [dbo].[Relationship] rel on rel.FromId = e.FromId and rel.TypeId = @param3 and rel.TenantId = @tenant
+    left join [dbo].[Relationship] rel2 on rel2.FromId = rel.ToId and rel2.TypeId = @param4 and rel2.TenantId = @tenant
+    left join [dbo].[Data_NVarChar] d3 on d3.EntityId = rel2.ToId and d3.FieldId = @param6 and d3.TenantId = @tenant
+    left join [dbo].[Data_NVarChar] d2 on d2.EntityId = rel.ToId and d2.FieldId = @param6 and d2.TenantId = @tenant
+    left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param5 and d.TenantId = @tenant
+where
+    e.TypeId = @param1
+    and e.ToId = @param2
+    and e.TenantId = @tenant]]></Expect>
+  </Test>
+  <Test name="FollowForwardRelationshipReverseRelationship">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="1f9d6264-d4b1-45d5-8238-50ab2417c962">
+        <RelatedEntities>
+          <Entity xsi:type="RelatedResource" id="52e65518-00ff-4571-80b2-e158dcab7aaf">
+            <RelatedEntities>
+              <Entity xsi:type="RelatedResource" id="0d9aef90-10a1-4b0f-9418-246a49ed76ad">
+                <RelationshipDirection>Reverse</RelationshipDirection>
+                <RelationshipTypeId entityRef="true">test:truckDriver</RelationshipTypeId>
+              </Entity>
+            </RelatedEntities>
+            <RelationshipDirection>Forward</RelationshipDirection>
+            <RelationshipTypeId entityRef="true">test:trucks</RelationshipTypeId>
+          </Entity>
+        </RelatedEntities>
+        <EntityTypeId entityRef="true">test:allFields</EntityTypeId>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>1f9d6264-d4b1-45d5-8238-50ab2417c962</NodeId>
+            <FieldId entityRef="true">test:afString</FieldId>
+          </Expression>
+        </Column>
+        <Column>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>52e65518-00ff-4571-80b2-e158dcab7aaf</NodeId>
+            <FieldId entityRef="true">core:name</FieldId>
+          </Expression>
+        </Column>
+        <Column>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>0d9aef90-10a1-4b0f-9418-246a49ed76ad</NodeId>
+            <FieldId entityRef="true">test:firstName</FieldId>
+          </Expression>
+        </Column>
+      </Columns>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+select
+    d.Data,
+    d2.Data,
+    d3.Data
+from
+    [dbo].[Relationship] e
+    left join [dbo].[Relationship] rel on rel.FromId = e.FromId and rel.TypeId = @param3 and rel.TenantId = @tenant
+    left join [dbo].[Relationship] rel2 on rel2.ToId = rel.ToId and rel2.TypeId = @param4 and rel2.TenantId = @tenant
+    left join [dbo].[Data_NVarChar] d3 on d3.EntityId = rel2.FromId and d3.FieldId = @param7 and d3.TenantId = @tenant
+    left join [dbo].[Data_NVarChar] d2 on d2.EntityId = rel.ToId and d2.FieldId = @param6 and d2.TenantId = @tenant
+    left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param5 and d.TenantId = @tenant
+where
+    e.TypeId = @param1
+    and e.ToId = @param2
+    and e.TenantId = @tenant]]></Expect>
+  </Test>
+  <Test name="RelatesBackToSelfUsingEntity" flags="UsedElsewhere">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="1f9d6264-d4b1-45d5-8238-50ab2417c962">
+        <RelatedEntities>
+          <Entity xsi:type="RelatedResource" id="52e65518-00ff-4571-80b2-e158dcab7aaf">
+            <RelationshipDirection>Forward</RelationshipDirection>
+            <RelationshipTypeId entityRef="true">test:manager</RelationshipTypeId>
+          </Entity>
+        </RelatedEntities>
+        <EntityTypeId entityRef="true">test:employee</EntityTypeId>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>1f9d6264-d4b1-45d5-8238-50ab2417c962</NodeId>
+            <FieldId entityRef="true">test:firstName</FieldId>
+          </Expression>
+        </Column>
+        <Column>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>52e65518-00ff-4571-80b2-e158dcab7aaf</NodeId>
+            <FieldId entityRef="true">test:firstName</FieldId>
+          </Expression>
+        </Column>
+      </Columns>
+    </Query>
+    <Expect><![CDATA[System.InvalidOperationException: Relationship not specified or invalid.
+   at ReadiNow.QueryEngine.Builder.QueryBuilder.RegisterRelatedResourceEntity(RelatedResource relationship, SqlTable parentTable, SqlQuery sqlQuery)
+   at ReadiNow.QueryEngine.Builder.QueryBuilder.CreateEntityPrimaryTable(StructuredQuery query, Entity entity, SqlTable parentTable, SqlQuery sqlQuery)
+   at ReadiNow.QueryEngine.Builder.QueryBuilder.BuildEntityTableJoinTree(StructuredQuery query, Entity entity, SqlTable parentTable, SqlQuery sqlQuery)
+   at ReadiNow.QueryEngine.Builder.QueryBuilder.BuildEntityTableJoinTree(StructuredQuery query, Entity entity, SqlTable parentTable, SqlQuery sqlQuery)
+   at ReadiNow.QueryEngine.Builder.QueryBuilder.CreateSqlQuery(SqlSelectStatement fullQuery)
+   at ReadiNow.QueryEngine.Builder.QueryBuilder.GetSqlInternal()
+   at ReadiNow.QueryEngine.Builder.QuerySqlBuilder.BuildSql(StructuredQuery query, QuerySqlBuilderSettings settings)
+   at ReadiNow.QueryEngine.CachingBuilder.CachingQuerySqlBuilder.BuildSqlImpl(StructuredQuery query, QuerySqlBuilderSettings settings)
+   at ReadiNow.QueryEngine.CachingBuilder.CachingQuerySqlBuilder.BuildSql(StructuredQuery query, QuerySqlBuilderSettings settings)
+   at EDC.ReadiNow.Metadata.Query.Structured.Builder.QueryBuilder.GetSql(StructuredQuery query, QuerySqlBuilderSettings settings)
+   at ReadiNow.QueryEngine.Test.Builder.StructuredQueryTests.RegenerateExpectedResults() in C:\Development\Peter-Server\ReadiNow.QueryEngine.Test\Builder\StructuredQueryTests.cs:line 71]]></Expect>
+  </Test>
+  <Test name="RelatesBackToSelf">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="1f9d6264-d4b1-45d5-8238-50ab2417c962">
+        <RelatedEntities>
+          <Entity xsi:type="RelatedResource" id="52e65518-00ff-4571-80b2-e158dcab7aaf">
+            <RelationshipDirection>Forward</RelationshipDirection>
+            <RelationshipTypeId entityRef="true">test:reportsTo</RelationshipTypeId>
+          </Entity>
+        </RelatedEntities>
+        <EntityTypeId entityRef="true">test:employee</EntityTypeId>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>1f9d6264-d4b1-45d5-8238-50ab2417c962</NodeId>
+            <FieldId entityRef="true">test:firstName</FieldId>
+          </Expression>
+        </Column>
+        <Column>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>52e65518-00ff-4571-80b2-e158dcab7aaf</NodeId>
+            <FieldId entityRef="true">test:firstName</FieldId>
+          </Expression>
+        </Column>
+      </Columns>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+create table #derived ( Id bigint primary key )
+insert into #derived select Id from dbo.fnDerivedTypes(@param2, @tenant)
+
+select
+    d.Data,
+    d2.Data
+from
+    [dbo].[Relationship] e
+    join #derived dt on dt.Id = e.ToId
+    left join [dbo].[Relationship] rel on rel.FromId = e.FromId and rel.TypeId = @param3 and rel.TenantId = @tenant
+    left join [dbo].[Data_NVarChar] d2 on d2.EntityId = rel.ToId and d2.FieldId = @param4 and d2.TenantId = @tenant
+    left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param4 and d.TenantId = @tenant
+where
+    e.TypeId = @param1
+    and e.TenantId = @tenant
+
+drop table #derived]]></Expect>
+  </Test>
+  <Test name="DateTimeTest">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="c5df347b-5fb6-4752-b49e-aaa4e4cae4f2">
+        <ExactType>false</ExactType>
+        <EntityTypeId entityRef="true">core:userAccount</EntityTypeId>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <ColumnName>LastLogon</ColumnName>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>c5df347b-5fb6-4752-b49e-aaa4e4cae4f2</NodeId>
+            <FieldId entityRef="true">core:lastLogon</FieldId>
+          </Expression>
+        </Column>
+      </Columns>
+      <Conditions>
+        <Condition>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>c5df347b-5fb6-4752-b49e-aaa4e4cae4f2</NodeId>
+            <FieldId entityRef="true">core:lastLogon</FieldId>
+          </Expression>
+          <Operator>GreaterThan</Operator>
+          <Arguments>
+            <TypedValue>
+              <Value xsi:type="xsd:dateTime">2012-08-01T12:00:00</Value>
+              <Type xsi:type="DateTimeType" />
+            </TypedValue>
+          </Arguments>
+        </Condition>
+      </Conditions>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+select
+    d.Data [LastLogon]
+from
+    [dbo].[Relationship] e
+    left join [dbo].[Data_DateTime] d on d.EntityId = e.FromId and d.FieldId = @param3 and d.TenantId = @tenant
+where
+    e.TypeId = @param1
+    and e.ToId = @param2
+    and d.Data > try_convert(datetime, '2012-08-01 12:00:00')
+    and e.TenantId = @tenant]]></Expect>
+  </Test>
+  <Test name="SelectFromRelatedResourceWithFauxRelations">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="54c9415c-88fb-492c-984b-842674ee3877">
+        <RelatedEntities>
+          <Entity xsi:type="RelatedResource" id="d60d4b1b-8478-4f6f-abe0-cbe707cf5640">
+            <ExactType>false</ExactType>
+            <RelationshipDirection>Forward</RelationshipDirection>
+            <ResourceMustExist>false</ResourceMustExist>
+            <Recursive>None</Recursive>
+            <CheckExistenceOnly>false</CheckExistenceOnly>
+            <FauxRelationships>
+              <HasTargetResource>true</HasTargetResource>
+              <HasIncludedResources>true</HasIncludedResources>
+              <HasExcludedResources>true</HasExcludedResources>
+            </FauxRelationships>
+            <ExcludeIfNotReferenced>false</ExcludeIfNotReferenced>
+            <RelationshipTypeId entityRef="true">test:empDepartment</RelationshipTypeId>
+          </Entity>
+        </RelatedEntities>
+        <ExactType>false</ExactType>
+        <EntityTypeId entityRef="true">test:employee</EntityTypeId>
+      </RootEntity>
+      <Columns>
+        <Column id="365d0f5a-667d-4a40-802c-4d3fc46fec6a">
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>54c9415c-88fb-492c-984b-842674ee3877</NodeId>
+            <FieldId entityRef="true">test:firstName</FieldId>
+          </Expression>
+          <ColumnName>FirstName</ColumnName>
+          <DisplayName>First Name</DisplayName>
+          <IsHidden>false</IsHidden>
+        </Column>
+        <Column id="dfd6e708-c1ba-4479-a92a-20407b7eba94">
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>d60d4b1b-8478-4f6f-abe0-cbe707cf5640</NodeId>
+            <FieldId entityRef="true">core:name</FieldId>
+          </Expression>
+          <ColumnName>Country</ColumnName>
+          <DisplayName>Country</DisplayName>
+          <IsHidden>false</IsHidden>
+        </Column>
+      </Columns>
+      <Conditions>
+        <Condition>
+          <Expression xsi:type="IdExpression">
+            <NodeId>d60d4b1b-8478-4f6f-abe0-cbe707cf5640</NodeId>
+          </Expression>
+          <Operator>Equal</Operator>
+          <Arguments>
+            <TypedValue>
+              <Value xsi:type="xsd:long">55555</Value>
+              <Type xsi:type="IdentifierType">
+                <MinValue>0</MinValue>
+                <MaxValue>0</MaxValue>
+              </Type>
+              <SourceEntityTypeId>0</SourceEntityTypeId>
+            </TypedValue>
+          </Arguments>
+        </Condition>
+      </Conditions>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+create table #derived ( Id bigint primary key )
+insert into #derived select Id from dbo.fnDerivedTypes(@param2, @tenant)
+
+select
+    d.Data [FirstName],
+    d2.Data [Country]
+from
+    [dbo].[Relationship] e
+    join #derived dt on dt.Id = e.ToId
+    left join ( select TenantId, FromId, ToId, TypeId from dbo.Relationship union select @tenant TenantId, ir.Id FromId, @targetResource ToId, @param3 TypeId from @includeResources ir ) rel on rel.FromId = e.FromId and rel.TypeId = @param3 and rel.FromId not in ( select Id from @excludeResources ) and rel.TenantId = @tenant
+    left join [dbo].[Data_NVarChar] d2 on d2.EntityId = rel.ToId and d2.FieldId = @param5 and d2.TenantId = @tenant
+    left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param4 and d.TenantId = @tenant
+where
+    e.TypeId = @param1
+    and rel.ToId = @param6
+    and e.TenantId = @tenant
+
+drop table #derived]]></Expect>
+  </Test>
+  <Test name="WhereEquals">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="c5df347b-5fb6-4752-b49e-aaa4e4cae4f2">
+        <ExactType>false</ExactType>
+        <EntityTypeId entityRef="true">test:person</EntityTypeId>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <ColumnName>FirstName</ColumnName>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>c5df347b-5fb6-4752-b49e-aaa4e4cae4f2</NodeId>
+            <FieldId entityRef="true">test:firstName</FieldId>
+          </Expression>
+        </Column>
+      </Columns>
+      <Conditions>
+        <Condition>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>c5df347b-5fb6-4752-b49e-aaa4e4cae4f2</NodeId>
+            <FieldId entityRef="true">test:lastName</FieldId>
+          </Expression>
+          <Operator>Equal</Operator>
+          <Arguments>
+            <TypedValue>
+              <Value xsi:type="xsd:string">Aylett</Value>
+              <Type xsi:type="StringType" />
+            </TypedValue>
+          </Arguments>
+        </Condition>
+      </Conditions>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+create table #derived ( Id bigint primary key )
+insert into #derived select Id from dbo.fnDerivedTypes(@param2, @tenant)
+
+select
+    d.Data [FirstName]
+from
+    [dbo].[Relationship] e
+    join #derived dt on dt.Id = e.ToId
+    left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param3 and d.TenantId = @tenant
+    left join [dbo].[Data_NVarChar] d2 on d2.EntityId = e.FromId and d2.FieldId = @param4 and d2.TenantId = @tenant
+where
+    e.TypeId = @param1
+    and ( d2.Data_StartsWith = left((@param5 collate Latin1_General_CI_AI), 100) and d2.Data = (@param5 collate Latin1_General_CI_AI) )
+    and e.TenantId = @tenant
+
+drop table #derived]]></Expect>
+  </Test>
+  <Test name="WhereContains">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="c5df347b-5fb6-4752-b49e-aaa4e4cae4f2">
+        <ExactType>false</ExactType>
+        <EntityTypeId entityRef="true">test:person</EntityTypeId>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <ColumnName>FirstName</ColumnName>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>c5df347b-5fb6-4752-b49e-aaa4e4cae4f2</NodeId>
+            <FieldId entityRef="true">test:firstName</FieldId>
+          </Expression>
+        </Column>
+      </Columns>
+      <Conditions>
+        <Condition>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>c5df347b-5fb6-4752-b49e-aaa4e4cae4f2</NodeId>
+            <FieldId entityRef="true">test:firstName</FieldId>
+          </Expression>
+          <Operator>Contains</Operator>
+          <Arguments>
+            <TypedValue>
+              <Value xsi:type="xsd:string">Fred%s</Value>
+              <Type xsi:type="StringType" />
+            </TypedValue>
+          </Arguments>
+        </Condition>
+      </Conditions>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+create table #derived ( Id bigint primary key )
+insert into #derived select Id from dbo.fnDerivedTypes(@param2, @tenant)
+
+select
+    d.Data [FirstName]
+from
+    [dbo].[Relationship] e
+    join #derived dt on dt.Id = e.ToId
+    left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param3 and d.TenantId = @tenant
+where
+    e.TypeId = @param1
+    and d.Data like '%Fred[%]s%'
+    and e.TenantId = @tenant
+
+drop table #derived]]></Expect>
+  </Test>
+  <Test name="WhereIsNotNull">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="c5df347b-5fb6-4752-b49e-aaa4e4cae4f2">
+        <ExactType>false</ExactType>
+        <EntityTypeId entityRef="true">test:person</EntityTypeId>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <ColumnName>FirstName</ColumnName>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>c5df347b-5fb6-4752-b49e-aaa4e4cae4f2</NodeId>
+            <FieldId entityRef="true">test:firstName</FieldId>
+          </Expression>
+        </Column>
+      </Columns>
+      <Conditions>
+        <Condition>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>c5df347b-5fb6-4752-b49e-aaa4e4cae4f2</NodeId>
+            <FieldId entityRef="true">test:firstName</FieldId>
+          </Expression>
+          <Operator>IsNotNull</Operator>
+          <Arguments />
+        </Condition>
+      </Conditions>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+create table #derived ( Id bigint primary key )
+insert into #derived select Id from dbo.fnDerivedTypes(@param2, @tenant)
+
+select
+    d.Data [FirstName]
+from
+    [dbo].[Relationship] e
+    join #derived dt on dt.Id = e.ToId
+    left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param3 and d.TenantId = @tenant
+where
+    e.TypeId = @param1
+    and isnull(d.Data, '') <> ''
+    and e.TenantId = @tenant
+
+drop table #derived]]></Expect>
+  </Test>
+  <Test name="WhereIsNull">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="c5df347b-5fb6-4752-b49e-aaa4e4cae4f2">
+        <ExactType>false</ExactType>
+        <EntityTypeId entityRef="true">test:person</EntityTypeId>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <ColumnName>FirstName</ColumnName>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>c5df347b-5fb6-4752-b49e-aaa4e4cae4f2</NodeId>
+            <FieldId entityRef="true">test:firstName</FieldId>
+          </Expression>
+        </Column>
+      </Columns>
+      <Conditions>
+        <Condition>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>c5df347b-5fb6-4752-b49e-aaa4e4cae4f2</NodeId>
+            <FieldId entityRef="true">test:firstName</FieldId>
+          </Expression>
+          <Operator>IsNull</Operator>
+          <Arguments />
+        </Condition>
+      </Conditions>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+create table #derived ( Id bigint primary key )
+insert into #derived select Id from dbo.fnDerivedTypes(@param2, @tenant)
+
+select
+    d.Data [FirstName]
+from
+    [dbo].[Relationship] e
+    join #derived dt on dt.Id = e.ToId
+    left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param3 and d.TenantId = @tenant
+where
+    e.TypeId = @param1
+    and isnull(d.Data, '') = ''
+    and e.TenantId = @tenant
+
+drop table #derived]]></Expect>
+  </Test>
+  <Test name="WhereIsCurrentUserForUserAccount">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="c5df347b-5fb6-4752-b49e-aaa4e4cae4f2">
+        <ExactType>false</ExactType>
+        <EntityTypeId entityRef="true">core:userAccount</EntityTypeId>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <ColumnName>FirstName</ColumnName>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>c5df347b-5fb6-4752-b49e-aaa4e4cae4f2</NodeId>
+            <FieldId entityRef="true">core:name</FieldId>
+          </Expression>
+        </Column>
+      </Columns>
+      <Conditions>
+        <Condition>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>c5df347b-5fb6-4752-b49e-aaa4e4cae4f2</NodeId>
+            <FieldId entityRef="true">core:name</FieldId>
+          </Expression>
+          <Operator>CurrentUser</Operator>
+          <Arguments />
+        </Condition>
+      </Conditions>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+select
+    d.Data [FirstName]
+from
+    [dbo].[Relationship] e
+    left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param3 and d.TenantId = @tenant
+where
+    e.TypeId = @param1
+    and e.ToId = @param2
+    and e.FromId = @user
+    and e.TenantId = @tenant]]></Expect>
+  </Test>
+  <Test name="WhereIsCurrentUserForPerson">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="c5df347b-5fb6-4752-b49e-aaa4e4cae4f2">
+        <ExactType>false</ExactType>
+        <EntityTypeId entityRef="true">core:person</EntityTypeId>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <ColumnName>FirstName</ColumnName>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>c5df347b-5fb6-4752-b49e-aaa4e4cae4f2</NodeId>
+            <FieldId entityRef="true">core:firstName</FieldId>
+          </Expression>
+        </Column>
+      </Columns>
+      <Conditions>
+        <Condition>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>c5df347b-5fb6-4752-b49e-aaa4e4cae4f2</NodeId>
+            <FieldId entityRef="true">core:firstName</FieldId>
+          </Expression>
+          <Operator>CurrentUser</Operator>
+          <Arguments />
+        </Condition>
+      </Conditions>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+create table #derived ( Id bigint primary key )
+insert into #derived select Id from dbo.fnDerivedTypes(@param2, @tenant)
+
+select
+    d.Data [FirstName]
+from
+    [dbo].[Relationship] e
+    join #derived dt on dt.Id = e.ToId
+    left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param3 and d.TenantId = @tenant
+where
+    e.TypeId = @param1
+    and e.FromId in ( select FromId from dbo.Relationship where ToId = @user and TypeId = @param4 and TenantId = @tenant )
+    and e.TenantId = @tenant
+
+drop table #derived]]></Expect>
+  </Test>
+  <Test name="WhereIsCurrentUserForScript">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="c5df347b-5fb6-4752-b49e-aaa4e4cae4f2">
+        <ExactType>false</ExactType>
+        <EntityTypeId entityRef="true">test:person</EntityTypeId>
+      </RootEntity>
+      <Columns>
+        <Column id="c7d78d16-7723-494d-945e-7c79be5a6535">
+          <ColumnName>Result</ColumnName>
+          <Expression xsi:type="ScriptExpression">
+            <Script>[Created by]</Script>
+            <NodeId>c5df347b-5fb6-4752-b49e-aaa4e4cae4f2</NodeId>
+          </Expression>
+        </Column>
+      </Columns>
+      <Conditions>
+        <Condition>
+          <Expression xsi:type="ColumnReference">
+            <ColumnId>c7d78d16-7723-494d-945e-7c79be5a6535</ColumnId>
+          </Expression>
+          <Operator>CurrentUser</Operator>
+          <Arguments />
+        </Condition>
+      </Conditions>
+    </Query>
+    <Expect>
+      <![CDATA[--QueryEng (hint: test)
+create table #derived ( Id bigint primary key )
+insert into #derived select Id from dbo.fnDerivedTypes(@param2, @tenant)
+
+select
+    ( select rel.ToId id, Data text from dbo.Data_NVarChar where EntityId = rel.ToId and FieldId = @param4 and TenantId = @tenant for xml raw('e') ) [Result]
+from
+    [dbo].[Relationship] e
+    join #derived dt on dt.Id = e.ToId
+    left join [dbo].[Relationship] rel on rel.FromId = e.FromId and rel.TypeId = @param3 and rel.TenantId = @tenant
+where
+    e.TypeId = @param1
+    and rel.ToId = @user
+    and e.TenantId = @tenant
+
+drop table #derived]]>
+    </Expect>
+  </Test>
+  <Test name="WhereIsCurrentPersonForScript">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="c5df347b-5fb6-4752-b49e-aaa4e4cae4f2">
+        <ExactType>false</ExactType>
+        <EntityTypeId entityRef="true">test:allFields</EntityTypeId>
+      </RootEntity>
+      <Columns>
+        <Column id="c7d78d16-7723-494d-945e-7c79be5a6535">
+          <ColumnName>Result</ColumnName>
+          <Expression xsi:type="ScriptExpression">
+            <Script>[Created by].[User account]</Script> <!-- [User account] is actually the reverse name back to person. Hmm. -->
+            <NodeId>c5df347b-5fb6-4752-b49e-aaa4e4cae4f2</NodeId>
+          </Expression>
+        </Column>
+      </Columns>
+      <Conditions>
+        <Condition>
+          <Expression xsi:type="ColumnReference">
+            <ColumnId>c7d78d16-7723-494d-945e-7c79be5a6535</ColumnId>
+          </Expression>
+          <Operator>CurrentUser</Operator>
+          <Arguments />
+        </Condition>
+      </Conditions>
+    </Query>
+    <Expect>
+      <![CDATA[--QueryEng (hint: test)
+select
+    ( select rel2.FromId id, Data text from dbo.Data_NVarChar where EntityId = rel2.FromId and FieldId = @param5 and TenantId = @tenant for xml raw('e') ) [Result]
+from
+    [dbo].[Relationship] e
+    left join (
+        [dbo].[Relationship] rel
+        join [dbo].[Relationship] rel2 on rel2.ToId = rel.ToId and rel2.TypeId = @param4 and rel2.TenantId = @tenant
+    ) on rel.FromId = e.FromId and rel.TypeId = @param3 and rel.TenantId = @tenant
+where
+    e.TypeId = @param1
+    and e.ToId = @param2
+    and rel2.FromId in ( select FromId from dbo.Relationship where ToId = @user and TypeId = @param4 and TenantId = @tenant )
+    and e.TenantId = @tenant]]>
+    </Expect>
+  </Test>
+  <Test name="WhereWithinStructureLevel">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="c5df347b-5fb6-4752-b49e-aaa4e4cae4f2">
+        <ExactType>false</ExactType>
+        <EntityTypeId entityRef="true">test:person</EntityTypeId>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <ColumnName>FirstName</ColumnName>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>c5df347b-5fb6-4752-b49e-aaa4e4cae4f2</NodeId>
+            <FieldId entityRef="true">test:firstName</FieldId>
+          </Expression>
+        </Column>
+      </Columns>
+      <Conditions>
+        <Condition>
+          <Expression xsi:type="StructureView">
+            <NodeId>c5df347b-5fb6-4752-b49e-aaa4e4cae4f2</NodeId>
+            <StructureViewId entityRef="true">test:testView</StructureViewId>
+          </Expression>
+          <Operator>AnyBelowStructureLevel</Operator>
+          <Arguments>
+            <TypedValue>
+              <Value xsi:type="xsd:string">test:australiaStructureLevel</Value>
+              <Type xsi:type="IdentifierType" />
+            </TypedValue>
+          </Arguments>
+        </Condition>
+      </Conditions>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+create table #derived ( Id bigint primary key )
+insert into #derived select Id from dbo.fnDerivedTypes(@param2, @tenant)
+
+select
+    d.Data [FirstName]
+from
+    [dbo].[Relationship] e
+    join #derived dt on dt.Id = e.ToId
+    left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param3 and d.TenantId = @tenant
+where
+    e.TypeId = @param1
+    and exists ( select 1 from dbo.fnGetRelationshipRecAndSelf( @param6, @tenant, @param8, @param10, @param10 ) svTree where svTree.ToId = e.FromId and svTree.FromId in ( @param9 ) )
+    and e.TenantId = @tenant
+
+drop table #derived]]></Expect>
+  </Test>
+  <Test name="WhereRelatedFieldEquals">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="1f9d6264-d4b1-45d5-8238-50ab2417c962">
+        <RelatedEntities>
+          <Entity xsi:type="RelatedResource" id="52e65518-00ff-4571-80b2-e158dcab7aaf">
+            <RelationshipDirection>Forward</RelationshipDirection>
+            <RelationshipTypeId entityRef="true">oldshared:worksFor</RelationshipTypeId>
+          </Entity>
+        </RelatedEntities>
+        <EntityTypeId entityRef="true">oldshared:person</EntityTypeId>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>1f9d6264-d4b1-45d5-8238-50ab2417c962</NodeId>
+            <FieldId entityRef="true">oldshared:firstName</FieldId>
+          </Expression>
+        </Column>
+        <Column>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>52e65518-00ff-4571-80b2-e158dcab7aaf</NodeId>
+            <FieldId entityRef="true">core:name</FieldId>
+          </Expression>
+        </Column>
+      </Columns>
+      <Conditions>
+        <Condition>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>52e65518-00ff-4571-80b2-e158dcab7aaf</NodeId>
+            <FieldId entityRef="true">core:name</FieldId>
+          </Expression>
+          <Operator>Equal</Operator>
+          <Arguments>
+            <TypedValue>
+              <Value xsi:type="xsd:string">EDC</Value>
+              <Type xsi:type="StringType" />
+            </TypedValue>
+          </Arguments>
+        </Condition>
+      </Conditions>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+create table #derived ( Id bigint primary key )
+insert into #derived select Id from dbo.fnDerivedTypes(@param2, @tenant)
+
+select
+    d.Data,
+    d2.Data
+from
+    [dbo].[Relationship] e
+    join #derived dt on dt.Id = e.ToId
+    left join [dbo].[Relationship] rel on rel.FromId = e.FromId and rel.TypeId = @param3 and rel.TenantId = @tenant
+    left join [dbo].[Data_NVarChar] d2 on d2.EntityId = rel.ToId and d2.FieldId = @param5 and d2.TenantId = @tenant
+    left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param4 and d.TenantId = @tenant
+where
+    e.TypeId = @param1
+    and ( d2.Data_StartsWith = left((@param6 collate Latin1_General_CI_AI), 100) and d2.Data = (@param6 collate Latin1_General_CI_AI) )
+    and e.TenantId = @tenant
+
+drop table #derived]]></Expect>
+  </Test>
+  <Test name="WhereRelatedFieldEqualsButResourceNeedNotExist">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="1f9d6264-d4b1-45d5-8238-50ab2417c962">
+        <RelatedEntities>
+          <Entity xsi:type="RelatedResource" id="52e65518-00ff-4571-80b2-e158dcab7aaf">
+            <RelationshipDirection>Forward</RelationshipDirection>
+            <ResourceNeedNotExist>true</ResourceNeedNotExist>
+            <RelationshipTypeId entityRef="true">oldshared:worksFor</RelationshipTypeId>
+          </Entity>
+        </RelatedEntities>
+        <EntityTypeId entityRef="true">oldshared:person</EntityTypeId>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>1f9d6264-d4b1-45d5-8238-50ab2417c962</NodeId>
+            <FieldId entityRef="true">oldshared:firstName</FieldId>
+          </Expression>
+        </Column>
+        <Column>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>52e65518-00ff-4571-80b2-e158dcab7aaf</NodeId>
+            <FieldId entityRef="true">core:name</FieldId>
+          </Expression>
+        </Column>
+      </Columns>
+      <Conditions>
+        <Condition>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>52e65518-00ff-4571-80b2-e158dcab7aaf</NodeId>
+            <FieldId entityRef="true">core:name</FieldId>
+          </Expression>
+          <Operator>Equal</Operator>
+          <Arguments>
+            <TypedValue>
+              <Value xsi:type="xsd:string">EDC</Value>
+              <Type xsi:type="StringType" />
+            </TypedValue>
+          </Arguments>
+        </Condition>
+      </Conditions>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+create table #derived ( Id bigint primary key )
+insert into #derived select Id from dbo.fnDerivedTypes(@param2, @tenant)
+
+select
+    d.Data,
+    d2.Data
+from
+    [dbo].[Relationship] e
+    join #derived dt on dt.Id = e.ToId
+    left join (
+        [dbo].[Relationship] rel
+        left join [dbo].[Data_NVarChar] d2 on d2.EntityId = rel.ToId and d2.FieldId = @param5 and d2.TenantId = @tenant
+    ) on rel.FromId = e.FromId and rel.TypeId = @param3 and ( d2.Data_StartsWith = left((@param6 collate Latin1_General_CI_AI), 100) and d2.Data = (@param6 collate Latin1_General_CI_AI) ) and rel.TenantId = @tenant
+    left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param4 and d.TenantId = @tenant
+where
+    e.TypeId = @param1
+    and e.TenantId = @tenant
+
+drop table #derived]]></Expect>
+  </Test>
+  <Test name="SelectStructureViewColumn">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="c5df347b-5fb6-4752-b49e-aaa4e4cae4f2">
+        <ExactType>false</ExactType>
+        <EntityTypeId entityRef="true">oldshared:person</EntityTypeId>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <ColumnName>FirstName</ColumnName>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>c5df347b-5fb6-4752-b49e-aaa4e4cae4f2</NodeId>
+            <FieldId entityRef="true">oldshared:firstName</FieldId>
+          </Expression>
+        </Column>
+        <Column>
+          <Expression xsi:type="StructureView">
+            <NodeId>c5df347b-5fb6-4752-b49e-aaa4e4cae4f2</NodeId>
+            <StructureViewId entityRef="true">test:testView</StructureViewId>
+          </Expression>
+        </Column>
+      </Columns>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+create table #derived ( Id bigint primary key )
+insert into #derived select Id from dbo.fnDerivedTypes(@param2, @tenant)
+
+select
+    d.Data [FirstName],
+    dbo.fnGetStructureLevelNamesRev(@tenant, e.FromId, @param4, @param5, @param6, @param7, @param8, char(2), char(3), DEFAULT, 0)
+from
+    [dbo].[Relationship] e
+    join #derived dt on dt.Id = e.ToId
+    left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param3 and d.TenantId = @tenant
+where
+    e.TypeId = @param1
+    and e.TenantId = @tenant
+
+drop table #derived]]></Expect>
+  </Test>
+  <Test name="OrderByChoiceField">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="403d4dc4-e8ab-427e-bb3d-939e15dc039a">
+        <RelatedEntities>
+          <Entity xsi:type="RelatedResource" id="aa27de28-5866-4b64-99e5-501b69708113">
+            <EntityTypeId entityRef="true">test:weekdayEnum</EntityTypeId>
+            <RelationshipDirection>Forward</RelationshipDirection>
+            <RelationshipTypeId entityRef="true">test:afWeekday</RelationshipTypeId>
+          </Entity>
+        </RelatedEntities>
+        <ExactType>false</ExactType>
+        <EntityTypeId entityRef="true">test:allFields</EntityTypeId>
+      </RootEntity>
+      <Columns>
+        <Column id="41f5cc77-667e-40fa-8c95-3e4b05518271">
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>403d4dc4-e8ab-427e-bb3d-939e15dc039a</NodeId>
+            <FieldId entityRef="true">core:name</FieldId>
+          </Expression>
+          <ColumnName>Name</ColumnName>
+          <DisplayName>Name</DisplayName>
+          <IsHidden>false</IsHidden>
+        </Column>
+        <Column id="3b923d1d-660a-4c2e-8d87-9eec26be5415">
+          <Expression xsi:type="ResourceExpression">
+            <NodeId>aa27de28-5866-4b64-99e5-501b69708113</NodeId>
+            <FieldId entityRef="true">name</FieldId>
+          </Expression>
+          <ColumnName>Name</ColumnName>
+          <DisplayName>Incident Status</DisplayName>
+          <IsHidden>false</IsHidden>
+        </Column>
+      </Columns>
+      <Ordering>
+        <OrderBy>
+          <Expression xsi:type="ColumnReference">
+            <ColumnId>3b923d1d-660a-4c2e-8d87-9eec26be5415</ColumnId>
+          </Expression>
+          <Direction>Ascending</Direction>
+        </OrderBy>
+      </Ordering>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+select
+    d.Data [Name],
+    ( select rel.ToId id, Data text from dbo.Data_NVarChar where EntityId = rel.ToId and FieldId = @param4 and TenantId = @tenant for xml raw('e') ) [Name]
+from
+    [dbo].[Relationship] e
+    left join [dbo].[Relationship] rel on rel.FromId = e.FromId and rel.TypeId = @param3 and rel.TenantId = @tenant
+    left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param4 and d.TenantId = @tenant
+where
+    e.TypeId = @param1
+    and e.ToId = @param2
+    and e.TenantId = @tenant
+order by
+    ( select Data from dbo.Data_Int where EntityId = rel.ToId and FieldId = @param5 and TenantId = @tenant )]]></Expect>
+  </Test>
+  <Test name="GroupByChoiceField">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="AggregateEntity" id="6cce8cc5-a42d-491b-9611-eb7be7219d59">
+        <GroupedEntity xsi:type="ResourceEntity" id="403d4dc4-e8ab-427e-bb3d-939e15dc039a">
+          <RelatedEntities>
+            <Entity xsi:type="RelatedResource" id="aa27de28-5866-4b64-99e5-501b69708113">
+              <EntityTypeId entityRef="true">core:dayOfWeekEnum</EntityTypeId>
+              <RelationshipDirection>Forward</RelationshipDirection>
+              <RelationshipTypeId entityRef="true">test:driverWeekday</RelationshipTypeId>
+            </Entity>
+          </RelatedEntities>
+          <ExactType>false</ExactType>
+          <EntityTypeId entityRef="true">test:driver</EntityTypeId>
+        </GroupedEntity>
+        <GroupBy>
+          <Expression xsi:type="ResourceExpression" id="0840c433-f061-40ed-86ab-11e64b9f3bcf">
+            <NodeId>aa27de28-5866-4b64-99e5-501b69708113</NodeId>
+            <FieldId entityRef="true">name</FieldId>
+          </Expression>
+        </GroupBy>
+      </RootEntity>
+      <Columns>
+        <Column id="3b923d1d-660a-4c2e-8d87-9eec26be5415">
+          <Expression xsi:type="ResourceExpression" id="0840c433-f061-40ed-86ab-11e64b9f3bcf">
+            <NodeId>aa27de28-5866-4b64-99e5-501b69708113</NodeId>
+            <FieldId entityRef="true">name</FieldId>
+          </Expression>
+          <ColumnName>Name</ColumnName>
+          <DisplayName>Priority</DisplayName>
+          <IsHidden>false</IsHidden>
+        </Column>
+        <Column>
+          <Expression xsi:type="AggregateExpression">
+            <NodeId>6cce8cc5-a42d-491b-9611-eb7be7219d59</NodeId>
+            <AggregateMethod>Count</AggregateMethod>
+          </Expression>
+        </Column>
+      </Columns>
+      <Ordering>
+        <OrderBy>
+          <Expression xsi:type="ColumnReference">
+            <ColumnId>3b923d1d-660a-4c2e-8d87-9eec26be5415</ColumnId>
+          </Expression>
+          <Direction>Ascending</Direction>
+        </OrderBy>
+      </Ordering>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+select
+    ( select ag.aggCol id, Data text from dbo.Data_NVarChar where EntityId = ag.aggCol and FieldId = @param5 and TenantId = @tenant for xml raw('e') ) [Name],
+    isnull(ag.aggCol2, 0)
+from
+    (
+        select
+            rel.ToId [aggCol],
+            count(*) [aggCol2]
+        from
+            [dbo].[Relationship] e
+            left join [dbo].[Relationship] rel on rel.FromId = e.FromId and rel.TypeId = @param3 and rel.TenantId = @tenant
+        where
+            e.TypeId = @param1
+            and e.ToId = @param2
+            and e.TenantId = @tenant
+        group by
+            rel.ToId
+    ) ag
+order by
+    ( select Data from dbo.Data_Int where EntityId = ag.aggCol and FieldId = @param4 and TenantId = @tenant )]]></Expect>
+  </Test>
+  <Test name="AggregateChoiceField">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="AggregateEntity" id="6cce8cc5-a42d-491b-9611-eb7be7219d59">
+        <GroupedEntity xsi:type="ResourceEntity" id="403d4dc4-e8ab-427e-bb3d-939e15dc039a">
+          <RelatedEntities>
+            <Entity xsi:type="RelatedResource" id="aa27de28-5866-4b64-99e5-501b69708113">
+              <EntityTypeId entityRef="true">test:weekdayEnum</EntityTypeId>
+              <RelationshipDirection>Forward</RelationshipDirection>
+              <RelationshipTypeId entityRef="true">test:afWeekday</RelationshipTypeId>
+            </Entity>
+          </RelatedEntities>
+          <ExactType>false</ExactType>
+          <EntityTypeId entityRef="true">test:allFields</EntityTypeId>
+        </GroupedEntity>
+      </RootEntity>
+      <Columns>
+        <Column id="3b923d1d-660a-4c2e-8d87-9eec26be5415">
+          <Expression xsi:type="AggregateExpression">
+            <NodeId>6cce8cc5-a42d-491b-9611-eb7be7219d59</NodeId>
+            <AggregateMethod>Max</AggregateMethod>
+            <Expression xsi:type="ResourceExpression">
+              <NodeId>aa27de28-5866-4b64-99e5-501b69708113</NodeId>
+              <FieldId entityRef="true">core:name</FieldId>
+            </Expression>
+          </Expression>
+          <ColumnName>Name</ColumnName>
+          <DisplayName>Name</DisplayName>
+          <IsHidden>false</IsHidden>
+        </Column>
+      </Columns>
+      <Ordering>
+        <OrderBy>
+          <Expression xsi:type="ColumnReference">
+            <ColumnId>3b923d1d-660a-4c2e-8d87-9eec26be5415</ColumnId>
+          </Expression>
+          <Direction>Ascending</Direction>
+        </OrderBy>
+      </Ordering>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+select
+    ( select ag.aggCol id, Data text from dbo.Data_NVarChar where EntityId = ag.aggCol and FieldId = @param6 and TenantId = @tenant for xml raw('e') ) [Name]
+from
+    (
+        select
+             ( select top 1 o.EntityId from dbo.Data_Int o join dbo.Relationship t on o.EntityId = t.FromId and t.ToId = @param5 and t.TypeId = @param1 and t.TenantId = @tenant where o.Data = max(d.Data) and o.FieldId = @param4 and o.TenantId = @tenant ) [aggCol]
+        from
+            [dbo].[Relationship] e
+            left join [dbo].[Relationship] rel on rel.FromId = e.FromId and rel.TypeId = @param3 and rel.TenantId = @tenant
+            left join [dbo].[Data_Int] d on d.EntityId = rel.ToId and d.FieldId = @param4 and d.TenantId = @tenant
+        where
+            e.TypeId = @param1
+            and e.ToId = @param2
+            and e.TenantId = @tenant
+    ) ag
+order by
+    ( select Data from dbo.Data_Int where EntityId = ag.aggCol and FieldId = @param4 and TenantId = @tenant )]]></Expect>
+  </Test>
+  <Test name="GroupedAtRootWithCondition">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="AggregateEntity" id="7e0aece2-b5e6-47e7-ba48-1cfa278a03aa">
+        <GroupedEntity xsi:type="ResourceEntity" id="46ff3767-84f3-4d35-a0c3-2a944d9ea25a">
+          <EntityTypeId entityRef="true">oldshared:person</EntityTypeId>
+        </GroupedEntity>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <Expression xsi:type="AggregateExpression">
+            <NodeId>7e0aece2-b5e6-47e7-ba48-1cfa278a03aa</NodeId>
+            <AggregateMethod>Count</AggregateMethod>
+          </Expression>
+          <ColumnName>Count</ColumnName>
+          <DisplayName>Count</DisplayName>
+          <IsHidden>false</IsHidden>
+        </Column>
+      </Columns>
+      <Conditions>
+        <Condition>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>46ff3767-84f3-4d35-a0c3-2a944d9ea25a</NodeId>
+            <FieldId entityRef="true">oldshared:lastName</FieldId>
+          </Expression>
+          <Operator>Equal</Operator>
+          <Arguments>
+            <TypedValue>
+              <Value xsi:type="xsd:string">Aylett</Value>
+              <Type xsi:type="StringType" />
+            </TypedValue>
+          </Arguments>
+        </Condition>
+      </Conditions>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+create table #derived ( Id bigint primary key )
+insert into #derived select Id from dbo.fnDerivedTypes(@param2, @tenant)
+
+select
+    isnull(ag.aggCol, 0) [Count]
+from
+    (
+        select
+            count(*) [aggCol]
+        from
+            [dbo].[Relationship] e
+            join #derived dt on dt.Id = e.ToId
+            left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param3 and d.TenantId = @tenant
+        where
+            e.TypeId = @param1
+            and ( d.Data_StartsWith = left((@param4 collate Latin1_General_CI_AI), 100) and d.Data = (@param4 collate Latin1_General_CI_AI) )
+            and e.TenantId = @tenant
+    ) ag
+
+drop table #derived]]></Expect>
+  </Test>
+  <Test name="GroupedAtRoot">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="AggregateEntity" id="7e0aece2-b5e6-47e7-ba48-1cfa278a03aa">
+        <GroupedEntity xsi:type="ResourceEntity" id="46ff3767-84f3-4d35-a0c3-2a944d9ea25a">
+          <EntityTypeId entityRef="true">oldshared:organisation</EntityTypeId>
+        </GroupedEntity>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <Expression xsi:type="AggregateExpression">
+            <NodeId>7e0aece2-b5e6-47e7-ba48-1cfa278a03aa</NodeId>
+            <AggregateMethod>Count</AggregateMethod>
+          </Expression>
+          <ColumnName>Count</ColumnName>
+          <DisplayName>Count</DisplayName>
+          <IsHidden>false</IsHidden>
+        </Column>
+        <Column>
+          <Expression xsi:type="AggregateExpression">
+            <NodeId>7e0aece2-b5e6-47e7-ba48-1cfa278a03aa</NodeId>
+            <AggregateMethod>Max</AggregateMethod>
+            <Expression xsi:type="ResourceDataColumn">
+              <NodeId>46ff3767-84f3-4d35-a0c3-2a944d9ea25a</NodeId>
+              <FieldId entityRef="true">core:name</FieldId>
+            </Expression>
+          </Expression>
+          <ColumnName>MaxName</ColumnName>
+          <DisplayName>MaxName</DisplayName>
+          <IsHidden>false</IsHidden>
+        </Column>
+      </Columns>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+select
+    isnull(ag.aggCol, 0) [Count],
+    ag.aggCol2 [MaxName]
+from
+    (
+        select
+            count(*) [aggCol],
+            max(d.Data) [aggCol2]
+        from
+            [dbo].[Relationship] e
+            left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param3 and d.TenantId = @tenant
+        where
+            e.TypeId = @param1
+            and e.ToId = @param2
+            and e.TenantId = @tenant
+    ) ag]]></Expect>
+  </Test>
+  <Test name="GroupedRelationshipParent">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="AggregateEntity" id="aecca7cb-130a-447a-ae9d-58aba9012f04">
+        <GroupedEntity xsi:type="ResourceEntity" id="b3ea01f1-0ed5-4545-8169-ca44ac16a233">
+          <RelatedEntities>
+            <Entity xsi:type="RelatedResource" id="d40cee68-d01c-4638-abfa-156c19b9edf4">
+              <RelationshipDirection>Reverse</RelationshipDirection>
+              <RelationshipTypeId entityRef="true">oldshared:worksFor</RelationshipTypeId>
+            </Entity>
+          </RelatedEntities>
+          <ExactType>false</ExactType>
+          <EntityTypeId entityRef="true">oldshared:organisation</EntityTypeId>
+        </GroupedEntity>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <Expression xsi:type="AggregateExpression">
+            <NodeId>aecca7cb-130a-447a-ae9d-58aba9012f04</NodeId>
+            <AggregateMethod>Count</AggregateMethod>
+          </Expression>
+        </Column>
+        <Column>
+          <Expression xsi:type="AggregateExpression">
+            <NodeId>aecca7cb-130a-447a-ae9d-58aba9012f04</NodeId>
+            <AggregateMethod>Max</AggregateMethod>
+            <Expression xsi:type="ResourceDataColumn">
+              <NodeId>b3ea01f1-0ed5-4545-8169-ca44ac16a233</NodeId>
+              <FieldId entityRef="true">core:name</FieldId>
+            </Expression>
+          </Expression>
+        </Column>
+      </Columns>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+select
+    isnull(ag.aggCol, 0),
+    ag.aggCol2
+from
+    (
+        select
+            count(*) [aggCol],
+            max(d.Data) [aggCol2]
+        from
+            [dbo].[Relationship] e
+            left join [dbo].[Relationship] rel on rel.ToId = e.FromId and rel.TypeId = @param3 and rel.TenantId = @tenant
+            left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param4 and d.TenantId = @tenant
+        where
+            e.TypeId = @param1
+            and e.ToId = @param2
+            and e.TenantId = @tenant
+    ) ag]]></Expect>
+  </Test>
+  <Test name="GroupedRelationshipChild">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="bbb13550-602b-4740-ac6f-5dd395162c5c">
+        <RelatedEntities>
+          <Entity xsi:type="AggregateEntity" id="6c2d934a-eccd-43ec-9ac1-88e2be2689a7">
+            <GroupedEntity xsi:type="RelatedResource" id="b2e000a9-7fdc-406d-bfe9-d98548366e8e">
+              <RelationshipDirection>Reverse</RelationshipDirection>
+              <RelationshipTypeId entityRef="true">oldshared:worksFor</RelationshipTypeId>
+            </GroupedEntity>
+          </Entity>
+        </RelatedEntities>
+        <EntityTypeId entityRef="true">oldshared:organisation</EntityTypeId>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>bbb13550-602b-4740-ac6f-5dd395162c5c</NodeId>
+            <FieldId entityRef="true">core:name</FieldId>
+          </Expression>
+        </Column>
+        <Column>
+          <Expression xsi:type="AggregateExpression">
+            <NodeId>6c2d934a-eccd-43ec-9ac1-88e2be2689a7</NodeId>
+            <AggregateMethod>Count</AggregateMethod>
+          </Expression>
+        </Column>
+        <Column>
+          <Expression xsi:type="AggregateExpression">
+            <NodeId>6c2d934a-eccd-43ec-9ac1-88e2be2689a7</NodeId>
+            <AggregateMethod>Max</AggregateMethod>
+            <Expression xsi:type="ResourceDataColumn">
+              <NodeId>b2e000a9-7fdc-406d-bfe9-d98548366e8e</NodeId>
+              <FieldId entityRef="true">core:name</FieldId>
+            </Expression>
+          </Expression>
+        </Column>
+      </Columns>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+select
+    d.Data,
+    isnull(ag.aggCol2, 0),
+    ag.aggCol3
+from
+    [dbo].[Relationship] e
+    left join (
+        select
+            rel.ToId [aggCol],
+            count(*) [aggCol2],
+            max(d2.Data) [aggCol3]
+        from
+            [dbo].[Relationship] rel
+            left join [dbo].[Data_NVarChar] d2 on d2.EntityId = rel.FromId and d2.FieldId = @param4 and d2.TenantId = @tenant
+        where
+            rel.TypeId = @param3
+            and rel.TenantId = @tenant
+        group by
+            rel.ToId
+    ) ag on ag.aggCol = e.FromId
+    left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param4 and d.TenantId = @tenant
+where
+    e.TypeId = @param1
+    and e.ToId = @param2
+    and e.TenantId = @tenant]]></Expect>
+  </Test>
+  <Test name="GroupedRelationshipChildDuplicated">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="0c942530-9853-4260-af68-f64782ddb96a">
+        <RelatedEntities>
+          <Entity xsi:type="AggregateEntity" id="97948abf-ae75-4d00-8138-4e26b538b7f5">
+            <GroupedEntity xsi:type="RelatedResource" id="23d6f824-68e1-4413-9648-730bc81db006">
+              <RelationshipDirection>Reverse</RelationshipDirection>
+              <RelationshipTypeId entityRef="true">oldshared:worksFor</RelationshipTypeId>
+            </GroupedEntity>
+          </Entity>
+          <Entity xsi:type="AggregateEntity" id="bcb1aebb-effa-4034-b12c-b4e206c35073">
+            <GroupedEntity xsi:type="RelatedResource" id="be1e048f-af73-4ae1-b420-a6c6d2f393c0">
+              <RelationshipDirection>Reverse</RelationshipDirection>
+              <RelationshipTypeId entityRef="true">oldshared:worksFor</RelationshipTypeId>
+            </GroupedEntity>
+          </Entity>
+        </RelatedEntities>
+        <EntityTypeId entityRef="true">oldshared:organisation</EntityTypeId>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>0c942530-9853-4260-af68-f64782ddb96a</NodeId>
+            <FieldId entityRef="true">core:name</FieldId>
+          </Expression>
+        </Column>
+        <Column>
+          <Expression xsi:type="AggregateExpression">
+            <NodeId>97948abf-ae75-4d00-8138-4e26b538b7f5</NodeId>
+            <AggregateMethod>Count</AggregateMethod>
+          </Expression>
+        </Column>
+        <Column>
+          <Expression xsi:type="AggregateExpression">
+            <NodeId>97948abf-ae75-4d00-8138-4e26b538b7f5</NodeId>
+            <AggregateMethod>Max</AggregateMethod>
+            <Expression xsi:type="ResourceDataColumn">
+              <NodeId>23d6f824-68e1-4413-9648-730bc81db006</NodeId>
+              <FieldId entityRef="true">core:name</FieldId>
+            </Expression>
+          </Expression>
+        </Column>
+        <Column>
+          <Expression xsi:type="AggregateExpression">
+            <NodeId>bcb1aebb-effa-4034-b12c-b4e206c35073</NodeId>
+            <AggregateMethod>Max</AggregateMethod>
+            <Expression xsi:type="ResourceDataColumn">
+              <NodeId>be1e048f-af73-4ae1-b420-a6c6d2f393c0</NodeId>
+              <FieldId entityRef="true">core:name</FieldId>
+            </Expression>
+          </Expression>
+        </Column>
+      </Columns>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+select
+    d.Data,
+    isnull(ag.aggCol3, 0),
+    ag.aggCol4,
+    ag2.aggCol5
+from
+    [dbo].[Relationship] e
+    left join (
+        select
+            rel.ToId [aggCol],
+            count(*) [aggCol3],
+            max(d2.Data) [aggCol4]
+        from
+            [dbo].[Relationship] rel
+            left join [dbo].[Data_NVarChar] d2 on d2.EntityId = rel.FromId and d2.FieldId = @param4 and d2.TenantId = @tenant
+        where
+            rel.TypeId = @param3
+            and rel.TenantId = @tenant
+        group by
+            rel.ToId
+    ) ag on ag.aggCol = e.FromId
+    left join (
+        select
+            rel2.ToId [aggCol2],
+            max(d3.Data) [aggCol5]
+        from
+            [dbo].[Relationship] rel2
+            left join [dbo].[Data_NVarChar] d3 on d3.EntityId = rel2.FromId and d3.FieldId = @param4 and d3.TenantId = @tenant
+        where
+            rel2.TypeId = @param3
+            and rel2.TenantId = @tenant
+        group by
+            rel2.ToId
+    ) ag2 on ag2.aggCol2 = e.FromId
+    left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param4 and d.TenantId = @tenant
+where
+    e.TypeId = @param1
+    and e.ToId = @param2
+    and e.TenantId = @tenant]]></Expect>
+  </Test>
+  <Test name="GroupedRelationshipChildWithAuxillaryRelationshipOnParent">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="36e54aef-4874-412a-90b0-d6dbe613c8cd">
+        <RelatedEntities>
+          <Entity xsi:type="AggregateEntity" id="05957e6e-f765-4fe9-a8b3-9eabaddb4abf">
+            <GroupedEntity xsi:type="RelatedResource" id="221bee63-5ea4-4cce-b61d-2cf7f3297f85">
+              <RelationshipDirection>Reverse</RelationshipDirection>
+              <RelationshipTypeId entityRef="true">oldshared:worksFor</RelationshipTypeId>
+            </GroupedEntity>
+          </Entity>
+          <Entity xsi:type="RelatedResource" id="cc2e7218-0ffb-44a1-b936-0c1535abb453">
+            <RelationshipDirection>Reverse</RelationshipDirection>
+            <RelationshipTypeId entityRef="true">oldshared:worksFor</RelationshipTypeId>
+          </Entity>
+        </RelatedEntities>
+        <EntityTypeId entityRef="true">oldshared:organisation</EntityTypeId>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>36e54aef-4874-412a-90b0-d6dbe613c8cd</NodeId>
+            <FieldId entityRef="true">core:name</FieldId>
+          </Expression>
+        </Column>
+        <Column>
+          <Expression xsi:type="AggregateExpression">
+            <NodeId>05957e6e-f765-4fe9-a8b3-9eabaddb4abf</NodeId>
+            <AggregateMethod>Count</AggregateMethod>
+          </Expression>
+        </Column>
+        <Column>
+          <Expression xsi:type="AggregateExpression">
+            <NodeId>05957e6e-f765-4fe9-a8b3-9eabaddb4abf</NodeId>
+            <AggregateMethod>Max</AggregateMethod>
+            <Expression xsi:type="ResourceDataColumn">
+              <NodeId>221bee63-5ea4-4cce-b61d-2cf7f3297f85</NodeId>
+              <FieldId entityRef="true">core:name</FieldId>
+            </Expression>
+          </Expression>
+        </Column>
+        <Column>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>cc2e7218-0ffb-44a1-b936-0c1535abb453</NodeId>
+            <FieldId entityRef="true">core:name</FieldId>
+          </Expression>
+        </Column>
+      </Columns>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+select
+    d.Data,
+    isnull(ag.aggCol2, 0),
+    ag.aggCol3,
+    d3.Data
+from
+    [dbo].[Relationship] e
+    left join (
+        select
+            rel.ToId [aggCol],
+            count(*) [aggCol2],
+            max(d2.Data) [aggCol3]
+        from
+            [dbo].[Relationship] rel
+            left join [dbo].[Data_NVarChar] d2 on d2.EntityId = rel.FromId and d2.FieldId = @param4 and d2.TenantId = @tenant
+        where
+            rel.TypeId = @param3
+            and rel.TenantId = @tenant
+        group by
+            rel.ToId
+    ) ag on ag.aggCol = e.FromId
+    left join [dbo].[Relationship] rel2 on rel2.ToId = e.FromId and rel2.TypeId = @param3 and rel2.TenantId = @tenant
+    left join [dbo].[Data_NVarChar] d3 on d3.EntityId = rel2.FromId and d3.FieldId = @param4 and d3.TenantId = @tenant
+    left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param4 and d.TenantId = @tenant
+where
+    e.TypeId = @param1
+    and e.ToId = @param2
+    and e.TenantId = @tenant]]></Expect>
+  </Test>
+  <Test name="GroupedRelationshipFields">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="39353d68-b657-4174-813b-7742cc38b1c5">
+        <RelatedEntities>
+          <Entity xsi:type="AggregateEntity" id="55d5ad21-cbb8-4fb5-814f-09a525874621">
+            <GroupedEntity xsi:type="RelatedResource" id="af170992-b36a-4596-b9e6-c0fb6d1b2123">
+              <RelationshipDirection>Reverse</RelationshipDirection>
+              <RelationshipTypeId entityRef="true">oldshared:worksFor</RelationshipTypeId>
+            </GroupedEntity>
+            <GroupBy>
+              <Expression xsi:type="ResourceDataColumn" id="60578756-5065-4a78-a519-ad0a1a490f2c">
+                <NodeId>af170992-b36a-4596-b9e6-c0fb6d1b2123</NodeId>
+                <FieldId entityRef="true">core:name</FieldId>
+              </Expression>
+              <Expression xsi:type="ResourceDataColumn" id="41613def-5b24-4f26-8603-5d575620dac6">
+                <NodeId>af170992-b36a-4596-b9e6-c0fb6d1b2123</NodeId>
+                <FieldId entityRef="true">core:name</FieldId>
+              </Expression>
+            </GroupBy>
+          </Entity>
+        </RelatedEntities>
+        <EntityTypeId entityRef="true">oldshared:organisation</EntityTypeId>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <Expression xsi:type="ResourceDataColumn" id="60578756-5065-4a78-a519-ad0a1a490f2c">
+            <NodeId>af170992-b36a-4596-b9e6-c0fb6d1b2123</NodeId>
+            <FieldId entityRef="true">core:name</FieldId>
+          </Expression>
+        </Column>
+        <Column>
+          <Expression xsi:type="ResourceDataColumn" id="41613def-5b24-4f26-8603-5d575620dac6">
+            <NodeId>af170992-b36a-4596-b9e6-c0fb6d1b2123</NodeId>
+            <FieldId entityRef="true">oldshared:firstName</FieldId>
+          </Expression>
+        </Column>
+        <Column>
+          <Expression xsi:type="AggregateExpression">
+            <NodeId>55d5ad21-cbb8-4fb5-814f-09a525874621</NodeId>
+            <AggregateMethod>Count</AggregateMethod>
+          </Expression>
+        </Column>
+        <Column>
+          <Expression xsi:type="AggregateExpression">
+            <NodeId>55d5ad21-cbb8-4fb5-814f-09a525874621</NodeId>
+            <AggregateMethod>Max</AggregateMethod>
+            <Expression xsi:type="ResourceDataColumn">
+              <NodeId>af170992-b36a-4596-b9e6-c0fb6d1b2123</NodeId>
+              <FieldId entityRef="true">oldshared:lastName</FieldId>
+            </Expression>
+          </Expression>
+        </Column>
+      </Columns>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+select
+    ag.aggCol2,
+    ag.aggCol3,
+    isnull(ag.aggCol4, 0),
+    ag.aggCol5
+from
+    [dbo].[Relationship] e
+    left join (
+        select
+            rel.ToId [aggCol],
+            d.Data [aggCol2],
+            d.Data [aggCol3],
+            count(*) [aggCol4],
+            max(d2.Data) [aggCol5]
+        from
+            [dbo].[Relationship] rel
+            left join [dbo].[Data_NVarChar] d on d.EntityId = rel.FromId and d.FieldId = @param4 and d.TenantId = @tenant
+            left join [dbo].[Data_NVarChar] d2 on d2.EntityId = rel.FromId and d2.FieldId = @param5 and d2.TenantId = @tenant
+        where
+            rel.TypeId = @param3
+            and rel.TenantId = @tenant
+        group by
+            rel.ToId,
+            d.Data,
+            d.Data
+    ) ag on ag.aggCol = e.FromId
+where
+    e.TypeId = @param1
+    and e.ToId = @param2
+    and e.TenantId = @tenant]]></Expect>
+  </Test>
+  <Test name="GroupedRelationshipFieldsWithIsNullCondition">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="39353d68-b657-4174-813b-7742cc38b1c5">
+        <RelatedEntities>
+          <Entity xsi:type="AggregateEntity" id="55d5ad21-cbb8-4fb5-814f-09a525874621">
+            <GroupedEntity xsi:type="RelatedResource" id="af170992-b36a-4596-b9e6-c0fb6d1b2123">
+              <RelationshipDirection>Reverse</RelationshipDirection>
+              <RelationshipTypeId entityRef="true">oldshared:worksFor</RelationshipTypeId>
+            </GroupedEntity>
+            <GroupBy>
+              <Expression xsi:type="ResourceDataColumn" id="60578756-5065-4a78-a519-ad0a1a490f2c">
+                <NodeId>af170992-b36a-4596-b9e6-c0fb6d1b2123</NodeId>
+                <FieldId entityRef="true">core:name</FieldId>
+              </Expression>
+              <Expression xsi:type="ResourceDataColumn" id="41613def-5b24-4f26-8603-5d575620dac6">
+                <NodeId>af170992-b36a-4596-b9e6-c0fb6d1b2123</NodeId>
+                <FieldId entityRef="true">core:name</FieldId>
+              </Expression>
+            </GroupBy>
+          </Entity>
+        </RelatedEntities>
+        <EntityTypeId entityRef="true">oldshared:organisation</EntityTypeId>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <Expression xsi:type="ResourceDataColumn" id="60578756-5065-4a78-a519-ad0a1a490f2c">
+            <NodeId>af170992-b36a-4596-b9e6-c0fb6d1b2123</NodeId>
+            <FieldId entityRef="true">core:name</FieldId>
+          </Expression>
+        </Column>
+        <Column>
+          <Expression xsi:type="ResourceDataColumn" id="41613def-5b24-4f26-8603-5d575620dac6">
+            <NodeId>af170992-b36a-4596-b9e6-c0fb6d1b2123</NodeId>
+            <FieldId entityRef="true">oldshared:firstName</FieldId>
+          </Expression>
+        </Column>
+        <Column>
+          <Expression xsi:type="AggregateExpression">
+            <NodeId>55d5ad21-cbb8-4fb5-814f-09a525874621</NodeId>
+            <AggregateMethod>Count</AggregateMethod>
+          </Expression>
+        </Column>
+        <Column>
+          <Expression xsi:type="AggregateExpression">
+            <NodeId>55d5ad21-cbb8-4fb5-814f-09a525874621</NodeId>
+            <AggregateMethod>Max</AggregateMethod>
+            <Expression xsi:type="ResourceExpression">
+              <NodeId>af170992-b36a-4596-b9e6-c0fb6d1b2123</NodeId>
+              <FieldId entityRef="true">core:name</FieldId>
+            </Expression>
+          </Expression>
+        </Column>
+      </Columns>
+      <Conditions>
+        <Condition>
+          <!-- the condition is under aggregated node with isnull operator -->
+          <Expression xsi:type="ResourceExpression">
+            <NodeId>af170992-b36a-4596-b9e6-c0fb6d1b2123</NodeId>
+            <FieldId entityRef="true">core:name</FieldId>
+          </Expression>
+          <Operator>IsNull</Operator>
+          <Arguments />
+        </Condition>
+      </Conditions>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+select
+    ag.aggCol2,
+    ag.aggCol3,
+    isnull(ag.aggCol4, 0),
+    ( select ag.aggCol5 id, Data text from dbo.Data_NVarChar where EntityId = ag.aggCol5 and FieldId = @param4 and TenantId = @tenant for xml raw('e') )
+from
+    [dbo].[Relationship] e
+    left join (
+        select
+            rel.ToId [aggCol],
+            d.Data [aggCol2],
+            d.Data [aggCol3],
+            count(*) [aggCol4],
+             ( select top 1 o.EntityId from dbo.Data_Int o join dbo.Relationship t on o.EntityId = t.FromId and t.ToId = @param5 and t.TypeId = @param1 and t.TenantId = @tenant where o.Data = max(d.Data) and o.FieldId = @param4 and o.TenantId = @tenant ) [aggCol5],
+             ( select top 1 o.EntityId from dbo.Data_Int o join dbo.Relationship t on o.EntityId = t.FromId and t.ToId = @param5 and t.TypeId = @param1 and t.TenantId = @tenant where o.Data = min(d.Data) and o.FieldId = @param4 and o.TenantId = @tenant ) [aggCol6]
+        from
+            [dbo].[Relationship] rel
+            left join [dbo].[Data_NVarChar] d on d.EntityId = rel.FromId and d.FieldId = @param4 and d.TenantId = @tenant
+        where
+            rel.TypeId = @param3
+            and rel.TenantId = @tenant
+        group by
+            rel.ToId,
+            d.Data,
+            d.Data
+    ) ag on ag.aggCol = e.FromId
+where
+    e.TypeId = @param1
+    and e.ToId = @param2
+    and ag.aggCol6 is null
+    and e.TenantId = @tenant]]></Expect>
+  </Test>
+  <Test name="GroupedRootField">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="AggregateEntity" id="6cce8cc5-a42d-491b-9611-eb7be7219d59">
+        <GroupedEntity xsi:type="ResourceEntity" id="36a9e7c7-c004-4b23-ab9a-796b706b044b">
+          <ExactType>false</ExactType>
+          <EntityTypeId entityRef="true">oldshared:person</EntityTypeId>
+        </GroupedEntity>
+        <GroupBy>
+          <Expression xsi:type="ResourceDataColumn" id="0840c433-f061-40ed-86ab-11e64b9f3bcf">
+            <NodeId>36a9e7c7-c004-4b23-ab9a-796b706b044b</NodeId>
+            <FieldId entityRef="true">core:name</FieldId>
+          </Expression>
+        </GroupBy>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <Expression xsi:type="ResourceDataColumn" id="0840c433-f061-40ed-86ab-11e64b9f3bcf">
+            <NodeId>36a9e7c7-c004-4b23-ab9a-796b706b044b</NodeId>
+            <FieldId entityRef="true">core:name</FieldId>
+          </Expression>
+        </Column>
+        <Column>
+          <Expression xsi:type="AggregateExpression">
+            <NodeId>6cce8cc5-a42d-491b-9611-eb7be7219d59</NodeId>
+            <AggregateMethod>Count</AggregateMethod>
+          </Expression>
+        </Column>
+      </Columns>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+create table #derived ( Id bigint primary key )
+insert into #derived select Id from dbo.fnDerivedTypes(@param2, @tenant)
+
+select
+    ag.aggCol,
+    isnull(ag.aggCol2, 0)
+from
+    (
+        select
+            d.Data [aggCol],
+            count(*) [aggCol2]
+        from
+            [dbo].[Relationship] e
+            join #derived dt on dt.Id = e.ToId
+            left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param3 and d.TenantId = @tenant
+        where
+            e.TypeId = @param1
+            and e.TenantId = @tenant
+        group by
+            d.Data
+    ) ag
+
+drop table #derived]]></Expect>
+  </Test>
+  <Test name="GroupedRootFields">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="AggregateEntity" id="6cce8cc5-a42d-491b-9611-eb7be7219d59">
+        <GroupedEntity xsi:type="ResourceEntity" id="36a9e7c7-c004-4b23-ab9a-796b706b044b">
+          <ExactType>false</ExactType>
+          <EntityTypeId entityRef="true">oldshared:person</EntityTypeId>
+        </GroupedEntity>
+        <GroupBy>
+          <Expression xsi:type="ResourceDataColumn" id="0840c433-f061-40ed-86ab-11e64b9f3bcf">
+            <NodeId>36a9e7c7-c004-4b23-ab9a-796b706b044b</NodeId>
+            <FieldId entityRef="true">core:name</FieldId>
+          </Expression>
+          <Expression xsi:type="ResourceDataColumn" id="7c3db291-4a45-4056-bb1e-fcce6f07106f">
+            <NodeId>36a9e7c7-c004-4b23-ab9a-796b706b044b</NodeId>
+            <FieldId entityRef="true">oldshared:firstName</FieldId>
+          </Expression>
+        </GroupBy>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <Expression xsi:type="ResourceDataColumn" id="0840c433-f061-40ed-86ab-11e64b9f3bcf">
+            <NodeId>36a9e7c7-c004-4b23-ab9a-796b706b044b</NodeId>
+            <FieldId entityRef="true">core:name</FieldId>
+          </Expression>
+        </Column>
+        <Column>
+          <Expression xsi:type="ResourceDataColumn" id="7c3db291-4a45-4056-bb1e-fcce6f07106f">
+            <NodeId>36a9e7c7-c004-4b23-ab9a-796b706b044b</NodeId>
+            <FieldId entityRef="true">oldshared:firstName</FieldId>
+          </Expression>
+        </Column>
+        <Column>
+          <Expression xsi:type="AggregateExpression">
+            <NodeId>6cce8cc5-a42d-491b-9611-eb7be7219d59</NodeId>
+            <AggregateMethod>Count</AggregateMethod>
+          </Expression>
+        </Column>
+        <Column>
+          <Expression xsi:type="AggregateExpression">
+            <NodeId>6cce8cc5-a42d-491b-9611-eb7be7219d59</NodeId>
+            <AggregateMethod>Max</AggregateMethod>
+            <Expression xsi:type="ResourceDataColumn">
+              <NodeId>36a9e7c7-c004-4b23-ab9a-796b706b044b</NodeId>
+              <FieldId entityRef="true">oldshared:lastName</FieldId>
+            </Expression>
+          </Expression>
+        </Column>
+      </Columns>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+create table #derived ( Id bigint primary key )
+insert into #derived select Id from dbo.fnDerivedTypes(@param2, @tenant)
+
+select
+    ag.aggCol,
+    ag.aggCol2,
+    isnull(ag.aggCol3, 0),
+    ag.aggCol4
+from
+    (
+        select
+            d.Data [aggCol],
+            d2.Data [aggCol2],
+            count(*) [aggCol3],
+            max(d3.Data) [aggCol4]
+        from
+            [dbo].[Relationship] e
+            join #derived dt on dt.Id = e.ToId
+            left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param3 and d.TenantId = @tenant
+            left join [dbo].[Data_NVarChar] d2 on d2.EntityId = e.FromId and d2.FieldId = @param4 and d2.TenantId = @tenant
+            left join [dbo].[Data_NVarChar] d3 on d3.EntityId = e.FromId and d3.FieldId = @param5 and d3.TenantId = @tenant
+        where
+            e.TypeId = @param1
+            and e.TenantId = @tenant
+        group by
+            d.Data,
+            d2.Data
+    ) ag
+
+drop table #derived]]></Expect>
+  </Test>
+  <Test name="NestedGroupBy">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="bbb13550-602b-4740-ac6f-5dd395162c5c">
+        <RelatedEntities>
+          <Entity xsi:type="AggregateEntity" id="6c2d934a-eccd-43ec-9ac1-88e2be2689a7">
+            <GroupedEntity xsi:type="RelatedResource" id="b2e000a9-7fdc-406d-bfe9-d98548366e8e">
+              <RelationshipDirection>Reverse</RelationshipDirection>
+              <RelationshipTypeId entityRef="true">oldshared:worksFor</RelationshipTypeId>
+              <RelatedEntities>
+                <Entity xsi:type="AggregateEntity" id="ba3f9be8-01b0-4f42-986d-281230ce522d">
+                  <GroupedEntity xsi:type="RelatedResource" id="a2956247-b9ad-420b-803b-163fadcb0d5b">
+                    <RelationshipTypeId entityRef="true">oldshared:directReports</RelationshipTypeId>
+                  </GroupedEntity>
+                  <GroupBy>
+                    <Expression xsi:type="ResourceDataColumn" id="60578756-5065-4a78-a519-ad0a1a490f2c">
+                      <NodeId>a2956247-b9ad-420b-803b-163fadcb0d5b</NodeId>
+                      <FieldId entityRef="true">core:name</FieldId>
+                    </Expression>
+                  </GroupBy>
+                </Entity>
+              </RelatedEntities>
+            </GroupedEntity>
+            <GroupBy>
+              <Expression xsi:type="ResourceDataColumn" id="60578756-5065-4a78-a519-ad0a1a490f2c">
+                <NodeId>a2956247-b9ad-420b-803b-163fadcb0d5b</NodeId>
+                <FieldId entityRef="true">core:name</FieldId>
+              </Expression>
+            </GroupBy>
+          </Entity>
+        </RelatedEntities>
+        <EntityTypeId entityRef="true">oldshared:organisation</EntityTypeId>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <Expression xsi:type="ResourceDataColumn" id="60578756-5065-4a78-a519-ad0a1a490f2c">
+            <NodeId>a2956247-b9ad-420b-803b-163fadcb0d5b</NodeId>
+            <FieldId entityRef="true">core:name</FieldId>
+          </Expression>
+        </Column>
+        <Column>
+          <Expression xsi:type="AggregateExpression">
+            <NodeId>6c2d934a-eccd-43ec-9ac1-88e2be2689a7</NodeId>
+            <AggregateMethod>Max</AggregateMethod>
+            <Expression xsi:type="AggregateExpression">
+              <NodeId>ba3f9be8-01b0-4f42-986d-281230ce522d</NodeId>
+              <AggregateMethod>Count</AggregateMethod>
+            </Expression>
+          </Expression>
+        </Column>
+      </Columns>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+select
+    ag2.aggCol4,
+    ag2.aggCol6
+from
+    [dbo].[Relationship] e
+    left join (
+        select
+            rel.ToId [aggCol3],
+            ag.aggCol2 [aggCol4],
+            max(isnull(ag.aggCol5, 0)) [aggCol6]
+        from
+            [dbo].[Relationship] rel
+            left join (
+                select
+                    rel2.FromId [aggCol],
+                    d.Data [aggCol2],
+                    count(*) [aggCol5]
+                from
+                    [dbo].[Relationship] rel2
+                    left join [dbo].[Data_NVarChar] d on d.EntityId = rel2.ToId and d.FieldId = @param5 and d.TenantId = @tenant
+                where
+                    rel2.TypeId = @param4
+                    and rel2.TenantId = @tenant
+                group by
+                    rel2.FromId,
+                    d.Data
+            ) ag on ag.aggCol = rel.FromId
+        where
+            rel.TypeId = @param3
+            and rel.TenantId = @tenant
+        group by
+            rel.ToId,
+            ag.aggCol2
+    ) ag2 on ag2.aggCol3 = e.FromId
+where
+    e.TypeId = @param1
+    and e.ToId = @param2
+    and e.TenantId = @tenant]]></Expect>
+  </Test>
+  <Test name="NestedGroupMaxOfCount">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="bbb13550-602b-4740-ac6f-5dd395162c5c">
+        <RelatedEntities>
+          <Entity xsi:type="AggregateEntity" id="6c2d934a-eccd-43ec-9ac1-88e2be2689a7">
+            <GroupedEntity xsi:type="RelatedResource" id="b2e000a9-7fdc-406d-bfe9-d98548366e8e">
+              <RelationshipDirection>Reverse</RelationshipDirection>
+              <RelationshipTypeId entityRef="true">oldshared:worksFor</RelationshipTypeId>
+              <RelatedEntities>
+                <Entity xsi:type="AggregateEntity" id="ba3f9be8-01b0-4f42-986d-281230ce522d">
+                  <GroupedEntity xsi:type="RelatedResource" id="a2956247-b9ad-420b-803b-163fadcb0d5b">
+                    <RelationshipTypeId entityRef="true">oldshared:directReports</RelationshipTypeId>
+                  </GroupedEntity>
+                </Entity>
+              </RelatedEntities>
+            </GroupedEntity>
+          </Entity>
+        </RelatedEntities>
+        <EntityTypeId entityRef="true">oldshared:organisation</EntityTypeId>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>bbb13550-602b-4740-ac6f-5dd395162c5c</NodeId>
+            <FieldId entityRef="true">core:name</FieldId>
+          </Expression>
+        </Column>
+        <Column>
+          <Expression xsi:type="AggregateExpression">
+            <NodeId>6c2d934a-eccd-43ec-9ac1-88e2be2689a7</NodeId>
+            <AggregateMethod>Max</AggregateMethod>
+            <Expression xsi:type="AggregateExpression">
+              <NodeId>ba3f9be8-01b0-4f42-986d-281230ce522d</NodeId>
+              <AggregateMethod>Count</AggregateMethod>
+            </Expression>
+          </Expression>
+        </Column>
+        <Column>
+          <Expression xsi:type="AggregateExpression">
+            <NodeId>6c2d934a-eccd-43ec-9ac1-88e2be2689a7</NodeId>
+            <AggregateMethod>Max</AggregateMethod>
+            <Expression xsi:type="AggregateExpression">
+              <NodeId>ba3f9be8-01b0-4f42-986d-281230ce522d</NodeId>
+              <AggregateMethod>Min</AggregateMethod>
+              <Expression xsi:type="ResourceDataColumn">
+                <NodeId>a2956247-b9ad-420b-803b-163fadcb0d5b</NodeId>
+                <FieldId entityRef="true">oldshared:hireDate</FieldId>
+              </Expression>
+            </Expression>
+          </Expression>
+        </Column>
+      </Columns>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+select
+    d.Data,
+    ag2.aggCol4,
+    ag2.aggCol6
+from
+    [dbo].[Relationship] e
+    left join (
+        select
+            rel.ToId [aggCol2],
+            max(isnull(ag.aggCol3, 0)) [aggCol4],
+            max(ag.aggCol5) [aggCol6]
+        from
+            [dbo].[Relationship] rel
+            left join (
+                select
+                    rel2.FromId [aggCol],
+                    count(*) [aggCol3],
+                    min(d2.Data) [aggCol5]
+                from
+                    [dbo].[Relationship] rel2
+                    left join [dbo].[Data_DateTime] d2 on d2.EntityId = rel2.ToId and d2.FieldId = @param6 and d2.TenantId = @tenant
+                where
+                    rel2.TypeId = @param4
+                    and rel2.TenantId = @tenant
+                group by
+                    rel2.FromId
+            ) ag on ag.aggCol = rel.FromId
+        where
+            rel.TypeId = @param3
+            and rel.TenantId = @tenant
+        group by
+            rel.ToId
+    ) ag2 on ag2.aggCol2 = e.FromId
+    left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param5 and d.TenantId = @tenant
+where
+    e.TypeId = @param1
+    and e.ToId = @param2
+    and e.TenantId = @tenant]]></Expect>
+  </Test>
+  <Test name="SuperNestGroupSumMaxMin">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="bbb13550-602b-4740-ac6f-5dd395162c5c">
+        <RelatedEntities>
+          <Entity xsi:type="AggregateEntity" id="6c2d934a-eccd-43ec-9ac1-88e2be2689a7">
+            <GroupedEntity xsi:type="RelatedResource" id="b2e000a9-7fdc-406d-bfe9-d98548366e8e">
+              <RelationshipDirection>Reverse</RelationshipDirection>
+              <RelationshipTypeId entityRef="true">oldshared:worksFor</RelationshipTypeId>
+              <RelatedEntities>
+                <Entity xsi:type="AggregateEntity" id="ba3f9be8-01b0-4f42-986d-281230ce522d">
+                  <GroupedEntity xsi:type="RelatedResource" id="a2956247-b9ad-420b-803b-163fadcb0d5b">
+                    <RelationshipTypeId entityRef="true">oldshared:directReports</RelationshipTypeId>
+                  </GroupedEntity>
+                </Entity>
+              </RelatedEntities>
+            </GroupedEntity>
+          </Entity>
+        </RelatedEntities>
+        <EntityTypeId entityRef="true">oldshared:organisation</EntityTypeId>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>bbb13550-602b-4740-ac6f-5dd395162c5c</NodeId>
+            <FieldId entityRef="true">core:name</FieldId>
+          </Expression>
+        </Column>
+        <Column>
+          <Expression xsi:type="AggregateExpression">
+            <NodeId>ba3f9be8-01b0-4f42-986d-281230ce522d</NodeId>
+            <AggregateMethod>Max</AggregateMethod>
+            <Expression xsi:type="ResourceDataColumn">
+              <NodeId>a2956247-b9ad-420b-803b-163fadcb0d5b</NodeId>
+              <FieldId entityRef="true">oldshared:hireDate</FieldId>
+            </Expression>
+          </Expression>
+        </Column>
+        <Column>
+          <Expression xsi:type="AggregateExpression">
+            <NodeId>ba3f9be8-01b0-4f42-986d-281230ce522d</NodeId>
+            <AggregateMethod>Min</AggregateMethod>
+            <Expression xsi:type="ResourceDataColumn">
+              <NodeId>a2956247-b9ad-420b-803b-163fadcb0d5b</NodeId>
+              <FieldId entityRef="true">oldshared:hireDate</FieldId>
+            </Expression>
+          </Expression>
+        </Column>
+        <Column>
+          <Expression xsi:type="AggregateExpression">
+            <NodeId>ba3f9be8-01b0-4f42-986d-281230ce522d</NodeId>
+            <AggregateMethod>Sum</AggregateMethod>
+            <Expression xsi:type="ResourceDataColumn">
+              <NodeId>a2956247-b9ad-420b-803b-163fadcb0d5b</NodeId>
+              <FieldId entityRef="true">oldshared:hireDate</FieldId>
+            </Expression>
+          </Expression>
+        </Column>
+      </Columns>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+select
+    d.Data,
+    ag2.aggCol4,
+    ag2.aggCol6,
+    isnull(ag2.aggCol8, 0)
+from
+    [dbo].[Relationship] e
+    left join (
+        select
+            rel.ToId [aggCol2],
+            max(ag.aggCol3) [aggCol4],
+            min(ag.aggCol5) [aggCol6],
+            sum(isnull(ag.aggCol7, 0)) [aggCol8]
+        from
+            [dbo].[Relationship] rel
+            left join (
+                select
+                    rel2.FromId [aggCol],
+                    max(d2.Data) [aggCol3],
+                    min(d2.Data) [aggCol5],
+                    sum(d2.Data) [aggCol7]
+                from
+                    [dbo].[Relationship] rel2
+                    left join [dbo].[Data_DateTime] d2 on d2.EntityId = rel2.ToId and d2.FieldId = @param6 and d2.TenantId = @tenant
+                where
+                    rel2.TypeId = @param4
+                    and rel2.TenantId = @tenant
+                group by
+                    rel2.FromId
+            ) ag on ag.aggCol = rel.FromId
+        where
+            rel.TypeId = @param3
+            and rel.TenantId = @tenant
+        group by
+            rel.ToId
+    ) ag2 on ag2.aggCol2 = e.FromId
+    left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param5 and d.TenantId = @tenant
+where
+    e.TypeId = @param1
+    and e.ToId = @param2
+    and e.TenantId = @tenant]]></Expect>
+  </Test>
+  <Test name="SuperNestGroupCount">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="bbb13550-602b-4740-ac6f-5dd395162c5c">
+        <RelatedEntities>
+          <Entity xsi:type="AggregateEntity" id="6c2d934a-eccd-43ec-9ac1-88e2be2689a7">
+            <GroupedEntity xsi:type="RelatedResource" id="b2e000a9-7fdc-406d-bfe9-d98548366e8e">
+              <RelationshipDirection>Reverse</RelationshipDirection>
+              <RelationshipTypeId entityRef="true">oldshared:worksFor</RelationshipTypeId>
+              <RelatedEntities>
+                <Entity xsi:type="AggregateEntity" id="ba3f9be8-01b0-4f42-986d-281230ce522d">
+                  <GroupedEntity xsi:type="RelatedResource" id="a2956247-b9ad-420b-803b-163fadcb0d5b">
+                    <RelationshipTypeId entityRef="true">oldshared:directReports</RelationshipTypeId>
+                  </GroupedEntity>
+                </Entity>
+              </RelatedEntities>
+            </GroupedEntity>
+          </Entity>
+        </RelatedEntities>
+        <EntityTypeId entityRef="true">oldshared:organisation</EntityTypeId>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>bbb13550-602b-4740-ac6f-5dd395162c5c</NodeId>
+            <FieldId entityRef="true">core:name</FieldId>
+          </Expression>
+        </Column>
+        <Column>
+          <Expression xsi:type="AggregateExpression">
+            <NodeId>ba3f9be8-01b0-4f42-986d-281230ce522d</NodeId>
+            <AggregateMethod>Count</AggregateMethod>
+          </Expression>
+        </Column>
+      </Columns>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+select
+    d.Data,
+    isnull(ag2.aggCol4, 0)
+from
+    [dbo].[Relationship] e
+    left join (
+        select
+            rel.ToId [aggCol2],
+            sum(isnull(ag.aggCol3, 0)) [aggCol4]
+        from
+            [dbo].[Relationship] rel
+            left join (
+                select
+                    rel2.FromId [aggCol],
+                    count(*) [aggCol3]
+                from
+                    [dbo].[Relationship] rel2
+                where
+                    rel2.TypeId = @param4
+                    and rel2.TenantId = @tenant
+                group by
+                    rel2.FromId
+            ) ag on ag.aggCol = rel.FromId
+        where
+            rel.TypeId = @param3
+            and rel.TenantId = @tenant
+        group by
+            rel.ToId
+    ) ag2 on ag2.aggCol2 = e.FromId
+    left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param5 and d.TenantId = @tenant
+where
+    e.TypeId = @param1
+    and e.ToId = @param2
+    and e.TenantId = @tenant]]></Expect>
+  </Test>
+  <Test name="SuperNestGroupAverage">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="bbb13550-602b-4740-ac6f-5dd395162c5c">
+        <RelatedEntities>
+          <Entity xsi:type="AggregateEntity" id="6c2d934a-eccd-43ec-9ac1-88e2be2689a7">
+            <GroupedEntity xsi:type="RelatedResource" id="b2e000a9-7fdc-406d-bfe9-d98548366e8e">
+              <RelationshipDirection>Reverse</RelationshipDirection>
+              <RelationshipTypeId entityRef="true">oldshared:worksFor</RelationshipTypeId>
+              <RelatedEntities>
+                <Entity xsi:type="AggregateEntity" id="ba3f9be8-01b0-4f42-986d-281230ce522d">
+                  <GroupedEntity xsi:type="RelatedResource" id="a2956247-b9ad-420b-803b-163fadcb0d5b">
+                    <RelationshipTypeId entityRef="true">oldshared:directReports</RelationshipTypeId>
+                  </GroupedEntity>
+                </Entity>
+              </RelatedEntities>
+            </GroupedEntity>
+          </Entity>
+        </RelatedEntities>
+        <EntityTypeId entityRef="true">oldshared:organisation</EntityTypeId>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>bbb13550-602b-4740-ac6f-5dd395162c5c</NodeId>
+            <FieldId entityRef="true">core:name</FieldId>
+          </Expression>
+        </Column>
+        <Column>
+          <Expression xsi:type="AggregateExpression">
+            <NodeId>ba3f9be8-01b0-4f42-986d-281230ce522d</NodeId>
+            <AggregateMethod>Average</AggregateMethod>
+            <Expression xsi:type="ResourceDataColumn">
+              <NodeId>a2956247-b9ad-420b-803b-163fadcb0d5b</NodeId>
+              <FieldId entityRef="true">oldshared:hireDate</FieldId>
+            </Expression>
+          </Expression>
+        </Column>
+      </Columns>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+select
+    d.Data,
+    ag2.aggCol5
+from
+    [dbo].[Relationship] e
+    left join (
+        select
+            rel.ToId [aggCol2],
+            case when sum(isnull(ag.aggCol4, 0)) = 0 then null else sum(isnull(ag.aggCol3, 0)) / sum(isnull(ag.aggCol4, 0)) end [aggCol5]
+        from
+            [dbo].[Relationship] rel
+            left join (
+                select
+                    rel2.FromId [aggCol],
+                    sum(d2.Data) [aggCol3],
+                    count(*) [aggCol4]
+                from
+                    [dbo].[Relationship] rel2
+                    left join [dbo].[Data_DateTime] d2 on d2.EntityId = rel2.ToId and d2.FieldId = @param6 and d2.TenantId = @tenant
+                where
+                    rel2.TypeId = @param4
+                    and rel2.TenantId = @tenant
+                group by
+                    rel2.FromId
+            ) ag on ag.aggCol = rel.FromId
+        where
+            rel.TypeId = @param3
+            and rel.TenantId = @tenant
+        group by
+            rel.ToId
+    ) ag2 on ag2.aggCol2 = e.FromId
+    left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param5 and d.TenantId = @tenant
+where
+    e.TypeId = @param1
+    and e.ToId = @param2
+    and e.TenantId = @tenant]]></Expect>
+  </Test>
+  <Test name="DefinitionsReport">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="9b4ca7d4-039f-4c0f-85f6-7bee30acb8c0">
+        <EntityTypeId entityRef="true">core:type</EntityTypeId>
+        <ExactType>true</ExactType>
+        <RelatedEntities>
+          <Entity xsi:type="RelatedResource" id="28CC8532-7467-48EB-9553-AEF6AF13CF69">
+            <RelationshipTypeId entityRef="true">core:inherits</RelationshipTypeId>
+            <RelationshipDirection>Forward</RelationshipDirection>
+            <ResourceMustExist>false</ResourceMustExist>
+          </Entity>
+          <Entity xsi:type="RelatedResource" id="bfc68cec-678f-4515-ba7d-89751cc73abd">
+            <RelationshipTypeId entityRef="true">core:inherits</RelationshipTypeId>
+            <RelationshipDirection>Forward</RelationshipDirection>
+            <Recursive>RecursiveWithSelf</Recursive>
+            <CheckExistenceOnly>true</CheckExistenceOnly>
+            <ResourceMustExist>true</ResourceMustExist>
+          </Entity>
+          <Entity xsi:type="RelatedResource" id="E4B99611-846F-40CD-88F6-9143B47FE776">
+            <RelationshipTypeId entityRef="true">core:inSolution</RelationshipTypeId>
+            <RelationshipDirection>Forward</RelationshipDirection>
+            <ResourceMustExist>false</ResourceMustExist>
+          </Entity>
+        </RelatedEntities>
+      </RootEntity>
+      <Columns>
+        <Column id="36CE0819-CF6A-4BB6-8CE6-B33625DA4AB6">
+          <Expression xsi:type="IdExpression">
+            <NodeId>9b4ca7d4-039f-4c0f-85f6-7bee30acb8c0</NodeId>
+          </Expression>
+          <ColumnName>_Id</ColumnName>
+          <IsHidden>true</IsHidden>
+        </Column>
+        <Column id="8615a000-26b1-405c-9f01-3e2945e0efb1">
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>9b4ca7d4-039f-4c0f-85f6-7bee30acb8c0</NodeId>
+            <FieldId entityRef="true">core:name</FieldId>
+          </Expression>
+          <ColumnName>Name</ColumnName>
+          <DisplayName>Name</DisplayName>
+          <IsHidden>false</IsHidden>
+        </Column>
+        <Column id="65FD3201-01F2-47B7-9BAF-117F6BB0C94B">
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>9b4ca7d4-039f-4c0f-85f6-7bee30acb8c0</NodeId>
+            <FieldId entityRef="true">core:description</FieldId>
+          </Expression>
+          <ColumnName>Description</ColumnName>
+          <DisplayName>Description</DisplayName>
+          <IsHidden>false</IsHidden>
+        </Column>
+        <Column id="9EEF0417-834E-4CAB-A3ED-0D9BCFA1351C">
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>28CC8532-7467-48EB-9553-AEF6AF13CF69</NodeId>
+            <FieldId entityRef="true">core:name</FieldId>
+          </Expression>
+          <ColumnName>Inherits</ColumnName>
+          <DisplayName>Inherits</DisplayName>
+          <IsHidden>false</IsHidden>
+        </Column>
+        <Column id="B1EC374C-4CFC-4015-9A13-6DDACF83839E">
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>E4B99611-846F-40CD-88F6-9143B47FE776</NodeId>
+            <FieldId entityRef="true">core:name</FieldId>
+          </Expression>
+          <ColumnName>Solution</ColumnName>
+          <DisplayName>Solution</DisplayName>
+          <IsHidden>false</IsHidden>
+        </Column>
+      </Columns>
+      <Conditions>
+        <Condition>
+          <!-- constrain the recursive inheritance relationship to userresource -->
+          <Expression xsi:type="IdExpression">
+            <NodeId>bfc68cec-678f-4515-ba7d-89751cc73abd</NodeId>
+          </Expression>
+          <Operator>Equal</Operator>
+          <Arguments>
+            <TypedValue>
+              <Type xsi:type="IdentifierType" />
+              <Value xsi:type="xsd:string">core:userResource</Value>
+            </TypedValue>
+          </Arguments>
+        </Condition>
+      </Conditions>
+      <Ordering>
+        <OrderBy>
+          <Expression xsi:type="ColumnReference">
+            <ColumnId>8615a000-26b1-405c-9f01-3e2945e0efb1</ColumnId>
+          </Expression>
+          <Direction>Ascending</Direction>
+        </OrderBy>
+      </Ordering>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+select
+    e.FromId [_Id],
+    d.Data [Name],
+    d2.Data [Description],
+    d3.Data [Inherits],
+    d4.Data [Solution]
+from
+    [dbo].[Relationship] e
+    left join [dbo].[Relationship] rel on rel.FromId = e.FromId and rel.TypeId = @param3 and rel.TenantId = @tenant
+    left join [dbo].[Data_NVarChar] d3 on d3.EntityId = rel.ToId and d3.FieldId = @param5 and d3.TenantId = @tenant
+    left join [dbo].[Relationship] rel3 on rel3.FromId = e.FromId and rel3.TypeId = @param4 and rel3.TenantId = @tenant
+    left join [dbo].[Data_NVarChar] d4 on d4.EntityId = rel3.ToId and d4.FieldId = @param5 and d4.TenantId = @tenant
+    left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param5 and d.TenantId = @tenant
+    left join [dbo].[Data_NVarChar] d2 on d2.EntityId = e.FromId and d2.FieldId = @param6 and d2.TenantId = @tenant
+where
+    e.TypeId = @param1
+    and e.ToId = @param2
+    and e.TenantId = @tenant
+    and exists (
+        select 1
+        from
+            dbo.fnGetRelationshipRecAndSelf(@param3, @tenant, 1, @param2, @param2) rel2
+        where
+            rel2.FromId = e.FromId
+            and rel2.TypeId = @param3
+            and rel2.ToId = @param7
+    )
+order by
+    d.Data]]></Expect>
+  </Test>
+  <Test name="DownCast">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="c5df347b-5fb6-4752-b49e-aaa4e4cae4f2">
+        <RelatedEntities>
+          <Entity xsi:type="DownCastResource" id="52e65518-00ff-4571-80b2-e158dcab7aaf">
+            <ExactType>false</ExactType>
+            <MustExist>false</MustExist>
+            <EntityTypeId entityRef="true">oldshared:employee</EntityTypeId>
+          </Entity>
+        </RelatedEntities>
+        <ExactType>false</ExactType>
+        <EntityTypeId entityRef="true">oldshared:person</EntityTypeId>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <ColumnName>FirstName</ColumnName>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>52e65518-00ff-4571-80b2-e158dcab7aaf</NodeId>
+            <FieldId entityRef="true">oldshared:firstName</FieldId>
+          </Expression>
+        </Column>
+      </Columns>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+create table #derived ( Id bigint primary key )
+insert into #derived select Id from dbo.fnDerivedTypes(@param2, @tenant)
+
+select
+    d.Data [FirstName]
+from
+    [dbo].[Relationship] e
+    join #derived dt on dt.Id = e.ToId
+    left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param3 and d.TenantId = @tenant
+where
+    e.TypeId = @param1
+    and e.TenantId = @tenant
+
+drop table #derived]]></Expect>
+  </Test>
+  <Test name="DownCastMustExist">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="c5df347b-5fb6-4752-b49e-aaa4e4cae4f2">
+        <RelatedEntities>
+          <Entity xsi:type="DownCastResource" id="52e65518-00ff-4571-80b2-e158dcab7aaf">
+            <ExactType>false</ExactType>
+            <MustExist>true</MustExist>
+            <EntityTypeId entityRef="true">oldshared:employee</EntityTypeId>
+          </Entity>
+        </RelatedEntities>
+        <ExactType>false</ExactType>
+        <EntityTypeId entityRef="true">oldshared:person</EntityTypeId>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <ColumnName>FirstName</ColumnName>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>52e65518-00ff-4571-80b2-e158dcab7aaf</NodeId>
+            <FieldId entityRef="true">oldshared:firstName</FieldId>
+          </Expression>
+        </Column>
+      </Columns>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+create table #derived ( Id bigint primary key )
+insert into #derived select Id from dbo.fnDerivedTypes(@param3, @tenant)
+create table #derived ( Id bigint primary key )
+insert into #derived select Id from dbo.fnDerivedTypes(@param2, @tenant)
+
+select
+    d.Data [FirstName]
+from
+    [dbo].[Relationship] e
+    join #derived dt on dt.Id = e.ToId
+    left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param4 and d.TenantId = @tenant
+where
+    e.TypeId = @param1
+    and e.TenantId = @tenant
+    and exists (
+        select 1
+        from
+            [dbo].[Relationship] r
+            join #derived dt2 on dt2.Id = r.ToId
+        where
+            r.FromId = e.FromId
+            and r.TenantId = @tenant
+            and r.TypeId = @param1
+    )
+
+drop table #derived
+drop table #derived]]></Expect>
+  </Test>
+  <Test name="DownCastExactType">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="c5df347b-5fb6-4752-b49e-aaa4e4cae4f2">
+        <RelatedEntities>
+          <Entity xsi:type="DownCastResource" id="52e65518-00ff-4571-80b2-e158dcab7aaf">
+            <ExactType>true</ExactType>
+            <MustExist>false</MustExist>
+            <EntityTypeId entityRef="true">oldshared:employee</EntityTypeId>
+          </Entity>
+        </RelatedEntities>
+        <ExactType>false</ExactType>
+        <EntityTypeId entityRef="true">oldshared:person</EntityTypeId>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <ColumnName>FirstName</ColumnName>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>52e65518-00ff-4571-80b2-e158dcab7aaf</NodeId>
+            <FieldId entityRef="true">oldshared:firstName</FieldId>
+          </Expression>
+        </Column>
+      </Columns>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+create table #derived ( Id bigint primary key )
+insert into #derived select Id from dbo.fnDerivedTypes(@param2, @tenant)
+
+select
+    d.Data [FirstName]
+from
+    [dbo].[Relationship] e
+    join #derived dt on dt.Id = e.ToId
+    left join [dbo].[Entity] dc on dc.Id = e.FromId
+    and exists (
+        select 1
+        from
+            [dbo].[Relationship] r
+        where
+            r.FromId = dc.Id
+            and r.TenantId = @tenant
+            and r.TypeId = @param1
+            and r.ToId = @param3
+    )
+    left join [dbo].[Data_NVarChar] d on d.EntityId = dc.Id and d.FieldId = @param4 and d.TenantId = @tenant
+where
+    e.TypeId = @param1
+    and e.TenantId = @tenant
+
+drop table #derived]]></Expect>
+  </Test>
+  <Test name="DownCastMustExistExactType">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="c5df347b-5fb6-4752-b49e-aaa4e4cae4f2">
+        <RelatedEntities>
+          <Entity xsi:type="DownCastResource" id="52e65518-00ff-4571-80b2-e158dcab7aaf">
+            <ExactType>true</ExactType>
+            <MustExist>true</MustExist>
+            <EntityTypeId entityRef="true">oldshared:employee</EntityTypeId>
+          </Entity>
+        </RelatedEntities>
+        <ExactType>false</ExactType>
+        <EntityTypeId entityRef="true">oldshared:person</EntityTypeId>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <ColumnName>FirstName</ColumnName>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>52e65518-00ff-4571-80b2-e158dcab7aaf</NodeId>
+            <FieldId entityRef="true">oldshared:firstName</FieldId>
+          </Expression>
+        </Column>
+      </Columns>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+create table #derived ( Id bigint primary key )
+insert into #derived select Id from dbo.fnDerivedTypes(@param2, @tenant)
+
+select
+    d.Data [FirstName]
+from
+    [dbo].[Relationship] e
+    join #derived dt on dt.Id = e.ToId
+    left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param4 and d.TenantId = @tenant
+where
+    e.TypeId = @param1
+    and e.TenantId = @tenant
+    and exists (
+        select 1
+        from
+            [dbo].[Relationship] r
+        where
+            r.FromId = e.FromId
+            and r.TenantId = @tenant
+            and r.TypeId = @param1
+            and r.ToId = @param3
+    )
+
+drop table #derived]]></Expect>
+  </Test>
+  <Test name="MiscDateFunctions">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="90659f4a-ae55-4ec8-9901-30b7e5387be3">
+        <EntityTypeId entityRef="true">test:allFields</EntityTypeId>
+        <ExactType>false</ExactType>
+        <RelatedEntities>
+          <Entity xsi:type="RelatedResource" id="b26f990c-0e42-4001-8c83-23d71d2d15f2">
+            <EntityTypeId entityRef="true">test:weekdayEnum</EntityTypeId>
+            <ExactType>false</ExactType>
+            <RelationshipTypeId entityRef="true">test:afWeekday</RelationshipTypeId>
+            <RelationshipDirection>Forward</RelationshipDirection>
+            <ResourceMustExist>false</ResourceMustExist>
+            <ConstrainParent>false</ConstrainParent>
+            <Recursive>None</Recursive>
+            <CheckExistenceOnly>false</CheckExistenceOnly>
+            <ExcludeIfNotReferenced>false</ExcludeIfNotReferenced>
+          </Entity>
+        </RelatedEntities>
+      </RootEntity>
+      <Columns>
+        <Column id="23f219f4-94b9-4a65-9e51-d7b4f5b862a9">
+          <Expression xsi:type="CalculationExpression">
+            <Operator>Hour</Operator>
+            <DateTimePart>None</DateTimePart>
+            <Expressions>
+              <Expression xsi:type="ResourceDataColumn">
+                <NodeId>90659f4a-ae55-4ec8-9901-30b7e5387be3</NodeId>
+                <FieldId entityRef="true">test:dateTimeDateTimeFieldTestField</FieldId>
+              </Expression>
+            </Expressions>
+          </Expression>
+          <ColumnName>Hour(Date Time)</ColumnName>
+          <DisplayName>Hour(Date Time)</DisplayName>
+          <IsHidden>false</IsHidden>
+        </Column>
+        <Column id="49093cad-25dd-450d-896c-1d355e96e44c">
+          <Expression xsi:type="CalculationExpression">
+            <Operator>Hour</Operator>
+            <DateTimePart>None</DateTimePart>
+            <Expressions>
+              <Expression xsi:type="ResourceDataColumn">
+                <NodeId>90659f4a-ae55-4ec8-9901-30b7e5387be3</NodeId>
+                <FieldId entityRef="true">test:timeTimeFieldTestField</FieldId>
+              </Expression>
+            </Expressions>
+          </Expression>
+          <ColumnName>Hour(Time)</ColumnName>
+          <DisplayName>Hour(Time)</DisplayName>
+          <IsHidden>false</IsHidden>
+        </Column>
+        <Column id="1a3587f0-0085-40d0-b82f-3d11668e69d4">
+          <Expression xsi:type="CalculationExpression">
+            <Operator>Minute</Operator>
+            <DateTimePart>None</DateTimePart>
+            <Expressions>
+              <Expression xsi:type="ResourceDataColumn">
+                <NodeId>90659f4a-ae55-4ec8-9901-30b7e5387be3</NodeId>
+                <FieldId entityRef="true">test:dateTimeDateTimeFieldTestField</FieldId>
+              </Expression>
+            </Expressions>
+          </Expression>
+          <ColumnName>Minute(Date Time)</ColumnName>
+          <DisplayName>Minute(Date Time)</DisplayName>
+          <IsHidden>false</IsHidden>
+        </Column>
+        <Column id="9ba438bb-8c84-4d57-8364-6cbc58d95a1b">
+          <Expression xsi:type="CalculationExpression">
+            <Operator>Minute</Operator>
+            <DateTimePart>None</DateTimePart>
+            <Expressions>
+              <Expression xsi:type="ResourceDataColumn">
+                <NodeId>90659f4a-ae55-4ec8-9901-30b7e5387be3</NodeId>
+                <FieldId entityRef="true">test:timeTimeFieldTestField</FieldId>
+              </Expression>
+            </Expressions>
+          </Expression>
+          <ColumnName>Minute(Time)</ColumnName>
+          <DisplayName>Minute(Time)</DisplayName>
+          <IsHidden>false</IsHidden>
+        </Column>
+        <Column id="c32f7a93-1b32-4630-8bac-5ace830f5784">
+          <Expression xsi:type="CalculationExpression">
+            <Operator>Second</Operator>
+            <DateTimePart>None</DateTimePart>
+            <Expressions>
+              <Expression xsi:type="ResourceDataColumn">
+                <NodeId>90659f4a-ae55-4ec8-9901-30b7e5387be3</NodeId>
+                <FieldId entityRef="true">test:dateTimeDateTimeFieldTestField</FieldId>
+              </Expression>
+            </Expressions>
+          </Expression>
+          <ColumnName>Second(Date Time)</ColumnName>
+          <DisplayName>Second(Date Time)</DisplayName>
+          <IsHidden>false</IsHidden>
+        </Column>
+        <Column id="e0a0d7eb-d5c1-4c6a-92c9-1335f75cc886">
+          <Expression xsi:type="CalculationExpression">
+            <Operator>Second</Operator>
+            <DateTimePart>None</DateTimePart>
+            <Expressions>
+              <Expression xsi:type="ResourceDataColumn">
+                <NodeId>90659f4a-ae55-4ec8-9901-30b7e5387be3</NodeId>
+                <FieldId entityRef="true">test:timeTimeFieldTestField</FieldId>
+              </Expression>
+            </Expressions>
+          </Expression>
+          <ColumnName>Second(Time)</ColumnName>
+          <DisplayName>Second(Time)</DisplayName>
+          <IsHidden>false</IsHidden>
+        </Column>
+        <Column id="9d94dffd-802e-40e2-8966-4e62eb9e5c7e">
+          <Expression xsi:type="CalculationExpression">
+            <Operator>Year</Operator>
+            <DateTimePart>None</DateTimePart>
+            <Expressions>
+              <Expression xsi:type="ResourceDataColumn">
+                <NodeId>90659f4a-ae55-4ec8-9901-30b7e5387be3</NodeId>
+                <FieldId entityRef="true">test:dateTimeDateTimeFieldTestField</FieldId>
+              </Expression>
+            </Expressions>
+          </Expression>
+          <ColumnName>Year(Date Time)</ColumnName>
+          <DisplayName>Year(Date Time)</DisplayName>
+          <IsHidden>false</IsHidden>
+        </Column>
+        <Column id="1bb88e5d-5199-4c4d-9ef2-fcc85e251c58">
+          <Expression xsi:type="CalculationExpression">
+            <Operator>Year</Operator>
+            <DateTimePart>None</DateTimePart>
+            <Expressions>
+              <Expression xsi:type="ResourceDataColumn">
+                <NodeId>90659f4a-ae55-4ec8-9901-30b7e5387be3</NodeId>
+                <FieldId entityRef="true">test:dateDateFieldTestField</FieldId>
+              </Expression>
+            </Expressions>
+          </Expression>
+          <ColumnName>Year(Date)</ColumnName>
+          <DisplayName>Year(Date)</DisplayName>
+          <IsHidden>false</IsHidden>
+        </Column>
+        <Column id="d283a915-881c-4dcb-b1bb-aca92f0653cf">
+          <Expression xsi:type="CalculationExpression">
+            <Operator>Month</Operator>
+            <DateTimePart>None</DateTimePart>
+            <Expressions>
+              <Expression xsi:type="ResourceDataColumn">
+                <NodeId>90659f4a-ae55-4ec8-9901-30b7e5387be3</NodeId>
+                <FieldId entityRef="true">test:dateTimeDateTimeFieldTestField</FieldId>
+              </Expression>
+            </Expressions>
+          </Expression>
+          <ColumnName>Month(Date Time)</ColumnName>
+          <DisplayName>Month(Date Time)</DisplayName>
+          <IsHidden>false</IsHidden>
+        </Column>
+        <Column id="f00c149b-a4eb-4990-ba8a-41f006633b58">
+          <Expression xsi:type="CalculationExpression">
+            <Operator>Month</Operator>
+            <DateTimePart>None</DateTimePart>
+            <Expressions>
+              <Expression xsi:type="ResourceDataColumn">
+                <NodeId>90659f4a-ae55-4ec8-9901-30b7e5387be3</NodeId>
+                <FieldId entityRef="true">test:dateDateFieldTestField</FieldId>
+              </Expression>
+            </Expressions>
+          </Expression>
+          <ColumnName>Month(Date)</ColumnName>
+          <DisplayName>Month(Date)</DisplayName>
+          <IsHidden>false</IsHidden>
+        </Column>
+        <Column id="cd01b214-8009-4517-9224-03ca1ddea7b0">
+          <Expression xsi:type="CalculationExpression">
+            <Operator>Day</Operator>
+            <DateTimePart>None</DateTimePart>
+            <Expressions>
+              <Expression xsi:type="ResourceDataColumn">
+                <NodeId>90659f4a-ae55-4ec8-9901-30b7e5387be3</NodeId>
+                <FieldId entityRef="true">test:dateTimeDateTimeFieldTestField</FieldId>
+              </Expression>
+            </Expressions>
+          </Expression>
+          <ColumnName>Day(Date Time)</ColumnName>
+          <DisplayName>Day(Date Time)</DisplayName>
+          <IsHidden>false</IsHidden>
+        </Column>
+        <Column id="77fc665a-c7f7-42c3-8961-08c9e60c2e61">
+          <Expression xsi:type="CalculationExpression">
+            <Operator>Day</Operator>
+            <DateTimePart>None</DateTimePart>
+            <Expressions>
+              <Expression xsi:type="ResourceDataColumn">
+                <NodeId>90659f4a-ae55-4ec8-9901-30b7e5387be3</NodeId>
+                <FieldId entityRef="true">test:dateDateFieldTestField</FieldId>
+              </Expression>
+            </Expressions>
+          </Expression>
+          <ColumnName>Day(Date)</ColumnName>
+          <DisplayName>Day(Date)</DisplayName>
+          <IsHidden>false</IsHidden>
+        </Column>
+        <Column id="9d94dffd-802e-40e2-8966-4e62eb9e5c7e">
+          <Expression xsi:type="CalculationExpression">
+            <Operator>DateAdd</Operator>
+            <DateTimePart>Day</DateTimePart>
+            <Expressions>
+              <Expression xsi:type="ResourceDataColumn">
+                <NodeId>90659f4a-ae55-4ec8-9901-30b7e5387be3</NodeId>
+                <FieldId entityRef="true">test:dateTimeDateTimeFieldTestField</FieldId>
+              </Expression>
+              <Expression xsi:type="ResourceDataColumn">
+                <NodeId>90659f4a-ae55-4ec8-9901-30b7e5387be3</NodeId>
+                <FieldId entityRef="true">test:numberIntFieldTestField</FieldId>
+              </Expression>
+            </Expressions>
+          </Expression>
+          <ColumnName>DateAdd(DateTime) day</ColumnName>
+          <DisplayName>DateAdd(DateTime) day</DisplayName>
+          <IsHidden>false</IsHidden>
+        </Column>
+        <Column id="47a74a5e-eee5-469b-848a-13b103d2febd">
+          <Expression xsi:type="CalculationExpression">
+            <Operator>DateAdd</Operator>
+            <DateTimePart>Day</DateTimePart>
+            <Expressions>
+              <Expression xsi:type="ResourceDataColumn">
+                <NodeId>90659f4a-ae55-4ec8-9901-30b7e5387be3</NodeId>
+                <FieldId entityRef="true">test:dateDateFieldTestField</FieldId>
+              </Expression>
+              <Expression xsi:type="ResourceDataColumn">
+                <NodeId>90659f4a-ae55-4ec8-9901-30b7e5387be3</NodeId>
+                <FieldId entityRef="true">test:numberIntFieldTestField</FieldId>
+              </Expression>
+            </Expressions>
+          </Expression>
+          <ColumnName>DateAdd(Date) day</ColumnName>
+          <DisplayName>DateAdd(Date) day</DisplayName>
+          <IsHidden>false</IsHidden>
+        </Column>
+        <Column id="0b37b3e2-bbbf-4e06-ae76-12c3e1a8215d">
+          <Expression xsi:type="CalculationExpression">
+            <Operator>DateAdd</Operator>
+            <DateTimePart>Minute</DateTimePart>
+            <Expressions>
+              <Expression xsi:type="ResourceDataColumn">
+                <NodeId>90659f4a-ae55-4ec8-9901-30b7e5387be3</NodeId>
+                <FieldId entityRef="true">test:timeTimeFieldTestField</FieldId>
+              </Expression>
+              <Expression xsi:type="ResourceDataColumn">
+                <NodeId>90659f4a-ae55-4ec8-9901-30b7e5387be3</NodeId>
+                <FieldId entityRef="true">test:numberIntFieldTestField</FieldId>
+              </Expression>
+            </Expressions>
+          </Expression>
+          <ColumnName>DateAdd(Time) minute</ColumnName>
+          <DisplayName>DateAdd(Time) minute</DisplayName>
+          <IsHidden>false</IsHidden>
+        </Column>
+        <Column id="85f066cb-ef1a-4c01-97e6-4592476a46fb">
+          <Expression xsi:type="CalculationExpression">
+            <Operator>DateDiff</Operator>
+            <DateTimePart>Day</DateTimePart>
+            <Expressions>
+              <Expression xsi:type="ResourceDataColumn">
+                <NodeId>90659f4a-ae55-4ec8-9901-30b7e5387be3</NodeId>
+                <FieldId entityRef="true">test:dateTimeDateTimeFieldTestField</FieldId>
+              </Expression>
+              <Expression xsi:type="ResourceDataColumn">
+                <NodeId>90659f4a-ae55-4ec8-9901-30b7e5387be3</NodeId>
+                <FieldId entityRef="true">test:dateTimeDateTimeFieldTestField</FieldId>
+              </Expression>
+            </Expressions>
+          </Expression>
+          <ColumnName>DateDiff(DateTime) day</ColumnName>
+          <DisplayName>DateDiff(DateTime) day</DisplayName>
+          <IsHidden>false</IsHidden>
+        </Column>
+        <Column id="8502d9e5-f102-4077-a6cc-f4ed8accf51b">
+          <Expression xsi:type="CalculationExpression">
+            <Operator>DateDiff</Operator>
+            <DateTimePart>Day</DateTimePart>
+            <Expressions>
+              <Expression xsi:type="ResourceDataColumn">
+                <NodeId>90659f4a-ae55-4ec8-9901-30b7e5387be3</NodeId>
+                <FieldId entityRef="true">test:dateDateFieldTestField</FieldId>
+              </Expression>
+              <Expression xsi:type="ResourceDataColumn">
+                <NodeId>90659f4a-ae55-4ec8-9901-30b7e5387be3</NodeId>
+                <FieldId entityRef="true">test:dateDateFieldTestField</FieldId>
+              </Expression>
+            </Expressions>
+          </Expression>
+          <ColumnName>DateDiff(Date) day</ColumnName>
+          <DisplayName>DateDiff(Date) day</DisplayName>
+          <IsHidden>false</IsHidden>
+        </Column>
+        <Column id="22afc165-60a6-4071-83a1-a02eb7ae98b9">
+          <Expression xsi:type="CalculationExpression">
+            <Operator>DateDiff</Operator>
+            <DateTimePart>Minute</DateTimePart>
+            <Expressions>
+              <Expression xsi:type="ResourceDataColumn">
+                <NodeId>90659f4a-ae55-4ec8-9901-30b7e5387be3</NodeId>
+                <FieldId entityRef="true">test:timeTimeFieldTestField</FieldId>
+              </Expression>
+              <Expression xsi:type="ResourceDataColumn">
+                <NodeId>90659f4a-ae55-4ec8-9901-30b7e5387be3</NodeId>
+                <FieldId entityRef="true">test:timeTimeFieldTestField</FieldId>
+              </Expression>
+            </Expressions>
+          </Expression>
+          <ColumnName>DateDiff(Time) minute</ColumnName>
+          <DisplayName>DateDiff(Time) minute</DisplayName>
+          <IsHidden>false</IsHidden>
+        </Column>
+        <Column id="9fcda5ca-4e56-4fa2-b424-9442d69e420c">
+          <Expression xsi:type="CalculationExpression">
+            <Operator>DateName</Operator>
+            <DateTimePart>Month</DateTimePart>
+            <Expressions>
+              <Expression xsi:type="ResourceDataColumn">
+                <NodeId>90659f4a-ae55-4ec8-9901-30b7e5387be3</NodeId>
+                <FieldId entityRef="true">test:dateTimeDateTimeFieldTestField</FieldId>
+              </Expression>
+            </Expressions>
+          </Expression>
+          <ColumnName>DateName(DateTime) month</ColumnName>
+          <DisplayName>DateName(DateTime) month</DisplayName>
+          <IsHidden>false</IsHidden>
+        </Column>
+        <Column id="22bb8409-65ae-4794-bbb9-2cb0674a1831">
+          <Expression xsi:type="CalculationExpression">
+            <Operator>DateName</Operator>
+            <DateTimePart>Weekday</DateTimePart>
+            <Expressions>
+              <Expression xsi:type="ResourceDataColumn">
+                <NodeId>90659f4a-ae55-4ec8-9901-30b7e5387be3</NodeId>
+                <FieldId entityRef="true">test:dateDateFieldTestField</FieldId>
+              </Expression>
+            </Expressions>
+          </Expression>
+          <ColumnName>DateName(Date) weekday</ColumnName>
+          <DisplayName>DateName(Date) weekday</DisplayName>
+          <IsHidden>false</IsHidden>
+        </Column>
+        <Column id="03205c69-e337-47ba-a7b4-5ac7a8090432">
+          <Expression xsi:type="CalculationExpression">
+            <Operator>SmartOrderConcatenate</Operator>
+            <DateTimePart>None</DateTimePart>
+            <Expressions>
+              <Expression xsi:type="CalculationExpression">
+                <Operator>DateName</Operator>
+                <DateTimePart>Weekday</DateTimePart>
+                <Expressions>
+                  <Expression xsi:type="ResourceDataColumn">
+                    <NodeId>90659f4a-ae55-4ec8-9901-30b7e5387be3</NodeId>
+                    <FieldId entityRef="true">test:dateDateFieldTestField</FieldId>
+                  </Expression>
+                </Expressions>
+              </Expression>
+              <Expression xsi:type="LiteralExpression">
+                <Value>
+                  <Value xsi:type="xsd:string">..</Value>
+                  <Type xsi:type="StringType">
+                  </Type>
+                  <SourceEntityTypeId>0</SourceEntityTypeId>
+                </Value>
+              </Expression>
+              <Expression xsi:type="ResourceExpression">
+                <NodeId>b26f990c-0e42-4001-8c83-23d71d2d15f2</NodeId>
+                <FieldId entityRef="true">core:name</FieldId>
+                <CastType xsi:type="ChoiceRelationshipType">
+                </CastType>
+              </Expression>
+            </Expressions>
+          </Expression>
+          <ColumnName>Name</ColumnName>
+          <DisplayName>Priority - Choice</DisplayName>
+          <IsHidden>false</IsHidden>
+        </Column>
+      </Columns>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+select
+    datepart(hour, dbo.fnConvertToLocalTime(d.Data, 'AUS Eastern Standard Time')) [Hour(Date Time)],
+    datepart(hour, d2.Data) [Hour(Time)],
+    datepart(minute, dbo.fnConvertToLocalTime(d.Data, 'AUS Eastern Standard Time')) [Minute(Date Time)],
+    datepart(minute, d2.Data) [Minute(Time)],
+    datepart(second, dbo.fnConvertToLocalTime(d.Data, 'AUS Eastern Standard Time')) [Second(Date Time)],
+    datepart(second, d2.Data) [Second(Time)],
+    datepart(year, dbo.fnConvertToLocalTime(d.Data, 'AUS Eastern Standard Time')) [Year(Date Time)],
+    datepart(year, d3.Data) [Year(Date)],
+    datepart(month, dbo.fnConvertToLocalTime(d.Data, 'AUS Eastern Standard Time')) [Month(Date Time)],
+    datepart(month, d3.Data) [Month(Date)],
+    datepart(day, dbo.fnConvertToLocalTime(d.Data, 'AUS Eastern Standard Time')) [Day(Date Time)],
+    datepart(day, d3.Data) [Day(Date)],
+    dateadd(Day, d4.Data, d.Data) [DateAdd(DateTime) day],
+    dateadd(Day, d4.Data, d3.Data) [DateAdd(Date) day],
+    dateadd(Minute, d4.Data, d2.Data) [DateAdd(Time) minute],
+    datediff(Day, d.Data, d.Data) [DateDiff(DateTime) day],
+    datediff(Day, d3.Data, d3.Data) [DateDiff(Date) day],
+    datediff(Minute, try_convert(nvarchar(8), d2.Data, 108), try_convert(nvarchar(8), d2.Data, 108)) [DateDiff(Time) minute],
+    datename(Month, dbo.fnConvertToLocalTime(d.Data, 'AUS Eastern Standard Time')) [DateName(DateTime) month],
+    datename(Weekday, d3.Data) [DateName(Date) weekday],
+    (isnull(datename(Weekday, d3.Data), '') + isnull((@param8 collate Latin1_General_CI_AI), '') + isnull(( select Data from dbo.Data_NVarChar where EntityId = rel.ToId and FieldId = @param9 and TenantId = @tenant ), '')) [Name]
+from
+    [dbo].[Relationship] e
+    left join [dbo].[Relationship] rel on rel.FromId = e.FromId and rel.TypeId = @param3 and rel.TenantId = @tenant
+    left join [dbo].[Data_DateTime] d on d.EntityId = e.FromId and d.FieldId = @param4 and d.TenantId = @tenant
+    left join [dbo].[Data_DateTime] d2 on d2.EntityId = e.FromId and d2.FieldId = @param5 and d2.TenantId = @tenant
+    left join [dbo].[Data_DateTime] d3 on d3.EntityId = e.FromId and d3.FieldId = @param6 and d3.TenantId = @tenant
+    left join [dbo].[Data_Int] d4 on d4.EntityId = e.FromId and d4.FieldId = @param7 and d4.TenantId = @tenant
+where
+    e.TypeId = @param1
+    and e.ToId = @param2
+    and e.TenantId = @tenant]]></Expect>
+  </Test>
+  <Test name="AggregateXmlList">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="9b4ca7d4-039f-4c0f-85f6-7bee30acb8c0">
+        <EntityTypeId entityRef="true">core:definition</EntityTypeId>
+        <ExactType>false</ExactType>
+        <RelatedEntities>
+          <Entity xsi:type="AggregateEntity" id="25a795db-6acd-4408-90bb-38a7337461ca">
+            <GroupedEntity xsi:type="RelatedResource" id="28CC8532-7467-48EB-9553-AEF6AF13CF69">
+              <RelationshipTypeId entityRef="true">core:inherits</RelationshipTypeId>
+              <RelationshipDirection>Forward</RelationshipDirection>
+              <ResourceMustExist>false</ResourceMustExist>
+            </GroupedEntity>
+          </Entity>
+        </RelatedEntities>
+      </RootEntity>
+      <Columns>
+        <Column id="8615a000-26b1-405c-9f01-3e2945e0efb1">
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>9b4ca7d4-039f-4c0f-85f6-7bee30acb8c0</NodeId>
+            <FieldId entityRef="true">core:name</FieldId>
+          </Expression>
+          <ColumnName>Name</ColumnName>
+          <DisplayName>Name</DisplayName>
+          <IsHidden>false</IsHidden>
+        </Column>
+        <Column id="9EEF0417-834E-4CAB-A3ED-0D9BCFA1351C">
+          <Expression xsi:type="AggregateExpression">
+            <NodeId>25a795db-6acd-4408-90bb-38a7337461ca</NodeId>
+            <AggregateMethod>List</AggregateMethod>
+            <Expression xsi:type="ResourceDataColumn">
+              <NodeId>28CC8532-7467-48EB-9553-AEF6AF13CF69</NodeId>
+              <FieldId entityRef="true">core:name</FieldId>
+            </Expression>
+          </Expression>
+          <ColumnName>Inherits</ColumnName>
+          <DisplayName>Inherits</DisplayName>
+          <IsHidden>false</IsHidden>
+        </Column>
+      </Columns>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+select
+    d.Data [Name],
+    (
+            select
+                rel.ToId [id],
+                d2.Data [text]
+            from
+                [dbo].[Relationship] rel
+                left join [dbo].[Data_NVarChar] d2 on d2.EntityId = rel.ToId and d2.FieldId = @param4 and d2.TenantId = @tenant
+            where
+                rel.FromId = e.FromId
+                and rel.TypeId = @param3
+                and rel.TenantId = @tenant
+            order by
+                d2.Data
+            for xml raw('e')
+        ) [Inherits]
+from
+    [dbo].[Relationship] e
+    left join (
+        select
+            rel.FromId [aggCol]
+        from
+            [dbo].[Relationship] rel
+            left join [dbo].[Data_NVarChar] d2 on d2.EntityId = rel.ToId and d2.EntityId = rel.ToId and d2.FieldId = @param4 and d2.TenantId = @tenant
+        where
+            rel.TypeId = @param3
+            and rel.TenantId = @tenant
+        group by
+            rel.FromId
+    ) ag on ag.aggCol = e.FromId
+    left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param4 and d.TenantId = @tenant
+where
+    e.TypeId = @param1
+    and e.ToId = @param2
+    and e.TenantId = @tenant]]></Expect>
+  </Test>
+  <Test name="TestAggregateSortDateName">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="AggregateEntity" id="46a4db46-0f5f-4559-b33c-cc14b9f0680f">
+        <GroupedEntity xsi:type="ResourceEntity" id="fcf50108-d9ff-430a-bba5-3a8fd6a9ff0d">
+          <EntityTypeId entityRef="true">test:allFieldsTestType</EntityTypeId>
+          <ExactType>false</ExactType>
+        </GroupedEntity>
+        <GroupBy>
+          <Expression xsi:type="CalculationExpression" id="591bf324-20b0-470d-8810-6b5ee6b662a2">
+            <Operator>DateName</Operator>
+            <DateTimePart>Month</DateTimePart>
+            <Expressions>
+              <Expression xsi:type="ResourceDataColumn">
+                <NodeId>fcf50108-d9ff-430a-bba5-3a8fd6a9ff0d</NodeId>
+                <FieldId entityRef="true">test:dateTimeDateTimeFieldTestField</FieldId>
+              </Expression>
+            </Expressions>
+          </Expression>
+        </GroupBy>
+      </RootEntity>
+      <Columns>
+        <Column id="bb015d54-dadf-4c27-a42f-053571de0001">
+          <Expression xsi:type="CalculationExpression" id="591bf324-20b0-470d-8810-6b5ee6b662a2">
+            <Operator>DateName</Operator>
+            <DateTimePart>Month</DateTimePart>
+            <Expressions>
+              <Expression xsi:type="ResourceDataColumn">
+                <NodeId>fcf50108-d9ff-430a-bba5-3a8fd6a9ff0d</NodeId>
+                <FieldId entityRef="true">test:dateTimeDateTimeFieldTestField</FieldId>
+              </Expression>
+            </Expressions>
+          </Expression>
+          <ColumnName>Date</ColumnName>
+          <DisplayName>Date</DisplayName>
+          <IsHidden>false</IsHidden>
+        </Column>
+        <Column id="fd75de25-1606-4ed6-a109-540a5646fbcd">
+          <Expression xsi:type="AggregateExpression">
+            <NodeId>46a4db46-0f5f-4559-b33c-cc14b9f0680f</NodeId>
+            <AggregateMethod>Sum</AggregateMethod>
+            <Expression xsi:type="ResourceDataColumn">
+              <NodeId>fcf50108-d9ff-430a-bba5-3a8fd6a9ff0d</NodeId>
+              <FieldId entityRef="true">test:numberIntFieldTestField</FieldId>
+              <CastType xsi:type="Int32Type">
+                <MaxValue>0</MaxValue>
+                <MinValue>0</MinValue>
+              </CastType>
+            </Expression>
+          </Expression>
+          <ColumnName>Sum : Number</ColumnName>
+          <DisplayName>Sum : Number</DisplayName>
+          <IsHidden>false</IsHidden>
+        </Column>
+      </Columns>
+      <Conditions>
+        <Condition>
+          <Expression xsi:type="ResourceDataColumn" id="642351d7-bfa8-4791-b1e4-4b8fe441b9cd">
+            <NodeId>fcf50108-d9ff-430a-bba5-3a8fd6a9ff0d</NodeId>
+            <FieldId entityRef="true">core:name</FieldId>
+          </Expression>
+          <Operator>Unspecified</Operator>
+          <Arguments>
+            <TypedValue>
+              <Value xsi:type="xsd:string">
+              </Value>
+              <Type xsi:type="StringType">
+              </Type>
+              <SourceEntityTypeId>0</SourceEntityTypeId>
+            </TypedValue>
+          </Arguments>
+        </Condition>
+        <Condition>
+          <Expression xsi:type="AggregateExpression" id="f7e7a3be-84cc-4182-a0a7-533e2a32bfaf">
+            <NodeId>46a4db46-0f5f-4559-b33c-cc14b9f0680f</NodeId>
+            <AggregateMethod>Sum</AggregateMethod>
+            <Expression xsi:type="ResourceDataColumn">
+              <NodeId>fcf50108-d9ff-430a-bba5-3a8fd6a9ff0d</NodeId>
+              <FieldId entityRef="true">test:numberIntFieldTestField</FieldId>
+              <CastType xsi:type="Int32Type">
+                <MaxValue>0</MaxValue>
+                <MinValue>0</MinValue>
+              </CastType>
+            </Expression>
+          </Expression>
+          <Operator>Unspecified</Operator>
+          <Arguments>
+            <TypedValue>
+              <Type xsi:type="Int32Type">
+                <MaxValue>0</MaxValue>
+                <MinValue>0</MinValue>
+              </Type>
+              <SourceEntityTypeId>0</SourceEntityTypeId>
+            </TypedValue>
+          </Arguments>
+        </Condition>
+      </Conditions>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+select
+    ag.aggCol [Date],
+    isnull(ag.aggCol2, 0) [Sum : Number]
+from
+    (
+        select
+            datename(Month, dbo.fnConvertToLocalTime(d.Data, 'AUS Eastern Standard Time')) [aggCol],
+            sum(convert(bigint, d2.Data)) [aggCol2]
+        from
+            [dbo].[Relationship] e
+            left join [dbo].[Data_DateTime] d on d.EntityId = e.FromId and d.FieldId = @param3 and d.TenantId = @tenant
+            left join [dbo].[Data_Int] d2 on d2.EntityId = e.FromId and d2.FieldId = @param4 and d2.TenantId = @tenant
+        where
+            e.TypeId = @param1
+            and e.ToId = @param2
+            and e.TenantId = @tenant
+        group by
+            datename(Month, dbo.fnConvertToLocalTime(d.Data, 'AUS Eastern Standard Time'))
+    ) ag]]></Expect>
+  </Test>
+  <Test name="TestAggregateSortSmartConcat">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="AggregateEntity" id="46a4db46-0f5f-4559-b33c-cc14b9f0680f">
+        <GroupedEntity xsi:type="ResourceEntity" id="fcf50108-d9ff-430a-bba5-3a8fd6a9ff0d">
+          <EntityTypeId entityRef="true">test:allFieldsTestType</EntityTypeId>
+          <ExactType>false</ExactType>
+        </GroupedEntity>
+        <GroupBy>
+          <Expression xsi:type="CalculationExpression" id="1fd5aee5-9dc5-4a9d-9f22-23201c98022b">
+            <Operator>SmartOrderConcatenate</Operator>
+            <DateTimePart>None</DateTimePart>
+            <Expressions>
+              <Expression xsi:type="CalculationExpression" id="9e9d02f8-cde8-43c4-87aa-7881fd318f03">
+                <Operator>DateName</Operator>
+                <DateTimePart>Year</DateTimePart>
+                <Expressions>
+                  <Expression xsi:type="ResourceDataColumn">
+                    <NodeId>fcf50108-d9ff-430a-bba5-3a8fd6a9ff0d</NodeId>
+                    <FieldId entityRef="true">test:dateTimeDateTimeFieldTestField</FieldId>
+                  </Expression>
+                </Expressions>
+              </Expression>
+              <Expression xsi:type="LiteralExpression">
+                <Value>
+                  <Value xsi:type="xsd:string">
+                  </Value>
+                  <Type xsi:type="StringType">
+                  </Type>
+                  <SourceEntityTypeId>0</SourceEntityTypeId>
+                </Value>
+              </Expression>
+              <Expression xsi:type="CalculationExpression" id="591bf324-20b0-470d-8810-6b5ee6b662a2">
+                <Operator>DateName</Operator>
+                <DateTimePart>Month</DateTimePart>
+                <Expressions>
+                  <Expression xsi:type="ResourceDataColumn">
+                    <NodeId>fcf50108-d9ff-430a-bba5-3a8fd6a9ff0d</NodeId>
+                    <FieldId entityRef="true">test:dateTimeDateTimeFieldTestField</FieldId>
+                  </Expression>
+                </Expressions>
+              </Expression>
+            </Expressions>
+          </Expression>
+        </GroupBy>
+      </RootEntity>
+      <Columns>
+        <Column id="bb015d54-dadf-4c27-a42f-053571de0001">
+          <Expression xsi:type="CalculationExpression" id="1fd5aee5-9dc5-4a9d-9f22-23201c98022b">
+            <Operator>SmartOrderConcatenate</Operator>
+            <DateTimePart>None</DateTimePart>
+            <Expressions>
+              <Expression xsi:type="CalculationExpression" id="9e9d02f8-cde8-43c4-87aa-7881fd318f03">
+                <Operator>DateName</Operator>
+                <DateTimePart>Year</DateTimePart>
+                <Expressions>
+                  <Expression xsi:type="ResourceDataColumn">
+                    <NodeId>fcf50108-d9ff-430a-bba5-3a8fd6a9ff0d</NodeId>
+                    <FieldId entityRef="true">test:dateTimeDateTimeFieldTestField</FieldId>
+                  </Expression>
+                </Expressions>
+              </Expression>
+              <Expression xsi:type="LiteralExpression">
+                <Value>
+                  <Value xsi:type="xsd:string">
+                  </Value>
+                  <Type xsi:type="StringType">
+                  </Type>
+                  <SourceEntityTypeId>0</SourceEntityTypeId>
+                </Value>
+              </Expression>
+              <Expression xsi:type="CalculationExpression" id="591bf324-20b0-470d-8810-6b5ee6b662a2">
+                <Operator>DateName</Operator>
+                <DateTimePart>Month</DateTimePart>
+                <Expressions>
+                  <Expression xsi:type="ResourceDataColumn">
+                    <NodeId>fcf50108-d9ff-430a-bba5-3a8fd6a9ff0d</NodeId>
+                    <FieldId entityRef="true">test:dateTimeDateTimeFieldTestField</FieldId>
+                  </Expression>
+                </Expressions>
+              </Expression>
+            </Expressions>
+          </Expression>
+          <ColumnName>Date</ColumnName>
+          <DisplayName>Date</DisplayName>
+          <IsHidden>false</IsHidden>
+        </Column>
+        <Column id="fd75de25-1606-4ed6-a109-540a5646fbcd">
+          <Expression xsi:type="AggregateExpression">
+            <NodeId>46a4db46-0f5f-4559-b33c-cc14b9f0680f</NodeId>
+            <AggregateMethod>Sum</AggregateMethod>
+            <Expression xsi:type="ResourceDataColumn">
+              <NodeId>fcf50108-d9ff-430a-bba5-3a8fd6a9ff0d</NodeId>
+              <FieldId entityRef="true">test:numberIntFieldTestField</FieldId>
+              <CastType xsi:type="Int32Type">
+                <MaxValue>0</MaxValue>
+                <MinValue>0</MinValue>
+              </CastType>
+            </Expression>
+          </Expression>
+          <ColumnName>Sum : Number</ColumnName>
+          <DisplayName>Sum : Number</DisplayName>
+          <IsHidden>false</IsHidden>
+        </Column>
+      </Columns>
+      <Conditions>
+        <Condition>
+          <Expression xsi:type="ResourceDataColumn" id="642351d7-bfa8-4791-b1e4-4b8fe441b9cd">
+            <NodeId>fcf50108-d9ff-430a-bba5-3a8fd6a9ff0d</NodeId>
+            <FieldId entityRef="true">core:name</FieldId>
+          </Expression>
+          <Operator>Unspecified</Operator>
+          <Arguments>
+            <TypedValue>
+              <Value xsi:type="xsd:string">
+              </Value>
+              <Type xsi:type="StringType">
+              </Type>
+              <SourceEntityTypeId>0</SourceEntityTypeId>
+            </TypedValue>
+          </Arguments>
+        </Condition>
+        <Condition>
+          <Expression xsi:type="AggregateExpression" id="f7e7a3be-84cc-4182-a0a7-533e2a32bfaf">
+            <NodeId>46a4db46-0f5f-4559-b33c-cc14b9f0680f</NodeId>
+            <AggregateMethod>Sum</AggregateMethod>
+            <Expression xsi:type="ResourceDataColumn">
+              <NodeId>fcf50108-d9ff-430a-bba5-3a8fd6a9ff0d</NodeId>
+              <FieldId entityRef="true">test:numberIntFieldTestField</FieldId>
+              <CastType xsi:type="Int32Type">
+                <MaxValue>0</MaxValue>
+                <MinValue>0</MinValue>
+              </CastType>
+            </Expression>
+          </Expression>
+          <Operator>Unspecified</Operator>
+          <Arguments>
+            <TypedValue>
+              <Type xsi:type="Int32Type">
+                <MaxValue>0</MaxValue>
+                <MinValue>0</MinValue>
+              </Type>
+              <SourceEntityTypeId>0</SourceEntityTypeId>
+            </TypedValue>
+          </Arguments>
+        </Condition>
+      </Conditions>
+      <Ordering>
+        <OrderBy>
+          <Expression xsi:type="ColumnReference">
+            <ColumnId>bb015d54-dadf-4c27-a42f-053571de0001</ColumnId>
+          </Expression>
+          <Direction>Ascending</Direction>
+        </OrderBy>
+      </Ordering>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+select
+    ag.aggCol [Date],
+    isnull(ag.aggCol2, 0) [Sum : Number]
+from
+    (
+        select
+            (isnull(datename(Year, dbo.fnConvertToLocalTime(d.Data, 'AUS Eastern Standard Time')), '') + isnull((@param4 collate Latin1_General_CI_AI), '') + isnull(datename(Month, dbo.fnConvertToLocalTime(d.Data, 'AUS Eastern Standard Time')), '')) [aggCol],
+            sum(convert(bigint, d2.Data)) [aggCol2],
+            datepart(Year, dbo.fnConvertToLocalTime(d.Data, 'AUS Eastern Standard Time')) [aggCol3],
+            datepart(Month, dbo.fnConvertToLocalTime(d.Data, 'AUS Eastern Standard Time')) [aggCol4]
+        from
+            [dbo].[Relationship] e
+            left join [dbo].[Data_DateTime] d on d.EntityId = e.FromId and d.FieldId = @param3 and d.TenantId = @tenant
+            left join [dbo].[Data_Int] d2 on d2.EntityId = e.FromId and d2.FieldId = @param5 and d2.TenantId = @tenant
+        where
+            e.TypeId = @param1
+            and e.ToId = @param2
+            and e.TenantId = @tenant
+        group by
+            (isnull(datename(Year, dbo.fnConvertToLocalTime(d.Data, 'AUS Eastern Standard Time')), '') + isnull((@param4 collate Latin1_General_CI_AI), '') + isnull(datename(Month, dbo.fnConvertToLocalTime(d.Data, 'AUS Eastern Standard Time')), '')),
+            datepart(Year, dbo.fnConvertToLocalTime(d.Data, 'AUS Eastern Standard Time')),
+            datepart(Month, dbo.fnConvertToLocalTime(d.Data, 'AUS Eastern Standard Time'))
+    ) ag
+order by
+    ag.aggCol3~thenby~ag.aggCol4]]></Expect>
+  </Test>
+  <Test name="SimpleScriptScalar">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="c5df347b-5fb6-4752-b49e-aaa4e4cae4f2">
+        <ExactType>false</ExactType>
+        <EntityTypeId entityRef="true">oldshared:person</EntityTypeId>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <ColumnName>Result</ColumnName>
+          <Expression xsi:type="ScriptExpression">
+            <Script>1+1</Script>
+          </Expression>
+        </Column>
+      </Columns>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+create table #derived ( Id bigint primary key )
+insert into #derived select Id from dbo.fnDerivedTypes(@param2, @tenant)
+
+select
+    1 + 1 [Result]
+from
+    [dbo].[Relationship] e
+    join #derived dt on dt.Id = e.ToId
+where
+    e.TypeId = @param1
+    and e.TenantId = @tenant
+
+drop table #derived]]></Expect>
+  </Test>
+  <Test name="SimpleScriptFieldValue">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="c5df347b-5fb6-4752-b49e-aaa4e4cae4f2">
+        <ExactType>false</ExactType>
+        <EntityTypeId entityRef="true">oldshared:person</EntityTypeId>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <ColumnName>Result</ColumnName>
+          <Expression xsi:type="ScriptExpression">
+            <Script>Name</Script>
+          </Expression>
+        </Column>
+      </Columns>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+create table #derived ( Id bigint primary key )
+insert into #derived select Id from dbo.fnDerivedTypes(@param2, @tenant)
+
+select
+    null [Result]
+from
+    [dbo].[Relationship] e
+    join #derived dt on dt.Id = e.ToId
+where
+    e.TypeId = @param1
+    and e.TenantId = @tenant
+
+drop table #derived]]></Expect>
+  </Test>
+  <Test name="DerivedTypesThreshold" flags="Ignore">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="c5df347b-5fb6-4752-b49e-aaa4e4cae4f2">
+        <ExactType>false</ExactType>
+        <EntityTypeId entityRef="true">oldshared:person</EntityTypeId>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <ColumnName>FirstName</ColumnName>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>c5df347b-5fb6-4752-b49e-aaa4e4cae4f2</NodeId>
+            <FieldId entityRef="true">oldshared:firstName</FieldId>
+          </Expression>
+        </Column>
+      </Columns>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+select
+    d.Data [FirstName]
+from
+    [dbo].[Relationship] e
+    left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param5 and d.TenantId = @tenant
+where
+    e.TypeId = @param1
+    and e.ToId in (@param2, @param3, @param4)
+    and e.TenantId = @tenant]]></Expect>
+  </Test>
+  <!--<Test name="SimpleScriptLookup">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="c5df347b-5fb6-4752-b49e-aaa4e4cae4f2">
+        <ExactType>false</ExactType>
+        <EntityTypeId entityRef="true">oldshared:employee</EntityTypeId>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <ColumnName>Result</ColumnName>
+          <Expression xsi:type="ScriptExpression">
+            <Script>Manager</Script>
+          </Expression>
+        </Column>
+      </Columns>
+    </Query>
+    <Expect>
+      <![CDATA[
+      ]]>
+    </Expect>
+  </Test>-->
+</QueryTests>

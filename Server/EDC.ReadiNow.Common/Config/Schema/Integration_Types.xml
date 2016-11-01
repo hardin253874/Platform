@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="core" xsi:schemaLocation=". ../Core.xsd" defaultSolution="coreSolution">
+  <!--Copyright 2011-2016 Global Software Innovation Pty Ltd-->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    Integrations                                                      -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- Twilio                                                        -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+
+  <managedType>
+    <alias>notifier</alias>
+    <inherits>userResource</inherits>
+    <name>Notifier</name>
+    <description>The base type for all notification providers.</description>
+    <isAbstract>true</isAbstract>
+    <generateCode>true</generateCode>
+
+     <fieldGroups>
+        <fieldGroup>
+          <alias>intergrationProviderFieldGroup</alias>
+          <name>Integration Provider</name>
+        </fieldGroup>
+      </fieldGroups>
+  </managedType>
+
+  <managedType>
+    <alias>twilioNotifier</alias>
+      <inherits>notifier</inherits>
+    <name>Twilio Notifier</name>
+    <description>Twilio Sms notifier type</description>
+    <generateCode>true</generateCode>
+    <canCreateType>true</canCreateType>
+
+    <fields>
+      <stringField>
+        <alias>core:tpAccountSid</alias>
+        <name>Account SID</name>
+        <description>Account Sid as obtained from Twilio</description>
+        <fieldInGroup>intergrationProviderFieldGroup</fieldInGroup>
+        <isRequired>true</isRequired>
+      </stringField>
+      <stringField>
+        <alias>core:tpAuthToken</alias> 
+        <name>Auth token</name>
+        <description>Auth token as obtained from Twilio</description>
+        <isFieldWriteOnly>true</isFieldWriteOnly>
+        <fieldInGroup>intergrationProviderFieldGroup</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>core:tpSendingNumber</alias>  
+        <name>Sending number</name>
+        <description>The number to use when sending a message</description>
+        <fieldInGroup>intergrationProviderFieldGroup</fieldInGroup>
+        <isRequired>true</isRequired>
+      </stringField>
+      <boolField>
+        <alias>tpEnableTestMode</alias>
+        <name>Enable test mode</name>
+        <description>If enabled then dummy send and reply messages will be created. No actually messages will be sent.</description>
+        <fieldInGroup>intergrationProviderFieldGroup</fieldInGroup>
+      </boolField>
+    </fields>
+      <onBeforeSave>twilioNotifierEventTarget</onBeforeSave>
+      <onAfterSave>twilioNotifierEventTarget</onAfterSave>
+  </managedType>
+
+  <target>
+    <alias>twilioNotifierEventTarget</alias>
+    <typeName>ReadiNow.Integration.EventTarget.TwilioNotifierEventTarget</typeName>
+    <assemblyName>ReadiNow.Integration, Version=1.0.0.0, Culture=neutral</assemblyName>
+  </target>
+
+  <managedType>
+    <alias>emailNotifier</alias>
+    <inherits>notifier</inherits>
+    <name>Email Notifier</name>
+    <description>Email notifier type</description>
+    <generateCode>true</generateCode>
+    <canCreateType>true</canCreateType>
+
+    <fields>
+      <stringField>
+        <alias>enSubject</alias>
+        <name>Subject</name>
+        <description>The subject for the email message.</description>
+        <fieldInGroup>intergrationProviderFieldGroup</fieldInGroup>
+        <!--  <fieldRepresents></fieldRepresents> should be field represents expression -->
+        <isRequired>true</isRequired>
+      </stringField>
+
+      <stringField>
+        <alias>enEmailAddressExpression</alias>
+        <name>Email expression</name>
+        <description>An expression for a person that returns their email address.</description>
+        <fieldInGroup>intergrationProviderFieldGroup</fieldInGroup>
+        <isRequired>true</isRequired>
+        <!--  <fieldRepresents></fieldRepresents> should be field represents expression -->
+      </stringField>
+    </fields>
+    <relationships>
+      <relationship>
+        <alias>emailNotifierInbox</alias>
+        <name>Email notifier inbox</name>
+        <description>The email inbox that is used by a email notifier.</description>
+        <toType>inbox</toType>
+        <relType>relLookup</relType>
+        <relationshipInFromTypeGroup>intergrationProviderFieldGroup</relationshipInFromTypeGroup>
+        <hideOnToType>true</hideOnToType>
+        <hideOnToTypeDefaultForm>true</hideOnToTypeDefaultForm>
+        <generateCode>true</generateCode>
+      </relationship>
+    </relationships>
+  </managedType>
+
+
+  <managedType>
+    <alias>notification</alias>
+    <name>Notification</name>
+    <inherits>userResource</inherits>
+    <description>A record of a sent notification message</description>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <alias>notificationFieldGroup</alias>
+        <name>Notification</name>
+      </fieldGroup>
+    </fieldGroups>
+
+    <fields>
+      <stringField>
+        <alias>nMessage</alias>
+        <name>Message</name>
+        <description>The message that was sent</description>
+        <fieldInGroup>notificationFieldGroup</fieldInGroup>
+      </stringField>
+      <dateTimeField>
+        <alias>nAcceptRepliesUntil</alias>
+        <name>Accept replies until</name>
+        <description>Accept replies until the given date. After that time no further replies will be added to the notification.</description>
+        <fieldInGroup>notificationFieldGroup</fieldInGroup>
+        <isRequired>true</isRequired>
+      </dateTimeField>
+    </fields>
+
+    <relationships>
+      <relationship>
+        <alias>sendRecords</alias>
+        <reverseAlias>sendToNotification</reverseAlias>
+        <name>Notification to send records</name>
+        <toName>Send records</toName>
+        <fromName>Notification</fromName>
+        <generateCode>true</generateCode>
+        <toType>sendRecord</toType>
+        <relType>relComponents</relType>
+        <securesTo>true</securesTo>
+        <relationshipInToTypeGroup>notificationFieldGroup</relationshipInToTypeGroup>
+        <relationshipInFromTypeGroup>notificationFieldGroup</relationshipInFromTypeGroup>
+      </relationship>
+
+      <relationship>
+        <alias>nPendingRun</alias>
+        <name>Pending run</name>
+        <description>The workflow run that is waiting for this notification to complete</description>
+        <toType>workflowRun</toType>
+        <relType>relSingleLookup</relType>
+        <hideOnToTypeDefaultForm>true</hideOnToTypeDefaultForm>
+        <relationshipInFromTypeGroup>notificationFieldGroup</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>notificationFieldGroup</relationshipInToTypeGroup>
+        <generateCode>true</generateCode>
+      </relationship>
+      
+      <relationship>
+        <alias>nRelatedRecord</alias>
+        <name>Related record</name>
+        <toName>Related records</toName>
+        <fromName>Notifications</fromName>
+        <description>An option record that this notification is related to.</description>
+        <toType>userResource</toType>
+        <relType>relLookup</relType>
+        <relationshipInFromTypeGroup>notificationFieldGroup</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>system</relationshipInToTypeGroup>
+        <generateCode>true</generateCode>
+      </relationship>
+
+      <relationship>
+        <alias>nReplyMapCopy</alias>
+        <name>Reply map copy</name>
+        <description>A copy of the reply map that was original set up in the workflow activity that created this notification. This ensure that later updates to the workflow will not effect the reply mapping.</description>
+        <toType>replyMapEntry</toType>
+        <relType>relComponents</relType>
+        <hideOnToType>true</hideOnToType>
+        <hideOnFromType>true</hideOnFromType>
+        <hideOnToTypeDefaultForm>true</hideOnToTypeDefaultForm>
+        <hideOnFromTypeDefaultForm>true</hideOnFromTypeDefaultForm>
+        <generateCode>true</generateCode>
+        <securesTo>true</securesTo>
+      </relationship>
+    </relationships>
+
+  </managedType>
+
+  <managedType>
+    <alias>sendRecord</alias>
+    <name>Send Record</name>
+    <inherits>userResource</inherits>
+    <generateCode>true</generateCode>
+    <description>A record containing details of a notification to a person.</description>
+    <fields>
+
+      
+      <stringField>
+        <alias>srErrorMessage</alias>
+        <name>Error message</name>
+        <description>If a delivery fails this will contain the error message.</description>
+        <fieldInGroup>notificationFieldGroup</fieldInGroup>
+        <isFieldReadOnly>true</isFieldReadOnly>
+      </stringField>
+
+      <dateTimeField>
+        <alias>srSendDate</alias>
+        <name>Send date</name>
+        <description>The time and date of the send.</description>
+        <fieldInGroup>notificationFieldGroup</fieldInGroup>
+        <isFieldReadOnly>true</isFieldReadOnly>
+      </dateTimeField>
+    </fields>
+
+    <relationships>
+      <relationship>
+        <alias>srToPerson</alias>
+        <name>Send record to person</name>
+        <description>The person who was sent the notification.</description>
+        <toType>person</toType>
+        <toName>Person</toName>
+        <fromName>Send record</fromName>
+        <relType>relLookup</relType>
+        <relationshipInFromTypeGroup>notificationFieldGroup</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>notificationFieldGroup</relationshipInToTypeGroup>
+        <hideOnToType>true</hideOnToType>
+        <hideOnToTypeDefaultForm>true</hideOnToTypeDefaultForm>
+        <generateCode>true</generateCode>
+      </relationship>
+
+      <relationship>
+        <alias>srToReply</alias>
+        <reverseAlias>rrToSend</reverseAlias>
+
+        <name>Send record to reply</name>
+        <description>The reply to a send.</description>
+        <toType>replyRecord</toType>
+        <toName>Replies</toName>
+        <fromName>Send record</fromName>
+        <relType>relComponents</relType>
+        <securesTo>true</securesTo>
+        <relationshipInFromTypeGroup>notificationFieldGroup</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>notificationFieldGroup</relationshipInToTypeGroup>
+        <generateCode>true</generateCode>
+      </relationship>
+    </relationships>
+
+    <onAfterSave>sendRecordEventTarget</onAfterSave>
+
+  </managedType>
+
+  <target>
+    <alias>sendRecordEventTarget</alias>
+    <typeName>EDC.SoftwarePlatform.Activities.EventTarget.SendRecordEventTarget</typeName>
+    <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+  </target>
+
+  <managedType>
+    <alias>replyRecord</alias>
+    <name>Reply Record</name>
+    <inherits>userResource</inherits>
+    <generateCode>true</generateCode>
+    <description>A reply to a notification.</description>
+    <fields>
+
+      <stringField>
+        <alias>rrReply</alias>
+        <name>Reply</name>
+        <description>Populated by a reply message.</description>
+        <fieldInGroup>notificationFieldGroup</fieldInGroup>
+        <isFieldReadOnly>true</isFieldReadOnly>
+      </stringField>
+
+      <dateTimeField>
+        <alias>rrReplyDate</alias>
+        <name>Reply date</name>
+        <description>The time and date of a reply.</description>
+        <fieldInGroup>notificationFieldGroup</fieldInGroup>
+        <isFieldReadOnly>true</isFieldReadOnly>
+      </dateTimeField>
+    </fields>
+
+    <relationships>
+
+    </relationships>
+    <onBeforeSave>replyRecordEventTarget</onBeforeSave>
+    <onAfterSave>replyRecordEventTarget</onAfterSave>
+  </managedType>
+
+  <target>
+    <alias>replyRecordEventTarget</alias>
+    <typeName>EDC.SoftwarePlatform.Activities.EventTarget.ReplyRecordEventTarget</typeName>
+    <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+  </target>
+
+  <managedType>
+    <alias>smsSendRecord</alias>
+    <inherits>sendRecord</inherits>
+    <name>SMS send record</name>
+    <generateCode>true</generateCode>
+    <description>A details of the SMS send.</description>
+    <fields>
+
+      <stringField>
+        <alias>ssrTo</alias>
+        <name>To</name>
+        <description>The number the message was sent to</description>
+        <fieldInGroup>notificationFieldGroup</fieldInGroup>
+        <isFieldReadOnly>true</isFieldReadOnly>
+      </stringField>
+
+      <stringField>
+        <alias>ssrFrom</alias>
+        <name>From</name>
+        <description>The number the message was sent from</description>
+        <fieldInGroup>notificationFieldGroup</fieldInGroup>
+        <isFieldReadOnly>true</isFieldReadOnly>
+      </stringField>
+      
+      <stringField>
+        <alias>ssrMessageSid</alias>
+        <name>MessageSid</name>
+        <description>Unique identifier for the message.</description>
+        <fieldInGroup>notificationFieldGroup</fieldInGroup>
+        <isFieldReadOnly>true</isFieldReadOnly>
+      </stringField>
+      
+      <stringField>
+        <alias>ssrDeliveryStatus</alias>
+        <name>Delivery status</name>
+        <description>The status od the delivery of the message. This may change a number of times during the delivery.</description>
+        <fieldInGroup>notificationFieldGroup</fieldInGroup>
+        <isFieldReadOnly>true</isFieldReadOnly>
+      </stringField>
+      
+
+      <boolField>
+        <alias>ssrClosed</alias>
+        <name>Closed</name>
+        <description>If set to true, no further replies can be matched to this send. Used to reduce the cost of matching sends.</description>
+        <fieldInGroup>notificationFieldGroup</fieldInGroup>
+      </boolField>
+    </fields>
+
+  </managedType>
+
+</resources>

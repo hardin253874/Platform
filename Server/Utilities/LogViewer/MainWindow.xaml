@@ -1,0 +1,235 @@
+<!-- Copyright 2011-2016 Global Software Innovation Pty Ltd -->
+<Window x:Class="LogViewer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:lvm="clr-namespace:LogViewer.ViewModels" 
+        xmlns:lvc="clr-namespace:LogViewer.Common" 
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        Title="{Binding WindowTitle}" Height="913" Width="1261" Icon="/Resources/eventlog.ico" WindowStartupLocation="CenterScreen">    
+    <Window.DataContext>
+        <lvm:MainWindowViewModel></lvm:MainWindowViewModel>
+    </Window.DataContext>
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top">
+            <Menu>
+                <MenuItem Header="_File">
+                    <MenuItem Header="Open">
+                        <MenuItem Header="File" Command="{Binding OpenFileCommand}">
+                            <MenuItem.Icon>
+                                <Image Source="/Resources/OpenFile.png" Width="16" Height="16"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="Folder" Command="{Binding OpenFolderCommand}">
+                            <MenuItem.Icon>
+                                <Image Source="/Resources/OpenFolder.png" Width="16" Height="16"/>
+                            </MenuItem.Icon>
+                        </MenuItem>                        
+                    </MenuItem>
+                    <MenuItem Header="Save Log File As..." Command="{Binding SaveAsCommand}">
+                    </MenuItem>
+                    <Separator></Separator>
+                    <MenuItem Header="Start Monitoring" Command="{Binding StartMonitoringCommand}" Style="{StaticResource MenuItemStyle}">
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/Play.png" Width="16" Height="16"/>
+                        </MenuItem.Icon>                        
+                    </MenuItem>
+                    <MenuItem Header="Stop Monitoring"  Command="{Binding StopMonitoringCommand}" Style="{StaticResource MenuItemStyle}">
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/StopHS.png"  Width="16" Height="16"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <Separator></Separator>
+                    <MenuItem Header="Resolve Guids" IsCheckable="True" IsChecked="{Binding ResolveGuids}"/>
+                    <Separator></Separator>
+                    <MenuItem Header="E_xit" Command="{Binding Path=ExitCommand}"/>
+                </MenuItem>                
+                <MenuItem Header="_Help">
+                </MenuItem>
+            </Menu>
+            <ToolBarTray>                
+                <ToolBar>                    
+                    <Button Margin="2" ToolTip="Start Monitoring" Command="{Binding StartMonitoringCommand}" Style="{StaticResource ToolbarButtonStyle}">                        
+                        <Image Source="/Resources/Play.png" Width="16" Height="16"/>                        
+                    </Button>
+                    <Button Margin="2" ToolTip="Stop Monitoring" Command="{Binding StopMonitoringCommand}" Style="{StaticResource ToolbarButtonStyle}">
+                        <Image Source="/Resources/StopHS.png"  Width="16" Height="16"/>
+                    </Button>
+                    <Separator></Separator>
+                    <Button Margin="2" ToolTip="Filters" Style="{StaticResource ToolbarButtonStyle}" Command="{Binding FiltersCommand}">
+                        <Image Source="/Resources/Filter2HS.png" Width="16" Height="16"/>
+                    </Button>
+                    <Separator></Separator>
+                    <Button Margin="2" ToolTip="Reload all logs" Command="{Binding ReloadLogEntriesCommand}" Style="{StaticResource ToolbarButtonStyle}">
+                        <Image Source="/Resources/Refresh.png" Width="16" Height="16"/>
+                    </Button>
+                    <Button Margin="2" ToolTip="Clear" Command="{Binding ClearLogEntriesCommand}" Style="{StaticResource ToolbarButtonStyle}">
+                        <Image Source="/Resources/Clear.png" Width="16" Height="16"/>
+                    </Button>
+                    <Separator></Separator>                    
+                    <ToggleButton Margin="2" IsChecked="{Binding Autoscroll}" ToolTip="Autoscroll on/off">                        
+                        <Image Source="/Resources/DownArrow.png" Width="16" Height="16"/>
+                    </ToggleButton>                    
+                </ToolBar>
+            </ToolBarTray>
+        </StackPanel>
+        <StatusBar Height="23" DockPanel.Dock="Bottom" BorderThickness="0,1,0,0" BorderBrush="Gray">                        
+            <StatusBarItem Content="{Binding MonitorStatusText}"></StatusBarItem>            
+            <Separator/>
+            <StatusBarItem Content="{Binding CountLogEntriesText}"></StatusBarItem>
+        </StatusBar>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <DataGrid Name="Grid" BorderThickness="1" BorderBrush="Black" HorizontalGridLinesBrush="LightGray" VerticalGridLinesBrush="LightGray" Grid.Row="0" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeRows="False" IsReadOnly="True" AutoGenerateColumns="False" ItemsSource="{Binding LogEntries.View}" RowHeight="18" SelectionUnit="FullRow" SelectedValue="{Binding SelectedValue}">                                                
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Date" Width="*" Binding="{Binding Date}" CanUserSort="False"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Message" Width="3*" Binding="{Binding GridMessage}" CanUserSort="False"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Source" Width="*" Binding="{Binding Source}" CanUserSort="False"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Process" Width="*" Binding="{Binding Process}" CanUserSort="False"></DataGridTextColumn>
+                    <DataGridTextColumn Header="TID" Width="0.5*" Binding="{Binding ThreadId}" CanUserSort="False"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Machine" Width="*" Binding="{Binding Machine}" CanUserSort="False"></DataGridTextColumn>
+                    <DataGridTextColumn Header="TenantName" Width="*" Binding="{Binding TenantName}" CanUserSort="False"></DataGridTextColumn>
+                    <DataGridTextColumn Header="UserName" Width="*" Binding="{Binding UserName}" CanUserSort="False"></DataGridTextColumn>
+                </DataGrid.Columns>                
+                <i:Interaction.Triggers>                    
+                    <i:EventTrigger EventName="Loaded">
+                        <i:InvokeCommandAction Command="{Binding LogEntriesGridLoadedCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
+                    </i:EventTrigger>                    
+                </i:Interaction.Triggers>                
+                <DataGrid.ItemContainerStyle>
+                    <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource {x:Type DataGridRow}}">
+                        <Setter Property="Background" Value="{Binding BackgroundColor}"/>
+                        <Setter Property="Foreground" Value="{Binding ForegroundColor}"/>                        
+                    </Style>
+                </DataGrid.ItemContainerStyle>
+            </DataGrid>
+            <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="5" Margin="0,0,0,5" />
+            <Grid Grid.Row="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <DockPanel Grid.Row="0">
+                    <Border DockPanel.Dock="Top">
+                        <Label FontWeight="Bold" Content="Details:" Padding="5,2">
+                            <Label.Background>
+                                <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                                    <GradientStop Color="White" Offset="0" />
+                                    <GradientStop Color="Lavender" Offset="1" />
+                                </LinearGradientBrush>
+                            </Label.Background>
+                        </Label>                        
+                    </Border>
+                    <Popup DockPanel.Dock="Bottom" IsOpen="{Binding PopupIsOpen}" Placement="MousePoint" HorizontalOffset="20" VerticalOffset="20" PopupAnimation="Fade">
+                        <Border BorderThickness="1" Padding="3" Background="LightYellow">
+                            <TextBlock Background="LightYellow" Text="{Binding PopupText}"></TextBlock>
+                        </Border>
+                    </Popup>
+                    <TextBox TextWrapping="Wrap" IsReadOnly="True" Text="{Binding SelectedLogEntryText}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Tag="{Binding RelativeSource={RelativeSource Self}}">
+                        <TextBox.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Command="ApplicationCommands.Copy"></MenuItem>
+                                <MenuItem Header="Search online..." Command="{Binding SearchOnlineCommand}" CommandParameter="{Binding PlacementTarget.Tag, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"></MenuItem>
+                            </ContextMenu>
+                        </TextBox.ContextMenu>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseMove">
+                                <i:InvokeCommandAction Command="{Binding LogEntryDetailsMouseMoveCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=TextBox}}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>                        
+                    </TextBox>
+                </DockPanel>
+                <Expander Grid.Row="1" IsExpanded="False" FontWeight="Normal" BorderThickness="1">
+                    <Expander.Background>
+                        <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                            <GradientStop Color="White" Offset="0" />
+                            <GradientStop Color="Lavender" Offset="1" />
+                        </LinearGradientBrush>                        
+                    </Expander.Background>
+                    <Expander.Header>
+                        <Border Width="Auto">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0" FontWeight="Bold" Content="Quick Search / Filter" Padding="5,2"></Label>
+                                <Label Grid.Column="1" FontWeight="Bold" Content="{Binding QuickSearchFilterHintText}" Padding="5,2"></Label>
+                            </Grid>                            
+                        </Border>
+                    </Expander.Header>
+                    <DockPanel Background="White">
+                        <GroupBox Header="Level Filter" DockPanel.Dock="Right">
+                            <StackPanel>
+                                <CheckBox Margin="3" IsChecked="{Binding ShowErrors, Mode=TwoWay}">Error</CheckBox>
+                                <CheckBox Margin="3" IsChecked="{Binding ShowWarnings, Mode=TwoWay}">Warning</CheckBox>
+                                <CheckBox Margin="3" IsChecked="{Binding ShowInformation, Mode=TwoWay}">Information</CheckBox>
+                                <CheckBox Margin="3" IsChecked="{Binding ShowTrace, Mode=TwoWay}">Trace</CheckBox>
+                            </StackPanel>
+                        </GroupBox>
+                        <GroupBox Name="JumpToGroup" Header="Jump to" DockPanel.Dock="Right">
+                            <StackPanel Orientation="Vertical">
+                                <RadioButton Margin="3" IsChecked="{Binding JumpToError, Mode=TwoWay}">Error</RadioButton>
+                                <RadioButton Margin="3" IsChecked="{Binding JumpToWarning, Mode=TwoWay}">Warning</RadioButton>
+                                <RadioButton Margin="3" IsChecked="{Binding JumpToInformation, Mode=TwoWay}">Information</RadioButton>
+                                <RadioButton Margin="3" IsChecked="{Binding JumpToTrace, Mode=TwoWay}">Trace</RadioButton>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Button Margin="3" Command="{Binding JumpToPreviousCommand}">
+                                        <Image Source="/Resources/UpArrow.png" Width="16" Height="16"/>
+                                    </Button>
+                                    <Button Margin="3" Command="{Binding JumpToNextCommand}">
+                                        <Image Source="/Resources/DownArrow.png" Width="16" Height="16"/>
+                                    </Button>
+                                </StackPanel>
+                            </StackPanel>
+                        </GroupBox>             
+                        <GroupBox Header="Quick Search / Filter">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Label Margin="3" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center">Filter:</Label>
+                                <TextBox Margin="3" Grid.Row="0" Foreground="Red" FontWeight="Bold" Grid.Column="1" Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"></TextBox>
+                                <CheckBox Margin="3" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding IsFilterTextRegex}">Regex</CheckBox>
+                                <CheckBox Margin="3" Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding IsFilterTextInverse}">Inverse</CheckBox>
+
+                                <Label Margin="3" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center">Highlight:</Label>                                                                
+                                <TextBox Margin="3" Grid.Row="1" Grid.Column="1" Text="{Binding HighlightText, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"></TextBox>                                
+                                <CheckBox Margin="3" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding IsHighlightTextRegex}">Regex</CheckBox>                                
+
+                                <Label Margin="3" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center">Search:</Label>
+                                <TextBox Margin="3" Grid.Row="2" Grid.Column="1" Text="{Binding SearchText}" VerticalAlignment="Center"></TextBox>
+                                <CheckBox Margin="3" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding IsSearchTextRegex}">Regex</CheckBox>
+                                <Button Margin="3" Grid.Row="2" Grid.Column="3" Command="{Binding SearchToPreviousCommand}" VerticalAlignment="Center">
+                                    <Image Source="/Resources/UpArrow.png" Width="16" Height="16"/>
+                                </Button>
+                                <Button Margin="3" Grid.Row="2" Grid.Column="4" Command="{Binding SearchToNextCommand}" VerticalAlignment="Center">
+                                    <Image Source="/Resources/DownArrow.png" Width="16" Height="16"/>
+                                </Button>                                
+                            </Grid>
+                        </GroupBox>                        
+                    </DockPanel>
+                </Expander>
+            </Grid>            
+        </Grid>                
+    </DockPanel>
+</Window>

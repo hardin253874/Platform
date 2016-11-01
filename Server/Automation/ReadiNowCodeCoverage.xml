@@ -1,0 +1,44 @@
+<codeCoverageConfiguration>
+  <!--Copyright 2011-2016 Global Software Innovation Pty Ltd-->
+  <results resultsRootPath="%USERPROFILE%\My Documents\CodeCoverageResults" keepHistory="false" />
+  <testConfiguration noResults="false">
+  </testConfiguration>
+  <!--<shutdownCommands>
+	<stopService name='ReadiNowSvc' />
+  </shutdownCommands>
+  <startUpCommands>
+	<startService name='ReadiNowSvc' />
+  </startUpCommands>-->
+  <assemblies>
+    <testAssemblies testSettingsPath="..\Local.TestSettings">
+      <testAssembly path="..\EDC.Common.Test\bin\Debug\EDC.Common.Test.Dll" />
+      <testAssembly path="..\EDC.ReadiNow.Common.Test\bin\Debug\EDC.ReadiNow.Common.Test.Dll" />
+      <testAssembly path="..\EDC.SoftwarePlatform.Activities.Test\bin\Debug\EDC.SoftwarePlatform.Activities.Test.Dll" />
+      <testAssembly path="..\EDC.SoftwarePlatform.Services.Test\bin\Debug\EDC.SoftwarePlatform.Services.Test.Dll" />
+      <testAssembly path="..\EDC.SoftwarePlatform.WebApi.Test\bin\Debug\EDC.SoftwarePlatform.WebApi.Test.dll" />
+      <testAssembly path="..\ReadiNow.DocGen.Test\bin\Debug\ReadiNow.DocGen.Test.dll" />
+      <testAssembly path="..\EDC.SoftwarePlatform.Migration.Test\bin\Debug\EDC.SoftwarePlatform.Migration.Test.dll" />
+      <testAssembly path="..\Deployment\EDC.SoftwarePlatform.Install.Actions.Test\bin\Debug\EDC.SoftwarePlatform.Install.Actions.Test.dll" />
+      <testAssembly path="..\ReadiNow.QueryEngine.Test\bin\Debug\ReadiNow.QueryEngine.Test.dll" />
+	  <testAssembly path="..\ReadiNow.Integration.Test\bin\Debug\ReadiNow.Integration.Test.dll" />
+    </testAssemblies>
+    <assembliesUnderTest>
+      <assemblyUnderTest path="..\EDC.Common\bin\Debug\EDC.Common.Dll" publishPath="GAC" />
+      <assemblyUnderTest path="..\EDC.Interop\bin\Debug\EDC.Interop.Dll" publishPath="GAC" />
+      <assemblyUnderTest path="..\EDC.ReadiNow.Common\bin\Debug\EDC.ReadiNow.Common.Dll" publishPath="GAC" />
+      <assemblyUnderTest path="..\Deployment\EDC.SoftwarePlatform.Install.Common\Bin\Debug\EDC.SoftwarePlatform.Install.Common.dll" publishPath="GAC" />
+      <assemblyUnderTest path="..\EDC.ReadiNow.Common.ConfigParser\bin\Debug\EDC.ReadiNow.Common.ConfigParser.dll" publishPath="GAC" />
+      <assemblyUnderTest path="..\EDC.SoftwarePlatform.Interfaces\bin\Debug\EDC.SoftwarePlatform.Interfaces.dll" publishPath="GAC" />
+      <assemblyUnderTest path="..\EDC.SoftwarePlatform.Services\bin\Debug\EDC.SoftwarePlatform.Services.dll" publishPath="GAC" />
+      <assemblyUnderTest path="..\EDC.SoftwarePlatform.Activities\bin\Debug\EDC.SoftwarePlatform.Activities.dll" publishPath="GAC" />
+      <assemblyUnderTest path="..\EDC.SoftwarePlatform.Migration\bin\Debug\EDC.SoftwarePlatform.Migration.dll" publishPath="GAC" />
+      <assemblyUnderTest path="..\ReadiNow.DocGen\bin\Debug\ReadiNow.DocGen.dll" publishPath="GAC" />
+      <assemblyUnderTest path="..\EDC.SoftwarePlatform.WebApi\bin\EDC.SoftwarePlatform.WebApi.dll" />
+      <assemblyUnderTest path="..\ReadiNow.QueryEngine\bin\Debug\ReadiNow.QueryEngine.dll" publishPath="GAC" />
+	  <assemblyUnderTest path="..\ReadiNow.Integration\bin\Debug\ReadiNow.Integration.dll" publishPath="GAC" />	  
+    </assembliesUnderTest>
+    <!-- <referencedAssemblies>
+		<referencedAssemby path='' publishPath=''/>
+	</referencedAssemblies> -->
+  </assemblies>
+</codeCoverageConfiguration>

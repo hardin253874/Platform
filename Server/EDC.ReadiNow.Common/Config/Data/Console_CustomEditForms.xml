@@ -1,0 +1,1594 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="core" xmlns:k="console" xsi:schemaLocation=". ../Core.xsd k ../Console.xsd" defaultSolution="consoleSolution">
+  <!--Copyright 2011-2016 Global Software Innovation Pty Ltd-->
+  <!-- 'Resource Info' custom edit form -->
+  <k:customEditForm>
+    <alias>k:resourceInfoEditForm</alias>
+    <name>Resource Info</name>
+    <k:typeToEditWithForm>resource</k:typeToEditWithForm>
+    <k:readOnlyControl>true</k:readOnlyControl>
+    <k:containedControlsOnForm>
+      <k:headerColumnContainerControl>
+        <alias>k:structureControlOnForm3612gen</alias>
+        <k:renderingOrdinal>0</k:renderingOrdinal>
+        <k:containedControlsOnForm>
+          <k:singleLineTextControl>
+            <alias>k:descriptionFieldControlOnForm3613gen</alias>
+            <name>Description</name>
+            <description>The 'description' field of every resource.</description>
+            <k:renderingOrdinal>55</k:renderingOrdinal>
+            <k:fieldToRender>description</k:fieldToRender>
+            <k:readOnlyControl>true</k:readOnlyControl>
+          </k:singleLineTextControl>
+          <k:singleLineTextControl>
+            <alias>k:nameFieldControlOnForm3614gen</alias>
+            <name>Name</name>
+            <description>The 'name' field of every resource.</description>
+            <k:renderingOrdinal>50</k:renderingOrdinal>
+            <k:fieldToRender>name</k:fieldToRender>
+            <k:readOnlyControl>true</k:readOnlyControl>
+          </k:singleLineTextControl>
+        </k:containedControlsOnForm>
+      </k:headerColumnContainerControl>
+      <k:horizontalStackContainerControl>
+        <alias>k:structureControlOnForm3615gen</alias>
+        <k:renderingOrdinal>1</k:renderingOrdinal>
+        <k:containedControlsOnForm>
+          <k:verticalStackContainerControl>
+            <alias>k:detailsStructureControlOnForm3617gen</alias>
+            <name>Details</name>
+            <k:renderingOrdinal>10</k:renderingOrdinal>
+            <k:containedControlsOnForm>
+              <dateAndTimeKFieldRenderControl>
+                <alias>k:createdDateControlOnForm3614gen</alias>
+                <name>Created date</name>
+                <k:renderingOrdinal>100</k:renderingOrdinal>
+                <k:fieldToRender>createdDate</k:fieldToRender>
+                <k:readOnlyControl>true</k:readOnlyControl>
+              </dateAndTimeKFieldRenderControl>
+              <k:inlineRelationshipRenderControl>
+                <alias>k:createdOwnedByRelationshipControlOnForm3618gen</alias>
+                <name>Created by</name>
+                <k:renderingOrdinal>110</k:renderingOrdinal>
+                <k:relationshipToRender>createdBy</k:relationshipToRender>
+                <k:pickerReport>templateReport</k:pickerReport>
+                <k:relationshipDisplayReport>templateReport</k:relationshipDisplayReport>
+                <k:relationshipDisplayForm>k:userInfoStandardEditForm</k:relationshipDisplayForm>
+                <k:readOnlyControl>true</k:readOnlyControl>
+              </k:inlineRelationshipRenderControl>
+              <dateAndTimeKFieldRenderControl>
+                <alias>k:modifiedDateControlOnForm3614gen</alias>
+                <name>Modified date</name>
+                <k:renderingOrdinal>120</k:renderingOrdinal>
+                <k:fieldToRender>modifiedDate</k:fieldToRender>
+                <k:readOnlyControl>true</k:readOnlyControl>
+              </dateAndTimeKFieldRenderControl>
+              <k:inlineRelationshipRenderControl>
+                <alias>k:lastModifiedByRelationshipControlOnForm3619gen</alias>
+                <name>Last modified by</name>
+                <k:renderingOrdinal>130</k:renderingOrdinal>
+                <k:relationshipToRender>lastModifiedBy</k:relationshipToRender>
+                <k:pickerReport>templateReport</k:pickerReport>
+                <k:relationshipDisplayReport>templateReport</k:relationshipDisplayReport>
+                <k:relationshipDisplayForm>k:userInfoStandardEditForm</k:relationshipDisplayForm>
+                <k:readOnlyControl>true</k:readOnlyControl>
+              </k:inlineRelationshipRenderControl>
+              <k:inlineRelationshipRenderControl>
+                <alias>k:securityOwnedByRelationshipControlOnForm</alias>
+                <name>Owner</name>
+                <k:renderingOrdinal>140</k:renderingOrdinal>
+                <k:relationshipToRender>securityOwner</k:relationshipToRender>
+                <k:pickerReport>templateReport</k:pickerReport>
+                <k:relationshipDisplayReport>templateReport</k:relationshipDisplayReport>
+                <k:relationshipDisplayForm>k:userInfoStandardEditForm</k:relationshipDisplayForm>
+                <k:readOnlyControl>false</k:readOnlyControl>
+              </k:inlineRelationshipRenderControl>
+            </k:containedControlsOnForm>
+          </k:verticalStackContainerControl>
+        </k:containedControlsOnForm>
+      </k:horizontalStackContainerControl>
+      <k:tabContainerControl>
+        <alias>k:structureControlOnForm3620gen</alias>
+        <k:renderingOrdinal>2</k:renderingOrdinal>
+        <k:containedControlsOnForm>
+          <k:tabRelationshipRenderControl>
+            <alias>k:structureLevelsRelationshipControlOnForm3621gen</alias>
+            <name>Structure levels</name>
+            <k:renderingOrdinal>2</k:renderingOrdinal>
+            <k:relationshipToRender>inStructureLevel</k:relationshipToRender>
+            <k:hasRelationshipControlBehavior>k:defaultRelationshipBehavior</k:hasRelationshipControlBehavior>
+            <k:pickerReport>templateReport</k:pickerReport>
+            <k:relationshipDisplayReport>templateReport</k:relationshipDisplayReport>
+          </k:tabRelationshipRenderControl>
+          <k:tabRelationshipRenderControl>
+            <alias>k:resourceTypeSRelationshipControlOnForm3622gen</alias>
+            <name>Resource type(s)</name>
+            <k:renderingOrdinal>0</k:renderingOrdinal>
+            <k:relationshipToRender>isOfType</k:relationshipToRender>
+            <k:hasRelationshipControlBehavior>k:defaultRelationshipBehavior</k:hasRelationshipControlBehavior>
+            <k:pickerReport>resourceReport</k:pickerReport>
+            <k:relationshipDisplayReport>resourceReport</k:relationshipDisplayReport>
+          </k:tabRelationshipRenderControl>
+        </k:containedControlsOnForm>
+      </k:tabContainerControl>
+    </k:containedControlsOnForm>
+  </k:customEditForm>
+  <!-- 'User Accounts Form' custom edit form -->
+  <k:customEditForm>
+    <alias>k:userAccountsForm</alias>
+    <name>User Accounts Form</name>
+    <k:typeToEditWithForm>userAccount</k:typeToEditWithForm>
+    <k:isDefaultForEntityType>userAccount</k:isDefaultForEntityType>
+    <k:containedControlsOnForm>
+      <k:headerColumnContainerControl>
+        <alias>k:structureControlOnForm3945gen</alias>
+        <k:renderingOrdinal>0</k:renderingOrdinal>
+        <k:containedControlsOnForm>
+          <k:singleLineTextControl>
+            <alias>k:descriptionFieldControlOnForm3946gen</alias>
+            <name>Description</name>
+            <description>The 'description' field of every resource.</description>
+            <k:renderingOrdinal>2</k:renderingOrdinal>
+            <k:fieldToRender>description</k:fieldToRender>
+          </k:singleLineTextControl>
+          <k:singleLineTextControl>
+            <alias>k:nameFieldControlOnForm3947gen</alias>
+            <name>Username</name>
+            <description>The username used to log in.</description>
+            <k:renderingOrdinal>0</k:renderingOrdinal>
+            <k:fieldToRender>name</k:fieldToRender>
+            <k:mandatoryControl>true</k:mandatoryControl>
+          </k:singleLineTextControl>
+          <k:inlineRelationshipRenderControl>
+            <alias>k:accountHolderRelationshipControlOnUserAccountForm</alias>
+            <name>Account holder</name>
+            <description>Defines a relationship between employee and user account</description>
+            <k:isReversed>true</k:isReversed>
+            <k:renderingOrdinal>1</k:renderingOrdinal>
+            <k:relationshipToRender>personHasUserAccount</k:relationshipToRender>
+            <k:pickerReport>templateReport</k:pickerReport>
+            <k:relationshipDisplayReport>templateReport</k:relationshipDisplayReport>
+          </k:inlineRelationshipRenderControl>
+        </k:containedControlsOnForm>
+      </k:headerColumnContainerControl>
+      <k:horizontalStackContainerControl>
+        <alias>k:structureControlOnForm3949gen</alias>
+        <k:renderingOrdinal>1</k:renderingOrdinal>
+        <k:containedControlsOnForm>
+          <k:verticalStackContainerControl>
+            <alias>k:structureControlOnForm3950gen</alias>
+            <k:renderingOrdinal>10</k:renderingOrdinal>
+            <k:containedControlsOnForm>
+              <k:verticalStackContainerControl>
+                <alias>k:accountStatusStructureControlOnForm3955gen</alias>
+                <name>Account Status</name>
+                <k:renderingOrdinal>0</k:renderingOrdinal>
+                <k:containedControlsOnForm>
+                  <k:choiceRelationshipRenderControl>
+                    <alias>k:accountStatusRelationshipControlOnForm3956gen</alias>
+                    <name>Account status</name>
+                    <description>A field indicating the status of a user account.</description>
+                    <k:renderingOrdinal>0</k:renderingOrdinal>
+                    <k:relationshipToRender>accountStatus</k:relationshipToRender>
+                    <k:pickerReport>templateReport</k:pickerReport>
+                    <k:relationshipDisplayReport>templateReport</k:relationshipDisplayReport>
+                    <k:mandatoryControl>true</k:mandatoryControl>
+                  </k:choiceRelationshipRenderControl>
+                  <dateAndTimeKFieldRenderControl>
+                    <alias>k:accountExpirationFieldControlOnForm3957gen</alias>
+                    <name>Account expiration</name>
+                    <description>The date and time that the user account expires.</description>
+                    <k:renderingOrdinal>1</k:renderingOrdinal>
+                    <k:fieldToRender>accountExpiration</k:fieldToRender>
+                  </dateAndTimeKFieldRenderControl>
+                </k:containedControlsOnForm>
+              </k:verticalStackContainerControl>
+              <k:verticalStackContainerControl>
+                <alias>k:passwordStructureControlOnForm3951gen</alias>
+                <name>Password</name>
+                <k:renderingOrdinal>1</k:renderingOrdinal>
+                <k:containedControlsOnForm>
+                  <checkboxKFieldRenderControl>
+                    <alias>k:changePasswordAtNextLogonFieldControlOnForm3952gen</alias>
+                    <name>Change on next logon</name>
+                    <description>If checked, the user must change their password when they next logon.</description>
+                    <k:renderingOrdinal>3</k:renderingOrdinal>
+                    <k:fieldToRender>changePasswordAtNextLogon</k:fieldToRender>
+                  </checkboxKFieldRenderControl>
+                  <k:singleLineTextControl>
+                    <alias>k:passwordFieldControlOnForm3953gen</alias>
+                    <name>Password</name>
+                    <description>A secret word or phrase used to authenticate a user account.</description>
+                    <k:renderingOrdinal>2</k:renderingOrdinal>
+                    <k:fieldToRender>password</k:fieldToRender>
+                    <k:mandatoryControl>true</k:mandatoryControl>
+                  </k:singleLineTextControl>
+                  <checkboxKFieldRenderControl>
+                    <alias>k:passwordNeverExpiresFieldControlOnForm3954gen</alias>
+                    <name>Password never expires</name>
+                    <description>If checked, the password never expires.</description>
+                    <k:renderingOrdinal>5</k:renderingOrdinal>
+                    <k:fieldToRender>passwordNeverExpires</k:fieldToRender>
+                  </checkboxKFieldRenderControl>
+                </k:containedControlsOnForm>
+              </k:verticalStackContainerControl>
+            </k:containedControlsOnForm>
+          </k:verticalStackContainerControl>
+          <k:verticalStackContainerControl>
+            <alias>k:structureControlOnForm3958gen</alias>
+            <k:renderingOrdinal>20</k:renderingOrdinal>
+            <k:containedControlsOnForm>
+              <k:verticalStackContainerControl>
+                <alias>k:accountActivityStructureControlOnForm3959gen</alias>
+                <name>Account Activity</name>
+                <k:renderingOrdinal>10</k:renderingOrdinal>
+                <k:containedControlsOnForm>
+                  <dateAndTimeKFieldRenderControl>
+                    <alias>k:lastLogonFieldControlOnForm3960gen</alias>
+                    <name>Last logon</name>
+                    <description>The date and time that a user account was last logged on.</description>
+                    <k:renderingOrdinal>0</k:renderingOrdinal>
+                    <k:fieldToRender>lastLogon</k:fieldToRender>
+                    <k:readOnlyControl>true</k:readOnlyControl>
+                  </dateAndTimeKFieldRenderControl>
+                  <dateAndTimeKFieldRenderControl>
+                    <alias>k:lastLockoutFieldControlOnForm3961gen</alias>
+                    <name>Last lockout</name>
+                    <description>The date and time that a user account was last locked out.</description>
+                    <k:renderingOrdinal>2</k:renderingOrdinal>
+                    <k:fieldToRender>lastLockout</k:fieldToRender>
+                    <k:readOnlyControl>true</k:readOnlyControl>
+                  </dateAndTimeKFieldRenderControl>
+                  <numericKFieldRenderControl>
+                    <alias>k:badLogonCountFieldControlOnForm3962gen</alias>
+                    <name>Bad logon count</name>
+                    <description>The number of times a user account has been unsuccessfully logged on.</description>
+                    <k:renderingOrdinal>3</k:renderingOrdinal>
+                    <k:fieldToRender>badLogonCount</k:fieldToRender>
+                    <k:readOnlyControl>true</k:readOnlyControl>
+                  </numericKFieldRenderControl>
+                  <dateAndTimeKFieldRenderControl>
+                    <alias>k:passwordLastChangedFieldControlOnForm3963gen</alias>
+                    <name>Password last changed</name>
+                    <description>The date and time that the password for a user account was last changed.</description>
+                    <k:renderingOrdinal>1</k:renderingOrdinal>
+                    <k:fieldToRender>passwordLastChanged</k:fieldToRender>
+                    <k:readOnlyControl>true</k:readOnlyControl>
+                  </dateAndTimeKFieldRenderControl>
+                </k:containedControlsOnForm>
+              </k:verticalStackContainerControl>
+            </k:containedControlsOnForm>
+          </k:verticalStackContainerControl>
+        </k:containedControlsOnForm>
+      </k:horizontalStackContainerControl>
+      <k:tabContainerControl>
+        <alias>k:structureControlOnForm3964gen</alias>
+        <k:renderingOrdinal>2</k:renderingOrdinal>
+        <k:renderingHorizontalResizeMode>console:resizeSpring</k:renderingHorizontalResizeMode>
+        <k:renderingVerticalResizeMode>console:resizeSpring</k:renderingVerticalResizeMode>
+        <k:containedControlsOnForm>
+          <k:tabRelationshipRenderControl>
+            <alias>k:securityRolesRelationshipControlOnForm3969gen</alias>
+            <name>Security roles</name>
+            <description>Roles that a user is a member of.</description>
+            <k:renderingOrdinal>0</k:renderingOrdinal>
+            <k:renderingHorizontalResizeMode>console:resizeSpring</k:renderingHorizontalResizeMode>
+            <k:renderingVerticalResizeMode>console:resizeSpring</k:renderingVerticalResizeMode>
+            <k:relationshipToRender>userHasRole</k:relationshipToRender>
+            <k:hasRelationshipControlBehavior>k:defaultRelationshipBehavior</k:hasRelationshipControlBehavior>
+            <k:pickerReport>templateReport</k:pickerReport>
+            <k:relationshipDisplayReport>templateReport</k:relationshipDisplayReport>
+          </k:tabRelationshipRenderControl>
+        </k:containedControlsOnForm>
+      </k:tabContainerControl>
+    </k:containedControlsOnForm>
+  </k:customEditForm>
+  <!-- 'Document Form' custom edit form -->
+  <k:customEditForm>
+    <alias>k:documentForm</alias>
+    <name>Document Form</name>
+    <k:isDefaultForEntityType>document</k:isDefaultForEntityType>
+    <k:typeToEditWithForm>document</k:typeToEditWithForm>
+    <k:containedControlsOnForm>
+      <k:headerColumnContainerControl>
+        <alias>k:structureControlOnForm3684gen</alias>
+        <k:renderingOrdinal>0</k:renderingOrdinal>
+        <k:containedControlsOnForm>
+          <k:fileNameUploadControl>
+            <alias>k:nameFieldControlOnForm3686gen</alias>
+            <name>File</name>
+            <description>The document file name.</description>
+            <k:renderingOrdinal>0</k:renderingOrdinal>
+            <k:fieldToRender>name</k:fieldToRender>
+            <k:readOnlyControl>true</k:readOnlyControl>
+          </k:fileNameUploadControl>
+          <k:inlineRelationshipRenderControl>
+            <alias>k:documentTypeRelationshipControlOnForm3698gen</alias>
+            <name>Document type</name>
+            <description>Defines a relationship between a Document and a Document Type.</description>
+            <k:renderingOrdinal>1</k:renderingOrdinal>
+            <k:relationshipToRender>documentHasDocumentType</k:relationshipToRender>
+            <k:pickerReport>templateReport</k:pickerReport>
+            <k:relationshipDisplayReport>templateReport</k:relationshipDisplayReport>
+            <k:readOnlyControl>true</k:readOnlyControl>
+          </k:inlineRelationshipRenderControl>
+          <k:singleLineTextControl>
+            <alias>k:descriptionFieldControlOnForm3685gen</alias>
+            <name>Description</name>
+            <description>The 'description' field of every resource.</description>
+            <k:renderingOrdinal>2</k:renderingOrdinal>
+            <k:fieldToRender>description</k:fieldToRender>
+          </k:singleLineTextControl>
+        </k:containedControlsOnForm>
+      </k:headerColumnContainerControl>
+      <k:horizontalStackContainerControl>
+        <alias>k:structureControlOnForm3687gen</alias>
+        <k:renderingOrdinal>1</k:renderingOrdinal>
+        <k:containedControlsOnForm>
+          <k:verticalStackContainerControl>
+            <alias>k:structureControlOnForm3689gen</alias>
+            <k:renderingOrdinal>10</k:renderingOrdinal>
+            <k:containedControlsOnForm>
+              <k:verticalStackContainerControl>
+                <alias>k:detailsStructureControlOnForm3695gen</alias>
+                <name>Details</name>
+                <k:renderingOrdinal>0</k:renderingOrdinal>
+                <k:containedControlsOnForm>
+                  <k:inlineRelationshipRenderControl>
+                    <alias>k:currentRevisionRelationshipControlOnForm3697gen</alias>
+                    <name>Current revision</name>
+                    <description>Defines a relationship between a document and current document revision.</description>
+                    <k:renderingOrdinal>0</k:renderingOrdinal>
+                    <k:relationshipToRender>currentDocumentRevision</k:relationshipToRender>
+                    <k:pickerReport>k:documentRevisionReport</k:pickerReport>
+                    <k:relationshipDisplayReport>k:documentRevisionReport</k:relationshipDisplayReport>
+                    <k:readOnlyControl>true</k:readOnlyControl>
+                  </k:inlineRelationshipRenderControl>
+                  <k:singleLineTextControl>
+                    <alias>k:tagsKeywordsFieldControlOnForm3696gen</alias>
+                    <name>Tags/keywords</name>
+                    <description>The tags or strings associated to the document version</description>
+                    <k:renderingOrdinal>1</k:renderingOrdinal>
+                    <k:fieldToRender>tagsKeywords</k:fieldToRender>
+                  </k:singleLineTextControl>
+                  <k:inlineRelationshipRenderControl>
+                    <alias>k:documentFormApplicationsInlineRelationshipRenderControl</alias>
+                    <name>Applications</name>
+                    <k:renderingOrdinal>2</k:renderingOrdinal>
+                    <canCreate>false</canCreate>
+                    <canCreateDerivedTypes>false</canCreateDerivedTypes>
+                    <hideNewButton>true</hideNewButton>
+                    <k:relationshipToRender>inSolution</k:relationshipToRender>
+                  </k:inlineRelationshipRenderControl>
+                </k:containedControlsOnForm>
+              </k:verticalStackContainerControl>
+              <k:verticalStackContainerControl>
+                <alias>k:usersStructureControlOnForm3690gen</alias>
+                <name>Users</name>
+                <k:renderingOrdinal>1</k:renderingOrdinal>
+                <k:containedControlsOnForm>
+                  <k:inlineRelationshipRenderControl>
+                    <alias>k:createdByRelationshipControlOnForm3691gen</alias>
+                    <name>Created by</name>
+                    <description>Defines a relationship between a Document Library and a User Account.</description>
+                    <k:renderingOrdinal>1</k:renderingOrdinal>
+                    <k:relationshipToRender>documentCreatedBy</k:relationshipToRender>
+                    <k:pickerReport>templateReport</k:pickerReport>
+                    <k:relationshipDisplayReport>templateReport</k:relationshipDisplayReport>
+                    <k:readOnlyControl>true</k:readOnlyControl>
+                  </k:inlineRelationshipRenderControl>
+                  <k:inlineRelationshipRenderControl>
+                    <alias>k:modifiedByRelationshipControlOnForm3693gen</alias>
+                    <name>Modified by</name>
+                    <description>Defines a relationship between a Document Library and a User Account.</description>
+                    <k:renderingOrdinal>2</k:renderingOrdinal>
+                    <k:relationshipToRender>documentModifiedBy</k:relationshipToRender>
+                    <k:pickerReport>templateReport</k:pickerReport>
+                    <k:relationshipDisplayReport>templateReport</k:relationshipDisplayReport>
+                    <k:readOnlyControl>true</k:readOnlyControl>
+                  </k:inlineRelationshipRenderControl>
+                </k:containedControlsOnForm>
+              </k:verticalStackContainerControl>
+            </k:containedControlsOnForm>
+          </k:verticalStackContainerControl>
+        </k:containedControlsOnForm>
+      </k:horizontalStackContainerControl>
+      <k:tabContainerControl>
+        <alias>k:structureControlOnForm3699gen</alias>
+        <k:renderingOrdinal>2</k:renderingOrdinal>
+        <k:renderingHorizontalResizeMode>console:resizeSpring</k:renderingHorizontalResizeMode>
+        <k:renderingVerticalResizeMode>console:resizeSpring</k:renderingVerticalResizeMode>
+        <k:containedControlsOnForm>
+          <k:tabRelationshipRenderControl>
+            <alias>k:documentVersionsRelationshipControlOnForm3700gen</alias>
+            <name>Document versions</name>
+            <description>Defines a relationship between a Document and Document revisions.</description>
+            <k:renderingOrdinal>0</k:renderingOrdinal>
+            <k:renderingHorizontalResizeMode>console:resizeSpring</k:renderingHorizontalResizeMode>
+            <k:renderingVerticalResizeMode>console:resizeSpring</k:renderingVerticalResizeMode>
+            <k:relationshipToRender>documentHasDocumentRevision</k:relationshipToRender>
+            <k:hasRelationshipControlBehavior>k:defaultRelationshipBehavior</k:hasRelationshipControlBehavior>
+            <k:pickerReport>k:documentRevisionReport</k:pickerReport>
+            <k:relationshipDisplayReport>k:documentRevisionReport</k:relationshipDisplayReport>
+            <k:readOnlyControl>true</k:readOnlyControl>
+            <hideNewButton>true</hideNewButton>
+            <hideAddButton>true</hideAddButton>
+            <hideRemoveButton>true</hideRemoveButton>
+          </k:tabRelationshipRenderControl>
+        </k:containedControlsOnForm>
+      </k:tabContainerControl>
+    </k:containedControlsOnForm>
+  </k:customEditForm>
+  <!-- 'Document Revision Form' custom edit form -->
+  <k:customEditForm>
+    <alias>k:documentRevisionForm</alias>
+    <name>Document Revision Form</name>
+    <k:typeToEditWithForm>documentRevision</k:typeToEditWithForm>
+    <k:containedControlsOnForm>
+      <k:headerColumnContainerControl>
+        <k:renderingOrdinal>0</k:renderingOrdinal>
+        <alias>k:structureControlOnForm3705gen</alias>
+        <k:containedControlsOnForm>
+          <k:inlineRelationshipRenderControl>
+            <alias>k:documentRelationshipControlOnForm3710gen</alias>
+            <name>Document</name>
+            <description>Defines a relationship between a Document and Document revisions.</description>
+            <k:isReversed>true</k:isReversed>
+            <k:renderingOrdinal>0</k:renderingOrdinal>
+            <k:relationshipToRender>documentHasDocumentRevision</k:relationshipToRender>
+            <k:pickerReport>templateReport</k:pickerReport>
+            <k:relationshipDisplayReport>templateReport</k:relationshipDisplayReport>
+            <k:readOnlyControl>true</k:readOnlyControl>
+          </k:inlineRelationshipRenderControl>
+          <k:fileRevisionControl>
+            <alias>k:versionFieldControlOnForm3708gen</alias>
+            <name>Version</name>
+            <description>The version string associated to this document entry</description>
+            <k:renderingOrdinal>1</k:renderingOrdinal>
+            <k:fieldToRender>version</k:fieldToRender>
+            <k:readOnlyControl>true</k:readOnlyControl>
+          </k:fileRevisionControl>
+          <dateAndTimeKFieldRenderControl>
+            <alias>k:modifiedDateFieldControlOnForm3711gen</alias>
+            <name>Modified date</name>
+            <description>The date and time that the user modified this document (Including check-ins).</description>
+            <k:renderingOrdinal>2</k:renderingOrdinal>
+            <k:fieldToRender>modifiedDate</k:fieldToRender>
+            <k:readOnlyControl>true</k:readOnlyControl>
+          </dateAndTimeKFieldRenderControl>
+          <k:inlineRelationshipRenderControl>
+            <alias>k:updatedByRelationshipControlOnForm3712gen</alias>
+            <name>Modified by</name>
+            <description>Defines a relationship between a Document Library revision and a User Account.</description>
+            <k:renderingOrdinal>3</k:renderingOrdinal>
+            <k:relationshipToRender>revisionUpdatedBy</k:relationshipToRender>
+            <k:pickerReport>templateReport</k:pickerReport>
+            <k:relationshipDisplayReport>templateReport</k:relationshipDisplayReport>
+            <k:readOnlyControl>true</k:readOnlyControl>
+          </k:inlineRelationshipRenderControl>
+          <k:singleLineTextControl>
+            <alias>k:versionCommentsFieldControlOnForm3709gen</alias>
+            <name>Version comments</name>
+            <description>The comments used when creating/checking in the document</description>
+            <k:renderingOrdinal>4</k:renderingOrdinal>
+            <k:fieldToRender>versionComments</k:fieldToRender>
+          </k:singleLineTextControl>
+        </k:containedControlsOnForm>
+      </k:headerColumnContainerControl>
+      <k:horizontalStackContainerControl>
+        <k:renderingOrdinal>1</k:renderingOrdinal>
+        <alias>k:structureControlOnForm3713gen</alias>
+        <k:containedControlsOnForm>
+          <k:verticalStackContainerControl>
+            <alias>k:fileDetailsStructureControlOnForm3716gen</alias>
+            <name>File Details</name>
+            <k:renderingOrdinal>0</k:renderingOrdinal>
+            <k:containedControlsOnForm>
+              <k:singleLineTextControl>
+                <alias>k:fileExtensionFieldControlOnForm3718gen</alias>
+                <name>File extension</name>
+                <description>The document file extension</description>
+                <k:renderingOrdinal>1</k:renderingOrdinal>
+                <k:fieldToRender>fileExtension</k:fieldToRender>
+                <k:readOnlyControl>true</k:readOnlyControl>
+              </k:singleLineTextControl>
+              <numericKFieldRenderControl>
+                <alias>k:sizeFieldControlOnForm3717gen</alias>
+                <name>Size (bytes)</name>
+                <description>The size of the document file in bytes</description>
+                <k:renderingOrdinal>2</k:renderingOrdinal>
+                <k:fieldToRender>size</k:fieldToRender>
+                <k:readOnlyControl>true</k:readOnlyControl>
+              </numericKFieldRenderControl>
+            </k:containedControlsOnForm>
+          </k:verticalStackContainerControl>
+        </k:containedControlsOnForm>
+      </k:horizontalStackContainerControl>
+    </k:containedControlsOnForm>
+  </k:customEditForm>
+  <!-- 'user info' custom edit form -->
+  <k:customEditForm>
+    <alias>k:userInfoStandardEditForm</alias>
+    <name>User Account</name>
+    <k:typeToEditWithForm>userAccount</k:typeToEditWithForm>
+    <k:readOnlyControl>true</k:readOnlyControl>
+    <k:containedControlsOnForm>
+      <k:headerColumnContainerControl>
+        <alias>k:structureControlOnUserInfoStandardForm</alias>
+        <k:renderingOrdinal>0</k:renderingOrdinal>
+        <k:containedControlsOnForm>
+          <k:singleLineTextControl>
+            <alias>k:descriptionFieldControlOnUserInfoStandardForm</alias>
+            <name>Description</name>
+            <description>The 'description' field of every resource.</description>
+            <k:renderingOrdinal>55</k:renderingOrdinal>
+            <k:fieldToRender>description</k:fieldToRender>
+            <k:readOnlyControl>true</k:readOnlyControl>
+          </k:singleLineTextControl>
+          <k:singleLineTextControl>
+            <alias>k:nameFieldControlOnUserInfoStandardForm</alias>
+            <name>Name</name>
+            <description>The 'name' field of every resource.</description>
+            <k:renderingOrdinal>50</k:renderingOrdinal>
+            <k:fieldToRender>name</k:fieldToRender>
+            <k:readOnlyControl>true</k:readOnlyControl>
+          </k:singleLineTextControl>
+        </k:containedControlsOnForm>
+      </k:headerColumnContainerControl>
+    </k:containedControlsOnForm>
+  </k:customEditForm>
+  <!-- 'Photo Form' custom edit form -->
+  <k:customEditForm>
+    <alias>k:photoForm</alias>
+    <name>Photo Form</name>
+    <k:isDefaultForEntityType>photoFileType</k:isDefaultForEntityType>
+    <k:typeToEditWithForm>photoFileType</k:typeToEditWithForm>
+    <k:containedControlsOnForm>
+      <k:headerColumnContainerControl>
+        <alias>k:photoFileTypHeaderColumnContainerControl</alias>
+        <k:renderingOrdinal>0</k:renderingOrdinal>
+        <k:containedControlsOnForm>
+          <k:imageFileNameUploadControl>
+            <alias>k:photoFileTypeFileNameUploadControl</alias>
+            <name>File</name>
+            <description>The image file name.</description>
+            <k:renderingOrdinal>0</k:renderingOrdinal>
+            <k:fieldToRender>name</k:fieldToRender>
+            <k:readOnlyControl>true</k:readOnlyControl>
+            <k:mandatoryControl>true</k:mandatoryControl>
+          </k:imageFileNameUploadControl>
+          <k:singleLineTextControl>
+            <alias>k:photoFileTypesingleLineTextControl</alias>
+            <name>Description</name>
+            <description>The 'description' field of every resource.</description>
+            <k:renderingOrdinal>1</k:renderingOrdinal>
+            <k:fieldToRender>description</k:fieldToRender>
+          </k:singleLineTextControl>
+          <k:inlineRelationshipRenderControl>
+            <alias>k:photoFileTypeApplicationsInlineRelationshipRenderControl</alias>
+            <name>Applications</name>
+            <k:renderingOrdinal>4</k:renderingOrdinal>
+            <canCreate>false</canCreate>
+            <canCreateDerivedTypes>false</canCreateDerivedTypes>
+            <hideNewButton>true</hideNewButton>
+            <k:relationshipToRender>inSolution</k:relationshipToRender>
+          </k:inlineRelationshipRenderControl>
+        </k:containedControlsOnForm>
+      </k:headerColumnContainerControl>
+      <k:horizontalStackContainerControl>
+        <alias>k:photoFileTypeHorizontalStackContainerControl</alias>
+        <k:renderingOrdinal>1</k:renderingOrdinal>
+        <k:containedControlsOnForm>
+          <k:verticalStackContainerControl>
+            <alias>k:photoFileTypeDimensions</alias>
+            <name>Dimensions</name>
+            <k:renderingOrdinal>0</k:renderingOrdinal>
+            <k:containedControlsOnForm>
+              <numericKFieldRenderControl>
+                <alias>k:photoFileTypeImageWidthControl</alias>
+                <name>Image width</name>
+                <description>The width of the image.</description>
+                <k:renderingOrdinal>0</k:renderingOrdinal>
+                <k:fieldToRender>imageWidth</k:fieldToRender>
+                <k:readOnlyControl>true</k:readOnlyControl>
+              </numericKFieldRenderControl>
+              <numericKFieldRenderControl>
+                <alias>k:photoFileTypeImageHeightControl</alias>
+                <name>Image height</name>
+                <description>The height of the image.</description>
+                <k:renderingOrdinal>1</k:renderingOrdinal>
+                <k:fieldToRender>imageHeight</k:fieldToRender>
+                <k:readOnlyControl>true</k:readOnlyControl>
+              </numericKFieldRenderControl>
+            </k:containedControlsOnForm>
+          </k:verticalStackContainerControl>
+        </k:containedControlsOnForm>
+      </k:horizontalStackContainerControl>
+    </k:containedControlsOnForm>
+  </k:customEditForm>
+  <!-- 'Icon Form' custom edit form -->
+  <k:customEditForm>
+    <alias>k:iconForm</alias>
+    <name>Icon Form</name>
+    <k:isDefaultForEntityType>iconFileType</k:isDefaultForEntityType>
+    <k:typeToEditWithForm>iconFileType</k:typeToEditWithForm>
+    <k:containedControlsOnForm>
+      <k:headerColumnContainerControl>
+        <alias>k:iconFileTypHeaderColumnContainerControl</alias>
+        <k:renderingOrdinal>0</k:renderingOrdinal>
+        <k:containedControlsOnForm>
+          <k:imageFileNameUploadControl>
+            <alias>k:iconFileTypeFileNameUploadControl</alias>
+            <name>File</name>
+            <description>The image file name.</description>
+            <k:renderingOrdinal>0</k:renderingOrdinal>
+            <k:fieldToRender>name</k:fieldToRender>
+            <k:readOnlyControl>true</k:readOnlyControl>
+            <k:mandatoryControl>true</k:mandatoryControl>
+          </k:imageFileNameUploadControl>
+          <k:singleLineTextControl>
+            <alias>k:iconFileTypesingleLineTextControl</alias>
+            <name>Description</name>
+            <description>The 'description' field of every resource.</description>
+            <k:renderingOrdinal>1</k:renderingOrdinal>
+            <k:fieldToRender>description</k:fieldToRender>
+          </k:singleLineTextControl>
+          <k:inlineRelationshipRenderControl>
+            <alias>k:iconFileTypeApplicationsInlineRelationshipRenderControl</alias>
+            <name>Applications</name>
+            <k:renderingOrdinal>4</k:renderingOrdinal>
+            <canCreate>false</canCreate>
+            <canCreateDerivedTypes>false</canCreateDerivedTypes>
+            <hideNewButton>true</hideNewButton>
+            <k:relationshipToRender>inSolution</k:relationshipToRender>
+          </k:inlineRelationshipRenderControl>
+          <k:singleLineTextControl>
+            <alias>k:iconBackgroundColorsingleLineTextControl</alias>
+            <name>Image background color</name>
+            <description>The background color of image.</description>
+            <k:renderingOrdinal>5</k:renderingOrdinal>
+            <k:fieldToRender>imageBackgroundColor</k:fieldToRender>
+          </k:singleLineTextControl>
+        </k:containedControlsOnForm>
+      </k:headerColumnContainerControl>
+      <k:horizontalStackContainerControl>
+        <alias>k:iconFileTypeHorizontalStackContainerControl</alias>
+        <k:renderingOrdinal>1</k:renderingOrdinal>
+        <k:containedControlsOnForm>
+          <k:verticalStackContainerControl>
+            <alias>k:iconFileTypeDimensions</alias>
+            <name>Dimensions</name>
+            <k:renderingOrdinal>0</k:renderingOrdinal>
+            <k:containedControlsOnForm>
+              <numericKFieldRenderControl>
+                <alias>k:iconFileTypeImageWidthControl</alias>
+                <name>Image width</name>
+                <description>The width of the image.</description>
+                <k:renderingOrdinal>0</k:renderingOrdinal>
+                <k:fieldToRender>imageWidth</k:fieldToRender>
+                <k:readOnlyControl>true</k:readOnlyControl>
+              </numericKFieldRenderControl>
+              <numericKFieldRenderControl>
+                <alias>k:iconFileTypeImageHeightControl</alias>
+                <name>Image height</name>
+                <description>The height of the image.</description>
+                <k:renderingOrdinal>1</k:renderingOrdinal>
+                <k:fieldToRender>imageHeight</k:fieldToRender>
+                <k:readOnlyControl>true</k:readOnlyControl>
+              </numericKFieldRenderControl>
+            </k:containedControlsOnForm>
+          </k:verticalStackContainerControl>
+        </k:containedControlsOnForm>
+      </k:horizontalStackContainerControl>
+    </k:containedControlsOnForm>
+  </k:customEditForm>
+  <!-- 'Console Theme' custom edit form -->
+  <k:customEditForm>
+    <alias>k:consoleThemeForm</alias>
+    <name>Console Theme Form</name>
+    <k:isDefaultForEntityType>k:consoleTheme</k:isDefaultForEntityType>
+    <k:typeToEditWithForm>k:consoleTheme</k:typeToEditWithForm>
+    <k:containedControlsOnForm>
+      <k:headerColumnContainerControl>
+        <alias>k:consoleThemeHeaderColumnContainerControl</alias>
+        <k:renderingOrdinal>1</k:renderingOrdinal>
+        <k:containedControlsOnForm>
+          <k:singleLineTextControl>
+            <alias>k:nameFieldControlOnForm4319gen</alias>
+            <name>Name</name>
+            <description>The 'name' field of every resource.</description>
+            <k:renderingOrdinal>50</k:renderingOrdinal>
+            <k:fieldToRender>name</k:fieldToRender>
+            <k:mandatoryControl>true</k:mandatoryControl>
+          </k:singleLineTextControl>
+          <k:singleLineTextControl>
+            <alias>k:descriptionFieldControlOnForm4320gen</alias>
+            <name>Description</name>
+            <description>The 'description' field of every resource.</description>
+            <k:renderingOrdinal>55</k:renderingOrdinal>
+            <k:fieldToRender>description</k:fieldToRender>
+          </k:singleLineTextControl>
+          <k:inlineRelationshipRenderControl>
+            <alias>k:consoleThemeFormApplicationsInlineRelationshipRenderControl</alias>
+            <name>Applications</name>
+            <k:renderingOrdinal>60</k:renderingOrdinal>
+            <canCreate>false</canCreate>
+            <canCreateDerivedTypes>false</canCreateDerivedTypes>
+            <hideNewButton>true</hideNewButton>
+            <k:relationshipToRender>inSolution</k:relationshipToRender>
+          </k:inlineRelationshipRenderControl>
+        </k:containedControlsOnForm>
+      </k:headerColumnContainerControl>
+      <k:horizontalStackContainerControl>
+        <alias>k:consoleTheme1HorizontalStackContainerControl</alias>
+        <k:renderingOrdinal>2</k:renderingOrdinal>
+        <k:containedControlsOnForm>
+          <k:verticalStackContainerControl>
+            <alias>k:consoleThemeHeaderArea</alias>
+            <name>Header Area</name>
+            <k:renderingOrdinal>10</k:renderingOrdinal>
+            <k:containedControlsOnForm>
+              <k:singleLineTextControl>
+                <alias>k:headerBGColorFieldControlOnForm4322gen</alias>
+                <name>Background colour</name>
+                <description>The colour of the header background colour.</description>
+                <k:renderingOrdinal>62</k:renderingOrdinal>
+                <k:fieldToRender>k:consoleHeaderBackgroundColor</k:fieldToRender>
+              </k:singleLineTextControl>
+              <k:imageRelationshipRenderControl>
+                <alias>k:headerBGImageUploadControlOnForm4323gen</alias>
+                <name>Background image</name>
+                <description>The image that should be used for the console header area background.</description>
+                <k:renderingOrdinal>63</k:renderingOrdinal>
+                <k:relationshipToRender>k:consoleHeaderBackgroundImage</k:relationshipToRender>
+                <k:readOnlyControl>false</k:readOnlyControl>
+              </k:imageRelationshipRenderControl>
+              <checkboxKFieldRenderControl>
+                <alias>k:headerBGImageRepeatFieldControlOnForm4324gen</alias>
+                <name>Background image repeat</name>
+                <description>Horizontal repeat header background image?</description>
+                <k:renderingOrdinal>64</k:renderingOrdinal>
+                <k:fieldToRender>k:consoleHeaderBackgroundImageRepeat</k:fieldToRender>
+              </checkboxKFieldRenderControl>
+              <k:singleLineTextControl>
+                <alias>k:headerMenuTextColorFieldControlOnForm4325gen</alias>
+                <name>Text colour</name>
+                <description>The colour of the header menu text.</description>
+                <k:renderingOrdinal>65</k:renderingOrdinal>
+                <k:fieldToRender>k:consoleHeaderMenuTextColor</k:fieldToRender>
+              </k:singleLineTextControl>
+              <k:imageRelationshipRenderControl>
+                <alias>k:logoImageUploadControlOnForm4321gen</alias>
+                <name>Logo image</name>
+                <description>The image that should be used for the logo at the top left of the console.</description>
+                <k:renderingOrdinal>66</k:renderingOrdinal>
+                <k:relationshipToRender>k:consoleLogoImage</k:relationshipToRender>
+                <k:readOnlyControl>false</k:readOnlyControl>
+              </k:imageRelationshipRenderControl>
+            </k:containedControlsOnForm>
+          </k:verticalStackContainerControl>
+          <k:verticalStackContainerControl>
+            <alias>k:consoleThemeTopNavigationArea</alias>
+            <name>Top Navigation Area</name>
+            <k:renderingOrdinal>20</k:renderingOrdinal>
+            <k:containedControlsOnForm>
+              <k:singleLineTextControl>
+                <alias>k:topNavigationBGColorFieldControlOnForm4326gen</alias>
+                <name>Background colour</name>
+                <description>The colour of the top navigation background colour.</description>
+                <k:renderingOrdinal>71</k:renderingOrdinal>
+                <k:fieldToRender>k:consoleTopNavigationAreaBackgroundColor</k:fieldToRender>
+              </k:singleLineTextControl>
+              <k:imageRelationshipRenderControl>
+                <alias>k:topNavigationBGImageUploadControlOnForm4327gen</alias>
+                <name>Background image</name>
+                <description>The image that should be used for the console top navigation area background.</description>
+                <k:renderingOrdinal>72</k:renderingOrdinal>
+                <k:relationshipToRender>k:consoleTopBackgroundImage</k:relationshipToRender>
+                <k:readOnlyControl>false</k:readOnlyControl>
+              </k:imageRelationshipRenderControl>
+              <checkboxKFieldRenderControl>
+                <alias>k:topNavigationBGImageRepeatFieldControlOnForm4328gen</alias>
+                <name>Background image repeat</name>
+                <description>Horizontal repeat Top Navigation background image?</description>
+                <k:renderingOrdinal>73</k:renderingOrdinal>
+                <k:fieldToRender>k:consoleTopBackgroundImageRepeat</k:fieldToRender>
+              </checkboxKFieldRenderControl>
+              <k:choiceRelationshipRenderControl>
+                <alias>k:topNavigationStyleControlOnForm4329gen</alias>
+                <name>Tab style</name>
+                <description>The top navigation tab style options.</description>
+                <k:renderingOrdinal>74</k:renderingOrdinal>
+                <k:relationshipToRender>k:consoleTopNavigationStyle</k:relationshipToRender>
+                <k:pickerReport>templateReport</k:pickerReport>
+                <k:relationshipDisplayReport>templateReport</k:relationshipDisplayReport>
+              </k:choiceRelationshipRenderControl>
+              <k:singleLineTextControl>
+                <alias>k:topNavigationSelectedTabColorFieldControlOnForm4330gen</alias>
+                <name>Selected tab colour</name>
+                <description>The colour of the top navigation area Selected Tab.</description>
+                <k:renderingOrdinal>75</k:renderingOrdinal>
+                <k:fieldToRender>k:consoleTopNavigationSelectedTabColor</k:fieldToRender>
+              </k:singleLineTextControl>
+               <k:singleLineTextControl>
+                <alias>k:topNavigationSelectedTabBorderColorFieldControlOnForm4335gen</alias>
+                <name>Selected tab border colour</name>
+                <description>The colour of the top navigation area selected tab border.</description>
+                <k:renderingOrdinal>76</k:renderingOrdinal>
+                <k:fieldToRender>k:consoleTopNavigationSelectedTabBorderColor</k:fieldToRender>
+              </k:singleLineTextControl>
+              <k:singleLineTextControl>
+                <alias>k:topNavigationSelectedTabFontColorFieldControlOnForm4331gen</alias>
+                <name>Selected tab font colour</name>
+                <description>The colour of the top navigation area Selected Tab font.</description>
+                <k:renderingOrdinal>77</k:renderingOrdinal>
+                <k:fieldToRender>k:consoleTopNavigationSelectedTabFontColor</k:fieldToRender>
+              </k:singleLineTextControl>
+              <k:singleLineTextControl>
+                <alias>k:topNavigationUnSelectedTabColorFieldControlOnForm4332gen</alias>
+                <name>Unselected tab colour</name>
+                <description>The colour of the top navigation area Unselected Tab.</description>
+                <k:renderingOrdinal>78</k:renderingOrdinal>
+                <k:fieldToRender>k:consoleTopNavigationUnselectedTabColor</k:fieldToRender>
+              </k:singleLineTextControl>
+              <k:singleLineTextControl>
+                <alias>k:topNavigationUnSelectedTabFontColorFieldControlOnForm4333gen</alias>
+                <name>Unselected tab font colour</name>
+                <description>The colour of the top navigation area Unselected Tab font.</description>
+                <k:renderingOrdinal>79</k:renderingOrdinal>
+                <k:fieldToRender>k:consoleTopNavigationUnselectedTabFontColor</k:fieldToRender>
+              </k:singleLineTextControl>
+            </k:containedControlsOnForm>
+          </k:verticalStackContainerControl>
+        </k:containedControlsOnForm>
+      </k:horizontalStackContainerControl>
+      <k:horizontalStackContainerControl>
+        <alias>k:consoleTheme2HorizontalStackContainerControl</alias>
+        <k:renderingOrdinal>3</k:renderingOrdinal>
+        <k:containedControlsOnForm>
+          <k:verticalStackContainerControl>
+            <alias>k:consoleThemeLeftNavigationArea</alias>
+            <name>Left Navigation Area</name>
+            <k:renderingOrdinal>30</k:renderingOrdinal>
+            <k:containedControlsOnForm>
+              <k:singleLineTextControl>
+                <alias>k:leftNavigationBGColorFieldControlOnForm4333gen</alias>
+                <name>Background colour</name>
+                <description>The colour of the left navigation background colour.</description>
+                <k:renderingOrdinal>81</k:renderingOrdinal>
+                <k:fieldToRender>k:consoleLeftNavigationAreaBackgroundColor</k:fieldToRender>
+              </k:singleLineTextControl>
+              <k:singleLineTextControl>
+                <alias>k:mobileleftNavigationBGColorFieldControlOnForm4339gen</alias>
+                <name>Mobile Background colour</name>
+                <description>The colour of the mobile left navigation background colour.</description>
+                <k:renderingOrdinal>81</k:renderingOrdinal>
+                <k:fieldToRender>k:mobileLeftNavigationAreaBackgroundColor</k:fieldToRender>
+              </k:singleLineTextControl>
+              
+              <k:imageRelationshipRenderControl>
+                <alias>k:leftNavigationBGImageUploadControlOnForm4334gen</alias>
+                <name>Background image</name>
+                <description>The image that should be used for the console left navigation area background.</description>
+                <k:renderingOrdinal>82</k:renderingOrdinal>
+                <k:relationshipToRender>k:consoleLeftBackgroundImage</k:relationshipToRender>
+                <k:readOnlyControl>false</k:readOnlyControl>
+              </k:imageRelationshipRenderControl>
+              <checkboxKFieldRenderControl>
+                <alias>k:leftNavigationBGImageRepeatFieldControlOnForm4335gen</alias>
+                <name>Background image repeat</name>
+                <description>Horizontal repeat Left Navigation background image?</description>
+                <k:renderingOrdinal>83</k:renderingOrdinal>
+                <k:fieldToRender>k:consoleLeftBackgroundImageRepeat</k:fieldToRender>
+              </checkboxKFieldRenderControl>
+              <k:singleLineTextControl>
+                <alias>k:leftNavigationFontColorFieldControlOnForm4336gen</alias>
+                <name>Font colour</name>
+                <description>The font colour of the left navigation area.</description>
+                <k:renderingOrdinal>84</k:renderingOrdinal>
+                <k:fieldToRender>k:consoleLeftNavigationAreaFontColor</k:fieldToRender>
+              </k:singleLineTextControl>
+              <k:singleLineTextControl>
+                <alias>k:leftNavigationSelectedElementColorFieldControlOnForm4337gen</alias>
+                <name>Selected element colour</name>
+                <description>The colour of the left navigation selected navigation element.</description>
+                <k:renderingOrdinal>85</k:renderingOrdinal>
+                <k:fieldToRender>k:consoleLeftNavigationSelectedElementColor</k:fieldToRender>
+              </k:singleLineTextControl>
+              <k:singleLineTextControl>
+                <alias>k:leftNavigationSelectedFontColorFieldControlOnForm4338gen</alias>
+                <name>Selected font colour</name>
+                <description>The colour of the left navigation selected navigation font.</description>
+                <k:renderingOrdinal>86</k:renderingOrdinal>
+                <k:fieldToRender>k:consoleLeftNavigationSelectedFontColor</k:fieldToRender>
+              </k:singleLineTextControl>
+            </k:containedControlsOnForm>
+          </k:verticalStackContainerControl>
+          <k:verticalStackContainerControl>
+            <alias>k:consoleThemeGeneralContentArea</alias>
+            <name>General Content Area</name>
+            <k:renderingOrdinal>40</k:renderingOrdinal>
+            <k:containedControlsOnForm>
+              <k:singleLineTextControl>
+                <alias>k:contentTitleFontColorFieldControlOnForm4339gen</alias>
+                <name>Title font colour</name>
+                <description>The font colour of the general content area title.</description>
+                <k:renderingOrdinal>91</k:renderingOrdinal>
+                <k:fieldToRender>k:consoleGeneralContentAreaTitleFontColor</k:fieldToRender>
+              </k:singleLineTextControl>
+              <k:singleLineTextControl>
+                <alias>k:contentHeadingFontColorFieldControlOnForm4340gen</alias>
+                <name>Container heading font colour</name>
+                <description>The font colour of the general content area Heading.</description>
+                <k:renderingOrdinal>92</k:renderingOrdinal>
+                <k:fieldToRender>k:consoleGeneralContentAreaContainerHeadingFontColor</k:fieldToRender>
+              </k:singleLineTextControl>
+              <k:singleLineTextControl>
+                <alias>k:contentHeadingLineFieldControlOnForm4341gen</alias>
+                <name>Container heading line colour</name>
+                <description>The line colour of the general content area Heading.</description>
+                <k:renderingOrdinal>93</k:renderingOrdinal>
+                <k:fieldToRender>k:consoleGeneralContentAreaContainerHeadingLineColor</k:fieldToRender>
+              </k:singleLineTextControl>
+              <k:singleLineTextControl>
+                <alias>k:contentFormSelectedTabColorFieldControlOnForm4342gen</alias>
+                <name>Form selected tab colour</name>
+                <description>The selected tab colour of the general content area form tab.</description>
+                <k:renderingOrdinal>94</k:renderingOrdinal>
+                <k:fieldToRender>k:consoleGeneralContentAreaSelectedTabColor</k:fieldToRender>
+              </k:singleLineTextControl>
+              <k:singleLineTextControl>
+                <alias>k:contentFormSelectedTabFontColorFieldControlOnForm4343gen</alias>
+                <name>Form selected tab font colour</name>
+                <description>The selected tab font colour of the general content area form tab.</description>
+                <k:renderingOrdinal>95</k:renderingOrdinal>
+                <k:fieldToRender>k:consoleGeneralContentAreaSelectedTabFontColor</k:fieldToRender>
+              </k:singleLineTextControl>
+              <k:singleLineTextControl>
+                <alias>k:contentFormUnselectedTabColorFieldControlOnForm4344gen</alias>
+                <name>Form unselected tab colour</name>
+                <description>The unselected tab colour of the general content area form tab.</description>
+                <k:renderingOrdinal>96</k:renderingOrdinal>
+                <k:fieldToRender>k:consoleGeneralContentAreaUnselectedTabColor</k:fieldToRender>
+              </k:singleLineTextControl>
+              <k:singleLineTextControl>
+                <alias>k:contentFormUnselectedTabFontColorFieldControlOnForm4345gen</alias>
+                <name>Form unselected tab font colour</name>
+                <description>The unselected tab font colour of the general content area form tab.</description>
+                <k:renderingOrdinal>97</k:renderingOrdinal>
+                <k:fieldToRender>k:consoleGeneralContentAreaUnselectedTabFontColor</k:fieldToRender>
+              </k:singleLineTextControl>
+              <k:singleLineTextControl>
+                <alias>k:contentReportHeaderColorFieldControlOnForm4346gen</alias>
+                <name>Report header colour</name>
+                <description>The colour of the general content area report header.</description>
+                <k:renderingOrdinal>98</k:renderingOrdinal>
+                <k:fieldToRender>k:consoleGeneralContentAreaReportHeaderColor</k:fieldToRender>
+              </k:singleLineTextControl>
+              <k:singleLineTextControl>
+                <alias>k:contentReportHeaderFontColorFieldControlOnForm4347gen</alias>
+                <name>Report header font colour</name>
+                <description>The font colour of the general content area report header.</description>
+                <k:renderingOrdinal>99</k:renderingOrdinal>
+                <k:fieldToRender>k:consoleGeneralContentAreaReportHeaderFontColor</k:fieldToRender>
+              </k:singleLineTextControl>
+            </k:containedControlsOnForm>
+          </k:verticalStackContainerControl>
+        </k:containedControlsOnForm>
+      </k:horizontalStackContainerControl>
+    </k:containedControlsOnForm>
+  </k:customEditForm>
+  <!-- 'Navigation Element' custom edit form -->
+  <k:customEditForm>
+    <name>Navigation Element Edit Form</name>
+    <alias>k:navigationElementForm</alias>
+    <k:typeToEditWithForm>k:navigationElement</k:typeToEditWithForm>
+    <k:containedControlsOnForm>
+      <k:verticalStackContainerControl>
+        <alias>k:navigationElementVerticalStackContainer</alias>
+        <k:renderingOrdinal>0</k:renderingOrdinal>
+        <k:containedControlsOnForm>
+          <k:singleLineTextControl>
+            <alias>k:navigationElementNameFieldControlOnForm</alias>
+            <name>Name</name>
+            <description>The 'name' field of every resource.</description>
+            <k:renderingOrdinal>50</k:renderingOrdinal>
+            <k:fieldToRender>name</k:fieldToRender>
+          </k:singleLineTextControl>
+          <k:singleLineTextControl>
+            <alias>k:navigationElementDescriptionFieldControlOnForm</alias>
+            <name>Description</name>
+            <description>The 'description' field of every resource.</description>
+            <k:renderingOrdinal>55</k:renderingOrdinal>
+            <k:fieldToRender>description</k:fieldToRender>
+          </k:singleLineTextControl>
+          <k:inlineRelationshipRenderControl>
+            <alias>k:navigationElementIconFieldControlOnForm</alias>
+            <name>Icon</name>
+            <description>The icon to show for this item.</description>
+            <canCreate>false</canCreate>
+            <canCreateDerivedTypes>false</canCreateDerivedTypes>
+            <k:renderingOrdinal>60</k:renderingOrdinal>
+            <k:relationshipToRender>k:navigationElementIcon</k:relationshipToRender>
+          </k:inlineRelationshipRenderControl>
+        </k:containedControlsOnForm>
+      </k:verticalStackContainerControl>
+    </k:containedControlsOnForm>
+  </k:customEditForm>
+  <!-- 'Edit Form Properties' custom edit form -->
+  <k:customEditForm>
+    <name>Custom Edit Form Properties Form</name>
+    <alias>k:customEditFormPropertiesForm</alias>
+    <k:typeToEditWithForm>k:customEditForm</k:typeToEditWithForm>
+    <k:containedControlsOnForm>
+      <k:verticalStackContainerControl>
+        <alias>k:customEditFormVerticalStackContainer</alias>
+        <k:renderingOrdinal>0</k:renderingOrdinal>
+        <k:containedControlsOnForm>
+          <k:singleLineTextControl>
+            <alias>k:customEditFormNameFieldControlOnForm</alias>
+            <name>Name</name>
+            <description>The 'name' field of every resource.</description>
+            <k:renderingOrdinal>50</k:renderingOrdinal>
+            <k:fieldToRender>name</k:fieldToRender>
+          </k:singleLineTextControl>
+          <k:singleLineTextControl>
+            <alias>k:customEditFormDescriptionFieldControlOnForm</alias>
+            <name>Description</name>
+            <description>The 'description' field of every resource.</description>
+            <k:renderingOrdinal>55</k:renderingOrdinal>
+            <k:fieldToRender>description</k:fieldToRender>
+          </k:singleLineTextControl>
+          <k:inlineRelationshipRenderControl>
+            <alias>k:customEditFormApplicationsInlineRelationshipRenderControl</alias>
+            <name>Applications</name>
+            <k:renderingOrdinal>60</k:renderingOrdinal>
+            <canCreate>false</canCreate>
+            <canCreateDerivedTypes>false</canCreateDerivedTypes>
+            <hideNewButton>true</hideNewButton>
+            <k:relationshipToRender>inSolution</k:relationshipToRender>
+          </k:inlineRelationshipRenderControl>
+          <checkboxKFieldRenderControl>
+            <alias>k:customEditFormCheckboxKFieldControlOnForm</alias>
+            <name>Enable convert</name>
+            <description>If checked, the form allows multiple types.</description>
+            <k:renderingOrdinal>65</k:renderingOrdinal>
+            <k:fieldToRender>allowSelectMultiTypes</k:fieldToRender>
+          </checkboxKFieldRenderControl>
+           <checkboxKFieldRenderControl>
+            <alias>k:customEditFormHelpTextCheckboxKFieldControlOnForm</alias>
+            <name>Show help</name>
+            <description>If checked, show the help icon in form.</description>
+            <k:renderingOrdinal>66</k:renderingOrdinal>
+            <k:fieldToRender>k:showFormHelpText</k:fieldToRender>
+          </checkboxKFieldRenderControl>
+          <k:inlineRelationshipRenderControl>
+            <alias>k:customEditFormIconInlineRelationshipRenderControl</alias>
+            <name>Icon</name>
+            <description>The icon to show for this item.</description>
+            <canCreate>false</canCreate>
+            <canCreateDerivedTypes>false</canCreateDerivedTypes>
+            <k:renderingOrdinal>70</k:renderingOrdinal>
+            <k:relationshipToRender>k:navigationElementIcon</k:relationshipToRender>
+          </k:inlineRelationshipRenderControl>
+        </k:containedControlsOnForm>
+      </k:verticalStackContainerControl>
+    </k:containedControlsOnForm>
+  </k:customEditForm>
+  <!-- 'IMAP Email Provider' custom edit form -->
+  <k:customEditForm>
+    <name>IMAP Email Provider Form</name>
+    <alias>k:imapEmailProviderForm</alias>
+    <k:isDefaultForEntityType>imapEmailProvider</k:isDefaultForEntityType>
+    <k:typeToEditWithForm>imapEmailProvider</k:typeToEditWithForm>
+    <k:containedControlsOnForm>
+      <k:headerColumnContainerControl>
+        <alias>k:imapEmailProviderFormVerControl1</alias>
+        <k:renderingOrdinal>0</k:renderingOrdinal>
+        <k:containedControlsOnForm>
+          <k:singleLineTextControl>
+            <alias>k:imapEmailProviderFormControlName</alias>
+            <k:renderingOrdinal>0</k:renderingOrdinal>
+            <k:fieldToRender>name</k:fieldToRender>
+          </k:singleLineTextControl>
+          <k:singleLineTextControl>
+            <alias>k:imapEmailProviderFormControlDescription</alias>
+            <k:renderingOrdinal>1</k:renderingOrdinal>
+            <k:fieldToRender>description</k:fieldToRender>
+          </k:singleLineTextControl>
+        </k:containedControlsOnForm>
+      </k:headerColumnContainerControl>
+      <k:verticalStackContainerControl>
+        <alias>k:imapEmailProviderFormVerControl2</alias>
+        <name>IMAP Email Server Details</name>
+        <k:renderingOrdinal>1</k:renderingOrdinal>
+        <k:renderingHorizontalResizeMode>console:resizeSpring</k:renderingHorizontalResizeMode>
+        <k:renderingVerticalResizeMode>console:resizeSpring</k:renderingVerticalResizeMode>
+        <k:containedControlsOnForm>
+          <k:singleLineTextControl>
+            <alias>k:imapEmailProviderFormControlAccount</alias>
+            <k:renderingOrdinal>0</k:renderingOrdinal>
+            <k:fieldToRender>oaAccount</k:fieldToRender>
+          </k:singleLineTextControl>
+          <k:singleLineTextControl>
+            <alias>k:imapEmailProviderFormControlDomain</alias>
+            <k:renderingOrdinal>1</k:renderingOrdinal>
+            <k:fieldToRender>oaDomainName</k:fieldToRender>
+          </k:singleLineTextControl>
+          <k:singleLineTextControl>
+            <alias>k:imapEmailProviderFormControlEmail</alias>
+            <k:renderingOrdinal>2</k:renderingOrdinal>
+            <k:fieldToRender>oaEmailAddress</k:fieldToRender>
+          </k:singleLineTextControl>
+          <k:singleLineTextControl>
+            <alias>k:imapEmailProviderFormControlPassword</alias>
+            <k:renderingOrdinal>3</k:renderingOrdinal>
+            <k:fieldToRender>oaPassword</k:fieldToRender>
+          </k:singleLineTextControl>
+          <numericKFieldRenderControl>
+            <alias>k:imapEmailProviderFormControlPort</alias>
+            <k:renderingOrdinal>4</k:renderingOrdinal>
+            <k:fieldToRender>oaPort</k:fieldToRender>
+          </numericKFieldRenderControl>
+          <checkboxKFieldRenderControl>
+            <alias>k:imapEmailProviderFormControlPostInDir</alias>
+            <k:renderingOrdinal>5</k:renderingOrdinal>
+            <k:fieldToRender>oaPostInDirectory</k:fieldToRender>
+          </checkboxKFieldRenderControl>
+          <k:singleLineTextControl>
+            <alias>k:imapEmailProviderFormControlServer</alias>
+            <k:renderingOrdinal>6</k:renderingOrdinal>
+            <k:fieldToRender>oaServer</k:fieldToRender>
+          </k:singleLineTextControl>
+          <checkboxKFieldRenderControl>
+            <alias>k:imapEmailProviderFormControlUseFolder</alias>
+            <k:renderingOrdinal>7</k:renderingOrdinal>
+            <k:fieldToRender>oaUseFolder</k:fieldToRender>
+          </checkboxKFieldRenderControl>
+          <checkboxKFieldRenderControl>
+            <alias>k:imapEmailProviderFormControlUseIntAuth</alias>
+            <k:renderingOrdinal>8</k:renderingOrdinal>
+            <k:fieldToRender>oaUseIntegratedAuth</k:fieldToRender>
+          </checkboxKFieldRenderControl>
+          <checkboxKFieldRenderControl>
+            <alias>k:imapEmailProviderFormControlUseSSL</alias>
+            <k:renderingOrdinal>9</k:renderingOrdinal>
+            <k:fieldToRender>oaUseSSL</k:fieldToRender>
+          </checkboxKFieldRenderControl>
+        </k:containedControlsOnForm>
+      </k:verticalStackContainerControl>
+      <k:tabContainerControl>
+        <name>Tab container</name>
+        <alias>k:imapEmailProviderFormTabControl</alias>
+        <k:renderingOrdinal>2</k:renderingOrdinal>
+        <k:renderingHorizontalResizeMode>console:resizeSpring</k:renderingHorizontalResizeMode>
+        <k:renderingVerticalResizeMode>console:resizeSpring</k:renderingVerticalResizeMode>
+        <k:containedControlsOnForm>
+          <k:tabRelationshipRenderControl>
+            <name>Uses provider</name>
+            <k:renderingHorizontalResizeMode>console:resizeSpring</k:renderingHorizontalResizeMode>
+            <k:renderingVerticalResizeMode>console:resizeSpring</k:renderingVerticalResizeMode>
+            <alias>k:imapEmailProviderFormControlUseInboxProvider</alias>
+            <k:renderingOrdinal>0</k:renderingOrdinal>
+            <k:relationshipToRender>usesInboxProvider</k:relationshipToRender>
+            <k:isReversed>true</k:isReversed>
+            <k:hasRelationshipControlBehavior>k:defaultRelationshipBehavior</k:hasRelationshipControlBehavior>
+            <k:pickerReport>templateReport</k:pickerReport>
+            <k:relationshipDisplayReport>templateReport</k:relationshipDisplayReport>
+          </k:tabRelationshipRenderControl>
+        </k:containedControlsOnForm>
+      </k:tabContainerControl>
+    </k:containedControlsOnForm>
+  </k:customEditForm>
+  <!-- Identity Provider Form -->
+  <k:customEditForm>
+    <alias>k:oidcIdpForm</alias>
+    <name>Identity Provider Form</name>
+    <k:typeToEditWithForm>oidcIdentityProvider</k:typeToEditWithForm>
+    <k:isDefaultForEntityType>oidcIdentityProvider</k:isDefaultForEntityType>
+    <k:containedControlsOnForm>
+      <k:headerColumnContainerControl>
+        <alias>k:oidcIdpFormHeader</alias>
+        <k:renderingOrdinal>0</k:renderingOrdinal>
+        <k:containedControlsOnForm>
+           <k:singleLineTextControl>
+            <alias>k:oidcIdpFormName</alias>
+            <name>Name</name>            
+             <description>The 'name' field of every resource.</description>
+            <k:renderingOrdinal>0</k:renderingOrdinal>
+            <k:fieldToRender>name</k:fieldToRender>
+            <k:mandatoryControl>true</k:mandatoryControl>
+          </k:singleLineTextControl>
+          <k:singleLineTextControl>
+            <alias>k:oidcIdpFormDescription</alias>
+            <name>Description</name>
+            <description>The 'description' field of every resource.</description>
+            <k:renderingOrdinal>1</k:renderingOrdinal>
+            <k:fieldToRender>description</k:fieldToRender>
+          </k:singleLineTextControl>                   
+        </k:containedControlsOnForm>
+      </k:headerColumnContainerControl>
+      <k:horizontalStackContainerControl>
+        <alias>k:oidcIdpFormHorizStackControl</alias>
+        <k:renderingOrdinal>1</k:renderingOrdinal>
+        <k:containedControlsOnForm>          
+          <k:verticalStackContainerControl>
+            <alias>k:oidcIdpFormVertStackControlDetails</alias>
+            <name>OpenId Connect Identity Provider Details</name>
+            <k:renderingOrdinal>0</k:renderingOrdinal>
+            <k:containedControlsOnForm>
+              <checkboxKFieldRenderControl>
+                <alias>k:oidcIdpFormAlwaysPrompt</alias>
+                <name>Always prompt</name>                    
+                <k:renderingOrdinal>0</k:renderingOrdinal>
+                <k:fieldToRender>oidcAlwaysPrompt</k:fieldToRender>
+              </checkboxKFieldRenderControl>
+              <k:singleLineTextControl>
+                <alias>k:oidcIdpFormClientId</alias>
+                <name>Client Id</name>                    
+                <k:renderingOrdinal>1</k:renderingOrdinal>
+                <k:fieldToRender>oidcClientId</k:fieldToRender>
+                <k:mandatoryControl>true</k:mandatoryControl>
+              </k:singleLineTextControl>
+              <k:singleLineTextControl>
+                <alias>k:oidcIdpFormClientSecret</alias>
+                <name>Client secret</name>                    
+                <k:renderingOrdinal>2</k:renderingOrdinal>
+                <k:fieldToRender>oidcClientSecret</k:fieldToRender>
+                <k:mandatoryControl>true</k:mandatoryControl>
+              </k:singleLineTextControl>
+              <k:singleLineTextControl>
+                <alias>k:oidcIdpFormIdentityClaim</alias>
+                <name>Identity claim</name>                    
+                <k:renderingOrdinal>3</k:renderingOrdinal>
+                <k:fieldToRender>oidcUserIdentityClaim</k:fieldToRender>
+                <k:mandatoryControl>true</k:mandatoryControl>
+              </k:singleLineTextControl>
+              <k:singleLineTextControl>
+                <alias>k:oidcIdpFormConfigUrl</alias>
+                <name>Identity provider configuration URL</name>                    
+                <k:renderingOrdinal>4</k:renderingOrdinal>
+                <k:fieldToRender>oidcIdentityProviderConfigurationUrl</k:fieldToRender>
+                <k:mandatoryControl>true</k:mandatoryControl>
+              </k:singleLineTextControl>
+            </k:containedControlsOnForm>
+          </k:verticalStackContainerControl>
+          <k:verticalStackContainerControl>
+            <alias>k:oidcIdpFormVertStackControlIdpDetails</alias>
+            <name>Identity Provider Details</name>
+            <k:renderingOrdinal>1</k:renderingOrdinal>
+            <k:containedControlsOnForm>
+              <checkboxKFieldRenderControl>
+                <alias>k:oidcIdpFormIdpEnabled</alias>
+                <name>Is provider enabled</name>                    
+                <k:renderingOrdinal>0</k:renderingOrdinal>
+                <k:fieldToRender>isProviderEnabled</k:fieldToRender>
+              </checkboxKFieldRenderControl>
+              <numericKFieldRenderControl>
+                <alias>k:oidcIdpFormIdpOrder</alias>
+                <name>Order</name>                    
+                <k:renderingOrdinal>1</k:renderingOrdinal>
+                <k:fieldToRender>providerOrdinal</k:fieldToRender>                    
+              </numericKFieldRenderControl>                  
+            </k:containedControlsOnForm>
+          </k:verticalStackContainerControl>                    
+        </k:containedControlsOnForm>
+      </k:horizontalStackContainerControl>
+      <k:tabContainerControl>
+        <alias>k:oidcIdpFormTabControl</alias>
+        <k:renderingOrdinal>2</k:renderingOrdinal>
+        <k:renderingHorizontalResizeMode>console:resizeSpring</k:renderingHorizontalResizeMode>
+        <k:renderingVerticalResizeMode>console:resizeSpring</k:renderingVerticalResizeMode>
+        <k:containedControlsOnForm>
+          <k:tabRelationshipRenderControl>
+            <alias>k:oidcIdpFormIdpUsers</alias>
+            <name>Identity provider users</name>            
+            <k:renderingOrdinal>0</k:renderingOrdinal>
+            <k:renderingHorizontalResizeMode>console:resizeSpring</k:renderingHorizontalResizeMode>
+            <k:renderingVerticalResizeMode>console:resizeSpring</k:renderingVerticalResizeMode>
+            <k:relationshipToRender>identityProviderForUser</k:relationshipToRender>
+            <k:isReversed>true</k:isReversed>
+            <k:hasRelationshipControlBehavior>k:defaultRelationshipBehavior</k:hasRelationshipControlBehavior>
+            <k:pickerReport>k:oidcIdentityProviderUsersReport</k:pickerReport>
+            <k:relationshipDisplayReport>k:oidcIdentityProviderUsersReport</k:relationshipDisplayReport>
+          </k:tabRelationshipRenderControl>
+        </k:containedControlsOnForm>
+      </k:tabContainerControl>
+    </k:containedControlsOnForm>
+  </k:customEditForm>
+  <!-- Identity Provider User Form -->
+  <k:customEditForm>
+    <alias>k:oidcIdpUserForm</alias>
+    <name>Identity Provider User Form</name>
+    <k:typeToEditWithForm>oidcIdentityProviderUser</k:typeToEditWithForm>
+    <k:isDefaultForEntityType>oidcIdentityProviderUser</k:isDefaultForEntityType>
+    <k:containedControlsOnForm>
+      <k:headerColumnContainerControl>
+        <alias>k:oidcIdpUserFormHeader</alias>
+        <k:renderingOrdinal>0</k:renderingOrdinal>
+        <k:containedControlsOnForm>
+           <k:singleLineTextControl>
+            <alias>k:oidcIdpUserFormName</alias>
+            <name>Name</name>            
+             <description>The 'name' field of every resource.</description>
+            <k:renderingOrdinal>0</k:renderingOrdinal>
+            <k:fieldToRender>name</k:fieldToRender>
+            <k:mandatoryControl>true</k:mandatoryControl>
+          </k:singleLineTextControl>
+          <k:singleLineTextControl>
+            <alias>k:oidcIdpUserFormDescription</alias>
+            <name>Description</name>
+            <description>The 'description' field of every resource.</description>
+            <k:renderingOrdinal>1</k:renderingOrdinal>
+            <k:fieldToRender>description</k:fieldToRender>
+          </k:singleLineTextControl>                   
+        </k:containedControlsOnForm>
+      </k:headerColumnContainerControl>
+      <k:horizontalStackContainerControl>
+        <alias>k:oidcIdpUserFormHorizStackControl</alias>
+        <k:renderingOrdinal>1</k:renderingOrdinal>
+        <k:containedControlsOnForm>          
+          <k:verticalStackContainerControl>
+            <alias>k:oidcIdpUserFormVertStackControlIdpUserDetails</alias>
+            <name>Identity Provider User Details</name>
+            <k:renderingOrdinal>0</k:renderingOrdinal>
+            <k:containedControlsOnForm>
+              <k:inlineRelationshipRenderControl>
+                <alias>k:oidcIdpUserFormAssociatedAccount</alias>
+                <name>Associated account</name>                    
+                <canCreate>false</canCreate>
+                <canCreateDerivedTypes>false</canCreateDerivedTypes>
+                <k:renderingOrdinal>0</k:renderingOrdinal>
+                <k:relationshipToRender>associatedUserAccount</k:relationshipToRender>
+              </k:inlineRelationshipRenderControl>
+              <k:inlineRelationshipRenderControl>
+                <alias>k:oidcIdpUserFormIdp</alias>
+                <name>Identity provider</name>                    
+                <canCreate>false</canCreate>
+                <canCreateDerivedTypes>false</canCreateDerivedTypes>
+                <k:renderingOrdinal>1</k:renderingOrdinal>
+                <k:relationshipToRender>identityProviderForUser</k:relationshipToRender>
+                <k:pickerReport>k:identityProvidersReport</k:pickerReport>
+              </k:inlineRelationshipRenderControl>                  
+            </k:containedControlsOnForm>
+          </k:verticalStackContainerControl>                                  
+        </k:containedControlsOnForm>
+      </k:horizontalStackContainerControl>      
+    </k:containedControlsOnForm>
+  </k:customEditForm>
+  <!-- 'Board' form -->
+  <k:customEditForm>
+    <alias>k:boardForm</alias>
+    <name>Board Form</name>
+    <k:typeToEditWithForm>board</k:typeToEditWithForm>
+    <k:isDefaultForEntityType>board</k:isDefaultForEntityType>
+    <k:containedControlsOnForm>
+      <k:horizontalStackContainerControl>
+        <alias>k:boardFormHorizontalContainerControl</alias>
+        <k:hideLabel>true</k:hideLabel>
+        <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
+        <k:renderingHeight>50</k:renderingHeight>
+        <k:renderingOrdinal>2</k:renderingOrdinal>
+        <k:containedControlsOnForm>
+          <k:verticalStackContainerControl>
+            <alias>k:boardFormBoardDetails</alias>
+            <name>Board Details</name>
+            <k:renderingBackgroundColor>rgba(255,255,255,1)</k:renderingBackgroundColor>
+            <k:renderingHeight>50</k:renderingHeight>
+            <k:renderingOrdinal>0</k:renderingOrdinal>
+            <k:renderingWidth>33</k:renderingWidth>
+            <k:containedControlsOnForm>
+              <k:inlineRelationshipRenderControl>
+                <alias>k:boardFormReport</alias>
+                <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
+                <k:renderingOrdinal>0</k:renderingOrdinal>
+                <k:relationshipToRender>boardReport</k:relationshipToRender>
+                <k:renderingHorizontalResizeMode>console:resizeAutomatic</k:renderingHorizontalResizeMode>
+                <k:renderingVerticalResizeMode>console:resizeAutomatic</k:renderingVerticalResizeMode>
+              </k:inlineRelationshipRenderControl>
+              <k:inlineRelationshipRenderControl>
+                <alias>k:boardFormChildReport</alias>
+                <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
+                <k:renderingOrdinal>1</k:renderingOrdinal>
+                <k:relationshipToRender>boardChildReport</k:relationshipToRender>
+                <k:renderingHorizontalResizeMode>console:resizeAutomatic</k:renderingHorizontalResizeMode>
+                <k:renderingVerticalResizeMode>console:resizeAutomatic</k:renderingVerticalResizeMode>
+              </k:inlineRelationshipRenderControl>
+              <k:inlineRelationshipRenderControl>
+                <alias>k:boardFormRankColumn</alias>
+                <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
+                <k:renderingOrdinal>2</k:renderingOrdinal>
+                <k:relationshipToRender>boardRankColumn</k:relationshipToRender>
+                <k:renderingHorizontalResizeMode>console:resizeAutomatic</k:renderingHorizontalResizeMode>
+                <k:renderingVerticalResizeMode>console:resizeAutomatic</k:renderingVerticalResizeMode>
+              </k:inlineRelationshipRenderControl>
+              <k:inlineRelationshipRenderControl>
+                <alias>k:boardFormDrilldownTargetBoard</alias>
+                <name>Drilldown Target</name>
+                <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
+                <k:renderingOrdinal>3</k:renderingOrdinal>
+                <k:relationshipToRender>drilldownTargetBoard</k:relationshipToRender>
+                <k:renderingHorizontalResizeMode>console:resizeAutomatic</k:renderingHorizontalResizeMode>
+                <k:renderingVerticalResizeMode>console:resizeAutomatic</k:renderingVerticalResizeMode>
+              </k:inlineRelationshipRenderControl>
+              <checkboxKFieldRenderControl>
+                <alias>k:boardFormShowQuickAdd</alias>
+                <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
+                <k:renderingOrdinal>4</k:renderingOrdinal>
+                <k:fieldToRender>boardShowQuickAdd</k:fieldToRender>
+                <k:renderingHorizontalResizeMode>console:resizeAutomatic</k:renderingHorizontalResizeMode>
+                <k:renderingVerticalResizeMode>console:resizeAutomatic</k:renderingVerticalResizeMode>
+              </checkboxKFieldRenderControl>
+            </k:containedControlsOnForm>
+            <k:renderingHorizontalResizeMode>console:resizeThirtyThree</k:renderingHorizontalResizeMode>
+            <k:renderingVerticalResizeMode>console:resizeAutomatic</k:renderingVerticalResizeMode>
+          </k:verticalStackContainerControl>
+          <k:verticalStackContainerControl>
+            <alias>k:boardFormDimensionDetails</alias>
+            <name>Dimension Details</name>
+            <k:renderingBackgroundColor>rgba(255,255,255,1)</k:renderingBackgroundColor>
+            <k:renderingHeight>50</k:renderingHeight>
+            <k:renderingOrdinal>1</k:renderingOrdinal>
+            <k:renderingWidth>33</k:renderingWidth>
+            <k:containedControlsOnForm>
+              <k:inlineRelationshipRenderControl>
+                <alias>k:boardFormColumnDimension</alias>
+                <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
+                <k:renderingOrdinal>0</k:renderingOrdinal>
+                <k:relationshipToRender>boardColumnDimension</k:relationshipToRender>
+                <k:renderingHorizontalResizeMode>console:resizeAutomatic</k:renderingHorizontalResizeMode>
+                <k:renderingVerticalResizeMode>console:resizeAutomatic</k:renderingVerticalResizeMode>
+              </k:inlineRelationshipRenderControl>
+              <k:inlineRelationshipRenderControl>
+                <alias>k:boardFormStyleDimension</alias>
+                <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
+                <k:renderingOrdinal>2</k:renderingOrdinal>
+                <k:relationshipToRender>boardStyleDimension</k:relationshipToRender>
+                <k:renderingHorizontalResizeMode>console:resizeAutomatic</k:renderingHorizontalResizeMode>
+                <k:renderingVerticalResizeMode>console:resizeAutomatic</k:renderingVerticalResizeMode>
+              </k:inlineRelationshipRenderControl>
+              <k:inlineRelationshipRenderControl>
+                <alias>k:boardFormSwimlaneDimension</alias>
+                <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
+                <k:renderingOrdinal>1</k:renderingOrdinal>
+                <k:relationshipToRender>boardSwimlaneDimension</k:relationshipToRender>
+                <k:renderingHorizontalResizeMode>console:resizeAutomatic</k:renderingHorizontalResizeMode>
+                <k:renderingVerticalResizeMode>console:resizeAutomatic</k:renderingVerticalResizeMode>
+              </k:inlineRelationshipRenderControl>
+            </k:containedControlsOnForm>
+            <k:renderingHorizontalResizeMode>console:resizeThirtyThree</k:renderingHorizontalResizeMode>
+            <k:renderingVerticalResizeMode>console:resizeAutomatic</k:renderingVerticalResizeMode>
+          </k:verticalStackContainerControl>
+          <k:verticalStackContainerControl>
+            <alias>k:boardFormTemplateDetails</alias>
+            <name>Template Details</name>
+            <k:renderingBackgroundColor>rgba(255,255,255,1)</k:renderingBackgroundColor>
+            <k:renderingHeight>50</k:renderingHeight>
+            <k:renderingOrdinal>2</k:renderingOrdinal>
+            <k:renderingWidth>33</k:renderingWidth>
+            <k:containedControlsOnForm>
+              <k:singleLineTextControl>
+                <alias>k:boardFormCardTemplateName</alias>
+                <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
+                <k:renderingOrdinal>0</k:renderingOrdinal>
+                <k:fieldToRender>boardCardTemplateName</k:fieldToRender>
+                <k:renderingHorizontalResizeMode>console:resizeAutomatic</k:renderingHorizontalResizeMode>
+                <k:renderingVerticalResizeMode>console:resizeAutomatic</k:renderingVerticalResizeMode>
+              </k:singleLineTextControl>
+              <k:singleLineTextControl>
+                <alias>k:boardFormCardCustomTemplate</alias>
+                <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
+                <k:renderingOrdinal>1</k:renderingOrdinal>
+                <k:fieldToRender>boardCardCustomTemplate</k:fieldToRender>
+                <k:renderingHorizontalResizeMode>console:resizeAutomatic</k:renderingHorizontalResizeMode>
+                <k:renderingVerticalResizeMode>console:resizeAutomatic</k:renderingVerticalResizeMode>
+              </k:singleLineTextControl>
+            </k:containedControlsOnForm>
+            <k:renderingHorizontalResizeMode>console:resizeThirtyThree</k:renderingHorizontalResizeMode>
+            <k:renderingVerticalResizeMode>console:resizeAutomatic</k:renderingVerticalResizeMode>
+          </k:verticalStackContainerControl>
+        </k:containedControlsOnForm>
+        <k:renderingHorizontalResizeMode>console:resizeSpring</k:renderingHorizontalResizeMode>
+        <k:renderingVerticalResizeMode>console:resizeAutomatic</k:renderingVerticalResizeMode>
+      </k:horizontalStackContainerControl>
+      <k:singleLineTextControl>
+        <alias>k:boardFormDescription</alias>
+        <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
+        <k:renderingOrdinal>1</k:renderingOrdinal>
+        <k:fieldToRender>description</k:fieldToRender>
+        <k:renderingHorizontalResizeMode>console:resizeAutomatic</k:renderingHorizontalResizeMode>
+        <k:renderingVerticalResizeMode>console:resizeAutomatic</k:renderingVerticalResizeMode>
+      </k:singleLineTextControl>
+      <k:singleLineTextControl>
+        <alias>k:boardFormName</alias>
+        <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
+        <k:renderingOrdinal>0</k:renderingOrdinal>
+        <k:fieldToRender>name</k:fieldToRender>
+        <k:renderingHorizontalResizeMode>console:resizeAutomatic</k:renderingHorizontalResizeMode>
+        <k:renderingVerticalResizeMode>console:resizeAutomatic</k:renderingVerticalResizeMode>
+      </k:singleLineTextControl>
+      <k:tabContainerControl>
+        <alias>k:boardFormTabContainerControl</alias>
+        <name>Board Form Tab Container</name>
+        <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
+        <k:renderingHeight>50</k:renderingHeight>
+        <k:renderingOrdinal>4</k:renderingOrdinal>
+        <k:containedControlsOnForm>
+          <k:verticalStackContainerControl>
+            <alias>k:boardFormDrilldownTargetBoardTabContainer</alias>
+            <name>Drilldown Target for Boards</name>
+            <k:hideLabel>true</k:hideLabel>
+            <k:renderingBackgroundColor>rgba(0,0,0,0)</k:renderingBackgroundColor>
+            <k:renderingOrdinal>0</k:renderingOrdinal>
+            <k:containedControlsOnForm>
+              <k:tabRelationshipRenderControl>
+                <alias>k:boardFormDrilldownTargetBoardTab</alias>
+                <k:isReversed>true</k:isReversed>
+                <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
+                <k:renderingOrdinal>0</k:renderingOrdinal>
+                <k:relationshipToRender>drilldownTargetBoard</k:relationshipToRender>
+                <k:renderingHorizontalResizeMode>console:resizeSpring</k:renderingHorizontalResizeMode>
+                <k:renderingVerticalResizeMode>console:resizeSpring</k:renderingVerticalResizeMode>
+              </k:tabRelationshipRenderControl>
+            </k:containedControlsOnForm>
+            <k:renderingHorizontalResizeMode>console:resizeSpring</k:renderingHorizontalResizeMode>
+            <k:renderingVerticalResizeMode>console:resizeSpring</k:renderingVerticalResizeMode>
+          </k:verticalStackContainerControl>
+        </k:containedControlsOnForm>
+        <k:renderingHorizontalResizeMode>console:resizeSpring</k:renderingHorizontalResizeMode>
+        <k:renderingVerticalResizeMode>console:resizeFifty</k:renderingVerticalResizeMode>
+      </k:tabContainerControl>
+    </k:containedControlsOnForm>
+    <k:hideLabel>true</k:hideLabel>
+    <k:renderingHorizontalResizeMode>console:resizeSpring</k:renderingHorizontalResizeMode>
+    <k:renderingVerticalResizeMode>console:resizeSpring</k:renderingVerticalResizeMode>
+    <k:renderingHeight>100</k:renderingHeight>
+    <k:renderingOrdinal>0</k:renderingOrdinal>
+    <k:renderingWidth>100</k:renderingWidth>
+  </k:customEditForm>
+  <!-- 'Board' properties form -->
+  <k:customEditForm>
+    <alias>k:boardPropertiesForm</alias>
+    <name>Board Properties Form</name>
+    <k:typeToEditWithForm>board</k:typeToEditWithForm>
+    <k:containedControlsOnForm>
+      <k:singleLineTextControl>
+        <alias>k:boardPropertiesFormName</alias>
+        <k:renderingOrdinal>0</k:renderingOrdinal>
+        <k:fieldToRender>name</k:fieldToRender>
+        <k:renderingHorizontalResizeMode>console:resizeAutomatic</k:renderingHorizontalResizeMode>
+        <k:renderingVerticalResizeMode>console:resizeAutomatic</k:renderingVerticalResizeMode>
+      </k:singleLineTextControl>
+      <k:singleLineTextControl>
+        <alias>k:boardPropertiesFormDescription</alias>
+        <k:renderingOrdinal>1</k:renderingOrdinal>
+        <k:fieldToRender>description</k:fieldToRender>
+        <k:renderingHorizontalResizeMode>console:resizeAutomatic</k:renderingHorizontalResizeMode>
+        <k:renderingVerticalResizeMode>console:resizeAutomatic</k:renderingVerticalResizeMode>
+      </k:singleLineTextControl>
+      <k:inlineRelationshipRenderControl>
+        <alias>k:boardPropertiesFormReport</alias>
+        <k:mandatoryControl>true</k:mandatoryControl>
+        <k:renderingOrdinal>2</k:renderingOrdinal>
+        <canCreate>false</canCreate>
+        <canCreateDerivedTypes>false</canCreateDerivedTypes>
+        <k:relationshipToRender>boardReport</k:relationshipToRender>
+        <k:renderingHorizontalResizeMode>console:resizeAutomatic</k:renderingHorizontalResizeMode>
+        <k:renderingVerticalResizeMode>console:resizeAutomatic</k:renderingVerticalResizeMode>
+      </k:inlineRelationshipRenderControl>
+      <checkboxKFieldRenderControl>
+        <alias>k:boardPropertiesFormShowQuickAdd</alias>
+        <k:renderingOrdinal>3</k:renderingOrdinal>
+        <k:fieldToRender>boardShowQuickAdd</k:fieldToRender>
+        <k:renderingHorizontalResizeMode>console:resizeAutomatic</k:renderingHorizontalResizeMode>
+        <k:renderingVerticalResizeMode>console:resizeAutomatic</k:renderingVerticalResizeMode>
+      </checkboxKFieldRenderControl>
+    </k:containedControlsOnForm>
+    <k:hideLabel>true</k:hideLabel>
+    <k:renderingHorizontalResizeMode>console:resizeSpring</k:renderingHorizontalResizeMode>
+    <k:renderingVerticalResizeMode>console:resizeSpring</k:renderingVerticalResizeMode>
+    <k:renderingHeight>100</k:renderingHeight>
+    <k:renderingOrdinal>0</k:renderingOrdinal>
+    <k:renderingWidth>100</k:renderingWidth>
+  </k:customEditForm>
+</resources>

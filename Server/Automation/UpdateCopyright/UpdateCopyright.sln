@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpdateCopyright", "UpdateCopyright.csproj", "{BDD8ACC9-60F9-4BF0-9F2D-9C2E84972455}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BDD8ACC9-60F9-4BF0-9F2D-9C2E84972455}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDD8ACC9-60F9-4BF0-9F2D-9C2E84972455}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDD8ACC9-60F9-4BF0-9F2D-9C2E84972455}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDD8ACC9-60F9-4BF0-9F2D-9C2E84972455}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

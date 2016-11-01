@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  
+  <PropertyGroup>
+    <SolutionFile>$(MSBuildProjectDirectory)\Platform.sln</SolutionFile>	
+  </PropertyGroup>
+   <!-- <Target Name="CreateBinariesDirectoriy">
+        <MakeDir Directories="$(BinariesRoot)"/>
+    </Target>-->
+   <ItemGroup>
+	<BuildFile Include="$(SolutionFile)">
+		<AdditionalProperties>
+			OutputPath=$(BinariesRoot)
+		</AdditionalProperties>
+	</BuildFile>
+
+  </ItemGroup>
+  <Target Name="BuildAll" Outputs="$(BinariesRoot)">
+ 	<MSBuild Projects="@(BuildFile)"
+	Properties="Configuration=Release"/>
+  </Target>
+</Project>

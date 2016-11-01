@@ -1,0 +1,165 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C628F2BD-1D59-4649-8859-514C1688E763}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ReadiNow.Expressions.Test</RootNamespace>
+    <AssemblyName>ReadiNow.Expressions.Test</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\ReadiNow.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <NoWarn>618</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Autofac, Version=4.1.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.1.1\lib\net45\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Irony, Version=1.0.0.0, Culture=neutral, PublicKeyToken=ca48ace7223ead47, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\ThirdParty\Irony.dll</HintPath>
+    </Reference>
+    <Reference Include="Moq, Version=4.2.1507.118, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Moq.4.2.1507.0118\lib\net40\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ActivationTests.cs" />
+    <Compile Include="AssemblyTestFixture.cs" />
+    <Compile Include="Builder\LanguageManagerTests.cs" />
+    <Compile Include="Builder\ScriptQueryBuilderTests.cs" />
+    <Compile Include="Builder\StaticBuilderTests.cs" />
+    <Compile Include="Builder\StaticDependencyTests.cs" />
+    <Compile Include="Builder\SyntaxTests.cs" />
+    <Compile Include="CalculatedFields\CachingCalculatedFieldsMetadataProviderTests.cs" />
+    <Compile Include="CalculatedFields\CalculatedFieldMetadataProviderTests.cs" />
+    <Compile Include="CalculatedFields\CalculatedFieldProviderTests.cs" />
+    <Compile Include="CalculatedFields\CalculatedFieldsExtensionsTests.cs" />
+    <Compile Include="CalculatedFields\CalculatedFieldProviderIntegrationTests.cs" />
+    <Compile Include="CalculatedFields\DateTimeTests.cs" />
+    <Compile Include="CalculatedFields\EntityModelIntegrationTests.cs" />
+    <Compile Include="ExprTypeTests.cs" />
+    <Compile Include="NameResolver\CachingScriptNameResolverTests.cs" />
+    <Compile Include="NameResolver\CodeNameResolverTest.cs" />
+    <Compile Include="NameResolver\ScriptNameResolverTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Runner\ChoiceOrderingTests.cs" />
+    <Compile Include="Runner\ScenarioTests.cs" />
+    <Compile Include="Runner\ScriptInvalidTests.cs" />
+    <Compile Include="Runner\ScriptResourceTests.cs" />
+    <Compile Include="Runner\ScriptTests.cs" />
+    <Compile Include="Runner\SyntaxTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EDC.Common\EDC.Common.csproj">
+      <Project>{c7183bef-1a52-4da5-850b-7132b5dca7eb}</Project>
+      <Name>EDC.Common</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EDC.ReadiNow.Common.Test\EDC.ReadiNow.Common.Test.csproj">
+      <Project>{9aededc8-f2e7-47f7-9fcb-6694de936fde}</Project>
+      <Name>EDC.ReadiNow.Common.Test</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EDC.ReadiNow.Common\EDC.ReadiNow.Common.csproj">
+      <Project>{a1c54cf6-e515-4132-a3cb-5cbe32b11d7e}</Project>
+      <Name>EDC.ReadiNow.Common</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EDC.SoftwarePlatform.Interfaces\EDC.SoftwarePlatform.Interfaces.csproj">
+      <Project>{c1fc97b7-aacc-45b5-9969-7995b27093ca}</Project>
+      <Name>EDC.SoftwarePlatform.Interfaces</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\ReadiNow.Expressions\ReadiNow.Expressions.csproj">
+      <Project>{703ebe03-abba-484f-b550-bc3b31643d40}</Project>
+      <Name>ReadiNow.Expressions</Name>
+      <Private>True</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir).build\MSBuild.Community.Tasks.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Import Project="$(SolutionDir)Automation\ReadiNow.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <Target Name="AfterBuild">
+    <CallTarget Targets="PublishTestAssembly" />
+  </Target>
+  <PropertyGroup>
+    <AssemblyFileInfo>$(ProjectDir)Properties\AssemblyFileInfo.cs</AssemblyFileInfo>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

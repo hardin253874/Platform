@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="core" xmlns:k="console" xsi:schemaLocation=". ../Core.xsd" defaultSolution="coreSolution">
+  <!--Copyright 2011-2016 Global Software Innovation Pty Ltd-->
+  <!-- Audit Log Data -->
+  <!-- Audit Log Settings instance type -->
+  <auditLogSettings>
+    <alias>tenantAuditLogSettingsInstance</alias>
+    <name>Security Audit Log Settings</name>
+    <description>The security audit log settings configured by the tenant.</description>
+    <maxAuditLogEntries>10000</maxAuditLogEntries>
+    <minAuditLogSeverity>auditLogInformation</minAuditLogSeverity>
+  </auditLogSettings>
+  <!-- ****************************************************** -->
+  <!-- SPECIFIC AUDIT LOG ENTRY METADATA INSTANCES - There is one instance per audit log message type. -->
+  <!-- Create User Account Audit Log Entry Metadata -->
+  <auditLogEntryMetadata>
+    <alias>createUserAccountAuditLogEntryMetadata</alias>
+    <name>Create User Account Audit Log Entry Metadata</name>
+    <messageId>createUserAccount</messageId>
+    <severitySuccess>auditLogInformation</severitySuccess>
+    <severityFailure>auditLogError</severityFailure>
+    <auditLogEntryType>createUserAccountAuditLogEntry</auditLogEntryType>
+    <messageFormatString>Create user account. User name: {0:createdUserName}.</messageFormatString>
+  </auditLogEntryMetadata>
+  <!-- Delete User Account Audit Log Entry Metadata -->
+  <auditLogEntryMetadata>
+    <alias>deleteUserAccountAuditLogEntryMetadata</alias>
+    <name>Delete User Account Audit Log Entry Metadata</name>
+    <messageId>deleteUserAccount</messageId>
+    <severitySuccess>auditLogInformation</severitySuccess>
+    <severityFailure>auditLogError</severityFailure>
+    <auditLogEntryType>deleteUserAccountAuditLogEntry</auditLogEntryType>
+    <messageFormatString>Delete user account. User name: {0:deletedUserName}.</messageFormatString>
+  </auditLogEntryMetadata>
+  <!-- Rename User Account Audit Log Entry Metadata -->
+  <auditLogEntryMetadata>
+    <alias>renameUserAccountAuditLogEntryMetadata</alias>
+    <name>Rename User Account Audit Log Entry Metadata</name>
+    <messageId>renameUserAccount</messageId>
+    <severitySuccess>auditLogInformation</severitySuccess>
+    <severityFailure>auditLogError</severityFailure>
+    <auditLogEntryType>renameUserAccountAuditLogEntry</auditLogEntryType>
+    <messageFormatString>Rename user account. Old user name: {0:oldUserName}, New user name: {0:newUserName}.</messageFormatString>
+  </auditLogEntryMetadata>
+  <!-- Expired User Account Audit Log Entry Metadata -->
+  <auditLogEntryMetadata>
+    <alias>expireUserAccountAuditLogEntryMetadata</alias>
+    <name>Expired User Account Audit Log Entry Metadata</name>
+    <messageId>expireUserAccount</messageId>
+    <severitySuccess>auditLogInformation</severitySuccess>
+    <severityFailure>auditLogError</severityFailure>
+    <auditLogEntryType>expireUserAccountAuditLogEntry</auditLogEntryType>
+    <messageFormatString>User account expired. User name: {0:expiredUserName}.</messageFormatString>
+  </auditLogEntryMetadata>
+  <!-- Change User Account Password Audit Log Entry Metadata -->
+  <auditLogEntryMetadata>
+    <alias>changeUserAccountPasswordAuditLogEntryMetadata</alias>
+    <name>Change User Account Password Audit Log Entry Metadata</name>
+    <messageId>changeUserAccountPassword</messageId>
+    <severitySuccess>auditLogInformation</severitySuccess>
+    <severityFailure>auditLogError</severityFailure>
+    <auditLogEntryType>changeUserAccountPasswordAuditLogEntry</auditLogEntryType>
+    <messageFormatString>Change user account password. User name: {0:changedPasswordUserName}.</messageFormatString>
+  </auditLogEntryMetadata>
+  <!-- Change User Account Expiry Audit Log Entry Metadata -->
+  <auditLogEntryMetadata>
+    <alias>changeUserAccountExpiryAuditLogEntryMetadata</alias>
+    <name>Change User Account Expiry Audit Log Entry Metadata</name>
+    <messageId>changeUserAccountExpiration</messageId>
+    <severitySuccess>auditLogInformation</severitySuccess>
+    <severityFailure>auditLogError</severityFailure>
+    <auditLogEntryType>changeUserAccountExpiryAuditLogEntry</auditLogEntryType>
+    <messageFormatString>Change user account expiry. User name: {0:changedExpiryUserName}, Old expiration date: {0:oldExpirationDate}, New expiration date: {0:newExpirationDate}.</messageFormatString>
+  </auditLogEntryMetadata>
+  <!-- Change User Account Status Audit Log Entry Metadata -->
+  <auditLogEntryMetadata>
+    <alias>changeUserAccountStatusAuditLogEntryMetadata</alias>
+    <name>Change User Account Status Audit Log Entry Metadata</name>
+    <messageId>changeUserAccountStatus</messageId>
+    <severitySuccess>auditLogInformation</severitySuccess>
+    <severityFailure>auditLogError</severityFailure>
+    <auditLogEntryType>changeUserAccountStatusAuditLogEntry</auditLogEntryType>
+    <messageFormatString>Change user account status. User name: {0:changedStatusUserName}, Old status: {0:oldStatus}, New status : {0:newStatus}.</messageFormatString>
+  </auditLogEntryMetadata>
+  <!-- Locked User Account Status Audit Log Entry Metadata -->
+  <auditLogEntryMetadata>
+    <alias>lockUserAccountAuditLogEntryMetadata</alias>
+    <name>Lock User Account Audit Log Entry Metadata</name>
+    <messageId>lockUserAccount</messageId>
+    <severitySuccess>auditLogWarning</severitySuccess>
+    <severityFailure>auditLogError</severityFailure>
+    <auditLogEntryType>lockUserAccountAuditLogEntry</auditLogEntryType>
+    <messageFormatString>User account locked. User name: {0:lockedUserName}.</messageFormatString>
+  </auditLogEntryMetadata>
+  <!-- Logon Audit Log Entry Metadata -->
+  <auditLogEntryMetadata>
+    <alias>logonAuditLogEntryMetadata</alias>
+    <name>Logon Audit Log Entry Metadata</name>
+    <messageId>logon</messageId>
+    <severitySuccess>auditLogInformation</severitySuccess>
+    <severityFailure>auditLogWarning</severityFailure>
+    <auditLogEntryType>logonAuditLogEntry</auditLogEntryType>
+    <messageFormatString>Logon. User name: {0:loggedOnUserName}. User agent: {0:userAgent}.</messageFormatString>
+  </auditLogEntryMetadata>
+  <!-- Logoff Audit Log Entry Metadata -->
+  <auditLogEntryMetadata>
+    <alias>logoffAuditLogEntryMetadata</alias>
+    <name>Logoff Audit Log Entry Metadata</name>
+    <messageId>logoff</messageId>
+    <severitySuccess>auditLogInformation</severitySuccess>
+    <auditLogEntryType>logoffAuditLogEntry</auditLogEntryType>
+    <messageFormatString>Logoff. User name: {0:loggedOffUserName}.</messageFormatString>
+  </auditLogEntryMetadata>
+  <!-- Create User Role Audit Log Entry Metadata -->
+  <auditLogEntryMetadata>
+    <alias>createUserRoleAuditLogEntryMetadata</alias>
+    <name>Create User Role Audit Log Entry Metadata</name>
+    <messageId>createUserRole</messageId>
+    <severitySuccess>auditLogInformation</severitySuccess>
+    <severityFailure>auditLogError</severityFailure>
+    <auditLogEntryType>createUserRoleAuditLogEntry</auditLogEntryType>
+    <messageFormatString>Create user role. Role name: {0:createdRoleName}.</messageFormatString>
+  </auditLogEntryMetadata>
+  <!-- Delete User Role Audit Log Entry Metadata -->
+  <auditLogEntryMetadata>
+    <alias>deleteUserRoleAuditLogEntryMetadata</alias>
+    <name>Delete User Role Audit Log Entry Metadata</name>
+    <messageId>deleteUserRole</messageId>
+    <severitySuccess>auditLogInformation</severitySuccess>
+    <severityFailure>auditLogError</severityFailure>
+    <auditLogEntryType>deleteUserRoleAuditLogEntry</auditLogEntryType>
+    <messageFormatString>Delete user role. Role name: {0:deletedRoleName}.</messageFormatString>
+  </auditLogEntryMetadata>
+  <!-- Rename User Role Audit Log Entry Metadata -->
+  <auditLogEntryMetadata>
+    <alias>renameUserRoleAuditLogEntryMetadata</alias>
+    <name>Rename User Role Audit Log Entry Metadata</name>
+    <messageId>renameUserRole</messageId>
+    <severitySuccess>auditLogInformation</severitySuccess>
+    <severityFailure>auditLogError</severityFailure>
+    <auditLogEntryType>renameUserRoleAuditLogEntry</auditLogEntryType>
+    <messageFormatString>Rename user role. Old role name: {0:oldRoleName}, New role name: {0:newRoleName}.</messageFormatString>
+  </auditLogEntryMetadata>
+  <!-- Change User Role Members Audit Log Entry Metadata -->
+  <auditLogEntryMetadata>
+    <alias>changeUserRoleMembersAuditLogEntryMetadata</alias>
+    <name>Change User Role Members Audit Log Entry Metadata</name>
+    <messageId>changeUserRoleMembers</messageId>
+    <severitySuccess>auditLogInformation</severitySuccess>
+    <severityFailure>auditLogError</severityFailure>
+    <auditLogEntryType>changeUserRoleMembersAuditLogEntry</auditLogEntryType>
+    <messageFormatString>Change user role members. Role name: {0:roleNameChangeMembers}, Added members: {0:addedMemberNames}, Removed members: {0:removedMemberNames}.</messageFormatString>
+  </auditLogEntryMetadata>
+  <!-- Create Tenant Audit Log Entry Metadata -->
+  <auditLogEntryMetadata>
+    <alias>createTenantAuditLogEntryMetadata</alias>
+    <name>Create Tenant Audit Log Entry Metadata</name>
+    <messageId>createTenant</messageId>
+    <severitySuccess>auditLogInformation</severitySuccess>
+    <severityFailure>auditLogError</severityFailure>
+    <auditLogEntryType>createTenantAuditLogEntry</auditLogEntryType>
+    <messageFormatString>Create tenant. Tenant name: {0:createdTenantName}.</messageFormatString>
+  </auditLogEntryMetadata>
+  <!-- Delete Tenant Audit Log Entry Metadata -->
+  <auditLogEntryMetadata>
+    <alias>deleteTenantAuditLogEntryMetadata</alias>
+    <name>Delete Tenant Audit Log Entry Metadata</name>
+    <messageId>deleteTenant</messageId>
+    <severitySuccess>auditLogInformation</severitySuccess>
+    <severityFailure>auditLogError</severityFailure>
+    <auditLogEntryType>deleteTenantAuditLogEntry</auditLogEntryType>
+    <messageFormatString>Delete tenant. Tenant name: {0:deletedTenantName}.</messageFormatString>
+  </auditLogEntryMetadata>
+  <!-- Create Application Audit Log Entry Metadata -->
+  <auditLogEntryMetadata>
+    <alias>createApplicationAuditLogEntryMetadata</alias>
+    <name>Create Application Audit Log Entry Metadata</name>
+    <messageId>createApplication</messageId>
+    <severitySuccess>auditLogInformation</severitySuccess>
+    <severityFailure>auditLogError</severityFailure>
+    <auditLogEntryType>createApplicationAuditLogEntry</auditLogEntryType>
+    <messageFormatString>Create application.</messageFormatString>
+  </auditLogEntryMetadata>
+  <!-- Delete Application Audit Log Entry Metadata -->
+  <auditLogEntryMetadata>
+    <alias>deleteApplicationAuditLogEntryMetadata</alias>
+    <name>Delete Application Audit Log Entry Metadata</name>
+    <messageId>deleteApplication</messageId>
+    <severitySuccess>auditLogInformation</severitySuccess>
+    <severityFailure>auditLogError</severityFailure>
+    <auditLogEntryType>deleteApplicationAuditLogEntry</auditLogEntryType>
+    <messageFormatString>Delete application. Application name: {0:deletedApplicationName}.</messageFormatString>
+  </auditLogEntryMetadata>
+  <!-- Deploy Application Audit Log Entry Metadata -->
+  <auditLogEntryMetadata>
+    <alias>deployApplicationAuditLogEntryMetadata</alias>
+    <name>Deploy Application Audit Log Entry Metadata</name>
+    <messageId>deployApplication</messageId>
+    <severitySuccess>auditLogWarning</severitySuccess>
+    <severityFailure>auditLogError</severityFailure>
+    <auditLogEntryType>deployApplicationAuditLogEntry</auditLogEntryType>
+    <messageFormatString>Deploy application. Application name: {0:deployedApplicationName}, Application version: {0:deployedApplicationVersion}.</messageFormatString>
+  </auditLogEntryMetadata>
+  <!-- Publish Application Audit Log Entry Metadata -->
+  <auditLogEntryMetadata>
+    <alias>publishApplicationAuditLogEntryMetadata</alias>
+    <name>Publish Application Audit Log Entry Metadata</name>
+    <messageId>publishApplication</messageId>
+    <severitySuccess>auditLogWarning</severitySuccess>
+    <severityFailure>auditLogError</severityFailure>
+    <auditLogEntryType>publishApplicationAuditLogEntry</auditLogEntryType>
+    <messageFormatString>Publish application. Application name: {0:publishedApplicationName}, Application version: {0:publishedApplicationVersion}.</messageFormatString>
+  </auditLogEntryMetadata>
+  <!-- Password Policy Change Audit Log Entry Metadata -->
+  <auditLogEntryMetadata>
+    <alias>changePasswordPolicyAuditLogEntryMetadata</alias>
+    <name>Change Password Policy Audit Log Entry Metadata</name>
+    <messageId>changePasswordPolicy</messageId>
+    <severitySuccess>auditLogInformation</severitySuccess>
+    <severityFailure>auditLogError</severityFailure>
+    <auditLogEntryType>changePasswordPolicyAuditLogEntry</auditLogEntryType>
+    <messageFormatString>Change password policy.</messageFormatString>
+  </auditLogEntryMetadata>
+  <!-- Create Access Rule Audit Log Entry Metadata -->
+  <auditLogEntryMetadata>
+    <alias>createAccessRuleAuditLogEntryMetadata</alias>
+    <name>Create Access Rule Audit Log Entry Metadata</name>
+    <messageId>createAccessRule</messageId>
+    <severitySuccess>auditLogInformation</severitySuccess>
+    <severityFailure>auditLogError</severityFailure>
+    <auditLogEntryType>createAccessRuleAuditLogEntry</auditLogEntryType>
+    <messageFormatString>Create access rule. Subject name: {0:subjectNameCreateAccessRule}, Secured type: {0:securedTypeNameCreateAccessRule}.</messageFormatString>
+  </auditLogEntryMetadata>
+  <!-- Enable Access Rule Audit Log Entry Metadata -->
+  <auditLogEntryMetadata>
+    <alias>enableAccessRuleAuditLogEntryMetadata</alias>
+    <name>Enable Access Rule Audit Log Entry Metadata</name>
+    <messageId>enableAccessRule</messageId>
+    <severitySuccess>auditLogInformation</severitySuccess>
+    <severityFailure>auditLogError</severityFailure>
+    <auditLogEntryType>enableAccessRuleAuditLogEntry</auditLogEntryType>
+    <messageFormatString>Enable/disable access rule. Subject name: {0:subjectNameEnableAccessRule}, Secured type: {0:securedTypeNameEnableAccessRule}, Authorisation report: {0:authorizationReportNameEnableAccessRule}, Old enabled: {0:oldAccessRuleEnabled}, New enabled: {0:newAccessRuleEnabled}.</messageFormatString>
+  </auditLogEntryMetadata>
+  <!-- Change Access Rule Query Audit Log Entry Metadata -->
+  <auditLogEntryMetadata>
+    <alias>changeAccessRuleQueryLogEntryMetadata</alias>
+    <name>Change Access Rule Query Audit Log Entry Metadata</name>
+    <messageId>changeAccessRuleQuery</messageId>
+    <severitySuccess>auditLogInformation</severitySuccess>
+    <severityFailure>auditLogError</severityFailure>
+    <auditLogEntryType>changeAccessRuleQueryAuditLogEntry</auditLogEntryType>
+    <messageFormatString>Change access rule query. Subject name: {0:subjectNameChangeAccessRuleQuery}, Secured type: {0:securedTypeNameChangeAccessRuleQuery}, Authorisation report: {0:authorizationReportNameChangeAccessRuleQuery}.</messageFormatString>
+  </auditLogEntryMetadata>
+  <!-- Change Access Rule Permissions Audit Log Entry Metadata -->
+  <auditLogEntryMetadata>
+    <alias>changeAccessRulePermissionsAuditLogEntryMetadata</alias>
+    <name>Change Access Rule Permissions Audit Log Entry Metadata</name>
+    <messageId>changeAccessRulePermissions</messageId>
+    <severitySuccess>auditLogInformation</severitySuccess>
+    <severityFailure>auditLogError</severityFailure>
+    <auditLogEntryType>changeAccessRulePermissionsAuditLogEntry</auditLogEntryType>
+    <messageFormatString>Change access rule permissions. Subject name: {0:subjectNameChangeAccessRulePerm}, Secured type: {0:securedTypeNameChangeAccessRulePerm}, Authorisation report: {0:authorizationReportNameChangeAccessRulePerm}, Old permissions: {0:oldPermissionNamesChangeAccessRulePerm}, New permissions: {0:newPermissionNamesChangeAccessRulePerm}.</messageFormatString>
+  </auditLogEntryMetadata>
+  <!-- Delete Access Rule Audit Log Entry Metadata -->
+  <auditLogEntryMetadata>
+    <alias>deleteAccessRuleAuditLogEntryMetadata</alias>
+    <name>Delete Access Rule Audit Log Entry Metadata</name>
+    <messageId>deleteAccessRule</messageId>
+    <severitySuccess>auditLogInformation</severitySuccess>
+    <severityFailure>auditLogError</severityFailure>
+    <auditLogEntryType>deleteAccessRuleAuditLogEntry</auditLogEntryType>
+    <messageFormatString>Delete access rule. Subject name: {0:subjectNameDeleteAccessRule}, Secured type: {0:securedTypeNameDeleteAccessRule}, Authorisation report: {0:authorizationReportNameDeleteAccessRule}.</messageFormatString>
+  </auditLogEntryMetadata>
+  <!-- Tenant Rollback Audit Log Entry Metadata -->
+  <auditLogEntryMetadata>
+    <alias>tenantRollbackAuditLogEntryMetadata</alias>
+    <name>Tenant Rollback Audit Log Entry Metadata</name>
+    <messageId>tenantRollback</messageId>
+    <severitySuccess>auditLogInformation</severitySuccess>
+    <severityFailure>auditLogError</severityFailure>
+    <auditLogEntryType>tenantRollbackAuditLogEntry</auditLogEntryType>
+    <messageFormatString>Tenant Rollback. Transaction Id: {0:transactionId}.</messageFormatString>
+  </auditLogEntryMetadata>
+</resources>

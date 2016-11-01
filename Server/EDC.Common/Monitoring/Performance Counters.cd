@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Comment CommentText="For both SingleInstancePerformanceCounterCategory and MultiInstancePerformanceCounterCategory, GetPerformanceCounter returns a BasePerformanceCounter of the requested type.">
+    <Position X="3.982" Y="1.746" Height="1.099" Width="3.027" />
+  </Comment>
+  <Comment CommentText="Construct a PerformanceCounterCategoryFactory and add the desired counters.">
+    <Position X="0.734" Y="4.89" Height="0.75" Width="2.377" />
+  </Comment>
+  <Class Name="EDC.Monitoring.SingleInstancePerformanceCounterCategory">
+    <Position X="0.5" Y="0.75" Width="3.25" />
+    <Members>
+      <Method Name="~SingleInstancePerformanceCounterCategory" Hidden="true" />
+      <Method Name="Dispose" Hidden="true" />
+      <Field Name="PerformanceCounters" Hidden="true" />
+      <Method Name="SingleInstancePerformanceCounterCategory" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAACACAQAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Monitoring\SingleInstancePerformanceCounterCategory.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="EDC.Monitoring.MultiInstancePerformanceCounterCategory">
+    <Position X="0.5" Y="2.75" Width="3.25" />
+    <Members>
+      <Method Name="~MultiInstancePerformanceCounterCategory" Hidden="true" />
+      <Method Name="Dispose" Hidden="true" />
+      <Method Name="MultiInstancePerformanceCounterCategory" Hidden="true" />
+      <Field Name="PerformanceCounters" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAACACAQAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Monitoring\MultiInstancePerformanceCounterCategory.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="EDC.Monitoring.BasePerformanceCounter">
+    <Position X="7.25" Y="2.25" Width="2.25" />
+    <Members>
+      <Method Name="BasePerformanceCounter" Hidden="true" />
+      <Method Name="Dispose" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Monitoring\BasePerformanceCounter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="EDC.Monitoring.AveragePerformanceCounter">
+    <Position X="5" Y="3.5" Width="3" />
+    <Members>
+      <Method Name="~AveragePerformanceCounter" Hidden="true" />
+      <Method Name="AveragePerformanceCounter" Hidden="true" />
+      <Property Name="Base" Hidden="true" />
+      <Method Name="Dispose" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>Monitoring\AveragePerformanceCounter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EDC.Monitoring.AverageTimer32PerformanceCounter">
+    <Position X="3.75" Y="5" Width="2.75" />
+    <Members>
+      <Method Name="~AverageTimer32PerformanceCounter" Hidden="true" />
+      <Method Name="AverageTimer32PerformanceCounter" Hidden="true" />
+      <Method Name="Dispose" Hidden="true" />
+      <Property Name="Timer" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AACAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Monitoring\AverageTimer32PerformanceCounter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EDC.Monitoring.NumberOfItems64PerformanceCounter">
+    <Position X="6.75" Y="5" Width="3" />
+    <Members>
+      <Method Name="~NumberOfItems64PerformanceCounter" Hidden="true" />
+      <Property Name="Counter" Hidden="true" />
+      <Method Name="Dispose" Hidden="true" />
+      <Method Name="NumberOfItems64PerformanceCounter" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAIAAAAAAAAQAAAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>Monitoring\NumberOfItems64PerformanceCounter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EDC.Monitoring.RatePerSecond32PerformanceCounter">
+    <Position X="13" Y="5" Width="2.75" />
+    <Members>
+      <Method Name="~RatePerSecond32PerformanceCounter" Hidden="true" />
+      <Method Name="Dispose" Hidden="true" />
+      <Property Name="Rate" Hidden="true" />
+      <Method Name="RatePerSecond32PerformanceCounter" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAACAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Monitoring\RatePerSecond32PerformanceCounter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EDC.Monitoring.PercentageRatePerformanceCounter">
+    <Position X="10" Y="5" Width="2.75" />
+    <Members>
+      <Method Name="~PercentageRatePerformanceCounter" Hidden="true" />
+      <Method Name="Dispose" Hidden="true" />
+      <Method Name="PercentageRatePerformanceCounter" Hidden="true" />
+      <Property Name="SampleBase" Hidden="true" />
+      <Property Name="SampleFraction" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAEQAAQACAgAAAAAAAAAgAAAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>Monitoring\PercentageRatePerformanceCounter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EDC.Monitoring.PerformanceCounterCategoryFactory">
+    <Position X="0.5" Y="6" Width="2.75" />
+    <Members>
+      <Field Name="counterCreationDataCollection" Hidden="true" />
+      <Method Name="PerformanceCounterCategoryFactory" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAQAACAAAAAAAAAAAIAAAAAAAAAAAAAAAQAAA=</HashCode>
+      <FileName>Monitoring\PerformanceCounterCategoryFactory.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

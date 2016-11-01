@@ -1,0 +1,237 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0704C0C3-4324-406C-8798-8C72C1E91BDE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EDC.SoftwarePlatform.Services</RootNamespace>
+    <AssemblyName>EDC.SoftwarePlatform.Services</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <WarningsNotAsErrors>1607</WarningsNotAsErrors>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\ReadiNow.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Autofac, Version=4.1.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.1.1\lib\net45\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.0.5022.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\Microsoft\OpenXML\v2.0\DocumentFormat.OpenXml.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MigraDoc.DocumentObjectModel, Version=1.32.3885.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\PdfSharp\MigraDoc.DocumentObjectModel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MigraDoc.Rendering, Version=1.32.3885.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\PdfSharp\MigraDoc.Rendering.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MigraDoc.RtfRendering, Version=1.32.3885.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\PdfSharp\MigraDoc.RtfRendering.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PdfSharp, Version=1.32.2608.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\PdfSharp\PdfSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PdfSharp.Charting, Version=1.32.2608.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\PdfSharp\PdfSharp.Charting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="protobuf-net, Version=2.0.0.668, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
+      <HintPath>..\packages\protobuf-net.2.0.0.668\lib\net40\protobuf-net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ApplicationManager\AppManagerDataReaderHelper.cs" />
+    <Compile Include="ApplicationManager\AppManagerService.cs" />
+    <Compile Include="ApplicationManager\AvailableApplication.cs" />
+    <Compile Include="ApplicationManager\InstalledApplication.cs" />
+    <Compile Include="Common\Extension.cs" />
+    <Compile Include="Common\ResourceExistsResult.cs" />
+    <Compile Include="Data\DbDataColumn.cs" />
+    <Compile Include="Data\DbDataField.cs" />
+    <Compile Include="Data\DbDataFieldDictionary.cs" />
+    <Compile Include="Data\DbDataRow.cs" />
+    <Compile Include="Data\DbDataTable.cs" />
+    <Compile Include="Data\DbDataTableHelper.cs" />
+    <Compile Include="ExportData\ExportDataHelper.cs" />
+    <Compile Include="ExportData\ExportDataInfo.cs" />
+    <Compile Include="ExportData\ExportDataInterface.cs" />
+    <Compile Include="ExportData\ExportDataStyle.cs" />
+    <Compile Include="ExportData\ExportDataStylesheet.cs" />
+    <Compile Include="ExportData\ExportToCsv.cs" />
+    <Compile Include="ExportData\ExportToExcel.cs" />
+    <Compile Include="ExportData\ExportToWord.cs" />
+    <Compile Include="ExportData\ExportToWordHelper.cs" />
+    <Compile Include="FileManager\FileDetails.cs" />
+    <Compile Include="FileManager\FileManagerInterface.cs" />
+    <Compile Include="FileManager\FileManagerService.cs" />
+    <Compile Include="ImageManager\ImageInterface.cs" />
+    <Compile Include="ImageManager\ImageManager.cs" />
+    <Compile Include="ImportData\ImportDataService.cs" />
+    <Compile Include="LongRunningTask\LongRunningHelper.cs" />
+    <Compile Include="LongRunningTask\LongRunningInfo.cs" />
+    <Compile Include="LongRunningTask\LongRunningStatus.cs" />
+    <Compile Include="LongRunningTask\LongRunningTaskInterface.cs" />
+    <Compile Include="Properties\AssemblyFileInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Query\GridRequest.cs" />
+    <Compile Include="Query\GridResult.cs" />
+    <Compile Include="Query\GridResultColumn.cs" />
+    <Compile Include="Query\ThumbnailDetails.cs" />
+    <Compile Include="Reporting\AnalyserExpressionHelper.cs" />
+    <Compile Include="Reporting\ConditionalFormatter.cs" />
+    <Compile Include="Reporting\ConditionInfo.cs" />
+    <Compile Include="Reporting\Definitions\AggregateDetail.cs" />
+    <Compile Include="Reporting\Definitions\ConditionalFormatStyleEnum.cs" />
+    <Compile Include="Reporting\Definitions\GroupingDetail.cs" />
+    <Compile Include="Reporting\Definitions\ReportColumnConditionalFormat.cs" />
+    <Compile Include="Reporting\Definitions\ReportColumnValueFormat.cs" />
+    <Compile Include="Reporting\Definitions\ReportMetadataAggregate.cs" />
+    <Compile Include="Reporting\Definitions\ReportConditionalFormatRule.cs" />
+    <Compile Include="Reporting\Definitions\ReportConditionColor.cs" />
+    <Compile Include="Reporting\Definitions\ReportPercentageBounds.cs" />
+    <Compile Include="Reporting\Definitions\ReportSortOrder.cs" />
+    <Compile Include="Reporting\Definitions\SelectedColumnCondition.cs" />
+    <Compile Include="Reporting\Helpers\DateTimeFormatHelper.cs" />
+    <Compile Include="Reporting\Helpers\ReportConditionHelper.cs" />
+    <Compile Include="Reporting\Helpers\ReportEntityFormatHelper.cs" />
+    <Compile Include="Reporting\Helpers\ReportRollupHelper.cs" />
+    <Compile Include="Reporting\PreparedQuery.cs" />
+    <Compile Include="Reporting\ReportCompletionData.cs" />
+    <Compile Include="Reporting\ReportingInterface.cs" />
+    <Compile Include="Reporting\ReportObject.cs" />
+    <Compile Include="Reporting\ReportResultCacheKey.cs" />
+    <Compile Include="Reporting\ReportValidationResult.cs" />
+    <Compile Include="Reporting\Request\RelatedEntityFilterSettings.cs" />
+    <Compile Include="Reporting\Request\ReportParameters.cs" />
+    <Compile Include="Reporting\Request\ReportRelationshipSettings.cs" />
+    <Compile Include="Reporting\Request\ReportSettings.cs" />
+    <Compile Include="Reporting\Result\AggregateItem.cs" />
+    <Compile Include="Reporting\Result\CellValue.cs" />
+    <Compile Include="Reporting\Result\ChoiceItemDefinition.cs" />
+    <Compile Include="Reporting\Result\DataRow.cs" />
+    <Compile Include="Reporting\Result\ReportAnalyserColumn.cs" />
+    <Compile Include="Reporting\Result\ReportColumn.cs" />
+    <Compile Include="Reporting\Result\ReportDataAggregate.cs" />
+    <Compile Include="Reporting\Result\ReportImageScale.cs" />
+    <Compile Include="Reporting\Result\ReportMetadata.cs" />
+    <Compile Include="Reporting\Result\ReportResult.cs" />
+    <Compile Include="ReportTemplate\ReportTemplateInterface.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EDC.Common\EDC.Common.csproj">
+      <Project>{c7183bef-1a52-4da5-850b-7132b5dca7eb}</Project>
+      <Name>EDC.Common</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EDC.ReadiNow.Common\EDC.ReadiNow.Common.csproj">
+      <Project>{a1c54cf6-e515-4132-a3cb-5cbe32b11d7e}</Project>
+      <Name>EDC.ReadiNow.Common</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EDC.SoftwarePlatform.Interfaces\EDC.SoftwarePlatform.Interfaces.csproj">
+      <Project>{c1fc97b7-aacc-45b5-9969-7995b27093ca}</Project>
+      <Name>EDC.SoftwarePlatform.Interfaces</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EDC.SoftwarePlatform.Migration\EDC.SoftwarePlatform.Migration.csproj">
+      <Project>{ACC17A7D-5BD0-4F9E-8569-3E4D51588064}</Project>
+      <Name>EDC.SoftwarePlatform.Migration</Name>
+      <Private>True</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir).build\MSBuild.Community.Tasks.targets" />
+  <Import Project="$(SolutionDir)Automation\ReadiNow.targets" />
+  <PropertyGroup>
+    <AssemblyFileInfo>$(ProjectDir)Properties\AssemblyFileInfo.cs</AssemblyFileInfo>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <Target Name="AfterBuild">
+    <CallTarget Targets="PublishWebAssembly" />
+  </Target>
+</Project>

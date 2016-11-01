@@ -1,0 +1,11 @@
+Name,Description,String1,City,State,Country,Result,NOTES1
+Test Jamie,Oliver,91 Bridge Rd,Brighton,WA,Australia,fail,state length not less than 3
+Test Vincent,Dorey,"Unit 9, 51 D Stoneridge avenue",Pymble,NSW,Australia,warning,"address line 1 
+stripped to 20"
+Test Joel,Thomas,37 Hassell St ,Parramatta,NSW,Australia,good,
+Test Sienna,Jones,12 Hurantario Rd,Mississauga,Ontario,Canada,good,
+Test Karen,Jones,9 Vanness Avn,,BC,Canada,fail,
+Test Sri,Korada,107 Church St,,Florida,USA,fail,
+Test Matthew,Pearce,60 Strong Dr ,Hampton Park,VIC,Australia,good,
+Test Kim,Adams,1 Sussex Dr,New York,New York,USA,good,
+Test Mike,Travis,15 Pitt St,Sydney,NSW,Australia,good,

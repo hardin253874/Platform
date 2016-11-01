@@ -1,0 +1,801 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="core" xmlns:k="console" xsi:schemaLocation=". ../Core.xsd" defaultSolution="consoleSolution">
+  <!--Copyright 2011-2016 Global Software Innovation Pty Ltd-->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    CONSOLE BEHAVIORS                                             -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- Resouce -->
+  <k:consoleBehavior>
+    <alias>k:resourceBehavior</alias>
+    <k:behaviorForTypes>resource</k:behaviorForTypes>
+  </k:consoleBehavior>
+  <!-- Folders -->
+  <k:consoleBehavior>
+    <alias>k:folderBehavior</alias>
+    <k:behaviorForTypes>folder</k:behaviorForTypes>
+    <k:treeIconUrl>Assets/Images/Nav/Folder.svg</k:treeIconUrl>
+    <k:html5ViewId>folder</k:html5ViewId>
+  </k:consoleBehavior>
+  <k:consoleBehavior>
+    <alias>k:navSectionBehavior</alias>
+    <k:behaviorForTypes>k:navSection</k:behaviorForTypes>
+    <k:treeIconUrl>Assets/Images/Nav/Folder.svg</k:treeIconUrl>
+    <k:html5ViewId>folder</k:html5ViewId>
+  </k:consoleBehavior>
+  <k:consoleBehavior>
+    <alias>k:privateContentSectionBehavior</alias>
+    <k:behaviorForTypes>k:privateContentSection</k:behaviorForTypes>
+    <k:treeIconUrl>Assets/Images/Nav/PrivateFolder.svg</k:treeIconUrl>
+    <k:html5ViewId>folder</k:html5ViewId>
+  </k:consoleBehavior>
+  <!-- Screen -->
+  <k:consoleBehavior>
+    <alias>k:screenBehavior</alias>
+    <k:behaviorForTypes>k:screen</k:behaviorForTypes>
+    <k:treeIconUrl>Assets/Images/Nav/Screen.svg</k:treeIconUrl> <!-- k:treeIcon is set in coreData which has icon and background color -->
+    <k:html5ViewId>screen</k:html5ViewId>
+  </k:consoleBehavior>
+  <!-- Form -->
+  <k:consoleBehavior>
+    <alias>k:formBehavior</alias>
+    <k:behaviorForTypes>k:customEditForm</k:behaviorForTypes> <!-- k:treeIcon is set in coreData which has icon and background color -->
+  </k:consoleBehavior>
+  <!-- Chart -->
+  <k:consoleBehavior>
+    <alias>k:chartBehavior</alias>
+    <k:behaviorForTypes>chart</k:behaviorForTypes>
+    <k:treeIconUrl>Assets/Images/Nav/Chart.svg</k:treeIconUrl>
+    <k:html5ViewId>chart</k:html5ViewId>
+  </k:consoleBehavior>
+  <!-- Board -->
+  <k:consoleBehavior>
+    <alias>k:boardBehavior</alias>
+    <k:behaviorForTypes>board</k:behaviorForTypes>
+    <k:treeIconUrl>Assets/Images/Nav/Board.svg</k:treeIconUrl>  <!-- k:treeIcon is set in coreData which has icon and background color -->
+    <k:html5ViewId>board</k:html5ViewId>
+  </k:consoleBehavior>
+  <!-- Reports -->
+  <k:consoleBehavior>
+    <alias>k:reportBehavior</alias>
+    <k:behaviorForTypes>report</k:behaviorForTypes>
+    <k:treeIconUrl>Assets/Images/Nav/Report.svg</k:treeIconUrl> <!-- k:treeIcon is set in coreData which has icon and background color -->
+    <k:html5ViewId>report</k:html5ViewId>
+  </k:consoleBehavior>
+  <!-- Types -->
+  <!-- Note: applies to types, not reports of types. I.e. don't confuse with the definitionsAdminBehaviour -->
+  <k:consoleBehavior>
+    <alias>k:typeBehavior</alias>
+    <k:behaviorForTypes>type</k:behaviorForTypes>
+  </k:consoleBehavior>
+  <!-- Relationship behaviour-->
+  <!-- Note: applies to relationships, not reports of relationships. I.e. don't confuse with the relationshipsAdminBehaviour -->
+  <k:consoleBehavior>
+    <alias>k:relationshipBehavior</alias>
+    <k:behaviorActionMenu>
+      <k:actionMenu>
+        <alias>k:relationshipsActionMenu</alias>
+        <k:suppressedTypesForNewMenu>relationship,virtualRelationship</k:suppressedTypesForNewMenu>
+        <k:suppressedActions>k:deleteResourceAction</k:suppressedActions>
+      </k:actionMenu>
+    </k:behaviorActionMenu>
+    <k:behaviorForTypes>relationship</k:behaviorForTypes>
+  </k:consoleBehavior>
+  <!-- Document Revision>-->
+  <k:consoleBehavior>
+    <alias>k:documentRevisionBehavior</alias>
+    <k:behaviorActionMenu>
+      <k:actionMenu>
+        <alias>k:documentRevisionActionMenu</alias>
+        <k:suppressedTypesForNewMenu>documentRevision</k:suppressedTypesForNewMenu>
+      </k:actionMenu>
+    </k:behaviorActionMenu>
+  </k:consoleBehavior>
+  <!-- Enum behaviour-->
+  <k:consoleBehavior>
+    <alias>k:enumTypeBehavior</alias>
+    <k:behaviorForTypes>enumType</k:behaviorForTypes>
+  </k:consoleBehavior>
+  <!-- ReportBuilders -->
+  <k:consoleBehavior>
+    <alias>k:reportBuilderBehavior</alias>
+    <k:treeIconUrl>Assets/Images/Nav/Report.svg</k:treeIconUrl>
+  </k:consoleBehavior>
+  <!-- Structure Views -->
+  <k:consoleBehavior>
+    <alias>k:structureViewBehavior</alias>
+    <k:behaviorForTypes>structureView</k:behaviorForTypes>
+    <k:treeIconUrl>Assets/Images/Nav/StructureView.svg</k:treeIconUrl>
+    <k:consoleBehaviorHidden>true</k:consoleBehaviorHidden>
+  </k:consoleBehavior>
+  <!-- Structure Levels -->
+  <k:consoleBehavior>
+    <alias>k:structureLevelBehavior</alias>
+    <k:behaviorForTypes>structureLevel</k:behaviorForTypes>
+    <k:treeIconUrl>Assets/Images/Nav/StructureLevel.svg</k:treeIconUrl>
+  </k:consoleBehavior>
+  <!-- Connector Endpoint -->
+  <k:consoleBehavior>
+    <alias>k:apiEndpointBehavior</alias>
+    <k:behaviorForTypes>apiEndpoint</k:behaviorForTypes>
+    <k:html5ViewId>resourceEndpoint</k:html5ViewId>
+  </k:consoleBehavior>
+  <k:consoleBehavior>
+    <alias>k:apiResourceEndpointBehavior</alias>
+    <k:behaviorForTypes>apiResourceEndpoint</k:behaviorForTypes>
+    <k:html5ViewId>resourceEndpoint</k:html5ViewId>
+    <k:html5CreateId>resourceEndpointNew</k:html5CreateId>
+  </k:consoleBehavior>
+  <!-- Import Config -->
+  <k:consoleBehavior>
+    <alias>k:importConfigBehavior</alias>
+    <k:behaviorForTypes>importConfig</k:behaviorForTypes>
+    <k:html5ViewId>importFile</k:html5ViewId>
+    <k:html5CreateId>newImportFile</k:html5CreateId>
+  </k:consoleBehavior>
+  <!-- Static Pages -->
+  <k:consoleBehavior>
+    <alias>autod7e0d196f42e4ff695b58b0f673d4270</alias>
+    <k:behaviorForTypes>k:staticPage</k:behaviorForTypes>
+    <k:treeIconUrl>Assets/Images/Nav/Resource.svg</k:treeIconUrl>
+  </k:consoleBehavior>
+  <!-- Definitions admin report -->
+  <k:consoleBehavior>
+    <alias>k:definitionsAdminBehavior</alias>    
+  </k:consoleBehavior>
+  <!-- All Reports debug report -->
+  <k:consoleBehavior>
+    <alias>k:allReportsDebugBehavior</alias>
+  </k:consoleBehavior>
+  <!-- Choice-fields admin report -->
+  <k:consoleBehavior>
+    <alias>k:choiceFieldsAdminBehavior</alias>
+    <k:behaviorActionMenu>
+      <k:actionMenu>
+        <alias>k:choiceFieldsAdminMenu</alias>        
+      </k:actionMenu>
+    </k:behaviorActionMenu>
+  </k:consoleBehavior>
+  <!-- Calculated-fields admin report -->
+  <k:consoleBehavior>
+    <alias>k:calculatedFieldsAdminBehavior</alias>
+  </k:consoleBehavior>
+  <!-- Console Theme admin report -->
+  <k:consoleBehavior>
+    <alias>k:consoleThemeAdminBehavior</alias>    
+  </k:consoleBehavior>  
+  <!-- Top Menus -->
+  <k:consoleBehavior>
+    <alias>auto7cc69d36713b41638c09c6b031d5325d</alias>
+    <k:behaviorForTypes>k:topMenu</k:behaviorForTypes>
+  </k:consoleBehavior>
+  <!-- Document Folder -->
+  <k:consoleBehavior>
+    <k:behaviorForTypes>documentFolder</k:behaviorForTypes>
+    <alias>k:documentFolderBehavior</alias>
+    <k:treeIconUrl>Assets/Images/Nav/Folder.svg</k:treeIconUrl>
+    <k:html5ViewId>documentFolder</k:html5ViewId>
+  </k:consoleBehavior>
+  <!-- Report Template Folder -->
+  <k:consoleBehavior>
+    <k:behaviorForTypes>reportTemplate</k:behaviorForTypes>
+    <alias>k:reportTemplateFolderBehavior</alias>
+    <k:html5ViewId>reportTemplate</k:html5ViewId>
+  </k:consoleBehavior>
+  <!-- Security Role behavior -->
+  <k:consoleBehavior>
+    <alias>k:securityRoleBehavior</alias>
+    <k:behaviorForTypes>role</k:behaviorForTypes>
+  </k:consoleBehavior>
+  <!-- Identity Providers behavior -->
+  <k:consoleBehavior>
+    <alias>k:identityProvidersReportBehavior</alias>
+    <k:treeIconUrl>Assets/Images/Nav/User.svg</k:treeIconUrl>
+    <k:behaviorForResources>k:identityProvidersReport</k:behaviorForResources>    
+  </k:consoleBehavior>
+  <!-- Password Policy -->
+  <k:consoleBehavior>
+    <alias>k:passwordPolicyConsoleBehaviour</alias>
+    <k:behaviorForResources>passwordPolicyInstance</k:behaviorForResources>
+    <k:treeIconUrl>Assets/Images/Nav/Lock.svg</k:treeIconUrl>
+    <k:html5ViewId>viewForm</k:html5ViewId>
+  </k:consoleBehavior>
+  <!-- Audit Log Settings -->
+  <k:consoleBehavior>
+    <alias>k:tenantAuditLogSettingsConsoleBehaviour</alias>
+    <k:behaviorForResources>tenantAuditLogSettingsInstance</k:behaviorForResources>
+    <k:treeIconUrl>Assets/Images/Nav/Lock.svg</k:treeIconUrl>
+    <k:html5ViewId>viewForm</k:html5ViewId>
+  </k:consoleBehavior>
+  <!-- Event Log Settings -->
+  <k:consoleBehavior>
+    <alias>k:tenantEventLogSettingsConsoleBehaviour</alias>
+    <k:behaviorForResources>tenantEventLogSettingsInstance</k:behaviorForResources>
+    <k:treeIconUrl>Assets/Images/Nav/Report.svg</k:treeIconUrl>
+    <k:html5ViewId>viewForm</k:html5ViewId>
+  </k:consoleBehavior>
+  <!-- General Settings -->
+  <k:consoleBehavior>
+    <alias>k:tenantEmailSettingsConsoleBehaviour</alias>
+    <k:behaviorForResources>tenantEmailSettingsInstance</k:behaviorForResources>
+    <k:treeIconUrl>Assets/Images/Nav/Lock.svg</k:treeIconUrl>
+    <k:html5ViewId>viewForm</k:html5ViewId>
+  </k:consoleBehavior>
+  <k:consoleBehavior>
+    <alias>k:spInboxProviderConsoleBehaviour</alias>
+    <k:behaviorForResources>spInboxProvider</k:behaviorForResources>
+    <k:treeIconUrl>Assets/Images/Nav/Lock.svg</k:treeIconUrl>
+    <k:html5ViewId>viewForm</k:html5ViewId>
+  </k:consoleBehavior>
+  <k:consoleBehavior>
+    <alias>k:processInboxInstanceConsoleBehaviour</alias>
+    <k:behaviorForResources>processInboxInstance</k:behaviorForResources>
+    <k:treeIconUrl>Assets/Images/Nav/Lock.svg</k:treeIconUrl>
+    <k:html5ViewId>viewForm</k:html5ViewId>
+  </k:consoleBehavior>
+  <k:consoleBehavior>
+    <alias>k:tenantNotificationProviderConsoleBehaviour</alias>
+    <k:behaviorForResources>tenantNotificationProvider</k:behaviorForResources>
+    <k:treeIconUrl>Assets/Images/Nav/Lock.svg</k:treeIconUrl>
+    <k:html5ViewId>viewForm</k:html5ViewId>
+  </k:consoleBehavior>
+  <!-- workflow behaviour -->
+  <k:consoleBehavior>
+    <k:treeIconUrl>Assets/Images/Nav/Workflow.svg</k:treeIconUrl>
+    <alias>k:workflowBehavior</alias>
+    <k:behaviorForTypes>workflow</k:behaviorForTypes>    
+  </k:consoleBehavior>  
+  <!-- Image Settings -->
+  <k:consoleBehavior>
+    <alias>k:tenantImageSettingsConsoleBehaviour</alias>
+    <k:behaviorForResources>tenantImageSettingsInstance</k:behaviorForResources>
+    <k:treeIconUrl>Assets/Images/Nav/Image.svg</k:treeIconUrl>
+    <k:html5ViewId>viewForm</k:html5ViewId>
+  </k:consoleBehavior>
+  <!-- General Settings -->
+  <k:consoleBehavior>
+    <alias>k:tenantGeneralSettingsConsoleBehaviour</alias>
+    <k:behaviorForResources>tenantGeneralSettingsInstance</k:behaviorForResources>
+    <k:treeIconUrl>Assets/Images/Nav/Lock.svg</k:treeIconUrl>
+    <k:html5ViewId>viewForm</k:html5ViewId>
+  </k:consoleBehavior>
+  <!-- Tenant Rollback -->
+  <k:consoleBehavior>
+    <alias>k:tenantRollbackBehavior</alias>
+    <k:behaviorForResources>k:tenantRollbackStaticPage</k:behaviorForResources>
+    <k:html5ViewId>tenantRollback</k:html5ViewId>
+  </k:consoleBehavior>
+
+  <!--*************-->
+  <!--   ACTIONS   -->
+  <!--*************-->
+  <!-- Resource-->
+  <k:actionMenu>
+    <alias>k:defaultResourceActionMenu</alias>
+    <k:menuForBehavior>k:resourceBehavior</k:menuForBehavior>
+    <k:menuItems>
+      <k:actionMenuItem>
+        <alias>k:viewResourceAction</alias>
+        <name>View '%Resource%'</name>
+        <emptySelectName>View</emptySelectName>
+        <k:menuIconUrl>assets/images/16x16/view.svg</k:menuIconUrl>
+        <k:menuOrder>10</k:menuOrder>
+        <k:isActionItem>true</k:isActionItem>
+        <k:isContextMenu>true</k:isContextMenu>
+        <k:isSystem>true</k:isSystem>
+        <k:appliesToSelection>true</k:appliesToSelection>
+        <htmlActionMethod>navigate</htmlActionMethod>
+        <htmlActionState>viewForm</htmlActionState>
+      </k:actionMenuItem>
+      <k:actionMenuItem>
+        <alias>k:editResourceAction</alias>
+        <name>Edit '%Resource%'</name>
+        <emptySelectName>Edit</emptySelectName>
+        <k:menuIconUrl>assets/images/16x16/edit.svg</k:menuIconUrl>
+        <k:menuOrder>20</k:menuOrder>
+        <k:isActionItem>true</k:isActionItem>
+        <k:isContextMenu>true</k:isContextMenu>
+        <k:isSystem>true</k:isSystem>
+        <k:appliesToSelection>true</k:appliesToSelection>
+        <htmlActionMethod>navigate</htmlActionMethod>
+        <htmlActionState>editForm</htmlActionState>
+        <k:actionRequiresPermission>modify</k:actionRequiresPermission>
+      </k:actionMenuItem>
+      <k:actionMenuItem>
+        <alias>k:deleteResourceAction</alias>
+        <name>Delete '%Resource%'</name>
+        <emptySelectName>Delete</emptySelectName>
+        <multiSelectName>Delete selected</multiSelectName>
+        <k:menuIconUrl>assets/images/16x16/delete.svg</k:menuIconUrl>
+        <k:menuOrder>30</k:menuOrder>
+        <k:isActionItem>true</k:isActionItem>
+        <k:isContextMenu>true</k:isContextMenu>
+        <k:isSystem>true</k:isSystem>
+        <k:appliesToSelection>true</k:appliesToSelection>
+        <k:appliesToMultiSelection>true</k:appliesToMultiSelection>
+        <htmlActionMethod>delete</htmlActionMethod>
+        <k:actionRequiresPermission>delete</k:actionRequiresPermission>
+      </k:actionMenuItem>
+      <k:actionMenuItem>
+        <alias>k:exportXmlAction</alias>
+        <name>Export</name>
+        <k:menuIconUrl>assets/images/16x16/export.svg</k:menuIconUrl>
+        <k:menuOrder>10000</k:menuOrder>
+        <k:isActionItem>false</k:isActionItem>
+        <k:isContextMenu>true</k:isContextMenu>
+        <k:isSystem>true</k:isSystem>
+        <k:appliesToSelection>true</k:appliesToSelection>
+        <htmlActionMethod>exportXml</htmlActionMethod>
+        <actionRequiresRole>importExportRole</actionRequiresRole>
+      </k:actionMenuItem>
+      <k:actionMenuItem>
+        <alias>k:exportExcelAction</alias>
+        <name>Excel</name>
+        <k:menuIconUrl>assets/images/16x16/excel.svg</k:menuIconUrl>
+        <k:menuOrder>500</k:menuOrder>
+        <k:isActionItem>true</k:isActionItem>
+        <k:isContextMenu>false</k:isContextMenu>
+        <k:isSystem>true</k:isSystem>
+        <k:appliesToSelection>false</k:appliesToSelection>
+        <htmlActionMethod>export</htmlActionMethod>
+        <htmlActionState>excel</htmlActionState>
+      </k:actionMenuItem>
+      <k:actionMenuItem>
+        <alias>k:exportCsvAction</alias>
+        <name>CSV</name>
+        <k:menuIconUrl>assets/images/16x16/csv.svg</k:menuIconUrl>
+        <k:menuOrder>501</k:menuOrder>
+        <k:isActionItem>true</k:isActionItem>
+        <k:isContextMenu>false</k:isContextMenu>
+        <k:isSystem>true</k:isSystem>
+        <k:appliesToSelection>false</k:appliesToSelection>
+        <htmlActionMethod>export</htmlActionMethod>
+        <htmlActionState>csv</htmlActionState>
+      </k:actionMenuItem>
+      <k:actionMenuItem>
+        <alias>k:exportWordAction</alias>
+        <name>Word</name>
+        <k:menuIconUrl>assets/images/16x16/word.svg</k:menuIconUrl>
+        <k:menuOrder>502</k:menuOrder>
+        <k:isActionItem>true</k:isActionItem>
+        <k:isContextMenu>false</k:isContextMenu>
+        <k:isSystem>true</k:isSystem>
+        <k:appliesToSelection>false</k:appliesToSelection>
+        <htmlActionMethod>export</htmlActionMethod>
+        <htmlActionState>word</htmlActionState>
+      </k:actionMenuItem>
+    </k:menuItems>
+    <k:showNewActionsButton>true</k:showNewActionsButton>
+  </k:actionMenu>
+  <!-- Type -->
+  <k:actionMenu>
+    <alias>k:defaultTypeActionMenu</alias>
+    <k:menuForBehavior>k:typeBehavior</k:menuForBehavior>
+    <k:menuItems>
+      <k:actionMenuItem>
+        <alias>k:viewInstancesOfTypeAction</alias>
+        <name>View Records</name>
+        <k:menuIconUrl>assets/images/16x16/reports.svg</k:menuIconUrl>
+        <k:menuOrder>1100</k:menuOrder>
+        <k:isContextMenu>true</k:isContextMenu>
+        <k:isSystem>true</k:isSystem>
+        <k:appliesToSelection>true</k:appliesToSelection>
+        <htmlActionMethod>drilldown</htmlActionMethod>
+      </k:actionMenuItem>
+    </k:menuItems>
+  </k:actionMenu>
+  <!-- Folder ? -->
+  <k:actionMenu>
+    <alias>k:defaultFolderActionMenu</alias>
+    <k:menuForBehavior>k:folderBehavior</k:menuForBehavior>
+    <k:suppressedActions>k:viewResourceAction,k:editResourceAction</k:suppressedActions>
+    <k:menuItems>
+      <k:actionMenuItem>
+        <alias>k:openFolderAction</alias>
+        <name>Open '%Resource%'</name>
+        <k:menuIconUrl>assets/images/16x16/folder.svg</k:menuIconUrl>
+        <k:menuOrder>5</k:menuOrder>
+        <k:isActionItem>true</k:isActionItem>
+        <k:isContextMenu>true</k:isContextMenu>
+        <k:isSystem>true</k:isSystem>
+        <k:appliesToSelection>true</k:appliesToSelection>
+        <htmlActionMethod>navigate</htmlActionMethod>
+        <htmlActionState>folder</htmlActionState>
+      </k:actionMenuItem>
+    </k:menuItems>
+  </k:actionMenu>
+  <!-- Screen -->
+  <k:actionMenu>
+    <alias>k:defaultScreenActionMenu</alias>
+    <k:menuForBehavior>k:screenBehavior</k:menuForBehavior>
+    <k:suppressedActions>k:viewResourceAction,k:editResourceAction</k:suppressedActions>
+    <k:menuItems>
+      <k:actionMenuItem>
+        <alias>k:openScreenAction</alias>
+        <name>Open '%Resource%'</name>
+        <k:menuIconUrl>assets/images/16x16/screen.svg</k:menuIconUrl>
+        <k:menuOrder>5</k:menuOrder>
+        <k:isActionItem>true</k:isActionItem>
+        <k:isContextMenu>true</k:isContextMenu>
+        <k:isSystem>true</k:isSystem>
+        <k:appliesToSelection>true</k:appliesToSelection>
+        <htmlActionMethod>navigate</htmlActionMethod>
+        <htmlActionState>screen</htmlActionState>
+      </k:actionMenuItem>
+      <k:actionMenuItem>
+        <alias>k:editScreenAction</alias>
+        <name>Edit '%Resource%'</name>
+        <k:menuIconUrl>assets/images/16x16/edit.svg</k:menuIconUrl>
+        <k:menuOrder>20</k:menuOrder>
+        <k:isActionItem>true</k:isActionItem>
+        <k:isContextMenu>true</k:isContextMenu>
+        <k:isSystem>true</k:isSystem>
+        <k:appliesToSelection>true</k:appliesToSelection>
+        <htmlActionMethod>navigate</htmlActionMethod>
+        <htmlActionState>screenBuilder</htmlActionState>
+      </k:actionMenuItem>
+    </k:menuItems>
+  </k:actionMenu>
+  <!-- Form -->
+  <k:actionMenu>
+    <alias>k:defaultFormActionMenu</alias>
+    <k:menuForBehavior>k:formBehavior</k:menuForBehavior>
+    <k:suppressedActions>k:viewResourceAction,k:editResourceAction</k:suppressedActions>
+    <k:suppressedTypesForNewMenu>k:customEditForm</k:suppressedTypesForNewMenu>
+    <k:menuItems>
+      <k:actionMenuItem>
+        <alias>k:editFormAction</alias>
+        <name>Edit '%Resource%'</name>
+        <k:menuIconUrl>assets/images/16x16/edit.svg</k:menuIconUrl>
+        <k:menuOrder>20</k:menuOrder>
+        <k:isActionItem>true</k:isActionItem>
+        <k:isContextMenu>true</k:isContextMenu>
+        <k:isSystem>true</k:isSystem>
+        <k:appliesToSelection>true</k:appliesToSelection>
+        <htmlActionMethod>navigate</htmlActionMethod>
+        <htmlActionState>formBuilder</htmlActionState>
+      </k:actionMenuItem>
+    </k:menuItems>
+  </k:actionMenu>
+  <!-- Report -->
+  <k:actionMenu>
+    <alias>k:defaultReportActionMenu</alias>
+    <k:menuForBehavior>k:reportBehavior</k:menuForBehavior>
+    <k:suppressedActions>k:viewResourceAction,k:editResourceAction</k:suppressedActions>
+  </k:actionMenu>
+  <k:actionMenuItem>
+    <alias>k:openReportAction</alias>
+    <name>Open '%Resource%'</name>
+    <k:menuIconUrl>assets/images/16x16/reports.svg</k:menuIconUrl>
+    <k:menuOrder>5</k:menuOrder>
+    <k:isActionItem>true</k:isActionItem>
+    <k:isContextMenu>true</k:isContextMenu>
+    <k:isSystem>true</k:isSystem>
+    <k:appliesToSelection>true</k:appliesToSelection>
+    <k:actionAppliesToMenu>k:defaultReportActionMenu</k:actionAppliesToMenu>
+    <htmlActionMethod>navigate</htmlActionMethod>
+    <htmlActionState>report</htmlActionState>
+  </k:actionMenuItem>
+  <k:actionMenuItem>
+    <alias>k:editReportAction</alias>
+    <name>Edit '%Resource%'</name>
+    <k:menuIconUrl>assets/images/16x16/edit.svg</k:menuIconUrl>
+    <k:menuOrder>20</k:menuOrder>
+    <k:isActionItem>true</k:isActionItem>
+    <k:isContextMenu>true</k:isContextMenu>
+    <k:isSystem>true</k:isSystem>
+    <k:appliesToSelection>true</k:appliesToSelection>
+    <k:actionAppliesToMenu>k:defaultReportActionMenu</k:actionAppliesToMenu>
+    <htmlActionMethod>navigate</htmlActionMethod>
+    <htmlActionState>reportBuilder</htmlActionState>
+  </k:actionMenuItem>
+  <k:actionMenuItem>
+    <alias>k:maintainReportAction</alias>
+    <name>Maintain '%Resource%'</name>
+    <k:menuIconUrl>assets/images/16x16/gear.svg</k:menuIconUrl>
+    <k:menuOrder>21</k:menuOrder>
+    <k:isActionItem>true</k:isActionItem>
+    <k:isContextMenu>true</k:isContextMenu>
+    <k:isSystem>true</k:isSystem>
+    <k:appliesToSelection>true</k:appliesToSelection>
+    <k:actionAppliesToMenu>k:defaultReportActionMenu</k:actionAppliesToMenu>
+    <htmlActionMethod>navigate</htmlActionMethod>
+    <htmlActionState>reportSchemaBuilder</htmlActionState>
+  </k:actionMenuItem>
+  <!-- Chart -->
+  <k:actionMenu>
+    <alias>k:defaultChartActionMenu</alias>
+    <k:menuForBehavior>k:chartBehavior</k:menuForBehavior>
+    <k:suppressedActions>k:viewResourceAction,k:editResourceAction</k:suppressedActions>
+    <k:menuItems>
+      <k:actionMenuItem>
+        <alias>k:openChartAction</alias>
+        <name>Open '%Resource%'</name>
+        <k:menuIconUrl>assets/images/16x16/chart.svg</k:menuIconUrl>
+        <k:menuOrder>5</k:menuOrder>
+        <k:isActionItem>true</k:isActionItem>
+        <k:isContextMenu>true</k:isContextMenu>
+        <k:isSystem>true</k:isSystem>
+        <k:appliesToSelection>true</k:appliesToSelection>
+        <htmlActionMethod>navigate</htmlActionMethod>
+        <htmlActionState>chart</htmlActionState>
+      </k:actionMenuItem>
+      <k:actionMenuItem>
+        <alias>k:editChartAction</alias>
+        <name>Edit '%Resource%'</name>
+        <k:menuIconUrl>assets/images/16x16/edit.svg</k:menuIconUrl>
+        <k:menuOrder>20</k:menuOrder>
+        <k:isActionItem>true</k:isActionItem>
+        <k:isContextMenu>true</k:isContextMenu>
+        <k:isSystem>true</k:isSystem>
+        <k:appliesToSelection>true</k:appliesToSelection>
+        <htmlActionMethod>navigate</htmlActionMethod>
+        <htmlActionState>chartBuilder</htmlActionState>
+      </k:actionMenuItem>
+    </k:menuItems>
+  </k:actionMenu>
+  <!-- Board -->
+  <k:actionMenu>
+    <alias>k:defaultBoardActionMenu</alias>
+    <k:menuForBehavior>k:boardBehavior</k:menuForBehavior>
+    <k:suppressedActions>k:viewResourceAction</k:suppressedActions>
+  </k:actionMenu>
+  <k:actionMenuItem>
+    <alias>k:openBoardAction</alias>
+    <name>Open '%Resource%'</name>
+    <k:menuIconUrl>assets/images/16x16/view.svg</k:menuIconUrl>
+    <k:menuOrder>5</k:menuOrder>
+    <k:isActionItem>true</k:isActionItem>
+    <k:isContextMenu>true</k:isContextMenu>
+    <k:isSystem>true</k:isSystem>
+    <k:appliesToSelection>true</k:appliesToSelection>
+    <k:actionAppliesToMenu>k:defaultBoardActionMenu</k:actionAppliesToMenu>
+    <htmlActionMethod>navigate</htmlActionMethod>
+    <htmlActionState>board</htmlActionState>
+  </k:actionMenuItem>
+  <!-- Relationships Tab -->
+  <k:consoleBehavior>
+    <alias>k:defaultRelationshipsTabBehavior</alias>
+    <k:behaviorForTypes>k:tabRelationshipRenderControl</k:behaviorForTypes>
+    <k:behaviorActionMenu>
+      <k:actionMenu>
+        <alias>k:defaultRelationshipsTabMenu</alias>
+        <k:menuItems>
+          <k:actionMenuItem>
+            <alias>k:addRelationshipAction</alias>
+            <name>Link to Existing</name>
+            <description>Link to Existing</description>
+            <k:menuIconUrl>assets/images/16x16/linkExisting.svg</k:menuIconUrl>
+            <k:menuOrder>25</k:menuOrder>
+            <k:isActionItem>true</k:isActionItem>
+            <k:isSystem>true</k:isSystem>
+            <htmlActionMethod>custom</htmlActionMethod>
+            <htmlActionState>handleAdd</htmlActionState>
+            <k:actionIncludedAsButton>k:defaultRelationshipsTabMenu</k:actionIncludedAsButton>
+          </k:actionMenuItem>
+        </k:menuItems>
+      </k:actionMenu>
+    </k:behaviorActionMenu>
+  </k:consoleBehavior>
+  <k:consoleBehavior>
+    <alias>k:relationshipsTabSelectBehavior</alias>
+    <k:behaviorForSelection>k:tabRelationshipRenderControl</k:behaviorForSelection>
+    <k:behaviorActionMenu>
+      <k:actionMenu>
+        <alias>k:relationshipsTabSelectMenu</alias>
+        <k:menuItems>
+          <k:actionMenuItem>
+            <alias>k:removeRelationshipAction</alias>
+            <name>Remove Link</name>
+            <description>Remove Link</description>
+            <k:menuIconUrl>assets/images/16x16/linkRemove.svg</k:menuIconUrl>
+            <k:menuOrder>26</k:menuOrder>
+            <k:isActionItem>true</k:isActionItem>
+            <k:isContextMenu>true</k:isContextMenu>
+            <k:isSystem>true</k:isSystem>
+            <k:appliesToSelection>true</k:appliesToSelection>
+            <k:appliesToMultiSelection>true</k:appliesToMultiSelection>
+            <htmlActionMethod>custom</htmlActionMethod>
+            <htmlActionState>handleRemove</htmlActionState>
+            <k:actionIncludedAsButton>k:relationshipsTabSelectMenu</k:actionIncludedAsButton>
+          </k:actionMenuItem>
+        </k:menuItems>
+      </k:actionMenu>
+    </k:behaviorActionMenu>
+  </k:consoleBehavior>
+  <!-- Workflow -->
+  <k:actionMenu>
+    <alias>k:defaultWorkflowActionMenu</alias>
+    <k:menuForBehavior>k:workflowBehavior</k:menuForBehavior>
+    <k:suppressedActions>k:viewResourceAction,k:editResourceAction,k:viewInstancesOfTypeAction</k:suppressedActions>
+    <k:suppressedTypesForNewMenu>workflow</k:suppressedTypesForNewMenu>
+    <k:menuItems>
+      <k:actionMenuItem>
+        <alias>k:viewWorkflowInDesignerAction</alias>
+        <name>View '%Resource%'</name>
+        <description>View the workflow</description>
+        <k:menuIconUrl>assets/images/16x16/view.svg</k:menuIconUrl>
+        <k:menuOrder>1</k:menuOrder>
+        <k:isContextMenu>true</k:isContextMenu>
+        <k:isActionItem>true</k:isActionItem>
+        <k:isSystem>true</k:isSystem>
+        <k:appliesToSelection>true</k:appliesToSelection>
+        <htmlActionMethod>navigate</htmlActionMethod>
+        <htmlActionState>workflowEdit</htmlActionState>
+        <k:actionRequiresPermission>read</k:actionRequiresPermission>
+      </k:actionMenuItem>
+      <k:actionMenuItem>
+        <alias>k:editWorkflowInDesignerAction</alias>
+        <name>Edit '%Resource%'</name>
+        <description>Edit the workflow</description>
+        <k:menuIconUrl>assets/images/16x16/edit.svg</k:menuIconUrl>
+        <k:menuOrder>2</k:menuOrder>
+        <k:isContextMenu>true</k:isContextMenu>
+        <k:isActionItem>true</k:isActionItem>
+        <k:isSystem>true</k:isSystem>
+        <k:appliesToSelection>true</k:appliesToSelection>
+        <htmlActionMethod>navigate</htmlActionMethod>
+        <htmlActionState>workflowEdit</htmlActionState>
+        <k:actionRequiresPermission>modify</k:actionRequiresPermission>
+      </k:actionMenuItem>
+      <k:actionMenuItem>
+        <alias>k:runWorkflowAction</alias>
+        <name>Start '%Resource%'</name>
+        <k:menuIconUrl>assets/images/16x16/run.svg</k:menuIconUrl>
+        <k:menuOrder>3</k:menuOrder>
+        <k:isActionItem>true</k:isActionItem>
+        <k:isContextMenu>true</k:isContextMenu>
+        <k:isSystem>true</k:isSystem>
+        <k:appliesToSelection>true</k:appliesToSelection>
+        <htmlActionMethod>navigate</htmlActionMethod>
+        <htmlActionState>workflowRun</htmlActionState>
+      </k:actionMenuItem>
+    </k:menuItems>
+  </k:actionMenu>
+  <!-- Import config -->
+  <k:actionMenu>
+    <alias>k:defaultImportConfigActionMenu</alias>
+    <k:menuForBehavior>k:importConfigBehavior</k:menuForBehavior>
+    <k:suppressedActions>k:viewResourceAction,k:editResourceAction</k:suppressedActions>
+    <k:menuItems>
+      <k:actionMenuItem>
+        <alias>k:editImportConfigAction</alias>
+        <name>Edit '%Resource%'</name>
+        <description>Edit the import configuration</description>
+        <k:menuIconUrl>assets/images/16x16/edit.svg</k:menuIconUrl>
+        <k:menuOrder>2</k:menuOrder>
+        <k:isContextMenu>true</k:isContextMenu>
+        <k:isActionItem>true</k:isActionItem>
+        <k:isSystem>true</k:isSystem>
+        <k:appliesToSelection>true</k:appliesToSelection>
+        <htmlActionMethod>navigate</htmlActionMethod>
+        <htmlActionState>importFile</htmlActionState>
+        <k:actionRequiresPermission>modify</k:actionRequiresPermission>
+      </k:actionMenuItem>
+    </k:menuItems>
+  </k:actionMenu>
+  <!-- Connector Endpoint -->
+  <k:actionMenu>
+    <alias>k:defaultApiEndpointActionMenu</alias>
+    <k:menuForBehavior>k:apiEndpointBehavior</k:menuForBehavior>
+    <k:suppressedActions>k:viewResourceAction,k:editResourceAction,k:addRelationshipAction,k:removeRelationshipAction</k:suppressedActions>
+    <k:suppressedTypesForNewMenu>apiEndpoint</k:suppressedTypesForNewMenu>
+  </k:actionMenu>
+  <k:actionMenu>
+    <alias>k:defaultApiResourceEndpointActionMenu</alias>
+    <k:menuForBehavior>k:apiResourceEndpointBehavior</k:menuForBehavior>
+    <k:suppressedActions>k:viewResourceAction,k:editResourceAction</k:suppressedActions>
+    <k:suppressedTypesForNewMenu>apiEndpoint</k:suppressedTypesForNewMenu>
+    <k:menuItems>
+      <k:actionMenuItem>
+        <alias>k:viewResourceEndpointAction</alias>
+        <name>View '%Resource%'</name>
+        <description>View the endpoint</description>
+        <k:menuIconUrl>assets/images/16x16/edit.svg</k:menuIconUrl>
+        <k:menuOrder>2</k:menuOrder>
+        <k:isContextMenu>true</k:isContextMenu>
+        <k:isActionItem>true</k:isActionItem>
+        <k:isSystem>true</k:isSystem>
+        <k:appliesToSelection>true</k:appliesToSelection>
+        <htmlActionMethod>navigate</htmlActionMethod>
+        <htmlActionState>resourceEndpoint</htmlActionState>
+      </k:actionMenuItem>
+    </k:menuItems>
+  </k:actionMenu>
+  <!-- App Management -->
+  <k:consoleBehavior>
+    <alias>k:applicationManagementReportSelectBehavior</alias>
+    <k:behaviorForSelection>k:applicationManagementReport</k:behaviorForSelection>
+    <k:behaviorActionMenu>
+      <k:actionMenu>
+        <alias>k:applicationManagementReportSelectMenu</alias>
+        <k:showEditInlineActionsButton>false</k:showEditInlineActionsButton>
+        <k:menuItems>
+          <k:actionMenuItem>
+            <alias>k:exportSolutionAction</alias>
+            <name>Export</name>
+            <k:menuIconUrl>assets/images/16x16/export.svg</k:menuIconUrl>
+            <k:menuOrder>20</k:menuOrder>
+            <k:isActionItem>true</k:isActionItem>
+            <k:isActionButton>true</k:isActionButton>
+            <k:isContextMenu>true</k:isContextMenu>
+            <k:isSystem>true</k:isSystem>
+            <k:appliesToSelection>true</k:appliesToSelection>
+            <k:appliesToMultiSelection>false</k:appliesToMultiSelection>
+            <htmlActionMethod>custom</htmlActionMethod>
+            <htmlActionState>export</htmlActionState>
+          </k:actionMenuItem>
+          <k:actionMenuItem>
+            <alias>k:publishSolutionAction</alias>
+            <name>Publish</name>
+            <k:menuIconUrl>assets/images/16x16/publish.svg</k:menuIconUrl>
+            <k:menuOrder>21</k:menuOrder>
+            <k:isActionItem>true</k:isActionItem>
+            <k:isActionButton>true</k:isActionButton>
+            <k:isContextMenu>true</k:isContextMenu>
+            <k:isSystem>true</k:isSystem>
+            <k:appliesToSelection>true</k:appliesToSelection>
+            <k:appliesToMultiSelection>false</k:appliesToMultiSelection>
+            <htmlActionMethod>custom</htmlActionMethod>
+            <htmlActionState>publish</htmlActionState>
+          </k:actionMenuItem>
+          <k:actionMenuItem>
+            <alias>k:installSolutionAction</alias>
+            <name>Install</name>
+            <k:menuIconUrl>assets/images/16x16/deploy.svg</k:menuIconUrl>
+            <k:menuOrder>22</k:menuOrder>
+            <k:isActionItem>true</k:isActionItem>
+            <k:isActionButton>true</k:isActionButton>
+            <k:isContextMenu>true</k:isContextMenu>
+            <k:isSystem>true</k:isSystem>
+            <k:appliesToSelection>true</k:appliesToSelection>
+            <k:appliesToMultiSelection>false</k:appliesToMultiSelection>
+            <htmlActionMethod>custom</htmlActionMethod>
+            <htmlActionState>deploy</htmlActionState>
+          </k:actionMenuItem>
+          <k:actionMenuItem>
+            <alias>k:upgradeSolutionAction</alias>
+            <name>Upgrade</name>
+            <k:menuIconUrl>assets/images/16x16/upgrade.svg</k:menuIconUrl>
+            <k:menuOrder>23</k:menuOrder>
+            <k:isActionItem>true</k:isActionItem>
+            <k:isActionButton>true</k:isActionButton>
+            <k:isContextMenu>true</k:isContextMenu>
+            <k:isSystem>true</k:isSystem>
+            <k:appliesToSelection>true</k:appliesToSelection>
+            <k:appliesToMultiSelection>false</k:appliesToMultiSelection>
+            <htmlActionMethod>custom</htmlActionMethod>
+            <htmlActionState>upgrade</htmlActionState>
+          </k:actionMenuItem>
+          <k:actionMenuItem>
+            <alias>k:repairSolutionAction</alias>
+            <name>Repair</name>
+            <k:menuIconUrl>assets/images/16x16/repair.svg</k:menuIconUrl>
+            <k:menuOrder>24</k:menuOrder>
+            <k:isActionItem>true</k:isActionItem>
+            <k:isActionButton>true</k:isActionButton>
+            <k:isContextMenu>true</k:isContextMenu>
+            <k:isSystem>true</k:isSystem>
+            <k:appliesToSelection>true</k:appliesToSelection>
+            <k:appliesToMultiSelection>false</k:appliesToMultiSelection>
+            <htmlActionMethod>custom</htmlActionMethod>
+            <htmlActionState>repair</htmlActionState>
+          </k:actionMenuItem>
+          <k:actionMenuItem>
+            <alias>k:uninstallSolutionAction</alias>
+            <name>Uninstall</name>
+            <k:menuIconUrl>assets/images/16x16/remove.svg</k:menuIconUrl>
+            <k:menuOrder>26</k:menuOrder>
+            <k:isActionItem>true</k:isActionItem>
+            <k:isContextMenu>true</k:isContextMenu>
+            <k:isSystem>true</k:isSystem>
+            <k:appliesToSelection>true</k:appliesToSelection>
+            <k:appliesToMultiSelection>true</k:appliesToMultiSelection>
+            <htmlActionMethod>custom</htmlActionMethod>
+            <htmlActionState>uninstall</htmlActionState>
+          </k:actionMenuItem>
+        </k:menuItems>
+        <k:suppressedActions>k:deleteResourceAction,k:exportXmlAction</k:suppressedActions>
+      </k:actionMenu>
+    </k:behaviorActionMenu>
+  </k:consoleBehavior>
+</resources>

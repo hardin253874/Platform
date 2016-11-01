@@ -1,0 +1,62 @@
+﻿<!-- ReadiNow Data Package -->
+<xml version="2.0" encoding="utf-16" xmlns:k="console" xmlns="core">
+  <metadata>
+    <type>DataExport</type>
+    <platformVersion>1.0.0.0</platformVersion>
+    <publishDate>2016-10-20 06:34:24Z</publishDate>
+  </metadata>
+  <entities>
+    <group typeId="report">
+      <report id="7faec068-162c-4e99-995b-e84f9832fae0">
+        <name>Simple herb</name>
+        <rootNode>
+          <resourceReportNode id="5e7c086c-08e5-4aa7-99dc-b4e94d787548">
+            <resourceReportNodeType>a7bf22ab-6834-4d31-8133-5795acb27d69</resourceReportNodeType>
+          </resourceReportNode>
+        </rootNode>
+        <reportColumns>
+          <reportColumn id="1bb4d52c-0900-435e-9afd-dfb0a6c98b15">
+            <name>AA_Herb</name>
+            <columnIsHidden>True</columnIsHidden>
+            <columnExpression>
+              <fieldExpression id="1059aca5-d937-4876-9e54-661e95c14e0a">
+                <fieldExpressionField>name</fieldExpressionField>
+                <sourceNode>5e7c086c-08e5-4aa7-99dc-b4e94d787548</sourceNode>
+              </fieldExpression>
+            </columnExpression>
+            <columnGrouping>
+              <reportRowGroup id="22bf140b-78e6-4ca7-8169-3d817a8eb1d7">
+                <groupingPriority>1</groupingPriority>
+                <groupingMethod>groupList</groupingMethod>
+              </reportRowGroup>
+            </columnGrouping>
+          </reportColumn>
+        </reportColumns>
+      </report>
+    </group>
+  </entities>
+  <relationships />
+  <secureData />
+  <binaries />
+  <documents />
+  <aliasMap>
+    <columnExpression id="b4d64bef-e364-4786-ba7e-4a6b2c62d163" type="rel" />
+    <columnGrouping id="610ccabc-e32f-4a11-beaf-c72f631b6f40" type="revRel" />
+    <columnIsHidden id="ab3248b3-bb72-494f-ab86-7e1c21588380" type="bool" />
+    <fieldExpression id="872d794d-d0fd-4638-8c33-c3b23cf8bf3b" type="type" />
+    <fieldExpressionField id="9c94542d-c9ab-46f4-a408-8f2510c1ce2f" type="rel" />
+    <groupingMethod id="8a96454c-60f6-49d6-9814-8ccc66d389a2" type="rel" />
+    <groupingPriority id="9f9d74c7-e87b-4e55-a035-11f06bf5bc07" type="int" />
+    <groupList id="df065dcc-af26-4a9f-89a9-0663d84c6255" />
+    <name id="f8def406-90a1-4580-94f4-1b08beac87af" type="text" />
+    <report id="4902f0f8-c77e-406f-a75d-1a44e585ad5f" type="type" />
+    <reportColumn id="cbfe49f2-357c-457f-96df-a57c5688c041" type="type" />
+    <reportColumns id="92e050ea-a7e2-462d-b67e-1683b1c851ef" type="rel" />
+    <reportRowGroup id="081cc05e-7bc6-43d5-81cd-bfc08d60114e" type="type" />
+    <resourceReportNode id="fb62db70-3482-4cb2-81ae-2192d9a39bd6" type="type" />
+    <resourceReportNodeType id="7d86e7fa-f307-4811-a438-3eb494efe58c" type="rel" />
+    <rootNode id="92a404ce-ad00-40d5-9dee-5588621d5351" type="rel" />
+    <sourceNode id="b385b664-22b7-4ed0-a194-a42e45e5b7f0" type="rel" />
+  </aliasMap>
+  <doNotRemove />
+</xml>

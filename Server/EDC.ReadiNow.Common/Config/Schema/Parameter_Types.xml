@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="core" xsi:schemaLocation=". ../Core.xsd" defaultSolution="coreSolution">
+  <!--Copyright 2011-2016 Global Software Innovation Pty Ltd-->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    PARAMETERS                                                    -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <type>
+    <alias>parameter</alias>
+    <name>Parameter</name>
+    <description>A parameter.</description>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Parameter Details</name>
+        <alias>parameterDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <relationships>
+      <relationship>
+        <alias>paramTypeAndDefault</alias>
+        <name>Parameter type and default value</name>
+        <relType>relSingleComponent</relType>
+        <toType>activityArgument</toType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>parameterDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>activityArgumentDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- A type of parameter, e.g. string parameter, int parameter -->
+  <type>
+    <alias>argumentType</alias>
+    <!-- rename to: typedValueType -->
+    <inherits>type, protectableType</inherits>
+    <name>Argument Type</name>
+    <description>A type of input or output argument for an activity or a variable.</description>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Argument Type Details</name>
+        <alias>argumentTypeDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>internalDisplayName</alias>
+        <name>Internal display name</name>
+        <description>The display name for the internal field type.</description>
+        <isRequired>true</isRequired>
+        <fieldInGroup>argumentTypeDetails</fieldInGroup>
+      </stringField>
+    </fields>
+    <relationships>
+      <relationship>
+        <alias>equivFieldType</alias>
+        <name>Equivalent field type</name>
+        <relType>relSingleLookup</relType>
+        <toType>fieldType</toType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>argumentTypeDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>fieldTypeDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <alias>parameterValueField</alias>
+        <name>Parameter value field</name>
+        <relType>relSingleLookup</relType>
+        <toType>field</toType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>argumentTypeDetails</relationshipInFromTypeGroup>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- A parameter -->
+  <argumentType>
+    <alias>activityArgument</alias>
+    <!-- rename to: typedValue -->
+    <name>Argument</name>
+    <description>The base argument type</description>
+    <isAbstract>true</isAbstract>
+    <generateCode>true</generateCode>
+    <internalDisplayName>Argument</internalDisplayName>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Argument Details</name>
+        <alias>activityArgumentDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <name>Default expression</name>
+        <alias>defaultExpression</alias>
+        <isRequired>false</isRequired>
+        <fieldInGroup>activityArgumentDetails</fieldInGroup>
+      </stringField>
+      <boolField>
+        <name>Mandatory</name>
+        <alias>argumentIsMandatory</alias>
+        <description>If true then the argument must be provided a value either at run time of by using a default.</description>
+        <fieldInGroup>activityArgumentDetails</fieldInGroup>
+      </boolField>
+    </fields>
+    <relationships>
+      <!-- Relationship from a parameter (instance of argumentType) to an argument (instance of parameter) -->
+      <!-- TODO: Review this relationship .. it looks weird -->
+      <relationship>
+        <alias>parameterDefaultValue</alias>
+        <name>Parameter default value</name>
+        <toType>activityArgument</toType>
+        <relType>relSingleComponent</relType>
+        <relationshipInFromTypeGroup>activityArgumentDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>activityArgumentDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <alias>argumentForField</alias>
+        <name>Parameter default value</name>
+        <relType>relLookup</relType>
+        <toType>field</toType>
+        <relationshipInFromTypeGroup>activityArgumentDetails</relationshipInFromTypeGroup>
+      </relationship>
+    </relationships>
+  </argumentType>
+  <argumentType>
+    <name>String</name>
+    <alias>stringArgument</alias>
+    <!-- rename to: stringTypedValue -->
+    <inherits>activityArgument</inherits>
+    <generateCode>true</generateCode>
+    <internalDisplayName>String</internalDisplayName>
+    <equivFieldType>stringField</equivFieldType>
+    <fieldGroups>
+      <fieldGroup>
+        <name>String Details</name>
+        <alias>stringArgumentDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>stringParameterValue</alias>
+        <name>String parameter value</name>
+        <fieldInGroup>stringArgumentDetails</fieldInGroup>
+      </stringField>
+      <boolField>
+        <alias>stringMultiLine</alias>
+        <name>Is multiline</name>
+        <fieldInGroup>stringArgumentDetails</fieldInGroup>
+      </boolField>
+    </fields>
+  </argumentType>
+  <argumentType>
+    <name>Number</name>
+    <alias>integerArgument</alias>
+    <!-- rename to: intTypedValue -->
+    <inherits>activityArgument</inherits>
+    <generateCode>true</generateCode>
+    <internalDisplayName>Int32</internalDisplayName>
+    <equivFieldType>intField</equivFieldType>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Number Details</name>
+        <alias>integerArgumentDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <intField>
+        <alias>intParameterValue</alias>
+        <name>Number parameter value</name>
+        <fieldInGroup>integerArgumentDetails</fieldInGroup>
+      </intField>
+    </fields>
+  </argumentType>
+  <argumentType>
+    <name>Decimal</name>
+    <alias>decimalArgument</alias>
+    <!-- rename to: decimalTypedValue -->
+    <inherits>activityArgument</inherits>
+    <generateCode>true</generateCode>
+    <internalDisplayName>Decimal</internalDisplayName>
+    <equivFieldType>decimalField</equivFieldType>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Decimal Details</name>
+        <alias>decimalArgumentDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <intField>
+        <alias>numberDecimalPlaces</alias>
+        <name>Decimal places</name>
+        <fieldInGroup>decimalArgumentDetails</fieldInGroup>
+      </intField>
+      <decimalField>
+        <alias>decimalParameterValue</alias>
+        <name>Decimal parameter value</name>
+        <fieldInGroup>decimalArgumentDetails</fieldInGroup>
+      </decimalField>
+    </fields>
+  </argumentType>
+  <argumentType>
+    <name>Currency</name>
+    <alias>currencyArgument</alias>
+    <!-- rename to: currencyTypedValue -->
+    <inherits>decimalArgument</inherits>
+    <generateCode>true</generateCode>
+    <internalDisplayName>Currency</internalDisplayName>
+    <equivFieldType>currencyField</equivFieldType>
+  </argumentType>
+  <argumentType>
+    <name>Yes/No</name>
+    <alias>boolArgument</alias>
+    <!-- rename to: boolTypedValue -->
+    <inherits>activityArgument</inherits>
+    <generateCode>true</generateCode>
+    <internalDisplayName>Bool</internalDisplayName>
+    <equivFieldType>boolField</equivFieldType>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Yes/No Details</name>
+        <alias>boolArgumentDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <boolField>
+        <alias>boolParameterValue</alias>
+        <name>Yes/no parameter value</name>
+        <fieldInGroup>boolArgumentDetails</fieldInGroup>
+      </boolField>
+    </fields>
+  </argumentType>
+  <argumentType>
+    <name>Date/Time</name>
+    <alias>dateTimeArgument</alias>
+    <!-- rename to: dateTimeTypedValue -->
+    <inherits>activityArgument</inherits>
+    <generateCode>true</generateCode>
+    <internalDisplayName>DateTime</internalDisplayName>
+    <equivFieldType>dateTimeField</equivFieldType>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Date/Time Details</name>
+        <alias>dateTimeArgumentDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <dateTimeField>
+        <alias>dateTimeParameterValue</alias>
+        <name>Date/time parameter value</name>
+        <fieldInGroup>dateTimeArgumentDetails</fieldInGroup>
+      </dateTimeField>
+    </fields>
+  </argumentType>
+  <argumentType>
+    <name>Time</name>
+    <alias>timeArgument</alias>
+    <!-- rename to: timeTypedValue -->
+    <inherits>activityArgument</inherits>
+    <generateCode>true</generateCode>
+    <internalDisplayName>Time</internalDisplayName>
+    <equivFieldType>timeField</equivFieldType>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Time Details</name>
+        <alias>timeArgumentDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <timeField>
+        <alias>timeParameterValue</alias>
+        <name>Time parameter value</name>
+        <fieldInGroup>timeArgumentDetails</fieldInGroup>
+      </timeField>
+    </fields>
+  </argumentType>
+  <argumentType>
+    <name>Date</name>
+    <alias>dateArgument</alias>
+    <!-- rename to: dateTypedValue -->
+    <inherits>activityArgument</inherits>
+    <generateCode>true</generateCode>
+    <internalDisplayName>Date</internalDisplayName>
+    <equivFieldType>dateField</equivFieldType>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Date Details</name>
+        <alias>dateArgumentDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <dateField>
+        <alias>dateParameterValue</alias>
+        <name>Date parameter value</name>
+        <fieldInGroup>dateArgumentDetails</fieldInGroup>
+      </dateField>
+    </fields>
+  </argumentType>
+  <argumentType>
+    <name>GUID</name>
+    <alias>guidArgument</alias>
+    <!-- rename to: guidTypedValue -->
+    <inherits>activityArgument</inherits>
+    <generateCode>true</generateCode>
+    <internalDisplayName>Guid</internalDisplayName>
+    <equivFieldType>guidField</equivFieldType>
+    <fieldGroups>
+      <fieldGroup>
+        <name>GUID Details</name>
+        <alias>guidArgumentDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <guidField>
+        <alias>guidParameterValue</alias>
+        <name>GUID parameter value</name>
+        <fieldInGroup>guidArgumentDetails</fieldInGroup>
+      </guidField>
+    </fields>
+  </argumentType>
+  <type>
+    <name>Typed Argument</name>
+    <alias>typedArgument</alias>
+    <description>When placed against an argumment this indicates the argument must conform to a specific type.</description>
+    <isAbstract>true</isAbstract>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Typed Argument Details</name>
+        <alias>typedArgumentDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <relationships>
+      <relationship>
+        <alias>conformsToType</alias>
+        <name>Conforms to type</name>
+        <description>When specified on an argument it indicates this argument can only be one of the given types or a type derived from them.</description>
+        <relType>relLookup</relType>
+        <toType>type</toType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>typedArgumentDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>typeDetails</relationshipInToTypeGroup>
+      </relationship>
+    </relationships>
+  </type>
+  <argumentType>
+    <alias>resourceArgument</alias>
+    <!-- rename to: resourceTypedValue -->
+    <inherits>activityArgument,typedArgument</inherits>
+    <name>Record Argument</name>
+    <description>An argument that can hold a reference</description>
+    <generateCode>true</generateCode>
+    <internalDisplayName>
+    </internalDisplayName>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Record Argument Details</name>
+        <alias>resourceArgumentDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <relationships>
+      <relationship>
+        <alias>resourceParameterValue</alias>
+        <name>Record parameter value</name>
+        <description>The value being passed to a record parameter.</description>
+        <relType>relLookup</relType>
+        <toType>resource</toType>
+        <hideOnToType>true</hideOnToType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>resourceArgumentDetails</relationshipInFromTypeGroup>
+      </relationship>
+    </relationships>
+  </argumentType>
+  <!-- Deprecated .. can we remove this? -->
+  <argumentType>
+    <name>Object</name>
+    <alias>objectArgument</alias>
+    <!-- rename to: objectTypedValue ?? -->
+    <inherits>activityArgument</inherits>
+    <generateCode>true</generateCode>
+    <internalDisplayName>
+    </internalDisplayName>
+  </argumentType>
+  <argumentType>
+    <alias>resourceListArgument</alias>
+    <!-- rename to: resourceListTypedValue -->
+    <inherits>activityArgument,typedArgument</inherits>
+    <name>Record List</name>
+    <description>An argument that can hold a list of references</description>
+    <generateCode>true</generateCode>
+    <internalDisplayName>
+    </internalDisplayName>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Record List Details</name>
+        <alias>resourceListArgumentDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <relationships>
+      <relationship>
+        <alias>resourceListParameterValues</alias>
+        <name>Record list parameter values</name>
+        <description>The values being passed to a record list parameter.</description>
+        <cardinality>manyToMany</cardinality>
+        <toType>resource</toType>
+        <hideOnToType>true</hideOnToType>
+        <generateCode>true</generateCode>
+        <cascadeDelete>false</cascadeDelete>
+        <cascadeDeleteTo>false</cascadeDeleteTo>
+        <cloneAction>cloneReferences</cloneAction>
+        <reverseCloneAction>drop</reverseCloneAction>
+        <implicitInSolution>false</implicitInSolution>
+        <reverseImplicitInSolution>false</reverseImplicitInSolution>
+        <relType>relCustom</relType>
+        <relationshipInFromTypeGroup>resourceListArgumentDetails</relationshipInFromTypeGroup>
+        <!-- relManyToMany except reverseCloneAction=drop -->
+      </relationship>
+    </relationships>
+  </argumentType>
+</resources>

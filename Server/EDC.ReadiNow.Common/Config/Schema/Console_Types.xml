@@ -1,0 +1,1454 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="core" xmlns:k="console" xsi:schemaLocation=". ../Core.xsd k ../Console.xsd" defaultSolution="consoleSolution">
+  <!--Copyright 2011-2016 Global Software Innovation Pty Ltd-->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    EDIT FORM                                                     -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <type>
+    <name>UI Context</name>
+    <description>Used to describe the contexts which a form or UI control can operate in.</description>
+    <alias>k:uiContext</alias>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>UI Context Details</name>
+        <alias>k:uiContextDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+  </type>
+  <!-- Rendering Control Types -->
+  <!-- These types are used describe the rendering and form design properties for a control -->
+  <type>
+    <name>Rendering Control Type</name>
+    <alias>k:renderControlType</alias>
+    <description>An abstract representation of a control that can be rendered.</description>
+    <generateCode>true</generateCode>
+    <inherits>type</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Rendering Control Type Details</name>
+        <alias>k:renderControlTypeDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <boolField>
+        <name>Requires context</name>
+        <description>Does this control require a resource context in which to run?</description>
+        <alias>k:requiresContext</alias>
+        <fieldInGroup>k:renderControlTypeDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <name>Hidden from form designer</name>
+        <description>Is the render control hidden from the form designer?</description>
+        <alias>k:isHiddenFromFormDesigner</alias>
+        <defaultValue>false</defaultValue>
+        <fieldInGroup>k:renderControlTypeDetails</fieldInGroup>
+      </boolField>
+      <stringField>
+        <name>Design time render control</name>
+        <description>The control used by the Html designer to render the control.</description>
+        <alias>k:designControl</alias>
+        <fieldInGroup>k:renderControlTypeDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <name>Render control name</name>
+        <description>The control used during runtime to render the control.</description>
+        <alias>k:control</alias>
+        <fieldInGroup>k:renderControlTypeDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <name>View render control</name>
+        <description>The control used by the view mode of the control.</description>
+        <alias>k:viewControl</alias>
+        <fieldInGroup>k:renderControlTypeDetails</fieldInGroup>
+      </stringField>
+      <intField>
+        <name>Minimum width</name>
+        <description>The minimum width in pixels that this control requires to render correctly.</description>
+        <alias>k:minWidth</alias>
+        <defaultValue>340</defaultValue>
+        <fieldInGroup>k:renderControlTypeDetails</fieldInGroup>
+      </intField>
+      <intField>
+        <name>Minimum height</name>
+        <description>The minimum height in pixels that this control requires to render correctly.</description>
+        <alias>k:minHeight</alias>
+        <defaultValue>30</defaultValue>
+        <fieldInGroup>k:renderControlTypeDetails</fieldInGroup>
+      </intField>
+      <intField>
+        <name>Minimum width (tablet)</name>
+        <description>The minimum width in pixels that this control requires to render correctly on a tablet device.</description>
+        <alias>k:minWidthTablet</alias>
+        <defaultValue>340</defaultValue>
+        <fieldInGroup>k:renderControlTypeDetails</fieldInGroup>
+      </intField>
+      <intField>
+        <name>Minimum height (tablet)</name>
+        <description>The minimum height in pixels that this control requires to render correctly on a tablet device.</description>
+        <alias>k:minHeightTablet</alias>
+        <defaultValue>60</defaultValue>
+        <fieldInGroup>k:renderControlTypeDetails</fieldInGroup>
+      </intField>
+      <intField>
+        <name>Minimum width (mobile)</name>
+        <description>The minimum width in pixels that this control requires to render correctly on a mobile device.</description>
+        <alias>k:minWidthMobile</alias>
+        <defaultValue>280</defaultValue>
+        <fieldInGroup>k:renderControlTypeDetails</fieldInGroup>
+      </intField>
+      <intField>
+        <name>Minimum height (mobile)</name>
+        <description>The minimum height in pixels that this control requires to render correctly on a mobile device.</description>
+        <alias>k:minHeightMobile</alias>
+        <defaultValue>70</defaultValue>
+        <fieldInGroup>k:renderControlTypeDetails</fieldInGroup>
+      </intField>
+      <boolField>
+        <name>Pager support (mobile)</name>
+        <alias>k:pagerSupportMobile</alias>
+        <description>Indicates if this control has support for the paged rendering model for forms on mobile devices.</description>
+        <hideField>true</hideField>
+      </boolField>
+    </fields>
+    <relationships>
+      <relationship>
+        <name>Applicable context</name>
+        <description>The context a rendering control is applicable for.</description>
+        <alias>k:context</alias>
+        <reverseAlias>k:applicableControl</reverseAlias>
+        <toType>k:uiContext</toType>
+        <relType>relLookup</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>k:renderControlTypeDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>k:uiContextDetails</relationshipInToTypeGroup>
+      </relationship>
+    </relationships>
+  </type>
+  <type>
+    <name>Custom Rendering Control Type</name>
+    <alias>k:customRenderControlType</alias>
+    <description>A purpose built control for exclusive use on select forms.</description>
+    <generateCode>true</generateCode>
+    <inherits>k:renderControlType</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Custom Rendering Control Type Details</name>
+        <alias>k:customRenderControlTypeDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <name>Icon</name>
+        <alias>k:customRenderControlIcon</alias>
+        <description>The icon displayed with the control in the toolbox.</description>
+        <hideField>true</hideField>
+      </stringField>
+    </fields>
+    <relationships>
+      <relationship>
+        <name>For type</name>
+        <alias>k:customRenderControlForType</alias>
+        <description>The type that this control will present on forms for.</description>
+        <fromName>Custom control</fromName>
+        <toType>type</toType>
+        <relType>relLookup</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>k:customRenderControlTypeDetails</relationshipInFromTypeGroup>
+        <hideOnToType>true</hideOnToType>
+      </relationship>
+      <relationship>
+        <name>For relationship</name>
+        <alias>k:customRenderControlForRelationship</alias>
+        <description>The relationship that instances of this control are to render.</description>
+        <toType>relationship</toType>
+        <relType>relLookup</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>k:customRenderControlTypeDetails</relationshipInFromTypeGroup>
+        <hideOnToType>true</hideOnToType>
+      </relationship>
+      <relationship>
+        <name>Default vertical resize mode</name>
+        <alias>k:customRenderControlDefaultVerticalResizeMode</alias>
+        <description>How instances of this control should initially size themselves vertically.</description>
+        <relType>relChoiceField</relType>
+        <securesTo>true</securesTo>
+        <toType>k:resizeEnum</toType>
+        <hideOnFromType>true</hideOnFromType>
+        <hideOnToType>true</hideOnToType>
+      </relationship>
+      <relationship>
+        <name>Default horizontal resize mode</name>
+        <alias>k:customRenderControlDefaultHorizontalResizeMode</alias>
+        <description>How instances of this control should initially size themselves horizontally.</description>
+        <relType>relChoiceField</relType>
+        <securesTo>true</securesTo>
+        <toType>k:resizeEnum</toType>
+        <hideOnFromType>true</hideOnFromType>
+        <hideOnToType>true</hideOnToType>
+      </relationship>
+      <relationship>
+        <name>Required forms</name>
+        <alias>k:customRenderControlRequiredForms</alias>
+        <reverseAlias>k:formRequiredByCustomRenderControl</reverseAlias>
+        <description>Form instances that this control implementation relies upon.</description>
+        <relType>relManyToMany</relType>
+        <securesTo>true</securesTo>
+        <securesToReadOnly>true</securesToReadOnly>
+        <toType>k:customEditForm</toType>
+        <hideOnFromType>true</hideOnFromType>
+        <hideOnToType>true</hideOnToType>
+      </relationship>
+      <relationship>
+        <name>Required reports</name>
+        <alias>k:customRenderControlRequiredReports</alias>
+        <reverseAlias>k:reportRequiredByCustomRenderControl</reverseAlias>
+        <description>Report instances that this control implementation relies upon.</description>
+        <relType>relManyToMany</relType>
+        <securesTo>true</securesTo>
+        <securesToReadOnly>true</securesToReadOnly>
+        <toType>report</toType>
+        <hideOnFromType>true</hideOnFromType>
+        <hideOnToType>true</hideOnToType>
+      </relationship>
+    </relationships>
+  </type>
+  <type>
+    <name>Context Provider</name>
+    <alias>k:contextProvider</alias>
+    <description>A rendering control that is able to provide contexts that Context receivers can use.</description>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Context Provider Details</name>
+        <alias>k:contextProviderDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+  </type>
+  <type>
+    <name>Context Receiver</name>
+    <alias>k:contextReceiver</alias>
+    <description>A rendering control that is able to be bound to the context produced by another control.</description>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Context Receiver Details</name>
+        <alias>k:contextReceiverDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <relationships>
+      <relationship>
+        <name>Control context binding</name>
+        <fromName>Context provider</fromName>
+        <toName>Context receiver</toName>
+        <alias>k:receiveContextFrom</alias>
+        <reverseAlias>k:sendContextTo</reverseAlias>
+        <toType>k:contextProvider</toType>
+        <relType>relLookup</relType>
+        <securesTo>true</securesTo>
+        <relationshipInFromTypeGroup>k:contextReceiverDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>k:contextProviderDetails</relationshipInToTypeGroup>
+      </relationship>
+    </relationships>
+  </type>
+  <type>
+    <name>Field Rendering Control Type</name>
+    <alias>k:fieldRenderControlType</alias>
+    <description>The rendering controls allowing the relationships between the applicable contexts and fields to be specified </description>
+    <inherits>k:renderControlType, protectableType</inherits>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Field Rendering Control Type Details</name>
+        <alias>k:fieldRenderControlTypeDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <relationships>
+      <relationship>
+        <name>Field type to render</name>
+        <description>This control is able to render the contents of the the related type of field.</description>
+        <alias>k:fieldTypeToRender</alias>
+        <reverseAlias>k:renderingControl</reverseAlias>
+        <toType>fieldType</toType>
+        <relType>relManyToMany</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>k:fieldRenderControlTypeDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>fieldTypeDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <name>Default control for field</name>
+        <description>This control is the default control to use for a given ui context.</description>
+        <alias>k:defaultFieldTypesToRender</alias>
+        <reverseAlias>k:defaultRenderingControls</reverseAlias>
+        <toType>fieldType</toType>
+        <relType>relManyToMany</relType>
+        <!-- As there are multiple UI contexts, multiple defaults are valid -->
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>k:fieldRenderControlTypeDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>fieldTypeDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <name>Field instance to render</name>
+        <description>This control is able to render the contents of the related field.</description>
+        <alias>k:fieldInstanceToRender</alias>
+        <reverseAlias>k:fieldInstanceRenderingControl</reverseAlias>
+        <toType>field</toType>
+        <relType>relManyToMany</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>k:fieldRenderControlTypeDetails</relationshipInFromTypeGroup>
+      </relationship>
+    </relationships>
+  </type>
+  <type>
+    <name>Relationship Rendering Control Type</name>
+    <alias>k:relationshipRenderControlType</alias>
+    <description>The rendering controls allowing the relationships between the applicable contexts and relationships to be specified </description>
+    <inherits>k:renderControlType</inherits>
+    <generateCode>true</generateCode>
+  </type>
+  <type>
+    <name>Structure Rendering Control Type</name>
+    <alias>k:structureRenderControlType</alias>
+    <description>The rendering controls used to structure the page for display </description>
+    <inherits>k:renderControlType</inherits>
+    <generateCode>true</generateCode>
+  </type>
+  <!-- Resize Mode Enumeration type -->
+  <enumType>
+    <alias>k:resizeModeEnum</alias>
+    <name>Resize Mode</name>
+    <inherits>enumValue</inherits>
+    <enumValues>
+      <k:resizeModeEnum>
+        <name>Automatic</name>
+        <alias>k:automatic</alias>
+      </k:resizeModeEnum>
+      <k:resizeModeEnum>
+        <name>Manual</name>
+        <alias>k:manual</alias>
+      </k:resizeModeEnum>
+    </enumValues>
+  </enumType>
+  <!-- Resize Mode Enumeration for both directions type -->
+  <enumType>
+    <alias>k:resizeEnum</alias>
+    <name>Resize</name>
+    <inherits>enumValue</inherits>
+    <enumValues>
+      <k:resizeEnum>
+        <name>Compact</name>
+        <alias>k:resizeAutomatic</alias>
+        <enumOrder>1</enumOrder>
+      </k:resizeEnum>
+      <k:resizeEnum>
+        <name>Manual</name>
+        <alias>k:resizeManual</alias>
+        <enumOrder>2</enumOrder>
+      </k:resizeEnum>
+      <k:resizeEnum>
+        <name>Autofill</name>
+        <alias>k:resizeSpring</alias>
+        <enumOrder>3</enumOrder>
+      </k:resizeEnum>
+      <k:resizeEnum>
+        <name>25%</name>
+        <alias>k:resizeTwentyFive</alias>
+        <enumOrder>4</enumOrder>
+      </k:resizeEnum>
+      <k:resizeEnum>
+        <name>33%</name>
+        <alias>k:resizeThirtyThree</alias>
+        <enumOrder>5</enumOrder>
+      </k:resizeEnum>
+      <k:resizeEnum>
+        <name>50%</name>
+        <alias>k:resizeFifty</alias>
+        <enumOrder>6</enumOrder>
+      </k:resizeEnum>
+      <k:resizeEnum>
+        <name>66%</name>
+        <alias>k:resizeSixtySix</alias>
+        <enumOrder>7</enumOrder>
+      </k:resizeEnum>
+      <k:resizeEnum>
+        <name>75%</name>
+        <alias>k:resizeSeventyFive</alias>
+        <enumOrder>8</enumOrder>
+      </k:resizeEnum>
+      <k:resizeEnum>
+        <name>100%</name>
+        <alias>k:resizeHundred</alias>
+        <enumOrder>9</enumOrder>
+      </k:resizeEnum>
+    </enumValues>
+  </enumType>
+  <!-- Controls -->
+  <!-- Controls are all of a ControlType, specifying their rendering and design characteristics and adding -->
+  <!-- properties and relationships for the instances that are places on a form -->
+  <type>
+    <name>Control on Form</name>
+    <alias>k:controlOnForm</alias>
+    <description>A class representing any control instance on a form providing the order of controls</description>
+    <generateCode>true</generateCode>
+    <isMetadata>true</isMetadata>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Control on Form Details</name>
+        <alias>k:controlOnFormDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <intField>
+        <name>Ordinal</name>
+        <alias>k:renderingOrdinal</alias>
+        <description>The order a control appears on a form</description>
+        <defaultValue>100</defaultValue>
+        <fieldInGroup>k:controlOnFormDetails</fieldInGroup>
+      </intField>
+      <intField>
+        <name>Width</name>
+        <alias>k:renderingWidth</alias>
+        <description>The width of the control on a form</description>
+        <fieldInGroup>k:controlOnFormDetails</fieldInGroup>
+      </intField>
+      <intField>
+        <name>Height</name>
+        <alias>k:renderingHeight</alias>
+        <description>The height of the control on a form</description>
+        <fieldInGroup>k:controlOnFormDetails</fieldInGroup>
+      </intField>
+      <stringField>
+        <name>Background colour</name>
+        <alias>k:renderingBackgroundColor</alias>
+        <description>The background colour of the control.</description>
+        <fieldInGroup>k:controlOnFormDetails</fieldInGroup>
+      </stringField>
+      <boolField>
+        <name>Read only</name>
+        <alias>k:readOnlyControl</alias>
+        <description>Specifies whether the field or relationship should appear as read-only when in edit mode.</description>
+        <defaultValue>false</defaultValue>
+        <fieldInGroup>k:controlOnFormDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <name>Mandatory control</name>
+        <alias>k:mandatoryControl</alias>
+        <description>Is the control mandatory to complete for this form.</description>
+        <defaultValue>false</defaultValue>
+        <fieldInGroup>k:controlOnFormDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <name>Hide label</name>
+        <alias>k:hideLabel</alias>
+        <description>Specify whether the control label is visible.</description>
+        <defaultValue>false</defaultValue>
+        <fieldInGroup>k:controlOnFormDetails</fieldInGroup>
+      </boolField>      
+      <boolField>
+        <name>Show help text</name>
+        <alias>k:showControlHelpText</alias>
+        <description>Specify show the help text for control.</description>
+        <defaultValue>false</defaultValue>
+        <fieldInGroup>k:controlOnFormDetails</fieldInGroup>
+      </boolField>
+    </fields>
+    <!-- The path of relationships to follow to render the current control -->
+    <relationships>
+      <relationship>
+        <name>Related entity data path nodes</name>
+        <description>The data path nodes of the relationship to render.</description>
+        <alias>k:controlRelatedEntityDataPathNodes</alias>
+        <toType>k:relatedEntityDataPathNode</toType>
+        <relType>relComponents</relType>
+        <generateCode>true</generateCode>
+        <hideOnToType>true</hideOnToType>
+        <hideOnFromType>true</hideOnFromType>
+        <securesTo>true</securesTo>
+      </relationship>
+      <!-- Control on form has resize mode -->
+      <relationship>
+        <name>Resize mode</name>
+        <alias>k:renderingResizeMode</alias>
+        <relType>relChoiceField</relType>
+        <securesTo>true</securesTo>
+        <toType>k:resizeModeEnum</toType>
+        <hideOnFromType>true</hideOnFromType>
+        <hideOnToType>true</hideOnToType>
+      </relationship>
+      <!-- Control on form has horizontal resize mode -->
+      <relationship>
+        <name>Horizontal resize mode</name>
+        <description>Controls resizing along horizonatal direction.</description>
+        <alias>k:renderingHorizontalResizeMode</alias>
+        <relType>relChoiceField</relType>
+        <securesTo>true</securesTo>
+        <toType>k:resizeEnum</toType>
+        <hideOnFromType>true</hideOnFromType>
+        <hideOnToType>true</hideOnToType>
+      </relationship>
+      <!-- Control on form has vertical resize mode -->
+      <relationship>
+        <name>Vertical resize mode</name>
+        <alias>k:renderingVerticalResizeMode</alias>
+        <description>Controls resizing along vertical direction.</description>
+        <relType>relChoiceField</relType>
+        <securesTo>true</securesTo>
+        <toType>k:resizeEnum</toType>
+        <hideOnFromType>true</hideOnFromType>
+        <hideOnToType>true</hideOnToType>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- Represents a node in a path of relationships -->
+  <type>
+    <name>Related Entity Data Path Node</name>
+    <alias>k:relatedEntityDataPathNode</alias>
+    <description>A class describing a node in a path of relationships.</description>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Related Entity Data Path Node Details</name>
+        <alias>k:relatedEntityDataPathNodeDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <intField>
+        <name>Ordinal</name>
+        <alias>k:dataPathNodeOrdinal</alias>
+        <description>The order of the data path node.</description>
+        <defaultValue>0</defaultValue>
+        <fieldInGroup>k:relatedEntityDataPathNodeDetails</fieldInGroup>
+      </intField>
+    </fields>
+    <relationships>
+      <relationship>
+        <name>Data path node relationship</name>
+        <description>The data path node relationship.</description>
+        <alias>k:dataPathNodeRelationship</alias>
+        <toType>relationship</toType>
+        <relType>relDependantOf</relType>
+        <generateCode>true</generateCode>
+        <hideOnToType>true</hideOnToType>
+        <hideOnFromType>true</hideOnFromType>
+      </relationship>
+      <relationship>
+        <name>Data path node relationship direction</name>
+        <description>The data path node relationship direction.</description>
+        <alias>k:dataPathNodeRelationshipDirection</alias>
+        <toType>directionEnum</toType>
+        <relType>relChoiceField</relType>
+        <securesTo>true</securesTo>
+        <generateCode>true</generateCode>
+        <hideOnToType>true</hideOnToType>
+        <hideOnFromType>true</hideOnFromType>
+      </relationship>
+    </relationships>
+  </type>
+  <k:renderControlType>
+    <name>Structure Control On Form</name>
+    <alias>k:structureControlOnForm</alias>
+    <description>Represents a structure control instance on a form and its contained subcontrols</description>
+    <generateCode>true</generateCode>
+    <inherits>k:controlOnForm</inherits>
+    <k:isHiddenFromFormDesigner>true</k:isHiddenFromFormDesigner>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Structure Control On Form Details</name>
+        <alias>k:structureControlOnFormDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <relationships>
+      <relationship>
+        <name>Contained controls</name>
+        <alias>k:containedControlsOnForm</alias>
+        <reverseAlias>k:containedWithinStructureControlOnForm</reverseAlias>
+        <toType>k:controlOnForm</toType>
+        <securesTo>true</securesTo>
+        <relType>relComponents</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>k:structureControlOnFormDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>k:controlOnFormDetails</relationshipInToTypeGroup>
+      </relationship>
+    </relationships>
+  </k:renderControlType>
+  <type>
+    <name>Custom Edit Form</name>
+    <alias>k:customEditForm</alias>
+    <description>A edit for with customized layout and fields</description>
+    <inherits>k:structureControlOnForm,k:navigationElement,k:contextReceiver, clientCachable, securableEntity</inherits>
+    <generateCode>true</generateCode>
+    <isMetadata>true</isMetadata>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Custom Edit Form Details</name>
+        <alias>k:customEditFormDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <boolField>
+        <alias>allowSelectMultiTypes</alias>
+        <name>Allow select multiple types</name>
+        <description>If the field is set to true, then the form will have option to convert types.</description>
+        <defaultValue>true</defaultValue>
+        <fieldInGroup>k:customEditFormDetails</fieldInGroup>
+      </boolField>     
+      <boolField>
+        <name>Show help text</name>
+        <alias>k:showFormHelpText</alias>
+        <description>Specify show the help text for form.</description>
+        <defaultValue>false</defaultValue>
+        <fieldInGroup>k:customEditFormDetails</fieldInGroup>
+      </boolField>
+    </fields>
+    <resourceKeys>
+      <resourceKey>
+        <alias>customEditFormUniqueNameKey</alias>
+        <name>Unique name per edit form</name>
+        <resourceKeyMessage>There is another form with the same name.</resourceKeyMessage>
+        <keyFields>name</keyFields>
+      </resourceKey>
+    </resourceKeys>
+    <relationships>
+      <relationship>
+        <name>Edits type</name>
+        <description>The UI context a form is valid for</description>
+        <alias>k:typeToEditWithForm</alias>
+        <reverseAlias>k:formsToEditType</reverseAlias>
+        <toType>type</toType>
+        <fromName>Edit forms</fromName>
+        <relType>relDependantOf</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>k:customEditFormDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>typeDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <name>UI context</name>
+        <description>The UI context a form is valid for</description>
+        <alias>k:uiContextForForm</alias>
+        <reverseAlias>k:formForUiContext</reverseAlias>
+        <toType>k:uiContext</toType>
+        <relType>relLookup</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>k:customEditFormDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>k:uiContextDetails</relationshipInToTypeGroup>
+      </relationship>
+    </relationships>
+    <onBeforeSave>customFormEventTarget</onBeforeSave>
+  </type>
+  <target>
+    <alias>customFormEventTarget</alias>
+    <typeName>EDC.ReadiNow.Model.EventClasses.CustomFormEventTarget</typeName>
+    <assemblyName>EDC.ReadiNow.Common, Version=1.0.0.0, Culture=neutral</assemblyName>
+    <ordinal>0</ordinal>
+  </target>
+  <!-- Workflow display form activity -->
+  <relationship>
+    <alias>formToUse</alias>
+    <reverseAlias>userTaskForForm</reverseAlias>
+    <name>Form</name>
+    <description>The form used to display the record.</description>
+    <fromType>displayFormUserTask</fromType>
+    <toType>k:customEditForm</toType>
+    <relType>relDependantOf</relType>
+    <generateCode>true</generateCode>
+    <relationshipInFromTypeGroup>displayFormUserTaskDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>displayFormUserTaskDetails</relationshipInToTypeGroup>
+  </relationship>
+  <type>
+    <name>Screen</name>
+    <alias>k:screen</alias>
+    <description>A screen with customised layout with reports and forms.</description>
+    <inherits>k:structureControlOnForm,k:navigationElement,visualController,privatelyOwnable,clientCachable</inherits>
+    <isMetadata>true</isMetadata>
+  </type>
+  <k:renderControlType>
+    <name>fieldControlOnForm</name>
+    <alias>k:fieldControlOnForm</alias>
+    <description>Represents a field control instance on a form and the field it relates to</description>
+    <inherits>k:controlOnForm, k:contextReceiver</inherits>
+    <generateCode>true</generateCode>
+    <k:isHiddenFromFormDesigner>true</k:isHiddenFromFormDesigner>
+    <k:requiresContext>true</k:requiresContext>
+    <fieldGroups>
+      <fieldGroup>
+        <name>FieldControlOnForm Details</name>
+        <alias>k:fieldControlOnFormDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <name>Group name</name>
+        <alias>k:groupName</alias>
+        <description>Specify the group name of the control belongs to.</description>
+        <fieldInGroup>k:fieldControlOnFormDetails</fieldInGroup>
+      </stringField>
+    </fields>
+    <relationships>
+      <relationship>
+        <name>Field</name>
+        <description>The field that this control is rendering.</description>
+        <alias>k:fieldToRender</alias>
+        <reverseAlias>k:rControlToRenderField</reverseAlias>
+        <toType>field</toType>
+        <relType>relDependantOf</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>k:fieldControlOnFormDetails</relationshipInFromTypeGroup>
+      </relationship>
+    </relationships>
+  </k:renderControlType>
+  <k:renderControlType>
+    <name>RelationshipControlOnForm</name>
+    <alias>k:relationshipControlOnForm</alias>
+    <description>Represents a relationship control instance on a form and the relationship it represents</description>
+    <inherits>k:controlOnForm, resourceViewer, k:contextReceiver</inherits>
+    <generateCode>true</generateCode>
+    <k:isHiddenFromFormDesigner>true</k:isHiddenFromFormDesigner>
+    <k:requiresContext>true</k:requiresContext>
+    <fieldGroups>
+      <fieldGroup>
+        <name>RelationshipControlOnForm Details</name>
+        <alias>k:relationshipControlOnFormDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <boolField>
+        <name>Is reverse</name>
+        <alias>k:isReversed</alias>
+        <defaultValue>false</defaultValue>
+        <fieldInGroup>k:relationshipControlOnFormDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <name>Instance can have fields</name>
+        <alias>k:canHaveFields</alias>
+        <defaultValue>false</defaultValue>
+        <fieldInGroup>k:relationshipControlOnFormDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <alias>k:infoButtonVisible</alias>
+        <name>Info button visible</name>
+        <defaultValue>false</defaultValue>
+        <fieldInGroup>k:relationshipControlOnFormDetails</fieldInGroup>
+      </boolField>
+    </fields>
+    <relationships>
+      <relationship>
+        <name>Relationship</name>
+        <description>The relationship that this control is rendering.</description>
+        <alias>k:relationshipToRender</alias>
+        <reverseAlias>k:rRenderingControl</reverseAlias>
+        <toType>relationship</toType>
+        <relType>relDependantOf</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>k:relationshipControlOnFormDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>relationshipDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <name>Picker report</name>
+        <description>The picker report to use</description>
+        <alias>k:pickerReport</alias>
+        <toType>resourcePicker</toType>
+        <generateCode>true</generateCode>
+        <relType>relLookup</relType>
+        <securesTo>true</securesTo>
+        <relationshipInFromTypeGroup>k:relationshipControlOnFormDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>reportDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <name>Display report</name>
+        <description>The report to use when displaying related entities.</description>
+        <alias>k:relationshipDisplayReport</alias>
+        <toType>report</toType>
+        <generateCode>true</generateCode>
+        <relType>relLookup</relType>
+        <securesTo>true</securesTo>
+        <relationshipInFromTypeGroup>k:relationshipControlOnFormDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>reportDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <name>Display form</name>
+        <description>The form to use when displaying related entities.</description>
+        <alias>k:relationshipDisplayForm</alias>
+        <toType>k:customEditForm</toType>
+        <generateCode>true</generateCode>
+        <relType>relLookup</relType>
+        <relationshipInFromTypeGroup>k:relationshipControlOnFormDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>k:customEditFormDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <name>Edit form relationship behavior</name>
+        <description>The behavior object to use when displaying a relationship report. In particular, controls which buttons get shown.</description>
+        <alias>k:hasRelationshipControlBehavior</alias>
+        <toType>k:multiRelationshipControlBehavior</toType>
+        <generateCode>true</generateCode>
+        <relType>relLookup</relType>
+        <relationshipInFromTypeGroup>k:relationshipControlOnFormDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>k:multiRelationshipControlBehaviorDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <name>Picker structure view</name>
+        <description>The picker structure to use</description>
+        <alias>k:pickerStructureView</alias>
+        <toType>structureView</toType>
+        <generateCode>true</generateCode>
+        <relType>relLookup</relType>
+        <relationshipInFromTypeGroup>k:relationshipControlOnFormDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>structureViewDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <name>Default value</name>
+        <description>The default value of relationship field control</description>
+        <alias>k:relationshipDefaultValue</alias>
+        <toType>resource</toType>
+        <generateCode>true</generateCode>
+        <relType>relLookup</relType>
+        <hideOnToType>true</hideOnToType>
+        <hideOnFromType>true</hideOnFromType>
+        <relationshipInFromTypeGroup>k:relationshipControlOnFormDetails</relationshipInFromTypeGroup>
+      </relationship>
+      <relationship>
+        <name>Relationship control filters</name>
+        <description>Relationship filters.</description>
+        <alias>k:relationshipControlFilters</alias>
+        <toType>k:relationshipControlFilterDetails</toType>
+        <cascadeDeleteTo>true</cascadeDeleteTo>
+        <generateCode>true</generateCode>
+        <relType>relComponents</relType>
+        <securesTo>true</securesTo>
+        <hideOnToType>true</hideOnToType>
+        <hideOnFromType>true</hideOnFromType>
+        <relationshipInFromTypeGroup>k:relationshipControlOnFormDetails</relationshipInFromTypeGroup>
+      </relationship>
+    </relationships>
+  </k:renderControlType>
+  <!-- Represents a relationship filter -->
+  <type>
+    <name>Relationship Control Filter Details</name>
+    <alias>k:relationshipControlFilterDetails</alias>
+    <description>A class describing a relationship control filter.</description>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Relationship Control Filter Details Group</name>
+        <alias>k:relationshipControlFilterDetailsGroup</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <intField>
+        <name>Ordinal</name>
+        <alias>k:relationshipControlFilterOrdinal</alias>
+        <description>The order of filter.</description>
+        <defaultValue>0</defaultValue>
+        <fieldInGroup>k:relationshipControlFilterDetailsGroup</fieldInGroup>
+      </intField>
+    </fields>
+    <relationships>
+      <!-- Used to filter picker reports and drop down relationship controls -->
+      <relationship>
+        <name>Relationship control filter</name>
+        <description>The control which has the value of the related entity to filter by.</description>
+        <alias>k:relationshipControlFilter</alias>
+        <toType>k:relationshipControlOnForm</toType>
+        <generateCode>true</generateCode>
+        <relType>relDependantOf</relType>
+        <hideOnToType>true</hideOnToType>
+        <hideOnFromType>true</hideOnFromType>
+      </relationship>
+      <!-- Used to filter picker reports and drop down relationship controls -->
+      <relationship>
+        <name>Relationship filter</name>
+        <description>The relationship to filter by.</description>
+        <alias>k:relationshipFilter</alias>
+        <toType>relationship</toType>
+        <generateCode>true</generateCode>
+        <cascadeDelete>true</cascadeDelete>
+        <relType>relLookup</relType>
+        <hideOnToType>true</hideOnToType>
+        <hideOnFromType>true</hideOnFromType>
+      </relationship>
+      <!-- Used to filter picker reports and drop down relationship controls -->
+      <relationship>
+        <name>Relationship direction filter</name>
+        <description>The relationship direction to filter by.</description>
+        <alias>k:relationshipDirectionFilter</alias>
+        <toType>directionEnum</toType>
+        <relType>relChoiceField</relType>
+        <securesTo>true</securesTo>
+        <generateCode>true</generateCode>
+        <hideOnToType>true</hideOnToType>
+        <hideOnFromType>true</hideOnFromType>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- Field Type Display Name -->
+  <type>
+    <name>FieldTypeDisplayName</name>
+    <alias>k:fieldTypeDisplayName</alias>
+    <description>Display name used by a field type.</description>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>FieldTypeDisplayName Details</name>
+        <alias>k:fieldTypeDisplayNameDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <intField>
+        <name>Display order</name>
+        <alias>k:fieldDisplayOrder</alias>
+        <fieldInGroup>k:fieldTypeDisplayNameDetails</fieldInGroup>
+      </intField>
+    </fields>
+  </type>
+  <relationship>
+    <name>FieldTypeDisplayName</name>
+    <description>Relates a field type to display name that is used on the UI.</description>
+    <alias>k:fieldDisplayName</alias>
+    <reverseAlias>k:displayNameField</reverseAlias>
+    <fromType>fieldType</fromType>
+    <toType>k:fieldTypeDisplayName</toType>
+    <relType>relSingleLookup</relType>
+    <generateCode>true</generateCode>
+    <relationshipInFromTypeGroup>fieldTypeDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>k:fieldTypeDisplayNameDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    FIELD TYPE DISPLAY NAMES                                      -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <k:fieldTypeDisplayName>
+    <alias>currencyDisplayName</alias>
+    <name>Currency</name>
+    <k:displayNameField>currencyField</k:displayNameField>
+    <k:fieldDisplayOrder>300</k:fieldDisplayOrder>
+  </k:fieldTypeDisplayName>
+  <k:fieldTypeDisplayName>
+    <alias>dateAndTimeDisplayName</alias>
+    <name>Date and Time</name>
+    <k:displayNameField>dateTimeField</k:displayNameField>
+    <k:fieldDisplayOrder>400</k:fieldDisplayOrder>
+  </k:fieldTypeDisplayName>
+  <k:fieldTypeDisplayName>
+    <alias>dateDisplayName</alias>
+    <name>Date only</name>
+    <k:displayNameField>dateField</k:displayNameField>
+    <k:fieldDisplayOrder>500</k:fieldDisplayOrder>
+  </k:fieldTypeDisplayName>
+  <k:fieldTypeDisplayName>
+    <alias>timeDisplayName</alias>
+    <name>Time only</name>
+    <k:displayNameField>timeField</k:displayNameField>
+    <k:fieldDisplayOrder>600</k:fieldDisplayOrder>
+  </k:fieldTypeDisplayName>
+  <k:fieldTypeDisplayName>
+    <alias>decimalDisplayName</alias>
+    <name>Decimal</name>
+    <k:displayNameField>decimalField</k:displayNameField>
+    <k:fieldDisplayOrder>200</k:fieldDisplayOrder>
+  </k:fieldTypeDisplayName>
+  <k:fieldTypeDisplayName>
+    <alias>numberDisplayName</alias>
+    <name>Number</name>
+    <k:displayNameField>intField</k:displayNameField>
+    <k:fieldDisplayOrder>100</k:fieldDisplayOrder>
+  </k:fieldTypeDisplayName>
+  <k:fieldTypeDisplayName>
+    <alias>stringDisplayName</alias>
+    <name>Text</name>
+    <k:displayNameField>stringField</k:displayNameField>
+    <k:fieldDisplayOrder>0</k:fieldDisplayOrder>
+  </k:fieldTypeDisplayName>
+  <k:fieldTypeDisplayName>
+    <alias>yesNoDisplayName</alias>
+    <name>Yes/No</name>
+    <k:displayNameField>boolField</k:displayNameField>
+    <k:fieldDisplayOrder>700</k:fieldDisplayOrder>
+  </k:fieldTypeDisplayName>
+  <k:fieldTypeDisplayName>
+    <alias>autoNumberDisplayName</alias>
+    <name>AutoNumber</name>
+    <k:displayNameField>autoNumberField</k:displayNameField>
+    <k:fieldDisplayOrder>150</k:fieldDisplayOrder>
+  </k:fieldTypeDisplayName>
+  <!-- Relationship from Entity Type to its default console form -->
+  <relationship>
+    <name>Default edit form</name>
+    <description>The default edit form for a Entity Type</description>
+    <alias>k:defaultEditForm</alias>
+    <reverseAlias>k:isDefaultForEntityType</reverseAlias>
+    <fromType>type</fromType>
+    <toType>k:customEditForm</toType>
+    <relType>relSingleComponent</relType>
+    <generateCode>true</generateCode>
+    <securesTo>true</securesTo>
+    <securesToReadOnly>true</securesToReadOnly>
+    <relationshipInFromTypeGroup>typeDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>k:customEditFormDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- Relationship from Entity Type to its default tablet form -->
+  <relationship>
+    <name>Default tablet form</name>
+    <description>The default edit form for a Entity Type</description>
+    <alias>k:defaultTabletForm</alias>
+    <reverseAlias>k:isDefaultTabletFormForEntityType</reverseAlias>
+    <fromType>type</fromType>
+    <toType>k:customEditForm</toType>
+    <relType>relSingleComponent</relType>
+    <generateCode>true</generateCode>
+    <securesTo>true</securesTo>
+    <securesToReadOnly>true</securesToReadOnly>
+    <relationshipInFromTypeGroup>typeDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>k:customEditFormDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- The relationship 'resourceViewerConsoleForm' relationship -->
+  <!-- Note: this should be in console solution but will show up in core solution as the alias is missing the console prefix -->
+  <relationship>
+    <alias>resourceViewerConsoleForm</alias>
+    <name>Resource viewer console custom form</name>
+    <description>Describes the 'resourceViewerConsoleForm' relationship definition.</description>
+    <reverseAlias>consoleFormUsedInResourceViewer</reverseAlias>
+    <fromType>resourceViewer</fromType>
+    <toType>k:customEditForm</toType>
+    <relType>relLookup</relType>
+    <generateCode>true</generateCode>
+    <securesTo>true</securesTo>
+    <securesToReadOnly>true</securesToReadOnly>
+    <relationshipInFromTypeGroup>resourceViewerDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>k:customEditFormDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- The relationship 'resourceViewerTabletForm' relationship -->
+  <!-- Note: this should be in console solution but will show up in core solution as the alias is missing the console prefix -->
+  <relationship>
+    <alias>resourceViewerTabletForm</alias>
+    <name>Resource viewer tablet custom form</name>
+    <description>Describes the 'resourceViewerTabletForm' relationship definition.</description>
+    <reverseAlias>tabletFormUsedInResourceViewer</reverseAlias>
+    <fromType>resourceViewer</fromType>
+    <toType>k:customEditForm</toType>
+    <relType>relLookup</relType>
+    <generateCode>true</generateCode>
+    <securesTo>true</securesTo>
+    <securesToReadOnly>true</securesToReadOnly>
+    <relationshipInFromTypeGroup>resourceViewerDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>k:customEditFormDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- Console Theme Type -->
+  <type>
+    <name>Console Theme</name>
+    <description>Used to control the look and feel of the console.</description>
+    <alias>k:consoleTheme</alias>
+    <generateCode>true</generateCode>
+    <isMetadata>true</isMetadata>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Header Area</name>
+        <alias>k:consoleHeaderAreaGroup</alias>
+      </fieldGroup>
+      <fieldGroup>
+        <name>Top Navigation Area</name>
+        <alias>k:consoleTopNavigationAreaGroup</alias>
+      </fieldGroup>
+      <fieldGroup>
+        <name>Left Navigation Area</name>
+        <alias>k:consoleLeftNavigationAreaGroup</alias>
+      </fieldGroup>
+      <fieldGroup>
+        <name>General Content Area</name>
+        <alias>k:consoleContentAreaGroup</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <relationships>
+      <relationship>
+        <alias>k:consoleLogoImage</alias>
+        <name>Logo image</name>
+        <description>The image that should be used for the logo at the top left of the console.</description>
+        <toType>photoFileType</toType>
+        <securesTo>true</securesTo>
+        <relType>relCustom</relType>
+        <!-- because of implicitInSolution=true -->
+        <cardinality>manyToOne</cardinality>
+        <generateCode>true</generateCode>
+        <cloneAction>cloneReferences</cloneAction>
+        <reverseCloneAction>drop</reverseCloneAction>
+        <cascadeDelete>false</cascadeDelete>
+        <cascadeDeleteTo>false</cascadeDeleteTo>
+        <implicitInSolution>true</implicitInSolution>
+        <reverseImplicitInSolution>false</reverseImplicitInSolution>
+        <relationshipInFromTypeGroup>k:consoleHeaderAreaGroup</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>photoFileTypeDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <alias>k:consoleHeaderBackgroundImage</alias>
+        <name>Header background image</name>
+        <description>The image that should be used for the console header area background.</description>
+        <toType>photoFileType</toType>
+        <securesTo>true</securesTo>
+        <relType>relCustom</relType>
+        <!-- because of implicitInSolution=true -->
+        <cardinality>manyToOne</cardinality>
+        <generateCode>true</generateCode>
+        <cloneAction>cloneReferences</cloneAction>
+        <reverseCloneAction>drop</reverseCloneAction>
+        <cascadeDelete>false</cascadeDelete>
+        <cascadeDeleteTo>false</cascadeDeleteTo>
+        <implicitInSolution>true</implicitInSolution>
+        <reverseImplicitInSolution>false</reverseImplicitInSolution>
+        <relationshipInFromTypeGroup>k:consoleHeaderAreaGroup</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>photoFileTypeDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <alias>k:consoleTopBackgroundImage</alias>
+        <name>Top navigation area background image</name>
+        <description>The image that should be used for the console top navigation area background.</description>
+        <toType>photoFileType</toType>
+        <securesTo>true</securesTo>
+        <relType>relCustom</relType>
+        <!-- because of implicitInSolution=true -->
+        <cardinality>manyToOne</cardinality>
+        <generateCode>true</generateCode>
+        <cloneAction>cloneReferences</cloneAction>
+        <reverseCloneAction>drop</reverseCloneAction>
+        <cascadeDelete>false</cascadeDelete>
+        <cascadeDeleteTo>false</cascadeDeleteTo>
+        <implicitInSolution>true</implicitInSolution>
+        <reverseImplicitInSolution>false</reverseImplicitInSolution>
+        <relationshipInFromTypeGroup>k:consoleTopNavigationAreaGroup</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>photoFileTypeDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <alias>k:consoleLeftBackgroundImage</alias>
+        <name>Left navigation area background image</name>
+        <description>The image that should be used for the console left navigation area background.</description>
+        <toType>photoFileType</toType>
+        <securesTo>true</securesTo>
+        <relType>relCustom</relType>
+        <!-- because of implicitInSolution=true -->
+        <cardinality>manyToOne</cardinality>
+        <generateCode>true</generateCode>
+        <cloneAction>cloneReferences</cloneAction>
+        <reverseCloneAction>drop</reverseCloneAction>
+        <cascadeDelete>false</cascadeDelete>
+        <cascadeDeleteTo>false</cascadeDeleteTo>
+        <implicitInSolution>true</implicitInSolution>
+        <reverseImplicitInSolution>false</reverseImplicitInSolution>
+        <relationshipInFromTypeGroup>k:consoleLeftNavigationAreaGroup</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>photoFileTypeDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <alias>k:consoleTopNavigationStyle</alias>
+        <!-- Structured.QueryCondition.Operator -->
+        <toType>k:topNavigationStyleEnum</toType>
+        <name>Top navigation style</name>
+        <relType>relChoiceField</relType>
+        <description>The top navigation style options</description>
+        <generateCode>true</generateCode>
+        <cloneAction>cloneReferences</cloneAction>
+        <reverseCloneAction>drop</reverseCloneAction>
+        <cascadeDelete>false</cascadeDelete>
+        <cascadeDeleteTo>false</cascadeDeleteTo>
+        <implicitInSolution>true</implicitInSolution>
+        <reverseImplicitInSolution>false</reverseImplicitInSolution>
+        <relationshipInFromTypeGroup>k:consoleTopNavigationAreaGroup</relationshipInFromTypeGroup>
+      </relationship>
+    </relationships>
+    <fields>
+      <!-- Header Area -->
+      <stringField>
+        <name>Header background colour (ARGB)</name>
+        <alias>k:consoleHeaderBackgroundColor</alias>
+        <description>The colour of the header background colour.</description>
+        <fieldRepresents>fieldRepresentsColor</fieldRepresents>
+        <fieldInGroup>k:consoleHeaderAreaGroup</fieldInGroup>
+      </stringField>
+      <stringField>
+        <name>Header menu text colour (ARGB)</name>
+        <alias>k:consoleHeaderMenuTextColor</alias>
+        <description>The colour of the header menu text.</description>
+        <fieldRepresents>fieldRepresentsColor</fieldRepresents>
+        <fieldInGroup>k:consoleHeaderAreaGroup</fieldInGroup>
+      </stringField>
+      <boolField>
+        <alias>k:consoleHeaderBackgroundImageRepeat</alias>
+        <name>Header background image repeat</name>
+        <description>Horizontal repeat header background image?</description>
+        <fieldInGroup>k:consoleHeaderAreaGroup</fieldInGroup>
+      </boolField>
+      <!-- Top Navigation Area -->
+      <stringField>
+        <name>Top navigation area background colour (ARGB)</name>
+        <alias>k:consoleTopNavigationAreaBackgroundColor</alias>
+        <description>The colour of the top navigation area background.</description>
+        <fieldRepresents>fieldRepresentsColor</fieldRepresents>
+        <fieldInGroup>k:consoleTopNavigationAreaGroup</fieldInGroup>
+      </stringField>
+      <stringField>
+        <name>Selected tab colour (ARGB)</name>
+        <alias>k:consoleTopNavigationSelectedTabColor</alias>
+        <description>The colour of the top navigation area Selected Tab.</description>
+        <fieldRepresents>fieldRepresentsColor</fieldRepresents>
+        <fieldInGroup>k:consoleTopNavigationAreaGroup</fieldInGroup>
+      </stringField>
+      <stringField>
+        <name>Selected tab border colour (ARGB)</name>
+        <alias>k:consoleTopNavigationSelectedTabBorderColor</alias>
+        <description>The colour of the top navigation area Selected Tab border.</description>
+        <fieldRepresents>fieldRepresentsColor</fieldRepresents>
+        <fieldInGroup>k:consoleTopNavigationAreaGroup</fieldInGroup>
+      </stringField>
+      <stringField>
+        <name>Selected tab font colour (ARGB)</name>
+        <alias>k:consoleTopNavigationSelectedTabFontColor</alias>
+        <description>The font colour of the top navigation area Selected Tab.</description>
+        <fieldRepresents>fieldRepresentsColor</fieldRepresents>
+        <fieldInGroup>k:consoleTopNavigationAreaGroup</fieldInGroup>
+      </stringField>
+      <stringField>
+        <name>Unselected tab colour (ARGB)</name>
+        <alias>k:consoleTopNavigationUnselectedTabColor</alias>
+        <description>The colour of the top navigation area Unselected Tab.</description>
+        <fieldRepresents>fieldRepresentsColor</fieldRepresents>
+        <fieldInGroup>k:consoleTopNavigationAreaGroup</fieldInGroup>
+      </stringField>
+      <stringField>
+        <name>Unselected tab font colour (ARGB)</name>
+        <alias>k:consoleTopNavigationUnselectedTabFontColor</alias>
+        <description>The font colour of the top navigation area Unselected Tab.</description>
+        <fieldRepresents>fieldRepresentsColor</fieldRepresents>
+        <fieldInGroup>k:consoleTopNavigationAreaGroup</fieldInGroup>
+      </stringField>
+      <boolField>
+        <alias>k:consoleTopBackgroundImageRepeat</alias>
+        <name>Top navigation area background image repeat</name>
+        <description>Horizontal repeat top navigation background image?</description>
+        <fieldInGroup>k:consoleTopNavigationAreaGroup</fieldInGroup>
+      </boolField>
+      <!-- Left Navigation Area -->
+      <stringField>
+        <name>Left navigation area background colour (ARGB)</name>
+        <alias>k:consoleLeftNavigationAreaBackgroundColor</alias>
+        <description>The colour of the left navigation area background.</description>
+        <fieldRepresents>fieldRepresentsColor</fieldRepresents>
+        <fieldInGroup>k:consoleLeftNavigationAreaGroup</fieldInGroup>
+      </stringField>
+      <stringField>
+        <name>Mobile left navigation area background colour (ARGB)</name>
+        <alias>k:mobileLeftNavigationAreaBackgroundColor</alias>
+        <description>The colour of the mobile left navigation area background.</description>
+        <fieldRepresents>fieldRepresentsColor</fieldRepresents>
+        <fieldInGroup>k:consoleLeftNavigationAreaGroup</fieldInGroup>
+      </stringField>
+      <stringField>
+        <name>Left navigation area font colour (ARGB)</name>
+        <alias>k:consoleLeftNavigationAreaFontColor</alias>
+        <description>The font colour of the left navigation area.</description>
+        <fieldRepresents>fieldRepresentsColor</fieldRepresents>
+        <fieldInGroup>k:consoleLeftNavigationAreaGroup</fieldInGroup>
+      </stringField>
+      <stringField>
+        <name>Selected navigation element colour (ARGB)</name>
+        <alias>k:consoleLeftNavigationSelectedElementColor</alias>
+        <description>The colour of the left navigation selected navigation element.</description>
+        <fieldRepresents>fieldRepresentsColor</fieldRepresents>
+        <fieldInGroup>k:consoleLeftNavigationAreaGroup</fieldInGroup>
+      </stringField>
+      <stringField>
+        <name>Selected navigation font colour (ARGB)</name>
+        <alias>k:consoleLeftNavigationSelectedFontColor</alias>
+        <description>The colour of the left navigation selected navigation font.</description>
+        <fieldRepresents>fieldRepresentsColor</fieldRepresents>
+        <fieldInGroup>k:consoleLeftNavigationAreaGroup</fieldInGroup>
+      </stringField>
+      <boolField>
+        <alias>k:consoleLeftBackgroundImageRepeat</alias>
+        <name>Left navigation area background image repeat</name>
+        <description>Veritical repeat left navigation background image?</description>
+        <fieldInGroup>k:consoleLeftNavigationAreaGroup</fieldInGroup>
+      </boolField>
+      <!-- General Content Area -->
+      <stringField>
+        <name>Title font colour (ARGB)</name>
+        <alias>k:consoleGeneralContentAreaTitleFontColor</alias>
+        <description>The font colour of the general content area title.</description>
+        <fieldRepresents>fieldRepresentsColor</fieldRepresents>
+        <fieldInGroup>k:consoleContentAreaGroup</fieldInGroup>
+      </stringField>
+      <stringField>
+        <name>Container heading font colour (ARGB)</name>
+        <alias>k:consoleGeneralContentAreaContainerHeadingFontColor</alias>
+        <description>The font colour of the general content area Heading.</description>
+        <fieldRepresents>fieldRepresentsColor</fieldRepresents>
+        <fieldInGroup>k:consoleContentAreaGroup</fieldInGroup>
+      </stringField>
+      <stringField>
+        <name>Container heading line colour (ARGB)</name>
+        <alias>k:consoleGeneralContentAreaContainerHeadingLineColor</alias>
+        <description>The line colour of the general content area Heading.</description>
+        <fieldRepresents>fieldRepresentsColor</fieldRepresents>
+        <fieldInGroup>k:consoleContentAreaGroup</fieldInGroup>
+      </stringField>
+      <stringField>
+        <name>Form tab control selected tab colour (ARGB)</name>
+        <alias>k:consoleGeneralContentAreaSelectedTabColor</alias>
+        <description>The selected tab colour of the general content area form tab.</description>
+        <fieldRepresents>fieldRepresentsColor</fieldRepresents>
+        <fieldInGroup>k:consoleContentAreaGroup</fieldInGroup>
+      </stringField>
+      <stringField>
+        <name>Form tab control selected tab font colour (ARGB)</name>
+        <alias>k:consoleGeneralContentAreaSelectedTabFontColor</alias>
+        <description>The selected tab font colour of the general content area form tab.</description>
+        <fieldRepresents>fieldRepresentsColor</fieldRepresents>
+        <fieldInGroup>k:consoleContentAreaGroup</fieldInGroup>
+      </stringField>
+      <stringField>
+        <name>Form tab control unselected tab colour (ARGB)</name>
+        <alias>k:consoleGeneralContentAreaUnselectedTabColor</alias>
+        <description>The unselected tab colour of the general content area form tab.</description>
+        <fieldRepresents>fieldRepresentsColor</fieldRepresents>
+        <fieldInGroup>k:consoleContentAreaGroup</fieldInGroup>
+      </stringField>
+      <stringField>
+        <name>Form tab control unselected tab font colour (ARGB)</name>
+        <alias>k:consoleGeneralContentAreaUnselectedTabFontColor</alias>
+        <description>The unselected tab font colour of the general content area form tab.</description>
+        <fieldRepresents>fieldRepresentsColor</fieldRepresents>
+        <fieldInGroup>k:consoleContentAreaGroup</fieldInGroup>
+      </stringField>
+      <stringField>
+        <name>Tab control line colour (ARGB)</name>
+        <alias>k:consoleGeneralContentAreaTabControlLineColor</alias>
+        <description>The colour of the general content area tab control line.</description>
+        <fieldRepresents>fieldRepresentsColor</fieldRepresents>
+        <fieldInGroup>k:consoleContentAreaGroup</fieldInGroup>
+      </stringField>
+      <stringField>
+        <name>Report header colour (ARGB)</name>
+        <alias>k:consoleGeneralContentAreaReportHeaderColor</alias>
+        <description>The colour of the general content area report header.</description>
+        <fieldRepresents>fieldRepresentsColor</fieldRepresents>
+        <fieldInGroup>k:consoleContentAreaGroup</fieldInGroup>
+      </stringField>
+      <stringField>
+        <name>Report header font colour (ARGB)</name>
+        <alias>k:consoleGeneralContentAreaReportHeaderFontColor</alias>
+        <description>The font colour of the general content area report header.</description>
+        <fieldRepresents>fieldRepresentsColor</fieldRepresents>
+        <fieldInGroup>k:consoleContentAreaGroup</fieldInGroup>
+      </stringField>
+    </fields>
+  </type>
+  <!-- Top Navigation Style Enumeration type -->
+  <enumType>
+    <alias>k:topNavigationStyleEnum</alias>
+    <name>Top Navigation Style</name>
+    <inherits>enumValue</inherits>
+    <enumValues>
+      <k:topNavigationStyleEnum>
+        <name>Default</name>
+        <alias>k:topNavigationStyle1</alias>
+      </k:topNavigationStyleEnum>
+      <k:topNavigationStyleEnum>
+        <name>navTab1</name>
+        <alias>k:topNavigationStyle2</alias>
+      </k:topNavigationStyleEnum>
+      <k:topNavigationStyleEnum>
+        <name>navTab2</name>
+        <alias>k:topNavigationStyle3</alias>
+      </k:topNavigationStyleEnum>
+      <k:topNavigationStyleEnum>
+        <name>navTab3</name>
+        <alias>k:topNavigationStyle4</alias>
+      </k:topNavigationStyleEnum>
+    </enumValues>
+    <generateCode>true</generateCode>
+  </enumType>
+  <!-- Tenant specific console theme -->
+  <relationship>
+    <alias>k:tenantConsoleThemeSettings</alias>
+    <name>Tenant theme</name>
+    <generateCode>true</generateCode>
+    <description>The tenant specific theme.</description>
+    <fromType>tenantGeneralSettings</fromType>
+    <toType>k:consoleTheme</toType>
+    <securesTo>true</securesTo>
+    <hideOnToType>true</hideOnToType>
+    <relType>relCustom</relType>
+    <relationshipInFromTypeGroup>generalSettings</relationshipInFromTypeGroup>
+    <!-- because of implicitInSolution=true -->
+    <cardinality>manyToOne</cardinality>
+    <cloneAction>cloneReferences</cloneAction>
+    <reverseCloneAction>drop</reverseCloneAction>
+    <cascadeDelete>false</cascadeDelete>
+    <cascadeDeleteTo>false</cascadeDeleteTo>
+    <implicitInSolution>true</implicitInSolution>
+    <reverseImplicitInSolution>false</reverseImplicitInSolution>
+  </relationship>
+  <!-- Solution specific console theme -->
+  <relationship>
+    <alias>k:solutionConsoleTheme</alias>
+    <name>Console theme settings</name>
+    <generateCode>true</generateCode>
+    <description>The application specific console theme settings.</description>
+    <fromType>solution</fromType>
+    <toType>k:consoleTheme</toType>
+    <securesTo>true</securesTo>
+    <hideOnToType>true</hideOnToType>
+    <relType>relCustom</relType>
+    <!-- because of implicitInSolution=true -->
+    <cardinality>manyToOne</cardinality>
+    <cloneAction>cloneReferences</cloneAction>
+    <reverseCloneAction>drop</reverseCloneAction>
+    <cascadeDelete>false</cascadeDelete>
+    <cascadeDeleteTo>false</cascadeDeleteTo>
+    <implicitInSolution>true</implicitInSolution>
+    <reverseImplicitInSolution>false</reverseImplicitInSolution>
+    <relationshipInFromTypeGroup>solutionDetails</relationshipInFromTypeGroup>
+  </relationship>
+  <!-- Image-Column formatting rule thumbnail size -->
+  <relationship>
+    <!-- defined here because thumbnailSizeEnum is in console solution -->
+    <alias>formatImageSize</alias>
+    <!-- Formatting.ImageFormattingRule.ThumbnailSizeId -->
+    <name>Size</name>
+    <relType>relChoiceField</relType>
+    <generateCode>true</generateCode>
+    <fromType>displayFormat</fromType>
+    <toType>k:thumbnailSizeEnum</toType>
+    <securesTo>true</securesTo>
+    <relationshipInFromTypeGroup>displayFormatDetails</relationshipInFromTypeGroup>
+  </relationship>
+  <!-- Event Log Settings -->
+  <type>
+    <name>Event Log Settings</name>
+    <alias>eventLogSettings</alias>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <alias>eventLogSettingsDetails</alias>
+        <name>Event Log Settings Details</name>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <intField>
+        <alias>maxEventLogEntries</alias>
+        <name>Maximum event log entries</name>
+        <description>Maximum number of log entries to store.</description>
+        <minInt>1</minInt>
+        <maxInt>10000</maxInt>
+        <defaultValue>10000</defaultValue>
+        <fieldInGroup>eventLogSettingsDetails</fieldInGroup>
+      </intField>
+    </fields>
+  </type>
+  <relationship>
+    <alias>inspectSecurityChecksOnResource</alias>
+    <name>Inspect security checks on resource</name>
+    <relType>relExclusiveCollection</relType>
+    <generateCode>true</generateCode>
+    <fromType>eventLogSettings</fromType>
+    <toType>resource</toType>
+    <relationshipInFromTypeGroup>eventLogSettingsDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>default</relationshipInToTypeGroup>
+    <hideOnToType>true</hideOnToType>
+    <hideOnToTypeDefaultForm>true</hideOnToTypeDefaultForm>
+  </relationship>
+
+</resources>

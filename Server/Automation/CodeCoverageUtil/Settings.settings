@@ -1,0 +1,36 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="CodeCoverageUtil" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="VsInstrExePath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Performance Tools\x64\vsinstr.exe</Value>
+    </Setting>
+    <Setting Name="SnExePath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Bin\NETFX 4.0 Tools\x64\sn.exe</Value>
+    </Setting>
+    <Setting Name="GacUtilExePath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Bin\NETFX 4.0 Tools\x64\gacutil.exe</Value>
+    </Setting>
+    <Setting Name="VsPerfMonExePath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Performance Tools\x64\vsperfmon.exe</Value>
+    </Setting>
+    <Setting Name="VsPerfCmdExePath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Performance Tools\x64\vsperfcmd.exe</Value>
+    </Setting>
+    <Setting Name="MsTestExePath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">c:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\MSTest.exe</Value>
+    </Setting>
+    <Setting Name="OpenCoverConsoleExePath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">.\OpenCover\OpenCover.Console.exe</Value>
+    </Setting>
+    <Setting Name="ReportGeneratorExePath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">.\ReportGenerator\ReportGenerator.exe</Value>
+    </Setting>
+    <Setting Name="NunitExePath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">C:\Program Files (x86)\NUnit 2.6.3\bin\Nunit-console.exe</Value>
+    </Setting>
+    <Setting Name="NunitExeFrameworkPath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">C:\Program Files (x86)\NUnit 2.6.3\bin\framework\nunit.framework.dll</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

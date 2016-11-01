@@ -1,0 +1,822 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="core" xmlns:k="console" xsi:schemaLocation=". ../Core.xsd k ../Console.xsd" defaultSolution="consoleSolution">
+  <!--Copyright 2011-2016 Global Software Innovation Pty Ltd-->
+  <!--XYZ The UI contexts that exist ZYX-->
+  <k:uiContext>
+    <name>Html</name>
+    <alias>k:uiContextHtml</alias>
+  </k:uiContext>
+  <k:uiContext>
+    <name>iOS</name>
+    <alias>k:uiContextIos</alias>
+  </k:uiContext>
+  <!-- Html field rendering controls -->
+  <k:fieldRenderControlType>
+    <inherits>k:fieldControlOnForm</inherits>
+    <generateCode>true</generateCode>
+    <alias>checkboxKFieldRenderControl</alias>
+    <name>Checkbox</name>
+    <k:control>CheckBoxControl</k:control>
+    <k:fieldTypeToRender>boolField</k:fieldTypeToRender>
+    <k:designControl>CheckBoxControl</k:designControl>
+    <k:viewControl>TextBlockControl</k:viewControl>
+    <k:context>k:uiContextHtml</k:context>
+  </k:fieldRenderControlType>
+  <k:fieldRenderControlType>
+    <inherits>k:fieldControlOnForm</inherits>
+    <generateCode>true</generateCode>
+    <alias>numericKFieldRenderControl</alias>
+    <name>Numeric</name>
+    <k:control>NumberSpinnerControl</k:control>
+    <k:fieldTypeToRender>intField</k:fieldTypeToRender>
+    <k:designControl>NumberSpinnerControl</k:designControl>
+    <k:viewControl>TextBlockControl</k:viewControl>
+    <k:context>k:uiContextHtml</k:context>
+  </k:fieldRenderControlType>
+  <k:fieldRenderControlType>
+    <inherits>k:fieldControlOnForm</inherits>
+    <generateCode>true</generateCode>
+    <alias>decimalKFieldRenderControl</alias>
+    <name>Decimal</name>
+    <k:control>DecimalSpinnerControl</k:control>
+    <k:fieldTypeToRender>decimalField</k:fieldTypeToRender>
+    <k:designControl>DecimalSpinnerControl</k:designControl>
+    <k:viewControl>TextBlockControl</k:viewControl>
+    <k:context>k:uiContextHtml</k:context>
+  </k:fieldRenderControlType>
+  <k:fieldRenderControlType>
+    <inherits>k:fieldControlOnForm</inherits>
+    <generateCode>true</generateCode>
+    <alias>currencyKFieldRenderControl</alias>
+    <name>Currency</name>
+    <k:control>CurrencyControl</k:control>
+    <k:fieldTypeToRender>currencyField</k:fieldTypeToRender>
+    <k:designControl>CurrencyControl</k:designControl>
+    <k:viewControl>TextBlockControl</k:viewControl>
+    <k:context>k:uiContextHtml</k:context>
+  </k:fieldRenderControlType>
+  <k:fieldRenderControlType>
+    <inherits>k:fieldControlOnForm</inherits>
+    <generateCode>true</generateCode>
+    <name>Text box</name>
+    <k:control>SingleLineTextControl</k:control>
+    <alias>k:singleLineTextControl</alias>
+    <k:fieldTypeToRender>stringField,aliasField</k:fieldTypeToRender>
+    <k:defaultFieldTypesToRender>stringField</k:defaultFieldTypesToRender>
+    <k:designControl>SingleLineTextControl</k:designControl>
+    <k:viewControl>TextBlockControl</k:viewControl>
+    <k:context>k:uiContextHtml</k:context>
+    <k:minHeightMobile>71</k:minHeightMobile> <!-- ANDROID - 1px extra at bottom for no reason I can discern -->
+    <k:minHeightTablet>71</k:minHeightTablet>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Text box Details</name>
+        <alias>k:singleLineTextControlDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <intField>
+        <alias>k:textControlWidth</alias>
+        <name>Text control width</name>
+        <minInt>0</minInt>
+        <defaultValue>0</defaultValue>
+        <fieldInGroup>k:singleLineTextControlDetails</fieldInGroup>
+      </intField>
+      <intField>
+        <alias>k:textControlHeight</alias>
+        <name>Text control height</name>
+        <minInt>0</minInt>
+        <defaultValue>0</defaultValue>
+        <fieldInGroup>k:singleLineTextControlDetails</fieldInGroup>
+      </intField>
+    </fields>
+  </k:fieldRenderControlType>
+  <k:fieldRenderControlType>
+    <inherits>k:fieldControlOnForm</inherits>
+    <generateCode>true</generateCode>
+    <name>AutoNumber</name>
+    <k:control>AutoNumberControl</k:control>
+    <alias>autoNumberFieldRenderControl</alias>
+    <k:fieldTypeToRender>autoNumberField</k:fieldTypeToRender>
+    <k:designControl>AutoNumberControl</k:designControl>
+    <k:viewControl>AutoNumberControl</k:viewControl>
+    <k:context>k:uiContextHtml</k:context>
+  </k:fieldRenderControlType>
+  <k:fieldRenderControlType>
+    <inherits>k:fieldControlOnForm</inherits>
+    <generateCode>true</generateCode>
+    <alias>timeKFieldRenderControl</alias>
+    <name>Time</name>
+    <k:control>TimeControl</k:control>
+    <k:fieldTypeToRender>timeField</k:fieldTypeToRender>
+    <k:designControl>TimeControl</k:designControl>
+    <k:viewControl>TextBlockControl</k:viewControl>
+    <k:context>k:uiContextHtml</k:context>
+  </k:fieldRenderControlType>
+  <k:fieldRenderControlType>
+    <inherits>k:fieldControlOnForm</inherits>
+    <generateCode>true</generateCode>
+    <alias>dateKFieldRenderControl</alias>
+    <name>Date</name>
+    <k:control>DateControl</k:control>
+    <k:fieldTypeToRender>dateField</k:fieldTypeToRender>
+    <k:designControl>DateControl</k:designControl>
+    <k:viewControl>TextBlockControl</k:viewControl>
+    <k:context>k:uiContextHtml</k:context>
+  </k:fieldRenderControlType>
+  <k:fieldRenderControlType>
+    <inherits>k:fieldControlOnForm</inherits>
+    <generateCode>true</generateCode>
+    <alias>dateAndTimeKFieldRenderControl</alias>
+    <name>Date and Time</name>
+    <k:control>DateTimeControl</k:control>
+    <k:fieldTypeToRender>dateTimeField</k:fieldTypeToRender>
+    <k:designControl>DateTimeControl</k:designControl>
+    <k:viewControl>TextBlockControl</k:viewControl>
+    <k:context>k:uiContextHtml</k:context>
+  </k:fieldRenderControlType>
+  <k:fieldRenderControlType>
+    <inherits>k:fieldControlOnForm</inherits>
+    <generateCode>true</generateCode>
+    <alias>guidFieldRenderControl</alias>
+    <name>GUID</name>
+    <k:control>SingleLineTextControl</k:control>
+    <k:fieldTypeToRender>guidField</k:fieldTypeToRender>
+    <k:designControl>SingleLineTextControl</k:designControl>
+    <k:viewControl>TextBlockControl</k:viewControl>
+    <k:context>k:uiContextHtml</k:context>
+  </k:fieldRenderControlType>
+  <k:fieldRenderControlType>
+    <inherits>k:fieldControlOnForm</inherits>
+    <generateCode>true</generateCode>
+    <alias>xmlFieldRenderControl</alias>
+    <name>XML</name>
+    <k:control>SingleLineTextControl</k:control>
+    <k:fieldTypeToRender>xmlField</k:fieldTypeToRender>
+    <k:designControl>SingleLineTextControl</k:designControl>
+    <k:viewControl>TextBlockControl</k:viewControl>
+    <k:context>k:uiContextHtml</k:context>
+  </k:fieldRenderControlType>
+  <k:relationshipRenderControlType>
+    <inherits>k:relationshipControlOnForm</inherits>
+    <generateCode>true</generateCode>
+    <name>Relationship</name>
+    <alias>k:multilineRelationshipRenderControl</alias>
+    <k:control>RelationshipControl</k:control>
+    <k:designControl>RelationshipControl</k:designControl>
+    <k:viewControl>RelationshipControl</k:viewControl>
+    <k:context>k:uiContextHtml</k:context>
+  </k:relationshipRenderControlType>
+  <k:relationshipRenderControlType>
+    <inherits>k:relationshipControlOnForm</inherits>
+    <generateCode>true</generateCode>
+    <name>TabRelationship</name>
+    <alias>k:tabRelationshipRenderControl</alias>
+    <k:control>TabRelationshipControl</k:control>
+    <k:designControl>TabRelationshipControl</k:designControl>
+    <k:viewControl>TabRelationshipControl</k:viewControl>
+    <k:context>k:uiContextHtml</k:context>
+    <k:minWidth>370</k:minWidth>
+    <k:minWidthTablet>370</k:minWidthTablet>
+    <k:minWidthMobile>300</k:minWidthMobile>
+    <k:minHeight>50</k:minHeight>
+    <k:minHeightTablet>50</k:minHeightTablet>
+    <k:minHeightMobile>50</k:minHeightMobile>
+    <k:pagerSupportMobile>true</k:pagerSupportMobile>
+  </k:relationshipRenderControlType>
+  <k:relationshipRenderControlType>
+    <inherits>k:relationshipControlOnForm</inherits>
+    <generateCode>true</generateCode>
+    <name>Inline Relationship</name>
+    <alias>k:inlineRelationshipRenderControl</alias>
+    <k:control>InlineRelationshipControl</k:control>
+    <k:designControl>InlineRelationshipControl</k:designControl>
+    <k:viewControl>LinkButtonControl</k:viewControl>
+    <k:context>k:uiContextHtml</k:context>
+  </k:relationshipRenderControlType>
+  <k:relationshipRenderControlType>
+    <inherits>k:relationshipControlOnForm</inherits>
+    <generateCode>true</generateCode>
+    <name>Choice Field</name>
+    <alias>k:choiceRelationshipRenderControl</alias>
+    <k:control>ChoiceRelationshipControl</k:control>
+    <k:designControl>ChoiceRelationshipControl</k:designControl>
+    <k:viewControl>ChoiceRelationshipControl</k:viewControl>
+    <k:context>k:uiContextHtml</k:context>
+  </k:relationshipRenderControlType>
+  <k:relationshipRenderControlType>
+    <inherits>k:relationshipControlOnForm</inherits>
+    <generateCode>true</generateCode>
+    <name>Multi Choice Field</name>
+    <alias>k:multiChoiceRelationshipRenderControl</alias>
+    <k:control>MultiChoiceRelationshipControl</k:control>
+    <k:designControl>MultiChoiceRelationshipControl</k:designControl>
+    <k:viewControl>MultiChoiceRelationshipControl</k:viewControl>
+    <k:context>k:uiContextHtml</k:context>
+  </k:relationshipRenderControlType>
+  <k:relationshipRenderControlType>
+    <inherits>k:relationshipControlOnForm</inherits>
+    <generateCode>true</generateCode>
+    <name>Calculated Field</name>
+    <alias>k:calculatedRenderControl</alias>
+    <k:control>CalculatedFieldControl</k:control>
+    <k:designControl>CalculatedFieldControl</k:designControl>
+    <k:viewControl>CalculatedFieldControl</k:viewControl>
+    <k:context>k:uiContextHtml</k:context>
+  </k:relationshipRenderControlType>
+  <k:relationshipRenderControlType>
+    <inherits>k:relationshipControlOnForm</inherits>
+    <generateCode>true</generateCode>
+    <name>Drop Down Relationship</name>
+    <alias>k:dropDownRelationshipRenderControl</alias>
+    <k:control>DropDownRelationshipControl</k:control>
+    <k:designControl>DropDownRelationshipControl</k:designControl>
+    <k:viewControl>DropDownRelationshipControl</k:viewControl>
+    <k:context>k:uiContextHtml</k:context>
+  </k:relationshipRenderControlType>
+  <!-- Html structure rendering controls -->
+  <k:structureRenderControlType>
+    <inherits>k:structureControlOnForm</inherits>
+    <generateCode>true</generateCode>
+    <name>Custom Edit Form</name>
+    <alias>k:customEditFormControl</alias>
+    <k:control>customEditFormControl</k:control>
+    <k:designControl>customEditFormControl</k:designControl>
+    <k:viewControl>customEditFormControl</k:viewControl>
+    <k:context>k:uiContextHtml</k:context>
+    <k:isHiddenFromFormDesigner>true</k:isHiddenFromFormDesigner>
+  </k:structureRenderControlType>
+  <k:structureRenderControlType>
+    <inherits>k:structureControlOnForm</inherits>
+    <generateCode>true</generateCode>
+    <name>Horizontal Stack Container</name>
+    <alias>k:horizontalStackContainerControl</alias>
+    <k:control>HorizontalStackContainerControl</k:control>
+    <k:designControl>HorizontalStackContainerControl</k:designControl>
+    <k:viewControl>HorizontalStackContainerControl</k:viewControl>
+    <k:context>k:uiContextHtml</k:context>
+    <k:minWidth>370</k:minWidth>
+    <k:minWidthTablet>370</k:minWidthTablet>
+    <k:minWidthMobile>300</k:minWidthMobile>
+    <k:minHeight>50</k:minHeight>
+    <k:minHeightTablet>50</k:minHeightTablet>
+    <k:minHeightMobile>50</k:minHeightMobile>
+  </k:structureRenderControlType>
+  <k:structureRenderControlType>
+    <inherits>k:structureControlOnForm</inherits>
+    <generateCode>true</generateCode>
+    <name>Vertical Stack Container</name>
+    <alias>k:verticalStackContainerControl</alias>
+    <k:control>VerticalStackContainerControl</k:control>
+    <k:designControl>VerticalStackContainerControl</k:designControl>
+    <k:viewControl>VerticalStackContainerControl</k:viewControl>
+    <k:context>k:uiContextHtml</k:context>
+    <k:minWidth>370</k:minWidth>
+    <k:minWidthTablet>370</k:minWidthTablet>
+    <k:minWidthMobile>300</k:minWidthMobile>
+    <k:minHeight>50</k:minHeight>
+    <k:minHeightTablet>50</k:minHeightTablet>
+    <k:minHeightMobile>50</k:minHeightMobile>
+  </k:structureRenderControlType>
+  <k:structureRenderControlType>
+    <inherits>k:structureControlOnForm</inherits>
+    <generateCode>true</generateCode>
+    <name>Header Column Display</name>
+    <alias>k:headerColumnContainerControl</alias>
+    <k:control>HeaderColumnContainerControl</k:control>
+    <k:designControl>HeaderColumnContainerControl</k:designControl>
+    <k:viewControl>HeaderColumnContainerControl</k:viewControl>
+    <k:context>k:uiContextHtml</k:context>
+    <k:isHiddenFromFormDesigner>true</k:isHiddenFromFormDesigner>
+    <k:minWidth>370</k:minWidth>
+    <k:minWidthTablet>370</k:minWidthTablet>
+    <k:minWidthMobile>300</k:minWidthMobile>
+    <k:minHeight>50</k:minHeight>
+    <k:minHeightTablet>50</k:minHeightTablet>
+    <k:minHeightMobile>50</k:minHeightMobile>
+  </k:structureRenderControlType>
+  <k:structureRenderControlType>
+    <inherits>k:structureControlOnForm</inherits>
+    <generateCode>true</generateCode>
+    <name>Tabbed Container</name>
+    <alias>k:tabContainerControl</alias>
+    <k:control>TabContainerControl</k:control>
+    <k:designControl>TabContainerControl</k:designControl>
+    <k:viewControl>TabContainerControl</k:viewControl>
+    <k:context>k:uiContextHtml</k:context>
+    <k:minWidth>370</k:minWidth>
+    <k:minWidthTablet>370</k:minWidthTablet>
+    <k:minWidthMobile>300</k:minWidthMobile>
+    <k:minHeight>200</k:minHeight>
+    <k:minHeightTablet>200</k:minHeightTablet>
+    <k:minHeightMobile>200</k:minHeightMobile>
+  </k:structureRenderControlType>
+  <k:relationshipRenderControlType>
+    <inherits>k:relationshipControlOnForm</inherits>
+    <generateCode>true</generateCode>
+    <name>StructureView Relationship</name>
+    <alias>k:structureViewRelationshipControl</alias>
+    <k:control>StructureViewRelationshipControl</k:control>
+    <k:designControl>StructureViewRelationshipControl</k:designControl>
+    <k:viewControl>LinkButtonControl</k:viewControl>
+    <k:context>k:uiContextHtml</k:context>
+  </k:relationshipRenderControlType>
+  <k:relationshipRenderControlType>
+    <name>Image Field</name>
+    <alias>k:imageRelationshipRenderControl</alias>
+    <inherits>k:relationshipControlOnForm</inherits>
+    <generateCode>true</generateCode>
+    <k:control>ImageRelationshipControl</k:control>
+    <k:designControl>ImageRelationshipControl</k:designControl>
+    <k:viewControl>ImageRelationshipControl</k:viewControl>
+    <k:context>k:uiContextHtml</k:context>
+    <k:minHeight>180</k:minHeight>
+    <k:minHeightTablet>230</k:minHeightTablet>
+    <k:minHeightMobile>230</k:minHeightMobile>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Image Field Details</name>
+        <alias>k:imageRelationshipRenderControlDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <relationships>
+      <relationship>
+        <name>Thumbnail scaling</name>
+        <alias>k:thumbnailScalingSetting</alias>
+        <toType>imageScaleEnum</toType>
+        <relType>relChoiceField</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>k:imageRelationshipRenderControlDetails</relationshipInFromTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <name>Thumbnail size</name>
+        <alias>k:thumbnailSizeSetting</alias>
+        <toType>k:thumbnailSizeEnum</toType>
+        <relType>relChoiceField</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>k:imageRelationshipRenderControlDetails</relationshipInFromTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+    </relationships>
+  </k:relationshipRenderControlType>
+  <!---->
+  <!-- Non data controls -->
+  <!---->
+  <k:renderControlType>
+    <inherits>k:controlOnForm</inherits>
+    <generateCode>true</generateCode>
+    <name>Workflow Button</name>
+    <description>Allows the user to trigger a workflow</description>
+    <alias>k:workflowButtonControl</alias>
+    <k:control>workflowButtonControl</k:control>
+    <k:designControl>workflowButtonControl</k:designControl>
+    <k:viewControl>workflowButtonControl</k:viewControl>
+    <k:context>k:uiContextHtml</k:context>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Workflow Button Details</name>
+        <alias>k:workflowButtonControlDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <boolField>
+        <alias>k:wbcHideSuccessConfirmation</alias>
+        <name>Hide success confirmation</name>
+        <defaultValue>false</defaultValue>
+        <fieldInGroup>k:workflowButtonControlDetails</fieldInGroup>
+      </boolField>
+    </fields>
+    <relationships>
+      <relationship>
+        <alias>k:wbcWorkflowToRun</alias>
+        <name>Workflow to run</name>
+        <description>The workflow to run when the button is pressed</description>
+        <toType>workflow</toType>
+        <relType>relLookup</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>k:workflowButtonControlDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>workflowDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <alias>k:wbcResourceInputParameter</alias>
+        <name>ResourceInputParameter</name>
+        <description>The input parameter tha contains the resource to start the workflow against. If missing then the workflow runs without any resource context.</description>
+        <toType>resourceArgument</toType>
+        <relType>relLookup</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>k:workflowButtonControlDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>resourceArgumentDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <!-- These two relationships are used together to determine if the control should be disabled. 
+      If the value of Disable Control Relationship Control is any of wbcDisableControlBasedOnResources then
+      the control is disabled. -->
+      <relationship>
+        <alias>k:wbcDisableControlBasedOnRelationshipControl</alias>
+        <name>Disable control based on relationship control</name>
+        <description>The control on the form whose value is used to determine if this control is to be disabled.</description>
+        <toType>k:relationshipControlOnForm</toType>
+        <relType>relLookup</relType>
+        <generateCode>true</generateCode>
+        <hideOnToType>true</hideOnToType>
+        <hideOnFromType>true</hideOnFromType>
+        <relationshipInFromTypeGroup>k:workflowButtonControlDetails</relationshipInFromTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <alias>k:wbcDisableControlBasedOnResources</alias>
+        <name>Disable control based on resources</name>
+        <description>The resources that determine if this control is to be disabled.</description>
+        <toType>resource</toType>
+        <relType>relExclusiveCollection</relType>
+        <!-- is this right? -->
+        <generateCode>true</generateCode>
+        <hideOnToType>true</hideOnToType>
+        <hideOnFromType>true</hideOnFromType>
+        <relationshipInFromTypeGroup>k:workflowButtonControlDetails</relationshipInFromTypeGroup>
+      </relationship>
+    </relationships>
+  </k:renderControlType>
+  <k:renderControlType>
+    <inherits>k:controlOnForm</inherits>
+    <generateCode>true</generateCode>
+    <name>Image</name>
+    <description>Image</description>
+    <alias>k:imageControl</alias>
+    <k:control>imageControl</k:control>
+    <k:designControl>imageControl</k:designControl>
+    <k:viewControl>imageControl</k:viewControl>
+    <k:context>k:uiContextHtml</k:context>
+    <k:isHiddenFromFormDesigner>true</k:isHiddenFromFormDesigner>
+  </k:renderControlType>
+  <k:renderControlType>
+    <inherits>k:controlOnForm</inherits>
+    <generateCode>true</generateCode>
+    <name>Report Link</name>
+    <description>Report link</description>
+    <alias>k:reportLinkControl</alias>
+    <k:control>reportLinkControl</k:control>
+    <k:designControl>reportLinkControl</k:designControl>
+    <k:viewControl>reportLinkControl</k:viewControl>
+    <k:context>k:uiContextHtml</k:context>
+    <k:isHiddenFromFormDesigner>true</k:isHiddenFromFormDesigner>
+  </k:renderControlType>
+  
+  <!-- Map control -->
+  <k:renderControlType>
+    <inherits>k:controlOnForm</inherits>
+    <generateCode>true</generateCode>
+    <name>Map Control</name>
+    <description>Map Control</description>
+    <alias>k:mapControl</alias>
+    <k:control>MapControl</k:control>
+    <k:designControl>MapControl</k:designControl>
+    <k:viewControl>MapControl</k:viewControl>
+    <k:context>k:uiContextHtml</k:context>
+    <k:isHiddenFromFormDesigner>true</k:isHiddenFromFormDesigner>
+  </k:renderControlType>
+  
+  <!-- Report control -->
+  <k:renderControlType>
+    <inherits>k:controlOnForm, k:contextProvider, k:contextReceiver</inherits>
+    <name>Report Render Control</name>
+    <description>A control used to render a stand alone report</description>
+    <alias>k:reportRenderControl</alias>
+    <k:minWidth>400</k:minWidth>
+    <k:minWidthTablet>440</k:minWidthTablet>
+    <k:minWidthMobile>300</k:minWidthMobile>
+    <k:minHeight>150</k:minHeight>
+    <k:minHeightTablet>170</k:minHeightTablet><!-- allowing for the actions toolbar -->
+    <k:minHeightMobile>340</k:minHeightMobile><!-- extra room for the view full report button -->
+    <k:pagerSupportMobile>true</k:pagerSupportMobile>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Report Render Control Details</name>
+        <alias>k:reportRenderControlDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <relationships>
+      <relationship>
+        <name>Report to render</name>
+        <description>The report to render in the control.</description>
+        <alias>k:reportToRender</alias>
+        <toType>report</toType>
+        <securesTo>true</securesTo>
+        <securesToReadOnly>true</securesToReadOnly>
+        <relType>relDependantOf</relType>
+        <relationshipInFromTypeGroup>k:reportRenderControlDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>reportDetails</relationshipInToTypeGroup>
+      </relationship>
+    </relationships>
+  </k:renderControlType>
+  
+  <!-- Chart control -->
+  <k:renderControlType>
+    <inherits>k:controlOnForm, k:contextProvider, k:contextReceiver</inherits>
+    <name>Chart Render Control</name>
+    <description>A control used to render a chart.</description>
+    <alias>k:chartRenderControl</alias>
+    <k:minWidth>200</k:minWidth>
+    <k:minWidthTablet>200</k:minWidthTablet>
+    <k:minWidthMobile>300</k:minWidthMobile>
+    <k:minHeight>150</k:minHeight>
+    <k:minHeightTablet>150</k:minHeightTablet>
+    <k:minHeightMobile>300</k:minHeightMobile>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Chart Control Details</name>
+        <alias>k:chartRenderControlDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <relationships>
+      <relationship>
+        <name>Chart to render</name>
+        <description>The chart to render in the control.</description>
+        <alias>k:chartToRender</alias>
+        <toType>chart</toType>
+        <securesTo>true</securesTo>
+        <securesToReadOnly>true</securesToReadOnly>
+        <relType>relDependantOf</relType>
+        <relationshipInFromTypeGroup>k:chartRenderControlDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>chartDetails</relationshipInToTypeGroup>
+      </relationship>
+    </relationships>
+  </k:renderControlType>
+
+  <!-- Hero text control -->
+  <k:renderControlType>
+    <inherits>k:controlOnForm, k:contextReceiver</inherits>
+    <name>Hero Text Control</name>
+    <description>A control used to render big text.</description>
+    <alias>heroTextControl</alias>
+    <k:minWidth>80</k:minWidth>
+    <k:minWidthTablet>80</k:minWidthTablet>
+    <k:minWidthMobile>80</k:minWidthMobile>
+    <k:minHeight>60</k:minHeight>
+    <k:minHeightTablet>60</k:minHeightTablet>
+    <k:minHeightMobile>60</k:minHeightMobile>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Hero Text Control Details</name>
+        <alias>heroTextDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <boolField>
+        <alias>heroTextUseCondFormattingColor</alias>
+        <name>Use conditional formatting colour</name>
+        <description>If set to true, then use any conditional formatting found on the colour source column.</description>
+        <fieldInGroup>heroTextDetails</fieldInGroup>
+      </boolField>
+      <stringField>
+        <alias>heroTextStyle</alias>
+        <name>Display style</name>
+        <fieldInGroup>heroTextDetails</fieldInGroup>
+      </stringField>
+    </fields>
+    <relationships>
+      <relationship>
+        <name>Hero text report</name>
+        <description>The report that provides data for the hero text.</description>
+        <alias>heroTextReport</alias>
+        <toType>report</toType>
+        <relType>relDependantOf</relType>
+        <securesTo>true</securesTo>
+        <securesToReadOnly>true</securesToReadOnly>
+        <relationshipInFromTypeGroup>heroTextDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>reportDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <name>Hero text source</name>
+        <description>The source for the hero text value.</description>
+        <alias>heroTextSource</alias>
+        <toType>chartSource</toType>
+        <relType>relSingleComponent</relType>
+        <securesTo>true</securesTo>
+        <relationshipInFromTypeGroup>heroTextDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>chartSourceDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <name>Hero text size</name>
+        <description>The size to use for marker symbols.</description>
+        <alias>heroTextSize</alias>
+        <toType>sizeEnum</toType>
+        <relType>relChoiceField</relType>
+        <relationshipInFromTypeGroup>chartSeriesDetails</relationshipInFromTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+    </relationships>
+  </k:renderControlType>
+  
+  <!-- Form control on screen -->
+  <k:renderControlType>
+    <inherits>k:controlOnForm, k:contextReceiver, k:contextProvider</inherits>
+    <name>Form Render Control</name>
+    <description>A Control used to render a form.</description>
+    <alias>k:formRenderControl</alias>
+    <k:minWidth>425</k:minWidth>
+    <k:minWidthTablet>425</k:minWidthTablet>
+    <k:minWidthMobile>0</k:minWidthMobile><!-- mobile - do not show form on mobile -->
+    <k:minHeight>150</k:minHeight>
+    <k:minHeightTablet>150</k:minHeightTablet>
+    <k:minHeightMobile>0</k:minHeightMobile>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Form Render Control Details</name>
+        <alias>k:formRenderControlDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <relationships>
+      <relationship>
+        <name>Form to render</name>
+        <description>The form to render in the control.</description>
+        <alias>k:formToRender</alias>
+        <toType>k:customEditForm</toType>
+        <securesTo>true</securesTo>
+        <securesToReadOnly>true</securesToReadOnly>
+        <relType>relDependantOf</relType>
+        <relationshipInFromTypeGroup>k:formRenderControlDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>k:customEditFormDetails</relationshipInToTypeGroup>
+      </relationship>
+    </relationships>
+  </k:renderControlType>
+  <!---->
+  <!-- Begin iOS Controls for rendering -->
+  <!---->
+  <k:fieldRenderControlType>
+    <inherits>k:fieldControlOnForm</inherits>
+    <generateCode>true</generateCode>
+    <alias>switchKFieldRenderControl</alias>
+    <name>Switch</name>
+    <k:control>GIBooleanControl</k:control>
+    <k:fieldTypeToRender>boolField</k:fieldTypeToRender>
+    <k:context>k:uiContextIos</k:context>
+  </k:fieldRenderControlType>
+  <k:fieldRenderControlType>
+    <inherits>k:fieldControlOnForm</inherits>
+    <generateCode>true</generateCode>
+    <alias>numericKFieldRenderControl2</alias>
+    <name>Numeric</name>
+    <k:control>GIIntegerEntryControl</k:control>
+    <k:fieldTypeToRender>intField</k:fieldTypeToRender>
+    <k:context>k:uiContextIos</k:context>
+  </k:fieldRenderControlType>
+  <k:fieldRenderControlType>
+    <inherits>k:fieldControlOnForm</inherits>
+    <generateCode>true</generateCode>
+    <alias>decimalKFieldRenderControl2</alias>
+    <name>Decimal</name>
+    <k:control>GIDecimalEntryControl</k:control>
+    <k:fieldTypeToRender>decimalField</k:fieldTypeToRender>
+    <k:context>k:uiContextIos</k:context>
+  </k:fieldRenderControlType>
+  <k:fieldRenderControlType>
+    <inherits>k:fieldControlOnForm</inherits>
+    <generateCode>true</generateCode>
+    <alias>currencyKFieldRenderControl2</alias>
+    <name>Currency</name>
+    <k:control>GICurrencyEntryControl</k:control>
+    <k:fieldTypeToRender>currencyField</k:fieldTypeToRender>
+    <k:context>k:uiContextIos</k:context>
+  </k:fieldRenderControlType>
+  <k:fieldRenderControlType>
+    <inherits>k:fieldControlOnForm</inherits>
+    <generateCode>true</generateCode>
+    <alias>textBoxKFieldRenderControl</alias>
+    <name>Text box</name>
+    <k:control>GIEntryControl</k:control>
+    <k:fieldTypeToRender>stringField</k:fieldTypeToRender>
+    <k:context>k:uiContextIos</k:context>
+  </k:fieldRenderControlType>
+  <k:fieldRenderControlType>
+    <inherits>k:fieldControlOnForm</inherits>
+    <generateCode>true</generateCode>
+    <alias>largeTextBoxKFieldRenderControl</alias>
+    <name>Large text box</name>
+    <k:control>GIMultiLineEntryControl</k:control>
+    <k:fieldTypeToRender>stringField</k:fieldTypeToRender>
+    <k:context>k:uiContextIos</k:context>
+  </k:fieldRenderControlType>
+  <k:fieldRenderControlType>
+    <inherits>k:fieldControlOnForm</inherits>
+    <generateCode>true</generateCode>
+    <alias>timeKFieldRenderControl2</alias>
+    <name>Time</name>
+    <k:control>GITimeEntryControl</k:control>
+    <k:fieldTypeToRender>timeField</k:fieldTypeToRender>
+    <k:context>k:uiContextIos</k:context>
+  </k:fieldRenderControlType>
+  <k:fieldRenderControlType>
+    <inherits>k:fieldControlOnForm</inherits>
+    <generateCode>true</generateCode>
+    <alias>dateKFieldRenderControl2</alias>
+    <name>Date</name>
+    <k:control>GIDateEntryControl</k:control>
+    <k:fieldTypeToRender>dateField</k:fieldTypeToRender>
+    <k:context>k:uiContextIos</k:context>
+  </k:fieldRenderControlType>
+  <k:fieldRenderControlType>
+    <inherits>k:fieldControlOnForm</inherits>
+    <generateCode>true</generateCode>
+    <alias>dateAndTimeKFieldRenderControl2</alias>
+    <name>Date and Time</name>
+    <k:control>GIDateTimeEntryControl</k:control>
+    <k:fieldTypeToRender>dateTimeField</k:fieldTypeToRender>
+    <k:context>k:uiContextIos</k:context>
+  </k:fieldRenderControlType>
+  <!---->
+  <!-- End iOS Controls for rendering -->
+  <!---->
+  <k:fieldRenderControlType>
+    <inherits>k:fieldControlOnForm</inherits>
+    <generateCode>true</generateCode>
+    <name>FileNameUploadControl</name>
+    <alias>k:fileNameUploadControl</alias>
+    <k:control>FileNameUploadControl</k:control>
+    <k:fieldTypeToRender>stringField</k:fieldTypeToRender>
+    <!-- this would be better as a specific fileName field type -->
+    <k:designControl>FileNameUploadControl</k:designControl>
+    <k:viewControl>FileNameUploadControl</k:viewControl>
+    <k:context>k:uiContextHtml</k:context>
+  </k:fieldRenderControlType>
+  <k:fieldRenderControlType>
+    <inherits>k:fieldControlOnForm</inherits>
+    <generateCode>true</generateCode>
+    <name>FileRevisionControl</name>
+    <alias>k:fileRevisionControl</alias>
+    <k:control>FileRevisionControl</k:control>
+    <k:fieldTypeToRender>stringField</k:fieldTypeToRender>
+    <k:designControl>FileRevisionControl</k:designControl>
+    <k:context>k:uiContextHtml</k:context>
+  </k:fieldRenderControlType>
+  <!-- Thumbnail Size Enumeration type -->
+  <enumType>
+    <alias>k:thumbnailSizeEnum</alias>
+    <name>Thumbnail Size</name>
+    <inherits>enumValue</inherits>
+    <isMetadata>true</isMetadata>
+    <fields>
+      <intField>
+        <alias>k:thumbnailWidth</alias>
+        <name>Thumbnail width (pixels)</name>
+        <isRequired>true</isRequired>
+        <minInt>0</minInt>
+      </intField>
+      <intField>
+        <alias>k:thumbnailHeight</alias>
+        <name>Thumbnail height (pixels)</name>
+        <isRequired>true</isRequired>
+        <minInt>0</minInt>
+      </intField>
+      <boolField>
+        <alias>k:isSystemThumbnail</alias>
+        <name>Is system thumbnail</name>
+        <defaultValue>false</defaultValue>
+        <isFieldReadOnly>true</isFieldReadOnly>
+      </boolField>
+    </fields>
+    <enumValues>
+      <k:thumbnailSizeEnum>
+        <alias>k:smallThumbnail</alias>
+        <name>Small</name>
+        <description>150 x 150 (pixels)</description>
+        <k:thumbnailWidth>150</k:thumbnailWidth>
+        <k:thumbnailHeight>150</k:thumbnailHeight>
+        <enumOrder>1</enumOrder>
+      </k:thumbnailSizeEnum>
+      <k:thumbnailSizeEnum>
+        <alias>k:largeThumbnail</alias>
+        <name>Large</name>
+        <description>300 x 300 (pixels)</description>
+        <k:thumbnailWidth>300</k:thumbnailWidth>
+        <k:thumbnailHeight>300</k:thumbnailHeight>
+        <enumOrder>2</enumOrder>
+      </k:thumbnailSizeEnum>
+      <k:thumbnailSizeEnum>
+        <alias>k:iconThumbnailSize</alias>
+        <name>Icon</name>
+        <description>16 x 16 (pixels)</description>
+        <k:thumbnailWidth>16</k:thumbnailWidth>
+        <k:thumbnailHeight>16</k:thumbnailHeight>
+        <enumOrder>3</enumOrder>
+        <k:isSystemThumbnail>true</k:isSystemThumbnail>
+      </k:thumbnailSizeEnum>
+    </enumValues>
+    <generateCode>true</generateCode>
+  </enumType>
+  <!-- Image File Name Upload Control -->
+  <k:fieldRenderControlType>
+    <inherits>k:fieldControlOnForm</inherits>
+    <generateCode>true</generateCode>
+    <name>ImageFileNameUploadControl</name>
+    <alias>k:imageFileNameUploadControl</alias>
+    <k:control>ImageFileNameUploadControl</k:control>
+    <k:fieldTypeToRender>stringField</k:fieldTypeToRender>
+    <k:designControl>ImageFileNameUploadControl</k:designControl>
+    <k:context>k:uiContextHtml</k:context>
+    <k:minHeight>180</k:minHeight>
+    <k:minHeightTablet>230</k:minHeightTablet>
+    <k:minHeightMobile>230</k:minHeightMobile>
+  </k:fieldRenderControlType>
+</resources>

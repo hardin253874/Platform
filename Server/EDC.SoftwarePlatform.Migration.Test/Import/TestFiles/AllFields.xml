@@ -1,0 +1,50 @@
+﻿<!-- ReadiNow Data Package -->
+<xml version="2.0" encoding="utf-16" xmlns:k="console" xmlns="core">
+  <metadata>
+    <type>DataExport</type>
+    <platformVersion>1.0.0.0</platformVersion>
+    <publishDate>2016-10-20 00:52:00Z</publishDate>
+  </metadata>
+  <entities>
+    <group typeId="ac7883f2-2997-41a7-9e62-a74d19d015b2">
+      <entity typeId="ac7883f2-2997-41a7-9e62-a74d19d015b2" id="83ee343c-1bd1-423d-bb8b-ccabdf3409d3">
+        <name>ImportTest</name>
+        <description></description>
+        <bool id="5b9af0f4-e812-4fd3-9b92-954393746908">True</bool>
+        <dateTime id="4e1f3930-2953-406f-8fc2-ea2ffb5b7d97">2016-12-19 08:02:00Z</dateTime>
+        <modifiedDate>2016-10-19 13:49:52Z</modifiedDate>
+        <dateTime id="78ec955f-b28c-4178-acab-e3bf543811c5">2016-12-24 13:00:00Z</dateTime>
+        <createdDate>2016-10-19 13:49:52Z</createdDate>
+        <dateTime id="e54de990-35ce-46b5-a89d-3226ce33529e">1753-01-01 20:51:00Z</dateTime>
+        <decimal id="88359587-17fe-4998-82b9-51d6bca2fdce">123.4</decimal>
+        <decimal id="bfe519f4-c80a-494b-8f8c-c4d3918ee5b3">123.45</decimal>
+        <int id="8639a367-eb11-404b-8300-034e41a2dffc">123</int>
+        <text id="0851aeb2-6550-4467-810c-653a19f71d52">
+Multi
+Line
+</text>
+        <text id="73e42305-cf4d-4efd-a082-968ac70fb07a">Hello</text>
+        <lastModifiedBy>administratorUserAccount</lastModifiedBy>
+        <createdBy>administratorUserAccount</createdBy>
+        <securityOwner>administratorUserAccount</securityOwner>
+        <rel id="bfe88a14-85a0-4299-9d19-fd0933f7b575">bd6beb4e-05de-4c8e-bf29-0251214be1c7</rel>
+        <revRel id="05cd3a57-7b02-4bd0-aadc-272782e971b7">93b6d431-226b-44da-9df2-1d672cb16c21</revRel>
+      </entity>
+    </group>
+  </entities>
+  <relationships />
+  <secureData />
+  <binaries />
+  <documents />
+  <aliasMap>
+    <administratorUserAccount id="d223c5fb-1e3f-4fba-b45c-2df451eb85c7" />
+    <createdBy id="69e48524-101a-4575-a636-e69c9906cab4" type="rel" />
+    <createdDate id="8c309550-868f-4f7a-b2ac-d5e4c6659a9c" type="dateTime" />
+    <lastModifiedBy id="653ebcf5-66ec-4238-9aba-fac99891f192" type="rel" />
+    <modifiedDate id="58a25569-1266-4886-894f-dbd02c483561" type="dateTime" />
+    <name id="f8def406-90a1-4580-94f4-1b08beac87af" type="text" />
+    <description id="a6907c5a-19db-48ca-b9be-85d81cd9081f" type="text" />
+    <securityOwner id="a715539d-0425-4488-a950-54dca3d88925" type="rel" />
+  </aliasMap>
+  <doNotRemove />
+</xml>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="core" xsi:schemaLocation=". ../Core.xsd" defaultSolution="coreSolution">
+  <!--Copyright 2011-2016 Global Software Innovation Pty Ltd-->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    Feature Switches                                              -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- Chart -->
+  <type>
+    <alias>featureSwitchType</alias>
+    <name>Feature Switch Type</name>
+    <description>Feature switches that are global and per tenant. To activate a feature the feature must be turned on in the global tenant and the actual tenant.</description>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Feature Switch Details</name>
+        <alias>featureSwitchDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>fsSwitches</alias>
+        <name>Switches</name>
+        <description>A comma and pipe seperated list of features. "feature1,description1,true|feature2,description2,false".</description>
+        <fieldInGroup>featureSwitchDetails</fieldInGroup>
+      </stringField>
+      
+    </fields>
+    <generateCode>true</generateCode>
+  </type>
+
+  <featureSwitchType>
+    <alias>featureSwitch</alias>
+    <name>Feature Switch</name>
+    <description>Feature switches that are global and per tenant. To activate a feature the feature must be turned on in the global tenant and the actual tenant.</description>
+
+    <fsSwitches></fsSwitches>  <!-- This must be left blank in this file - otherwise changing it will mess up tenant upgrades. -->
+  </featureSwitchType>
+
+</resources>

@@ -1,0 +1,10 @@
+Name ,Description,Currency,,Result,NOTE1
+Currency 1,Description Currency 1,$10,,Pass,
+Currency 2,Description Currency 2,$5.09,,Fail,Should Fail as less than the minimum 
+Currency 3,Description Currency 3,$100.00,,Pass,
+Currency 4,Description Currency 4,$99.99,,Pass,
+Currency 5,Description Currency 5,$100.01,,Fail,Should fail as more than the maximum 
+Currency 6,Description Currency 6,,,Fail,Should fail as  mandatory field is missing
+Currency 7,Description Currency 7,$9.99,,Fail,Should Fail as less than the minimum 
+Currency 8,Description Currency 8,$99.99,,Pass,
+Currency 9,Description Currency 9,$35.90,,Pass,

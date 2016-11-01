@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="core" xsi:schemaLocation=". ../Core.xsd" defaultSolution="coreSolution">
+  <!--Copyright 2011-2016 Global Software Innovation Pty Ltd-->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    Generalized Structure Views                                   -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- A Hierarchy (formerly structure view) -->
+  <type>
+    <alias>structureView</alias>
+    <name>Hierarchy</name>
+    <description>A platform Hierarchy, which can be used to organize resources in a hierarchical manner.</description>
+    <inherits>resourcePicker</inherits>
+    <generateCode>true</generateCode>
+    <isMetadata>true</isMetadata>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Structure View Details</name>
+        <alias>structureViewDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <boolField>
+        <alias>detectRootLevels</alias>
+        <name>Detect root levels</name>
+        <defaultValue>false</defaultValue>
+        <description>If false, the 'isRootForStructureView' relationship is used to specify root levels. If true, all instances of the structure resource type that do not have parents are treated as roots.</description>
+        <fieldInGroup>structureViewDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <alias>followRelationshipInReverse</alias>
+        <name>Follow in reverse</name>
+        <defaultValue>false</defaultValue>
+        <description>Follow the recursive relationship in reverse direction.</description>
+        <fieldInGroup>structureViewDetails</fieldInGroup>
+      </boolField>
+    </fields>
+    <!-- Unique names -->
+    <resourceKeys>
+      <resourceKey>
+        <alias>structureViewUniqueNameKey</alias>
+        <name>Unique name per structure view</name>
+        <keyFields>name</keyFields>
+        <resourceKeyMessage>There is another structure view with the same name.</resourceKeyMessage>
+      </resourceKey>
+    </resourceKeys>
+    <onBeforeSave>hierarchyTarget</onBeforeSave>
+    <onAfterSave>hierarchyTarget</onAfterSave>
+  </type>
+  <!-- Relationship that points to the relationship that describes the structure view hierarchy -->
+  <relationship>
+    <alias>structureHierarchyRelationship</alias>
+    <name>Structure view relationship type</name>
+    <reverseAlias>isStructureHierarchyRelationshipFor</reverseAlias>
+    <fromType>structureView</fromType>
+    <toType>relationship</toType>
+    <generateCode>true</generateCode>
+    <relType>relComponentOf</relType>
+    <cardinality>manyToOne</cardinality>
+    <relationshipInFromTypeGroup>structureViewDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>relationshipDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- Relationship that points to the relationship that describes the structure level membership -->
+  <relationship>
+    <alias>structureMembersRelationship</alias>
+    <name>Structure view membership relationship type</name>
+    <reverseAlias>isStructureMembersRelationshipFor</reverseAlias>
+    <fromType>structureView</fromType>
+    <toType>relationship</toType>
+    <generateCode>true</generateCode>
+    <cardinality>manyToOne</cardinality>
+    <relationshipInFromTypeGroup>structureViewDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>relationshipDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- Relationship that points to the relationship that describes the structure level membership -->
+  <relationship>
+    <alias>isRootForStructureView</alias>
+    <name>Structure view root resource</name>
+    <reverseAlias>structureViewRoot</reverseAlias>
+    <toType>structureView</toType>
+    <fromType>resource</fromType>
+    <generateCode>true</generateCode>
+    <relType>relManyToMany</relType>
+    <hideOnFromType>true</hideOnFromType>
+    <relationshipInToTypeGroup>structureViewDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    Manual (Structure Level) based view                           -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- A structure level -->
+  <type>
+    <alias>structureLevel</alias>
+    <name>Structure Level</name>
+    <description>An individual group of resources within a Structure View. Structure levels get arranged hierarchically.</description>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Structure Level Details</name>
+        <alias>structureLevelDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <!-- Unique names per parent -->
+    <resourceKeys>
+      <resourceKey>
+        <alias>structureLevelUniqueNameKey</alias>
+        <name>Unique name per structure level</name>
+        <keyFields>name</keyFields>
+        <resourceKeyMessage>There is another structure level under this same parent level with the same name.</resourceKeyMessage>
+        <resourceKeyRelationships>
+          <resourceKeyRelationship>
+            <alias>structureLevelResourceKeyRelationship</alias>
+            <keyRelationship>parentStructureLevel</keyRelationship>
+            <keyRelationshipDirection>forward</keyRelationshipDirection>
+          </resourceKeyRelationship>
+        </resourceKeyRelationships>
+      </resourceKey>
+    </resourceKeys>
+  </type>
+  <!-- Relationship that points to the relationship that describes the structure level membership -->
+  <relationship>
+    <alias>parentStructureLevel</alias>
+    <name>Structure level relationship</name>
+    <reverseAlias>childStructureLevels</reverseAlias>
+    <toType>structureLevel</toType>
+    <fromType>structureLevel</fromType>
+    <cascadeDelete>true</cascadeDelete>
+    <cardinality>manyToOne</cardinality>
+    <generateCode>true</generateCode>
+    <relationshipInFromTypeGroup>structureLevelDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>structureLevelDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- Relationship that points to the relationship that describes the structure level membership -->
+  <relationship>
+    <alias>inStructureLevel</alias>
+    <name>Structure level members</name>
+    <toName>Structure levels</toName>
+    <reverseAlias>structureLevelResources</reverseAlias>
+    <toType>structureLevel</toType>
+    <fromType>resource</fromType>
+    <cascadeDelete>false</cascadeDelete>
+    <cardinality>manyToMany</cardinality>
+    <cloneAction>cloneReferences</cloneAction>
+    <reverseCloneAction>drop</reverseCloneAction>
+    <generateCode>true</generateCode>
+    <hideOnFromType>true</hideOnFromType>
+    <relationshipInToTypeGroup>structureLevelDetails</relationshipInToTypeGroup>
+  </relationship>
+</resources>

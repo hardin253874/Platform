@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{99C48B40-8897-4C0C-9AB3-8FBF888A49B3}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EDC.SoftwarePlatform.Install.Common</RootNamespace>
+    <AssemblyName>EDC.SoftwarePlatform.Install.Common</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <WarningsNotAsErrors>1607</WarningsNotAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\..\ReadiNow.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Web.Administration, Version=7.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Dependencies\Microsoft\Web Administration\Microsoft.Web.Administration.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Context.cs" />
+    <Compile Include="Database.cs" />
+    <Compile Include="FileLogger.cs" />
+    <Compile Include="FrontEnd.cs" />
+    <Compile Include="FrontEndException.cs" />
+    <Compile Include="FrontEndHelper.cs" />
+    <Compile Include="FrontEndMode.cs" />
+    <Compile Include="FrontEndProcessingContext.cs" />
+    <Compile Include="IFrontEndArgumentParser.cs" />
+    <Compile Include="Properties\AssemblyFileInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReportMigration.cs" />
+    <Compile Include="ServiceManager.cs" />
+    <Compile Include="Solution.cs" />
+    <Compile Include="Tenant.cs" />
+    <Compile Include="WebManager.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\EDC.Common\EDC.Common.csproj">
+      <Project>{C7183BEF-1A52-4DA5-850B-7132B5DCA7EB}</Project>
+      <Name>EDC.Common</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\EDC.ReadiNow.Common\EDC.ReadiNow.Common.csproj">
+      <Project>{A1C54CF6-E515-4132-A3CB-5CBE32B11D7E}</Project>
+      <Name>EDC.ReadiNow.Common</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\EDC.SoftwarePlatform.Interfaces\EDC.SoftwarePlatform.Interfaces.csproj">
+      <Project>{c1fc97b7-aacc-45b5-9969-7995b27093ca}</Project>
+      <Name>EDC.SoftwarePlatform.Interfaces</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\EDC.SoftwarePlatform.Migration\EDC.SoftwarePlatform.Migration.csproj">
+      <Project>{acc17a7d-5bd0-4f9e-8569-3e4d51588064}</Project>
+      <Name>EDC.SoftwarePlatform.Migration</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="config.json" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir).build\MSBuild.Community.Tasks.targets" />
+  <Import Project="$(SolutionDir)Automation\ReadiNow.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <Target Name="PublishActivationFiles">
+    <Message Text="Publishing activation files to $(PublishRoot)" />
+    <ItemGroup>
+      <ActivationFiles Include="$(ProjectDir)*.bat;$(ProjectDir)*.ps1;$(ProjectDir)*.json" />
+    </ItemGroup>
+    <Copy SourceFiles="@(ActivationFiles)" DestinationFolder="$(PublishRoot)$(Configuration)" ContinueOnError="WarnAndContinue" Retries="0" />
+  </Target>
+  <Target Name="AfterBuild">
+    <CallTarget Targets="PublishTool" />
+    <!-- <CallTarget Targets="PublishActivationFiles" /> -->
+  </Target>
+  <PropertyGroup>
+    <AssemblyFileInfo>$(ProjectDir)Properties\AssemblyFileInfo.cs</AssemblyFileInfo>
+  </PropertyGroup>
+</Project>

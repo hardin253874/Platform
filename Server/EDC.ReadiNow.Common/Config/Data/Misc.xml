@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="core" xmlns:k="console" xsi:schemaLocation=". ../Core.xsd k ../Console.xsd" defaultSolution="consoleSolution">
+  <!--Copyright 2011-2016 Global Software Innovation Pty Ltd-->
+  <!-- password reset inbox -->
+  <inbox>
+    <name>Password Reset Inbox</name>
+    <description>Inbox that password reset.</description>
+    <alias>passwordResetInbox</alias>
+    <usesInboxProvider>spInboxProvider</usesInboxProvider>
+    <inboxEmailActions>completeUserTaskEmailAction,matchSentToReceivedEmailsAction</inboxEmailActions>
+    <inboxEnabled>false</inboxEnabled>
+  </inbox>
+  <tenantEmailSetting>
+    <alias>tenantEmailSettingsInstance</alias>
+    <name>Email Settings</name>
+    <description>The email settings used to control emails sent by workflows configured by the tenant.</description>
+    <emailServerNoReplyAddress>noreply@readinow.net</emailServerNoReplyAddress>
+    <tesApprovalsInbox>approvalsInbox</tesApprovalsInbox>
+    <tesSupportInbox>supportInbox</tesSupportInbox>
+    <tesNewTicketsInbox>newTicketsInbox</tesNewTicketsInbox>
+    <tesCalendarInbox>calendarInbox</tesCalendarInbox>
+    <tesPasswordResetInbox>passwordResetInbox</tesPasswordResetInbox>
+  </tenantEmailSetting>
+  <!-- Tenant Image settings -->
+  <tenantImageSettings>
+    <alias>tenantImageSettingsInstance</alias>
+    <name>Image Settings</name>
+    <description>The settings used to control images configured by the tenant.</description>
+  </tenantImageSettings>
+  <!-- Event log settings instance -->
+  <eventLogSettings>
+    <alias>tenantEventLogSettingsInstance</alias>
+    <name>Event Log Settings</name>
+    <description>The event log settings configured by the tenant.</description>
+    <maxEventLogEntries>10000</maxEventLogEntries>
+  </eventLogSettings>
+  <!-- Tenant General settings instance -->
+  <tenantGeneralSettings>
+    <alias>tenantGeneralSettingsInstance</alias>
+    <name>General Settings</name>
+    <description>The general settings configured by the tenant.</description>
+    <finYearStartMonth>moyJanuary</finYearStartMonth>
+    <tenantCurrencySymbol>$</tenantCurrencySymbol>
+    <k:tenantConsoleThemeSettings>k:tenantConsoleTheme</k:tenantConsoleThemeSettings>
+  </tenantGeneralSettings>
+  <!-- Notification provider-->
+  <twilioNotifier>
+    <alias>tenantNotificationProvider</alias>
+    <name>Notification Provider</name>
+    <description>The Twilio account used for sending notifications.</description>
+    <tpAccountSid>Enter SID</tpAccountSid>
+    <tpAuthToken>Empty value</tpAuthToken>
+    <tpSendingNumber>12345-12345</tpSendingNumber>
+    <tpEnableTestMode>true</tpEnableTestMode>
+  </twilioNotifier>
+  <!-- The software platform console image-->
+  <photoFileType source="../Binaries/logo_softwareplatform.png">
+    <alias>k:defaultProductLogoImage</alias>
+    <name>Default Logo Image</name>
+    <description>Default Logo Image.</description>
+    <imageWidth>173</imageWidth>
+    <imageHeight>72</imageHeight>
+    <fileExtension>.png</fileExtension>
+  </photoFileType>
+  <iconFileType source="../Binaries/TopMenuImage_Home.png">
+    <alias>k:topMenuImage_Home</alias>
+    <name>Home Image</name>
+    <description>
+    </description>
+    <imageWidth>200</imageWidth>
+    <imageHeight>200</imageHeight>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <iconFileType source="../Binaries/TopMenuImage_Shared.png">
+    <alias>k:topMenuImage_Shared</alias>
+    <name>Shared Menu Image</name>
+    <description>
+    </description>
+    <imageWidth>200</imageWidth>
+    <imageHeight>200</imageHeight>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <iconFileType source="../Binaries/TopMenuImage_Admin.png">
+    <alias>k:topMenuImage_Admin</alias>
+    <name>Admin Menu Image</name>
+    <description>
+    </description>
+    <imageWidth>200</imageWidth>
+    <imageHeight>200</imageHeight>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <iconFileType source="../Binaries/TopMenuImage_Documents.png">
+    <alias>k:topMenuImage_Documents</alias>
+    <name>Documents Menu Image</name>
+    <description>
+    </description>
+    <imageWidth>200</imageWidth>
+    <imageHeight>200</imageHeight>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <iconFileType source="../Binaries/TopMenuImage_TestSolution.png">
+    <alias>k:topMenuImage_TestSolution</alias>
+    <name>Test Solution Menu Image</name>
+    <description>
+    </description>
+    <imageWidth>200</imageWidth>
+    <imageHeight>200</imageHeight>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <!-- Tenant specific console theme -->
+  <k:consoleTheme>
+    <alias>k:tenantConsoleTheme</alias>
+    <name>Console Theme Settings</name>
+    <description>The default tenant specific console theme settings.</description>
+    <k:consoleLogoImage>
+    </k:consoleLogoImage>
+    <k:consoleHeaderBackgroundImage>
+    </k:consoleHeaderBackgroundImage>
+    <k:consoleHeaderBackgroundImageRepeat>true</k:consoleHeaderBackgroundImageRepeat>
+    <k:consoleTopBackgroundImage>
+    </k:consoleTopBackgroundImage>
+    <k:consoleTopBackgroundImageRepeat>true</k:consoleTopBackgroundImageRepeat>
+    <k:consoleLeftBackgroundImage>
+    </k:consoleLeftBackgroundImage>
+    <k:consoleLeftBackgroundImageRepeat>true</k:consoleLeftBackgroundImageRepeat>
+    <k:consoleTopNavigationStyle>console:topNavigationStyle1</k:consoleTopNavigationStyle>
+    <k:consoleHeaderBackgroundColor>
+    </k:consoleHeaderBackgroundColor>
+    <k:consoleHeaderMenuTextColor>
+    </k:consoleHeaderMenuTextColor>
+    <k:consoleTopNavigationAreaBackgroundColor>
+    </k:consoleTopNavigationAreaBackgroundColor>
+    <k:consoleTopNavigationSelectedTabColor>
+    </k:consoleTopNavigationSelectedTabColor>
+    <k:consoleTopNavigationSelectedTabFontColor>
+    </k:consoleTopNavigationSelectedTabFontColor>
+    <k:consoleTopNavigationUnselectedTabColor>
+    </k:consoleTopNavigationUnselectedTabColor>
+    <k:consoleTopNavigationUnselectedTabFontColor>
+    </k:consoleTopNavigationUnselectedTabFontColor>
+    <k:consoleLeftNavigationAreaBackgroundColor>
+    </k:consoleLeftNavigationAreaBackgroundColor>
+    <k:mobileLeftNavigationAreaBackgroundColor>
+    </k:mobileLeftNavigationAreaBackgroundColor>
+    <k:consoleLeftNavigationAreaFontColor>
+    </k:consoleLeftNavigationAreaFontColor>
+    <k:consoleLeftNavigationSelectedElementColor>
+    </k:consoleLeftNavigationSelectedElementColor>
+    <k:consoleLeftNavigationSelectedFontColor>
+    </k:consoleLeftNavigationSelectedFontColor>
+    <k:consoleGeneralContentAreaTitleFontColor>
+    </k:consoleGeneralContentAreaTitleFontColor>
+    <k:consoleGeneralContentAreaContainerHeadingFontColor>
+    </k:consoleGeneralContentAreaContainerHeadingFontColor>
+    <k:consoleGeneralContentAreaContainerHeadingLineColor>
+    </k:consoleGeneralContentAreaContainerHeadingLineColor>
+    <k:consoleGeneralContentAreaSelectedTabColor>
+    </k:consoleGeneralContentAreaSelectedTabColor>
+    <k:consoleGeneralContentAreaSelectedTabFontColor>
+    </k:consoleGeneralContentAreaSelectedTabFontColor>
+    <k:consoleGeneralContentAreaUnselectedTabColor>
+    </k:consoleGeneralContentAreaUnselectedTabColor>
+    <k:consoleGeneralContentAreaUnselectedTabFontColor>
+    </k:consoleGeneralContentAreaUnselectedTabFontColor>
+    <k:consoleGeneralContentAreaTabControlLineColor>
+    </k:consoleGeneralContentAreaTabControlLineColor>
+    <k:consoleGeneralContentAreaReportHeaderColor>
+    </k:consoleGeneralContentAreaReportHeaderColor>
+    <k:consoleGeneralContentAreaReportHeaderFontColor>
+    </k:consoleGeneralContentAreaReportHeaderFontColor>
+  </k:consoleTheme>
+  <!-- The navigation configuration button with full admin access -->
+  <k:navigationConfigButton>
+    <alias>fullConfigButton</alias>
+    <name>Full Configuration Button</name>
+  </k:navigationConfigButton>
+  <!-- The configuration button instance with self-service level access (reports, charts, screens) -->
+  <k:navigationConfigButton>
+    <alias>selfServiceConfigButton</alias>
+    <name>Self-Service Configuration Button</name>
+  </k:navigationConfigButton>
+  <!-- The admin toolbox static page instance to host quick links -->
+  <k:staticPage>
+    <alias>k:adminToolboxStaticPage</alias>
+    <name>Admin Toolbox</name>
+  </k:staticPage>
+  <!-- Tenant rollback page -->
+  <k:staticPage>
+    <alias>k:tenantRollbackStaticPage</alias>
+    <name>Tenant Rollback</name>
+    <k:consoleOrder>100</k:consoleOrder>
+  </k:staticPage>
+  <!-- Application dependencies -->
+  <applicationDependency>
+    <name>Console Solution Depends on Core Solution</name>
+    <description>Console solution depends on Core solution being installed.</description>
+    <alias>consoleToCoreDependency</alias>
+    <applicationMinimumVersion>Any</applicationMinimumVersion>
+    <applicationMaximumVersion>Any</applicationMaximumVersion>
+    <applicationIsRequired>true</applicationIsRequired>
+    <dependentApplication>consoleSolution</dependentApplication>
+    <dependencyApplication>coreSolution</dependencyApplication>
+  </applicationDependency>
+</resources>

@@ -1,0 +1,628 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="core" xsi:schemaLocation=". ../Core.xsd" defaultSolution="coreSolution">
+  <!--Copyright 2011-2016 Global Software Innovation Pty Ltd-->
+  <!-- API -->
+  <type>
+    <alias>api</alias>
+    <name>API</name>
+    <description>An Application Programming Interface. A group of endpoints.</description>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>API Details</name>
+        <alias>apiDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <boolField>
+        <alias>apiEnabled</alias>
+        <name>Enabled</name>
+        <defaultValue>true</defaultValue>
+        <fieldInGroup>apiDetails</fieldInGroup>
+      </boolField>
+      <stringField>
+        <alias>apiAddress</alias>
+        <name>Address</name>
+        <description>The section of the API URI that identifies the group of endpoints, rather than an individual endpoint. Typically the a</description>
+        <isRequired>true</isRequired>
+        <fieldInGroup>apiDetails</fieldInGroup>
+      </stringField>
+    </fields>
+    <relationships>
+      <relationship>
+        <name>API endpoints</name>
+        <alias>apiEndpoints</alias>
+        <description>The endpoints exposed by an API.</description>
+        <reverseAlias>endpointForApi</reverseAlias>
+        <relType>relComponents</relType>
+        <toType>apiEndpoint</toType>
+        <toName>Endpoints</toName>
+        <fromName>API</fromName>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>apiDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>apiEndpointDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- API Key -->
+  <type>
+    <alias>apiKey</alias>
+    <name>API Key</name>
+    <description>A token that grants access to an API.</description>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>API Key Details</name>
+        <alias>apiKeyDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <boolField>
+        <alias>apiKeyEnabled</alias>
+        <name>Enabled</name>
+        <defaultValue>true</defaultValue>
+        <fieldInGroup>apiKeyDetails</fieldInGroup>
+      </boolField>
+    </fields>
+    <relationships>
+      <relationship>
+        <name>API keys</name>
+        <alias>keyForApis</alias>
+        <description>Relationship between an API Key and the APIs that it can access.</description>
+        <reverseAlias>apiKeys</reverseAlias>
+        <relType>relManyToMany</relType>
+        <toType>api</toType>
+        <toName>APIs</toName>
+        <fromName>API keys</fromName>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>apiKeyDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>apiDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <name>API key user account</name>
+        <alias>apiKeyUserAccount</alias>
+        <description>Relationship between an API Key and the user account that will be used when running requests made using that key.</description>
+        <reverseAlias>userAccountApiKeys</reverseAlias>
+        <relType>relLookup</relType>
+        <toType>userAccount</toType>
+        <toName>User account</toName>
+        <fromName>API keys</fromName>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>apiKeyDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>userAccountDetails</relationshipInToTypeGroup>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- API Endpoint -->
+  <type>
+    <alias>apiEndpoint</alias>
+    <name>API Endpoint</name>
+    <description>An endpoint for an API. A server address.</description>
+    <generateCode>true</generateCode>
+    <isAbstract>true</isAbstract>
+    <fieldGroups>
+      <fieldGroup>
+        <name>API Endpoint Details</name>
+        <alias>apiEndpointDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <boolField>
+        <alias>apiEndpointEnabled</alias>
+        <name>Enabled</name>
+        <defaultValue>true</defaultValue>
+        <fieldInGroup>apiEndpointDetails</fieldInGroup>
+      </boolField>
+      <stringField>
+        <alias>apiEndpointAddress</alias>
+        <name>Address</name>
+        <description>The section of the API endpoint URI that distinguishes this endpoint from other endpoints.</description>
+        <isRequired>true</isRequired>
+        <fieldInGroup>apiEndpointDetails</fieldInGroup>
+      </stringField>
+    </fields>
+  </type>
+  <!-- API Resource Endpoint -->
+  <type>
+    <alias>apiResourceEndpoint</alias>
+    <name>API Resource Endpoint</name>
+    <description>An endpoint for an API that can support create, read, update and delete operations on resources.</description>
+    <generateCode>true</generateCode>
+    <inherits>apiEndpoint</inherits>
+    <fields>
+      <boolField>
+        <alias>endpointCanCreate</alias>
+        <name>Can create</name>
+        <description>This endpoint can be used to create new instances.</description>
+        <fieldInGroup>apiEndpointDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <alias>endpointCanUpdate</alias>
+        <name>Can update</name>
+        <description>This endpoint can be used to modify existing instances.</description>
+        <fieldInGroup>apiEndpointDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <alias>endpointCanDelete</alias>
+        <name>Can delete</name>
+        <description>This endpoint can be used to remove existing instances.</description>
+        <fieldInGroup>apiEndpointDetails</fieldInGroup>
+      </boolField>
+    </fields>
+    <relationships>
+      <relationship>
+        <name>Endpoint resource mapping</name>
+        <alias>endpointResourceMapping</alias>
+        <description>The mappings to use for a particular endpoint.</description>
+        <reverseAlias>resourceMappingForEndpoint</reverseAlias>
+        <relType>relSingleComponent</relType>
+        <toType>apiResourceMapping</toType>
+        <toName>Resource mapping</toName>
+        <fromName>Used by resource endpoint</fromName>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>apiEndpointDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>apiResourceMappingDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- API Spreadsheet Endpoint -->
+  <type>
+    <alias>apiSpreadsheetEndpoint</alias>
+    <name>API Spreadsheet Endpoint</name>
+    <description>An endpoint for uploading and processing spreadsheets and data files.</description>
+    <generateCode>true</generateCode>
+    <inherits>apiEndpoint</inherits>
+    <relationships>
+      <relationship>
+        <name>Endpoint resource mapping</name>
+        <alias>endpointImportConfig</alias>
+        <description>The import configuration that describes how to import the file.</description>
+        <reverseAlias>importConfigEndpoints</reverseAlias>
+        <relType>relLookup</relType>
+        <toType>importConfig</toType>
+        <toName>Import configuration</toName>
+        <fromName>API spreadsheet endpoint</fromName>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>apiEndpointDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>importConfigDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- API Resource Mapping -->
+  <type>
+    <alias>apiResourceMapping</alias>
+    <name>API Resource Mapping</name>
+    <description>Provides information for encoding or decoding a resource in an API.</description>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Mapping Details</name>
+        <alias>apiResourceMappingDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>mappingSourceReference</alias>
+        <name>Source</name>
+        <description>The name or reference of the object source, such as a sheet name.</description>
+        <fieldInGroup>importConfigDetails</fieldInGroup>
+      </stringField>
+      <boolField>
+        <alias>mappingSuppressWorkflows</alias>
+        <name>Suppress workflows</name>
+        <description>This endpoint will not fire any workflows when resources are imported.</description>
+        <fieldInGroup>apiEndpointDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <alias>importMergeExisting</alias>
+        <name>Merge existing</name>
+        <description>If an existing resource is matched on a resource key, then merge with the existing resource.</description>
+        <fieldInGroup>importConfigDetails</fieldInGroup>
+      </boolField>
+      <intField>
+        <alias>importHeadingRow</alias>
+        <name>Heading row</name>
+        <description>The number of the line/row that contains heading information.</description>
+        <!-- Zero if there is no heading row -->
+        <fieldInGroup>importConfigDetails</fieldInGroup>
+      </intField>
+      <intField>
+        <alias>importDataRow</alias>
+        <name>Data row</name>
+        <description>The number of the first line/row that contains data to be imported.</description>
+        <fieldInGroup>importConfigDetails</fieldInGroup>
+      </intField>
+      <intField>
+        <alias>importLastDataRow</alias>
+        <name>Last row</name>
+        <description>Optional. The last row to be included in an import.</description>
+        <fieldInGroup>importConfigDetails</fieldInGroup>
+      </intField>
+    </fields>
+    <relationships>
+      <relationship>
+        <name>Member mappings</name>
+        <alias>resourceMemberMappings</alias>
+        <description>The API mappings used for individual members when mapping a resource.</description>
+        <reverseAlias>memberForResourceMapping</reverseAlias>
+        <relType>relComponents</relType>
+        <toType>apiMemberMapping</toType>
+        <toName>Members</toName>
+        <fromName>Owner resource mapping</fromName>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>apiResourceMappingDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>apiMemberMappingDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <name>Mapped type</name>
+        <alias>mappedType</alias>
+        <description>The type of resource mapped by this mapping.</description>
+        <reverseAlias>typeApiMappings</reverseAlias>
+        <relType>relDependantOf</relType>
+        <toType>type</toType>
+        <toName>Mapped type</toName>
+        <fromName>API mappings</fromName>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>apiResourceMappingDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>typeDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <name>Identity field</name>
+        <alias>resourceMappingIdentityField</alias>
+        <description>The unique field to use when locating resources.</description>
+        <reverseAlias>identityFieldForResourceMapping</reverseAlias>
+        <relType>relDependantOf</relType>
+        <toType>field</toType>
+        <toName>Identity field</toName>
+        <fromName>API mappings</fromName>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>apiResourceMappingDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>typeDetails</relationshipInToTypeGroup>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- API Member Mapping -->
+  <type>
+    <alias>apiMemberMapping</alias>
+    <name>API Member Mapping</name>
+    <description>Provides information for encoding or decoding an individual field or relationship in an API.</description>
+    <generateCode>true</generateCode>
+    <isAbstract>true</isAbstract>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Mapping Details</name>
+        <alias>apiMemberMappingDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <boolField>
+        <alias>apiMemberIsRequired</alias>
+        <description>Indicates that the field or relationship is required when calling this API.</description>
+        <name>Is required</name>
+        <fieldInGroup>apiMemberMappingDetails</fieldInGroup>
+      </boolField>
+    </fields>
+  </type>
+  <!-- API Field Mapping -->
+  <type>
+    <alias>apiFieldMapping</alias>
+    <name>API Field Mapping</name>
+    <description>Provides information for encoding or decoding an individual field in an API.</description>
+    <generateCode>true</generateCode>
+    <inherits>apiMemberMapping</inherits>
+    <relationships>
+      <relationship>
+        <name>Mapped field</name>
+        <alias>mappedField</alias>
+        <description>The field mapped by this mapping.</description>
+        <reverseAlias>fieldUsedByApiMappings</reverseAlias>
+        <relType>relDependantOf</relType>
+        <toType>field</toType>
+        <toName>Mapped field</toName>
+        <fromName>API mappings</fromName>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>apiMemberMappingDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>fieldDetails</relationshipInToTypeGroup>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- API Relationship Mapping -->
+  <type>
+    <alias>apiRelationshipMapping</alias>
+    <name>API Relationship Mapping</name>
+    <description>Provides information for encoding or decoding an individual relationship in an API.</description>
+    <generateCode>true</generateCode>
+    <inherits>apiMemberMapping</inherits>
+    <fields>
+      <boolField>
+        <alias>mapRelationshipInReverse</alias>
+        <description>Indicates that the relationship is being followed in reverse.</description>
+        <name>Reverse direction</name>
+        <defaultValue>true</defaultValue>
+        <fieldInGroup>apiMemberMappingDetails</fieldInGroup>
+      </boolField>
+    </fields>
+    <relationships>
+      <relationship>
+        <name>Mapped relationship</name>
+        <alias>mappedRelationship</alias>
+        <description>The field mapped by this mapping.</description>
+        <reverseAlias>relationshipUsedByApiMappings</reverseAlias>
+        <relType>relDependantOf</relType>
+        <toType>relationship</toType>
+        <toName>Mapped relationship</toName>
+        <fromName>API mappings</fromName>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>apiMemberMappingDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>fieldDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <name>Lookup field</name>
+        <alias>mappedRelationshipLookupField</alias>
+        <description>The field used to look up instances as part of a relationship mapping.</description>
+        <reverseAlias>lookupFieldForRelationshipMapping</reverseAlias>
+        <relType>relDependantOf</relType>
+        <toType>field</toType>
+        <toName>Lookup field</toName>
+        <fromName>Use by relationship mappings</fromName>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>apiMemberMappingDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>fieldDetails</relationshipInToTypeGroup>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- Import Configuration -->
+  <type>  
+    <alias>importConfig</alias>
+    <name>Import Configuration</name>
+    <description>A configuration for a data import such as a spreadsheet.</description>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Import Config Details</name>
+        <alias>importConfigDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <relationships>
+      <relationship>
+        <name>Import mapping</name>
+        <alias>importConfigMapping</alias>
+        <description>The endpoints exposed by an API.</description>
+        <reverseAlias>mappingForImportConfig</reverseAlias>
+        <relType>relSingleComponent</relType>
+        <toType>apiResourceMapping</toType>
+        <toName>Mapping</toName>
+        <fromName>Import configuration</fromName>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>importConfigDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>apiResourceMappingDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <name>Import file type</name>
+        <alias>importFileType</alias>
+        <description>The type of file being imported.</description>
+        <relType>relChoiceField</relType>
+        <toType>importFileTypeEnum</toType>
+        <toName>File type</toName>
+        <fromName>Import configuration</fromName>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>importConfigDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>apiResourceMappingDetails</relationshipInToTypeGroup>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- Import File Type -->
+  <enumType>
+    <alias>importFileTypeEnum</alias>
+    <name>Import File Type</name>
+    <inherits>enumValue</inherits>
+    <generateCode>true</generateCode>
+    <enumValues>
+      <importFileTypeEnum>
+        <name>Excel</name>
+        <alias>importFileTypeExcel</alias>
+        <enumOrder>1</enumOrder>
+      </importFileTypeEnum>
+      <importFileTypeEnum>
+        <name>CSV</name>
+        <alias>importFileTypeCsv</alias>
+        <enumOrder>2</enumOrder>
+      </importFileTypeEnum>
+      <importFileTypeEnum>
+        <name>Tab separated</name>
+        <alias>importFileTypeTab</alias>
+        <enumOrder>3</enumOrder>
+      </importFileTypeEnum>
+    </enumValues>
+  </enumType>
+  <!-- Import Run -->
+  <type>
+    <alias>importRun</alias>
+    <name>Import Run</name>
+    <description>A run of an import job.</description>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Import Run Details</name>
+        <alias>importRunDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>importFileId</alias>
+        <name>File Id</name>
+        <hideField>true</hideField>
+        <description>Token for the file being imported.</description>
+        <fieldInGroup>importRunDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>importFileName</alias>
+        <name>File name</name>        
+        <description>Name of the file that was imported.</description>
+        <fieldInGroup>importRunDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>importTimeZone</alias>
+        <name>Time zone</name>
+        <description>Time zone used for importing date/time data.</description>
+        <fieldInGroup>importRunDetails</fieldInGroup>
+      </stringField>
+      <dateTimeField>
+        <alias>importRunStarted</alias>
+        <name>Started</name>
+        <fieldInGroup>importRunDetails</fieldInGroup>
+      </dateTimeField>
+      <dateTimeField>
+        <alias>importRunFinished</alias>
+        <name>Finished</name>
+        <fieldInGroup>importRunDetails</fieldInGroup>
+      </dateTimeField>
+      <intField>
+        <alias>importRecordsTotal</alias>
+        <name>Records found</name>
+        <fieldInGroup>importRunDetails</fieldInGroup>
+      </intField>
+      <intField>
+        <alias>importRecordsSucceeded</alias>
+        <name>Records succeeded</name>
+        <fieldInGroup>importRunDetails</fieldInGroup>
+      </intField>
+      <intField>
+        <alias>importRecordsFailed</alias>
+        <name>Records failed</name>
+        <fieldInGroup>importRunDetails</fieldInGroup>
+      </intField>
+      <stringField>
+        <alias>importMessages</alias>
+        <name>Messages</name>
+        <allowMultiLines>true</allowMultiLines>
+        <fieldInGroup>importRunDetails</fieldInGroup>
+      </stringField>
+      <boolField>
+        <alias>importTestRun</alias>
+        <name>Test run</name>
+        <description>An import that does not actually import the data.</description>
+        <fieldInGroup>importRunDetails</fieldInGroup>
+      </boolField>
+    </fields>
+    <relationships>
+      <relationship>
+        <alias>importRunStatus</alias>
+        <name>Status</name>
+        <description>The current state of the import job.</description>
+        <relType>relChoiceField</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>importRunDetails</relationshipInFromTypeGroup>
+        <toType>workflowRunState</toType>
+      </relationship>
+      <relationship>
+        <name>Import runs</name>
+        <alias>importConfigUsed</alias>
+        <description>Runs of a configuration.</description>
+        <reverseAlias>importRuns</reverseAlias>
+        <relType>relDependantOf</relType>
+        <toType>importConfig</toType>
+        <toName>Import configuration</toName>
+        <fromName>Import runs</fromName>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>importRunDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>importConfigDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+    </relationships>
+  </type>
+  
+  <!-- Scheduled Import Configuration -->
+ 
+  <scheduleAction>
+    <alias>scheduledImportConfig</alias>
+    <name>Scheduled Import Configuration</name>
+    <description>A configuration for scheduling an import.</description>
+    <generateCode>true</generateCode>
+    <inherits>scheduledItem</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Scheduled Import Config Details</name>
+        <alias>scheduledImportConfigDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>sicUrl</alias>
+        <name>FTP address</name>
+        <description>The address of the file to be downloaded. The URL must start with either SFTP or FTPS and match the protocol that the FTP server supports. Downloads using the unencrypted FTP protocol are not supported. </description>
+        <pattern>secureFtpAddressPattern</pattern>
+        <fieldRepresents>fieldRepresentsUrl</fieldRepresents>
+        <fieldInGroup>scheduledImportConfigDetails</fieldInGroup>
+        <isRequired>true</isRequired>
+      </stringField>
+    
+      <stringField>
+        <alias>sicUsername</alias>
+        <name>Username</name>
+        <description>The username of the account to be used to log-in.</description>
+        <allowMultiLines>false</allowMultiLines>
+        <fieldInGroup>scheduledImportConfigDetails</fieldInGroup>
+
+      </stringField>
+    
+      <stringField>
+        <alias>sicPassword</alias>
+        <name>Password</name>
+        <description>The password of the account to be used to log-in.</description>
+        <allowMultiLines>false</allowMultiLines>
+        <fieldRepresents>fieldRepresentsPassword</fieldRepresents>
+        <isFieldWriteOnly>true</isFieldWriteOnly>
+        <fieldInGroup>scheduledImportConfigDetails</fieldInGroup>
+      </stringField>
+      
+      <guidField>
+        <alias>sicPasswordSecureId</alias>
+        <name>Password secure Id</name>
+        <description>Reference to the SecureId field.</description>
+        <isFieldWriteOnly>true</isFieldWriteOnly>
+        <hideField>true</hideField>
+        <fieldInGroup>scheduledImportConfigDetails</fieldInGroup>
+      </guidField>
+    
+    </fields>
+    <relationships>
+      
+      <relationship>
+        <alias>sicImportConfig</alias>
+        <name>Import configuration</name>
+        <description>The import configuration that will be used.</description>
+        <relType>relSingleLookup</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>scheduledImportConfigDetails</relationshipInFromTypeGroup>
+        <toType>importConfig</toType>
+        <relationshipInToTypeGroup>scheduledImportConfigDetails</relationshipInToTypeGroup>
+      </relationship>
+
+    </relationships>
+    
+    <onScheduleFire>
+      <class>
+        <alias>startImportJobClass</alias>
+        <name>StartImportJobClass</name>
+        <typeName>ReadiNow.Connector.Scheduled.StartImportJob</typeName>
+        <assemblyName>ReadiNow.Connector, Version=1.0.0.0, Culture=neutral</assemblyName>
+      </class>
+    </onScheduleFire>
+    
+    <onBeforeSave>scheduledImportConfigSaveHandler</onBeforeSave>
+
+  </scheduleAction>
+
+  <target>
+    <alias>scheduledImportConfigSaveHandler</alias>
+    <name>scheduledImportConfigSaveHandler</name>
+    <typeName>ReadiNow.Connector.Scheduled.ScheduledImportConfigSaveHandler</typeName>
+    <assemblyName>ReadiNow.Connector, Version=1.0.0.0, Culture=neutral</assemblyName>
+  </target>
+</resources>

@@ -1,0 +1,1018 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="core" xmlns:k="console" xsi:schemaLocation=". ../Core.xsd k ../Console.xsd" defaultSolution="coreSolution">
+  <!--Copyright 2011-2016 Global Software Innovation Pty Ltd-->
+  <!-- Audit Log Entity Model. -->
+  <!-- Audit Log Severity Enumeration -->
+  <enumType>
+    <alias>auditLogSeverityEnum</alias>
+    <name>Audit Log Severity</name>
+    <generateCode>true</generateCode>
+    <inherits>enumValue</inherits>
+    <enumValues>
+      <auditLogSeverityEnum>
+        <alias>auditLogInformation</alias>
+        <name>Information</name>
+        <enumOrder>1</enumOrder>
+      </auditLogSeverityEnum>
+      <auditLogSeverityEnum>
+        <alias>auditLogWarning</alias>
+        <name>Warning</name>
+        <enumOrder>2</enumOrder>
+      </auditLogSeverityEnum>
+      <auditLogSeverityEnum>
+        <alias>auditLogError</alias>
+        <name>Error</name>
+        <enumOrder>3</enumOrder>
+      </auditLogSeverityEnum>
+    </enumValues>
+  </enumType>
+  <!-- Audit Log Settings type -->
+  <type>
+    <alias>auditLogSettings</alias>
+    <name>Security Audit Log Settings</name>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <alias>auditLogSettingsDetails</alias>
+        <name>Audit Log Settings Details</name>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <intField>
+        <alias>maxAuditLogEntries</alias>
+        <name>Maximum audit log entries</name>
+        <description>The maximum number of audit log entries.</description>
+        <fieldInGroup>auditLogSettingsDetails</fieldInGroup>
+        <minInt>1</minInt>
+        <maxInt>10000</maxInt>
+        <isRequired>true</isRequired>
+      </intField>
+    </fields>
+    <relationships>
+      <relationship>
+        <alias>minAuditLogSeverity</alias>
+        <name>Minimum severity</name>
+        <description>The minimum message severity to log to the audit log.</description>
+        <relType>relChoiceField</relType>
+        <generateCode>true</generateCode>
+        <toType>auditLogSeverityEnum</toType>
+        <toName>Minimum severity</toName>
+        <relationshipInFromTypeGroup>auditLogSettingsDetails</relationshipInFromTypeGroup>
+        <relationshipIsMandatory>true</relationshipIsMandatory>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- Audit Log Entry Metadata base type -->
+  <type>
+    <alias>auditLogEntryMetadata</alias>
+    <name>Audit Log Entry Metadata</name>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <alias>auditLogEntryMetadataDetails</alias>
+        <name>Audit Log Entry Metadata Details</name>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>messageId</alias>
+        <name>Message Id</name>
+        <fieldInGroup>auditLogEntryMetadataDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>messageFormatString</alias>
+        <name>Message format string</name>
+        <fieldInGroup>auditLogEntryMetadataDetails</fieldInGroup>
+      </stringField>
+    </fields>
+    <relationships>
+      <relationship>
+        <alias>severitySuccess</alias>
+        <name>Severity success</name>
+        <relType>relChoiceField</relType>
+        <generateCode>true</generateCode>
+        <toType>auditLogSeverityEnum</toType>
+        <toName>Severity success</toName>
+        <relationshipInFromTypeGroup>auditLogEntryMetadataDetails</relationshipInFromTypeGroup>
+      </relationship>
+      <relationship>
+        <alias>severityFailure</alias>
+        <name>Severity failure</name>
+        <relType>relChoiceField</relType>
+        <generateCode>true</generateCode>
+        <toType>auditLogSeverityEnum</toType>
+        <toName>Severity failure</toName>
+        <relationshipInFromTypeGroup>auditLogEntryMetadataDetails</relationshipInFromTypeGroup>
+      </relationship>
+      <relationship>
+        <alias>auditLogEntryType</alias>
+        <name>Audit log entry type</name>
+        <reverseAlias>auditLogEntryTypeMetadata</reverseAlias>
+        <relType>relSingleComponentOf</relType>
+        <generateCode>true</generateCode>
+        <toType>type</toType>
+        <toName>Audit log entry type</toName>
+        <fromName>Audit log entry type metadata</fromName>
+        <hideOnToType>true</hideOnToType>
+        <relationshipInFromTypeGroup>auditLogEntryMetadataDetails</relationshipInFromTypeGroup>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- Audit Log Entry base type -->
+  <type>
+    <alias>auditLogEntry</alias>
+    <name>Audit Log Entry</name>
+    <generateCode>true</generateCode>
+    <isAbstract>true</isAbstract>
+    <fieldGroups>
+      <fieldGroup>
+        <alias>auditLogEntryDetails</alias>
+        <name>Audit Log Entry Details</name>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <dateTimeField>
+        <alias>auditLogEntryCreatedDate</alias>
+        <name>Audit log entry created date</name>
+        <fieldInGroup>auditLogEntryDetails</fieldInGroup>
+      </dateTimeField>
+      <stringField>
+        <alias>auditLogEntryMessage</alias>
+        <name>Message</name>
+        <fieldInGroup>auditLogEntryDetails</fieldInGroup>
+        <allowMultiLines>true</allowMultiLines>
+      </stringField>
+      <stringField>
+        <alias>auditLogEntryUser</alias>
+        <name>User</name>
+        <fieldInGroup>auditLogEntryDetails</fieldInGroup>
+      </stringField>
+      <boolField>
+        <alias>auditLogEntrySuccess</alias>
+        <name>Success</name>
+        <fieldInGroup>auditLogEntryDetails</fieldInGroup>
+      </boolField>
+    </fields>
+    <relationships>
+      <relationship>
+        <alias>auditLogEntrySeverity</alias>
+        <name>Severity</name>
+        <relType>relChoiceField</relType>
+        <generateCode>true</generateCode>
+        <toType>auditLogSeverityEnum</toType>
+        <toName>Severity</toName>
+        <relationshipInFromTypeGroup>auditLogEntryDetails</relationshipInFromTypeGroup>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- ****************************************************** -->
+  <!-- SPECIFIC AUDIT LOG ENTRY TYPES - There is one type per audit log message type. -->
+  <!-- Create User Account Audit Log Entry -->
+  <type>
+    <alias>createUserAccountAuditLogEntry</alias>
+    <name>Create User Account Audit Log Entry</name>
+    <description>Create user account audit log entry</description>
+    <generateCode>true</generateCode>
+    <inherits>auditLogEntry</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <alias>createUserAccountAuditLogEntryDetails</alias>
+        <name>Create User Account Audit Log Entry Details</name>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>createdUserName</alias>
+        <name>User</name>
+        <fieldInGroup>createUserAccountAuditLogEntryDetails</fieldInGroup>
+      </stringField>
+    </fields>
+  </type>
+  <!-- Delete User Account Audit Log Entry -->
+  <type>
+    <alias>deleteUserAccountAuditLogEntry</alias>
+    <name>Delete User Account Audit Log Entry</name>
+    <description>Delete user account audit log entry</description>
+    <generateCode>true</generateCode>
+    <inherits>auditLogEntry</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <alias>deleteUserAccountAuditLogEntryDetails</alias>
+        <name>Delete User Account Audit Log Entry Details</name>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>deletedUserName</alias>
+        <name>User</name>
+        <fieldInGroup>deleteUserAccountAuditLogEntryDetails</fieldInGroup>
+      </stringField>
+    </fields>
+  </type>
+  <!-- Rename User Account Audit Log Entry -->
+  <type>
+    <alias>renameUserAccountAuditLogEntry</alias>
+    <name>Rename User Account Audit Log Entry</name>
+    <description>Rename user account audit log entry</description>
+    <generateCode>true</generateCode>
+    <inherits>auditLogEntry</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <alias>renameUserAccountAuditLogEntryDetails</alias>
+        <name>Rename User Account Audit Log Entry Details</name>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>oldUserName</alias>
+        <name>Old user name</name>
+        <fieldInGroup>renameUserAccountAuditLogEntryDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>newUserName</alias>
+        <name>New user name</name>
+        <fieldInGroup>renameUserAccountAuditLogEntryDetails</fieldInGroup>
+      </stringField>
+    </fields>
+  </type>
+  <!-- Expired User Account Audit Log Entry -->
+  <type>
+    <alias>expireUserAccountAuditLogEntry</alias>
+    <name>Expired User Account Audit Log Entry</name>
+    <description>Expired user account audit log entry</description>
+    <generateCode>true</generateCode>
+    <inherits>auditLogEntry</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <alias>expireUserAccountAuditLogEntryDetails</alias>
+        <name>Expired User Account Audit Log Entry Details</name>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>expiredUserName</alias>
+        <name>Expired user name</name>
+        <fieldInGroup>expireUserAccountAuditLogEntryDetails</fieldInGroup>
+      </stringField>
+    </fields>
+  </type>
+  <!-- Change User Account Password Audit Log Entry -->
+  <type>
+    <alias>changeUserAccountPasswordAuditLogEntry</alias>
+    <name>Change User Account Password Audit Log Entry</name>
+    <description>Change user account password audit log entry</description>
+    <generateCode>true</generateCode>
+    <inherits>auditLogEntry</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <alias>changeUserAccountPasswordAuditLogEntryDetails</alias>
+        <name>Change User Account Password Audit Log Entry Details</name>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>changedPasswordUserName</alias>
+        <name>Changed password user name</name>
+        <fieldInGroup>changeUserAccountPasswordAuditLogEntryDetails</fieldInGroup>
+      </stringField>
+    </fields>
+  </type>
+  <!-- Change User Account Expiry Audit Log Entry -->
+  <type>
+    <alias>changeUserAccountExpiryAuditLogEntry</alias>
+    <name>Change User Account Expiry Audit Log Entry</name>
+    <description>Change user account expiry audit log entry</description>
+    <generateCode>true</generateCode>
+    <inherits>auditLogEntry</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <alias>changeUserAccountExpiryAuditLogEntryDetails</alias>
+        <name>Change User Account Expiry Audit Log Entry Details</name>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>changedExpiryUserName</alias>
+        <name>Changed expiry user name</name>
+        <fieldInGroup>changeUserAccountExpiryAuditLogEntryDetails</fieldInGroup>
+      </stringField>
+      <dateTimeField>
+        <alias>oldExpirationDate</alias>
+        <name>Old expiration date</name>
+        <fieldInGroup>changeUserAccountExpiryAuditLogEntryDetails</fieldInGroup>
+      </dateTimeField>
+      <dateTimeField>
+        <alias>newExpirationDate</alias>
+        <name>New expiration date</name>
+        <fieldInGroup>changeUserAccountExpiryAuditLogEntryDetails</fieldInGroup>
+      </dateTimeField>
+    </fields>
+  </type>
+  <!-- Change User Account Status Audit Log Entry -->
+  <type>
+    <alias>changeUserAccountStatusAuditLogEntry</alias>
+    <name>Change User Account Status Audit Log Entry</name>
+    <description>Change user account status audit log entry</description>
+    <generateCode>true</generateCode>
+    <inherits>auditLogEntry</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Change User Account Status Audit Log Entry Details</name>
+        <alias>changeUserAccountStatusAuditLogEntryDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>changedStatusUserName</alias>
+        <name>Changed status user name</name>
+        <fieldInGroup>changeUserAccountStatusAuditLogEntryDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>oldStatus</alias>
+        <name>Old status</name>
+        <fieldInGroup>changeUserAccountStatusAuditLogEntryDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>newStatus</alias>
+        <name>New status</name>
+        <fieldInGroup>changeUserAccountStatusAuditLogEntryDetails</fieldInGroup>
+      </stringField>
+    </fields>
+  </type>
+  <!-- Locked User Account Audit Log Entry -->
+  <type>
+    <alias>lockUserAccountAuditLogEntry</alias>
+    <name>Lock User Account Audit Log Entry</name>
+    <description>Lock user account audit log entry</description>
+    <generateCode>true</generateCode>
+    <inherits>auditLogEntry</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <alias>lockUserAccountAuditLogEntryDetails</alias>
+        <name>Lock User Account Audit Log Entry Details</name>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>lockedUserName</alias>
+        <name>Locked user name</name>
+        <fieldInGroup>lockUserAccountAuditLogEntryDetails</fieldInGroup>
+      </stringField>
+    </fields>
+  </type>
+  <!-- Logon Audit Log Entry -->
+  <type>
+    <alias>logonAuditLogEntry</alias>
+    <name>Logon Audit Log Entry</name>
+    <description>Logon audit log entry</description>
+    <generateCode>true</generateCode>
+    <inherits>auditLogEntry</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Logon Audit Log Entry Details</name>
+        <alias>logonAuditLogEntryDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <name>Logged on user name</name>
+        <alias>loggedOnUserName</alias>
+        <fieldInGroup>logonAuditLogEntryDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <name>User agent</name>
+        <alias>userAgent</alias>
+        <fieldInGroup>logonAuditLogEntryDetails</fieldInGroup>
+      </stringField>
+    </fields>
+  </type>
+  <!-- Logoff Audit Log Entry -->
+  <type>
+    <alias>logoffAuditLogEntry</alias>
+    <name>Logoff Audit Log Entry</name>
+    <description>Logoff audit log entry</description>
+    <generateCode>true</generateCode>
+    <inherits>auditLogEntry</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <alias>logoffAuditLogEntryDetails</alias>
+        <name>Logoff Audit Log Entry Details</name>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>loggedOffUserName</alias>
+        <name>Logged off user name</name>
+        <fieldInGroup>logoffAuditLogEntryDetails</fieldInGroup>
+      </stringField>
+    </fields>
+  </type>
+  <!-- Create User Role Audit Log Entry -->
+  <type>
+    <alias>createUserRoleAuditLogEntry</alias>
+    <name>Create User Role Audit Log Entry</name>
+    <description>Create user role audit log entry</description>
+    <generateCode>true</generateCode>
+    <inherits>auditLogEntry</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <alias>createUserRoleAuditLogEntryDetails</alias>
+        <name>Create User Role Audit Log Entry Details</name>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>createdRoleName</alias>
+        <name>Role</name>
+        <fieldInGroup>createUserRoleAuditLogEntryDetails</fieldInGroup>
+      </stringField>
+    </fields>
+  </type>
+  <!-- Delete User Role Audit Log Entry -->
+  <type>
+    <alias>deleteUserRoleAuditLogEntry</alias>
+    <name>Delete User Role Audit Log Entry</name>
+    <description>Delete user role audit log entry</description>
+    <generateCode>true</generateCode>
+    <inherits>auditLogEntry</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <alias>deleteUserRoleAuditLogEntryDetails</alias>
+        <name>Delete User Role Audit Log Entry Details</name>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>deletedRoleName</alias>
+        <name>Role</name>
+        <fieldInGroup>deleteUserRoleAuditLogEntryDetails</fieldInGroup>
+      </stringField>
+    </fields>
+  </type>
+  <!-- Rename User Role Audit Log Entry -->
+  <type>
+    <alias>renameUserRoleAuditLogEntry</alias>
+    <name>Rename User Role Audit Log Entry</name>
+    <description>Rename user role audit log entry</description>
+    <generateCode>true</generateCode>
+    <inherits>auditLogEntry</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <alias>renameUserRoleAuditLogEntryDetails</alias>
+        <name>Rename User Role Audit Log Entry Details</name>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>oldRoleName</alias>
+        <name>Old role name</name>
+        <fieldInGroup>renameUserRoleAuditLogEntryDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>newRoleName</alias>
+        <name>New role name</name>
+        <fieldInGroup>renameUserRoleAuditLogEntryDetails</fieldInGroup>
+      </stringField>
+    </fields>
+  </type>
+  <!-- Change User Role Membership Audit Log Entry -->
+  <type>
+    <alias>changeUserRoleMembersAuditLogEntry</alias>
+    <name>Change User Role Members Audit Log Entry</name>
+    <description>Change user role members audit log entry</description>
+    <generateCode>true</generateCode>
+    <inherits>auditLogEntry</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <alias>changeUserRoleMembersAuditLogEntryDetails</alias>
+        <name>Change User Role Members Audit Log Entry Details</name>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>roleNameChangeMembers</alias>
+        <name>Role</name>
+        <fieldInGroup>changeUserRoleMembersAuditLogEntryDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>addedMemberNames</alias>
+        <name>Added members</name>
+        <fieldInGroup>changeUserRoleMembersAuditLogEntryDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>removedMemberNames</alias>
+        <name>Removed members</name>
+        <fieldInGroup>changeUserRoleMembersAuditLogEntryDetails</fieldInGroup>
+      </stringField>
+    </fields>
+  </type>
+  <!-- Create Tenant Audit Log Entry -->
+  <type>
+    <alias>createTenantAuditLogEntry</alias>
+    <name>Create Tenant Audit Log Entry</name>
+    <description>Create tenant audit log entry</description>
+    <generateCode>true</generateCode>
+    <inherits>auditLogEntry</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <alias>createTenantAuditLogEntryDetails</alias>
+        <name>Create Tenant Audit Log Entry Details</name>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>createdTenantName</alias>
+        <name>Created tenant</name>
+        <fieldInGroup>createTenantAuditLogEntryDetails</fieldInGroup>
+      </stringField>
+    </fields>
+  </type>
+  <!-- Delete Tenant Audit Log Entry -->
+  <type>
+    <alias>deleteTenantAuditLogEntry</alias>
+    <name>Delete Tenant Audit Log Entry</name>
+    <description>Delete tenant audit log entry</description>
+    <generateCode>true</generateCode>
+    <inherits>auditLogEntry</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <alias>deleteTenantAuditLogEntryDetails</alias>
+        <name>Delete Tenant Audit Log Entry Details</name>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>deletedTenantName</alias>
+        <name>Deleted tenant</name>
+        <fieldInGroup>deleteTenantAuditLogEntryDetails</fieldInGroup>
+      </stringField>
+    </fields>
+  </type>
+  <!-- Create Application Audit Log Entry -->
+  <type>
+    <alias>createApplicationAuditLogEntry</alias>
+    <name>Create Application Audit Log Entry</name>
+    <description>Create application audit log entry</description>
+    <generateCode>true</generateCode>
+    <inherits>auditLogEntry</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <alias>createApplicationAuditLogEntryDetails</alias>
+        <name>Create Application Audit Log Entry Details</name>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>createdApplicationName</alias>
+        <name>Created application</name>
+        <fieldInGroup>createApplicationAuditLogEntryDetails</fieldInGroup>
+      </stringField>
+    </fields>
+  </type>
+  <!-- Delete Application Audit Log Entry -->
+  <type>
+    <alias>deleteApplicationAuditLogEntry</alias>
+    <name>Delete Application Audit Log Entry</name>
+    <description>Delete application audit log entry</description>
+    <generateCode>true</generateCode>
+    <inherits>auditLogEntry</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <alias>deleteApplicationAuditLogEntryDetails</alias>
+        <name>Delete Application Audit Log Entry Details</name>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>deletedApplicationName</alias>
+        <name>Deleted application</name>
+        <fieldInGroup>deleteApplicationAuditLogEntryDetails</fieldInGroup>
+      </stringField>
+    </fields>
+  </type>
+  <!-- Deploy Application Audit Log Entry -->
+  <type>
+    <alias>deployApplicationAuditLogEntry</alias>
+    <name>Deploy Application Audit Log Entry</name>
+    <description>Deploy application audit log entry</description>
+    <generateCode>true</generateCode>
+    <inherits>auditLogEntry</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <alias>deployApplicationAuditLogEntryDetails</alias>
+        <name>Deploy Application Audit Log Entry Details</name>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>deployedApplicationName</alias>
+        <name>Deployed application</name>
+        <fieldInGroup>deployApplicationAuditLogEntryDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>deployedApplicationVersion</alias>
+        <name>Deployed application version</name>
+        <fieldInGroup>deployApplicationAuditLogEntryDetails</fieldInGroup>
+      </stringField>
+    </fields>
+  </type>
+  <!-- Publish Application Audit Log Entry -->
+  <type>
+    <alias>publishApplicationAuditLogEntry</alias>
+    <name>Publish Application Audit Log Entry</name>
+    <description>Publish application audit log entry</description>
+    <generateCode>true</generateCode>
+    <inherits>auditLogEntry</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <alias>publishApplicationAuditLogEntryDetails</alias>
+        <name>Publish Application Audit Log Entry Details</name>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>publishedApplicationName</alias>
+        <name>Published application</name>
+        <fieldInGroup>deployApplicationAuditLogEntryDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>publishedApplicationVersion</alias>
+        <name>Published application version</name>
+        <fieldInGroup>publishApplicationAuditLogEntryDetails</fieldInGroup>
+      </stringField>
+    </fields>
+  </type>
+  <!-- Password Policy Change Audit Log Entry -->
+  <type>
+    <alias>changePasswordPolicyAuditLogEntry</alias>
+    <name>Change Password Policy Audit Log Entry</name>
+    <description>Change password policy audit log entry</description>
+    <generateCode>true</generateCode>
+    <inherits>auditLogEntry</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <alias>changePasswordPolicyAuditLogEntryDetails</alias>
+        <name>Change Password Policy Audit Log Entry Details</name>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <intField>
+        <alias>oldMinimumPasswordLength</alias>
+        <name>Old minimum password length</name>
+        <fieldInGroup>changePasswordPolicyAuditLogEntryDetails</fieldInGroup>
+      </intField>
+      <intField>
+        <alias>oldMaximumPasswordAge</alias>
+        <name>Old maximum password age (days)</name>
+        <fieldInGroup>changePasswordPolicyAuditLogEntryDetails</fieldInGroup>
+      </intField>
+      <boolField>
+        <alias>oldMustContainUpperCaseCharacters</alias>
+        <name>Old must contain uppercase characters</name>
+        <fieldInGroup>changePasswordPolicyAuditLogEntryDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <alias>oldMustContainLowerCaseCharacters</alias>
+        <name>Old must contain lowercase characters</name>
+        <fieldInGroup>changePasswordPolicyAuditLogEntryDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <alias>oldMustContainDigits</alias>
+        <name>Old must contain digits</name>
+        <fieldInGroup>changePasswordPolicyAuditLogEntryDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <alias>oldMustContainSpecialCharacters</alias>
+        <name>Old must contain special characters</name>
+        <fieldInGroup>changePasswordPolicyAuditLogEntryDetails</fieldInGroup>
+      </boolField>
+      <intField>
+        <alias>oldAccountLockoutDuration</alias>
+        <name>Old account lockout duration (minutes)</name>
+        <fieldInGroup>changePasswordPolicyAuditLogEntryDetails</fieldInGroup>
+      </intField>
+      <intField>
+        <alias>oldAccountLockoutThreshold</alias>
+        <name>Old account lockout threshold</name>
+        <fieldInGroup>changePasswordPolicyAuditLogEntryDetails</fieldInGroup>
+      </intField>
+      <intField>
+        <alias>newMinimumPasswordLength</alias>
+        <name>New minimum password length</name>
+        <fieldInGroup>changePasswordPolicyAuditLogEntryDetails</fieldInGroup>
+      </intField>
+      <intField>
+        <alias>newMaximumPasswordAge</alias>
+        <name>New maximum password age (days)</name>
+        <fieldInGroup>changePasswordPolicyAuditLogEntryDetails</fieldInGroup>
+      </intField>
+      <boolField>
+        <alias>newMustContainUpperCaseCharacters</alias>
+        <name>New must contain uppercase characters</name>
+        <fieldInGroup>changePasswordPolicyAuditLogEntryDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <alias>newMustContainLowerCaseCharacters</alias>
+        <name>New must contain lowercase characters</name>
+        <fieldInGroup>changePasswordPolicyAuditLogEntryDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <alias>newMustContainDigits</alias>
+        <name>New must contain digits</name>
+        <fieldInGroup>changePasswordPolicyAuditLogEntryDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <alias>newMustContainSpecialCharacters</alias>
+        <name>New must contain special characters</name>
+        <fieldInGroup>changePasswordPolicyAuditLogEntryDetails</fieldInGroup>
+      </boolField>
+      <intField>
+        <alias>newAccountLockoutDuration</alias>
+        <name>New account lockout duration (minutes)</name>
+        <fieldInGroup>changePasswordPolicyAuditLogEntryDetails</fieldInGroup>
+      </intField>
+      <intField>
+        <alias>newAccountLockoutThreshold</alias>
+        <name>New account lockout threshold</name>
+        <fieldInGroup>changePasswordPolicyAuditLogEntryDetails</fieldInGroup>
+      </intField>
+    </fields>
+  </type>
+  <!-- Create Access Rule Log Entry -->
+  <type>
+    <alias>createAccessRuleAuditLogEntry</alias>
+    <name>Create Access Rule Audit Log Entry</name>
+    <description>Create access rule audit log entry</description>
+    <generateCode>true</generateCode>
+    <inherits>auditLogEntry</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <alias>createAccessRuleAuditLogEntryDetails</alias>
+        <name>Create Access Rule Audit Log Entry Details</name>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>subjectNameCreateAccessRule</alias>
+        <name>Subject name</name>
+        <fieldInGroup>createAccessRuleAuditLogEntryDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>securedTypeNameCreateAccessRule</alias>
+        <name>Secured object name</name>
+        <fieldInGroup>createAccessRuleAuditLogEntryDetails</fieldInGroup>
+      </stringField>
+    </fields>
+  </type>
+  <!-- Enable Access Rule Audit Log Entry -->
+  <type>
+    <alias>enableAccessRuleAuditLogEntry</alias>
+    <name>Enable Access Rule Audit Log Entry</name>
+    <description>Enable access rule audit log entry</description>
+    <generateCode>true</generateCode>
+    <inherits>auditLogEntry</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <alias>enableAccessRuleAuditLogEntryDetails</alias>
+        <name>Enable Access Rule Audit Log Entry Details</name>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <boolField>
+        <alias>oldAccessRuleEnabled</alias>
+        <name>Old access rule enabled</name>
+        <fieldInGroup>enableAccessRuleAuditLogEntryDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <alias>newAccessRuleEnabled</alias>
+        <name>New access rule enabled</name>
+        <fieldInGroup>enableAccessRuleAuditLogEntryDetails</fieldInGroup>
+      </boolField>
+      <stringField>
+        <alias>subjectNameEnableAccessRule</alias>
+        <name>Subject name</name>
+        <fieldInGroup>enableAccessRuleAuditLogEntryDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>securedTypeNameEnableAccessRule</alias>
+        <name>Secured object name</name>
+        <fieldInGroup>enableAccessRuleAuditLogEntryDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>accessRuleReportNameEnableAccessRule</alias>
+        <name>Access rule report name</name>
+        <fieldInGroup>enableAccessRuleAuditLogEntryDetails</fieldInGroup>
+      </stringField>
+    </fields>
+  </type>
+  <!-- Change Access Rule Query Audit Log Entry -->
+  <type>
+    <alias>changeAccessRuleQueryAuditLogEntry</alias>
+    <name>Change Access Rule Query Audit Log Entry</name>
+    <description>Change access rule query audit log entry</description>
+    <generateCode>true</generateCode>
+    <inherits>auditLogEntry</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <alias>changeAccessRuleQueryAuditLogEntryDetails</alias>
+        <name>Change Access Rule Query Audit Log Entry Details</name>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>subjectNameChangeAccessRuleQuery</alias>
+        <name>Subject name</name>
+        <fieldInGroup>changeAccessRuleQueryAuditLogEntryDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>securedTypeNameChangeAccessRuleQuery</alias>
+        <name>Secured object name</name>
+        <fieldInGroup>changeAccessRuleQueryAuditLogEntryDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>accessRuleReportNameChangeAccessRuleQuery</alias>
+        <name>Access rule report name</name>
+        <fieldInGroup>changeAccessRuleQueryAuditLogEntryDetails</fieldInGroup>
+      </stringField>
+    </fields>
+  </type>
+  <!-- Change Access Rule Permissions Audit Log Entry -->
+  <type>
+    <alias>changeAccessRulePermissionsAuditLogEntry</alias>
+    <name>Change Access Rule Permissions Audit Log Entry</name>
+    <description>Change access rule permissions audit log entry</description>
+    <generateCode>true</generateCode>
+    <inherits>auditLogEntry</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <alias>changeAccessRulePermissionsAuditLogEntryDetails</alias>
+        <name>Change Access Rule Permissions Audit Log Entry Details</name>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>oldPermissionNamesChangeAccessRulePerm</alias>
+        <name>Old permissions</name>
+        <fieldInGroup>changeAccessRulePermissionsAuditLogEntryDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>newPermissionNamesChangeAccessRulePerm</alias>
+        <name>New permissions</name>
+        <fieldInGroup>changeAccessRulePermissionsAuditLogEntryDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>subjectNameChangeAccessRulePerm</alias>
+        <name>Subject name</name>
+        <fieldInGroup>changeAccessRulePermissionsAuditLogEntryDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>securedTypeNameChangeAccessRulePerm</alias>
+        <name>Secured object name</name>
+        <fieldInGroup>changeAccessRulePermissionsAuditLogEntryDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>accessRuleReportNameChangeAccessRulePerm</alias>
+        <name>Access rule report name</name>
+        <fieldInGroup>changeAccessRulePermissionsAuditLogEntryDetails</fieldInGroup>
+      </stringField>
+    </fields>
+  </type>
+  <!-- Delete Access Rule Log Entry -->
+  <type>
+    <alias>deleteAccessRuleAuditLogEntry</alias>
+    <name>Delete Access Rule Audit Log Entry</name>
+    <description>Delete access rule audit log entry</description>
+    <generateCode>true</generateCode>
+    <inherits>auditLogEntry</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <alias>deleteAccessRuleAuditLogEntryDetails</alias>
+        <name>Delete Access Rule Audit Log Entry Details</name>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>subjectNameDeleteAccessRule</alias>
+        <name>Subject name</name>
+        <fieldInGroup>deleteAccessRuleAuditLogEntryDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>securedTypeNameDeleteAccessRule</alias>
+        <name>Secured object name</name>
+        <fieldInGroup>deleteAccessRuleAuditLogEntryDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>accessRuleReportNameDeleteAccessRule</alias>
+        <name>Access rule report name</name>
+        <fieldInGroup>deleteAccessRuleAuditLogEntryDetails</fieldInGroup>
+      </stringField>
+    </fields>
+  </type>
+  <!-- Tenant Rollback Log Entry -->
+  <type>
+    <alias>tenantRollbackAuditLogEntry</alias>
+    <name>Tenant Rollback Audit Log Entry</name>
+    <description>Tenant rollback audit log entry</description>
+    <generateCode>true</generateCode>
+    <inherits>auditLogEntry</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <alias>tenantRollbackAuditLogEntryDetails</alias>
+        <name>Tenant Rollback Audit Log Entry Details</name>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>transactionId</alias>
+        <name>Transaction Id</name>
+        <fieldInGroup>tenantRollbackAuditLogEntryDetails</fieldInGroup>
+      </stringField>
+    </fields>
+  </type>
+  
+  <!-- ************************************* -->
+  <!--            Filtered targets           -->
+  <!-- ************************************* -->
+
+  <type>
+    <alias>resourceTriggerFilterDef</alias>
+    <name>Resource Trigger Filter Definition</name>
+    <description>An interface type that holds filtering information related to resources for triggering and auditing.</description>
+    <inherits>enableableItem</inherits>
+    <generateCode>true</generateCode>
+    <isAbstract>true</isAbstract>
+
+    <fieldGroups>
+      <fieldGroup>
+        <name>Resource Trigger Filter</name>
+        <alias>resTriggerFilter</alias>
+      </fieldGroup>
+    </fieldGroups>
+
+    <fields>
+      <boolField>
+        <alias>rtfdRunInForeground</alias>
+        <name>Run in foreground</name>
+        <description>When triggered during a form save, the save will wait until the trigger finishes running.</description>
+        <fieldInGroup>resTriggerFilter</fieldInGroup>
+      </boolField>
+    </fields>
+
+    <relationships>
+      <relationship>
+        <alias>triggeredOnType</alias>
+        <reverseAlias>triggerForWorkflow</reverseAlias>
+        <name>Triggered on object</name>
+        <toName>Object to trigger on</toName>
+        <fromName>Workflow to trigger</fromName>
+        <description>The object that cause the workflow to run. If no object is specified then the workflow will not run.</description>
+        <toType>type</toType>
+        <relType>relLookup</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>resTriggerFilter</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>typeDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <alias>updatedFieldsToTriggerOn</alias>
+        <name>Updated fields to trigger on</name>
+        <toName>Fields to trigger on</toName>
+        <fromName>Workflow trigger</fromName>
+        <description>The fields on a resource that will cause a trigger to trip. If multiple fields are provided the trigger will trip on any of the fields.</description>
+        <toType>field</toType>
+        <relType>relManyToMany</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>resTriggerFilter</relationshipInFromTypeGroup>
+      </relationship>
+      <relationship>
+        <alias>updatedRelationshipsToTriggerOn</alias>
+        <name>Updated relationships to trigger on</name>
+        <toName>Relationships to trigger on</toName>
+        <fromName>Workflow trigger</fromName>
+        <description>The relationships on a resource that will cause a trigger to trip. </description>
+        <toType>relationship</toType>
+        <relType>relManyToMany</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>resTriggerFilter</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>relationshipDetails</relationshipInToTypeGroup>
+      </relationship>
+    </relationships>
+    <onAfterDelete>resourceTriggerFilterDefTarget</onAfterDelete>
+    <onAfterSave>resourceTriggerFilterDefTarget</onAfterSave>
+    <onAfterDeploy>resourceTriggerFilterDefTarget</onAfterDeploy>
+  </type>
+
+  <type>
+    <alias>recordChangeAuditPolicy</alias>
+    <name>Record Change Audit Policy</name>
+    <description>A policy that controls the change auditing for a object definition.</description>
+    <inherits>resourceTriggerFilterDef, userResource</inherits>
+    <generateCode>true</generateCode>
+  </type>
+
+  <!-- hook to track updates to resourceTriggerFilterDef -->
+  <target>
+    <alias>resourceTriggerFilterDefTarget</alias>
+    <typeName>EDC.ReadiNow.Model.EventClasses.ResourceTriggerFilter.ResourceTriggerFilterDefEventTarget</typeName>
+    <assemblyName>EDC.ReadiNow.Common, Version=1.0.0.0, Culture=neutral</assemblyName>
+  </target>
+</resources>

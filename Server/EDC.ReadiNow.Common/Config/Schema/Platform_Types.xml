@@ -1,0 +1,1970 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="core" xsi:schemaLocation=". ../Core.xsd" defaultSolution="coreSolution">
+  <!--Copyright 2011-2016 Global Software Innovation Pty Ltd-->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    USER DATA                                                     -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <type>
+    <alias>userResource</alias>
+    <name>Editable Resource</name>
+    <description>This is the parent type for all business resources, including both application resources and user-created resources.</description>
+    <generateCode>true</generateCode>
+  </type>
+  <type>
+    <name>Resource Picker Type</name>
+    <alias>resourcePicker</alias>
+    <description>A control that can be used to pick resources. E.g. a report or a structure view (Hirarchy object).</description>
+    <generateCode>true</generateCode>
+    <isMetadata>true</isMetadata>
+    <relationships>
+      <relationship>
+        <alias>reportUsesDefinition</alias>
+        <reverseAlias>definitionUsedByReport</reverseAlias>
+        <name>Report to definition</name>
+        <generateCode>true</generateCode>
+        <description>Indicates that a report uses a definition.</description>
+        <toType>type</toType>
+        <relType>relDependantOf</relType>
+        <warnOnDeleteTo>true</warnOnDeleteTo>
+        <cloneAction>cloneReferences</cloneAction>
+        <relationshipInFromTypeGroup>reportDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>typeDetails</relationshipInToTypeGroup>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    TENANTS AND SOLUTIONS                                         -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- 'Core' solution resource -->
+  <solution>
+    <alias>coreSolution</alias>
+    <name>ReadiNow Core</name>
+    <description>System application that contains core platform objects.</description>
+    <solutionVersionString>1.0.0.0</solutionVersionString>
+    <solutionPublisher>Readinow Corporation</solutionPublisher>
+    <solutionPublisherUrl>http://www.readinow.com</solutionPublisherUrl>
+    <solutionReleaseDate>2012-12-13</solutionReleaseDate>
+    <legacyGuid>49480442-FF64-479B-9073-CEF5646D0E1F</legacyGuid>
+    <packageId>d14fbd50-52b8-43b8-9388-dba8574c0280</packageId>
+  </solution>
+  <!-- 'Tenant' type -->
+  <type>
+    <alias>tenant</alias>
+    <name>Tenant</name>
+    <description>An individual customer in the multi-tenanted platform.</description>
+    <systemTenantOnly>true</systemTenantOnly>
+    <generateCode>true</generateCode>
+    <onBeforeDelete>tenantEventTarget</onBeforeDelete>
+    <onAfterDelete>tenantEventTarget</onAfterDelete>
+    <onBeforeSave>tenantEventTarget</onBeforeSave>
+    <onAfterSave>tenantEventTarget</onAfterSave>
+    <onDeleteFailed>tenantEventTarget</onDeleteFailed>
+    <onSaveFailed>tenantEventTarget</onSaveFailed>
+    <fields>
+      <boolField>
+        <alias>isTenantDisabled</alias>
+        <name>Disabled</name>
+        <description>Disables the tenant.</description>
+        <defaultValue>false</defaultValue>
+        <excludeFieldFromPublish>true</excludeFieldFromPublish>
+        <isFieldReadOnly>true</isFieldReadOnly>
+        <fieldInGroup>system</fieldInGroup>
+        <systemTenantOnly>true</systemTenantOnly>
+      </boolField>
+    </fields>
+  </type>
+  <!-- Tenant Event Target -->
+  <target>
+    <alias>tenantEventTarget</alias>
+    <typeName>EDC.ReadiNow.Model.EventClasses.TenantEventTarget</typeName>
+    <assemblyName>EDC.ReadiNow.Common, Version=1.0.0.0, Culture=neutral</assemblyName>
+    <ordinal>0</ordinal>
+  </target>
+  <!-- 'Application' type -->
+  <type>
+    <alias>app</alias>
+    <name>Application</name>
+    <description>A SoftwarePlatform application. Applications can have multiple versions (packages), and it is individual packages that are installed.</description>
+    <systemTenantOnly>true</systemTenantOnly>
+    <generateCode>true</generateCode>
+    <isMetadata>true</isMetadata>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Application Details</name>
+        <alias>appDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <guidField>
+        <name>Application Id</name>
+        <alias>applicationId</alias>
+        <fieldInGroup>appDetails</fieldInGroup>
+        <systemTenantOnly>true</systemTenantOnly>
+      </guidField>
+      <dateField>
+        <alias>releaseDate</alias>
+        <name>Release date</name>
+        <description>The date the application was released.</description>
+        <fieldInGroup>appDetails</fieldInGroup>
+        <systemTenantOnly>true</systemTenantOnly>
+      </dateField>
+      <stringField>
+        <alias>publisher</alias>
+        <name>Publisher</name>
+        <description>The applications publisher.</description>
+        <fieldInGroup>appDetails</fieldInGroup>
+        <systemTenantOnly>true</systemTenantOnly>
+      </stringField>
+      <stringField>
+        <alias>publisherUrl</alias>
+        <name>Publisher URL</name>
+        <description>URL of the application publisher.</description>
+        <fieldInGroup>appDetails</fieldInGroup>
+        <systemTenantOnly>true</systemTenantOnly>
+      </stringField>
+    </fields>
+  </type>
+  <!-- 'Application Package' (version) type -->
+  <type>
+    <alias>appPackage</alias>
+    <name>Application Package</name>
+    <description>A package that is installed in the application library. A specific version of an application.</description>
+    <systemTenantOnly>true</systemTenantOnly>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Application Package Details</name>
+        <alias>appPackageDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <guidField>
+        <name>App version Id</name>
+        <alias>appVerId</alias>
+        <fieldInGroup>appPackageDetails</fieldInGroup>
+        <systemTenantOnly>true</systemTenantOnly>
+      </guidField>
+      <stringField>
+        <name>Version</name>
+        <alias>appVersionString</alias>
+        <fieldInGroup>appPackageDetails</fieldInGroup>
+        <systemTenantOnly>true</systemTenantOnly>
+      </stringField>
+      <dateField>
+        <alias>publishDate</alias>
+        <name>Publish date</name>
+        <description>Date the package was published.</description>
+        <fieldInGroup>appPackageDetails</fieldInGroup>
+        <systemTenantOnly>true</systemTenantOnly>
+      </dateField>
+      <dateField>
+        <alias>appPackageReleaseDate</alias>
+        <name>Release date</name>
+        <description>Date the package was released.</description>
+        <fieldInGroup>appPackageDetails</fieldInGroup>
+        <systemTenantOnly>true</systemTenantOnly>
+      </dateField>
+    </fields>
+    <relationships>
+      <relationship>
+        <alias>packageForApplication</alias>
+        <name>Package for Application</name>
+        <reverseAlias>applicationPackages</reverseAlias>
+        <toType>app</toType>
+        <systemTenantOnly>true</systemTenantOnly>
+        <generateCode>true</generateCode>
+        <relType>relLookup</relType>
+      </relationship>
+    </relationships>
+  </type>
+
+  <type>
+    <alias>appPackageDependency</alias>
+    <name>Application Package Dependency</name>
+    <description>Tracks dependencies between application packages.</description>
+    <systemTenantOnly>true</systemTenantOnly>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Application Package Dependency Details</name>
+        <alias>appPackageDependencyDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <name>Minimum version</name>
+        <alias>appPackageMinimumVersion</alias>
+        <fieldInGroup>appPackageDependencyDetails</fieldInGroup>
+        <systemTenantOnly>true</systemTenantOnly>
+      </stringField>
+      <stringField>
+        <name>Maximum version</name>
+        <alias>appPackageMaximumVersion</alias>
+        <fieldInGroup>appPackageDependencyDetails</fieldInGroup>
+        <systemTenantOnly>true</systemTenantOnly>
+      </stringField>
+      <boolField>
+        <name>Is required</name>
+        <alias>appPackageIsRequired</alias>
+        <fieldInGroup>appPackageDependencyDetails</fieldInGroup>
+        <systemTenantOnly>true</systemTenantOnly>
+      </boolField>
+      <guidField>
+        <name>Dependency application Id</name>
+        <alias>appPackageDependencyId</alias>
+        <fieldInGroup>appPackageDependencyDetails</fieldInGroup>
+        <systemTenantOnly>true</systemTenantOnly>
+      </guidField>
+      <stringField>
+        <name>Dependency application name</name>
+        <alias>appPackageDependencyName</alias>
+        <fieldInGroup>appPackageDependencyDetails</fieldInGroup>
+        <systemTenantOnly>true</systemTenantOnly>
+      </stringField>
+    </fields>
+    <relationships>
+      <relationship>
+        <alias>dependentAppPackage</alias>
+        <name>Dependent package</name>
+        <generateCode>true</generateCode>
+        <reverseAlias>dependentAppPackageDetails</reverseAlias>
+        <description>The package that requires the 'dependency' to exist for it to be present.</description>
+        <toType>appPackage</toType>
+        <relType>relComponentOf</relType>
+        <relationshipInFromTypeGroup>appPackageDependencyDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>appPackageDependencyDetails</relationshipInToTypeGroup>
+        <systemTenantOnly>true</systemTenantOnly>
+      </relationship>
+    </relationships>
+  </type>
+  
+ <!-- Tenant to app package relationship -->
+  <relationship>
+    <alias>activatedAppPackages</alias>
+    <reverseAlias>tenantsWithPackage</reverseAlias>
+    <name>Activated App Packages</name>
+    <generateCode>true</generateCode>
+    <description>Indicates that a tenant has installed an application package.</description>
+    <fromType>tenant</fromType>
+    <toType>appPackage</toType>
+    <systemTenantOnly>true</systemTenantOnly>
+    <relType>relManyToMany</relType>
+    <hideOnToType>true</hideOnToType>
+  </relationship>
+  <!-- 'Solution' type -->
+  <!-- The solution resource is deployed to the tenant. This allows it to be trivially uninstalled via cascade-delete. -->
+  <type>
+    <alias>solution</alias>
+    <name>Application</name>
+    <description>Represents a platform application.</description>
+    <generateCode>true</generateCode>
+    <inherits>visualController</inherits>
+    <isMetadata>true</isMetadata>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Application Details</name>
+        <alias>solutionDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <name>Base name</name>
+        <alias>baseName</alias>
+        <fieldInGroup>solutionDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <name>Version</name>
+        <alias>solutionVersionString</alias>
+        <isRequired>true</isRequired>
+        <fieldInGroup>solutionDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <name>Version details</name>
+        <alias>solutionVersionDetails</alias>
+        <allowMultiLines>true</allowMultiLines>
+        <fieldInGroup>solutionDetails</fieldInGroup>
+      </stringField>
+      <guidField>
+        <name>Legacy GUID</name>
+        <alias>legacyGuid</alias>
+        <description>The corresponding legacy resource GUID. Remapped for tenants.</description>
+        <fieldInGroup>solutionDetails</fieldInGroup>
+        <hideField>true</hideField>
+        <hideFieldDefaultForm>true</hideFieldDefaultForm>
+      </guidField>
+      <guidField>
+        <alias>packageId</alias>
+        <name>Package Id</name>
+        <description>The package id (AppVerId) that this solution was installed from.</description>
+        <isRequired>true</isRequired>
+        <fieldInGroup>solutionDetails</fieldInGroup>
+        <hideField>true</hideField>
+        <hideFieldDefaultForm>true</hideFieldDefaultForm>
+      </guidField>
+      <dateField>
+        <alias>solutionReleaseDate</alias>
+        <name>Release date</name>
+        <description>The date the application was released.</description>
+        <fieldInGroup>solutionDetails</fieldInGroup>
+      </dateField>
+      <stringField>
+        <alias>solutionPublisher</alias>
+        <name>Publisher</name>
+        <description>The applications publisher.</description>
+        <fieldInGroup>solutionDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>solutionPublisherUrl</alias>
+        <name>Publisher URL</name>
+        <description>URL of the application publisher.</description>
+        <fieldInGroup>solutionDetails</fieldInGroup>
+      </stringField>
+      <boolField>
+        <!-- This is a non-authoritive copy of canPublishApplication, so that it is available within the tenant data -->
+        <!-- Use this for UI convenience. Use canPublishApplication in zero tenant for server-side security purposes. -->
+        <alias>canPublishSolution</alias>
+        <name>Can publish modifications</name>
+        <description>True if the solution may be URL of the application publisher.</description>
+        <fieldInGroup>solutionDetails</fieldInGroup>
+        <excludeFieldFromPublish>true</excludeFieldFromPublish>
+        <isFieldReadOnly>true</isFieldReadOnly>
+      </boolField>
+      <boolField>
+        <alias>canModifyApplication</alias>
+        <name>Can modify application</name>
+        <description>True if the application can be modified, false otherwise.</description>
+        <fieldInGroup>solutionDetails</fieldInGroup>
+        <excludeFieldFromPublish>true</excludeFieldFromPublish>
+        <isFieldReadOnly>true</isFieldReadOnly>
+        <hideField>true</hideField>
+        <hideFieldDefaultForm>true</hideFieldDefaultForm>
+        <defaultValue>false</defaultValue>
+      </boolField>
+    </fields>
+    <resourceKeys>
+      <resourceKey>
+        <alias>solutionUniqueNameKey</alias>
+        <name>Unique name per solution</name>
+        <resourceKeyMessage>There is another application with the same name.</resourceKeyMessage>
+        <keyFields>name</keyFields>
+      </resourceKey>
+    </resourceKeys>
+    <onBeforeSave>solutionEventTarget</onBeforeSave>
+    <onAfterSave>solutionEventTarget</onAfterSave>
+    <onBeforeDelete>solutionEventTarget</onBeforeDelete>
+    <onAfterDelete>solutionEventTarget</onAfterDelete>
+    <onSaveFailed>solutionEventTarget</onSaveFailed>
+    <onDeleteFailed>solutionEventTarget</onDeleteFailed>
+    <onAfterDeploy>solutionEventTarget</onAfterDeploy>
+    <onAfterPublish>solutionEventTarget</onAfterPublish>
+    <onPublishFailed>solutionEventTarget</onPublishFailed>
+    <onDeployFailed>solutionEventTarget</onDeployFailed>
+    <onBeforeUpgrade>workflowUpgradeEventTarget</onBeforeUpgrade>
+    <onAfterUpgrade>solutionEventTarget,workflowUpgradeEventTarget,securityUpgradeEventTarget</onAfterUpgrade>
+  </type>
+  <!-- Solution events -->
+  <target>
+    <alias>solutionEventTarget</alias>
+    <typeName>EDC.ReadiNow.Model.EventClasses.SolutionEventTarget</typeName>
+    <assemblyName>EDC.ReadiNow.Common, Version=1.0.0.0, Culture=neutral</assemblyName>
+    <ordinal>0</ordinal>
+  </target>
+
+  <target>
+    <alias>workflowUpgradeEventTarget</alias>
+    <typeName>EDC.SoftwarePlatform.Activities.Engine.Upgrade.WorkflowUpgradeEventTarget</typeName>
+    <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+    <ordinal>1</ordinal>
+  </target>
+
+  <target>
+    <alias>securityUpgradeEventTarget</alias>
+    <typeName>EDC.ReadiNow.Security.SecurityUpgradeEventTarget</typeName>
+    <assemblyName>EDC.ReadiNow.Common, Version=1.0.0.0, Culture=neutral</assemblyName>
+    <ordinal>3</ordinal>
+  </target>
+
+  <target>
+    <alias>secureDataUpgradeEventTarget</alias>
+    <typeName>EDC.ReadiNow.Security.SecuredData.SecureDataUpgradeEventTarget</typeName>
+    <assemblyName>EDC.ReadiNow.Common, Version=1.0.0.0, Culture=neutral</assemblyName>
+    <ordinal>3</ordinal>
+  </target>
+  
+   <!-- Application dependency type -->
+  <type>
+    <alias>applicationDependency</alias>
+    <name>Application Dependency</name>
+    <description>Describes a dependency between two applications.</description>
+    <generateCode>true</generateCode>
+    <inherits>userResource</inherits>
+    <isMetadata>true</isMetadata>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Application Dependency Details</name>
+        <alias>applicationDependencyDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <name>Minimum version</name>
+        <description>The minimum version of the application.</description>
+        <alias>applicationMinimumVersion</alias>
+        <fieldInGroup>applicationDependencyDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <name>Maximum version</name>
+        <description>The maximum supported version of the application.</description>
+        <alias>applicationMaximumVersion</alias>
+        <fieldInGroup>applicationDependencyDetails</fieldInGroup>
+      </stringField>
+      <boolField>
+        <name>Is required</name>
+        <description>Whether the dependency must exist for installation to take place.</description>
+        <alias>applicationIsRequired</alias>
+        <fieldInGroup>applicationDependencyDetails</fieldInGroup>
+      </boolField>
+    </fields>
+    <relationships>
+      <relationship>
+        <alias>dependentApplication</alias>
+        <name>Dependent application</name>
+        <generateCode>true</generateCode>
+        <reverseAlias>dependentApplicationDetails</reverseAlias>
+        <description>The application that requires the 'dependency' to exist for it to be present.</description>
+        <toType>solution</toType>
+        <relType>relComponentOf</relType>
+        <relationshipInFromTypeGroup>applicationDependencyDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>applicationDependencyDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <alias>dependencyApplication</alias>
+        <name>Dependency application</name>
+        <generateCode>true</generateCode>
+        <reverseAlias>dependencyApplicationDetails</reverseAlias>
+        <description>The application that is required to be present for the 'dependent' to exist.</description>
+        <toType>solution</toType>
+        <relType>relDependantOf</relType>
+        <relationshipInFromTypeGroup>applicationDependencyDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>applicationDependencyDetails</relationshipInToTypeGroup>
+      </relationship>
+    </relationships>
+  </type>
+
+  <!-- Tenant to solution relationship -->
+  <relationship>
+    <alias>canInstallApplication</alias>
+    <name>Can Install Applications</name>
+    <description>Indicates that a tenant may install an application.</description>
+    <fromType>tenant</fromType>
+    <toType>app</toType>
+    <systemTenantOnly>true</systemTenantOnly>
+    <relType>relManyToMany</relType>
+    <hideOnToType>true</hideOnToType>
+  </relationship>
+  <relationship>
+    <alias>canPublishApplication</alias>
+    <name>Can Publish Applications</name>
+    <description>Indicates that a tenant may publish updates to an application.</description>
+    <fromType>tenant</fromType>
+    <toType>app</toType>
+    <systemTenantOnly>true</systemTenantOnly>
+    <relType>relManyToMany</relType>
+    <hideOnToType>true</hideOnToType>
+  </relationship>
+  <!-- Resource to solution relationship -->
+  <relationship>
+    <alias>inSolution</alias>
+    <name>Resource in application</name>
+    <generateCode>true</generateCode>
+    <reverseAlias>applicationContents</reverseAlias>
+    <description>Indicates what application a resource belongs to.</description>
+    <fromType>resource</fromType>
+    <toType>solution</toType>
+    <relType>relCustom</relType>
+    <cascadeDelete>true</cascadeDelete>
+    <cascadeDeleteTo>false</cascadeDeleteTo>
+    <cardinality>manyToOne</cardinality>
+    <!-- TODO: the whole configuration of this relationship needs further consideration -->
+    <hideOnFromType>true</hideOnFromType>
+    <cloneAction>cloneReferences</cloneAction>
+    <reverseCloneAction>cloneEntities</reverseCloneAction>
+    <implicitInSolution>false</implicitInSolution>
+    <reverseImplicitInSolution>false</reverseImplicitInSolution>
+    <!-- TODO: we could make this 'true' .. LOL -->
+    <relationshipInToTypeGroup>solutionDetails</relationshipInToTypeGroup>
+    <relationshipInFromTypeGroup>solutionDetails</relationshipInFromTypeGroup>
+  </relationship>
+  <!-- Resource is indirectly in the solution -->
+  <relationship>
+    <alias>indirectInSolution</alias>
+    <name>Resource indirectly in application</name>
+    <generateCode>true</generateCode>
+    <reverseAlias>indirectApplicationContents</reverseAlias>
+    <description>Indicates what application a resource indirectly belongs to.</description>
+    <fromType>resource</fromType>
+    <toType>solution</toType>
+    <relType>relCustom</relType>
+    <cascadeDelete>true</cascadeDelete>
+    <cascadeDeleteTo>false</cascadeDeleteTo>
+    <cardinality>manyToOne</cardinality>
+    <!-- TODO: the whole configuration of this relationship needs further consideration -->
+    <hideOnFromType>true</hideOnFromType>
+    <cloneAction>cloneReferences</cloneAction>
+    <reverseCloneAction>cloneEntities</reverseCloneAction>
+    <implicitInSolution>false</implicitInSolution>
+    <reverseImplicitInSolution>false</reverseImplicitInSolution>
+    <!-- TODO: we could make this 'true' .. LOL -->
+    <relationshipInToTypeGroup>solutionDetails</relationshipInToTypeGroup>
+    <relationshipInFromTypeGroup>solutionDetails</relationshipInFromTypeGroup>
+  </relationship>
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- Calculated Result -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <type>
+    <name>Calculated Result</name>
+    <alias>calculatedResult</alias>
+    <!-- TODO: Investigate this type-->
+    <description>The Result with calculated selected column used on calculated field</description>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Calculated Result Details</name>
+        <alias>calculatedResultDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <relationships>
+      <relationship>
+        <name>Calculated results report</name>
+        <description>The report list all calculated result</description>
+        <alias>calculatedResultReport</alias>
+        <cardinality>manyToOne</cardinality>
+        <toName>Report of calculated result</toName>
+        <fromName>Calculated result report</fromName>
+        <generateCode>true</generateCode>
+        <toType>report</toType>
+        <relationshipInFromTypeGroup>calculatedResultDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>reportDetails</relationshipInToTypeGroup>
+        <!-- TODO: Investigate this relationship-->
+      </relationship>
+      <relationship>
+        <name>Calculated results type</name>
+        <description>The Type to use calculated result</description>
+        <alias>calculatedResultType</alias>
+        <cardinality>manyToOne</cardinality>
+        <toName>Type of calculated result</toName>
+        <fromName>Calculated result type</fromName>
+        <generateCode>true</generateCode>
+        <toType>type</toType>
+        <relationshipInFromTypeGroup>calculatedResultDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>typeDetails</relationshipInToTypeGroup>
+        <!-- TODO: Investigate this relationship-->
+      </relationship>
+    </relationships>
+  </type>
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    Tenant Log - derive from this for specific message types      -->
+  <!--    Name and description are used to hold title and message       -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <managedType>
+    <alias>tenantLogEntry</alias>
+    <name>Log Entry</name>
+    <description>An entry in the tenant system log.</description>
+    <generateCode>true</generateCode>
+
+    <fieldGroups>
+      <fieldGroup>
+        <name>Log Entry Details</name>
+        <alias>tenantLogEntryDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+
+      <dateTimeField>
+        <alias>logEventTime</alias>
+        <name>Event time</name>
+        <isRequired>true</isRequired>
+        <fieldInGroup>tenantLogEntryDetails</fieldInGroup>
+      </dateTimeField>
+    </fields>
+    <relationships>
+      <relationship>
+        <alias>logEntrySeverity</alias>
+        <name>Severity</name>
+        <description>An indication of the importance of the message</description>
+        <relType>relChoiceField</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>tenantLogEntryDetails</relationshipInFromTypeGroup>
+        <toType>
+          <enumType>
+            <alias>logSeverityEnum</alias>
+            <name>Severity Level</name>
+            <description>An enumeration of the possible message levels.</description>
+            <inherits>enumValue</inherits>
+            <generateCode>true</generateCode>
+            <enumValues>
+              <logSeverityEnum>
+                <name>Error</name>
+                <alias>errorSeverity</alias>
+                <enumOrder>1</enumOrder>
+              </logSeverityEnum>
+              <logSeverityEnum>
+                <name>Warning</name>
+                <alias>warningSeverity</alias>
+                <enumOrder>2</enumOrder>
+              </logSeverityEnum>
+              <logSeverityEnum>
+                <name>Information</name>
+                <alias>informationSeverity</alias>
+                <enumOrder>3</enumOrder>
+              </logSeverityEnum>
+            </enumValues>
+          </enumType>
+        </toType>
+      </relationship>
+    </relationships>
+  </managedType>
+
+  <managedType>
+    <alias>managedObjectLogEntry</alias>
+    <name>Managed Object Log Entry</name>
+    <description>An abstract type for a log entry that references a managed object.</description>
+    <generateCode>true</generateCode>
+    <isAbstract>true</isAbstract>
+
+    <fields>
+      <stringField>
+        <alias>referencedObjectName</alias>
+        <name>Object name</name>
+        <description>Name of the object at the time of log generation.</description>
+        <fieldInGroup>tenantLogEntryDetails</fieldInGroup>
+      </stringField>
+    </fields>
+
+    <relationships>
+      <relationship>
+        <alias>objectReferencedInLog</alias>
+        <reverseAlias>logEntriesForObject</reverseAlias>
+        <name>Referenced object</name>
+        <description>The object that is the subject of the log message.</description>
+        <toName>Object</toName>
+        <fromName>Log entries for object</fromName>
+        <toType>userResource</toType>
+        <relType>relLookup</relType>
+        <generateCode>true</generateCode>
+        <hideOnToTypeDefaultForm>true</hideOnToTypeDefaultForm>
+        <relationshipInFromTypeGroup>tenantLogEntryDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>system</relationshipInToTypeGroup>
+      </relationship>
+    </relationships>
+  </managedType>
+
+  <managedType>
+    <alias>actingPersonLogEntry</alias>
+    <name>Acting Person Log Entry</name>
+    <description>An abstract type for a log entry that references a person performing the action.</description>
+    <generateCode>true</generateCode>
+    <isAbstract>true</isAbstract>
+
+    <fields>
+      <stringField>
+        <alias>actingPersonName</alias>
+        <name>Acting person name</name>
+        <description>Name of the person performing the action at the time of log generation.</description>
+        <fieldInGroup>tenantLogEntryDetails</fieldInGroup>
+      </stringField>
+    </fields>
+
+    <relationships>
+      <relationship>
+        <alias>actingPersonReferencedInLog</alias>
+        <reverseAlias>logEntriesForActingPerson</reverseAlias>
+        <name>Referenced acting person</name>
+        <description>The person performing an action that generated the log message.</description>
+        <toName>Acting person</toName>
+        <fromName>Acting log entries</fromName>
+        <toType>person</toType>
+        <relType>relLookup</relType>
+        <generateCode>true</generateCode>
+        <hideOnToTypeDefaultForm>true</hideOnToTypeDefaultForm>
+        <relationshipInFromTypeGroup>tenantLogEntryDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>system</relationshipInToTypeGroup>
+      </relationship>
+    </relationships>
+  </managedType>
+
+  <managedType>
+    <alias>recordChangeLogEntry</alias>
+    <name>Record Change Log Entry</name>
+    <description>A log entry generate when a record is changed</description>
+    <inherits>tenantLogEntry, managedObjectLogEntry</inherits>
+    <generateCode>true</generateCode>
+  </managedType>
+
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    MISC                                                          -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+  <!-- 'Resource Viewer' type. -->
+  <type>
+    <name>Resource Viewer</name>
+    <alias>resourceViewer</alias>
+    <description>The 'Resource Viewer' type</description>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Resource Viewer Details</name>
+        <alias>resourceViewerDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <boolField>
+        <alias>canCreate</alias>
+        <name>Can create</name>
+        <description>If the field is set to true, then the instance of the type can be created.</description>
+        <defaultValue>true</defaultValue>
+        <fieldInGroup>resourceViewerDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <alias>canCreateDerivedTypes</alias>
+        <name>Can create derived types</name>
+        <description>If the field is set to true, then the instance of the derived types can be created.</description>
+        <defaultValue>true</defaultValue>
+        <fieldInGroup>resourceViewerDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <name>Hide new button</name>
+        <alias>hideNewButton</alias>
+        <defaultValue>false</defaultValue>
+        <fieldInGroup>resourceViewerDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <name>Hide add button</name>
+        <alias>hideAddButton</alias>
+        <defaultValue>false</defaultValue>
+        <fieldInGroup>resourceViewerDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <name>Hide remove button</name>
+        <alias>hideRemoveButton</alias>
+        <defaultValue>false</defaultValue>
+        <fieldInGroup>resourceViewerDetails</fieldInGroup>
+      </boolField>
+    </fields>
+  </type>
+  <!-- 'Tenant Email Settings' type. -->
+  <type>
+    <alias>tenantEmailSetting</alias>
+    <name>Tenant Email Settings</name>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Tenant Email Details</name>
+        <alias>tenantEmailDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>emailServer</alias>
+        <!-- This should be moved to a global setting -->
+        <name>Email server</name>
+        <description>The address of the email server to use for sending emails</description>
+        <fieldInGroup>tenantEmailDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>emailServerNoReplyAddress</alias>
+        <name>No-reply address</name>
+        <description>The address used for replies that will be ignored.</description>
+        <fieldRepresents>fieldRepresentsEmail</fieldRepresents>
+        <fieldInGroup>tenantEmailDetails</fieldInGroup>
+      </stringField>
+    </fields>
+    <relationships>
+      <relationship>
+        <alias>tesApprovalsInbox</alias>
+        <name>Approvals inbox</name>
+        <description>The inbox that is used to receive approvals.</description>
+        <toType>inbox</toType>
+        <hideOnToType>true</hideOnToType>
+        <relType>relSingleLookup</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>tenantEmailDetails</relationshipInFromTypeGroup>
+      </relationship>
+      <relationship>
+        <alias>tesSupportInbox</alias>
+        <name>Support inbox</name>
+        <description>The inbox that is used to receive support emails.</description>
+        <toType>inbox</toType>
+        <hideOnToType>true</hideOnToType>
+        <relType>relSingleLookup</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>tenantEmailDetails</relationshipInFromTypeGroup>
+      </relationship>
+      <relationship>
+        <alias>tesNewTicketsInbox</alias>
+        <name>New tickets inbox</name>
+        <description>The inbox that is used to receive new tickets emails.</description>
+        <toType>inbox</toType>
+        <hideOnToType>true</hideOnToType>
+        <relType>relSingleLookup</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>tenantEmailDetails</relationshipInFromTypeGroup>
+      </relationship>
+      <relationship>
+        <alias>tesCalendarInbox</alias>
+        <name>Calendar inbox</name>
+        <description>The inbox that is used to receive calendar updates.</description>
+        <toType>inbox</toType>
+        <hideOnToType>true</hideOnToType>
+        <relType>relSingleLookup</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>tenantEmailDetails</relationshipInFromTypeGroup>
+      </relationship>
+      <relationship>
+        <alias>tesPasswordResetInbox</alias>
+        <name>Password reset inbox</name>
+        <description>The inbox that is used to receive password reset email.</description>
+        <toType>inbox</toType>
+        <hideOnToType>true</hideOnToType>
+        <relType>relSingleLookup</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>tenantEmailDetails</relationshipInFromTypeGroup>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- 'File' type -->
+  <type>
+    <name>File</name>
+    <alias>fileType</alias>
+    <description>A file.</description>
+    <inherits>userResource</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <name>File Details</name>
+        <alias>fileTypeDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>fileDataHash</alias>
+        <name>File data hash</name>
+        <isFieldReadOnly>true</isFieldReadOnly>
+        <fieldInGroup>fileTypeDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <name>File extension</name>
+        <alias>fileExtension</alias>
+        <description>The file extension</description>
+        <fieldInGroup>fileTypeDetails</fieldInGroup>
+      </stringField>
+      <intField>
+        <name>Size</name>
+        <alias>size</alias>
+        <description>The size of the file in bytes</description>
+        <fieldInGroup>fileTypeDetails</fieldInGroup>
+      </intField>
+    </fields>
+    <generateCode>true</generateCode>
+    <onBeforeSave>
+      <target>
+        <alias>reportBeforeSaveFileType</alias>
+        <typeName>EDC.ReadiNow.Model.EventClasses.FileTypeEventTarget</typeName>
+        <assemblyName>EDC.ReadiNow.Common, Version=1.0.0.0, Culture=neutral</assemblyName>
+        <ordinal>0</ordinal>
+      </target>
+    </onBeforeSave>
+  </type>
+  <!-- 'Image' type -->
+  <type>
+    <name>Image</name>
+    <alias>imageFileType</alias>
+    <description>An image.</description>
+    <inherits>fileType</inherits>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <alias>imageDimensions</alias>
+        <name>Dimensions</name>
+      </fieldGroup>
+      <fieldGroup>
+        <alias>imageDetails</alias>
+        <name>Image Details</name>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <intField>
+        <alias>imageWidth</alias>
+        <name>Image width</name>
+        <description>The width of the image.</description>
+        <fieldInGroup>imageDimensions</fieldInGroup>
+        <isFieldReadOnly>true</isFieldReadOnly>
+      </intField>
+      <intField>
+        <alias>imageHeight</alias>
+        <name>Image height</name>
+        <description>The height of the image.</description>
+        <fieldInGroup>imageDimensions</fieldInGroup>
+        <isFieldReadOnly>true</isFieldReadOnly>
+      </intField>
+      <stringField>
+        <name>Image background color (ARGB)</name>
+        <alias>imageBackgroundColor</alias>
+        <fieldRepresents>fieldRepresentsColor</fieldRepresents>
+        <fieldInGroup>imageDetails</fieldInGroup>
+      </stringField>
+    </fields>
+  </type>
+  <!-- 'Photo' type -->
+  <type>
+    <name>Photo</name>
+    <alias>photoFileType</alias>
+    <description>A photo.</description>
+    <generateCode>true</generateCode>
+    <inherits>imageFileType</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Photo Details</name>
+        <alias>photoFileTypeDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+  </type>
+  <!-- 'Icon' type -->
+  <type>
+    <name>Icon</name>
+    <alias>iconFileType</alias>
+    <description>An icon.</description>
+    <generateCode>true</generateCode>
+    <inherits>imageFileType</inherits>
+    <isMetadata>true</isMetadata>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Icon Details</name>
+        <alias>iconFileTypeDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+  </type>
+  <!-- 'Thumbnail' type -->
+  <type>
+    <name>Thumbnail</name>
+    <alias>thumbnailFileType</alias>
+    <description>A thumbnail.</description>
+    <generateCode>true</generateCode>
+    <inherits>imageFileType</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Thumbnail Details</name>
+        <alias>thumbnailFileTypeDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <relationships>
+      <!-- Scaling of thumbnail -->
+      <relationship>
+        <name>Thumbnail scale</name>
+        <alias>thumbnailScaling</alias>
+        <toType>imageScaleEnum</toType>
+        <relType>relChoiceField</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>thumbnailFileTypeDetails</relationshipInFromTypeGroup>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- Image has thumbnails -->
+  <relationship>
+    <name>Image has thumbnails.</name>
+    <alias>imageHasThumbnails</alias>
+    <reverseAlias>isThumbnailForImage</reverseAlias>
+    <relType>relComponents</relType>
+    <generateCode>true</generateCode>
+    <fromType>imageFileType</fromType>
+    <toType>thumbnailFileType</toType>
+    <fromName>Image</fromName>
+    <toName>Thumbnail</toName>
+    <securesTo>true</securesTo>
+    <hideOnFromType>true</hideOnFromType>
+    <hideOnToType>true</hideOnToType>
+  </relationship>
+  <!-- Image Scale Enumeration -->
+  <enumType>
+    <alias>imageScaleEnum</alias>
+    <name>Image Scaling Options</name>
+    <inherits>enumValue</inherits>
+    <enumValues>
+      <imageScaleEnum>
+        <name>Fit proportional</name>
+        <description>Resize image to fit inside the item while maintaining the aspect ratio</description>
+        <alias>scaleImageProportionally</alias>
+        <enumOrder>1</enumOrder>
+      </imageScaleEnum>
+      <imageScaleEnum>
+        <name>Fit to size</name>
+        <description>Resize image to fit inside the item</description>
+        <alias>scaleImageToFit</alias>
+        <enumOrder>2</enumOrder>
+      </imageScaleEnum>
+      <imageScaleEnum>
+        <name>Crop</name>
+        <description>Crop image to fit inside the item</description>
+        <alias>cropImage</alias>
+        <enumOrder>3</enumOrder>
+      </imageScaleEnum>
+    </enumValues>
+    <generateCode>true</generateCode>
+  </enumType>
+  <!-- Image Administration Setting -->
+  <type>
+    <alias>tenantImageSettings</alias>
+    <name>Tenant Image Settings</name>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Image Settings</name>
+        <alias>imageSettings</alias>
+        <description>Contains administration image settings.</description>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <intField>
+        <name>Maximum file size (MB)</name>
+        <alias>maximumImageFileSize</alias>
+        <description>The maximum image file size in megabytes.</description>
+        <fieldInGroup>imageSettings</fieldInGroup>
+        <isRequired>true</isRequired>
+        <defaultValue>4</defaultValue>
+        <minInt>0</minInt>
+      </intField>
+    </fields>
+  </type>
+  <!-- Event type -->
+  <definition>
+    <name>Event</name>
+    <description>Event definition.</description>
+    <alias>event</alias>
+    <generateCode>true</generateCode>
+    <inherits>userResource</inherits>
+    <isAbstract>true</isAbstract>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Event Details</name>
+        <description>Event details field group.</description>
+        <alias>eventDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <dateTimeField>
+        <name>Start date</name>
+        <description>Event start time.</description>
+        <alias>eventStart</alias>
+        <fieldInGroup>eventDetails</fieldInGroup>
+      </dateTimeField>
+    </fields>
+  </definition>
+  <!-- Appointment type -->
+  <definition>
+    <name>Appointment</name>
+    <description>Appointment definition.</description>
+    <alias>appointment</alias>
+    <generateCode>true</generateCode>
+    <inherits>event</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Appointment Details</name>
+        <description>Appointment details field group.</description>
+        <alias>apptDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <dateTimeField>
+        <name>End date</name>
+        <description>Event end time.</description>
+        <alias>eventEnd</alias>
+        <fieldInGroup>apptDetails</fieldInGroup>
+      </dateTimeField>
+      <boolField>
+        <name>Is all day event</name>
+        <description>Whether the event runs all day.</description>
+        <alias>eventIsAllDay</alias>
+        <fieldInGroup>apptDetails</fieldInGroup>
+      </boolField>
+      <stringField>
+        <name>Location</name>
+        <description>Event location.</description>
+        <alias>eventLocation</alias>
+        <fieldInGroup>apptDetails</fieldInGroup>
+      </stringField>
+      <boolField>
+        <name>Private</name>
+        <description>Whether the appointment is private.</description>
+        <alias>apptIsPrivate</alias>
+        <fieldInGroup>apptDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <name>Send email</name>
+        <description>Whether this instance should send an email upon create/update/delete.</description>
+        <alias>apptSendEmail</alias>
+        <fieldInGroup>apptDetails</fieldInGroup>
+      </boolField>
+    </fields>
+    <relationships>
+      <relationship>
+        <name>Priority</name>
+        <description>Event email priority.</description>
+        <alias>eventEmailPriority</alias>
+        <relType>relChoiceField</relType>
+        <toType>eventEmailPriorityEnum</toType>
+        <hideOnToType>true</hideOnToType>
+        <hideOnToTypeDefaultForm>true</hideOnToTypeDefaultForm>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>apptDetails</relationshipInFromTypeGroup>
+      </relationship>
+      <relationship>
+        <name>Event status</name>
+        <alias>eventStatus</alias>
+        <toType>eventStatusEnum</toType>
+        <relType>relChoiceField</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>apptDetails</relationshipInFromTypeGroup>
+      </relationship>
+      <relationship>
+        <name>Reminder</name>
+        <alias>apptReminder</alias>
+        <toType>appointmentReminderEnum</toType>
+        <relType>relChoiceField</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>apptDetails</relationshipInFromTypeGroup>
+      </relationship>
+      <relationship>
+        <name>Show time as</name>
+        <alias>apptShowTimeAs</alias>
+        <toType>showTimeAsEnum</toType>
+        <relType>relChoiceField</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>apptDetails</relationshipInFromTypeGroup>
+      </relationship>
+      <relationship>
+        <name>iCal appointment</name>
+        <alias>iCalAppt</alias>
+        <reverseAlias>eventEmailAppt</reverseAlias>
+        <toType>eventEmail</toType>
+        <relType>relSingleComponent</relType>
+        <generateCode>true</generateCode>
+        <toName>iCal appointment</toName>
+        <fromName>Appointment</fromName>
+        <relationshipInFromTypeGroup>apptDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>eventEmailDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <name>Attendees</name>
+        <description>Event email attendees.</description>
+        <alias>eventEmailAttendees</alias>
+        <toType>person</toType>
+        <hideOnToType>true</hideOnToType>
+        <hideOnToTypeDefaultForm>true</hideOnToTypeDefaultForm>
+        <relType>relManyToMany</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>apptDetails</relationshipInFromTypeGroup>
+      </relationship>
+      <relationship>
+        <name>Organiser</name>
+        <description>Appointment organiser.</description>
+        <alias>apptOrganiser</alias>
+        <toType>person</toType>
+        <hideOnToType>true</hideOnToType>
+        <hideOnToTypeDefaultForm>true</hideOnToTypeDefaultForm>
+        <relType>relLookup</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>apptDetails</relationshipInFromTypeGroup>
+      </relationship>
+    </relationships>
+    <onBeforeSave>appointmentTarget</onBeforeSave>
+    <onAfterSave>appointmentTarget</onAfterSave>
+  </definition>
+  <!-- Event Email -->
+  <managedType>
+    <name>iCal Appointment</name>
+    <description>Event that supports email.</description>
+    <alias>eventEmail</alias>
+    <generateCode>true</generateCode>
+    <inherits>userResource</inherits>
+    <isAbstract>false</isAbstract>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Email Details</name>
+        <description>Event email Details field group.</description>
+        <alias>eventEmailDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+    </fields>
+    <relationships>
+      <relationship>
+        <name>Creator</name>
+        <description>Event email creator.</description>
+        <alias>eventEmailCreator</alias>
+        <toType>emailContact</toType>
+        <hideOnToType>true</hideOnToType>
+        <hideOnToTypeDefaultForm>true</hideOnToTypeDefaultForm>
+        <relType>relLookup</relType>
+        <generateCode>true</generateCode>
+        <toTypeDefaultValue>softwarePlatformEmailContact</toTypeDefaultValue>
+        <isRelationshipReadOnly>true</isRelationshipReadOnly>
+        <relationshipInFromTypeGroup>eventEmailDetails</relationshipInFromTypeGroup>
+      </relationship>
+      <relationship>
+        <name>Calendar Id</name>
+        <description>The event emails calendar id.</description>
+        <alias>calendarId</alias>
+        <reverseAlias>calendarEventEmail</reverseAlias>
+        <relType>relSingleComponent</relType>
+        <toType>iCalUidContainer</toType>
+        <hideOnFromType>true</hideOnFromType>
+        <hideOnFromTypeDefaultForm>true</hideOnFromTypeDefaultForm>
+        <hideOnToType>true</hideOnToType>
+        <hideOnToTypeDefaultForm>true</hideOnToTypeDefaultForm>
+        <generateCode>true</generateCode>
+      </relationship>
+      <relationship>
+        <name>Received email messages</name>
+        <description>Received Email(s) that spawned this Event Email.</description>
+        <alias>receivedEmailMessages</alias>
+        <reverseAlias>createdEventEmail</reverseAlias>
+        <toType>receivedICalEmailMessage</toType>
+        <hideOnFromType>false</hideOnFromType>
+        <hideOnToType>true</hideOnToType>
+        <relType>relExclusiveCollection</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>eventEmailDetails</relationshipInFromTypeGroup>
+      </relationship>
+      <relationship>
+        <name>Sent email messages</name>
+        <description>Sent Email(s) spawned by this Event Email.</description>
+        <alias>sentEmailMessages</alias>
+        <reverseAlias>ownerEventEmail</reverseAlias>
+        <toType>sentICalEmailMessage</toType>
+        <hideOnFromType>false</hideOnFromType>
+        <hideOnToType>true</hideOnToType>
+        <relType>relExclusiveCollection</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>eventEmailDetails</relationshipInFromTypeGroup>
+      </relationship>
+    </relationships>
+  </managedType>
+  <!-- This needs to be fixed as part of dealing with replies from ical requests. The rel on a rel needs to be turned into something else. -->
+  <!--<relationship>
+    <name>Attendee status</name>
+    <description>The attendee status.</description>
+    <alias>attendeeStatus</alias>
+    <fromType>eventEmailAttendees.instance</fromType>
+    <toType>attendeeStatusEnum</toType>
+    <relType>relChoiceField</relType>
+    <generateCode>true</generateCode>
+    <relationshipInFromTypeGroup>eventEmailAttendeesDetails</relationshipInFromTypeGroup>
+  </relationship>-->
+  <!-- Email type status -->
+  <enumType>
+    <name>Email Type</name>
+    <description>Email Types.</description>
+    <alias>emailTypeEnum</alias>
+    <inherits>enumValue</inherits>
+    <enumValues>
+      <emailTypeEnum>
+        <name>Business</name>
+        <alias>emailTypeBusiness</alias>
+        <enumOrder>1</enumOrder>
+      </emailTypeEnum>
+      <emailTypeEnum>
+        <name>Personal</name>
+        <alias>emailTypePersonal</alias>
+        <enumOrder>2</enumOrder>
+      </emailTypeEnum>
+      <emailTypeEnum>
+        <name>Other</name>
+        <alias>emailTypeOther</alias>
+        <enumOrder>3</enumOrder>
+      </emailTypeEnum>
+    </enumValues>
+    <generateCode>true</generateCode>
+  </enumType>
+  <!-- Email Contact-->
+  <definition>
+    <name>Email Contact</name>
+    <description>Email contact.</description>
+    <alias>emailContact</alias>
+    <generateCode>true</generateCode>
+    <inherits>userResource</inherits>
+    <isAbstract>false</isAbstract>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Contact Details</name>
+        <description>Contact Details field group.</description>
+        <alias>emailContactDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <name>Display name</name>
+        <description>Email display name.</description>
+        <alias>emailContactDisplayName</alias>
+        <fieldInGroup>emailContactDetails</fieldInGroup>
+      </stringField>
+      <boolField>
+        <name>Inactive</name>
+        <alias>emailContactIsInactive</alias>
+        <fieldInGroup>emailContactDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <name>Default</name>
+        <alias>emailContactIsDefault</alias>
+        <fieldInGroup>emailContactDetails</fieldInGroup>
+      </boolField>
+    </fields>
+    <relationships>
+      <relationship>
+        <name>Email type</name>
+        <alias>emailType</alias>
+        <toType>emailTypeEnum</toType>
+        <relType>relChoiceField</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>emailContactDetails</relationshipInFromTypeGroup>
+      </relationship>
+    </relationships>
+  </definition>
+  <emailContact>
+    <name>noreply@readinow.net</name>
+    <description>The Software Platform Email Contact.</description>
+    <alias>softwarePlatformEmailContact</alias>
+    <emailContactDisplayName>Software Platform</emailContactDisplayName>
+  </emailContact>
+  <!-- Phone type -->
+  <enumType>
+    <name>Phone Type</name>
+    <description>Phone Types.</description>
+    <alias>phoneTypeEnum</alias>
+    <inherits>enumValue</inherits>
+    <enumValues>
+      <phoneTypeEnum>
+        <name>Business</name>
+        <alias>phoneTypeBusiness</alias>
+        <enumOrder>1</enumOrder>
+      </phoneTypeEnum>
+      <phoneTypeEnum>
+        <name>Direct</name>
+        <alias>phoneTypeDirect</alias>
+        <enumOrder>2</enumOrder>
+      </phoneTypeEnum>
+      <phoneTypeEnum>
+        <name>Mobile</name>
+        <alias>phoneTypeMobile</alias>
+        <enumOrder>3</enumOrder>
+      </phoneTypeEnum>
+      <phoneTypeEnum>
+        <name>Home</name>
+        <alias>phoneTypeHome</alias>
+        <enumOrder>4</enumOrder>
+      </phoneTypeEnum>
+      <phoneTypeEnum>
+        <name>Other</name>
+        <alias>phoneTypeOther</alias>
+        <enumOrder>5</enumOrder>
+      </phoneTypeEnum>
+    </enumValues>
+    <generateCode>true</generateCode>
+  </enumType>
+  <!-- Phone Contact -->
+  <definition>
+    <name>Phone Contact</name>
+    <description>Phone contact.</description>
+    <alias>phoneContact</alias>
+    <generateCode>true</generateCode>
+    <inherits>userResource</inherits>
+    <isAbstract>false</isAbstract>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Contact Details</name>
+        <description>Contact Details field group.</description>
+        <alias>phoneContactDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <boolField>
+        <name>Inactive</name>
+        <alias>phoneContactIsInactive</alias>
+        <fieldInGroup>phoneContactDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <name>Default</name>
+        <alias>phoneContactIsDefault</alias>
+        <fieldInGroup>phoneContactDetails</fieldInGroup>
+      </boolField>
+    </fields>
+    <relationships>
+      <relationship>
+        <name>Phone type</name>
+        <alias>phoneType</alias>
+        <toType>phoneTypeEnum</toType>
+        <relType>relChoiceField</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>phoneContactDetails</relationshipInFromTypeGroup>
+      </relationship>
+    </relationships>
+  </definition>
+  <!-- Email Alert -->
+  <type>
+    <name>Email Alarm</name>
+    <description>Email alarm.</description>
+    <alias>emailAlarm</alias>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Alarm Details</name>
+        <description>Email alarm details field group.</description>
+        <alias>emailAlarmDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <timeField>
+        <name>Duration</name>
+        <description>Alarm Duration.</description>
+        <alias>emailAlarmDuration</alias>
+        <fieldInGroup>emailAlarmDetails</fieldInGroup>
+      </timeField>
+      <intField>
+        <name>Repeat</name>
+        <description>Alarm repeats.</description>
+        <alias>emailAlarmRepeat</alias>
+        <fieldInGroup>emailAlarmDetails</fieldInGroup>
+      </intField>
+      <stringField>
+        <name>Summary</name>
+        <description>Email alarm summary.</description>
+        <alias>emailAlarmSummary</alias>
+        <fieldInGroup>emailAlarmDetails</fieldInGroup>
+      </stringField>
+    </fields>
+    <relationships>
+      <relationship>
+        <name>Actions</name>
+        <description>Alarm actions.</description>
+        <alias>emailAlarmActions</alias>
+        <toType>emailAlarmActionEnum</toType>
+        <relType>relChoiceField</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>emailAlarmDetails</relationshipInFromTypeGroup>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- Event status -->
+  <enumType>
+    <name>Event Status Options</name>
+    <description>Event status options.</description>
+    <alias>eventStatusEnum</alias>
+    <inherits>enumValue</inherits>
+    <enumValues>
+      <eventStatusEnum>
+        <name>Tentative</name>
+        <description>Tentative status.</description>
+        <alias>eventStatusTentative</alias>
+      </eventStatusEnum>
+      <eventStatusEnum>
+        <name>Confirmed</name>
+        <description>Confirmed status.</description>
+        <alias>eventStatusConfirmed</alias>
+      </eventStatusEnum>
+      <eventStatusEnum>
+        <name>Cancelled</name>
+        <description>Cancelled status.</description>
+        <alias>eventStatusCancelled</alias>
+      </eventStatusEnum>
+    </enumValues>
+    <generateCode>true</generateCode>
+  </enumType>
+  <!-- Attendee Status enum-->
+  <enumType>
+    <name>Attendee Status</name>
+    <description>Available Attendee Status options.</description>
+    <alias>attendeeStatusEnum</alias>
+    <inherits>enumValue</inherits>
+    <enumValues>
+      <attendeeStatusEnum>
+        <name>Needs Action</name>
+        <description>Needs Action status.</description>
+        <alias>attendeeStatusNeedsAction</alias>
+      </attendeeStatusEnum>
+      <attendeeStatusEnum>
+        <name>Accepted</name>
+        <description>Accepted status.</description>
+        <alias>attendeeStatusAccepted</alias>
+      </attendeeStatusEnum>
+      <attendeeStatusEnum>
+        <name>Declined</name>
+        <description>Declined status.</description>
+        <alias>attendeeStatusDeclined</alias>
+      </attendeeStatusEnum>
+      <attendeeStatusEnum>
+        <name>Tentative</name>
+        <description>Tentative status.</description>
+        <alias>attendeeStatusTentative</alias>
+      </attendeeStatusEnum>
+      <attendeeStatusEnum>
+        <name>Delegated</name>
+        <description>Delegated status.</description>
+        <alias>attendeeStatusDelegated</alias>
+      </attendeeStatusEnum>
+    </enumValues>
+    <generateCode>true</generateCode>
+  </enumType>
+  <enumType>
+    <name>Event Email Priority Enum</name>
+    <description>Event email priority enumeration.</description>
+    <alias>eventEmailPriorityEnum</alias>
+    <inherits>enumValue</inherits>
+    <enumValues>
+      <eventEmailPriorityEnum>
+        <name>Low</name>
+        <description>Low priority</description>
+        <alias>lowPriority</alias>
+        <enumOrder>3</enumOrder>
+      </eventEmailPriorityEnum>
+      <eventEmailPriorityEnum>
+        <name>Normal</name>
+        <description>Normal priority</description>
+        <alias>normalPriority</alias>
+        <enumOrder>2</enumOrder>
+      </eventEmailPriorityEnum>
+      <eventEmailPriorityEnum>
+        <name>High</name>
+        <description>High priority</description>
+        <alias>highPriority</alias>
+        <enumOrder>1</enumOrder>
+      </eventEmailPriorityEnum>
+    </enumValues>
+    <generateCode>true</generateCode>
+  </enumType>
+  <!-- EMail Alarm Action -->
+  <enumType>
+    <name>Email Alarm Action Options</name>
+    <description>Email alarm action options</description>
+    <alias>emailAlarmActionEnum</alias>
+    <inherits>enumValue</inherits>
+    <enumValues>
+      <emailAlarmActionEnum>
+        <name>Audio</name>
+        <description>Email Alarm alert.</description>
+        <alias>emailAlarmActionAudio</alias>
+      </emailAlarmActionEnum>
+      <emailAlarmActionEnum>
+        <name>Display</name>
+        <description>Email Display alarm.</description>
+        <alias>emailAlarmActionDisplay</alias>
+      </emailAlarmActionEnum>
+      <emailAlarmActionEnum>
+        <name>Email</name>
+        <description>Email email alarm.</description>
+        <alias>emailAlarmActionEmail</alias>
+      </emailAlarmActionEnum>
+      <emailAlarmActionEnum>
+        <name>Procedure</name>
+        <description>Email procedure alarm.</description>
+        <alias>emailAlarmActionProcedure</alias>
+      </emailAlarmActionEnum>
+    </enumValues>
+    <generateCode>true</generateCode>
+  </enumType>
+  <!-- Solution events -->
+  <target>
+    <alias>appointmentTarget</alias>
+    <typeName>EDC.ReadiNow.Model.EventClasses.AppointmentEventTarget</typeName>
+    <assemblyName>EDC.ReadiNow.Common, Version=1.0.0.0, Culture=neutral</assemblyName>
+    <ordinal>0</ordinal>
+  </target>
+
+  <target>
+    <alias>hierarchyTarget</alias>
+    <typeName>EDC.ReadiNow.Model.EventClasses.HierarchyEventTarget</typeName>
+    <assemblyName>EDC.ReadiNow.Common, Version=1.0.0.0, Culture=neutral</assemblyName>
+    <ordinal>0</ordinal>
+  </target>
+  <!-- Tenant General Settings -->
+  <type>
+    <alias>tenantGeneralSettings</alias>
+    <name>Tenant General Settings</name>
+    <generateCode>true</generateCode>
+    <isMetadata>true</isMetadata>
+    <fieldGroups>
+      <fieldGroup>
+        <name>General Settings</name>
+        <alias>generalSettings</alias>
+        <description>Contains all general settings.</description>
+      </fieldGroup>
+      <fieldGroup>
+        <name>Financial Year Settings</name>
+        <alias>financialYearSettings</alias>
+        <description>Contains administration financial year settings.</description>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>tenantCurrencySymbol</alias>
+        <name>Currency symbol</name>
+        <description>The symbol to be displayed against currencies fields in the console.</description>
+        <fieldInGroup>generalSettings</fieldInGroup>
+      </stringField>
+    </fields>
+    <relationships>
+      <!-- Financial year start month -->
+      <relationship>
+        <name>Financial year start month</name>
+        <alias>finYearStartMonth</alias>
+        <toType>monthOfYearEnum</toType>
+        <relType>relChoiceField</relType>
+        <relationshipInFromTypeGroup>financialYearSettings</relationshipInFromTypeGroup>
+        <generateCode>true</generateCode>
+      </relationship>
+    </relationships>
+  </type>
+  <type>
+    <alias>visualController</alias>
+    <name>Visual Controller</name>
+    <description>A type to control the resources to appear on different devices.</description>
+    <generateCode>true</generateCode>
+    <isAbstract>true</isAbstract>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Visual Controller Details</name>
+        <alias>visualControllerDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <boolField>
+        <name>Hide on desktop</name>
+        <alias>hideOnDesktop</alias>
+        <defaultValue>false</defaultValue>
+        <fieldInGroup>visualControllerDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <name>Hide on tablet</name>
+        <alias>hideOnTablet</alias>
+        <defaultValue>true</defaultValue>
+        <fieldInGroup>visualControllerDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <name>Hide on mobile</name>
+        <alias>hideOnMobile</alias>
+        <defaultValue>true</defaultValue>
+        <fieldInGroup>visualControllerDetails</fieldInGroup>
+      </boolField>
+    </fields>
+  </type>
+  <!-- Appointment Reminder -->
+  <enumType>
+    <alias>appointmentReminderEnum</alias>
+    <name>Appointment Reminder</name>
+    <inherits>enumValue</inherits>
+    <enumValues>
+      <appointmentReminderEnum>
+        <name>None</name>
+        <alias>apptRem1</alias>
+        <enumOrder>1</enumOrder>
+      </appointmentReminderEnum>
+      <appointmentReminderEnum>
+        <name>0 minutes</name>
+        <alias>apptRem2</alias>
+        <enumOrder>2</enumOrder>
+      </appointmentReminderEnum>
+      <appointmentReminderEnum>
+        <name>5 minutes</name>
+        <alias>apptRem3</alias>
+        <enumOrder>3</enumOrder>
+      </appointmentReminderEnum>
+      <appointmentReminderEnum>
+        <name>10 minutes</name>
+        <alias>apptRem4</alias>
+        <enumOrder>4</enumOrder>
+      </appointmentReminderEnum>
+      <appointmentReminderEnum>
+        <name>15 minutes</name>
+        <alias>apptRem5</alias>
+        <enumOrder>5</enumOrder>
+      </appointmentReminderEnum>
+      <appointmentReminderEnum>
+        <name>30 minutes</name>
+        <alias>apptRem6</alias>
+        <enumOrder>6</enumOrder>
+      </appointmentReminderEnum>
+      <appointmentReminderEnum>
+        <name>1 hour</name>
+        <alias>apptRem7</alias>
+        <enumOrder>7</enumOrder>
+      </appointmentReminderEnum>
+      <appointmentReminderEnum>
+        <name>2 hours</name>
+        <alias>apptRem8</alias>
+        <enumOrder>8</enumOrder>
+      </appointmentReminderEnum>
+      <appointmentReminderEnum>
+        <name>3 hours</name>
+        <alias>apptRem9</alias>
+        <enumOrder>9</enumOrder>
+      </appointmentReminderEnum>
+      <appointmentReminderEnum>
+        <name>4 hours</name>
+        <alias>apptRem10</alias>
+        <enumOrder>10</enumOrder>
+      </appointmentReminderEnum>
+      <appointmentReminderEnum>
+        <name>5 hours</name>
+        <alias>apptRem11</alias>
+        <enumOrder>11</enumOrder>
+      </appointmentReminderEnum>
+      <appointmentReminderEnum>
+        <name>6 hours</name>
+        <alias>apptRem12</alias>
+        <enumOrder>12</enumOrder>
+      </appointmentReminderEnum>
+      <appointmentReminderEnum>
+        <name>7 hours</name>
+        <alias>apptRem13</alias>
+        <enumOrder>13</enumOrder>
+      </appointmentReminderEnum>
+      <appointmentReminderEnum>
+        <name>8 hours</name>
+        <alias>apptRem14</alias>
+        <enumOrder>14</enumOrder>
+      </appointmentReminderEnum>
+      <appointmentReminderEnum>
+        <name>9 hours</name>
+        <alias>apptRem15</alias>
+        <enumOrder>15</enumOrder>
+      </appointmentReminderEnum>
+      <appointmentReminderEnum>
+        <name>10 hours</name>
+        <alias>apptRem16</alias>
+        <enumOrder>16</enumOrder>
+      </appointmentReminderEnum>
+      <appointmentReminderEnum>
+        <name>11 hours</name>
+        <alias>apptRem17</alias>
+        <enumOrder>17</enumOrder>
+      </appointmentReminderEnum>
+      <appointmentReminderEnum>
+        <name>0.5 days</name>
+        <alias>apptRem18</alias>
+        <enumOrder>18</enumOrder>
+      </appointmentReminderEnum>
+      <appointmentReminderEnum>
+        <name>18 hours</name>
+        <alias>apptRem19</alias>
+        <enumOrder>19</enumOrder>
+      </appointmentReminderEnum>
+      <appointmentReminderEnum>
+        <name>1 day</name>
+        <alias>apptRem20</alias>
+        <enumOrder>20</enumOrder>
+      </appointmentReminderEnum>
+      <appointmentReminderEnum>
+        <name>2 days</name>
+        <alias>apptRem21</alias>
+        <enumOrder>21</enumOrder>
+      </appointmentReminderEnum>
+      <appointmentReminderEnum>
+        <name>3 days</name>
+        <alias>apptRem22</alias>
+        <enumOrder>22</enumOrder>
+      </appointmentReminderEnum>
+      <appointmentReminderEnum>
+        <name>4 days</name>
+        <alias>apptRem23</alias>
+        <enumOrder>23</enumOrder>
+      </appointmentReminderEnum>
+      <appointmentReminderEnum>
+        <name>1 week</name>
+        <alias>apptRem24</alias>
+        <enumOrder>24</enumOrder>
+      </appointmentReminderEnum>
+      <appointmentReminderEnum>
+        <name>2 weeks</name>
+        <alias>apptRem25</alias>
+        <enumOrder>25</enumOrder>
+      </appointmentReminderEnum>
+    </enumValues>
+    <generateCode>true</generateCode>
+  </enumType>
+  <!-- Show time as -->
+  <enumType>
+    <alias>showTimeAsEnum</alias>
+    <name>Show Time As</name>
+    <inherits>enumValue</inherits>
+    <enumValues>
+      <showTimeAsEnum>
+        <name>Busy</name>
+        <alias>showTimeAsBusy</alias>
+        <enumOrder>1</enumOrder>
+      </showTimeAsEnum>
+      <showTimeAsEnum>
+        <name>Free</name>
+        <alias>showTimeAsFree</alias>
+        <enumOrder>2</enumOrder>
+      </showTimeAsEnum>
+      <showTimeAsEnum>
+        <name>Tentative</name>
+        <alias>showTimeAsTenative</alias>
+        <enumOrder>3</enumOrder>
+      </showTimeAsEnum>
+      <showTimeAsEnum>
+        <name>Out of office</name>
+        <alias>showTimeAsOutOfOffice</alias>
+        <enumOrder>3</enumOrder>
+      </showTimeAsEnum>
+    </enumValues>
+    <generateCode>true</generateCode>
+  </enumType>
+  <!-- Person -->
+  <definition>
+    <name>Person</name>
+    <alias>person</alias>
+    <generateCode>true</generateCode>
+    <inherits>userResource</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Person Detail</name>
+        <alias>personDetail</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <name>First name</name>
+        <alias>firstName</alias>
+        <fieldInGroup>personDetail</fieldInGroup>
+      </stringField>
+      <stringField>
+        <name>Last name</name>
+        <alias>lastName</alias>
+        <fieldInGroup>personDetail</fieldInGroup>
+      </stringField>
+
+      <boolField>
+        <name>Calculated has account</name>
+        <description>A calculated field that will return true if the person is associated with any user accounts.</description>
+        <alias>calcPersonHasAccount</alias>
+        <fieldInGroup>personDetail</fieldInGroup>
+        <isFieldReadOnly>true</isFieldReadOnly>
+      </boolField>
+    </fields>
+
+    <relationships>
+      <relationship>
+        <name>Person has user account</name>
+        <description>Specifies the owners of user-accounts.</description>
+        <alias>personHasUserAccount</alias>
+        <reverseAlias>accountHolder</reverseAlias>
+        <relType>relExclusiveCollection</relType>
+        <toType>userAccount</toType>
+        <toName>Person has user account</toName>
+        <fromName>User account</fromName>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>personDetail</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>userAccountDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <name>Person has email contact</name>
+        <description>Specifies the persons emails.</description>
+        <alias>personHasEmailContact</alias>
+        <reverseAlias>emailContactOwner</reverseAlias>
+        <relType>relComponents</relType>
+        <toType>emailContact</toType>
+        <toName>Person has email contact</toName>
+        <fromName>Email contact</fromName>
+        <generateCode>true</generateCode>
+        <securesTo>true</securesTo>
+        <relationshipInFromTypeGroup>personDetail</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>emailContactDetails</relationshipInToTypeGroup>
+        <cascadeDelete>false</cascadeDelete>
+        <cascadeDeleteTo>true</cascadeDeleteTo>
+        <cloneAction>cloneEntities</cloneAction>
+        <reverseCloneAction>cloneReferences</reverseCloneAction>
+        <implicitInSolution>true</implicitInSolution>
+        <reverseImplicitInSolution>false</reverseImplicitInSolution>
+      </relationship>
+      <relationship>
+        <name>Person has phone contact</name>
+        <description>Specifies the persons phones.</description>
+        <alias>personHasPhoneContact</alias>
+        <reverseAlias>phoneContactOwner</reverseAlias>
+        <relType>relComponents</relType>
+        <toType>phoneContact</toType>
+        <toName>Person has phone contact</toName>
+        <fromName>Phone contact</fromName>
+        <generateCode>true</generateCode>
+        <securesTo>true</securesTo>
+        <relationshipInFromTypeGroup>personDetail</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>phoneContactDetails</relationshipInToTypeGroup>
+        <cascadeDelete>false</cascadeDelete>
+        <cascadeDeleteTo>true</cascadeDeleteTo>
+        <cloneAction>cloneEntities</cloneAction>
+        <reverseCloneAction>cloneReferences</reverseCloneAction>
+        <implicitInSolution>true</implicitInSolution>
+        <reverseImplicitInSolution>false</reverseImplicitInSolution>
+      </relationship>
+    </relationships>
+    <onBeforeSave>personHasAccountEventTarget</onBeforeSave>
+  </definition>
+
+  <target>
+    <alias>personHasAccountEventTarget</alias>
+    <typeName>EDC.ReadiNow.Model.EventClasses.PersonHasAccountEventTarget</typeName>
+    <assemblyName>EDC.ReadiNow.Common, Version=1.0.0.0, Culture=neutral</assemblyName>
+    <ordinal>0</ordinal>    <!-- This needs to run before the userAccountHasPersonEventTarget-->
+</target>
+
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    Client side caching                                           -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <type>
+    <name>Client Cachable</name>
+    <description>An internal type that holds a change marker used in client side caching. Objects that are client side cached must inherit from this.</description>
+    <alias>clientCachable</alias>
+    <isAbstract>true</isAbstract>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Cachable details</name>
+        <alias>cachableDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <guidField>
+        <name>Change marker</name>
+        <alias>cacheChangeMarker</alias>
+        <description>This field changes every time the cachable item is modified.</description>
+        <fieldInGroup>cachableDetails</fieldInGroup>
+        <hideField>true</hideField>
+        <hideFieldDefaultForm>true</hideFieldDefaultForm>
+      </guidField>
+    </fields>
+    <onBeforeSave>clientCachableEventTarget</onBeforeSave>
+    <onAfterDeploy>clientCachableEventTarget</onAfterDeploy>
+  </type>
+  <target>
+    <alias>clientCachableEventTarget</alias>
+    <typeName>EDC.ReadiNow.Model.EventClasses.ClientCachableEventTarget</typeName>
+    <assemblyName>EDC.ReadiNow.Common, Version=1.0.0.0, Culture=neutral</assemblyName>
+    <ordinal>0</ordinal>
+  </target>
+
+  <scheduleAction>
+    <alias>cleanupFileRepositoriesAction</alias>
+    <inherits>scheduledItem</inherits>
+    <name>Clean up file repositories action</name>
+    <description>When fired, deletes all unreferenced files from the file repositories.</description>
+    <systemTenantOnly>true</systemTenantOnly>
+    <generateCode>false</generateCode>
+    <onScheduleFire>
+      <class>
+        <alias>cleanupFileRepositoriesActionClass</alias>
+        <name>cleanupFileRepositoriesAction</name>
+        <typeName>EDC.ReadiNow.IO.CleanupFileRepositoriesAction</typeName>
+        <assemblyName>EDC.ReadiNow.Common, Version=1.0.0.0, Culture=neutral</assemblyName>
+      </class>
+    </onScheduleFire>
+  </scheduleAction>
+
+</resources>

@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:core="core" xmlns:console="console" xmlns="shared" elementFormDefault="qualified" targetNamespace="shared" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="Core.xsd" namespace="core" />
+  <xs:import schemaLocation="Console.xsd" namespace="console" />
+  <xs:element name="checkedOn">
+    <xs:simpleType>
+      <xs:restriction base="xs:dateTime" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="updatedByUserOn">
+    <xs:simpleType>
+      <xs:restriction base="xs:dateTime" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="checkingUser.instance" type="type_checkingUser" />
+  <xs:complexType name="type_checkingUser">
+    <xs:all>
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:name" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:description" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:createdDate" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:modifiedDate" />
+      <xs:element minOccurs="1" maxOccurs="1" ref="core:alias" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:isOfType" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:resourceHasResourceKeyDataHashes" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:flags" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:securityOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:createdBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:lastModifiedBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:isRootForStructureView" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:inStructureLevel" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:inSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" name="from">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_isChecked" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="to">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="core:is_userAccount" />
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:group name="is_checkingUser">
+    <xs:choice>
+      <xs:element ref="checkingUser.instance" />
+    </xs:choice>
+  </xs:group>
+  <xs:element name="isChecked.instance" type="type_isChecked" />
+  <xs:complexType name="type_isChecked">
+    <xs:all>
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:name" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:description" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:createdDate" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:modifiedDate" />
+      <xs:element minOccurs="1" maxOccurs="1" ref="core:alias" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="checkedOn" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:isOfType" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:resourceHasResourceKeyDataHashes" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:flags" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:securityOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:createdBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:lastModifiedBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:isRootForStructureView" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:inStructureLevel" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:inSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="checkingUser" />
+      <xs:element minOccurs="0" maxOccurs="1" name="from">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_checkable" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="to">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="core:is_relationship" />
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:group name="is_isChecked">
+    <xs:choice>
+      <xs:element ref="isChecked.instance" />
+    </xs:choice>
+  </xs:group>
+  <xs:element name="updatingUser.instance" type="type_updatingUser" />
+  <xs:complexType name="type_updatingUser">
+    <xs:all>
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:name" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:description" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:createdDate" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:modifiedDate" />
+      <xs:element minOccurs="1" maxOccurs="1" ref="core:alias" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:isOfType" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:resourceHasResourceKeyDataHashes" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:flags" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:securityOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:createdBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:lastModifiedBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:isRootForStructureView" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:inStructureLevel" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:inSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" name="from">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_updatedByUser" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="to">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="core:is_userAccount" />
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:group name="is_updatingUser">
+    <xs:choice>
+      <xs:element ref="updatingUser.instance" />
+    </xs:choice>
+  </xs:group>
+  <xs:element name="updatedByUser.instance" type="type_updatedByUser" />
+  <xs:complexType name="type_updatedByUser">
+    <xs:all>
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:name" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:description" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:createdDate" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:modifiedDate" />
+      <xs:element minOccurs="1" maxOccurs="1" ref="core:alias" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="updatedByUserOn" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:isOfType" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:resourceHasResourceKeyDataHashes" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:flags" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:securityOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:createdBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:lastModifiedBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:isRootForStructureView" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:inStructureLevel" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:inSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="updatingUser" />
+      <xs:element minOccurs="0" maxOccurs="1" name="from">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_checkable" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="to">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="core:is_relationship" />
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:group name="is_updatedByUser">
+    <xs:choice>
+      <xs:element ref="updatedByUser.instance" />
+    </xs:choice>
+  </xs:group>
+  <xs:element name="checkable" type="type_checkable" />
+  <xs:complexType name="type_checkable">
+    <xs:all>
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:name" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:description" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:createdDate" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:modifiedDate" />
+      <xs:element minOccurs="1" maxOccurs="1" ref="core:alias" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:isOfType" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:resourceHasResourceKeyDataHashes" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:flags" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:securityOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:createdBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:lastModifiedBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:isRootForStructureView" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:inStructureLevel" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:inSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isChecked" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="updatedByUser" />
+    </xs:all>
+  </xs:complexType>
+  <xs:group name="is_checkable">
+    <xs:choice>
+      <xs:element ref="checkable" />
+    </xs:choice>
+  </xs:group>
+  <xs:element name="needsChecking.instance" type="type_needsChecking" />
+  <xs:complexType name="type_needsChecking">
+    <xs:all>
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:name" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:description" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:createdDate" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:modifiedDate" />
+      <xs:element minOccurs="1" maxOccurs="1" ref="core:alias" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:isOfType" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:resourceHasResourceKeyDataHashes" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:flags" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:securityOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:createdBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:lastModifiedBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:isRootForStructureView" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:inStructureLevel" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:inSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" name="from">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="core:is_type" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="to">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="core:is_relationship" />
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:group name="is_needsChecking">
+    <xs:choice>
+      <xs:element ref="needsChecking.instance" />
+      <xs:element ref="needsCheckingForType.instance" />
+    </xs:choice>
+  </xs:group>
+  <xs:element name="needsCheckingForType.instance" type="type_needsCheckingForType" />
+  <xs:complexType name="type_needsCheckingForType">
+    <xs:all>
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:name" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:description" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:createdDate" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:modifiedDate" />
+      <xs:element minOccurs="1" maxOccurs="1" ref="core:alias" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:isOfType" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:resourceHasResourceKeyDataHashes" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:flags" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:securityOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:createdBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:lastModifiedBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:isRootForStructureView" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:inStructureLevel" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:inSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
+      <xs:element minOccurs="1" maxOccurs="1" name="to">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="core:is_type" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="from">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="core:is_relationship" />
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:group name="is_needsCheckingForType">
+    <xs:choice>
+      <xs:element ref="needsChecking.instance" />
+      <xs:element ref="needsCheckingForType.instance" />
+    </xs:choice>
+  </xs:group>
+  <xs:element name="checkingUser">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="1" ref="checkingUser.instance" />
+        <xs:group minOccurs="0" maxOccurs="1" ref="core:is_userAccount" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="isChecked">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="isChecked.instance" />
+        <xs:group minOccurs="0" maxOccurs="unbounded" ref="core:is_relationship" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="updatingUser">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="1" ref="updatingUser.instance" />
+        <xs:group minOccurs="0" maxOccurs="1" ref="core:is_userAccount" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="updatedByUser">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="updatedByUser.instance" />
+        <xs:group minOccurs="0" maxOccurs="unbounded" ref="core:is_relationship" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="needsChecking">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="needsChecking.instance" />
+        <xs:group minOccurs="0" maxOccurs="unbounded" ref="core:is_relationship" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="needsCheckingForType">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="needsCheckingForType.instance" />
+        <xs:group minOccurs="0" maxOccurs="unbounded" ref="core:is_type" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

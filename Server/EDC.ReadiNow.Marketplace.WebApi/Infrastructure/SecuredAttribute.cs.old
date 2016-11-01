@@ -1,0 +1,107 @@
+﻿// Copyright 2011-2015 Global Software Innovation Pty Ltd
+
+using System;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web;
+using System.Web.Http;
+using System.Web.Http.Controllers;
+using System.Web.Security;
+using EDC.ReadiNow.Diagnostics;
+using EDC.ReadiNow.IO;
+using EDC.ReadiNow.Security.OpenId;
+
+namespace EDC.ReadiNow.Marketplace.WebApi.Infrastructure
+{
+    public class SecuredAttribute : AuthorizeAttribute
+    {
+        /// <summary>
+        /// Processes requests that fail authorization.
+        /// </summary>
+        /// <param name="actionContext">The context.</param>
+        protected override void HandleUnauthorizedRequest(HttpActionContext actionContext)
+        {
+            actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized);
+        }
+        
+        /// <summary>
+        /// Indicates whether the specified control is authorized.
+        /// </summary>
+        /// <param name="actionContext">The context.</param>
+        /// <returns>True if the control is authorized; otherwise, false.</returns>
+        protected override bool IsAuthorized(HttpActionContext actionContext)
+        {
+            if (HttpContext.Current == null)
+            {
+                return base.IsAuthorized(actionContext);
+            }
+
+            string ticketData = null;
+
+            // attempt to retrieve the aspx auth cookie for forms authentication
+            var aspxAuthCookie = HttpContext.Current.Request.Cookies[FormsAuthentication.FormsCookieName];
+            if (aspxAuthCookie != null)
+            {
+                ticketData = aspxAuthCookie.Values[null];
+            }
+            else
+            {
+                var header = actionContext.Request.Headers.GetCookies(FormsAuthentication.FormsCookieName);
+                if (header != null && header.Count > 0)
+                {
+                    var cookie = header.First().Cookies.FirstOrDefault(c => c.Name == FormsAuthentication.FormsCookieName);
+                    if (cookie != null)
+                    {
+                        ticketData = cookie.Value;
+                    }
+                } 
+            }
+
+            if (string.IsNullOrEmpty(ticketData))
+            {
+                return base.IsAuthorized(actionContext);
+            }
+                
+            FormsAuthenticationTicket authenticationTicket = null;
+
+            try
+            {
+                // Attempt to decrypt the authentication ticket (ensure machineKey is correctly set in web.config!)
+                authenticationTicket = FormsAuthentication.Decrypt(ticketData);
+            }
+            catch (HttpException ex)
+            {
+                EventLog.Application.WriteError("Error decrypting authentication ticket. " + ex.Message);
+            }
+            catch (ArgumentException ex)
+            {
+                EventLog.Application.WriteError("Error decrypting authentication ticket. " + ex.Message);
+            }
+
+            if (authenticationTicket == null)
+            {
+                return base.IsAuthorized(actionContext);
+            }
+
+            if (authenticationTicket.Expired)
+            {
+                return base.IsAuthorized(actionContext);
+            }
+
+            var claimedIdentifier = authenticationTicket.UserData;
+
+            var requestContextData = OpenIdCache.Get(claimedIdentifier);
+
+            if (requestContextData == null)
+            {
+                return base.IsAuthorized(actionContext);
+            }
+
+            // Allow the context to be set
+            RequestContext.SetContext(requestContextData);
+
+            return true;
+        }
+    }
+}

@@ -1,0 +1,882 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="core" xsi:schemaLocation=". ../Core.xsd" defaultSolution="coreSolution">
+  <!--Copyright 2011-2016 Global Software Innovation Pty Ltd-->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    Roles and Users                                               -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- User Account Status Enum Type -->
+  <enumType>
+    <alias>userAccountStatusEnum</alias>
+    <name>User Account Status</name>
+    <inherits>enumValue</inherits>
+    <enumValues>
+      <userAccountStatusEnum>
+        <name>Active</name>
+        <description>The account is usable.</description>
+        <alias>active</alias>
+        <enumOrder>1</enumOrder>
+      </userAccountStatusEnum>
+      <userAccountStatusEnum>
+        <name>Disabled</name>
+        <description>An administrator has manually disabled the account, preventing login.</description>
+        <alias>disabled</alias>
+        <enumOrder>2</enumOrder>
+      </userAccountStatusEnum>
+      <userAccountStatusEnum>
+        <name>Locked</name>
+        <description>The user has entered the incorrect credentials too many times.</description>
+        <alias>locked</alias>
+        <enumOrder>3</enumOrder>
+      </userAccountStatusEnum>
+      <userAccountStatusEnum>
+        <name>Expired</name>
+        <description>The account has passed its expiry date.</description>
+        <alias>expired</alias>
+        <enumOrder>4</enumOrder>
+      </userAccountStatusEnum>
+    </enumValues>
+    <generateCode>true</generateCode>
+  </enumType>
+  
+  <!-- Securable Entity base -->
+  <type>
+    <alias>subject</alias>
+    <name>Subject</name>
+    <description>Common type for users and roles for applying access control, such as security queries.</description>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Subject Details</name>
+        <alias>subjectDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+  </type>
+  
+  <!-- 'User Account' type -->
+  <importableType>
+    <name>User Account</name>
+    <alias>userAccount</alias>
+    <description>Represents a user account definition</description>
+    <generateCode>true</generateCode>
+    <inherits>subject</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <name>User Account</name>
+        <alias>userAccountDetails</alias>
+        <description>Contains custom information about user accounts.</description>
+      </fieldGroup>
+      <fieldGroup>
+        <name>Other</name>
+        <alias>userAccountOtherDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <name>Password</name>
+        <alias>password</alias>
+        <description>A secret word or phrase used to authenticate a user account.</description>
+        <fieldInGroup>userAccountDetails</fieldInGroup>
+        <isRequired>true</isRequired>
+        <fieldRepresents>fieldRepresentsPassword</fieldRepresents>
+        <maxLength>100</maxLength>
+        <isFieldWriteOnly>true</isFieldWriteOnly>
+        <hideField>true</hideField>
+        <hideFieldDefaultForm>true</hideFieldDefaultForm>
+      </stringField>
+      <dateTimeField>
+        <name>Account expiration</name>
+        <alias>accountExpiration</alias>
+        <description>The date and time that the user account expires.</description>
+        <fieldInGroup>userAccountDetails</fieldInGroup>
+      </dateTimeField>
+      <boolField>
+        <name>Password never expires</name>
+        <alias>passwordNeverExpires</alias>
+        <description>If checked, the password never expires.</description>
+        <fieldInGroup>userAccountDetails</fieldInGroup>
+      </boolField>
+      <dateTimeField>
+        <name>Last logon</name>
+        <alias>lastLogon</alias>
+        <description>The date and time that a user account was last logged on.</description>
+        <fieldInGroup>userAccountDetails</fieldInGroup>
+      </dateTimeField>
+      <dateTimeField>
+        <name>Password last changed</name>
+        <alias>passwordLastChanged</alias>
+        <description>The date and time that the password for a user account was last changed.</description>
+        <fieldInGroup>userAccountDetails</fieldInGroup>
+      </dateTimeField>
+      <dateTimeField>
+        <name>Last lockout</name>
+        <alias>lastLockout</alias>
+        <description>The date and time that a user account was last locked out.</description>
+        <fieldInGroup>userAccountDetails</fieldInGroup>
+      </dateTimeField>
+      <intField>
+        <name>Bad logon count</name>
+        <alias>badLogonCount</alias>
+        <description>The number of times a user account has been unsuccessfully logged on.</description>
+        <fieldInGroup>userAccountDetails</fieldInGroup>
+        <defaultValue>0</defaultValue>
+      </intField>
+      <boolField>
+        <name>Change password at next logon</name>
+        <alias>changePasswordAtNextLogon</alias>
+        <description>If checked, the user must change their password when they next logon.</description>
+        <fieldInGroup>userAccountDetails</fieldInGroup>
+        <defaultValue>false</defaultValue>
+      </boolField>
+    </fields>
+    <relationships>
+      <relationship>
+        <name>Account status</name>
+        <alias>accountStatus</alias>
+        <description>A field indicating the status of a user account.</description>
+        <toType>userAccountStatusEnum</toType>
+        <relType>relChoiceField</relType>
+        <generateCode>true</generateCode>
+        <relationshipIsMandatory>true</relationshipIsMandatory>
+        <relationshipInFromTypeGroup>userAccountDetails</relationshipInFromTypeGroup>
+        <toTypeDefaultValue>active</toTypeDefaultValue>
+      </relationship>      
+      <relationship>
+        <name>Password reset</name>
+        <alias>passwordReset</alias>
+        <description>Reset password key and expiry for the account</description>
+        <toType>passwordResetRecord</toType>
+        <generateCode>true</generateCode>
+        <securesTo>true</securesTo>
+        <cardinality>oneToOne</cardinality>
+        <relationshipInFromTypeGroup>userAccountDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>passwordResetDetails</relationshipInToTypeGroup>
+        <hideOnFromType>true</hideOnFromType>
+        <hideOnFromTypeDefaultForm>true</hideOnFromTypeDefaultForm>
+      </relationship>
+    </relationships>
+    <resourceKeys>
+      <resourceKey>
+        <alias>userAcccountUniqueNameKey</alias>
+        <name>Unique name per user account</name>
+        <resourceKeyMessage>There is another user account with the same name.</resourceKeyMessage>
+        <keyFields>name</keyFields>
+      </resourceKey>
+    </resourceKeys>
+    <onBeforeSave>userAccountEventTarget, userAccountHasPersonEventTarget</onBeforeSave>
+    <onAfterSave>userAccountEventTarget</onAfterSave>
+    <onBeforeDelete>userAccountEventTarget</onBeforeDelete>
+    <onAfterDelete>userAccountEventTarget</onAfterDelete>
+    <onSaveFailed>userAccountEventTarget</onSaveFailed>
+    <onDeleteFailed>userAccountEventTarget</onDeleteFailed>
+  </importableType>
+  
+  
+  <type>
+    <name>Password Reset Record</name>
+    <alias>passwordResetRecord</alias>
+    <description>Password Reset Record details.</description>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Password reset details</name>
+        <alias>passwordResetDetails</alias>
+        <description>Contains password reset record.</description>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <name>Reset key</name>
+        <alias>passwordResetKey</alias>
+        <description>Password reset key</description>
+        <fieldInGroup>passwordResetDetails</fieldInGroup>
+      </stringField>
+      <dateTimeField>
+        <alias>passwordResetExpiry</alias>
+        <name>Password reset expiry</name>
+        <fieldInGroup>passwordResetDetails</fieldInGroup>
+      </dateTimeField>
+    </fields>
+  </type>  
+  <!-- Identity provider type -->
+  <type>
+    <name>Identity Provider</name>
+    <alias>identityProvider</alias>
+    <description>Identity provider.</description>
+    <generateCode>true</generateCode>
+    <isAbstract>true</isAbstract>
+    <inherits>userResource</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Identity Provider Details</name>
+        <alias>identityProviderDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>      
+      <boolField>
+        <alias>isProviderEnabled</alias>
+        <name>Is provider enabled</name>                
+        <description>True if the provider is enabled, false otherwise.</description>
+        <defaultValue>true</defaultValue>
+        <fieldInGroup>identityProviderDetails</fieldInGroup>
+      </boolField>
+      <intField>
+        <alias>providerOrdinal</alias>
+        <name>Order</name>
+        <defaultValue>1</defaultValue>
+        <description>The display order for this provider.</description>
+        <fieldInGroup>identityProviderDetails</fieldInGroup>
+      </intField>
+    </fields>
+  </type>
+
+  <!-- Identity provider User -->
+  <type>
+    <name>Identity Provider User</name>
+    <alias>identityProviderUser</alias>
+    <description>Identity provider user.</description>
+    <generateCode>true</generateCode>
+    <isAbstract>true</isAbstract>
+    <inherits>userResource</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Identity Provider User Details</name>
+        <alias>identityProviderUserDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <relationships>      
+      <relationship>
+        <name>Associated account</name>
+        <toName>Associated account</toName>
+        <fromName>Identity provider users</fromName>
+        <alias>associatedUserAccount</alias>        
+        <description>User Account associated with the identity provider user.</description>
+        <toType>userAccount</toType>
+        <relType>relLookup</relType>                
+        <generateCode>true</generateCode>        
+        <relationshipInFromTypeGroup>identityProviderUserDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>userAccountDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <name>Identity provider</name>
+        <toName>Identity provider</toName>
+        <fromName>Identity provider users</fromName>
+        <alias>identityProviderForUser</alias>
+        <reverseAlias>identityProviderUsers</reverseAlias>
+        <description>Identity provider for this user.</description>        
+        <relType>relDependantOf</relType>
+        <toType>identityProvider</toType>        
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>identityProviderUserDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>identityProviderDetails</relationshipInToTypeGroup>
+      </relationship>
+    </relationships>
+    <resourceKeys>
+      <resourceKey>
+        <alias>identityProviderUserUniqueNameKey</alias>
+        <name>Unique name per identity provider user</name>
+        <resourceKeyMessage>There is another identity provider user with the same name.</resourceKeyMessage>
+        <keyFields>name</keyFields>        
+        <resourceKeyRelationships>
+          <resourceKeyRelationship>
+            <alias>identityProviderUserUniqueNameKeyRelationship</alias>
+            <keyRelationship>identityProviderForUser</keyRelationship>
+            <keyRelationshipDirection>forward</keyRelationshipDirection>
+          </resourceKeyRelationship>      
+        </resourceKeyRelationships>      
+      </resourceKey>
+    </resourceKeys>
+  </type>
+
+  <!-- OpenId Connect Identity provider type -->
+  <type>
+    <name>OpenId Connect Identity Provider</name>
+    <alias>oidcIdentityProvider</alias>
+    <description>OpenId Connect Identity provider.</description>
+    <generateCode>true</generateCode>
+    <inherits>identityProvider</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <name>OpenId Connect Identity Provider Details</name>
+        <alias>oidcIdentityProviderDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>oidcIdentityProviderConfigurationUrl</alias>
+        <name>Identity provider configuration URL</name>
+        <isRequired>true</isRequired>
+        <description>The OpenId Connect Provider configuration URL.</description>
+        <fieldInGroup>oidcIdentityProviderDetails</fieldInGroup>
+        <pattern>secureWebAddressPattern</pattern>
+      </stringField>
+      <stringField>
+        <alias>oidcClientId</alias>
+        <name>Client Id</name>
+        <isRequired>true</isRequired>        
+        <description>The client id.</description>
+        <fieldInGroup>oidcIdentityProviderDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>oidcClientSecret</alias>
+        <name>Client secret</name>
+        <description>Shared secret between client and identity provider.</description>
+        <fieldInGroup>oidcIdentityProviderDetails</fieldInGroup>
+        <isRequired>true</isRequired>
+        <fieldRepresents>fieldRepresentsPassword</fieldRepresents>
+        <maxLength>100</maxLength>
+        <isFieldWriteOnly>true</isFieldWriteOnly>
+      </stringField>
+      <guidField>
+        <alias>oidcClientSecretSecureId</alias>
+        <name>Client secret secure Id</name>
+        <description>Reference to the SecureId field.</description>
+        <isFieldWriteOnly>true</isFieldWriteOnly>
+        <hideField>true</hideField>
+        <fieldInGroup>oidcIdentityProviderDetails</fieldInGroup>
+      </guidField>
+      <stringField>
+        <alias>oidcUserIdentityClaim</alias>
+        <name>Identity claim</name>
+        <isRequired>true</isRequired>
+        <description>The name of the claim to use to map identity provider users to user accounts.</description>
+        <fieldInGroup>oidcIdentityProviderDetails</fieldInGroup>
+      </stringField>
+      <boolField>
+        <alias>oidcAlwaysPrompt</alias>
+        <name>Always prompt</name>        
+        <defaultValue>true</defaultValue>
+        <description>True to direct the identity provider to always prompt for credentials.</description>
+        <fieldInGroup>oidcIdentityProviderDetails</fieldInGroup>
+      </boolField>
+    </fields>
+    <onBeforeSave>oidcIdentityProviderTarget</onBeforeSave>
+  </type>
+
+  <target>
+    <alias>oidcIdentityProviderTarget</alias>
+    <typeName>EDC.ReadiNow.Model.EventClasses.OidcIdentityProviderEventTarget</typeName>
+    <assemblyName>EDC.ReadiNow.Common, Version=1.0.0.0, Culture=neutral</assemblyName>
+    <ordinal>0</ordinal>
+  </target>
+  
+  <!-- OpenId Connect Identity provider User -->
+  <importableType>
+    <name>OpenId Connect Identity Provider User</name>
+    <alias>oidcIdentityProviderUser</alias>
+    <description>OpenId Connect Identity provider user.</description>
+    <generateCode>true</generateCode>
+    <inherits>identityProviderUser</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <name>OpenId Connect Identity Provider User Details</name>
+        <alias>oidcIdentityProviderUserDetails</alias>
+      </fieldGroup>
+    </fieldGroups>    
+  </importableType>      
+  
+  <!-- ReadiNow Identity provider -->
+  <type>
+    <name>ReadiNow Identity Provider</name>
+    <alias>readiNowIdentityProvider</alias>
+    <description>ReadiNow Identity provider.</description>
+    <generateCode>true</generateCode>
+    <inherits>identityProvider</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <name>ReadiNow Identity Provider Details</name>
+        <alias>readiNowIdentityProviderDetails</alias>
+      </fieldGroup>
+    </fieldGroups>    
+  </type>
+  
+  <!-- User Account Event Target -->
+  <target>
+    <alias>userAccountEventTarget</alias>
+    <typeName>EDC.ReadiNow.Model.EventClasses.UserAccountEventTarget</typeName>
+    <assemblyName>EDC.ReadiNow.Common, Version=1.0.0.0, Culture=neutral</assemblyName>
+    <ordinal>0</ordinal>
+  </target>
+  
+    <target>
+    <alias>userAccountHasPersonEventTarget</alias>
+    <typeName>EDC.ReadiNow.Model.EventClasses.UserAccountHasPersonEventTarget</typeName>
+    <assemblyName>EDC.ReadiNow.Common, Version=1.0.0.0, Culture=neutral</assemblyName>
+    <ordinal>1</ordinal>  <!-- This needs to run after the personHasUserAccountEventTarget-->
+  </target>
+  
+  <!-- Security Owner -->
+  <relationship>
+    <alias>securityOwner</alias>
+    <name>Owner</name>
+    <description>The owner of a resources. Resource owners always have permission to see their resource, irrespective of other security rules. Users are automatically made the owner of any resource that they create.</description>
+    <reverseAlias>securityOwnerOf</reverseAlias>
+    <relType>relLookup</relType>
+    <fromType>resource</fromType>
+    <fromName>Owns resource</fromName>
+    <toType>userAccount</toType>
+    <toName>Owned by</toName>
+    <hideOnFromType>false</hideOnFromType>
+    <hideOnFromTypeDefaultForm>true</hideOnFromTypeDefaultForm>
+    <hideOnToType>true</hideOnToType>
+    <generateCode>true</generateCode>
+    <relationshipInFromTypeGroup>system</relationshipInFromTypeGroup>
+    <isRelationshipReadOnly>true</isRelationshipReadOnly>
+  </relationship>
+  <!-- Created by -->
+  <relationship>
+    <alias>createdBy</alias>
+    <name>Created by</name>
+    <relType>relLookup</relType>
+    <fromType>resource</fromType>
+    <fromName>Created</fromName>
+    <toType>userAccount</toType>
+    <toName>Created by</toName>
+    <hideOnFromType>false</hideOnFromType>
+    <hideOnFromTypeDefaultForm>true</hideOnFromTypeDefaultForm>
+    <hideOnToType>true</hideOnToType>
+    <generateCode>true</generateCode>
+    <relationshipInFromTypeGroup>system</relationshipInFromTypeGroup>
+    <isRelationshipReadOnly>true</isRelationshipReadOnly>
+    <excludeFromPublish>true</excludeFromPublish>
+  </relationship>
+  <!-- Modified by -->
+  <relationship>
+    <alias>lastModifiedBy</alias>
+    <name>Modified by</name>
+    <relType>relLookup</relType>
+    <fromType>resource</fromType>
+    <fromName>Last to modify</fromName>
+    <toType>userAccount</toType>
+    <toName>Last modified by</toName>
+    <hideOnFromType>false</hideOnFromType>
+    <hideOnFromTypeDefaultForm>true</hideOnFromTypeDefaultForm>
+    <hideOnToType>true</hideOnToType>
+    <generateCode>true</generateCode>
+    <relationshipInFromTypeGroup>system</relationshipInFromTypeGroup>
+    <isRelationshipReadOnly>true</isRelationshipReadOnly>
+    <excludeFromPublish>true</excludeFromPublish>
+  </relationship>
+  <!-- 'User Role' type -->
+  <type>
+    <alias>role</alias>
+    <name>User Role</name>
+    <description>Represents a user role definition</description>
+    <onBeforeSave>roleEventTarget</onBeforeSave>
+    <onAfterSave>roleEventTarget</onAfterSave>
+    <onAfterDelete>roleEventTarget</onAfterDelete>
+    <onBeforeDelete>roleEventTarget</onBeforeDelete>
+    <onDeleteFailed>roleEventTarget</onDeleteFailed>
+    <onSaveFailed>roleEventTarget</onSaveFailed>
+    <generateCode>true</generateCode>
+    <inherits>subject</inherits>
+    <isMetadata>true</isMetadata>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Role Details</name>
+        <alias>roleDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <resourceKeys>
+      <resourceKey>
+        <alias>userRoleUniqueNameKey</alias>
+        <name>Unique name per user role</name>
+        <resourceKeyMessage>There is another user role with the same name.</resourceKeyMessage>
+        <keyFields>name</keyFields>
+      </resourceKey>
+    </resourceKeys>
+  </type>
+  <!-- Security Role Event target -->
+  <target>
+    <alias>roleEventTarget</alias>
+    <typeName>EDC.ReadiNow.Model.EventClasses.RoleEventTarget</typeName>
+    <assemblyName>EDC.ReadiNow.Common, Version=1.0.0.0, Culture=neutral</assemblyName>
+    <ordinal>0</ordinal>
+  </target>
+  <!-- 'Role includes Roles' relationship -->
+  <relationship>
+    <alias>includesRoles</alias>
+    <name>Role composition</name>
+    <description>Users in the 'includes roles' gain any permissions that are assigned to the 'included-by roles'.</description>
+    <reverseAlias>includedByRoles</reverseAlias>
+    <fromType>role</fromType>
+    <fromName>Included by roles</fromName>
+    <toType>role</toType>
+    <toName>Includes roles</toName>
+    <relType>relManyToMany</relType>
+    <generateCode>true</generateCode>
+    <relationshipInFromTypeGroup>roleDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>roleDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- 'User has Roles' relationship -->
+  <relationship>
+    <alias>userHasRole</alias>
+    <name>User's roles</name>
+    <description>Roles that a user is a member of.</description>
+    <reverseAlias>roleMembers</reverseAlias>
+    <fromType>userAccount</fromType>
+    <fromName>Users</fromName>
+    <toType>role</toType>
+    <toName>Security roles</toName>
+    <relType>relManyToMany</relType>
+    <generateCode>true</generateCode>
+    <relationshipInFromTypeGroup>userAccountDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>roleDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    Permission Relationships                                      -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- Permission -->
+  <type>
+    <alias>permission</alias>
+    <name>Permission</name>
+    <description>The 'Permission' type</description>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Permission Details</name>
+        <alias>permissionDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <onAfterSave>
+      <target>
+        <alias>permissionSecurityCacheInvalidation</alias>
+        <typeName>EDC.ReadiNow.Model.EventClasses.PermissionEventTarget</typeName>
+        <assemblyName>EDC.ReadiNow.Common, Version=1.0.0.0, Culture=neutral</assemblyName>
+        <ordinal>0</ordinal>
+      </target>
+    </onAfterSave>
+    <generateCode>true</generateCode>
+  </type>
+  <!-- Read permission -->
+  <permission>
+    <alias>read</alias>
+    <name>Read</name>
+    <description>Read permission.</description>
+  </permission>
+  <!-- Modify permission -->
+  <permission>
+    <alias>modify</alias>
+    <name>Modify</name>
+    <description>Modify permission.</description>
+  </permission>
+  <!-- Delete permission -->
+  <permission>
+    <alias>delete</alias>
+    <name>Delete</name>
+    <description>Delete permission.</description>
+  </permission>
+  <!-- Create permission -->
+  <permission>
+    <alias>create</alias>
+    <name>Create</name>
+    <description>Create permission.</description>
+  </permission>
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    Password Policy                                               -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- Password Policy Type -->
+  <type>
+    <alias>passwordPolicy</alias>
+    <name>Password Policy</name>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Password Policy</name>
+        <alias>passwordPolicyDetails</alias>
+        <description>Contains password policy information.</description>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <intField>
+        <name>Minimum password length</name>
+        <alias>minimumPasswordLength</alias>
+        <description>The minimum password length.</description>
+        <fieldInGroup>passwordPolicyDetails</fieldInGroup>
+        <isRequired>true</isRequired>
+        <minInt>6</minInt>
+        <defaultValue>6</defaultValue>
+      </intField>
+      <intField>
+        <name>Maximum password age (days)</name>
+        <alias>maximumPasswordAge</alias>
+        <description>The maximum password age, in days.</description>
+        <fieldInGroup>passwordPolicyDetails</fieldInGroup>
+        <isRequired>false</isRequired>
+        <minInt>0</minInt>
+        <defaultValue>30</defaultValue>
+      </intField>
+      <boolField>
+        <name>Must contain uppercase characters</name>
+        <alias>mustContainUpperCaseCharacters</alias>
+        <description>The password must contain uppercase characters.</description>
+        <fieldInGroup>passwordPolicyDetails</fieldInGroup>
+        <isRequired>false</isRequired>
+        <defaultValue>true</defaultValue>
+      </boolField>
+      <boolField>
+        <name>Must contain lowercase characters</name>
+        <alias>mustContainLowerCaseCharacters</alias>
+        <description>The password must contain lowercase characters.</description>
+        <fieldInGroup>passwordPolicyDetails</fieldInGroup>
+        <isRequired>false</isRequired>
+        <defaultValue>true</defaultValue>
+      </boolField>
+      <boolField>
+        <name>Must contain digits</name>
+        <alias>mustContainDigits</alias>
+        <description>The password must contain digits.</description>
+        <fieldInGroup>passwordPolicyDetails</fieldInGroup>
+        <isRequired>false</isRequired>
+        <defaultValue>true</defaultValue>
+      </boolField>
+      <boolField>
+        <name>Must contain special characters</name>
+        <alias>mustContainSpecialCharacters</alias>
+        <description>The password must contain special characters.</description>
+        <fieldInGroup>passwordPolicyDetails</fieldInGroup>
+        <isRequired>false</isRequired>
+        <defaultValue>true</defaultValue>
+      </boolField>
+      <intField>
+        <name>Account lockout duration (minutes)</name>
+        <alias>accountLockoutDuration</alias>
+        <description>The number of minutes a locked account remains locked before becoming automatically unlocked.</description>
+        <fieldInGroup>passwordPolicyDetails</fieldInGroup>
+        <isRequired>false</isRequired>
+        <minInt>0</minInt>
+        <defaultValue>60</defaultValue>
+      </intField>
+      <intField>
+        <name>Account lockout threshold</name>
+        <alias>accountLockoutThreshold</alias>
+        <description>The number of invalid logons before accounts are locked.</description>
+        <fieldInGroup>passwordPolicyDetails</fieldInGroup>
+        <isRequired>false</isRequired>
+        <minInt>0</minInt>
+        <defaultValue>3</defaultValue>
+      </intField>
+    </fields>
+    <onBeforeSave>passwordPolicyEventTarget</onBeforeSave>
+    <onAfterSave>passwordPolicyEventTarget</onAfterSave>
+    <onSaveFailed>passwordPolicyEventTarget</onSaveFailed>
+    <onDeleteFailed>passwordPolicyEventTarget</onDeleteFailed>
+  </type>
+  <!-- Password policy Account Event Target -->
+  <target>
+    <alias>passwordPolicyEventTarget</alias>
+    <typeName>EDC.ReadiNow.Model.EventClasses.PasswordPolicyEventTarget</typeName>
+    <assemblyName>EDC.ReadiNow.Common, Version=1.0.0.0, Culture=neutral</assemblyName>
+    <ordinal>0</ordinal>
+  </target>
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    Authorization                                                 -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <type>
+    <name>Access Rule</name>
+    <alias>accessRule</alias>
+    <generateCode>true</generateCode>
+    <isMetadata>true</isMetadata>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Access Rule Details</name>
+        <alias>accessRuleDetails</alias>
+        <description>Contains access rule information.</description>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <boolField>
+        <name>Enabled</name>
+        <alias>accessRuleEnabled</alias>
+        <description>Is the access rule used?</description>
+        <fieldInGroup>accessRuleDetails</fieldInGroup>
+        <isRequired>true</isRequired>
+        <defaultValue>false</defaultValue>
+      </boolField>
+      <boolField>
+        <name>Hidden</name>
+        <alias>accessRuleHidden</alias>
+        <description>Is the access rule hidden?</description>
+        <fieldInGroup>accessRuleDetails</fieldInGroup>
+        <isRequired>false</isRequired>
+        <defaultValue>false</defaultValue>
+      </boolField>
+      <boolField>
+        <name>Ignore for reports</name>
+        <alias>accessRuleIgnoreForReports</alias>
+        <description>If yes, then this access rule is not considered when running report - typically done for performance reasons.</description>
+        <fieldInGroup>accessRuleDetails</fieldInGroup>
+        <isRequired>false</isRequired>
+        <defaultValue>false</defaultValue>
+      </boolField>
+    </fields>
+    <onBeforeDelete>accessRuleEventTarget</onBeforeDelete>
+    <onAfterDelete>accessRuleEventTarget</onAfterDelete>
+    <onBeforeSave>accessRuleEventTarget</onBeforeSave>
+    <onAfterSave>accessRuleEventTarget</onAfterSave>
+    <onDeleteFailed>accessRuleEventTarget</onDeleteFailed>
+    <onSaveFailed>accessRuleEventTarget</onSaveFailed>
+  </type>
+  <!-- Authorization Event Target -->
+  <target>
+    <alias>accessRuleEventTarget</alias>
+    <typeName>EDC.ReadiNow.Model.EventClasses.AccessRuleEventTarget</typeName>
+    <assemblyName>EDC.ReadiNow.Common, Version=1.0.0.0, Culture=neutral</assemblyName>
+    <ordinal>0</ordinal>
+  </target>
+  <relationship>
+    <name>Allow access</name>
+    <description>Allow the subject access to the related securable entity.</description>
+    <alias>allowAccess</alias>
+    <reverseAlias>allowAccessBy</reverseAlias>
+    <fromType>subject</fromType>
+    <fromName>Subjects</fromName>
+    <toType>accessRule</toType>
+    <toName>Access rules</toName>
+    <generateCode>true</generateCode>
+    <relType>relComponents</relType>
+    <relationshipInFromTypeGroup>subjectDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>accessRuleDetails</relationshipInToTypeGroup>
+    <implicitInSolution>true</implicitInSolution>
+  </relationship>
+  <relationship>
+    <name>Control access</name>
+    <description>Link the access rule to the related securable entity.</description>
+    <alias>controlAccess</alias>
+    <reverseAlias>controlAccessBy</reverseAlias>
+    <fromType>accessRule</fromType>
+    <fromName>Access rule</fromName>
+    <toType>securableEntity</toType>
+    <toName>Securable entities</toName>
+    <generateCode>true</generateCode>
+    <relType>relComponentOf</relType>
+    <relationshipInFromTypeGroup>accessRuleDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>securableEntityDetails</relationshipInToTypeGroup>
+    <implicitInSolution>true</implicitInSolution>
+  </relationship>
+  <relationship>
+    <name>Permission access</name>
+    <description>Permission(s) for this operation.</description>
+    <alias>permissionAccess</alias>
+    <reverseAlias>permissionAccessBy</reverseAlias>
+    <fromType>accessRule</fromType>
+    <fromName>Access rule</fromName>
+    <toType>permission</toType>
+    <toName>Permission</toName>
+    <generateCode>true</generateCode>
+    <relType>relManyToMany</relType>
+    <relationshipInFromTypeGroup>accessRuleDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>permissionDetails</relationshipInToTypeGroup>
+    <implicitInSolution>true</implicitInSolution>
+  </relationship>
+  <relationship>
+    <name>Access rule to report</name>
+    <description>Report that describes who can perform the operation(s).</description>
+    <alias>accessRuleReport</alias>
+    <reverseAlias>reportForAccessRule</reverseAlias>
+    <fromType>accessRule</fromType>
+    <fromName>Access rule</fromName>
+    <toType>report</toType>
+    <toName>Report</toName>
+    <generateCode>true</generateCode>
+    <!-- No relType satisfies the following critiera -->
+    <cardinality>oneToOne</cardinality>
+    <cascadeDelete>true</cascadeDelete>
+    <cascadeDeleteTo>true</cascadeDeleteTo>
+    <cloneAction>cloneEntities</cloneAction>
+    <reverseCloneAction>cloneEntities</reverseCloneAction>
+    <implicitInSolution>true</implicitInSolution>
+    <reverseImplicitInSolution>true</reverseImplicitInSolution>
+    <relationshipInFromTypeGroup>accessRuleDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>reportDetails</relationshipInToTypeGroup>
+    <!-- Access to the report is granted with access to the accessRule entity. -->
+    <securesTo>true</securesTo>
+  </relationship>
+  <!-- Allow access Internal-->
+  <relationship>
+    <name>Allow access internal</name>
+    <description>List of resources that are allowed to be accessed.</description>
+    <alias>allowAccessInternal</alias>
+    <reverseAlias>allowedAccessInternalBy</reverseAlias>
+    <fromType>subject</fromType>
+    <fromName>Subjects (internal)</fromName>
+    <toType>resource</toType>
+    <toName>Allowed resources (internal)</toName>
+    <generateCode>false</generateCode>
+    <relType>relManyToMany</relType>
+    <relationshipInFromTypeGroup>subjectDetails</relationshipInFromTypeGroup>
+    <hideOnFromType>true</hideOnFromType>
+    <hideOnToType>true</hideOnToType>
+  </relationship>
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    Private Ownership                                             -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <type>
+    <name>Privately Ownable</name>
+    <description>Base type for system resources that can be hidden to individual users.</description>
+    <alias>privatelyOwnable</alias>
+    <isMetadata>true</isMetadata>
+    <isAbstract>true</isAbstract>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Privately Ownable Details</name>
+        <alias>privatelyOwnableDetails</alias>
+        <description>Contains ownership information.</description>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <boolField>
+        <name>Is private</name>
+        <alias>isPrivatelyOwned</alias>
+        <description>Is the resource currently privately owned by its creator?</description>
+        <fieldInGroup>privatelyOwnableDetails</fieldInGroup>
+        <isRequired>true</isRequired>
+        <defaultValue>false</defaultValue>
+      </boolField>
+    </fields>
+  </type>
+
+  <!-- selfServeComponent -->
+  <type>
+    <alias>selfServeComponent</alias>
+    <name>Self Serve Component</name>
+    <description>Base type for any component of anything that can be self-serve administered. Allows 'create' rules to be assigned to allow creation of components.</description>
+    <generateCode>true</generateCode>
+  </type>
+  
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    Protecting out of the box applications                        -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <type>
+    <name>Protectable Type</name>
+    <description>Base type for system resources that can be in a protected application.</description>
+    <alias>protectableType</alias>
+    <isMetadata>true</isMetadata>
+    <isAbstract>true</isAbstract>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Protectable Type Details</name>
+        <alias>protectableTypeDetails</alias>        
+      </fieldGroup>
+    </fieldGroups>
+    <fields>      
+      <boolField>
+        <alias>canModifyProtectedResource</alias>
+        <name>Can modify protected resource</name>
+        <description>True if the resource can be modified, even if it belongs to a protected application.</description>
+        <fieldInGroup>protectableTypeDetails</fieldInGroup>        
+        <isFieldReadOnly>true</isFieldReadOnly>
+        <hideField>true</hideField>        
+        <hideFieldDefaultForm>true</hideFieldDefaultForm>        
+      </boolField>
+    </fields>
+    <onBeforeSave>protectableTypeEventTarget</onBeforeSave>
+  </type>
+
+  <target>
+    <alias>protectableTypeEventTarget</alias>
+    <typeName>EDC.ReadiNow.Model.EventClasses.ProtectableTypeEventTarget</typeName>
+    <assemblyName>EDC.ReadiNow.Common, Version=1.0.0.0, Culture=neutral</assemblyName>
+    <ordinal>0</ordinal>
+  </target>
+</resources>

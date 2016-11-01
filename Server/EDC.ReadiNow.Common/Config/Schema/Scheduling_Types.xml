@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="core" xsi:schemaLocation=". ../Core.xsd" defaultSolution="coreSolution">
+  <!--Copyright 2011-2016 Global Software Innovation Pty Ltd-->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    Scheduling                                                      -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <type>
+    <alias>scheduleAction</alias>
+    <name>Schedule Action</name>
+    <description>An item with a relationship to a class that can action a schedule firing (class must implement IJob). Internal. </description>
+    <inherits>type</inherits>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Schedule Action Details</name>
+        <alias>scheduleActionDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <relationships>
+      <relationship>
+        <alias>onScheduleFire</alias>
+        <name>On schedule fire</name>
+        <description>A class with the IJob interface that is called to service a schedule firing.</description>
+        <toType>class</toType>
+        <relType>relLookup</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>scheduleActionDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>classDetails</relationshipInToTypeGroup>
+      </relationship>
+    </relationships>
+  </type>
+  <type>
+    <alias>enableableItem</alias>
+    <name>Enableable Item</name>
+    <description>An item that can be Enabled</description>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Enableable Item Details</name>
+        <alias>enableableItemDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <boolField>
+        <alias>triggerEnabled</alias>
+        <name>Enabled</name>
+        <description>If the trigger is not enabled the workflow will not run.</description>
+        <defaultValue>true</defaultValue>
+        <fieldInGroup>enableableItemDetails</fieldInGroup>
+      </boolField>
+    </fields>
+  </type>
+  <type>
+    <alias>scheduledItem</alias>
+    <name>Scheduled Item</name>
+    <inherits>enableableItem</inherits>
+    <description>An item with a relationship to a schedule. (Internal.)</description>
+    <isAbstract>true</isAbstract>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Scheduled Item Details</name>
+        <alias>scheduledItemDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <relationships>
+      <relationship>
+        <alias>scheduleForTrigger</alias>
+        <reverseAlias>triggersForSchedule</reverseAlias>
+        <name>Schedule for trigger</name>
+        <toName>Schedule</toName>
+        <fromName>Trigger</fromName>
+        <toType>schedule</toType>
+        <cardinality>manyToMany</cardinality>
+        <!-- TODO : Configure this relationship-->
+        <generateCode>true</generateCode>
+        <implicitInSolution>true</implicitInSolution>
+        <relationshipInFromTypeGroup>scheduledItemDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>scheduleDetails</relationshipInToTypeGroup>
+      </relationship>
+    </relationships>
+    <onAfterSave>scheduledItemSyncTarget</onAfterSave>
+    <onAfterDelete>scheduledItemSyncTarget</onAfterDelete>
+  </type>
+  <!-- system only WARNING! This does not appear to work correctly as there is nothing to trigger the sync process on installation -->
+  <type>
+    <alias>systemOnlyScheduleAction</alias>
+    <name>System Only Schedule Action</name>
+    <description>A schedule action that only resides in the global tenant.</description>
+    <inherits>scheduleAction</inherits>
+    <systemTenantOnly>true</systemTenantOnly>
+  </type>
+  <!-- Item Targets -->
+  <target>
+    <alias>scheduleSyncTarget</alias>
+    <typeName>EDC.SoftwarePlatform.Activities.Scheduling.ScheduleSyncTarget</typeName>
+    <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+    <ordinal>0</ordinal>
+  </target>
+  <target>
+    <alias>scheduledItemSyncTarget</alias>
+    <typeName>EDC.SoftwarePlatform.Activities.Scheduling.ScheduledItemSyncTarget</typeName>
+    <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+    <ordinal>0</ordinal>
+    <onAfterSolutionDeploy>solution</onAfterSolutionDeploy>
+    <!-- update any new scheduledItems -->
+  </target>
+  <!-- Schedule Actions-->
+  <scheduleAction>
+    <alias>wfTriggerOnSchedule</alias>
+    <inherits>wfTrigger, scheduledItem</inherits>
+    <name>Trigger On Schedule</name>
+    <description>A trigger that is tripped on a specified schedule to run a workflow.</description>
+    <generateCode>true</generateCode>
+    <onScheduleFire>
+      <class>
+        <alias>startWorkflowJobClass</alias>
+        <name>StartWorkflowJobClass</name>
+        <typeName>EDC.SoftwarePlatform.Activities.Scheduling.StartWorkflowJob</typeName>
+        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+      </class>
+    </onScheduleFire>
+  </scheduleAction>
+  <!-- Schedules types -->
+  <type>
+    <alias>schedule</alias>
+    <name>Schedule</name>
+    <description>A schedule used for triggering events such as workflows</description>
+    <generateCode>true</generateCode>
+    <isAbstract>true</isAbstract>
+    <onAfterSave>scheduleSyncTarget</onAfterSave>
+    <onBeforeDelete>scheduleSyncTarget</onBeforeDelete>
+    <onAfterDelete>scheduleSyncTarget</onAfterDelete>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Schedule Details</name>
+        <alias>scheduleDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+  </type>
+  <type>
+    <alias>scheduleOneOff</alias>
+    <name>Schedule One Off</name>
+    <inherits>schedule</inherits>
+    <description>A schedule for a one off event.</description>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Schedule Details</name>
+        <alias>scheduleOneOffDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <dateTimeField>
+        <alias>scheduleSpecificTime</alias>
+        <name>Date and time</name>
+        <description>A specific date and time.</description>
+        <fieldInGroup>scheduleOneOffDetails</fieldInGroup>
+      </dateTimeField>
+    </fields>
+  </type>
+  <type>
+    <alias>scheduleDailyRepeat</alias>
+    <name>Schedule Daily Repeat</name>
+    <inherits>schedule</inherits>
+    <description>A schedule for an event that repeats on a daily basis</description>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Schedule Daily Repeat Details</name>
+        <alias>scheduleDailyRepeatDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <timeField>
+        <alias>sdrTimeOfDay</alias>
+        <name>Time of day</name>
+        <description>Schedule at a specified time of the day.</description>
+        <fieldInGroup>scheduleDailyRepeatDetails</fieldInGroup>
+      </timeField>
+      <stringField>
+        <alias>sdrTimeZone</alias>
+        <name>Time zone</name>
+        <description>The time zone the schedule is respecting. If no time zone is specified the timezone of the editing user will be added.</description>
+        <isFieldReadOnly>true</isFieldReadOnly>
+        <fieldInGroup>scheduleDailyRepeatDetails</fieldInGroup>
+      </stringField>
+    </fields>
+    <relationships>
+      <relationship>
+        <alias>sdrDayOfWeek</alias>
+        <name>Days</name>
+        <description>The days of the week that the schedule applies to.</description>
+        <toType>dayOfWeekEnum</toType>
+        <relType>relMultiChoiceField</relType>
+        <relationshipInFromTypeGroup>scheduleDailyRepeatDetails</relationshipInFromTypeGroup>
+      </relationship>
+    </relationships>
+    <onBeforeSave>
+      <target>
+        <alias>scheduleDailyRepeatTarget</alias>
+        <typeName>EDC.SoftwarePlatform.Activities.Scheduling.ScheduleDailyRepeatTarget</typeName>
+        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+        <ordinal>0</ordinal>
+      </target>
+    </onBeforeSave>
+  </type>
+  <type>
+    <alias>scheduleCron</alias>
+    <name>Schedule Cron</name>
+    <inherits>schedule</inherits>
+    <description>A schedule for an event that repeats using a cron definition</description>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Schedule Cron Details</name>
+        <alias>scheduleCronDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>cronDefinition</alias>
+        <name>Cron definition</name>
+        <description>A Unix cron definition for a repeating schedule. See http://quartznet.sourceforge.net/apidoc/1.0/html/topic223.html for a complete description.</description>
+        <isRequired>true</isRequired>
+        <fieldInGroup>scheduleCronDetails</fieldInGroup>
+        <pattern>
+          <stringPattern>
+            <alias>cronPattern</alias>
+            <name>Cron Pattern</name>
+            <description>A valid pattern for a Cron schedule definition</description>
+            <regex>(((([0-9]|[0-5][0-9]),)*([0-9]|[0-5][0-9]))|(([\*]|[0-9]|[0-5][0-9])(/|-)([0-9]|[0-5][0-9]))|([\?])|([\*]))[\s](((([0-9]|[0-5][0-9]),)*([0-9]|[0-5][0-9]))|(([\*]|[0-9]|[0-5][0-9])(/|-)([0-9]|[0-5][0-9]))|([\?])|([\*]))[\s](((([0-9]|[0-1][0-9]|[2][0-3]),)*([0-9]|[0-1][0-9]|[2][0-3]))|(([\*]|[0-9]|[0-1][0-9]|[2][0-3])(/|-)([0-9]|[0-1][0-9]|[2][0-3]))|([\?])|([\*]))[\s](((([1-9]|[0][1-9]|[1-2][0-9]|[3][0-1]),)*([1-9]|[0][1-9]|[1-2][0-9]|[3][0-1])(C)?)|(([1-9]|[0][1-9]|[1-2][0-9]|[3][0-1])(/|-)([1-9]|[0][1-9]|[1-2][0-9]|[3][0-1])(C)?)|(L(-[0-9])?)|(L(-[1-2][0-9])?)|(L(-[3][0-1])?)|(LW)|([1-9]W)|([1-3][0-9]W)|([\?])|([\*]))[\s](((([1-9]|0[1-9]|1[0-2]),)*([1-9]|0[1-9]|1[0-2]))|(([1-9]|0[1-9]|1[0-2])(/|-)([1-9]|0[1-9]|1[0-2]))|(((JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC),)*(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC))|((JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)(-|/)(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC))|([\?])|([\*]))[\s]((([1-7],)*([1-7]))|([1-7](/|-)([1-7]))|(((MON|TUE|WED|THU|FRI|SAT|SUN),)*(MON|TUE|WED|THU|FRI|SAT|SUN)(C)?)|((MON|TUE|WED|THU|FRI|SAT|SUN)(-|/)(MON|TUE|WED|THU|FRI|SAT|SUN)(C)?)|(([1-7]|(MON|TUE|WED|THU|FRI|SAT|SUN))?(L|LW)?)|(([1-7]|MON|TUE|WED|THU|FRI|SAT|SUN)#([1-7])?)|([\?])|([\*]))([\s]?(([\*])?|(19[7-9][0-9])|(20[0-9][0-9]))?| (((19[7-9][0-9])|(20[0-9][0-9]))(-|/)((19[7-9][0-9])|(20[0-9][0-9])))?| ((((19[7-9][0-9])|(20[0-9][0-9])),)*((19[7-9][0-9])|(20[0-9][0-9])))?)</regex>
+            <regexDescription>The value must conform to the Unix-style CRON pattern.</regexDescription>
+          </stringPattern>
+        </pattern>
+      </stringField>
+    </fields>
+  </type>
+  <enumType>
+    <alias>dayOfWeekEnum</alias>
+    <name>Day of Week</name>
+    <description>An enumeration of the days of the week.</description>
+    <inherits>enumValue</inherits>
+    <generateCode>true</generateCode>
+    <enumValues>
+      <dayOfWeekEnum>
+        <name>Sunday</name>
+        <alias>dowSunday</alias>
+        <enumOrder>0</enumOrder>
+        <!-- Keep Sunday as 0. Used by scheduler -->
+      </dayOfWeekEnum>
+      <dayOfWeekEnum>
+        <name>Monday</name>
+        <alias>dowMonday</alias>
+        <enumOrder>1</enumOrder>
+      </dayOfWeekEnum>
+      <dayOfWeekEnum>
+        <name>Tuesday</name>
+        <alias>dowTuesday</alias>
+        <enumOrder>2</enumOrder>
+      </dayOfWeekEnum>
+      <dayOfWeekEnum>
+        <name>Wednesday</name>
+        <alias>dowWednesday</alias>
+        <enumOrder>3</enumOrder>
+      </dayOfWeekEnum>
+      <dayOfWeekEnum>
+        <name>Thursday</name>
+        <alias>dowThursday</alias>
+        <enumOrder>4</enumOrder>
+      </dayOfWeekEnum>
+      <dayOfWeekEnum>
+        <name>Friday</name>
+        <alias>dowFriday</alias>
+        <enumOrder>5</enumOrder>
+      </dayOfWeekEnum>
+      <dayOfWeekEnum>
+        <name>Saturday</name>
+        <alias>dowSaturday</alias>
+        <enumOrder>6</enumOrder>
+      </dayOfWeekEnum>
+    </enumValues>
+  </enumType>
+  <!-- Month of year Enum -->
+  <enumType>
+    <alias>monthOfYearEnum</alias>
+    <name>Month of Year</name>
+    <description>An enumeration of the month of year.</description>
+    <inherits>enumValue</inherits>
+    <generateCode>true</generateCode>
+    <enumValues>
+      <monthOfYearEnum>
+        <name>January</name>
+        <alias>moyJanuary</alias>
+        <enumOrder>0</enumOrder>
+        <!-- Keep January as 0. Used by analyser -->
+      </monthOfYearEnum>
+      <monthOfYearEnum>
+        <name>February</name>
+        <alias>moyFebruary</alias>
+        <enumOrder>1</enumOrder>
+      </monthOfYearEnum>
+      <monthOfYearEnum>
+        <name>March</name>
+        <alias>moyMarch</alias>
+        <enumOrder>2</enumOrder>
+      </monthOfYearEnum>
+      <monthOfYearEnum>
+        <name>April</name>
+        <alias>moyApril</alias>
+        <enumOrder>3</enumOrder>
+      </monthOfYearEnum>
+      <monthOfYearEnum>
+        <name>May</name>
+        <alias>moyMay</alias>
+        <enumOrder>4</enumOrder>
+      </monthOfYearEnum>
+      <monthOfYearEnum>
+        <name>June</name>
+        <alias>moyJune</alias>
+        <enumOrder>5</enumOrder>
+      </monthOfYearEnum>
+      <monthOfYearEnum>
+        <name>July</name>
+        <alias>moyJuly</alias>
+        <enumOrder>6</enumOrder>
+      </monthOfYearEnum>
+      <monthOfYearEnum>
+        <name>August</name>
+        <alias>moyAugust</alias>
+        <enumOrder>7</enumOrder>
+      </monthOfYearEnum>
+      <monthOfYearEnum>
+        <name>September</name>
+        <alias>moySeptember</alias>
+        <enumOrder>8</enumOrder>
+      </monthOfYearEnum>
+      <monthOfYearEnum>
+        <name>October</name>
+        <alias>moyOctober</alias>
+        <enumOrder>9</enumOrder>
+      </monthOfYearEnum>
+      <monthOfYearEnum>
+        <name>November</name>
+        <alias>moyNovember</alias>
+        <enumOrder>10</enumOrder>
+      </monthOfYearEnum>
+      <monthOfYearEnum>
+        <name>December</name>
+        <alias>moyDecember</alias>
+        <enumOrder>11</enumOrder>
+      </monthOfYearEnum>
+    </enumValues>
+  </enumType>
+  <!-- System Schedule -->
+  <type>
+    <alias>systemSchedule</alias>
+    <name>System Schedule</name>
+    <inherits>schedule</inherits>
+    <description>A predefined schedule that is part of the system.</description>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>System Schedule Details</name>
+        <alias>systemScheduleDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>systemScheduleAlias</alias>
+        <name>System schedule alias</name>
+        <description>The alias of the schedule in the global tenant.</description>
+        <fieldInGroup>systemScheduleDetails</fieldInGroup>
+      </stringField>
+    </fields>
+  </type>
+</resources>

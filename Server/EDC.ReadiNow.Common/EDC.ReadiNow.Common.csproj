@@ -1,0 +1,1434 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A1C54CF6-E515-4132-A3CB-5CBE32B11D7E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EDC.ReadiNow</RootNamespace>
+    <AssemblyName>EDC.ReadiNow.Common</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsNotAsErrors>1607</WarningsNotAsErrors>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <RegisterConfigTasks>true</RegisterConfigTasks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\ReadiNow.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="antlr.runtime">
+      <HintPath>..\Dependencies\ThirdParty\antlr.runtime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Autofac, Version=4.1.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.1.1\lib\net45\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Autofac.Extras.AttributeMetadata, Version=4.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Extras.AttributeMetadata.4.0.0\lib\net45\Autofac.Extras.AttributeMetadata.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Autofac.Integration.Mef, Version=4.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Mef.4.0.0\lib\net45\Autofac.Integration.Mef.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="C5">
+      <HintPath>..\Dependencies\ThirdParty\C5.dll</HintPath>
+    </Reference>
+    <Reference Include="Common.Logging, Version=3.0.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.3.0.0\lib\net40\Common.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Common.Logging.Core, Version=3.0.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.Core.3.0.0\lib\net40\Common.Logging.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Jil, Version=2.12.1.0, Culture=neutral, PublicKeyToken=83a7b913e85df348, processorArchitecture=MSIL">
+      <HintPath>..\packages\Jil.StrongName.2.12.1\lib\net45\Jil.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Diagnostics.Runtime, Version=0.8.31.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Diagnostics.Runtime.0.8.31-beta\lib\net40\Microsoft.Diagnostics.Runtime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="protobuf-net, Version=2.0.0.668, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
+      <HintPath>..\packages\protobuf-net.2.0.0.668\lib\net40\protobuf-net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="protobuf-net-data, Version=2.0.7.668, Culture=neutral, PublicKeyToken=3a92fdc8f425ccde, processorArchitecture=MSIL">
+      <HintPath>..\packages\protobuf-net-data.2.0.7.668\lib\net45\protobuf-net-data.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Quartz, Version=2.3.3.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Quartz.2.3.3\lib\net40\Quartz.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="RabbitMQ.Client, Version=3.6.0.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
+      <HintPath>..\packages\RabbitMQ.Client.3.6.0\lib\net45\RabbitMQ.Client.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Renci.SshNet">
+      <HintPath>..\Dependencies\ThirdParty\Renci.SshNet.dll</HintPath>
+    </Reference>
+    <Reference Include="S22.Imap, Version=3.3.4862.22008, Culture=neutral, PublicKeyToken=36d66e51a95be77c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\ThirdParty\S22.Imap.dll</HintPath>
+    </Reference>
+    <Reference Include="Sigil, Version=4.5.0.0, Culture=neutral, PublicKeyToken=2d06c3494341c8ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sigil.4.5.0\lib\net45\Sigil.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="StackExchange.Redis.StrongName, Version=1.0.316.0, Culture=neutral, PublicKeyToken=c219ff1ca8c2ce46, processorArchitecture=MSIL">
+      <HintPath>..\packages\StackExchange.Redis.StrongName.1.0.488\lib\net45\StackExchange.Redis.StrongName.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.IdentityModel.Selectors" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Messaging" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BackgroundTasks\BackgroundTasksModule.cs" />
+    <Compile Include="BackgroundTasks\IBackgroundTaskManager.cs" />
+    <Compile Include="BackgroundTasks\ITenantQueueFactory.cs" />
+    <Compile Include="BackgroundTasks\RedisTenantQueueFactory.cs" />
+    <Compile Include="Cache\GenericCacheService.cs" />
+    <Compile Include="Cache\ICacheService.cs" />
+    <Compile Include="CommonModule.cs" />
+    <Compile Include="Configuration\AppLibraryConfiguration.cs" />
+    <Compile Include="Configuration\CacheConfigElement.cs" />
+    <Compile Include="Configuration\CacheConfigElementCollection.cs" />
+    <Compile Include="Configuration\CastConfiguration.cs" />
+    <Compile Include="Configuration\CastSettings.cs" />
+    <Compile Include="Configuration\EventLogSyslogSettings.cs" />
+    <Compile Include="Configuration\PrewarmConfiguration.cs" />
+    <Compile Include="Configuration\PrewarmTenant.cs" />
+    <Compile Include="Configuration\PrewarmTenantCollection.cs" />
+    <Compile Include="Configuration\FileRepositoryConfigElement.cs" />
+    <Compile Include="Configuration\FileRepositoryConfigElementCollection.cs" />
+    <Compile Include="Configuration\FileRepositoryConfiguration.cs" />
+    <Compile Include="Configuration\ProcessMonitorSettings.cs" />
+    <Compile Include="Configuration\RabbitMqConfiguration.cs" />
+    <Compile Include="Configuration\RabbitMqSettings.cs" />
+    <Compile Include="Configuration\ClientSettings.cs" />
+    <Compile Include="Configuration\RemoteExecSettings.cs" />
+    <Compile Include="Configuration\SystemInfoSettings.cs" />
+    <Compile Include="Core\AsyncRunner\AsyncRunner.cs" />
+    <Compile Include="Core\Cache\Providers\MetadataCache.cs" />
+    <Compile Include="Core\Cache\Providers\PerUserRuleSetCache.cs" />
+    <Compile Include="Core\Cache\Providers\DelayedInvalidateCache.cs" />
+    <Compile Include="Core\Cache\Providers\RedisCacheInvalidationValue.cs" />
+    <Compile Include="Core\FeatureSwitch\EntityFeatureSwitch.cs" />
+    <Compile Include="Core\FeatureSwitch\FeatureSwitchesModule.cs" />
+    <Compile Include="Core\FeatureSwitch\IFeatureSwitch.cs" />
+    <Compile Include="Database\CustomRestorePoint.cs" />
+    <Compile Include="Database\DatabaseChangeTracking.cs" />
+    <Compile Include="Database\DatabaseModule.cs" />
+    <Compile Include="Database\DatabaseProvider.cs" />
+    <Compile Include="Database\DataReaderExtensions.cs" />
+    <Compile Include="Database\RestorePoint.cs" />
+    <Compile Include="Database\RollbackLog.cs" />
+    <Compile Include="Database\TenantRollbackData.cs" />
+    <Compile Include="Diagnostics\DiagnosticChannel.cs" />
+    <Compile Include="Diagnostics\DiagnosticRequest.cs" />
+    <Compile Include="Diagnostics\DiagnosticResponse.cs" />
+    <Compile Include="Diagnostics\ProcessMonitorWriter.cs" />
+    <Compile Include="Diagnostics\Request\FlushCachesRequest.cs" />
+    <Compile Include="Diagnostics\Request\RemoteExecRequest.cs" />
+    <Compile Include="Diagnostics\Request\ThreadRequest.cs" />
+    <Compile Include="Diagnostics\Request\WorkflowRequest.cs" />
+    <Compile Include="Diagnostics\Response\FlushCachesResponse.cs" />
+    <Compile Include="Diagnostics\Response\RemoteExecResponse.cs" />
+    <Compile Include="Diagnostics\Response\ThreadResponse.cs" />
+    <Compile Include="Diagnostics\Response\WorkflowResponse.cs" />
+    <Compile Include="Diagnostics\Severity.cs" />
+    <Compile Include="Diagnostics\ThreadInfo.cs" />
+    <Compile Include="Expressions\CalculatedFieldsExtensions.cs" />
+    <Compile Include="Expressions\ExprTypeHelper.cs" />
+    <Compile Include="Expressions\QueryBuilderSettings.cs" />
+    <Compile Include="IO\CleanupFileRepositoriesAction.cs" />
+    <Compile Include="IO\FileDetails.cs" />
+    <Compile Include="IO\RemoteFileFetcher\ConnectionException.cs" />
+    <Compile Include="IO\FileRepositoryFactory.cs" />
+    <Compile Include="IO\FileRepositoryHelper.cs" />
+    <Compile Include="IO\RemoteFileFetcher\RemoteFileFetcherModule.cs" />
+    <Compile Include="IO\RemoteFileFetcher\FtpFileFetcher.cs" />
+    <Compile Include="IO\RemoteFileFetcher\IRemoteFileFetcher.cs" />
+    <Compile Include="IO\RegistryException.cs" />
+    <Compile Include="IO\RegistryKeyNotFoundException.cs" />
+    <Compile Include="IO\FileRepositoryModule.cs" />
+    <Compile Include="IO\SymbolicLink.cs" />
+    <Compile Include="MessageQueue\IMessageQueue.cs" />
+    <Compile Include="MessageQueue\IMessageQueueTypeAware.cs" />
+    <Compile Include="MessageQueue\MessageQueue.cs" />
+    <Compile Include="MessageQueue\MessageQueueListener.cs" />
+    <Compile Include="MessageQueue\MessageQueueModule.cs" />
+    <Compile Include="MessageQueue\MessageQueueRequestEventTarget.cs" />
+    <Compile Include="MessageQueue\MessageQueueResponseManager.cs" />
+    <Compile Include="MessageQueue\MessageQueueSender.cs" />
+    <Compile Include="Messaging\IListeningQueue.cs" />
+    <Compile Include="Messaging\IQueue.cs" />
+    <Compile Include="Messaging\Redis\ListeningQueue.cs" />
+    <Compile Include="Messaging\Redis\RedisQueue.cs" />
+    <Compile Include="Messaging\Redis\QueueActioner.cs" />
+    <Compile Include="Messaging\Redis\RedisHelper.cs" />
+    <Compile Include="Metadata\Query\Structured\Helpers\IDictionaryExtensionMethods.cs" />
+    <Compile Include="Metadata\Query\Structured\ParameterValue.cs" />
+    <Compile Include="Metadata\Query\Structured\QueryBuild.cs" />
+    <Compile Include="Model\CacheInvalidation\ISerializableCacheInvalidator.cs" />
+    <Compile Include="Model\CacheInvalidation\MultiCacheInvalidator.cs" />
+    <Compile Include="Model\CacheInvalidation\SerializableCacheInvalidationKey.cs" />
+    <Compile Include="Model\Defaults\CachingEntityDefaultsDecoratorProvider.cs" />
+    <Compile Include="Model\Defaults\NoopEntityDefaultsDecorator.cs" />
+    <Compile Include="Model\Defaults\PrebuiltEntityDefaultsDecorator.cs" />
+    <Compile Include="Model\Defaults\EntityDefaultsDecoratorProvider.cs" />
+    <Compile Include="Model\EntityResolver.cs" />
+    <Compile Include="Model\EntityResolverProvider.cs" />
+    <Compile Include="Model\EntitySaver.cs" />
+    <Compile Include="Model\EntityTypeContext.cs" />
+    <Compile Include="Model\EventClasses\CustomFormEventTarget.cs" />
+    <Compile Include="Model\EventClasses\HierarchyEventTarget.cs" />
+    <Compile Include="Model\EventClasses\OidcIdentityProviderEventTarget.cs" />
+    <Compile Include="Model\EventClasses\ProtectableTypeEventTarget.cs" />
+    <Compile Include="Model\EventClasses\ResourceTriggerFilter\EventHandlers\RecordChangeAuditFormatter.cs" />
+    <Compile Include="Model\EventClasses\ResourceTriggerFilter\EventHandlers\ResourceAuditHandlerFactory.cs" />
+    <Compile Include="Model\EventClasses\ResourceTriggerFilter\EventHandlers\RecordChangeAuditEventHandler.cs" />
+    <Compile Include="Model\EventClasses\ResourceTriggerFilter\IFilteredSaveEventHandler.cs" />
+    <Compile Include="Model\EventClasses\ResourceTriggerFilter\IFilteredTargetHandlerFactory.cs" />
+    <Compile Include="Model\EventClasses\ResourceTriggerFilter\IResourceTriggerFilterPolicyCache.cs" />
+    <Compile Include="Model\EventClasses\ResourceTriggerFilter\ResourceTriggerFilterDefEventTarget.cs" />
+    <Compile Include="Model\EventClasses\ResourceTriggerFilter\ResourceTriggerFilterEventTarget.cs" />
+    <Compile Include="Model\EventClasses\ResourceTriggerFilter\ResourceTriggerFilterModule.cs" />
+    <Compile Include="Model\EventClasses\ResourceTriggerFilter\ResourceTriggerFilterPolicyCache.cs" />
+    <Compile Include="Model\EventClasses\SurveyCampaignEventTarget.cs" />
+    <Compile Include="Model\EventClasses\UserAccountHasPersonEventTarget.cs" />
+    <Compile Include="Model\EventClasses\PersonHasAccountEventTarget.cs" />
+    <Compile Include="Model\EventClasses\UserSurveyTaskEventTarget.cs" />
+    <Compile Include="Model\FieldException.cs" />
+    <Compile Include="BackgroundTasks\IWorkflowQueuedEvent.cs" />
+    <Compile Include="Model\Interfaces\IWorkflowEventBase.cs" />
+    <Compile Include="Model\Interfaces\IWorkflowUserTransitionEvent.cs" />
+    <Compile Include="Model\Interfaces\IWorkflowRunner.cs" />
+    <Compile Include="Model\Interfaces\WorkflowStartEvent.cs" />
+    <Compile Include="Model\PartialClasses\DependencyFailure.cs" />
+    <Compile Include="Model\PartialClasses\DependencyFailureReason.cs" />
+    <Compile Include="Model\PartialClasses\FieldExtensions.cs" />
+    <Compile Include="Model\PartialClasses\InvalidCampaignException.cs" />
+    <Compile Include="Model\PartialClasses\SurveyHelper.cs" />
+    <Compile Include="Model\PartialClasses\SurveyResponse.cs" />
+    <Compile Include="Model\PartialClasses\SurveyAnswer.cs" />
+    <Compile Include="Model\SerializableEntityId.cs" />
+    <Compile Include="Model\SerializableEntityRelationshipCacheKey.cs" />
+    <Compile Include="Model\SerializableEntityRelationshipCacheTypeKey.cs" />
+    <Compile Include="Model\UpgradeIdProvider.cs" />
+    <Compile Include="Notify\INotifier.cs" />
+    <Compile Include="Scheduling\SchedulingTypeLoadHelper.cs" />
+    <Compile Include="Security\AccessControl\AccessRuleQueryDefinitionAttribute.cs" />
+    <Compile Include="Security\AccessControl\Diagnostics\AccessReason.cs" />
+    <Compile Include="Security\AccessControl\Diagnostics\ITypeAccessReasonService.cs" />
+    <Compile Include="Security\AccessControl\Diagnostics\ReasonGroup.cs" />
+    <Compile Include="Security\AccessControl\Diagnostics\TypeAccessReasonService.cs" />
+    <Compile Include="Security\AccessControl\IAccessRuleQueryFactory.cs" />
+    <Compile Include="Security\AccessControl\IntersectingEntityAccessControlChecker.cs" />
+    <Compile Include="Security\AccessControl\SubjectPermissionTuple.cs" />
+    <Compile Include="Security\AccessControl\SystemAccessRuleQueryFactory.cs" />
+    <Compile Include="Security\AccessControl\SystemAccessRuleQueryRepository.cs" />
+    <Compile Include="Security\AccessControl\SystemAccessRules.cs" />
+    <Compile Include="Security\AccessControl\SystemEntityAccessControlChecker.cs" />
+    <Compile Include="Security\AccessControl\UserRuleSetsHasher.cs" />
+    <Compile Include="Model\EntityActivator.cs" />
+    <Compile Include="Core\Cache\CacheModule.cs" />
+    <Compile Include="Core\Cache\Providers\IPerTenantCache.cs" />
+    <Compile Include="Core\Cache\Providers\IPerTenantCacheInvalidator.cs" />
+    <Compile Include="Core\Cache\Providers\PerTenantCacheInvalidator.cs" />
+    <Compile Include="Core\Cache\Providers\RedisCacheMemoryStoreSuppressionContext.cs" />
+    <Compile Include="Security\IdentityProviderContextCache.cs" />
+    <Compile Include="Security\IdentityProviderContextCacheKey.cs" />
+    <Compile Include="Security\IdentityProviderContextCacheValue.cs" />
+    <Compile Include="Security\OidcProviderInvalidConfigurationException.cs" />
+    <Compile Include="Security\IIdentityProviderContextCache.cs" />
+    <Compile Include="Security\SecuredData\DbSecuredData.cs" />
+    <Compile Include="Security\SecuredData\ISecureDataSaveHelper.cs" />
+    <Compile Include="Security\SecuredData\ISecuredData.cs" />
+    <Compile Include="Security\SecuredData\SecureDataSaveHelper.cs" />
+    <Compile Include="Security\SecuredData\SecureDataUpgradeHelper.cs" />
+    <Compile Include="Security\SecuredData\SecuredDataModule.cs" />
+    <Compile Include="Security\SecuredData\SecureIdNotFoundException.cs" />
+    <Compile Include="Security\SecurityModule.cs" />
+    <Compile Include="Services\Console\ActionCache.cs" />
+    <Compile Include="Services\Console\ActionCacheInvalidator.cs" />
+    <Compile Include="Services\Exceptions\TenantResourceLimitException.cs" />
+    <Compile Include="BackgroundTasks\BackgroundTaskManager.cs" />
+    <Compile Include="BackgroundTasks\Handlers\TaskHandler.cs" />
+    <Compile Include="BackgroundTasks\BackgroundTask.cs" />
+    <Compile Include="BackgroundTasks\ITaskHandler.cs" />
+    <Compile Include="Workflow\WorkflowRunDeferred.cs" />
+    <ReadiNowXmlWithSchema Include="Config\Schema\Connector_Types.xml">
+      <SubType>Designer</SubType>
+    </ReadiNowXmlWithSchema>
+    <Compile Include="Core\Cache\CacheFactory.cs" />
+    <Compile Include="Core\Cache\Providers\PerTenantCacheMessage.cs" />
+    <Compile Include="Core\Cache\Providers\RedisCache.cs" />
+    <Compile Include="Core\Cache\Providers\RedisCacheMessageSuppressionContext.cs" />
+    <Compile Include="Core\Cache\Providers\RedisPubSubCache.cs" />
+    <Compile Include="Core\Cache\Providers\RedisPubSubCacheHelpers.cs" />
+    <Compile Include="Core\Cache\Providers\RedisPubSubCacheMessage.cs" />
+    <Compile Include="Core\Cache\Providers\RedisPubSubCacheMessageAction.cs" />
+    <Compile Include="Core\Cache\Providers\RedisPubSubPerTenantCacheMessage.cs" />
+    <Compile Include="Core\Cache\Providers\StocasticCache.cs" />
+    <Compile Include="Core\Factory.cs" />
+    <Compile Include="Core\TenantLocal.cs" />
+    <Compile Include="Database\ForeignKeyHelper.cs" />
+    <Compile Include="Diagnostics\ActivityLog\ActivityLogModule.cs" />
+    <Compile Include="Diagnostics\ActivityLog\ActivityLogPurger.cs" />
+    <Compile Include="Diagnostics\ActivityLog\ActivityLogWriter.cs" />
+    <Compile Include="Diagnostics\ActivityLog\IActivityLogPurger.cs" />
+    <Compile Include="Diagnostics\ActivityLog\IActivityLogWriter.cs" />
+    <Compile Include="Diagnostics\ActivityLog\RateLimitedPurger.cs" />
+    <Compile Include="Diagnostics\CacheConversionCompleteAttribute.cs" />
+    <Compile Include="EntityRequests\BulkRequests\BulkRequestResultSecurityHelper.cs" />
+    <Compile Include="EntityRequests\BulkRequests\BulkRequestsModule.cs" />
+    <Compile Include="EntityRequests\BulkRequests\BulkResultCache.cs" />
+    <Compile Include="EntityRequests\BulkRequests\CachingBulkRequestRunner.cs" />
+    <Compile Include="EntityRequests\BulkRequests\CachingBulkRequestRunnerKey.cs" />
+    <Compile Include="EntityRequests\BulkRequests\CachingBulkRequestRunnerValue.cs" />
+    <Compile Include="EntityRequests\BulkRequests\EntityTypeOnly.cs" />
+    <Compile Include="EntityRequests\BulkRequests\IBulkRequestRunner.cs" />
+    <Compile Include="EntityRequests\BulkRequests\TypicallySingleEntry.cs" />
+    <Compile Include="EntityRequests\WriteOnlyFieldReadValueGenerator.cs" />
+    <Compile Include="IO\EntryPointContext.cs" />
+    <Compile Include="Messaging\DeferredChannelMessageContext.cs" />
+    <Compile Include="Messaging\DeferredChannelMessageContextEntry.cs" />
+    <Compile Include="Messaging\ITaskManager.cs" />
+    <Compile Include="Messaging\MessagingModule.cs" />
+    <Compile Include="Messaging\Redis\RedisMessageCacheInvalidation.cs" />
+    <Compile Include="Messaging\Redis\TaskManager.cs" />
+    <Compile Include="Metadata\Query\Structured\IQueryRunnerCacheKeyProvider.cs" />
+    <Compile Include="Metadata\Tenants\TenantHelperMessage.cs" />
+    <Compile Include="Model\CacheInvalidation\IdEntity.cs" />
+    <Compile Include="Model\EntityBatch\BatchingEntityEnumeration.cs" />
+    <Compile Include="Expressions\IExpressionCompiler.cs" />
+    <Compile Include="IO\InstallationContext.cs" />
+    <Compile Include="Messaging\Redis\RedisHashKey.cs" />
+    <Compile Include="Configuration\ApplicationManagementReportSettings.cs" />
+    <Compile Include="Configuration\AuditLogConfiguration.cs" />
+    <Compile Include="Configuration\AuditLogEntityModelSettings.cs" />
+    <Compile Include="Configuration\AuditLogEventLogSettings.cs" />
+    <Compile Include="Configuration\AuditLogSyslogSettings.cs" />
+    <Compile Include="Configuration\EntityWebApiSettings.cs" />
+    <Compile Include="Configuration\RedisConfiguration.cs" />
+    <Compile Include="Configuration\RedisServer.cs" />
+    <Compile Include="Configuration\RedisServerCollection.cs" />
+    <Compile Include="Configuration\SyslogConfiguration.cs" />
+    <Compile Include="Configuration\SyslogApplicationSettings.cs" />
+    <Compile Include="Configuration\UploadDirectorySettings.cs" />
+    <Compile Include="Core\Cache\CacheManager.cs" />
+    <Compile Include="Core\Cache\Providers\PerTenantCache.cs" />
+    <Compile Include="Database\DatabaseImpersonationContext.cs" />
+    <Compile Include="Database\ImpersonationSqlFileStream.cs" />
+    <Compile Include="Database\TransactionId.cs" />
+    <Compile Include="Diagnostics\EventLogMonitor.cs" />
+    <Compile Include="Diagnostics\MessageContext.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Diagnostics\MessageContextBehavior.cs" />
+    <Compile Include="Diagnostics\MessageContextEntry.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Diagnostics\Profiler.cs" />
+    <Compile Include="Core\Cache\Providers\PerTenantNonSharingCache.cs" />
+    <Compile Include="EditForm\CurrentUiContext.cs" />
+    <Compile Include="EditForm\DefaultLayoutGenerator.cs" />
+    <Compile Include="EditForm\DefaultLayoutGenerator.Extensions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EditForm\DefaultLayoutGenerator.Private.cs" />
+    <Compile Include="EditForm\EditformHelper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EditForm\FormNotFoundException.cs" />
+    <Compile Include="EditForm\StructuredControlOnFormHelper.cs" />
+    <Compile Include="EntityRequests\BulkRequests\BulkRequestHelper.cs" />
+    <Compile Include="EntityRequests\BulkRequests\BulkRequestResult.cs" />
+    <Compile Include="EntityRequests\BulkRequests\BulkRequestRunner.cs" />
+    <Compile Include="EntityRequests\BulkRequests\BulkRequestSqlRunner.cs" />
+    <Compile Include="EntityRequests\BulkRequests\BulkRequestSqlBuilder.cs" />
+    <Compile Include="EntityRequests\BulkRequests\BulkRequestResultConverter.cs" />
+    <Compile Include="EntityRequests\BulkRequests\BulkSqlQuery.cs" />
+    <Compile Include="EntityRequests\BulkRequests\BulkSqlQueryCache.cs" />
+    <Compile Include="EntityRequests\EntityDataBuilder.cs" />
+    <Compile Include="EntityRequests\EntityInfoService.Read.cs" />
+    <Compile Include="EntityRequests\EntityInfoService.Write.cs" />
+    <Compile Include="EntityRequests\EntityRequest.cs" />
+    <Compile Include="EntityRequests\EntityRequestHelper.cs" />
+    <Compile Include="EntityRequests\IEntityInfo.cs" />
+    <Compile Include="IO\ActualUserRequestContext.cs" />
+    <Compile Include="Messaging\IChannel.cs" />
+    <Compile Include="Messaging\IMemoryStore.cs" />
+    <Compile Include="Messaging\ISuppression.cs" />
+    <Compile Include="Messaging\MessageHelper.cs" />
+    <Compile Include="Messaging\PublisherActions.cs" />
+    <Compile Include="Messaging\IChannelMessage.cs" />
+    <Compile Include="Messaging\PublishMethod.cs" />
+    <Compile Include="Messaging\PublishOptions.cs" />
+    <Compile Include="Messaging\Redis\ChannelMessage.cs" />
+    <Compile Include="Messaging\IDistributedMemoryManager.cs" />
+    <Compile Include="Messaging\InterprocessCommunications.ActionContainer.cs" />
+    <Compile Include="Messaging\InterprocessCommunications.BidirectionalDictionary.cs" />
+    <Compile Include="Messaging\InterprocessCommunications.BulkOperation.cs" />
+    <Compile Include="Messaging\InterprocessCommunications.Subscriber.cs" />
+    <Compile Include="Messaging\InterprocessCommunications.Suppression.cs" />
+    <Compile Include="Messaging\MessageEventArgs.cs" />
+    <Compile Include="Messaging\Redis\MemoryStore.cs" />
+    <Compile Include="Messaging\Redis\Identity.cs" />
+    <Compile Include="Messaging\Redis\Channel.cs" />
+    <Compile Include="Messaging\Redis\RedisConnectionException.cs" />
+    <Compile Include="Messaging\Redis\RedisManager.cs" />
+    <Compile Include="Messaging\Redis\Suppression.cs" />
+    <Compile Include="Metadata\Query\Structured\ClusterOperation.cs" />
+    <Compile Include="Metadata\Query\Structured\Helpers\ReportHelpers.cs" />
+    <Compile Include="Metadata\Query\Structured\IQueryRunner.cs" />
+    <Compile Include="Metadata\Query\Structured\IQuerySqlBuilder.cs" />
+    <Compile Include="Metadata\Query\Structured\IReportToQueryConverter.cs" />
+    <Compile Include="Metadata\Query\Structured\IReportToQueryPartsConverter.cs" />
+    <Compile Include="Metadata\Query\Structured\JoinToSelfEntity.cs" />
+    <Compile Include="Metadata\Query\Structured\MutateExpression.cs" />
+    <Compile Include="Metadata\Query\Structured\PeriodConditionHelper.cs" />
+    <Compile Include="Metadata\Query\Structured\QueryBuilder.cs" />
+    <Compile Include="Metadata\Query\Structured\QueryException.cs" />
+    <Compile Include="Metadata\Query\Structured\QuerySettings.cs" />
+    <Compile Include="Metadata\Query\Structured\ReportToQueryConverterSettings.cs" />
+    <Compile Include="Metadata\Query\Structured\StructuredQueryEqualityComparer.cs" />
+    <Compile Include="Metadata\Query\Structured\StructuredQueryHashingContext.cs" />
+    <Compile Include="Metadata\Solutions\DataUpgrade\AutoNumber.cs" />
+    <Compile Include="Model\BulkPreloader.cs" />
+    <Compile Include="Model\CacheInvalidation\CacheContext.cs" />
+    <Compile Include="Model\CacheInvalidation\CacheContextEntry.cs" />
+    <Compile Include="Model\CacheInvalidation\CacheInvalidatorFactory.cs" />
+    <Compile Include="Model\CacheInvalidation\CacheMonitor.cs" />
+    <Compile Include="Model\CacheInvalidation\ContextHelper.cs" />
+    <Compile Include="Model\CacheInvalidation\ContextType.cs" />
+    <Compile Include="Model\CacheInvalidation\EntityChanges.cs" />
+    <Compile Include="Model\CacheInvalidation\ICacheInvalidator.cs" />
+    <Compile Include="Model\CacheInvalidation\InvalidationCause.cs" />
+    <Compile Include="Model\CacheInvalidation\RelationshipTypeToEntity.cs" />
+    <Compile Include="Model\CacheInvalidation\CacheInvalidator.cs" />
+    <Compile Include="Model\CardinalityViolationException.cs" />
+    <Compile Include="Model\DistributedMemoryManagerCache.cs" />
+    <Compile Include="Model\EntityCacheMessage.cs" />
+    <Compile Include="Model\EntityFieldCacheMessage.cs" />
+    <Compile Include="Model\EntityFieldValues.cs" />
+    <Compile Include="Model\EntityInternalData.cs" />
+    <Compile Include="Model\EntityEvent.cs" />
+    <Compile Include="Model\EntityId.cs" />
+    <Compile Include="Model\EntityModule.cs" />
+    <Compile Include="Model\EntityRelationshipCacheKey.cs" />
+    <Compile Include="Model\EntityRelationshipCacheKeyConverter.cs" />
+    <Compile Include="Model\EntityRelationshipCacheMessage.cs" />
+    <Compile Include="Model\EntityRelationshipCacheTypeKey.cs" />
+    <Compile Include="Model\EntityRelationshipModificationProxy.cs" />
+    <Compile Include="Model\EntityRelationshipModificationValueProxy.cs" />
+    <Compile Include="Model\EntityRepository.cs" />
+    <Compile Include="Model\EventClasses\AppointmentHelper.cs" />
+    <Compile Include="Model\EventClasses\AccessRuleEventTarget.cs" />
+    <Compile Include="Model\EventClasses\CacheInvalidationEventTarget.cs" />
+    <Compile Include="Model\EventClasses\ClientCachableEventTarget.cs" />
+    <Compile Include="Model\EventClasses\AppointmentEventTarget.cs" />
+    <Compile Include="Model\EventClasses\FilteredTarget.cs" />
+    <Compile Include="Model\EventClasses\ImapEmailProviderEventTarget.cs" />
+    <Compile Include="Model\EventClasses\PasswordPolicyEventTarget.cs" />
+    <Compile Include="Model\EventClasses\TenantEventTarget.cs" />
+    <Compile Include="Model\EventClasses\TypeAddResourceBaseTypeEventTarget.cs" />
+    <Compile Include="Model\FieldEntityCache.cs" />
+    <Compile Include="Model\FieldEntityCacheMessage.cs" />
+    <Compile Include="Model\FieldTypes\FieldExtensionMethods.cs" />
+    <Compile Include="Model\FieldTypes\IFieldHelper.cs" />
+    <Compile Include="Model\DirectionalEntityRelationshipCache.cs" />
+    <Compile Include="Model\Interfaces\IInboxProviderHelper.cs" />
+    <Compile Include="Model\ModelClassAttribute.cs" />
+    <Compile Include="Model\PartialClasses\ClassHelper.cs" />
+    <Compile Include="Model\PartialClasses\EmailMessageHelper.cs" />
+    <Compile Include="Model\PartialClasses\InboxProviderHelper.cs" />
+    <Compile Include="Model\PartialClasses\ReceivedEmailMessageHelper.cs" />
+    <Compile Include="Model\PartialClasses\ResourceHelper.cs" />
+    <Compile Include="Model\PartialClasses\SentEmailMessageHelper.cs" />
+    <Compile Include="Model\PartialClasses\SolutionHelper.cs" />
+    <Compile Include="Model\PerTenantEntityTypeCache.cs" />
+    <Compile Include="Model\PerTenantEntityTypeCacheMessage.cs" />
+    <Compile Include="Model\SaveGraph.cs" />
+    <Compile Include="Model\StrongEntityActivator.cs" />
+    <Compile Include="Model\WellKnownAliases.cs" />
+    <Compile Include="Monitoring\Model\EntityInfoServicePerformanceCounters.cs" />
+    <Compile Include="Monitoring\Reports\ReportsPerformanceCounters.cs" />
+    <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Security\AccessControl\AccessControlDiagnosticsHelper.cs" />
+    <Compile Include="Security\AccessControl\AccessRuleQuery.cs" />
+    <Compile Include="Security\AccessControl\CachingEntityAccessControlCheckerBase.cs" />
+    <Compile Include="Security\AccessControl\CachingPerRuleSetEntityAccessControlChecker.cs" />
+    <Compile Include="Security\AccessControl\CachingUserRuleSetProvider.cs" />
+    <Compile Include="Security\AccessControl\EntityAccessControlModule.cs" />
+    <Compile Include="Security\AccessControl\AccessRuleDisplayReportFactory.cs" />
+    <Compile Include="Security\AccessControl\AccessRuleFactory.cs" />
+    <Compile Include="Security\AccessControl\AllowAllEntityAccessControlChecker.cs" />
+    <Compile Include="Security\AccessControl\CachingEntityAccessControlChecker.cs" />
+    <Compile Include="Security\AccessControl\CachingEntityAccessControlCheckerResult.cs" />
+    <Compile Include="Security\AccessControl\CachingEntityMemberRequestFactory.cs" />
+    <Compile Include="Security\AccessControl\CachingQueryRepository.cs" />
+    <Compile Include="Security\AccessControl\CounterEntityAccessControlChecker.cs" />
+    <Compile Include="Security\AccessControl\Diagnostics\ForceSecurityTraceContextEntry.cs" />
+    <Compile Include="Security\AccessControl\EntityAccessControlCheckerHelper.cs" />
+    <Compile Include="Security\AccessControl\EntityMemberRequestCacheInvalidator.cs" />
+    <Compile Include="Security\AccessControl\EntityMemberRequestFactory.cs" />
+    <Compile Include="Security\AccessControl\Diagnostics\ForceSecurityTraceContext.cs" />
+    <Compile Include="Security\AccessControl\FilteringQueryRepository.cs" />
+    <Compile Include="Security\AccessControl\IAccessRuleFactory.cs" />
+    <Compile Include="Security\AccessControl\IAccessRuleReportFactory.cs" />
+    <Compile Include="Security\AccessControl\ICachingEntityAccessControlCheckerResult.cs" />
+    <Compile Include="Security\AccessControl\IEntityAccessControlFactory.cs" />
+    <Compile Include="Security\AccessControl\IEntityMemberRequestFactory.cs" />
+    <Compile Include="Security\AccessControl\IRuleRepository.cs" />
+    <Compile Include="Security\AccessControl\IUserRuleSetProvider.cs" />
+    <Compile Include="Security\AccessControl\QueryInspector.cs" />
+    <Compile Include="Security\AccessControl\RoleCheckingQueryRepository.cs" />
+    <Compile Include="Security\AccessControl\RuleSetEntityPermissionTuple.cs" />
+    <Compile Include="Security\AccessControl\RuleRepository.cs" />
+    <Compile Include="Security\AccessControl\SafetyEntityAccessControlChecker.cs" />
+    <Compile Include="Security\AccessControl\SecuresFlagEntityAccessControlChecker.cs" />
+    <Compile Include="Security\AccessControl\EntityTypeExtensions.cs" />
+    <Compile Include="Security\AccessControl\SecurityCacheInvalidator.cs" />
+    <Compile Include="Security\AccessControl\SecurityCacheInvalidatorBase.cs" />
+    <Compile Include="Security\AccessControl\SecurityQueryCacheInvalidatorHelper.cs" />
+    <Compile Include="Security\AccessControl\SecurityQueryCacheInvalidator.cs" />
+    <Compile Include="Security\AccessControl\StringEntityAccessControlCheckTrace.cs" />
+    <Compile Include="Security\AccessControl\EntityAccessControlService.cs" />
+    <Compile Include="Security\AccessControl\EntityAccessControlCacheInvalidator.cs" />
+    <Compile Include="Security\AccessControl\EntityTypeRepository.cs" />
+    <Compile Include="Security\AccessControl\IEntityAccessControlCheckTrace.cs" />
+    <Compile Include="Security\AccessControl\IEntityAccessControlCacheInvalidator.cs" />
+    <Compile Include="Security\AccessControl\IEntityAccessControlChecker.cs" />
+    <Compile Include="Security\AccessControl\IEntityAccessControlService.cs" />
+    <Compile Include="Security\AccessControl\IEntityTypeRepository.cs" />
+    <Compile Include="Security\AccessControl\IQueryRepository.cs" />
+    <Compile Include="Security\AccessControl\IUserRoleRepository.cs" />
+    <Compile Include="Security\AccessControl\QueryRepository.cs" />
+    <Compile Include="AppLibrary\ApplicationDeployException.cs" />
+    <Compile Include="AppLibrary\ApplicationLibraryException.cs" />
+    <Compile Include="AppLibrary\ApplicationPublishException.cs" />
+    <Compile Include="Configuration\CacheSettings.cs" />
+    <Compile Include="Configuration\ConfigurationSettings.cs" />
+    <Compile Include="Configuration\CacheConfiguration.cs" />
+    <Compile Include="Configuration\WorkflowConfiguration.cs" />
+    <Compile Include="Configuration\SecuritySettings.cs" />
+    <Compile Include="Configuration\ServerConfiguration.cs" />
+    <Compile Include="Configuration\DatabaseConfigurationHelper.cs" />
+    <Compile Include="Configuration\LogSettings.cs" />
+    <Compile Include="Configuration\DiagnosticsConfiguration.cs" />
+    <Compile Include="Configuration\DatabaseConfiguration.cs" />
+    <Compile Include="Configuration\DatabaseSettings.cs" />
+    <Compile Include="Configuration\SiteSettings.cs" />
+    <Compile Include="Diagnostics\SystemInfo.cs" />
+    <Compile Include="IO\GlobalAdministratorContext.cs" />
+    <Compile Include="Metadata\Query\Structured\ClientAggregate.cs" />
+    <Compile Include="Metadata\Query\Structured\ClientAggregateHelper.cs" />
+    <Compile Include="Expressions\NameResolver.cs" />
+    <Compile Include="Messaging\Mail\DefaultMailMessageFormatter.cs" />
+    <Compile Include="Metadata\Query\Structured\Helpers\ReportToEntityModelHelper.cs" />
+    <Compile Include="Metadata\Query\Structured\Helpers\ToEntityContext.cs" />
+    <Compile Include="Metadata\Query\Structured\Helpers\ToEntitySettings.cs" />
+    <Compile Include="Metadata\Query\Structured\ReportInfo.cs" />
+    <Compile Include="Metadata\Query\Structured\ScriptExpression.cs" />
+    <Compile Include="Metadata\Reporting\Formatting\ImageFormattingRule.cs" />
+    <Compile Include="Metadata\Reporting\Helpers\ReportingEntityHelper.cs" />
+    <Compile Include="Metadata\Reporting\ReportAggregateField.cs" />
+    <Compile Include="Metadata\Reporting\ReportGroupField.cs" />
+    <Compile Include="Metadata\Solutions\BulkProviderMetadata.cs" />
+    <Compile Include="Metadata\Solutions\CsvBulkProvider.cs" />
+    <Compile Include="Model\Console\NavigationHelper.cs" />
+    <Compile Include="Model\EmailHelper.cs" />
+    <Compile Include="Model\EntityAlias.cs" />
+    <Compile Include="Model\EntityCacheExclusionContext.cs" />
+    <Compile Include="Model\EntityModel-js.cs" />
+    <Compile Include="Model\EntityModificationToken.cs" />
+    <Compile Include="Model\EntityRef.cs" />
+    <Compile Include="Model\EventClasses\DocumentEventTarget.cs" />
+    <Compile Include="Model\EventClasses\FileTypeEventTarget.cs" />
+    <Compile Include="Model\EventClasses\InboxTarget.cs" />
+    <Compile Include="Model\FieldTypes\AutoNumberFieldHelper.cs" />
+    <Compile Include="Model\MutableKey.cs" />
+    <Compile Include="Model\PartialClasses\ProxyInboxProviderHelper.cs" />
+    <Compile Include="Model\PartialClasses\ImapEmailProviderHelper.cs" />
+    <Compile Include="Model\RelationshipHelper.cs" />
+    <Compile Include="Model\SourceEntityContext.cs" />
+    <Compile Include="Monitoring\AccessControl\AccessControlCacheInvalidationPerformanceCounters.cs" />
+    <Compile Include="Monitoring\AccessControl\AccessControlPerformanceCounters.cs" />
+    <Compile Include="Monitoring\AccessControl\AccessControlPermissionPerformanceCounters.cs" />
+    <Compile Include="Monitoring\Model\PlatformTracePerformanceCounters.cs" />
+    <Compile Include="Monitoring\Workflow\WorkflowPerformanceCounters.cs" />
+    <Compile Include="Scheduling\iCalendar\Collections\Constants.cs" />
+    <Compile Include="Scheduling\iCalendar\Collections\Enumerators\GroupedListEnumerator.cs" />
+    <Compile Include="Scheduling\iCalendar\Collections\GroupedList.cs" />
+    <Compile Include="Scheduling\iCalendar\Collections\GroupedValueList.cs" />
+    <Compile Include="Scheduling\iCalendar\Collections\Interfaces\IGroupedList.cs" />
+    <Compile Include="Scheduling\iCalendar\Collections\Interfaces\IGroupedCollection.cs" />
+    <Compile Include="Scheduling\iCalendar\Collections\Interfaces\IGroupedObject.cs" />
+    <Compile Include="Scheduling\iCalendar\Collections\Interfaces\IGroupedValueCollection.cs" />
+    <Compile Include="Scheduling\iCalendar\Collections\Interfaces\IGroupedValueList.cs" />
+    <Compile Include="Scheduling\iCalendar\Collections\Interfaces\IMultiLinkedList.cs" />
+    <Compile Include="Scheduling\iCalendar\Collections\Interfaces\IValueObject.cs" />
+    <Compile Include="Scheduling\iCalendar\Collections\Interfaces\Proxies\IGroupedCollectionProxy.cs" />
+    <Compile Include="Scheduling\iCalendar\Collections\Interfaces\Proxies\IGroupedValueListProxy.cs" />
+    <Compile Include="Scheduling\iCalendar\Collections\MultiLinkedList.cs" />
+    <Compile Include="Scheduling\iCalendar\Collections\Proxies\GroupedCollectionProxy.cs" />
+    <Compile Include="Scheduling\iCalendar\Collections\Proxies\GroupedValueListProxy.cs" />
+    <Compile Include="Scheduling\iCalendar\Compatibility\BrowsableAttribute.cs" />
+    <Compile Include="Scheduling\iCalendar\Compatibility\DebuggerDisplayAttribute.cs" />
+    <Compile Include="Scheduling\iCalendar\Components\Alarm.cs" />
+    <Compile Include="Scheduling\iCalendar\Components\CalendarComponent.cs" />
+    <Compile Include="Scheduling\iCalendar\Components\Event.cs" />
+    <Compile Include="Scheduling\iCalendar\Components\FreeBusy.cs" />
+    <Compile Include="Scheduling\iCalendar\Components\iCalTimeZone.cs" />
+    <Compile Include="Scheduling\iCalendar\Components\iCalTimeZoneInfo.cs" />
+    <Compile Include="Scheduling\iCalendar\Components\Journal.cs" />
+    <Compile Include="Scheduling\iCalendar\Components\RecurringComponent.cs" />
+    <Compile Include="Scheduling\iCalendar\Components\Todo.cs" />
+    <Compile Include="Scheduling\iCalendar\Components\UniqueComponent.cs" />
+    <Compile Include="Scheduling\iCalendar\Constants.cs" />
+    <Compile Include="Scheduling\iCalendar\DataTypes\Attachment.cs" />
+    <Compile Include="Scheduling\iCalendar\DataTypes\Attendee.cs" />
+    <Compile Include="Scheduling\iCalendar\DataTypes\CalendarDataType.cs" />
+    <Compile Include="Scheduling\iCalendar\DataTypes\EncodableDataType.cs" />
+    <Compile Include="Scheduling\iCalendar\DataTypes\FreeBusyEntry.cs" />
+    <Compile Include="Scheduling\iCalendar\DataTypes\GeographicLocation.cs" />
+    <Compile Include="Scheduling\iCalendar\DataTypes\iCalDateTime.cs" />
+    <Compile Include="Scheduling\iCalendar\DataTypes\Organizer.cs" />
+    <Compile Include="Scheduling\iCalendar\DataTypes\ParticipantRole.cs" />
+    <Compile Include="Scheduling\iCalendar\DataTypes\Period.cs" />
+    <Compile Include="Scheduling\iCalendar\DataTypes\PeriodList.cs" />
+    <Compile Include="Scheduling\iCalendar\DataTypes\RecurrencePattern.cs" />
+    <Compile Include="Scheduling\iCalendar\DataTypes\RequestStatus.cs" />
+    <Compile Include="Scheduling\iCalendar\DataTypes\StatusCode.cs" />
+    <Compile Include="Scheduling\iCalendar\DataTypes\Trigger.cs" />
+    <Compile Include="Scheduling\iCalendar\DataTypes\UTCOffset.cs" />
+    <Compile Include="Scheduling\iCalendar\DataTypes\WeekDay.cs" />
+    <Compile Include="Scheduling\iCalendar\Email\iCalEmailHelper.cs" />
+    <Compile Include="Scheduling\iCalendar\Evaluation\Evaluator.cs" />
+    <Compile Include="Scheduling\iCalendar\Evaluation\EventEvaluator.cs" />
+    <Compile Include="Scheduling\iCalendar\Evaluation\PeriodListEvaluator.cs" />
+    <Compile Include="Scheduling\iCalendar\Evaluation\RecurrencePatternEvaluator.cs" />
+    <Compile Include="Scheduling\iCalendar\Evaluation\RecurringEvaluator.cs" />
+    <Compile Include="Scheduling\iCalendar\Evaluation\TimeZoneEvaluator.cs" />
+    <Compile Include="Scheduling\iCalendar\Evaluation\TimeZoneInfoEvaluator.cs" />
+    <Compile Include="Scheduling\iCalendar\Evaluation\TodoEvaluator.cs" />
+    <Compile Include="Scheduling\iCalendar\Exceptions\EvaluationEngineException.cs" />
+    <Compile Include="Scheduling\iCalendar\ExtensionMethods\CalendarObjectExtensions.cs" />
+    <Compile Include="Scheduling\iCalendar\ExtensionMethods\ListExtensions.cs" />
+    <Compile Include="Scheduling\iCalendar\Factory\UIDFactory.cs" />
+    <Compile Include="Scheduling\iCalendar\Formatters\iCalMailMesssageFormatter.cs" />
+    <Compile Include="Scheduling\iCalendar\General\CalendarObject.cs" />
+    <Compile Include="Scheduling\iCalendar\General\CalendarObjectBase.cs" />
+    <Compile Include="Scheduling\iCalendar\General\CalendarObjectList.cs" />
+    <Compile Include="Scheduling\iCalendar\General\CalendarParameter.cs" />
+    <Compile Include="Scheduling\iCalendar\General\CalendarParameterList.cs" />
+    <Compile Include="Scheduling\iCalendar\General\CalendarProperty.cs" />
+    <Compile Include="Scheduling\iCalendar\General\CalendarPropertyList.cs" />
+    <Compile Include="Scheduling\iCalendar\General\Proxies\CalendarObjectListProxy.cs" />
+    <Compile Include="Scheduling\iCalendar\General\Proxies\CalendarParameterCollectionProxy.cs" />
+    <Compile Include="Scheduling\iCalendar\General\Proxies\UniqueComponentListProxy.cs" />
+    <Compile Include="Scheduling\iCalendar\General\ServiceProvider.cs" />
+    <Compile Include="Scheduling\iCalendar\iCalendar.cs" />
+    <Compile Include="Scheduling\iCalendar\iCalendarCollection.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\Components\IAlarm.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\Components\IAlarmContainer.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\Components\ICalendarComponent.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\Components\IEvent.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\Components\IFreeBusy.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\Components\IJournal.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\Components\IRecurringComponent.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\Components\ITimeZone.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\Components\ITimeZoneInfo.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\Components\ITodo.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\Components\IUniqueComponent.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\DataTypes\IAttachment.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\DataTypes\IAttendee.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\DataTypes\ICalendarDataType.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\DataTypes\IDateTime.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\DataTypes\IEncodableDataType.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\DataTypes\IFreeBusyEntry.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\DataTypes\IGeographicLocation.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\DataTypes\IOrganizer.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\DataTypes\IPeriod.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\DataTypes\IPeriodList.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\DataTypes\IRecurrencePattern.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\DataTypes\IRequestStatus.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\DataTypes\IStatusCode.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\DataTypes\ITrigger.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\DataTypes\IUTCOffset.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\DataTypes\IWeekDay.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\Evaluation\IEvaluator.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\Evaluation\IGetFreeBusy.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\Evaluation\IGetOccurrences.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\Evaluation\IRecurrable.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\General\ICalendarObject.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\General\ICalendarObjectList.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\General\ICalendarParameter.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\General\ICalendarParameterCollection.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\General\ICalendarParameterCollectionContainer.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\General\ICalendarProperty.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\General\ICalendarPropertyList.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\General\ICalendarPropertyListContainer.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\General\ICopyable.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\General\ILoadable.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\General\IMergeable.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\General\IServiceProvider.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\General\IUniqueComponentList.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\General\Proxies\ICalendarParameterCollectionProxy.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\IICalendar.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\IICalendarCollection.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\Serialization\Factory\ICalendarComponentFactory.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\Serialization\Factory\ISerializerFactory.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\Serialization\IDataTypeMapper.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\Serialization\IEncodingProvider.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\Serialization\IEncodingStack.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\Serialization\ISerializationContext.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\Serialization\ISerializationProcessor.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\Serialization\ISerializationSettings.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\Serialization\ISerializer.cs" />
+    <Compile Include="Scheduling\iCalendar\Interfaces\Serialization\IStringSerializer.cs" />
+    <Compile Include="Scheduling\iCalendar\Serialization\DataTypeMapper.cs" />
+    <Compile Include="Scheduling\iCalendar\Serialization\EncodingProvider.cs" />
+    <Compile Include="Scheduling\iCalendar\Serialization\EncodingStack.cs" />
+    <Compile Include="Scheduling\iCalendar\Serialization\Factory\ComponentFactory.cs" />
+    <Compile Include="Scheduling\iCalendar\Serialization\iCalendar\Factory\DataTypeSerializerFactory.cs" />
+    <Compile Include="Scheduling\iCalendar\Serialization\iCalendar\Factory\SerializerFactory.cs" />
+    <Compile Include="Scheduling\iCalendar\Serialization\iCalendar\iCalLexer.cs" />
+    <Compile Include="Scheduling\iCalendar\Serialization\iCalendar\iCalParser.cs" />
+    <Compile Include="Scheduling\iCalendar\Serialization\iCalendar\iCalParserTokenTypes.cs" />
+    <Compile Include="Scheduling\iCalendar\Serialization\iCalendar\Processors\ComponentPropertyConsolidator.cs" />
+    <Compile Include="Scheduling\iCalendar\Serialization\iCalendar\Processors\CompositeProcessor.cs" />
+    <Compile Include="Scheduling\iCalendar\Serialization\iCalendar\SerializationInfo.cs" />
+    <Compile Include="Scheduling\iCalendar\Serialization\iCalendar\Serializers\Components\ComponentSerializer.cs" />
+    <Compile Include="Scheduling\iCalendar\Serialization\iCalendar\Serializers\Components\EventSerializer.cs" />
+    <Compile Include="Scheduling\iCalendar\Serialization\iCalendar\Serializers\Components\UniqueComponentSerializer.cs" />
+    <Compile Include="Scheduling\iCalendar\Serialization\iCalendar\Serializers\DataMapSerializer.cs" />
+    <Compile Include="Scheduling\iCalendar\Serialization\iCalendar\Serializers\DataTypes\AttachmentSerializer.cs" />
+    <Compile Include="Scheduling\iCalendar\Serialization\iCalendar\Serializers\DataTypes\AttendeeSerializer.cs" />
+    <Compile Include="Scheduling\iCalendar\Serialization\iCalendar\Serializers\DataTypes\DataTypeSerializer.cs" />
+    <Compile Include="Scheduling\iCalendar\Serialization\iCalendar\Serializers\DataTypes\DateTimeSerializer.cs" />
+    <Compile Include="Scheduling\iCalendar\Serialization\iCalendar\Serializers\DataTypes\EncodableDataTypeSerializer.cs" />
+    <Compile Include="Scheduling\iCalendar\Serialization\iCalendar\Serializers\DataTypes\FreeBusyEntrySerializer.cs" />
+    <Compile Include="Scheduling\iCalendar\Serialization\iCalendar\Serializers\DataTypes\GeographicLocationSerializer.cs" />
+    <Compile Include="Scheduling\iCalendar\Serialization\iCalendar\Serializers\DataTypes\OrganizerSerializer.cs" />
+    <Compile Include="Scheduling\iCalendar\Serialization\iCalendar\Serializers\DataTypes\PeriodListSerializer.cs" />
+    <Compile Include="Scheduling\iCalendar\Serialization\iCalendar\Serializers\DataTypes\PeriodSerializer.cs" />
+    <Compile Include="Scheduling\iCalendar\Serialization\iCalendar\Serializers\DataTypes\RecurrencePatternSerializer.cs" />
+    <Compile Include="Scheduling\iCalendar\Serialization\iCalendar\Serializers\DataTypes\RequestStatusSerializer.cs" />
+    <Compile Include="Scheduling\iCalendar\Serialization\iCalendar\Serializers\DataTypes\StatusCodeSerializer.cs" />
+    <Compile Include="Scheduling\iCalendar\Serialization\iCalendar\Serializers\DataTypes\TriggerSerializer.cs" />
+    <Compile Include="Scheduling\iCalendar\Serialization\iCalendar\Serializers\DataTypes\UTCOffsetSerializer.cs" />
+    <Compile Include="Scheduling\iCalendar\Serialization\iCalendar\Serializers\DataTypes\WeekDaySerializer.cs" />
+    <Compile Include="Scheduling\iCalendar\Serialization\iCalendar\Serializers\iCalendarSerializer.cs" />
+    <Compile Include="Scheduling\iCalendar\Serialization\iCalendar\Serializers\Other\EnumSerializer.cs" />
+    <Compile Include="Scheduling\iCalendar\Serialization\iCalendar\Serializers\Other\IntegerSerializer.cs" />
+    <Compile Include="Scheduling\iCalendar\Serialization\iCalendar\Serializers\Other\StringSerializer.cs" />
+    <Compile Include="Scheduling\iCalendar\Serialization\iCalendar\Serializers\Other\TimeSpanSerializer.cs" />
+    <Compile Include="Scheduling\iCalendar\Serialization\iCalendar\Serializers\Other\UriSerializer.cs" />
+    <Compile Include="Scheduling\iCalendar\Serialization\iCalendar\Serializers\ParameterSerializer.cs" />
+    <Compile Include="Scheduling\iCalendar\Serialization\iCalendar\Serializers\PropertySerializer.cs" />
+    <Compile Include="Scheduling\iCalendar\Serialization\iCalendar\Serializers\SerializerBase.cs" />
+    <Compile Include="Scheduling\iCalendar\Serialization\SerializationContext.cs" />
+    <Compile Include="Scheduling\iCalendar\Serialization\SerializationSettings.cs" />
+    <Compile Include="Scheduling\iCalendar\Structs\AlarmOccurrence.cs" />
+    <Compile Include="Scheduling\iCalendar\Structs\Occurrence.cs" />
+    <Compile Include="Scheduling\iCalendar\Structs\TimeZoneObservance.cs" />
+    <Compile Include="Scheduling\iCalendar\Utility\DateUtil.cs" />
+    <Compile Include="Scheduling\iCalendar\Utility\EnumDescriptionAttribute.cs" />
+    <Compile Include="Scheduling\iCalendar\Utility\EnumExtensions.cs" />
+    <Compile Include="Scheduling\iCalendar\Utility\KnownTypeHelper.cs" />
+    <Compile Include="Scheduling\iCalendar\Utility\RecurrenceUtil.cs" />
+    <Compile Include="Scheduling\iCalendar\Utility\SerializationUtil.cs" />
+    <Compile Include="Scheduling\iCalendar\Utility\TextUtil.cs" />
+    <Compile Include="Scheduling\IScheduledItemJob.cs" />
+    <Compile Include="Scheduling\ItemBase.cs" />
+    <Compile Include="Scheduling\ScheduledItemHelper.cs" />
+    <Compile Include="Scheduling\SyncAction.cs" />
+    <Compile Include="Scheduling\TenantJob.cs" />
+    <Compile Include="Security\AccessControl\CachingUserRoleRepository.cs" />
+    <Compile Include="Security\AccessControl\UnionEntityAccessControlChecker.cs" />
+    <Compile Include="Security\AccessControl\UserRoleRepositoryCacheInvalidator.cs" />
+    <Compile Include="Security\AccessControl\UserRuleSet.cs" />
+    <Compile Include="Security\AccessControl\UserRuleSetProvider.cs" />
+    <Compile Include="Security\AccountDisabledException.cs" />
+    <Compile Include="Security\AccountExpiredException.cs" />
+    <Compile Include="Security\AccountInvalidException.cs" />
+    <Compile Include="Security\AccountLockedException.cs" />
+    <Compile Include="Security\AuthenticationTokenExpiredException.cs" />
+    <Compile Include="Security\AuditLog\AuditLog.cs" />
+    <Compile Include="Security\AuditLog\AuditLogEntityModelDeleter.cs" />
+    <Compile Include="Security\AuditLog\AuditLogEntityModelWriter.cs" />
+    <Compile Include="Security\AuditLog\AuditLogEntryData.cs" />
+    <Compile Include="Security\AuditLog\AuditLogEventLogWriter.cs" />
+    <Compile Include="Security\AuditLog\AuditLogInstance.cs" />
+    <Compile Include="Security\AuditLog\AuditLogSyslogWriter.cs" />
+    <Compile Include="Security\AuditLog\EventTargets\AuditLogAccessRuleEventTarget.cs" />
+    <Compile Include="Security\AuditLog\EventTargets\AuditLogEventTargetBase.cs" />
+    <Compile Include="Security\AuditLog\EventTargets\AuditLogPasswordPolicyEventTarget.cs" />
+    <Compile Include="Security\AuditLog\EventTargets\AuditLogReportEventTarget.cs" />
+    <Compile Include="Security\AuditLog\EventTargets\AuditLogRoleEventTarget.cs" />
+    <Compile Include="Security\AuditLog\EventTargets\AuditLogSolutionEventTarget.cs" />
+    <Compile Include="Security\AuditLog\EventTargets\AuditLogTenantEventTarget.cs" />
+    <Compile Include="Security\AuditLog\EventTargets\AuditLogUserAccountEventTarget.cs" />
+    <Compile Include="Security\AuditLog\EventTargets\IAuditLogEventTarget.cs" />
+    <Compile Include="Security\AuditLog\IAuditLog.cs" />
+    <Compile Include="Security\AuditLog\IAuditLogDeleter.cs" />
+    <Compile Include="Security\AuditLog\IAuditLogEntryData.cs" />
+    <Compile Include="Security\AuditLog\IAuditLogWriter.cs" />
+    <Compile Include="Security\PasswordExpiredException.cs" />
+    <Compile Include="Security\PasswordPolicyHelper.cs" />
+    <Compile Include="Security\AccessControl\Permissions.cs" />
+    <Compile Include="Security\SecurityUpgradeEventTarget.cs" />
+    <Compile Include="Security\SetUser.cs" />
+    <Compile Include="Security\AccessControl\TenantEntityCache.cs" />
+    <Compile Include="Security\AccessControl\UserEntityPermissionTuple.cs" />
+    <Compile Include="Security\AccessControl\SubjectPermissionTypesTuple.cs" />
+    <Compile Include="Security\AccessControl\EntityAccessControlChecker.cs" />
+    <Compile Include="Security\AccessControl\LoggingEntityAccessControlChecker.cs" />
+    <Compile Include="Security\AccessControl\UserRoleRepository.cs" />
+    <Compile Include="Security\SecurityBypassContext.cs" />
+    <Compile Include="Security\SecurityOption.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Security\TenantDisabledException.cs" />
+    <Compile Include="Security\UserAccountCacheMessage.cs" />
+    <Compile Include="Security\XsrfValidationException.cs" />
+    <Compile Include="Services\Console\ActionContext.cs" />
+    <Compile Include="Services\Console\ActionMenuItemInfoEqualityComparer.cs" />
+    <Compile Include="Services\Console\ActionMenuItemInfo.cs" />
+    <Compile Include="Services\Console\ActionMenuState.cs" />
+    <Compile Include="Services\Console\ActionRequest.cs" />
+    <Compile Include="Services\Console\ActionResponse.cs" />
+    <Compile Include="Services\Console\ActionService.cs" />
+    <Compile Include="Services\Console\ActionServiceHelpers.cs" />
+    <Compile Include="Services\Console\ActionTargetInfo.cs" />
+    <Compile Include="Services\Console\WorkflowActions\CachingWorkflowActionsFactory.cs" />
+    <Compile Include="Services\Console\WorkflowActions\IWorkflowActionsFactory.cs" />
+    <Compile Include="Services\Console\ActionsModule.cs" />
+    <Compile Include="Services\Console\SecurityActionMenuItemFilter.cs" />
+    <Compile Include="Services\Console\WorkflowActions\WorkflowActionsFactory.cs" />
+    <Compile Include="StaticFinalizerAction.cs" />
+    <Compile Include="StrongEntity.cs" />
+    <Compile Include="Utc\TimeZoneHelper.cs" />
+    <Compile Include="Workflow\WorkflowRunContext.cs" />
+    <ReadiNowXmlWithSchema Include="Config\Schema\Charts_Types.xml">
+      <SubType>Designer</SubType>
+    </ReadiNowXmlWithSchema>
+    <ReadiNowXmlWithSchema Include="Config\Schema\Parameter_Types.xml">
+      <SubType>Designer</SubType>
+    </ReadiNowXmlWithSchema>
+    <ReadiNowXmlWithSchema Include="Config\Schema\Report_Types.xml">
+      <SubType>Designer</SubType>
+    </ReadiNowXmlWithSchema>
+    <ReadiNowXmlWithSchema Include="Config\Schema\AuditLog_Types.xml">
+      <SubType>Designer</SubType>
+    </ReadiNowXmlWithSchema>
+    <ReadiNowXml Include="Config\Data\AuditLog.xml">
+      <SubType>Designer</SubType>
+    </ReadiNowXml>
+    <ReadiNowXmlWithSchema Include="Config\Schema\Survey_Types.xml">
+      <SubType>Designer</SubType>
+    </ReadiNowXmlWithSchema>
+    <ReadiNowXmlWithSchema Include="Config\Schema\FeatureSwitches.xml">
+      <SubType>Designer</SubType>
+    </ReadiNowXmlWithSchema>
+    <ReadiNowXmlWithSchema Include="Config\Schema\Board_Types.xml">
+      <SubType>Designer</SubType>
+    </ReadiNowXmlWithSchema>
+    <ReadiNowXmlWithSchema Include="Config\Schema\MessageQueue_Types.xml" />
+    <ReadiNowXmlWithSchema Include="Config\Schema\Console_CustomControls.xml">
+      <SubType>Designer</SubType>
+    </ReadiNowXmlWithSchema>
+    <ReadiNowXmlWithSchema Include="Config\Schema\Integration_Types.xml">
+      <SubType>Designer</SubType>
+    </ReadiNowXmlWithSchema>
+    <Content Include="Scheduling\iCalendar\Serialization\iCalendar\iCalParserTokenTypes.txt" />
+    <ReadiNowXmlWithSchema Include="Config\Schema\Console_Types.xml">
+      <SubType>Designer</SubType>
+    </ReadiNowXmlWithSchema>
+    <ReadiNowXml Include="Config\Data\Platform_Reports.xml">
+      <SubType>Designer</SubType>
+    </ReadiNowXml>
+    <ReadiNowXml Include="Config\Data\Console_Behaviors.xml">
+      <SubType>Designer</SubType>
+    </ReadiNowXml>
+    <Compile Include="Configuration\SiteConfiguration.cs" />
+    <ReadiNowXml Include="Config\Data\Console_CustomEditForms.xml">
+      <SubType>Designer</SubType>
+    </ReadiNowXml>
+    <Compile Include="Core\SpecialIds.cs" />
+    <Compile Include="Core\SpecialStrings.cs" />
+    <Compile Include="Database\DatabaseInfoHelper.cs" />
+    <Compile Include="Diagnostics\Tracing\PlatformTrace.cs" />
+    <Compile Include="IO\AdministratorContext.cs" />
+    <Compile Include="IO\ContextBlock.cs" />
+    <Compile Include="IO\CustomContext.cs" />
+    <Compile Include="IO\TenantAdministratorContext.cs" />
+    <Compile Include="Messaging\EncodingMethod.cs" />
+    <Compile Include="Messaging\InterprocessCommunications.cs" />
+    <Compile Include="Metadata\CircularRelationshipException.cs" />
+    <Compile Include="Metadata\Media\ColorInfo.cs" />
+    <Compile Include="Metadata\Media\ColorInfoHelper.cs" />
+    <Compile Include="Metadata\Query\Structured\AggregateEntity.cs" />
+    <Compile Include="Metadata\Query\Structured\AggregateExpression.cs" />
+    <Compile Include="Metadata\Query\Structured\BooleanExpression.cs" />
+    <Compile Include="Metadata\Query\Structured\CalculationExpression.cs" />
+    <Compile Include="Metadata\Query\Structured\ConditionHelper.cs" />
+    <Compile Include="Metadata\Query\Structured\ColumnReference.cs" />
+    <Compile Include="Metadata\Query\Structured\ConditionType.cs" />
+    <Compile Include="Metadata\Query\Structured\Condition.cs" />
+    <Compile Include="Metadata\Query\Structured\Conditions.cs" />
+    <Compile Include="Metadata\Query\Structured\ConditionTypeHelper.cs" />
+    <Compile Include="Metadata\Query\Structured\DownCastResource.cs" />
+    <Compile Include="Metadata\Query\Structured\Entity.cs" />
+    <Compile Include="Metadata\Query\Structured\EntityExpression.cs" />
+    <Compile Include="Metadata\Query\Structured\IdExpression.cs" />
+    <Compile Include="Metadata\Query\Structured\IfElseExpression.cs" />
+    <Compile Include="Metadata\Query\Structured\LiteralExpression.cs" />
+    <Compile Include="Metadata\Query\Structured\OrderByItem.cs" />
+    <Compile Include="Metadata\Query\Structured\QueryCondition.cs" />
+    <Compile Include="Metadata\Query\Structured\QueryResult.cs" />
+    <Compile Include="Metadata\Query\Structured\QuerySqlBuilderSettings.cs" />
+    <Compile Include="Metadata\Query\Structured\ResourceEntity.cs" />
+    <Compile Include="Metadata\Query\Structured\ResourceExpression.cs" />
+    <Compile Include="Metadata\Query\Structured\ScalarExpression.cs" />
+    <Compile Include="Metadata\Query\Structured\RelatedResource.cs" />
+    <Compile Include="Metadata\Query\Structured\ResourceDataColumn.cs" />
+    <Compile Include="Metadata\Query\Structured\SelectColumn.cs" />
+    <Compile Include="Metadata\Query\Structured\StructuredQuery.cs" />
+    <Compile Include="Metadata\Query\Structured\StructuredQueryHelper.cs" />
+    <Compile Include="Metadata\Query\Structured\StructuredQueryResource.cs" />
+    <Compile Include="Metadata\Query\Structured\StructureViewExpression.cs" />
+    <Compile Include="Metadata\RelationshipDirection.cs" />
+    <Compile Include="Metadata\Reporting\ChartDataView.cs" />
+    <Compile Include="Metadata\Reporting\ChartType.cs" />
+    <Compile Include="Metadata\Reporting\MatrixHeadersVisibility.cs" />
+    <Compile Include="Metadata\Reporting\MatrixReportDataView.cs" />
+    <Compile Include="Metadata\Reporting\ReportAnalyzerField.cs" />
+    <Compile Include="Metadata\Reporting\Formatting\BarFormattingRule.cs" />
+    <Compile Include="Metadata\Reporting\Formatting\ColorFormattingRule.cs" />
+    <Compile Include="Metadata\Reporting\Formatting\ColorRule.cs" />
+    <Compile Include="Metadata\Reporting\Formatting\ColumnFormatting.cs" />
+    <Compile Include="Metadata\Reporting\Formatting\FormattingRule.cs" />
+    <Compile Include="Metadata\Reporting\Formatting\FormattingRuleHelper.cs" />
+    <Compile Include="Metadata\Reporting\Formatting\IconFormattingRule.cs" />
+    <Compile Include="Metadata\Reporting\Formatting\IconRule.cs" />
+    <Compile Include="Metadata\Reporting\Formatting\IconType.cs" />
+    <Compile Include="Metadata\Reporting\GridReportDataView.cs" />
+    <Compile Include="Metadata\Reporting\ReportDataView.cs" />
+    <Compile Include="Metadata\Solutions\EntityInstaller.cs" />
+    <Compile Include="Metadata\ResourceAlreadyExistsException.cs" />
+    <Compile Include="Diagnostics\ServerDiagnosticLevel.cs" />
+    <Compile Include="Diagnostics\ServerDiagnostics.cs" />
+    <Compile Include="Metadata\ResourceNotFoundException.cs" />
+    <Compile Include="Metadata\Solutions\SolutionInfo.cs" />
+    <Compile Include="Metadata\Solutions\SolutionInstallerHelper.cs" />
+    <Compile Include="Metadata\Tenants\TenantHelper.cs" />
+    <Compile Include="Metadata\Tenants\TenantInfo.cs" />
+    <Compile Include="Database\DatabaseContext.cs" />
+    <Compile Include="Diagnostics\EventLog.cs" />
+    <Compile Include="Diagnostics\EventLogHelper.cs" />
+    <Compile Include="IO\RequestContext.cs" />
+    <Compile Include="IO\RequestContextData.cs" />
+    <Compile Include="IO\SpecialFolder.cs" />
+    <Compile Include="IO\SpecialFolders.cs" />
+    <Compile Include="Metadata\TypedValue.cs" />
+    <Compile Include="Metadata\TypedValueHelper.cs" />
+    <Compile Include="Model\ActivationData.cs" />
+    <Compile Include="Model\AutoGeneratedTypes.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Model\AutoGeneratedTypes.A.cs">
+      <DependentUpon>AutoGeneratedTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\AutoGeneratedTypes.B.cs">
+      <DependentUpon>AutoGeneratedTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\AutoGeneratedTypes.C.cs">
+      <DependentUpon>AutoGeneratedTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\AutoGeneratedTypes.D.cs">
+      <DependentUpon>AutoGeneratedTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\AutoGeneratedTypes.E.cs">
+      <DependentUpon>AutoGeneratedTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\AutoGeneratedTypes.F.cs">
+      <DependentUpon>AutoGeneratedTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\AutoGeneratedTypes.G.cs">
+      <DependentUpon>AutoGeneratedTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\AutoGeneratedTypes.H.cs">
+      <DependentUpon>AutoGeneratedTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\AutoGeneratedTypes.I.cs">
+      <DependentUpon>AutoGeneratedTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\AutoGeneratedTypes.J.cs">
+      <DependentUpon>AutoGeneratedTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\AutoGeneratedTypes.K.cs">
+      <DependentUpon>AutoGeneratedTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\AutoGeneratedTypes.L.cs">
+      <DependentUpon>AutoGeneratedTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\AutoGeneratedTypes.M.cs">
+      <DependentUpon>AutoGeneratedTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\AutoGeneratedTypes.N.cs">
+      <DependentUpon>AutoGeneratedTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\AutoGeneratedTypes.O.cs">
+      <DependentUpon>AutoGeneratedTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\AutoGeneratedTypes.P.cs">
+      <DependentUpon>AutoGeneratedTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\AutoGeneratedTypes.Q.cs">
+      <DependentUpon>AutoGeneratedTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\AutoGeneratedTypes.R.cs">
+      <DependentUpon>AutoGeneratedTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\AutoGeneratedTypes.S.cs">
+      <DependentUpon>AutoGeneratedTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\AutoGeneratedTypes.T.cs">
+      <DependentUpon>AutoGeneratedTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\AutoGeneratedTypes.U.cs">
+      <DependentUpon>AutoGeneratedTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\AutoGeneratedTypes.V.cs">
+      <DependentUpon>AutoGeneratedTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\AutoGeneratedTypes.W.cs">
+      <DependentUpon>AutoGeneratedTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\AutoGeneratedTypes.X.cs">
+      <DependentUpon>AutoGeneratedTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\AutoGeneratedTypes.Y.cs">
+      <DependentUpon>AutoGeneratedTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\AutoGeneratedTypes.Z.cs">
+      <DependentUpon>AutoGeneratedTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CacheBase.cs" />
+    <Compile Include="Model\CaseComparisonOption.cs" />
+    <Compile Include="Model\Client\DataState.cs" />
+    <Compile Include="Model\Client\EntityData.cs" />
+    <Compile Include="Model\Client\EntityData.shared.cs" />
+    <Compile Include="Model\Client\EntityDataHelper.cs" />
+    <Compile Include="Model\Console\CustomEditFormHelper.cs" />
+    <Compile Include="Model\DuplicateKeyException.cs" />
+    <Compile Include="Model\Entity.BulkIterator.cs">
+      <DependentUpon>Entity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Entity.cs" />
+    <Compile Include="Model\Entity.Iterator.cs">
+      <DependentUpon>Entity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\EntityCollection.cs" />
+    <Compile Include="Model\EntityIdEqualityComparer.cs" />
+    <Compile Include="Model\EntitySnapshotContext.cs" />
+    <Compile Include="Model\EntityExtensions.cs" />
+    <Compile Include="Model\EntityIdentificationCache.cs" />
+    <Compile Include="Model\EntityCache.cs" />
+    <Compile Include="Model\EntityFieldCache.cs" />
+    <Compile Include="Model\EntityFieldModificationCache.cs" />
+    <Compile Include="Model\EntityNotFoundException.cs" />
+    <Compile Include="Model\EntityRefHelper.cs" />
+    <Compile Include="Model\EntityRefStaticConverters.cs" />
+    <Compile Include="Model\EntityRelationshipCache.cs" />
+    <Compile Include="Model\EntityRelationshipModificationCache.cs" />
+    <Compile Include="Model\EntityTemporaryIdAllocator.cs" />
+    <Compile Include="Model\EntityTypeHelper.cs" />
+    <Compile Include="Model\EntityTypeCache.cs" />
+    <Compile Include="Model\EventClasses\EnumValueEventTarget.cs" />
+    <Compile Include="Model\EventClasses\EventTargetStateHelper.cs" />
+    <Compile Include="Model\EventClasses\PermissionEventTarget.cs" />
+    <Compile Include="Model\EventClasses\PermissionInvalidationBase.cs" />
+    <Compile Include="Model\EventClasses\ReportEventTarget.cs" />
+    <Compile Include="Model\EventClasses\ResourceEventTarget.cs" />
+    <Compile Include="Model\EventClasses\ResourceKeyEventTarget.cs" />
+    <Compile Include="Model\EventClasses\RoleEventTarget.cs" />
+    <Compile Include="Model\EventClasses\SolutionEventTarget.cs" />
+    <Compile Include="Model\EventClasses\UserAccountEventTarget.cs" />
+    <Compile Include="Model\FieldTypes\AliasFieldHelper.cs" />
+    <Compile Include="Model\FieldTypes\BoolFieldHelper.cs" />
+    <Compile Include="Model\FieldTypes\CurrencyFieldHelper.cs" />
+    <Compile Include="Model\FieldTypes\DateFieldHelper.cs" />
+    <Compile Include="Model\FieldTypes\DateTimeFieldHelper.cs" />
+    <Compile Include="Model\FieldTypes\DecimalFieldHelper.cs" />
+    <Compile Include="Model\FieldTypes\FieldHelper.cs" />
+    <Compile Include="Model\FieldTypes\GuidFieldHelper.cs" />
+    <Compile Include="Model\FieldTypes\IntFieldHelper.cs" />
+    <Compile Include="Model\FieldTypes\StringFieldHelper.cs" />
+    <Compile Include="Model\FieldTypes\TimeFieldHelper.cs" />
+    <Compile Include="Model\FieldTypes\XmlFieldHelper.cs" />
+    <Compile Include="Model\IDoubleCheckLock.cs" />
+    <Compile Include="Model\EntityEqualityComparer.cs" />
+    <Compile Include="Model\Internal\EntitySnapshotContextData.cs" />
+    <Compile Include="Model\Client\IFormSaveParticipant.cs" />
+    <Compile Include="Model\Internal\InternalExtensionMethods.cs" />
+    <Compile Include="Model\InvalidTypeException.cs" />
+    <Compile Include="Model\InvalidValueException.cs" />
+    <Compile Include="Model\Iterator.cs" />
+    <Compile Include="Model\IteratorState.cs" />
+    <Compile Include="Model\ObjectExtensions.cs" />
+    <Compile Include="Model\PartialClasses\TargetHelper.cs" />
+    <Compile Include="Model\PatternMatchException.cs" />
+    <Compile Include="Model\ReadOnlyException.cs" />
+    <Compile Include="Model\EntityRelationship.cs" />
+    <Compile Include="Model\EntityRelationshipCollection.cs" />
+    <Compile Include="Model\RelationshipInstanceException.cs" />
+    <Compile Include="Model\ResourceKeyHelper.cs" />
+    <Compile Include="Model\StringComparisonOption.cs" />
+    <Compile Include="Model\StringExtensions.cs" />
+    <Compile Include="Model\ValidationException.cs" />
+    <Compile Include="Properties\AssemblyFileInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\GlobalStrings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalStrings.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Metadata\Solutions\SolutionConfigurationAction.cs" />
+    <Compile Include="Metadata\Solutions\SolutionInstallAction.cs" />
+    <Compile Include="Scheduling\EdcDelegate.cs" />
+    <Compile Include="Scheduling\EdcLoggingAdapter.cs" />
+    <Compile Include="Scheduling\SchedulingHelper.cs" />
+    <Compile Include="Security\Credentials.cs" />
+    <Compile Include="Security\IdentityInfo.cs" />
+    <Compile Include="Security\ISetExtensions.cs" />
+    <Compile Include="Security\PlatformSecurityException.cs" />
+    <Compile Include="Security\SecurityTraceLevel.cs" />
+    <Compile Include="Security\SecurityTraceListener.cs" />
+    <Compile Include="Security\UserAccountCache.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Security\UserAccountValidator.cs" />
+    <Compile Include="Services\RequestContextBehavior.cs" />
+    <Compile Include="Services\RequestContextErrorHandler.cs" />
+    <Compile Include="Services\RequestContextParameterInspector.cs" />
+    <Compile Include="Services\ServiceFaults.cs" />
+    <Compile Include="Services\ServicePatternAttribute.cs" />
+    <Compile Include="Services\ServicesHelper.cs" />
+    <Compile Include="Services\CustomUsernameValidator.cs" />
+    <Compile Include="Services\StandardFaultBehavior.cs" />
+    <Compile Include="Services\StandardServiceBehavior.cs" />
+    <Compile Include="Services\StandardFaultErrorHandler.cs" />
+    <Compile Include="Services\IdentityTenantAuthorizationPolicy.cs" />
+    <Compile Include="Services\UserNamePasswordSecurityTokenAuthenticator.cs" />
+    <Compile Include="Services\UserNamePasswordSecurityTokenManager.cs" />
+    <Compile Include="Services\UserNamePasswordServiceCredentials.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\GlobalStrings.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>GlobalStrings.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ReadiNowXmlWithSchema Include="Config\Schema\Bootstrap_Enums.xml">
+      <SubType>Designer</SubType>
+    </ReadiNowXmlWithSchema>
+    <ReadiNowXmlWithSchema Include="Config\Schema\Bootstrap_FieldTypes.xml">
+      <SubType>Designer</SubType>
+    </ReadiNowXmlWithSchema>
+    <ReadiNowXmlWithSchema Include="Config\Schema\Bootstrap_Relationships.xml">
+      <SubType>Designer</SubType>
+    </ReadiNowXmlWithSchema>
+    <ReadiNowXmlWithSchema Include="Config\Schema\Bootstrap_Types.xml">
+      <SubType>Designer</SubType>
+    </ReadiNowXmlWithSchema>
+    <ReadiNowUpgradeMap Include="Config\UpgradeMap.xml">
+      <SubType>Designer</SubType>
+    </ReadiNowUpgradeMap>
+    <ReadiNowXml Include="Config\Data\Console_RelationshipBehaviors.xml">
+      <SubType>Designer</SubType>
+    </ReadiNowXml>
+    <ReadiNowXml Include="Config\Data\Mobile_Forms.xml">
+      <SubType>Designer</SubType>
+    </ReadiNowXml>
+    <ReadiNowXml Include="Config\Data\Mobile_Reports.xml">
+      <SubType>Designer</SubType>
+    </ReadiNowXml>
+    <ReadiNowXml Include="Config\Data\Security.xml">
+      <SubType>Designer</SubType>
+    </ReadiNowXml>
+    <ReadiNowXml Include="Config\Data\Workflow_Data.xml">
+      <SubType>Designer</SubType>
+    </ReadiNowXml>
+    <ReadiNowXml Include="Config\Data\Misc.xml">
+      <SubType>Designer</SubType>
+    </ReadiNowXml>
+    <ReadiNowXml Include="Config\Data\Console_Navigation.xml">
+      <SubType>Designer</SubType>
+    </ReadiNowXml>
+    <ReadiNowXmlWithSchema Include="Config\Schema\Shared_Types.xml">
+      <SubType>Designer</SubType>
+    </ReadiNowXmlWithSchema>
+    <ReadiNowXmlWithSchema Include="Config\Schema\EditForm.xml">
+      <SubType>Designer</SubType>
+    </ReadiNowXmlWithSchema>
+    <ReadiNowXmlWithSchema Include="Config\Schema\Platform_DocumentLibrary.xml">
+      <SubType>Designer</SubType>
+    </ReadiNowXmlWithSchema>
+    <ReadiNowXmlWithSchema Include="Config\Schema\Platform_Security.xml">
+      <SubType>Designer</SubType>
+    </ReadiNowXmlWithSchema>
+    <ReadiNowXmlWithSchema Include="Config\Schema\Platform_StructureViews.xml">
+      <SubType>Designer</SubType>
+    </ReadiNowXmlWithSchema>
+    <ReadiNowXmlWithSchema Include="Config\Schema\Platform_Types.xml">
+      <SubType>Designer</SubType>
+    </ReadiNowXmlWithSchema>
+    <ReadiNowXmlWithSchema Include="Config\Schema\TestArea.xml">
+      <SubType>Designer</SubType>
+    </ReadiNowXmlWithSchema>
+    <ReadiNowXmlWithSchema Include="Config\Schema\Mobile_Types.xml" />
+    <ReadiNowXml Include="Config\Data\Platform_DocumentTypes.xml">
+      <SubType>Designer</SubType>
+    </ReadiNowXml>
+    <ReadiNowXmlWithSchema Include="Config\Data\Platform_CondFormatTypes.xml">
+      <SubType>Designer</SubType>
+    </ReadiNowXmlWithSchema>
+    <ReadiNowXmlWithSchema Include="Config\Schema\Workflow_Types.xml">
+      <SubType>Designer</SubType>
+    </ReadiNowXmlWithSchema>
+    <ReadiNowXmlWithSchema Include="Config\Schema\Workflow_Activities.xml">
+      <SubType>Designer</SubType>
+    </ReadiNowXmlWithSchema>
+    <ReadiNowXmlWithSchema Include="Config\Schema\Scheduling_Types.xml">
+      <SubType>Designer</SubType>
+    </ReadiNowXmlWithSchema>
+    <ReadiNowSolutionXml Include="Config\Solution.xml">
+      <SubType>Designer</SubType>
+    </ReadiNowSolutionXml>
+    <ReadiNowXmlWithSchema Include="Config\Schema\Console_NavigationTypes.xml">
+      <SubType>Designer</SubType>
+    </ReadiNowXmlWithSchema>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="job_scheduling_data_2_0.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Model\Client\_EntityData.cd" />
+    <None Include="packages.config" />
+    <None Include="Scheduling\iCalendar\Serialization\iCalendar\iCal.g" />
+    <None Include="Security\AccessControl\Access Control - Checks.cd" />
+    <None Include="Security\AccessControl\Access Control - Repositories.cd" />
+    <ReadiNowCodeTemplate Include="Config\Templates\AutoGeneratedTypes.tt" />
+    <!--
+    <None Include="Config\Templates\AliasType.tt" />
+    <None Include="Config\Templates\Entity.tt" />
+    <None Include="Config\Templates\EntityAliasToIdCache.tt" />
+    <None Include="Config\Templates\EntityBase.tt" />
+    <None Include="Config\Templates\EntityCache.tt" />
+    <None Include="Config\Templates\EntityExceptions.tt" />
+    <None Include="Config\Templates\EntityFieldCache.tt" />
+    <None Include="Config\Templates\EntityFieldModificationCache.tt" />
+    <None Include="Config\Templates\EntityIdToAliasCache.tt" />
+    <None Include="Config\Templates\EntityTypeCache.tt" />
+    <None Include="Config\Templates\Event.tt" />
+    <None Include="Config\Templates\EventHandlerCache.tt" />
+    <None Include="Config\Templates\EventHandlerEventArgs.tt" />
+    <None Include="Config\Templates\IEntity.tt" />
+    <None Include="Config\Templates\IEntityBase.tt" />
+    <None Include="Config\Templates\IEvent.tt" />
+    <None Include="Config\Templates\IEventHandler.tt" />
+    <None Include="Config\Templates\StringExtensions.tt" />
+    <None Include="Config\Templates\ObjectExtensions.tt" />
+    -->
+    <None Include="Configuration\SoftwarePlatform.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Metadata\Query\Structured\_QueryDiagram.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EDC.Common\EDC.Common.csproj">
+      <Project>{C7183BEF-1A52-4DA5-850B-7132B5DCA7EB}</Project>
+      <Name>EDC.Common</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EDC.Interop\EDC.Interop.csproj">
+      <Project>{90FA9820-A3EC-40B2-A5C8-F3A3C533F000}</Project>
+      <Name>EDC.Interop</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EDC.ReadiNow.Common.ConfigParser\EDC.ReadiNow.Common.ConfigParser.csproj">
+      <Project>{151AD911-0248-4207-9B90-8B230A32131D}</Project>
+      <Name>EDC.ReadiNow.Common.ConfigParser</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EDC.SoftwarePlatform.Interfaces\EDC.SoftwarePlatform.Interfaces.csproj">
+      <Project>{c1fc97b7-aacc-45b5-9969-7995b27093ca}</Project>
+      <Name>EDC.SoftwarePlatform.Interfaces</Name>
+      <Private>True</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup />
+  <PropertyGroup>
+    <!-- Force visual studio to use external compiler and avoid cached files -->
+    <UseHostCompilerIfAvailable>False</UseHostCompilerIfAvailable>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <LangVersion>default</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)Automation\ReadiNow.targets" />
+  <Import Project="$(SolutionDir).build\MSBuild.Community.Tasks.targets" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <Target Name="PublishRedis">
+    <Message Text="Publishing redis files to $(PublishRoot)" />
+    <ItemGroup>
+      <RedisFiles Include="$(SolutionDir)Dependencies\Redis\redis-server.exe" />
+      <RedisFiles Include="$(SolutionDir)Dependencies\Redis\redis.windows.conf" />
+    </ItemGroup>
+    <Copy SourceFiles="@(RedisFiles)" DestinationFolder="$(PublishRoot)$(Configuration)\Redis\" ContinueOnError="WarnAndContinue" Retries="0" />
+  </Target>
+  <Target Name="AfterBuild">
+    <CallTarget Targets="PublishRedis" />
+    <CallTarget Targets="PublishWebAssembly" />
+    <Copy SourceFiles="Configuration\SoftwarePlatform.config" DestinationFiles="$(PublishRoot)$(Configuration)\Configuration\SoftwarePlatform.pristine" ContinueOnError="WarnAndContinue" Retries="0" />
+    <MakeDir Directories="$(PublishRoot)$(Configuration)\OutgoingEmail" />
+  </Target>
+  <PropertyGroup>
+    <AssemblyFileInfo>$(ProjectDir)Properties\AssemblyFileInfo.cs</AssemblyFileInfo>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>$(SolutionDir)Automation\SolutionHash.exe -in "$(SolutionDir)EDC.ReadiNow.Common\Config\Solution.xml" -out "$(SolutionDir)EDC.ReadiNow.Common\Config\Solution.hash"</PreBuildEvent>
+  </PropertyGroup>
+</Project>

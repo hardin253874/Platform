@@ -1,0 +1,1237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="core" xsi:schemaLocation=". ../Core.xsd" defaultSolution="coreSolution">
+  <!--Copyright 2011-2016 Global Software Innovation Pty Ltd-->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    WORKFLOW Activities                                           -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- Log -->
+  <activityType>
+    <inherits>wfActivity</inherits>
+    <alias>logActivity</alias>
+    <name>Log</name>
+    <description>Record a message to the system log.</description>
+    <wfActivityCategory>activityCategoryEnum_System</wfActivityCategory>
+    <activityTypeOrder>26</activityTypeOrder>
+    <activityExecutionClass>
+      <class>
+        <alias>logActivityClass</alias>
+        <typeName>EDC.SoftwarePlatform.Activities.LogActivityImplementation</typeName>
+        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+      </class>
+    </activityExecutionClass>
+    <generateCode>true</generateCode>
+    <inputArguments>
+      <stringArgument>
+        <alias>inLogActivityMessage</alias>
+        <name>Message</name>
+        <description>Message to record in to the system log.</description>
+        <argumentIsMandatory>true</argumentIsMandatory>
+      </stringArgument>
+      <resourceArgument>
+        <alias>inLogActivityObject</alias>
+        <name>Object</name>
+        <description>The subject of the log message.</description>
+        <argumentIsMandatory>false</argumentIsMandatory>
+        <conformsToType>userResource</conformsToType>
+      </resourceArgument>
+    </inputArguments>
+
+    <exitPoints>
+      <exitPoint>
+        <alias>exit9</alias>
+        <name>Exit</name>
+        <isDefaultExitPoint>true</isDefaultExitPoint>
+      </exitPoint>
+    </exitPoints>
+  </activityType>
+  <!-- Create -->
+  <activityType>
+    <inherits>wfActivity, entityWithArgsAndExits</inherits>
+    <alias>createActivity</alias>
+    <name>Create</name>
+    <description>Create a new record of a selected object.</description>
+    <wfActivityCategory>activityCategoryEnum_Data</wfActivityCategory>
+    <activityTypeOrder>2</activityTypeOrder>
+    <activityExecutionClass>
+      <class>
+        <alias>createActivityClass</alias>
+        <typeName>EDC.SoftwarePlatform.Activities.CreateImplementation</typeName>
+        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+      </class>
+    </activityExecutionClass>
+    <generateCode>true</generateCode>
+    <inputArguments>
+      <resourceArgument>
+        <alias>createActivityResourceArgument</alias>
+        <name>Object</name>
+        <description>Object definition of the record to create</description>
+        <argumentIsMandatory>true</argumentIsMandatory>
+        <conformsToType>definition</conformsToType>
+      </resourceArgument>
+    </inputArguments>
+    <outputArguments>
+      <resourceArgument>
+        <alias>createActivityCreatedResource</alias>
+        <name>Record</name>
+      </resourceArgument>
+    </outputArguments>
+    <exitPoints>
+      <exitPoint>
+        <alias>exit10</alias>
+        <name>Exit</name>
+        <isDefaultExitPoint>true</isDefaultExitPoint>
+      </exitPoint>
+    </exitPoints>
+  </activityType>
+  <!-- Delete -->
+  <activityType>
+    <inherits>wfActivity</inherits>
+    <alias>deleteActivity</alias>
+    <name>Delete</name>
+    <description>Delete a selected record.</description>
+    <wfActivityCategory>activityCategoryEnum_Data</wfActivityCategory>
+    <activityTypeOrder>6</activityTypeOrder>
+    <activityExecutionClass>
+      <class>
+        <alias>deleteActivityClass</alias>
+        <typeName>EDC.SoftwarePlatform.Activities.DeleteImplementation</typeName>
+        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+      </class>
+    </activityExecutionClass>
+    <generateCode>true</generateCode>
+    <inputArguments>
+      <resourceArgument>
+        <alias>deleteActivityResourceArgument</alias>
+        <name>Record</name>
+        <description>Record to delete</description>
+      </resourceArgument>
+    </inputArguments>
+    <exitPoints>
+      <exitPoint>
+        <alias>exit11</alias>
+        <name>Exit</name>
+        <isDefaultExitPoint>true</isDefaultExitPoint>
+      </exitPoint>
+    </exitPoints>
+  </activityType>
+  <!-- Update -->
+  <activityType>
+    <inherits>wfActivity, entityWithArgsAndExits</inherits>
+    <alias>updateFieldActivity</alias>
+    <name>Update</name>
+    <description>Update multiple fields or relationships for a selected record.</description>
+    <wfActivityCategory>activityCategoryEnum_Data</wfActivityCategory>
+    <activityTypeOrder>4</activityTypeOrder>
+    <activityExecutionClass>
+      <class>
+        <alias>updateFieldActivityClass</alias>
+        <typeName>EDC.SoftwarePlatform.Activities.UpdateFieldImplementation</typeName>
+        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+      </class>
+    </activityExecutionClass>
+    <generateCode>true</generateCode>
+    <inputArguments>
+      <resourceArgument>
+        <alias>updateFieldActivityResourceArgument</alias>
+        <argumentIsMandatory>true</argumentIsMandatory>
+        <name>Record</name>
+        <description>The record to update</description>
+      </resourceArgument>
+    </inputArguments>
+    <exitPoints>
+      <exitPoint>
+        <alias>exit1</alias>
+        <name>Exit</name>
+        <isDefaultExitPoint>true</isDefaultExitPoint>
+      </exitPoint>
+    </exitPoints>
+  </activityType>
+  <!-- Set Choice field -->
+  <activityType>
+    <inherits>wfActivity</inherits>
+    <alias>setChoiceActivity</alias>
+    <name>Set Choice</name>
+    <description>Set a choice field. If the field allows multiple options, either replace or or add to the selected options.</description>
+    <wfActivityCategory>activityCategoryEnum_Hidden</wfActivityCategory>
+    <generateCode>true</generateCode>
+    <activityExecutionClass>
+      <class>
+        <alias>setChoiceActivityClass</alias>
+        <typeName>EDC.SoftwarePlatform.Activities.SetChoiceImplementation</typeName>
+        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+      </class>
+    </activityExecutionClass>
+    <inputArguments>
+      <resourceArgument>
+        <alias>setChoiceActivityResourceArgument</alias>
+        <name>Resource to Update</name>
+        <description>The resource to update.</description>
+        <argumentIsMandatory>true</argumentIsMandatory>
+      </resourceArgument>
+      <resourceArgument>
+        <alias>setChoiceActivityFieldArgument</alias>
+        <name>Field to Update</name>
+        <description>The field to update on the resource.</description>
+        <conformsToType>enumType</conformsToType>
+        <argumentIsMandatory>true</argumentIsMandatory>
+      </resourceArgument>
+      <resourceArgument>
+        <alias>setChoiceActivityValueArgument</alias>
+        <name>New Value</name>
+        <description>The new value.</description>
+        <conformsToType>enumValue</conformsToType>
+      </resourceArgument>
+      <boolArgument>
+        <alias>setChoiceActivityReplaceExisting</alias>
+        <name>Replace Existing Values</name>
+        <description>When set to true, any existing choices will be removed.</description>
+      </boolArgument>
+    </inputArguments>
+    <exitPoints>
+      <exitPoint>
+        <alias>exit3</alias>
+        <name>Exit</name>
+        <isDefaultExitPoint>true</isDefaultExitPoint>
+      </exitPoint>
+    </exitPoints>
+  </activityType>
+  <!-- Set Relationship field -->
+  <activityType>
+    <inherits>wfActivity</inherits>
+    <alias>setRelationshipActivity</alias>
+    <name>Set Relationship</name>
+    <description>Set a relationship. If the relationship allows multiple relationships, either replace or or add.</description>
+    <wfActivityCategory>activityCategoryEnum_Hidden</wfActivityCategory>
+    <generateCode>true</generateCode>
+    <activityExecutionClass>
+      <class>
+        <alias>setRelationshipChoiceActivityClass</alias>
+        <typeName>EDC.SoftwarePlatform.Activities.SetRelationshipImplementation</typeName>
+        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+      </class>
+    </activityExecutionClass>
+    <inputArguments>
+      <resourceArgument>
+        <alias>setRelationshipActivityOriginArgument</alias>
+        <name>Origin</name>
+        <description>The resource that the relationship starts at.</description>
+        <argumentIsMandatory>true</argumentIsMandatory>
+      </resourceArgument>
+      <resourceArgument>
+        <alias>setRelationshipActivityRelationshipArgument</alias>
+        <name>Relationship</name>
+        <description>The relationship to add.</description>
+        <conformsToType>relationship</conformsToType>
+        <argumentIsMandatory>true</argumentIsMandatory>
+      </resourceArgument>
+      <resourceArgument>
+        <alias>setRelationshipActivityDestinationArgument</alias>
+        <name>Destination</name>
+        <description>The resource that the relationship ends at. To clear the relationship leave this blank.</description>
+      </resourceArgument>
+      <boolArgument>
+        <alias>setRelationshipActivityReplaceExisting</alias>
+        <name>Replace Existing Destination</name>
+        <description>When set to true, any existing choices will be removed of the relationship allows multiple destinations.</description>
+      </boolArgument>
+      <boolArgument>
+        <alias>setRelationshipActivityIsReverse</alias>
+        <name>(Internal) Is this a reverse relationship</name>
+        <description>(Internal argument) Is this a reverse relationship?</description>
+      </boolArgument>
+    </inputArguments>
+    <exitPoints>
+      <exitPoint>
+        <alias>exit4</alias>
+        <name>Exit</name>
+        <isDefaultExitPoint>true</isDefaultExitPoint>
+      </exitPoint>
+    </exitPoints>
+  </activityType>
+  <!-- Decision DEPRECATED -->
+  <activityType>
+    <alias>decisionActivity</alias>
+    <name>Gateway</name>
+    <description>Activity to make a yes/no decision. The default exit point corresponds to a "yes".</description>
+    <inherits>wfActivity, entityWithArgsAndExits</inherits>
+    <wfActivityCategory>activityCategoryEnum_Hidden</wfActivityCategory>
+    <generateCode>true</generateCode>
+    <activityExecutionClass>
+      <class>
+        <alias>decisionActivityClass</alias>
+        <typeName>EDC.SoftwarePlatform.Activities.DecisionImplementation</typeName>
+        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+      </class>
+    </activityExecutionClass>
+    <inputArguments>
+      <boolArgument>
+        <alias>decisionActivityDecisionArgument</alias>
+        <name>DecisionArgument</name>
+        <description>This argument is used during expression evaluation</description>
+      </boolArgument>
+    </inputArguments>
+    <exitPoints>
+      <exitPoint>
+        <alias>decisionActivityYesExitPoint</alias>
+        <name>Yes</name>
+        <description>The decision is true.</description>
+        <isDefaultExitPoint>true</isDefaultExitPoint>
+        <exitPointOrdinal>0</exitPointOrdinal>
+      </exitPoint>
+      <exitPoint>
+        <alias>decisionActivityNoExitPoint</alias>
+        <name>No</name>
+        <description>The decision is false.</description>
+        <exitPointOrdinal>1</exitPointOrdinal>
+      </exitPoint>
+    </exitPoints>
+  </activityType>
+  <!-- Assign to variable -->
+  <activityType>
+    <alias>assignToVariable</alias>
+    <name>Assign to Variable</name>
+    <description>Assign a specified value to a predefined variable.</description>
+    <wfActivityCategory>activityCategoryEnum_System</wfActivityCategory>
+    <activityTypeOrder>20</activityTypeOrder>
+    <inherits>wfActivity</inherits>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Assign to Variable Details</name>
+        <alias>assignToVariableDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <activityExecutionClass>
+      <class>
+        <alias>assignToVariableClass</alias>
+        <typeName>EDC.SoftwarePlatform.Activities.AssignToVariableImplementation</typeName>
+        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+      </class>
+    </activityExecutionClass>
+    <inputArguments>
+      <objectArgument>
+        <alias>assignValueArgument</alias>
+        <name>Value</name>
+        <description>Value to be assigned to variable.</description>
+        <argumentIsMandatory>true</argumentIsMandatory>
+      </objectArgument>
+    </inputArguments>
+    <relationships>
+      <relationship>
+        <alias>targetVariable</alias>
+        <name>Target variable</name>
+        <description>The variable to be updated.</description>
+        <toType>activityArgument</toType>
+        <relType>relLookup</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>assignToVariableDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>activityArgumentDetails</relationshipInToTypeGroup>
+      </relationship>
+    </relationships>
+    <exitPoints>
+      <exitPoint>
+        <alias>exit5</alias>
+        <name>Exit</name>
+        <isDefaultExitPoint>true</isDefaultExitPoint>
+      </exitPoint>
+    </exitPoints>
+  </activityType>
+  <!-- Send email -->
+  <!-- TODO: Add mulitple recipients -->
+  <activityType>
+    <alias>sendEmailActivity</alias>
+    <inherits>wfActivity</inherits>
+    <name>Send Email</name>
+    <description>Send an email to a single or list of addresses.</description>
+    <wfActivityCategory>activityCategoryEnum_User</wfActivityCategory>
+    <activityTypeOrder>18</activityTypeOrder>
+    <activityExecutionClass>
+      <class>
+        <alias>sendEmailActivityClass</alias>
+        <typeName>EDC.SoftwarePlatform.Activities.SendEmailImplementation</typeName>
+        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+      </class>
+    </activityExecutionClass>
+    <generateCode>true</generateCode>
+    <inputArguments>
+      <stringArgument>
+        <alias>sendEmailRecipientArgument</alias>
+        <name>Recipient Address</name>
+        <description>The email address of the intended recipient.</description>
+      </stringArgument>
+      <resourceListArgument>
+        <alias>sendEmailRecipientList</alias>
+        <name>Recipients</name>
+        <description>The list of recipients for the email.</description>
+      </resourceListArgument>
+      <resourceArgument>
+        <alias>sendEmailRecipientField</alias>
+        <name>Email Field</name>
+        <description>The field that will be used to get email addresses. This must be a string fields that has been marked as email addresses. </description>
+        <conformsToType>stringField</conformsToType>
+      </resourceArgument>
+      <stringArgument>
+        <alias>sendEmailSubjectArgument</alias>
+        <name>Subject</name>
+        <description>The email subject field.</description>
+      </stringArgument>
+      <stringArgument>
+        <alias>sendEmailBodyArgument</alias>
+        <name>Body</name>
+        <description>The main body of text for the email.</description>
+      </stringArgument>
+      <resourceListArgument>
+        <alias>sendEmailAttachments</alias>
+        <name>Attachments</name>
+        <description>Any attachments to include in the email.</description>
+        <conformsToType>document</conformsToType>
+      </resourceListArgument>
+      <resourceArgument>
+        <alias>sendEmailInbox</alias>
+        <name>From Inbox</name>
+        <description>The inbox that will be used as the 'From' address.</description>
+        <conformsToType>inbox</conformsToType>
+        <argumentIsMandatory>true</argumentIsMandatory>
+      </resourceArgument>
+    </inputArguments>
+    <exitPoints>
+      <exitPoint>
+        <alias>sendEmailSucceededSend</alias>
+        <name>Send Succeeded</name>
+        <description>This path is taken when an email send succeeded to send.</description>
+        <isDefaultExitPoint>true</isDefaultExitPoint>
+        <exitPointOrdinal>0</exitPointOrdinal>
+      </exitPoint>
+      <exitPoint>
+        <alias>sendEmailFailedSend</alias>
+        <name>Send Failed</name>
+        <description>This path is taken when an email failed to send.</description>
+        <exitPointOrdinal>1</exitPointOrdinal>
+      </exitPoint>
+    </exitPoints>
+  </activityType>
+  <!-- Display Form (aka User Action)-->
+  <activityType>
+    <alias>displayFormActivity</alias>
+    <inherits>wfActivity, entityWithArgsAndExits</inherits>
+    <name>User Action</name>
+    <description>Displays a form to the user and creates a user task.</description>
+    <wfActivityCategory>activityCategoryEnum_User</wfActivityCategory>
+    <activityTypeOrder>16</activityTypeOrder>
+    <activityExecutionClass>
+      <class>
+        <alias>displayFormActivityClass</alias>
+        <typeName>EDC.SoftwarePlatform.Activities.DisplayFormImplementation</typeName>
+        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+      </class>
+    </activityExecutionClass>
+    <generateCode>true</generateCode>
+    <inputArguments>
+      <resourceArgument>
+        <alias>inDisplayFormForUser</alias>
+        <name>For Person</name>
+        <argumentIsMandatory>true</argumentIsMandatory>
+        <description>The person who will receive the form.</description>
+        <conformsToType>person</conformsToType>
+      </resourceArgument>
+      <resourceArgument>
+        <alias>inDisplayFormResource</alias>
+        <name>Record</name>
+        <description>The record to display to the user</description>
+        <conformsToType>userResource</conformsToType>
+      </resourceArgument>
+      <resourceArgument>
+        <alias>inDisplayFormForm</alias>
+        <name>Form</name>
+        <description>The form to use. If no form is given the default form for the type will be used.</description>
+        <conformsToType>resource</conformsToType>
+        <!-- <conformsToType>cusomtEditForm</conformsToType>  Problem, can't refer to it here -->
+      </resourceArgument>
+      <decimalArgument>
+        <alias>inDisplayFormTimeOut</alias>
+        <name>Due in (Days)</name>
+        <description>The amount of time in days before the display is due and will time-out.  </description>
+      </decimalArgument>
+      <resourceArgument>
+        <alias>inDisplayFormPriority</alias>
+        <name>Priority</name>
+        <description>The priority on this form.</description>
+        <conformsToType>eventEmailPriorityEnum</conformsToType>
+      </resourceArgument>
+      <decimalArgument>
+        <alias>inDisplayFormPercentageCompleted</alias>
+        <name>% Completed</name>
+        <description>If set, this is displayed to the user on the form.</description>
+      </decimalArgument>
+      <boolArgument>
+        <alias>inDisplayFormWaitForNext</alias>
+        <name>Wait for next form</name>
+        <description>After the user completed the form, wait to see if there are any follow on forms to completed.</description>
+      </boolArgument>
+      <boolArgument>
+        <alias>inDisplayFormRecordHistory</alias>
+        <name>Record history</name>
+        <description>If true the user task that was created is preserved after the user response has been processed and a log entry written.</description>
+      </boolArgument>
+      <boolArgument>
+        <alias>inHideComment</alias>
+        <name>Hide comment field</name>
+        <description>Do not display the comment field.</description>
+      </boolArgument>
+      <boolArgument>
+        <alias>inOpenInEditMode</alias>
+        <name>Open in edit mode</name>
+        <description>Open the form in edit mode.</description>
+      </boolArgument>
+    </inputArguments>
+    <outputArguments>
+      <resourceArgument>
+        <alias>outDisplayFormUserTask</alias>
+        <name>Completed task</name>
+        <description>The user task that was created. If this is only populate if 'Store user response' has been set to true.</description>
+        <conformsToType>displayFormUserTask</conformsToType>
+      </resourceArgument>
+      <stringArgument>
+        <alias>outTaskComment</alias>
+        <name>Comment</name>
+        <description>The comment provided by the user.</description>
+      </stringArgument>
+    </outputArguments>
+    <internalArguments>
+      <boolArgument>
+        <alias>dfaInternalKeepHistory</alias>
+      </boolArgument>
+    </internalArguments>
+    <exitPoints>
+      <exitPoint>
+        <alias>displayFormTimeout</alias>
+        <name>Time out</name>
+        <description>The exit to be used if a timeout threshold has been set and exceeded. If this exit has not been wired up the time-out threshold will be ignored.</description>
+        <isDefaultExitPoint>true</isDefaultExitPoint>
+        <isTimeoutExitPoint>true</isTimeoutExitPoint>
+        <exitPointOrdinal>99</exitPointOrdinal>
+      </exitPoint>
+    </exitPoints>
+  </activityType>
+  <!-- For Each -->
+  <activityType>
+    <inherits>wfActivity</inherits>
+    <alias>forEachResource</alias>
+    <name>For Each</name>
+    <description>Run a sequence of activities down a list of records.</description>
+    <wfActivityCategory>activityCategoryEnum_Data</wfActivityCategory>
+    <activityTypeOrder>12</activityTypeOrder>
+    <activityExecutionClass>
+      <class>
+        <alias>foreachActivityClass</alias>
+        <typeName>EDC.SoftwarePlatform.Activities.ForeachImplementation</typeName>
+        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+      </class>
+    </activityExecutionClass>
+    <generateCode>true</generateCode>
+    <inputArguments>
+      <resourceListArgument>
+        <alias>foreachList</alias>
+        <name>List</name>
+        <description>The list of records to iterate over.</description>
+        <argumentIsMandatory>true</argumentIsMandatory>
+      </resourceListArgument>
+    </inputArguments>
+    <outputArguments>
+      <resourceArgument>
+        <alias>foreachSelectedResource</alias>
+        <name>Record</name>
+        <description>The record that has been selected for the current iteration.</description>
+      </resourceArgument>
+    </outputArguments>
+    <internalArguments>
+      <resourceListArgument>
+        <alias>forEachResourceList</alias>
+        <name>Internal Resource List</name>
+        <description>An internal variable used to keep the list of records in the foreach</description>
+      </resourceListArgument>
+      <boolArgument>
+        <alias>forEachHaveStarted</alias>
+        <name>Have started</name>
+        <description>An internal variable used to indicate if the for loop has already started</description>
+      </boolArgument>
+    </internalArguments>
+    <exitPoints>
+      <exitPoint>
+        <alias>foreachCompletedExitPoint</alias>
+        <name>Finished</name>
+        <description>The loop has completed, continue onto then next activity.</description>
+        <isDefaultExitPoint>true</isDefaultExitPoint>
+      </exitPoint>
+      <exitPoint>
+        <alias>foreachLoopExitPoint</alias>
+        <name>Loop</name>
+        <description>The exit point on the 'For Each' activity that is run for every record in the list.</description>
+        <exitPointOrdinal>1</exitPointOrdinal>
+      </exitPoint>
+    </exitPoints>
+  </activityType>
+  <activityType>
+    <alias>switchActivity</alias>
+    <name>Gateway</name>
+    <description>Switch paths based on defined logic.</description>
+    <wfActivityCategory>activityCategoryEnum_Data</wfActivityCategory>
+    <activityTypeOrder>14</activityTypeOrder>
+    <inherits>wfActivity, entityWithArgsAndExits</inherits>
+    <generateCode>true</generateCode>
+    <activityExecutionClass>
+      <class>
+        <alias>switchActivityClass</alias>
+        <typeName>EDC.SoftwarePlatform.Activities.SwitchImplementation</typeName>
+        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+      </class>
+    </activityExecutionClass>
+    <inputArguments>
+      <stringArgument>
+        <alias>switchActivityDecisionArgument</alias>
+        <name>Value to Switch On</name>
+        <description>The value of this argument is used to determine which path is followed. The value must match the name of the exit point.</description>
+      </stringArgument>
+    </inputArguments>
+    <exitPoints>t
+
+      <exitPoint><alias>switchActivityOtherwiseExitPoint</alias><name>Otherwise</name><description>This path is taken if none of the other exits match.</description><isDefaultExitPoint>true</isDefaultExitPoint><exitPointOrdinal>99</exitPointOrdinal></exitPoint></exitPoints>
+  </activityType>
+  <!-- Run Workflow -->
+  <activityType>
+    <alias>workflowProxy</alias>
+    <name>Run Workflow</name>
+    <description>Run another workflow and wait for results.</description>
+    <inherits>wfActivity, entityWithArgsAndExits</inherits>
+    <wfActivityCategory>activityCategoryEnum_System</wfActivityCategory>
+    <activityTypeOrder>22</activityTypeOrder>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Run Workflow Details</name>
+        <alias>workflowProxyDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <activityExecutionClass>
+      <class>
+        <alias>workflowProxyClass</alias>
+        <typeName>EDC.SoftwarePlatform.Activities.WorkflowProxyImplementation</typeName>
+        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+      </class>
+    </activityExecutionClass>
+    <relationships>
+      <relationship>
+        <alias>workflowToProxy</alias>
+        <name>Workflow</name>
+        <toType>workflow</toType>
+        <relType>relLookup</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>workflowProxyDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>workflowDetails</relationshipInToTypeGroup>
+      </relationship>
+    </relationships>
+  </activityType>
+  <!-- Clone  -->
+  <activityType>
+    <alias>cloneActivity</alias>
+    <name>Clone</name>
+    <description>Clone a record from one object to another.</description>
+    <inherits>wfActivity, entityWithArgsAndExits</inherits>
+    <wfActivityCategory>activityCategoryEnum_Data</wfActivityCategory>
+    <activityTypeOrder>8</activityTypeOrder>
+    <generateCode>true</generateCode>
+    <activityExecutionClass>
+      <class>
+        <alias>cloneActivityClass</alias>
+        <typeName>EDC.SoftwarePlatform.Activities.CloneImplementation</typeName>
+        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+      </class>
+    </activityExecutionClass>
+    <inputArguments>
+      <resourceArgument>
+        <alias>resourceToCloneArgument</alias>
+        <name>Record</name>
+        <description>The record that is to be cloned</description>
+        <argumentIsMandatory>true</argumentIsMandatory>
+      </resourceArgument>
+      <resourceArgument>
+        <alias>newDefinitionCloneArgument</alias>
+        <name>Object</name>
+        <description>The object definition for the new record</description>
+        <conformsToType>definition</conformsToType>
+      </resourceArgument>
+    </inputArguments>
+    <outputArguments>
+      <resourceArgument>
+        <alias>clonedResourceArgument</alias>
+        <name>Record</name>
+        <description>The new record that has been created</description>
+      </resourceArgument>
+    </outputArguments>
+    <exitPoints>
+      <exitPoint>
+        <alias>exit6</alias>
+        <name>Exit</name>
+        <isDefaultExitPoint>true</isDefaultExitPoint>
+      </exitPoint>
+    </exitPoints>
+  </activityType>
+  <!-- Get Resources -->
+  <activityType>
+    <inherits>wfActivity</inherits>
+    <alias>getResourcesActivity</alias>
+    <name>Get Records</name>
+    <description>Get a list of records from a selected object.</description>
+    <wfActivityCategory>activityCategoryEnum_Data</wfActivityCategory>
+    <activityTypeOrder>10</activityTypeOrder>
+    <activityExecutionClass>
+      <class>
+        <alias>getResourcesActivityClass</alias>
+        <typeName>EDC.SoftwarePlatform.Activities.GetResourcesImplementation</typeName>
+        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+      </class>
+    </activityExecutionClass>
+    <generateCode>true</generateCode>
+    <inputArguments>
+      <resourceArgument>
+        <alias>getResourcesResourceType</alias>
+        <name>Object</name>
+        <description>Object definition to get all the records for.</description>
+        <conformsToType>definition</conformsToType>
+      </resourceArgument>
+      <resourceArgument>
+        <alias>getResourcesReport</alias>
+        <name>Report</name>
+        <description>The type of resource that is being read.</description>
+      </resourceArgument>
+    </inputArguments>
+    <outputArguments>
+      <resourceListArgument>
+        <alias>getResourcesList</alias>
+        <name>List</name>
+        <description>The list of records</description>
+      </resourceListArgument>
+      <resourceArgument>
+        <alias>getResourcesFirst</alias>
+        <name>First</name>
+        <description>The first available record</description>
+      </resourceArgument>
+      <integerArgument>
+        <alias>getResourcesCount</alias>
+        <name>Count</name>
+        <description>The number of records obtained</description>
+      </integerArgument>
+    </outputArguments>
+    <exitPoints>
+      <exitPoint>
+        <alias>exit7</alias>
+        <name>Exit</name>
+        <isDefaultExitPoint>true</isDefaultExitPoint>
+      </exitPoint>
+    </exitPoints>
+  </activityType>
+  <!-- Create Link -->
+  <activityType>
+    <inherits>wfActivity</inherits>
+    <alias>createLinkActivity</alias>
+    <name>Create Link</name>
+    <description>Create a link to record.</description>
+    <wfActivityCategory>activityCategoryEnum_System</wfActivityCategory>
+    <activityTypeOrder>24</activityTypeOrder>
+    <activityExecutionClass>
+      <class>
+        <alias>createLinkActivityClass</alias>
+        <typeName>EDC.SoftwarePlatform.Activities.CreateLinkImplementation</typeName>
+        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+      </class>
+    </activityExecutionClass>
+    <generateCode>true</generateCode>
+    <inputArguments>
+      <resourceArgument>
+        <alias>createLinkResourceArgument</alias>
+        <name>Resource</name>
+        <description>The selected resource</description>
+        <argumentIsMandatory>true</argumentIsMandatory>
+      </resourceArgument>
+    </inputArguments>
+    <outputArguments>
+      <stringArgument>
+        <alias>createLinkUrlOutput</alias>
+        <name>URL</name>
+        <description>The URL link to the record.</description>
+      </stringArgument>
+      <stringArgument>
+        <alias>createLinkAnchorOutput</alias>
+        <name>Link</name>
+        <description>An anchor tag pointing to the record, suitable for embedding in email.</description>
+      </stringArgument>
+    </outputArguments>
+    <exitPoints>
+      <exitPoint>
+        <alias>exit8</alias>
+        <name>Exit</name>
+        <isDefaultExitPoint>true</isDefaultExitPoint>
+      </exitPoint>
+    </exitPoints>
+  </activityType>
+  <!-- Generate document -->
+  <activityType>
+    <inherits>wfActivity</inherits>
+    <alias>generateDocActivity</alias>
+    <name>Generate Document</name>
+    <description>Generate a document.</description>
+    <wfActivityCategory>activityCategoryEnum_Other</wfActivityCategory>
+    <activityTypeOrder>29</activityTypeOrder>
+    <activityExecutionClass>
+      <class>
+        <alias>generateDocActivityClass</alias>
+        <typeName>EDC.SoftwarePlatform.Activities.GenerateDocImplementation</typeName>
+        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+      </class>
+    </activityExecutionClass>
+    <generateCode>true</generateCode>
+    <inputArguments>
+      <stringArgument>
+        <alias>inGenerateDocName</alias>
+        <name>Generated Name</name>
+        <description>The name to give to the document.</description>
+        <argumentIsMandatory>false</argumentIsMandatory>
+      </stringArgument>
+      <resourceArgument>
+        <alias>inGenerateDocTemplate</alias>
+        <name>Document Template</name>
+        <description>The template to use</description>
+        <argumentIsMandatory>true</argumentIsMandatory>
+        <conformsToType>reportTemplate</conformsToType>
+      </resourceArgument>
+      <resourceArgument>
+        <alias>inGenerateDocSource</alias>
+        <name>Data Source</name>
+        <description>A resource to use as a source of information for the generation.</description>
+        <argumentIsMandatory>false</argumentIsMandatory>
+        <conformsToType>userResource</conformsToType>
+      </resourceArgument>
+    </inputArguments>
+    <outputArguments>
+      <resourceArgument>
+        <alias>outGenerateDocDoc</alias>
+        <name>Document</name>
+        <description>The document that has been generated.</description>
+        <conformsToType>document</conformsToType>
+      </resourceArgument>
+    </outputArguments>
+    <exitPoints>
+      <exitPoint>
+        <alias>exit12</alias>
+        <name>Exit</name>
+        <isDefaultExitPoint>true</isDefaultExitPoint>
+      </exitPoint>
+    </exitPoints>
+  </activityType>
+
+  <!-- Export to -->
+  <activityType>
+    <inherits>wfActivity</inherits>
+    <alias>exportToActivity</alias>
+    <name>Export to ...</name>
+    <description>Run a report and generate a file.</description>
+    <wfActivityCategory>activityCategoryEnum_Other</wfActivityCategory>
+    <activityTypeOrder>30</activityTypeOrder>
+    <activityExecutionClass>
+      <class>
+        <alias>exportToActivityClass</alias>
+        <typeName>EDC.SoftwarePlatform.Activities.ExportToImplementation</typeName>
+        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+      </class>
+    </activityExecutionClass>
+    <generateCode>true</generateCode>
+    <inputArguments>
+      <stringArgument>
+        <alias>inExportToName</alias>
+        <name>File Name</name>
+        <description>The name to give to the exported file.</description>
+        <argumentIsMandatory>false</argumentIsMandatory>
+      </stringArgument>
+
+      <resourceArgument>
+        <alias>inExportToReport</alias>
+        <name>Report</name>
+        <description>The report to run.</description>
+        <argumentIsMandatory>true</argumentIsMandatory>
+        <conformsToType>report</conformsToType>
+      </resourceArgument>
+
+      <resourceArgument>
+        <alias>inExportToFormat</alias>
+        <name>Format</name>
+        <description>The format of file to generate.</description>
+        <argumentIsMandatory>true</argumentIsMandatory>
+        <conformsToType>
+          <enumType>
+            <alias>exportFileTypeEnum</alias>
+            <name>Export File Type</name>
+            <inherits>enumValue</inherits>
+            <generateCode>true</generateCode>
+            <enumValues>
+              <exportFileTypeEnum>
+                <name>Excel</name>
+                <alias>exportFileTypeExcel</alias>
+                <enumOrder>1</enumOrder>
+              </exportFileTypeEnum>
+              <exportFileTypeEnum>
+                <name>CSV</name>
+                <alias>exportFileTypeCsv</alias>
+                <enumOrder>2</enumOrder>
+              </exportFileTypeEnum>
+              <exportFileTypeEnum>
+                <name>Word</name>
+                <alias>exportFileTypeWord</alias>
+                <enumOrder>3</enumOrder>
+              </exportFileTypeEnum>
+            </enumValues>
+          </enumType>
+        </conformsToType>
+      </resourceArgument>
+
+    </inputArguments>
+    <outputArguments>
+      <resourceArgument>
+        <alias>outExportToDoc</alias>
+        <name>Document</name>
+        <description>The exported document.</description>
+        <conformsToType>document</conformsToType>
+      </resourceArgument>
+    </outputArguments>
+    <exitPoints>
+      <exitPoint>
+        <alias>exit13</alias>
+        <name>Exit</name>
+        <isDefaultExitPoint>true</isDefaultExitPoint>
+      </exitPoint>
+    </exitPoints>
+  </activityType>
+
+  <!-- Notify  -->
+  <activityType>
+    <inherits>wfActivity</inherits>
+    <alias>notifyActivity</alias>
+    <name>Notify</name>
+    <description>Notify users.</description>
+    <wfActivityCategory>activityCategoryEnum_Other</wfActivityCategory>
+    <activityTypeOrder>31</activityTypeOrder>
+    <activityExecutionClass>
+      <class>
+        <alias>notifyActivityClass</alias>
+        <typeName>EDC.SoftwarePlatform.Activities.NotifyImplementation</typeName>
+        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+      </class>
+    </activityExecutionClass>
+    <generateCode>true</generateCode>
+    <inputArguments>
+      <stringArgument>
+        <alias>inMessage</alias>
+        <name>Message</name>
+        <description>The message to send to users.</description>
+        <argumentIsMandatory>true</argumentIsMandatory>
+      </stringArgument>
+      <resourceListArgument>
+        <alias>inPeople</alias>
+        <name>People</name>
+        <description>The people to notify.</description>
+        <argumentIsMandatory>true</argumentIsMandatory>
+        <conformsToType>core:person</conformsToType>
+      </resourceListArgument>
+      <boolArgument>
+        <alias>inWaitForReplies</alias>
+        <name>Wait for replies</name>
+        <description>Wait for everyone to reply before progressing the workflow.</description>
+        <argumentIsMandatory>false</argumentIsMandatory>
+      </boolArgument>
+      <decimalArgument>
+        <alias>inNotifyTimeOut</alias>
+        <name>Wait for</name>
+        <description>The amount of time in days to wait before automatically moving the workflow on. </description>
+      </decimalArgument>
+      <decimalArgument>
+        <alias>inAcceptRepliesFor</alias>
+        <name>Accept replies for</name>
+        <description>The amount of time in days to accept replies to this notification. </description>
+        <argumentIsMandatory>false</argumentIsMandatory>
+        <defaultExpression>1</defaultExpression>
+      </decimalArgument>
+      <resourceArgument>
+        <alias>inLinkToRecord</alias>
+        <name>Link to record</name>
+        <description>If set then a relationship will be set between the notification and the provided record.</description>
+        <conformsToType>core:userResource</conformsToType>
+      </resourceArgument>
+
+    </inputArguments>
+
+    <outputArguments>
+
+      <resourceArgument>
+        <alias>outNotificationRecord</alias>
+        <name>Notification Record</name>
+        <description>If create send receipts has been set, this is record of all the sent notifications along with any replies.</description>
+        <conformsToType>notification</conformsToType>
+      </resourceArgument>
+
+    </outputArguments>
+
+    <exitPoints>
+      <exitPoint>
+        <alias>exit14</alias>
+        <name>Exit</name>
+        <isDefaultExitPoint>true</isDefaultExitPoint>
+        <isTimeoutExitPoint>true</isTimeoutExitPoint>
+      </exitPoint>
+    </exitPoints>
+
+    <relationships>
+      <relationship>
+        <alias>nReplyMap</alias>
+        <name>Reply map</name>
+        <description>The mapping from a reply string to a workflow</description>
+        <relType>relComponents</relType>
+        <securesTo>true</securesTo>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>workflowDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>workflowDetails</relationshipInToTypeGroup>
+
+        <toType>
+          <type>
+            <alias>replyMapEntry</alias>
+            <name>Workflow Map Entry</name>
+            <description>An entry for a workflow map.</description>
+            <generateCode>true</generateCode>
+            <fields>
+              <intField>
+                <alias>rmeOrder</alias>
+                <name>Order</name>
+                <description>The order of an entry in a workflow map</description>
+                <fieldInGroup>workflowDetails</fieldInGroup>
+              </intField>
+            </fields>
+
+            <relationships>
+              <relationship>
+                <alias>rmeWorkflow</alias>
+                <name>Workflow</name>
+                <toType>workflow</toType>
+                <toName>Workflow</toName>
+                <relType>relLookup</relType>
+                <hideOnToType>true</hideOnToType>
+                <hideOnToTypeDefaultForm>true</hideOnToTypeDefaultForm>
+                <relationshipInFromTypeGroup>workflowDetails</relationshipInFromTypeGroup>
+                <generateCode>true</generateCode>
+              </relationship>
+            </relationships>
+          </type>
+        </toType>
+      </relationship>
+    </relationships>
+
+  </activityType>
+
+  <!-- User Input -->
+  <activityType>
+    <inherits>wfActivity</inherits>
+    <alias>promptUserActivity</alias>
+    <name>User Input</name>
+    <description>Ask for input from a user.</description>
+    <wfActivityCategory>activityCategoryEnum_User</wfActivityCategory>
+    <activityTypeOrder>17</activityTypeOrder>
+    <fieldGroups>
+      <fieldGroup>
+        <name>User Input Details</name>
+        <alias>promptUserDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <activityExecutionClass>
+      <class>
+        <alias>promptUserActivityClass</alias>
+        <typeName>EDC.SoftwarePlatform.Activities.PromptUserImplementation</typeName>
+        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+      </class>
+    </activityExecutionClass>
+    <generateCode>true</generateCode>
+    <inputArguments>
+      <resourceArgument>
+        <alias>inPromptUserForPerson</alias>
+        <name>For Person</name>
+        <argumentIsMandatory>true</argumentIsMandatory>
+        <description>The person who should provide the values.</description>
+        <conformsToType>person</conformsToType>
+      </resourceArgument>
+      <stringArgument>
+        <alias>inPromptUserMessage</alias>
+        <name>Prompt</name>
+        <description>Displays some helpful text to preface the required user response.</description>
+      </stringArgument>
+    </inputArguments>
+    <relationships>
+      <relationship>
+        <alias>promptForArguments</alias>
+        <name>Prompt for arguments</name>
+        <description>The arguments requiring input from the user.</description>
+        <toType>activityPrompt</toType>
+        <relType>relComponents</relType>
+        <generateCode>true</generateCode>
+        <securesTo>true</securesTo>
+        <relationshipInFromTypeGroup>promptUserDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>activityArgumentDetails</relationshipInToTypeGroup>
+      </relationship>
+    </relationships>
+    <exitPoints>
+      <exitPoint>
+        <alias>promptUserCompleted</alias>
+        <name>Completed</name>
+        <isDefaultExitPoint>true</isDefaultExitPoint>
+        <exitPointOrdinal>1</exitPointOrdinal>
+      </exitPoint>
+    </exitPoints>
+  </activityType>
+
+  <!-- Start survey -->
+  <activityType>
+    <inherits>wfActivity</inherits>
+    <alias>startSurveyActivity</alias>
+    <name>Start Survey</name>
+    <description>Start a survey.</description>
+    <wfActivityCategory>activityCategoryEnum_User</wfActivityCategory>
+    <activityTypeOrder>30</activityTypeOrder>
+    <activityExecutionClass>
+      <class>
+        <alias>startSurveyActivityClass</alias>
+        <typeName>EDC.SoftwarePlatform.Activities.StartSurveyImplementation</typeName>
+        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+      </class>
+    </activityExecutionClass>
+    <generateCode>true</generateCode>
+    <inputArguments>
+      <boolArgument>
+        <alias>inStartSurveyPause</alias>
+        <name>Pause Until Completed</name>
+        <description>Plause the activity until the user has completed the survey.</description>
+        <argumentIsMandatory>false</argumentIsMandatory>
+        <defaultExpression>true</defaultExpression>
+      </boolArgument>
+      <resourceArgument>
+        <alias>inStartSurveyCampaign</alias>
+        <name>Campaign</name>
+        <description>The campaign to launch for the relevant survey.</description>
+        <argumentIsMandatory>true</argumentIsMandatory>
+        <conformsToType>surveyCampaign</conformsToType>
+      </resourceArgument>
+      <resourceArgument>
+        <alias>inStartSurveyTarget</alias>
+        <name>Target object</name>
+        <description>The survey to be completed.</description>
+        <conformsToType>userResource</conformsToType>
+      </resourceArgument>
+      <decimalArgument>
+        <alias>inStartSurveyDueDays</alias>
+        <name>Due in (Days)</name>
+        <description>The amount of time in days before the survey must be completed.</description>
+      </decimalArgument>
+      <stringArgument>
+        <alias>inStartSurveyTaskName</alias>
+        <name>Task name</name>
+        <description>The name to give the task.</description>
+      </stringArgument>
+    </inputArguments>
+    <outputArguments>
+      <resourceListArgument>
+        <alias>outStartSurveyResponses</alias>
+        <name>Responses</name>
+        <description>The survey results.</description>
+        <conformsToType>surveyResponse</conformsToType>
+      </resourceListArgument>
+    </outputArguments>
+    <exitPoints>
+      <exitPoint>
+        <alias>exitSs1</alias>
+        <name>Exit</name>
+        <isDefaultExitPoint>true</isDefaultExitPoint>
+      </exitPoint>
+      <exitPoint>
+        <alias>startSurveyTimeout</alias>
+        <name>Time out</name>
+        <description>The exit to be used if a timeout threshold has been set and exceeded. If this exit has not been wired up the due date will be ignored.</description>
+        <isTimeoutExitPoint>true</isTimeoutExitPoint>
+        <exitPointOrdinal>99</exitPointOrdinal>
+      </exitPoint>
+    </exitPoints>
+  </activityType>
+
+  <!-- Review survey -->
+  <activityType>
+    <alias>reviewSurveyActivity</alias>
+    <inherits>wfActivity, entityWithArgsAndExits</inherits>
+    <name>Review Survey</name>
+    <description>Assign a survey result to a person for them to review.</description>
+    <wfActivityCategory>activityCategoryEnum_User</wfActivityCategory>
+    <activityTypeOrder>31</activityTypeOrder>
+    <activityExecutionClass>
+      <class>
+        <alias>reviewSurveyActivityClass</alias>
+        <typeName>EDC.SoftwarePlatform.Activities.ReviewSurveyImplementation</typeName>
+        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+      </class>
+    </activityExecutionClass>
+    <generateCode>true</generateCode>
+    <inputArguments>
+      <resourceArgument>
+        <alias>inReviewSurveyResponse</alias>
+        <name>Completed survey</name>
+        <argumentIsMandatory>true</argumentIsMandatory>
+        <description>The survey result to review.</description>
+        <conformsToType>surveyResponse</conformsToType>
+      </resourceArgument>
+      <resourceArgument>
+        <alias>inReviewSurveyReviewer</alias>
+        <name>Reviewer</name>
+        <argumentIsMandatory>true</argumentIsMandatory>
+        <description>The person who will receive the survey to review.</description>
+        <conformsToType>person</conformsToType>
+      </resourceArgument>
+      <resourceArgument>
+        <alias>inReviewSurveyEntryState</alias>
+        <name>Entry state</name>
+        <argumentIsMandatory>false</argumentIsMandatory>
+        <description>Set the state of the survey response.</description>
+        <conformsToType>surveyStatusEnum</conformsToType>
+      </resourceArgument>
+      <boolArgument>
+        <alias>inReviewSurveyAllowComments</alias>
+        <name>Allow comments</name>
+        <description>Allow the reviewer to add comments.</description>
+      </boolArgument>
+      <decimalArgument>
+        <alias>inReviewSurveyDueInDays</alias>
+        <name>Due in (Days)</name>
+        <description>The amount of time in days before the review is due.</description>
+      </decimalArgument>
+      <stringArgument>
+        <alias>inReviewSurveyTaskName</alias>
+        <name>Task name</name>
+        <description>The name to give the task.</description>
+      </stringArgument>
+    </inputArguments>
+
+    <outputArguments>
+    </outputArguments>
+
+    <exitPoints>
+
+      <exitPoint>
+        <alias>reviewSurveyTimeout</alias>
+        <name>Time out</name>
+        <description>The exit to be used if a timeout threshold has been set and exceeded. If this exit has not been wired up the time-out threshold will be ignored.</description>
+        <isTimeoutExitPoint>true</isTimeoutExitPoint>
+        <exitPointOrdinal>99</exitPointOrdinal>
+      </exitPoint>
+    </exitPoints>
+  </activityType>
+</resources>

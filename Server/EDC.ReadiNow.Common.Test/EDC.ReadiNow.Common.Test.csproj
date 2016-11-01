@@ -1,0 +1,507 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9AEDEDC8-F2E7-47F7-9FCB-6694DE936FDE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EDC.ReadiNow.Test</RootNamespace>
+    <AssemblyName>EDC.ReadiNow.Common.Test</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <WarningsNotAsErrors>1607</WarningsNotAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\ReadiNow.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <LangVersion>6</LangVersion>
+    <NoWarn>618</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemGroup>
+    <Reference Include="Autofac, Version=4.1.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.1.1\lib\net45\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Autofac.Extras.AttributeMetadata, Version=4.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Extras.AttributeMetadata.4.0.0\lib\net45\Autofac.Extras.AttributeMetadata.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Autofac.Integration.Mef, Version=4.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Mef.4.0.0\lib\net45\Autofac.Integration.Mef.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Common.Logging, Version=3.0.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.3.0.0\lib\net40\Common.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Common.Logging.Core, Version=3.0.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.Core.3.0.0\lib\net40\Common.Logging.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FluentAssertions, Version=4.2.2.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentAssertions.4.2.2\lib\net45\FluentAssertions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FluentAssertions.Core, Version=4.2.2.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentAssertions.4.2.2\lib\net45\FluentAssertions.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Irony, Version=1.0.0.0, Culture=neutral, PublicKeyToken=ca48ace7223ead47, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\ThirdParty\Irony.dll</HintPath>
+    </Reference>
+    <Reference Include="Irony.Interpreter, Version=1.0.0.0, Culture=neutral, PublicKeyToken=ca48ace7223ead47, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\ThirdParty\Irony.Interpreter.dll</HintPath>
+    </Reference>
+    <Reference Include="Jil, Version=2.12.1.0, Culture=neutral, PublicKeyToken=83a7b913e85df348, processorArchitecture=MSIL">
+      <HintPath>..\packages\Jil.StrongName.2.12.1\lib\net45\Jil.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Moq, Version=4.2.1507.118, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Moq.4.2.1507.0118\lib\net40\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="protobuf-net, Version=2.0.0.668, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
+      <HintPath>..\packages\protobuf-net.2.0.0.668\lib\net40\protobuf-net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Quartz, Version=2.3.3.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Quartz.2.3.3\lib\net40\Quartz.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="RabbitMQ.Client, Version=3.6.0.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
+      <HintPath>..\packages\RabbitMQ.Client.3.6.0\lib\net45\RabbitMQ.Client.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Sigil, Version=4.5.0.0, Culture=neutral, PublicKeyToken=2d06c3494341c8ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sigil.4.5.0\lib\net45\Sigil.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="StackExchange.Redis.StrongName, Version=1.0.316.0, Culture=neutral, PublicKeyToken=c219ff1ca8c2ce46, processorArchitecture=MSIL">
+      <HintPath>..\packages\StackExchange.Redis.StrongName.1.0.488\lib\net45\StackExchange.Redis.StrongName.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
+      <Visible>False</Visible>
+    </CodeAnalysisDependentAssemblyPaths>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyTestFixture.cs" />
+    <Compile Include="BackgroundTasks\BackgroundTaskManagerTests.cs" />
+    <Compile Include="BackgroundTasks\Handlers\BaseTaskHandlerTest.cs" />
+    <Compile Include="Cache\GenericCacheServiceTests.cs" />
+    <Compile Include="ClearCachesAttribute.cs" />
+    <Compile Include="Configuration\ClientSettingsTest.cs" />
+    <Compile Include="Configuration\RedisConfigurationTests.cs" />
+    <Compile Include="Core\Cache\CommonCacheTestsMirror.cs" />
+    <Compile Include="Core\Cache\Providers\InvalidationRateLimitedCacheTest.cs" />
+    <Compile Include="Core\Cache\Providers\LruCacheTests.cs" />
+    <Compile Include="Core\Cache\Providers\MetadataCacheTest.cs" />
+    <Compile Include="Core\Cache\Providers\PerTenantCacheInvalidatorTests.cs" />
+    <Compile Include="Core\Cache\Providers\PerTenantNonSharingCacheTests.cs" />
+    <Compile Include="Core\Cache\Providers\PerUserRuleSetCacheTest.cs" />
+    <Compile Include="Core\Cache\Providers\RedisCacheMessageSuppressionContextTests.cs" />
+    <Compile Include="Core\Cache\Providers\RedisPubSubCacheTests.cs" />
+    <Compile Include="Core\Cache\Providers\RedisPubSubMessageTests.cs" />
+    <Compile Include="Core\Cache\Providers\StocasticCacheTests.cs" />
+    <Compile Include="Core\Cache\Providers\TimeoutCacheTests.cs" />
+    <Compile Include="Core\FactoryTests.cs" />
+    <Compile Include="Database\CardinalityViolationTests.cs" />
+    <Compile Include="Database\DatabaseChangeTrackingTests.cs" />
+    <Compile Include="Database\DatabaseContextTests_RunWithRetry.cs" />
+    <Compile Include="Database\DatabaseContextTests.cs" />
+    <Compile Include="Database\DatabasePerformanceTests.cs" />
+    <Compile Include="Database\LicensingMetricsTests.cs" />
+    <Compile Include="Database\RecursionTests.cs" />
+    <Compile Include="Database\SqlExceptionMocker.cs" />
+    <Compile Include="Diagnostics\ActivityLog\RateLimitedPurgerTest.cs" />
+    <Compile Include="Diagnostics\ActivityLog\ActivityLogPurgerTests.cs" />
+    <Compile Include="Diagnostics\ActivityLog\ActivityLogWriterTests.cs" />
+    <Compile Include="Diagnostics\MessageContextTests.cs" />
+    <Compile Include="IO\CleanupFileRepositoriesActionTests.cs" />
+    <Compile Include="IO\RemoteFileFetcher\FtpFileFetcherTest.cs" />
+    <Compile Include="Messaging\Redis\InMemoryTestQueue.cs" />
+    <Compile Include="Messaging\Redis\QueueActionerTest.cs" />
+    <Compile Include="Messaging\Redis\QueueTest.cs" />
+    <Compile Include="MockDateTime.cs" />
+    <Compile Include="Model\AccessControl\ProtectedAppTests.cs" />
+    <Compile Include="Model\ActivationTests.cs" />
+    <Compile Include="EditForm\CustomEditFormTest.cs" />
+    <Compile Include="EditForm\DefaultLayoutGeneratorTest.cs" />
+    <Compile Include="EntityRequests\BulkRequestRunnerMockService.cs" />
+    <Compile Include="EntityRequests\BulkRequests\BulkRequestResultConverterTests.cs" />
+    <Compile Include="EntityRequests\BulkRequests\BulkRequestSqlBuilderTests.cs" />
+    <Compile Include="EntityRequests\ConfigXmlTests.cs" />
+    <Compile Include="EntityRequests\EntityInfoServiceTests.Invalidates.cs" />
+    <Compile Include="EntityRequests\EntityInfoServiceTests.Read.cs" />
+    <Compile Include="EntityRequests\EntityInfoServiceTests.Write.cs" />
+    <Compile Include="EntityRequests\PreloaderTests.cs" />
+    <Compile Include="EntityRequests\VirtualAccessControlFields.cs" />
+    <Compile Include="EntityRequests\WriteOnlyFieldReadValueGeneratorTests.cs" />
+    <Compile Include="GraphModel\ActivationTests.cs" />
+    <Compile Include="GraphModel\GraphModelTests.cs" />
+    <Compile Include="MessageQueue\MessageQueueMockConsumeEventArgs.cs" />
+    <Compile Include="MessageQueue\MessageQueueListenerTests.cs" />
+    <Compile Include="MessageQueue\MessageQueueMock.cs" />
+    <Compile Include="MessageQueue\MessageQueueSenderTests.cs" />
+    <Compile Include="Messaging\DeferredChannelMessageContextEntryTests.cs" />
+    <Compile Include="Messaging\DeferredChannelMessageContextTests.cs" />
+    <Compile Include="Messaging\Redis\TaskManagerTest.cs" />
+    <Compile Include="JilHelpers.cs" />
+    <Compile Include="Messaging\Redis\TestMessage.cs" />
+    <Compile Include="Metadata\Query\Structured\ConditionHelperTests.cs" />
+    <Compile Include="Core\Cache\Providers\RedisPubSubCacheHelperTests.cs" />
+    <Compile Include="Metadata\TenantHelperTests.cs" />
+    <Compile Include="Model\Defaults\EntityDefaultsDecoratorProviderTest.cs" />
+    <Compile Include="Model\EntityBatch\BatchingEntityEnumeration_Test.cs" />
+    <Compile Include="FailOnEventAttribute.cs" />
+    <Compile Include="FailOnEventAttributeTests.cs" />
+    <Compile Include="IgnoreSecurityAttribute.cs" />
+    <Compile Include="IgnoreSecurityReason.cs" />
+    <Compile Include="IO\AdministratorContextTests.cs" />
+    <Compile Include="IO\ContextBlockTests.cs" />
+    <Compile Include="IO\RequestContextTests.cs" />
+    <Compile Include="IO\TenantAdministratorContextTests.cs" />
+    <Compile Include="Messaging\Redis\AppDomainHelper.cs" />
+    <Compile Include="Messaging\Redis\RedisManagerTests.cs" />
+    <Compile Include="Messaging\Redis\ServiceHelper.cs" />
+    <Compile Include="Messaging\Redis\SubscriberRefObject.cs" />
+    <Compile Include="Messaging\Redis\TestAppDomain.cs" />
+    <Compile Include="Metadata\Media\ColorInfoHelperTests.cs" />
+    <Compile Include="Metadata\Query\Structured\ReportHelpersTests.cs" />
+    <Compile Include="Metadata\Query\Structured\StructuredQueryHelperReferencingTests.cs" />
+    <Compile Include="Metadata\Query\Structured\StructuredQueryHelperTests.cs" />
+    <Compile Include="Metadata\Reporting\ChartDataViewTests.cs" />
+    <Compile Include="Metadata\Reporting\Formatting\FormattingRuleHelperTests.cs" />
+    <Compile Include="Metadata\Reporting\GridReportDataViewTests.cs" />
+    <Compile Include="Metadata\Reporting\MatrixReportDataViewTest.cs" />
+    <Compile Include="Metadata\Reporting\ReportDataViewTests.cs" />
+    <Compile Include="Metadata\Reporting\ReportToEntityModelTests.cs" />
+    <Compile Include="Metadata\TypedValueXmlTests.cs" />
+    <Compile Include="Metadata\TypedValueTests.cs" />
+    <Compile Include="Model\AccessControl\CreateTests.cs" />
+    <Compile Include="Model\AccessControl\DeleteTests.cs" />
+    <Compile Include="Model\AccessControl\GetEntitiesOfTypeTests.cs" />
+    <Compile Include="Model\AccessControl\GetTests.cs" />
+    <Compile Include="Model\AccessControl\SaveTests.cs" />
+    <Compile Include="Model\BulkPreloaderTests.cs" />
+    <Compile Include="Model\CacheInvalidation\CacheContextEntryTests.cs" />
+    <Compile Include="Model\CacheInvalidation\CacheMonitorTests.cs" />
+    <Compile Include="Model\CacheInvalidation\EntityChangesTests.cs" />
+    <Compile Include="Model\CacheInvalidation\TestCacheInvalidator.cs" />
+    <Compile Include="Model\CacheInvalidation\TestRelationshipTypeToEntity.cs" />
+    <Compile Include="Model\EntityFieldGroupTests.cs" />
+    <Compile Include="Model\EntityRelationshipCacheTests.cs" />
+    <Compile Include="Model\EntityRepositoryTests.cs" />
+    <Compile Include="Model\EventClasses\OidcIdentityProviderEventTargetTest.cs" />
+    <Compile Include="Model\EventClasses\ImapEmailProviderEventTargetTest.cs" />
+    <Compile Include="Model\EventClasses\ProtectableTypeEventTargetTests.cs" />
+    <Compile Include="Model\EventClasses\ReportEventTargetTests.cs" />
+    <Compile Include="Model\EventClasses\ResourceTriggerFilter\RecordChangeAuditEventHandlerTests.cs" />
+    <Compile Include="Model\EventClasses\PersonHasAccountEventTargetTests.cs" />
+    <Compile Include="Model\EventClasses\ResourceTriggerFilter\RecordChangeAuditFormatterTest.cs" />
+    <Compile Include="Model\EventClasses\ResourceTriggerFilter\ResourceTriggerFilterPolicyCacheTest.cs" />
+    <Compile Include="Model\EventClasses\ResourceTriggerFilter\ResourceTriggerFilterTest.cs" />
+    <Compile Include="Model\EventClasses\SecuredDataTestHelper.cs" />
+    <Compile Include="Model\EventClasses\SolutionEventTargetTests.cs" />
+    <Compile Include="Model\EventClasses\UserAccountHasPersonEventTargetTests.cs" />
+    <Compile Include="Model\RelationshipHelperTests.cs" />
+    <Compile Include="Model\StringExtensionsTests.cs" />
+    <Compile Include="Model\UpgradeIdProviderTests.cs" />
+    <Compile Include="Model\WellKnownAliasesTests.cs" />
+    <Compile Include="Monitoring\PerformanceCounterHelper.cs" />
+    <Compile Include="ReadiNowTestAttribute.cs" />
+    <Compile Include="ReadiNowTestFixtureAttribute.cs" />
+    <Compile Include="RunWithoutTransaction.cs" />
+    <Compile Include="Scheduling\SchedulingHelperTest.cs" />
+    <Compile Include="Security\AccessControl\AccessRuleDisplayReportFactoryTests.cs" />
+    <Compile Include="Security\AccessControl\ActivationTests.cs" />
+    <Compile Include="Security\AccessControl\CachingEntityMemberRequestFactoryTests.cs" />
+    <Compile Include="Model\PerTenantEntityTypeCacheTests.cs" />
+    <Compile Include="Security\AccessControl\CachingUserRuleSetProviderTests.cs" />
+    <Compile Include="Security\AccessControl\Diagnostics\ForceSecurityTraceContextEntryTests.cs" />
+    <Compile Include="Security\AccessControl\Diagnostics\ForceSecurityTraceContextTests.cs" />
+    <Compile Include="Security\AccessControl\Diagnostics\TypeAccessReasonServiceTests.cs" />
+    <Compile Include="Security\AccessControl\EntityAccessControlCheckerHelperTests.cs" />
+    <Compile Include="Security\AccessControl\EntityAccessControlTests.cs" />
+    <Compile Include="Security\AccessControl\EntityMemberRequestFactoryTests.cs" />
+    <Compile Include="Security\AccessControl\CounterEntityAccessControlCheckerTests.cs" />
+    <Compile Include="Security\AccessControl\EntityTypeExtensionsTests.cs" />
+    <Compile Include="Security\AccessControl\FilteringQueryRepositoryTests.cs" />
+    <Compile Include="Security\AccessControl\IntersectingEntityAccessControlCheckerTests.cs" />
+    <Compile Include="Security\AccessControl\QueryInspectorTests.cs" />
+    <Compile Include="Security\AccessControl\RelationshipSecurityTests.cs" />
+    <Compile Include="Security\AccessControl\RoleCheckingQueryRepositoryTests.cs" />
+    <Compile Include="Security\AccessControl\RuleRepositoryTests.cs" />
+    <Compile Include="Security\AccessControl\SecuresFlagEntityAccessControlCheckerTests.cs" />
+    <Compile Include="Security\AccessControl\SecurityCacheInvalidationTests.cs" />
+    <Compile Include="Security\AccessControl\SecurityPerformance.cs" />
+    <Compile Include="Security\AccessControl\SecurityQueryCacheInvalidationTests.cs" />
+    <Compile Include="Model\ActivationDataTests.cs" />
+    <Compile Include="Model\CacheInvalidation\CacheContextTests.cs" />
+    <Compile Include="Model\CacheInvalidation\CacheInvalidatorFactoryTests.cs" />
+    <Compile Include="Model\CacheInvalidation\CacheInvalidatorTests.cs" />
+    <Compile Include="Model\CacheInvalidation\ContextHelperTests.cs" />
+    <Compile Include="Model\CascadeDeleteTests.cs" />
+    <Compile Include="Model\DataTests.cs" />
+    <Compile Include="Model\EnityEventTests.cs" />
+    <Compile Include="Model\EntityIdTests.cs" />
+    <Compile Include="Model\EntityNamingTests.cs" />
+    <Compile Include="Model\EntityRefHelperTests.cs" />
+    <Compile Include="Model\EntityRefTests.cs" />
+    <Compile Include="Model\EntitySnapshotContextTests.cs" />
+    <Compile Include="Model\EventClasses\CacheInvalidationEventTargetTests.cs" />
+    <Compile Include="Model\EventClasses\TypeAddResourceBaseTypeEventTargetTests.cs" />
+    <Compile Include="Model\EventClasses\UserAccountEventTargetTests.cs" />
+    <Compile Include="Model\Relationships\BacklogTestHelper.cs" />
+    <Compile Include="Model\Relationships\CascadeDeleteTests.cs" />
+    <Compile Include="Model\Relationships\SchemaTests.cs" />
+    <Compile Include="Model\ReportEventTargetTests.cs" />
+    <Compile Include="Model\ResourceKeyTests.cs" />
+    <Compile Include="Model\TemporaryEntityTests.cs" />
+    <Compile Include="Model\EntityRelationshipTests.cs" />
+    <Compile Include="Model\EntityTypeTests.cs" />
+    <Compile Include="Model\EntityAliasTests.cs" />
+    <Compile Include="Model\EntityTests.cs" />
+    <Compile Include="Model\FieldTypeTests.cs" />
+    <Compile Include="Model\MultipleInheritanceTests.cs" />
+    <Compile Include="Model\RelationshipTests.cs" />
+    <Compile Include="Model\TemporaryIdTests.cs" />
+    <Compile Include="Model\TenantTests.cs" />
+    <Compile Include="Properties\AssemblyFileInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\GlobalStrings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalStrings.resx</DependentUpon>
+    </Compile>
+    <Compile Include="RunAsDefaultTenant.cs" />
+    <Compile Include="RunAsGlobalTenantAttribute.cs" />
+    <Compile Include="RunAsTenantAttribute.cs" />
+    <Compile Include="RunWithTransactionAttribute.cs" />
+    <Compile Include="Scheduling\ScheduledItemTest.cs" />
+    <Compile Include="Security\AccessControl\AccessControlEntitiesTests.cs" />
+    <Compile Include="Security\AccessControl\AccessRuleFactoryTests.cs" />
+    <Compile Include="Security\AccessControl\AllowAllEntityAccessControlCheckerTests.cs" />
+    <Compile Include="Security\AccessControl\AccessRuleTests.cs" />
+    <Compile Include="Security\AccessControl\CachingEntityAccessControlCheckerTests.cs" />
+    <Compile Include="Security\AccessControl\CachingQueryRepositoryTests.cs" />
+    <Compile Include="Security\AccessControl\CachingUserRoleRepositoryTests.cs" />
+    <Compile Include="Security\AccessControl\CascadingDeleteTests.cs" />
+    <Compile Include="Security\AccessControl\DefaultSecurityData.cs" />
+    <Compile Include="Security\AccessControl\EntityAccessControlCacheInvalidatorTests.cs" />
+    <Compile Include="Security\AccessControl\EntityAccessControlCheckerTests.cs" />
+    <Compile Include="Security\AccessControl\EntityAccessControlServiceTests.cs" />
+    <Compile Include="Security\AccessControl\EntityTypeRepositoryTests.cs" />
+    <Compile Include="Security\AccessControl\PermissionsTests.cs" />
+    <Compile Include="Security\AccessControl\QueryRepositoryTests.cs" />
+    <Compile Include="Security\AccessControl\SecurityBypassContextTests.cs" />
+    <Compile Include="Security\AccessControl\SecurityQueryCacheInvalidatorHelperTests.cs" />
+    <Compile Include="Security\AccessControl\SecurityQueryCacheInvalidatorTests.cs" />
+    <Compile Include="Security\AccessControl\SelfServeTests.cs" />
+    <Compile Include="Security\AccessControl\StringEntityAccessControlCheckTraceTests.cs" />
+    <Compile Include="Security\AccessControl\StringExtensionsTests.cs" />
+    <Compile Include="Security\AccessControl\SubjectPermissionTypesTupleTests.cs" />
+    <Compile Include="Security\AccessControl\SystemAccessRuleQueryFactoryTests.cs" />
+    <Compile Include="Security\AccessControl\SystemAccessRuleQueryRepositoryTests.cs" />
+    <Compile Include="Security\AccessControl\SystemEntityAccessControlCheckerTests.cs" />
+    <Compile Include="Security\AccessControl\TenantEntityCacheTests.cs" />
+    <Compile Include="Security\AccessControl\TestQueries.cs" />
+    <Compile Include="Security\AccessControl\UserRuleSetProviderTests.cs" />
+    <Compile Include="Security\AccessControl\UserRuleSetsHasherTest.cs" />
+    <Compile Include="Security\AccessControl\UserRuleSetTests.cs" />
+    <Compile Include="Security\AuditLog\AuditLogEntityModelDeleterTests.cs" />
+    <Compile Include="Security\AuditLog\AuditLogEntityModelWriterTests.cs" />
+    <Compile Include="Security\AuditLog\AuditLogEntryDataTests.cs" />
+    <Compile Include="Security\AuditLog\AuditLogEventLogWriterTests.cs" />
+    <Compile Include="Security\AuditLog\AuditLogInstanceTests.cs" />
+    <Compile Include="Security\AuditLog\AuditLogSyslogWriterTests.cs" />
+    <Compile Include="Security\AuditLog\AuditLogTests.cs" />
+    <Compile Include="Security\AuditLog\EventTargets\AuditLogAccessRuleEventTargetTests.cs" />
+    <Compile Include="Security\AuditLog\EventTargets\AuditLogEventTargetBaseTests.cs" />
+    <Compile Include="Security\AuditLog\EventTargets\AuditLogPasswordPolicyEventTargetTests.cs" />
+    <Compile Include="Security\AuditLog\EventTargets\AuditLogReportEventTargetTests.cs" />
+    <Compile Include="Security\AuditLog\EventTargets\AuditLogRoleEventTargetTests.cs" />
+    <Compile Include="Security\AuditLog\EventTargets\AuditLogSolutionEventTargetTests.cs" />
+    <Compile Include="Security\AuditLog\EventTargets\AuditLogTenantEventTargetTests.cs" />
+    <Compile Include="Security\AuditLog\EventTargets\AuditLogUserAccountEventTargetTests.cs" />
+    <Compile Include="Security\IdentityProviderContextCacheTests.cs" />
+    <Compile Include="Security\PasswordPolicyHelperTests.cs" />
+    <Compile Include="Security\PlatformSecurityExceptionTests.cs" />
+    <Compile Include="Security\SecuredData\DbSecuredDataTest.cs" />
+    <Compile Include="Security\SecuredData\SecureDataUpgradeHelperTests.cs" />
+    <Compile Include="Security\SecurityUpgradeEventTargetTests.cs" />
+    <Compile Include="Security\TestSetUser.cs" />
+    <Compile Include="Security\AccessControl\UserEntityPermissionTupleTests.cs" />
+    <Compile Include="Security\AccessControl\UserRoleRepositoryTests.cs" />
+    <Compile Include="Security\AccessControl\LoggingEntityAccessControlCheckerTests.cs" />
+    <Compile Include="Security\UserAccountValidatorTests.cs" />
+    <Compile Include="Services\Console\ActionSchemaTests.cs" />
+    <Compile Include="Services\Console\ActionServiceTests.cs" />
+    <Compile Include="Services\Console\SecurityActionMenuItemFilterTests.cs" />
+    <Compile Include="Services\Console\CachingWorkflowActionsFactoryTest.cs" />
+    <Compile Include="Services\Console\WorkflowActionsFactoryTest.cs" />
+    <Compile Include="Survey\SurveyAnswerTest.cs" />
+    <Compile Include="Survey\SurveyResponseTest.cs" />
+    <Compile Include="TestHelpers.cs" />
+    <Compile Include="TimedAttribute.cs" />
+    <Compile Include="Utc\TimeZoneHelperTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="job_scheduling_data_2_0.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EDC.Common\EDC.Common.csproj">
+      <Project>{C7183BEF-1A52-4DA5-850B-7132B5DCA7EB}</Project>
+      <Name>EDC.Common</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EDC.Interop\EDC.Interop.csproj">
+      <Project>{90FA9820-A3EC-40B2-A5C8-F3A3C533F000}</Project>
+      <Name>EDC.Interop</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EDC.ReadiNow.Common.ConfigParser\EDC.ReadiNow.Common.ConfigParser.csproj">
+      <Project>{151ad911-0248-4207-9b90-8b230a32131d}</Project>
+      <Name>EDC.ReadiNow.Common.ConfigParser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EDC.ReadiNow.Common\EDC.ReadiNow.Common.csproj">
+      <Project>{A1C54CF6-E515-4132-A3CB-5CBE32B11D7E}</Project>
+      <Name>EDC.ReadiNow.Common</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EDC.SoftwarePlatform.Interfaces\EDC.SoftwarePlatform.Interfaces.csproj">
+      <Project>{c1fc97b7-aacc-45b5-9969-7995b27093ca}</Project>
+      <Name>EDC.SoftwarePlatform.Interfaces</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EDC.SoftwarePlatform.Migration\EDC.SoftwarePlatform.Migration.csproj">
+      <Project>{ACC17A7D-5BD0-4F9E-8569-3E4D51588064}</Project>
+      <Name>EDC.SoftwarePlatform.Migration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ReadiNow.EntityGraph\ReadiNow.EntityGraph.csproj">
+      <Project>{9c2bc19b-0d62-4e3c-a5e2-9850c1526460}</Project>
+      <Name>ReadiNow.EntityGraph</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ReadiNow.QueryEngine\ReadiNow.QueryEngine.csproj">
+      <Project>{1a69d59a-e78a-45d8-b2ad-8b320b17657b}</Project>
+      <Name>ReadiNow.QueryEngine</Name>
+      <Private>True</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\GlobalStrings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>GlobalStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Metadata\Solution\DataUpgrade\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir).build\MSBuild.Community.Tasks.targets" />
+  <Import Project="$(SolutionDir)Automation\ReadiNow.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <Target Name="AfterBuild">
+    <CallTarget Targets="PublishTestAssembly" />
+  </Target>
+  <PropertyGroup>
+    <AssemblyFileInfo>$(ProjectDir)Properties\AssemblyFileInfo.cs</AssemblyFileInfo>
+  </PropertyGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+</Project>

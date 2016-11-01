@@ -1,0 +1,195 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProjectName Condition="'$(ProjectName)' == ''">Dev</ProjectName>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{85BD4BE3-0FCA-457C-A40D-99EB67B690C5}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PlatformConfigure</RootNamespace>
+    <AssemblyName>PlatformConfigure</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <WarningsNotAsErrors>1607</WarningsNotAsErrors>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x64</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>PlatformConfigure.Program</StartupObject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Autofac, Version=4.1.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Autofac.4.1.1\lib\net45\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Common.Logging, Version=3.0.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Common.Logging.3.0.0\lib\net40\Common.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Common.Logging.Core, Version=3.0.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Common.Logging.Core.3.0.0\lib\net40\Common.Logging.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Quartz, Version=2.3.3.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Quartz.2.3.3\lib\net40\Quartz.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AttributeArgParser.cs" />
+    <Compile Include="CommandLineParser.cs" />
+    <Compile Include="ConsoleLogger.cs" />
+    <Compile Include="FrontEndArgumentParser.cs" />
+    <Compile Include="FunctionArgumentAttribute.cs" />
+    <Compile Include="FunctionArgumentOptions.cs" />
+    <Compile Include="FunctionAttribute.cs" />
+    <Compile Include="Helpers.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyFileInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Database\ReadiNowDeploymentPlanContributors\ReadiNowDeploymentPlanContributors.csproj">
+      <Project>{8241741c-2f93-43b6-a085-a61f10f74919}</Project>
+      <Name>ReadiNowDeploymentPlanContributors</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\EDC.Common\EDC.Common.csproj">
+      <Project>{c7183bef-1a52-4da5-850b-7132b5dca7eb}</Project>
+      <Name>EDC.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\EDC.ReadiNow.Common.ConfigParser\EDC.ReadiNow.Common.ConfigParser.csproj">
+      <Project>{151ad911-0248-4207-9b90-8b230a32131d}</Project>
+      <Name>EDC.ReadiNow.Common.ConfigParser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\EDC.ReadiNow.Common\EDC.ReadiNow.Common.csproj">
+      <Project>{a1c54cf6-e515-4132-a3cb-5cbe32b11d7e}</Project>
+      <Name>EDC.ReadiNow.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\EDC.SoftwarePlatform.Activities\EDC.SoftwarePlatform.Activities.csproj">
+      <Project>{98ec024c-6439-44b1-8b1e-29e457b2201f}</Project>
+      <Name>EDC.SoftwarePlatform.Activities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\EDC.SoftwarePlatform.Interfaces\EDC.SoftwarePlatform.Interfaces.csproj">
+      <Project>{c1fc97b7-aacc-45b5-9969-7995b27093ca}</Project>
+      <Name>EDC.SoftwarePlatform.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\EDC.SoftwarePlatform.Migration\EDC.SoftwarePlatform.Migration.csproj">
+      <Project>{acc17a7d-5bd0-4f9e-8569-3e4d51588064}</Project>
+      <Name>EDC.SoftwarePlatform.Migration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ReadiNow.EntityGraph\ReadiNow.EntityGraph.csproj">
+      <Project>{9c2bc19b-0d62-4e3c-a5e2-9850c1526460}</Project>
+      <Name>ReadiNow.EntityGraph</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ReadiNow.Expressions\ReadiNow.Expressions.csproj">
+      <Project>{703ebe03-abba-484f-b550-bc3b31643d40}</Project>
+      <Name>ReadiNow.Expressions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ReadiNow.QueryEngine\ReadiNow.QueryEngine.csproj">
+      <Project>{1a69d59a-e78a-45d8-b2ad-8b320b17657b}</Project>
+      <Name>ReadiNow.QueryEngine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EDC.SoftwarePlatform.Install.Common\EDC.SoftwarePlatform.Install.Common.csproj">
+      <Project>{99c48b40-8897-4c0c-9ab3-8fbf888a49b3}</Project>
+      <Name>EDC.SoftwarePlatform.Install.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="app.manifest" />
+    <None Include="job_scheduling_data_2_0.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir).build\MSBuild.Community.Tasks.targets" />
+  <Import Project="$(SolutionDir)Automation\ReadiNow.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <Target Name="TransformConfig">
+    <Message Text="Transforming config files to application files..." />
+    <Exec Command="$(TargetPath) -tc -config $(SolutionDir)EDC.ReadiNow.Common\Config\Solution.xml -output $(SolutionDir)ApplicationCache -srcHash $(SolutionDir)EDC.ReadiNow.Common\Config\Solution.hash -dstHash $(SolutionDir)ApplicationCache\Solution.hash -ver $(Version) &gt; nul" />
+  </Target>
+  <Target Name="PublishApplications">
+    <Message Text="Publishing application files from $(SolutionDir)ApplicationCache\ to $(PublishRoot)$(Configuration)\Applications\" />
+    <ItemGroup>
+      <ApplicationFiles Include="$(SolutionDir)ApplicationCache\*.xml" />
+    </ItemGroup>
+    <Copy SourceFiles="@(ApplicationFiles)" DestinationFolder="$(PublishRoot)$(Configuration)\Applications\" ContinueOnError="WarnAndContinue" Retries="0" />
+  </Target>
+  <Target Name="AfterBuild">
+    <CallTarget Targets="TransformConfig" />
+    <CallTarget Targets="PublishApplications" />
+    <CallTarget Targets="PublishTool" />
+  </Target>
+  <PropertyGroup>
+    <AssemblyFileInfo>$(ProjectDir)Properties\AssemblyFileInfo.cs</AssemblyFileInfo>
+  </PropertyGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+</Project>

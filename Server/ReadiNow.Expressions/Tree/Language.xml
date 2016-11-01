@@ -1,0 +1,897 @@
+<Language xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/expressions/1.0">
+  <!--Copyright 2011-2016 Global Software Innovation Pty Ltd-->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--   Casts                                                                        -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <Casts>
+    <!-- Implicit casts -->
+    <Cast cast="Implicit" class="CastFromBool" from="Bool" to="String" priority="10" />
+    <Cast cast="Implicit" class="CastFromDecimal" from="Currency" to="Decimal" priority="5" />
+    <Cast cast="Implicit" class="CastFromDecimal" from="Currency" to="String" priority="10" />
+    <Cast cast="Implicit" class="CastFromDate" from="Date" to="DateTime" priority="4" />
+    <Cast cast="Implicit" class="CastFromDate" from="Date" to="String" priority="10" />
+    <Cast cast="Implicit" class="CastFromDateTime" from="DateTime" to="Date" priority="2" />
+    <Cast cast="Implicit" class="CastFromDateTime" from="DateTime" to="String" priority="10" />
+    <Cast cast="Implicit" class="CastFromDateTime" from="DateTime" to="Time" priority="3" />
+    <Cast cast="Implicit" class="CastFromDecimal" from="Decimal" to="Currency" priority="8" />
+    <Cast cast="Implicit" class="CastFromDecimal" from="Decimal" to="String" priority="10" />
+    <Cast cast="Implicit" class="CastFromEntity" from="Entity" to="String" priority="10" />
+    <Cast cast="Implicit" class="CastFromGuid" from="Guid" to="String" priority="10" />
+    <Cast cast="Implicit" class="CastFromInt" from="Int32" to="Decimal" priority="5" />
+    <Cast cast="Implicit" class="CastFromInt" from="Int32" to="String" priority="10" />
+    <Cast cast="Implicit" class="CastFromTime" from="Time" to="String" priority="10" />
+    <Cast cast="Implicit" class="CastFromNone" from="None" to="String" priority="10" />
+    <Cast cast="Implicit" class="CastFromNone" from="None" to="Bool" /> <!-- kept around really just to support test scenarios -->
+    <Cast cast="Implicit" class="CastFromNone" from="None" to="Date" />
+    <Cast cast="Implicit" class="CastFromNone" from="None" to="DateTime" />
+    <Cast cast="Implicit" class="CastFromNone" from="None" to="Decimal" />
+    <Cast cast="Implicit" class="CastFromNone" from="None" to="Currency" />
+    <Cast cast="Implicit" class="CastFromNone" from="None" to="Int32" />
+    <Cast cast="Implicit" class="CastFromNone" from="None" to="Time" />
+    <Cast cast="Implicit" class="CastFromNone" from="None" to="Guid" />
+    <Cast cast="Implicit" class="CastFromNone" from="None" to="Entity" />
+    <!-- Explicit casts -->
+    <Cast cast="Explicit" class="CastFromEntity" from="Entity" to="Bool" token="bool" />
+    <Cast cast="Explicit" class="CastFromInt" from="Int32" to="Bool" token="bool" />
+    <Cast cast="Explicit" class="CastFromInt" from="Int32" to="Currency" token="currency" />
+    <Cast cast="Explicit" class="CastFromDecimal" from="Currency" to="Int32" token="int" />
+    <Cast cast="Explicit" class="CastFromDecimal" from="Decimal" to="Bool" token="bool" />
+    <Cast cast="Explicit" class="CastFromDecimal" from="Decimal" to="Int32" token="int" />
+    <Cast cast="Explicit" class="CastFromDecimal" from="Decimal" to="Currency" token="currency" />
+    <Cast cast="Explicit" class="CastFromString" from="String" to="Bool" token="bool" />
+    <Cast cast="Explicit" class="CastFromString" from="String" to="Date" token="date" />
+    <Cast cast="Explicit" class="CastFromString" from="String" to="DateTime" token="datetime" />
+    <Cast cast="Explicit" class="CastFromString" from="String" to="Decimal" token="decimal" />
+    <Cast cast="Explicit" class="CastFromString" from="String" to="Currency" token="currency" />
+    <Cast cast="Explicit" class="CastFromString" from="String" to="Int32" token="int" />
+    <Cast cast="Explicit" class="CastFromString" from="String" to="Time" token="time" />
+    <Cast cast="Explicit" class="CastFromString" from="String" to="Guid" token="guid" />
+  </Casts>
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--   Operators                                                                    -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <Operators>
+    <!-- Is Null -->
+    <Operator>
+      <Class>EqualsNullNode</Class>
+      <Token>is</Token>
+      <ResultType type="Bool" />
+      <ParameterTypes>
+        <ExprType typeGroup="AllExceptBool" />
+        <ExprType type="None" />
+      </ParameterTypes>
+    </Operator>
+    <!-- Is Not Null -->
+    <Operator>
+      <Class>EqualsNullNode</Class>
+      <Token>is not</Token>
+      <ResultType type="Bool" />
+      <ParameterTypes>
+        <ExprType typeGroup="AllExceptBool" />
+        <ExprType type="None" />
+      </ParameterTypes>
+    </Operator>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!--   String Operators                                                             -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- Concat -->
+    <Operator>
+      <Class>ConcatNode</Class>
+      <Token>+</Token>
+      <ResultType type="String" />
+      <ParameterTypes>
+        <ExprType type="String" />
+        <ExprType type="String" />
+      </ParameterTypes>
+    </Operator>
+    <!-- Like -->
+    <Operator>
+      <Class>LikeNode</Class>
+      <Token>like</Token>
+      <ResultType type="Bool" />
+      <ParameterTypes>
+        <ExprType type="String" />
+        <ExprType type="String" />
+      </ParameterTypes>
+    </Operator>
+    <!-- Not Like -->
+    <Operator>
+      <Class>LikeNode</Class>
+      <Token>not like</Token>
+      <ResultType type="Bool" />
+      <ParameterTypes>
+        <ExprType type="String" />
+        <ExprType type="String" />
+      </ParameterTypes>
+    </Operator>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!--   Math Operators                                                               -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- Negate -->
+    <Operator>
+      <Class>NegateNode</Class>
+      <Token>-</Token>
+      <ResultType typeGroup="Numeric" />
+      <ParameterTypes>
+        <ExprType typeGroup="Numeric" />
+      </ParameterTypes>
+    </Operator>
+    <!-- Add -->
+    <Operator>
+      <Class>AddNode</Class>
+      <Token>+</Token>
+      <ResultType typeGroup="Numeric" />
+      <ParameterTypes>
+        <ExprType typeGroup="Numeric" />
+        <ExprType typeGroup="Numeric" />
+      </ParameterTypes>
+    </Operator>
+    <!-- Subtract -->
+    <Operator>
+      <Class>SubtractNode</Class>
+      <Token>-</Token>
+      <ResultType typeGroup="Numeric" />
+      <ParameterTypes>
+        <ExprType typeGroup="Numeric" />
+        <ExprType typeGroup="Numeric" />
+      </ParameterTypes>
+    </Operator>
+    <!-- Multiply -->
+    <Operator>
+      <Class>MultiplyNode</Class>
+      <Token>*</Token>
+      <ResultType typeGroup="Numeric" />
+      <ParameterTypes>
+        <ExprType typeGroup="Numeric" />
+        <ExprType typeGroup="Numeric" />
+      </ParameterTypes>
+    </Operator>
+    <!-- Divide -->
+    <Operator>
+      <Class>DivideNode</Class>
+      <Token>/</Token>
+      <ResultType type="Decimal" />
+      <ParameterTypes>
+        <ExprType type="Decimal" />
+        <ExprType type="Decimal" />
+      </ParameterTypes>
+    </Operator>
+    <!-- Modulo -->
+    <Operator>
+      <Class>ModuloNode</Class>
+      <Token>%</Token>
+      <ResultType type="Int32" />
+      <ParameterTypes>
+        <ExprType type="Int32" />
+        <ExprType type="Int32" />
+      </ParameterTypes>
+    </Operator>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!--   List Operators                                                               -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- Where -->
+    <Operator>
+      <Class>WhereNode</Class>
+      <Token>where</Token>
+      <ResultType type="Entity" isList="true" />
+      <ParameterTypes>
+        <ExprType type="Entity" isList="true" />
+        <ExprType type="Bool" />
+      </ParameterTypes>
+    </Operator>
+    <!-- Union -->
+    <!--
+    <Operator>
+      <Class>UnionNode</Class>
+      <Token>union</Token>
+      <ResultType type="Entity" isList="true" />
+      <ParameterTypes>
+        <ExprType type="Entity" isList="true" />
+        <ExprType type="Entity" isList="true" />
+      </ParameterTypes>
+    </Operator>
+
+    -->
+    <!-- Union All -->
+    <!--
+    <Operator>
+      <Class>UnionAllNode</Class>
+      <Token>union all</Token>
+      <ResultType type="Entity" isList="true" />
+      <ParameterTypes>
+        <ExprType type="Entity" isList="true" />
+        <ExprType type="Entity" isList="true" />
+      </ParameterTypes>
+    </Operator>-->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!--   Logical Operators                                                            -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- And -->
+    <Operator>
+      <Class>AndNode</Class>
+      <Token>and</Token>
+      <ResultType type="Bool" />
+      <ParameterTypes>
+        <ExprType type="Bool" />
+        <ExprType type="Bool" />
+      </ParameterTypes>
+    </Operator>
+    <!-- Or -->
+    <Operator>
+      <Class>OrNode</Class>
+      <Token>or</Token>
+      <ResultType type="Bool" />
+      <ParameterTypes>
+        <ExprType type="Bool" />
+        <ExprType type="Bool" />
+      </ParameterTypes>
+    </Operator>
+    <!-- Not -->
+    <Operator>
+      <Class>NotNode</Class>
+      <Token>not</Token>
+      <ResultType type="Bool" />
+      <ParameterTypes>
+        <ExprType type="Bool" />
+      </ParameterTypes>
+    </Operator>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!--   Comparison Operators                                                         -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- Greater Than -->
+    <Operator>
+      <Class>GreaterThanNode</Class>
+      <Token>&gt;</Token>
+      <ResultType type="Bool" />
+      <InputType typeGroup="Comparable" />
+      <ParameterTypes>
+        <ExprType typeGroup="Comparable" tranformForOrdering="true" />
+        <ExprType typeGroup="Comparable" tranformForOrdering="true" />
+      </ParameterTypes>
+    </Operator>
+    <!-- Greater Than Equal -->
+    <Operator>
+      <Class>GreaterThanEqualNode</Class>
+      <Token>&gt;=</Token>
+      <ResultType type="Bool" />
+      <InputType typeGroup="Comparable" />
+      <ParameterTypes>
+        <ExprType typeGroup="Comparable" tranformForOrdering="true" />
+        <ExprType typeGroup="Comparable" tranformForOrdering="true" />
+      </ParameterTypes>
+    </Operator>
+    <!-- Less Than -->
+    <Operator>
+      <Class>LessThanNode</Class>
+      <Token>&lt;</Token>
+      <ResultType type="Bool" />
+      <InputType typeGroup="Comparable" />
+      <ParameterTypes>
+        <ExprType typeGroup="Comparable" tranformForOrdering="true" />
+        <ExprType typeGroup="Comparable" tranformForOrdering="true" />
+      </ParameterTypes>
+    </Operator>
+    <!-- Less Than Equal -->
+    <Operator>
+      <Class>LessThanEqualNode</Class>
+      <Token>&lt;=</Token>
+      <ResultType type="Bool" />
+      <InputType typeGroup="Comparable" />
+      <ParameterTypes>
+        <ExprType typeGroup="Comparable" tranformForOrdering="true" />
+        <ExprType typeGroup="Comparable" tranformForOrdering="true" />
+      </ParameterTypes>
+    </Operator>
+    <!-- Equal To -->
+    <Operator>
+      <Class>EqualNode</Class>
+      <Token>=</Token>
+      <ResultType type="Bool" />
+      <InputType typeGroup="Equatable" />
+      <ParameterTypes>
+        <ExprType typeGroup="Equatable" />
+        <ExprType typeGroup="Equatable" />
+      </ParameterTypes>
+    </Operator>
+    <!-- Not Equal To -->
+    <Operator>
+      <Class>NotEqualNode</Class>
+      <Token>&lt;&gt;</Token>
+      <ResultType type="Bool" />
+      <InputType typeGroup="Equatable" />
+      <ParameterTypes>
+        <ExprType typeGroup="Equatable" />
+        <ExprType typeGroup="Equatable" />
+      </ParameterTypes>
+    </Operator>
+  </Operators>
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--   Functions                                                                    -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <Functions>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!--   General Functions                                                            -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- Context -->
+    <Function>
+      <Token>context</Token>
+      <Class>GetRootContextEntityNode</Class>
+      <ResultType type="Entity" />
+      <ParameterTypes />
+    </Function>
+    <!-- Iif -->
+    <Function>
+      <Token>iif</Token>
+      <Class>IifNode</Class>
+      <ResultType typeGroup="AllExceptEntity" />
+      <ParameterTypes>
+        <ExprType type="Bool" />
+        <ExprType typeGroup="AllExceptEntity" />
+        <ExprType typeGroup="AllExceptEntity" />
+      </ParameterTypes>
+    </Function>
+    <!-- Iif -->
+    <Function>
+      <Token>iif</Token>
+      <Class>IifEntityNode</Class>
+      <ResultType type="Entity" />
+      <ParameterTypes>
+        <ExprType type="Bool" />
+        <ExprType type="Entity" />
+        <ExprType type="Entity" />
+      </ParameterTypes>
+    </Function>
+    <!-- IsNull -->
+    <Function>
+      <Token>isnull</Token>
+      <Class>IsNullNode</Class>
+      <ResultType typeGroup="All" />
+      <ParameterTypes>
+        <ExprType typeGroup="All" />
+        <ExprType typeGroup="All" />
+      </ParameterTypes>
+    </Function>
+    <!-- All -->
+    <Function>
+      <Token>all</Token>
+      <Class>AllInstancesNode</Class>
+      <ResultType type="Entity" isList="true" />
+      <ParameterTypes>
+        <ExprType type="Entity">
+          <EntityType entityRef="true">type</EntityType>
+        </ExprType>
+      </ParameterTypes>
+    </Function>
+    <!-- Resource (static) -->
+    <Function>
+      <Token>resource</Token>
+      <Class>ResourceInstanceNode</Class>
+      <ResultType type="Entity" isList="true" />
+      <ParameterTypes>
+        <ExprType type="Entity">
+          <EntityType entityRef="true">type</EntityType>
+        </ExprType>
+        <ExprType type="Entity">
+          <EntityType entityRef="true">resource</EntityType>
+        </ExprType>
+      </ParameterTypes>
+    </Function>
+    <!-- Resource (dynamic) -->
+    <Function>
+      <Token>resource</Token>
+      <Class>ResourceInstanceDynamicNode</Class>
+      <ResultType type="Entity" isList="true" />
+      <ParameterTypes>
+        <ExprType type="Entity">
+          <EntityType entityRef="true">type</EntityType>
+        </ExprType>
+        <ExprType type="String" />
+      </ParameterTypes>
+    </Function>
+    <!-- id -->
+    <Function>
+      <Token>id</Token>
+      <Class>IdFunctionNode</Class>
+      <ApiUseOnly>true</ApiUseOnly>
+      <ResultType type="Int32" />
+      <!-- actually Int64, but calculations doesn't handle them .. -->
+      <ParameterTypes>
+        <ExprType type="Entity">
+          <EntityType entityRef="true">resource</EntityType>
+        </ExprType>
+      </ParameterTypes>
+    </Function>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!--   Math Functions                                                               -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- Abs -->
+    <Function>
+      <Token>abs</Token>
+      <Class>AbsNode</Class>
+      <ResultType typeGroup="Numeric" />
+      <ParameterTypes>
+        <ExprType typeGroup="Numeric" />
+      </ParameterTypes>
+    </Function>
+    <!-- Ceiling -->
+    <Function>
+      <Token>ceiling</Token>
+      <Class>CeilingNode</Class>
+      <ResultType type="Int32" />
+      <ParameterTypes>
+        <ExprType type="Decimal" />
+      </ParameterTypes>
+    </Function>
+    <!-- Exp -->
+    <Function>
+      <Token>exp</Token>
+      <Class>ExpNode</Class>
+      <ResultType type="Decimal" />
+      <ParameterTypes>
+        <ExprType type="Decimal" />
+      </ParameterTypes>
+    </Function>
+    <!-- Floor -->
+    <Function>
+      <Token>floor</Token>
+      <Class>FloorNode</Class>
+      <ResultType type="Int32" />
+      <ParameterTypes>
+        <ExprType type="Decimal" />
+      </ParameterTypes>
+    </Function>
+    <!-- Log -->
+    <Function>
+      <Token>log</Token>
+      <Class>LogNode</Class>
+      <ResultType type="Decimal" />
+      <ParameterTypes>
+        <ExprType type="Decimal" />
+      </ParameterTypes>
+    </Function>
+    <!-- Log -->
+    <Function>
+      <Token>log</Token>
+      <Class>LogNode</Class>
+      <ResultType type="Decimal" />
+      <ParameterTypes>
+        <ExprType type="Decimal" />
+        <ExprType type="Decimal" />
+      </ParameterTypes>
+    </Function>
+    <!-- Log10 -->
+    <Function>
+      <Token>log10</Token>
+      <Class>Log10Node</Class>
+      <ResultType type="Decimal" />
+      <ParameterTypes>
+        <ExprType type="Decimal" />
+      </ParameterTypes>
+    </Function>
+    <!-- Power -->
+    <Function>
+      <Token>power</Token>
+      <Class>PowerNode</Class>
+      <ResultType type="Decimal" />
+      <ParameterTypes>
+        <ExprType type="Decimal" />
+        <ExprType type="Decimal" />
+      </ParameterTypes>
+    </Function>
+    <!-- Round -->
+    <Function>
+      <Token>round</Token>
+      <Class>RoundNode</Class>
+      <ResultType type="Decimal" />
+      <ParameterTypes>
+        <ExprType type="Decimal" />
+        <ExprType type="Int32" />
+      </ParameterTypes>
+    </Function>
+    <!-- Sign -->
+    <Function>
+      <Token>sign</Token>
+      <Class>SignNode</Class>
+      <ResultType type="Int32" />
+      <InputType typeGroup="Numeric" />
+      <ParameterTypes>
+        <ExprType typeGroup="Numeric" />
+      </ParameterTypes>
+    </Function>
+    <!-- Square -->
+    <Function>
+      <Token>square</Token>
+      <Class>SquareNode</Class>
+      <ResultType typeGroup="Numeric" />
+      <ParameterTypes>
+        <ExprType typeGroup="Numeric" />
+      </ParameterTypes>
+    </Function>
+    <!-- Sqrt -->
+    <Function>
+      <Token>sqrt</Token>
+      <Class>SqrtNode</Class>
+      <ResultType type="Decimal" />
+      <ParameterTypes>
+        <ExprType type="Decimal" />
+      </ParameterTypes>
+    </Function>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!--   String Functions                                                             -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- CharIndex -->
+    <Function>
+      <Token>charindex</Token>
+      <Class>CharIndexNode</Class>
+      <ResultType type="Int32" />
+      <ParameterTypes>
+        <ExprType type="String" />
+        <ExprType type="String" />
+      </ParameterTypes>
+    </Function>
+    <!-- CharIndex -->
+    <Function>
+      <Token>charindex</Token>
+      <Class>CharIndexNode</Class>
+      <ResultType type="Int32" />
+      <ParameterTypes>
+        <ExprType type="String" />
+        <ExprType type="String" />
+        <ExprType type="Int32" />
+        <!-- start position -->
+      </ParameterTypes>
+    </Function>
+    <!-- Left -->
+    <Function>
+      <Token>left</Token>
+      <Class>LeftNode</Class>
+      <ResultType type="String" />
+      <ParameterTypes>
+        <ExprType type="String" />
+        <ExprType type="Int32" />
+      </ParameterTypes>
+    </Function>
+    <!-- Len -->
+    <Function>
+      <Token>len</Token>
+      <Class>LenNode</Class>
+      <ResultType type="Int32" />
+      <ParameterTypes>
+        <ExprType type="String" />
+      </ParameterTypes>
+    </Function>
+    <!-- Replace -->
+    <Function>
+      <Token>replace</Token>
+      <Class>ReplaceNode</Class>
+      <ResultType type="String" />
+      <ParameterTypes>
+        <ExprType type="String" />
+        <ExprType type="String" />
+        <ExprType type="String" />
+      </ParameterTypes>
+    </Function>
+    <!-- Right -->
+    <Function>
+      <Token>right</Token>
+      <Class>RightNode</Class>
+      <ResultType type="String" />
+      <ParameterTypes>
+        <ExprType type="String" />
+        <ExprType type="Int32" />
+      </ParameterTypes>
+    </Function>
+    <!-- Substring -->
+    <Function>
+      <Token>substring</Token>
+      <Class>SubstringNode</Class>
+      <ResultType type="String" />
+      <ParameterTypes>
+        <ExprType type="String" />
+        <ExprType type="Int32" />
+        <!-- start (1-based) -->
+        <ExprType type="Int32" />
+        <!-- count -->
+      </ParameterTypes>
+    </Function>
+    <!-- ToLower -->
+    <Function>
+      <Token>tolower</Token>
+      <Class>ToLowerNode</Class>
+      <ResultType type="String" />
+      <ParameterTypes>
+        <ExprType type="String" />
+      </ParameterTypes>
+    </Function>
+    <!-- ToUpper -->
+    <Function>
+      <Token>toupper</Token>
+      <Class>ToUpperNode</Class>
+      <ResultType type="String" />
+      <ParameterTypes>
+        <ExprType type="String" />
+      </ParameterTypes>
+    </Function>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!--   Date Functions                                                               -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- DateFromParts -->
+    <Function>
+      <Token>datefromparts</Token>
+      <Class>DateFromPartsNode</Class>
+      <ResultType type="Date" />
+      <ParameterTypes>
+        <ExprType type="Int32" />
+        <ExprType type="Int32" />
+        <ExprType type="Int32" />
+      </ParameterTypes>
+    </Function>
+    <!-- TimeFromParts -->
+    <Function>
+      <Token>timefromparts</Token>
+      <Class>TimeFromPartsNode</Class>
+      <ResultType type="Time" />
+      <ParameterTypes>
+        <ExprType type="Int32" />
+        <ExprType type="Int32" />
+        <ExprType type="Int32" />
+      </ParameterTypes>
+    </Function>
+    <!-- DateTimeFromParts -->
+    <Function>
+      <Token>datetimefromparts</Token>
+      <Class>DateTimeFromPartsNode</Class>
+      <ResultType type="DateTime" />
+      <ParameterTypes>
+        <ExprType type="Int32" />
+        <ExprType type="Int32" />
+        <ExprType type="Int32" />
+        <ExprType type="Int32" />
+        <ExprType type="Int32" />
+        <ExprType type="Int32" />
+      </ParameterTypes>
+    </Function>
+    <!-- Year -->
+    <Function>
+      <Token>year</Token>
+      <Class>YearNode</Class>
+      <ResultType type="Int32" />
+      <ParameterTypes>
+        <ExprType type="Date" />
+      </ParameterTypes>
+    </Function>
+    <!-- Quarter -->
+    <Function>
+      <Token>quarter</Token>
+      <Class>QuarterNode</Class>
+      <ResultType type="Int32" />
+      <ParameterTypes>
+        <ExprType type="Date" />
+      </ParameterTypes>
+    </Function>
+    <!-- Month -->
+    <Function>
+      <Token>month</Token>
+      <Class>MonthNode</Class>
+      <ResultType type="Int32" />
+      <ParameterTypes>
+        <ExprType type="Date" />
+      </ParameterTypes>
+    </Function>
+    <!-- Week -->
+    <Function>
+      <Token>week</Token>
+      <Class>WeekNode</Class>
+      <ResultType type="Int32" />
+      <ParameterTypes>
+        <ExprType type="Date" />
+      </ParameterTypes>
+    </Function>
+    <!-- Weekday -->
+    <Function>
+      <Token>weekday</Token>
+      <Class>WeekdayNode</Class>
+      <ResultType type="Int32" />
+      <ParameterTypes>
+        <ExprType type="Date" />
+      </ParameterTypes>
+    </Function>
+    <!-- Dayofyear -->
+    <Function>
+      <Token>dayofyear</Token>
+      <Class>DayOfYearNode</Class>
+      <ResultType type="Int32" />
+      <ParameterTypes>
+        <ExprType type="Date" />
+      </ParameterTypes>
+    </Function>
+    <!-- Day -->
+    <Function>
+      <Token>day</Token>
+      <Class>DayNode</Class>
+      <ResultType type="Int32" />
+      <ParameterTypes>
+        <ExprType type="Date" />
+      </ParameterTypes>
+    </Function>
+    <!-- Hour -->
+    <Function>
+      <Token>hour</Token>
+      <Class>HourNode</Class>
+      <ResultType type="Int32" />
+      <ParameterTypes>
+        <ExprType type="Time" />
+      </ParameterTypes>
+    </Function>
+    <!-- Minute -->
+    <Function>
+      <Token>minute</Token>
+      <Class>MinuteNode</Class>
+      <ResultType type="Int32" />
+      <ParameterTypes>
+        <ExprType type="Time" />
+      </ParameterTypes>
+    </Function>
+    <!-- Second -->
+    <Function>
+      <Token>second</Token>
+      <Class>SecondNode</Class>
+      <ResultType type="Int32" />
+      <ParameterTypes>
+        <ExprType type="Time" />
+      </ParameterTypes>
+    </Function>
+    <!-- GetDate -->
+    <Function>
+      <Token>getdate</Token>
+      <Class>GetDateNode</Class>
+      <ResultType type="Date" />
+      <ParameterTypes />
+    </Function>
+    <!-- GetDateTime -->
+    <Function>
+      <Token>getdatetime</Token>
+      <Class>GetDateTimeNode</Class>
+      <ResultType type="DateTime" />
+      <ParameterTypes />
+    </Function>
+    <!-- GetTime -->
+    <Function>
+      <Token>gettime</Token>
+      <Class>GetTimeNode</Class>
+      <ResultType type="Time" />
+      <ParameterTypes />
+    </Function>
+    <!-- DateAdd -->
+    <Function>
+      <Token>dateadd</Token>
+      <Class>DateAddNode</Class>
+      <ResultType typeGroup="DateOrTime" />
+      <InputType typeGroup="DateOrTime" />
+      <ParameterTypes>
+        <!-- Part parameter does not get declared here -->
+        <ExprType type="Int32" />
+        <ExprType typeGroup="DateOrTime" />
+      </ParameterTypes>
+    </Function>
+    <!-- DateDiff -->
+    <Function>
+      <Token>datediff</Token>
+      <Class>DateDiffNode</Class>
+      <ResultType type="Int32" />
+      <InputType typeGroup="DateOrTime" />
+      <ParameterTypes>
+        <!-- Part parameter does not get declared here -->
+        <ExprType typeGroup="DateOrTime" />
+        <ExprType typeGroup="DateOrTime" />
+      </ParameterTypes>
+    </Function>
+    <!-- DateName -->
+    <Function>
+      <Token>datename</Token>
+      <Class>DateNameNode</Class>
+      <ResultType type="String" />
+      <InputType typeGroup="DateOrTime" />
+      <ParameterTypes>
+        <!-- Part parameter does not get declared here -->
+        <ExprType typeGroup="DateOrTime" />
+      </ParameterTypes>
+    </Function>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!--   Aggregate Functions                                                               -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- Count -->
+    <Function>
+      <Token>count</Token>
+      <Class>CountNode</Class>
+      <ResultType type="Int32" />
+      <ParameterTypes>
+        <ExprType type="Entity" isList="true" />
+      </ParameterTypes>
+    </Function>
+    <!-- Any -->
+    <Function>
+      <Token>any</Token>
+      <Class>AnyNode</Class>
+      <Availability>Evaluate</Availability>
+      <ResultType type="Bool" />
+      <ParameterTypes>
+        <ExprType type="Entity" isList="true" />
+      </ParameterTypes>
+    </Function>
+    <!-- Any -->
+    <Function>
+      <Token>any</Token>
+      <Class>AnyNode</Class>
+      <Availability>Evaluate</Availability>
+      <ResultType type="Bool" />
+      <ParameterTypes>
+        <ExprType type="Bool" />
+      </ParameterTypes>
+    </Function>
+    <!-- Every -->
+    <Function>
+      <Token>every</Token>
+      <Class>EveryNode</Class>
+      <Availability>Evaluate</Availability>
+      <ResultType type="Bool" />
+      <ParameterTypes>
+        <ExprType type="Bool" />
+      </ParameterTypes>
+    </Function>
+    <!-- Max -->
+    <Function>
+      <Token>max</Token>
+      <Class>MaxNode</Class>
+      <ResultType typeGroup="Comparable" />
+      <ParameterTypes>
+        <ExprType typeGroup="Comparable" isList="true" />
+      </ParameterTypes>
+    </Function>
+    <!-- Min -->
+    <Function>
+      <Token>min</Token>
+      <Class>MinNode</Class>
+      <ResultType typeGroup="Comparable" />
+      <ParameterTypes>
+        <ExprType typeGroup="Comparable" isList="true" />
+      </ParameterTypes>
+    </Function>
+    <!-- Sum -->
+    <Function>
+      <Token>sum</Token>
+      <Class>SumNode</Class>
+      <ResultType typeGroup="Numeric" />
+      <ParameterTypes>
+        <ExprType typeGroup="Numeric" isList="true" />
+      </ParameterTypes>
+    </Function>
+    <!-- Average -->
+    <Function>
+      <Token>avg</Token>
+      <Class>AverageNode</Class>
+      <ResultType type="Decimal" />
+      <ParameterTypes>
+        <ExprType type="Decimal" isList="true" />
+      </ParameterTypes>
+    </Function>
+    <!-- Stdev -->
+    <Function>
+      <Token>stdev</Token>
+      <Class>StdevNode</Class>
+      <ResultType type="Decimal" />
+      <ParameterTypes>
+        <ExprType type="Decimal" isList="true" />
+      </ParameterTypes>
+    </Function>
+    <!-- Join -->
+    <Function>
+      <Token>join</Token>
+      <Class>StringJoinNode</Class>
+      <ResultType type="String" />
+      <ParameterTypes>
+        <ExprType type="String" isList="true" />
+      </ParameterTypes>
+    </Function>
+  </Functions>
+</Language>

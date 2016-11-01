@@ -1,0 +1,2396 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="core" xsi:schemaLocation=". ../Core.xsd" defaultSolution="coreSolution">
+  <!--Copyright 2011-2016 Global Software Innovation Pty Ltd-->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    WORKFLOW                                                      -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- Missing things from the model
+
+A extig transition on an activity to say which exit point it represents. Needed to distinguish between multiple exists and between unconfigured exists.
+
+A way of marking a transition as being the default transition.
+
+-->
+  <type>
+    <alias>entityWithArgsAndExits</alias>
+    <name>I/O Abstract Entity</name>
+    <description>An entity that has typed inputs, outputs and exit points. This is an abstract type internal to the Workflow engine.</description>
+    <generateCode>true</generateCode>
+    <isAbstract>true</isAbstract>
+    <inherits>protectableType</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <name>I/O Abstract Entity Details</name>
+        <alias>entityWithArgsAndExitsDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <relationships>
+      <relationship>
+        <alias>inputArguments</alias>
+        <reverseAlias>inputToActivity</reverseAlias>
+        <name>Input arguments</name>
+        <description>Inputs into an activity</description>
+        <toType>activityArgument</toType>
+        <relType>relComponents</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>entityWithArgsAndExitsDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>activityArgumentDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <alias>internalArguments</alias>
+        <reverseAlias>internalsFromActivity</reverseAlias>
+        <name>Internal arguments</name>
+        <description>Arguments used internally by the activity implementation</description>
+        <toType>activityArgument</toType>
+        <relType>relComponents</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>entityWithArgsAndExitsDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>activityArgumentDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <alias>outputArguments</alias>
+        <reverseAlias>outputFromActivity</reverseAlias>
+        <name>Output arguments</name>
+        <description>Outputs from an activity</description>
+        <toType>activityArgument</toType>
+        <relType>relComponents</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>entityWithArgsAndExitsDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>activityArgumentDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <alias>exitPoints</alias>
+        <name>Activity exit points</name>
+        <toType>exitPoint</toType>
+        <relType>relComponents</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>entityWithArgsAndExitsDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>exitPointDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+    </relationships>
+  </type>
+  <type>
+    <alias>activityType</alias>
+    <inherits>type, entityWithArgsAndExits</inherits>
+    <name>Activity Type</name>
+    <description>All workflow activities are of this type</description>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Activity Type Details</name>
+        <alias>activityTypeDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <intField>
+        <alias>activityTypeOrder</alias>
+        <name>Order</name>
+        <description>The order the activity types are displayed in.</description>
+        <fieldInGroup>activityTypeDetails</fieldInGroup>
+      </intField>
+    </fields>
+    <relationships>
+      <relationship>
+        <name>Activity execution class</name>
+        <alias>activityExecutionClass</alias>
+        <toType>class</toType>
+        <relType>relSingleLookup</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>activityTypeDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>classDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <alias>runtimeProperties</alias>
+        <name>Runtime properties</name>
+        <description>Runtime properties that are populated by the workflow engine.</description>
+        <toType>activityArgument</toType>
+        <relType>relComponents</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>activityTypeDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>activityArgumentDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <alias>wfActivityCategory</alias>
+        <name>Activity category</name>
+        <description>The category of an activity. An example of its use is for grouping Activity types when presenting to the user.</description>
+        <relType>relChoiceField</relType>
+        <relationshipInFromTypeGroup>activityTypeDetails</relationshipInFromTypeGroup>
+        <!-- securesTo  true  /securesTo  NEED TO THINK ABOUT THIS ONE -->
+        <toType>
+          <enumType>
+            <inherits>enumValue</inherits>
+            <alias>wfActivityCategoryEnum</alias>
+            <name>Activity Category Choice</name>
+            <enumValues>
+              <wfActivityCategoryEnum>
+                <alias>activityCategoryEnum_Data</alias>
+                <name>Data Activities</name>
+                <description>Data related activities</description>
+                <enumOrder>1</enumOrder>
+              </wfActivityCategoryEnum>
+              <wfActivityCategoryEnum>
+                <alias>activityCategoryEnum_User</alias>
+                <name>User Activities</name>
+                <description>User related activities</description>
+                <enumOrder>2</enumOrder>
+              </wfActivityCategoryEnum>
+              <wfActivityCategoryEnum>
+                <alias>activityCategoryEnum_System</alias>
+                <name>System Activities</name>
+                <description>System level activities</description>
+                <enumOrder>3</enumOrder>
+              </wfActivityCategoryEnum>
+              <wfActivityCategoryEnum>
+                <alias>activityCategoryEnum_Other</alias>
+                <name>Other Activities</name>
+                <description>Other activities</description>
+                <enumOrder>4</enumOrder>
+              </wfActivityCategoryEnum>
+              <wfActivityCategoryEnum>
+                <alias>activityCategoryEnum_Hidden</alias>
+                <name>System - Hidden</name>
+                <description>Activity to not offer the user, such as those either deprecated or incomplete</description>
+                <enumOrder>4</enumOrder>
+              </wfActivityCategoryEnum>
+            </enumValues>
+          </enumType>
+        </toType>
+      </relationship>
+    </relationships>
+  </type>
+  <type>
+    <alias>exitPoint</alias>
+    <name>Exit Point</name>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Exit Point Details</name>
+        <alias>exitPointDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <boolField>
+        <alias>isDefaultExitPoint</alias>
+        <name>Is default</name>
+        <description>Is this Exit Point the default one?</description>
+        <defaultValue>false</defaultValue>
+        <fieldInGroup>exitPointDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <alias>isTimeoutExitPoint</alias>
+        <name>Is time-out</name>
+        <description>Is this Exit Point the time-out one?</description>
+        <defaultValue>false</defaultValue>
+        <fieldInGroup>exitPointDetails</fieldInGroup>
+      </boolField>
+      <intField>
+        <alias>exitPointOrdinal</alias>
+        <name>Ordinal</name>
+        <defaultValue>0</defaultValue>
+        <fieldInGroup>exitPointDetails</fieldInGroup>
+      </intField>
+      <stringField>
+        <alias>exitPointActionSummary</alias>
+        <name>ActionSummary</name>
+        <description>Additional information that can be added to describe the outcome of selecting this exit point.</description>
+        <fieldInGroup>exitPointDetails</fieldInGroup>
+      </stringField>
+    </fields>
+  </type>
+  <activityType>
+    <alias>wfActivity</alias>
+    <isAbstract>true</isAbstract>
+    <name>Activity</name>
+    <generateCode>true</generateCode>
+    <inherits>protectableType</inherits>
+    <description>A step in a workflow, from basic operations to workflows themselves</description>
+    <wfActivityCategory>activityCategoryEnum_Hidden</wfActivityCategory>
+    <fields>
+      <stringField>
+        <!-- TODO: discuss this one. It might be better to have this a separate object referencing the model entity -->
+        <alias>designerData</alias>
+        <name>Designer data</name>
+        <description>Internal property to maintain Workflow Designer related data.</description>
+        <isRequired>false</isRequired>
+        <fieldInGroup>activityTypeDetails</fieldInGroup>
+      </stringField>
+    </fields>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Activity Details</name>
+        <alias>wfActivityDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <relationships>
+      <relationship>
+        <alias>expressionMap</alias>
+        <reverseAlias>expressionInActivity</reverseAlias>
+        <name>Expression mappings</name>
+        <description>This contains the set of expressions to activity input arguments.</description>
+        <toType>wfExpression</toType>
+        <relType>relComponents</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>wfActivityDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>wfExpressionDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+    </relationships>
+  </activityType>
+  <exitPoint>
+    <alias>defaultExitPoint</alias>
+    <name>Old Default Exit Point</name>
+    <description>THIS SHOULD NOT BE USED, IT IS NEED FOR UPGRADE PURPOSES ONLY</description>
+    <isDefaultExitPoint>true</isDefaultExitPoint>
+  </exitPoint>
+  <activityType>
+    <alias>workflow</alias>
+    <name>Workflow</name>
+    <inherits>wfActivity, entityWithArgsAndExits</inherits>
+    <generateCode>true</generateCode>
+    <isMetadata>true</isMetadata>
+    <wfActivityCategory>activityCategoryEnum_Hidden</wfActivityCategory>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Workflow Details</name>
+        <alias>workflowDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <activityExecutionClass>
+      <class>
+        <alias>workflowActivityClass</alias>
+        <typeName>EDC.SoftwarePlatform.Activities.WorkflowImplementation</typeName>
+        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+      </class>
+    </activityExecutionClass>
+    <runtimeProperties>
+      <resourceArgument>
+        <alias>triggeringUserAccount</alias>
+        <name>Triggering User</name>
+        <description>The account of the user who triggerered this workflow to run. If empty, this indicates the workflow was triggered by some system process.</description>
+        <conformsToType>userAccount</conformsToType>
+      </resourceArgument>
+      <resourceArgument>
+        <alias>triggeringPerson</alias>
+        <name>Triggering Person</name>
+        <description>The person who triggerered this workflow to run. If empty, this indicates the workflow was triggered by some system process or that the triggering account was not associated with a person.</description>
+        <conformsToType>person</conformsToType>
+      </resourceArgument>
+      <resourceArgument>
+        <alias>workflowOwnerAccount</alias>
+        <name>Workflow Owner</name>
+        <description>The account of the user who owns this workflow.</description>
+        <conformsToType>userAccount</conformsToType>
+      </resourceArgument>
+    </runtimeProperties>
+    <fields>
+      <boolField>
+        <alias>workflowRunAsOwner</alias>
+        <name>Run as owner</name>
+        <description>Run the workflow as the owner rather than as the triggering user.</description>
+        <fieldInGroup>workflowDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <alias>workflowHasErrors</alias>
+        <name>Has errors</name>
+        <description>Is the workflow misconfigured?</description>
+        <fieldInGroup>workflowDetails</fieldInGroup>
+      </boolField>
+      <stringField>
+        <alias>workflowUpdateHash</alias>
+        <name>Version</name>
+        <description>This value changes every time the workflow is updated. This is user to track upgraded workflows.</description>
+        <fieldInGroup>workflowDetails</fieldInGroup>
+        <defaultValue>
+        </defaultValue>
+        <isFieldReadOnly>true</isFieldReadOnly>
+        <hideField>true</hideField>
+      </stringField>
+      <intField>
+        <alias>workflowVersion</alias>
+        <name>Version</name>
+        <description>The workflow version. This number is incremented whenever a workflow is updated or a new version of an application with a workflow update is installed.</description>
+        <fieldInGroup>workflowDetails</fieldInGroup>
+        <defaultValue>1</defaultValue>
+        <isFieldReadOnly>true</isFieldReadOnly>
+      </intField>
+    </fields>
+    <relationships>
+      <relationship>
+        <alias>swimlanes</alias>
+        <reverseAlias>parentWorkflow</reverseAlias>
+        <name>Swimlanes</name>
+        <fromName>Parent workflow</fromName>
+        <toType>swimlane</toType>
+        <relType>relComponents</relType>
+        <relationshipInFromTypeGroup>workflowDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>swimlaneDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <alias>containedActivities</alias>
+        <reverseAlias>containingWorkflow</reverseAlias>
+        <name>Contained activities</name>
+        <fromName>Parent workflow</fromName>
+        <toType>wfActivity</toType>
+        <relType>relComponents</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>workflowDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>wfActivityDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <name>Transitions</name>
+        <alias>transitions</alias>
+        <reverseAlias>workflowForTransition</reverseAlias>
+        <toType>transition</toType>
+        <relType>relComponents</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>workflowDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>transitionDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <name>First activity</name>
+        <alias>firstActivity</alias>
+        <relType>relSingleLookup</relType>
+        <toType>wfActivity</toType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>workflowDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>wfActivityDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <alias>terminations</alias>
+        <reverseAlias>workflowForTermination</reverseAlias>
+        <name>Terminations</name>
+        <relType>relComponents</relType>
+        <toType>termination</toType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>workflowDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>terminationDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <alias>variables</alias>
+        <reverseAlias>variableInWorkflow</reverseAlias>
+        <name>Variables</name>
+        <description>Values held against the workflow instance.</description>
+        <toType>activityArgument</toType>
+        <relType>relComponents</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>workflowDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>activityArgumentDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <alias>expressionParameters</alias>
+        <reverseAlias>referencedInWorkflow</reverseAlias>
+        <name>Substitution parameters</name>
+        <description>The parameters to substitute in expressions in the workflow.</description>
+        <toType>wfArgumentInstance</toType>
+        <relType>relComponents</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>workflowDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>wfArgumentInstanceDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <alias>inputArgumentForAction</alias>
+        <name>Input argument for action</name>
+        <description>If this relationship exists the workflow can be used as an action.</description>
+        <toType>activityArgument</toType>
+        <relType>relSingleLookup</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>workflowDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>activityArgumentDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <alias>inputArgumentForRelatedResource</alias>
+        <name>Input argument for the related resource</name>
+        <description>Allows the context of the entity to be passed into the workflow. This allows a workflow triggered of a tab in a form to access the item the tab is on.</description>
+        <toType>activityArgument</toType>
+        <relType>relSingleLookup</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>workflowDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>activityArgumentDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <alias>wfNewerVersion</alias>
+        <reverseAlias>wfOlderVersion</reverseAlias>
+        <name>Newer/older version</name>
+        <fromName>Older version</fromName>
+        <toName>Newer version</toName>
+        <description>The newer/older version of the workflow.</description>
+        <toType>workflow</toType>
+        <relType>relSingleLookup</relType>
+        <securesFrom>true</securesFrom>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>workflowDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>workflowDetails</relationshipInToTypeGroup>
+      </relationship>
+    </relationships>
+    <onBeforeSave>workflowSaveHelperClass</onBeforeSave>
+    <onAfterSave>workflowSaveHelperClass</onAfterSave>
+  </activityType>
+  <target>
+    <alias>workflowSaveHelperClass</alias>
+    <typeName>EDC.SoftwarePlatform.Activities.WorkflowSaveHelper</typeName>
+    <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+  </target>
+  <type>
+    <alias>swimlane</alias>
+    <name>Swimlane</name>
+    <description>Swimlanes represent responsibilities for activities in a process. They are a visual aid for the process diagram.</description>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Swimlane Details</name>
+        <alias>swimlaneDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+  </type>
+  <type>
+    <name>Transition Start</name>
+    <alias>transitionStart</alias>
+    <isAbstract>true</isAbstract>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Transition Start Details</name>
+        <alias>transitionStartDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <relationships>
+      <relationship>
+        <name>From activity</name>
+        <alias>fromActivity</alias>
+        <reverseAlias>forwardTransitions</reverseAlias>
+        <toType>wfActivity</toType>
+        <relType>relLookup</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>transitionStartDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>wfActivityDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <name>From exit point</name>
+        <alias>fromExitPoint</alias>
+        <reverseAlias>exitPointToTransition</reverseAlias>
+        <toType>exitPoint</toType>
+        <relType>relLookup</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>transitionStartDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>exitPointDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+    </relationships>
+  </type>
+  <type>
+    <alias>transition</alias>
+    <inherits>transitionStart</inherits>
+    <name>Workflow Transition</name>
+    <description>A transition within a workflow between two activities</description>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Workflow Transition Details</name>
+        <alias>transitionDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <relationships>
+      <relationship>
+        <name>To activity</name>
+        <alias>toActivity</alias>
+        <reverseAlias>transitionsForActivity</reverseAlias>
+        <toType>wfActivity</toType>
+        <relType>relLookup</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>transitionDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>wfActivityDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+    </relationships>
+  </type>
+  <type>
+    <alias>termination</alias>
+    <inherits>transitionStart</inherits>
+    <name>Workflow Termination</name>
+    <description>Specifies how a workflow terminates, it's exit point and field mappings</description>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Workflow Termination Details</name>
+        <alias>terminationDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <relationships>
+      <relationship>
+        <name>Workflow exit point</name>
+        <alias>workflowExitPoint</alias>
+        <reverseAlias>exitPointToTermination</reverseAlias>
+        <toType>exitPoint</toType>
+        <relType>relLookup</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>terminationDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>exitPointDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- Expressions -->
+  <type>
+    <alias>wfExpression</alias>
+    <name>Workflow Expression</name>
+    <description>An expression used to populate a workflow argument</description>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Workflow Expression Details</name>
+        <alias>wfExpressionDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>expressionString</alias>
+        <name>Expression</name>
+        <description>The expression to evaluate</description>
+        <fieldInGroup>wfExpressionDetails</fieldInGroup>
+      </stringField>
+      <boolField>
+        <alias>isTemplateString</alias>
+        <name>Is a template string</name>
+        <description>Then true the expression is evaluated as a template string rather than a mathmatical expression.</description>
+        <defaultValue>false</defaultValue>
+        <fieldInGroup>wfExpressionDetails</fieldInGroup>
+      </boolField>
+    </fields>
+    <relationships>
+      <relationship>
+        <name>Argument to populate</name>
+        <alias>argumentToPopulate</alias>
+        <reverseAlias>populatedByExpression</reverseAlias>
+        <description>The arguments required to be populated for a workflow.</description>
+        <toType>activityArgument</toType>
+        <relType>relLookup</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>wfExpressionDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>activityArgumentDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <alias>wfExpressionKnownEntities</alias>
+        <name>Known entities</name>
+        <description>Entities that may be used in the expression</description>
+        <toType>
+          <type>
+            <alias>namedReference</alias>
+            <name>Expression Entity</name>
+            <description>A known named entity in an expression.</description>
+            <generateCode>true</generateCode>
+            <relationships>
+              <relationship>
+                <alias>referencedEntity</alias>
+                <name>Referenced entity</name>
+                <description>The entity that has been named in the expression.</description>
+                <toType>resource</toType>
+                <relType>relLookup</relType>
+                <generateCode>true</generateCode>
+                <hideOnToType>true</hideOnToType>
+                <relationshipInFromTypeGroup>wfExpressionDetails</relationshipInFromTypeGroup>
+                <relationshipInToTypeGroup>activityArgumentDetails</relationshipInToTypeGroup>
+              </relationship>
+            </relationships>
+          </type>
+        </toType>
+        <relType>relComponents</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>wfExpressionDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>activityArgumentDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+    </relationships>
+  </type>
+  <type>
+    <alias>wfArgumentInstance</alias>
+    <name>Argument Instance</name>
+    <description>An argument and activity instance</description>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Argument Instance Details</name>
+        <alias>wfArgumentInstanceDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <relationships>
+      <relationship>
+        <alias>argumentInstanceActivity</alias>
+        <reverseAlias>argumentInstanceFromActivity</reverseAlias>
+        <name>Activity instance</name>
+        <toName>Activity</toName>
+        <fromName>Argument instance</fromName>
+        <toType>wfActivity</toType>
+        <relType>relLookup</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>wfArgumentInstanceDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>wfActivityDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <alias>argumentInstanceArgument</alias>
+        <reverseAlias>argumentInstanceFromArgument</reverseAlias>
+        <name>Argument</name>
+        <toName>Argument</toName>
+        <fromName>Argument instance</fromName>
+        <toType>activityArgument</toType>
+        <relType>relLookup</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>wfArgumentInstanceDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>activityArgumentDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <alias>instanceConformsToType</alias>
+        <name>Instance conforms to type</name>
+        <description>When specified on an argument instance, it overrides the definition on the original argument.</description>
+        <toType>type</toType>
+        <relType>relLookup</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>wfArgumentInstanceDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>typeDetails</relationshipInToTypeGroup>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- Argument Values -->
+  <type>
+    <alias>argumentValue</alias>
+    <name>Argument Value</name>
+    <description>Represents a value of any type. 
+The fields and relationships are mutually exclusive, that is only one should be defined 
+for a given instance of Argument Value. The usage context for an instance of this entity 
+will determine which actual type - which field or relationship - is in effect.
+    </description>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Argument Value Details</name>
+        <alias>argumentValueDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>stringArgumentValue</alias>
+        <name>String argument value</name>
+        <fieldInGroup>argumentValueDetails</fieldInGroup>
+      </stringField>
+      <!-- todo: add other types -->
+    </fields>
+    <relationships>
+      <relationship>
+        <alias>resourceArgumentValue</alias>
+        <name>Resource argument value</name>
+        <toType>resource</toType>
+        <hideOnToType>true</hideOnToType>
+        <relType>relLookup</relType>
+        <relationshipInFromTypeGroup>argumentValueDetails</relationshipInFromTypeGroup>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- Workflow Triggers -->
+  <type>
+    <alias>wfTrigger</alias>
+    <name>Workflow Trigger</name>
+    <description>A type of trigger that relates an action to a workflow. The workflow arguments are filled in by the trigger.</description>
+    <isAbstract>true</isAbstract>
+    <inherits>enableableItem</inherits>
+    <generateCode>true</generateCode>
+    <isMetadata>true</isMetadata>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Workflow Trigger Details</name>
+        <alias>wfTriggerDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <relationships>
+      <relationship>
+        <alias>workflowToRun</alias>
+        <name>Workflow to run</name>
+        <toName>Workflow to run</toName>
+        <fromName>Triggers</fromName>
+        <description>The workflow to run when the trigger is tripped.</description>
+        <toType>workflow</toType>
+        <relType>relDependantOf</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>wfTriggerDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>workflowDetails</relationshipInToTypeGroup>
+      </relationship>
+    </relationships>
+  </type>
+
+
+  <type>
+    <alias>wfTriggerUserUpdatesResource</alias>
+    <inherits>wfTrigger, resourceTriggerFilterDef</inherits>
+    <name>Trigger on Create/Update</name>
+    <description>A workflow trigger that is tripped when the user updates the given fields or relations on a specified type of resource.</description>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>User Updates Resource Trigger Details</name>
+        <alias>wfTriggerUserUpdatesResourceDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <relationships>
+      <relationship>
+        <alias>triggeringCondition</alias>
+        <name>Triggered on</name>
+        <relType>relChoiceField</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>wfTriggerUserUpdatesResourceDetails</relationshipInFromTypeGroup>
+        <toType>
+          <enumType>
+            <alias>triggeredOnEnum</alias>
+            <name>Triggered On</name>
+            <inherits>enumValue</inherits>
+            <generateCode>true</generateCode>
+            <enumValues>
+              <triggeredOnEnum>
+                <alias>triggeredOnEnumCreate</alias>
+                <name>Create</name>
+                <enumOrder>1</enumOrder>
+              </triggeredOnEnum>
+              <triggeredOnEnum>
+                <alias>triggeredOnEnumUpdate</alias>
+                <name>Update</name>
+                <enumOrder>2</enumOrder>
+              </triggeredOnEnum>
+              <triggeredOnEnum>
+                <alias>triggeredOnEnumCreateUpdate</alias>
+                <name>Create Or Update</name>
+                <enumOrder>3</enumOrder>
+              </triggeredOnEnum>
+            </enumValues>
+          </enumType>
+        </toType>
+      </relationship>
+     
+    </relationships>
+  </type>
+
+  <!--~~~~~~~~~~~~~-->
+  <!-- WorkflowRun -->
+  <!--~~~~~~~~~~~~~-->
+  <managedType>
+    <alias>workflowRun</alias>
+    <name>Workflow Run</name>
+    <description>A running instance of a workflow that has been triggered.</description>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Workflow Run Details</name>
+        <alias>workflowRunDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>taskId</alias>
+        <name>Task Id</name>
+        <description>A generated task Id. (System internal.)</description>
+        <isFieldReadOnly>true</isFieldReadOnly>
+        <fieldInGroup>system</fieldInGroup>
+      </stringField>
+      <dateTimeField>
+        <alias>runCompletedAt</alias>
+        <name>Completed at</name>
+        <description>The date and time when the run was completed.</description>
+        <fieldInGroup>workflowRunDetails</fieldInGroup>
+      </dateTimeField>
+      <boolField>
+        <alias>hasTimeout</alias>
+        <name>Has timeout</name>
+        <description>When true the current workflow run has an active timeout.</description>
+        <fieldInGroup>workflowRunDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <alias>runTrace</alias>
+        <name>Trace workflow</name>
+        <description>When true a workflow run will generate trace messages.</description>
+        <fieldInGroup>workflowRunDetails</fieldInGroup>
+      </boolField>
+      <intField>
+        <alias>runStepCounter</alias>
+        <name>Step counter</name>
+        <description>The number of steps that have been taken to get to this point in the workflow run.</description>
+        <fieldInGroup>workflowRunDetails</fieldInGroup>
+      </intField>
+      <intField>
+        <alias>totalTimeMs</alias>
+        <name>Total time</name>
+        <description>The total amount of time (ms) that has been taken to get to this point in the workflow run. This does not include any time in a Paused state. </description>
+        <fieldInGroup>workflowRunDetails</fieldInGroup>
+      </intField>
+      <intField>
+        <alias>triggerDepth</alias>
+        <name>Trigger depth</name>
+        <isRequired>true</isRequired>
+        <description>The number of cascaded triggers that have caused this workflow to run. If this trigger depth becomes too great the workflow will not start.</description>
+        <defaultValue>0</defaultValue>
+        <fieldInGroup>workflowRunDetails</fieldInGroup>
+      </intField>
+    </fields>
+    <relationships>
+      <relationship>
+        <alias>workflowBeingRun</alias>
+        <reverseAlias>runningInstances</reverseAlias>
+        <name>Workflow being run</name>
+        <toName>Workflow</toName>
+        <fromName>Running instances</fromName>
+        <description>The workflow that was triggered to create this run.</description>
+        <toType>workflow</toType>
+        <relType>relDependantOf</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>workflowRunDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>workflowDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <alias>triggeringUser</alias>
+        <reverseAlias>triggeredWorkflowByUser</reverseAlias>
+        <name>Triggering user</name>
+        <toName>Triggering user</toName>
+        <fromName>Running workflows</fromName>
+        <description>The user that triggered the workflow</description>
+        <toType>userAccount</toType>
+        <relType>relLookup</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>workflowRunDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>userAccountOtherDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <alias>triggerForRun</alias>
+        <name>Trigger for run</name>
+        <toName>Trigger</toName>
+        <fromName>Running workflows</fromName>
+        <description>The trigger that created the running instance.</description>
+        <toType>wfTrigger</toType>
+        <relType>relLookup</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>workflowRunDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>wfTriggerDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <alias>pendingActivity</alias>
+        <name>Pending activity</name>
+        <description>An activity that is waiting for external input to complete and is blocking the workflow run.</description>
+        <toType>wfActivity</toType>
+        <relType>relLookup</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>workflowRunDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>wfActivityDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <alias>childRuns</alias>
+        <reverseAlias>parentRun</reverseAlias>
+        <name>Parent/child workflow run</name>
+        <description>Workflow runs with nested child runs.</description>
+        <fromName>Parent runs</fromName>
+        <toName>Child run</toName>
+        <toType>workflowRun</toType>
+        <relType>relComponents</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>workflowRunDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>workflowRunDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <alias>workflowRunStatus</alias>
+        <name>Status</name>
+        <description>A state a workflow run can be in.</description>
+        <relType>relChoiceField</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>workflowRunDetails</relationshipInFromTypeGroup>
+        <toType>workflowRunState</toType>
+      </relationship>
+      <relationship>
+        <alias>stateInfo</alias>
+        <name>State information</name>
+        <description>The variables and outputs for a paused or completed run.</description>
+        <relationshipInFromTypeGroup>workflowRunDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>stateInfoEntryDetails</relationshipInToTypeGroup>
+        <toType>
+          <type>
+            <alias>stateInfoEntry</alias>
+            <name>State Info Value</name>
+            <description>A piece of stored state information.</description>
+            <generateCode>true</generateCode>
+            <fieldGroups>
+              <fieldGroup>
+                <name>State Info Value Details</name>
+                <alias>stateInfoEntryDetails</alias>
+              </fieldGroup>
+            </fieldGroups>
+            <relationships>
+              <relationship>
+                <alias>stateInfoArgument</alias>
+                <name>State info argument</name>
+                <description>The argument for which the value is stored.</description>
+                <toType>activityArgument</toType>
+                <relType>relLookup</relType>
+                <generateCode>true</generateCode>
+                <relationshipInFromTypeGroup>stateInfoEntryDetails</relationshipInFromTypeGroup>
+                <relationshipInToTypeGroup>activityArgumentDetails</relationshipInToTypeGroup>
+              </relationship>
+              <relationship>
+                <alias>stateInfoActivity</alias>
+                <name>State info activity</name>
+                <description>The activity instance the argument is part of.</description>
+                <toType>wfActivity</toType>
+                <relType>relLookup</relType>
+                <generateCode>true</generateCode>
+                <relationshipInFromTypeGroup>stateInfoEntryDetails</relationshipInFromTypeGroup>
+                <relationshipInToTypeGroup>wfActivityDetails</relationshipInToTypeGroup>
+              </relationship>
+              <relationship>
+                <alias>stateInfoValue</alias>
+                <name>State info value</name>
+                <description>The value being stored for the state.</description>
+                <toType>activityArgument</toType>
+                <relType>relSingleComponent</relType>
+                <generateCode>true</generateCode>
+                <relationshipInFromTypeGroup>stateInfoEntryDetails</relationshipInFromTypeGroup>
+                <relationshipInToTypeGroup>activityArgumentDetails</relationshipInToTypeGroup>
+                <securesTo>true</securesTo>
+              </relationship>
+            </relationships>
+          </type>
+        </toType>
+        <relType>relDependants</relType>
+        <generateCode>true</generateCode>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <alias>errorLogEntry</alias>
+        <reverseAlias>workflowRunInError</reverseAlias>
+        <name>Error log entry</name>
+        <toType>workflowRunLogEntry</toType>
+        <toName>Additional information</toName>
+        <relType>relSingleLookup</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>workflowRunDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>workflowRunLogEntryDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <alias>workflowRunExitPoint</alias>
+        <name>ExitPoint</name>
+        <description>The exit point that the workflow completed at.</description>
+        <toType>exitPoint</toType>
+        <relType>relLookup</relType>
+        <hideOnToType>true</hideOnToType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>workflowRunDetails</relationshipInFromTypeGroup>
+      </relationship>
+    </relationships>
+  </managedType>
+  <!--~~~~~~~~~~~~~~~~~~~~-->
+  <!-- Workflow Run State -->
+  <!--~~~~~~~~~~~~~~~~~~~~-->
+  <enumType>
+    <!-- note: also used by file import -->
+    <alias>workflowRunState</alias>
+    <name>Workflow Run State</name>
+    <inherits>enumValue</inherits>
+    <description>A possible state a workflow can be in.</description>
+    <generateCode>true</generateCode>
+    <enumValues>
+      <workflowRunState>
+        <alias>workflowRunQueued</alias>
+        <name>Queued</name>
+        <description>The workflow will start running shortly.</description>
+        <enumOrder>0</enumOrder>
+      </workflowRunState>
+      <workflowRunState>
+        <alias>workflowRunStarted</alias>
+        <name>Started</name>
+        <description>The workflow is currently running.</description>
+        <enumOrder>1</enumOrder>
+      </workflowRunState>
+      <workflowRunState>
+        <alias>workflowRunPaused</alias>
+        <name>Paused</name>
+        <description>The workflow run is currently paused.</description>
+        <enumOrder>2</enumOrder>
+      </workflowRunState>
+      <workflowRunState>
+        <alias>workflowRunCompleted</alias>
+        <name>Completed</name>
+        <description>The workflow completed normally.</description>
+        <enumOrder>3</enumOrder>
+      </workflowRunState>
+      <workflowRunState>
+        <alias>workflowRunFailed</alias>
+        <name>Failed</name>
+        <description>The workflow run failed with an error.</description>
+        <enumOrder>4</enumOrder>
+      </workflowRunState>
+      <workflowRunState>
+        <alias>workflowRunCancelled</alias> <!-- used by Excel import -->
+        <name>Cancelled</name>
+        <description>The workflow run was cancelled.</description>
+        <enumOrder>2</enumOrder>
+      </workflowRunState>
+    </enumValues>
+  </enumType>
+  <!--~~~~~~~~~~~-->
+  <!-- User Tasks -->
+  <!--~~~~~~~~~~~-->
+  <definition>
+    <alias>baseUserTask</alias>
+    <name>Task</name>
+    <description>A base task object definition that can be derived from to create specialized task object definitions.</description>
+    <generateCode>true</generateCode>
+    <inherits>userResource</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Task Details</name>
+        <alias>baseUserTaskDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <boolField>
+        <alias>userTaskIsComplete</alias>
+        <name>Is complete</name>
+        <description>Has the task been completed</description>
+        <fieldInGroup>baseUserTaskDetails</fieldInGroup>
+        <isFieldReadOnly>true</isFieldReadOnly>
+      </boolField>
+      <dateTimeField>
+        <alias>userTaskStartedOn</alias>
+        <name>Start date</name>
+        <description>The time and date when the task was completed</description>
+        <fieldInGroup>baseUserTaskDetails</fieldInGroup>
+      </dateTimeField>
+      <dateTimeField>
+        <alias>userTaskDueOn</alias>
+        <name>Due date</name>
+        <description>The time and date when the task was completed</description>
+        <fieldInGroup>baseUserTaskDetails</fieldInGroup>
+      </dateTimeField>
+      <dateTimeField>
+        <alias>userTaskCompletedOn</alias>
+        <name>Completed date</name>
+        <description>The time and date when the task was completed</description>
+        <fieldInGroup>baseUserTaskDetails</fieldInGroup>
+        <isFieldReadOnly>true</isFieldReadOnly>
+      </dateTimeField>
+      <decimalField>
+        <alias>percentageCompleted</alias>
+        <name>% completed</name>
+        <description>If set, displayed to the user.</description>
+        <fieldInGroup>baseUserTaskDetails</fieldInGroup>
+      </decimalField>
+      <boolField>
+        <alias>userTaskReminderEnabled</alias>
+        <name>Reminder</name>
+        <description>Is a reminder notificatioin required?</description>
+        <fieldInGroup>baseUserTaskDetails</fieldInGroup>
+      </boolField>
+      <dateTimeField>
+        <alias>taskReminderTime</alias>
+        <name>Reminder time</name>
+        <fieldInGroup>baseUserTaskDetails</fieldInGroup>
+      </dateTimeField>
+      <boolField>
+        <alias>keepAfterCompletion</alias>
+        <name>Keep after completion</name>
+        <description>If set, the task will not be removed once the associated implementation has completed.</description>
+        <defaultValue>false</defaultValue>
+        <fieldInGroup>baseUserTaskDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <alias>waitForNextTask</alias>
+        <name>Wait for next task</name>
+        <description>If set, after the task is completed the system will wait to see if there are additional tasks for the user to complete.</description>
+        <fieldInGroup>baseUserTaskDetails</fieldInGroup>
+      </boolField>
+    </fields>
+    <relationships>
+      <relationship>
+        <alias>assignedToUser</alias>
+        <reverseAlias>taskForUser</reverseAlias>
+        <name>Assigned to</name>
+        <toName>Assigned to</toName>
+        <fromName>Assigned tasks</fromName>
+        <description>The person who has been assigned to this task</description>
+        <defaultFromUseCurrent>true</defaultFromUseCurrent>
+        <defaultToUseCurrent>true</defaultToUseCurrent>
+        <toType>person</toType>
+        <relType>relLookup</relType>
+        <generateCode>true</generateCode>
+        <hideOnToTypeDefaultForm>true</hideOnToTypeDefaultForm>
+        <relationshipInFromTypeGroup>system</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>userAccountOtherDetails</relationshipInToTypeGroup>        
+      </relationship>
+      <relationship>
+        <alias>taskPriority</alias>
+        <name>Priority</name>
+        <description>The priority of the task.</description>
+        <relType>relChoiceField</relType>
+        <toType>eventEmailPriorityEnum</toType>
+        <hideOnToType>true</hideOnToType>
+        <hideOnToTypeDefaultForm>true</hideOnToTypeDefaultForm>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>baseUserTaskDetails</relationshipInFromTypeGroup>
+      </relationship>
+      <relationship>
+        <name>Task status</name>
+        <alias>taskStatus</alias>
+        <toType>taskStatusEnum</toType>
+        <relType>relChoiceField</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>baseUserTaskDetails</relationshipInFromTypeGroup>
+      </relationship>
+      <relationship>
+        <alias>workflowRunForTask</alias>
+        <reverseAlias>taskWithinWorkflowRun</reverseAlias>
+        <name>Running workflow</name>
+        <toName>Running workflow instance</toName>
+        <fromName>User tasks</fromName>
+        <description>The workflow run that is waiting on this user task.</description>
+        <toType>workflowRun</toType>
+        <relType>relLookup</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>baseUserTaskDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>workflowRunDetails</relationshipInToTypeGroup>
+      </relationship>
+    </relationships>
+    <onBeforeSave>userTaskTargetClass</onBeforeSave>
+  </definition>
+  <!--~~~~~~~~~~~~~~~~-->
+  <!-- Approval Tasks -->
+  <!--~~~~~~~~~~~~~~~~-->
+  <managedType>
+    <alias>transitionTask</alias>
+    <name>Transition Task </name>
+    <description>Internal</description>
+    <isAbstract>true</isAbstract>
+    <generateCode>true</generateCode>
+
+    <relationships>
+      <relationship>
+        <alias>availableTransitions</alias>
+        <name>Available transitions</name>
+        <description>The transitions from the activity that may be taken.</description>
+        <toType>transitionStart</toType>
+        <relType>relManyToMany</relType>
+        <generateCode>true</generateCode>
+        <hideOnToTypeDefaultForm>true</hideOnToTypeDefaultForm>
+        <hideOnToType>true</hideOnToType>
+        <relationshipInFromTypeGroup>displayFormUserTaskDetails</relationshipInFromTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+
+      <relationship>
+        <alias>userResponse</alias>
+        <name>User response</name>
+        <description>The response the user has selected.</description>
+        <toType>transitionStart</toType>
+        <relType>relLookup</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>displayFormUserTaskDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>transitionStartDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+    </relationships>
+  </managedType>
+  
+  <managedType>
+    <alias>displayFormUserTask</alias>
+    <inherits>baseUserTask, transitionTask</inherits>
+    <name>Approval Task</name>
+    <description>A form needs to be filled in</description>
+    <generateCode>true</generateCode>
+    <isAbstract>false</isAbstract>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Approval Task Details</name>
+        <alias>displayFormUserTaskDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>taskComment</alias>
+        <name>Comment</name>
+        <description>Additional information from the user.</description>
+        <fieldInGroup>displayFormUserTaskDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>sequenceId</alias>
+        <name>Sequence Id</name>
+        <description>An internal field containing a generated Id used to track messages and responses.</description>
+        <fieldInGroup>displayFormUserTaskDetails</fieldInGroup>
+        <hideField>true</hideField>
+      </stringField>
+      <boolField>
+        <alias>hideComment</alias>
+        <name>Hide comment</name>
+        <description>If set, do not display the comment field.</description>
+        <defaultValue>false</defaultValue>
+        <fieldInGroup>displayFormUserTaskDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <alias>openInEditMode</alias>
+        <name>Open in edit mode</name>
+        <description>If set, the form is opened in edit mode.</description>
+        <defaultValue>false</defaultValue>
+        <fieldInGroup>displayFormUserTaskDetails</fieldInGroup>
+      </boolField>
+      <stringField>
+        <alias>dfutLinkToken</alias>
+        <name>Link token</name>
+        <description>A token embedded in a URL that allows a task to be approved without needing to log-in</description>
+        <fieldInGroup>displayFormUserTaskDetails</fieldInGroup>
+        <hideField>true</hideField>
+      </stringField>
+
+    </fields>
+    <relationships>
+      <relationship>
+        <alias>relatedMessages</alias>
+        <reverseAlias>relatedTask</reverseAlias>
+        <name>Messages about user task</name>
+        <toName>Related messages</toName>
+        <fromName>Related task</fromName>
+        <description>The messages that relate to the user task.</description>
+        <toType>emailMessage</toType>
+        <relType>relExclusiveCollection</relType>
+        <generateCode>true</generateCode>
+        <hideOnToTypeDefaultForm>true</hideOnToTypeDefaultForm>
+        <hideOnToType>true</hideOnToType>
+        <relationshipInFromTypeGroup>displayFormUserTaskDetails</relationshipInFromTypeGroup>
+      </relationship>
+      <relationship>
+        <alias>recordToPresent</alias>
+        <reverseAlias>tasksForRecord</reverseAlias>
+        <name>Record</name>
+        <toName>Record</toName>
+        <fromName>Task</fromName>
+        <description>The record that is related to this task. This field is optional.</description>
+        <toType>userResource</toType>
+        <relType>relLookup</relType>
+        <generateCode>true</generateCode>
+        <hideOnToTypeDefaultForm>true</hideOnToTypeDefaultForm>
+        <hideOnToType>true</hideOnToType>
+        <relationshipInFromTypeGroup>displayFormUserTaskDetails</relationshipInFromTypeGroup>
+      </relationship>
+
+      
+    </relationships>
+    <onBeforeSave>displayFormTaskTargetClass</onBeforeSave>
+    <onAfterSave>displayFormTaskTargetClass</onAfterSave>
+  </managedType>
+  <!--~~~~~~~~~~~~~~~~-->
+  <!--  Prompt Tasks  -->
+  <!--~~~~~~~~~~~~~~~~-->
+  <managedType>
+    <alias>promptUserTask</alias>
+    <inherits>baseUserTask</inherits>
+    <name>Prompt Task</name>
+    <description>User input is required.</description>
+    <generateCode>true</generateCode>
+    <isAbstract>true</isAbstract>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Input Task Details</name>
+        <alias>promptUserTaskDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>promptForTaskMessage</alias>
+        <name>Prompt for task message</name>
+        <description>Some helpful introductory text displayed to the user.</description>
+        <fieldInGroup>promptUserTaskDetails</fieldInGroup>
+      </stringField>
+    </fields>
+    <relationships>
+      <relationship>
+        <alias>promptForTaskArguments</alias>
+        <name>Prompt for task arguments</name>
+        <description>The arguments requiring input from the user.</description>
+        <toType>activityPrompt</toType>
+        <relType>relSharedDependantsOf</relType>
+        <generateCode>true</generateCode>
+        <securesTo>true</securesTo>
+        <hideOnToTypeDefaultForm>true</hideOnToTypeDefaultForm>
+        <hideOnToType>true</hideOnToType>
+        <relationshipInFromTypeGroup>promptUserTaskDetails</relationshipInFromTypeGroup>
+      </relationship>
+      <relationship>
+        <alias>promptForTaskStateInfo</alias>
+        <name>State information</name>
+        <description>The values to be passed along to the workflow run.</description>
+        <relType>relDependants</relType>
+        <generateCode>true</generateCode>
+        <securesTo>true</securesTo>
+        <toType>stateInfoEntry</toType>
+        <hideOnToTypeDefaultForm>true</hideOnToTypeDefaultForm>
+        <hideOnToType>true</hideOnToType>
+        <relationshipInFromTypeGroup>promptUserTaskDetails</relationshipInFromTypeGroup>
+      </relationship>
+    </relationships>
+    <onBeforeSave>promptUserTaskTargetClass</onBeforeSave>
+    <onAfterSave>promptUserTaskTargetClass</onAfterSave>
+  </managedType>
+  <type>
+    <alias>activityPrompt</alias>
+    <name>Activity Prompt</name>
+    <description>A wrapper for activity arguments for use with user prompt tasks.</description>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Activity Prompt Details</name>
+        <alias>activityPromptDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <intField>
+        <alias>activityPromptOrdinal</alias>
+        <name>Order</name>
+        <description>The order in which to display this on the user input form.</description>
+        <isRequired>true</isRequired>
+        <fieldInGroup>activityPromptDetails</fieldInGroup>
+      </intField>
+    </fields>
+    <relationships>
+      <relationship>
+        <alias>activityPromptArgument</alias>
+        <name>Prompt for argument</name>
+        <relType>relDependantOf</relType>
+        <toType>activityArgument</toType>
+        <generateCode>true</generateCode>
+        <securesTo>true</securesTo>
+        <relationshipInFromTypeGroup>activityPromptDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>activityArgumentDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <alias>activityPromptArgumentPickerReport</alias>
+        <name>Prompt for argument picker report</name>
+        <relType>relDependantOf</relType>
+        <toType>report</toType>
+        <generateCode>true</generateCode>
+        <hideOnToTypeDefaultForm>true</hideOnToTypeDefaultForm>
+        <hideOnToType>true</hideOnToType>
+        <relationshipInFromTypeGroup>activityPromptDetails</relationshipInFromTypeGroup>
+      </relationship>
+    </relationships>
+  </type>
+  <target>
+    <alias>userTaskTargetClass</alias>
+    <typeName>EDC.SoftwarePlatform.Activities.Tasks.UserTaskTarget</typeName>
+    <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+    <ordinal>10</ordinal>
+  </target>
+  <target>
+    <alias>displayFormTaskTargetClass</alias>
+    <typeName>EDC.SoftwarePlatform.Activities.Tasks.DisplayFormTaskTarget</typeName>
+    <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+    <ordinal>20</ordinal>
+  </target>
+  <target>
+    <alias>promptUserTaskTargetClass</alias>
+    <typeName>EDC.SoftwarePlatform.Activities.Tasks.PromptUserTaskTarget</typeName>
+    <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+    <ordinal>30</ordinal>
+  </target>
+  <!--~~~~~~~~~~~~~~~~-->
+  <!-- User Survey Tasks -->
+  <!--~~~~~~~~~~~~~~~~-->
+  <managedType>
+    <alias>userSurveyTask</alias>
+    <inherits>baseUserTask, transitionTask</inherits>
+    <name>User Survey Task</name>
+    <description>A task for a user to complete a survey.</description>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>User Survey Task Details</name>
+        <alias>userSurveyTaskDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <boolField>
+        <alias>userSurveyTaskForReview</alias>
+        <!-- TODO: REMOVE -->
+        <name>For review</name>
+        <description>The task is to review a previously completed survey.</description>
+        <fieldInGroup>userSurveyTaskDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <alias>userSurveyTaskAllowComments</alias>
+        <name>Allow comments</name>
+        <description>Allow the recipient to add comments.</description>
+        <fieldInGroup>userSurveyTaskDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <alias>userSurveyTaskAllowTargetEdit</alias>
+        <name>Allow target editing</name>
+        <description>Allow the recipient to change the target if set.</description>
+        <fieldInGroup>userSurveyTaskDetails</fieldInGroup>
+      </boolField>
+      <stringField>
+        <alias>userSurveyTaskHelp</alias>
+        <name>Help</name>
+        <description>Help text presented to the recipient with the survey.</description>
+        <fieldInGroup>userSurveyTaskDetails</fieldInGroup>
+      </stringField>
+    </fields>
+    <relationships>
+      <relationship>
+        <alias>userSurveyTaskSurveyResponse</alias>
+        <reverseAlias>userSurveyTaskForResults</reverseAlias>
+        <name>Survey results</name>
+        <description>The response from the survey recipient.</description>
+        <toType>surveyResponse</toType>
+        <relType>relLookup</relType>
+        <generateCode>true</generateCode>
+        <hideOnToTypeDefaultForm>true</hideOnToTypeDefaultForm>
+        <hideOnToType>true</hideOnToType>
+        <relationshipInFromTypeGroup>userSurveyTaskDetails</relationshipInFromTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <alias>userSurveyTaskTargetDefinition</alias>
+        <name>Target object definition</name>
+        <description>The type of target object defintion.</description>
+        <toType>definition</toType>
+        <relType>relLookup</relType>
+        <generateCode>true</generateCode>
+        <hideOnToTypeDefaultForm>true</hideOnToTypeDefaultForm>
+        <hideOnToType>true</hideOnToType>
+        <relationshipInFromTypeGroup>userSurveyTaskDetails</relationshipInFromTypeGroup>
+      </relationship>
+    </relationships>
+    <onBeforeSave>userSurveyTaskEventTargetClass</onBeforeSave>
+    <onAfterSave>userSurveyTaskEventTargetClass</onAfterSave>
+  </managedType>
+  <target>
+    <alias>userSurveyTaskEventTargetClass</alias>
+    <typeName>EDC.ReadiNow.Model.EventClasses.UserSurveyTaskEventTarget</typeName>
+    <assemblyName>EDC.ReadiNow.Common, Version=1.0.0.0, Culture=neutral</assemblyName>
+    <ordinal>0</ordinal>
+  </target>
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- Log Entries                                          -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <managedType>
+    <alias>workflowRunLogEntry</alias>
+    <name>Workflow Run Log Entry</name>
+    <description>A generic log message for a running workflow</description>
+    <inherits>tenantLogEntry</inherits>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Workflow Run Log Entry Details</name>
+        <alias>workflowRunLogEntryDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    
+      <fields>
+      <stringField>
+        <alias>wrleWorkflowName</alias>
+        <name>Workflow name</name>
+        <description>The name of the workflow being run.</description>
+        <isRequired>true</isRequired>
+      <fieldInGroup>workflowRunLogEntryDetails</fieldInGroup>
+      </stringField>
+        
+      <stringField>
+        <alias>wrleStepName</alias>
+        <name>Step name</name>
+        <description>The name of the step in the workflow.</description>
+        <fieldInGroup>workflowRunLogEntryDetails</fieldInGroup>
+      </stringField>
+        
+    </fields>
+    
+    <relationships>
+      <relationship>
+        <alias>workflowRunBeingLogged</alias>
+        <reverseAlias>runLog</reverseAlias>
+        <name>Workflow run being logged</name>
+        <toType>workflowRun</toType>
+        <toName>Workflow run</toName>
+        <fromName>Log messages</fromName>
+        <relType>relComponentOf</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>workflowRunLogEntryDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>workflowRunDetails</relationshipInToTypeGroup>
+        <securesFrom>true</securesFrom>
+      </relationship>
+    </relationships>
+  </managedType>
+
+  <managedType>
+    <alias>workflowUserActionLogEntry</alias>
+    <name>User Action Log Entry</name>
+    <description>A log entry for recording user actions within a process.</description>
+    <inherits>workflowRunLogEntry, managedObjectLogEntry, actingPersonLogEntry</inherits>
+    <generateCode>true</generateCode>
+    
+    <fields>
+      <dateTimeField>
+        <alias>wuleDueDate</alias>
+        <name>Due date</name>
+        <description>The due date for the action.</description>
+        <fieldInGroup>workflowRunDetails</fieldInGroup>
+      </dateTimeField>
+      
+      <dateTimeField>
+        <alias>wuleCompletedDate</alias>
+        <name>Completed date</name>
+        <description>If set, the date the task was completed.</description>
+        <fieldInGroup>workflowRunDetails</fieldInGroup>
+      </dateTimeField>
+    
+      <stringField>
+        <alias>wuleUserComment</alias>
+        <name>User comment</name>
+        <description>The user comment as provided.</description>
+        <fieldInGroup>workflowRunDetails</fieldInGroup>
+      </stringField>
+
+      <stringField>
+        <alias>wuleActionSummary</alias>
+        <name>Action summary</name>
+        <description>The effect on the workflow of the users action.</description>
+        <fieldInGroup>workflowRunDetails</fieldInGroup>
+      </stringField>
+    </fields>
+  
+    <relationships>
+      <relationship>
+        <alias>userActionBeingLogged</alias>
+        <reverseAlias>logEntryForUserAction</reverseAlias>
+        <name>User action</name>
+        <description>The user action that is generating the log. Used when task completes.</description>
+        <toType>displayFormUserTask</toType>
+        <relType>relSingleLookup</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>workflowRunDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>wfActivityDetails</relationshipInToTypeGroup>
+      </relationship>
+    </relationships>
+  </managedType>
+
+  <managedType>
+    <alias>workflowRunFailedLogEntry</alias>
+    <name>Workflow Run Failed Log Entry</name>
+    <description>A log entry generated by a failure during a workflow run.</description>
+    <inherits>workflowRunLogEntry</inherits>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Workflow Run Failed Log Entry Details</name>
+        <alias>workflowRunFailedLogEntryDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <relationships>
+      <relationship>
+        <alias>activityBeingRun</alias>
+        <name>Activity being run</name>
+        <toType>wfActivity</toType>
+        <relType>relLookup</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>workflowRunFailedLogEntryDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>wfActivityDetails</relationshipInToTypeGroup>
+      </relationship>
+    </relationships>
+  </managedType>
+
+
+  <managedType>
+    <alias>logActivityLogEntry</alias>
+    <name>Log Activity Entry</name>
+    <description>A log entry generated by the Log Activity within a workflow.</description>
+    <inherits>workflowRunLogEntry</inherits>
+    <generateCode>true</generateCode>
+  </managedType>
+
+
+  <managedType>
+    <alias>logActivityResourceLogEntry</alias>
+    <name>Log Activity Resource Entry</name>
+    <description>A log entry generated by the Log Activity within a workflow that includes a reference to a resource.</description>
+    <inherits>workflowRunLogEntry,managedObjectLogEntry</inherits>
+    <generateCode>true</generateCode>
+  </managedType>
+
+  <managedType>
+    <alias>runTraceLogEntry</alias>
+    <name>Run Trace Log Entry</name>
+    <description>A trace log entry for a workflow run.</description>
+    <inherits>workflowRunLogEntry</inherits>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Run Trace Log Entry Details</name>
+        <alias>runTraceLogEntryDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <intField>
+        <alias>workflowRunTraceStep</alias>
+        <name>Step</name>
+        <description>The step in the workflow</description>
+        <fieldInGroup>runTraceLogEntryDetails</fieldInGroup>
+      </intField>
+    </fields>
+  </managedType>
+  <!-- Workflow Events-->
+  <enumType>
+    <alias>workflowEventEnum</alias>
+    <name>Workflow Event</name>
+    <inherits>enumValue</inherits>
+    <generateCode>true</generateCode>
+    <relationships>
+      <relationship>
+        <name>Event backing class</name>
+        <alias>eventBackingClass</alias>
+        <toType>class</toType>
+        <relType>relSingleLookup</relType>
+        <generateCode>true</generateCode>
+        <relationshipInToTypeGroup>classDetails</relationshipInToTypeGroup>
+      </relationship>
+    </relationships>
+    <enumValues>
+      <workflowEventEnum>
+        <alias>timeoutEvent</alias>
+        <name>Time out event</name>
+        <enumOrder>1</enumOrder>
+        <eventBackingClass>
+          <class>
+            <alias>timeoutEventClass</alias>
+            <typeName>EDC.SoftwarePlatform.Activities.Engine.Events.TimeoutEvent</typeName>
+            <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+          </class>
+        </eventBackingClass>
+      </workflowEventEnum>
+      <workflowEventEnum>
+        <alias>userCompletesTaskEvent</alias>
+        <name>User completes task event</name>
+        <enumOrder>2</enumOrder>
+        <eventBackingClass>
+          <class>
+            <alias>userCompletesTaskEventClass</alias>
+            <typeName>EDC.SoftwarePlatform.Activities.Engine.Events.UserCompletesTaskEvent</typeName>
+            <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+          </class>
+        </eventBackingClass>
+      </workflowEventEnum>
+      <workflowEventEnum>
+        <alias>childWorkflowCompletedEvent</alias>
+        <name>A child workflow run has completed</name>
+        <enumOrder>3</enumOrder>
+        <eventBackingClass>
+          <class>
+            <alias>childWorkflowCompletedTaskEventClass</alias>
+            <typeName>EDC.SoftwarePlatform.Activities.Engine.Events.ChildWorkflowCompletedEvent</typeName>
+            <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+          </class>
+        </eventBackingClass>
+      </workflowEventEnum>
+      <workflowEventEnum>
+        <alias>promptUserTaskCompletedEvent</alias>
+        <name>User has provided the requested input values.</name>
+        <enumOrder>4</enumOrder>
+        <eventBackingClass>
+          <class>
+            <alias>promptUserTaskCompletedEventClass</alias>
+            <typeName>EDC.SoftwarePlatform.Activities.Engine.Events.PromptUserTaskCompletedEvent</typeName>
+            <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+          </class>
+        </eventBackingClass>
+      </workflowEventEnum>
+    </enumValues>
+  </enumType>
+  <scheduleAction>
+    <alias>cleanUpWorkflowRunsAction</alias>
+    <inherits>scheduledItem</inherits>
+    <name>Clean up workflow runs Action</name>
+    <description>When fired, remove all the old completed workflow runs and any superseded  workflow with no associated runs.</description>
+    <generateCode>false</generateCode>
+    <onScheduleFire>
+      <class>
+        <alias>cleanUpWorkflowRunsActionClass</alias>
+        <name>cleanUpWorkflowRunsAction</name>
+        <typeName>EDC.SoftwarePlatform.Activities.Engine.CleanUpWorkflowRunsAction</typeName>
+        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+      </class>
+    </onScheduleFire>
+  </scheduleAction>
+  <!--~~~~~~~~~~~~~-->
+  <!-- Mail Listener -->
+  <!--~~~~~~~~~~~~~-->
+  <managedType>
+    <alias>emailMessage</alias>
+    <name>Email</name>
+    <description>An email message that has been received by the email listener.</description>
+    <isAbstract>true</isAbstract>
+    <generateCode>true</generateCode>
+    <inherits>userResource</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Email Details</name>
+        <alias>emailMessageDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <intField>
+        <alias>emUid</alias>
+        <name>Uid</name>
+        <description>The server specific unique ID</description>
+        <isRequired>true</isRequired>
+        <fieldInGroup>emailMessageDetails</fieldInGroup>
+      </intField>
+      <stringField>
+        <alias>emTo</alias>
+        <name>To</name>
+        <description>The text in the 'To' field of the original message.</description>
+        <fieldInGroup>emailMessageDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>emCC</alias>
+        <name>CC</name>
+        <description>The text in the 'CC' field of the original message.</description>
+        <fieldInGroup>emailMessageDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>emFrom</alias>
+        <name>From</name>
+        <description>The text in the 'From' field of the original message.</description>
+        <fieldInGroup>emailMessageDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>emSubject</alias>
+        <name>Subject</name>
+        <description>The text in the 'Subject' field of the original message.</description>
+        <fieldInGroup>emailMessageDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>emBody</alias>
+        <name>Body</name>
+        <description>The text in the 'Subject' field of the original message.</description>
+        <fieldInGroup>emailMessageDetails</fieldInGroup>
+      </stringField>
+      <boolField>
+        <alias>emIsHtml</alias>
+        <name>Is HTML</name>
+        <description>Is the body of the email encoded as HTML</description>
+        <fieldInGroup>emailMessageDetails</fieldInGroup>
+      </boolField>
+    </fields>
+  <relationships>
+    <relationship>
+      <alias>emAttachments</alias>
+      <name>Attachments</name>
+      <toName>Email</toName>
+      <toType>document</toType>
+      <description>Documents attached to the email.</description>
+      <relType>relManyToMany</relType>
+      <relationshipInFromTypeGroup>emailMessageDetails</relationshipInFromTypeGroup>
+      <hideOnToType>true</hideOnToType>
+      <hideOnToTypeDefaultForm>true</hideOnToTypeDefaultForm>
+      <generateCode>true</generateCode>
+    </relationship>
+    
+  </relationships>
+  </managedType>
+  
+  <managedType>
+    <alias>sentEmailMessage</alias>
+    <name>Sent Email</name>
+    <description>An email messages that was sent out from the system.</description>
+    <inherits>emailMessage</inherits>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Sent Email Details</name>
+        <alias>sentEmailMessageDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>semSequenceNumber</alias>
+        <name>Sequence number</name>
+        <description>The Message-ID that is used to track related messages.</description>
+        <fieldInGroup>sentEmailMessageDetails</fieldInGroup>
+      </stringField>
+      <dateTimeField>
+        <alias>emSentDate</alias>
+        <name>Sent</name>
+        <description>The date and time the message was sent.</description>
+        <fieldInGroup>sentEmailMessageDetails</fieldInGroup>
+      </dateTimeField>
+    </fields>
+    <onBeforeSave>
+      <target>
+        <alias>sentEmailTarget</alias>
+        <typeName>EDC.SoftwarePlatform.Activities.EmailListener.SentEmailTarget</typeName>
+        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+        <ordinal>0</ordinal>
+      </target>
+    </onBeforeSave>
+  </managedType>
+  <type>
+    <name>iCal Unique Id</name>
+    <description>Contains the unique iCal identifier.</description>
+    <alias>iCalUidContainer</alias>
+    <isAbstract>true</isAbstract>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>iCal Unique Id Details</name>
+        <alias>iCalUidContainerDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <name>iCal uid</name>
+        <description>iCal unique identifier.</description>
+        <alias>iCalUid</alias>
+        <fieldInGroup>iCalUidContainerDetails</fieldInGroup>
+      </stringField>
+    </fields>
+  </type>
+  <managedType>
+    <name>Sent iCal Email</name>
+    <description>An email messages that was sent out from the system containing an iCal attachment.</description>
+    <alias>sentICalEmailMessage</alias>
+    <inherits>sentEmailMessage</inherits>
+    <generateCode>true</generateCode>
+    <isAbstract>true</isAbstract>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Sent iCal Email Details</name>
+        <alias>sentICalEmailMessageDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <name>iCal timezone</name>
+        <description>iCal time zone.</description>
+        <alias>iCalTimeZone</alias>
+        <fieldInGroup>sentICalEmailMessageDetails</fieldInGroup>
+      </stringField>
+    </fields>
+  </managedType>
+  <managedType>
+    <alias>receivedEmailMessage</alias>
+    <name>Received Email</name>
+    <description>An email messages that was received by the system.</description>
+    <inherits>emailMessage</inherits>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Received Email Details</name>
+        <alias>receivedEmailMessageDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <dateTimeField>
+        <alias>emReceivedDate</alias>
+        <name>Received</name>
+        <description>The date and time the message was received.</description>
+        <fieldInGroup>receivedEmailMessageDetails</fieldInGroup>
+      </dateTimeField>
+      <stringField>
+        <alias>emReferences</alias>
+        <name>References</name>
+        <description>The referenced Message Ids.</description>
+        <fieldInGroup>receivedEmailMessageDetails</fieldInGroup>
+      </stringField>
+    </fields>
+    <relationships>
+      <relationship>
+        <alias>originalMessage</alias>
+        <reverseAlias>responseToMessage</reverseAlias>
+        <name>Original message</name>
+        <description>The message that was sent that this message was a response for.</description>
+        <toName>Responses</toName>
+        <toType>sentEmailMessage</toType>
+        <relType>relLookup</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>receivedEmailMessageDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>sentEmailMessageDetails</relationshipInToTypeGroup>
+      </relationship>
+    </relationships>
+  </managedType>
+  <managedType>
+    <alias>receivedICalEmailMessage</alias>
+    <name>Received iCal Email</name>
+    <description>An email messages that was received by the system containing iCal updates.</description>
+    <inherits>receivedEmailMessage</inherits>
+    <generateCode>true</generateCode>
+    <isAbstract>true</isAbstract>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Received iCal Email Details</name>
+        <alias>receivedICalEmailMessageDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <name>iCal update</name>
+        <description>iCal update string.</description>
+        <alias>iCalUpdate</alias>
+        <fieldInGroup>receivedICalEmailMessageDetails</fieldInGroup>
+      </stringField>
+    </fields>
+  </managedType>
+  <!--~~~~~~~~~~~~~-->
+  <!-- Inboxes -->
+  <!--~~~~~~~~~~~~~-->
+  <type>
+    <alias>inboxProvider</alias>
+    <name>Inbox Provider</name>
+    <description>The server providing the inbox support</description>
+    <isAbstract>true</isAbstract>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Inbox Provider Details</name>
+        <alias>inboxProviderDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+  </type>
+  <target>
+    <alias>iInboxProvider</alias>
+    <typeName>EDC.ReadiNow.Model.Interfaces.IInboxProvider</typeName>
+    <assemblyName>EDC.ReadiNow.Common, Version=1.0.0.0, Culture=neutral</assemblyName>
+    <ordinal>0</ordinal>
+  </target>
+  <type>
+    <alias>proxyInboxProvider</alias>
+    <name>Internal Inbox Provider</name>
+    <description>The internal inbox provider using the default SoftwarePlatform inboxes.</description>
+    <generateCode>true</generateCode>
+    <inherits>inboxProvider</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Internal Inbox Provider Details</name>
+        <alias>proxyInboxProviderDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>providerAlias</alias>
+        <name>Internal alias</name>
+        <isRequired>true</isRequired>
+        <fieldInGroup>proxyInboxProviderDetails</fieldInGroup>
+      </stringField>
+    </fields>
+  </type>
+  <type>
+    <alias>imapEmailProvider</alias>
+    <name>IMAP Email Server</name>
+    <description>The server providing the inbox support via IMAP.</description>
+    <generateCode>true</generateCode>
+    <inherits>inboxProvider</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <name>IMAP Email Server Details</name>
+        <alias>imapEmailProviderDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <!-- <systemTenantOnly>true</systemTenantOnly>    Removed for the internal build to allow mailboxed to be directly wired in the tenant. -->
+    <fields>
+      <boolField>
+        <alias>oaPostInDirectory</alias>
+        <name>Post email in directory</name>
+        <description>When true emails are posted into the Program Data directory rather then to the email server.</description>
+        <fieldInGroup>imapEmailProviderDetails</fieldInGroup>
+      </boolField>
+      <stringField>
+        <alias>oaDomainName</alias>
+        <name>Domain name</name>
+        <description>The base email address that will be used for the inbox</description>
+        <isRequired>false</isRequired>
+        <fieldInGroup>imapEmailProviderDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>oaServer</alias>
+        <name>Server</name>
+        <description>The server which is providing the mail box</description>
+        <pattern>hostNamePattern</pattern>
+        <isRequired>true</isRequired>
+        <fieldInGroup>imapEmailProviderDetails</fieldInGroup>
+      </stringField>
+      <intField>
+        <alias>oaPort</alias>
+        <name>Port</name>
+        <fieldInGroup>imapEmailProviderDetails</fieldInGroup>
+      </intField>
+      <boolField>
+        <alias>oaUseSSL</alias>
+        <name>Use SSL</name>
+        <defaultValue>true</defaultValue>
+        <fieldInGroup>imapEmailProviderDetails</fieldInGroup>
+      </boolField>
+      <stringField>
+        <alias>oaAccount</alias>
+        <name>Account</name>
+        <description>The mail box that is used to receive the mail in the format DOMAIN\user.</description>
+        <isRequired>false</isRequired>
+        <fieldInGroup>imapEmailProviderDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>oaPassword</alias>
+        <name>Password</name>
+        <description>The password for the mailbox. (If integrated authentication is not used.)</description>
+        <fieldInGroup>imapEmailProviderDetails</fieldInGroup>
+        <isFieldWriteOnly>true</isFieldWriteOnly>
+        <fieldRepresents>fieldRepresentsPassword</fieldRepresents>
+      </stringField>
+      <guidField>
+        <alias>oaPasswordSecureId</alias>
+        <name>Password secure Id</name>
+        <description>Reference to the SecureId field.</description>
+        <isFieldWriteOnly>true</isFieldWriteOnly>
+        <hideField>true</hideField>
+        <fieldInGroup>imapEmailProviderDetails</fieldInGroup>
+      </guidField>
+      <boolField>
+        <alias>oaUseIntegratedAuth</alias>
+        <name>Use integrated authentication</name>
+        <description>Use integrated authentication for verifying indentity. (Internal use only.) When true the password field is ignored.</description>
+        <defaultValue>true</defaultValue>
+        <fieldInGroup>imapEmailProviderDetails</fieldInGroup>
+      </boolField>
+      <stringField>
+        <alias>oaEmailAddress</alias>
+        <name>Mail address</name>
+        <description>If set this mail address will be used, otherwise a email address will be generated from the tenant name and the domain name.</description>
+        <fieldRepresents>fieldRepresentsEmail</fieldRepresents>
+        <fieldInGroup>imapEmailProviderDetails</fieldInGroup>
+      </stringField>
+      <boolField>
+        <alias>oaUseFolder</alias>
+        <name>Use folder</name>
+        <description>When true the provider expects there to be a folder with the same name as the inbox that the messages will have already been moved into.</description>
+        <defaultValue>false</defaultValue>
+        <fieldInGroup>imapEmailProviderDetails</fieldInGroup>
+      </boolField>
+    </fields>
+    <onBeforeSave>imapEmailProviderTarget</onBeforeSave>
+  </type>
+  <managedType>
+    <alias>inbox</alias>
+    <name>Inbox</name>
+    <description>A mail box for recieving incoming emails.</description>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Inbox Settings</name>
+        <description>Inbox settings field group.</description>
+        <alias>inboxFieldGroup</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>inboxEmailAddress</alias>
+        <name>Email address</name>
+        <description>The email address for this inbox.</description>
+        <fieldInGroup>inboxFieldGroup</fieldInGroup>
+        <fieldRepresents>fieldRepresentsEmail</fieldRepresents>
+      </stringField>
+      <boolField>
+        <name>Enabled</name>
+        <description>Whether the inbox is enabled.</description>
+        <alias>inboxEnabled</alias>
+        <defaultValue>true</defaultValue>
+        <fieldInGroup>inboxFieldGroup</fieldInGroup>
+      </boolField>
+    </fields>
+    <relationships>
+      <relationship>
+        <alias>usesInboxProvider</alias>
+        <name>Uses provider</name>
+        <description>The provider for the inboxes</description>
+        <relType>relLookup</relType>
+        <toType>inboxProvider</toType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>inboxFieldGroup</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>inboxProviderDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <alias>receivedMessages</alias>
+        <reverseAlias>fromInbox</reverseAlias>
+        <name>Messages to inbox</name>
+        <fromName>From inbox</fromName>
+        <toName>Received messages</toName>
+        <toType>receivedEmailMessage</toType>
+        <relType>relExclusiveCollection</relType>
+        <!-- TODO: dependency? -->
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>inboxFieldGroup</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>receivedEmailMessageDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <alias>sentMessages</alias>
+        <reverseAlias>sentFromInbox</reverseAlias>
+        <name>Messages from inbox</name>
+        <fromName>Sent from inbox</fromName>
+        <toName>Sent messages</toName>
+        <toType>sentEmailMessage</toType>
+        <relType>relExclusiveCollection</relType>
+        <!-- TODO: dependency? -->
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>inboxFieldGroup</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>sentEmailMessageDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <alias>inboxWorkflows</alias>
+        <toType>workflow</toType>
+        <name>Workflows to run on inbox</name>
+        <description>The workflows to run on new messages received from a mailbox.</description>
+        <toName>Workflows to run</toName>
+        <fromName>Inbox to action</fromName>
+        <relType>relManyToMany</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>inboxFieldGroup</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>workflowDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <alias>inboxEmailActions</alias>
+        <toType>inboxEmailAction</toType>
+        <name>Inbox email actions</name>
+        <description>Actions to run on the incoming emails.</description>
+        <toName>Actions</toName>
+        <fromName>Inboxes</fromName>
+        <relType>relManyToMany</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>inboxFieldGroup</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>inboxEmailActionDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <name>Message formatter</name>
+        <description>Custom MailMessage formatter.</description>
+        <alias>mailMessageFormatter</alias>
+        <toType>class</toType>
+        <hideOnFromType>true</hideOnFromType>
+        <hideOnToType>true</hideOnToType>
+        <relType>relManyToMany</relType>
+        <generateCode>true</generateCode>
+      </relationship>
+      <relationship>
+        <name>Received message type</name>
+        <description>Type of messages this inbox receives.</description>
+        <alias>inboxReceivedMessageType</alias>
+        <toType>class</toType>
+        <hideOnFromType>true</hideOnFromType>
+        <hideOnToType>true</hideOnToType>
+        <relType>relLookup</relType>
+        <generateCode>true</generateCode>
+      </relationship>
+      <relationship>
+        <name>Created event type</name>
+        <description>Type of event that this inbox creates.</description>
+        <alias>inboxCreatedEventType</alias>
+        <toType>type</toType>
+        <hideOnFromType>false</hideOnFromType>
+        <hideOnToType>true</hideOnToType>
+        <relType>relLookup</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>inboxFieldGroup</relationshipInFromTypeGroup>
+      </relationship>
+    </relationships>
+    <onBeforeSave>inboxTarget</onBeforeSave>
+    <onAfterDelete>inboxTarget</onAfterDelete>
+  </managedType>
+  <class>
+    <name>Default MailMessage Formatter</name>
+    <description>Default mail message formatter class.</description>
+    <alias>defaultMailMessageFormatter</alias>
+    <typeName>EDC.ReadiNow.Messaging.Mail.DefaultMailMessageFormatter</typeName>
+    <assemblyName>EDC.ReadiNow.Common, Version=1.0.0.0, Culture=neutral</assemblyName>
+  </class>
+  <class>
+    <name>iCal MailMessage Formatter</name>
+    <description>iCal mail message formatter class.</description>
+    <alias>iCalMailMessageFormatter</alias>
+    <typeName>EDC.ReadiNow.Scheduling.iCalendar.Formatters.iCalMailMesssageFormatter</typeName>
+    <assemblyName>EDC.ReadiNow.Common, Version=1.0.0.0, Culture=neutral</assemblyName>
+  </class>
+  <class>
+    <name>iCal Received Message Type</name>
+    <description>iCal received message type.</description>
+    <alias>iCalReceivedMessageType</alias>
+    <typeName>EDC.ReadiNow.Model.ReceivedICalEmailMessage</typeName>
+    <assemblyName>EDC.ReadiNow.Common, Version=1.0.0.0, Culture=neutral</assemblyName>
+  </class>
+  <target>
+    <alias>inboxTarget</alias>
+    <typeName>EDC.ReadiNow.Model.EventClasses.InboxTarget</typeName>
+    <assemblyName>EDC.ReadiNow.Common, Version=1.0.0.0, Culture=neutral</assemblyName>
+    <ordinal>0</ordinal>
+    <onAfterSolutionDeploy>solution</onAfterSolutionDeploy>
+    <!-- fix up the inbox names -->
+  </target>
+  <target>
+    <alias>imapEmailProviderTarget</alias>
+    <typeName>EDC.ReadiNow.Model.EventClasses.ImapEmailProviderEventTarget</typeName>
+    <assemblyName>EDC.ReadiNow.Common, Version=1.0.0.0, Culture=neutral</assemblyName>
+    <ordinal>0</ordinal>
+  </target>
+  <systemOnlyScheduleAction>
+    <!-- WARNING! This does not appear to work correctly as there is nothing to trigger the sync process on installation -->
+    <alias>processInboxesAction</alias>
+    <inherits>scheduledItem</inherits>
+    <name>Process Inboxes Action</name>
+    <description>When fired, find all the inboxes in all the tenants and process them.</description>
+    <generateCode>true</generateCode>
+    <systemTenantOnly>true</systemTenantOnly>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Process Inboxes Action Details</name>
+        <alias>processInboxesActionDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <dateTimeField>
+        <alias>piaLastRun</alias>
+        <name>Listener last run</name>
+        <description>The last time the inboxes were processed.</description>
+        <fieldInGroup>processInboxesActionDetails</fieldInGroup>
+        <systemTenantOnly>true</systemTenantOnly>
+      </dateTimeField>
+    </fields>
+    <onScheduleFire>
+      <class>
+        <alias>processInboxesActionClass</alias>
+        <name>processInboxesActionClass</name>
+        <typeName>EDC.SoftwarePlatform.Activities.EmailListener.ProcessInboxesAction</typeName>
+        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+      </class>
+    </onScheduleFire>
+  </systemOnlyScheduleAction>
+  <!-- Mail Actions -->
+  <type>
+    <alias>inboxEmailAction</alias>
+    <name>Inbox Email Action</name>
+    <description>An action that can be performed upon an email that has been received.</description>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Inbox Email Action Details</name>
+        <alias>inboxEmailActionDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <intField>
+        <alias>ieaOrdinal</alias>
+        <name>Ordinal</name>
+        <description>The order the actions are processed in.</description>
+        <fieldInGroup>inboxEmailActionDetails</fieldInGroup>
+      </intField>
+    </fields>
+    <relationships>
+      <relationship>
+        <alias>ieaBackingClass</alias>
+        <name>Backing class</name>
+        <toType>class</toType>
+        <relType>relLookup</relType>
+        <hideOnToType>true</hideOnToType>
+        <hideOnFromType>true</hideOnFromType>
+        <generateCode>true</generateCode>
+      </relationship>
+    </relationships>
+  </type>
+  <inboxEmailAction>
+    <alias>completeUserTaskEmailAction</alias>
+    <name>Complete User Task</name>
+    <description>If an email contains a user task identifier and the completion state, complete the user task.</description>
+    <ieaOrdinal>100</ieaOrdinal>
+    <ieaBackingClass>
+      <class>
+        <alias>completeUserTaskEmailActionClass</alias>
+        <name>completeUserTaskEmailActionClass</name>
+        <typeName>EDC.SoftwarePlatform.Activities.EmailListener.CompleteUserTaskEmailAction</typeName>
+        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+      </class>
+    </ieaBackingClass>
+  </inboxEmailAction>
+  <inboxEmailAction>
+    <alias>matchSentToReceivedEmailsAction</alias>
+    <name>Match Sent to Received Emails</name>
+    <description>If an email contains a sequence matching a sent email, update the "Response To" relationship.</description>
+    <ieaOrdinal>50</ieaOrdinal>
+    <ieaBackingClass>
+      <class>
+        <alias>matchSentToReceivedEmailsActionClass</alias>
+        <name>MatchSentToReceivedEmailsActionClass</name>
+        <typeName>EDC.SoftwarePlatform.Activities.EmailListener.MatchSentToReceivedEmailsAction</typeName>
+        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+      </class>
+    </ieaBackingClass>
+  </inboxEmailAction>
+  <inboxEmailAction>
+    <alias>sendICalUpdateEmailsAction</alias>
+    <name>Send iCal Updates.</name>
+    <description>Send out iCal updates to the attendees.</description>
+    <ieaOrdinal>150</ieaOrdinal>
+    <ieaBackingClass>
+      <class>
+        <alias>sendICalUpdateEmailsActionClass</alias>
+        <name>SendICalUpdateEmailsActionClass</name>
+        <typeName>EDC.SoftwarePlatform.Activities.EmailListener.SendICalUpdatesEmailAction</typeName>
+        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+      </class>
+    </ieaBackingClass>
+  </inboxEmailAction>
+  
+  <!-- Task Status -->
+  <enumType>
+    <alias>taskStatusEnum</alias>
+    <name>Task Status</name>
+    <inherits>enumValue</inherits>
+    <enumValues>
+      <taskStatusEnum>
+        <name>Not started</name>
+        <alias>taskStatusNotStarted</alias>
+        <enumOrder>1</enumOrder>
+      </taskStatusEnum>
+      <taskStatusEnum>
+        <name>In progress</name>
+        <alias>taskStatusInProgress</alias>
+        <enumOrder>2</enumOrder>
+      </taskStatusEnum>
+      <taskStatusEnum>
+        <name>Completed</name>
+        <alias>taskStatusCompleted</alias>
+        <enumOrder>3</enumOrder>
+      </taskStatusEnum>
+      <taskStatusEnum>
+        <name>Waiting on someone else</name>
+        <alias>taskStatusWaiting</alias>
+        <enumOrder>4</enumOrder>
+      </taskStatusEnum>
+      <taskStatusEnum>
+        <name>Deferred</name>
+        <alias>taskStatusDeferred</alias>
+        <enumOrder>5</enumOrder>
+      </taskStatusEnum>
+    </enumValues>
+    <generateCode>true</generateCode>
+  </enumType>
+
+
+
+
+
+
+
+
+
+
+</resources>

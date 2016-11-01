@@ -1,0 +1,462 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>protobuf-net-data</name>
+    </assembly>
+    <members>
+        <member name="T:ProtoBuf.Data.DataSerializerEngine">
+            <summary>
+            Provides protocol-buffer serialization for <see cref="T:System.Data.IDataReader"/>s.
+            </summary>
+        </member>
+        <member name="T:ProtoBuf.Data.IDataSerializerEngine">
+            <summary>
+            Provides protocol-buffer serialization for <see cref="T:System.Data.IDataReader"/>s.
+            </summary>
+        </member>
+        <member name="M:ProtoBuf.Data.IDataSerializerEngine.Serialize(System.IO.Stream,System.Data.IDataReader)">
+            <summary>
+             Serialize an <see cref="T:System.Data.IDataReader"/> to a binary stream using protocol-buffers.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> to write to.</param>
+            <param name="reader">The <see cref="T:System.Data.IDataReader"/> who's contents to serialize.</param>
+        </member>
+        <member name="M:ProtoBuf.Data.IDataSerializerEngine.Serialize(System.IO.Stream,System.Data.DataTable)">
+            <summary>
+             Serialize a <see cref="T:System.Data.DataTable"/> to a binary stream using protocol-buffers.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> to write to.</param>
+            <param name="dataTable">The <see cref="T:System.Data.DataTable"/> who's contents to serialize.</param>
+        </member>
+        <member name="M:ProtoBuf.Data.IDataSerializerEngine.Serialize(System.IO.Stream,System.Data.DataSet)">
+            <summary>
+             Serialize a <see cref="T:System.Data.DataSet"/> to a binary stream using protocol-buffers.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> to write to.</param>
+            <param name="dataSet">The <see cref="T:System.Data.DataSet"/> who's contents to serialize.</param>
+        </member>
+        <member name="M:ProtoBuf.Data.IDataSerializerEngine.Serialize(System.IO.Stream,System.Data.IDataReader,ProtoBuf.Data.ProtoDataWriterOptions)">
+            <summary>
+             Serialize an <see cref="T:System.Data.IDataReader"/> to a binary stream using protocol-buffers.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> to write to.</param>
+            <param name="reader">The <see cref="T:System.Data.IDataReader"/> who's contents to serialize.</param>
+            <param name="options"><see cref="T:ProtoBuf.Data.ProtoDataWriterOptions"/> specifying any custom serialization options.</param>
+        </member>
+        <member name="M:ProtoBuf.Data.IDataSerializerEngine.Serialize(System.IO.Stream,System.Data.DataTable,ProtoBuf.Data.ProtoDataWriterOptions)">
+            <summary>
+             Serialize a <see cref="T:System.Data.DataTable"/> to a binary stream using protocol-buffers.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> to write to.</param>
+            <param name="dataTable">The <see cref="T:System.Data.DataTable"/> who's contents to serialize.</param>
+            <param name="options"><see cref="T:ProtoBuf.Data.ProtoDataWriterOptions"/> specifying any custom serialization options.</param>
+        </member>
+        <member name="M:ProtoBuf.Data.IDataSerializerEngine.Serialize(System.IO.Stream,System.Data.DataSet,ProtoBuf.Data.ProtoDataWriterOptions)">
+            <summary>
+             Serialize a <see cref="T:System.Data.DataSet"/> to a binary stream using protocol-buffers.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> to write to.</param>
+            <param name="dataSet">The <see cref="T:System.Data.DataSet"/> who's contents to serialize.</param>
+            <param name="options"><see cref="T:ProtoBuf.Data.ProtoDataWriterOptions"/> specifying any custom serialization options.</param>
+        </member>
+        <member name="M:ProtoBuf.Data.IDataSerializerEngine.Deserialize(System.IO.Stream)">
+            <summary>
+             Deserialize a protocol-buffer binary stream back into an <see cref="T:System.Data.IDataReader"/>.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> to read from.</param>
+        </member>
+        <member name="M:ProtoBuf.Data.IDataSerializerEngine.DeserializeDataTable(System.IO.Stream)">
+            <summary>
+             Deserialize a protocol-buffer binary stream back into a <see cref="T:System.Data.DataTable"/>.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> to read from.</param>
+        </member>
+        <member name="M:ProtoBuf.Data.IDataSerializerEngine.DeserializeDataSet(System.IO.Stream,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+             Deserialize a protocol-buffer binary stream back into a <see cref="T:System.Data.DataSet"/>.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> to read from.</param>
+            <param name="tables">A sequence of strings, from which the <see cref="T:System.Data.DataSet"/> Load method retrieves table name information.</param>
+        </member>
+        <member name="M:ProtoBuf.Data.IDataSerializerEngine.DeserializeDataSet(System.IO.Stream,System.String[])">
+            <summary>
+             Deserialize a protocol-buffer binary stream as a <see cref="T:System.Data.DataSet"/>.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> to read from.</param>
+            <param name="tables">An array of strings, from which the <see cref="T:System.Data.DataSet"/> Load method retrieves table name information.</param>
+        </member>
+        <member name="M:ProtoBuf.Data.DataSerializerEngine.Serialize(System.IO.Stream,System.Data.IDataReader)">
+            <summary>
+             Serialize an <see cref="T:System.Data.IDataReader"/> to a binary stream using protocol-buffers.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> to write to.</param>
+            <param name="reader">The <see cref="T:System.Data.IDataReader"/> who's contents to serialize.</param>
+        </member>
+        <member name="M:ProtoBuf.Data.DataSerializerEngine.Serialize(System.IO.Stream,System.Data.DataTable)">
+            <summary>
+             Serialize a <see cref="T:System.Data.DataTable"/> to a binary stream using protocol-buffers.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> to write to.</param>
+            <param name="dataTable">The <see cref="T:System.Data.DataTable"/> who's contents to serialize.</param>
+        </member>
+        <member name="M:ProtoBuf.Data.DataSerializerEngine.Serialize(System.IO.Stream,System.Data.DataSet)">
+            <summary>
+             Serialize a <see cref="T:System.Data.DataSet"/> to a binary stream using protocol-buffers.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> to write to.</param>
+            <param name="dataSet">The <see cref="T:System.Data.DataSet"/> who's contents to serialize.</param>
+        </member>
+        <member name="M:ProtoBuf.Data.DataSerializerEngine.Serialize(System.IO.Stream,System.Data.IDataReader,ProtoBuf.Data.ProtoDataWriterOptions)">
+            <summary>
+             Serialize an <see cref="T:System.Data.IDataReader"/> to a binary stream using protocol-buffers.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> to write to.</param>
+            <param name="reader">The <see cref="T:System.Data.IDataReader"/> who's contents to serialize.</param>
+            <param name="options"><see cref="T:ProtoBuf.Data.ProtoDataWriterOptions"/> specifying any custom serialization options.</param>
+        </member>
+        <member name="M:ProtoBuf.Data.DataSerializerEngine.Serialize(System.IO.Stream,System.Data.DataTable,ProtoBuf.Data.ProtoDataWriterOptions)">
+            <summary>
+             Serialize a <see cref="T:System.Data.DataTable"/> to a binary stream using protocol-buffers.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> to write to.</param>
+            <param name="dataTable">The <see cref="T:System.Data.DataTable"/> who's contents to serialize.</param>
+            <param name="options"><see cref="T:ProtoBuf.Data.ProtoDataWriterOptions"/> specifying any custom serialization options.</param>
+        </member>
+        <member name="M:ProtoBuf.Data.DataSerializerEngine.Serialize(System.IO.Stream,System.Data.DataSet,ProtoBuf.Data.ProtoDataWriterOptions)">
+            <summary>
+             Serialize a <see cref="T:System.Data.DataSet"/> to a binary stream using protocol-buffers.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> to write to.</param>
+            <param name="dataSet">The <see cref="T:System.Data.DataSet"/> who's contents to serialize.</param>
+            <param name="options"><see cref="T:ProtoBuf.Data.ProtoDataWriterOptions"/> specifying any custom serialization options.</param>
+        </member>
+        <member name="M:ProtoBuf.Data.DataSerializerEngine.Deserialize(System.IO.Stream)">
+            <summary>
+             Deserialize a protocol-buffer binary stream back into an <see cref="T:System.Data.IDataReader"/>.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> to read from.</param>
+        </member>
+        <member name="M:ProtoBuf.Data.DataSerializerEngine.DeserializeDataTable(System.IO.Stream)">
+            <summary>
+             Deserialize a protocol-buffer binary stream back into a <see cref="T:System.Data.DataTable"/>.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> to read from.</param>
+        </member>
+        <member name="M:ProtoBuf.Data.DataSerializerEngine.DeserializeDataSet(System.IO.Stream,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+             Deserialize a protocol-buffer binary stream back into a <see cref="T:System.Data.DataSet"/>.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> to read from.</param>
+            <param name="tables">A sequence of strings, from which the <see cref="T:System.Data.DataSet"/> Load method retrieves table name information.</param>
+        </member>
+        <member name="M:ProtoBuf.Data.DataSerializerEngine.DeserializeDataSet(System.IO.Stream,System.String[])">
+            <summary>
+             Deserialize a protocol-buffer binary stream as a <see cref="T:System.Data.DataSet"/>.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> to read from.</param>
+            <param name="tables">An array of strings, from which the <see cref="T:System.Data.DataSet"/> Load method retrieves table name information.</param>
+        </member>
+        <member name="T:ProtoBuf.Data.DataSerializer">
+            <summary>
+            Provides protocol-buffer serialization for <see cref="T:System.Data.IDataReader"/>s.
+            </summary>
+        </member>
+        <member name="M:ProtoBuf.Data.DataSerializer.Serialize(System.IO.Stream,System.Data.IDataReader)">
+            <summary>
+             Serialize an <see cref="T:System.Data.IDataReader"/> to a binary stream using protocol-buffers.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> to write to.</param>
+            <param name="reader">The <see cref="T:System.Data.IDataReader"/> who's contents to serialize.</param>
+        </member>
+        <member name="M:ProtoBuf.Data.DataSerializer.Serialize(System.IO.Stream,System.Data.IDataReader,ProtoBuf.Data.ProtoDataWriterOptions)">
+            <summary>
+             Serialize an <see cref="T:System.Data.IDataReader"/> to a binary stream using protocol-buffers.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> to write to.</param>
+            <param name="reader">The <see cref="T:System.Data.IDataReader"/> who's contents to serialize.</param>
+             <param name="options"><see cref="T:ProtoBuf.Data.ProtoDataWriterOptions"/> specifying any custom serialization options.</param>
+        </member>
+        <member name="M:ProtoBuf.Data.DataSerializer.Serialize(System.IO.Stream,System.Data.DataTable)">
+            <summary>
+             Serialize a <see cref="T:System.Data.DataTable"/> to a binary stream using protocol-buffers.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> to write to.</param>
+            <param name="dataTable">The <see cref="T:System.Data.DataTable"/> who's contents to serialize.</param>
+        </member>
+        <member name="M:ProtoBuf.Data.DataSerializer.Serialize(System.IO.Stream,System.Data.DataTable,ProtoBuf.Data.ProtoDataWriterOptions)">
+            <summary>
+             Serialize a <see cref="T:System.Data.DataTable"/> to a binary stream using protocol-buffers.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> to write to.</param>
+            <param name="dataTable">The <see cref="T:System.Data.DataTable"/> who's contents to serialize.</param>
+            <param name="options"><see cref="T:ProtoBuf.Data.ProtoDataWriterOptions"/> specifying any custom serialization options.</param>
+        </member>
+        <member name="M:ProtoBuf.Data.DataSerializer.Serialize(System.IO.Stream,System.Data.DataSet)">
+            <summary>
+             Serialize a <see cref="T:System.Data.DataSet"/> to a binary stream using protocol-buffers.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> to write to.</param>
+            <param name="dataSet">The <see cref="T:System.Data.DataSet"/> who's contents to serialize.</param>
+        </member>
+        <member name="M:ProtoBuf.Data.DataSerializer.Serialize(System.IO.Stream,System.Data.DataSet,ProtoBuf.Data.ProtoDataWriterOptions)">
+            <summary>
+             Serialize a <see cref="T:System.Data.DataSet"/> to a binary stream using protocol-buffers.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> to write to.</param>
+            <param name="dataSet">The <see cref="T:System.Data.DataSet"/> who's contents to serialize.</param>
+            <param name="options"><see cref="T:ProtoBuf.Data.ProtoDataWriterOptions"/> specifying any custom serialization options.</param>
+        </member>
+        <member name="M:ProtoBuf.Data.DataSerializer.Deserialize(System.IO.Stream)">
+            <summary>
+             Deserialize a protocol-buffer binary stream back into an <see cref="T:System.Data.IDataReader"/>.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> to read from.</param>
+        </member>
+        <member name="M:ProtoBuf.Data.DataSerializer.DeserializeDataTable(System.IO.Stream)">
+            <summary>
+             Deserialize a protocol-buffer binary stream back into a <see cref="T:System.Data.DataTable"/>.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> to read from.</param>
+        </member>
+        <member name="M:ProtoBuf.Data.DataSerializer.DeserializeDataSet(System.IO.Stream,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+             Deserialize a protocol-buffer binary stream back into a <see cref="T:System.Data.DataSet"/>.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> to read from.</param>
+            <param name="tables">A sequence of strings, from which the <see cref="T:System.Data.DataSet"/> Load method retrieves table name information.</param>
+        </member>
+        <member name="M:ProtoBuf.Data.DataSerializer.DeserializeDataSet(System.IO.Stream,System.String[])">
+            <summary>
+             Deserialize a protocol-buffer binary stream as a <see cref="T:System.Data.DataSet"/>.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> to read from.</param>
+            <param name="tables">An array of strings, from which the <see cref="T:System.Data.DataSet"/> Load method retrieves table name information.</param>
+        </member>
+        <member name="T:ProtoBuf.Data.Internal.ExcludeFromCodeCoverageAttribute">
+            <summary>
+            Exclude a type or method from code coverage.
+            </summary>
+            <remarks>Using our own because the BCL one is only available in .NET
+            4.0 and higher.</remarks>
+        </member>
+        <member name="T:ProtoBuf.Data.IProtoDataWriter">
+            <summary>
+             Serializes an <see cref="T:System.Data.IDataReader"/> to a binary stream.
+            </summary>
+        </member>
+        <member name="M:ProtoBuf.Data.IProtoDataWriter.Serialize(System.IO.Stream,System.Data.IDataReader)">
+            <summary>
+             Serialize an <see cref="T:System.Data.IDataReader"/> to a binary stream using protocol-buffers.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> to write to.</param>
+            <param name="reader">The <see cref="T:System.Data.IDataReader"/>who's contents to serialize.</param>
+        </member>
+        <member name="M:ProtoBuf.Data.IProtoDataWriter.Serialize(System.IO.Stream,System.Data.IDataReader,ProtoBuf.Data.ProtoDataWriterOptions)">
+            <summary>
+             Serialize an <see cref="T:System.Data.IDataReader"/> to a binary stream using protocol-buffers.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> to write to.</param>
+            <param name="reader">The <see cref="T:System.Data.IDataReader"/> who's contents to serialize.</param>
+             <param name="options"><see cref="T:ProtoBuf.Data.ProtoDataWriterOptions"/> specifying any custom serialization options.</param>
+        </member>
+        <member name="T:ProtoBuf.Data.ProtoDataReader">
+            <summary>
+             A custom <see cref="T:System.Data.IDataReader"/> for deserializing a protocol-buffer binary stream back
+             into a tabular form.
+            </summary>
+        </member>
+        <member name="M:ProtoBuf.Data.ProtoDataReader.#ctor(System.IO.Stream)">
+            <summary>
+            Initializes a new instance of a <see cref="T:ProtoBuf.Data.ProtoDataReader"/> type.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> to read from.</param>
+        </member>
+        <member name="P:ProtoBuf.Data.ProtoDataReader.RecordsAffected">
+            <summary>
+            Gets the number of rows changed, inserted, or deleted. 
+            </summary>
+            <returns>This is always zero in the case of <see cref="T:ProtoBuf.Data.ProtoDataReader"/>.</returns>
+        </member>
+        <member name="T:ProtoBuf.Data.ProtoDataStream">
+            <summary>
+             Serializes an <see cref="T:System.Data.IDataReader"/> to a binary stream
+             which can be read (it serializes additional rows with subsequent calls
+             to <see cref="M:ProtoBuf.Data.ProtoDataStream.Read(System.Byte[],System.Int32,System.Int32)"/>). Useful for scenarios like WCF where you cannot
+             write to the output stream directly.
+            </summary>
+            <remarks>Not guaranteed to be thread safe.</remarks>
+        </member>
+        <member name="M:ProtoBuf.Data.ProtoDataStream.#ctor(System.Data.DataSet,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ProtoBuf.Data.ProtoDataStream"/> class.
+            </summary>
+            <param name="dataSet">The <see cref="T:System.Data.DataSet"/>who's contents to serialize.</param>
+            <param name="bufferSize">Buffer size to use when serializing rows. 
+            You should not need to change this unless you have exceptionally
+            large rows or an exceptionally high number of columns.</param>
+        </member>
+        <member name="M:ProtoBuf.Data.ProtoDataStream.#ctor(System.Data.DataSet,ProtoBuf.Data.ProtoDataWriterOptions,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ProtoBuf.Data.ProtoDataStream"/> class.
+            </summary>
+            <param name="dataSet">The <see cref="T:System.Data.DataSet"/>who's contents to serialize.</param>
+            <param name="options"><see cref="T:ProtoBuf.Data.ProtoDataWriterOptions"/> specifying any custom serialization options.</param>
+            <param name="bufferSize">Buffer size to use when serializing rows. 
+            You should not need to change this unless you have exceptionally
+            large rows or an exceptionally high number of columns.</param>
+        </member>
+        <member name="M:ProtoBuf.Data.ProtoDataStream.#ctor(System.Data.DataTable,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ProtoBuf.Data.ProtoDataStream"/> class.
+            </summary>
+            <param name="dataTable">The <see cref="T:System.Data.DataTable"/>who's contents to serialize.</param>
+            <param name="bufferSize">Buffer size to use when serializing rows. 
+            You should not need to change this unless you have exceptionally
+            large rows or an exceptionally high number of columns.</param>
+        </member>
+        <member name="M:ProtoBuf.Data.ProtoDataStream.#ctor(System.Data.DataTable,ProtoBuf.Data.ProtoDataWriterOptions,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ProtoBuf.Data.ProtoDataStream"/> class.
+            </summary>
+            <param name="dataTable">The <see cref="T:System.Data.DataTable"/>who's contents to serialize.</param>
+            <param name="options"><see cref="T:ProtoBuf.Data.ProtoDataWriterOptions"/> specifying any custom serialization options.</param>
+            <param name="bufferSize">Buffer size to use when serializing rows. 
+            You should not need to change this unless you have exceptionally
+            large rows or an exceptionally high number of columns.</param>
+        </member>
+        <member name="M:ProtoBuf.Data.ProtoDataStream.#ctor(System.Data.IDataReader,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ProtoBuf.Data.ProtoDataStream"/> class.
+            </summary>
+            <param name="reader">The <see cref="T:System.Data.IDataReader"/>who's contents to serialize.</param>
+            <param name="bufferSize">Buffer size to use when serializing rows. 
+            You should not need to change this unless you have exceptionally
+            large rows or an exceptionally high number of columns.</param>
+        </member>
+        <member name="M:ProtoBuf.Data.ProtoDataStream.#ctor(System.Data.IDataReader,ProtoBuf.Data.ProtoDataWriterOptions,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ProtoBuf.Data.ProtoDataStream"/> class.
+            </summary>
+            <param name="reader">The <see cref="T:System.Data.IDataReader"/>who's contents to serialize.</param>
+            <param name="options"><see cref="T:ProtoBuf.Data.ProtoDataWriterOptions"/> specifying any custom serialization options.</param>
+            <param name="bufferSize">Buffer size to use when serializing rows. 
+            You should not need to change this unless you have exceptionally
+            large rows or an exceptionally high number of columns.</param>
+        </member>
+        <member name="T:ProtoBuf.Data.ProtoDataWriter">
+            <summary>
+             Serializes an <see cref="T:System.Data.IDataReader"/> to a binary stream.
+            </summary>
+        </member>
+        <member name="M:ProtoBuf.Data.ProtoDataWriter.Serialize(System.IO.Stream,System.Data.DataSet)">
+            <summary>
+             Serialize an <see cref="T:System.Data.IDataReader"/> to a binary stream using protocol-buffers.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> to write to.</param>
+            <param name="dataSet">The <see cref="T:System.Data.DataSet"/>who's contents to serialize.</param>
+        </member>
+        <member name="M:ProtoBuf.Data.ProtoDataWriter.Serialize(System.IO.Stream,System.Data.DataSet,ProtoBuf.Data.ProtoDataWriterOptions)">
+            <summary>
+             Serialize an <see cref="T:System.Data.IDataReader"/> to a binary stream using protocol-buffers.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> to write to.</param>
+            <param name="dataSet">The <see cref="T:System.Data.DataSet"/>who's contents to serialize.</param>
+        </member>
+        <member name="M:ProtoBuf.Data.ProtoDataWriter.Serialize(System.IO.Stream,System.Data.DataTable)">
+            <summary>
+             Serialize an <see cref="T:System.Data.IDataReader"/> to a binary stream using protocol-buffers.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> to write to.</param>
+            <param name="dataTable">The <see cref="T:System.Data.DataTable"/>who's contents to serialize.</param>
+        </member>
+        <member name="M:ProtoBuf.Data.ProtoDataWriter.Serialize(System.IO.Stream,System.Data.DataTable,ProtoBuf.Data.ProtoDataWriterOptions)">
+            <summary>
+             Serialize an <see cref="T:System.Data.IDataReader"/> to a binary stream using protocol-buffers.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> to write to.</param>
+            <param name="dataTable">The <see cref="T:System.Data.DataTable"/>who's contents to serialize.</param>
+        </member>
+        <member name="M:ProtoBuf.Data.ProtoDataWriter.Serialize(System.IO.Stream,System.Data.IDataReader)">
+            <summary>
+             Serialize an <see cref="T:System.Data.IDataReader"/> to a binary stream using protocol-buffers.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> to write to.</param>
+            <param name="reader">The <see cref="T:System.Data.IDataReader"/>who's contents to serialize.</param>
+        </member>
+        <member name="M:ProtoBuf.Data.ProtoDataWriter.Serialize(System.IO.Stream,System.Data.IDataReader,ProtoBuf.Data.ProtoDataWriterOptions)">
+            <summary>
+             Serialize an <see cref="T:System.Data.IDataReader"/> to a binary stream using protocol-buffers.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> to write to.</param>
+            <param name="reader">The <see cref="T:System.Data.IDataReader"/>who's contents to serialize.</param>
+            <param name="options"><see cref="T:ProtoBuf.Data.ProtoDataWriterOptions"/> specifying any custom serialization options.</param>
+        </member>
+        <member name="T:ProtoBuf.Data.ProtoDataWriterOptions">
+            <summary>
+            Sets custom serialization options for the <see cref="T:ProtoBuf.Data.ProtoDataWriter"/>.
+            </summary>
+        </member>
+        <member name="M:ProtoBuf.Data.ProtoDataWriterOptions.Equals(ProtoBuf.Data.ProtoDataWriterOptions)">
+            <summary>
+            Indicates whether the current object is equal to another object of the same type.
+            </summary>
+            <returns>
+            true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+            </returns>
+            <param name="other">An object to compare with this object.
+                            </param>
+        </member>
+        <member name="M:ProtoBuf.Data.ProtoDataWriterOptions.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>; otherwise, false.
+            </returns>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with the current <see cref="T:System.Object"/>. 
+                            </param><exception cref="T:System.NullReferenceException">The <paramref name="obj"/> parameter is null.
+                            </exception><filterpriority>2</filterpriority>
+        </member>
+        <member name="M:ProtoBuf.Data.ProtoDataWriterOptions.GetHashCode">
+            <summary>
+            Serves as a hash function for a particular type. 
+            </summary>
+            <returns>
+            A hash code for the current <see cref="T:System.Object"/>.
+            </returns>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="P:ProtoBuf.Data.ProtoDataWriterOptions.SerializeEmptyArraysAsNull">
+            <summary>
+            In versions 2.0.4.480 and earlier, zero-length arrays were
+            serialized as null. After that, they are serialized properly as
+            a zero-length array. Set this flag if you need to write to the old
+            format. Default is false.
+            </summary>
+        </member>
+        <member name="P:ProtoBuf.Data.ProtoDataWriterOptions.IncludeComputedColumns">
+            <summary>
+            Computed columns are ignored by default (columns who's values are
+            determined by an Expression rather than a stored value). Set to
+            true to include computed columns in serialization.
+            </summary>
+        </member>
+        <member name="T:ProtoBuf.Data.UnsupportedColumnTypeException">
+            <summary>
+            Exception thrown when a <see cref="T:System.Data.IDataReader"/> with a field
+            of an unsupported type is attempted to be serialized.
+            </summary>
+        </member>
+        <member name="M:ProtoBuf.Data.UnsupportedColumnTypeException.#ctor(System.Type)">
+            <summary>
+            Initializes a new instance of a <see cref="T:ProtoBuf.Data.UnsupportedColumnTypeException"/> type.
+            </summary>
+            <param name="type">The <see cref="T:System.Type"/> that was attempted to be serialized.</param>
+        </member>
+        <member name="P:ProtoBuf.Data.UnsupportedColumnTypeException.AttemptedType">
+            <summary>
+            The <see cref="T:System.Type"/> that was attempted to be serialized.
+            </summary>
+        </member>
+    </members>
+</doc>

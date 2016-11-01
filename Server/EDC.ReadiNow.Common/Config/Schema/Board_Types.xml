@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="core" xsi:schemaLocation=". ../Core.xsd"
+           defaultSolution="coreSolution">
+  <!--Copyright 2011-2016 Global Software Innovation Pty Ltd-->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- Types for the Task Board screen element                          -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <type>
+    <alias>board</alias>
+    <name>Board</name>
+    <description>An interactive representation of a report involving cards on a board, aka Task Board</description>
+    <generateCode>false</generateCode>
+    <inherits>visualController</inherits>
+    <isMetadata>true</isMetadata><!-- tree cache invalidation -->
+    <fieldGroups>
+      <fieldGroup>
+        <name>Board Details</name>
+        <alias>boardDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>boardCardCustomTemplate</alias>
+        <name>Custom card template</name>
+        <description>A custom template for the cards on this board.</description>
+        <fieldInGroup>boardDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>boardCardTemplateName</alias>
+        <name>Card template name</name>
+        <description>The name of the card template, or "custom" to use the saved custom template.</description>
+        <fieldInGroup>boardDetails</fieldInGroup>
+      </stringField>
+      <boolField>
+        <alias>boardShowQuickAdd</alias>
+        <name>Show quick add</name>
+        <description>Show the quick add input control</description>
+        <fieldInGroup>boardDetails</fieldInGroup>
+        <defaultValue>true</defaultValue>
+      </boolField>
+    </fields>
+    <relationships>
+      <relationship>
+        <name>Board report</name>
+        <alias>boardReport</alias>
+        <description>The primary report that defines the data for the board.</description>
+        <reverseAlias>reportBoards</reverseAlias>
+        <relType>relLookup</relType>
+        <toType>report</toType>
+        <toName>Report</toName>
+        <securesTo>true</securesTo>
+        <securesToReadOnly>true</securesToReadOnly>
+        <fromName>Boards</fromName>
+        <relationshipInFromTypeGroup>boardDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>reportDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <name>Board child report</name>
+        <alias>boardChildReport</alias>
+        <description>The secondary report used by the board for child items that are related to the items of the primary report.</description>
+        <relType>relLookup</relType>
+        <toType>report</toType>
+        <toName>Child report</toName>
+        <securesTo>true</securesTo>
+        <securesToReadOnly>true</securesToReadOnly>
+        <fromName>Boards</fromName>
+        <relationshipInFromTypeGroup>boardDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>reportDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <name>Rank column</name>
+        <alias>boardRankColumn</alias>
+        <description>The column of the report that is a field of the report root entity that can be used to rank items. Must be decimal type.</description>
+        <relType>relLookup</relType>
+        <toType>reportColumn</toType>
+        <toName>Rank column</toName>
+        <fromName>Boards</fromName>
+        <relationshipInFromTypeGroup>boardDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>default</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <name>Board column dimension</name>
+        <alias>boardColumnDimension</alias>
+        <reverseAlias>dimensionForBoardColumn</reverseAlias>
+        <description>The dimension (column) of the related report to use as the column dimension of the Board</description>
+        <relType>relSingleComponent</relType>
+        <toType>boardDimension</toType>
+        <toName>Column dimension</toName>
+        <fromName>Board</fromName>
+        <relationshipInFromTypeGroup>boardDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>boardDimensionDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <name>Board swimlane dimension</name>
+        <alias>boardSwimlaneDimension</alias>
+        <reverseAlias>dimensionForBoardSwimlane</reverseAlias>
+        <description>The dimension (column) of the related report to use as the swimlane dimension of the Board</description>
+        <relType>relSingleComponent</relType>
+        <toType>boardDimension</toType>
+        <toName>Swimlane dimension</toName>
+        <fromName>Board</fromName>
+        <relationshipInFromTypeGroup>boardDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>boardDimensionDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <name>Board style dimension</name>
+        <alias>boardStyleDimension</alias>
+        <reverseAlias>dimensionForBoardStyle</reverseAlias>
+        <description>The dimension (column) of the related report to use as the style dimension of the Board</description>
+        <relType>relSingleComponent</relType>
+        <toType>boardDimension</toType>
+        <toName>Style dimension</toName>
+        <fromName>Board</fromName>
+        <relationshipInFromTypeGroup>boardDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>boardDimensionDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <name>Board drilldown target</name>
+        <alias>drilldownTargetBoard</alias>
+        <description>A board to drilldown to passing context of the current card or other</description>
+        <reverseAlias>drilldownSourceBoards</reverseAlias>
+        <relType>relLookup</relType>
+        <toType>board</toType>
+        <toName>Board</toName>
+        <securesTo>true</securesTo>
+        <securesToReadOnly>true</securesToReadOnly>
+        <fromName>Boards</fromName>
+        <relationshipInFromTypeGroup>boardDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>boardDetails</relationshipInToTypeGroup>
+      </relationship>
+    </relationships>
+  </type>
+  <type>
+    <alias>boardDimension</alias>
+    <name>Board Dimension</name>
+    <description>The report column used for a dimension of the Board</description>
+    <generateCode>false</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Board Dimension Details</name>
+        <alias>boardDimensionDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <boolField>
+        <alias>boardDimensionShowUndefined</alias>
+        <name>Show undefined</name>
+        <description>Indicates whether to show a dimension value for Undefined (or no value).</description>
+        <fieldInGroup>boardDetails</fieldInGroup>
+        <defaultValue>true</defaultValue>
+      </boolField>
+      <boolField>
+        <alias>boardDimensionShowAll</alias>
+        <name>Show all</name>
+        <description>Indicates whether to show all dimension values (up to the internal limit)</description>
+        <fieldInGroup>boardDetails</fieldInGroup>
+        <defaultValue>true</defaultValue>
+      </boolField>
+    </fields>
+    <relationships>
+      <relationship>
+        <name>Board report column</name>
+        <description>The column of the Board's report used for this dimension.</description>
+        <alias>boardDimensionReportColumn</alias>
+        <reverseAlias>columnUsedByBoardDimension</reverseAlias>
+        <relType>relLookup</relType>
+        <toType>reportColumn</toType>
+        <toName>Report column</toName>
+        <relationshipInFromTypeGroup>boardDimensionDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>reportColumnDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <name>Board dimension value</name>
+        <description>A dimension value to show on this board.</description>
+        <alias>boardDimensionValue</alias>
+        <relType>relManyToMany</relType>
+        <toName>Dimension value</toName>
+        <toType>resource</toType>
+        <relationshipInFromTypeGroup>boardDimensionDetails</relationshipInFromTypeGroup>
+        <hideOnToType>true</hideOnToType>
+      </relationship>
+    </relationships>
+  </type>
+</resources>

@@ -1,0 +1,50 @@
+{
+    "rni": {
+        "logFile": "activate.log",
+        "database": {
+            "server": "localhost",
+            "catalog": "SoftwarePlatform",
+            "role": "rn_service"
+        },
+        "appPool": {
+            "domain": "READINOWINT",
+            "user": "svc-swp-iis",
+            "password": "35Cat456"
+        },
+        "logFolder": {
+            "securityDomain": "READINOWINT",
+            "securityGroup": "Domain Users"
+        },
+        "uploadDirectory": "PlatformUploadFiles",
+        "repositories": {
+            "fileDirectory": "PlatformFileRepos",
+            "applicationLibraryDirectory": "Application Library",
+            "binaryDirectory": "Binary",
+            "documentDirectory": "Document",
+            "tempDirectory": "Temporary"
+        },
+        "redis": {
+            "server": "localhost",
+            "port": 6379,
+            "domain": "READINOWINT",
+            "user": "svc-swp-iis",
+            "password": "35Cat456",
+            "serviceName": "Redis",
+            "serviceDisplayName": "ReadiNow Redis Service"
+        },
+        "scheduler": {
+            "serviceName": "Scheduler",
+            "serviceDisplayName": "ReadiNow Scheduler Service"
+        },
+        "webServer": {
+            "virtualDirectoryPath": "/",
+            "spVirtualPath": "sp",
+            "spPhysicalPath": "../../../Client/client/dist",
+            "spApiVirtualPath": "SpApi",
+            "spApiPhysicalPath": "SpApi" 
+        },
+        "defaultTenant": "EDC"
+    },
+    "sp": {
+    }
+}

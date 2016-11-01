@@ -1,0 +1,199 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1A69D59A-E78A-45D8-B2AD-8B320B17657B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ReadiNow.QueryEngine</RootNamespace>
+    <AssemblyName>ReadiNow.QueryEngine</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <WarningsNotAsErrors>1607</WarningsNotAsErrors>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\ReadiNow.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Autofac, Version=4.1.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.1.1\lib\net45\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Autofac.Extras.AttributeMetadata, Version=4.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Extras.AttributeMetadata.4.0.0\lib\net45\Autofac.Extras.AttributeMetadata.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Autofac.Integration.Mef, Version=4.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Mef.4.0.0\lib\net45\Autofac.Integration.Mef.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Common.Logging, Version=3.0.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.3.0.0\lib\net40\Common.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Common.Logging.Core, Version=3.0.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.Core.3.0.0\lib\net40\Common.Logging.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Irony, Version=1.0.0.0, Culture=neutral, PublicKeyToken=ca48ace7223ead47, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\ThirdParty\Irony.dll</HintPath>
+    </Reference>
+    <Reference Include="protobuf-net, Version=2.0.0.668, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
+      <HintPath>..\packages\protobuf-net.2.0.0.668\lib\net40\protobuf-net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Quartz, Version=2.3.3.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Quartz.2.3.3\lib\net40\Quartz.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization">
+      <HintPath>..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Runtime.Serialization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Builder\AccessRuleCte.cs" />
+    <Compile Include="Builder\AccessRuleCteTypeEnum.cs" />
+    <Compile Include="Builder\AliasManager.cs" />
+    <Compile Include="Builder\FtsGrammarHelper.cs" />
+    <Compile Include="Builder\QueryBuilder.cs" />
+    <Compile Include="Builder\QueryBuilder.Expressions.cs" />
+    <Compile Include="Builder\QueryBuilder.Nodes.cs" />
+    <Compile Include="Builder\QueryBuilder.Security.cs" />
+    <Compile Include="Builder\QuerySqlBuilder.cs" />
+    <Compile Include="Builder\ReferenceManager.cs" />
+    <Compile Include="Builder\SqlObjects\SqlBuilderContext.cs" />
+    <Compile Include="Builder\SqlObjects\SqlBatch.cs" />
+    <Compile Include="Builder\SqlObjects\SqlCte.cs" />
+    <Compile Include="Builder\SqlObjects\SqlExpression.cs" />
+    <Compile Include="Builder\SqlObjects\SqlFromClause.cs" />
+    <Compile Include="Builder\SqlObjects\SqlGroupByClause.cs" />
+    <Compile Include="Builder\SqlObjects\SqlHavingClause.cs" />
+    <Compile Include="Builder\SqlObjects\SqlOrderClause.cs" />
+    <Compile Include="Builder\SqlObjects\SqlOrderItem.cs" />
+    <Compile Include="Builder\SqlObjects\SqlQuery.cs" />
+    <Compile Include="Builder\SqlObjects\SqlSelectClause.cs" />
+    <Compile Include="Builder\SqlObjects\SqlSelectItem.cs" />
+    <Compile Include="Builder\SqlObjects\SqlSelectStatement.cs" />
+    <Compile Include="Builder\SqlObjects\SqlTable.cs" />
+    <Compile Include="Builder\SqlObjects\SqlUnion.cs" />
+    <Compile Include="Builder\SqlObjects\SqlWithClause.cs" />
+    <Compile Include="CachingBuilder\CachingQuerySqlBuilder.cs" />
+    <Compile Include="CachingBuilder\CachingQuerySqlBuilderInvalidator.cs" />
+    <Compile Include="CachingBuilder\CachingQuerySqlBuilderKey.cs" />
+    <Compile Include="CachingBuilder\CachingQuerySqlBuilderValue.cs" />
+    <Compile Include="CachingRunner\CachingQueryRunner.cs" />
+    <Compile Include="CachingRunner\CachingQueryRunnerInvalidator.cs" />
+    <Compile Include="CachingRunner\CachingQueryRunnerKey.cs" />
+    <Compile Include="CachingRunner\CachingQueryRunnerValue.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueryEngineModule.cs" />
+    <Compile Include="ReportConverter\CachingReportToQueryConverter.cs" />
+    <Compile Include="ReportConverter\CachingReportToQueryConverterKey.cs" />
+    <Compile Include="ReportConverter\FromEntityContext.cs" />
+    <Compile Include="ReportConverter\ReportToQueryCacheInvalidator.cs" />
+    <Compile Include="ReportConverter\ReportToQueryConverter.cs" />
+    <Compile Include="ReportConverter\CachingReportToQueryConverterValue.cs" />
+    <Compile Include="ReportConverter\ReportToQueryPartsConverter.cs" />
+    <Compile Include="ReportConverter\StructuredQueryEntityHelper.cs" />
+    <Compile Include="Runner\MetadataHelper.cs" />
+    <Compile Include="Runner\QueryRunner.cs" />
+    <Compile Include="Runner\StructureViewHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="job_scheduling_data_2_0.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EDC.Common\EDC.Common.csproj">
+      <Project>{c7183bef-1a52-4da5-850b-7132b5dca7eb}</Project>
+      <Name>EDC.Common</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EDC.ReadiNow.Common\EDC.ReadiNow.Common.csproj">
+      <Project>{a1c54cf6-e515-4132-a3cb-5cbe32b11d7e}</Project>
+      <Name>EDC.ReadiNow.Common</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EDC.SoftwarePlatform.Interfaces\EDC.SoftwarePlatform.Interfaces.csproj">
+      <Project>{c1fc97b7-aacc-45b5-9969-7995b27093ca}</Project>
+      <Name>EDC.SoftwarePlatform.Interfaces</Name>
+      <Private>True</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ReadMe.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir).build\MSBuild.Community.Tasks.targets" />
+  <Import Project="$(SolutionDir)Automation\ReadiNow.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <Target Name="AfterBuild">
+    <CallTarget Targets="PublishWebAssembly" />
+  </Target>
+  <PropertyGroup>
+    <AssemblyFileInfo>$(ProjectDir)Properties\AssemblyFileInfo.cs</AssemblyFileInfo>
+  </PropertyGroup>
+</Project>

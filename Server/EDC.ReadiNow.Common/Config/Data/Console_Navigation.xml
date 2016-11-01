@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="core" xmlns:k="console" xsi:schemaLocation=". ../Core.xsd k ../Console.xsd" defaultSolution="consoleSolution">
+  <!--Copyright 2011-2016 Global Software Innovation Pty Ltd-->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    TOP NAVIGATION                                                -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- Home -->
+  <k:topMenu>
+    <alias>homeMenu</alias>
+    <name>Home</name>
+    <description>
+This text is an example of some markdown formatted text you can use as the description of  a element.
+
+## A heading
+
+* a list item
+* another list item
+* here is a [link](#/)
+* and another [link](http://daringfireball.net/projects/markdown)
+  </description>
+    <k:consoleOrder>1</k:consoleOrder>
+    <k:navigationElementIcon>k:topMenuImage_Home</k:navigationElementIcon>
+  </k:topMenu>  
+  <!-- Documents -->
+  <k:topMenu>
+    <alias>documentsMenu</alias>
+    <name>Documents</name>
+    <k:consoleOrder>5</k:consoleOrder>
+    <k:navigationElementIcon>k:topMenuImage_Documents</k:navigationElementIcon>
+  </k:topMenu>
+  <!-- Administration -->
+  <k:topMenu>
+    <alias>adminMenu</alias>
+    <name>Administration</name>
+    <k:isTopMenuVisible>false</k:isTopMenuVisible>
+    <k:consoleOrder>6</k:consoleOrder>
+    <k:navigationElementIcon>k:topMenuImage_Admin</k:navigationElementIcon>
+    <k:folderContents>
+      <k:staticPage>
+        <alias>k:administrationStaticPage</alias>
+        <name>Administration</name>
+        <k:consoleOrder>0</k:consoleOrder>
+        <k:resourceConsoleBehavior>
+          <k:consoleBehavior>
+            <alias>k:administrationPageBehavior</alias>
+            <k:html5ViewId>administration</k:html5ViewId>
+            <k:consoleBehaviorHidden>true</k:consoleBehaviorHidden>
+          </k:consoleBehavior>
+        </k:resourceConsoleBehavior>
+      </k:staticPage>
+    </k:folderContents>
+  </k:topMenu>
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    HOME TAB                                                      -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- Home Sections -->
+  <k:navSection>
+    <alias>k:homeSection</alias>
+    <name>Home</name>
+    <k:resourceInFolder>homeMenu</k:resourceInFolder>
+    <k:consoleOrder>1</k:consoleOrder>
+  </k:navSection>
+  <!-- My Contents -->
+  <k:privateContentSection>
+    <alias>k:myContentSection</alias>
+    <name>My Contents</name>
+    <k:resourceInFolder>k:homeSection</k:resourceInFolder>
+    <k:consoleOrder>4</k:consoleOrder>
+  </k:privateContentSection>
+  <k:navSection>
+    <alias>k:favoritesSection</alias>
+    <name>Favourites</name>
+    <k:resourceInFolder>homeMenu</k:resourceInFolder>
+    <k:consoleOrder>2</k:consoleOrder>
+  </k:navSection>
+  <k:navSection>
+    <alias>tasksSection</alias>
+    <name>Tasks</name>
+    <k:resourceInFolder>homeMenu</k:resourceInFolder>
+    <k:consoleOrder>3</k:consoleOrder>
+  </k:navSection>
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    DOCUMENT LIBRARY TAB                                          -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <k:navSection>
+    <alias>k:documentsSection</alias>
+    <name>Documents</name>
+    <k:resourceInFolder>documentsMenu</k:resourceInFolder>
+    <k:consoleOrder>1</k:consoleOrder>
+  </k:navSection>
+  <!-- Document Library -->
+  <k:navSection>
+    <alias>docLibrarySection</alias>
+    <name>Document Library</name>
+    <k:resourceInFolder>k:documentsSection</k:resourceInFolder>
+    <k:folderContents>
+      <documentFolder>
+        <alias>documentsDocumentFolder</alias>
+        <name>Documents</name>
+      </documentFolder>
+      <documentFolder>
+        <alias>generatedDocumentFolder</alias>
+        <name>Generated</name>
+      </documentFolder>
+    </k:folderContents>
+  </k:navSection>
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    ADMINISTRATION TAB                                            -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <k:navSection>
+    <alias>k:adminSection</alias>
+    <name>Administration</name>
+    <k:resourceInFolder>adminMenu</k:resourceInFolder>
+    <k:consoleOrder>1</k:consoleOrder>
+  </k:navSection>
+  <!-- Doc Library -->
+  <k:navSection>
+    <alias>k:docLibraryAdminSection</alias>
+    <name>Applications</name>
+    <k:resourceInFolder>adminMenu</k:resourceInFolder>
+    <k:consoleOrder>1</k:consoleOrder>
+    <k:folderContents>
+      <k:staticPage>
+        <alias>k:applicationManagerStaticPage</alias>
+        <name>Application Library</name>
+        <k:consoleOrder>0</k:consoleOrder>
+        <k:resourceConsoleBehavior>
+          <k:consoleBehavior>
+            <alias>k:applicationManagerBehavior</alias>
+            <k:html5ViewId>appManager</k:html5ViewId>
+          </k:consoleBehavior>
+        </k:resourceConsoleBehavior>
+      </k:staticPage>
+      <k:staticPage>
+        <alias>k:applicationConfigurationStaticPage</alias>
+        <name>Application Configuration</name>
+        <k:consoleOrder>1</k:consoleOrder>
+        <k:resourceConsoleBehavior>
+          <k:consoleBehavior>
+            <alias>k:applicationConfigurationBehavior</alias>
+            <k:html5ViewId>appConfiguration</k:html5ViewId>
+          </k:consoleBehavior>
+        </k:resourceConsoleBehavior>
+      </k:staticPage>
+    </k:folderContents>
+  </k:navSection>
+  <!-- Environment -->
+  <k:navSection>
+    <alias>environmentSection</alias>
+    <name>Settings</name>
+    <k:resourceInFolder>adminMenu</k:resourceInFolder>
+    <k:consoleOrder>2</k:consoleOrder>
+    <k:folderContents>tenantGeneralSettingsInstance,tenantImageSettingsInstance,tenantEmailSettingsInstance,tenantNotificationProvider,k:tenantRollbackStaticPage</k:folderContents>
+  </k:navSection>
+  <!-- Resources -->
+  <k:navSection>
+    <alias>k:resourcesSection</alias>
+    <name>Resources</name>
+    <k:resourceInFolder>adminMenu</k:resourceInFolder>
+    <k:consoleOrder>3</k:consoleOrder>
+    <k:folderContents>
+      <k:staticPage>
+        <alias>importResourcePage</alias>
+        <name>Import Resource</name>
+        <navFeatureSwitch>importExport</navFeatureSwitch>
+        <k:consoleOrder>1000</k:consoleOrder>
+        <k:resourceConsoleBehavior>
+          <k:consoleBehavior>
+            <alias>importResourceBehavior</alias>
+            <k:html5ViewId>importXml</k:html5ViewId>
+          </k:consoleBehavior>
+        </k:resourceConsoleBehavior>
+      </k:staticPage>
+    </k:folderContents>
+  </k:navSection>
+  <!-- Security -->
+  <k:navSection>
+    <alias>k:securitySection</alias>
+    <name>Security</name>
+    <k:resourceInFolder>adminMenu</k:resourceInFolder>
+    <k:consoleOrder>4</k:consoleOrder>
+    <k:folderContents>passwordPolicyInstance,tenantAuditLogSettingsInstance</k:folderContents>
+  </k:navSection>
+  <!--<folder>
+    <alias>k:advancedSecurityFolder</alias>
+    <k:resourceInFolder>k:securitySection</k:resourceInFolder>
+    <name>Advanced</name>
+    -->
+  <!--<k:folderContents>roleStructureView</k:folderContents>-->
+  <!--
+    -->
+  <!--<k:folderContents>roleBasedSecurityGrantReadReport,roleBasedSecurityDenyReadReport,applicableRolesSecurityReport,instancesOfTypesInSecurityGroupReport</k:folderContents>-->
+  <!--
+  </folder>-->
+  <!-- Workflows -->
+  <k:navSection>
+    <alias>workflowsSection</alias>
+    <name>Workflows</name>
+    <k:resourceInFolder>adminMenu</k:resourceInFolder>
+    <k:consoleOrder>7</k:consoleOrder>
+  </k:navSection>
+  <!-- 'Tools' navigation section -->
+  <k:navSection>
+    <alias>toolsSection</alias>
+    <name>Audit</name>
+    <k:resourceInFolder>adminMenu</k:resourceInFolder>
+    <k:consoleOrder>8</k:consoleOrder>
+    <k:folderContents>
+      tenantEventLogSettingsInstance
+    </k:folderContents>
+  </k:navSection>
+</resources>

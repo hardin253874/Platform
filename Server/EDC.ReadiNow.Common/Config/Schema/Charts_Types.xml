@@ -1,0 +1,707 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="core" xsi:schemaLocation=". ../Core.xsd" defaultSolution="coreSolution">
+  <!--Copyright 2011-2016 Global Software Innovation Pty Ltd-->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    CHARTS                                                        -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- chartComponent -->
+  <type>
+    <alias>chartComponent</alias>
+    <name>Chart Component</name>
+    <description>Base type for every possible component of a chart. Allows 'create' rules to be assigned to all of the parts of a chart.</description>
+    <inherits>selfServeComponent</inherits>
+    <generateCode>true</generateCode>
+  </type>
+  <!-- Chart -->
+  <type>
+    <alias>chart</alias>
+    <name>Chart</name>
+    <description>A chart or similar graphical data visualization.</description>
+    <generateCode>true</generateCode>
+    <inherits>chartComponent,visualController,privatelyOwnable</inherits>
+    <isMetadata>true</isMetadata>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Chart Details</name>
+        <alias>chartDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>chartTitle</alias>
+        <name>Chart title</name>
+        <description>The title that appears at the top of the chart.</description>
+        <fieldInGroup>chartDetails</fieldInGroup>
+      </stringField>
+    </fields>
+    <relationships>
+      <!-- Each chart runs on one report -->
+      <relationship>
+        <name>Chart uses report</name>
+        <alias>chartReport</alias>
+        <description>Relationship between a chart and the report that is runs on.</description>
+        <reverseAlias>reportCharts</reverseAlias>
+        <relType>relLookup</relType>
+        <toType>report</toType>
+        <toName>Based on report</toName>
+        <securesTo>true</securesTo>
+        <securesToReadOnly>true</securesToReadOnly>
+        <fromName>Charts</fromName>
+        <relationshipInFromTypeGroup>chartDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>reportDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <name>Chart has series</name>
+        <alias>chartHasSeries</alias>
+        <reverseAlias>seriesForChart</reverseAlias>
+        <description>Relationship between a chart and the series of data on the chart.</description>
+        <relType>relComponents</relType>
+        <toType>chartSeries</toType>
+        <toName>Chart series</toName>
+        <fromName>Charts</fromName>
+        <relationshipInFromTypeGroup>chartDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>chartSeriesDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <!-- Horizontal axis -->
+      <relationship>
+        <name>Horizontal axis</name>
+        <description>The x axis of a chart.</description>
+        <alias>horizontalAxis</alias>
+        <reverseAlias>horizontalAxisForChart</reverseAlias>
+        <toType>chartAxis</toType>
+        <relType>relComponents</relType>
+        <relationshipInFromTypeGroup>chartDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>chartAxisDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <!-- Vertical axis -->
+      <relationship>
+        <name>Vertical axis</name>
+        <description>The y axis of a chart.</description>
+        <alias>verticalAxis</alias>
+        <reverseAlias>verticalAxisForChart</reverseAlias>
+        <toType>chartAxis</toType>
+        <relType>relComponents</relType>
+        <relationshipInFromTypeGroup>chartDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>chartAxisDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <!-- Chart Title Alignment -->
+      <relationship>
+        <name>Chart title alignment</name>
+        <description>The alignment to use for the chart title.</description>
+        <alias>chartTitleAlign</alias>
+        <toType>alignEnum</toType>
+        <relType>relChoiceField</relType>
+        <relationshipInFromTypeGroup>chartDetails</relationshipInFromTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- Chart Series -->
+  <type>
+    <alias>chartSeries</alias>
+    <name>Chart Series</name>
+    <description>A series of data on a chart. Brings together multiple data sources to be assigned to various dimensions.</description>
+    <inherits>chartComponent</inherits>
+    <generateCode>false</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Chart Series Details</name>
+        <alias>chartSeriesDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>chartCustomColor</alias>
+        <name>Colour</name>
+        <description>The hex code to use for custom colouring.</description>
+        <fieldInGroup>chartSeriesDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>chartNegativeColor</alias>
+        <name>Negative colour</name>
+        <description>The hex code to use for colouring of negative values.</description>
+        <fieldInGroup>chartSeriesDetails</fieldInGroup>
+      </stringField>
+      <boolField>
+        <alias>hideColorLegend</alias>
+        <name>Hide colour legend</name>
+        <description>If true, the colour legend never appears. Otherwise it appears if a colour source has been set.</description>
+        <fieldInGroup>chartSeriesDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <alias>useConditionalFormattingColor</alias>
+        <name>Use conditional formatting colour</name>
+        <description>If set to true, then use any conditional formatting found on the colour source column.</description>
+        <fieldInGroup>chartSeriesDetails</fieldInGroup>
+      </boolField>
+      <intField>
+        <alias>seriesOrder</alias>
+        <name>Series order number</name>
+        <description>The z-order of the series. Lowest on top.</description>
+        <fieldInGroup>chartSeriesDetails</fieldInGroup>
+      </intField>
+    </fields>
+    <relationships>
+      <!-- Type of chart series -->
+      <!-- Should this be done with type inheritance -->
+      <relationship>
+        <name>Chart type</name>
+        <description>The type of chart formatting.</description>
+        <alias>chartType</alias>
+        <toType>chartTypeEnum</toType>
+        <relType>relChoiceField</relType>
+        <relationshipInFromTypeGroup>chartSeriesDetails</relationshipInFromTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <!-- Primary axis -->
+      <relationship>
+        <name>Primary axis</name>
+        <description>The primary (typically 'x') axis of a chart.</description>
+        <alias>primaryAxis</alias>
+        <toType>chartAxis</toType>
+        <relType>relCustom</relType>
+        <!-- TODO : Consider further -->
+        <cardinality>manyToOne</cardinality>
+        <implicitInSolution>true</implicitInSolution>
+        <reverseImplicitInSolution>false</reverseImplicitInSolution>
+        <cascadeDelete>false</cascadeDelete>
+        <cascadeDeleteTo>true</cascadeDeleteTo>
+        <cloneAction>cloneEntities</cloneAction>
+        <reverseCloneAction>drop</reverseCloneAction>
+        <relationshipInFromTypeGroup>chartSeriesDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>chartAxisDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <!-- Value axis -->
+      <relationship>
+        <name>Value axis</name>
+        <description>The value (typically 'y') axis of a chart.</description>
+        <alias>valueAxis</alias>
+        <toType>chartAxis</toType>
+        <relType>relCustom</relType>
+        <!-- TODO : Consider further -->
+        <cardinality>manyToOne</cardinality>
+        <implicitInSolution>true</implicitInSolution>
+        <reverseImplicitInSolution>false</reverseImplicitInSolution>
+        <cascadeDelete>false</cascadeDelete>
+        <cascadeDeleteTo>true</cascadeDeleteTo>
+        <cloneAction>cloneEntities</cloneAction>
+        <reverseCloneAction>drop</reverseCloneAction>
+        <relationshipInFromTypeGroup>chartSeriesDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>chartAxisDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <!-- Series colouring method -->
+      <relationship>
+        <name>Colour method</name>
+        <description>The type of colouring to use.</description>
+        <alias>chartColorMethod</alias>
+        <toType>chartColorEnum</toType>
+        <relType>relChoiceField</relType>
+        <relationshipInFromTypeGroup>chartSeriesDetails</relationshipInFromTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <!-- Primary Series Source-->
+      <relationship>
+        <name>Primary source</name>
+        <description>The source for the primary series of a chart.</description>
+        <alias>primarySource</alias>
+        <toType>chartSource</toType>
+        <relType>relSingleComponent</relType>
+        <relationshipInFromTypeGroup>chartSeriesDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>chartSourceDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <name>Values source</name>
+        <description>The source for the primary series of a chart.</description>
+        <alias>valueSource</alias>
+        <toType>chartSource</toType>
+        <relType>relSingleComponent</relType>
+        <relationshipInFromTypeGroup>chartSeriesDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>chartSourceDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <name>End values source</name>
+        <description>The source for the primary series of a chart.</description>
+        <alias>endValueSource</alias>
+        <toType>chartSource</toType>
+        <relType>relSingleComponent</relType>
+        <relationshipInFromTypeGroup>chartSeriesDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>chartSourceDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <name>Associate source</name>
+        <description>The to connect to.</description>
+        <alias>associateSource</alias>
+        <toType>chartSource</toType>
+        <relType>relSingleComponent</relType>
+        <relationshipInFromTypeGroup>chartSeriesDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>chartSourceDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <name>Size source</name>
+        <description>The source for the primary series of a chart.</description>
+        <alias>sizeSource</alias>
+        <toType>chartSource</toType>
+        <relType>relSingleComponent</relType>
+        <relationshipInFromTypeGroup>chartSeriesDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>chartSourceDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <name>Colour source</name>
+        <description>The source for the primary series of a chart.</description>
+        <alias>colorSource</alias>
+        <toType>chartSource</toType>
+        <relType>relSingleComponent</relType>
+        <relationshipInFromTypeGroup>chartSeriesDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>chartSourceDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <name>Image source</name>
+        <description>The source for the primary series of a chart.</description>
+        <alias>imageSource</alias>
+        <toType>chartSource</toType>
+        <relType>relSingleComponent</relType>
+        <relationshipInFromTypeGroup>chartSeriesDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>chartSourceDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <name>Text source</name>
+        <description>The source for the primary series of a chart.</description>
+        <alias>textSource</alias>
+        <toType>chartSource</toType>
+        <relType>relSingleComponent</relType>
+        <relationshipInFromTypeGroup>chartSeriesDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>chartSourceDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <name>Symbol source</name>
+        <description>The source for the primary series of a chart.</description>
+        <alias>symbolSource</alias>
+        <toType>chartSource</toType>
+        <relType>relSingleComponent</relType>
+        <relationshipInFromTypeGroup>chartSeriesDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>chartSourceDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <!-- Data Label Position -->
+      <relationship>
+        <name>Data label position</name>
+        <description>The location of data labels.</description>
+        <alias>dataLabelPos</alias>
+        <toType>dataLabelPosEnum</toType>
+        <relType>relChoiceField</relType>
+        <relationshipInFromTypeGroup>chartSeriesDetails</relationshipInFromTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <!-- Marker Shape -->
+      <relationship>
+        <name>Marker shape</name>
+        <description>The shape of marker to use on this series.</description>
+        <alias>markerShape</alias>
+        <toType>markerShapeEnum</toType>
+        <relType>relChoiceField</relType>
+        <relationshipInFromTypeGroup>chartSeriesDetails</relationshipInFromTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <!-- Marker Size -->
+      <relationship>
+        <name>Marker size</name>
+        <description>The size to use for marker symbols.</description>
+        <alias>markerSize</alias>
+        <toType>sizeEnum</toType>
+        <relType>relChoiceField</relType>
+        <relationshipInFromTypeGroup>chartSeriesDetails</relationshipInFromTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <!-- Stack Method -->
+      <relationship>
+        <name>Stack method</name>
+        <description>The type of stack for stack charts.</description>
+        <!-- Null for default -->
+        <alias>stackMethod</alias>
+        <toType>stackMethodEnum</toType>
+        <relType>relChoiceField</relType>
+        <relationshipInFromTypeGroup>chartSeriesDetails</relationshipInFromTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- Chart Source -->
+  <type>
+    <alias>chartSource</alias>
+    <name>Chart Source</name>
+    <description>A data source for a chart series or other chart object.</description>
+    <inherits>chartComponent</inherits>
+    <generateCode>false</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Chart Source Details</name>
+        <alias>chartSourceDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <relationships>
+      <relationship>
+        <name>Chart report column</name>
+        <description>The source for the primary series of a chart.</description>
+        <alias>chartReportColumn</alias>
+        <reverseAlias>columnUsedByChartSource</reverseAlias>
+        <relType>relDependantOf</relType>
+        <toType>reportColumn</toType>
+        <toName>Report column</toName>
+        <relationshipInFromTypeGroup>chartSourceDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>reportColumnDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <name>Chart source aggregation</name>
+        <description>The manner in which this report column will be aggregated, if it is being aggregated.</description>
+        <alias>sourceAggMethod</alias>
+        <relType>relChoiceField</relType>
+        <toType>aggregateMethodEnum</toType>
+        <toName>Aggregation</toName>
+        <relationshipInFromTypeGroup>chartSourceDetails</relationshipInFromTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <name>Special source</name>
+        <description>Indicates that this source is a special source, such as 'row number', or 'count'.</description>
+        <alias>specialChartSource</alias>
+        <relType>relChoiceField</relType>
+        <toType>specialChartSourceEnum</toType>
+        <relationshipInFromTypeGroup>chartSourceDetails</relationshipInFromTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- Chart Axis -->
+  <type>
+    <alias>chartAxis</alias>
+    <name>Chart Axis</name>
+    <description>An axis on a chart.</description>
+    <inherits>chartComponent</inherits>
+    <generateCode>false</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Chart Axis Details</name>
+        <alias>chartAxisDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>axisMinimumValue</alias>
+        <name>Minimum value</name>
+        <description>The minimum value to display.</description>
+        <fieldInGroup>chartAxisDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>axisMaximumValue</alias>
+        <name>Maximum value</name>
+        <description>The maximum value to display.</description>
+        <fieldInGroup>chartAxisDetails</fieldInGroup>
+      </stringField>
+      <boolField>
+        <alias>showGridLines</alias>
+        <name>Show grid lines</name>
+        <description>Should grid lines be shown for this axis.</description>
+        <fieldInGroup>chartAxisDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <alias>showAllChoiceValues</alias>
+        <name>Show all choice values</name>
+        <description>Show all possible choice values on the axis, even if they aren't all present in the report results.</description>
+        <fieldInGroup>chartAxisDetails</fieldInGroup>
+      </boolField>
+    </fields>
+    <relationships>
+      <!-- Scale Type -->
+      <relationship>
+        <name>Scale type</name>
+        <description>The type of colouring to use.</description>
+        <alias>axisScaleType</alias>
+        <toType>axisScaleTypeEnum</toType>
+        <relType>relChoiceField</relType>
+        <relationshipInFromTypeGroup>chartAxisDetails</relationshipInFromTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- Chart Type -->
+  <enumType>
+    <name>Chart Type</name>
+    <alias>chartTypeEnum</alias>
+    <inherits>enumValue</inherits>
+    <enumValues>
+      <chartTypeEnum>
+        <name>Column Chart</name>
+        <alias>columnChart</alias>
+      </chartTypeEnum>
+      <chartTypeEnum>
+        <name>Bar Chart</name>
+        <alias>barChart</alias>
+      </chartTypeEnum>
+      <chartTypeEnum>
+        <name>Pie Chart</name>
+        <alias>pieChart</alias>
+      </chartTypeEnum>
+      <chartTypeEnum>
+        <name>Donut Chart</name>
+        <alias>donutChart</alias>
+      </chartTypeEnum>
+      <chartTypeEnum>
+        <name>Force Graph</name>
+        <alias>forceGraph</alias>
+      </chartTypeEnum>
+      <chartTypeEnum>
+        <name>Line Chart</name>
+        <alias>lineChart</alias>
+      </chartTypeEnum>
+      <chartTypeEnum>
+        <name>Area</name>
+        <alias>areaChart</alias>
+      </chartTypeEnum>
+      <chartTypeEnum>
+        <name>Scatter</name>
+        <alias>scatterChart</alias>
+      </chartTypeEnum>
+      <chartTypeEnum>
+        <name>Bubble</name>
+        <alias>bubbleChart</alias>
+      </chartTypeEnum>
+      <chartTypeEnum>
+        <name>Tree Map</name>
+        <alias>treeMapChart</alias>
+      </chartTypeEnum>
+      <chartTypeEnum>
+        <name>Horizontal Hierarchy</name>
+        <alias>horzHierarchy</alias>
+      </chartTypeEnum>
+      <chartTypeEnum>
+        <name>Radial Tree</name>
+        <alias>radialTreeGraph</alias>
+      </chartTypeEnum>
+      <chartTypeEnum>
+        <name>Sunburst</name>
+        <alias>sunburstChart</alias>
+      </chartTypeEnum>
+      <chartTypeEnum>
+        <name>Funnel</name>
+        <alias>funnelChart</alias>
+      </chartTypeEnum>
+      <chartTypeEnum>
+        <name>Gauge</name>
+        <alias>gaugeChart</alias>
+      </chartTypeEnum>
+      <chartTypeEnum>
+        <name>Matrix</name>
+        <alias>matrixChart</alias>
+      </chartTypeEnum>
+    </enumValues>
+  </enumType>
+  <!-- Axis Scale Type -->
+  <enumType>
+    <name>Axis Scale Type</name>
+    <description>The type method used to scale a chart axis.</description>
+    <alias>axisScaleTypeEnum</alias>
+    <inherits>enumValue</inherits>
+    <enumValues>
+      <axisScaleTypeEnum>
+        <name>Automatic</name>
+        <description>Select the most appropriate scale type for the data.</description>
+        <alias>automaticScaleType</alias>
+      </axisScaleTypeEnum>
+      <axisScaleTypeEnum>
+        <name>Category</name>
+        <description>Each unique value has a discrete location. No other scaling is applied.</description>
+        <alias>categoryScaleType</alias>
+      </axisScaleTypeEnum>
+      <axisScaleTypeEnum>
+        <name>Linear</name>
+        <description>Numeric values get linearly scaled. This is the normal scale for numeric and date values.</description>
+        <alias>linearScaleType</alias>
+      </axisScaleTypeEnum>
+      <axisScaleTypeEnum>
+        <name>Logarithmic</name>
+        <description>Numeric values get logarithmically scaled.</description>
+        <alias>logScaleType</alias>
+      </axisScaleTypeEnum>
+      <axisScaleTypeEnum>
+        <name>Date and Time</name>
+        <description>Date/Time scale type.</description>
+        <alias>dateTimeScaleType</alias>
+      </axisScaleTypeEnum>
+    </enumValues>
+  </enumType>
+  <!-- Special Chart Source Type -->
+  <enumType>
+    <name>Special Chart Source Type</name>
+    <description>Special types of chart sources.</description>
+    <alias>specialChartSourceEnum</alias>
+    <inherits>enumValue</inherits>
+    <enumValues>
+      <specialChartSourceEnum>
+        <name>Row Number</name>
+        <alias>rowNumberSource</alias>
+      </specialChartSourceEnum>
+      <specialChartSourceEnum>
+        <name>Count</name>
+        <alias>countSource</alias>
+      </specialChartSourceEnum>
+    </enumValues>
+  </enumType>
+  <!-- Chart Color Method -->
+  <enumType>
+    <name>Chart Colour Method</name>
+    <description>The method of colouring used on a series.</description>
+    <alias>chartColorEnum</alias>
+    <inherits>enumValue</inherits>
+    <enumValues>
+      <chartColorEnum>
+        <name>Automatic</name>
+        <alias>colorAutomatic</alias>
+      </chartColorEnum>
+      <chartColorEnum>
+        <name>Custom</name>
+        <alias>colorCustom</alias>
+      </chartColorEnum>
+      <chartColorEnum>
+        <name>Varied by point</name>
+        <alias>colorVaried</alias>
+      </chartColorEnum>
+    </enumValues>
+  </enumType>
+  <!-- sizeEnum -->
+  <enumType>
+    <alias>sizeEnum</alias>
+    <name>Size</name>
+    <inherits>enumValue</inherits>
+    <generateCode>true</generateCode>
+    <enumValues>
+      <sizeEnum>
+        <name>Small</name>
+        <alias>sizeSmall</alias>
+      </sizeEnum>
+      <sizeEnum>
+        <name>Medium</name>
+        <alias>sizeMedium</alias>
+      </sizeEnum>
+      <sizeEnum>
+        <name>Large</name>
+        <alias>sizeLarge</alias>
+      </sizeEnum>
+    </enumValues>
+  </enumType>
+  <!-- stackMethodEnum -->
+  <enumType>
+    <alias>stackMethodEnum</alias>
+    <name>Stacked Chart Method</name>
+    <inherits>enumValue</inherits>
+    <generateCode>true</generateCode>
+    <enumValues>
+      <stackMethodEnum>
+        <name>Stacked</name>
+        <alias>stackMethodStacked</alias>
+      </stackMethodEnum>
+      <stackMethodEnum>
+        <name>Not Stacked</name>
+        <alias>stackMethodNotStacked</alias>
+      </stackMethodEnum>
+      <stackMethodEnum>
+        <name>100% Stacked</name>
+        <alias>stackMethod100percent</alias>
+      </stackMethodEnum>
+      <stackMethodEnum>
+        <name>Centred</name>
+        <alias>stackMethodCentre</alias>
+      </stackMethodEnum>
+    </enumValues>
+  </enumType>
+  <!-- dataLabelPosEnum -->
+  <enumType>
+    <alias>dataLabelPosEnum</alias>
+    <name>Data Label Position</name>
+    <inherits>enumValue</inherits>
+    <generateCode>true</generateCode>
+    <enumValues>
+      <dataLabelPosEnum>
+        <name>Inside</name>
+        <alias>dataLabelPosInside</alias>
+      </dataLabelPosEnum>
+      <dataLabelPosEnum>
+        <name>Outside</name>
+        <alias>dataLabelPosOutside</alias>
+      </dataLabelPosEnum>
+    </enumValues>
+  </enumType>
+  <!-- markerShapeEnum -->
+  <enumType>
+    <alias>markerShapeEnum</alias>
+    <name>Marker Shape</name>
+    <inherits>enumValue</inherits>
+    <generateCode>true</generateCode>
+    <enumValues>
+      <markerShapeEnum>
+        <name>None</name>
+        <alias>markerShapeNone</alias>
+      </markerShapeEnum>
+      <markerShapeEnum>
+        <name>Circle</name>
+        <alias>markerShapeCircle</alias>
+      </markerShapeEnum>
+      <markerShapeEnum>
+        <name>Filled Circle</name>
+        <alias>markerShapeFilledCircle</alias>
+      </markerShapeEnum>
+      <markerShapeEnum>
+        <name>Square</name>
+        <alias>markerShapeSquare</alias>
+      </markerShapeEnum>
+      <markerShapeEnum>
+        <name>Filled Square</name>
+        <alias>markerShapeFilledSquare</alias>
+      </markerShapeEnum>
+      <markerShapeEnum>
+        <name>Triangle (Up)</name>
+        <alias>markerShapeTriangleUp</alias>
+      </markerShapeEnum>
+      <markerShapeEnum>
+        <name>Filled Triangle (Up)</name>
+        <alias>markerShapeFilledTriangleUp</alias>
+      </markerShapeEnum>
+      <markerShapeEnum>
+        <name>Triangle (Down)</name>
+        <alias>markerShapeTriangleDown</alias>
+      </markerShapeEnum>
+      <markerShapeEnum>
+        <name>Filled Triangle (Down)</name>
+        <alias>markerShapeFilledTriangleDown</alias>
+      </markerShapeEnum>
+      <markerShapeEnum>
+        <name>Diamond</name>
+        <alias>markerShapeDiamond</alias>
+      </markerShapeEnum>
+      <markerShapeEnum>
+        <name>Filled Diamond</name>
+        <alias>markerShapeFilledDiamond</alias>
+      </markerShapeEnum>
+      <markerShapeEnum>
+        <name>Cross</name>
+        <alias>markerShapeCross</alias>
+      </markerShapeEnum>
+      <markerShapeEnum>
+        <name>Filled Cross</name>
+        <alias>markerShapeFilledCross</alias>
+      </markerShapeEnum>
+    </enumValues>
+  </enumType>
+</resources>

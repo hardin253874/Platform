@@ -1,0 +1,4 @@
+﻿-- Copyright 2011-2016 Global Software Innovation Pty Ltd
+CREATE TYPE [dbo].[IntListType] AS TABLE (
+    [Data] INT NOT NULL);
+

@@ -1,0 +1,307 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Accepted" xml:space="preserve">
+    <value>Accepted</value>
+  </data>
+  <data name="Cancelled" xml:space="preserve">
+    <value>Cancelled</value>
+  </data>
+  <data name="CastingBoolMessageTextFormat" xml:space="preserve">
+    <value>Cannot convert '{0}' value to yes/no data type.</value>
+  </data>
+  <data name="CastingDateMessageTextFormat" xml:space="preserve">
+    <value>Cannot convert '{0}' value to date data type.</value>
+  </data>
+  <data name="CastingDateTimeMessageTextFormat" xml:space="preserve">
+    <value>Cannot convert '{0}' value to date-time data type.</value>
+  </data>
+  <data name="CastingDecimalMessageTextFormat" xml:space="preserve">
+    <value>Cannot convert '{0}' value to decimal data type.</value>
+  </data>
+  <data name="CastingIntegerMessageTextFormat" xml:space="preserve">
+    <value>Cannot convert '{0}' value to integer data type.</value>
+  </data>
+  <data name="CastingTimeMessageTextFormat" xml:space="preserve">
+    <value>Cannot convert '{0}' value to Time data type.</value>
+  </data>
+  <data name="CompanyPath" xml:space="preserve">
+    <value>EDC</value>
+  </data>
+  <data name="DefaultICalSummary" xml:space="preserve">
+    <value>Software Platform Calendar Event</value>
+  </data>
+  <data name="GeneralPath" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="InternalError" xml:space="preserve">
+    <value>InternalError</value>
+  </data>
+  <data name="InvalidCalendarEmailSubject" xml:space="preserve">
+    <value>Software Platform Calendar Update</value>
+  </data>
+  <data name="MandatoryMessageTextFormat" xml:space="preserve">
+    <value>'{0}' is required.</value>
+  </data>
+  <data name="MaximumLengthMessageTextFormat" xml:space="preserve">
+    <value>'{0}' length must not be greater than {1}</value>
+  </data>
+  <data name="MaximumValueMessageTextFormat" xml:space="preserve">
+    <value>'{0}' value must not be greater than {1}</value>
+  </data>
+  <data name="MeetingInvitation" xml:space="preserve">
+    <value>Meeting Invitation</value>
+  </data>
+  <data name="MinimumLengthMessageTextFormat" xml:space="preserve">
+    <value>'{0}' length must not be less than {1}</value>
+  </data>
+  <data name="MinimumValueMessageTextFormat" xml:space="preserve">
+    <value>'{0}' value must not be less than {1}</value>
+  </data>
+  <data name="PasswordIsRequired" xml:space="preserve">
+    <value>A password is required.</value>
+  </data>
+  <data name="PasswordIsTooShort" xml:space="preserve">
+    <value>The password is too short; the minimum length is {0} characters.</value>
+  </data>
+  <data name="PasswordMustHaveDigit" xml:space="preserve">
+    <value>The password must contain at least one digit character.</value>
+  </data>
+  <data name="PasswordMustHaveLowercase" xml:space="preserve">
+    <value>The password must contain at least one lowercase character.</value>
+  </data>
+  <data name="PasswordMustHaveSpecial" xml:space="preserve">
+    <value>The password must contain at least one non-alphanumeric character.</value>
+  </data>
+  <data name="PasswordMustHaveUppercase" xml:space="preserve">
+    <value>The password must contain at least one uppercase character.</value>
+  </data>
+  <data name="PatternMatchMessageTextFormat" xml:space="preserve">
+    <value>Text must match the '{0}' pattern</value>
+  </data>
+  <data name="ProductPath" xml:space="preserve">
+    <value>ReadiNow</value>
+  </data>
+  <data name="RegexNullExceptionMessage" xml:space="preserve">
+    <value>Regex pattern was not set.</value>
+  </data>
+  <data name="ServerPath" xml:space="preserve">
+    <value>Server</value>
+  </data>
+  <data name="SoftwarePlatformCalendarInvite" xml:space="preserve">
+    <value>Software Platform Calendar Invite</value>
+  </data>
+  <data name="TypeDoesnotSupportMultiTypesError" xml:space="preserve">
+    <value>'{0}' doesn't support multiple types.</value>
+  </data>
+  <data name="TypeIsAbstractError" xml:space="preserve">
+    <value>'{0}' is Abstract.</value>
+  </data>
+  <data name="ValidCalendarEmailSubject" xml:space="preserve">
+    <value>Software Platform Calendar Update - {0}</value>
+  </data>
+  <data name="DateTimeRangeConstraintHelpMessage" xml:space="preserve">
+    <value>The value must be between {0} and {1}.</value>
+  </data>
+  <data name="DefaultDateTimeRangeConstraintHelpMessage" xml:space="preserve">
+    <value>The value is outside of the allowable range.</value>
+  </data>
+  <data name="DefaultNumericRangeConstraintHelpMessage" xml:space="preserve">
+    <value>The value is outside of the allowable range.</value>
+  </data>
+  <data name="FileFormatError" xml:space="preserve">
+    <value>There are problems with this file and it cannot be imported.</value>
+  </data>
+  <data name="ImportFailedTextFormat" xml:space="preserve">
+    <value>Row number {0} \t could not be imported. {1}
+{2}</value>
+  </data>
+  <data name="ImportFileError" xml:space="preserve">
+    <value>An error occurred during the import operation. Exception : {0}</value>
+  </data>
+  <data name="ImportingCsvRowError" xml:space="preserve">
+    <value>An unexpected error occurred while importing CSV row (Exception: {0}</value>
+  </data>
+  <data name="ImportingExcelDataError" xml:space="preserve">
+    <value>Error occurred while importing data from Excel (Exception: {0}</value>
+  </data>
+  <data name="ImportingExcelRowError" xml:space="preserve">
+    <value>An unexpected error occurred while importing Excel row (Exception: {0}</value>
+  </data>
+  <data name="ImportSuccessfulTextFormat" xml:space="preserve">
+    <value>{0} of {1} records successfully imported.</value>
+  </data>
+  <data name="ImportTaskDeleteError" xml:space="preserve">
+    <value>An error occurred while deleting the import task.</value>
+  </data>
+  <data name="MaximumDateTimeRangeConstraintHelpMessage" xml:space="preserve">
+    <value>The value must be before {0}.</value>
+  </data>
+  <data name="MaximumNumericRangeConstraintHelpMessage" xml:space="preserve">
+    <value>The value must be less than {0}.</value>
+  </data>
+  <data name="MinimumDateTimeRangeConstraintHelpMessage" xml:space="preserve">
+    <value>The value must be after {0}.</value>
+  </data>
+  <data name="MinimumNumericRangeConstraintHelpMessage" xml:space="preserve">
+    <value>The value must be greater than {0}.</value>
+  </data>
+  <data name="NumericRangeConstraintHelpMessage" xml:space="preserve">
+    <value>The value must be between {0} and {1}.</value>
+  </data>
+  <data name="NumericSetRangeConstraintHelpMessage" xml:space="preserve">
+    <value>The value must be included within the following set '{0}'.</value>
+  </data>
+  <data name="Relationships" xml:space="preserve">
+    <value>Relationships</value>
+  </data>
+  <data name="StringLengthConstraintHelpMessage" xml:space="preserve">
+    <value>The text must be between {0} and {1} characters in length.</value>
+  </data>
+  <data name="StringRegexConstraintHelpMessage" xml:space="preserve">
+    <value>The text value is not valid.</value>
+  </data>
+  <data name="UnexpectedError" xml:space="preserve">
+    <value>An unexpected occurred during the current operation.</value>
+  </data>
+  <data name="ImportWarningTextFormat" xml:space="preserve">
+    <value>Row number {0} \t is imported successfully. Warning! : {1}
+{2}</value>
+  </data>
+  <data name="MaximumLengthWarningTextFormat" xml:space="preserve">
+    <value>The {0} value truncated to maximum length {1}.</value>
+  </data>
+  <data name="CastingCurrencyMessageTextFormat" xml:space="preserve">
+    <value>Cannot convert '{0}' value to currency data type.</value>
+  </data>
+  <data name="ImportFailedRelTextFormat" xml:space="preserve">
+    <value>Row number {0} \t could not be imported. Couldn't find '{1}' named '{2}'
+{3}</value>
+  </data>
+  <data name="ImportFailedRelMultiRelatedInstancesTextFormat" xml:space="preserve">
+    <value>Row number {0} \t could not be imported. There is more than 1  '{1}' named '{2}'
+{3}</value>
+  </data>
+  <data name="NumberTruncated" xml:space="preserve">
+    <value>The decimal '{0}' has been truncated to '{1}'.</value>
+  </data>
+  <data name="MaximumTimeRangeConstraintHelpMessage" xml:space="preserve">
+    <value>The input '{0}' does not specify a valid time value.</value>
+  </data>
+</root>

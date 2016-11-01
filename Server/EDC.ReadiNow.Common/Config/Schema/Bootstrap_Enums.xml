@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="core" xsi:schemaLocation=". ../Core.xsd" defaultSolution="coreSolution">
+  <!--Copyright 2011-2016 Global Software Innovation Pty Ltd-->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    ENUM                                                          -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--
+  EXAMPLE USAGE:
+  <enumType>
+    <alias>employmentStatusEnum</alias>
+    <name>Employment Status</name>
+    <inherits>enumValue</inherits>
+    <generateCode>true</generateCode>
+    <enumValues>
+      <cardinalityEnum>
+        <name>Full Time</name>
+        <alias>fullTime</alias>
+      </cardinalityEnum>
+      <cardinalityEnum>
+        <name>Casual</name>
+        <alias>casual</alias>
+      </cardinalityEnum>
+    </enumValues>
+  </enumType>
+  
+  <type>
+    <alias>employee</alias>
+    ...    
+    <relationship>
+      <name>Employment Status</name>
+      <alias>employmentStatus</alias>
+      <relType>relChoiceField</relType>
+      <fromType>relationship</fromType>
+      <toType>employmentStatusEnum</toType>
+    </relationship>
+  </type>
+  
+  Probably needs to be made simpler.
+  -->
+  <!-- Type of enum Types -->
+  <type>
+    <alias>enumType</alias>
+    <name>Choice Field</name>
+    <description>All choice-field type definitions are of this type.</description>
+    <inherits>type, protectableType</inherits>
+    <generateCode>true</generateCode>
+    <allowEveryoneRead>true</allowEveryoneRead>
+    <isMetadata>true</isMetadata>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Choice Field Details</name>
+        <alias>enumTypeDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+  </type>
+  <!-- Inheritance parent for all enum types -->
+  <type>
+    <alias>enumValue</alias>
+    <name>Choice Field Value</name>
+    <description>All choice-field values are of this type.</description>
+    <inherits>protectableType</inherits>
+    <isAbstract>true</isAbstract>
+    <generateCode>true</generateCode>
+    <onBeforeSave>enumValueEventTarget</onBeforeSave>
+    <isMetadata>true</isMetadata>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Choice Field Value Details</name>
+        <alias>enumValueDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <intField>
+        <alias>enumOrder</alias>
+        <name>Order</name>
+        <fieldInGroup>enumValueDetails</fieldInGroup>
+      </intField>
+    </fields>
+  </type>
+  <!-- EnumValueEventTarget -->
+  <target>
+    <alias>enumValueEventTarget</alias>
+    <typeName>EDC.ReadiNow.Model.EventClasses.EnumValueEventTarget</typeName>
+    <assemblyName>EDC.ReadiNow.Common, Version=1.0.0.0, Culture=neutral</assemblyName>
+    <ordinal>0</ordinal>
+  </target>
+  <!-- Serves no purpose other than a convenient way to syntactically group instances of a type under a type -->
+  <!-- Is really the implied inverse of the 'is a' relationship -->
+  <relationship>
+    <alias>enumOwner</alias>
+    <name>Choice field owner</name>
+    <reverseAlias>enumValues</reverseAlias>
+    <relType>relComponentOf</relType>
+    <fromType>enumValue</fromType>
+    <fromName>Choice values</fromName>
+    <toType>enumType</toType>
+    <toName>Choice field</toName>
+    <hideOnFromType>true</hideOnFromType>
+    <generateCode>true</generateCode>
+    <relationshipInToTypeGroup>enumTypeDetails</relationshipInToTypeGroup>
+  </relationship>
+</resources>

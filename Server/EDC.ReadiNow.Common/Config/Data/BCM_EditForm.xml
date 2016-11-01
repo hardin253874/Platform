@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="core" xmlns:k="console" xmlns:b="bcm" xsi:schemaLocation=". ../Core.xsd k ../Console.xsd b ../BCM.xsd" defaultSolution="bcmSolution">
+  <!--Copyright 2011-2016 Global Software Innovation Pty Ltd-->
+  <!-- Dummy form original --><!--
+  <k:customEditFormControl>
+    <name>Dumy Custom Edit Form</name>
+    <description>Dummy form used for testing</description>
+    <alias>k:dummyFormOriginal</alias>
+    <k:typeToEditWithForm>b:person</k:typeToEditWithForm>
+    <k:containedControlsOnForm>
+      <k:twoColumnContainerControl>
+        <alias>auto1be99e80eefe40168e16ae078296f181</alias>
+        <k:containedControlsOnForm>
+          <k:singleLineTextControl>
+            <alias>autobfac3f58ea504af2a71998c0d6dbe6a0</alias>
+            <k:fieldToRender>b:employeeNumber</k:fieldToRender>
+          </k:singleLineTextControl>
+        </k:containedControlsOnForm>
+      </k:twoColumnContainerControl>
+    </k:containedControlsOnForm>
+  </k:customEditFormControl>
+  --><!-- Dummy form original --><!--
+  <k:customEditFormControl>
+    <name>Dumy Custom Edit Form</name>
+    <description>Dummy form used for testing</description>
+    <alias>k:dummyForm</alias>
+    <k:typeToEditWithForm>b:person</k:typeToEditWithForm>
+    <k:containedControlsOnForm>
+      <k:twoColumnContainerControl>
+        <alias>auto5d745d5e571a4bd5b9c9c78f210965fd</alias>
+        --><!-- twoColumnContainerControl --><!--
+        <k:containedControlsOnForm>
+          <k:oneColumnContainerControl>
+            <alias>auto3fb8eb87e8434b4a8f6e57b384293680</alias>
+            --><!-- oneColumnContainerControl --><!--
+            <k:containedControlsOnForm>
+              --><!-- singleLineTextControl --><!--
+              <k:singleLineTextControl>
+                <alias>auto125702bac5b342b3bac78cfe2af196a7</alias>
+                <k:fieldToRender>b:employeeNumber</k:fieldToRender>
+              </k:singleLineTextControl>
+              <k:singleLineTextControl>
+                <alias>autodfcbc7bffe134b389e07df1291526525</alias>
+                <k:fieldToRender>b:firstName</k:fieldToRender>
+              </k:singleLineTextControl>
+              <k:singleLineTextControl>
+                <alias>autoaf4eb8eb0a3d42dca1503781dba6ce0a</alias>
+                <k:fieldToRender>b:lastName</k:fieldToRender>
+              </k:singleLineTextControl>
+            </k:containedControlsOnForm>
+          </k:oneColumnContainerControl>
+          <k:oneColumnContainerControl>
+            <alias>auto255a60e50c224c2c9d7714ae5c433299</alias>
+            --><!-- oneColumnContainerControl --><!--
+            <k:containedControlsOnForm>
+              --><!-- singleLineTextControl --><!--
+              <k:singleLineTextControl>
+                <alias>auto0a57f471736d4830ad3d1724c21b1895</alias>
+                <k:fieldToRender>b:employeeNumber</k:fieldToRender>
+                <k:renderingOrdinal>1000</k:renderingOrdinal>
+              </k:singleLineTextControl>
+              <k:singleLineTextControl>
+                <alias>auto88943ce006ad4498ae441bd4f8e573fc</alias>
+                <k:fieldToRender>b:firstName</k:fieldToRender>
+              </k:singleLineTextControl>
+              <k:singleLineTextControl>
+                <alias>auto6b02e1b86bc945fa90ebaffccf740a73</alias>
+                <k:fieldToRender>b:lastName</k:fieldToRender>
+              </k:singleLineTextControl>
+            </k:containedControlsOnForm>
+          </k:oneColumnContainerControl>
+        </k:containedControlsOnForm>
+      </k:twoColumnContainerControl>
+    </k:containedControlsOnForm>
+  </k:customEditFormControl>
+  <k:customEditFormControl>
+    <name>Dumy Custom Edit Form</name>
+    <description>Dummy form used for testing</description>
+    <alias>k:dummyFormFlat</alias>
+    <k:typeToEditWithForm>b:person</k:typeToEditWithForm>
+    <k:containedControlsOnForm>
+      <k:singleLineTextControl>
+        <alias>auto20422ce433e24713bcd71d2fbb5b79ea</alias>
+        <k:fieldToRender>b:employeeNumber</k:fieldToRender>
+      </k:singleLineTextControl>
+      <k:singleLineTextControl>
+        <alias>auto918385aeff1d45a68d39de472d234305</alias>
+        <k:fieldToRender>b:firstName</k:fieldToRender>
+      </k:singleLineTextControl>
+      <k:singleLineTextControl>
+        <alias>auto298eea6e634340239eda48aafc48cca1</alias>
+        <k:fieldToRender>b:lastName</k:fieldToRender>
+      </k:singleLineTextControl>
+    </k:containedControlsOnForm>
+    <k:uiContextForForm>k:uiContextSilverlight</k:uiContextForForm>
+  </k:customEditFormControl>-->
+  <!--
+  <k:structureControlOnForm>
+    <alias>k:dummyTwoColumnContainerControl</alias>
+    <k:controlToRender>k:twoColumnContainerControl</k:controlToRender>
+    <k:containedWithinControl>k:dummyForm</k:containedWithinControl>
+  </k:structureControlOnForm>
+  
+  <k:fieldControlOnForm>
+    <alias>k:structCtrl</alias>
+    <k:controlToRender>k:singleLineTextControl</k:controlToRender>
+    <k:fieldToRender>b:employeeNumber</k:fieldToRender>
+    <k:containedWithinControl>k:dummyTwoColumnContainerControl</k:containedWithinControl>
+  </k:fieldControlOnForm>
+  <b:employee>
+    <alias>k:dummyEmployee</alias>
+    <b:firstName>bob</b:firstName>
+    <b:lastName>test</b:lastName>
+    <name>test bob</name>
+    <b:employeeNumber>222</b:employeeNumber>
+    <b:personStatus>
+    </b:personStatus>
+  </b:employee>
+  -->
+</resources>

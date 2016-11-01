@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="core" xmlns:k="console" xsi:schemaLocation=". ../Core.xsd k ../Console.xsd" defaultSolution="consoleSolution">
+  <!--Copyright 2011-2016 Global Software Innovation Pty Ltd-->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    SPECIAL CONTROLS                                              -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <k:customRenderControlType>
+    <name>Survey taker picker</name>
+    <alias>k:targetCampaignSurveyTakerPicker</alias>
+    <inherits>k:relationshipControlOnForm</inherits>
+    <generateCode>true</generateCode>
+    <k:requiresContext>true</k:requiresContext>
+    <k:customRenderControlIcon>assets/images/itemicon/LookupField.png</k:customRenderControlIcon>
+    <k:customRenderControlForType>surveyTargetCampaign</k:customRenderControlForType>
+    <k:customRenderControlForRelationship>campaignTargetRelationship</k:customRenderControlForRelationship>
+  </k:customRenderControlType>
+  <k:customRenderControlType>
+    <name>Targets editor</name>
+    <alias>k:targetCampaignTargetsEditor</alias>
+    <inherits>k:relationshipControlOnForm</inherits>
+    <generateCode>true</generateCode>
+    <k:requiresContext>true</k:requiresContext>
+    <k:pagerSupportMobile>true</k:pagerSupportMobile>
+    <k:customRenderControlIcon>assets/images/itemicon/relationship.png</k:customRenderControlIcon>
+    <k:customRenderControlForType>surveyTargetCampaign</k:customRenderControlForType>
+    <k:customRenderControlForRelationship>campaignTargetTargets</k:customRenderControlForRelationship>
+    <k:customRenderControlDefaultHorizontalResizeMode>console:resizeSpring</k:customRenderControlDefaultHorizontalResizeMode>
+    <k:customRenderControlDefaultVerticalResizeMode>console:resizeSpring</k:customRenderControlDefaultVerticalResizeMode>
+  </k:customRenderControlType>
+  <k:customRenderControlType>
+    <name>Survey sections editor</name>
+    <alias>k:surveySectionsEditor</alias>
+    <inherits>k:relationshipControlOnForm</inherits>
+    <generateCode>true</generateCode>
+    <k:requiresContext>true</k:requiresContext>
+    <k:pagerSupportMobile>true</k:pagerSupportMobile>
+    <k:customRenderControlIcon>assets/images/itemicon/LookupField.png</k:customRenderControlIcon>
+    <k:customRenderControlForType>userSurvey</k:customRenderControlForType>
+    <k:customRenderControlForRelationship>surveySections</k:customRenderControlForRelationship>
+    <k:customRenderControlDefaultHorizontalResizeMode>console:resizeSpring</k:customRenderControlDefaultHorizontalResizeMode>
+    <k:customRenderControlDefaultVerticalResizeMode>console:resizeSpring</k:customRenderControlDefaultVerticalResizeMode>
+  </k:customRenderControlType>
+  <k:customRenderControlType>
+    <name>Choice question options editor</name>
+    <alias>k:choiceQuestionOptionsEditor</alias>
+    <inherits>k:relationshipControlOnForm</inherits>
+    <generateCode>true</generateCode>
+    <k:requiresContext>true</k:requiresContext>
+    <k:customRenderControlIcon>assets/images/itemicon/LookupField.png</k:customRenderControlIcon>
+    <k:customRenderControlForType>choiceQuestion</k:customRenderControlForType>
+    <k:customRenderControlForRelationship>choiceQuestionChoiceSet</k:customRenderControlForRelationship>
+    <k:customRenderControlDefaultHorizontalResizeMode>console:resizeSpring</k:customRenderControlDefaultHorizontalResizeMode>
+    <k:customRenderControlDefaultVerticalResizeMode>console:resizeSpring</k:customRenderControlDefaultVerticalResizeMode>
+  </k:customRenderControlType>
+  <k:customRenderControlType>
+    <name>Subject navigation access editor</name>
+    <alias>k:subjectNavigationAccessEditor</alias>
+    <inherits>k:relationshipControlOnForm</inherits>
+    <generateCode>true</generateCode>
+    <k:requiresContext>true</k:requiresContext>
+    <k:customRenderControlIcon>assets/images/itemicon/LookupField.png</k:customRenderControlIcon>
+    <k:customRenderControlForType>subject</k:customRenderControlForType>
+    <k:customRenderControlForRelationship>allowDisplay</k:customRenderControlForRelationship>
+    <k:customRenderControlDefaultHorizontalResizeMode>console:resizeSpring</k:customRenderControlDefaultHorizontalResizeMode>
+    <k:customRenderControlDefaultVerticalResizeMode>console:resizeSpring</k:customRenderControlDefaultVerticalResizeMode>
+  </k:customRenderControlType>
+  <k:customRenderControlType>
+    <name>Subject record access editor</name>
+    <alias>k:subjectRecordAccessEditor</alias>
+    <inherits>k:relationshipControlOnForm</inherits>
+    <generateCode>true</generateCode>
+    <k:requiresContext>true</k:requiresContext>
+    <k:customRenderControlIcon>assets/images/itemicon/LookupField.png</k:customRenderControlIcon>
+    <k:customRenderControlForType>subject</k:customRenderControlForType>
+    <k:customRenderControlForRelationship>allowAccess</k:customRenderControlForRelationship>
+    <k:customRenderControlDefaultHorizontalResizeMode>console:resizeSpring</k:customRenderControlDefaultHorizontalResizeMode>
+    <k:customRenderControlDefaultVerticalResizeMode>console:resizeSpring</k:customRenderControlDefaultVerticalResizeMode>
+  </k:customRenderControlType>
+  <k:customRenderControlType>
+    <name>Subject record access summary</name>
+    <alias>k:subjectRecordAccessSummary</alias>
+    <inherits>k:controlOnForm</inherits>
+    <k:requiresContext>true</k:requiresContext>
+    <k:customRenderControlIcon>assets/images/itemicon/LookupField.png</k:customRenderControlIcon>
+    <k:customRenderControlForType>subject</k:customRenderControlForType>
+    <k:customRenderControlDefaultHorizontalResizeMode>console:resizeSpring</k:customRenderControlDefaultHorizontalResizeMode>
+    <k:customRenderControlDefaultVerticalResizeMode>console:resizeSpring</k:customRenderControlDefaultVerticalResizeMode>
+  </k:customRenderControlType>
+</resources>

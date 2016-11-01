@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>System.Windows.Controls.Theming.WhistlerBlue</name>
+    </assembly>
+    <members>
+        <member name="T:System.Windows.Controls.Theming.WhistlerBlueTheme">
+            <summary>
+            Implicitly applies the Whistler blue theme to all of its descendent
+            FrameworkElements.
+            </summary>
+            <QualityBand>Preview</QualityBand>
+        </member>
+        <member name="F:System.Windows.Controls.Theming.WhistlerBlueTheme.ThemeResourceUri">
+            <summary>
+            Stores a reference to a Uri referring to the theme resource for the class.
+            </summary>
+        </member>
+        <member name="M:System.Windows.Controls.Theming.WhistlerBlueTheme.#ctor">
+            <summary>
+            Initializes a new instance of the WhistlerBlueTheme class.
+            </summary>
+        </member>
+        <member name="M:System.Windows.Controls.Theming.WhistlerBlueTheme.GetIsApplicationTheme(System.Windows.Application)">
+            <summary>
+            Gets a value indicating whether this theme is the application theme.
+            </summary>
+            <param name="app">Application instance.</param>
+            <returns>True if this theme is the application theme.</returns>
+        </member>
+        <member name="M:System.Windows.Controls.Theming.WhistlerBlueTheme.SetIsApplicationTheme(System.Windows.Application,System.Boolean)">
+            <summary>
+            Sets a value indicating whether this theme is the application theme.
+            </summary>
+            <param name="app">Application instance.</param>
+            <param name="value">True if this theme should be the application theme.</param>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,290 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E7F1CC27-B0C8-45CE-82FE-4D25B26D8ED5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EDC.SoftwarePlatform.WebApi.Test</RootNamespace>
+    <AssemblyName>EDC.SoftwarePlatform.WebApi.Test</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <WarningsNotAsErrors>1607</WarningsNotAsErrors>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\ReadiNow.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <NoWarn>618</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Autofac, Version=4.1.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.1.1\lib\net45\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.0.5022.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\Dependencies\Microsoft\OpenXML\v2.0\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentAssertions, Version=4.2.2.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentAssertions.4.2.2\lib\net45\FluentAssertions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FluentAssertions.Core, Version=4.2.2.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentAssertions.4.2.2\lib\net45\FluentAssertions.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Jil, Version=2.12.1.0, Culture=neutral, PublicKeyToken=83a7b913e85df348, processorArchitecture=MSIL">
+      <HintPath>..\packages\Jil.StrongName.2.12.1\lib\net45\Jil.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Protocol.Extensions, Version=1.0.2.33, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Protocol.Extensions.1.0.2.206221351\lib\net45\Microsoft.IdentityModel.Protocol.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Moq, Version=4.2.1507.118, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Moq.4.2.1507.0118\lib\net40\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="protobuf-net, Version=2.0.0.668, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
+      <HintPath>..\packages\protobuf-net.2.0.0.668\lib\net40\protobuf-net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Sigil, Version=4.5.0.0, Culture=neutral, PublicKeyToken=2d06c3494341c8ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sigil.4.5.0\lib\net45\Sigil.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.IdentityModel.Tokens.Jwt, Version=4.0.20622.1351, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.4.0.2.206221351\lib\net45\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Actions\ActionControllerTestHelper.cs" />
+    <Compile Include="Actions\ActionControllerTests.cs" />
+    <Compile Include="AssemblyTestFixture.cs" />
+    <Compile Include="CalcEditor\CalcEditorTests.cs" />
+    <Compile Include="Common\AssertHelper.cs" />
+    <Compile Include="Common\CommonServiceTestsHelper.cs" />
+    <Compile Include="Common\Global.cs" />
+    <Compile Include="Connectors\ConnectorControllerTests.cs" />
+    <Compile Include="Connectors\ConnectorImportFileTests.cs" />
+    <Compile Include="Console\ActionControllerTests.cs" />
+    <Compile Include="Console\ConsoleControllerTests.cs" />
+    <Compile Include="Console\ConsoleTreeRepositoryTests.cs" />
+    <Compile Include="DocumentLibrary\DocumentLibraryTests.cs" />
+    <Compile Include="EditForm\FormControllerTestHelper.cs" />
+    <Compile Include="EditForm\TypeControllerTest.cs" />
+    <Compile Include="EditForm\InstanceControllerTest.cs" />
+    <Compile Include="EditForm\FormControllerTest.cs" />
+    <Compile Include="Entity\EntityControllerTestHelper.cs" />
+    <Compile Include="Entity\EntityNuggets.cs" />
+    <Compile Include="Entity\EntityRequest.Read.cs" />
+    <Compile Include="EventHandler\EventhandlerControllerTests.cs" />
+    <Compile Include="ExportData\ExportDataControllerTests.cs" />
+    <Compile Include="ExportData\ExportDataHelperTests.cs" />
+    <Compile Include="FileManager\FileManagerTests.cs" />
+    <Compile Include="ImageManager\ImageControllerTests.cs" />
+    <Compile Include="ImportData\ImportDataTests.cs" />
+    <Compile Include="ImportFromExcel\ImportSpreadsheetControllerTests.cs" />
+    <Compile Include="Infrastructure\JsonPropertyConstraint.cs" />
+    <Compile Include="Infrastructure\JsonPropertyOperator.cs" />
+    <Compile Include="Infrastructure\CookieInfo.cs" />
+    <Compile Include="Infrastructure\ExceptionFilterTests.cs" />
+    <Compile Include="Infrastructure\ConstraintExpressionExtensionMethods.cs" />
+    <Compile Include="Infrastructure\SecuredAttributeTests.cs" />
+    <Compile Include="Infrastructure\WebApiTestHelpers.cs" />
+    <Compile Include="Integration\TwilioControllerTest.cs" />
+    <Compile Include="Login\IdentityProviderRepositoryTests.cs" />
+    <Compile Include="Login\LoginControllerTests.cs" />
+    <Compile Include="Login\OpenIdConnect\OpenIdConnectLoginHandlerTests.cs" />
+    <Compile Include="Login\TestAuthorizationTests.cs" />
+    <Compile Include="Login\CookieHelperTests.cs" />
+    <Compile Include="Performance\EntityRelationshipCacheTests.cs" />
+    <Compile Include="Performance\ManualPerformanceTests.cs" />
+    <Compile Include="Performance\TestCaching.cs" />
+    <Compile Include="Properties\AssemblyFileInfo.cs" />
+    <Compile Include="Report\ReportBuilderPerformance.cs" />
+    <Compile Include="Report\ReportControllerTestHelper.cs" />
+    <Compile Include="Report\ReportControllerTests.cs" />
+    <Compile Include="Report\ReportResultCacheTests.cs" />
+    <Compile Include="Security\AccessControlControllerTests.cs" />
+    <Compile Include="Security\AccessRuleDisplayReportFactoryTests.cs" />
+    <Compile Include="Security\AccessRulesControllerTests.cs" />
+    <Compile Include="Security\EntityV1Tests.cs" />
+    <Compile Include="Security\EntityV2Tests.cs" />
+    <Compile Include="Security\PasswordManagementControllerTests.cs" />
+    <Compile Include="Security\ReportTests.cs" />
+    <Compile Include="Serializer\SerializerTests.cs" />
+    <Compile Include="TestEntity.cs" />
+    <Compile Include="Infrastructure\PlatformHttpMethod.cs" />
+    <Compile Include="Infrastructure\PlatformHttpRequest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WebConfig\TestWebConfig.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EDC.Common\EDC.Common.csproj">
+      <Project>{c7183bef-1a52-4da5-850b-7132b5dca7eb}</Project>
+      <Name>EDC.Common</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EDC.ReadiNow.Common.Test\EDC.ReadiNow.Common.Test.csproj">
+      <Project>{9aededc8-f2e7-47f7-9fcb-6694de936fde}</Project>
+      <Name>EDC.ReadiNow.Common.Test</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EDC.ReadiNow.Common\EDC.ReadiNow.Common.csproj">
+      <Project>{a1c54cf6-e515-4132-a3cb-5cbe32b11d7e}</Project>
+      <Name>EDC.ReadiNow.Common</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EDC.SoftwarePlatform.Activities\EDC.SoftwarePlatform.Activities.csproj">
+      <Project>{98ec024c-6439-44b1-8b1e-29e457b2201f}</Project>
+      <Name>EDC.SoftwarePlatform.Activities</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EDC.SoftwarePlatform.Interfaces\EDC.SoftwarePlatform.Interfaces.csproj">
+      <Project>{c1fc97b7-aacc-45b5-9969-7995b27093ca}</Project>
+      <Name>EDC.SoftwarePlatform.Interfaces</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EDC.SoftwarePlatform.Services\EDC.SoftwarePlatform.Services.csproj">
+      <Project>{0704c0c3-4324-406c-8798-8c72c1e91bde}</Project>
+      <Name>EDC.SoftwarePlatform.Services</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EDC.SoftwarePlatform.WebApi\EDC.SoftwarePlatform.WebApi.csproj">
+      <Project>{91D575B6-8646-400F-B208-90571832234F}</Project>
+      <Name>EDC.SoftwarePlatform.WebApi</Name>
+      <Private>True</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <EmbeddedResource Include="DocumentLibrary\BPSemanticDBModeling.docx" />
+    <EmbeddedResource Include="DocumentLibrary\BPSemanticDBModeling.pdf" />
+    <EmbeddedResource Include="DocumentLibrary\BPSemanticDBModelingChanged.docx" />
+    <EmbeddedResource Include="ImportFromExcel\TestFile.xlsx" />
+    <EmbeddedResource Include="FileManager\BPSemanticDBModeling.docx" />
+    <EmbeddedResource Include="Login\OpenIdConnect\OpenIdProviderConfig.json" />
+    <EmbeddedResource Include="Login\OpenIdConnect\OpenIdProviderKeys.json" />
+    <EmbeddedResource Include="Login\OpenIdConnect\OpenIdProviderTokenResponse.json" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ImageManager\Image1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ImportData\despair.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ImportData\mediocrity.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="FileManager\despair.jpg" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir).build\MSBuild.Community.Tasks.targets" />
+  <Import Project="$(SolutionDir)Automation\ReadiNow.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <Target Name="ZipFiles">
+    <ItemGroup>
+      <BinDirectoryFiles Include="$(PublishRoot)$(Configuration)\**" Exclude="$(PublishRoot)$(Configuration)\Client\**;$(PublishRoot)$(Configuration)\Database\*.mdf;$(PublishRoot)$(Configuration)\Database\*.ldf;$(PublishRoot)$(Configuration)\Log\**;$(PublishRoot)$(Configuration)\PlatformFileRepos\**;$(PublishRoot)$(Configuration)\PlatformUploadFiles\**;$(PublishRoot)$(Configuration)\Redis\*.log;$(PublishRoot)$(Configuration)\Tests\**;$(PublishRoot)$(Configuration)\OutgoingEmail\**;$(PublishRoot)$Configuration\SpApi\Bin\EDC.SoftwarePlatform.WebApiTestControllers*.*;$(PublishRoot)$(Configuration)\*.zip;$(PublishRoot)$(Configuration)\DotNetZip*.tmp;$(PublishRoot)$(Configuration)\Configuration\SoftwarePlatform.config" />
+    </ItemGroup>
+    <Message Text="Compressing SoftwarePlatform files..." />
+    <Zip Files="@(BinDirectoryFiles)" WorkingDirectory="$(PublishRoot)$(Configuration)\" ZipFileName="$(PublishRoot)$(Configuration)\SoftwarePlatformSetup_$(Version).zip" ZipLevel="9" />
+    <Copy SourceFiles="$(PublishRoot)$(Configuration)\SoftwarePlatformSetup_$(Version).zip" DestinationFolder="$(SolutionDir)Automation\" ContinueOnError="WarnAndContinue" Retries="0" />
+  </Target>
+  <Target Name="AfterBuild">
+    <CallTarget Targets="PublishTestAssembly" />
+    <CallTarget Targets="ZipFiles" />
+  </Target>
+  <PropertyGroup>
+    <AssemblyFileInfo>$(ProjectDir)Properties\AssemblyFileInfo.cs</AssemblyFileInfo>
+  </PropertyGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+</Project>

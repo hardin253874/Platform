@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="core" xsi:schemaLocation=". ../Core.xsd" defaultSolution="coreSolution">
+  <!--Copyright 2011-2016 Global Software Innovation Pty Ltd-->
+  <!-- Word Document Type -->
+  <imageFileType source="../Binaries/WordDocumentImage.jpg">
+    <alias>wordDocumentImage</alias>
+    <name>Word Document</name>
+    <description>Word document type.</description>
+    <imageHeight>160</imageHeight>
+    <imageWidth>160</imageWidth>
+  </imageFileType>
+  <documentType>
+    <alias>wordDocumentDocumentType</alias>
+    <name>Word Document</name>
+    <shortFileTypeName>Word</shortFileTypeName>
+    <fileTypeDescription>Word Files (*.doc;*.docx;*.docm;*.dotx;*.dot;*.dotm;*.rtf;*.odt)</fileTypeDescription>
+    <extension>*.doc;*.docx;*.docm;*.dotx;*.dot;*.dotm;*.rtf;*.odt</extension>
+    <mimeType>application/ms-word</mimeType>
+    <documentTypeImage>wordDocumentImage</documentTypeImage>
+  </documentType>
+  <!-- Excel Document Type -->
+  <imageFileType source="../Binaries/ExcelDocumentImage.jpg">
+    <alias>excelDocumentImage</alias>
+    <name>Excel Spreadsheet</name>
+    <description>Excel document type.</description>
+    <imageHeight>160</imageHeight>
+    <imageWidth>160</imageWidth>
+    <fileExtension>.jpg</fileExtension>
+  </imageFileType>
+  <documentType>
+    <alias>excelSpreadsheetDocumentType</alias>
+    <name>Excel Spreadsheet</name>
+    <shortFileTypeName>Excel</shortFileTypeName>
+    <fileTypeDescription>Excel Files (*.xls;*.xlsx;*.xlsm;*.xlt;*.xltx;*.xlm;*.xltm;*.xlsb;*.xla;*.xlam;*.xlw;*.csv;*.odc;*.uxdc;*.ods)</fileTypeDescription>
+    <extension>*.xls;*.xlsx;*.xlsm;*.xlt;*.xltx;*.xlm;*.xltm;*.xlsb;*.xla;*.xlam;*.xlw;*.csv;*.odc;*.uxdc;*.ods</extension>
+    <mimeType>application/vnd.ms-excel</mimeType>
+    <documentTypeImage>excelDocumentImage</documentTypeImage>
+  </documentType>
+  <!-- PowerPoint Document Type -->
+  <imageFileType source="../Binaries/PowerpointDocumentImage.jpg">
+    <alias>powerpointDocumentImage</alias>
+    <name>Powerpoint Presentation</name>
+    <description>Powerpoint document type.</description>
+    <imageHeight>160</imageHeight>
+    <imageWidth>160</imageWidth>
+    <fileExtension>.jpg</fileExtension>
+  </imageFileType>
+  <documentType>
+    <alias>powerPointPresentationDocumentType</alias>
+    <name>PowerPoint Presentation</name>
+    <shortFileTypeName>PowerPoint</shortFileTypeName>
+    <fileTypeDescription>Powerpoint Files (*.ppt;*.pptx;*.pptm; *.potx;*.ppam;*.pps;*.ppsx;*.ppsm;*.sldx;*.sldm;*.thmx;*.odp)</fileTypeDescription>
+    <extension>*.ppt;*.pptx;*.pptm; *.potx;*.ppam;*.pps;*.ppsx;*.ppsm;*.sldx;*.sldm;*.thmx;*.odp</extension>
+    <mimeType>application/mspowerpoint</mimeType>
+    <documentTypeImage>powerpointDocumentImage</documentTypeImage>
+  </documentType>
+  <!-- Acrobat Document Type -->
+  <imageFileType source="../Binaries/PdfDocumentImage.jpg">
+    <alias>pdfDocumentImage</alias>
+    <name>Pdf Document</name>
+    <description>PDF document type.</description>
+    <imageHeight>160</imageHeight>
+    <imageWidth>160</imageWidth>
+    <fileExtension>.jpg</fileExtension>
+  </imageFileType>
+  <documentType>
+    <alias>pDFDocumentDocumentType</alias>
+    <name>PDF Document</name>
+    <shortFileTypeName>Acrobat</shortFileTypeName>
+    <fileTypeDescription>PDF Files (*.pdf;*.fdf;*.xfdf)</fileTypeDescription>
+    <extension>*.pdf;*.fdf;*.xfdf</extension>
+    <mimeType>application/pdf</mimeType>
+    <documentTypeImage>pdfDocumentImage</documentTypeImage>
+  </documentType>
+  <!-- Visio Document Type -->
+  <imageFileType source="../Binaries/VisioDocumentImage.jpg">
+    <alias>visioDocumentImage</alias>
+    <name>Visio Diagram</name>
+    <description>Visio document type.</description>
+    <imageHeight>160</imageHeight>
+    <imageWidth>160</imageWidth>
+    <fileExtension>.jpg</fileExtension>
+  </imageFileType>
+  <documentType>
+    <alias>visioDocumentDocumentType</alias>
+    <name>Visio Document</name>
+    <shortFileTypeName>Visio</shortFileTypeName>
+    <fileTypeDescription>Visio Files (*.vsd;*.vdx;*.vss;*.vsx;*.vst;*.vtx;*.vsw;*.vdw)</fileTypeDescription>
+    <extension>*.vsd;*.vdx;*.vss;*.vsx;*.vst;*.vtx;*.vsw;*.vdw</extension>
+    <mimeType>application/vnd.visio</mimeType>
+    <documentTypeImage>visioDocumentImage</documentTypeImage>
+  </documentType>
+  <!-- Outlook Document Type -->
+  <imageFileType source="../Binaries/OutlookDocumentImage.jpg">
+    <alias>outlookDocumentImage</alias>
+    <name>Outlook Message</name>
+    <description>Outlook document type.</description>
+    <imageHeight>160</imageHeight>
+    <imageWidth>160</imageWidth>
+    <fileExtension>.jpg</fileExtension>
+  </imageFileType>
+  <documentType>
+    <alias>outlookDocumentDocumentType</alias>
+    <name>Outlook Document</name>
+    <shortFileTypeName>Outlook</shortFileTypeName>
+    <fileTypeDescription>Outlook Files (*.oft;*.msg)</fileTypeDescription>
+    <extension>*.oft;*.msg</extension>
+    <mimeType>application/msoutlook</mimeType>
+    <documentTypeImage>outlookDocumentImage</documentTypeImage>
+  </documentType>
+  <!-- Publisher Document Type -->
+  <imageFileType source="../Binaries/PublisherDocumentImage.jpg">
+    <alias>publisherDocumentImage</alias>
+    <name>Publisher Document</name>
+    <description>Publisher document type.</description>
+    <imageHeight>160</imageHeight>
+    <imageWidth>160</imageWidth>
+    <fileExtension>.jpg</fileExtension>
+  </imageFileType>
+  <documentType>
+    <alias>publisherDocumentDocumentType</alias>
+    <name>Publisher Document</name>
+    <shortFileTypeName>Publisher</shortFileTypeName>
+    <fileTypeDescription>Publisher Files (*.pub)</fileTypeDescription>
+    <extension>*.pub</extension>
+    <mimeType>application/x-mspublisher</mimeType>
+    <documentTypeImage>publisherDocumentImage</documentTypeImage>
+  </documentType>
+  <!-- OneNote Document Type -->
+  <imageFileType source="../Binaries/OnenoteDocumentImage.jpg">
+    <alias>onenoteDocumentImage</alias>
+    <name>Onenote Document</name>
+    <description>Onenote document type.</description>
+    <imageHeight>160</imageHeight>
+    <imageWidth>160</imageWidth>
+    <fileExtension>.jpg</fileExtension>
+  </imageFileType>
+  <documentType>
+    <alias>oneNoteDocumentDocumentType</alias>
+    <name>OneNote Document</name>
+    <shortFileTypeName>OneNote</shortFileTypeName>
+    <fileTypeDescription>OneNote Files (*.one)</fileTypeDescription>
+    <extension>*.one</extension>
+    <mimeType>application/onenote</mimeType>
+    <documentTypeImage>onenoteDocumentImage</documentTypeImage>
+  </documentType>
+  <!-- Text Document Document Type -->
+  <imageFileType source="../Binaries/TextDocumentImage.jpg">
+    <alias>textDocumentImage</alias>
+    <name>Text Document</name>
+    <description>Text document type.</description>
+    <imageHeight>160</imageHeight>
+    <imageWidth>160</imageWidth>
+    <fileExtension>.jpg</fileExtension>
+  </imageFileType>
+  <documentType>
+    <alias>textDocumentDocumentType</alias>
+    <name>Text Document</name>
+    <shortFileTypeName>Text</shortFileTypeName>
+    <fileTypeDescription>Text Files (*.txt)</fileTypeDescription>
+    <extension>*.txt</extension>
+    <mimeType>text/plain</mimeType>
+    <documentTypeImage>textDocumentImage</documentTypeImage>
+  </documentType>
+</resources>

@@ -1,0 +1,482 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{91D575B6-8646-400F-B208-90571832234F}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EDC.SoftwarePlatform.WebApi</RootNamespace>
+    <AssemblyName>EDC.SoftwarePlatform.WebApi</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <WarningsNotAsErrors>1607</WarningsNotAsErrors>
+    <UseGlobalApplicationHostFile />
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;PLATFORMWEBAPI</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;PLATFORMWEBAPI</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Autofac, Version=4.1.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.1.1\lib\net45\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Common.Logging, Version=3.0.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.3.0.0\lib\net40\Common.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Common.Logging.Core, Version=3.0.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.Core.3.0.0\lib\net40\Common.Logging.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Jil, Version=2.12.1.0, Culture=neutral, PublicKeyToken=83a7b913e85df348, processorArchitecture=MSIL">
+      <HintPath>..\packages\Jil.StrongName.2.12.1\lib\net45\Jil.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.IdentityModel.Protocol.Extensions, Version=1.0.2.33, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Protocol.Extensions.1.0.2.206221351\lib\net45\Microsoft.IdentityModel.Protocol.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Quartz, Version=2.3.3.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Quartz.2.3.3\lib\net40\Quartz.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="RabbitMQ.Client, Version=3.6.0.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
+      <HintPath>..\packages\RabbitMQ.Client.3.6.0\lib\net45\RabbitMQ.Client.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Sigil, Version=4.5.0.0, Culture=neutral, PublicKeyToken=2d06c3494341c8ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sigil.4.5.0\lib\net45\Sigil.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Activities" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.IdentityModel.Tokens.Jwt, Version=4.0.20622.1351, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.4.0.2.206221351\lib\net45\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Extensions, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives, Version=4.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Primitives.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.0.0\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="WebActivator">
+      <HintPath>..\packages\WebActivator.1.0.0.0\lib\WebActivator.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AppPreload.cs" />
+    <Compile Include="Controllers\ApplicationManager\AppManagerController.cs" />
+    <Compile Include="Controllers\ApplicationManager\AppManagerData.cs" />
+    <Compile Include="Controllers\ApplicationManager\AppStagingData.cs" />
+    <Compile Include="Controllers\ApplicationManager\CardinalityViolation.cs" />
+    <Compile Include="Controllers\ApplicationManager\DependentAppData.cs" />
+    <Compile Include="Controllers\Approval\ApproveController.cs" />
+    <Compile Include="Controllers\CalcEditor\CalcEditorController.cs" />
+    <Compile Include="Controllers\CalcEditor\CompileResult.cs" />
+    <Compile Include="Controllers\CalcEditor\DataTypeHelpers.cs" />
+    <Compile Include="Controllers\CalcEditor\EvalRequest.cs" />
+    <Compile Include="Controllers\CalcEditor\EvalResult.cs" />
+    <Compile Include="Controllers\CalcEditor\ExpressionParameter.cs" />
+    <Compile Include="Controllers\CalcEditor\ExpressionType.cs" />
+    <Compile Include="Controllers\Connector\ConnectorController.cs" />
+    <Compile Include="Controllers\Connect\ConnectController.cs" />
+    <Compile Include="Controllers\Console\ActionController.cs" />
+    <Compile Include="Controllers\Console\CachingConsoleTreeRepository.cs" />
+    <Compile Include="Controllers\Console\CachingConsoleTreeRepositoryInvalidator.cs" />
+    <Compile Include="Controllers\Console\ConsoleController.cs" />
+    <Compile Include="Controllers\Console\ConsoleModule.cs" />
+    <Compile Include="Controllers\Console\ConsoleTreeRepository.cs" />
+    <Compile Include="Controllers\Console\IConsoleTreeRepository.cs" />
+    <Compile Include="Controllers\Console\SessionInfoResult.cs" />
+    <Compile Include="Controllers\EditForm\FormModule.cs" />
+    <Compile Include="Controllers\EditForm\InstanceController.cs" />
+    <Compile Include="Controllers\EditForm\FormController.cs" />
+    <Compile Include="Controllers\EditForm\Helper.cs" />
+    <Compile Include="Controllers\EditForm\TypeController.cs" />
+    <Compile Include="Controllers\Entity2\EntityController.Read.cs" />
+    <Compile Include="Controllers\Entity2\EntityNugget.cs" />
+    <Compile Include="Controllers\Entity2\EntityPackage.cs" />
+    <Compile Include="Controllers\Entity2\JsonDeleteDependentDetail.cs" />
+    <Compile Include="Controllers\Entity2\JsonDeleteDetails.cs" />
+    <Compile Include="Controllers\Entity2\JsonDeleteRelatedDetail.cs" />
+    <Compile Include="Controllers\Entity2\JsonMember.cs" />
+    <Compile Include="Controllers\Entity2\JsonQueryBatchRequest.cs" />
+    <Compile Include="Controllers\Entity2\JsonQueryResult.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controllers\Entity2\JsonQuerySingleRequest.cs" />
+    <Compile Include="Controllers\Entity2\JsonRelationshipData.cs" />
+    <Compile Include="Controllers\Entity2\JsonRelationshipInstance.cs" />
+    <Compile Include="Controllers\Entity2\JsonRelationshipMember.cs" />
+    <Compile Include="Controllers\Entity2\JsonSingleQueryResult.cs" />
+    <Compile Include="Controllers\Entity\EntityCloneRequest.cs" />
+    <Compile Include="Controllers\Entity\EntityController.cs" />
+    <Compile Include="Controllers\Entity\JsonCondition.cs" />
+    <Compile Include="Controllers\Entity\JsonEntity.cs" />
+    <Compile Include="Controllers\Entity\JsonEntityData.cs" />
+    <Compile Include="Controllers\Entity\JsonEntityInQuery.cs" />
+    <Compile Include="Controllers\Entity\JsonEntityQueryResult.cs" />
+    <Compile Include="Controllers\Entity\JsonEntityRef.cs" />
+    <Compile Include="Controllers\Entity\JsonExprFieldQuery.cs" />
+    <Compile Include="Controllers\Entity\JsonFieldData.cs" />
+    <Compile Include="Controllers\Entity\JsonRelatedEntityInQuery.cs" />
+    <Compile Include="Controllers\Entity\JsonRelationshipData.cs" />
+    <Compile Include="Controllers\Entity\JsonRelationshipInstanceData.cs" />
+    <Compile Include="Controllers\Entity\JsonSelectInQuery.cs" />
+    <Compile Include="Controllers\Entity\JsonStructuredQuery.cs" />
+    <Compile Include="Controllers\Console\ReadiDeskService.cs" />
+    <Compile Include="Controllers\EventHandler\EventDataContracts.cs" />
+    <Compile Include="Controllers\EventHandler\EventhandlerController.cs" />
+    <Compile Include="Controllers\Exceptions\InvalidTenantException.cs" />
+    <Compile Include="Controllers\ExportData\ExportDataContracts.cs" />
+    <Compile Include="Controllers\ExportData\ExportDataController.cs" />
+    <Compile Include="Controllers\FileManager\FileManagerController.cs" />
+    <Compile Include="Controllers\FileManager\FileManagerDataContracts.cs" />
+    <Compile Include="Controllers\FileUpload\FileController.cs" />
+    <Compile Include="Controllers\FileUpload\FileList.cs" />
+    <Compile Include="Controllers\FileUpload\FileListItem.cs" />
+    <Compile Include="Controllers\FileUpload\LocalCacheStreamProvider.cs" />
+    <Compile Include="Controllers\ImageManager\ImageController.cs" />
+    <Compile Include="Controllers\ImportExport\ImportResult.cs" />
+    <Compile Include="Controllers\ImportSpreadsheet\ColumnInfo.cs" />
+    <Compile Include="Controllers\ImportSpreadsheet\FileInfo.cs" />
+    <Compile Include="Controllers\ImportSpreadsheet\ImportFormat.cs" />
+    <Compile Include="Controllers\ImportSpreadsheet\ImportResultInfo.cs" />
+    <Compile Include="Controllers\ImportSpreadsheet\ImportSpreadsheetController.cs" />
+    <Compile Include="Controllers\ImportSpreadsheet\ImportStatus.cs" />
+    <Compile Include="Controllers\ImportSpreadsheet\SpreadsheetInfo.cs" />
+    <Compile Include="Controllers\ImportSpreadsheet\SampleColumn.cs" />
+    <Compile Include="Controllers\ImportSpreadsheet\SampleRow.cs" />
+    <Compile Include="Controllers\ImportSpreadsheet\SampleTable.cs" />
+    <Compile Include="Controllers\ImportSpreadsheet\SheetImportInfo.cs" />
+    <Compile Include="Controllers\ImportSpreadsheet\SheetInfo.cs" />
+    <Compile Include="Controllers\ImportExport\ImportExportController.cs" />
+    <Compile Include="Controllers\Integration\TwilioController.cs" />
+    <Compile Include="Controllers\Login\ActiveAccountInfo.cs" />
+    <Compile Include="Controllers\Login\IdentityProviderLoginRequest.cs" />
+    <Compile Include="Controllers\Login\IdentityProviderRepository.cs" />
+    <Compile Include="Controllers\Login\IdentityProviderResponse.cs" />
+    <Compile Include="Controllers\Login\JsonPasswordChangeRequest.cs" />
+    <Compile Include="Controllers\Login\JsonResetPasswordRequest.cs" />
+    <Compile Include="Controllers\Login\OpenIdConnect\IOpenIdConnectConfigurationManager.cs" />
+    <Compile Include="Controllers\Login\OpenIdConnect\OpenIdConnectRequestContextResult.cs" />
+    <Compile Include="Controllers\Login\OpenIdConnect\OpenIdConnectAuthorizationTokenResponse.cs" />
+    <Compile Include="Controllers\Login\OpenIdConnect\OpenIdConnectAuthorizationState.cs" />
+    <Compile Include="Controllers\Login\OpenIdConnect\OpenIdConnectConfigurationManager.cs" />
+    <Compile Include="Controllers\Login\OpenIdConnect\OpenIdConnectLoginHandler.cs" />
+    <Compile Include="Controllers\Login\TenantIdentityProviderResponse.cs" />
+    <Compile Include="Controllers\Login\TestAuthorization.cs" />
+    <Compile Include="Controllers\Login\InitialSettings.cs" />
+    <Compile Include="Controllers\Login\JsonLoginCredential.cs" />
+    <Compile Include="Controllers\Login\LoginConstants.cs" />
+    <Compile Include="Controllers\Login\LoginController.cs" />
+    <Compile Include="Controllers\Login\LoginResult.cs" />
+    <Compile Include="Controllers\Login\RedirectResult.cs" />
+    <Compile Include="Controllers\Login\ResponseResult.cs" />
+    <Compile Include="Controllers\LongRunning\LongRunningController.cs" />
+    <Compile Include="Controllers\LongRunning\LongRunningDataContracts.cs" />
+    <Compile Include="Controllers\ReportTemplate\ReportTemplateController.cs" />
+    <Compile Include="Controllers\Report\AggregateDetail.cs" />
+    <Compile Include="Controllers\Report\AggregateItem.cs" />
+    <Compile Include="Controllers\Report\AnalyserColumnCondition.cs" />
+    <Compile Include="Controllers\Report\CellValue.cs" />
+    <Compile Include="Controllers\Report\ChoiceItemDefinition.cs" />
+    <Compile Include="Controllers\Report\DataRow.cs" />
+    <Compile Include="Controllers\Report\DateTimeValueFormat.cs" />
+    <Compile Include="Controllers\Report\GroupingDetail.cs" />
+    <Compile Include="Controllers\Report\OperatorDefinition.cs" />
+    <Compile Include="Controllers\Report\RelatedEntityFilter.cs" />
+    <Compile Include="Controllers\Report\RelationshipDetail.cs" />
+    <Compile Include="Controllers\Report\ReportAnalyserColumn.cs" />
+    <Compile Include="Controllers\Report\ReportApiModule.cs" />
+    <Compile Include="Controllers\Report\ReportColumn.cs" />
+    <Compile Include="Controllers\Report\ReportColumnConditionalFormat.cs" />
+    <Compile Include="Controllers\Report\ReportColumnValueFormat.cs" />
+    <Compile Include="Controllers\Report\ReportConditionalFormatRule.cs" />
+    <Compile Include="Controllers\Report\ReportConditionColor.cs" />
+    <Compile Include="Controllers\Report\ReportController.cs" />
+    <Compile Include="Controllers\Report\ReportDataAggregate.cs" />
+    <Compile Include="Controllers\Report\ReportResult.cs" />
+    <Compile Include="Controllers\Report\ReportMetadata.cs" />
+    <Compile Include="Controllers\Report\ReportMetadataAggregate.cs" />
+    <Compile Include="Controllers\Report\ReportParameters.cs" />
+    <Compile Include="Controllers\Report\ReportPercentageBounds.cs" />
+    <Compile Include="Controllers\Report\ReportResultCache.cs" />
+    <Compile Include="Controllers\Report\ReportResultCacheInvalidator.cs" />
+    <Compile Include="Controllers\Report\ReportSortOrder.cs" />
+    <Compile Include="Controllers\Report\TypeValueName.cs" />
+    <Compile Include="Controllers\Security\AccessControlController.cs" />
+    <Compile Include="Controllers\Security\AccessRulesController.cs" />
+    <Compile Include="Controllers\Security\NewAccessRuleInfo.cs" />
+    <Compile Include="Controllers\Security\PasswordChangeInfo.cs" />
+    <Compile Include="Controllers\Security\PasswordManagementController.cs" />
+    <Compile Include="Controllers\Security\TypeAccessReason.cs" />
+    <Compile Include="Controllers\Tablet\InterfaceDataContracts.cs" />
+    <Compile Include="Controllers\TenantRollback\RestorePointDetails.cs" />
+    <Compile Include="Controllers\TenantRollback\RollbackDetails.cs" />
+    <Compile Include="Controllers\TenantRollback\TenantRollbackController.cs" />
+    <Compile Include="Controllers\Workflow\ParameterValue.cs" />
+    <Compile Include="Controllers\Workflow\WorkflowController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Infrastructure\AuthenticationToken.cs" />
+    <Compile Include="Infrastructure\CompressedContent.cs" />
+    <Compile Include="Infrastructure\CompressionHandler.cs" />
+    <Compile Include="Infrastructure\ContextFilter.cs" />
+    <Compile Include="Infrastructure\CookieHelper.cs" />
+    <Compile Include="Infrastructure\ExceptionFilter.cs" />
+    <Compile Include="Infrastructure\FilterConfig.cs" />
+    <Compile Include="Infrastructure\FormatterConfig.cs" />
+    <Compile Include="Infrastructure\BasicHttpClient.cs" />
+    <Compile Include="Infrastructure\HttpRequestResponseType.cs" />
+    <Compile Include="Infrastructure\IHttpClient.cs" />
+    <Compile Include="Infrastructure\JilFormatter.cs" />
+    <Compile Include="Infrastructure\JsonpCallbackAttribute.cs" />
+    <Compile Include="Infrastructure\JsonResponse.cs" />
+    <Compile Include="Infrastructure\MessageConfig.cs" />
+    <Compile Include="Infrastructure\SecuredAttribute.cs" />
+    <Compile Include="Infrastructure\NoXsrfCheckAttribute.cs" />
+    <Compile Include="Infrastructure\TestControllersAssemblyResolver.cs" />
+    <Compile Include="Infrastructure\TypeDeserializers.cs" />
+    <Compile Include="Properties\AssemblyFileInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WebApiHelpers.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Global.asax" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EDC.Common\EDC.Common.csproj">
+      <Project>{c7183bef-1a52-4da5-850b-7132b5dca7eb}</Project>
+      <Name>EDC.Common</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EDC.ReadiNow.CAST\EDC.ReadiNow.CAST.csproj">
+      <Project>{61f07c9a-a94d-44d1-a538-d3b177d08f9a}</Project>
+      <Name>EDC.ReadiNow.CAST</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EDC.ReadiNow.Common\EDC.ReadiNow.Common.csproj">
+      <Project>{A1C54CF6-E515-4132-A3CB-5CBE32B11D7E}</Project>
+      <Name>EDC.ReadiNow.Common</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EDC.SoftwarePlatform.Activities\EDC.SoftwarePlatform.Activities.csproj">
+      <Project>{98ec024c-6439-44b1-8b1e-29e457b2201f}</Project>
+      <Name>EDC.SoftwarePlatform.Activities</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EDC.SoftwarePlatform.Interfaces\EDC.SoftwarePlatform.Interfaces.csproj">
+      <Project>{c1fc97b7-aacc-45b5-9969-7995b27093ca}</Project>
+      <Name>EDC.SoftwarePlatform.Interfaces</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EDC.SoftwarePlatform.Migration\EDC.SoftwarePlatform.Migration.csproj">
+      <Project>{acc17a7d-5bd0-4f9e-8569-3e4d51588064}</Project>
+      <Name>EDC.SoftwarePlatform.Migration</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EDC.SoftwarePlatform.Services\EDC.SoftwarePlatform.Services.csproj">
+      <Project>{0704c0c3-4324-406c-8798-8c72c1e91bde}</Project>
+      <Name>EDC.SoftwarePlatform.Services</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\ReadiNow.Connector\ReadiNow.Connector.csproj">
+      <Project>{b25186e3-001c-4cfd-a8d4-d0c6da10de17}</Project>
+      <Name>ReadiNow.Connector</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="job_scheduling_data_2_0.xsd">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;PLATFORMWEBAPI</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;PLATFORMWEBAPI</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v14.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>65070</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:64055/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>True</UseCustomServer>
+          <CustomServerUrl>https://localhost/sp</CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <Import Project="$(SolutionDir).build\MSBuild.Community.Tasks.targets" />
+  <Import Project="$(SolutionDir)Automation\ReadiNow.targets" />
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v14.0\WebApplications\Microsoft.WebApplication.targets" />
+  <UsingTask TaskName="TransformXml" AssemblyFile="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v12.0\Web\Microsoft.Web.Publishing.Tasks.dll" />
+  <Target Name="AfterBuild">
+    <TransformXml Source="Web.config" Transform="Web.$(Configuration).config" Destination="$(OutputPath)\Web.config" />
+    <Copy SourceFiles="$(OutputPath)\Web.config" DestinationFolder="$(PublishRoot)$(Configuration)\SpApi\" ContinueOnError="false" />
+    <Copy SourceFiles="Global.asax" DestinationFolder="$(PublishRoot)$(Configuration)\SpApi\" ContinueOnError="false" />
+    <Delete ContinueOnError="true" Files="$(TargetPath).config" />
+    <CallTarget Targets="PublishWebAssembly" />
+  </Target>
+  <PropertyGroup>
+    <AssemblyFileInfo>$(ProjectDir)Properties\AssemblyFileInfo.cs</AssemblyFileInfo>
+  </PropertyGroup>
+  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
+    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
+    <Error Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
+  </Target>
+</Project>

@@ -1,0 +1,15 @@
+Name ,Description,Boolean_True,Boolean_False,Result,NOTE1
+Tina,Available,TRUE,FALSE,Pass,
+Karen,Available,T,F,Pass,
+Russel,Available,1,0,Pass,
+Peter,Available,Yes,No,Pass,
+Con,Available,Y,N,Pass,
+Kun,Available,,,Pass,Null treated as false
+Jiong,Available,YES,TRUE,Pass,
+Scott,Available,y,n,Pass,
+David,Available,t,f,Pass,
+Martin,Available,TRUE,no,Pass,
+Diana,Available,TRUE,f,Pass,
+Nino,Available,,FALSE,Pass,Null treated as false
+Sri,Available,yes,,Pass,Null treated as false
+Sri,Available,yes,Invalid,Fail,Row dropped

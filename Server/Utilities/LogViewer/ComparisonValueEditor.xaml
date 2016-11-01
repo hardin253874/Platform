@@ -1,0 +1,62 @@
+<!-- Copyright 2011-2016 Global Software Innovation Pty Ltd -->
+<UserControl x:Class="LogViewer.ComparisonValueEditor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:lvm="clr-namespace:LogViewer.ViewModels"             
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Control.Resources>
+        <DataTemplate x:Key="System.String">
+            <TextBox Text="{Binding Path=MinValue, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="100" />
+        </DataTemplate>
+        <DataTemplate x:Key="System.String-IsRange">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Column="0" Text="{Binding Path=MinValue, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="100" />
+                <Label Grid.Column="1">and</Label>
+                <TextBox Grid.Column="2" Text="{Binding Path=MaxValue, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="100" />
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="System.DateTime">            
+            <DatePicker SelectedDate="{Binding Path=MinValue, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        </DataTemplate>
+        <DataTemplate x:Key="System.DateTime-IsRange">            
+            <Grid>                
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <DatePicker Grid.Column="0" SelectedDate="{Binding Path=MinValue, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <Label Grid.Column="1">and</Label>
+                <DatePicker Grid.Column="2" SelectedDate="{Binding Path=MaxValue, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />            
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="System.Int32">
+            <TextBox Text="{Binding Path=MinValue, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        </DataTemplate>
+        <DataTemplate x:Key="System.Int32-IsRange">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Column="0" Text="{Binding Path=MinValue, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <Label Grid.Column="1">and</Label>
+                <TextBox Grid.Column="2" Text="{Binding Path=MaxValue, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="Unknown">
+            <Grid/>
+        </DataTemplate>                        
+    </Control.Resources>
+
+    <ContentControl x:Name="content" HorizontalAlignment="Stretch" />
+</UserControl>

@@ -1,0 +1,767 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="core" xsi:schemaLocation=". ../Core.xsd" defaultSolution="coreSolution">
+  <!--Copyright 2011-2016 Global Software Innovation Pty Ltd-->
+  <!-- 'Conditional Formatting Image' type -->
+  <type>
+    <name>Conditional Format Icon</name>
+    <alias>conditionalFormatIcon</alias>
+    <description>Represents an icon that can be used for conditional formatting</description>
+    <inherits>userResource</inherits>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Conditional Format Icon Details</name>
+        <alias>conditionalFormatIconDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <intField>
+        <alias>formatIconOrder</alias>
+        <name>Order</name>
+        <defaultValue>0</defaultValue>
+        <description>The order of the format icon.</description>
+        <fieldInGroup>conditionalFormatIconDetails</fieldInGroup>
+      </intField>
+    </fields>
+    <relationships>
+      <relationship>
+        <name>Conditional format image</name>
+        <description>The image for the associated for a condition</description>
+        <alias>condFormatImage</alias>
+        <reverseAlias>imageForCondFmt</reverseAlias>
+        <toType>iconFileType</toType>
+        <relType>relCustom</relType>
+        <cardinality>manyToOne</cardinality>
+        <generateCode>true</generateCode>
+        <cloneAction>cloneReferences</cloneAction>
+        <reverseCloneAction>drop</reverseCloneAction>
+        <cascadeDelete>false</cascadeDelete>
+        <cascadeDeleteTo>false</cascadeDeleteTo>
+        <implicitInSolution>true</implicitInSolution>
+        <reverseImplicitInSolution>true</reverseImplicitInSolution>
+        <relationshipInFromTypeGroup>conditionalFormatIconDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>iconFileTypeDetails</relationshipInToTypeGroup>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- Black Icons -->
+  <iconFileType source="../Binaries/BlackCircle.png">
+    <alias>blackCircleCondFormatIcon</alias>
+    <name>Black Circle Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>blackCircleCondFormat</alias>
+    <name>Black Circle Conditional Format</name>
+    <condFormatImage>blackCircleCondFormatIcon</condFormatImage>
+    <formatIconOrder>0</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/BlackCross.png">
+    <alias>blackCrossCondFormatIcon</alias>
+    <name>Black Cross Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>blackCrossCondFormat</alias>
+    <name>Black Cross Conditional Format</name>
+    <condFormatImage>blackCrossCondFormatIcon</condFormatImage>
+    <formatIconOrder>1</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/BlackDiamond.png">
+    <alias>blackDiamondCondFormatIcon</alias>
+    <name>Black Diamond Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>blackDiamondCondFormat</alias>
+    <name>Black Diamond Conditional Format</name>
+    <condFormatImage>blackDiamondCondFormatIcon</condFormatImage>
+    <formatIconOrder>2</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/BlackDownArrow.png">
+    <alias>blackDownArrowCondFormatIcon</alias>
+    <name>Black Down Arrow Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>blackDownArrowCondFormat</alias>
+    <name>Black Down Arrow Conditional Format</name>
+    <condFormatImage>blackDownArrowCondFormatIcon</condFormatImage>
+    <formatIconOrder>3</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/BlackExclamationMark.png">
+    <alias>blackExclamationMarkCondFormatIcon</alias>
+    <name>Black Exclamation Mark Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>blackExclamationMarkCondFormat</alias>
+    <name>Black Exclamation Mark Conditional Format</name>
+    <condFormatImage>blackExclamationMarkCondFormatIcon</condFormatImage>
+    <formatIconOrder>4</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/BlackLeftArrow.png">
+    <alias>blackLeftArrowCondFormatIcon</alias>
+    <name>Black Left Arrow Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>blackLeftArrowCondFormat</alias>
+    <name>Black Left Arrow Conditional Format</name>
+    <condFormatImage>blackLeftArrowCondFormatIcon</condFormatImage>
+    <formatIconOrder>5</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/BlackRightArrow.png">
+    <alias>blackRightArrowCondFormatIcon</alias>
+    <name>Black Right Arrow Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>blackRightArrowCondFormat</alias>
+    <name>Black Right Arrow Conditional Format</name>
+    <condFormatImage>blackRightArrowCondFormatIcon</condFormatImage>
+    <formatIconOrder>6</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/BlackSemiCircle.png">
+    <alias>blackSemiCircleCondFormatIcon</alias>
+    <name>Black Semi Circle Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>blackSemiCircleCondFormat</alias>
+    <name>Black Semi Circle Conditional Format</name>
+    <condFormatImage>blackSemiCircleCondFormatIcon</condFormatImage>
+    <formatIconOrder>7</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/BlackSquare.png">
+    <alias>blackSquareCondFormatIcon</alias>
+    <name>Black Square Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>blackSquareCondFormat</alias>
+    <name>Black Square Conditional Format</name>
+    <condFormatImage>blackSquareCondFormatIcon</condFormatImage>
+    <formatIconOrder>8</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/BlackStar.png">
+    <alias>blackStarCondFormatIcon</alias>
+    <name>Black Star Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>blackStarCondFormat</alias>
+    <name>Black Star Conditional Format</name>
+    <condFormatImage>blackStarCondFormatIcon</condFormatImage>
+    <formatIconOrder>9</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/BlackTick.png">
+    <alias>blackTickCondFormatIcon</alias>
+    <name>Black Tick Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>blackTickCondFormat</alias>
+    <name>Black Tick Conditional Format</name>
+    <condFormatImage>blackTickCondFormatIcon</condFormatImage>
+    <formatIconOrder>10</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/BlackTriangle.png">
+    <alias>blackTriangleCondFormatIcon</alias>
+    <name>Black Triangle Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>blackTriangleCondFormat</alias>
+    <name>Black Triangle Conditional Format</name>
+    <condFormatImage>blackTriangleCondFormatIcon</condFormatImage>
+    <formatIconOrder>11</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/BlackUpArrow.png">
+    <alias>blackUpArrowCondFormatIcon</alias>
+    <name>Black Up Arrow Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>blackUpArrowCondFormat</alias>
+    <name>Black Up Arrow Conditional Format</name>
+    <condFormatImage>blackUpArrowCondFormatIcon</condFormatImage>
+    <formatIconOrder>12</formatIconOrder>
+  </conditionalFormatIcon>
+  <!-- Green Icons -->
+  <iconFileType source="../Binaries/GreenCircle.png">
+    <alias>greenCircleCondFormatIcon</alias>
+    <name>Green Circle Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>greenCircleCondFormat</alias>
+    <name>Green Circle Conditional Format</name>
+    <condFormatImage>greenCircleCondFormatIcon</condFormatImage>
+    <formatIconOrder>13</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/GreenCross.png">
+    <alias>greenCrossCondFormatIcon</alias>
+    <name>Green Cross Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>greenCrossCondFormat</alias>
+    <name>Green Cross Conditional Format</name>
+    <condFormatImage>greenCrossCondFormatIcon</condFormatImage>
+    <formatIconOrder>14</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/GreenDiamond.png">
+    <alias>greenDiamondCondFormatIcon</alias>
+    <name>Green Diamond Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>greenDiamondCondFormat</alias>
+    <name>Green Diamond Conditional Format</name>
+    <condFormatImage>greenDiamondCondFormatIcon</condFormatImage>
+    <formatIconOrder>15</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/GreenDownArrow.png">
+    <alias>greenDownArrowCondFormatIcon</alias>
+    <name>Green Down Arrow Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>greenDownArrowCondFormat</alias>
+    <name>Green Down Arrow Conditional Format</name>
+    <condFormatImage>greenDownArrowCondFormatIcon</condFormatImage>
+    <formatIconOrder>16</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/GreenExclamationMark.png">
+    <alias>greenExclamationMarkCondFormatIcon</alias>
+    <name>Green Exclamation Mark Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>greenExclamationMarkCondFormat</alias>
+    <name>Green Exclamation Mark Conditional Format</name>
+    <condFormatImage>greenExclamationMarkCondFormatIcon</condFormatImage>
+    <formatIconOrder>17</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/GreenLeftArrow.png">
+    <alias>greenLeftArrowCondFormatIcon</alias>
+    <name>Green Left Arrow Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>greenLeftArrowCondFormat</alias>
+    <name>Green Left Arrow Conditional Format</name>
+    <condFormatImage>greenLeftArrowCondFormatIcon</condFormatImage>
+    <formatIconOrder>18</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/GreenRightArrow.png">
+    <alias>greenRightArrowCondFormatIcon</alias>
+    <name>Green Right Arrow Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>greenRightArrowCondFormat</alias>
+    <name>Green Right Arrow Conditional Format</name>
+    <condFormatImage>greenRightArrowCondFormatIcon</condFormatImage>
+    <formatIconOrder>19</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/GreenSemiCircle.png">
+    <alias>greenSemiCircleCondFormatIcon</alias>
+    <name>Green Semi Circle Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>greenSemiCircleCondFormat</alias>
+    <name>Green Semi Circle Conditional Format</name>
+    <condFormatImage>greenSemiCircleCondFormatIcon</condFormatImage>
+    <formatIconOrder>20</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/GreenSquare.png">
+    <alias>greenSquareCondFormatIcon</alias>
+    <name>Green Square Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>greenSquareCondFormat</alias>
+    <name>Green Square Conditional Format</name>
+    <condFormatImage>greenSquareCondFormatIcon</condFormatImage>
+    <formatIconOrder>21</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/GreenStar.png">
+    <alias>greenStarCondFormatIcon</alias>
+    <name>Green Star Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>greenStarCondFormat</alias>
+    <name>Green Star Conditional Format</name>
+    <condFormatImage>greenStarCondFormatIcon</condFormatImage>
+    <formatIconOrder>22</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/GreenTick.png">
+    <alias>greenTickCondFormatIcon</alias>
+    <name>Green Tick Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>greenTickCondFormat</alias>
+    <name>Green Tick Conditional Format</name>
+    <condFormatImage>greenTickCondFormatIcon</condFormatImage>
+    <formatIconOrder>23</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/GreenTriangle.png">
+    <alias>greenTriangleCondFormatIcon</alias>
+    <name>Green Triangle Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>greenTriangleCondFormat</alias>
+    <name>Green Triangle Conditional Format</name>
+    <condFormatImage>greenTriangleCondFormatIcon</condFormatImage>
+    <formatIconOrder>24</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/GreenUpArrow.png">
+    <alias>greenUpArrowCondFormatIcon</alias>
+    <name>Green Up Arrow Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>greenUpArrowCondFormat</alias>
+    <name>Green Up Arrow Conditional Format</name>
+    <condFormatImage>greenUpArrowCondFormatIcon</condFormatImage>
+    <formatIconOrder>25</formatIconOrder>
+  </conditionalFormatIcon>
+  <!-- Red Icons -->
+  <iconFileType source="../Binaries/RedCircle.png">
+    <alias>redCircleCondFormatIcon</alias>
+    <name>Red Circle Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>redCircleCondFormat</alias>
+    <name>Red Circle Conditional Format</name>
+    <condFormatImage>redCircleCondFormatIcon</condFormatImage>
+    <formatIconOrder>26</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/RedCross.png">
+    <alias>redCrossCondFormatIcon</alias>
+    <name>Red Cross Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>redCrossCondFormat</alias>
+    <name>Red Cross Conditional Format</name>
+    <condFormatImage>redCrossCondFormatIcon</condFormatImage>
+    <formatIconOrder>27</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/RedDiamond.png">
+    <alias>redDiamondCondFormatIcon</alias>
+    <name>Red Diamond Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>redDiamondCondFormat</alias>
+    <name>Red Diamond Conditional Format</name>
+    <condFormatImage>redDiamondCondFormatIcon</condFormatImage>
+    <formatIconOrder>28</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/RedDownArrow.png">
+    <alias>redDownArrowCondFormatIcon</alias>
+    <name>Red Down Arrow Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>redDownArrowCondFormat</alias>
+    <name>Red Down Arrow Conditional Format</name>
+    <condFormatImage>redDownArrowCondFormatIcon</condFormatImage>
+    <formatIconOrder>29</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/RedExclamationMark.png">
+    <alias>redExclamationMarkCondFormatIcon</alias>
+    <name>Red Exclamation Mark Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>redExclamationMarkCondFormat</alias>
+    <name>Red Exclamation Mark Conditional Format</name>
+    <condFormatImage>redExclamationMarkCondFormatIcon</condFormatImage>
+    <formatIconOrder>30</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/RedLeftArrow.png">
+    <alias>redLeftArrowCondFormatIcon</alias>
+    <name>Red Left Arrow Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>redLeftArrowCondFormat</alias>
+    <name>Red Left Arrow Conditional Format</name>
+    <condFormatImage>redLeftArrowCondFormatIcon</condFormatImage>
+    <formatIconOrder>31</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/RedRightArrow.png">
+    <alias>redRightArrowCondFormatIcon</alias>
+    <name>Red Right Arrow Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>redRightArrowCondFormat</alias>
+    <name>Red Right Arrow Conditional Format</name>
+    <condFormatImage>redRightArrowCondFormatIcon</condFormatImage>
+    <formatIconOrder>32</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/RedSemiCircle.png">
+    <alias>redSemiCircleCondFormatIcon</alias>
+    <name>Red Semi Circle Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>redSemiCircleCondFormat</alias>
+    <name>Red Semi Circle Conditional Format</name>
+    <condFormatImage>redSemiCircleCondFormatIcon</condFormatImage>
+    <formatIconOrder>33</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/RedSquare.png">
+    <alias>redSquareCondFormatIcon</alias>
+    <name>Red Square Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>redSquareCondFormat</alias>
+    <name>Red Square Conditional Format</name>
+    <condFormatImage>redSquareCondFormatIcon</condFormatImage>
+    <formatIconOrder>34</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/RedStar.png">
+    <alias>redStarCondFormatIcon</alias>
+    <name>Red Star Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>redStarCondFormat</alias>
+    <name>Red Star Conditional Format</name>
+    <condFormatImage>redStarCondFormatIcon</condFormatImage>
+    <formatIconOrder>35</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/RedTick.png">
+    <alias>redTickCondFormatIcon</alias>
+    <name>Red Tick Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>redTickCondFormat</alias>
+    <name>Red Tick Conditional Format</name>
+    <condFormatImage>redTickCondFormatIcon</condFormatImage>
+    <formatIconOrder>36</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/RedTriangle.png">
+    <alias>redTriangleCondFormatIcon</alias>
+    <name>Red Triangle Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>redTriangleCondFormat</alias>
+    <name>Red Triangle Conditional Format</name>
+    <condFormatImage>redTriangleCondFormatIcon</condFormatImage>
+    <formatIconOrder>37</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/RedUpArrow.png">
+    <alias>redUpArrowCondFormatIcon</alias>
+    <name>Red Up Arrow Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>redUpArrowCondFormat</alias>
+    <name>Red Up Arrow Conditional Format</name>
+    <condFormatImage>redUpArrowCondFormatIcon</condFormatImage>
+    <formatIconOrder>38</formatIconOrder>
+  </conditionalFormatIcon>
+  <!-- Yellow Icons -->
+  <iconFileType source="../Binaries/YellowCircle.png">
+    <alias>yellowCircleCondFormatIcon</alias>
+    <name>Yellow Circle Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>yellowCircleCondFormat</alias>
+    <name>Yellow Circle Conditional Format</name>
+    <condFormatImage>yellowCircleCondFormatIcon</condFormatImage>
+    <formatIconOrder>39</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/YellowCross.png">
+    <alias>yellowCrossCondFormatIcon</alias>
+    <name>Yellow Cross Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>yellowCrossCondFormat</alias>
+    <name>Yellow Cross Conditional Format</name>
+    <condFormatImage>yellowCrossCondFormatIcon</condFormatImage>
+    <formatIconOrder>40</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/YellowDiamond.png">
+    <alias>yellowDiamondCondFormatIcon</alias>
+    <name>Yellow Diamond Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>yellowDiamondCondFormat</alias>
+    <name>Yellow Diamond Conditional Format</name>
+    <condFormatImage>yellowDiamondCondFormatIcon</condFormatImage>
+    <formatIconOrder>41</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/YellowDownArrow.png">
+    <alias>yellowDownArrowCondFormatIcon</alias>
+    <name>Yellow Down Arrow Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>yellowDownArrowCondFormat</alias>
+    <name>Yellow Down Arrow Conditional Format</name>
+    <condFormatImage>yellowDownArrowCondFormatIcon</condFormatImage>
+    <formatIconOrder>42</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/YellowExclamationMark.png">
+    <alias>yellowExclamationMarkCondFormatIcon</alias>
+    <name>Yellow Exclamation Mark Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>yellowExclamationMarkCondFormat</alias>
+    <name>Yellow Exclamation Mark Conditional Format</name>
+    <condFormatImage>yellowExclamationMarkCondFormatIcon</condFormatImage>
+    <formatIconOrder>43</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/YellowLeftArrow.png">
+    <alias>yellowLeftArrowCondFormatIcon</alias>
+    <name>Yellow Left Arrow Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>yellowLeftArrowCondFormat</alias>
+    <name>Yellow Left Arrow Conditional Format</name>
+    <condFormatImage>yellowLeftArrowCondFormatIcon</condFormatImage>
+    <formatIconOrder>44</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/YellowRightArrow.png">
+    <alias>yellowRightArrowCondFormatIcon</alias>
+    <name>Yellow Right Arrow Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>yellowRightArrowCondFormat</alias>
+    <name>Yellow Right Arrow Conditional Format</name>
+    <condFormatImage>yellowRightArrowCondFormatIcon</condFormatImage>
+    <formatIconOrder>45</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/YellowSemiCircle.png">
+    <alias>yellowSemiCircleCondFormatIcon</alias>
+    <name>Yellow Semi Circle Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>yellowSemiCircleCondFormat</alias>
+    <name>Yellow Semi Circle Conditional Format</name>
+    <condFormatImage>yellowSemiCircleCondFormatIcon</condFormatImage>
+    <formatIconOrder>46</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/YellowSquare.png">
+    <alias>yellowSquareCondFormatIcon</alias>
+    <name>Yellow Square Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>yellowSquareCondFormat</alias>
+    <name>Yellow Square Conditional Format</name>
+    <condFormatImage>yellowSquareCondFormatIcon</condFormatImage>
+    <formatIconOrder>47</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/YellowStar.png">
+    <alias>yellowStarCondFormatIcon</alias>
+    <name>Yellow Star Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>yellowStarCondFormat</alias>
+    <name>Yellow Star Conditional Format</name>
+    <condFormatImage>yellowStarCondFormatIcon</condFormatImage>
+    <formatIconOrder>48</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/YellowTick.png">
+    <alias>yellowTickCondFormatIcon</alias>
+    <name>Yellow Tick Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>yellowTickCondFormat</alias>
+    <name>Yellow Tick Conditional Format</name>
+    <condFormatImage>yellowTickCondFormatIcon</condFormatImage>
+    <formatIconOrder>49</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/YellowTriangle.png">
+    <alias>yellowTriangleCondFormatIcon</alias>
+    <name>Yellow Triangle Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>yellowTriangleCondFormat</alias>
+    <name>Yellow Triangle Conditional Format</name>
+    <condFormatImage>yellowTriangleCondFormatIcon</condFormatImage>
+    <formatIconOrder>50</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/YellowUpArrow.png">
+    <alias>yellowUpArrowCondFormatIcon</alias>
+    <name>Yellow Up Arrow Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>yellowUpArrowCondFormat</alias>
+    <name>Yellow Up Arrow Conditional Format</name>
+    <condFormatImage>yellowUpArrowCondFormatIcon</condFormatImage>
+    <formatIconOrder>51</formatIconOrder>
+  </conditionalFormatIcon>
+  <!-- Bootstrap conditional formatting icon types-->
+  <iconFileType source="../Binaries/Tick.png">
+    <alias>tickCondFormatImage</alias>
+    <name>Tick Conditional Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>tickCondFormat</alias>
+    <name>Tick Conditional Format</name>
+    <condFormatImage>tickCondFormatImage</condFormatImage>
+    <formatIconOrder>52</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/Cross.png">
+    <alias>crossCondFormatImage</alias>
+    <name>Cross Conditional Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>crossCondFormat</alias>
+    <name>Cross Conditional Format</name>
+    <condFormatImage>crossCondFormatImage</condFormatImage>
+    <formatIconOrder>53</formatIconOrder>
+  </conditionalFormatIcon>
+  <iconFileType source="../Binaries/Question.png">
+    <alias>questionCondFormatImage</alias>
+    <name>Question Conditional Format Icon</name>
+    <imageHeight>64</imageHeight>
+    <imageWidth>64</imageWidth>
+    <fileExtension>.png</fileExtension>
+  </iconFileType>
+  <conditionalFormatIcon>
+    <alias>questionCondFormat</alias>
+    <name>Question Conditional Format</name>
+    <condFormatImage>questionCondFormatImage</condFormatImage>
+    <formatIconOrder>54</formatIconOrder>
+  </conditionalFormatIcon>
+</resources>

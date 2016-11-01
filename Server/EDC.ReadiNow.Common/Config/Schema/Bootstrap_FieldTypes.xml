@@ -1,0 +1,630 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="core" xsi:schemaLocation=". ../Core.xsd" defaultSolution="coreSolution">
+  <!--Copyright 2011-2016 Global Software Innovation Pty Ltd-->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    FIELD TYPES                                                   -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- All field-types are of type 'fieldType', and derive from 'field' -->
+  <!-- 'Field Type' type -->
+  <type>
+    <alias>fieldType</alias>
+    <name>Field Type</name>
+    <description>The 'Field Type' type.</description>
+    <inherits>type</inherits>
+    <generateCode>true</generateCode>
+    <className>FieldType</className>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Field Type Details</name>
+        <alias>fieldTypeDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <name>Database table</name>
+        <description>Name of table used to store all field data for fields of this type.</description>
+        <alias>dbFieldTable</alias>
+        <isRequired>true</isRequired>
+        <fieldInGroup>fieldTypeDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <name>Database type</name>
+        <description>Must match the System.Data.DbType enum.</description>
+        <alias>dbType</alias>
+        <isRequired>true</isRequired>
+        <fieldInGroup>fieldTypeDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <name>Database type full details</name>
+        <description>Full SQL description of the type.</description>
+        <alias>dbTypeFull</alias>
+        <isRequired>true</isRequired>
+        <fieldInGroup>fieldTypeDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <name>XSD type name</name>
+        <description>XML Schema Definition type name.</description>
+        <alias>xsdType</alias>
+        <isRequired>true</isRequired>
+        <fieldInGroup>fieldTypeDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <name>ReadiNowType</name>
+        <!-- The ReadiNow class deriving from System.Database.DatabaseType that corresponds to this type. -->
+        <description>Internal type name.</description>
+        <alias>readiNowType</alias>
+        <isRequired>true</isRequired>
+        <fieldInGroup>fieldTypeDetails</fieldInGroup>
+      </stringField>
+    </fields>
+  </type>
+  <!-- 'Base Field' field type -->
+  <fieldType>
+    <alias>field</alias>
+    <name>Field</name>
+    <description>The base field-type from which other field types derive.</description>
+    <inherits>schema, protectableType</inherits>
+    <generateCode>true</generateCode>
+    <isMetadata>true</isMetadata>
+    <fields>
+      <boolField>
+        <name>Is required</name>
+        <alias>isRequired</alias>
+        <defaultValue>false</defaultValue>
+      </boolField>
+      <boolField>
+        <name>Is hidden</name>
+        <alias>hideField</alias>
+        <defaultValue>false</defaultValue>
+      </boolField>
+      <boolField>
+        <name>Is hidden on default form</name>
+        <alias>hideFieldDefaultForm</alias>
+        <defaultValue>false</defaultValue>
+      </boolField>
+      <stringField>
+        <name>Default value</name>
+        <alias>defaultValue</alias>
+        <isRequired>false</isRequired>
+      </stringField>
+      <stringField>
+        <name>Watermark</name>
+        <alias>fieldWatermark</alias>
+        <isRequired>false</isRequired>
+      </stringField>
+      <boolField>
+        <name>Is readonly</name>
+        <alias>isFieldReadOnly</alias>
+        <defaultValue>false</defaultValue>
+      </boolField>
+      <boolField>
+        <name>Is writeonly</name>
+        <alias>isFieldWriteOnly</alias>
+        <defaultValue>false</defaultValue>
+      </boolField>
+      <boolField>
+        <name>Exclude field from publish</name>
+        <alias>excludeFieldFromPublish</alias>
+        <defaultValue>false</defaultValue>
+      </boolField>
+      <boolField>
+        <name>Is virtual</name>
+        <alias>isFieldVirtual</alias>
+        <defaultValue>false</defaultValue>
+      </boolField>
+      <stringField>
+        <name>Script name</name>
+        <description>The name to use when referring to this field in scripts.</description>
+        <alias>fieldScriptName</alias>
+        <maxLength>200</maxLength>
+        <pattern>scriptNamePattern</pattern>
+      </stringField>
+      <boolField>
+        <name>Is calculated</name>
+        <alias>isCalculatedField</alias>
+      </boolField>
+      <stringField> <!-- if set, this is a calculated field -->
+        <name>Calculation</name>
+        <alias>fieldCalculation</alias>
+        <isRequired>false</isRequired>
+      </stringField>
+    </fields>
+    <isAbstract>true</isAbstract>
+    <dbFieldTable>
+    </dbFieldTable>
+    <dbType>
+    </dbType>
+    <dbTypeFull>
+    </dbTypeFull>
+    <xsdType>
+    </xsdType>
+    <classType>Field</classType>
+    <readiNowType>DatabaseType</readiNowType>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Field Details</name>
+        <alias>fieldDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <relationships>
+      <relationship>
+        <name>Field overrides field</name>
+        <alias>fieldOverrides</alias>
+        <reverseAlias>fieldOverriddenBy</reverseAlias>
+        <relType>relDependantOf</relType>
+        <fromName>Overridden by</fromName>
+        <description>Mapping between a field and another field that overrides certain behaviors.</description>
+        <toType>field</toType>
+        <toName>Overrides field</toName>
+        <generateCode>true</generateCode>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <name>Field override for type</name>
+        <alias>fieldOverrideForType</alias>
+        <reverseAlias>fieldOverridesForType</reverseAlias>
+        <description>Associates field-overrides to a particular type.</description>
+        <relType>relDependantOf</relType>
+        <fromName>Field overrides</fromName>
+        <toType>type</toType>
+        <toName>Override applies to type</toName>
+        <generateCode>true</generateCode>
+        <relationshipInToTypeGroup>typeDetails</relationshipInToTypeGroup>
+        <securesFrom>true</securesFrom>
+        <hideOnToType>true</hideOnToType> <!-- hide for now -->
+      </relationship>
+    </relationships>
+  </fieldType>
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    SPECIFIC FIELD TYPES                                          -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- 'Alias Field' field type -->
+  <fieldType>
+    <alias>aliasField</alias>
+    <name>Alias Field</name>
+    <description>Special field type for representing 'alias' and 'reverseAlias' so they can handle namespaces.</description>
+    <inherits>field</inherits>
+    <generateCode>true</generateCode>
+    <dbFieldTable>Data_Alias</dbFieldTable>
+    <dbType>String</dbType>
+    <dbTypeFull>NVarChar(max)</dbTypeFull>
+    <xsdType>string</xsdType>
+    <classType>string</classType>
+    <readiNowType>StringType</readiNowType>
+    <isMetadata>true</isMetadata>
+    <fields>
+      <intField>
+        <name>Alias marker</name>
+        <description>Special marker placed in the alias table to efficiently identify the type of alias.</description>
+        <alias>aliasMarkerId</alias>
+        <isRequired>true</isRequired>
+        <minInt>0</minInt>
+        <maxInt>1</maxInt>
+      </intField>
+    </fields>
+  </fieldType>
+  <!-- 'String Field' field type -->
+  <fieldType>
+    <name>String Field</name>
+    <alias>stringField</alias>
+    <description>A string field definition.</description>
+    <inherits>field</inherits>
+    <generateCode>true</generateCode>
+    <dbFieldTable>Data_NVarChar</dbFieldTable>
+    <dbType>String</dbType>
+    <dbTypeFull>NVarChar(max)</dbTypeFull>
+    <xsdType>string</xsdType>
+    <classType>string</classType>
+    <readiNowType>StringType</readiNowType>
+    <isMetadata>true</isMetadata>
+    <fields>
+      <intField>
+        <name>Min length</name>
+        <alias>minLength</alias>
+        <minInt>0</minInt>
+        <defaultValue>0</defaultValue>
+      </intField>
+      <intField>
+        <name>Max length</name>
+        <alias>maxLength</alias>
+        <minInt>1</minInt>
+      </intField>
+      <boolField>
+        <name>Allow multilines</name>
+        <alias>allowMultiLines</alias>
+      </boolField>
+    </fields>
+    <relationships>
+      <relationship>
+        <name>Field must match pattern</name>
+        <fromName>Field's using pattern</fromName>
+        <alias>pattern</alias>
+        <toType>stringPattern</toType>
+        <securesTo>true</securesTo>
+        <generateCode>true</generateCode>
+        <relType>relLookup</relType>
+        <relationshipInToTypeGroup>stringPatternDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <name>Field represents</name>
+        <description>The type of information that this field represents.</description>
+        <toName>Represents</toName>
+        <fromName>Fields</fromName>
+        <alias>fieldRepresents</alias>
+        <reverseAlias>representedFields</reverseAlias>
+        <toType>fieldRepresentsEnum</toType>
+        <relType>relChoiceField</relType>
+        <generateCode>true</generateCode>
+      </relationship>
+    </relationships>
+  </fieldType>
+  <!-- 'Int Field' field type -->
+  <fieldType>
+    <name>Int Field</name>
+    <alias>intField</alias>
+    <description>A numeric field definition.</description>
+    <inherits>field</inherits>
+    <generateCode>true</generateCode>
+    <dbFieldTable>Data_Int</dbFieldTable>
+    <dbType>Int32</dbType>
+    <dbTypeFull>Int</dbTypeFull>
+    <xsdType>int</xsdType>
+    <classType>int?</classType>
+    <readiNowType>Int32Type</readiNowType>
+    <isMetadata>true</isMetadata>
+    <fields>
+      <intField>
+        <name>Minimum value</name>
+        <alias>minInt</alias>
+      </intField>
+      <intField>
+        <name>Maximum value</name>
+        <alias>maxInt</alias>
+      </intField>
+    </fields>
+  </fieldType>
+  <!-- 'Guid Field' field type -->
+  <fieldType>
+    <name>Guid Field</name>
+    <alias>guidField</alias>
+    <description>A GUID field definition.</description>
+    <inherits>field</inherits>
+    <generateCode>true</generateCode>
+    <dbFieldTable>Data_Guid</dbFieldTable>
+    <dbType>Guid</dbType>
+    <dbTypeFull>Guid</dbTypeFull>
+    <xsdType>string</xsdType>
+    <classType>Guid?</classType>
+    <readiNowType>GuidType</readiNowType>
+    <isMetadata>true</isMetadata>
+  </fieldType>
+  <!-- 'Bool Field' field type -->
+  <fieldType>
+    <name>Boolean Field</name>
+    <alias>boolField</alias>
+    <description>A yes/no field definition.</description>
+    <inherits>field</inherits>
+    <generateCode>true</generateCode>
+    <dbFieldTable>Data_Bit</dbFieldTable>
+    <dbType>Boolean</dbType>
+    <dbTypeFull>Bit</dbTypeFull>
+    <xsdType>boolean</xsdType>
+    <classType>bool?</classType>
+    <readiNowType>BoolType</readiNowType>
+    <isMetadata>true</isMetadata>
+  </fieldType>
+  <!-- 'Date Time' field type -->
+  <fieldType>
+    <name>DateTime Field</name>
+    <alias>dateTimeField</alias>
+    <description>A date-time field definition.</description>
+    <inherits>field</inherits>
+    <generateCode>true</generateCode>
+    <dbFieldTable>Data_DateTime</dbFieldTable>
+    <dbType>DateTime</dbType>
+    <dbTypeFull>DateTime</dbTypeFull>
+    <xsdType>dateTime</xsdType>
+    <classType>DateTime?</classType>
+    <readiNowType>DateTimeType</readiNowType>
+    <isMetadata>true</isMetadata>
+    <fields>
+      <dateTimeField>
+        <name>Min datetime</name>
+        <alias>minDateTime</alias>
+      </dateTimeField>
+      <dateTimeField>
+        <name>Max datetime</name>
+        <alias>maxDateTime</alias>
+      </dateTimeField>
+    </fields>
+  </fieldType>
+  <!-- 'Date' field type -->
+  <fieldType>
+    <name>Date Field</name>
+    <alias>dateField</alias>
+    <description>A date field definition.</description>
+    <inherits>field</inherits>
+    <generateCode>true</generateCode>
+    <dbFieldTable>Data_DateTime</dbFieldTable>
+    <dbType>DateTime</dbType>
+    <dbTypeFull>DateTime</dbTypeFull>
+    <xsdType>date</xsdType>
+    <!-- todo: change to dateTime -->
+    <classType>DateTime?</classType>
+    <readiNowType>DateType</readiNowType>
+    <isMetadata>true</isMetadata>
+    <fields>
+      <dateField>
+        <name>Min date</name>
+        <alias>minDate</alias>
+      </dateField>
+      <dateField>
+        <name>Max date</name>
+        <alias>maxDate</alias>
+      </dateField>
+    </fields>
+  </fieldType>
+  <!-- 'Time' field type -->
+  <fieldType>
+    <name>Time Field</name>
+    <alias>timeField</alias>
+    <description>A time field definition.</description>
+    <inherits>field</inherits>
+    <generateCode>true</generateCode>
+    <dbFieldTable>Data_DateTime</dbFieldTable>
+    <dbType>DateTime</dbType>
+    <dbTypeFull>DateTime</dbTypeFull>
+    <xsdType>time</xsdType>
+    <classType>DateTime?</classType>
+    <!-- todo: change to dateTime -->
+    <readiNowType>TimeType</readiNowType>
+    <isMetadata>true</isMetadata>
+    <fields>
+      <timeField>
+        <name>Min time</name>
+        <alias>minTime</alias>
+      </timeField>
+      <timeField>
+        <name>Max time</name>
+        <alias>maxTime</alias>
+      </timeField>
+    </fields>
+  </fieldType>
+  <!-- 'Decimal' field type -->
+  <fieldType>
+    <name>Decimal Field</name>
+    <alias>decimalField</alias>
+    <description>A fixed-precision decimal field definition.</description>
+    <inherits>field</inherits>
+    <generateCode>true</generateCode>
+    <dbFieldTable>Data_Decimal</dbFieldTable>
+    <dbType>Decimal</dbType>
+    <dbTypeFull>Decimal(18,6)</dbTypeFull>
+    <xsdType>decimal</xsdType>
+    <classType>decimal?</classType>
+    <readiNowType>DecimalType</readiNowType>
+    <isMetadata>true</isMetadata>
+    <fields>
+      <intField>
+        <name>Decimal places</name>
+        <alias>decimalPlaces</alias>
+        <defaultValue>3</defaultValue>
+        <minInt>0</minInt>
+      </intField>
+      <decimalField>
+        <name>Minimum value</name>
+        <alias>minDecimal</alias>
+      </decimalField>
+      <decimalField>
+        <name>Maximum value</name>
+        <alias>maxDecimal</alias>
+      </decimalField>
+    </fields>
+  </fieldType>
+  <!-- 'Currency' field type (inherits decimal) -->
+  <fieldType>
+    <name>Currency Field</name>
+    <alias>currencyField</alias>
+    <description>A monetary field definition.</description>
+    <inherits>decimalField</inherits>
+    <generateCode>true</generateCode>
+    <dbFieldTable>Data_Decimal</dbFieldTable>
+    <dbType>Decimal</dbType>
+    <dbTypeFull>Decimal(18,6)</dbTypeFull>
+    <xsdType>decimal</xsdType>
+    <classType>decimal?</classType>
+    <readiNowType>CurrencyType</readiNowType>
+    <isMetadata>true</isMetadata>
+  </fieldType>
+  <!-- 'XML' field type -->
+  <fieldType>
+    <name>XML Field</name>
+    <alias>xmlField</alias>
+    <description>An XML field definition.</description>
+    <inherits>field</inherits>
+    <generateCode>true</generateCode>
+    <dbFieldTable>Data_Xml</dbFieldTable>
+    <dbType>String</dbType>
+    <!-- todo -->
+    <dbTypeFull>NVarChar(max)</dbTypeFull>
+    <xsdType>platform-custom-xml</xsdType>
+    <classType>string</classType>
+    <readiNowType>XmlType</readiNowType>
+    <isMetadata>true</isMetadata>
+    <fields>
+      <stringField>
+        <name>XML field namespace</name>
+        <description>Namespace that the XML in this field must adhere to. Optional.</description>
+        <alias>xmlFieldNamespace</alias>
+      </stringField>
+    </fields>
+  </fieldType>
+  <!-- AutoNumber field type -->
+  <fieldType>
+    <name>AutoNumber Field</name>
+    <alias>autoNumberField</alias>
+    <description>A field that automatically increments with each change.</description>
+    <inherits>intField</inherits>
+    <generateCode>true</generateCode>
+    <flags>noDeleteFlag</flags>
+    <instanceFlags>readOnlyFlag</instanceFlags>
+    <dbFieldTable>Data_Int</dbFieldTable>
+    <dbType>Int32</dbType>
+    <dbTypeFull>Int</dbTypeFull>
+    <xsdType>int</xsdType>
+    <classType>int?</classType>
+    <readiNowType>AutoIncrementType</readiNowType>
+    <isMetadata>true</isMetadata>
+    <fields>
+      <intField>
+        <alias>autoNumberSeed</alias>
+        <name>Seed</name>
+        <description>AutoNumbers initial value.</description>
+        <defaultValue>1</defaultValue>
+      </intField>
+      <intField>
+        <alias>autoNumberValue</alias>
+        <name>NextValue</name>
+        <description>AutoNumbers next value.</description>
+        <defaultValue>1</defaultValue>
+        <excludeFieldFromPublish>true</excludeFieldFromPublish>
+      </intField>
+      <stringField>
+        <alias>autoNumberDisplayPattern</alias>
+        <name>Display pattern</name>
+        <description>The pattern to use when displaying the autonumber.</description>
+      </stringField>
+    </fields>
+  </fieldType>
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    STRING PATTERN                                                -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- 'String Pattern' type -->
+  <type>
+    <alias>stringPattern</alias>
+    <name>Text Field Pattern</name>
+    <description>Represents a reusable pattern (regular expression) that can be used for validating text fields.</description>
+    <generateCode>true</generateCode>
+    <isMetadata>true</isMetadata>
+    <fieldGroups>
+      <fieldGroup>
+        <name>String Pattern Details</name>
+        <alias>stringPatternDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>regex</alias>
+        <name>Regular expression</name>
+        <description>Regular expressions allow flexible validation of text with a small amount of computer code.</description>
+        <isRequired>true</isRequired>
+        <pattern>unrestrictedPattern</pattern>
+        <fieldInGroup>stringPatternDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>regexDescription</alias>
+        <name>Regular expression description</name>
+        <description>A description of the regular expression for display to the user.</description>
+        <isRequired>false</isRequired>
+        <pattern>unrestrictedPattern</pattern>
+        <fieldInGroup>stringPatternDetails</fieldInGroup>
+      </stringField>
+    </fields>
+  </type>
+  <!-- Pattern that is used when no other pattern is specified -->
+  <stringPattern>
+    <alias>defaultPattern</alias>
+    <name>Default</name>
+    <description>All text fields must match this pattern, if no other pattern is specified.</description>
+    <regex>.*</regex>
+    <regexDescription>The value has no restrictions.</regexDescription>
+  </stringPattern>
+  <!-- Pattern that is used when no other pattern is specified -->
+  <stringPattern>
+    <alias>unrestrictedPattern</alias>
+    <name>Unrestricted</name>
+    <description>All text is allowed.</description>
+    <regex>.*</regex>
+    <regexDescription>The value has no limits on the characters that it can contain.</regexDescription>
+  </stringPattern>
+  <!-- Resource name pattern -->
+  <stringPattern>
+    <alias>namePattern</alias>
+    <name>Instance's Name</name>
+    <description>A valid resource name</description>
+    <regex>^[^&lt;&gt;]+$</regex>
+    <regexDescription>The value must not contain angled brackets.</regexDescription>
+  </stringPattern>
+  <!-- Script name pattern -->
+  <stringPattern>
+    <alias>scriptNamePattern</alias>
+    <name>Script Name</name>
+    <description>A valid name for use in scripts.</description>
+    <regex>^[^&lt;&gt;]+$</regex>
+    <regexDescription>The value must not contain angled brackets.</regexDescription>
+  </stringPattern>
+  <!-- Email address pattern -->
+  <stringPattern>
+    <alias>emailPattern</alias>
+    <name>Email Address</name>
+    <description>An email address. Fairly permissive.</description>
+    <regex>^[^@]+[@]([a-zA-Z][a-zA-Z0-9-]*)(\.[a-zA-Z][a-zA-Z0-9-]*)*$</regex>
+    <regexDescription>The value must be in the form of an email address.</regexDescription>
+  </stringPattern>
+  <!-- Telephone number pattern -->
+  <stringPattern>
+    <alias>phonePattern</alias>
+    <name>Phone Number</name>
+    <description>A phone number. Allows digits and applicable punctuation.</description>
+    <regex>^[+]?[0-9()*# -]+$</regex>
+    <regexDescription>The value must be a telephone number, containing digits and punctuation characters.</regexDescription>
+  </stringPattern>
+  <!-- Person's name pattern -->
+  <stringPattern>
+    <alias>personNamePattern</alias>
+    <name>Person's Name</name>
+    <description>A person's name. Allows international characters. Excludes only numbers and a few characters.</description>
+    <regex>^[^0-9]+$</regex>
+    <regexDescription>The value can only contain alpha characters. Digits are not permitted.</regexDescription>
+  </stringPattern>
+  <!-- Web Address pattern -->
+  <stringPattern>
+    <alias>webAddressPattern</alias>
+    <name>Web Address</name>
+    <description>A HTTP web address.</description>
+    <regex>^(http(s)?://)?([\w-]+\.)+[\w-]+(:\d+)?(/[\w- \+.,/#@:!?%&amp;=]*)?$</regex>
+    <regexDescription>The value must be a valid web address, with or without the leading HTTP.</regexDescription>
+  </stringPattern>
+  <!-- Ftp Address pattern -->
+  <stringPattern>
+    <alias>ftpAddressPattern</alias>
+    <name>FTP Address</name>
+    <description>A FTP web address.</description>
+    <regex>^(ftps?://)?([\w-]+\.)+[\w-]+(:\d+)?(/[\w- \+.,/#@:!?%&amp;=]*)?$</regex>
+    <regexDescription>The value must be a valid ftp address, with or without the leading FTP.</regexDescription>
+  </stringPattern>
+  <!-- Secure Ftp Address pattern -->
+  <stringPattern>
+    <alias>secureFtpAddressPattern</alias>
+    <name>Secure FTP Address</name>
+    <description>A Security FTP web address.</description>
+    <regex>^(sftp|ftps)://([\w-]+\.)+[\w-]+(:\d+)?(/[\w- \+.,/#@:!?%&amp;=]*)?$</regex>
+    <regexDescription>The value must be a valid sftp or ftps URL.</regexDescription>
+  </stringPattern>
+  <!-- Secure Web Address pattern -->
+  <stringPattern>
+    <alias>secureWebAddressPattern</alias>
+    <name>Secure Web Address</name>
+    <description>A HTTPS web address.</description>
+    <regex>^https://([\w-]+\.)+[\w-]+(:\d+)?(/[\w- \+.,/#@:!?%&amp;=]*)?$</regex>
+    <regexDescription>The value must be a valid HTTPS web address.</regexDescription>
+  </stringPattern>
+  <!-- Web Address pattern -->
+  <stringPattern>
+    <alias>hostNamePattern</alias>
+    <name>Host Name</name>
+    <description>The network address of a device.</description>
+    <regex>^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$</regex>
+    <regexDescription>The value must be a network address.</regexDescription>
+  </stringPattern>
+</resources>

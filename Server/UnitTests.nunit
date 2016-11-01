@@ -1,0 +1,41 @@
+﻿<NUnitProject>
+  <Settings activeconfig="Debug" />
+  <Config name="Debug" binpathtype="Auto">
+    <assembly path="EDC.Common.Test\bin\Debug\EDC.Common.Test.dll" />
+    <assembly path="EDC.ReadiNow.Common.Test\bin\Debug\EDC.ReadiNow.Common.Test.dll" />
+    <assembly path="EDC.SoftwarePlatform.WebApi.Test\bin\Debug\EDC.SoftwarePlatform.WebApi.Test.dll" />
+    <assembly path="ReadiNow.DocGen.Test\bin\Debug\ReadiNow.DocGen.Test.dll" />
+    <assembly path="ReadiNow.Integration.Test.dll" />
+    <assembly path="EDC.SoftwarePlatform.Activities.Test\bin\Debug\EDC.SoftwarePlatform.Activities.Test.dll" />
+    <assembly path="EDC.SoftwarePlatform.Migration.Test\bin\Debug\EDC.SoftwarePlatform.Migration.Test.dll" />
+    <assembly path="EDC.SoftwarePlatform.Services.Test\bin\Debug\EDC.SoftwarePlatform.Services.Test.dll" />
+    <assembly path="Deployment\EDC.SoftwarePlatform.Install.Actions.Test\bin\Debug\EDC.SoftwarePlatform.Install.Actions.Test.dll" />
+    <assembly path="EDC.ReadiNow.CAST.Test\bin\x64\Debug\EDC.ReadiNow.CAST.Test.dll" />
+    <assembly path="ReadiNow.Integration.Test.dll" />
+  </Config>
+  <Config name="Release" binpathtype="Auto">
+    <assembly path="EDC.Common.Test\bin\Release\EDC.Common.Test.dll" />
+    <assembly path="EDC.ReadiNow.Common.Test\bin\Release\EDC.ReadiNow.Common.Test.dll" />
+    <assembly path="EDC.SoftwarePlatform.WebApi.Test\bin\Release\EDC.SoftwarePlatform.WebApi.Test.dll" />
+    <assembly path="ReadiNow.DocGen.Test\bin\Release\ReadiNow.DocGen.Test.dll" />
+    <assembly path="ReadiNow.Integration.Test.dll" />
+    <assembly path="EDC.SoftwarePlatform.Activities.Test\bin\Release\EDC.SoftwarePlatform.Activities.Test.dll" />
+    <assembly path="EDC.SoftwarePlatform.Migration.Test\bin\Release\EDC.SoftwarePlatform.Migration.Test.dll" />
+    <assembly path="EDC.SoftwarePlatform.Services.Test\bin\Release\EDC.SoftwarePlatform.Services.Test.dll" />
+    <assembly path="Deployment\EDC.SoftwarePlatform.Install.Actions.Test\bin\Release\EDC.SoftwarePlatform.Install.Actions.Test.dll" />
+    <assembly path="ReadiNow.Integration.Test.dll" />
+  </Config>
+  <Config name="SmokeTest" binpathtype="Auto">
+    <assembly path="EDC.Common.Test.dll" />
+    <assembly path="EDC.ReadiNow.Common.Test.dll" />
+    <assembly path="EDC.SoftwarePlatform.WebApi.Test.dll" />
+    <assembly path="ReadiNow.DocGen.Test.dll" />
+    <assembly path="ReadiNow.Integration.Test.dll" />
+    <assembly path="EDC.SoftwarePlatform.Activities.Test.dll" />
+    <assembly path="EDC.SoftwarePlatform.Migration.Test.dll" />
+    <assembly path="EDC.SoftwarePlatform.Services.Test.dll" />
+    <assembly path="EDC.SoftwarePlatform.Install.Actions.Test.dll" />
+    <assembly path="ReadiNow.Integration.Test.dll" />
+
+  </Config>
+</NUnitProject>

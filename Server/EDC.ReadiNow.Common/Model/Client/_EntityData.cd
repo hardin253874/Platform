@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="EDC.ReadiNow.Model.Client.EntityData">
+    <Position X="5.25" Y="1" Width="2" />
+    <AssociationLine Name="Fields" Type="EDC.ReadiNow.Model.Client.FieldData">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.704" Y="-0.336" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="Relationships" Type="EDC.ReadiNow.Model.Client.RelationshipData">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.44" Y="0.714" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAMAACAAAAAAAAAAAABEAAgABIAIBgAA=</HashCode>
+      <FileName>Model\Client\EntityData.shared.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Fields" />
+      <Property Name="Relationships" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="EDC.ReadiNow.Model.Client.FieldData">
+    <Position X="9" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Model\Client\EntityData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EDC.ReadiNow.Model.Client.RelationshipData">
+    <Position X="2.5" Y="3.5" Width="1.75" />
+    <AssociationLine Name="Instances" Type="EDC.ReadiNow.Model.Client.RelationshipInstanceData">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.55" Y="-0.359" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAEIAAIAAAgABAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Model\Client\EntityData.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Instances" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="EDC.ReadiNow.Model.Client.RelationshipInstanceData">
+    <Position X="2.5" Y="1.5" Width="1.5" />
+    <AssociationLine Name="Entity" Type="EDC.ReadiNow.Model.Client.EntityData" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4" Y="2.062" />
+        <Point X="4.375" Y="2.062" />
+        <Point X="4.375" Y="1.562" />
+        <Point X="5.25" Y="1.562" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="1.154" Y="-4.442" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAIAAAAA=</HashCode>
+      <FileName>Model\Client\EntityData.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Entity" />
+    </ShowAsAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

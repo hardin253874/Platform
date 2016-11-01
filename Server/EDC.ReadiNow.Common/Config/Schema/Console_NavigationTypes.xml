@@ -1,0 +1,914 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="core" xmlns:k="console" xsi:schemaLocation=". ../Core.xsd k ../Console.xsd" defaultSolution="consoleSolution">
+  <!--Copyright 2011-2016 Global Software Innovation Pty Ltd-->
+  <!-- Console solution resource -->
+  <solution>
+    <alias>consoleSolution</alias>
+    <name>ReadiNow Console</name>
+    <description>System application that contains user interface objects.</description>
+    <solutionVersionString>1.0.0.0</solutionVersionString>
+    <solutionPublisher>Readinow Corporation</solutionPublisher>
+    <solutionPublisherUrl>http://www.readinow.com</solutionPublisherUrl>
+    <solutionReleaseDate>2012-12-13</solutionReleaseDate>
+    <legacyGuid>1B5EEEFB-E129-439A-B814-764B0D384BC4</legacyGuid>
+    <packageId>8aeb3b0b-21ce-49f3-96ca-90103e62eea6</packageId>
+  </solution>
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    TREE NAVIGATION ELEMENTS                                      -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- 'Navigation Element' type -->
+  <type>
+    <alias>k:navigationElement</alias>
+    <name>Navigation Element</name>
+    <description>Provides properties common to many console navigation resources.</description>
+    <generateCode>true</generateCode>
+    <isMetadata>true</isMetadata>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Navigation Element Details</name>
+        <alias>k:navigationElementDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <intField>
+        <alias>k:consoleOrder</alias>
+        <name>Order</name>
+        <description>A number to specify the sorting order of this item.</description>
+        <fieldInGroup>k:navigationElementDetails</fieldInGroup>
+      </intField>
+      <stringField>
+        <name>Tree icon background color (ARGB)</name>
+        <alias>k:navElementTreeIconBackgroundColor</alias>
+        <fieldRepresents>fieldRepresentsColor</fieldRepresents>
+        <fieldInGroup>k:consoleBehaviorDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <name>Feature switch</name>
+        <description>If set to a feature switch name, that switch must be enabled for the nav element to be visible.</description>
+        <alias>navFeatureSwitch</alias>
+        <hideField>true</hideField>
+        <fieldInGroup>k:consoleBehaviorDetails</fieldInGroup>
+      </stringField>
+    </fields>
+    <derivedTypes>report,chart,board</derivedTypes>
+  </type>
+  <!-- 'Navigation Element' type -->
+  <type>
+    <alias>k:navContainer</alias>
+    <name>Navigation Container</name>
+    <description>Base type for any definition that can act as a console 'folder'.</description>
+    <generateCode>true</generateCode>
+    <inherits>k:navigationElement,visualController</inherits>
+    <derivedTypes>documentFolder</derivedTypes>
+    <isMetadata>true</isMetadata>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Navigation Container Details</name>
+        <alias>k:navContainerDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <!-- late declaration of inheritance -->
+  </type>
+  <!-- 'Static Page' type -->
+  <type>
+    <alias>k:staticPage</alias>
+    <name>Console Page</name>
+    <description>Represents a non-dynamic console page.</description>
+    <inherits>k:navigationElement</inherits>
+    <generateCode>true</generateCode>
+  </type>
+  <!-- 'Top Menu' type -->
+  <type>
+    <alias>k:topMenu</alias>
+    <name>Top Menu</name>
+    <description>Represents a menu item at the top of the console.</description>
+    <inherits>k:navContainer</inherits>
+    <generateCode>true</generateCode>
+    <isMetadata>true</isMetadata>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Top Menu Details</name>
+        <alias>k:topMenuDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <boolField>
+        <name>Is visible</name>
+        <alias>k:isTopMenuVisible</alias>
+        <defaultValue>true</defaultValue>
+        <fieldInGroup>k:topMenuDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <name>Show application tabs</name>
+        <alias>k:showApplicationTabs</alias>
+        <defaultValue>false</defaultValue>
+        <fieldInGroup>k:topMenuDetails</fieldInGroup>
+      </boolField>
+    </fields>
+  </type>
+  <!-- 'Navigation Section' type -->
+  <type>
+    <alias>k:navSection</alias>
+    <name>Navigation Section</name>
+    <description>Represents a section in the console left-hand navigation.</description>
+    <inherits>k:navContainer</inherits>
+    <generateCode>true</generateCode>
+    <isMetadata>true</isMetadata>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Navigation Section Details</name>
+        <alias>k:navSectionDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <boolField>
+        <name>Is application tab</name>
+        <alias>k:isAppTab</alias>
+        <defaultValue>false</defaultValue>
+        <fieldInGroup>k:navSectionDetails</fieldInGroup>
+      </boolField>
+    </fields>
+  </type>
+  <!-- 'Folder' type -->
+  <type>
+    <name>Folder</name>
+    <alias>folder</alias>
+    <description>The 'Folder' type</description>
+    <inherits>k:navContainer</inherits>
+    <generateCode>true</generateCode>
+  </type>
+  <!-- 'Private content section' type -->
+  <type>
+    <name>Private Content Section</name>
+    <alias>k:privateContentSection</alias>
+    <description>The 'Private Section' type</description>
+    <inherits>k:navContainer</inherits>
+    <generateCode>true</generateCode>
+  </type>
+  <!-- Report in Security Folder (used to avoid resource key issues) -->
+  <relationship>
+    <name>Security report in folder</name>
+    <description>Link a report used in an access rule to ensure cascading deletes.</description>
+    <alias>securityReportInFolder</alias>
+    <reverseAlias>folderForSecurityReport</reverseAlias>
+    <fromType>report</fromType>
+    <fromName>Report</fromName>
+    <toType>folder</toType>
+    <toName>Folder</toName>
+    <generateCode>true</generateCode>
+    <relType>relSingleComponent</relType>
+    <relationshipInFromTypeGroup>reportDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>reportDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- Allow Display -->
+  <relationship>
+    <name>Allowed display</name>
+    <description>List of navigation elements that are allowed to be displayed.</description>
+    <alias>allowDisplay</alias>
+    <reverseAlias>allowedDisplayBy</reverseAlias>
+    <fromType>subject</fromType>
+    <fromName>Visible to subjects</fromName>
+    <toType>k:navigationElement</toType>
+    <toName>Allowed resources</toName>
+    <generateCode>false</generateCode>
+    <relType>relManyToMany</relType>
+    <relationshipInFromTypeGroup>subjectDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>k:navigationElementDetails</relationshipInToTypeGroup>
+    <hideOnFromType>true</hideOnFromType>
+    <hideOnToType>true</hideOnToType>
+  </relationship>
+  <!-- 'Resource in folder' relationship -->
+  <relationship>
+    <alias>k:resourceInFolder</alias>
+    <name>Resource in folder</name>
+    <description>This relationship indicates that a resource should appear in the console under the specified folder.</description>
+    <reverseAlias>k:folderContents</reverseAlias>
+    <fromType>resource</fromType>
+    <toType>k:navContainer</toType>
+    <cardinality>manyToMany</cardinality>
+    <generateCode>true</generateCode>
+    <hideOnFromType>true</hideOnFromType>
+    <cascadeDelete>true</cascadeDelete>
+    <cascadeDeleteTo>false</cascadeDeleteTo>
+    <implicitInSolution>false</implicitInSolution>
+    <reverseImplicitInSolution>true</reverseImplicitInSolution>
+    <cloneAction>cloneReferences</cloneAction>
+    <reverseCloneAction>drop</reverseCloneAction>
+    <relType>relCustom</relType>
+    <!-- TODO: This needs a careful review -->
+    <relationshipInToTypeGroup>k:navContainerDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- 'Resource shortcut in folder' relationship -->
+  <relationship>
+    <alias>k:shortcutInFolder</alias>
+    <name>Shortcut in folder</name>
+    <description>This relationship indicates that a resource should appear in the console under the specified folder as a shortcut.</description>
+    <reverseAlias>k:shortcuts</reverseAlias>
+    <fromType>resource</fromType>
+    <toType>k:navContainer</toType>
+    <relType>relManyToMany</relType>
+    <generateCode>true</generateCode>
+    <hideOnFromType>true</hideOnFromType>
+    <relationshipInToTypeGroup>k:navContainerDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    UNIQUE FOLDER NAMES                                                                                        -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <resourceKey>
+    <alias>folderUniqueNameKey</alias>
+    <name>Unique name per folder</name>
+    <keyAppliesToType>k:navContainer</keyAppliesToType>
+    <resourceKeyMessage>There is another folder/section with the same name.</resourceKeyMessage>
+    <resourceKeyRelationships>
+      <resourceKeyRelationship>
+        <alias>folderUniqueNameKeyRelationship</alias>
+        <keyRelationship>k:resourceInFolder</keyRelationship>
+        <keyRelationshipDirection>forward</keyRelationshipDirection>
+      </resourceKeyRelationship>
+    </resourceKeyRelationships>
+    <keyFields>name</keyFields>
+  </resourceKey>
+  <!--
+  <resourceKey>
+    <alias>reportUniqueNameKey</alias>
+    <name>Unique name per report</name>
+    <keyAppliesToType>report</keyAppliesToType>
+    <resourceKeyMessage>There is another report with the same name in this folder.</resourceKeyMessage>
+    <resourceKeyRelationships>
+      <resourceKeyRelationship>
+        <alias>reportUniqueNameKeyRelationship</alias>
+        <keyRelationship>k:resourceInFolder</keyRelationship>
+        <keyRelationshipDirection>forward</keyRelationshipDirection>
+      </resourceKeyRelationship>      
+    </resourceKeyRelationships>
+    <keyFields>name</keyFields>
+  </resourceKey>
+  <resourceKey>
+    <alias>chartUniqueNameKey</alias>
+    <name>Unique name per chart</name>
+    <keyAppliesToType>chart</keyAppliesToType>
+    <resourceKeyMessage>There is another chart with the same name in this folder.</resourceKeyMessage>
+    <resourceKeyRelationships>
+      <resourceKeyRelationship>
+        <alias>chartUniqueNameKeyRelationship</alias>
+        <keyRelationship>k:resourceInFolder</keyRelationship>
+        <keyRelationshipDirection>forward</keyRelationshipDirection>
+      </resourceKeyRelationship>      
+    </resourceKeyRelationships>
+    <keyFields>name</keyFields>
+  </resourceKey>-->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    CONSOLE BEHAVIORS                                             -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- 'Console Behavior' type -->
+  <type>
+    <alias>k:consoleBehavior</alias>
+    <name>Console Behavior</name>
+    <description>Describes how a resource should appear and behave in the console.</description>
+    <generateCode>true</generateCode>
+    <isMetadata>true</isMetadata>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Console Behavior Details</name>
+        <alias>k:consoleBehaviorDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <name>Tree icon URL</name>
+        <alias>k:treeIconUrl</alias>
+        <fieldInGroup>k:consoleBehaviorDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <name>Tree icon background color (ARGB)</name>
+        <alias>k:treeIconBackgroundColor</alias>
+        <fieldRepresents>fieldRepresentsColor</fieldRepresents>
+        <fieldInGroup>k:consoleBehaviorDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <name>HTML5 view identifier</name>
+        <alias>k:html5ViewId</alias>
+        <fieldInGroup>k:consoleBehaviorDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <name>HTML5 create identifier</name>
+        <description>HTML state to use when creating new instances of this type.</description>
+        <alias>k:html5CreateId</alias>
+        <fieldInGroup>k:consoleBehaviorDetails</fieldInGroup>
+      </stringField>
+      <boolField>
+        <name>Suppress actions for type</name>
+        <alias>k:suppressActionsForType</alias>
+        <description>If specified on the console behavior of an individual resource, will prevent additional action menus being loaded that apply to the type.</description>
+        <fieldInGroup>k:consoleBehaviorDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <name>Console behavior hidden</name>
+        <alias>k:consoleBehaviorHidden</alias>
+        <description>Hides the console behavior.</description>
+        <fieldInGroup>k:consoleBehaviorDetails</fieldInGroup>
+        <hideField>true</hideField>
+        <hideFieldDefaultForm>true</hideFieldDefaultForm>
+        <defaultValue>false</defaultValue>
+      </boolField>
+    </fields>
+    <relationships>
+      <!-- relationship to an Icon entity. Independent of 'k:treeIconUrl' string field above.  -->
+      <relationship>
+        <alias>k:treeIcon</alias>
+        <name>Tree icon</name>
+        <description>The icon entity for the console behavior.</description>
+        <toType>iconFileType</toType>
+        <relType>relCustom</relType>
+        <cardinality>manyToOne</cardinality>
+        <generateCode>true</generateCode>
+        <cloneAction>cloneReferences</cloneAction>
+        <reverseCloneAction>drop</reverseCloneAction>
+        <cascadeDelete>false</cascadeDelete>
+        <cascadeDeleteTo>false</cascadeDeleteTo>
+        <implicitInSolution>true</implicitInSolution>
+        <reverseImplicitInSolution>false</reverseImplicitInSolution>
+        <relationshipInFromTypeGroup>k:consoleBehaviorDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>iconFileTypeDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+    </relationships>
+  </type>
+  
+  <!-- 'Type Console Behavior' relationship -->
+  <relationship>
+    <alias>k:typeConsoleBehavior</alias>
+    <reverseAlias>k:behaviorForTypes</reverseAlias>
+    <name>Type console behavior</name>
+    <description>Links a resource type to the way instances of that type should appear and behave in the console.</description>
+    <fromType>type</fromType>
+    <toType>k:consoleBehavior</toType>
+    <relType>relSingleComponent</relType>
+    <securesTo>true</securesTo>
+    <hideOnFromType>true</hideOnFromType>
+    <generateCode>true</generateCode>
+    <relationshipInToTypeGroup>k:consoleBehaviorDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- 'Resource Console Behavior' relationship -->
+  <relationship>
+    <alias>k:resourceConsoleBehavior</alias>
+    <reverseAlias>k:behaviorForResources</reverseAlias>
+    <name>Resource console behavior</name>
+    <description>Links an individual resource to a description of how it should behave in the console.</description>
+    <fromType>resource</fromType>
+    <toType>k:consoleBehavior</toType>
+    <relType>relSingleComponent</relType>
+    <securesTo>true</securesTo>
+    <generateCode>true</generateCode>
+    <hideOnFromType>true</hideOnFromType>
+    <relationshipInToTypeGroup>k:consoleBehaviorDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- 'Selection Behavior' relationship -->
+  <relationship>
+    <alias>k:selectionBehavior</alias>
+    <reverseAlias>k:behaviorForSelection</reverseAlias>
+    <name>Selection behavior</name>
+    <description>Links a report, chart, or relationship control to the way that its selected items should show their context menu.</description>
+    <fromType>resource</fromType>
+    <toType>k:consoleBehavior</toType>
+    <securesTo>true</securesTo>
+    <relType>relSingleComponent</relType>
+    <generateCode>true</generateCode>
+    <hideOnFromType>true</hideOnFromType>
+    <relationshipInToTypeGroup>k:consoleBehaviorDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- 'Default Display Report' relationship -->
+  <relationship>
+    <alias>defaultDisplayReport</alias>
+    <reverseAlias>isDefaultDisplayReportForTypes</reverseAlias>
+    <name>Default display report</name>
+    <description>Associates default report to use when displaying instances of a given type.</description>
+    <fromType>type</fromType>
+    <toType>report</toType>
+    <securesTo>true</securesTo>
+    <relType>relLookup</relType>
+    <generateCode>true</generateCode>
+    <relationshipInFromTypeGroup>typeDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>reportDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- 'Default Picker Report' relationship -->
+  <relationship>
+    <alias>defaultPickerReport</alias>
+    <reverseAlias>isDefaultPickerReportForTypes</reverseAlias>
+    <name>Default picker report</name>
+    <description>Associates default report to use when picking instances of a given type.</description>
+    <fromType>type</fromType>
+    <toType>resourcePicker</toType>
+    <securesTo>true</securesTo>
+    <relType>relLookup</relType>
+    <generateCode>true</generateCode>
+    <relationshipInFromTypeGroup>typeDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>reportDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    ACTIONS MENU ITEMS                                            -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <type>
+    <alias>k:actionExpression</alias>
+    <name>Action Expression</name>
+    <description>An optional expression that determines the applicability of an action menu item.</description>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Action Expression Details</name>
+        <alias>k:actionExpressionDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>k:actionExpressionString</alias>
+        <name>Expression</name>
+        <description>The expression to evaluate.</description>
+        <fieldInGroup>k:actionExpressionDetails</fieldInGroup>
+      </stringField>
+    </fields>
+    <relationships>
+      <relationship>
+        <alias>k:actionExpressionEntities</alias>
+        <name>Known entities</name>
+        <description>Entities that may be used in the expression.</description>
+        <toType>namedReference</toType>
+        <relType>relComponents</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>k:actionExpressionDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>k:actionExpressionDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- 'Action Menu Item' type -->
+  <type>
+    <alias>k:actionMenuItem</alias>
+    <name>Action Menu Item</name>
+    <description>Represents an action menu item.</description>
+    <generateCode>true</generateCode>
+    <isMetadata>true</isMetadata>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Action Menu Item Details</name>
+        <alias>k:actionMenuItemDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <name>Multi select name</name>
+        <alias>multiSelectName</alias>
+        <description>The label to present if the action is applied to a multi-selection.</description>
+        <fieldInGroup>k:actionMenuItemDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <name>Empty select name</name>
+        <alias>emptySelectName</alias>
+        <description>The label to present if the action is disabled or when selection information is to be excluded.</description>
+        <fieldInGroup>k:actionMenuItemDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <name>Menu icon URL</name>
+        <alias>k:menuIconUrl</alias>
+        <fieldInGroup>k:actionMenuItemDetails</fieldInGroup>
+      </stringField>
+      <intField>
+        <name>Menu order</name>
+        <alias>k:menuOrder</alias>
+        <fieldInGroup>k:actionMenuItemDetails</fieldInGroup>
+      </intField>
+      <boolField>
+        <name>Is separator</name>
+        <alias>k:isMenuSeparator</alias>
+        <fieldInGroup>k:actionMenuItemDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <name>Is action button</name>
+        <alias>k:isActionButton</alias>
+        <description>This Action item will appear as a button.</description>
+        <fieldInGroup>k:actionMenuItemDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <name>Is double-click action</name>
+        <alias>k:isDoubleClickAction</alias>
+        <description>This action is executed if an item is double-clicked.</description>
+        <fieldInGroup>k:actionMenuItemDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <!-- Siverlight specific hack .. ignore -->
+        <name>Is stacked</name>
+        <alias>k:isStackedLandingPage</alias>
+        <description>This action is a landing page that appears over the top of an existing one.</description>
+        <defaultValue>false</defaultValue>
+        <fieldInGroup>k:actionMenuItemDetails</fieldInGroup>
+      </boolField>
+      <stringField>
+        <!-- Data that gets passed to the action class (feel free to use, or not) -->
+        <name>Control action verb</name>
+        <alias>k:controlAction</alias>
+        <description>The action verb passed to the control.</description>
+        <fieldInGroup>k:actionMenuItemDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <!-- More data that gets passed to the action class (feel free to use, or not) -->
+        <name>Control action data</name>
+        <alias>k:controlActionData</alias>
+        <description>Additional data passed to the control action.</description>
+        <fieldInGroup>k:actionMenuItemDetails</fieldInGroup>
+      </stringField>
+      <boolField>
+        <!-- Does this action depend on some user selection state -->
+        <name>Applies to selection</name>
+        <alias>k:appliesToSelection</alias>
+        <fieldInGroup>k:actionMenuItemDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <!-- Does this action depend on more than one item present in the user selection state -->
+        <name>Applies to multi selection</name>
+        <alias>k:appliesToMultiSelection</alias>
+        <fieldInGroup>k:actionMenuItemDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <!-- When looking at Console_Behavior.xml, ignore anything that has this set to true -->
+        <name>Is an action item</name>
+        <description>Is visible in the legacy action menu system.</description>
+        <alias>k:isActionItem</alias>
+        <defaultValue>false</defaultValue>
+        <fieldInGroup>k:actionMenuItemDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <!-- When looking at Console_Behavior.xml, ignore anything that does not have this set to true -->
+        <name>Is a context menu</name>
+        <description>Is visible in context menus.</description>
+        <alias>k:isContextMenu</alias>
+        <defaultValue>false</defaultValue>
+        <fieldInGroup>k:actionMenuItemDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <!-- Denotes that the action is considered as "out of the box" and has special privilege -->
+        <name>Is a system item</name>
+        <alias>k:isSystem</alias>
+        <description>Denotes this action item is owned by the system.</description>
+        <fieldInGroup>k:actionMenuItemDetails</fieldInGroup>
+      </boolField>
+      <stringField>
+        <!-- Identifies the core action that is happening behind the item -->
+        <name>HTML action</name>
+        <alias>htmlActionMethod</alias>
+        <description>The action verb passed to the service.</description>
+        <fieldInGroup>k:actionMenuItemDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <!-- Further specifies a sub-category of task to be applied to the action method -->
+        <name>HTML action state</name>
+        <alias>htmlActionState</alias>
+        <description>Additional data passed to the html action.</description>
+        <fieldInGroup>k:actionMenuItemDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <!-- Optionally point the action at a related entity, other than the default -->
+        <name>HTML action target</name>
+        <alias>htmlActionTarget</alias>
+        <description>Specifies an alternate target to the action then that inherited from the behavior.</description>
+        <fieldInGroup>k:actionMenuItemDetails</fieldInGroup>
+      </stringField>
+    </fields>
+  </type>
+  <!-- 'Action Menu Item to Role' relationship -->
+  <relationship>
+    <alias>actionRequiresRole</alias>
+    <reverseAlias>roleFromAction</reverseAlias>
+    <name>Action menu item requires role</name>
+    <description>Associates an action menu item to required role on the target entity(ies).</description>
+    <fromName>Action menu items</fromName>
+    <fromType>k:actionMenuItem</fromType>
+    <toName>Requires role</toName>
+    <toType>role</toType>
+    <relType>relLookup</relType>
+    <generateCode>true</generateCode>
+    <relationshipInFromTypeGroup>k:actionMenuItemDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>roleDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- 'Action Menu Item to Permission' relationship -->
+  <relationship>
+    <alias>k:actionRequiresPermission</alias>
+    <reverseAlias>k:permissionFromAction</reverseAlias>
+    <name>Action menu item requires permission</name>
+    <description>Associates an action menu item to required permission(s) on the target entity(ies).</description>
+    <fromName>Action menu items</fromName>
+    <fromType>k:actionMenuItem</fromType>
+    <toName>Requires permission</toName>
+    <toType>permission</toType>
+    <relType>relManyToMany</relType>
+    <generateCode>true</generateCode>
+    <relationshipInFromTypeGroup>k:actionMenuItemDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>permissionDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- 'Action Menu Item to Expression' relationship -->
+  <relationship>
+    <alias>k:actionRequiresExpression</alias>
+    <reverseAlias>k:expressionFromAction</reverseAlias>
+    <name>Action menu item requires expression</name>
+    <description>Associates an action menu item to an expression that determines its applicability.</description>
+    <fromName>Action menu item</fromName>
+    <fromType>k:actionMenuItem</fromType>
+    <toName>Expression</toName>
+    <toType>k:actionExpression</toType>
+    <relType>relSingleComponent</relType>
+    <generateCode>true</generateCode>
+    <relationshipInFromTypeGroup>k:actionMenuItemDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>k:actionExpressionDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- MultiRelationshipControlBehavior type -->
+  <type>
+    <name>MultiRelationshipControlBehavior</name>
+    <description>Describes the behavior of buttons in the relationship tab.</description>
+    <alias>k:multiRelationshipControlBehavior</alias>
+    <generateCode>true</generateCode>
+    <isMetadata>true</isMetadata>
+    <fieldGroups>
+      <fieldGroup>
+        <name>MultiRelationshipControlBehavior Details</name>
+        <alias>k:multiRelationshipControlBehaviorDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+  </type>
+  <!-- 'Action Menu Item' to 'MultiRelationshipControlBehavior' relationship -->
+  <relationship>
+    <alias>k:actionAppliesToRelationshipControlBehavior</alias>
+    <reverseAlias>k:relationshipControlBehaviorHasAction</reverseAlias>
+    <name>Action menu applies to console behavior</name>
+    <description>Associates an action menu item to a console behavior.</description>
+    <fromName>Action menu items</fromName>
+    <fromType>k:actionMenuItem</fromType>
+    <toName>Multi-relationship console behaviors</toName>
+    <toType>k:multiRelationshipControlBehavior</toType>
+    <relType>relManyToMany</relType>
+    <generateCode>true</generateCode>
+    <relationshipInFromTypeGroup>k:actionMenuItemDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>k:multiRelationshipControlBehaviorDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- 'Action Menu' type -->
+  <type>
+    <alias>k:actionMenu</alias>
+    <name>Action Menu</name>
+    <description>Defines an action menu.</description>
+    <generateCode>true</generateCode>
+    <isMetadata>true</isMetadata>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Action Menu Details</name>
+        <alias>k:actionMenuDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <boolField>
+        <name>Show new actions in toolbar</name>
+        <alias>k:showNewActionsButton</alias>
+        <description>Activates a drop down menu for creating new entites of any derived types relevant to the host.</description>
+        <fieldInGroup>k:actionMenuDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <name>Suppress all new actions</name>
+        <alias>k:suppressNewActions</alias>
+        <description>Completely removes any create actions from appearing anywhere on this menu.</description>
+        <hideField>true</hideField>
+        <hideFieldDefaultForm>true</hideFieldDefaultForm>
+      </boolField>
+      <boolField>
+        <name>Show export actions in toolbar</name>
+        <alias>k:showExportActionsButton</alias>
+        <description>Activates a drop down menu for exporting data to various file formats.</description>
+        <fieldInGroup>k:actionMenuDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <name>Show edit inline button in toolbar</name>
+        <alias>k:showEditInlineActionsButton</alias>
+        <description>Activates inline editing for reports.</description>
+        <fieldInGroup>k:actionMenuDetails</fieldInGroup>
+      </boolField>
+    </fields>
+  </type>
+  <!-- 'Action Menu Item Applies to Action Menu' relationship -->
+  <relationship>
+    <alias>k:actionAppliesToMenu</alias>
+    <reverseAlias>k:menuItems</reverseAlias>
+    <name>Action menu item applies to action menu</name>
+    <description>Associates an action menu item directly to an action menu.</description>
+    <fromName>Action menu item</fromName>
+    <fromType>k:actionMenuItem</fromType>
+    <toName>Action menu items</toName>
+    <toType>k:actionMenu</toType>
+    <relType>relComponentOf</relType>
+    <generateCode>true</generateCode>
+    <securesFrom>true</securesFrom>
+    <relationshipInFromTypeGroup>k:actionMenuItemDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>k:actionMenuDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- 'Suppressed Action Menu Item on Action Menu' relationship -->
+  <relationship>
+    <alias>k:actionSuppressedOnMenu</alias>
+    <reverseAlias>k:suppressedActions</reverseAlias>
+    <name>Action menu item suppressed for an action menu</name>
+    <description>Removes an action item from being applied on this particular menu.</description>
+    <fromName>Suppressed action menu item</fromName>
+    <fromType>k:actionMenuItem</fromType>
+    <toName>Action menu items suppressed</toName>
+    <toType>k:actionMenu</toType>
+    <relType>relManyToMany</relType>
+    <generateCode>true</generateCode>
+    <relationshipInFromTypeGroup>k:actionMenuItemDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>k:actionMenuDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- 'Suppressed Type to Action Menu (New Menu)' relationship -->
+  <relationship>
+    <alias>k:typeSuppressedForNewAction</alias>
+    <reverseAlias>k:suppressedTypesForNewMenu</reverseAlias>
+    <name>Types suppressed from the new menu</name>
+    <description>Explicitly removes a particular type from those available in the new menu.</description>
+    <fromName>Suppressed new action type</fromName>
+    <fromType>type</fromType>
+    <toName>New action types suppressed</toName>
+    <toType>k:actionMenu</toType>
+    <relType>relManyToMany</relType>
+    <generateCode>true</generateCode>
+    <relationshipInFromTypeGroup>typeDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>k:actionMenuDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- 'Included Action Menu Item as Button on Action Menu' relationship -->
+  <relationship>
+    <alias>k:actionIncludedAsButton</alias>
+    <reverseAlias>k:includeActionsAsButtons</reverseAlias>
+    <name>Actions included to be shown as buttons in quick menu</name>
+    <description>Explicitly includes an action shown as a button.</description>
+    <fromName>Action menu button</fromName>
+    <fromType>k:actionMenuItem</fromType>
+    <toName>Action menu buttons</toName>
+    <toType>k:actionMenu</toType>
+    <relType>relManyToMany</relType>
+    <securesFrom>true</securesFrom>
+    <generateCode>true</generateCode>
+    <relationshipInFromTypeGroup>k:actionMenuItemDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>k:actionMenuDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- 'Included Type to Action Menu (New Buttons)' relationship -->
+  <relationship>
+    <alias>k:typeIncludedForNewButton</alias>
+    <reverseAlias>k:includeTypesForNewButtons</reverseAlias>
+    <name>Types included to be shown as 'new' button in quick menu</name>
+    <description>Explicitly includes a particular type to be shown as a new button.</description>
+    <fromName>New action type</fromName>
+    <fromType>type</fromType>
+    <toName>New action types</toName>
+    <toType>k:actionMenu</toType>
+    <relType>relManyToMany</relType>
+    <generateCode>true</generateCode>
+    <relationshipInFromTypeGroup>typeDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>k:actionMenuDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- 'Behavior Action Menu' relationship -->
+  <relationship>
+    <alias>k:behaviorActionMenu</alias>
+    <reverseAlias>k:menuForBehavior</reverseAlias>
+    <name>Action menu</name>
+    <description>Links an individual behavior to an Action Menu definition.</description>
+    <fromName>Parent behavior</fromName>
+    <fromType>k:consoleBehavior</fromType>
+    <toName>Action menu</toName>
+    <toType>k:actionMenu</toType>
+    <relType>relSingleComponent</relType>
+    <securesTo>true</securesTo>
+    <generateCode>true</generateCode>
+    <relationshipInFromTypeGroup>k:consoleBehaviorDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>k:actionMenuDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- Workflow action menu item type -->
+  <type>
+    <alias>k:workflowActionMenuItem</alias>
+    <name>Workflow Action Menu Item</name>
+    <description>An action menu item that depends on a workflow.</description>
+    <inherits>k:actionMenuItem</inherits>
+    <generateCode>true</generateCode>
+    <isMetadata>true</isMetadata>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Workflow Action Menu Item Details</name>
+        <alias>k:workflowActionMenuItemDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+  </type>
+  <!-- 'Workflow to run' relationship -->
+  <relationship>
+    <alias>k:actionMenuItemToWorkflow</alias>
+    <reverseAlias>k:workflowUsedInActionMenuItems</reverseAlias>
+    <name>Workflow to run</name>
+    <description>Links a particular action menu item to a workflow that it will run.</description>
+    <fromName>Workflow action</fromName>
+    <fromType>k:workflowActionMenuItem</fromType>
+    <toName>Workflow</toName>
+    <toType>workflow</toType>
+    <relType>relDependantOf</relType>
+    <generateCode>true</generateCode>
+    <relationshipInFromTypeGroup>k:workflowActionMenuItemDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>workflowDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- Generate Document action menu item type -->
+  <type>
+    <alias>k:generateDocumentActionMenuItem</alias>
+    <name>Generate Document Action Menu Item</name>
+    <description>An action menu item that depends on a report template.</description>
+    <inherits>k:actionMenuItem</inherits>
+    <generateCode>true</generateCode>
+    <isMetadata>true</isMetadata>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Generate Document Action Menu Item Details</name>
+        <alias>k:generateDocumentActionMenuItemDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+  </type>
+  <!-- 'Report template to generate' relationship -->
+  <relationship>
+    <alias>k:actionMenuItemToReportTemplate</alias>
+    <reverseAlias>k:reportTemplateUsedInActionMenuItems</reverseAlias>
+    <name>Report template for generation</name>
+    <description>Links a particular action menu item to a report template that it will use to generate a document.</description>
+    <fromName>Generate document action</fromName>
+    <fromType>k:generateDocumentActionMenuItem</fromType>
+    <toName>Report template</toName>
+    <toType>reportTemplate</toType>
+    <relType>relDependantOf</relType>
+    <generateCode>true</generateCode>
+    <relationshipInFromTypeGroup>k:generateDocumentActionMenuItemDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>reportTemplateDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- Navigation Element To Icon relationship -->
+  <relationship>
+    <alias>k:navigationElementIcon</alias>
+    <name>Icon</name>
+    <description>The icon to show for a navigation element.</description>
+    <fromType>k:navigationElement</fromType>
+    <toType>iconFileType</toType>
+    <relType>relCustom</relType>
+    <cardinality>manyToOne</cardinality>
+    <generateCode>true</generateCode>
+    <cloneAction>cloneReferences</cloneAction>
+    <reverseCloneAction>drop</reverseCloneAction>
+    <cascadeDelete>false</cascadeDelete>
+    <cascadeDeleteTo>false</cascadeDeleteTo>
+    <implicitInSolution>true</implicitInSolution>
+    <reverseImplicitInSolution>false</reverseImplicitInSolution>
+    <relationshipInFromTypeGroup>k:navigationElementDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>iconFileTypeDetails</relationshipInToTypeGroup>
+    <securesTo>true</securesTo>
+  </relationship>
+
+  <relationship>
+    <alias>k:applicationIcon</alias>
+    <name>Icon</name>
+    <description>The icon to show for an application.</description>
+    <fromType>solution</fromType>
+    <toType>iconFileType</toType>
+    <relType>relCustom</relType>
+    <cardinality>manyToOne</cardinality>
+    <generateCode>true</generateCode>
+    <cloneAction>cloneReferences</cloneAction>
+    <reverseCloneAction>drop</reverseCloneAction>
+    <cascadeDelete>false</cascadeDelete>
+    <cascadeDeleteTo>false</cascadeDeleteTo>
+    <implicitInSolution>true</implicitInSolution>
+    <reverseImplicitInSolution>false</reverseImplicitInSolution>    
+    <relationshipInToTypeGroup>iconFileTypeDetails</relationshipInToTypeGroup>
+    <hideOnFromType>true</hideOnFromType>
+    <securesTo>true</securesTo>
+  </relationship>
+  
+  
+  <!-- Navigation config button type -->
+  <type>
+    <alias>k:navigationConfigButton</alias>
+    <name>Navigation Configuration Button</name>
+    <description>Represents the navigation configuration button.</description>
+    <generateCode>true</generateCode>
+    <isMetadata>true</isMetadata>
+  </type>
+  <!-- Type To Icon relationship -->
+  <relationship>
+    <alias>k:typeIcon</alias>
+    <name>Type icon</name>
+    <description>The icon to show for a type.</description>
+    <fromType>type</fromType>
+    <toType>iconFileType</toType>
+    <relType>relCustom</relType>
+    <cardinality>manyToOne</cardinality>
+    <generateCode>true</generateCode>
+    <cloneAction>cloneReferences</cloneAction>
+    <reverseCloneAction>drop</reverseCloneAction>
+    <cascadeDelete>false</cascadeDelete>
+    <cascadeDeleteTo>false</cascadeDeleteTo>
+    <implicitInSolution>true</implicitInSolution>
+    <reverseImplicitInSolution>false</reverseImplicitInSolution>
+    <relationshipInFromTypeGroup>typeDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>iconFileTypeDetails</relationshipInToTypeGroup>
+  </relationship>
+</resources>

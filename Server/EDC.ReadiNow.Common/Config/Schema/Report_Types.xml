@@ -1,0 +1,1866 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="core" xmlns:k="console" xsi:schemaLocation=". ../Core.xsd k ../Console.xsd" defaultSolution="coreSolution">
+  <!--Copyright 2011-2016 Global Software Innovation Pty Ltd-->
+  <!-- 
+  Report Entity Model. This document is organized as follows:
+  - Reports: report type and other general objects for reports
+  - Report Nodes: reportNode and derived types for describing the report data source tree
+  - Report Expressions: reportExpression and derived types for describing data expressions (individual columns or calculations)
+  
+  Types, fields and relationships generally indicate their corresponding StructuredQuery member.
+  -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    REPORTS                                                       -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- reportComponent -->
+  <type>
+    <alias>reportComponent</alias>
+    <name>Report Component</name>
+    <description>Base type for every possible component of a report. Allows 'create' rules to be assigned to all of the parts of a report.</description>
+    <inherits>selfServeComponent</inherits>
+    <generateCode>true</generateCode>
+  </type>
+  <!-- report -->
+  <type>
+    <alias>report</alias>
+    <name>Report</name>
+    <description>A platform report.</description>
+    <generateCode>true</generateCode>
+    <inherits>reportComponent,resourcePicker,resourceViewer,visualController,privatelyOwnable</inherits>
+    <isMetadata>true</isMetadata>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Report Details</name>
+        <alias>reportDetails</alias>
+      </fieldGroup>
+      <fieldGroup>
+        <name>Legacy Field Details</name>
+        <alias>legacyReportDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <boolField>
+        <name>Show sub totals</name>
+        <alias>rollupSubTotals</alias>
+        <defaultValue>false</defaultValue>
+        <fieldInGroup>reportDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <name>Show grand totals</name>
+        <alias>rollupGrandTotals</alias>
+        <defaultValue>false</defaultValue>
+        <fieldInGroup>reportDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <name>Show row counts</name>
+        <alias>rollupRowCounts</alias>
+        <defaultValue>false</defaultValue>
+        <fieldInGroup>reportDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <name>Show row labels</name>
+        <alias>rollupRowLabels</alias>
+        <defaultValue>false</defaultValue>
+        <fieldInGroup>reportDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <name>Show option labels</name>
+        <alias>rollupOptionLabels</alias>
+        <defaultValue>false</defaultValue>
+        <fieldInGroup>reportDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <name>Hide action bar</name>
+        <alias>hideActionBar</alias>
+        <defaultValue>false</defaultValue>
+        <fieldInGroup>reportDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <name>Hide report header</name>
+        <alias>hideReportHeader</alias>
+        <defaultValue>false</defaultValue>
+        <fieldInGroup>reportDetails</fieldInGroup>
+      </boolField>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <!--    LEGACY FIELDS                                                 -->
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <xmlField>
+        <name>Analyzer XML</name>
+        <alias>analyzerXml</alias>
+        <fieldInGroup>legacyReportDetails</fieldInGroup>
+      </xmlField>
+      <xmlField>
+        <name>Data view XML</name>
+        <alias>dataViewXml</alias>
+        <fieldInGroup>legacyReportDetails</fieldInGroup>
+      </xmlField>
+      <xmlField>
+        <name>Calculated results XML</name>
+        <alias>calculatedResultXml</alias>
+        <fieldInGroup>legacyReportDetails</fieldInGroup>
+      </xmlField>
+      <xmlField>
+        <name>Client aggregates XML</name>
+        <alias>clientAggregateXml</alias>
+        <fieldInGroup>legacyReportDetails</fieldInGroup>
+      </xmlField>
+      <xmlField>
+        <name>Report analyzer structure view XML</name>
+        <alias>reportAnalyzerStructureViewXml</alias>
+        <fieldInGroup>legacyReportDetails</fieldInGroup>
+      </xmlField>
+      <guidField>
+        <name>Default data view Id</name>
+        <alias>defaultDataViewId</alias>
+        <fieldInGroup>legacyReportDetails</fieldInGroup>
+      </guidField>
+      <boolField>
+        <name>Is a calculated field report</name>
+        <alias>isCalculatedFieldReport</alias>
+        <defaultValue>false</defaultValue>
+        <fieldInGroup>legacyReportDetails</fieldInGroup>
+      </boolField>
+      <xmlField>
+        <name>Query XML</name>
+        <alias>queryXml</alias>
+        <fieldInGroup>legacyReportDetails</fieldInGroup>
+      </xmlField>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <!--    END LEGACY FIELDS                                             -->
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    </fields>
+    <relationships>
+      <!-- conditions relationship gets inherited from reportConditionGroup -->
+      <relationship>
+        <alias>rootNode</alias>
+        <!-- Structured.StructuredQuery.RootEntity -->
+        <toType>reportNode</toType>
+        <name>Root node</name>
+        <description>The root data source node for a report.</description>
+        <relType>relSingleComponent</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>reportDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>reportNodeDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <alias>reportColumns</alias>
+        <!-- Structured.StructuredQuery.SelectColumns -->
+        <reverseAlias>columnForReport</reverseAlias>
+        <toType>reportColumn</toType>
+        <name>Columns</name>
+        <relType>relComponents</relType>
+        <cardinality>oneToMany</cardinality>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>reportDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>reportColumnDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <alias>reportOrderBys</alias>
+        <!-- Structured.StructuredQuery.OrderBy -->
+        <toType>reportOrderBy</toType>
+        <name>Order by</name>
+        <relType>relComponents</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>reportDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>reportOrderByDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <alias>hasConditions</alias>
+        <!-- Structured.QueryCondition -->
+        <toType>reportCondition</toType>
+        <name>Conditions</name>
+        <relType>relComponents</relType>
+        <description>The conditions in this report.</description>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>reportDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>reportConditionDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <alias>reportRowGroups</alias>
+        <!-- Structured.StructuredQuery.OrderBy -->
+        <toType>reportRowGroup</toType>
+        <name>Row groups</name>
+        <relType>relComponents</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>reportDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>reportRowGroupDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+    </relationships>
+    <onBeforeSave>reportEventTarget</onBeforeSave>
+    <onAfterSave>reportEventTarget</onAfterSave>
+    <onSaveFailed>reportEventTarget</onSaveFailed>
+  </type>
+  <target>
+    <alias>reportEventTarget</alias>
+    <typeName>EDC.ReadiNow.Model.EventClasses.ReportEventTarget</typeName>
+    <assemblyName>EDC.ReadiNow.Common, Version=1.0.0.0, Culture=neutral</assemblyName>
+    <ordinal>0</ordinal>
+  </target>
+  <!-- reportColumn -->
+  <type>
+    <alias>reportColumn</alias>
+    <!-- Structured.SelectColumn -->
+    <name>Column</name>
+    <description>A column in a report</description>
+    <inherits>reportComponent</inherits>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Column Details</name>
+        <alias>reportColumnDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <!-- reportColumn.name maps to Structured.SelectColumn.DisplayName -->
+      <!-- Structured.SelectColumn.ColumnName is deprecated -->
+      <!-- Structured.SelectColumn.ColumnId is deprecated, use the resource ID of the column instead -->
+      <intField>
+        <!-- Used to order items in Structured.StructuredQuery.SelectColumns list -->
+        <!-- However, don't rely on a one-to-one mapping, as upgrade logic may remove a column without renumbering other columns -->
+        <alias>columnDisplayOrder</alias>
+        <name>Display order</name>
+        <description>Indicates positional order of the columns.</description>
+        <fieldInGroup>reportColumnDetails</fieldInGroup>
+      </intField>
+      <boolField>
+        <alias>columnIsHidden</alias>
+        <!-- Structured.SelectColumn.IsHidden -->
+        <name>Is hidden</name>
+        <description>Indicates whether a report column is hidden.</description>
+        <fieldInGroup>reportColumnDetails</fieldInGroup>
+      </boolField>
+    </fields>
+    <relationships>
+      <relationship>
+        <alias>columnExpression</alias>
+        <reverseAlias>expressionForColumn</reverseAlias>
+        <!-- Structured.SelectColumn.Expression -->
+        <toType>reportExpression</toType>
+        <name>Column expression</name>
+        <relType>relSingleComponent</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>reportColumnDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>reportExpressionDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <alias>columnFormattingRule</alias>
+        <!-- Formatting.ColumnFormatting.FormattingRule -->
+        <toType>formattingRule</toType>
+        <name>Column formatting rule</name>
+        <relType>relSingleComponent</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>reportColumnDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>formattingRuleDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <alias>columnDisplayFormat</alias>
+        <!-- ColumnFormatting-->
+        <toType>displayFormat</toType>
+        <name>Column display formatting</name>
+        <relType>relSingleComponent</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>reportColumnDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>displayFormatDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- reportOrderBy -->
+  <type>
+    <alias>reportOrderBy</alias>
+    <!-- Structured.OrderByItem -->
+    <name>Report Order</name>
+    <description>A column in a report</description>
+    <inherits>reportComponent</inherits>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Report Order Details</name>
+        <alias>reportOrderByDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <!-- reportColumn.name maps to Structured.SelectColumn.DisplayName -->
+      <!-- Structured.SelectColumn.ColumnName is deprecated -->
+      <!-- Structured.SelectColumn.ColumnId is deprecated, use the resource ID of the column instead -->
+      <boolField>
+        <alias>reverseOrder</alias>
+        <!-- Structured.SelectColumn.IsHidden -->
+        <name>Reverse order</name>
+        <description>Indicate that rows are sorted in the reverse order.</description>
+        <fieldInGroup>reportOrderByDetails</fieldInGroup>
+      </boolField>
+      <intField>
+        <alias>orderPriority</alias>
+        <name>Order priority</name>
+        <description>Indicate the priority of this ordering. Starting from zero and increasing as priority decreases.</description>
+        <fieldInGroup>reportOrderByDetails</fieldInGroup>
+      </intField>
+    </fields>
+    <relationships>
+      <relationship>
+        <alias>orderByExpression</alias>
+        <!-- Structured.SelectColumn.Expression -->
+        <toType>reportExpression</toType>
+        <name>Column expression</name>
+        <relType>relSingleComponent</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>reportOrderByDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>reportExpressionDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- Drill Down Report -->
+  <!-- (Do we want to maintain this going forwards?) -->
+  <relationship>
+    <name>Drill down report</name>
+    <description>The drill down report for current report</description>
+    <alias>drillDownReport</alias>
+    <reverseAlias>reportForDrillDown</reverseAlias>
+    <relType>relLookup</relType>
+    <fromType>report</fromType>
+    <toType>report</toType>
+    <generateCode>true</generateCode>
+    <relationshipInFromTypeGroup>reportDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>reportDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    CONDITIONS, etc                                               -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- reportCondition -->
+  <type>
+    <alias>reportCondition</alias>
+    <!-- Structured.Condition, Structured.QueryCondition -->
+    <name>Condition</name>
+    <description>A filter/condition rule in a report.</description>
+    <!-- Used by both analyser and conditional-formatting. -->
+    <inherits>reportComponent</inherits>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Condition Details</name>
+        <alias>reportConditionDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <!-- condition.name is the name that is shown in the analyzer for this condition. -->
+      <intField>
+        <!-- Used to order items in Structured.StructuredQuery.SelectColumns list -->
+        <!-- However, don't rely on a one-to-one mapping, as upgrade logic may remove a condition without renumbering other columns -->
+        <alias>conditionDisplayOrder</alias>
+        <name>Display order</name>
+        <description>Indicates positional order of the condition.</description>
+        <fieldInGroup>reportConditionDetails</fieldInGroup>
+      </intField>
+      <boolField>
+        <alias>conditionIsHidden</alias>
+        <!-- not present in legacy model -->
+        <name>Is hidden</name>
+        <description>Indicates that the condition is hidden from the user when viewing/running the report.</description>
+        <fieldInGroup>reportConditionDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <alias>conditionIsLocked</alias>
+        <!-- not present in legacy model -->
+        <name>Is hidden</name>
+        <description>Indicates that a condition cannot be changed when viewing/running the report.</description>
+        <fieldInGroup>reportConditionDetails</fieldInGroup>
+      </boolField>
+    </fields>
+    <relationships>
+      <relationship>
+        <alias>conditionExpression</alias>
+        <!-- Structured.QueryCondition.Expression -->
+        <toType>reportExpression</toType>
+        <name>Condition expression</name>
+        <relType>relSingleComponent</relType>
+        <description>The expression that a condition is being applied to.</description>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>reportConditionDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>reportExpressionDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <alias>operator</alias>
+        <!-- Structured.QueryCondition.Operator -->
+        <toType>operatorEnum</toType>
+        <name>Condition operator</name>
+        <relType>relChoiceField</relType>
+        <description>The type of condition being applied.</description>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>reportConditionDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>parameterDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <!-- This condition parameter in turn holds an typedValue (aka activityArgument)
+        that in turn represents the type of the argument. (not the type of the column/expression).
+        And the default value of the parameter represents the current value saved into the analyser.
+        Note: resource selections should get stored in a resourceListArgument (which can hold multiple values). (Use this even if only 0 or 1 were actually selected) -->
+        <alias>conditionParameter</alias>
+        <!-- Structured.QueryCondition.Arguments[0] -->
+        <toType>parameter</toType>
+        <name>Condition parameter</name>
+        <relType>relSingleComponent</relType>
+        <description>The type of condition being applied.</description>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>reportConditionDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>parameterDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <alias>conditionParameterPicker</alias>
+        <reverseAlias>resourcePickerForReportConditionParameter</reverseAlias>
+        <name>Report condition parameter picker</name>
+        <description>Resource picker to use when picking instances of a given type for report condition parameter. Resource picker could be a report or a hierarchy.</description>
+        <toType>resourcePicker</toType>
+        <relType>relLookup</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>reportConditionDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>parameterDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <alias>columnForCondition</alias>
+        <reverseAlias>columnHasCondition</reverseAlias>
+        <toType>reportColumn</toType>
+        <name>Condition to column association</name>
+        <relType>relLookup</relType>
+        <description>The column associated to the condition.</description>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>reportConditionDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>reportColumnDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+    </relationships>
+  </type>
+  <enumType>
+    <alias>operatorEnum</alias>
+    <!-- Structured.ConditionType -->
+    <name>Condition Operator</name>
+    <generateCode>true</generateCode>
+    <inherits>enumValue</inherits>
+    <enumValues>
+      <!-- There is no 'unspecified'. Just set to null. -->
+      <operatorEnum>
+        <alias>operEqual</alias>
+        <name>Equal</name>
+      </operatorEnum>
+      <operatorEnum>
+        <alias>operNotEqual</alias>
+        <name>Not Equal</name>
+      </operatorEnum>
+      <operatorEnum>
+        <alias>operGreaterThan</alias>
+        <name>Greater Than</name>
+      </operatorEnum>
+      <operatorEnum>
+        <alias>operGreaterThanOrEqual</alias>
+        <name>Greater Than Or Equal</name>
+      </operatorEnum>
+      <operatorEnum>
+        <alias>operLessThan</alias>
+        <name>Less Than</name>
+      </operatorEnum>
+      <operatorEnum>
+        <alias>operLessThanOrEqual</alias>
+        <name>Less Than Or Equal</name>
+      </operatorEnum>
+      <operatorEnum>
+        <alias>operContains</alias>
+        <name>Contains</name>
+      </operatorEnum>
+      <operatorEnum>
+        <alias>operStartsWith</alias>
+        <name>Starts With</name>
+      </operatorEnum>
+      <operatorEnum>
+        <alias>operEndsWith</alias>
+        <name>Ends With</name>
+      </operatorEnum>
+      <operatorEnum>
+        <alias>operIsTrue</alias>
+        <name>Is True</name>
+      </operatorEnum>
+      <operatorEnum>
+        <alias>operIsFalse</alias>
+        <name>Is False</name>
+      </operatorEnum>
+      <operatorEnum>
+        <alias>operIsNotNull</alias>
+        <name>Is Not Null</name>
+      </operatorEnum>
+      <operatorEnum>
+        <alias>operIsNull</alias>
+        <name>Is Null</name>
+      </operatorEnum>
+      <operatorEnum>
+        <alias>operAnyAboveStructureLevel</alias>
+        <name>Above Structure Level</name>
+      </operatorEnum>
+      <operatorEnum>
+        <alias>operAnyAtOrAboveStructureLevel</alias>
+        <name>At Or Above Structure Level</name>
+      </operatorEnum>
+      <operatorEnum>
+        <alias>operAnyBelowStructureLevel</alias>
+        <name>Below Structure Level</name>
+      </operatorEnum>
+      <operatorEnum>
+        <alias>operAnyAtOrBelowStructureLevel</alias>
+        <name>At Or Below Structure Level</name>
+      </operatorEnum>
+      <operatorEnum>
+        <alias>operFullTextSearch</alias>
+        <name>Full Text Search</name>
+      </operatorEnum>
+      <operatorEnum>
+        <alias>operAnyOf</alias>
+        <name>Any Of</name>
+      </operatorEnum>
+      <operatorEnum>
+        <alias>operAnyExcept</alias>
+        <name>Any Except</name>
+      </operatorEnum>
+      <operatorEnum>
+        <alias>operCurrentUser</alias>
+        <name>Current User</name>
+      </operatorEnum>
+      <operatorEnum>
+        <alias>operDateEquals</alias>
+        <name>Date Equals</name>
+      </operatorEnum>
+      <operatorEnum>
+        <alias>operToday</alias>
+        <name>Today</name>
+      </operatorEnum>
+      <operatorEnum>
+        <alias>operThisWeek</alias>
+        <name>This Week</name>
+      </operatorEnum>
+      <operatorEnum>
+        <alias>operThisMonth</alias>
+        <name>This Month</name>
+      </operatorEnum>
+      <operatorEnum>
+        <alias>operThisQuarter</alias>
+        <name>This Quarter</name>
+      </operatorEnum>
+      <operatorEnum>
+        <alias>operThisYear</alias>
+        <name>This Year</name>
+      </operatorEnum>
+      <operatorEnum>
+        <alias>operCurrentFinancialYear</alias>
+        <name>Current Financial Year</name>
+      </operatorEnum>
+      <operatorEnum>
+        <alias>operLastNDays</alias>
+        <name>Last N Days</name>
+      </operatorEnum>
+      <operatorEnum>
+        <alias>operLastNDaysTillNow</alias>
+        <name>Last N Days Till Now</name>
+      </operatorEnum>
+      <operatorEnum>
+        <alias>operNextNDays</alias>
+        <name>Next N Days</name>
+      </operatorEnum>
+      <operatorEnum>
+        <alias>operNextNDaysFromNow</alias>
+        <name>Next N Days From Now</name>
+      </operatorEnum>
+      <operatorEnum>
+        <alias>operLastNWeeks</alias>
+        <name>Last N Weeks</name>
+      </operatorEnum>
+      <operatorEnum>
+        <alias>operNextNWeeks</alias>
+        <name>Next N Weeks</name>
+      </operatorEnum>
+      <operatorEnum>
+        <alias>operLastNMonths</alias>
+        <name>Last N Months</name>
+      </operatorEnum>
+      <operatorEnum>
+        <alias>operNextNMonths</alias>
+        <name>Next N Months</name>
+      </operatorEnum>
+      <operatorEnum>
+        <alias>operLastNQuarters</alias>
+        <name>Last N Quarters</name>
+      </operatorEnum>
+      <operatorEnum>
+        <alias>operNextNQuarters</alias>
+        <name>Next N Quarters</name>
+      </operatorEnum>
+      <operatorEnum>
+        <alias>operLastNYears</alias>
+        <name>Last N Years</name>
+      </operatorEnum>
+      <operatorEnum>
+        <alias>operNextNYears</alias>
+        <name>Next N Years</name>
+      </operatorEnum>
+      <operatorEnum>
+        <alias>operLastNFinancialYears</alias>
+        <name>Last N Financial Years</name>
+      </operatorEnum>
+      <operatorEnum>
+        <alias>operNextNFinancialYears</alias>
+        <name>Next N Financial Years</name>
+      </operatorEnum>
+    </enumValues>
+  </enumType>
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    REPORT NODES                                                  -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- reportNode -->
+  <type>
+    <alias>reportNode</alias>
+    <!-- i.e. Structured.Entity -->
+    <name>Report Node</name>
+    <description>A node in the report tree. That is a source of entities, related entities, or grouping information.</description>
+    <inherits>reportComponent</inherits>
+    <generateCode>true</generateCode>
+    <isAbstract>true</isAbstract>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Report Node Details</name>
+        <alias>reportNodeDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <relationships>
+      <relationship>
+        <name>Child nodes</name>
+        <alias>relatedReportNodes</alias>
+        <!-- Structured.Entity.RelatedEntities -->
+        <reverseAlias>parentReportNode</reverseAlias>
+        <relType>relComponents</relType>
+        <generateCode>true</generateCode>
+        <description>Indicates that a report uses a definition.</description>
+        <toType>reportNode</toType>
+        <relationshipInFromTypeGroup>reportNodeDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>reportNodeDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- resourceReportNode -->
+  <type>
+    <alias>resourceReportNode</alias>
+    <!-- i.e. Structured.ResourceEntity -->
+    <name>Resource Node</name>
+    <description>A node in the report tree that returns resources.</description>
+    <generateCode>true</generateCode>
+    <inherits>reportNode</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Resource Node Details</name>
+        <alias>resourceReportNodeDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <boolField>
+        <alias>exactType</alias>
+        <!-- Structured.ResourceEntity.ExactType -->
+        <name>Exact type</name>
+        <fieldInGroup>resourceReportNodeDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <alias>targetMustExist</alias>
+        <!-- RelatedResource.ResourceMustExist, DownCastResource.MustExist -->
+        <name>Resource must exist</name>
+        <description>If true then a row will only be shown if the target exists (inner join). If false, then the row will be shown regardless (left join).</description>
+        <fieldInGroup>resourceReportNodeDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <alias>targetNeedNotExist</alias>
+        <!-- RelatedResource.ResourceNeedNotExist -->
+        <name>Resource need not exist</name>
+        <description>If true then a constraint applied to the target does not affect the parent (like a left join). If false, then constraints will apply to the overall report.</description>
+        <fieldInGroup>resourceReportNodeDetails</fieldInGroup>
+      </boolField>
+    </fields>
+    <relationships>
+      <relationship>
+        <name>Node resource type</name>
+        <alias>resourceReportNodeType</alias>
+        <!-- Structured.ResourceEntity.EntityTypeId -->
+        <reverseAlias>usedByResourceReportNode</reverseAlias>
+        <relType>relDependantOf</relType>
+        <generateCode>true</generateCode>
+        <description>The type of resource being reported.</description>
+        <toType>type</toType>
+        <fromName>Report node</fromName>
+        <toName>Node resource type</toName>
+        <relationshipInFromTypeGroup>resourceReportNodeDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>typeDetails</relationshipInToTypeGroup>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- relationshipReportNode -->
+  <type>
+    <alias>relationshipReportNode</alias>
+    <!-- i.e. Structured.RelatedResource -->
+    <name>Relationship Node</name>
+    <description>A node in the report tree that follows a relationship.</description>
+    <generateCode>true</generateCode>
+    <inherits>resourceReportNode</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Relationship Node Details</name>
+        <alias>relationshipReportNodeDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <boolField>
+        <alias>followInReverse</alias>
+        <!-- Structured.RelatedResource.RelationshipDirection -->
+        <name>Follow in reverse</name>
+        <fieldInGroup>relationshipReportNodeDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <alias>followRecursive</alias>
+        <!-- Structured.RelatedResource.Recursive = RecursionMode.Recursive -->
+        <name>Follow recursive</name>
+        <fieldInGroup>relationshipReportNodeDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <alias>includeSelfInRecursive</alias>
+        <!-- Structured.RelatedResource.Recursive = RecursionMode.RecursiveWithSelf -->
+        <name>Include self in recursive</name>
+        <fieldInGroup>relationshipReportNodeDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <alias>constrainParent</alias>
+        <!-- Structured.RelatedResource.ConstrainParent -->
+        <name>Constrain parent</name>
+        <description>If true then a row from the parent node will only be shown if the target exists. I.e. force the relationship to behave like an 'inner' join to the immediate parent.</description>
+        <fieldInGroup>relationshipReportNodeDetails</fieldInGroup>
+      </boolField>
+      <boolField>
+        <alias>checkExistenceOnly</alias>
+        <!-- Structured.RelatedResource.CheckExistenceOnly -->
+        <name>Check existence only</name>
+        <description>If true then the relationship is represented in the query as an 'exists' clause rather than a join.</description>
+        <fieldInGroup>relationshipReportNodeDetails</fieldInGroup>
+      </boolField>
+    </fields>
+    <relationships>
+      <relationship>
+        <name>Follow relationship</name>
+        <alias>followRelationship</alias>
+        <!-- Structured.ResourceEntity.RelationshipTypeId -->
+        <reverseAlias>usedByRelationshipReportNode</reverseAlias>
+        <relType>relLookup</relType>
+        <!-- maybe ... warn on delete, maybe? dependency maybe? -->
+        <generateCode>true</generateCode>
+        <description>The type of relationship being followed.</description>
+        <toType>relationship</toType>
+        <relationshipInFromTypeGroup>relationshipReportNodeDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>relationshipDetails</relationshipInToTypeGroup>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- derivedTypeReportNode -->
+  <type>
+    <name>Derived Type Node</name>
+    <alias>derivedTypeReportNode</alias>
+    <!-- i.e. Structured.DownCastResource -->
+    <description>A node in the report tree that allows access to fields and relationships of a derived type.</description>
+    <generateCode>true</generateCode>
+    <inherits>resourceReportNode</inherits>
+  </type>
+  <!-- aggregateReportNode -->
+  <type>
+    <name>Aggregate Node</name>
+    <alias>aggregateReportNode</alias>
+    <!-- i.e. Structured.AggregateEntity -->
+    <description>Represents a reporting node that returns summarized information.</description>
+    <generateCode>true</generateCode>
+    <inherits>reportNode</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Aggregate Node Details</name>
+        <alias>aggregateReportNodeDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <relationships>
+      <relationship>
+        <name>Grouped node</name>
+        <alias>groupedNode</alias>
+        <reverseAlias>parentAggregatedNode</reverseAlias>
+        <!-- Structured.AggregateEntity.GroupedEntity -->
+        <relType>relSingleComponent</relType>
+        <cardinality>oneToOne</cardinality>
+        <generateCode>true</generateCode>
+        <toType>reportNode</toType>
+        <relationshipInFromTypeGroup>aggregateReportNodeDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>reportNodeDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <name>Group by</name>
+        <alias>groupedBy</alias>
+        <reverseAlias>parentGroupedBy</reverseAlias>
+        <!-- Structured.AggregateEntity.GroupedBy -->
+        <relType>relComponents</relType>
+        <generateCode>true</generateCode>
+        <toType>reportExpression</toType>
+        <relationshipInFromTypeGroup>aggregateReportNodeDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>reportExpressionDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    REPORT EXPRESSIONS                                            -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--
+  The following expression types are not represented in the entity model:
+    IdExpression (open to discussion)
+    CalculationExpression, IfElseExpression, LiteralExpression, ComparisonExpression, LogicalExpression
+  -->
+  <!-- reportExpression -->
+  <type>
+    <alias>reportExpression</alias>
+    <!-- Structured.ScalarExpression -->
+    <name>Report Expression</name>
+    <description>An field, calculation or other result in a report.</description>
+    <inherits>reportComponent</inherits>
+    <generateCode>true</generateCode>
+    <isAbstract>true</isAbstract>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Report Expression Details</name>
+        <alias>reportExpressionDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <relationships>
+      <relationship>
+        <name>Result type</name>
+        <alias>reportExpressionResultType</alias>
+        <!-- Not currently represented in StructuredQuery, except for Structured.ScriptExpression.ResultType -->
+        <!-- Note: we'd really like this to just be relSingleComponent, but some reports (namely legacy converted ones) reuse result types -->
+        <relType>relCustom</relType>
+        <cardinality>manyToOne</cardinality>
+        <cascadeDelete>true</cascadeDelete>
+        <cascadeDeleteTo>false</cascadeDeleteTo>
+        <cloneAction>cloneEntities</cloneAction>
+        <reverseCloneAction>drop</reverseCloneAction>
+        <implicitInSolution>true</implicitInSolution>
+        <reverseImplicitInSolution>false</reverseImplicitInSolution>
+        <generateCode>true</generateCode>
+        <toType>activityArgument</toType>
+        <relationshipInFromTypeGroup>reportExpressionDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>activityArgumentDetails</relationshipInToTypeGroup>
+        <!-- aka typedValue -->
+        <securesTo>true</securesTo>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- nodeExpression -->
+  <type>
+    <alias>nodeExpression</alias>
+    <!-- Structured.EntityExpression -->
+    <name>Report Node Expression</name>
+    <description>An field, calculation or other result in a report, that refers to a report data source node.</description>
+    <generateCode>true</generateCode>
+    <inherits>reportExpression</inherits>
+    <isAbstract>true</isAbstract>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Report Node Expression Details</name>
+        <alias>nodeExpressionDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <relationships>
+      <relationship>
+        <name>Source node</name>
+        <alias>sourceNode</alias>
+        <!-- Structured.EntityExpression.NodeId -->
+        <reverseAlias>nodeUsedByExpression</reverseAlias>
+        <relType>relDependantOf</relType>
+        <generateCode>true</generateCode>
+        <toType>reportNode</toType>
+        <relationshipInFromTypeGroup>nodeExpressionDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>reportNodeDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- idExpression -->
+  <type>
+    <alias>idExpression</alias>
+    <!-- Structured.IdExpression -->
+    <name>Report Resource Id Expression</name>
+    <description>An expression that evaluates to the Id of the resource for the node.</description>
+    <generateCode>true</generateCode>
+    <inherits>nodeExpression</inherits>
+  </type>
+  <!-- fieldExpression -->
+  <type>
+    <alias>fieldExpression</alias>
+    <!-- Structured.ResourceDataColumn -->
+    <name>Field Expression</name>
+    <description>Represents a field being shown or used in a report.</description>
+    <generateCode>true</generateCode>
+    <inherits>nodeExpression</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Field Expression Details</name>
+        <alias>fieldExpressionDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <relationships>
+      <relationship>
+        <name>Field</name>
+        <alias>fieldExpressionField</alias>
+        <!-- Structured.ResourceDataColumn.FieldId -->
+        <reverseAlias>fieldUsedByExpression</reverseAlias>
+        <relType>relDependantOf</relType>
+        <generateCode>true</generateCode>
+        <toType>field</toType>
+        <relationshipInFromTypeGroup>fieldExpressionDetails</relationshipInFromTypeGroup>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- resourceExpression -->
+  <type>
+    <alias>resourceExpression</alias>
+    <!-- Structured.ResourceExpression -->
+    <name>Resource Expression</name>
+    <description>Represents a resource being shown or used in a report.</description>
+    <generateCode>true</generateCode>
+    <inherits>nodeExpression</inherits>
+  </type>
+  <!-- scriptExpression -->
+  <type>
+    <alias>scriptExpression</alias>
+    <!-- Structured.ScriptExpression -->
+    <name>Script Expression</name>
+    <description>Represents a calculation or script being shown or used in a report.</description>
+    <generateCode>true</generateCode>
+    <inherits>nodeExpression</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Script Expression Details</name>
+        <alias>scriptExpressionDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>reportScript</alias>
+        <!-- Structured.ScriptExpression.Script -->
+        <name>Check existence only</name>
+        <description>If true then the relationship is represented in the query as an 'exists' clause rather than a join.</description>
+        <fieldInGroup>scriptExpressionDetails</fieldInGroup>
+      </stringField>
+    </fields>
+  </type>
+  <!-- columnReferenceExpression -->
+  <type>
+    <alias>columnReferenceExpression</alias>
+    <!-- Structured.ColumnReference -->
+    <name>Column Reference Expression</name>
+    <description>A report expression that points to a column of the report.</description>
+    <generateCode>true</generateCode>
+    <inherits>reportExpression</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Column Reference Expression Details</name>
+        <alias>columnReferenceExpressionDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <relationships>
+      <relationship>
+        <name>Expression references column</name>
+        <alias>expressionReferencesColumn</alias>
+        <!-- Structured.ResourceDataColumn.FieldId -->
+        <relType>relDependantOf</relType>
+        <generateCode>true</generateCode>
+        <toType>reportColumn</toType>
+        <relationshipInFromTypeGroup>columnReferenceExpressionDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>reportColumnDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- aggregateExpression -->
+  <type>
+    <alias>aggregateExpression</alias>
+    <!-- Structured.AggregateExpression -->
+    <name>Aggregate Expression</name>
+    <description>Represents a summarization being shown or used in a report.</description>
+    <generateCode>true</generateCode>
+    <inherits>nodeExpression</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Aggregate Expression Details</name>
+        <alias>aggregateExpressionDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <relationships>
+      <relationship>
+        <name>Aggregate method</name>
+        <alias>aggregateMethod</alias>
+        <!-- Structured.AggregateExpression.AggregateMethod -->
+        <relType>relChoiceField</relType>
+        <generateCode>true</generateCode>
+        <toType>aggregateMethodEnum</toType>
+        <toName>Method</toName>
+        <relationshipInFromTypeGroup>aggregateExpressionDetails</relationshipInFromTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <name>Expression</name>
+        <alias>aggregatedExpression</alias>
+        <!-- Structured.AggregateExpression.Expression -->
+        <description>The expression being aggregated.</description>
+        <relType>relSingleComponent</relType>
+        <generateCode>true</generateCode>
+        <toType>reportExpression</toType>
+        <relationshipInFromTypeGroup>aggregateExpressionDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>reportExpressionDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- structureViewExpression -->
+  <type>
+    <alias>structureViewExpression</alias>
+    <!-- Structured.StructureViewExpression -->
+    <name>Structure View Expression</name>
+    <description>Represents a structure view being shown in a report.</description>
+    <generateCode>true</generateCode>
+    <inherits>reportExpression</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Structure View Expression Details</name>
+        <alias>structureViewExpressionDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <relationships>
+      <relationship>
+        <name>Structure view source node</name>
+        <alias>structureViewExpressionSourceNode</alias>
+        <!-- Structured.StructureViewExpression.NodeId -->
+        <reverseAlias>nodeUsedByStructureViewExpression</reverseAlias>
+        <relType>relDependantOf</relType>
+        <generateCode>true</generateCode>
+        <toType>reportNode</toType>
+        <relationshipInFromTypeGroup>structureViewExpressionDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>reportNodeDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <name>Structure view</name>
+        <alias>structureViewExpressionStructureView</alias>
+        <!-- Structured.StructureViewExpression.StructureViewId -->
+        <reverseAlias>usedByStructureViewExpression</reverseAlias>
+        <relType>relLookup</relType>
+        <generateCode>true</generateCode>
+        <toType>structureView</toType>
+        <relationshipInFromTypeGroup>structureViewExpressionDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>structureViewDetails</relationshipInToTypeGroup>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- aggregateMethodEnum -->
+  <enumType>
+    <alias>aggregateMethodEnum</alias>
+    <!-- Structured.AggregateMethod -->
+    <name>Aggregate Method</name>
+    <inherits>enumValue</inherits>
+    <generateCode>true</generateCode>
+    <enumValues>
+      <aggregateMethodEnum>
+        <alias>aggCountWithValues</alias>
+        <name>Count</name>
+        <enumOrder>1</enumOrder>
+      </aggregateMethodEnum>
+      <aggregateMethodEnum>
+        <alias>aggCountUniqueItems</alias>
+        <name>Count unique</name>
+        <enumOrder>2</enumOrder>
+      </aggregateMethodEnum>
+      <aggregateMethodEnum>
+        <alias>aggCount</alias>
+        <name>Count all</name>
+        <enumOrder>3</enumOrder>
+      </aggregateMethodEnum>
+      <aggregateMethodEnum>
+        <alias>aggSum</alias>
+        <name>Sum</name>
+        <enumOrder>4</enumOrder>
+      </aggregateMethodEnum>
+      <aggregateMethodEnum>
+        <alias>aggAverage</alias>
+        <name>Average</name>
+        <enumOrder>5</enumOrder>
+      </aggregateMethodEnum>
+      <aggregateMethodEnum>
+        <alias>aggMax</alias>
+        <name>Max</name>
+        <enumOrder>6</enumOrder>
+      </aggregateMethodEnum>
+      <aggregateMethodEnum>
+        <alias>aggMin</alias>
+        <name>Min</name>
+        <enumOrder>7</enumOrder>
+      </aggregateMethodEnum>
+      <aggregateMethodEnum>
+        <alias>aggCountUniqueNotBlanks</alias>
+        <name>Count unique no blanks</name>
+        <enumOrder>8</enumOrder>
+      </aggregateMethodEnum>
+      <aggregateMethodEnum>
+        <alias>aggList</alias>
+        <name>List</name>
+        <enumOrder>9</enumOrder>
+      </aggregateMethodEnum>
+    </enumValues>
+  </enumType>
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    FORMATTING                                                    -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- displayFormat -->
+  <type>
+    <alias>displayFormat</alias>
+    <!-- ColumnFormatting -->
+    <name>Display Format</name>
+    <description>Format for a column in a report.</description>
+    <inherits>reportComponent</inherits>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Display Format Details</name>
+        <alias>displayFormatDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <boolField>
+        <alias>columnShowText</alias>
+        <!-- ColumnFormatting.ShowText -->
+        <name>Show text</name>
+        <description>Indicates if text should be displayed in addition to conditional formatting rules such as icons.</description>
+        <fieldInGroup>displayFormatDetails</fieldInGroup>
+      </boolField>
+      <intField>
+        <alias>formatDecimalPlaces</alias>
+        <!-- ColumnFormatting.DecimalPlaces -->
+        <name>Decimal places</name>
+        <fieldInGroup>displayFormatDetails</fieldInGroup>
+      </intField>
+      <stringField>
+        <alias>formatPrefix</alias>
+        <!-- ColumnFormatting.Prefix -->
+        <name>Prefix</name>
+        <fieldInGroup>displayFormatDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>formatSuffix</alias>
+        <!-- ColumnFormatting.Suffix -->
+        <name>Suffix</name>
+        <fieldInGroup>displayFormatDetails</fieldInGroup>
+      </stringField>
+      <intField>
+        <alias>maxLineCount</alias>
+        <!-- ColumnFormatting.Lines -->
+        <description>The maximum number of lines to show for a multi-line string value.</description>
+        <name>Max line count</name>
+        <fieldInGroup>displayFormatDetails</fieldInGroup>
+      </intField>
+    </fields>
+    <relationships>
+      <relationship>
+        <name>Alignment</name>
+        <alias>formatAlignment</alias>
+        <description>Text alignment</description>
+        <relType>relChoiceField</relType>
+        <toType>alignEnum</toType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>displayFormatDetails</relationshipInFromTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <alias>formatImageScale</alias>
+        <!-- Formatting.ImageFormattingRule.ThumbnailScaleId -->
+        <name>Scaling method</name>
+        <relType>relChoiceField</relType>
+        <toType>imageScaleEnum</toType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>displayFormatDetails</relationshipInFromTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <!-- note: formatImageSize is defined in Console_Types.xml -->
+      <relationship>
+        <name>DateColumnFormat</name>
+        <alias>dateColumnFormat</alias>
+        <description>Column Formatting used Date types</description>
+        <relType>relChoiceField</relType>
+        <toType>dateColFmtEnum</toType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>displayFormatDetails</relationshipInFromTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <name>TimeColumnFormat</name>
+        <alias>timeColumnFormat</alias>
+        <description>Column Formatting used Time types</description>
+        <relType>relChoiceField</relType>
+        <toType>timeColFmtEnum</toType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>displayFormatDetails</relationshipInFromTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <name>DateTimeColumnFormat</name>
+        <alias>dateTimeColumnFormat</alias>
+        <description>Column Formatting used DateTime types</description>
+        <relType>relChoiceField</relType>
+        <toType>dateTimeColFmtEnum</toType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>displayFormatDetails</relationshipInFromTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- alignEnum -->
+  <enumType>
+    <alias>alignEnum</alias>
+    <name>Alignment</name>
+    <inherits>enumValue</inherits>
+    <generateCode>true</generateCode>
+    <enumValues>
+      <alignEnum>
+        <name>Automatic</name>
+        <alias>alignAutomatic</alias>
+      </alignEnum>
+      <alignEnum>
+        <name>Left</name>
+        <alias>alignLeft</alias>
+      </alignEnum>
+      <alignEnum>
+        <name>Centre</name>
+        <alias>alignCentre</alias>
+      </alignEnum>
+      <alignEnum>
+        <name>Right</name>
+        <alias>alignRight</alias>
+      </alignEnum>
+    </enumValues>
+  </enumType>
+  <!-- dateColFmtEnum -->
+  <enumType>
+    <alias>dateColFmtEnum</alias>
+    <name>DateColFmtEnum</name>
+    <inherits>enumValue</inherits>
+    <generateCode>true</generateCode>
+    <enumValues>
+      <dateColFmtEnum>
+        <name>Default</name>
+        <alias>dateShort</alias>
+        <enumOrder>1</enumOrder>
+      </dateColFmtEnum>
+      <dateColFmtEnum>
+        <name>Day Month</name>
+        <alias>dateDayMonth</alias>
+        <enumOrder>2</enumOrder>
+      </dateColFmtEnum>
+      <dateColFmtEnum>
+        <name>Long</name>
+        <alias>dateLong</alias>
+        <enumOrder>3</enumOrder>
+      </dateColFmtEnum>
+      <dateColFmtEnum>
+        <name>Month</name>
+        <alias>dateMonth</alias>
+        <enumOrder>4</enumOrder>
+      </dateColFmtEnum>
+      <dateColFmtEnum>
+        <name>Month Year</name>
+        <alias>dateMonthYear</alias>
+        <enumOrder>5</enumOrder>
+      </dateColFmtEnum>
+      <dateColFmtEnum>
+        <name>Quarter</name>
+        <alias>dateQuarter</alias>
+        <enumOrder>6</enumOrder>
+      </dateColFmtEnum>
+      <dateColFmtEnum>
+        <name>Quarter Year</name>
+        <alias>dateQuarterYear</alias>
+        <enumOrder>7</enumOrder>
+      </dateColFmtEnum>
+      <dateColFmtEnum>
+        <name>Year</name>
+        <alias>dateYear</alias>
+        <enumOrder>8</enumOrder>
+      </dateColFmtEnum>
+      <dateColFmtEnum>
+        <name>Weekday</name>
+        <alias>dateWeekday</alias>
+        <enumOrder>9</enumOrder>
+      </dateColFmtEnum>
+    </enumValues>
+  </enumType>
+  <!-- timeColFmtEnum -->
+  <enumType>
+    <alias>timeColFmtEnum</alias>
+    <name>TimeColFmtEnum</name>
+    <inherits>enumValue</inherits>
+    <generateCode>true</generateCode>
+    <enumValues>
+      <timeColFmtEnum>
+        <name>Default</name>
+        <alias>time12Hour</alias>
+        <enumOrder>1</enumOrder>
+      </timeColFmtEnum>
+      <timeColFmtEnum>
+        <name>24 Hour</name>
+        <alias>time24Hour</alias>
+        <enumOrder>2</enumOrder>
+      </timeColFmtEnum>
+      <timeColFmtEnum>
+        <name>Hour</name>
+        <description>Hour only</description>
+        <alias>timeHour</alias>
+        <enumOrder>3</enumOrder>
+      </timeColFmtEnum>
+    </enumValues>
+  </enumType>
+  <!-- dateTimeColFmtEnum -->
+  <enumType>
+    <alias>dateTimeColFmtEnum</alias>
+    <name>DateTimeColFmtEnum</name>
+    <inherits>enumValue</inherits>
+    <generateCode>true</generateCode>
+    <enumValues>
+      <dateTimeColFmtEnum>
+        <name>Default</name>
+        <alias>dateTimeShort</alias>
+        <enumOrder>1</enumOrder>
+      </dateTimeColFmtEnum>
+      <dateTimeColFmtEnum>
+        <name>24 Hour</name>
+        <alias>dateTime24Hour</alias>
+        <enumOrder>2</enumOrder>
+      </dateTimeColFmtEnum>
+      <dateTimeColFmtEnum>
+        <name>Day Month</name>
+        <alias>dateTimeDayMonth</alias>
+        <enumOrder>3</enumOrder>
+      </dateTimeColFmtEnum>
+      <dateTimeColFmtEnum>
+        <name>Day Month Time</name>
+        <alias>dateTimeDayMonthTime</alias>
+        <enumOrder>4</enumOrder>
+      </dateTimeColFmtEnum>
+      <dateTimeColFmtEnum>
+        <name>Long</name>
+        <alias>dateTimeLong</alias>
+        <enumOrder>5</enumOrder>
+      </dateTimeColFmtEnum>
+      <dateTimeColFmtEnum>
+        <name>Sortable</name>
+        <alias>dateTimeSortable</alias>
+        <enumOrder>6</enumOrder>
+      </dateTimeColFmtEnum>
+      <dateTimeColFmtEnum>
+        <name>Date only</name>
+        <alias>dateTimeDate</alias>
+        <enumOrder>7</enumOrder>
+      </dateTimeColFmtEnum>
+      <dateTimeColFmtEnum>
+        <name>Time only</name>
+        <alias>dateTimeTime</alias>
+        <enumOrder>8</enumOrder>
+      </dateTimeColFmtEnum>
+      <dateTimeColFmtEnum>
+        <name>Month</name>
+        <alias>dateTimeMonth</alias>
+        <enumOrder>9</enumOrder>
+      </dateTimeColFmtEnum>
+      <dateTimeColFmtEnum>
+        <name>Month Year</name>
+        <alias>dateTimeMonthYear</alias>
+        <enumOrder>10</enumOrder>
+      </dateTimeColFmtEnum>
+      <dateTimeColFmtEnum>
+        <name>Quarter</name>
+        <alias>dateTimeQuarter</alias>
+        <enumOrder>11</enumOrder>
+      </dateTimeColFmtEnum>
+      <dateTimeColFmtEnum>
+        <name>Quarter Year</name>
+        <alias>dateTimeQuarterYear</alias>
+        <enumOrder>12</enumOrder>
+      </dateTimeColFmtEnum>
+      <dateTimeColFmtEnum>
+        <name>Year</name>
+        <alias>dateTimeYear</alias>
+        <enumOrder>13</enumOrder>
+      </dateTimeColFmtEnum>
+      <dateColFmtEnum>
+        <name>Weekday</name>
+        <alias>dateTimeWeekday</alias>
+        <enumOrder>14</enumOrder>
+      </dateColFmtEnum>
+      <dateColFmtEnum>
+        <name>Hour only</name>
+        <alias>dateTimeHour</alias>
+        <enumOrder>15</enumOrder>
+      </dateColFmtEnum>
+    </enumValues>
+  </enumType>
+  <!-- formattingRule -->
+  <type>
+    <alias>formattingRule</alias>
+    <!-- Formatting.FormattingRule -->
+    <name>Conditional Formatting Rule</name>
+    <description>Describes a form of conditionalFormat for a column in a report.</description>
+    <inherits>reportComponent</inherits>
+    <generateCode>true</generateCode>
+    <isAbstract>true</isAbstract>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Conditional Formatting Rule Details</name>
+        <alias>formattingRuleDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+  </type>
+  <!-- conditionBasedRule -->
+  <type>
+    <alias>conditionBasedRule</alias>
+    <!-- base for Formatting.ColorRule Formatting.IconRule -->
+    <name>Condition Based Rule</name>
+    <description>An individual rule for conditional formatting that has a condition.</description>
+    <inherits>reportComponent</inherits>
+    <generateCode>true</generateCode>
+    <isAbstract>true</isAbstract>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Condition Based Rule Details</name>
+        <alias>conditionBasedRuleDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <intField>
+        <alias>rulePriority</alias>
+        <name>Rule priority</name>
+        <fieldInGroup>conditionBasedRuleDetails</fieldInGroup>
+      </intField>
+    </fields>
+    <relationships>
+      <relationship>
+        <alias>ruleCondition</alias>
+        <!-- ColorRule.Condition, IconRule.Condition -->
+        <name>Condition</name>
+        <relType>relSingleComponent</relType>
+        <generateCode>true</generateCode>
+        <toType>reportCondition</toType>
+        <relationshipInFromTypeGroup>conditionBasedRuleDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>reportConditionDetails</relationshipInToTypeGroup>
+        <!-- aka typedValue -->
+        <securesTo>true</securesTo>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- barFormattingRule -->
+  <type>
+    <alias>barFormattingRule</alias>
+    <!-- Formatting.BarFormattingRule -->
+    <name>Bar Conditional Formatting Rule</name>
+    <description>Describes a range bar conditional format for a column in a report.</description>
+    <generateCode>true</generateCode>
+    <inherits>formattingRule</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Bar Conditional Formatting Rule Details</name>
+        <alias>barFormattingRuleDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>barColor</alias>
+        <name>Colour</name>
+        <fieldInGroup>barFormattingRuleDetails</fieldInGroup>
+      </stringField>
+    </fields>
+    <relationships>
+      <relationship>
+        <alias>barMinValue</alias>
+        <!-- BarFormattingRule.Minimum -->
+        <name>Minimum</name>
+        <relType>relSingleComponent</relType>
+        <toType>activityArgument</toType>
+        <!-- aka typedValue -->
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>barFormattingRuleDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>activityArgumentDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <alias>barMaxValue</alias>
+        <!-- BarFormattingRule.Maximum -->
+        <name>Maximum</name>
+        <relType>relSingleComponent</relType>
+        <toType>activityArgument</toType>
+        <!-- aka typedValue -->
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>barFormattingRuleDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>activityArgumentDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- iconFormattingRule -->
+  <type>
+    <alias>iconFormattingRule</alias>
+    <!-- Formatting.IconFormattingRule -->
+    <name>Icon Conditional Formatting Rule</name>
+    <description>Describes a range bar conditional format for a column in a report.</description>
+    <generateCode>true</generateCode>
+    <inherits>formattingRule</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Icon Rule Formatting Details</name>
+        <alias>iconFormattingRuleDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <relationships>
+      <relationship>
+        <alias>iconRules</alias>
+        <!-- Formatting.IconFormattingRule.Rules -->
+        <name>Icon formatting conditions</name>
+        <relType>relComponents</relType>
+        <toType>iconRule</toType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>iconFormattingRuleDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>iconRuleDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- iconRule -->
+  <type>
+    <alias>iconRule</alias>
+    <!-- Formatting.IconRule -->
+    <name>Icon Rule Condition</name>
+    <description>An individual rule for formatting report column icons.</description>
+    <generateCode>true</generateCode>
+    <inherits>conditionBasedRule</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Icon Rule Condition Details</name>
+        <alias>iconRuleDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <relationships>
+      <relationship>
+        <alias>iconRuleImage</alias>
+        <!-- Formatting.IconRule.IconId -->
+        <name>Icon formatting conditions</name>
+        <relType>relLookup</relType>
+        <generateCode>true</generateCode>
+        <toType>imageFileType</toType>
+        <relationshipInFromTypeGroup>iconRuleDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>imageDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <alias>iconRuleCFIcon</alias>
+        <!-- Formatting.IconRule.ConditionalFormatIcon -->
+        <name>Conditional format icon</name>
+        <relType>relLookup</relType>
+        <generateCode>true</generateCode>
+        <toType>conditionalFormatIcon</toType>
+        <relationshipInFromTypeGroup>iconRuleDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>imageDetails</relationshipInToTypeGroup>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- colorFormattingRule -->
+  <type>
+    <alias>colorFormattingRule</alias>
+    <!-- Formatting.ColorFormattingRule -->
+    <name>Colour Conditional Formatting Rule</name>
+    <description>Describes a range bar conditional format for a column in a report.</description>
+    <generateCode>true</generateCode>
+    <inherits>formattingRule</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Colour Conditional Formatting Rule Details</name>
+        <alias>colorFormattingRuleDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <relationships>
+      <relationship>
+        <alias>colorRules</alias>
+        <!-- Formatting.ColorFormattingRule.Rules -->
+        <name>Icon formatting conditions</name>
+        <relType>relComponents</relType>
+        <generateCode>true</generateCode>
+        <toType>colorRule</toType>
+        <relationshipInFromTypeGroup>colorFormattingRuleDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>colourRuleDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- colorRule -->
+  <type>
+    <alias>colorRule</alias>
+    <!-- Formatting.ColorRule -->
+    <name>Colour Rule Condition</name>
+    <description>An individual rule for formatting report column colours.</description>
+    <generateCode>true</generateCode>
+    <inherits>conditionBasedRule</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Colour Rule Condition Details</name>
+        <alias>colourRuleDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>colorRuleForeground</alias>
+        <!-- Formatting.ColorRule.ForegroundColor -->
+        <name>Foreground colour</name>
+        <fieldInGroup>colourRuleDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>colorRuleBackground</alias>
+        <!-- Formatting.ColorRule.BackgroundColor -->
+        <name>Background colour</name>
+        <fieldInGroup>colourRuleDetails</fieldInGroup>
+      </stringField>
+    </fields>
+  </type>
+  <!-- imageFormattingRule -->
+  <type>
+    <alias>imageFormattingRule</alias>
+    <!-- Formatting.ImageFormattingRule -->
+    <name>Image Formatting Rule</name>
+    <description>Describes the formatting for an image column in a report.</description>
+    <generateCode>true</generateCode>
+    <inherits>formattingRule</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Image Formatting Rule Details</name>
+        <alias>imageFormattingRuleDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <relationships>
+      <relationship>
+        <alias>ruleImageScale</alias>
+        <!-- Formatting.ImageFormattingRule.ThumbnailScaleId -->
+        <name>Scaling method</name>
+        <relType>relChoiceField</relType>
+        <generateCode>true</generateCode>
+        <toType>imageScaleEnum</toType>
+        <relationshipInFromTypeGroup>imageFormattingRuleDetails</relationshipInFromTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <!-- note: ruleThumbnailSize is defined in Console_Types.xml -->
+    </relationships>
+  </type>
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    ROLLUPS                                                       -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- reportRowGroup -->
+  <type>
+    <alias>reportRowGroup</alias>
+    <name>Report Row Group</name>
+    <description>A report result row grouping.</description>
+    <inherits>reportComponent</inherits>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Report Row Group Details</name>
+        <alias>reportRowGroupDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <!-- reportColumn.name maps to Structured.SelectColumn.DisplayName -->
+      <!-- Structured.SelectColumn.ColumnName is deprecated -->
+      <!-- Structured.SelectColumn.ColumnId is deprecated, use the resource ID of the column instead -->
+      <intField>
+        <alias>groupingPriority</alias>
+        <name>Grouping priority</name>
+        <description>Indicate the priority of this ordering. Starting from zero and increasing as priority decreases.</description>
+        <fieldInGroup>reportRowGroupDetails</fieldInGroup>
+      </intField>
+      <boolField>
+        <alias>groupingCollapsed</alias>
+        <name>Grouping collapsed</name>
+        <description>Indicate whether all rows at this level are collapsed.</description>
+        <fieldInGroup>reportRowGroupDetails</fieldInGroup>
+      </boolField>
+    </fields>
+    <relationships>
+      <relationship>
+        <alias>groupedColumn</alias>
+        <reverseAlias>columnGrouping</reverseAlias>
+        <toType>reportColumn</toType>
+        <name>Grouped column</name>
+        <relType>relComponentOf</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>reportRowGroupDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>reportColumnDetails</relationshipInToTypeGroup>
+        <securesFrom>true</securesFrom>
+      </relationship>
+      <relationship>
+        <alias>groupingMethod</alias>
+        <toType>groupingMethodEnum</toType>
+        <name>Grouped column</name>
+        <relType>relChoiceField</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>reportRowGroupDetails</relationshipInFromTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- reportRollup -->
+  <type>
+    <alias>reportRollup</alias>
+    <name>Report Column Rollup</name>
+    <description>A rollup (summary) of a column.</description>
+    <inherits>reportComponent</inherits>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Report Column Rollup Details</name>
+        <alias>reportRollupDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <relationships>
+      <relationship>
+        <alias>rollupColumn</alias>
+        <reverseAlias>columnRollup</reverseAlias>
+        <toType>reportColumn</toType>
+        <name>Rollup column</name>
+        <relType>relComponentOf</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>reportRollupDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>reportColumnDetails</relationshipInToTypeGroup>
+        <securesFrom>true</securesFrom>
+      </relationship>
+      <relationship>
+        <name>Rollup method</name>
+        <alias>rollupMethod</alias>
+        <relType>relChoiceField</relType>
+        <generateCode>true</generateCode>
+        <toType>aggregateMethodEnum</toType>
+        <toName>Method</toName>
+        <relationshipInFromTypeGroup>reportRollupDetails</relationshipInFromTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+    </relationships>
+  </type>
+  <enumType>
+    <alias>groupingMethodEnum</alias>
+    <name>Grouping Method</name>
+    <generateCode>true</generateCode>
+    <inherits>enumValue</inherits>
+    <enumValues>
+      <!-- There is no 'unspecified'. Just set to null. -->
+      <groupingMethodEnum>
+        <alias>groupList</alias>
+        <name>List</name>
+        <enumOrder>0</enumOrder>
+      </groupingMethodEnum>
+      <groupingMethodEnum>
+        <alias>groupYear</alias>
+        <name>Year</name>
+        <enumOrder>1</enumOrder>
+      </groupingMethodEnum>
+      <groupingMethodEnum>
+        <alias>groupMonth</alias>
+        <name>Month</name>
+        <enumOrder>2</enumOrder>
+      </groupingMethodEnum>
+      <groupingMethodEnum>
+        <alias>groupYearMonth</alias>
+        <name>Year/Month</name>
+        <enumOrder>3</enumOrder>
+      </groupingMethodEnum>
+      <groupingMethodEnum>
+        <alias>groupDay</alias>
+        <name>Day</name>
+        <enumOrder>4</enumOrder>
+      </groupingMethodEnum>
+      <groupingMethodEnum>
+        <alias>groupYearMonthDay</alias>
+        <name>Year/Month/Day</name>
+        <enumOrder>5</enumOrder>
+      </groupingMethodEnum>
+      <groupingMethodEnum>
+        <alias>groupHour</alias>
+        <name>Hour</name>
+        <enumOrder>6</enumOrder>
+      </groupingMethodEnum>
+      <groupingMethodEnum>
+        <alias>groupQuarter</alias>
+        <name>Quarter</name>
+        <enumOrder>7</enumOrder>
+      </groupingMethodEnum>
+      <groupingMethodEnum>
+        <alias>groupFirstLetter</alias>
+        <name>First Letter</name>
+        <enumOrder>8</enumOrder>
+      </groupingMethodEnum>
+    </enumValues>
+  </enumType>
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    Style                                                       -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <relationship>
+    <name>Report style</name>
+    <alias>reportStyle</alias>
+    <description>The style of report</description>
+    <relType>relLookup</relType>
+    <generateCode>true</generateCode>
+    <fromType>report</fromType>
+    <toType>reportStyleEnum</toType>
+    <toName>Style for report</toName>
+    <relationshipInFromTypeGroup>reportDetails</relationshipInFromTypeGroup>
+    <securesTo>true</securesTo>
+  </relationship>
+  <enumType>
+    <alias>reportStyleEnum</alias>
+    <name>Report Style</name>
+    <inherits>enumValue</inherits>
+    <enumValues>
+      <reportStyleEnum>
+        <name>Default</name>
+        <alias>reportStyle0</alias>
+      </reportStyleEnum>
+      <reportStyleEnum>
+        <name>Rows</name>
+        <alias>reportStyle1</alias>
+      </reportStyleEnum>
+      <reportStyleEnum>
+        <name>KPI</name>
+        <alias>reportStyle2</alias>
+      </reportStyleEnum>
+      <reportStyleEnum>
+        <name>Tiles</name>
+        <alias>reportStyle3</alias>
+      </reportStyleEnum>
+      <reportStyleEnum>
+        <name>Conversation</name>
+        <alias>reportStyle4</alias>
+      </reportStyleEnum>
+    </enumValues>
+    <generateCode>true</generateCode>
+  </enumType>
+</resources>

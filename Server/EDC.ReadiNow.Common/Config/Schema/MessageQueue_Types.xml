@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<resources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="core" xsi:schemaLocation=". ../Core.xsd" defaultSolution="coreSolution">
+  <!--Copyright 2011-2016 Global Software Innovation Pty Ltd-->
+  <type>
+    <alias>messageQueueRequest</alias>
+    <name>Message Queue Request</name>
+    <description>Holds information about a remote procedure call made to a message queue such that its response can be handled through the IRemoteResponseHandler interface. (Internal)</description>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Message Queue Request Details</name>
+        <alias>messageQueueRequestDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>messageQueueRequestKey</alias>
+        <name>Key</name>
+        <description>The identifier of the queue/exchange that was addressed.</description>
+        <isRequired>true</isRequired>
+        <fieldInGroup>messageQueueRequestDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>messageQueueRequestToken</alias>
+        <name>Token</name>
+        <description>The identifier of the individual call that was made to be matched up against the response.</description>
+        <isRequired>true</isRequired>
+        <fieldInGroup>messageQueueRequestDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>messageQueueRequestHandlerType</alias>
+        <name>Handler type</name>
+        <description>The implementation of IRemoteResponseHandler that will be instantiated to process the result.</description>
+        <isRequired>true</isRequired>
+        <fieldInGroup>messageQueueRequestDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>messageQueueRequestBody</alias>
+        <name>Message body</name>
+        <description>The contents of the message that were passed as part of the request.</description>
+        <isRequired>true</isRequired>
+        <fieldInGroup>messageQueueRequestDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>messageQueueRequestBodyType</alias>
+        <name>Message body type</name>
+        <description>The type that the message body contents should conform to.</description>
+        <isRequired>true</isRequired>
+        <fieldInGroup>messageQueueRequestDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>messageQueueRequestResultType</alias>
+        <name>Message result type</name>
+        <description>The type that the response message contents should conform to.</description>
+        <isRequired>true</isRequired>
+        <fieldInGroup>messageQueueRequestDetails</fieldInGroup>
+      </stringField>
+    </fields>
+    <onAfterSave>messageQueueRequestEventTarget</onAfterSave>
+    <onAfterDelete>messageQueueRequestEventTarget</onAfterDelete>
+  </type>
+  <target>
+    <alias>messageQueueRequestEventTarget</alias>
+    <typeName>EDC.ReadiNow.MessageQueue.MessageQueueRequestEventTarget</typeName>
+    <assemblyName>EDC.ReadiNow.Common, Version=1.0.0.0, Culture=neutral</assemblyName>
+    <ordinal>0</ordinal>
+  </target>
+</resources>

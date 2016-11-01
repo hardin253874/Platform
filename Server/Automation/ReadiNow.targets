@@ -1,0 +1,200 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!-- Misc properties -->
+  <PropertyGroup>
+    <XsdGenExe>$(MSBuildThisFileDirectory)ReadiNowCodeGen\XsdGen.exe</XsdGenExe>
+    <XmlUtilExe>$(MSBuildThisFileDirectory)ReadiNowCodeGen\XmlUtil.exe</XmlUtilExe>
+    <CheckConfigTouchFile>$(MSBuildThisFileDirectory)ReadiNowCodeGen\config.touch</CheckConfigTouchFile>
+    <CodeGenExe>$(MSBuildThisFileDirectory)ReadiNowCodeGen\CodeGen.exe</CodeGenExe>
+    <CodeGenOutputDir>$(ProjectDir)Model</CodeGenOutputDir>
+    <ValidateConfigExe>$(MSBuildThisFileDirectory)ReadiNowCodeGen\ValidateConfig.exe</ValidateConfigExe>
+    <ReadiNowXsdDir>$(MSBuildThisFileDirectory)..\EDC.ReadiNow.Common\Config</ReadiNowXsdDir>
+	<PublishRoot Condition="'$(PublishRoot)' == ''">$(SolutionDir)Build\</PublishRoot>
+	<Version Condition="'$(Version)' == ''">1.0.0.0</Version>
+	<BuildConfig Condition="'$(BuildConfig)' == ''">Dev</BuildConfig>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ReadiNowXsd Include="$(ReadiNowXsdDir)\Core.xsd">
+      <Namespace>core</Namespace>
+    </ReadiNowXsd>
+    <ReadiNowXsd Include="$(ReadiNowXsdDir)\Console.xsd">
+      <Namespace>console</Namespace>
+    </ReadiNowXsd>
+  </ItemGroup>
+
+  <!-- Specify build actions available in visual studio -->
+  <ItemGroup Condition="'$(BuildingInsideVisualStudio)'=='true'">
+    <AvailableItemName Include="ReadiNowXmlWithSchema" />
+    <AvailableItemName Include="ReadiNowXml" />
+    <AvailableItemName Include="ReadiNowCodeTemplate" />
+    <AvailableItemName Include="ReadiNowUpgradeMap" />
+	<AvailableItemName Include="ReadiNowSolutionXml" />
+  </ItemGroup>
+
+  <!-- Register the UpdateSchema task to occur as part of build -->
+  <PropertyGroup Condition="'$(RegisterConfigTasks)'=='true'">
+    <BuildDependsOn>
+      CheckReadiNowConfig;
+      UpdateReadiNowConfigSchema;
+      ValidateConfigXml;
+      CopyXmlToOutput;
+      BuildSource;
+      $(BuildDependsOn)
+    </BuildDependsOn>
+  </PropertyGroup>
+
+  <!-- Register the Clean task to occur as part of clean/rebuild -->
+  <PropertyGroup Condition="'$(RegisterConfigTasks)'=='true'">
+    <CleanDependsOn>
+      CleanReadiNowConfigSchema;
+      $(CleanDependsOn)
+    </CleanDependsOn>
+  </PropertyGroup>
+
+  <!-- Register the UpdateSchema task to occur as part of build -->
+  <PropertyGroup>
+    <BuildDependsOn>
+      UpdateAssemblyVersion;
+      $(BuildDependsOn)
+    </BuildDependsOn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <OldFiles Include="$(OutDir)\*.xml" />
+  </ItemGroup>
+
+  <!-- Program files - rebuild content if the builders change -->
+  <ItemGroup>
+    <CodeGenProgramFiles
+  		Include="$(MSBuildThisFileDirectory)..\EDC.ReadiNow.CodeGen\**\*.cs"
+  		Exclude="$(MSBuildThisFileDirectory)..\EDC.ReadiNow.CodeGen\**\AssemblyFileInfo.cs" />
+    <CodeGenProgramFiles
+  		Include="$(MSBuildThisFileDirectory)..\EDC.ReadiNow.Common.ConfigParser\**\*.cs"
+  		Exclude="$(MSBuildThisFileDirectory)..\EDC.ReadiNow.Common.ConfigParser\**\AssemblyFileInfo.cs" />
+    <XsdGenProgramFiles
+  		Include="$(MSBuildThisFileDirectory)..\EDC.XsdGen\**\*.cs"
+  		Exclude="$(MSBuildThisFileDirectory)..\EDC.XsdGen\**\AssemblyFileInfo.cs" />
+    <XsdGenProgramFiles
+  		Include="$(MSBuildThisFileDirectory)..\EDC.ReadiNow.Common.ConfigParser\**\*.cs"
+  		Exclude="$(MSBuildThisFileDirectory)..\EDC.ReadiNow.Common.ConfigParser\**\AssemblyFileInfo.cs" />
+    <ValidateConfigProgramFiles
+  		Include="$(MSBuildThisFileDirectory)..\ReadiNow.ValidateConfig\**\*.cs"
+  		Exclude="$(MSBuildThisFileDirectory)..\ReadiNow.ValidateConfig\**\AssemblyFileInfo.cs" />
+    <ValidateConfigProgramFiles
+  		Include="$(MSBuildThisFileDirectory)..\EDC.ReadiNow.Common.ConfigParser\**\*.cs"
+  		Exclude="$(MSBuildThisFileDirectory)..\EDC.ReadiNow.Common.ConfigParser\**\AssemblyFileInfo.cs" />
+  </ItemGroup>
+
+
+  <!-- Task to check the schema -->
+  <Target Name="CheckReadiNowConfig" Inputs="@(ReadiNowXmlWithSchema);@(ReadiNowXml)" Outputs="$(CheckConfigTouchFile)">
+    <Message Text="&quot;$(XmlUtilExe)&quot; -check -config @(ReadiNowXmlWithSchema->'&quot;%(FullPath)&quot;',' ') @(ReadiNowXml->'&quot;%(FullPath)&quot;',' ') -map @(ReadiNowUpgradeMap->'&quot;%(FullPath)&quot;',' ')" />
+    <Exec Command="&quot;$(XmlUtilExe)&quot; -check -config @(ReadiNowXmlWithSchema->'&quot;%(FullPath)&quot;',' ') @(ReadiNowXml->'&quot;%(FullPath)&quot;',' ') -map @(ReadiNowUpgradeMap->'&quot;%(FullPath)&quot;',' ')" />
+
+    <!-- Timestamp of this file determines if changes have been made -->
+    <WriteLinesToFile File="$(CheckConfigTouchFile)" Lines="Used by ReadiNow.targets" Overwrite="true" Encoding="Unicode"/>
+    <Touch Files="@(CheckConfigTouchFile)" />
+  </Target>
+
+  <!-- Task to generate the schema -->
+  <Target Name="UpdateReadiNowConfigSchema" Inputs="@(ReadiNowXmlWithSchema);@(XsdGenProgramFiles)" Outputs="@(ReadiNowXsd)">
+    <Message Text="&quot;$(XsdGenExe)&quot; @(ReadiNowXsd->'-o %(FullPath) %(Namespace)',' ') @(ReadiNowXmlWithSchema->'&quot;%(FullPath)&quot;',' ')" />
+    <Exec Command="&quot;$(XsdGenExe)&quot; @(ReadiNowXsd->'-o %(FullPath) %(Namespace)',' ') @(ReadiNowXmlWithSchema->'&quot;%(FullPath)&quot;',' ')" CustomErrorRegularExpression="Config error:.*" />
+  </Target>
+
+  <!-- As part of clean, touch input files so that output will be rebuilt -->
+  <Target Name="CleanReadiNowConfigSchema">
+
+    <Touch Files="@(ReadiNowXmlWithSchema)" />
+  </Target>
+
+  <!-- Task to validate XML config files -->
+  <Target Name="ValidateConfigXml" Inputs="@(ReadiNowXmlWithSchema);@(ReadiNowXml);@(ValidateConfigProgramFiles)"
+          Outputs="@(ReadiNowCodeTemplate->'$(CodeGenOutputDir)\%(Filename).cs')">   <!-- Rely on timestamp of the codegen output -->
+    <Message Text="&quot;$(ValidateConfigExe)&quot; &quot;$(ReadiNowXsdDir)&quot;" />
+    <Exec Command="&quot;$(ValidateConfigExe)&quot; &quot;$(ReadiNowXsdDir)&quot;" />
+    <Message Text="Ignore any warnings about failing to touch" ></Message>
+  </Target>
+
+  <!-- Task to generate C# code -->
+  <Target Name="BuildSource" Inputs="@(ReadiNowXmlWithSchema);@(ReadiNowCodeTemplate);@(CodeGenProgramFiles)"
+          Outputs="@(ReadiNowCodeTemplate->'$(CodeGenOutputDir)\%(Filename).cs')">
+    <Message Text="&quot;$(CodeGenExe)&quot; -n EDC.ReadiNow.Model -o $(CodeGenOutputDir) @(ReadiNowXmlWithSchema->'-i &quot;%(FullPath)&quot;',' ') @(ReadiNowCodeTemplate->'-t &quot;%(FullPath)&quot;',' ')" />
+    <Exec Command="&quot;$(CodeGenExe)&quot; -n EDC.ReadiNow.Model -o $(CodeGenOutputDir) @(ReadiNowXmlWithSchema->'-i &quot;%(FullPath)&quot;',' ') @(ReadiNowCodeTemplate->'-t &quot;%(FullPath)&quot;',' ')" />
+    <Message Text="Ignore any warnings about failing to touch" ></Message>
+    <Touch Files="@(ReadiNowCodeTemplate->'$(CodeGenOutputDir)\%(Filename).cs')" ContinueOnError="WarnAndContinue" />
+  </Target>
+
+
+  <!-- not really the right place for these tasks, but will do for now -->
+  <Target Name="CopyXmlToOutput" Inputs="@(ReadiNowXmlWithSchema);@(ReadiNowXml)" Outputs="@(ReadiNowXmlWithSchema->'$(OutDir)\%(Filename)%(Extension)');@(ReadiNowXml->'$(OutDir)\%(Filename)%(Extension)')">
+    <Delete Files="@(OldFiles)" />
+    <Copy SourceFiles="@(ReadiNowXmlWithSchema)" DestinationFolder="$(PublishRoot)$(Configuration)\Bootstrap" />
+    <Copy SourceFiles="@(ReadiNowXml)" DestinationFolder="$(PublishRoot)$(Configuration)\Bootstrap" />
+	<Copy SourceFiles="@(ReadiNowUpgradeMap)" DestinationFolder="$(PublishRoot)$(Configuration)\Bootstrap" />
+	<Copy SourceFiles="@(ReadiNowSolutionXml)" DestinationFolder="$(PublishRoot)$(Configuration)\Bootstrap" />
+  </Target>
+
+
+  <!-- Update file version -->
+  <!-- Note: maintain version in a temp file so we don't unnecessarily touch the main file causing full rebuilds -->
+  <Target Name="UpdateAssemblyVersion" Condition="'$(AssemblyFileInfo)'!=''">
+
+    <Message Text="Checking AssemblyFileVersion $(AssemblyFileInfo)" />
+    <ReadLinesFromFile File="$(AssemblyFileInfo).tmp" Condition="Exists('$(AssemblyFileInfo).tmp')">
+      <Output TaskParameter="Lines" PropertyName="PrevVersion" />
+    </ReadLinesFromFile>
+
+    <Message Text="Setting AssemblyFileVersion: $(Version)" Condition="'$(PrevVersion)'!='$(Version)'" />
+    <AssemblyInfo CodeLanguage="CS" OutputFile="$(AssemblyFileInfo)" AssemblyFileVersion="$(Version)" AssemblyConfiguration="$(BuildConfig)" Condition="'$(PrevVersion)'!='$(Version)'" />
+    <WriteLinesToFile File="$(AssemblyFileInfo).tmp" Lines="$(Version)" Overwrite="true" Encoding="Unicode" Condition="'$(PrevVersion)'!='$(Version)'" />
+
+  </Target>
+  
+  <!-- Target for publishing a tool -->
+  <Target Name="PublishTool">
+    <Message Text="Publishing $(ProjectName) to $(PublishRoot)$(Configuration)\Tools\" />
+    <ItemGroup>
+      <ToolFiles Include="$(TargetDir)*.dll;$(TargetDir)*.pdb;$(TargetDir)*.config;$(TargetDir)*.exe" />
+    </ItemGroup>
+    <Copy SourceFiles="@(ToolFiles)" DestinationFolder="$(PublishRoot)$(Configuration)\Tools\" ContinueOnError="ErrorAndStop" Retries="20" />
+  </Target>
+  
+  <!-- Target for publishing a web assembly -->
+  <Target Name="PublishWebAssembly">
+    <Message Text="Publishing $(ProjectName) to $(PublishRoot)$(Configuration)\SpApi\Bin\" />
+    <ItemGroup>
+      <WebFiles Include="$(TargetDir)*.dll;$(TargetDir)*.pdb;$(TargetDir)*.config" />
+    </ItemGroup>
+    <Copy SourceFiles="@(WebFiles)" DestinationFolder="$(PublishRoot)$(Configuration)\SpApi\Bin\" ContinueOnError="ErrorAndStop" Retries="20" />
+  </Target>
+  
+  <!-- Target for publishing a test assembly -->
+  <Target Name="PublishTestAssembly">
+    <Message Text="Publishing $(ProjectName) to $(PublishRoot)$(Configuration)\Tests\" />
+    <ItemGroup>
+      <TestFiles Include="$(TargetDir)*.dll;$(TargetDir)*.pdb;$(TargetDir)*.config;$(TargetDir)*.xml" />
+    </ItemGroup>
+    <Copy SourceFiles="@(TestFiles)" DestinationFolder="$(PublishRoot)$(Configuration)\Tests\" ContinueOnError="ErrorAndStop" Retries="20" />
+  </Target>
+  
+  <!-- Target for publishing dacpac files -->
+  <Target Name="PublishDacPac">
+    <Message Text="Publishing $(ProjectName) to $(PublishRoot)$(Configuration)\Database\DacPac\" />
+    <ItemGroup>
+      <DacPacFiles Include="$(TargetDir)*.dll;$(TargetDir)*.pdb;$(TargetDir)*.config;$(TargetDir)*.dacpac" />
+    </ItemGroup>
+    <Copy SourceFiles="@(DacPacFiles)" DestinationFolder="$(PublishRoot)$(Configuration)\Database\DacPac\" ContinueOnError="ErrorAndStop" Retries="20" />
+  </Target>
+  
+  <!-- Target for publishing the scheduler -->
+  <Target Name="PublishScheduler">
+    <Message Text="Publishing $(ProjectName) to $(PublishRoot)$(Configuration)\Scheduler\" />
+    <ItemGroup>
+      <SchedulerFiles Include="$(TargetDir)*.dll;$(TargetDir)*.pdb;$(TargetDir)*.config;$(TargetDir)*.exe" />
+    </ItemGroup>
+    <Copy SourceFiles="@(SchedulerFiles)" DestinationFolder="$(PublishRoot)$(Configuration)\Scheduler\" ContinueOnError="ErrorAndStop" Retries="20" />
+  </Target>
+
+</Project>

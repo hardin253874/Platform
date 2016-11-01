@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="core" xsi:schemaLocation=". ../Core.xsd" defaultSolution="coreSolution">
+  <!--Copyright 2011-2016 Global Software Innovation Pty Ltd-->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    Document Library definitions                                  -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    Folders                                                       -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- 'Folder' type -->
+  <type>
+    <name>Document Folder</name>
+    <alias>documentFolder</alias>
+    <description>A folder that can contain documents.</description>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Document Folder Details</name>
+        <alias>documentFolderDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <!-- Note: this inherits k:navContainer, once console is imported -->
+  </type>
+  <!-- Folder has Documents relationship -->
+  <relationship>
+    <name>Folder documents</name>
+    <alias>inFolder</alias>
+    <reverseAlias>documents</reverseAlias>
+    <fromType>document</fromType>
+    <toType>documentFolder</toType>
+    <generateCode>true</generateCode>
+    <toName>Document folder</toName>
+    <fromName>Document</fromName>
+    <relType>relDependantOf</relType>
+    <relationshipInFromTypeGroup>documentDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>documentFolderDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    Documents                                                     -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- 'Document' type -->
+  <definition>
+    <name>Document</name>
+    <alias>document</alias>
+    <description>Represents the definition of a document</description>
+    <inherits>fileType</inherits>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Details</name>
+        <alias>documentDetails</alias>
+        <description>Contains information about the document.</description>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <name>Tags keywords</name>
+        <alias>tagsKeywords</alias>
+        <description>The tags or strings associated to the document version</description>
+        <fieldInGroup>documentDetails</fieldInGroup>
+      </stringField>
+    </fields>
+    <onBeforeSave>
+      <target>
+        <alias>documentBeforeSaveTarget</alias>
+        <typeName>EDC.ReadiNow.Model.EventClasses.DocumentEventTarget</typeName>
+        <assemblyName>EDC.ReadiNow.Common, Version=1.0.0.0, Culture=neutral</assemblyName>
+        <ordinal>0</ordinal>
+      </target>
+    </onBeforeSave>
+  </definition>
+  <!-- Document Revision-->
+  <type>
+    <name>Document Revision</name>
+    <alias>documentRevision</alias>
+    <description>Represents revision of a document</description>
+    <inherits>fileType</inherits>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Document Revision Details</name>
+        <alias>documentRevisionDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <name>Version comments</name>
+        <alias>versionComments</alias>
+        <description>The comments used when creating/checking in the document</description>
+        <fieldInGroup>documentRevisionDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <name>Version</name>
+        <alias>version</alias>
+        <description>The version string associated to this document entry</description>
+        <fieldInGroup>documentRevisionDetails</fieldInGroup>
+      </stringField>
+    </fields>
+  </type>
+  <!-- 'Document Type' type -->
+  <type>
+    <name>Document Type</name>
+    <alias>documentType</alias>
+    <description>Represents the definition of Document Type</description>
+    <inherits>userResource</inherits>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Document Details</name>
+        <alias>documentTypeDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <name>Short name</name>
+        <alias>shortFileTypeName</alias>
+        <description>The short name of the file type</description>
+        <fieldInGroup>documentTypeDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <name>File type description</name>
+        <alias>fileTypeDescription</alias>
+        <isRequired>true</isRequired>
+        <description>The Description of the the file type</description>
+        <fieldInGroup>documentTypeDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <name>Extension</name>
+        <alias>extension</alias>
+        <isRequired>true</isRequired>
+        <description>The file extension</description>
+        <fieldInGroup>documentTypeDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <name>MIME type</name>
+        <alias>mimeType</alias>
+        <isRequired>true</isRequired>
+        <description>The MIME type associated to the document type.</description>
+        <fieldInGroup>documentTypeDetails</fieldInGroup>
+      </stringField>
+    </fields>
+    <relationships>
+      <relationship>
+        <name>Document type image</name>
+        <description>The image for the associated document type</description>
+        <alias>documentTypeImage</alias>
+        <reverseAlias>imageForType</reverseAlias>
+        <relType>relLookup</relType>
+        <toType>imageFileType</toType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>documentTypeDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>imageDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <name>File document</name>
+        <description>The file has a document type (indexed)</description>
+        <alias>fileTypeDocument</alias>
+        <reverseAlias>documentFileType</reverseAlias>
+        <relType>relExclusiveCollection</relType>
+        <toType>fileType</toType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>documentTypeDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>fileTypeDetails</relationshipInToTypeGroup>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- Document to Document Revision -->
+  <relationship>
+    <alias>documentHasDocumentRevision</alias>
+    <reverseAlias>revisionForDocument</reverseAlias>
+    <name>Document has document revision</name>
+    <description>Defines a relationship between a Document and Document revisions.</description>
+    <generateCode>true</generateCode>
+    <relType>relComponents</relType>
+    <fromType>document</fromType>
+    <toType>documentRevision</toType>
+    <toName>Document versions</toName>
+    <fromName>Document</fromName>
+    <securesTo>true</securesTo>
+    <relationshipInFromTypeGroup>documentDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>documentRevisionDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- Current Document-->
+  <relationship>
+    <alias>currentDocumentRevision</alias>
+    <name>Document has current document revision</name>
+    <description>Defines a relationship between a document and current document revision.</description>
+    <relType>relSingleLookup</relType>
+    <toName>Current revision</toName>
+    <securesTo>true</securesTo>
+    <fromName>Document</fromName>
+    <generateCode>true</generateCode>
+    <fromType>document</fromType>
+    <toType>documentRevision</toType>
+    <relationshipInFromTypeGroup>documentDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>documentRevisionDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- 'Document has Document Type' relationship -->
+  <relationship>
+    <alias>documentHasDocumentType</alias>
+    <name>Document has document type</name>
+    <description>Defines a relationship between a Document and a Document Type.</description>
+    <generateCode>true</generateCode>
+    <relType>relLookup</relType>
+    <fromType>document</fromType>
+    <toType>documentType</toType>
+    <toName>Document type</toName>
+    <fromName>Document</fromName>
+    <relationshipInFromTypeGroup>documentDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>documentTypeDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- 'Document Modified By' relationship -->
+  <relationship>
+    <alias>documentModifiedBy</alias>
+    <name>Document modified by</name>
+    <description>Defines a relationship between a Document Library and a User Account.</description>
+    <generateCode>true</generateCode>
+    <relType>relLookup</relType>
+    <fromType>document</fromType>
+    <toType>userAccount</toType>
+    <toName>Modified by</toName>
+    <fromName>Document modified</fromName>
+    <relationshipInFromTypeGroup>documentDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>userAccountOtherDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- 'Document Revision Updated By' relationship -->
+  <relationship>
+    <alias>revisionUpdatedBy</alias>
+    <name>Document revision modified by</name>
+    <description>Defines a relationship between a Document Library revision and a User Account.</description>
+    <generateCode>true</generateCode>
+    <relType>relLookup</relType>
+    <fromType>documentRevision</fromType>
+    <toType>userAccount</toType>
+    <toName>Updated by</toName>
+    <fromName>Document updated by</fromName>
+    <relationshipInFromTypeGroup>documentRevisionDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>userAccountOtherDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- 'Document Created By' relationship -->
+  <relationship>
+    <alias>documentCreatedBy</alias>
+    <name>Document created by</name>
+    <description>Defines a relationship between a Document Library and a User Account.</description>
+    <generateCode>true</generateCode>
+    <relType>relLookup</relType>
+    <fromType>document</fromType>
+    <toType>userAccount</toType>
+    <toName>Created by</toName>
+    <fromName>Document created by</fromName>
+    <relationshipInFromTypeGroup>documentDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>userAccountOtherDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    Document Generation                                           -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- 'Report Template' type -->
+  <type>
+    <name>Report Template</name>
+    <alias>reportTemplate</alias>
+    <description>Represents a template that can be used to generate Word reports.</description>
+    <inherits>userResource</inherits>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Report Template Details</name>
+        <alias>reportTemplateDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+  </type>
+  <!-- 'Report Template uses Document' relationship -->
+  <relationship>
+    <alias>reportTemplateUsesDocument</alias>
+    <reverseAlias>documentUsedByReportTemplate</reverseAlias>
+    <name>Report template uses document</name>
+    <description>Defines the template document that is actually used by a report template.</description>
+    <generateCode>true</generateCode>
+    <relType>relSingleComponent</relType>
+    <fromType>reportTemplate</fromType>
+    <fromName>Template</fromName>
+    <toType>document</toType>
+    <toName>Document</toName>
+    <securesTo>true</securesTo>
+    <relationshipInFromTypeGroup>reportTemplateDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>documentDetails</relationshipInToTypeGroup>
+  </relationship>
+  <!-- 'Report Template applies to Type' relationship -->
+  <relationship>
+    <alias>reportTemplateAppliesToType</alias>
+    <reverseAlias>reportTemplatesApplyToType</reverseAlias>
+    <name>Report template applies to type</name>
+    <description>Defines a relationship between a report template and the type it applies to.</description>
+    <generateCode>true</generateCode>
+    <relType>relDependantOf</relType>
+    <fromType>reportTemplate</fromType>
+    <fromName>Template</fromName>
+    <toType>type</toType>
+    <toName>Type</toName>
+    <relationshipInFromTypeGroup>reportTemplateDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>typeDetails</relationshipInToTypeGroup>
+  </relationship>
+</resources>

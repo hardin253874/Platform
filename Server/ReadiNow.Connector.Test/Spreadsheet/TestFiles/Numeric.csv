@@ -1,0 +1,11 @@
+Name,Description,Numeric,,Result,NOTE1
+Assembly Point 1,AP 1,9,,Fail,Should Fail for Minimum Characters
+Assembly Point 2,AP 2,20,,Pass,
+Assembly Point 3,AP 3,30,,Pass,
+Assembly Point 4,AP 4,40,,Pass,
+Assembly Point 5,AP 5,50,,Pass,
+Assembly Point 6,AP 6,,,Fail,Should fail for Mandatory
+Assembly Point 7,AP 7,70,,Pass,
+Assembly Point 8,AP 8,80,,Pass,
+Assembly Point 9,AP 9,90,,Pass,
+Assembly Point 10,AP 10,100,,Fail ,Should Fail for a Maximum

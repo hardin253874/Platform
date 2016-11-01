@@ -1,0 +1,1 @@
+PowerShell.exe -NoProfile -NoLogo -ExecutionPolicy Unrestricted -File %~d0%~p0%~n0.ps1

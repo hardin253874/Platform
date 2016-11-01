@@ -1,0 +1,758 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="core" xsi:schemaLocation=". ../Core.xsd" defaultSolution="coreSolution">
+  <!--Copyright 2011-2016 Global Software Innovation Pty Ltd-->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    Survey                                                      -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- Questions                                                        -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <managedType>
+    <alias>questionLibrary</alias>
+    <inherits>userResource</inherits>
+    <name>Question Library</name>
+    <description>A library of related questions</description>
+    <relationships>
+      <relationship>
+        <alias>libraryQuestions</alias>
+        <name>Questions</name>
+        <description>The questions that form part of a library.</description>
+        <reverseAlias>inLibrary</reverseAlias>
+        <fromName>Library</fromName>
+        <toName>Questions</toName>
+        <relType>relExclusiveCollection</relType>
+        <toType>surveyQuestion</toType>
+        <relationshipInFromTypeGroup>surveyFieldGroup</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>surveyFieldGroup</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+    </relationships>
+  </managedType>
+  <type>
+    <alias>surveyQuestion</alias>
+    <inherits>userResource</inherits>
+    <name>Survey Question</name>
+    <description>The base object type for a question.</description>
+    <isAbstract>true</isAbstract>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <alias>questionFieldGroup</alias>
+        <name>Question Fields</name>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>questionId</alias>
+        <name>Id</name>
+        <description>An Id used to identify the question in an external database.</description>
+        <maxLength>20</maxLength>
+        <fieldInGroup>questionFieldGroup</fieldInGroup>
+      </stringField>
+      <decimalField>
+        <alias>questionWeight</alias>
+        <name>Weighting</name>
+        <description>The relative importance of the question in the overall survey.</description>
+        <fieldInGroup>questionFieldGroup</fieldInGroup>
+      </decimalField>
+      <decimalField>
+        <alias>questionOrder</alias>
+        <name>Order</name>
+        <description>Used to control the order in which questions appear. Questions with smaller Order values appear before large ones.</description>
+        <fieldInGroup>questionFieldGroup</fieldInGroup>
+      </decimalField>
+      <boolField>
+        <alias>questionAllowNotes</alias>
+        <name>Allow notes</name>
+        <description>Allow the user to include additional notes along with their answer.</description>
+        <fieldInGroup>questionFieldGroup</fieldInGroup>
+      </boolField>
+      <boolField>
+        <alias>questionAllowAttachments</alias>
+        <name>Allow attachments</name>
+        <description>Allow the user to include attachments along with their answer.</description>
+        <fieldInGroup>questionFieldGroup</fieldInGroup>
+      </boolField>
+    </fields>
+    <relationships>
+      <relationship>
+        <alias>questionCategories</alias>
+        <name>Categories</name>
+        <description>The categories a question belongs to. Used for grouping in reporting on results.</description>
+        <relType>relSharedDependants</relType>
+        <toType>questionCategory</toType>
+        <relationshipInFromTypeGroup>questionFieldGroup</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>questionFieldGroup</relationshipInToTypeGroup>
+      </relationship>
+    </relationships>
+  </type>
+  <managedType>
+    <alias>questionCategory</alias>
+    <inherits>userResource</inherits>
+    <name>Question Category</name>
+    <description>A question category is used to tag and group questions.</description>
+    <allowEveryoneRead>true</allowEveryoneRead>
+  </managedType>
+  <managedType>
+    <alias>textQuestion</alias>
+    <inherits>surveyQuestion</inherits>
+    <name>Text Question</name>
+    <description>A question that requires the user enter some text.</description>
+    <generateCode>true</generateCode>
+  </managedType>
+  <managedType>
+    <alias>numericQuestion</alias>
+    <inherits>surveyQuestion</inherits>
+    <name>Numeric Question</name>
+    <description>A question that requires the user enter a number.</description>
+    <generateCode>true</generateCode>
+    <fields>
+      <boolField>
+        <alias>numericQuestionIsInteger</alias>
+        <name>Only allow whole numbers</name>
+        <description>Does the question only permit whole numbers.</description>
+        <fieldInGroup>surveyFieldGroup</fieldInGroup>
+      </boolField>
+    </fields>
+  </managedType>
+  <managedType>
+    <alias>choiceQuestion</alias>
+    <inherits>surveyQuestion</inherits>
+    <name>Choice Question</name>
+    <description>A question that requires the user to make a choice from amongst a number of options.</description>
+    <generateCode>true</generateCode>
+    <fields>
+      <boolField>
+        <alias>choiceQuestionIsMulti</alias>
+        <name>Allow multiple selection</name>
+        <description>Does the question allow multiple answers to be selected.</description>
+        <fieldInGroup>surveyFieldGroup</fieldInGroup>
+      </boolField>
+    </fields>
+    <relationships>
+      <relationship>
+        <alias>choiceQuestionChoiceSet</alias>
+        <name>Choice set</name>
+        <fromName>Question</fromName>
+        <toName>Choice set</toName>
+        <description>An existing set of choices.</description>
+        <relType>relLookup</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>surveyFieldGroup</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>surveyFieldGroup</relationshipInToTypeGroup>
+        <toType>choiceOptionSet</toType>
+        <securesTo>true</securesTo>
+      </relationship>
+    </relationships>
+  </managedType>
+  <managedType>
+    <alias>choiceOption</alias>
+    <inherits>userResource</inherits>
+    <name>Choice Option</name>
+    <description>An option that can be selected in a choice question.</description>
+    <generateCode>true</generateCode>
+    <fields>
+      <intField>
+        <alias>choiceOptionOrder</alias>
+        <name>Order</name>
+        <description>The order a option appears in a list.</description>
+        <fieldInGroup>questionFieldGroup</fieldInGroup>
+      </intField>
+      <decimalField>
+        <alias>choiceOptionValue</alias>
+        <name>Value</name>
+        <description>A numeric value assigned to this choice. Used when aggregating across answers.</description>
+        <fieldInGroup>questionFieldGroup</fieldInGroup>
+      </decimalField>
+    </fields>
+  </managedType>
+  <managedType>
+    <alias>choiceOptionSet</alias>
+    <inherits>userResource</inherits>
+    <name>Choice Option Set</name>
+    <description>A set of choice options that may be re-used amongst choice questions.</description>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <alias>choiceOptionSetFieldGroup</alias>
+        <name>Choice Option Set Fields</name>
+      </fieldGroup>
+    </fieldGroups>
+    <relationships>
+      <relationship>
+        <alias>choiceOptionSetChoices</alias>
+        <name>Choices</name>
+        <fromName>Set</fromName>
+        <toName>Choices</toName>
+        <description>The choices belonging to the set.</description>
+        <relType>relComponents</relType>
+        <generateCode>true</generateCode>
+        <toType>choiceOption</toType>
+        <relationshipInFromTypeGroup>choiceOptionSetFieldGroup</relationshipInFromTypeGroup>
+        <hideOnToType>true</hideOnToType>
+        <securesTo>true</securesTo>
+      </relationship>
+    </relationships>
+  </managedType>
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- Survey                                                        -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <type>
+    <alias>userSurvey</alias>
+    <inherits>userResource</inherits>
+    <name>User Survey</name>
+    <description>A collection of questions to be presented to a group of users.</description>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <alias>surveyFieldGroup</alias>
+        <name>Survey Fields</name>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <boolField>
+        <name>Show help text</name>
+        <alias>showSurveyHelpText</alias>
+        <description>Specify show the help text for survey.</description>
+        <defaultValue>false</defaultValue>
+        <fieldInGroup>surveyFieldGroup</fieldInGroup>
+      </boolField>
+    </fields>
+    <relationships>
+      <relationship>
+        <alias>surveySections</alias>
+        <name>Sections</name>
+        <description>The sections a survey is divided into.</description>
+        <fromName>Survey</fromName>
+        <toName>Sections</toName>
+        <relType>relComponents</relType>
+        <toType>surveySection</toType>
+        <relationshipInFromTypeGroup>surveyFieldGroup</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>surveyFieldGroup</relationshipInToTypeGroup>
+        <generateCode>true</generateCode>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <alias>surveyCampaigns</alias>
+        <reverseAlias>surveyForCampaign</reverseAlias>
+        <name>Survey campaigns</name>
+        <description>The campaigns held for this survey.</description>
+        <fromName>Survey</fromName>
+        <toName>Campaigns</toName>
+        <relType>relComponents</relType>
+        <toType>surveyCampaign</toType>
+        <relationshipInFromTypeGroup>surveyFieldGroup</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>surveyFieldGroup</relationshipInToTypeGroup>
+        <generateCode>true</generateCode>
+      </relationship>
+      <relationship>
+        <alias>surveyOutcomes</alias>
+        <reverseAlias>surveyForOutcome</reverseAlias>
+        <name>Survey outcomes</name>
+        <description>An optional set of outcomes that a completed survey result can be bucketed into.</description>
+        <fromName>Survey</fromName>
+        <toName>Outcomes</toName>
+        <relType>relComponents</relType>
+        <toType>surveyOutcome</toType>
+        <relationshipInFromTypeGroup>surveyFieldGroup</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>surveyFieldGroup</relationshipInToTypeGroup>
+        <generateCode>true</generateCode>
+      </relationship>
+      <relationship>
+        <alias>surveyTriggerOnSurveyComplete</alias>
+        <name>Survey complete workflow</name>
+        <description>An optional workflow that will run when a user completes a survey.</description>
+        <relType>relLookup</relType>
+        <toType>workflow</toType>
+        <relationshipInFromTypeGroup>surveyFieldGroup</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>surveyFieldGroup</relationshipInToTypeGroup>
+        <generateCode>true</generateCode>
+      </relationship>
+      <relationship>
+        <alias>surveyTriggerOnCampaignComplete</alias>
+        <name>Campaign close workflow</name>
+        <description>An optional workflow that will run when a survey campaign completes.</description>
+        <relType>relLookup</relType>
+        <toType>workflow</toType>
+        <relationshipInFromTypeGroup>surveyFieldGroup</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>surveyFieldGroup</relationshipInToTypeGroup>
+        <generateCode>true</generateCode>
+      </relationship>
+    </relationships>
+  </type>
+  <type>
+    <alias>surveySection</alias>
+    <inherits>userResource</inherits>
+    <name>Section</name>
+    <description>A group of questions within a user survey.</description>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <alias>surveySectionFieldGroup</alias>
+        <name>Survey Section Fields</name>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <decimalField>
+        <alias>surveySectionWeight</alias>
+        <name>Weighting</name>
+        <description>The relative importance of the questions in this section to the overall survey.</description>
+        <fieldInGroup>surveySectionFieldGroup</fieldInGroup>
+        <defaultValue>1.0</defaultValue>
+      </decimalField>
+      <decimalField>
+        <alias>surveySectionOrder</alias>
+        <name>Order</name>
+        <description>Used to control the order in which the section appears. Sections with smaller Order values appear before large ones.</description>
+        <fieldInGroup>surveySectionFieldGroup</fieldInGroup>
+      </decimalField>
+      <boolField>
+        <alias>surveyBreak</alias>
+        <name>Break</name>
+        <description>Indicates that survey content should be broken up at this point.</description>
+        <fieldInGroup>surveySectionFieldGroup</fieldInGroup>
+        <defaultValue>false</defaultValue>
+      </boolField>
+      <intField>
+        <alias>surveyPage</alias>
+        <name>Page</name>
+        <description>If the survey contains page breaks this value helps distribute the sections.</description>
+        <fieldInGroup>surveySectionFieldGroup</fieldInGroup>
+      </intField>
+    </fields>
+    <relationships>
+      <relationship>
+        <alias>surveyQuestions</alias>
+        <name>Questions</name>
+        <description>The questions that will be used when generating a campaign.</description>
+        <fromName>Survey section</fromName>
+        <toName>Questions</toName>
+        <relType>relManyToMany</relType>
+        <toType>surveyQuestion</toType>
+        <relationshipInFromTypeGroup>surveySectionFieldGroup</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>surveySectionFieldGroup</relationshipInToTypeGroup>
+        <hideOnToType>true</hideOnToType>
+        <hideOnToTypeDefaultForm>true</hideOnToTypeDefaultForm>
+        <generateCode>true</generateCode>
+        <securesTo>true</securesTo>
+      </relationship>
+    </relationships>
+  </type>
+
+  <!-- Survey Campaign Event Target -->
+  <target>
+    <alias>surveyCampaignTarget</alias>
+    <typeName>EDC.ReadiNow.Model.EventClasses.SurveyCampaignEventTarget</typeName>
+    <assemblyName>EDC.ReadiNow.Common, Version=1.0.0.0, Culture=neutral</assemblyName>
+    <ordinal>0</ordinal>
+  </target>
+  
+  <type>
+    <alias>surveyCampaign</alias>
+    <inherits>userResource</inherits>
+    <name>Survey Campaign</name>
+    <description>A survey campaign.</description>
+    <isAbstract>true</isAbstract>
+    <generateCode>true</generateCode>
+    <fields>
+      <dateField>
+        <alias>surveyClosesOn</alias>
+        <name>Closes on</name>
+        <description>The date and time the survey closes.</description>
+        <fieldInGroup>surveyFieldGroup</fieldInGroup>
+      </dateField>
+      <boolField>
+        <alias>campaignIsComplete</alias>
+        <name>Is complete</name>
+        <description>The campaign has been completed.</description>
+        <fieldInGroup>surveyFieldGroup</fieldInGroup>
+      </boolField>
+      <boolField>
+        <alias>campaignIsLaunched</alias>
+        <name>Launched</name>
+        <description>The campaign has been launched.</description>
+        <defaultValue>false</defaultValue>
+        <isFieldReadOnly>true</isFieldReadOnly>
+        <fieldInGroup>surveyFieldGroup</fieldInGroup>
+      </boolField>
+      <dateField>
+        <alias>campaignLaunchedOn</alias>
+        <name>Launched on</name>
+        <description>The date and time the campaign was launched.</description>
+        <isFieldReadOnly>true</isFieldReadOnly>
+        <fieldInGroup>surveyFieldGroup</fieldInGroup>
+      </dateField>
+    </fields>
+    <relationships>
+      <relationship>
+        <alias>surveyResponses</alias>
+        <reverseAlias>campaignForResults</reverseAlias>
+        <name>Survey results</name>
+        <description>A user response for the survey.</description>
+        <fromName>Campaign</fromName>
+        <toName>Results</toName>
+        <relType>relComponents</relType>
+        <toType>surveyResponse</toType>
+        <relationshipInFromTypeGroup>surveyFieldGroup</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>surveyFieldGroup</relationshipInToTypeGroup>
+        <generateCode>true</generateCode>
+      </relationship>
+      <relationship>
+        <alias>campaignTarget</alias>
+        <name>Target object</name>
+        <description>The target object.</description>
+        <toType>definition</toType>
+        <relType>relLookup</relType>
+        <generateCode>true</generateCode>
+        <hideOnToTypeDefaultForm>true</hideOnToTypeDefaultForm>
+        <hideOnToType>true</hideOnToType>
+        <relationshipInFromTypeGroup>surveyFieldGroup</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>surveyFieldGroup</relationshipInToTypeGroup>
+      </relationship>
+    </relationships>
+    <onBeforeSave>surveyCampaignTarget</onBeforeSave>
+    <onBeforeDelete>surveyCampaignTarget</onBeforeDelete>
+  </type>
+  <!-- Person Campaign -->
+  <type>
+    <alias>surveyPersonCampaign</alias>
+    <inherits>surveyCampaign</inherits>
+    <name>Person Campaign</name>
+    <description>A survey campaign directed toward a list of recipients.</description>
+    <generateCode>true</generateCode>
+    <relationships>
+      <relationship>
+        <alias>campaignPersonRecipients</alias>
+        <name>Recipients</name>
+        <description>The people targeted in this campaign.</description>
+        <fromName>Campaign</fromName>
+        <toName>Recipients</toName>
+        <relType>relManyToMany</relType>
+        <toType>person</toType>
+        <relationshipInFromTypeGroup>surveyFieldGroup</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>surveyFieldGroup</relationshipInToTypeGroup>
+        <hideOnToType>true</hideOnToType>
+        <hideOnToTypeDefaultForm>true</hideOnToTypeDefaultForm>
+        <generateCode>true</generateCode>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- Target Campaign -->
+  <type>
+    <alias>surveyTargetCampaign</alias>
+    <inherits>surveyCampaign</inherits>
+    <name>Target Campaign</name>
+    <description>A survey campaign whose recipients are determined by a targeted relationship.</description>
+    <generateCode>true</generateCode>
+    <relationships>
+      <relationship>
+        <alias>campaignTargetRelationship</alias>
+        <name>Survey taker</name>
+        <description>The relationship between the recipients and the object of the survey.</description>
+        <relType>relLookup</relType>
+        <toType>relationship</toType>
+        <relationshipInFromTypeGroup>surveyFieldGroup</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>surveyFieldGroup</relationshipInToTypeGroup>
+        <hideOnToType>true</hideOnToType>
+        <hideOnToTypeDefaultForm>true</hideOnToTypeDefaultForm>
+        <generateCode>true</generateCode>
+      </relationship>
+      <relationship>
+        <alias>campaignTargetRelationshipDirection</alias>
+        <name>Survey taker direction</name>
+        <description>The direction of the relationship between target and recipients.</description>
+        <relType>relChoiceField</relType>
+        <toType>directionEnum</toType>
+        <relationshipInFromTypeGroup>surveyFieldGroup</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>surveyFieldGroup</relationshipInToTypeGroup>
+        <hideOnToType>true</hideOnToType>
+        <hideOnToTypeDefaultForm>true</hideOnToTypeDefaultForm>
+        <hideOnFromType>true</hideOnFromType>
+        <hideOnFromTypeDefaultForm>true</hideOnFromTypeDefaultForm>
+        <generateCode>true</generateCode>
+      </relationship>
+      <relationship>
+        <alias>campaignTargetTargets</alias>
+        <name>Targets</name>
+        <description>The target objects to be involved in this campaign.</description>
+        <relType>relManyToMany</relType>
+        <toType>userResource</toType>
+        <relationshipInFromTypeGroup>surveyFieldGroup</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>surveyFieldGroup</relationshipInToTypeGroup>
+        <hideOnToType>true</hideOnToType>
+        <hideOnToTypeDefaultForm>true</hideOnToTypeDefaultForm>
+        <generateCode>true</generateCode>
+      </relationship>
+    </relationships>
+  </type>
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- Result                                                           -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <type>
+    <alias>surveyResponse</alias>
+    <inherits>userResource</inherits>
+    <name>Survey Result</name>
+    <description>The container holding the results of a user survey. The survey may be incomplete</description>
+    <generateCode>true</generateCode>
+    <fields>
+      <dateField>
+        <alias>surveyStartedOn</alias>
+        <name>Started on</name>
+        <description>The date and time the survey was started.</description>
+        <fieldInGroup>surveyFieldGroup</fieldInGroup>
+      </dateField>
+      <dateField>
+        <alias>surveyCompletedOn</alias>
+        <name>Completed on</name>
+        <description>The date and time the survey was completed.</description>
+        <fieldInGroup>surveyFieldGroup</fieldInGroup>
+      </dateField>
+      <decimalField>
+        <alias>surveyResponseCalculatedValue</alias>
+        <name>Caclulated value</name>
+        <description>The sume of all the calculated values in the result. Set when a survey is completed.</description>
+        <fieldInGroup>surveyFieldGroup</fieldInGroup>
+        <isFieldReadOnly>true</isFieldReadOnly>
+      </decimalField>
+      <stringField>
+        <alias>surveyResponseComments</alias>
+        <name>Comments</name>
+        <description>Comments on the response.</description>
+        <fieldInGroup>surveyFieldGroup</fieldInGroup>
+      </stringField>
+    </fields>
+    <relationships>
+      <relationship>
+        <alias>surveyTaker</alias>
+        <name>Survey taker</name>
+        <description>The person taking the survey</description>
+        <toType>person</toType>
+        <relType>relLookup</relType>
+        <relationshipInFromTypeGroup>surveyFieldGroup</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>surveyFieldGroup</relationshipInToTypeGroup>
+        <hideOnToType>true</hideOnToType>
+        <hideOnToTypeDefaultForm>true</hideOnToTypeDefaultForm>
+        <generateCode>true</generateCode>
+      </relationship>
+      <relationship>
+        <alias>surveyTarget</alias>
+        <name>Survey target</name>
+        <description>The target of the survey.</description>
+        <toType>userResource</toType>
+        <relType>relLookup</relType>
+        <relationshipInFromTypeGroup>surveyFieldGroup</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>system</relationshipInToTypeGroup>
+        <hideOnToTypeDefaultForm>true</hideOnToTypeDefaultForm>
+        <generateCode>true</generateCode>
+      </relationship>
+      <relationship>
+        <alias>surveyAnswers</alias>
+        <name>Survey answers</name>
+        <fromName>Survey result</fromName>
+        <toName>Answers</toName>
+        <description>The users answers to the survey</description>
+        <relType>relComponents</relType>
+        <toType>surveyAnswer</toType>
+        <relationshipInFromTypeGroup>surveyFieldGroup</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>surveyFieldGroup</relationshipInToTypeGroup>
+        <hideOnToType>true</hideOnToType>
+        <hideOnToTypeDefaultForm>true</hideOnToTypeDefaultForm>
+        <securesTo>true</securesTo>
+        <generateCode>true</generateCode>
+      </relationship>
+      <relationship>
+        <alias>surveyResponseOutcome</alias>
+        <name>Survey outcome</name>
+        <description>The evaluated outcome of a completed survey result.</description>
+        <toType>surveyOutcome</toType>
+        <relType>relLookup</relType>
+        <relationshipInFromTypeGroup>surveyFieldGroup</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>surveyFieldGroup</relationshipInToTypeGroup>
+        <hideOnToType>true</hideOnToType>
+        <hideOnToTypeDefaultForm>true</hideOnToTypeDefaultForm>
+        <generateCode>true</generateCode>
+      </relationship>
+      <relationship>
+        <alias>surveyStatus</alias>
+        <name>Survey status</name>
+        <description>The state the survey is in.</description>
+        <toType>surveyStatusEnum</toType>
+        <relType>relChoiceField</relType>
+        <relationshipInFromTypeGroup>surveyFieldGroup</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>surveyFieldGroup</relationshipInToTypeGroup>
+        <hideOnToType>true</hideOnToType>
+        <hideOnToTypeDefaultForm>true</hideOnToTypeDefaultForm>
+        <generateCode>true</generateCode>
+        <relationshipIsMandatory>true</relationshipIsMandatory>
+      </relationship>
+    </relationships>
+  </type>
+
+  <enumType>
+    <name>Survey Status</name>
+    <alias>surveyStatusEnum</alias>
+    <inherits>enumValue</inherits>
+    <generateCode>true</generateCode>
+    <enumValues>
+      <surveyStatusEnum>
+        <name>Not Started</name>
+        <alias>sseNotStarted</alias>
+      </surveyStatusEnum>
+      <surveyStatusEnum>
+        <name>In Progress</name>
+        <alias>sseInProgress</alias>
+      </surveyStatusEnum>
+      <surveyStatusEnum>
+        <name>Completed</name>
+        <alias>sseCompleted</alias>
+      </surveyStatusEnum>
+      <surveyStatusEnum>
+        <name>In Review</name>
+        <alias>sseInReview</alias>
+      </surveyStatusEnum>
+      <surveyStatusEnum>
+        <name>Approved</name>
+        <alias>sseApproved</alias>
+      </surveyStatusEnum>
+    </enumValues>
+  </enumType>
+
+  <type>
+    <alias>surveyAnswer</alias>
+    <inherits>userResource</inherits>
+    <name>Survey Answer</name>
+    <description>The answer to a survey question.</description>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <alias>surveyAnswerGroup</alias>
+        <name>Answer fields</name>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>surveyAnswerString</alias>
+        <name>String answer</name>
+        <fieldInGroup>surveyAnswerGroup</fieldInGroup>
+      </stringField>
+      <decimalField>
+        <alias>surveyAnswerNumber</alias>
+        <name>Numeric answer</name>
+        <fieldInGroup>surveyAnswerGroup</fieldInGroup>
+      </decimalField>
+      <stringField>
+        <alias>surveyAnswerSummary</alias>
+        <name>Summary</name>
+        <description>A field containing a textural summary of the result to allow easy reporting of answers.</description>
+        <fieldInGroup>surveyAnswerGroup</fieldInGroup>
+        <isFieldReadOnly>true</isFieldReadOnly>
+      </stringField>
+      <stringField>
+        <alias>surveyAnswerNotes</alias>
+        <name>Notes</name>
+        <description>A additional notes the user adds to the answer.</description>
+        <fieldInGroup>surveyAnswerGroup</fieldInGroup>
+      </stringField>
+      <decimalField>
+        <alias>surveyAnswerCalculatedValue</alias>
+        <name>Calculated value</name>
+        <description>The calculated value of the answer using the questions and answers weighting and assigned value.</description>
+        <fieldInGroup>surveyAnswerGroup</fieldInGroup>
+        <isFieldReadOnly>true</isFieldReadOnly>
+      </decimalField>
+      <stringField>
+        <alias>surveyAnswerOriginalQuestionText</alias>
+        <name>Original question</name>
+        <description>The wording of the question at the time that this answer was prepared.</description>
+        <fieldInGroup>surveyAnswerGroup</fieldInGroup>
+      </stringField>
+    </fields>
+    <relationships>
+      <relationship>
+        <alias>questionBeingAnswered</alias>
+        <name>Question being answered</name>
+        <fromName>Answer</fromName>
+        <toName>Question</toName>
+        <toType>surveyQuestion</toType>
+        <relType>relLookup</relType>
+        <relationshipInFromTypeGroup>surveyAnswerGroup</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>surveyAnswerGroup</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+        <hideOnToTypeDefaultForm>true</hideOnToTypeDefaultForm>
+        <hideOnToType>true</hideOnToType>
+        <generateCode>true</generateCode>
+      </relationship>
+      <relationship>
+        <alias>questionInSection</alias>
+        <name>Question in section</name>
+        <description>The survey section that the question resides.</description>
+        <fromName>Answer</fromName>
+        <toName>Section</toName>
+        <toType>surveySection</toType>
+        <relType>relLookup</relType>
+        <relationshipInFromTypeGroup>surveyAnswerGroup</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>surveyAnswerGroup</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+        <hideOnToTypeDefaultForm>true</hideOnToTypeDefaultForm>
+        <hideOnToType>true</hideOnToType>
+        <generateCode>true</generateCode>
+      </relationship>
+      <relationship>
+        <alias>surveyAnswerSingleChoice</alias>
+        <name>Single choice answer</name>
+        <relType>relDependantOf</relType>
+        <toType>choiceOption</toType>
+        <relationshipInFromTypeGroup>surveyAnswerGroup</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>surveyAnswerGroup</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+        <hideOnToType>true</hideOnToType>
+        <hideOnToTypeDefaultForm>true</hideOnToTypeDefaultForm>
+        <generateCode>true</generateCode>
+      </relationship>
+      <relationship>
+        <alias>surveyAnswerMultiChoice</alias>
+        <name>Multiple choice answer</name>
+        <relType>relSharedDependantsOf</relType>
+        <toType>choiceOption</toType>
+        <relationshipInFromTypeGroup>surveyAnswerGroup</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>surveyAnswerGroup</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+        <hideOnToType>true</hideOnToType>
+        <hideOnToTypeDefaultForm>true</hideOnToTypeDefaultForm>
+        <generateCode>true</generateCode>
+      </relationship>
+      <relationship>
+        <alias>surveyAnswerAttachments</alias>
+        <name>Attachments</name>
+        <relType>relComponents</relType>
+        <toType>surveyAttachment</toType>
+        <relationshipInFromTypeGroup>surveyAnswerGroup</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>surveyAnswerGroup</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+        <generateCode>true</generateCode>
+      </relationship>
+    </relationships>
+  </type>
+  <type>
+    <alias>surveyAttachment</alias>
+    <name>Survey Attachment</name>
+    <description>A file attached by a user to a survey answer.</description>
+    <inherits>fileType</inherits>
+    <generateCode>true</generateCode>
+  </type>
+  <managedType>
+    <alias>surveyOutcome</alias>
+    <inherits>userResource</inherits>
+    <name>Survey Outcome</name>
+    <description>An possible outcome that a survey result will be bucketed into.</description>
+    <generateCode>true</generateCode>
+    <fields>
+      <decimalField>
+        <alias>surveyOutcomeThreshold</alias>
+        <name>Threshold</name>
+        <description>The threshold which a survey result must reach before it can have this outcome.</description>
+        <fieldInGroup>surveyFieldGroup</fieldInGroup>
+      </decimalField>
+    </fields>
+  </managedType>
+</resources>

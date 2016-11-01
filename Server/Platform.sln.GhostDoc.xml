@@ -1,0 +1,7 @@
+<GhostDoc>
+  <!--Copyright 2011-2016 Global Software Innovation Pty Ltd-->
+  <IgnoreFilePatterns>
+    <IgnoreFilePattern>*.min.js</IgnoreFilePattern>
+    <IgnoreFilePattern>jquery*.js</IgnoreFilePattern>
+  </IgnoreFilePatterns>
+</GhostDoc>

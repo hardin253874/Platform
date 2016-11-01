@@ -1,0 +1,165 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Comment CommentText="Represents the logical query. &#xD;&#xA;&#xD;&#xA;This is the representation that is presented to the user; passed to the client; and stored in the database.">
+    <Position X="8.729" Y="6.5" Height="1.042" Width="1.742" />
+  </Comment>
+  <Class Name="EDC.ReadiNow.Metadata.Query.Structured.Entity">
+    <Position X="9" Y="1" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="RelatedEntities" Type="EDC.ReadiNow.Metadata.Query.Structured.Entity" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="10.5" Y="1.22" />
+        <Point X="10.75" Y="1.22" />
+        <Point X="10.75" Y="1.714" />
+        <Point X="10.5" Y="1.714" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.321" Y="0.155" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAEAACAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Metadata\Query\Structured\Entity.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="RelatedEntities" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="EDC.ReadiNow.Metadata.Query.Structured.StructuredQuery">
+    <Position X="3" Y="0.5" Width="1.5" />
+    <AssociationLine Name="RootEntity" Type="EDC.ReadiNow.Metadata.Query.Structured.Entity" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4.5" Y="0.991" />
+        <Point X="6.073" Y="0.991" />
+        <Point X="6.073" Y="1.715" />
+        <Point X="9" Y="1.715" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="3.61" Y="0.82" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="SelectColumns" Type="EDC.ReadiNow.Metadata.Query.Structured.SelectColumn" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3.375" Y="1.481" />
+        <Point X="3.375" Y="1.856" />
+        <Point X="2.688" Y="1.856" />
+        <Point X="2.688" Y="2.25" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="-1.255" Y="0.476" Height="0.16" Width="1.243" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="OrderBy" Type="EDC.ReadiNow.Metadata.Query.Structured.OrderByItem" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4" Y="1.481" />
+        <Point X="4" Y="1.856" />
+        <Point X="4.562" Y="1.856" />
+        <Point X="4.562" Y="2.25" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="-0.45" Y="0.495" Height="0.16" Width="0.91" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAEAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Metadata\Query\Structured\StructuredQuery.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="RootEntity" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="SelectColumns" />
+      <Property Name="OrderBy" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="EDC.ReadiNow.Metadata.Query.Structured.RelatedResource">
+    <Position X="9" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAIACA=</HashCode>
+      <FileName>Metadata\Query\Structured\RelatedResource.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EDC.ReadiNow.Metadata.Query.Structured.ResourceDataColumn">
+    <Position X="0.5" Y="6.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAAAAAACQAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Metadata\Query\Structured\ResourceDataColumn.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EDC.ReadiNow.Metadata.Query.Structured.ScalarExpression">
+    <Position X="3" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Metadata\Query\Structured\ScalarExpression.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EDC.ReadiNow.Metadata.Query.Structured.SelectColumn">
+    <Position X="2" Y="2.25" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="Expression" Type="EDC.ReadiNow.Metadata.Query.Structured.ScalarExpression" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="2.688" Y="3.942" />
+        <Point X="2.688" Y="4.469" />
+        <Point X="3.562" Y="4.469" />
+        <Point X="3.562" Y="5.25" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="0.101" Y="1.005" Height="0.16" Width="0.939" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAgAAAABAAAAAAAAAAAAQAAAAAAAAEAA=</HashCode>
+      <FileName>Metadata\Query\Structured\SelectColumn.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Expression" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="EDC.ReadiNow.Metadata.Query.Structured.StructureViewExpression">
+    <Position X="2.75" Y="6.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACAAAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>Metadata\Query\Structured\StructureViewExpression.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EDC.ReadiNow.Metadata.Query.Structured.OrderByItem">
+    <Position X="3.75" Y="2.25" Width="1.5" />
+    <AssociationLine Name="Expression" Type="EDC.ReadiNow.Metadata.Query.Structured.ScalarExpression" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4.562" Y="3.231" />
+        <Point X="4.562" Y="4.427" />
+        <Point X="4" Y="4.427" />
+        <Point X="4" Y="5.25" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="-1.525" Y="1.268" Height="0.16" Width="1.172" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAACAAAAAAAAAAAAAQAAAAAAAAAAA=</HashCode>
+      <FileName>Metadata\Query\Structured\OrderByItem.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Expression" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="EDC.ReadiNow.Metadata.Query.Structured.ResourceEntity">
+    <Position X="9" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Metadata\Query\Structured\ResourceEntity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EDC.ReadiNow.Metadata.Query.Structured.ColumnReference">
+    <Position X="5.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Metadata\Query\Structured\ColumnReference.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

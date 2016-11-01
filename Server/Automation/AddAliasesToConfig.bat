@@ -1,0 +1,1 @@
+@ReadiNowCodeGen\XmlUtil.exe -fixconfig -config ..\EDC.ReadiNow.Common\Config\*.xml

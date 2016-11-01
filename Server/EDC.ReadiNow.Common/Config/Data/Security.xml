@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="core" xmlns:k="console" xsi:schemaLocation=". ../Core.xsd" defaultSolution="consoleSolution">
+  <!--Copyright 2011-2016 Global Software Innovation Pty Ltd-->
+  <!-- Users -->
+  <userAccount>
+    <alias>administratorUserAccount</alias>
+    <name>Administrator</name>
+    <password>1|Xl34BJq5+/zpZSUJYDnxmTFoyZ0lOJmB|cus2cm+COxhKDoFCEkMn4OSRabR0OPEF</password>
+    <accountStatus>active</accountStatus>
+    <userHasRole>administratorRole</userHasRole>
+    <accountHolder>
+      <person>
+        <alias>administratorPerson</alias>
+        <name>Jack Admin</name>
+        <firstName>Jack</firstName>
+        <lastName>Admin</lastName>
+      </person>
+    </accountHolder>
+  </userAccount>
+  <!-- Roles -->
+  <role>
+    <alias>everyoneRole</alias>
+    <name>Everyone</name>
+    <description>Special role that implicitly contains all users.</description>
+    <allowAccess>
+      everyoneTypeAuthorization,everyoneFieldAccess,everyoneRelationshipAccess,everyoneEnumTypeAccess,everyoneAllowDisplayByRoleAuth,everyoneAllowDisplayByUserAuth
+    </allowAccess>
+    <allowDisplay>
+      <!-- Home app -->
+      homeMenu, k:homeSection, k:favoritesSection, tasksSection, k:myContentSection
+    </allowDisplay>
+    <allowAccessInternal>
+      <!-- Required for reports -->
+      resourceReport, templateReport, k:enumValuesReport,
+      <!-- Console theme -->
+      k:tenantConsoleTheme
+    </allowAccessInternal>
+  </role>
+  <role>
+    <alias>administratorRole</alias>
+    <name>Administrators</name>
+    <description>Tenant administrators.</description>
+  </role>
+  <role>
+    <alias>selfServeRole</alias>
+    <name>Self Serve</name>
+    <description>Users who may create self-service reports and screens.</description>
+  </role>
+  <role>
+    <alias>importExportRole</alias>
+    <name>Import/Export</name>
+    <description>Users who may import and export content.</description>
+  </role>
+  <!-- Everyone type accessRule -->
+  <accessRule>
+    <alias>everyoneTypeAuthorization</alias>
+    <name>See the object types.</name>
+    <accessRuleEnabled>true</accessRuleEnabled>
+    <accessRuleHidden>true</accessRuleHidden>
+    <accessRuleReport>
+      <report>
+        <alias>everyoneReadType</alias>
+        <name>Object Types</name>
+        <reportUsesDefinition>type</reportUsesDefinition>
+      </report>
+    </accessRuleReport>
+    <controlAccess>type</controlAccess>
+    <permissionAccess>read</permissionAccess>
+  </accessRule>
+  <!-- Everyone field accessRule -->
+  <accessRule>
+    <alias>everyoneFieldAccess</alias>
+    <name>See all fields.</name>
+    <accessRuleEnabled>true</accessRuleEnabled>
+    <accessRuleHidden>true</accessRuleHidden>
+    <accessRuleReport>
+      <report>
+        <alias>everyoneAllFields</alias>
+        <name>All Fields</name>
+        <reportUsesDefinition>field</reportUsesDefinition>
+      </report>
+    </accessRuleReport>
+    <controlAccess>field</controlAccess>
+    <permissionAccess>read</permissionAccess>
+  </accessRule>
+  <!-- Everyone relationship accessRule -->
+  <accessRule>
+    <alias>everyoneRelationshipAccess</alias>
+    <name>See all relationships.</name>
+    <accessRuleEnabled>true</accessRuleEnabled>
+    <accessRuleHidden>true</accessRuleHidden>
+    <accessRuleReport>
+      <report>
+        <alias>everyoneAllRelationships</alias>
+        <name>All Relationships.</name>
+        <reportUsesDefinition>relationship</reportUsesDefinition>
+      </report>
+    </accessRuleReport>
+    <controlAccess>relationship</controlAccess>
+    <permissionAccess>read</permissionAccess>
+  </accessRule>
+  <!-- Everyone enum accessRule -->
+  <accessRule>
+    <alias>everyoneEnumTypeAccess</alias>
+    <name>See all enums.</name>
+    <accessRuleEnabled>true</accessRuleEnabled>
+    <accessRuleHidden>true</accessRuleHidden>
+    <accessRuleReport>
+      <report>
+        <alias>everyoneEnumTypes</alias>
+        <name>All Enum Types.</name>
+        <reportUsesDefinition>enumType</reportUsesDefinition>
+      </report>
+    </accessRuleReport>
+    <controlAccess>enumType</controlAccess>
+    <permissionAccess>read</permissionAccess>
+  </accessRule>
+  <!-- Allow Display by Role accessRule -->
+  <accessRule>
+    <alias>everyoneAllowDisplayByRoleAuth</alias>
+    <name>See all allowed navigation elements.</name>
+    <accessRuleEnabled>true</accessRuleEnabled>
+    <accessRuleHidden>true</accessRuleHidden>
+    <accessRuleReport>
+      <report>
+        <alias>everyoneAllowDisplayByRoleReport</alias>
+        <name>Allow Display Navigation Items by Role</name>
+        <reportUsesDefinition>k:navigationElement</reportUsesDefinition>
+      </report>
+    </accessRuleReport>
+    <controlAccess>k:navigationElement</controlAccess>
+    <permissionAccess>read</permissionAccess>
+  </accessRule>
+  <!-- Allow Display by User accessRule -->
+  <accessRule>
+    <alias>everyoneAllowDisplayByUserAuth</alias>
+    <name>See all allowed navigation elements.</name>
+    <accessRuleEnabled>true</accessRuleEnabled>
+    <accessRuleHidden>true</accessRuleHidden>
+    <accessRuleReport>
+      <report>
+        <alias>everyoneAllowDisplayByUserReport</alias>
+        <name>Allow Display Navigation Items by User</name>
+        <reportUsesDefinition>k:navigationElement</reportUsesDefinition>
+      </report>
+    </accessRuleReport>
+    <controlAccess>k:navigationElement</controlAccess>
+    <permissionAccess>read</permissionAccess>
+  </accessRule>
+  <!-- Password Policy Instance -->
+  <passwordPolicy>
+    <name>Password Policy</name>
+    <description>The policy settings that apply to passwords.</description>
+    <alias>passwordPolicyInstance</alias>
+    <minimumPasswordLength>7</minimumPasswordLength>
+    <mustContainDigits>true</mustContainDigits>
+    <mustContainLowerCaseCharacters>true</mustContainLowerCaseCharacters>
+    <mustContainUpperCaseCharacters>false</mustContainUpperCaseCharacters>
+    <mustContainSpecialCharacters>false</mustContainSpecialCharacters>
+    <accountLockoutThreshold>3</accountLockoutThreshold>
+    <accountLockoutDuration>60</accountLockoutDuration>
+    <maximumPasswordAge>90</maximumPasswordAge>
+  </passwordPolicy>  
+  <readiNowIdentityProvider>
+    <name>ReadiNow</name>
+    <alias>readiNowIdentityProviderInstance</alias>
+    <description>ReadiNow Identity Provider.</description>
+    <providerOrdinal>0</providerOrdinal>    
+    <isProviderEnabled>true</isProviderEnabled>
+  </readiNowIdentityProvider>
+</resources>

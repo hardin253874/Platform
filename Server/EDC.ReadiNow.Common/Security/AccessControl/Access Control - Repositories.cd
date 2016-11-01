@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Comment CommentText="Load the queries for a type and operation, honouring inheritance.">
+    <Position X="11.552" Y="4.78" Height="0.812" Width="1.658" />
+  </Comment>
+  <Comment CommentText="Load the roles for a user.">
+    <Position X="11.564" Y="0.5" Height="0.812" Width="1.658" />
+  </Comment>
+  <Comment CommentText="Load the types of the entities. This is used to load the queries, since they are related back to the type.">
+    <Position X="11.542" Y="2.479" Height="1.031" Width="1.658" />
+  </Comment>
+  <Class Name="EDC.ReadiNow.Security.AccessControl.EntityAccessControlChecker">
+    <Position X="0.5" Y="2.5" Width="2.25" />
+    <Members>
+      <Method Name="AllowAccessToTemporaryIds" Hidden="true" />
+      <Method Name="AllowAccessToTypelessIds" Hidden="true" />
+      <Method Name="CollateAccess" Hidden="true" />
+      <Method Name="CreateEntityCheckCondition" Hidden="true" />
+      <Method Name="DoQueryAccessControlCheck" Hidden="true" />
+      <Method Name="DoRelationshipAccessControlCheck" Hidden="true" />
+      <Method Name="EntityAccessControlChecker" Hidden="true" />
+      <Method Name="IsGlobalTenant" Hidden="true" />
+      <Method Name="SetAll" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>CABAACAgAIAAAAEAAAABAAABAAAACgAAAAAAAQAIAAA=</HashCode>
+      <FileName>Security\AccessControl\EntityAccessControlChecker.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="RoleRepository" />
+      <Property Name="QueryRepository" />
+      <Property Name="EntityTypeRepository" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="EDC.ReadiNow.Security.AccessControl.QueryRepository">
+    <Position X="8.75" Y="4.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Security\AccessControl\QueryRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="EDC.ReadiNow.Security.AccessControl.UserRoleRepository">
+    <Position X="8.75" Y="0.5" Width="1.5" />
+    <Members>
+      <Property Name="Everyone" Hidden="true" />
+      <Field Name="EveryoneRoleMap" Hidden="true" />
+      <Method Name="GetParentRoles" Hidden="true" />
+      <Field Name="SyncRoot" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAABAAAAEAAAAAAAAAAACAAAgAAAAAI=</HashCode>
+      <FileName>Security\AccessControl\UserRoleRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="EDC.ReadiNow.Security.AccessControl.CachingUserRoleRepository">
+    <Position X="6.5" Y="0.5" Width="2" />
+    <Members>
+      <Method Name="CachingUserRoleRepository" Hidden="true" />
+      <Method Name="IsCached" Hidden="true" />
+      <Field Name="UserToRoleMap" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAAAAAAAAAAAAAAAAAAACAAAKAAAAAA=</HashCode>
+      <FileName>Security\AccessControl\CachingUserRoleRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="EDC.ReadiNow.Security.AccessControl.EntityTypeRepository">
+    <Position X="6.5" Y="2.5" Width="1.75" />
+    <Members>
+      <Method Name="EntityTypeRepository" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAIAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Security\AccessControl\EntityTypeRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="EDC.ReadiNow.Security.AccessControl.CachingQueryRepository">
+    <Position X="6.5" Y="4.75" Width="2" />
+    <Members>
+      <Field Name="_syncRoot" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAIgAAAAAAAAAAAAAAAAAAAMAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Security\AccessControl\CachingQueryRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="EDC.ReadiNow.Security.AccessControl.IUserRoleRepository">
+    <Position X="4.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>Security\AccessControl\IUserRoleRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="EDC.ReadiNow.Security.AccessControl.IEntityTypeRepository" Collapsed="true">
+    <Position X="4.5" Y="2.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Security\AccessControl\IEntityTypeRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="EDC.ReadiNow.Security.AccessControl.IQueryRepository" Collapsed="true">
+    <Position X="4.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Security\AccessControl\IQueryRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

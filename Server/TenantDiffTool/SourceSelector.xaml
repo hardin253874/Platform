@@ -1,0 +1,303 @@
+﻿<Window x:Class="TenantDiffTool.SourceSelector"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:core="clr-namespace:TenantDiffTool.Core"
+        Title="Application Source Selection" Height="610" Width="600" WindowStartupLocation="CenterScreen"
+        core:WindowAttachedProperties.CloseWindow="{Binding CloseWindow}" ShowInTaskbar="False">
+	<Grid>
+		<Grid.RowDefinitions>
+			<!-- Heading row -->
+			<RowDefinition Height="Auto" />
+
+			<!-- Main Diff row -->
+			<RowDefinition Height="*" />
+
+			<!-- Buttons row -->
+			<RowDefinition Height="Auto" />
+
+		</Grid.RowDefinitions>
+
+		<Grid Grid.Row="0" Background="AliceBlue">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="*" />
+			</Grid.ColumnDefinitions>
+
+			<Image Grid.Row="0"
+			       Grid.Column="0"
+			       Width="75"
+			       Height="60"
+			       Margin="20,5,10,5"
+			       HorizontalAlignment="Left"
+			       Source="pack://application:,,,/Resources/Select.png"
+			       Stretch="Uniform" />
+
+			<StackPanel Grid.Row="0"
+			            Grid.Column="1"
+			            VerticalAlignment="Center"
+			            Orientation="Vertical">
+
+				<TextBlock FontSize="11"
+				           FontWeight="Bold"
+				           Text="SoftwarePlatform.com" />
+				<TextBlock Margin="0,-5,0,0"
+				           FontSize="18"
+				           FontWeight="ExtraBold"
+				           Text="Source Select" />
+
+			</StackPanel>
+		</Grid>
+
+		<Grid Grid.Row="1">
+			<Grid.RowDefinitions>
+				<!-- Blurb -->
+				<RowDefinition Height="Auto" />
+
+				<!-- Empty -->
+				<RowDefinition Height="Auto" />
+
+				<!-- Tenant -->
+				<RowDefinition Height="Auto" />
+
+				<!-- File -->
+				<RowDefinition Height="Auto" />
+
+				<!-- Application Library -->
+				<RowDefinition Height="*" />
+
+				<!-- Tenant Application -->
+				<RowDefinition Height="*" />
+
+				<!-- Buttons -->
+				<RowDefinition Height="Auto" />
+			</Grid.RowDefinitions>
+
+			<TextBlock Grid.Row="0" Margin="10" FontSize="10">Select the source from the following options.</TextBlock>
+
+			<!-- Empty -->
+			<Grid Grid.Row="1" Margin="20,10,20,0">
+				<RadioButton Content="Empty - Select an empty source" GroupName="Source"
+				             IsChecked="{Binding EmptySelected, Mode=TwoWay}" FontSize="10">
+				</RadioButton>
+			</Grid>
+
+			<!-- Tenant -->
+			<Grid Grid.Row="2" Margin="20,10,20,0">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+				</Grid.RowDefinitions>
+
+				<RadioButton Content="Tenant - Select an entire tenant" GroupName="Source" Grid.Row="0"
+				             IsChecked="{Binding TenantSelected, Mode=TwoWay}" IsEnabled="{Binding FoundDatabase}" FontSize="10">
+				</RadioButton>
+
+				<ComboBox Grid.Row="1" HorizontalAlignment="Left" Margin="15,0,0,0"
+				          ItemsSource="{Binding Tenants, Mode=OneWay}" SelectedValue="{Binding SelectedTenant, Mode=TwoWay}"
+				          DisplayMemberPath="Name"
+				          IsEnabled="{Binding TenantSelected, Mode=OneWay}">
+
+				</ComboBox>
+			</Grid>
+
+			<!-- File -->
+			<Grid Grid.Row="3" Margin="20,10,20,0">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+				</Grid.RowDefinitions>
+
+				<RadioButton Content="File - Select an exported .db file that contains an application" GroupName="Source"
+				             Grid.Row="0" FontSize="10"
+				             IsChecked="{Binding FileSelected, Mode=TwoWay}">
+				</RadioButton>
+
+				<Grid Grid.Row="1">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*" />
+						<ColumnDefinition Width="Auto" />
+					</Grid.ColumnDefinitions>
+
+					<TextBox Grid.Column="0" Margin="15,0,0,0" FontSize="10" Height="20"
+					         Text="{Binding SelectedFilePath, Mode=TwoWay}" IsEnabled="{Binding FileSelected, Mode=OneWay}">
+					</TextBox>
+
+					<Button Grid.Column="1" Content="..." Width="20" Height="20" Margin="5,0,5,0"
+					        Command="{Binding FileSelectCommand}"
+					        IsEnabled="{Binding FileSelected, Mode=OneWay}">
+						<ToolTipService.ToolTip>
+							<ToolTip Content="Select Source File" />
+						</ToolTipService.ToolTip>
+					</Button>
+				</Grid>
+			</Grid>
+
+			<!-- Application Library -->
+			<Grid Grid.Row="4" Margin="20,10,20,0">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="*" />
+				</Grid.RowDefinitions>
+
+				<RadioButton Content="Application Library - Select an application that resides in the local Application Library"
+				             GroupName="Source" Grid.Row="0" IsChecked="{Binding AppLibrarySelected, Mode=TwoWay}"
+				             IsEnabled="{Binding FoundDatabase}"
+				             FontSize="10">
+				</RadioButton>
+
+				<ListView Margin="15,0,0,0" MinHeight="100" Grid.Row="1" IsEnabled="{Binding AppLibrarySelected, Mode=OneWay}"
+				          SelectionMode="Single" ItemsSource="{Binding ApplicationLibraryApps.View, Mode=OneWay}"
+				          core:Commands.ListViewDoubleClickCommand="{Binding Path=AppLibraryDoubleClickCommand}"
+				          SelectedItem="{Binding SelectedApplicationLibraryApp}">
+					<ListView.View>
+						<GridView>
+							<GridViewColumn Width="140" Header="Name">
+								<GridViewColumn.CellTemplate>
+									<DataTemplate>
+										<TextBlock Grid.Column="2"
+										           FontSize="10"
+										           Text="{Binding Name,
+								                          Mode=OneWay}" />
+									</DataTemplate>
+								</GridViewColumn.CellTemplate>
+							</GridViewColumn>
+							<GridViewColumn Width="200" Header="Description">
+								<GridViewColumn.CellTemplate>
+									<DataTemplate>
+										<TextBlock Grid.Column="2"
+										           FontSize="10"
+										           Text="{Binding Description,
+								                          Mode=OneWay}" />
+									</DataTemplate>
+								</GridViewColumn.CellTemplate>
+							</GridViewColumn>
+							<GridViewColumn Width="50" Header="Version">
+								<GridViewColumn.CellTemplate>
+									<DataTemplate>
+										<TextBlock Grid.Column="2"
+										           FontSize="10"
+										           Text="{Binding Version,
+								                          Mode=OneWay}" />
+									</DataTemplate>
+								</GridViewColumn.CellTemplate>
+							</GridViewColumn>
+							<GridViewColumn Width="135" Header="Id">
+								<GridViewColumn.CellTemplate>
+									<DataTemplate>
+										<TextBlock Grid.Column="2"
+										           FontSize="10"
+										           Text="{Binding Id,
+								                          Mode=OneWay}" />
+									</DataTemplate>
+								</GridViewColumn.CellTemplate>
+
+							</GridViewColumn>
+						</GridView>
+					</ListView.View>
+				</ListView>
+			</Grid>
+
+			<!-- Tenant Application -->
+			<Grid Grid.Row="5" Margin="20,10,20,0">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="*" />
+				</Grid.RowDefinitions>
+
+				<RadioButton Content="Tenant Application - Select an application that resides in a specific tenant"
+				             GroupName="Source" Grid.Row="0" IsChecked="{Binding TenantApplicationSelected, Mode=TwoWay}"
+				             IsEnabled="{Binding FoundDatabase}"
+				             FontSize="10">
+				</RadioButton>
+
+				<Grid Grid.Row="1">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="*" />
+					</Grid.RowDefinitions>
+
+					<ComboBox Grid.Row="0" Grid.Column="0" Width="100" HorizontalAlignment="Left" Margin="15,0,0,5"
+					          ItemsSource="{Binding Tenants, Mode=OneWay}"
+					          SelectedValue="{Binding SelectedTenantAppTenant, Mode=TwoWay}" DisplayMemberPath="Name"
+					          IsEnabled="{Binding TenantApplicationSelected, Mode=OneWay}">
+
+					</ComboBox>
+
+					<ListView MinHeight="100" Grid.Row="1" Grid.Column="0" Margin="15,0,0,0"
+					          IsEnabled="{Binding TenantApplicationSelected, Mode=OneWay}"
+					          SelectionMode="Single" ItemsSource="{Binding TenantApps.View, Mode=OneWay}"
+					          core:Commands.ListViewDoubleClickCommand="{Binding Path=TenantAppDoubleClickCommand}"
+					          SelectedItem="{Binding SelectedTenantApp}">
+						<ListView.View>
+							<GridView>
+								<GridViewColumn Width="140" Header="Name">
+									<GridViewColumn.CellTemplate>
+										<DataTemplate>
+											<TextBlock Grid.Column="2"
+											           FontSize="10"
+											           Text="{Binding Name,
+								                          Mode=OneWay}" />
+										</DataTemplate>
+									</GridViewColumn.CellTemplate>
+								</GridViewColumn>
+								<GridViewColumn Width="200" Header="Description">
+									<GridViewColumn.CellTemplate>
+										<DataTemplate>
+											<TextBlock Grid.Column="2"
+											           FontSize="10"
+											           Text="{Binding Description,
+								                          Mode=OneWay}" />
+										</DataTemplate>
+									</GridViewColumn.CellTemplate>
+								</GridViewColumn>
+								<GridViewColumn Width="50" Header="Version">
+									<GridViewColumn.CellTemplate>
+										<DataTemplate>
+											<TextBlock Grid.Column="2"
+											           FontSize="10"
+											           Text="{Binding Version,
+								                          Mode=OneWay}" />
+										</DataTemplate>
+									</GridViewColumn.CellTemplate>
+								</GridViewColumn>
+								<GridViewColumn Width="135" Header="Id">
+									<GridViewColumn.CellTemplate>
+										<DataTemplate>
+											<TextBlock Grid.Column="2"
+											           FontSize="10"
+											           Text="{Binding Id,
+								                          Mode=OneWay}" />
+										</DataTemplate>
+									</GridViewColumn.CellTemplate>
+
+								</GridViewColumn>
+							</GridView>
+						</ListView.View>
+					</ListView>
+
+				</Grid>
+			</Grid>
+
+			<!-- Buttons -->
+			<Grid Grid.Row="6" Margin="20,5,20,5">
+
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="*" />
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="AUto" />
+				</Grid.ColumnDefinitions>
+
+				<Button Content="Server..." Grid.Column="0" Width="60" Margin="5" Command="{Binding ServerCommand, Mode=OneWay}"></Button>
+				<Button Content="OK" Grid.Column="2" Width="60" Margin="5" Command="{Binding OkCommand, Mode=OneWay}"
+				        IsDefault="True">
+				</Button>
+				<Button Content="Cancel" Grid.Column="3" Width="60" Margin="5" IsCancel="True"
+				        Command="{Binding CloseCommand,
+				                          Mode=OneWay}">
+				</Button>
+			</Grid>
+
+		</Grid>
+	</Grid>
+</Window>

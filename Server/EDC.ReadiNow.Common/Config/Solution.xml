@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resource>
+  <!--Copyright 2011-2016 Global Software Innovation Pty Ltd-->
+  <id>3EFBBACB-D053-496C-B540-96B38FD911EE</id>
+  <name>ReadiNow Entity Core</name>
+  <description>Provides core objects for the entity model.</description>
+  <typeId>1AC05B45-85E5-4395-BB92-9265D8D1486E</typeId>
+  <solutionId>2DA38F0E-BB56-400C-B94A-5CF5177E9B81</solutionId>
+  <attributes>System</attributes>
+  <version>1.0.0.0</version>
+  <configuration>
+    <solutions>
+      <solution>coreSolution</solution>
+      <solution>consoleSolution</solution>
+    </solutions>
+    <metadata>
+      <!-- Upgrade map -->
+      <upgradeMap format="external" path="UpgradeMap.xml" />
+      <!-- Bootstrap -->
+      <entities format="external" path="Bootstrap_Types.xml" designTimeFolder="Schema" />
+      <entities format="external" path="Bootstrap_FieldTypes.xml" designTimeFolder="Schema" />
+      <entities format="external" path="Bootstrap_Relationships.xml" designTimeFolder="Schema" />
+      <entities format="external" path="Bootstrap_Enums.xml" designTimeFolder="Schema" />
+      <!-- Platform -->
+      <entities format="external" path="Connector_Types.xml" designTimeFolder="Schema" />
+      <entities format="external" path="Report_Types.xml" designTimeFolder="Schema" />
+      <entities format="external" path="Parameter_Types.xml" designTimeFolder="Schema" />
+      <entities format="external" path="Platform_Types.xml" designTimeFolder="Schema" />
+      <entities format="external" path="Platform_DocumentLibrary.xml" designTimeFolder="Schema" />
+      <entities format="external" path="Platform_Security.xml" designTimeFolder="Schema" />
+      <entities format="external" path="Platform_StructureViews.xml" designTimeFolder="Schema" />
+      <entities format="external" path="TestArea.xml" designTimeFolder="Schema" />
+      <entities format="external" path="Platform_Reports.xml" designTimeFolder="Data" />
+      <entities format="external" path="Platform_DocumentTypes.xml" designTimeFolder="Data" />
+      <entities format="external" path="Platform_CondFormatTypes.xml" designTimeFolder="Data" />
+      <entities format="external" path="AuditLog.xml" designTimeFolder="Data" />
+      <entities format="external" path="AuditLog_Types.xml" designTimeFolder="Schema" />
+      <entities format="external" path="FeatureSwitches.xml" designTimeFolder="Schema" />
+      <entities format="external" path="Board_Types.xml" designTimeFolder="Schema" />
+      <!-- Shared Resources -->
+      <entities format="external" path="Shared_Types.xml" designTimeFolder="Schema" />
+      <!-- Charts Resources -->
+      <entities format="external" path="Charts_Types.xml" designTimeFolder="Schema" />
+      <!-- Workflow Resources -->
+      <entities format="external" path="Workflow_Types.xml" designTimeFolder="Schema" />
+      <entities format="external" path="Workflow_Activities.xml" designTimeFolder="Schema" />
+      <!-- Survey -->
+      <entities format="external" path="Survey_Types.xml" designTimeFolder="Schema" />
+      <!-- Scheduling -->
+      <entities format="external" path="Scheduling_Types.xml" designTimeFolder="Schema" />
+      <!-- Message Queue -->
+      <entities format="external" path="MessageQueue_Types.xml" designTimeFolder="Schema" />
+      <!-- Console Resources -->
+      <entities format="external" path="Console_Types.xml" designTimeFolder="Schema" />
+      <entities format="external" path="Console_CustomControls.xml" designTimeFolder="Schema" />
+      <entities format="external" path="Console_NavigationTypes.xml" designTimeFolder="Schema" />
+      <entities format="external" path="Console_Navigation.xml" designTimeFolder="Data" />
+      <entities format="external" path="Console_Behaviors.xml" designTimeFolder="Data" />
+      <entities format="external" path="Console_RelationshipBehaviors.xml" designTimeFolder="Data" />
+      <entities format="external" path="Console_CustomEditForms.xml" designTimeFolder="Data" />
+      <!-- Console Resources -->
+      <entities format="external" path="EditForm.xml" designTimeFolder="Schema" />
+      <!-- Data -->
+      <entities format="external" path="Misc.xml" designTimeFolder="Data" />
+      <entities format="external" path="Security.xml" designTimeFolder="Data" />
+      <entities format="external" path="Workflow_Data.xml" designTimeFolder="Data" />
+      <!-- Mobile Resources -->
+      <entities format="external" path="Mobile_Types.xml" designTimeFolder="Schema" />
+      <entities format="external" path="Mobile_Reports.xml" designTimeFolder="Data" />
+      <entities format="external" path="Mobile_Forms.xml" designTimeFolder="Data" />
+      <!-- Integrations -->
+      <entities format="external" path="Integration_Types.xml" designTimeFolder="Schema" />
+    </metadata>
+  </configuration>
+</resource>

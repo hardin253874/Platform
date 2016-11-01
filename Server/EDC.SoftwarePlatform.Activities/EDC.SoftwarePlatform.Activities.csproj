@@ -1,0 +1,261 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{98EC024C-6439-44B1-8B1E-29E457B2201F}</ProjectGuid>
+    <ProjectTypeGuids>{32f31d43-81cc-4c15-9de6-3fc5453562b6};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EDC.SoftwarePlatform.Activities</RootNamespace>
+    <AssemblyName>EDC.SoftwarePlatform.Activities</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <WarningsNotAsErrors>1607</WarningsNotAsErrors>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\ReadiNow.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Autofac, Version=4.1.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.1.1\lib\net45\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Autofac.Extras.AttributeMetadata, Version=4.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Extras.AttributeMetadata.4.0.0\lib\net45\Autofac.Extras.AttributeMetadata.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Autofac.Integration.Mef, Version=4.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Mef.4.0.0\lib\net45\Autofac.Integration.Mef.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Common.Logging, Version=3.0.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.3.0.0\lib\net40\Common.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Common.Logging.Core, Version=3.0.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.Core.3.0.0\lib\net40\Common.Logging.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="protobuf-net, Version=2.0.0.668, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\protobuf-net.2.0.0.668\lib\net40\protobuf-net.dll</HintPath>
+    </Reference>
+    <Reference Include="Quartz, Version=2.3.3.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Quartz.2.3.3\lib\net40\Quartz.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="S22.Imap">
+      <HintPath>..\Dependencies\ThirdParty\S22.Imap.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Activities" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Activities" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ActivitiesModule.cs" />
+    <Compile Include="Activities\AssignToVariableImplementation.cs" />
+    <Compile Include="Activities\CloneImplementation.cs" />
+    <Compile Include="Activities\DocHelper.cs" />
+    <Compile Include="Activities\ExportToImplementation.cs" />
+    <Compile Include="Activities\ReviewSurveyImplementation.cs" />
+    <Compile Include="Activities\NotifyImplementation.cs" />
+    <Compile Include="Activities\StartSurveyImplementation.cs" />
+    <Compile Include="Activities\DisplayFormImplementation.cs" />
+    <Compile Include="Activities\CreateLinkImplementation.cs" />
+    <Compile Include="Activities\GetResourcesImplementation.cs" />
+    <Compile Include="Activities\PromptUserImplementation.cs" />
+    <Compile Include="Activities\GenerateDocImplementation.cs" />
+    <Compile Include="Activities\SetChoiceImplementation.cs" />
+    <Compile Include="Activities\SetRelationshipImplementation.cs" />
+    <Compile Include="Activities\SwitchImplementation.cs" />
+    <Compile Include="Activities\CreateImplementation.cs" />
+    <Compile Include="Activities\ForeachImplementation.cs" />
+    <Compile Include="Activities\Triggers\WorkflowTriggerHander.cs" />
+    <Compile Include="Activities\UpdateArgsHelper.cs" />
+    <Compile Include="Activities\WorkflowImplementation.cs" />
+    <Compile Include="Activities\DeleteImplementation.cs" />
+    <Compile Include="Activities\workflowProxyImplementation.cs" />
+    <Compile Include="Approval\HtmlGenerator.cs" />
+    <Compile Include="BackgroundTasks\BackgroundTasksModule.cs" />
+    <Compile Include="BackgroundTasks\ResumeWorkflowHandler.cs" />
+    <Compile Include="BackgroundTasks\RunTriggersHandler.cs" />
+    <Compile Include="EventTarget\NotificationHelper.cs" />
+    <Compile Include="EventTarget\ReplyRecordEventTarget.cs" />
+    <Compile Include="EventTarget\SendRecordEventTarget.cs" />
+    <Compile Include="ITimeoutActivityHelper.cs" />
+    <Compile Include="Notify\INotificationRouter.cs" />
+    <Compile Include="Notify\NotificationRouter.cs" />
+    <Compile Include="Notify\EmailRouter.cs" />
+    <Compile Include="Notify\NotifyModule.cs" />
+    <Compile Include="Notify\TenantSmsNotifier.cs" />
+    <Compile Include="Notify\TwilioRouter.cs" />
+    <Compile Include="ResumableActivityImplementationBase.cs" />
+    <Compile Include="ActivityInputs.cs" />
+    <Compile Include="ActivityArgumentHelper.cs" />
+    <Compile Include="ActivityHelper.cs" />
+    <Compile Include="ActivityImplementationBase.cs" />
+    <Compile Include="Activities\SendEmailImplementation.cs" />
+    <Compile Include="Activities\DecisionImplementation.cs" />
+    <Compile Include="EmailListener\CompleteUserTaskEmailAction.cs" />
+    <Compile Include="Engine\Context\WorkflowMissingOwnerException.cs" />
+    <Compile Include="Engine\Events\ChildWorkflowStartEvent.cs" />
+    <Compile Include="Engine\CleanUpWorkflowRunsAction.cs" />
+    <Compile Include="Engine\Events\PromptUserTaskCompletedEvent.cs" />
+    <Compile Include="Engine\IWorkflowMetadataFactory.cs" />
+    <Compile Include="Engine\Upgrade\WorkflowUpgradeEventTarget.cs" />
+    <Compile Include="Engine\CachingWorkflowMetadataFactory.cs" />
+    <Compile Include="Engine\WorkflowMetadataFactory.cs" />
+    <Compile Include="Task\DisplayFormTaskTarget.cs" />
+    <Compile Include="EmailListener\MatchSentToReceivedEmailsAction.cs" />
+    <Compile Include="EmailListener\ProcessInboxesAction.cs" />
+    <Compile Include="EmailListener\SendICalUpdatesEmailAction.cs" />
+    <Compile Include="EmailListener\SentEmailTarget.cs" />
+    <Compile Include="Task\PromptUserTaskTarget.cs" />
+    <Compile Include="Task\UserTaskTarget.cs" />
+    <Compile Include="Engine\Context\DefaultRunStateFactory.cs" />
+    <Compile Include="Engine\Events\ChildWorkflowCompletedEvent.cs" />
+    <Compile Include="Engine\Events\TimeoutEvent.cs" />
+    <Compile Include="Engine\Events\UserCompletesTaskEvent.cs" />
+    <Compile Include="Engine\ContextProperties.cs" />
+    <Compile Include="Engine\Context\IRunState.cs" />
+    <Compile Include="Engine\Context\IRunStateFactory.cs" />
+    <Compile Include="Engine\Context\RunState.cs" />
+    <Compile Include="Engine\Context\RunStateBase.cs" />
+    <Compile Include="Engine\WorkflowInvoker.cs" />
+    <Compile Include="Engine\WorkflowMetadata.cs" />
+    <Compile Include="EntityIdComparer.cs" />
+    <Compile Include="ExpressionHelper.cs" />
+    <Compile Include="IResumableActivity.cs" />
+    <Compile Include="IRunNowActivity.cs" />
+    <Compile Include="Properties\AssemblyFileInfo.cs" />
+    <Compile Include="Scheduling\ActivityTimeoutJob.cs" />
+    <Compile Include="Scheduling\ScheduleDailyRepeatTarget.cs" />
+    <Compile Include="Scheduling\ScheduledItemSyncTarget.cs" />
+    <Compile Include="Scheduling\SchedulingSyncHelper.cs" />
+    <Compile Include="Scheduling\ScheduleSyncTarget.cs" />
+    <Compile Include="Scheduling\StartWorkflowJob.cs" />
+    <Compile Include="Scheduling\SyncEntitySchedulesJob.cs" />
+    <Compile Include="SequenceIdHelper.cs" />
+    <Compile Include="TimeoutActivityHelper.cs" />
+    <Compile Include="UserTaskHelper.cs" />
+    <Compile Include="WorkflowRunException.cs" />
+    <Compile Include="WorkflowRunner.cs" />
+    <Compile Include="WorkflowRunHelper.cs" />
+    <Compile Include="Activities\UpdateFieldImplementation.cs" />
+    <Compile Include="IDynamicArguments.cs" />
+    <Compile Include="Activities\LogActivityImplementation.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WorkflowActivityHelper.cs" />
+    <Compile Include="WorkflowRunDataDefinition.cs" />
+    <Compile Include="WorkflowSaveHelper.cs" />
+    <Compile Include="WorkflowTriggerHelper.cs" />
+    <Compile Include="WorkflowUpdateHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EDC.Common\EDC.Common.csproj">
+      <Project>{c7183bef-1a52-4da5-850b-7132b5dca7eb}</Project>
+      <Name>EDC.Common</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EDC.ReadiNow.Common\EDC.ReadiNow.Common.csproj">
+      <Project>{a1c54cf6-e515-4132-a3cb-5cbe32b11d7e}</Project>
+      <Name>EDC.ReadiNow.Common</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EDC.SoftwarePlatform.Interfaces\EDC.SoftwarePlatform.Interfaces.csproj">
+      <Project>{c1fc97b7-aacc-45b5-9969-7995b27093ca}</Project>
+      <Name>EDC.SoftwarePlatform.Interfaces</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EDC.SoftwarePlatform.Migration.Test\EDC.SoftwarePlatform.Migration.Test.csproj">
+      <Project>{A69EE8A9-C6C7-417B-86A8-5157D1FFDFCF}</Project>
+      <Name>EDC.SoftwarePlatform.Migration.Test</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EDC.SoftwarePlatform.Services\EDC.SoftwarePlatform.Services.csproj">
+      <Project>{0704c0c3-4324-406c-8798-8c72c1e91bde}</Project>
+      <Name>EDC.SoftwarePlatform.Services</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\ReadiNow.Integration\ReadiNow.Integration.csproj">
+      <Project>{1c02a083-d66b-4cf2-b19b-2e3d06e35a39}</Project>
+      <Name>ReadiNow.Integration</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="job_scheduling_data_2_0.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir).build\MSBuild.Community.Tasks.targets" />
+  <Import Project="$(SolutionDir)Automation\ReadiNow.targets" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <Target Name="AfterBuild">
+    <CallTarget Targets="PublishWebAssembly" />
+  </Target>
+  <PropertyGroup>
+    <AssemblyFileInfo>$(ProjectDir)Properties\AssemblyFileInfo.cs</AssemblyFileInfo>
+  </PropertyGroup>
+</Project>

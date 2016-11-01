@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="core" xmlns:k="console" xsi:schemaLocation=". ../Core.xsd" defaultSolution="consoleSolution">
+  <!--Copyright 2011-2016 Global Software Innovation Pty Ltd-->
+  <!-- Template report -->
+  <report>
+    <name>Template</name>
+    <alias>templateReport</alias>
+    <reportUsesDefinition>resource</reportUsesDefinition>
+    <isDefaultPickerReportForTypes>iconFileType,photoFileType</isDefaultPickerReportForTypes>
+  </report>
+  <!-- Resource report -->
+  <report>
+    <name>Resource</name>
+    <alias>resourceReport</alias>
+    <isDefaultDisplayReportForTypes>resource,k:controlOnForm</isDefaultDisplayReportForTypes>
+    <isDefaultPickerReportForTypes>resource,k:controlOnForm</isDefaultPickerReportForTypes>
+    <reportUsesDefinition>resource</reportUsesDefinition>
+  </report>
+  <!-- Application Management report-->
+  <report>
+    <name>Application Management</name>
+    <alias>k:applicationManagementReport</alias>
+    <reportUsesDefinition>solution</reportUsesDefinition>
+  </report>
+  <!-- Identity Providers report -->
+  <report>
+    <name>Identity Providers</name>
+    <alias>k:identityProvidersReport</alias>
+    <k:resourceInFolder>k:securitySection</k:resourceInFolder>
+    <reportUsesDefinition>oidcIdentityProvider</reportUsesDefinition>
+    <isDefaultDisplayReportForTypes>identityProvider</isDefaultDisplayReportForTypes>
+    <isDefaultPickerReportForTypes>identityProvider</isDefaultPickerReportForTypes>
+    <resourceViewerConsoleForm>k:oidcIdpForm</resourceViewerConsoleForm>    
+  </report>
+  <!-- OpenId Connect Identity Provider users report -->
+  <report>
+    <name>OpenId Connect Identity Provider Users</name>
+    <alias>k:oidcIdentityProviderUsersReport</alias>    
+    <reportUsesDefinition>oidcIdentityProviderUser</reportUsesDefinition>
+    <isDefaultDisplayReportForTypes>oidcIdentityProviderUser</isDefaultDisplayReportForTypes>
+    <isDefaultPickerReportForTypes>oidcIdentityProviderUser</isDefaultPickerReportForTypes>
+    <resourceViewerConsoleForm>k:oidcIdpUserForm</resourceViewerConsoleForm>    
+  </report>
+  <!-- Document Types report -->
+  <report>
+    <name>Document Types</name>
+    <alias>k:documentTypesReport</alias>
+    <k:resourceInFolder>environmentSection</k:resourceInFolder>
+    <reportUsesDefinition>documentType</reportUsesDefinition>
+    <k:resourceConsoleBehavior>
+      <k:consoleBehavior>
+        <alias>auto9e0022164c1f4985a26a46a046225d92</alias>
+        <k:treeIconUrl>Assets/Images/Nav/Documents.svg</k:treeIconUrl>
+      </k:consoleBehavior>
+    </k:resourceConsoleBehavior>
+  </report>
+  <!-- Document report -->
+  <report>
+    <name>Document Library View</name>
+    <alias>k:documentLibraryReport</alias>
+    <description>A report used to populate the contents of the Document Library view.</description>
+    <resourceViewerConsoleForm>k:documentForm</resourceViewerConsoleForm>
+    <reportUsesDefinition>document</reportUsesDefinition>
+  </report>
+  <!-- Document revision report-->
+  <report>
+    <name>Document Version</name>
+    <alias>k:documentRevisionReport</alias>
+    <isDefaultDisplayReportForTypes>documentRevision</isDefaultDisplayReportForTypes>
+    <isDefaultPickerReportForTypes>documentRevision</isDefaultPickerReportForTypes>
+    <resourceViewerConsoleForm>k:documentRevisionForm</resourceViewerConsoleForm>
+    <reportUsesDefinition>documentRevision</reportUsesDefinition>
+    <k:resourceConsoleBehavior>k:documentRevisionBehavior</k:resourceConsoleBehavior>
+  </report>
+  <!-- Relationships report -->
+  <report>
+    <name>Relationships</name>
+    <alias>k:relationshipsReport</alias>
+    <k:resourceInFolder>k:resourcesSection</k:resourceInFolder>
+    <reportUsesDefinition>relationship</reportUsesDefinition>
+    <k:resourceConsoleBehavior>
+      <k:consoleBehavior>
+        <alias>k:relationshipsAdminBehavior</alias>
+      </k:consoleBehavior>
+    </k:resourceConsoleBehavior>
+    <isDefaultDisplayReportForTypes>relationship</isDefaultDisplayReportForTypes>
+    <isDefaultPickerReportForTypes>relationship</isDefaultPickerReportForTypes>
+  </report>
+  <!-- Calculated Field Report-->
+  <report>
+    <name>Calculated Results</name>
+    <description>A list of all calculated results reports in the system.</description>
+    <alias>k:calculatedFieldReport</alias>
+    <reportUsesDefinition>calculatedResult</reportUsesDefinition>
+    <k:resourceConsoleBehavior>k:calculatedFieldsAdminBehavior</k:resourceConsoleBehavior>
+    <isDefaultDisplayReportForTypes>calculatedResult</isDefaultDisplayReportForTypes>
+    <isDefaultPickerReportForTypes>calculatedResult</isDefaultPickerReportForTypes>
+  </report>
+  <!-- Choice Fields report -->
+  <report>
+    <name>Choice Fields</name>
+    <description>A list of all choice fields types in the system.</description>
+    <alias>k:enumReport</alias>
+    <k:resourceInFolder>k:resourcesSection</k:resourceInFolder>
+    <reportUsesDefinition>enumType</reportUsesDefinition>
+    <k:resourceConsoleBehavior>k:choiceFieldsAdminBehavior</k:resourceConsoleBehavior>
+    <isDefaultDisplayReportForTypes>enumType</isDefaultDisplayReportForTypes>
+    <isDefaultPickerReportForTypes>enumType</isDefaultPickerReportForTypes>
+  </report>
+  <!-- Choice Field Details report -->
+  <report>
+    <name>Choice Field Details</name>
+    <description>A list of all choice fields types in the system.</description>
+    <alias>k:enumDetailsReport</alias>
+    <reportUsesDefinition>enumType</reportUsesDefinition>
+  </report>
+  <!-- 'Choice Values' report -->
+  <report>
+    <alias>k:enumValuesReport</alias>
+    <name>Choice Values</name>
+    <description>Displays all of the options available for a given choice field type.</description>
+    <reportUsesDefinition>enumValue</reportUsesDefinition>
+    <isDefaultDisplayReportForTypes>enumValue</isDefaultDisplayReportForTypes>
+    <isDefaultPickerReportForTypes>enumValue</isDefaultPickerReportForTypes>
+  </report>
+  <!-- Type (user resource) report -->
+  <report>
+    <name>Objects</name>
+    <alias>k:userTypesReport</alias>
+    <isDefaultDisplayReportForTypes>type,definition</isDefaultDisplayReportForTypes>
+    <isDefaultPickerReportForTypes>type,definition</isDefaultPickerReportForTypes>
+    <reportUsesDefinition>type</reportUsesDefinition>
+    <k:resourceInFolder>k:resourcesSection</k:resourceInFolder>
+    <k:resourceConsoleBehavior>k:definitionsAdminBehavior</k:resourceConsoleBehavior>
+    <description>List of resource types.</description>
+  </report>
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--    WORKFLOWS                                                     -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- 'Manage workflows' report -->
+  <report>
+    <alias>k:workflowReport</alias>
+    <name>Workflows</name>
+    <isDefaultDisplayReportForTypes>workflow</isDefaultDisplayReportForTypes>
+    <isDefaultPickerReportForTypes>workflow</isDefaultPickerReportForTypes>
+    <k:resourceInFolder>workflowsSection</k:resourceInFolder>
+    <reportUsesDefinition>workflow</reportUsesDefinition>
+  </report>
+  <!-- Workflow triggers -->
+  <report>
+    <name>Trigger on Create/Update</name>
+    <alias>k:workflowTriggersUurReport</alias>
+    <description>The list of workflow triggers that are tripped when a user creates or updates a resource.</description>
+    <reportUsesDefinition>wfTriggerUserUpdatesResource</reportUsesDefinition>
+    <isDefaultDisplayReportForTypes>wfTriggerUserUpdatesResource</isDefaultDisplayReportForTypes>
+    <isDefaultPickerReportForTypes>wfTriggerUserUpdatesResource</isDefaultPickerReportForTypes>
+  </report>
+  <!-- Trigger on Schedule -->
+  <report>
+    <name>Trigger on Schedule</name>
+    <alias>k:workflowTriggersOnScheduleReport</alias>
+    <reportUsesDefinition>wfTriggerOnSchedule</reportUsesDefinition>
+    <isDefaultDisplayReportForTypes>wfTriggerOnSchedule</isDefaultDisplayReportForTypes>
+    <isDefaultPickerReportForTypes>wfTriggerOnSchedule</isDefaultPickerReportForTypes>
+  </report>
+  <!-- Schedule -->
+  <report>
+    <name>Schedule One Off</name>
+    <alias>k:scheduleOneOffReport</alias>
+    <reportUsesDefinition>scheduleOneOff</reportUsesDefinition>
+    <isDefaultDisplayReportForTypes>scheduleOneOff</isDefaultDisplayReportForTypes>
+    <isDefaultPickerReportForTypes>scheduleOneOff</isDefaultPickerReportForTypes>
+  </report>
+  <!-- Daily Repeat -->
+  <report>
+    <name>Schedule Daily Repeat</name>
+    <alias>k:scheduleDailyRepeatReport</alias>
+    <reportUsesDefinition>scheduleDailyRepeat</reportUsesDefinition>
+    <isDefaultDisplayReportForTypes>scheduleDailyRepeat</isDefaultDisplayReportForTypes>
+    <isDefaultPickerReportForTypes>scheduleDailyRepeat</isDefaultPickerReportForTypes>
+  </report>
+</resources>

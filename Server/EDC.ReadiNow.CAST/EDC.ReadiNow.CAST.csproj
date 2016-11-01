@@ -1,0 +1,274 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{61F07C9A-A94D-44D1-A538-D3B177D08F9A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EDC.ReadiNow.CAST</RootNamespace>
+    <AssemblyName>EDC.ReadiNow.CAST</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <LangVersion>5</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\ReadiNow.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Autofac, Version=4.1.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.1.1\lib\net45\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Common.Logging, Version=3.0.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.3.0.0\lib\net40\Common.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Common.Logging.Core, Version=3.0.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.Core.3.0.0\lib\net40\Common.Logging.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Quartz, Version=2.3.3.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Quartz.2.3.3\lib\net40\Quartz.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Activities\CreateTenantImplementation.cs" />
+    <Compile Include="Activities\CreateUserImplementation.cs" />
+    <Compile Include="Activities\DeleteTenantImplementation.cs" />
+    <Compile Include="Activities\DeleteUserImplementation.cs" />
+    <Compile Include="Activities\DeployApplicationImplementation.cs" />
+    <Compile Include="Activities\DisableTenantImplementation.cs" />
+    <Compile Include="Activities\EnableTenantImplementation.cs" />
+    <Compile Include="Activities\LogActivityImplementation.cs" />
+    <Compile Include="Activities\RemoveApplicationImplementation.cs" />
+    <Compile Include="Activities\RenameTenantImplementation.cs" />
+    <Compile Include="Activities\ForEachApplicationImplementation.cs" />
+    <Compile Include="CastActivityImplementation.cs" />
+    <Compile Include="CastActivityResponseEvent.cs" />
+    <Compile Include="CastActivityService.cs" />
+    <Compile Include="CastEntityHelper.cs" />
+    <Compile Include="CastModule.cs" />
+    <Compile Include="CastService.cs" />
+    <Compile Include="Contracts\ApplicationInfoResponse.cs" />
+    <Compile Include="Contracts\ApplicationOperation.cs" />
+    <Compile Include="Contracts\ApplicationOperationRequest.cs" />
+    <Compile Include="Contracts\CastRequest.cs" />
+    <Compile Include="Contracts\CastResponse.cs" />
+    <Compile Include="Contracts\ICastRequest.cs" />
+    <Compile Include="Contracts\ICastResponse.cs" />
+    <Compile Include="Contracts\LogRequest.cs" />
+    <Compile Include="Contracts\LogResponse.cs" />
+    <Compile Include="Contracts\Operation.cs" />
+    <Compile Include="Contracts\RemoteTenantInfo.cs" />
+    <Compile Include="Contracts\RemoteUserInfo.cs" />
+    <Compile Include="Contracts\TenantInfoResponse.cs" />
+    <Compile Include="Contracts\UserInfoResponse.cs" />
+    <Compile Include="Contracts\UserOperationRequest.cs" />
+    <Compile Include="Contracts\UserStatus.cs" />
+    <Compile Include="ICastActivityResponseEvent.cs" />
+    <Compile Include="ICastActivityService.cs" />
+    <Compile Include="ICastEntityHelper.cs" />
+    <Compile Include="Marketplace\Model\IMarketplaceProduct.cs" />
+    <Compile Include="Marketplace\Model\MarketplaceLicence.cs" />
+    <Compile Include="Marketplace\Model\MarketplaceOrderHistory.cs" />
+    <Compile Include="Marketplace\Model\MarketplacePayment.cs" />
+    <Compile Include="Marketplace\Model\MarketplaceProduct.cs" />
+    <Compile Include="Marketplace\Model\VerificationLink.cs" />
+    <Compile Include="Marketplace\Services\AccountService.cs" />
+    <Compile Include="Marketplace\Services\IAccountService.cs" />
+    <Compile Include="Marketplace\Services\IMarketplaceService.cs" />
+    <Compile Include="Marketplace\Services\MarketplaceService.cs" />
+    <Compile Include="Model\IManagedApp.cs" />
+    <Compile Include="Model\IManagedAppVersion.cs" />
+    <Compile Include="Model\IManagedPlatform.cs" />
+    <Compile Include="Model\IManagedTenant.cs" />
+    <Compile Include="Model\IManagedUser.cs" />
+    <Compile Include="Model\IManagedUserRole.cs" />
+    <Compile Include="Model\IManagedUserStatus.cs" />
+    <Compile Include="Model\IPlatformDatabase.cs" />
+    <Compile Include="Model\IPlatformFrontEnd.cs" />
+    <Compile Include="Model\ManagedUser.cs" />
+    <Compile Include="Model\ManagedUserRole.cs" />
+    <Compile Include="Model\ManagedUserStatus.cs" />
+    <Compile Include="Model\PlatformDatabase.cs" />
+    <Compile Include="Model\PlatformFrontEnd.cs" />
+    <Compile Include="Services\ApplicationService.cs" />
+    <Compile Include="Services\IApplicationService.cs" />
+    <Compile Include="Services\IUserService.cs" />
+    <Compile Include="Services\UserService.cs" />
+    <Compile Include="SpecialStrings.cs" />
+    <Compile Include="Contracts\TenantOperationRequest.cs" />
+    <Compile Include="Contracts\RemotePlatformInfo.cs" />
+    <Compile Include="ICastService.cs" />
+    <Compile Include="Marketplace\Model\ManagedCustomer.cs" />
+    <Compile Include="Model\ManagedPlatform.cs" />
+    <Compile Include="Model\ManagedTenant.cs" />
+    <Compile Include="Model\ManagedApp.cs" />
+    <Compile Include="Model\ManagedAppVersion.cs" />
+    <Compile Include="Properties\AssemblyFileInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="CastComms.cs" />
+    <Compile Include="Services\IPlatformService.cs" />
+    <Compile Include="Services\ITenantService.cs" />
+    <Compile Include="Services\PlatformService.cs" />
+    <Compile Include="Services\TenantService.cs" />
+    <Compile Include="Template\AutoGenerate.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AutoGenerate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Template\Model\ManagedApp.cs" />
+    <Compile Include="Template\Model\ManagedAppVersion.cs" />
+    <Compile Include="Template\Model\ManagedCustomer.cs" />
+    <Compile Include="Template\Model\ManagedPlatform.cs" />
+    <Compile Include="Template\Model\ManagedTenant.cs" />
+    <Compile Include="Template\Model\ManagedUser.cs" />
+    <Compile Include="Template\Model\ManagedUserRoles.cs" />
+    <Compile Include="Template\Model\ManagedUserStatus.cs" />
+    <Compile Include="Template\Model\MarketplaceLicence.cs" />
+    <Compile Include="Template\Model\MarketplaceOrderHistory.cs" />
+    <Compile Include="Template\Model\MarketplacePayment.cs" />
+    <Compile Include="Template\Model\MarketplaceProduct.cs" />
+    <Compile Include="Template\Model\PlatformDatabase.cs" />
+    <Compile Include="Template\Model\PlatformFrontEnd.cs" />
+    <Compile Include="Template\Model\TenantRegister.cs" />
+    <Compile Include="Template\Model\TenantRegisterPurpose.cs" />
+    <Compile Include="Template\Model\TenantRegisterStatus.cs" />
+    <Compile Include="Template\Model\TenantRequester.cs" />
+    <Compile Include="Template\Model\VerificationLink.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Deployment\EDC.SoftwarePlatform.Install.Common\EDC.SoftwarePlatform.Install.Common.csproj">
+      <Project>{99c48b40-8897-4c0c-9ab3-8fbf888a49b3}</Project>
+      <Name>EDC.SoftwarePlatform.Install.Common</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EDC.Common\EDC.Common.csproj">
+      <Project>{c7183bef-1a52-4da5-850b-7132b5dca7eb}</Project>
+      <Name>EDC.Common</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EDC.ReadiNow.Common\EDC.ReadiNow.Common.csproj">
+      <Project>{a1c54cf6-e515-4132-a3cb-5cbe32b11d7e}</Project>
+      <Name>EDC.ReadiNow.Common</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EDC.SoftwarePlatform.Activities\EDC.SoftwarePlatform.Activities.csproj">
+      <Project>{98ec024c-6439-44b1-8b1e-29e457b2201f}</Project>
+      <Name>EDC.SoftwarePlatform.Activities</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EDC.SoftwarePlatform.Interfaces\EDC.SoftwarePlatform.Interfaces.csproj">
+      <Project>{c1fc97b7-aacc-45b5-9969-7995b27093ca}</Project>
+      <Name>EDC.SoftwarePlatform.Interfaces</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EDC.SoftwarePlatform.Migration\EDC.SoftwarePlatform.Migration.csproj">
+      <Project>{acc17a7d-5bd0-4f9e-8569-3e4d51588064}</Project>
+      <Name>EDC.SoftwarePlatform.Migration</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EDC.SoftwarePlatform.Services\EDC.SoftwarePlatform.Services.csproj">
+      <Project>{0704c0c3-4324-406c-8798-8c72c1e91bde}</Project>
+      <Name>EDC.SoftwarePlatform.Services</Name>
+      <Private>True</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="job_scheduling_data_2_0.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Marketplace\Contracts\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\ApplicationCache\CAST.xml">
+      <Link>Template\CAST.xml</Link>
+    </None>
+    <None Include="Template\AutoGenerate.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>AutoGenerate.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir).build\MSBuild.Community.Tasks.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyFileInfo>$(ProjectDir)Properties\AssemblyFileInfo.cs</AssemblyFileInfo>
+  </PropertyGroup>
+  <Import Project="$(SolutionDir)Automation\ReadiNow.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <Target Name="AfterBuild">
+    <CallTarget Targets="PublishWebAssembly" />
+  </Target>
+</Project>

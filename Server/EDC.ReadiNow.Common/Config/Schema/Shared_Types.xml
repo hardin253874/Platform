@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="core" xsi:schemaLocation=". ../Core.xsd" defaultSolution="coreSolution">
+  <!--Copyright 2011-2016 Global Software Innovation Pty Ltd-->
+  <!--
+  IMPORTANT : Resources in this file appear in both the core and shared solution (the latter with the database being the source of truth).
+              They are only appearing here to get strongly-typed accessors.
+              
+  DO NOT PUT ANYTHING ELSE HERE!! 
+  -->
+</resources>
