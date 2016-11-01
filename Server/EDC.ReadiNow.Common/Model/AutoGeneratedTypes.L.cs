@@ -225,6 +225,17 @@ namespace EDC.ReadiNow.Model
 		}
 
 		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static StringField VisibilityCalculation_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.ControlOnForm.VisibilityCalculation_Field;
+			}
+		}
+
+		/// <summary>
 		/// Public static accessor to the inherited  reverse relationship.
 		/// </summary>
 		public static IEntity ContainedWithinStructureControlOnForm_Field
@@ -418,7 +429,7 @@ namespace EDC.ReadiNow.Model
 		{
 			get
 			{
-				return new IEntity [ ] { LargeTextBoxKFieldRenderControl.Alias_Field, LargeTextBoxKFieldRenderControl.CanDelete_Field, LargeTextBoxKFieldRenderControl.CanModify_Field, LargeTextBoxKFieldRenderControl.CreatedDate_Field, LargeTextBoxKFieldRenderControl.Description_Field, LargeTextBoxKFieldRenderControl.GroupName_Field, LargeTextBoxKFieldRenderControl.HideLabel_Field, LargeTextBoxKFieldRenderControl.MandatoryControl_Field, LargeTextBoxKFieldRenderControl.ModifiedDate_Field, LargeTextBoxKFieldRenderControl.Name_Field, LargeTextBoxKFieldRenderControl.ReadOnlyControl_Field, LargeTextBoxKFieldRenderControl.RenderingBackgroundColor_Field, LargeTextBoxKFieldRenderControl.RenderingHeight_Field, LargeTextBoxKFieldRenderControl.RenderingOrdinal_Field, LargeTextBoxKFieldRenderControl.RenderingWidth_Field, LargeTextBoxKFieldRenderControl.ShowControlHelpText_Field, LargeTextBoxKFieldRenderControl.ContainedWithinStructureControlOnForm_Field, LargeTextBoxKFieldRenderControl.ControlRelatedEntityDataPathNodes_Field, LargeTextBoxKFieldRenderControl.CreatedBy_Field, LargeTextBoxKFieldRenderControl.FieldToRender_Field, LargeTextBoxKFieldRenderControl.Flags_Field, LargeTextBoxKFieldRenderControl.IndirectInSolution_Field, LargeTextBoxKFieldRenderControl.InSolution_Field, LargeTextBoxKFieldRenderControl.InStructureLevel_Field, LargeTextBoxKFieldRenderControl.IsOfType_Field, LargeTextBoxKFieldRenderControl.IsRootForStructureView_Field, LargeTextBoxKFieldRenderControl.LastModifiedBy_Field, LargeTextBoxKFieldRenderControl.ResourceConsoleBehavior_Field, LargeTextBoxKFieldRenderControl.ResourceHasResourceKeyDataHashes_Field, LargeTextBoxKFieldRenderControl.ResourceInFolder_Field, LargeTextBoxKFieldRenderControl.SecurityOwner_Field, LargeTextBoxKFieldRenderControl.SelectionBehavior_Field, LargeTextBoxKFieldRenderControl.ShortcutInFolder_Field };
+				return new IEntity [ ] { LargeTextBoxKFieldRenderControl.Alias_Field, LargeTextBoxKFieldRenderControl.CanDelete_Field, LargeTextBoxKFieldRenderControl.CanModify_Field, LargeTextBoxKFieldRenderControl.CreatedDate_Field, LargeTextBoxKFieldRenderControl.Description_Field, LargeTextBoxKFieldRenderControl.GroupName_Field, LargeTextBoxKFieldRenderControl.HideLabel_Field, LargeTextBoxKFieldRenderControl.MandatoryControl_Field, LargeTextBoxKFieldRenderControl.ModifiedDate_Field, LargeTextBoxKFieldRenderControl.Name_Field, LargeTextBoxKFieldRenderControl.ReadOnlyControl_Field, LargeTextBoxKFieldRenderControl.RenderingBackgroundColor_Field, LargeTextBoxKFieldRenderControl.RenderingHeight_Field, LargeTextBoxKFieldRenderControl.RenderingOrdinal_Field, LargeTextBoxKFieldRenderControl.RenderingWidth_Field, LargeTextBoxKFieldRenderControl.ShowControlHelpText_Field, LargeTextBoxKFieldRenderControl.VisibilityCalculation_Field, LargeTextBoxKFieldRenderControl.ContainedWithinStructureControlOnForm_Field, LargeTextBoxKFieldRenderControl.ControlRelatedEntityDataPathNodes_Field, LargeTextBoxKFieldRenderControl.CreatedBy_Field, LargeTextBoxKFieldRenderControl.FieldToRender_Field, LargeTextBoxKFieldRenderControl.Flags_Field, LargeTextBoxKFieldRenderControl.IndirectInSolution_Field, LargeTextBoxKFieldRenderControl.InSolution_Field, LargeTextBoxKFieldRenderControl.InStructureLevel_Field, LargeTextBoxKFieldRenderControl.IsOfType_Field, LargeTextBoxKFieldRenderControl.IsRootForStructureView_Field, LargeTextBoxKFieldRenderControl.LastModifiedBy_Field, LargeTextBoxKFieldRenderControl.ResourceConsoleBehavior_Field, LargeTextBoxKFieldRenderControl.ResourceHasResourceKeyDataHashes_Field, LargeTextBoxKFieldRenderControl.ResourceInFolder_Field, LargeTextBoxKFieldRenderControl.SecurityOwner_Field, LargeTextBoxKFieldRenderControl.SelectionBehavior_Field, LargeTextBoxKFieldRenderControl.ShortcutInFolder_Field };
 			}
 		}
 
@@ -648,6 +659,20 @@ namespace EDC.ReadiNow.Model
 			set
 			{
 				this.SetField( "console:showControlHelpText", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public string VisibilityCalculation
+		{
+			get
+			{
+				return ( string ) this.GetField( "console:visibilityCalculation" );
+			}
+			set
+			{
+				this.SetField( "console:visibilityCalculation", value);
 			}
 		}
 

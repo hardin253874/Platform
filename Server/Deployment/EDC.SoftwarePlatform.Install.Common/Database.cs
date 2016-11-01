@@ -366,15 +366,121 @@ EXEC sp_filestream_force_garbage_collection";
 					sqlCommand.ExecuteNonQuery( );
 				}
 			}
-		}
+        }
 
-		/// <summary>
-		///     Creates the database role.
-		/// </summary>
-		/// <param name="server">The server.</param>
-		/// <param name="catalog">The database.</param>
-		/// <param name="roleName">Name of the role.</param>
-		public static void CreateDatabaseRole( string server, string catalog, string roleName )
+        /// <summary>
+        ///     Previously, installation used the config xml bootstrap mechanism, which resulted in an incorrect packageId for core solutions
+        ///     being stored in the Global tenant. This means that subsequent upgrades don't run correctly.
+        ///     This probably only needs to be here for a few versions.
+        /// </summary>
+        /// <param name="server">The server.</param>
+        /// <param name="catalog">The database.</param>
+        public static void RepairPackageIdInGlobal( string server, string catalog )
+        {
+            string query = @"
+declare @coreSolution uniqueidentifier = '7062aade-2e72-4a71-a7fa-a412d20d6f01'
+declare @packageId uniqueidentifier = '1670eb43-6568-4e41-97c4-71b2bd1fba61'
+declare @consoleSolution uniqueidentifier = '34ff4d95-70c6-4ae8-8f6f-38d88546d4c4'
+declare @coreSolutionIncorrect uniqueidentifier = 'd14fbd50-52b8-43b8-9388-dba8574c0280'
+declare @consoleSolutionIncorrect uniqueidentifier = '8aeb3b0b-21ce-49f3-96ca-90103e62eea6'
+
+update gp
+set Data = 
+(
+	select top 1 Data from Data_Guid tp
+	join Entity tf on tf.Id = tp.FieldId and tf.UpgradeId = @packageId and tp.TenantId = tf.TenantId
+	join Entity ts on ts.Id = tp.EntityId and ts.UpgradeId = @coreSolution and tp.TenantId = ts.TenantId
+	where tp.TenantId <> 0
+)
+from Data_Guid gp
+join Entity gf on gf.Id = gp.FieldId and gf.UpgradeId = @packageId and gf.TenantId = 0
+join Entity gs on gs.Id = gp.EntityId and gs.UpgradeId = @coreSolution and gs.TenantId = 0
+where gp.TenantId = 0 and gp.Data = @coreSolutionIncorrect
+;
+update gp
+set Data = 
+(
+	select top 1 Data from Data_Guid tp
+	join Entity tf on tf.Id = tp.FieldId and tf.UpgradeId = @packageId and tp.TenantId = tf.TenantId
+	join Entity ts on ts.Id = tp.EntityId and ts.UpgradeId = @consoleSolution and tp.TenantId = ts.TenantId
+	where tp.TenantId <> 0
+)
+from Data_Guid gp
+join Entity gf on gf.Id = gp.FieldId and gf.UpgradeId = @packageId and gf.TenantId = 0
+join Entity gs on gs.Id = gp.EntityId and gs.UpgradeId = @consoleSolution and gs.TenantId = 0
+where gp.TenantId = 0 and gp.Data = @consoleSolutionIncorrect";
+
+            using ( var conn = new SqlConnection( GetDatabaseConnectionString( server, catalog ) ) )
+            {
+                conn.Open( );
+                using ( SqlCommand sqlCommand = conn.CreateCommand( ) )
+                {
+                    sqlCommand.CommandText = query;
+                    sqlCommand.CommandType = CommandType.Text;
+                    sqlCommand.ExecuteScalar( );
+                }
+            }
+        }
+
+        /// <summary>
+        ///     There are some bad duplicate resource key entries in the global tenant.
+        ///     Remove them.
+        ///     This probably only needs to be here for a few versions.
+        /// </summary>
+        /// <param name="server">The server.</param>
+        /// <param name="catalog">The database.</param>
+        public static void RepairResourceKeyHashesInGlobal( string server, string catalog )
+        {
+            string query = @"
+declare @tenantId bigint = 0
+declare @dataHash bigint = dbo.fnAliasNsId('dataHash','core', @tenantId)
+declare @relId bigint = dbo.fnAliasNsId('resourceKeyDataHashAppliesToResourceKey','core', @tenantId)
+declare @keyId bigint = dbo.fnAliasNsId('definitionUniqueNameKey','core', @tenantId)
+
+create table #tmp (
+  Id bigint
+)
+insert into #tmp (Id)
+select e.Id
+from
+	Data_NVarChar n
+join Entity e on
+	-- Skip the guids for the keys that we want to keep (namely the ones in coreData)
+	e.TenantId = @tenantId and e.Id = n.EntityId and e.UpgradeId not in ('715a37be-7aa5-4afd-bb1e-0d071f0d75d9', '2fc32cd0-af5b-4761-bd42-0bf33a94c008')
+join Relationship r on
+	r.TenantId = @tenantId and r.FromId = e.Id and r.TypeId = @relId and r.ToId = @keyId
+where
+	n.TenantId = @tenantId and n.FieldId = @dataHash
+	-- Match based on the hashes we want to nuke
+	and n.Data in ('F40E710BDABCDDE48927029B4DE274E0DDCBF7A8','F63A4849805C121F443BC8E8EE7D21D65BAF5625')
+
+delete from Data_NVarChar where TenantId = @tenantId and EntityId in ( select Id from #tmp )
+delete from Data_DateTime where TenantId = @tenantId and EntityId in ( select Id from #tmp )
+delete from Relationship where TenantId = @tenantId and FromId in ( select Id from #tmp )
+delete from Relationship where TenantId = @tenantId and ToId in ( select Id from #tmp )
+delete from Entity where TenantId = @tenantId and Id in ( select Id from #tmp )
+
+drop table #tmp";
+
+            using ( var conn = new SqlConnection( GetDatabaseConnectionString( server, catalog ) ) )
+            {
+                conn.Open( );
+                using ( SqlCommand sqlCommand = conn.CreateCommand( ) )
+                {
+                    sqlCommand.CommandText = query;
+                    sqlCommand.CommandType = CommandType.Text;
+                    sqlCommand.ExecuteScalar( );
+                }
+            }
+        }
+
+        /// <summary>
+        ///     Creates the database role.
+        /// </summary>
+        /// <param name="server">The server.</param>
+        /// <param name="catalog">The database.</param>
+        /// <param name="roleName">Name of the role.</param>
+        public static void CreateDatabaseRole( string server, string catalog, string roleName )
 		{
 			using ( var platformDbConnection = new SqlConnection( GetDatabaseConnectionString( server, catalog ) ) )
 			{
@@ -856,16 +962,42 @@ EXEC sp_filestream_force_garbage_collection";
 			}
 
 			return false;
-		}
+        }
 
-		/// <summary>
-		///     Tenants the exists.
-		/// </summary>
-		/// <param name="server">The server.</param>
-		/// <param name="catalog">The catalog.</param>
-		/// <param name="tenantName">Name of the tenant.</param>
-		/// <returns></returns>
-		public static bool TenantExists( string server, string catalog, string tenantName )
+        /// <summary>
+        ///     Generates a scheme number for a new database.
+        ///     This allows us to recognise a given installation.
+        /// </summary>
+        /// <param name="server">The server.</param>
+        /// <param name="catalog">The catalog.</param>
+        /// <returns></returns>
+        public static bool SetPlatformInstallInfo( string server, string catalog )
+        {
+            using ( var platformDbConnection = new SqlConnection( GetDatabaseConnectionString( server, catalog ) ) )
+            {
+                platformDbConnection.Open( );
+
+                string sql = "insert into PlatformInfo (InstallDate, BookmarkScheme) values (getdate(), convert(int, rand() * 1000000))";
+
+                using ( SqlCommand command = platformDbConnection.CreateCommand( ) )
+                {
+                    command.CommandText = sql;
+
+                    command.ExecuteNonQuery( );
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        ///     Tenants the exists.
+        /// </summary>
+        /// <param name="server">The server.</param>
+        /// <param name="catalog">The catalog.</param>
+        /// <param name="tenantName">Name of the tenant.</param>
+        /// <returns></returns>
+        public static bool TenantExists( string server, string catalog, string tenantName )
 		{
 			using ( var platformDbConnection = new SqlConnection( GetDatabaseConnectionString( server, catalog ) ) )
 			{

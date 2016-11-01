@@ -1,6 +1,8 @@
 ﻿// Copyright 2011-2016 Global Software Innovation Pty Ltd
 
 using System;
+using System.Linq;
+using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Xml;
@@ -38,10 +40,10 @@ namespace EDC.SoftwarePlatform.Migration.Processing.Xml
         /// <remarks>
         /// This is the entry point for export requests that come via the console. c.f. EntityManager.ExportEntity.
         /// </remarks>
-        /// <param name="entityId">ID of entity to export.</param>
+        /// <param name="entityIds">ID of entity to export.</param>
         /// <param name="xmlWriter">Xml Writer to write the exported entity to.</param>
         /// <param name="settings">Export settings.</param>
-        public void GenerateXml( long entityId, XmlWriter xmlWriter, EntityXmlExportSettings settings )
+        public void GenerateXml( IEnumerable<long> entityIds, XmlWriter xmlWriter, EntityXmlExportSettings settings )
         {
             if ( xmlWriter == null )
                 throw new ArgumentNullException( nameof( xmlWriter ) );
@@ -59,7 +61,7 @@ namespace EDC.SoftwarePlatform.Migration.Processing.Xml
             /////
             using ( IDataTarget target = CreateDataTarget( xmlWriter, settings ) )
             {
-                ExportEntity( tenantId, entityId, target, context, true );
+                ExportEntity( tenantId, entityIds, target, context, true );
             }
 
             context.Report.EndTime = DateTime.Now;
@@ -72,15 +74,15 @@ namespace EDC.SoftwarePlatform.Migration.Processing.Xml
         /// This has been split to try and capture the common code shared by a PlatformConfigure export and a console export. 
         /// </remarks>
         /// <param name="tenantId">The tenant</param>
-        /// <param name="entityId">The entity</param>
+        /// <param name="entityIds">The entity</param>
         /// <param name="target">The target</param>
         /// <param name="context">Processing context.</param>
         /// <param name="demandReadPermission">If true, perform a read demand as the current user.</param>
-        internal void ExportEntity( long tenantId, long entityId, IDataTarget target, IProcessingContext context, bool demandReadPermission )
+        internal void ExportEntity( long tenantId, IEnumerable<long> entityIds, IDataTarget target, IProcessingContext context, bool demandReadPermission )
         {
             using ( IDataSource source = new TenantGraphSource {
                 TenantId = tenantId,
-                RootEntities = new[] { entityId },
+                RootEntities = entityIds.ToList( ),
                 DemandReadPermission = demandReadPermission
             } )
             {
@@ -100,17 +102,17 @@ namespace EDC.SoftwarePlatform.Migration.Processing.Xml
         /// <summary>
         /// Interface for providing XML export.
         /// </summary>
-        /// <param name="entityId">ID of entity to export.</param>
+        /// <param name="entityIds">ID of entity to export.</param>
         /// <param name="textWriter">Xml Writer to write the exported entity to.</param>
         /// <param name="settings">Export settings.</param>
-        public string GenerateXml( long entityId, EntityXmlExportSettings settings )
+        public string GenerateXml( IEnumerable<long> entityIds, EntityXmlExportSettings settings )
         {
             XmlWriterSettings xmlWriterSettings = GetXmlWriterSettings( );
 
             using ( StringWriter stringWriter = new StringWriter( ) )
             using ( XmlWriter xmlWriter = XmlWriter.Create( stringWriter, xmlWriterSettings ) )
             {
-                GenerateXml( entityId, xmlWriter, settings );
+                GenerateXml( entityIds, xmlWriter, settings );
 
                 xmlWriter.Flush( );
                 stringWriter.Flush( );

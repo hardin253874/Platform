@@ -358,8 +358,26 @@ namespace EDC.ReadiNow.Model
         /// Administrator role ID.
         /// </summary>
         public long AdministratorRole => GetId(ref _administratorRole, "core", "administratorRole");
-        private long _administratorRole;        
-        
+        private long _administratorRole;
+
+        /// <summary>
+        /// Visibility calculation ID.
+        /// </summary>
+        public long VisibilityCalculation => GetId(ref _visibilityCalculation, "console", "visibilityCalculation");
+        private long _visibilityCalculation;
+
+        /// <summary>
+        /// Control on form ID.
+        /// </summary>
+        public long ControlOnForm => GetId(ref _controlOnForm, "console", "controlOnForm");
+        private long _controlOnForm;
+
+        /// <summary>
+        /// Type to edit with form ID.
+        /// </summary>
+        public long TypeToEditWithForm => GetId(ref _typeToEditWithForm, "console", "typeToEditWithForm");
+        private long _typeToEditWithForm;
+
         /// <summary>
         /// The general settings for the tenant
         /// </summary>

@@ -70,6 +70,8 @@ namespace EDC.ReadiNow.Common.ConfigParser.Containers
         public static readonly Alias RelDependants = Aliases.CoreAlias("relDependants");
         public static readonly Alias RelComponents = Aliases.CoreAlias("relComponents");
         public static readonly Alias RelManyToMany = Aliases.CoreAlias("relManyToMany");
+        public static readonly Alias RelManyToManyFwd = Aliases.CoreAlias( "relManyToManyFwd" );
+        public static readonly Alias RelManyToManyRev = Aliases.CoreAlias( "relManyToManyRev" );
         public static readonly Alias RelMultiChoiceField = Aliases.CoreAlias("relMultiChoiceField");
         public static readonly Alias RelSharedDependantsOf = Aliases.CoreAlias("relSharedDependantsOf");
         public static readonly Alias RelSharedDependants = Aliases.CoreAlias("relSharedDependants");

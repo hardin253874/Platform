@@ -15,7 +15,7 @@
     <AssemblyName>EDC.SoftwarePlatform.WebApi</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -181,6 +181,7 @@
     <Compile Include="Controllers\CalcEditor\EvalResult.cs" />
     <Compile Include="Controllers\CalcEditor\ExpressionParameter.cs" />
     <Compile Include="Controllers\CalcEditor\ExpressionType.cs" />
+    <Compile Include="Controllers\CalcEngine\CalcEngineRequestHandler.cs" />
     <Compile Include="Controllers\Connector\ConnectorController.cs" />
     <Compile Include="Controllers\Connect\ConnectController.cs" />
     <Compile Include="Controllers\Console\ActionController.cs" />
@@ -191,6 +192,11 @@
     <Compile Include="Controllers\Console\ConsoleTreeRepository.cs" />
     <Compile Include="Controllers\Console\IConsoleTreeRepository.cs" />
     <Compile Include="Controllers\Console\SessionInfoResult.cs" />
+    <Compile Include="Controllers\EditForm\FormVisibilityCalcDependenciesResponse.cs" />
+    <Compile Include="Controllers\EditForm\VisibilityCalcDependencies.cs" />
+    <Compile Include="Controllers\EditForm\FormDataRequest.cs" />
+    <Compile Include="Controllers\EditForm\FormControllerRequestHandler.cs" />
+    <Compile Include="Controllers\EditForm\FormDataResponse.cs" />
     <Compile Include="Controllers\EditForm\FormModule.cs" />
     <Compile Include="Controllers\EditForm\InstanceController.cs" />
     <Compile Include="Controllers\EditForm\FormController.cs" />
@@ -212,6 +218,11 @@
     <Compile Include="Controllers\Entity2\JsonRelationshipInstance.cs" />
     <Compile Include="Controllers\Entity2\JsonRelationshipMember.cs" />
     <Compile Include="Controllers\Entity2\JsonSingleQueryResult.cs" />
+    <Compile Include="Controllers\CalcEngine\CalcEngineExpression.cs" />
+    <Compile Include="Controllers\CalcEngine\CalcEngineController.cs" />
+    <Compile Include="Controllers\CalcEngine\CalcEngineEvalRequest.cs" />
+    <Compile Include="Controllers\CalcEngine\CalcEngineEvalResponse.cs" />
+    <Compile Include="Controllers\CalcEngine\CalcEngineEvalResult.cs" />
     <Compile Include="Controllers\Entity\EntityCloneRequest.cs" />
     <Compile Include="Controllers\Entity\EntityController.cs" />
     <Compile Include="Controllers\Entity\JsonCondition.cs" />

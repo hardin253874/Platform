@@ -138,6 +138,7 @@
     <Compile Include="Actions\ActionControllerTests.cs" />
     <Compile Include="AssemblyTestFixture.cs" />
     <Compile Include="CalcEditor\CalcEditorTests.cs" />
+    <Compile Include="CalcEngine\CalcEngineRequestHandlerTests.cs" />
     <Compile Include="Common\AssertHelper.cs" />
     <Compile Include="Common\CommonServiceTestsHelper.cs" />
     <Compile Include="Common\Global.cs" />
@@ -147,6 +148,7 @@
     <Compile Include="Console\ConsoleControllerTests.cs" />
     <Compile Include="Console\ConsoleTreeRepositoryTests.cs" />
     <Compile Include="DocumentLibrary\DocumentLibraryTests.cs" />
+    <Compile Include="EditForm\FormControllerRequestHandlerTests.cs" />
     <Compile Include="EditForm\FormControllerTestHelper.cs" />
     <Compile Include="EditForm\TypeControllerTest.cs" />
     <Compile Include="EditForm\InstanceControllerTest.cs" />
@@ -258,6 +260,7 @@
   <ItemGroup>
     <EmbeddedResource Include="FileManager\despair.jpg" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir).build\MSBuild.Community.Tasks.targets" />
   <Import Project="$(SolutionDir)Automation\ReadiNow.targets" />

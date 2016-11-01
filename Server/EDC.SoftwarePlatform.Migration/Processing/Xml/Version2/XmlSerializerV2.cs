@@ -154,6 +154,15 @@ namespace EDC.SoftwarePlatform.Migration.Processing.Xml.Version2
 
             RestructureFieldData( );
 
+            // XmlSerializerV2 needs metadata about relationships to build a nice hierarchy.
+            // Most IDataSource don't provide it. So hit up the application library hacker to get some metadata.
+            // Cross finders.
+            if ( PackageData.Metadata.RelationshipTypeCallback == null )
+            {
+                AppLibraryRelationshipMetadataRepository appLibRelMetadataRepos = new AppLibraryRelationshipMetadataRepository( );
+                PackageData.Metadata.RelationshipTypeCallback = appLibRelMetadataRepos.CreateMetadataCallback( PackageData.Relationships );
+            }
+
             Stack<string> xmlStack = new Stack<string>( );
 
             SerializeHeader( xmlWriter, xmlStack );
@@ -409,16 +418,7 @@ namespace EDC.SoftwarePlatform.Migration.Processing.Xml.Version2
             IEnumerable<EntityEntry> entities = PackageData.Entities;
 
             HierarchyBuilder builder = new HierarchyBuilder( );
-            builder.RelationshipMetadataCallback = PackageData.Metadata?.RelationshipTypeCallback;
-
-            // XmlSerializerV2 needs metadata about relationships to build a nice hierarchy.
-            // Most IDataSource don't provide it. So hit up the application library hacker to get some metadata.
-            // Cross finders.
-            if ( builder.RelationshipMetadataCallback == null )
-            {
-                AppLibraryRelationshipMetadataRepository appLibRelMetadataRepos = new AppLibraryRelationshipMetadataRepository( );
-                builder.RelationshipMetadataCallback = appLibRelMetadataRepos.CreateMetadataCallback( PackageData.Relationships );
-            }
+            builder.RelationshipMetadataCallback = PackageData.Metadata.RelationshipTypeCallback;
 
             _root = builder.BuildEntityHierarchy( PackageData );
 
@@ -473,6 +473,8 @@ namespace EDC.SoftwarePlatform.Migration.Processing.Xml.Version2
             EntityEntry entity = entityNode.Entity;
 
             Guid typeId = entityNode.TypeRelationship?.ToId ?? Guid.Empty;
+
+            WriteEntityNameComment( xmlWriter, entity );
 
             // TODO : HANDLE MISSING TYPE RELATIONSHIP PROPERLY
 
@@ -544,6 +546,23 @@ namespace EDC.SoftwarePlatform.Migration.Processing.Xml.Version2
             }
         }
 
+        private void WriteEntityNameComment( XmlWriter xmlWriter, EntityEntry entity )
+        {
+            IDictionary<Guid, IList<DataEntry>> stringData;
+            if ( !_dataMap.TryGetValue( Helpers.NVarCharName, out stringData ) )
+                return;
+
+            IList<DataEntry> entityStringData;
+            if ( !stringData.TryGetValue( entity.EntityId, out entityStringData ) )
+                return;
+            
+            string name = entityStringData.FirstOrDefault( de => de.FieldId == Guids.Name )?.Data as string;
+
+            if ( !string.IsNullOrEmpty( name ) )
+            {
+                xmlWriter.WriteComment( string.Concat(' ', name, ' ' ) );
+            }
+        }
 
         private void SerializeEntityFields( XmlWriter xmlWriter, EntityEntry entity, Stack<string> xmlStack )
         {

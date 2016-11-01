@@ -46,6 +46,8 @@ namespace EDC.ReadiNow.Common.ConfigParser
             rules.Add(Aliases.RelMultiChoiceField.Value, new RelTypeRules(Aliases.ManyToMany, false, false, Aliases.CloneReferences, Aliases.Drop, false, false, true, null));
             rules.Add(Aliases.RelSharedDependantsOf.Value, new RelTypeRules(Aliases.ManyToMany, true, false, Aliases.CloneReferences, Aliases.CloneReferences, false, false));
             rules.Add(Aliases.RelSharedDependants.Value, new RelTypeRules(Aliases.ManyToMany, false, true, Aliases.CloneReferences, Aliases.CloneReferences, false, false));
+            rules.Add(Aliases.RelManyToManyFwd.Value, new RelTypeRules(Aliases.ManyToMany, false, false, Aliases.CloneReferences, Aliases.Drop, false, false));
+            rules.Add(Aliases.RelManyToManyRev.Value, new RelTypeRules(Aliases.ManyToMany, false, false, Aliases.Drop, Aliases.CloneReferences, false, false));
 
             foreach (var entity in entities)
             {

@@ -55,7 +55,7 @@ namespace EDC.SoftwarePlatform.Migration.Processing.Xml.Version2
                 else
                 {
                     string entityId = DeserializeEntity( reader, stack );
-                    _metadata.RootEntityId = Guid.Parse( entityId ); //add
+                    _metadata.RootEntities.Add( Guid.Parse( entityId ) );
                 }
             } );
         }
@@ -72,7 +72,7 @@ namespace EDC.SoftwarePlatform.Migration.Processing.Xml.Version2
             AdvanceReader( xmlReader, xmlStack, null, XmlConstants.EntityConstants.Group, ( reader, stack ) =>
             {
                 string entityId = DeserializeEntity( reader, stack );
-                _metadata.RootEntityId = Guid.Parse( entityId ); //add
+                _metadata.RootEntities.Add( Guid.Parse( entityId  ) );
             } );
         }
 

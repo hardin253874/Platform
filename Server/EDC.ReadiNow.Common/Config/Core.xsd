@@ -152,6 +152,13 @@
       <xs:element ref="sendRecord" />
       <xs:element ref="replyRecord" />
       <xs:element ref="smsSendRecord" />
+      <xs:element ref="tenant" />
+      <xs:element ref="app" />
+      <xs:element ref="appPackage" />
+      <xs:element ref="appPackageDependency" />
+      <xs:element ref="cleanupFileRepositoriesAction" />
+      <xs:element ref="systemOnlyScheduleAction" />
+      <xs:element ref="processInboxesAction" />
       <xs:element ref="console:uiContext" />
       <xs:element ref="console:renderControlType" />
       <xs:element ref="console:customRenderControlType" />
@@ -262,10 +269,6 @@
       <xs:element ref="structureLevel" />
       <xs:element ref="userResource" />
       <xs:element ref="resourcePicker" />
-      <xs:element ref="tenant" />
-      <xs:element ref="app" />
-      <xs:element ref="appPackage" />
-      <xs:element ref="appPackageDependency" />
       <xs:element ref="solution" />
       <xs:element ref="applicationDependency" />
       <xs:element ref="calculatedResult" />
@@ -296,7 +299,6 @@
       <xs:element ref="appointmentReminderEnum" />
       <xs:element ref="showTimeAsEnum" />
       <xs:element ref="person" />
-      <xs:element ref="cleanupFileRepositoriesAction" />
       <xs:element ref="conditionalFormatIcon" />
       <xs:element ref="wfActivityCategoryEnum" />
       <xs:element ref="activityType" />
@@ -331,7 +333,6 @@
       <xs:element ref="proxyInboxProvider" />
       <xs:element ref="imapEmailProvider" />
       <xs:element ref="inbox" />
-      <xs:element ref="processInboxesAction" />
       <xs:element ref="inboxEmailAction" />
       <xs:element ref="taskStatusEnum" />
       <xs:element ref="logActivity" />
@@ -360,7 +361,6 @@
       <xs:element ref="reviewSurveyActivity" />
       <xs:element ref="scheduleAction" />
       <xs:element ref="enableableItem" />
-      <xs:element ref="systemOnlyScheduleAction" />
       <xs:element ref="wfTriggerOnSchedule" />
       <xs:element ref="scheduleOneOff" />
       <xs:element ref="scheduleDailyRepeat" />
@@ -627,6 +627,14 @@
       <xs:element ref="srToPerson.instance" />
       <xs:element ref="srToReply.instance" />
       <xs:element ref="rrToSend.instance" />
+      <xs:element ref="packageForApplication.instance" />
+      <xs:element ref="applicationPackages.instance" />
+      <xs:element ref="dependentAppPackage.instance" />
+      <xs:element ref="dependentAppPackageDetails.instance" />
+      <xs:element ref="activatedAppPackages.instance" />
+      <xs:element ref="tenantsWithPackage.instance" />
+      <xs:element ref="canInstallApplication.instance" />
+      <xs:element ref="canPublishApplication.instance" />
       <xs:element ref="console:context.instance" />
       <xs:element ref="console:applicableControl.instance" />
       <xs:element ref="console:customRenderControlForType.instance" />
@@ -786,18 +794,10 @@
       <xs:element ref="structureLevelResources.instance" />
       <xs:element ref="reportUsesDefinition.instance" />
       <xs:element ref="definitionUsedByReport.instance" />
-      <xs:element ref="packageForApplication.instance" />
-      <xs:element ref="applicationPackages.instance" />
-      <xs:element ref="dependentAppPackage.instance" />
-      <xs:element ref="dependentAppPackageDetails.instance" />
-      <xs:element ref="activatedAppPackages.instance" />
-      <xs:element ref="tenantsWithPackage.instance" />
       <xs:element ref="dependentApplication.instance" />
       <xs:element ref="dependentApplicationDetails.instance" />
       <xs:element ref="dependencyApplication.instance" />
       <xs:element ref="dependencyApplicationDetails.instance" />
-      <xs:element ref="canInstallApplication.instance" />
-      <xs:element ref="canPublishApplication.instance" />
       <xs:element ref="inSolution.instance" />
       <xs:element ref="applicationContents.instance" />
       <xs:element ref="indirectInSolution.instance" />
@@ -2337,6 +2337,81 @@
       <xs:restriction base="xs:boolean" />
     </xs:simpleType>
   </xs:element>
+  <xs:element name="isTenantDisabled">
+    <xs:simpleType>
+      <xs:restriction base="xs:boolean" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="applicationId">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="releaseDate">
+    <xs:simpleType>
+      <xs:restriction base="xs:date" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="publisher">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="publisherUrl">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="appVerId">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="appVersionString">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="publishDate">
+    <xs:simpleType>
+      <xs:restriction base="xs:date" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="appPackageReleaseDate">
+    <xs:simpleType>
+      <xs:restriction base="xs:date" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="appPackageMinimumVersion">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="appPackageMaximumVersion">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="appPackageIsRequired">
+    <xs:simpleType>
+      <xs:restriction base="xs:boolean" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="appPackageDependencyId">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="appPackageDependencyName">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="piaLastRun">
+    <xs:simpleType>
+      <xs:restriction base="xs:dateTime" />
+    </xs:simpleType>
+  </xs:element>
   <xs:element name="allowSelectMultiTypes">
     <xs:simpleType>
       <xs:restriction base="xs:boolean" />
@@ -2922,76 +2997,6 @@
   <xs:element name="followRelationshipInReverse">
     <xs:simpleType>
       <xs:restriction base="xs:boolean" />
-    </xs:simpleType>
-  </xs:element>
-  <xs:element name="isTenantDisabled">
-    <xs:simpleType>
-      <xs:restriction base="xs:boolean" />
-    </xs:simpleType>
-  </xs:element>
-  <xs:element name="applicationId">
-    <xs:simpleType>
-      <xs:restriction base="xs:string" />
-    </xs:simpleType>
-  </xs:element>
-  <xs:element name="releaseDate">
-    <xs:simpleType>
-      <xs:restriction base="xs:date" />
-    </xs:simpleType>
-  </xs:element>
-  <xs:element name="publisher">
-    <xs:simpleType>
-      <xs:restriction base="xs:string" />
-    </xs:simpleType>
-  </xs:element>
-  <xs:element name="publisherUrl">
-    <xs:simpleType>
-      <xs:restriction base="xs:string" />
-    </xs:simpleType>
-  </xs:element>
-  <xs:element name="appVerId">
-    <xs:simpleType>
-      <xs:restriction base="xs:string" />
-    </xs:simpleType>
-  </xs:element>
-  <xs:element name="appVersionString">
-    <xs:simpleType>
-      <xs:restriction base="xs:string" />
-    </xs:simpleType>
-  </xs:element>
-  <xs:element name="publishDate">
-    <xs:simpleType>
-      <xs:restriction base="xs:date" />
-    </xs:simpleType>
-  </xs:element>
-  <xs:element name="appPackageReleaseDate">
-    <xs:simpleType>
-      <xs:restriction base="xs:date" />
-    </xs:simpleType>
-  </xs:element>
-  <xs:element name="appPackageMinimumVersion">
-    <xs:simpleType>
-      <xs:restriction base="xs:string" />
-    </xs:simpleType>
-  </xs:element>
-  <xs:element name="appPackageMaximumVersion">
-    <xs:simpleType>
-      <xs:restriction base="xs:string" />
-    </xs:simpleType>
-  </xs:element>
-  <xs:element name="appPackageIsRequired">
-    <xs:simpleType>
-      <xs:restriction base="xs:boolean" />
-    </xs:simpleType>
-  </xs:element>
-  <xs:element name="appPackageDependencyId">
-    <xs:simpleType>
-      <xs:restriction base="xs:string" />
-    </xs:simpleType>
-  </xs:element>
-  <xs:element name="appPackageDependencyName">
-    <xs:simpleType>
-      <xs:restriction base="xs:string" />
     </xs:simpleType>
   </xs:element>
   <xs:element name="baseName">
@@ -3638,11 +3643,6 @@
       <xs:restriction base="xs:boolean" />
     </xs:simpleType>
   </xs:element>
-  <xs:element name="piaLastRun">
-    <xs:simpleType>
-      <xs:restriction base="xs:dateTime" />
-    </xs:simpleType>
-  </xs:element>
   <xs:element name="ieaOrdinal">
     <xs:simpleType>
       <xs:restriction base="xs:int" />
@@ -3893,6 +3893,13 @@
       <xs:element ref="sendRecord" />
       <xs:element ref="replyRecord" />
       <xs:element ref="smsSendRecord" />
+      <xs:element ref="tenant" />
+      <xs:element ref="app" />
+      <xs:element ref="appPackage" />
+      <xs:element ref="appPackageDependency" />
+      <xs:element ref="cleanupFileRepositoriesAction" />
+      <xs:element ref="systemOnlyScheduleAction" />
+      <xs:element ref="processInboxesAction" />
       <xs:element ref="console:uiContext" />
       <xs:element ref="console:renderControlType" />
       <xs:element ref="console:customRenderControlType" />
@@ -4003,10 +4010,6 @@
       <xs:element ref="structureLevel" />
       <xs:element ref="userResource" />
       <xs:element ref="resourcePicker" />
-      <xs:element ref="tenant" />
-      <xs:element ref="app" />
-      <xs:element ref="appPackage" />
-      <xs:element ref="appPackageDependency" />
       <xs:element ref="solution" />
       <xs:element ref="applicationDependency" />
       <xs:element ref="calculatedResult" />
@@ -4037,7 +4040,6 @@
       <xs:element ref="appointmentReminderEnum" />
       <xs:element ref="showTimeAsEnum" />
       <xs:element ref="person" />
-      <xs:element ref="cleanupFileRepositoriesAction" />
       <xs:element ref="conditionalFormatIcon" />
       <xs:element ref="wfActivityCategoryEnum" />
       <xs:element ref="activityType" />
@@ -4072,7 +4074,6 @@
       <xs:element ref="proxyInboxProvider" />
       <xs:element ref="imapEmailProvider" />
       <xs:element ref="inbox" />
-      <xs:element ref="processInboxesAction" />
       <xs:element ref="inboxEmailAction" />
       <xs:element ref="taskStatusEnum" />
       <xs:element ref="logActivity" />
@@ -4101,7 +4102,6 @@
       <xs:element ref="reviewSurveyActivity" />
       <xs:element ref="scheduleAction" />
       <xs:element ref="enableableItem" />
-      <xs:element ref="systemOnlyScheduleAction" />
       <xs:element ref="wfTriggerOnSchedule" />
       <xs:element ref="scheduleOneOff" />
       <xs:element ref="scheduleDailyRepeat" />
@@ -4163,6 +4163,7 @@
       <xs:element ref="importableType" />
       <xs:element ref="definition" />
       <xs:element ref="argumentType" />
+      <xs:element ref="systemOnlyScheduleAction" />
       <xs:element ref="console:renderControlType" />
       <xs:element ref="console:customRenderControlType" />
       <xs:element ref="console:fieldRenderControlType" />
@@ -4173,7 +4174,6 @@
       <xs:element ref="fieldType" />
       <xs:element ref="activityType" />
       <xs:element ref="scheduleAction" />
-      <xs:element ref="systemOnlyScheduleAction" />
     </xs:choice>
   </xs:group>
   <xs:element name="schema" type="type_schema" />
@@ -4213,6 +4213,7 @@
       <xs:element ref="importableType" />
       <xs:element ref="definition" />
       <xs:element ref="argumentType" />
+      <xs:element ref="systemOnlyScheduleAction" />
       <xs:element ref="console:renderControlType" />
       <xs:element ref="console:customRenderControlType" />
       <xs:element ref="console:fieldRenderControlType" />
@@ -4236,7 +4237,6 @@
       <xs:element ref="virtualRelationship" />
       <xs:element ref="activityType" />
       <xs:element ref="scheduleAction" />
-      <xs:element ref="systemOnlyScheduleAction" />
     </xs:choice>
   </xs:group>
   <xs:element name="type" type="type_type" />
@@ -4324,6 +4324,7 @@
       <xs:element ref="importableType" />
       <xs:element ref="definition" />
       <xs:element ref="argumentType" />
+      <xs:element ref="systemOnlyScheduleAction" />
       <xs:element ref="console:renderControlType" />
       <xs:element ref="console:customRenderControlType" />
       <xs:element ref="console:fieldRenderControlType" />
@@ -4333,7 +4334,6 @@
       <xs:element ref="fieldType" />
       <xs:element ref="activityType" />
       <xs:element ref="scheduleAction" />
-      <xs:element ref="systemOnlyScheduleAction" />
     </xs:choice>
   </xs:group>
   <xs:element name="managedType" type="type_managedType" />
@@ -10511,6 +10511,309 @@
       <xs:element ref="smsSendRecord" />
     </xs:choice>
   </xs:group>
+  <xs:element name="tenant" type="type_tenant" />
+  <xs:complexType name="type_tenant">
+    <xs:all>
+      <xs:element minOccurs="0" maxOccurs="1" ref="name" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="description" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdDate" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="modifiedDate" />
+      <xs:element minOccurs="1" maxOccurs="1" ref="alias" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canModify" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canDelete" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isTenantDisabled" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="flags" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="securityOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="lastModifiedBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isRootForStructureView" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inStructureLevel" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="indirectInSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="activatedAppPackages" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canInstallApplication" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canPublishApplication" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
+    </xs:all>
+  </xs:complexType>
+  <xs:group name="is_tenant">
+    <xs:choice>
+      <xs:element ref="tenant" />
+    </xs:choice>
+  </xs:group>
+  <xs:element name="app" type="type_app" />
+  <xs:complexType name="type_app">
+    <xs:all>
+      <xs:element minOccurs="0" maxOccurs="1" ref="name" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="description" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdDate" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="modifiedDate" />
+      <xs:element minOccurs="1" maxOccurs="1" ref="alias" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canModify" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canDelete" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="applicationId" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="releaseDate" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="publisher" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="publisherUrl" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="flags" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="securityOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="lastModifiedBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isRootForStructureView" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inStructureLevel" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="indirectInSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="applicationPackages" />
+    </xs:all>
+  </xs:complexType>
+  <xs:group name="is_app">
+    <xs:choice>
+      <xs:element ref="app" />
+    </xs:choice>
+  </xs:group>
+  <xs:element name="appPackage" type="type_appPackage" />
+  <xs:complexType name="type_appPackage">
+    <xs:all>
+      <xs:element minOccurs="0" maxOccurs="1" ref="name" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="description" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdDate" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="modifiedDate" />
+      <xs:element minOccurs="1" maxOccurs="1" ref="alias" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canModify" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canDelete" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="appVerId" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="appVersionString" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="publishDate" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="appPackageReleaseDate" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="flags" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="securityOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="lastModifiedBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isRootForStructureView" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inStructureLevel" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="indirectInSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="packageForApplication" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="dependentAppPackageDetails" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="tenantsWithPackage" />
+    </xs:all>
+  </xs:complexType>
+  <xs:group name="is_appPackage">
+    <xs:choice>
+      <xs:element ref="appPackage" />
+    </xs:choice>
+  </xs:group>
+  <xs:element name="appPackageDependency" type="type_appPackageDependency" />
+  <xs:complexType name="type_appPackageDependency">
+    <xs:all>
+      <xs:element minOccurs="0" maxOccurs="1" ref="name" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="description" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdDate" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="modifiedDate" />
+      <xs:element minOccurs="1" maxOccurs="1" ref="alias" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canModify" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canDelete" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="appPackageMinimumVersion" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="appPackageMaximumVersion" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="appPackageIsRequired" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="appPackageDependencyId" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="appPackageDependencyName" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="flags" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="securityOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="lastModifiedBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isRootForStructureView" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inStructureLevel" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="indirectInSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="dependentAppPackage" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
+    </xs:all>
+  </xs:complexType>
+  <xs:group name="is_appPackageDependency">
+    <xs:choice>
+      <xs:element ref="appPackageDependency" />
+    </xs:choice>
+  </xs:group>
+  <xs:element name="cleanupFileRepositoriesAction" type="type_cleanupFileRepositoriesAction" />
+  <xs:complexType name="type_cleanupFileRepositoriesAction">
+    <xs:all>
+      <xs:element minOccurs="0" maxOccurs="1" ref="name" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="description" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdDate" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="modifiedDate" />
+      <xs:element minOccurs="1" maxOccurs="1" ref="alias" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canModify" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canDelete" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="triggerEnabled" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="flags" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="securityOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="lastModifiedBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isRootForStructureView" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inStructureLevel" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="indirectInSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="scheduleForTrigger" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
+    </xs:all>
+  </xs:complexType>
+  <xs:group name="is_cleanupFileRepositoriesAction">
+    <xs:choice>
+      <xs:element ref="cleanupFileRepositoriesAction" />
+    </xs:choice>
+  </xs:group>
+  <xs:element name="systemOnlyScheduleAction" type="type_systemOnlyScheduleAction" />
+  <xs:complexType name="type_systemOnlyScheduleAction">
+    <xs:all>
+      <xs:element minOccurs="0" maxOccurs="1" ref="name" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="description" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdDate" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="modifiedDate" />
+      <xs:element minOccurs="1" maxOccurs="1" ref="alias" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canModify" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canDelete" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="allowEveryoneRead" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="generateCode" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="systemTenantOnly" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isAbstract" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isSealed" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="supportMultiTypes" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="className" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="classType" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canCreateType" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isMetadata" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="typeScriptName" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isAdvancedType" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="flags" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="securityOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="lastModifiedBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isRootForStructureView" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inStructureLevel" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="indirectInSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inherits" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="instancesInheritByDefault" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="onBeforeDelete" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="onAfterDelete" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="onBeforeSave" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="onAfterSave" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="onSaveFailed" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="onDeleteFailed" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="onAfterDeploy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="onDeployFailed" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="onAfterPublish" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="onPublishFailed" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="onBeforeUpgrade" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="onAfterUpgrade" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:defaultEditForm" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:defaultTabletForm" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="instanceFlags" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:typeConsoleBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="defaultDisplayReport" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="defaultPickerReport" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:typeSuppressedForNewAction" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:typeIncludedForNewButton" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:typeIcon" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="onScheduleFire" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="controlAccessBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="derivedTypes" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="instancesOfType" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="fields" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="fieldGroups" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="resourceKeys" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="typeApiMappings" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="usedByResourceReportNode" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="auditLogEntryTypeMetadata" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="triggerForWorkflow" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:formsToEditType" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="fieldOverridesForType" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="relationships" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="reverseRelationships" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="reportTemplatesApplyToType" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="definitionUsedByReport" />
+    </xs:all>
+  </xs:complexType>
+  <xs:group name="is_systemOnlyScheduleAction">
+    <xs:choice>
+      <xs:element ref="systemOnlyScheduleAction" />
+    </xs:choice>
+  </xs:group>
+  <xs:element name="processInboxesAction" type="type_processInboxesAction" />
+  <xs:complexType name="type_processInboxesAction">
+    <xs:all>
+      <xs:element minOccurs="0" maxOccurs="1" ref="name" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="description" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdDate" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="modifiedDate" />
+      <xs:element minOccurs="1" maxOccurs="1" ref="alias" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canModify" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canDelete" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="piaLastRun" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="triggerEnabled" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="flags" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="securityOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="lastModifiedBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isRootForStructureView" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inStructureLevel" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="indirectInSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="scheduleForTrigger" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
+    </xs:all>
+  </xs:complexType>
+  <xs:group name="is_processInboxesAction">
+    <xs:choice>
+      <xs:element ref="processInboxesAction" />
+    </xs:choice>
+  </xs:group>
   <xs:element name="eventLogSettings" type="type_eventLogSettings" />
   <xs:complexType name="type_eventLogSettings">
     <xs:all>
@@ -11973,6 +12276,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:groupName" />
       <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
       <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
@@ -12021,6 +12325,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:groupName" />
       <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
       <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
@@ -12069,6 +12374,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:groupName" />
       <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
       <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
@@ -12117,6 +12423,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:groupName" />
       <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
       <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
@@ -12165,6 +12472,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:groupName" />
       <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
       <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
@@ -12213,6 +12521,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:groupName" />
       <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
       <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
@@ -12261,6 +12570,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:groupName" />
       <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
       <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
@@ -12309,6 +12619,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:groupName" />
       <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
       <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
@@ -12357,6 +12668,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:groupName" />
       <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
       <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
@@ -12405,6 +12717,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:groupName" />
       <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
       <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
@@ -12453,6 +12766,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="heroTextUseCondFormattingColor" />
       <xs:element minOccurs="0" maxOccurs="1" ref="heroTextStyle" />
       <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
@@ -12504,6 +12818,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:groupName" />
       <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
       <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
@@ -12552,6 +12867,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:groupName" />
       <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
       <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
@@ -12600,6 +12916,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:groupName" />
       <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
       <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
@@ -12648,6 +12965,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:groupName" />
       <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
       <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
@@ -12696,6 +13014,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:groupName" />
       <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
       <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
@@ -12744,6 +13063,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:groupName" />
       <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
       <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
@@ -12792,6 +13112,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:groupName" />
       <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
       <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
@@ -12840,6 +13161,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:groupName" />
       <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
       <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
@@ -12888,6 +13210,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:groupName" />
       <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
       <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
@@ -14029,156 +14352,6 @@
       <xs:element ref="report" />
       <xs:element ref="structureView" />
       <xs:element ref="resourcePicker" />
-    </xs:choice>
-  </xs:group>
-  <xs:element name="tenant" type="type_tenant" />
-  <xs:complexType name="type_tenant">
-    <xs:all>
-      <xs:element minOccurs="0" maxOccurs="1" ref="name" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="description" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="createdDate" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="modifiedDate" />
-      <xs:element minOccurs="1" maxOccurs="1" ref="alias" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="canModify" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="canDelete" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="isTenantDisabled" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="flags" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="securityOwner" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="createdBy" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="lastModifiedBy" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="isRootForStructureView" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="inStructureLevel" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="inSolution" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="indirectInSolution" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="activatedAppPackages" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="canInstallApplication" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="canPublishApplication" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
-    </xs:all>
-  </xs:complexType>
-  <xs:group name="is_tenant">
-    <xs:choice>
-      <xs:element ref="tenant" />
-    </xs:choice>
-  </xs:group>
-  <xs:element name="app" type="type_app" />
-  <xs:complexType name="type_app">
-    <xs:all>
-      <xs:element minOccurs="0" maxOccurs="1" ref="name" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="description" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="createdDate" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="modifiedDate" />
-      <xs:element minOccurs="1" maxOccurs="1" ref="alias" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="canModify" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="canDelete" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="applicationId" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="releaseDate" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="publisher" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="publisherUrl" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="flags" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="securityOwner" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="createdBy" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="lastModifiedBy" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="isRootForStructureView" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="inStructureLevel" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="inSolution" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="indirectInSolution" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="applicationPackages" />
-    </xs:all>
-  </xs:complexType>
-  <xs:group name="is_app">
-    <xs:choice>
-      <xs:element ref="app" />
-    </xs:choice>
-  </xs:group>
-  <xs:element name="appPackage" type="type_appPackage" />
-  <xs:complexType name="type_appPackage">
-    <xs:all>
-      <xs:element minOccurs="0" maxOccurs="1" ref="name" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="description" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="createdDate" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="modifiedDate" />
-      <xs:element minOccurs="1" maxOccurs="1" ref="alias" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="canModify" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="canDelete" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="appVerId" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="appVersionString" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="publishDate" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="appPackageReleaseDate" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="flags" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="securityOwner" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="createdBy" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="lastModifiedBy" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="isRootForStructureView" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="inStructureLevel" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="inSolution" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="indirectInSolution" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="packageForApplication" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="dependentAppPackageDetails" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="tenantsWithPackage" />
-    </xs:all>
-  </xs:complexType>
-  <xs:group name="is_appPackage">
-    <xs:choice>
-      <xs:element ref="appPackage" />
-    </xs:choice>
-  </xs:group>
-  <xs:element name="appPackageDependency" type="type_appPackageDependency" />
-  <xs:complexType name="type_appPackageDependency">
-    <xs:all>
-      <xs:element minOccurs="0" maxOccurs="1" ref="name" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="description" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="createdDate" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="modifiedDate" />
-      <xs:element minOccurs="1" maxOccurs="1" ref="alias" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="canModify" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="canDelete" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="appPackageMinimumVersion" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="appPackageMaximumVersion" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="appPackageIsRequired" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="appPackageDependencyId" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="appPackageDependencyName" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="flags" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="securityOwner" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="createdBy" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="lastModifiedBy" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="isRootForStructureView" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="inStructureLevel" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="inSolution" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="indirectInSolution" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="dependentAppPackage" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
-    </xs:all>
-  </xs:complexType>
-  <xs:group name="is_appPackageDependency">
-    <xs:choice>
-      <xs:element ref="appPackageDependency" />
     </xs:choice>
   </xs:group>
   <xs:element name="solution" type="type_solution" />
@@ -15545,40 +15718,6 @@
     <xs:choice>
       <xs:element ref="console:customEditForm" />
       <xs:element ref="console:screen" />
-    </xs:choice>
-  </xs:group>
-  <xs:element name="cleanupFileRepositoriesAction" type="type_cleanupFileRepositoriesAction" />
-  <xs:complexType name="type_cleanupFileRepositoriesAction">
-    <xs:all>
-      <xs:element minOccurs="0" maxOccurs="1" ref="name" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="description" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="createdDate" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="modifiedDate" />
-      <xs:element minOccurs="1" maxOccurs="1" ref="alias" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="canModify" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="canDelete" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="triggerEnabled" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="flags" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="securityOwner" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="createdBy" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="lastModifiedBy" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="isRootForStructureView" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="inStructureLevel" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="inSolution" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="indirectInSolution" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="scheduleForTrigger" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
-    </xs:all>
-  </xs:complexType>
-  <xs:group name="is_cleanupFileRepositoriesAction">
-    <xs:choice>
-      <xs:element ref="cleanupFileRepositoriesAction" />
     </xs:choice>
   </xs:group>
   <xs:element name="conditionalFormatIcon" type="type_conditionalFormatIcon" />
@@ -17470,41 +17609,6 @@
       <xs:element ref="inbox" />
     </xs:choice>
   </xs:group>
-  <xs:element name="processInboxesAction" type="type_processInboxesAction" />
-  <xs:complexType name="type_processInboxesAction">
-    <xs:all>
-      <xs:element minOccurs="0" maxOccurs="1" ref="name" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="description" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="createdDate" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="modifiedDate" />
-      <xs:element minOccurs="1" maxOccurs="1" ref="alias" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="canModify" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="canDelete" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="piaLastRun" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="triggerEnabled" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="flags" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="securityOwner" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="createdBy" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="lastModifiedBy" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="isRootForStructureView" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="inStructureLevel" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="inSolution" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="indirectInSolution" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="scheduleForTrigger" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
-    </xs:all>
-  </xs:complexType>
-  <xs:group name="is_processInboxesAction">
-    <xs:choice>
-      <xs:element ref="processInboxesAction" />
-    </xs:choice>
-  </xs:group>
   <xs:element name="inboxEmailAction" type="type_inboxEmailAction" />
   <xs:complexType name="type_inboxEmailAction">
     <xs:all>
@@ -18618,8 +18722,8 @@
   </xs:complexType>
   <xs:group name="is_scheduleAction">
     <xs:choice>
-      <xs:element ref="scheduleAction" />
       <xs:element ref="systemOnlyScheduleAction" />
+      <xs:element ref="scheduleAction" />
     </xs:choice>
   </xs:group>
   <xs:element name="enableableItem" type="type_enableableItem" />
@@ -18655,9 +18759,9 @@
       <xs:element ref="scheduledImportConfig" />
       <xs:element ref="recordChangeAuditPolicy" />
       <xs:element ref="cleanupFileRepositoriesAction" />
+      <xs:element ref="processInboxesAction" />
       <xs:element ref="wfTriggerUserUpdatesResource" />
       <xs:element ref="cleanUpWorkflowRunsAction" />
-      <xs:element ref="processInboxesAction" />
       <xs:element ref="enableableItem" />
       <xs:element ref="wfTriggerOnSchedule" />
     </xs:choice>
@@ -18695,93 +18799,9 @@
     <xs:choice>
       <xs:element ref="scheduledImportConfig" />
       <xs:element ref="cleanupFileRepositoriesAction" />
-      <xs:element ref="cleanUpWorkflowRunsAction" />
       <xs:element ref="processInboxesAction" />
+      <xs:element ref="cleanUpWorkflowRunsAction" />
       <xs:element ref="wfTriggerOnSchedule" />
-    </xs:choice>
-  </xs:group>
-  <xs:element name="systemOnlyScheduleAction" type="type_systemOnlyScheduleAction" />
-  <xs:complexType name="type_systemOnlyScheduleAction">
-    <xs:all>
-      <xs:element minOccurs="0" maxOccurs="1" ref="name" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="description" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="createdDate" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="modifiedDate" />
-      <xs:element minOccurs="1" maxOccurs="1" ref="alias" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="canModify" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="canDelete" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="allowEveryoneRead" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="generateCode" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="systemTenantOnly" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="isAbstract" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="isSealed" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="supportMultiTypes" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="className" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="classType" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="canCreateType" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="isMetadata" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="typeScriptName" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="isAdvancedType" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="flags" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="securityOwner" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="createdBy" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="lastModifiedBy" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="isRootForStructureView" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="inStructureLevel" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="inSolution" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="indirectInSolution" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="inherits" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="instancesInheritByDefault" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="onBeforeDelete" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="onAfterDelete" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="onBeforeSave" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="onAfterSave" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="onSaveFailed" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="onDeleteFailed" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="onAfterDeploy" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="onDeployFailed" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="onAfterPublish" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="onPublishFailed" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="onBeforeUpgrade" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="onAfterUpgrade" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:defaultEditForm" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:defaultTabletForm" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="instanceFlags" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:typeConsoleBehavior" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="defaultDisplayReport" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="defaultPickerReport" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:typeSuppressedForNewAction" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:typeIncludedForNewButton" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:typeIcon" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="onScheduleFire" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="controlAccessBy" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="derivedTypes" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="instancesOfType" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="fields" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="fieldGroups" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="resourceKeys" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="typeApiMappings" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="usedByResourceReportNode" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="auditLogEntryTypeMetadata" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="triggerForWorkflow" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:formsToEditType" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="fieldOverridesForType" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="relationships" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="reverseRelationships" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="reportTemplatesApplyToType" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="definitionUsedByReport" />
-    </xs:all>
-  </xs:complexType>
-  <xs:group name="is_systemOnlyScheduleAction">
-    <xs:choice>
-      <xs:element ref="systemOnlyScheduleAction" />
     </xs:choice>
   </xs:group>
   <xs:element name="wfTriggerOnSchedule" type="type_wfTriggerOnSchedule" />
@@ -24646,6 +24666,182 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="packageForApplication.instance" type="ri_packageForApplication" />
+  <xs:complexType name="ri_packageForApplication">
+    <xs:all>
+      <xs:element minOccurs="1" maxOccurs="1" name="from">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_appPackage" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="to">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_app" />
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:element name="packageForApplication">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:group minOccurs="0" maxOccurs="1" ref="is_app" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="applicationPackages.instance" type="ri_applicationPackages" />
+  <xs:complexType name="ri_applicationPackages">
+    <xs:all>
+      <xs:element minOccurs="1" maxOccurs="1" name="to">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_appPackage" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="from">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_app" />
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:element name="applicationPackages">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:group minOccurs="0" maxOccurs="unbounded" ref="is_appPackage" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="dependentAppPackage.instance" type="ri_dependentAppPackage" />
+  <xs:complexType name="ri_dependentAppPackage">
+    <xs:all>
+      <xs:element minOccurs="1" maxOccurs="1" name="from">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_appPackageDependency" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="to">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_appPackage" />
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:element name="dependentAppPackage">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:group minOccurs="0" maxOccurs="1" ref="is_appPackage" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="dependentAppPackageDetails.instance" type="ri_dependentAppPackageDetails" />
+  <xs:complexType name="ri_dependentAppPackageDetails">
+    <xs:all>
+      <xs:element minOccurs="1" maxOccurs="1" name="to">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_appPackageDependency" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="from">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_appPackage" />
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:element name="dependentAppPackageDetails">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:group minOccurs="0" maxOccurs="unbounded" ref="is_appPackageDependency" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="activatedAppPackages.instance" type="ri_activatedAppPackages" />
+  <xs:complexType name="ri_activatedAppPackages">
+    <xs:all>
+      <xs:element minOccurs="1" maxOccurs="1" name="from">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_tenant" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="to">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_appPackage" />
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:element name="activatedAppPackages">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:group minOccurs="0" maxOccurs="unbounded" ref="is_appPackage" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="tenantsWithPackage.instance" type="ri_tenantsWithPackage" />
+  <xs:complexType name="ri_tenantsWithPackage">
+    <xs:all>
+      <xs:element minOccurs="1" maxOccurs="1" name="to">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_tenant" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="from">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_appPackage" />
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:element name="tenantsWithPackage">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:group minOccurs="0" maxOccurs="unbounded" ref="is_tenant" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="canInstallApplication.instance" type="ri_canInstallApplication" />
+  <xs:complexType name="ri_canInstallApplication">
+    <xs:all>
+      <xs:element minOccurs="1" maxOccurs="1" name="from">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_tenant" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="to">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_app" />
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:element name="canInstallApplication">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:group minOccurs="0" maxOccurs="unbounded" ref="is_app" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="canPublishApplication.instance" type="ri_canPublishApplication" />
+  <xs:complexType name="ri_canPublishApplication">
+    <xs:all>
+      <xs:element minOccurs="1" maxOccurs="1" name="from">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_tenant" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="to">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_app" />
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:element name="canPublishApplication">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:group minOccurs="0" maxOccurs="unbounded" ref="is_app" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="formToUse.instance" type="ri_formToUse" />
   <xs:complexType name="ri_formToUse">
     <xs:all>
@@ -25190,6 +25386,8 @@
         <xs:enumeration value="relMultiChoiceField" />
         <xs:enumeration value="relSharedDependantsOf" />
         <xs:enumeration value="relSharedDependants" />
+        <xs:enumeration value="relManyToManyFwd" />
+        <xs:enumeration value="relManyToManyRev" />
         <xs:enumeration value="relCustom" />
       </xs:restriction>
     </xs:simpleType>
@@ -26724,138 +26922,6 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="packageForApplication.instance" type="ri_packageForApplication" />
-  <xs:complexType name="ri_packageForApplication">
-    <xs:all>
-      <xs:element minOccurs="1" maxOccurs="1" name="from">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_appPackage" />
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="1" maxOccurs="1" name="to">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_app" />
-        </xs:complexType>
-      </xs:element>
-    </xs:all>
-  </xs:complexType>
-  <xs:element name="packageForApplication">
-    <xs:complexType mixed="true">
-      <xs:sequence>
-        <xs:group minOccurs="0" maxOccurs="1" ref="is_app" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="applicationPackages.instance" type="ri_applicationPackages" />
-  <xs:complexType name="ri_applicationPackages">
-    <xs:all>
-      <xs:element minOccurs="1" maxOccurs="1" name="to">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_appPackage" />
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="1" maxOccurs="1" name="from">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_app" />
-        </xs:complexType>
-      </xs:element>
-    </xs:all>
-  </xs:complexType>
-  <xs:element name="applicationPackages">
-    <xs:complexType mixed="true">
-      <xs:sequence>
-        <xs:group minOccurs="0" maxOccurs="unbounded" ref="is_appPackage" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="dependentAppPackage.instance" type="ri_dependentAppPackage" />
-  <xs:complexType name="ri_dependentAppPackage">
-    <xs:all>
-      <xs:element minOccurs="1" maxOccurs="1" name="from">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_appPackageDependency" />
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="1" maxOccurs="1" name="to">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_appPackage" />
-        </xs:complexType>
-      </xs:element>
-    </xs:all>
-  </xs:complexType>
-  <xs:element name="dependentAppPackage">
-    <xs:complexType mixed="true">
-      <xs:sequence>
-        <xs:group minOccurs="0" maxOccurs="1" ref="is_appPackage" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="dependentAppPackageDetails.instance" type="ri_dependentAppPackageDetails" />
-  <xs:complexType name="ri_dependentAppPackageDetails">
-    <xs:all>
-      <xs:element minOccurs="1" maxOccurs="1" name="to">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_appPackageDependency" />
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="1" maxOccurs="1" name="from">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_appPackage" />
-        </xs:complexType>
-      </xs:element>
-    </xs:all>
-  </xs:complexType>
-  <xs:element name="dependentAppPackageDetails">
-    <xs:complexType mixed="true">
-      <xs:sequence>
-        <xs:group minOccurs="0" maxOccurs="unbounded" ref="is_appPackageDependency" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="activatedAppPackages.instance" type="ri_activatedAppPackages" />
-  <xs:complexType name="ri_activatedAppPackages">
-    <xs:all>
-      <xs:element minOccurs="1" maxOccurs="1" name="from">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_tenant" />
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="1" maxOccurs="1" name="to">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_appPackage" />
-        </xs:complexType>
-      </xs:element>
-    </xs:all>
-  </xs:complexType>
-  <xs:element name="activatedAppPackages">
-    <xs:complexType mixed="true">
-      <xs:sequence>
-        <xs:group minOccurs="0" maxOccurs="unbounded" ref="is_appPackage" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="tenantsWithPackage.instance" type="ri_tenantsWithPackage" />
-  <xs:complexType name="ri_tenantsWithPackage">
-    <xs:all>
-      <xs:element minOccurs="1" maxOccurs="1" name="to">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_tenant" />
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="1" maxOccurs="1" name="from">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_appPackage" />
-        </xs:complexType>
-      </xs:element>
-    </xs:all>
-  </xs:complexType>
-  <xs:element name="tenantsWithPackage">
-    <xs:complexType mixed="true">
-      <xs:sequence>
-        <xs:group minOccurs="0" maxOccurs="unbounded" ref="is_tenant" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
   <xs:element name="dependentApplication.instance" type="ri_dependentApplication" />
   <xs:complexType name="ri_dependentApplication">
     <xs:all>
@@ -26941,50 +27007,6 @@
     <xs:complexType mixed="true">
       <xs:sequence>
         <xs:group minOccurs="0" maxOccurs="unbounded" ref="is_applicationDependency" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="canInstallApplication.instance" type="ri_canInstallApplication" />
-  <xs:complexType name="ri_canInstallApplication">
-    <xs:all>
-      <xs:element minOccurs="1" maxOccurs="1" name="from">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_tenant" />
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="1" maxOccurs="1" name="to">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_app" />
-        </xs:complexType>
-      </xs:element>
-    </xs:all>
-  </xs:complexType>
-  <xs:element name="canInstallApplication">
-    <xs:complexType mixed="true">
-      <xs:sequence>
-        <xs:group minOccurs="0" maxOccurs="unbounded" ref="is_app" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="canPublishApplication.instance" type="ri_canPublishApplication" />
-  <xs:complexType name="ri_canPublishApplication">
-    <xs:all>
-      <xs:element minOccurs="1" maxOccurs="1" name="from">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_tenant" />
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="1" maxOccurs="1" name="to">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_app" />
-        </xs:complexType>
-      </xs:element>
-    </xs:all>
-  </xs:complexType>
-  <xs:element name="canPublishApplication">
-    <xs:complexType mixed="true">
-      <xs:sequence>
-        <xs:group minOccurs="0" maxOccurs="unbounded" ref="is_app" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

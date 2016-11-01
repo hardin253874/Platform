@@ -931,7 +931,9 @@ namespace EDC.SoftwarePlatform.Migration.Processing.Xml.Version1
                             }
                             break;
                         case XmlConstants.MetadataConstants.Root:
-                            Metadata.RootEntityId = XmlConvert.ToGuid( xmlReader.ReadElementContentAsString( ) );
+                            if ( Metadata.RootEntities == null )
+                                Metadata.RootEntities = new List<Guid>( );
+                            Metadata.RootEntities.Add( XmlConvert.ToGuid( xmlReader.ReadElementContentAsString( ) ) );
                             break;
                         case XmlConstants.MetadataConstants.Version:
                             Metadata.Version = xmlReader.ReadElementContentAsString( );

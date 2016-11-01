@@ -7903,6 +7903,17 @@ namespace EDC.ReadiNow.Model
 		}
 
 		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static StringField VisibilityCalculation_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.ControlOnForm.VisibilityCalculation_Field;
+			}
+		}
+
+		/// <summary>
 		/// Public static accessor to the inherited  reverse relationship.
 		/// </summary>
 		public static IEntity ContainedWithinStructureControlOnForm_Field
@@ -8195,7 +8206,7 @@ namespace EDC.ReadiNow.Model
 		{
 			get
 			{
-				return new IEntity [ ] { RelationshipControlOnForm.CanHaveFields_Field, RelationshipControlOnForm.InfoButtonVisible_Field, RelationshipControlOnForm.IsReversed_Field, RelationshipControlOnForm.Alias_Field, RelationshipControlOnForm.CanCreate_Field, RelationshipControlOnForm.CanCreateDerivedTypes_Field, RelationshipControlOnForm.CanDelete_Field, RelationshipControlOnForm.CanModify_Field, RelationshipControlOnForm.CreatedDate_Field, RelationshipControlOnForm.Description_Field, RelationshipControlOnForm.HideAddButton_Field, RelationshipControlOnForm.HideLabel_Field, RelationshipControlOnForm.HideNewButton_Field, RelationshipControlOnForm.HideRemoveButton_Field, RelationshipControlOnForm.MandatoryControl_Field, RelationshipControlOnForm.ModifiedDate_Field, RelationshipControlOnForm.Name_Field, RelationshipControlOnForm.ReadOnlyControl_Field, RelationshipControlOnForm.RenderingBackgroundColor_Field, RelationshipControlOnForm.RenderingHeight_Field, RelationshipControlOnForm.RenderingOrdinal_Field, RelationshipControlOnForm.RenderingWidth_Field, RelationshipControlOnForm.ShowControlHelpText_Field, RelationshipControlOnForm.ContainedWithinStructureControlOnForm_Field, RelationshipControlOnForm.ControlRelatedEntityDataPathNodes_Field, RelationshipControlOnForm.CreatedBy_Field, RelationshipControlOnForm.Flags_Field, RelationshipControlOnForm.HasRelationshipControlBehavior_Field, RelationshipControlOnForm.IndirectInSolution_Field, RelationshipControlOnForm.InSolution_Field, RelationshipControlOnForm.InStructureLevel_Field, RelationshipControlOnForm.IsOfType_Field, RelationshipControlOnForm.IsRootForStructureView_Field, RelationshipControlOnForm.LastModifiedBy_Field, RelationshipControlOnForm.PickerReport_Field, RelationshipControlOnForm.PickerStructureView_Field, RelationshipControlOnForm.RelationshipControlFilters_Field, RelationshipControlOnForm.RelationshipDefaultValue_Field, RelationshipControlOnForm.RelationshipDisplayForm_Field, RelationshipControlOnForm.RelationshipDisplayReport_Field, RelationshipControlOnForm.RelationshipToRender_Field, RelationshipControlOnForm.ResourceConsoleBehavior_Field, RelationshipControlOnForm.ResourceHasResourceKeyDataHashes_Field, RelationshipControlOnForm.ResourceInFolder_Field, RelationshipControlOnForm.ResourceViewerConsoleForm_Field, RelationshipControlOnForm.ResourceViewerTabletForm_Field, RelationshipControlOnForm.SecurityOwner_Field, RelationshipControlOnForm.SelectionBehavior_Field, RelationshipControlOnForm.ShortcutInFolder_Field };
+				return new IEntity [ ] { RelationshipControlOnForm.CanHaveFields_Field, RelationshipControlOnForm.InfoButtonVisible_Field, RelationshipControlOnForm.IsReversed_Field, RelationshipControlOnForm.Alias_Field, RelationshipControlOnForm.CanCreate_Field, RelationshipControlOnForm.CanCreateDerivedTypes_Field, RelationshipControlOnForm.CanDelete_Field, RelationshipControlOnForm.CanModify_Field, RelationshipControlOnForm.CreatedDate_Field, RelationshipControlOnForm.Description_Field, RelationshipControlOnForm.HideAddButton_Field, RelationshipControlOnForm.HideLabel_Field, RelationshipControlOnForm.HideNewButton_Field, RelationshipControlOnForm.HideRemoveButton_Field, RelationshipControlOnForm.MandatoryControl_Field, RelationshipControlOnForm.ModifiedDate_Field, RelationshipControlOnForm.Name_Field, RelationshipControlOnForm.ReadOnlyControl_Field, RelationshipControlOnForm.RenderingBackgroundColor_Field, RelationshipControlOnForm.RenderingHeight_Field, RelationshipControlOnForm.RenderingOrdinal_Field, RelationshipControlOnForm.RenderingWidth_Field, RelationshipControlOnForm.ShowControlHelpText_Field, RelationshipControlOnForm.VisibilityCalculation_Field, RelationshipControlOnForm.ContainedWithinStructureControlOnForm_Field, RelationshipControlOnForm.ControlRelatedEntityDataPathNodes_Field, RelationshipControlOnForm.CreatedBy_Field, RelationshipControlOnForm.Flags_Field, RelationshipControlOnForm.HasRelationshipControlBehavior_Field, RelationshipControlOnForm.IndirectInSolution_Field, RelationshipControlOnForm.InSolution_Field, RelationshipControlOnForm.InStructureLevel_Field, RelationshipControlOnForm.IsOfType_Field, RelationshipControlOnForm.IsRootForStructureView_Field, RelationshipControlOnForm.LastModifiedBy_Field, RelationshipControlOnForm.PickerReport_Field, RelationshipControlOnForm.PickerStructureView_Field, RelationshipControlOnForm.RelationshipControlFilters_Field, RelationshipControlOnForm.RelationshipDefaultValue_Field, RelationshipControlOnForm.RelationshipDisplayForm_Field, RelationshipControlOnForm.RelationshipDisplayReport_Field, RelationshipControlOnForm.RelationshipToRender_Field, RelationshipControlOnForm.ResourceConsoleBehavior_Field, RelationshipControlOnForm.ResourceHasResourceKeyDataHashes_Field, RelationshipControlOnForm.ResourceInFolder_Field, RelationshipControlOnForm.ResourceViewerConsoleForm_Field, RelationshipControlOnForm.ResourceViewerTabletForm_Field, RelationshipControlOnForm.SecurityOwner_Field, RelationshipControlOnForm.SelectionBehavior_Field, RelationshipControlOnForm.ShortcutInFolder_Field };
 			}
 		}
 
@@ -8523,6 +8534,20 @@ namespace EDC.ReadiNow.Model
 			set
 			{
 				this.SetField( "console:showControlHelpText", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public string VisibilityCalculation
+		{
+			get
+			{
+				return ( string ) this.GetField( "console:visibilityCalculation" );
+			}
+			set
+			{
+				this.SetField( "console:visibilityCalculation", value);
 			}
 		}
 
@@ -13013,6 +13038,8 @@ namespace EDC.ReadiNow.Model
 				case "core:relMultiChoiceField": return RelTypeEnum_Enumeration.RelMultiChoiceField;
 				case "core:relSharedDependantsOf": return RelTypeEnum_Enumeration.RelSharedDependantsOf;
 				case "core:relSharedDependants": return RelTypeEnum_Enumeration.RelSharedDependants;
+				case "core:relManyToManyFwd": return RelTypeEnum_Enumeration.RelManyToManyFwd;
+				case "core:relManyToManyRev": return RelTypeEnum_Enumeration.RelManyToManyRev;
 				case "core:relCustom": return RelTypeEnum_Enumeration.RelCustom;
 				default: return null;
 			}
@@ -13039,6 +13066,8 @@ namespace EDC.ReadiNow.Model
 				case RelTypeEnum_Enumeration.RelMultiChoiceField: return "core:relMultiChoiceField";
 				case RelTypeEnum_Enumeration.RelSharedDependantsOf: return "core:relSharedDependantsOf";
 				case RelTypeEnum_Enumeration.RelSharedDependants: return "core:relSharedDependants";
+				case RelTypeEnum_Enumeration.RelManyToManyFwd: return "core:relManyToManyFwd";
+				case RelTypeEnum_Enumeration.RelManyToManyRev: return "core:relManyToManyRev";
 				case RelTypeEnum_Enumeration.RelCustom: return "core:relCustom";
 				default: return null;
 			}
@@ -13139,7 +13168,17 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// 
 		/// </summary>
-		RelCustom = 16384,
+		RelManyToManyFwd = 16384,
+
+		/// <summary>
+		/// 
+		/// </summary>
+		RelManyToManyRev = 32768,
+
+		/// <summary>
+		/// 
+		/// </summary>
+		RelCustom = 65536,
 
 	}
 
@@ -23609,6 +23648,17 @@ namespace EDC.ReadiNow.Model
 		}
 
 		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static StringField VisibilityCalculation_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.ControlOnForm.VisibilityCalculation_Field;
+			}
+		}
+
+		/// <summary>
 		/// Public static accessor to the inherited  reverse relationship.
 		/// </summary>
 		public static IEntity ContainedWithinStructureControlOnForm_Field
@@ -23791,7 +23841,7 @@ namespace EDC.ReadiNow.Model
 		{
 			get
 			{
-				return new IEntity [ ] { ReportLinkControl.Alias_Field, ReportLinkControl.CanDelete_Field, ReportLinkControl.CanModify_Field, ReportLinkControl.CreatedDate_Field, ReportLinkControl.Description_Field, ReportLinkControl.HideLabel_Field, ReportLinkControl.MandatoryControl_Field, ReportLinkControl.ModifiedDate_Field, ReportLinkControl.Name_Field, ReportLinkControl.ReadOnlyControl_Field, ReportLinkControl.RenderingBackgroundColor_Field, ReportLinkControl.RenderingHeight_Field, ReportLinkControl.RenderingOrdinal_Field, ReportLinkControl.RenderingWidth_Field, ReportLinkControl.ShowControlHelpText_Field, ReportLinkControl.ContainedWithinStructureControlOnForm_Field, ReportLinkControl.ControlRelatedEntityDataPathNodes_Field, ReportLinkControl.CreatedBy_Field, ReportLinkControl.Flags_Field, ReportLinkControl.IndirectInSolution_Field, ReportLinkControl.InSolution_Field, ReportLinkControl.InStructureLevel_Field, ReportLinkControl.IsOfType_Field, ReportLinkControl.IsRootForStructureView_Field, ReportLinkControl.LastModifiedBy_Field, ReportLinkControl.ResourceConsoleBehavior_Field, ReportLinkControl.ResourceHasResourceKeyDataHashes_Field, ReportLinkControl.ResourceInFolder_Field, ReportLinkControl.SecurityOwner_Field, ReportLinkControl.SelectionBehavior_Field, ReportLinkControl.ShortcutInFolder_Field };
+				return new IEntity [ ] { ReportLinkControl.Alias_Field, ReportLinkControl.CanDelete_Field, ReportLinkControl.CanModify_Field, ReportLinkControl.CreatedDate_Field, ReportLinkControl.Description_Field, ReportLinkControl.HideLabel_Field, ReportLinkControl.MandatoryControl_Field, ReportLinkControl.ModifiedDate_Field, ReportLinkControl.Name_Field, ReportLinkControl.ReadOnlyControl_Field, ReportLinkControl.RenderingBackgroundColor_Field, ReportLinkControl.RenderingHeight_Field, ReportLinkControl.RenderingOrdinal_Field, ReportLinkControl.RenderingWidth_Field, ReportLinkControl.ShowControlHelpText_Field, ReportLinkControl.VisibilityCalculation_Field, ReportLinkControl.ContainedWithinStructureControlOnForm_Field, ReportLinkControl.ControlRelatedEntityDataPathNodes_Field, ReportLinkControl.CreatedBy_Field, ReportLinkControl.Flags_Field, ReportLinkControl.IndirectInSolution_Field, ReportLinkControl.InSolution_Field, ReportLinkControl.InStructureLevel_Field, ReportLinkControl.IsOfType_Field, ReportLinkControl.IsRootForStructureView_Field, ReportLinkControl.LastModifiedBy_Field, ReportLinkControl.ResourceConsoleBehavior_Field, ReportLinkControl.ResourceHasResourceKeyDataHashes_Field, ReportLinkControl.ResourceInFolder_Field, ReportLinkControl.SecurityOwner_Field, ReportLinkControl.SelectionBehavior_Field, ReportLinkControl.ShortcutInFolder_Field };
 			}
 		}
 
@@ -24007,6 +24057,20 @@ namespace EDC.ReadiNow.Model
 			set
 			{
 				this.SetField( "console:showControlHelpText", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public string VisibilityCalculation
+		{
+			get
+			{
+				return ( string ) this.GetField( "console:visibilityCalculation" );
+			}
+			set
+			{
+				this.SetField( "console:visibilityCalculation", value);
 			}
 		}
 

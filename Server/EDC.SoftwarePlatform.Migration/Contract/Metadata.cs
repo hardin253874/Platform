@@ -132,17 +132,17 @@ namespace EDC.SoftwarePlatform.Migration.Contract
 			set;
         }
 
-        /// <summary>
-        ///     Gets or sets the root entity being exported/imported.
-        /// </summary>
-        /// <value>
-        ///     The Upgrade ID of the root entity.
-        /// </value>
-        public Guid RootEntityId
-        {
-            get;
-            set;
-        }
+	    /// <summary>
+	    ///     Gets or sets the root entity being exported/imported.
+	    /// </summary>
+	    /// <value>
+	    ///     The Upgrade ID of the root entity.
+	    /// </value>
+	    public IList<Guid> RootEntities
+	    {
+	        get;
+	        set;
+	    } = new List<Guid>( );
 
         /// <summary>
         ///     Gets or sets the type.

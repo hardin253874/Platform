@@ -1794,7 +1794,7 @@ will determine which actual type - which field or relationship - is in effect.
       <toName>Email</toName>
       <toType>document</toType>
       <description>Documents attached to the email.</description>
-      <relType>relManyToMany</relType>
+      <relType>relManyToManyFwd</relType>
       <relationshipInFromTypeGroup>emailMessageDetails</relationshipInFromTypeGroup>
       <hideOnToType>true</hideOnToType>
       <hideOnToTypeDefaultForm>true</hideOnToTypeDefaultForm>
@@ -2242,38 +2242,6 @@ will determine which actual type - which field or relationship - is in effect.
     <assemblyName>EDC.ReadiNow.Common, Version=1.0.0.0, Culture=neutral</assemblyName>
     <ordinal>0</ordinal>
   </target>
-  <systemOnlyScheduleAction>
-    <!-- WARNING! This does not appear to work correctly as there is nothing to trigger the sync process on installation -->
-    <alias>processInboxesAction</alias>
-    <inherits>scheduledItem</inherits>
-    <name>Process Inboxes Action</name>
-    <description>When fired, find all the inboxes in all the tenants and process them.</description>
-    <generateCode>true</generateCode>
-    <systemTenantOnly>true</systemTenantOnly>
-    <fieldGroups>
-      <fieldGroup>
-        <name>Process Inboxes Action Details</name>
-        <alias>processInboxesActionDetails</alias>
-      </fieldGroup>
-    </fieldGroups>
-    <fields>
-      <dateTimeField>
-        <alias>piaLastRun</alias>
-        <name>Listener last run</name>
-        <description>The last time the inboxes were processed.</description>
-        <fieldInGroup>processInboxesActionDetails</fieldInGroup>
-        <systemTenantOnly>true</systemTenantOnly>
-      </dateTimeField>
-    </fields>
-    <onScheduleFire>
-      <class>
-        <alias>processInboxesActionClass</alias>
-        <name>processInboxesActionClass</name>
-        <typeName>EDC.SoftwarePlatform.Activities.EmailListener.ProcessInboxesAction</typeName>
-        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
-      </class>
-    </onScheduleFire>
-  </systemOnlyScheduleAction>
   <!-- Mail Actions -->
   <type>
     <alias>inboxEmailAction</alias>

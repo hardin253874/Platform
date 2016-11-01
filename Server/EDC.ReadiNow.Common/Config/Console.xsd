@@ -106,6 +106,11 @@
       <xs:restriction base="xs:boolean" />
     </xs:simpleType>
   </xs:element>
+  <xs:element name="visibilityCalculation">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" />
+    </xs:simpleType>
+  </xs:element>
   <xs:element name="dataPathNodeOrdinal">
     <xs:simpleType>
       <xs:restriction base="xs:int" />
@@ -477,6 +482,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="isReversed" />
       <xs:element minOccurs="0" maxOccurs="1" ref="canHaveFields" />
       <xs:element minOccurs="0" maxOccurs="1" ref="infoButtonVisible" />
@@ -541,6 +547,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="isReversed" />
       <xs:element minOccurs="0" maxOccurs="1" ref="canHaveFields" />
       <xs:element minOccurs="0" maxOccurs="1" ref="infoButtonVisible" />
@@ -605,6 +612,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="isReversed" />
       <xs:element minOccurs="0" maxOccurs="1" ref="canHaveFields" />
       <xs:element minOccurs="0" maxOccurs="1" ref="infoButtonVisible" />
@@ -669,6 +677,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="isReversed" />
       <xs:element minOccurs="0" maxOccurs="1" ref="canHaveFields" />
       <xs:element minOccurs="0" maxOccurs="1" ref="infoButtonVisible" />
@@ -733,6 +742,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="isReversed" />
       <xs:element minOccurs="0" maxOccurs="1" ref="canHaveFields" />
       <xs:element minOccurs="0" maxOccurs="1" ref="infoButtonVisible" />
@@ -797,6 +807,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="isReversed" />
       <xs:element minOccurs="0" maxOccurs="1" ref="canHaveFields" />
       <xs:element minOccurs="0" maxOccurs="1" ref="infoButtonVisible" />
@@ -861,6 +872,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:isOfType" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:resourceHasResourceKeyDataHashes" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:flags" />
@@ -1619,6 +1631,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:isOfType" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:resourceHasResourceKeyDataHashes" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:flags" />
@@ -1756,6 +1769,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:isOfType" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:resourceHasResourceKeyDataHashes" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:flags" />
@@ -1810,6 +1824,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:allowSelectMultiTypes" />
       <xs:element minOccurs="0" maxOccurs="1" ref="showFormHelpText" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:cacheChangeMarker" />
@@ -1874,6 +1889,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:isPrivatelyOwned" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:hideOnDesktop" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:hideOnTablet" />
@@ -1930,6 +1946,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="groupName" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:isOfType" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:resourceHasResourceKeyDataHashes" />
@@ -2001,6 +2018,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="isReversed" />
       <xs:element minOccurs="0" maxOccurs="1" ref="canHaveFields" />
       <xs:element minOccurs="0" maxOccurs="1" ref="infoButtonVisible" />
@@ -2248,6 +2266,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="groupName" />
       <xs:element minOccurs="0" maxOccurs="1" ref="textControlWidth" />
       <xs:element minOccurs="0" maxOccurs="1" ref="textControlHeight" />
@@ -2298,6 +2317,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="isReversed" />
       <xs:element minOccurs="0" maxOccurs="1" ref="canHaveFields" />
       <xs:element minOccurs="0" maxOccurs="1" ref="infoButtonVisible" />
@@ -2362,6 +2382,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="isReversed" />
       <xs:element minOccurs="0" maxOccurs="1" ref="canHaveFields" />
       <xs:element minOccurs="0" maxOccurs="1" ref="infoButtonVisible" />
@@ -2426,6 +2447,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="isReversed" />
       <xs:element minOccurs="0" maxOccurs="1" ref="canHaveFields" />
       <xs:element minOccurs="0" maxOccurs="1" ref="infoButtonVisible" />
@@ -2490,6 +2512,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="isReversed" />
       <xs:element minOccurs="0" maxOccurs="1" ref="canHaveFields" />
       <xs:element minOccurs="0" maxOccurs="1" ref="infoButtonVisible" />
@@ -2554,6 +2577,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="isReversed" />
       <xs:element minOccurs="0" maxOccurs="1" ref="canHaveFields" />
       <xs:element minOccurs="0" maxOccurs="1" ref="infoButtonVisible" />
@@ -2618,6 +2642,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="isReversed" />
       <xs:element minOccurs="0" maxOccurs="1" ref="canHaveFields" />
       <xs:element minOccurs="0" maxOccurs="1" ref="infoButtonVisible" />
@@ -2682,6 +2707,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="isReversed" />
       <xs:element minOccurs="0" maxOccurs="1" ref="canHaveFields" />
       <xs:element minOccurs="0" maxOccurs="1" ref="infoButtonVisible" />
@@ -2746,6 +2772,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:isOfType" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:resourceHasResourceKeyDataHashes" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:flags" />
@@ -2792,6 +2819,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:isOfType" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:resourceHasResourceKeyDataHashes" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:flags" />
@@ -2838,6 +2866,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:isOfType" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:resourceHasResourceKeyDataHashes" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:flags" />
@@ -2884,6 +2913,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:isOfType" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:resourceHasResourceKeyDataHashes" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:flags" />
@@ -2930,6 +2960,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:isOfType" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:resourceHasResourceKeyDataHashes" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:flags" />
@@ -2976,6 +3007,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="isReversed" />
       <xs:element minOccurs="0" maxOccurs="1" ref="canHaveFields" />
       <xs:element minOccurs="0" maxOccurs="1" ref="infoButtonVisible" />
@@ -3040,6 +3072,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="isReversed" />
       <xs:element minOccurs="0" maxOccurs="1" ref="canHaveFields" />
       <xs:element minOccurs="0" maxOccurs="1" ref="infoButtonVisible" />
@@ -3106,6 +3139,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="wbcHideSuccessConfirmation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:isOfType" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:resourceHasResourceKeyDataHashes" />
@@ -3156,6 +3190,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:isOfType" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:resourceHasResourceKeyDataHashes" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:flags" />
@@ -3201,6 +3236,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:isOfType" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:resourceHasResourceKeyDataHashes" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:flags" />
@@ -3246,6 +3282,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:isOfType" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:resourceHasResourceKeyDataHashes" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:flags" />
@@ -3291,6 +3328,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:isOfType" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:resourceHasResourceKeyDataHashes" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:flags" />
@@ -3339,6 +3377,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:isOfType" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:resourceHasResourceKeyDataHashes" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:flags" />
@@ -3387,6 +3426,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:isOfType" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:resourceHasResourceKeyDataHashes" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:flags" />
@@ -3435,6 +3475,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="groupName" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:isOfType" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:resourceHasResourceKeyDataHashes" />
@@ -3483,6 +3524,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="groupName" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:isOfType" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:resourceHasResourceKeyDataHashes" />
@@ -3569,6 +3611,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="mandatoryControl" />
       <xs:element minOccurs="0" maxOccurs="1" ref="hideLabel" />
       <xs:element minOccurs="0" maxOccurs="1" ref="showControlHelpText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="visibilityCalculation" />
       <xs:element minOccurs="0" maxOccurs="1" ref="groupName" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:isOfType" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:resourceHasResourceKeyDataHashes" />

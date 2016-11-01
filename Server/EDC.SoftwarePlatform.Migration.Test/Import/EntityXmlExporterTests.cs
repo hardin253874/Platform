@@ -113,6 +113,46 @@ namespace EDC.SoftwarePlatform.Migration.Test.Import
         }
 
         /// <summary>
+        /// Check reverseAlias relationships
+        /// </summary>
+        [Test]
+        [RunWithTransaction]
+        public void Export_ReverseAlias( )
+        {
+            IEntityXmlExporter exporter = Factory.EntityXmlExporter;
+            IEntityRepository repository = Factory.EntityRepository;
+
+            Definition type = new Definition( );
+            type.Inherits.Add( UserResource.UserResource_Type );
+            StringField field = new StringField( );
+            type.Fields.Add( field.As<Field>( ) );
+            type.Save( );
+
+            // Export
+            string xml;
+            using ( RunAsImportExportRole( ) )
+            {
+                xml = exporter.GenerateXml( type.Id, EntityXmlExportSettings.Default );
+            }
+
+            XmlDocument doc = new XmlDocument( );
+            doc.LoadXml( xml );
+
+            XmlNamespaceManager ns = new XmlNamespaceManager( doc.NameTable );
+            // Note: can't get xpath to work with default namespace
+            ns.AddNamespace( "c", "core" );
+            ns.AddNamespace( "k", "console" );
+
+            XmlElement e = doc.SelectSingleNode( "/c:xml/c:entities/c:group/c:definition", ns ) as XmlElement;
+            Assert.That( e, Is.Not.Null );
+
+            Assert.That( e.SelectSingleNode( "c:fields/c:stringField", ns ), Is.Not.Null );
+
+            XmlAttribute alias = doc.SelectSingleNode( "/c:xml/c:aliasMap/c:fields/@type", ns ) as XmlAttribute;
+            Assert.That( alias.Value, Is.EqualTo( "revRel" ) );
+        }
+
+        /// <summary>
         /// Export an entity and verify that all required content is present.
         /// Tests scenarios where aliases are available, and nested relationships in both directions.
         /// </summary>
@@ -456,6 +496,47 @@ namespace EDC.SoftwarePlatform.Migration.Test.Import
                     Assert.That( Assert.Throws<PlatformSecurityException>( ( ) => run( ) ).Message, Is.StringStarting( "Frodo does not have view access to Mordor" ) );
             }
         }
+
+
+        [Test]
+        public void Export_ManyToManyRev_Field( )
+        {
+            using ( RunAsImportExportRole( ) )
+            {
+                IEntity entity = Entity.Get( "core:name" );
+                IEntityXmlExporter exporter = Factory.EntityXmlExporter;
+                string xml = exporter.GenerateXml( entity.Id, EntityXmlExportSettings.Default );
+
+                Assert.That( xml, Is.Not.StringContaining( "userAcccountUniqueNameKey" ) );
+            }
+        }
+
+        [Test]
+        public void Export_ManyToManyRev_ResourceKey( )
+        {
+            using ( RunAsImportExportRole( ) )
+            {
+                IEntity entity = Entity.Get( "core:userAcccountUniqueNameKey" );
+                IEntityXmlExporter exporter = Factory.EntityXmlExporter;
+                string xml = exporter.GenerateXml( entity.Id, EntityXmlExportSettings.Default );
+
+                Assert.That( xml, Is.StringContaining( "<keyFields>name</keyFields>" ) );
+            }
+        }
+
+        [Test]
+        public void Export_ManyToManyRev_Type( )
+        {
+            using ( RunAsImportExportRole( ) )
+            {
+                IEntity entity = Entity.Get( "core:userAccount" );
+                IEntityXmlExporter exporter = Factory.EntityXmlExporter;
+                string xml = exporter.GenerateXml( entity.Id, EntityXmlExportSettings.Default );
+
+                Assert.That( xml, Is.StringContaining( "<keyFields>name</keyFields>" ) );
+            }
+        }
+
 
         /// <summary>
         /// Verify that a user cannot export unless they have read permission on the items being exported.

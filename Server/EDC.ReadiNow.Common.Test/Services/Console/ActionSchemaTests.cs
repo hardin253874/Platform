@@ -20,7 +20,7 @@ namespace EDC.ReadiNow.Test.Services.Console
             Assert.That(Entity.Get<EntityType>("console:actionMenuItem").Relationships,
                 Has.Exactly(1).Property("Alias").EqualTo("console:actionRequiresPermission")
                           .And.Property("ToType").Property("Alias").EqualTo("core:permission")
-                          .And.Property("RelType").Property("Alias").EqualTo("core:relManyToMany"));
+                          .And.Property("RelType").Property("Alias").EqualTo("core:relManyToManyFwd"));
         }
 
         [Test]

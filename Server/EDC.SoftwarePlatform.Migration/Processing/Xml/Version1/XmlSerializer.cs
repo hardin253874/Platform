@@ -672,7 +672,10 @@ namespace EDC.SoftwarePlatform.Migration.Processing.Xml.Version1
                 xmlWriter.WriteStartElement(XmlConstants.MetadataConstants.Package, xmlStack);
 
                 xmlWriter.WriteElementString(XmlConstants.MetadataConstants.Type, metadata.Type.ToString());
-                xmlWriter.WriteElementString(XmlConstants.MetadataConstants.Root, metadata.RootEntityId.ToString("B"));
+                foreach ( Guid guid in metadata.RootEntities )
+                {
+                    xmlWriter.WriteElementString( XmlConstants.MetadataConstants.Root, guid.ToString( "B" ) );
+                }
                 xmlWriter.WriteElementString(XmlConstants.MetadataConstants.PlatformVersion, metadata.PlatformVersion ?? string.Empty);
                 xmlWriter.WriteElementString(XmlConstants.MetadataConstants.PublishDate, DateTime.UtcNow.ToString("u"));
             }

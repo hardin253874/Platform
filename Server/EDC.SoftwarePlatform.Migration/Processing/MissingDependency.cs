@@ -4,11 +4,23 @@ using System;
 
 namespace EDC.SoftwarePlatform.Migration.Processing
 {
+    /// <summary>
+    /// Untyped interface for missing dependencies
+    /// </summary>
+    public interface IMissingDependency
+    {
+        /// <summary>
+        ///     Gets the log message.
+        /// </summary>
+        string GetLogMessage( );
+    }
+
+
 	/// <summary>
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	public class MissingDependency<T>
-	{
+	public class MissingDependency<T> : IMissingDependency
+    {
 		/// <summary>
 		///     Initializes a new instance of the <see cref="MissingDependency{T}" /> class.
 		/// </summary>
@@ -56,5 +68,13 @@ namespace EDC.SoftwarePlatform.Migration.Processing
 			get;
 			private set;
 		}
+
+        /// <summary>
+        /// Generates the log message.
+        /// </summary>
+	    public string GetLogMessage( )
+	    {
+	        return GenerateLogMessage( Entry, Result );
+	    }
 	}
 }

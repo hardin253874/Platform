@@ -157,7 +157,6 @@
     <Compile Include="Processing\Diff.cs" />
     <Compile Include="Processing\FileManager.cs" />
     <Compile Include="Processing\FileRepositoryUtils.cs" />
-    <Compile Include="Processing\GeneralExtensions.cs" />
     <Compile Include="Processing\EnumExtensions.cs" />
     <Compile Include="Processing\ExecuteAction.cs" />
     <Compile Include="Processing\ExecutionArguments.cs" />

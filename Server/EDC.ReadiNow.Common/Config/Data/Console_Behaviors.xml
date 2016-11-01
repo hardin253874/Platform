@@ -324,6 +324,7 @@
         <k:isContextMenu>true</k:isContextMenu>
         <k:isSystem>true</k:isSystem>
         <k:appliesToSelection>true</k:appliesToSelection>
+        <k:appliesToMultiSelection>true</k:appliesToMultiSelection>
         <htmlActionMethod>exportXml</htmlActionMethod>
         <actionRequiresRole>importExportRole</actionRequiresRole>
       </k:actionMenuItem>

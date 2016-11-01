@@ -70,15 +70,24 @@ namespace EDC.SoftwarePlatform.Migration.Processing
 		{
 			get;
 			set;
-		}
+        }
 
-		/// <summary>
-		///     Gets or sets the context.
-		/// </summary>
-		/// <value>
-		///     The context.
-		/// </value>
-		private IProcessingContext Context
+        /// <summary>
+        ///     If true, copy only the metadata
+        /// </summary>
+        public bool CopyMetadataOnly
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        ///     Gets or sets the context.
+        /// </summary>
+        /// <value>
+        ///     The context.
+        /// </value>
+        private IProcessingContext Context
 		{
 			get
 			{
@@ -110,71 +119,10 @@ namespace EDC.SoftwarePlatform.Migration.Processing
 			Metadata metadata = DataSource.GetMetadata( context );
 			DataTarget.SetMetadata( metadata, context );
 
-			/////
-			// Migrate entities
-			/////
-			context.WriteInfo( "Copying Entity data..." );
-			IEnumerable<EntityEntry> entities = DataSource.GetEntities( context );
-			IList<EntityEntry> addedEntities = entities as IList<EntityEntry> ?? entities.ToList( );
-			context.Report.AddedEntities = addedEntities;
-			Context.Report.Counts.Add( new StatisticsCount( "Current Application Entities", addedEntities.Count, StatisticsCountType.CurrentApplication ) );
-			DataTarget.WriteEntities( addedEntities, context );
-
-			/////
-			// Migrate relationships
-			/////
-			context.WriteInfo( "Copying Relationship data..." );
-			IEnumerable<RelationshipEntry> relationships = DataSource.GetRelationships( context );
-			IList<RelationshipEntry> relationshipEntries = relationships as IList<RelationshipEntry> ?? relationships.ToList( );
-			context.Report.AddedRelationships = relationshipEntries;
-			Context.Report.Counts.Add( new StatisticsCount( "Current Application Relationships", relationshipEntries.Count, StatisticsCountType.CurrentApplication ) );
-			DataTarget.WriteRelationships( relationshipEntries, context );
-
-			/////
-			// Migrate field data
-			/////
-			foreach ( string fieldDataTable in Helpers.FieldDataTables )
-			{
-				context.WriteInfo( string.Format( "Copying {0} Field data...", fieldDataTable ) );
-				IEnumerable<DataEntry> fieldData = DataSource.GetFieldData( fieldDataTable, context );
-				IList<DataEntry> dataEntries = fieldData as IList<DataEntry> ?? fieldData.ToList( );
-				if ( dataEntries.Count > 0 )
-				{
-					context.Report.AddedEntityData[ fieldDataTable ] = dataEntries;
-				}
-
-				Context.Report.Counts.Add( new StatisticsCount( string.Format( "Current Application {0} Data", fieldDataTable ), dataEntries.Count, StatisticsCountType.CurrentApplication ) );
-				DataTarget.WriteFieldData( fieldDataTable, dataEntries, context );
-			}
-
-			context.WriteInfo( "Copying Binary File data..." );
-			IEnumerable<BinaryDataEntry> binaryData = DataSource.GetBinaryData( context );
-			IList<BinaryDataEntry> binaryDataEntries = binaryData as IList<BinaryDataEntry> ?? binaryData.ToList( );
-			context.Report.AddedBinaryData = binaryDataEntries;
-			Context.Report.Counts.Add( new StatisticsCount( "Current Application Binary Data", binaryDataEntries.Count, StatisticsCountType.CurrentApplication ) );
-			DataTarget.WriteBinaryData( binaryDataEntries, context );
-
-			context.WriteInfo( "Copying Document File data..." );
-			IEnumerable<DocumentDataEntry> documentData = DataSource.GetDocumentData( context );
-			IList<DocumentDataEntry> documentDataEntries = documentData as IList<DocumentDataEntry> ?? documentData.ToList( );
-			context.Report.AddedDocumentData = documentDataEntries;
-			Context.Report.Counts.Add( new StatisticsCount( "Current Application Document Data", documentDataEntries.Count, StatisticsCountType.CurrentApplication ) );
-			DataTarget.WriteDocumentData( documentDataEntries, context );
-
-            
-            context.WriteInfo("Copying Secure data...");
-            IEnumerable<SecureDataEntry> secureData = DataSource.GetSecureData(context);
-            IList<SecureDataEntry> secureDataEntries = secureData as IList<SecureDataEntry> ?? secureData.ToList();
-            context.Report.AddedSecureData = secureDataEntries;
-            Context.Report.Counts.Add(new StatisticsCount("Current Application Secure Data", secureDataEntries.Count, StatisticsCountType.CurrentApplication));
-            DataTarget.WriteSecureData(secureDataEntries, context);
-
-
-            context.WriteInfo( "Copying DoNotRemove data..." );
-            IList<Guid> doNotRemove = DataSource.GetDoNotRemove( context ).ToList( );
-            context.Report.AddedDoNotRemoveData = doNotRemove;
-            Context.Report.Counts.Add( new StatisticsCount( "Current Application DoNotRemove records", doNotRemove.Count, StatisticsCountType.CurrentApplication ) );
-            DataTarget.WriteDoNotRemove( doNotRemove, context );
+		    if ( !CopyMetadataOnly )
+		    {
+                MigrateContent( context );
+            }
 
             /////
             // Run any teardown logic.
@@ -182,5 +130,77 @@ namespace EDC.SoftwarePlatform.Migration.Processing
             DataTarget.TearDown(context);
             DataSource.TearDown( context );
 		}
+
+        /// <summary>
+        ///     Migrates all data except metadata.
+        /// </summary>
+        private void MigrateContent( IProcessingContext context )
+	    {
+            /////
+	        // Migrate entities
+	        /////
+	        context.WriteInfo( "Copying Entity data..." );
+	        IEnumerable<EntityEntry> entities = DataSource.GetEntities( context );
+	        IList<EntityEntry> addedEntities = entities as IList<EntityEntry> ?? entities.ToList( );
+	        context.Report.AddedEntities = addedEntities;
+	        Context.Report.Counts.Add( new StatisticsCount( "Current Application Entities", addedEntities.Count, StatisticsCountType.CurrentApplication ) );
+	        DataTarget.WriteEntities( addedEntities, context );
+
+	        /////
+	        // Migrate relationships
+	        /////
+	        context.WriteInfo( "Copying Relationship data..." );
+	        IEnumerable<RelationshipEntry> relationships = DataSource.GetRelationships( context );
+	        IList<RelationshipEntry> relationshipEntries = relationships as IList<RelationshipEntry> ?? relationships.ToList( );
+	        context.Report.AddedRelationships = relationshipEntries;
+	        Context.Report.Counts.Add( new StatisticsCount( "Current Application Relationships", relationshipEntries.Count, StatisticsCountType.CurrentApplication ) );
+	        DataTarget.WriteRelationships( relationshipEntries, context );
+
+	        /////
+	        // Migrate field data
+	        /////
+	        foreach ( string fieldDataTable in Helpers.FieldDataTables )
+	        {
+	            context.WriteInfo( string.Format( "Copying {0} Field data...", fieldDataTable ) );
+	            IEnumerable<DataEntry> fieldData = DataSource.GetFieldData( fieldDataTable, context );
+	            IList<DataEntry> dataEntries = fieldData as IList<DataEntry> ?? fieldData.ToList( );
+	            if ( dataEntries.Count > 0 )
+	            {
+	                context.Report.AddedEntityData[ fieldDataTable ] = dataEntries;
+	            }
+
+	            Context.Report.Counts.Add( new StatisticsCount( string.Format( "Current Application {0} Data", fieldDataTable ), dataEntries.Count, StatisticsCountType.CurrentApplication ) );
+	            DataTarget.WriteFieldData( fieldDataTable, dataEntries, context );
+	        }
+
+	        context.WriteInfo( "Copying Binary File data..." );
+	        IEnumerable<BinaryDataEntry> binaryData = DataSource.GetBinaryData( context );
+	        IList<BinaryDataEntry> binaryDataEntries = binaryData as IList<BinaryDataEntry> ?? binaryData.ToList( );
+	        context.Report.AddedBinaryData = binaryDataEntries;
+	        Context.Report.Counts.Add( new StatisticsCount( "Current Application Binary Data", binaryDataEntries.Count, StatisticsCountType.CurrentApplication ) );
+	        DataTarget.WriteBinaryData( binaryDataEntries, context );
+
+	        context.WriteInfo( "Copying Document File data..." );
+	        IEnumerable<DocumentDataEntry> documentData = DataSource.GetDocumentData( context );
+	        IList<DocumentDataEntry> documentDataEntries = documentData as IList<DocumentDataEntry> ?? documentData.ToList( );
+	        context.Report.AddedDocumentData = documentDataEntries;
+	        Context.Report.Counts.Add( new StatisticsCount( "Current Application Document Data", documentDataEntries.Count, StatisticsCountType.CurrentApplication ) );
+	        DataTarget.WriteDocumentData( documentDataEntries, context );
+
+
+	        context.WriteInfo( "Copying Secure data..." );
+	        IEnumerable<SecureDataEntry> secureData = DataSource.GetSecureData( context );
+	        IList<SecureDataEntry> secureDataEntries = secureData as IList<SecureDataEntry> ?? secureData.ToList( );
+	        context.Report.AddedSecureData = secureDataEntries;
+	        Context.Report.Counts.Add( new StatisticsCount( "Current Application Secure Data", secureDataEntries.Count, StatisticsCountType.CurrentApplication ) );
+	        DataTarget.WriteSecureData( secureDataEntries, context );
+
+
+	        context.WriteInfo( "Copying DoNotRemove data..." );
+	        IList<Guid> doNotRemove = DataSource.GetDoNotRemove( context ).ToList( );
+	        context.Report.AddedDoNotRemoveData = doNotRemove;
+	        Context.Report.Counts.Add( new StatisticsCount( "Current Application DoNotRemove records", doNotRemove.Count, StatisticsCountType.CurrentApplication ) );
+	        DataTarget.WriteDoNotRemove( doNotRemove, context );
+	    }
 	}
 }

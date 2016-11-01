@@ -118,7 +118,7 @@
   </Target>
 
   <!-- Task to generate C# code -->
-  <Target Name="BuildSource" Inputs="@(ReadiNowXmlWithSchema);@(ReadiNowCodeTemplate);@(CodeGenProgramFiles)"
+  <Target Name="BuildSource" Inputs="@(ReadiNowXmlWithSchema);@(ReadiNowXml);@(ReadiNowCodeTemplate);@(CodeGenProgramFiles)"
           Outputs="@(ReadiNowCodeTemplate->'$(CodeGenOutputDir)\%(Filename).cs')">
     <Message Text="&quot;$(CodeGenExe)&quot; -n EDC.ReadiNow.Model -o $(CodeGenOutputDir) @(ReadiNowXmlWithSchema->'-i &quot;%(FullPath)&quot;',' ') @(ReadiNowCodeTemplate->'-t &quot;%(FullPath)&quot;',' ')" />
     <Exec Command="&quot;$(CodeGenExe)&quot; -n EDC.ReadiNow.Model -o $(CodeGenOutputDir) @(ReadiNowXmlWithSchema->'-i &quot;%(FullPath)&quot;',' ') @(ReadiNowCodeTemplate->'-t &quot;%(FullPath)&quot;',' ')" />
@@ -127,13 +127,9 @@
   </Target>
 
 
-  <!-- not really the right place for these tasks, but will do for now -->
-  <Target Name="CopyXmlToOutput" Inputs="@(ReadiNowXmlWithSchema);@(ReadiNowXml)" Outputs="@(ReadiNowXmlWithSchema->'$(OutDir)\%(Filename)%(Extension)');@(ReadiNowXml->'$(OutDir)\%(Filename)%(Extension)')">
-    <Delete Files="@(OldFiles)" />
-    <Copy SourceFiles="@(ReadiNowXmlWithSchema)" DestinationFolder="$(PublishRoot)$(Configuration)\Bootstrap" />
-    <Copy SourceFiles="@(ReadiNowXml)" DestinationFolder="$(PublishRoot)$(Configuration)\Bootstrap" />
-	<Copy SourceFiles="@(ReadiNowUpgradeMap)" DestinationFolder="$(PublishRoot)$(Configuration)\Bootstrap" />
-	<Copy SourceFiles="@(ReadiNowSolutionXml)" DestinationFolder="$(PublishRoot)$(Configuration)\Bootstrap" />
+  <!-- Bootstrap via config xml is obsolete : remove folder -->
+  <Target Name="CopyXmlToOutput">
+    <RemoveDir Directories="$(PublishRoot)$(Configuration)\Bootstrap" />
   </Target>
 
 

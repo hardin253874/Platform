@@ -376,8 +376,6 @@ namespace EDC.SoftwarePlatform.Migration.Sources
         {
             if ( RootEntities == null )
                 throw new InvalidOperationException( "RootEntities is not set." );
-            if ( RootEntities.Count != 1 )
-                throw new InvalidOperationException( "Currently only support exporting exactly one root entity." );
 
             // Perform demand on root entity(ies).
             if ( DemandReadPermission )
@@ -388,20 +386,20 @@ namespace EDC.SoftwarePlatform.Migration.Sources
                 } );
             }
 
-            long instanceId = RootEntities.Single( );
-
             using ( new TenantAdministratorContext( TenantId ) )
             {
                 _aliasFieldId = WellKnownAliases.CurrentTenant.Alias;
                 _reverseAliasFieldId = WellKnownAliases.CurrentTenant.ReverseAlias;
 
                 // Get the instance to be exported
-                IEntity instance = EntityRepository.Get( instanceId );
-                long typeId = instance.TypeIds.Single( );
+                IEnumerable<IEntity> instances = EntityRepository.Get( RootEntities );
+                ICollection<long> typeIds = instances.Select( inst => inst.TypeIds.FirstOrDefault( ) ).Distinct().ToList();
+                if ( typeIds.Count == 0 )
+                    typeIds = new[] { WellKnownAliases.CurrentTenant.Resource };
 
                 // Generate a cloning request factory for loading the data
                 CloneEntityMemberRequestFactory requestFactory = new CloneEntityMemberRequestFactory( EntityRepository );
-                EntityMemberRequest memberRequest = requestFactory.CreateRequest( typeId );
+                EntityMemberRequest memberRequest = requestFactory.CreateRequest( typeIds );
 
                 EntityRequest entityRequest = new EntityRequest
                 {
@@ -453,8 +451,13 @@ namespace EDC.SoftwarePlatform.Migration.Sources
         /// <exception cref="System.InvalidOperationException">@Invalid package Id</exception>
         Metadata IDataSource.GetMetadata( IProcessingContext context )
         {
-            Guid rootId;
-            _idToUpgradeId.TryGetValue( RootEntities.Single( ), out rootId );
+            List<Guid> roots = new List<Guid>( );
+            foreach ( long rootId in RootEntities )
+            {
+                Guid rootGuid;
+                if ( _idToUpgradeId.TryGetValue( rootId, out rootGuid ) )
+                    roots.Add( rootGuid );
+            }
 
             var metadata = new Metadata
             {
@@ -464,7 +467,7 @@ namespace EDC.SoftwarePlatform.Migration.Sources
                 Description = "Exported data",
                 Name = "Exported data",
                 Version = "1.0",
-                RootEntityId = rootId,
+                RootEntities = roots,
                 //Dependencies = solutionDependencies,
                 Type = SourceType.DataExport,
                 PlatformVersion = SystemInfo.PlatformVersion,

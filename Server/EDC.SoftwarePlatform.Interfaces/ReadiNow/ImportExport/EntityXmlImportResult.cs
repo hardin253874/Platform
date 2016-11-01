@@ -27,5 +27,11 @@ namespace ReadiNow.ImportExport
         /// </summary>
         [NotNull]
         public IReadOnlyCollection<long> RootEntities { get; }
+
+        /// <summary>
+        /// Error message, if the import failed.
+        /// </summary>
+        [CanBeNull]
+        public string ErrorMessage { get; set; }
     }
 }

@@ -86,7 +86,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReportMigration.cs" />
     <Compile Include="ServiceManager.cs" />
-    <Compile Include="Solution.cs" />
     <Compile Include="Tenant.cs" />
     <Compile Include="WebManager.cs" />
   </ItemGroup>

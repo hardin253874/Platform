@@ -1568,6 +1568,17 @@ namespace EDC.ReadiNow.Model
 		}
 
 		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static StringField VisibilityCalculation_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.ControlOnForm.VisibilityCalculation_Field;
+			}
+		}
+
+		/// <summary>
 		/// Public static accessor to the inherited  reverse relationship.
 		/// </summary>
 		public static IEntity ContainedWithinStructureControlOnForm_Field
@@ -1761,7 +1772,7 @@ namespace EDC.ReadiNow.Model
 		{
 			get
 			{
-				return new IEntity [ ] { XmlFieldRenderControl.Alias_Field, XmlFieldRenderControl.CanDelete_Field, XmlFieldRenderControl.CanModify_Field, XmlFieldRenderControl.CreatedDate_Field, XmlFieldRenderControl.Description_Field, XmlFieldRenderControl.GroupName_Field, XmlFieldRenderControl.HideLabel_Field, XmlFieldRenderControl.MandatoryControl_Field, XmlFieldRenderControl.ModifiedDate_Field, XmlFieldRenderControl.Name_Field, XmlFieldRenderControl.ReadOnlyControl_Field, XmlFieldRenderControl.RenderingBackgroundColor_Field, XmlFieldRenderControl.RenderingHeight_Field, XmlFieldRenderControl.RenderingOrdinal_Field, XmlFieldRenderControl.RenderingWidth_Field, XmlFieldRenderControl.ShowControlHelpText_Field, XmlFieldRenderControl.ContainedWithinStructureControlOnForm_Field, XmlFieldRenderControl.ControlRelatedEntityDataPathNodes_Field, XmlFieldRenderControl.CreatedBy_Field, XmlFieldRenderControl.FieldToRender_Field, XmlFieldRenderControl.Flags_Field, XmlFieldRenderControl.IndirectInSolution_Field, XmlFieldRenderControl.InSolution_Field, XmlFieldRenderControl.InStructureLevel_Field, XmlFieldRenderControl.IsOfType_Field, XmlFieldRenderControl.IsRootForStructureView_Field, XmlFieldRenderControl.LastModifiedBy_Field, XmlFieldRenderControl.ResourceConsoleBehavior_Field, XmlFieldRenderControl.ResourceHasResourceKeyDataHashes_Field, XmlFieldRenderControl.ResourceInFolder_Field, XmlFieldRenderControl.SecurityOwner_Field, XmlFieldRenderControl.SelectionBehavior_Field, XmlFieldRenderControl.ShortcutInFolder_Field };
+				return new IEntity [ ] { XmlFieldRenderControl.Alias_Field, XmlFieldRenderControl.CanDelete_Field, XmlFieldRenderControl.CanModify_Field, XmlFieldRenderControl.CreatedDate_Field, XmlFieldRenderControl.Description_Field, XmlFieldRenderControl.GroupName_Field, XmlFieldRenderControl.HideLabel_Field, XmlFieldRenderControl.MandatoryControl_Field, XmlFieldRenderControl.ModifiedDate_Field, XmlFieldRenderControl.Name_Field, XmlFieldRenderControl.ReadOnlyControl_Field, XmlFieldRenderControl.RenderingBackgroundColor_Field, XmlFieldRenderControl.RenderingHeight_Field, XmlFieldRenderControl.RenderingOrdinal_Field, XmlFieldRenderControl.RenderingWidth_Field, XmlFieldRenderControl.ShowControlHelpText_Field, XmlFieldRenderControl.VisibilityCalculation_Field, XmlFieldRenderControl.ContainedWithinStructureControlOnForm_Field, XmlFieldRenderControl.ControlRelatedEntityDataPathNodes_Field, XmlFieldRenderControl.CreatedBy_Field, XmlFieldRenderControl.FieldToRender_Field, XmlFieldRenderControl.Flags_Field, XmlFieldRenderControl.IndirectInSolution_Field, XmlFieldRenderControl.InSolution_Field, XmlFieldRenderControl.InStructureLevel_Field, XmlFieldRenderControl.IsOfType_Field, XmlFieldRenderControl.IsRootForStructureView_Field, XmlFieldRenderControl.LastModifiedBy_Field, XmlFieldRenderControl.ResourceConsoleBehavior_Field, XmlFieldRenderControl.ResourceHasResourceKeyDataHashes_Field, XmlFieldRenderControl.ResourceInFolder_Field, XmlFieldRenderControl.SecurityOwner_Field, XmlFieldRenderControl.SelectionBehavior_Field, XmlFieldRenderControl.ShortcutInFolder_Field };
 			}
 		}
 
@@ -1991,6 +2002,20 @@ namespace EDC.ReadiNow.Model
 			set
 			{
 				this.SetField( "console:showControlHelpText", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public string VisibilityCalculation
+		{
+			get
+			{
+				return ( string ) this.GetField( "console:visibilityCalculation" );
+			}
+			set
+			{
+				this.SetField( "console:visibilityCalculation", value);
 			}
 		}
 

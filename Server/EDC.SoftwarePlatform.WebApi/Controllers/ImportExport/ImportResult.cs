@@ -11,6 +11,18 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.ImportExport
     public class ImportResult
     {
         /// <summary>
+        /// If true, the import succeeded.
+        /// </summary>
+        [DataMember( Name = "success" )]
+        public bool Success { get; set; }
+
+        /// <summary>
+        /// Error messages.
+        /// </summary>
+        [DataMember( Name = "message" )]
+        public string Message { get; set; }
+
+        /// <summary>
         /// List of root level entities imported.
         /// </summary>
         [DataMember(Name = "entities" )]

@@ -7421,6 +7421,17 @@ namespace EDC.ReadiNow.Model
 		}
 
 		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static StringField VisibilityCalculation_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.ControlOnForm.VisibilityCalculation_Field;
+			}
+		}
+
+		/// <summary>
 		/// Public static accessor to the inherited  reverse relationship.
 		/// </summary>
 		public static IEntity ContainedWithinStructureControlOnForm_Field
@@ -7647,7 +7658,7 @@ namespace EDC.ReadiNow.Model
 		{
 			get
 			{
-				return new IEntity [ ] { WorkflowButtonControl.WbcHideSuccessConfirmation_Field, WorkflowButtonControl.Alias_Field, WorkflowButtonControl.CanDelete_Field, WorkflowButtonControl.CanModify_Field, WorkflowButtonControl.CreatedDate_Field, WorkflowButtonControl.Description_Field, WorkflowButtonControl.HideLabel_Field, WorkflowButtonControl.MandatoryControl_Field, WorkflowButtonControl.ModifiedDate_Field, WorkflowButtonControl.Name_Field, WorkflowButtonControl.ReadOnlyControl_Field, WorkflowButtonControl.RenderingBackgroundColor_Field, WorkflowButtonControl.RenderingHeight_Field, WorkflowButtonControl.RenderingOrdinal_Field, WorkflowButtonControl.RenderingWidth_Field, WorkflowButtonControl.ShowControlHelpText_Field, WorkflowButtonControl.ContainedWithinStructureControlOnForm_Field, WorkflowButtonControl.ControlRelatedEntityDataPathNodes_Field, WorkflowButtonControl.CreatedBy_Field, WorkflowButtonControl.Flags_Field, WorkflowButtonControl.IndirectInSolution_Field, WorkflowButtonControl.InSolution_Field, WorkflowButtonControl.InStructureLevel_Field, WorkflowButtonControl.IsOfType_Field, WorkflowButtonControl.IsRootForStructureView_Field, WorkflowButtonControl.LastModifiedBy_Field, WorkflowButtonControl.ResourceConsoleBehavior_Field, WorkflowButtonControl.ResourceHasResourceKeyDataHashes_Field, WorkflowButtonControl.ResourceInFolder_Field, WorkflowButtonControl.SecurityOwner_Field, WorkflowButtonControl.SelectionBehavior_Field, WorkflowButtonControl.ShortcutInFolder_Field, WorkflowButtonControl.WbcDisableControlBasedOnRelationshipControl_Field, WorkflowButtonControl.WbcDisableControlBasedOnResources_Field, WorkflowButtonControl.WbcResourceInputParameter_Field, WorkflowButtonControl.WbcWorkflowToRun_Field };
+				return new IEntity [ ] { WorkflowButtonControl.WbcHideSuccessConfirmation_Field, WorkflowButtonControl.Alias_Field, WorkflowButtonControl.CanDelete_Field, WorkflowButtonControl.CanModify_Field, WorkflowButtonControl.CreatedDate_Field, WorkflowButtonControl.Description_Field, WorkflowButtonControl.HideLabel_Field, WorkflowButtonControl.MandatoryControl_Field, WorkflowButtonControl.ModifiedDate_Field, WorkflowButtonControl.Name_Field, WorkflowButtonControl.ReadOnlyControl_Field, WorkflowButtonControl.RenderingBackgroundColor_Field, WorkflowButtonControl.RenderingHeight_Field, WorkflowButtonControl.RenderingOrdinal_Field, WorkflowButtonControl.RenderingWidth_Field, WorkflowButtonControl.ShowControlHelpText_Field, WorkflowButtonControl.VisibilityCalculation_Field, WorkflowButtonControl.ContainedWithinStructureControlOnForm_Field, WorkflowButtonControl.ControlRelatedEntityDataPathNodes_Field, WorkflowButtonControl.CreatedBy_Field, WorkflowButtonControl.Flags_Field, WorkflowButtonControl.IndirectInSolution_Field, WorkflowButtonControl.InSolution_Field, WorkflowButtonControl.InStructureLevel_Field, WorkflowButtonControl.IsOfType_Field, WorkflowButtonControl.IsRootForStructureView_Field, WorkflowButtonControl.LastModifiedBy_Field, WorkflowButtonControl.ResourceConsoleBehavior_Field, WorkflowButtonControl.ResourceHasResourceKeyDataHashes_Field, WorkflowButtonControl.ResourceInFolder_Field, WorkflowButtonControl.SecurityOwner_Field, WorkflowButtonControl.SelectionBehavior_Field, WorkflowButtonControl.ShortcutInFolder_Field, WorkflowButtonControl.WbcDisableControlBasedOnRelationshipControl_Field, WorkflowButtonControl.WbcDisableControlBasedOnResources_Field, WorkflowButtonControl.WbcResourceInputParameter_Field, WorkflowButtonControl.WbcWorkflowToRun_Field };
 			}
 		}
 
@@ -7877,6 +7888,20 @@ namespace EDC.ReadiNow.Model
 			set
 			{
 				this.SetField( "console:showControlHelpText", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public string VisibilityCalculation
+		{
+			get
+			{
+				return ( string ) this.GetField( "console:visibilityCalculation" );
+			}
+			set
+			{
+				this.SetField( "console:visibilityCalculation", value);
 			}
 		}
 

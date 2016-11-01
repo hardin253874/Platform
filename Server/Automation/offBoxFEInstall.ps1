@@ -61,9 +61,6 @@ Try
 		Install-Bootstrap $platformConfigureProcess $deploymentSettings
 		
 		Upgrade-Bootstrap $platformConfigureProcess $deploymentSettings
-	
-		# Import Core, Console and CoreData into the application library
-		Install-CoreApplications $platformConfigureProcess $deploymentSettings
 		
 		# Import Shared, Power Tools, Test Solution, Foster University and Foster University Data into the application library
 		Install-BuiltInReadiNowApplications $platformConfigureProcess $deploymentSettings

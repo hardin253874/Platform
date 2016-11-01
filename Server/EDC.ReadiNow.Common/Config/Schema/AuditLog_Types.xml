@@ -979,7 +979,7 @@
         <fromName>Workflow trigger</fromName>
         <description>The fields on a resource that will cause a trigger to trip. If multiple fields are provided the trigger will trip on any of the fields.</description>
         <toType>field</toType>
-        <relType>relManyToMany</relType>
+        <relType>relManyToManyFwd</relType>
         <generateCode>true</generateCode>
         <relationshipInFromTypeGroup>resTriggerFilter</relationshipInFromTypeGroup>
       </relationship>
@@ -990,7 +990,7 @@
         <fromName>Workflow trigger</fromName>
         <description>The relationships on a resource that will cause a trigger to trip. </description>
         <toType>relationship</toType>
-        <relType>relManyToMany</relType>
+        <relType>relManyToManyFwd</relType>
         <generateCode>true</generateCode>
         <relationshipInFromTypeGroup>resTriggerFilter</relationshipInFromTypeGroup>
         <relationshipInToTypeGroup>relationshipDetails</relationshipInToTypeGroup>

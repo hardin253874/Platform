@@ -327,7 +327,7 @@
         <description>The questions that will be used when generating a campaign.</description>
         <fromName>Survey section</fromName>
         <toName>Questions</toName>
-        <relType>relManyToMany</relType>
+        <relType>relManyToManyFwd</relType>
         <toType>surveyQuestion</toType>
         <relationshipInFromTypeGroup>surveySectionFieldGroup</relationshipInFromTypeGroup>
         <relationshipInToTypeGroup>surveySectionFieldGroup</relationshipInToTypeGroup>
@@ -427,7 +427,7 @@
         <description>The people targeted in this campaign.</description>
         <fromName>Campaign</fromName>
         <toName>Recipients</toName>
-        <relType>relManyToMany</relType>
+        <relType>relManyToManyFwd</relType>
         <toType>person</toType>
         <relationshipInFromTypeGroup>surveyFieldGroup</relationshipInFromTypeGroup>
         <relationshipInToTypeGroup>surveyFieldGroup</relationshipInToTypeGroup>
@@ -475,7 +475,7 @@
         <alias>campaignTargetTargets</alias>
         <name>Targets</name>
         <description>The target objects to be involved in this campaign.</description>
-        <relType>relManyToMany</relType>
+        <relType>relManyToManyFwd</relType>
         <toType>userResource</toType>
         <relationshipInFromTypeGroup>surveyFieldGroup</relationshipInFromTypeGroup>
         <relationshipInToTypeGroup>surveyFieldGroup</relationshipInToTypeGroup>

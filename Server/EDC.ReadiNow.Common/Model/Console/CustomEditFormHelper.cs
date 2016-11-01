@@ -56,7 +56,7 @@ k:renderingVerticalResizeMode.{alias},
 k:containedControlsOnForm*.{ 
     _ND_, _IOTControl_, 
     k:renderingOrdinal, k:renderingHeight, k:renderingWidth, k:renderingBackgroundColor,k:hideLabel,k:renderingHorizontalResizeMode.{alias},k:renderingVerticalResizeMode.{alias},
-    k:mandatoryControl, k:readOnlyControl,k:showControlHelpText,
+    k:mandatoryControl, k:readOnlyControl,k:showControlHelpText, k:visibilityCalculation,
     _ImgSize_, k:thumbnailScalingSetting.alias,
     k:relationshipControlFilters.{
         _IOT_,

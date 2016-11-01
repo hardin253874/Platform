@@ -14,6 +14,8 @@ using EDC.SoftwarePlatform.Migration.Contract;
 using EDC.SoftwarePlatform.Migration.Sources;
 using EDC.SoftwarePlatform.Migration.Storage;
 using EDC.SoftwarePlatform.Migration.Targets;
+using ReadiNow.Database;
+using EDC.SoftwarePlatform.Migration.Contract.Statistics;
 
 namespace EDC.SoftwarePlatform.Migration.Processing
 {
@@ -205,29 +207,143 @@ namespace EDC.SoftwarePlatform.Migration.Processing
 		public static long ImportTenant( string packagePath, string tenantName, IProcessingContext context )
 		{
 			return ImportTenant_Impl( packagePath, tenantName, false, context );
-		}
+        }
 
-		/// <summary>
-		///     Imports the tenant.
-		/// </summary>
-		/// <param name="packagePath">The package path.</param>
-		/// <param name="tenantName">Name of the tenant.</param>
-		/// <param name="overwrite">
-		///     if set to <c>true</c> [overwrite].
-		/// </param>
-		/// <param name="context">The context.</param>
-		/// <exception cref="System.ArgumentNullException">tenantStorePath</exception>
-		/// <exception cref="System.InvalidOperationException">
-		///     The package does not contain a tenant.
-		///     or
-		/// </exception>
-		/// <exception cref="System.ArgumentException">The package is corrupt.</exception>
-		/// <remarks>
-		///     If a tenant with the same name already exists, an exception will be thrown.
-		///     To overwrite an existing tenant with the same name, call OverwriteTenant.
-		/// </remarks>
+        /// <summary>
+        ///     Imports the tenant.
+        /// </summary>
+        /// <param name="packagePath">The package path.</param>
+        /// <param name="tenantName">Name of the tenant.</param>
+        /// <param name="context">The context.</param>
         /// <returns>the tenant id</returns>
-		private static long ImportTenant_Impl( string packagePath, string tenantName, bool overwrite, IProcessingContext context )
+        public static void InstallGlobalTenant( )
+        {
+            IProcessingContext context = new ProcessingContext( );
+
+            context.Report.Action = AppLibraryAction.InstallGlobal;
+            context.Report.Arguments.Add( new KeyValuePair<string, string>( "Tenant Id", "Global" ) );
+
+            IDictionary<Guid, Guid> appToAppVer = new Dictionary<Guid, Guid>( );
+
+            // Get application versions
+            // It is assumed that if there is no global tenant, then there is only one version of each of the core apps
+            using ( IDatabaseContext dbContext = DatabaseContext.GetContext( false ) )
+            using ( IDbCommand command = dbContext.CreateCommand())
+            {
+                command.CommandText = "select FromUid AppUid, AppVerUid from AppRelationship where ToUid = @solution and TypeUid = @isOfType";
+                command.AddParameterWithValue( "@solution", Guids.Solution );
+                command.AddParameterWithValue( "@isOfType", Guids.IsOfType );
+
+                using ( IDataReader reader = command.ExecuteReader( ) )
+                {
+                    // Load appVerId for apps from app library
+                    while ( reader.Read( ) )
+                    {
+                        Guid appId = reader.GetGuid( 0 );
+                        Guid appVerId = reader.GetGuid( 1 );
+                        appToAppVer[ appId ] = appVerId;
+                    }
+                }
+            }
+
+            // Install apps
+            Guid[ ] coreApps = new[ ]
+            {
+                Guids.CoreSolution,
+                Guids.ConsoleSolution,
+                Guids.CoreDataSolution,
+                Guids.SystemSolution
+            };
+
+            // Copy system application content from the app library into the global tenant
+            foreach ( Guid appId in coreApps )
+            {
+                // Get the AppVerId
+                Guid appVerId;
+                if ( !appToAppVer.TryGetValue( appId, out appVerId ) )
+                    throw new Exception( $"Aborting: System app {0} was not present in app library." );
+
+                context.WriteInfo( $"Installing app {appId} package {appVerId} to global tenant." );
+
+                IDataSource empty = new EmptySource( );
+                IDataSource source = new LibraryAppSource
+                {
+                    AppId = appId,
+                    AppVerId = appVerId,
+                    AppName = appId.ToString( )
+                };
+                TenantMergeTarget target = new TenantMergeTarget
+                {
+                    TenantId = 0
+                };
+
+                using ( empty )
+                using ( source )
+                using ( target )
+                {
+                    MergeProcessor processor = new MergeProcessor( context )
+                    {
+                        OldVersion = empty,
+                        NewVersion = source,
+                        Target = target
+                    };
+                    processor.MergeData( );
+
+                    target.Commit( );
+                }
+            }
+
+
+            // Copy metadata from the tenant back into the application library
+            foreach ( Guid appId in coreApps )
+            {
+                Guid appVerId = appToAppVer[ appId ];
+
+                long solutionEntityId = Entity.GetIdFromUpgradeId( appId );
+                IDataSource metadataSource = new TenantAppSource
+                {
+                    SolutionId = solutionEntityId,
+                    TenantId = 0
+                };
+                LibraryAppTarget metadataTarget = new LibraryAppTarget
+                {
+                    ApplicationVersionId = appVerId
+                };
+                using ( metadataSource )
+                using ( metadataTarget )
+                {
+                    CopyProcessor processor = new CopyProcessor( metadataSource, metadataTarget, context );
+                    processor.CopyMetadataOnly = true;
+                    processor.MigrateData( );
+
+                    metadataTarget.Commit( );
+                }
+
+                context.WriteInfo( $"Installed app {appId} to global tenant." );
+            }
+        }
+
+        /// <summary>
+        ///     Imports the tenant.
+        /// </summary>
+        /// <param name="packagePath">The package path.</param>
+        /// <param name="tenantName">Name of the tenant.</param>
+        /// <param name="overwrite">
+        ///     if set to <c>true</c> [overwrite].
+        /// </param>
+        /// <param name="context">The context.</param>
+        /// <exception cref="System.ArgumentNullException">tenantStorePath</exception>
+        /// <exception cref="System.InvalidOperationException">
+        ///     The package does not contain a tenant.
+        ///     or
+        /// </exception>
+        /// <exception cref="System.ArgumentException">The package is corrupt.</exception>
+        /// <remarks>
+        ///     If a tenant with the same name already exists, an exception will be thrown.
+        ///     To overwrite an existing tenant with the same name, call OverwriteTenant.
+        /// </remarks>
+        /// <returns>the tenant id</returns>
+        private static long ImportTenant_Impl( string packagePath, string tenantName, bool overwrite, IProcessingContext context )
 		{
 			if ( string.IsNullOrEmpty( packagePath ) )
 			{

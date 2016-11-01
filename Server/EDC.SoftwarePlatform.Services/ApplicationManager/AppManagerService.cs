@@ -641,6 +641,10 @@ ORDER BY
         /// <param name="securityModel">Security method to apply.</param>
         public bool CanSee( InstalledApplication installedApp, AvailableApplication availableApp, AppSecurityModel securityModel )
         {
+            Guid systemSolution = new Guid( "3e67c1c4-aa65-4a9f-95d2-908a9f3614d1" );
+            if ( availableApp?.ApplicationId == systemSolution )
+                return false;
+
             bool isAvailable = !string.IsNullOrWhiteSpace( availableApp?.PackageVersion );
             bool isInstalled = !string.IsNullOrWhiteSpace( installedApp?.SolutionVersion );
 

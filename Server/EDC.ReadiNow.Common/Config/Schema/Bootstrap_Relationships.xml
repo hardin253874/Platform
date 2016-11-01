@@ -333,6 +333,18 @@
         <name>Shared dependants</name>
         <description>Many-to-many. The 'to' non-exclusively points to one or more 'from' resources. If the last 'from' resource is deleted, then so is the 'to' resource. This is equivalent to 'at least one to' in the opposite direction.</description>
       </relTypeEnum>
+      <!-- Many to many forward -->
+      <relTypeEnum>
+        <alias>relManyToManyFwd</alias>
+        <name>Many to many (forward)</name>
+        <description>A many-to-many relationship that belongs to the 'from' entity only. Neither entity owns or deletes the other. But the reference is only cloned if the 'from' entity is cloned.</description>
+      </relTypeEnum>
+      <!-- Many to many reverse -->
+      <relTypeEnum>
+        <alias>relManyToManyRev</alias>
+        <name>Many to many (reverse)</name>
+        <description>A many-to-many relationship that belongs to the 'from' entity only. Neither entity owns or deletes the other. But the reference is only cloned if the 'from' entity is cloned.</description>
+      </relTypeEnum>
       <!-- Custom -->
       <relTypeEnum>
         <alias>relCustom</alias>

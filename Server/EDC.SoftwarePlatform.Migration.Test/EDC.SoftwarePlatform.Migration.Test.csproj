@@ -151,10 +151,15 @@
     <EmbeddedResource Include="Import\TestFiles\AllFields.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Import\TestFiles\TestPhoto.xml" />
+    <EmbeddedResource Include="Import\TestFiles\TestPhoto.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Import\TestFiles\TestDocument.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Import\TestFiles\ReverseAlias.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

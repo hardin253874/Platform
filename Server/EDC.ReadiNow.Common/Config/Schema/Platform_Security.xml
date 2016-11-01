@@ -747,10 +747,21 @@
     <toType>securableEntity</toType>
     <toName>Securable entities</toName>
     <generateCode>true</generateCode>
-    <relType>relComponentOf</relType>
     <relationshipInFromTypeGroup>accessRuleDetails</relationshipInFromTypeGroup>
     <relationshipInToTypeGroup>securableEntityDetails</relationshipInToTypeGroup>
+    <!--
+    <relType>relComponentOf</relType>
     <implicitInSolution>true</implicitInSolution>
+    -->
+    <relType>relCustom</relType>
+    <!-- Rule implicit in solition with type, but don't clone rule with type -->
+    <cardinality>manyToOne</cardinality>
+    <cascadeDelete>true</cascadeDelete>
+    <cascadeDeleteTo>false</cascadeDeleteTo>
+    <cloneAction>cloneReferences</cloneAction>
+    <reverseCloneAction>drop</reverseCloneAction>
+    <implicitInSolution>false</implicitInSolution>
+    <reverseImplicitInSolution>true</reverseImplicitInSolution>
   </relationship>
   <relationship>
     <name>Permission access</name>
@@ -762,7 +773,7 @@
     <toType>permission</toType>
     <toName>Permission</toName>
     <generateCode>true</generateCode>
-    <relType>relManyToMany</relType>
+    <relType>relManyToManyFwd</relType>
     <relationshipInFromTypeGroup>accessRuleDetails</relationshipInFromTypeGroup>
     <relationshipInToTypeGroup>permissionDetails</relationshipInToTypeGroup>
     <implicitInSolution>true</implicitInSolution>

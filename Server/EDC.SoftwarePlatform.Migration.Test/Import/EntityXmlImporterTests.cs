@@ -113,6 +113,37 @@ namespace EDC.SoftwarePlatform.Migration.Test.Import
         }
 
         /// <summary>
+        /// Import a reverseAlias nested relationship.
+        /// </summary>
+        [Test]
+        [RunWithTransaction]
+        public void Import_ReverseAlias( )
+        {
+            IEntityRepository repository = Factory.EntityRepository;
+            IEntityXmlImporter importer = Factory.EntityXmlImporter;
+            EntityXmlImportResult result;
+            string xml;
+            long entityId;
+
+            // Import
+            using ( RunAsImportExportRole( ) )
+            using ( Stream stream = GetStream( "ReverseAlias.xml" ) )
+            using ( StreamReader reader = new StreamReader( stream ) )
+            {
+                xml = reader.ReadToEnd( );
+                result = importer.ImportXml( xml, EntityXmlImportSettings.Default );
+            }
+
+            // Check
+            Assert.That( result, Is.Not.Null );
+            Assert.That( result.RootEntities, Is.Not.Null );
+            entityId = result.RootEntities.Single( );
+
+            Definition type = repository.Get<Definition>( entityId );
+            Assert.That( type.Fields, Has.Count.EqualTo( 1 ) );
+        }
+
+        /// <summary>
         /// Import an entity and verify that all required content is present.
         /// Tests scenarios where aliases are unavailable, and relationships in both directions.
         /// </summary>

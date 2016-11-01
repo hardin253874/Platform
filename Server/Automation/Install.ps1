@@ -84,8 +84,9 @@ Try
 	
 	Try
 	{
+		# Install core apps and global tenant
 		Install-Bootstrap $platformConfigureProcess $deploymentSettings
-		Install-CoreApplications $platformConfigureProcess $deploymentSettings
+		
 		Install-BuiltInReadiNowApplications $platformConfigureProcess $deploymentSettings
 		
 		Create-DefaultTenant $platformConfigureProcess $deploymentSettings
@@ -108,7 +109,8 @@ Try
 
     Start-Scheduler $schedulerName
 
-    Log-Message 'SoftwarePlatform successfully installed.'
+    Log-Message 'SoftwarePlatform successfully installed.'	
+	Log-Message $global:logFile
 }
 Catch
 {

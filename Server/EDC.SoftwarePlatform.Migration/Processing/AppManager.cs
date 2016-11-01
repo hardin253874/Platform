@@ -8,7 +8,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Xml;
 using EDC.Database;
 using EDC.Diagnostics;
 using EDC.ReadiNow.AppLibrary;
@@ -21,15 +20,11 @@ using EDC.ReadiNow.Security;
 using EDC.SoftwarePlatform.Migration.Contract;
 using EDC.SoftwarePlatform.Migration.Contract.Statistics;
 using EDC.SoftwarePlatform.Migration.Sources;
-using EDC.SoftwarePlatform.Migration.Storage;
 using EDC.SoftwarePlatform.Migration.Targets;
 using EventLog = EDC.ReadiNow.Diagnostics.EventLog;
 using EDC.ReadiNow.Scheduling;
 using EDC.ReadiNow.Messaging;
 using EDC.ReadiNow.Model.PartialClasses;
-using EDC.SoftwarePlatform.Migration.Processing.Xml;
-using EDC.SoftwarePlatform.Migration.Processing.Xml.Version1;
-using ReadiNow.ImportExport;
 
 namespace EDC.SoftwarePlatform.Migration.Processing
 {
@@ -826,11 +821,12 @@ namespace EDC.SoftwarePlatform.Migration.Processing
 		///     Imports an application package (SQLite db) into the main app library (database).
 		/// </summary>
 		/// <param name="packagePath">Path to the SQLite database.</param>
+		/// <param name="bootstrapMode">Set to true when installing core applications before global tenant is ready.</param>
 		/// <param name="context">The processing context.</param>
 		/// <returns>
 		///     The application version identifier of the imported application.
 		/// </returns>
-		public static Guid ImportAppPackage( string packagePath, IProcessingContext context = null )
+		public static Guid ImportAppPackage( string packagePath, IProcessingContext context = null, bool bootstrapMode = false )
 		{
 			if ( string.IsNullOrEmpty( packagePath ) )
 			{
@@ -853,7 +849,7 @@ namespace EDC.SoftwarePlatform.Migration.Processing
 
 				if ( context.Report.Action == AppLibraryAction.Unknown )
 				{
-					context.Report.Action = AppLibraryAction.Import;
+					context.Report.Action = bootstrapMode ? AppLibraryAction.BootstrapImport : AppLibraryAction.Import;
 					context.Report.Arguments.Add( new KeyValuePair<string, string>( "Package Path", packagePath ) );
 				}
 
@@ -873,6 +869,8 @@ namespace EDC.SoftwarePlatform.Migration.Processing
 							throw new InvalidOperationException( "The package does not contain an application." );
 						}
 
+					    applicationVersionId = metadata.AppVerId;
+
                         if ( PackageExists( metadata.AppId, metadata.AppVerId ) )
                         {
                             context.WriteInfo( $"Skipping import or package at '{packagePath}' as it already exists in the library." );
@@ -885,8 +883,9 @@ namespace EDC.SoftwarePlatform.Migration.Processing
                         /////
                         using ( var target = new LibraryAppTarget
 						{
-							ApplicationVersionId = source.GetMetadata( context ).AppVerId
-						} )
+							ApplicationVersionId = source.GetMetadata( context ).AppVerId,
+                            SkipMetadata = bootstrapMode
+                        } )
 						{
 							/////
 							// Copy the data
@@ -2306,7 +2305,7 @@ ORDER BY
 
 					if ( sourceHashFileExists )
 					{
-						sourceHash = File.ReadAllText( sourceHashFile );
+						sourceHash = File.ReadAllText( sourceHashFile ) + " " + version;
 					}
 
 					bool destinationHashFileExists = File.Exists( destinationHashFile );

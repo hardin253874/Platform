@@ -2286,6 +2286,17 @@ namespace EDC.ReadiNow.Model
 		}
 
 		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static StringField VisibilityCalculation_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.ControlOnForm.VisibilityCalculation_Field;
+			}
+		}
+
+		/// <summary>
 		/// Public static accessor to the inherited  reverse relationship.
 		/// </summary>
 		public static IEntity ContainedWithinStructureControlOnForm_Field
@@ -2479,7 +2490,7 @@ namespace EDC.ReadiNow.Model
 		{
 			get
 			{
-				return new IEntity [ ] { FieldControlOnForm.GroupName_Field, FieldControlOnForm.Alias_Field, FieldControlOnForm.CanDelete_Field, FieldControlOnForm.CanModify_Field, FieldControlOnForm.CreatedDate_Field, FieldControlOnForm.Description_Field, FieldControlOnForm.HideLabel_Field, FieldControlOnForm.MandatoryControl_Field, FieldControlOnForm.ModifiedDate_Field, FieldControlOnForm.Name_Field, FieldControlOnForm.ReadOnlyControl_Field, FieldControlOnForm.RenderingBackgroundColor_Field, FieldControlOnForm.RenderingHeight_Field, FieldControlOnForm.RenderingOrdinal_Field, FieldControlOnForm.RenderingWidth_Field, FieldControlOnForm.ShowControlHelpText_Field, FieldControlOnForm.ContainedWithinStructureControlOnForm_Field, FieldControlOnForm.ControlRelatedEntityDataPathNodes_Field, FieldControlOnForm.CreatedBy_Field, FieldControlOnForm.FieldToRender_Field, FieldControlOnForm.Flags_Field, FieldControlOnForm.IndirectInSolution_Field, FieldControlOnForm.InSolution_Field, FieldControlOnForm.InStructureLevel_Field, FieldControlOnForm.IsOfType_Field, FieldControlOnForm.IsRootForStructureView_Field, FieldControlOnForm.LastModifiedBy_Field, FieldControlOnForm.ResourceConsoleBehavior_Field, FieldControlOnForm.ResourceHasResourceKeyDataHashes_Field, FieldControlOnForm.ResourceInFolder_Field, FieldControlOnForm.SecurityOwner_Field, FieldControlOnForm.SelectionBehavior_Field, FieldControlOnForm.ShortcutInFolder_Field };
+				return new IEntity [ ] { FieldControlOnForm.GroupName_Field, FieldControlOnForm.Alias_Field, FieldControlOnForm.CanDelete_Field, FieldControlOnForm.CanModify_Field, FieldControlOnForm.CreatedDate_Field, FieldControlOnForm.Description_Field, FieldControlOnForm.HideLabel_Field, FieldControlOnForm.MandatoryControl_Field, FieldControlOnForm.ModifiedDate_Field, FieldControlOnForm.Name_Field, FieldControlOnForm.ReadOnlyControl_Field, FieldControlOnForm.RenderingBackgroundColor_Field, FieldControlOnForm.RenderingHeight_Field, FieldControlOnForm.RenderingOrdinal_Field, FieldControlOnForm.RenderingWidth_Field, FieldControlOnForm.ShowControlHelpText_Field, FieldControlOnForm.VisibilityCalculation_Field, FieldControlOnForm.ContainedWithinStructureControlOnForm_Field, FieldControlOnForm.ControlRelatedEntityDataPathNodes_Field, FieldControlOnForm.CreatedBy_Field, FieldControlOnForm.FieldToRender_Field, FieldControlOnForm.Flags_Field, FieldControlOnForm.IndirectInSolution_Field, FieldControlOnForm.InSolution_Field, FieldControlOnForm.InStructureLevel_Field, FieldControlOnForm.IsOfType_Field, FieldControlOnForm.IsRootForStructureView_Field, FieldControlOnForm.LastModifiedBy_Field, FieldControlOnForm.ResourceConsoleBehavior_Field, FieldControlOnForm.ResourceHasResourceKeyDataHashes_Field, FieldControlOnForm.ResourceInFolder_Field, FieldControlOnForm.SecurityOwner_Field, FieldControlOnForm.SelectionBehavior_Field, FieldControlOnForm.ShortcutInFolder_Field };
 			}
 		}
 
@@ -2709,6 +2720,20 @@ namespace EDC.ReadiNow.Model
 			set
 			{
 				this.SetField( "console:showControlHelpText", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public string VisibilityCalculation
+		{
+			get
+			{
+				return ( string ) this.GetField( "console:visibilityCalculation" );
+			}
+			set
+			{
+				this.SetField( "console:visibilityCalculation", value);
 			}
 		}
 
@@ -10807,6 +10832,17 @@ namespace EDC.ReadiNow.Model
 		}
 
 		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static StringField VisibilityCalculation_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.ControlOnForm.VisibilityCalculation_Field;
+			}
+		}
+
+		/// <summary>
 		/// Public static accessor to the inherited  reverse relationship.
 		/// </summary>
 		public static IEntity ContainedWithinStructureControlOnForm_Field
@@ -11000,7 +11036,7 @@ namespace EDC.ReadiNow.Model
 		{
 			get
 			{
-				return new IEntity [ ] { FileNameUploadControl.Alias_Field, FileNameUploadControl.CanDelete_Field, FileNameUploadControl.CanModify_Field, FileNameUploadControl.CreatedDate_Field, FileNameUploadControl.Description_Field, FileNameUploadControl.GroupName_Field, FileNameUploadControl.HideLabel_Field, FileNameUploadControl.MandatoryControl_Field, FileNameUploadControl.ModifiedDate_Field, FileNameUploadControl.Name_Field, FileNameUploadControl.ReadOnlyControl_Field, FileNameUploadControl.RenderingBackgroundColor_Field, FileNameUploadControl.RenderingHeight_Field, FileNameUploadControl.RenderingOrdinal_Field, FileNameUploadControl.RenderingWidth_Field, FileNameUploadControl.ShowControlHelpText_Field, FileNameUploadControl.ContainedWithinStructureControlOnForm_Field, FileNameUploadControl.ControlRelatedEntityDataPathNodes_Field, FileNameUploadControl.CreatedBy_Field, FileNameUploadControl.FieldToRender_Field, FileNameUploadControl.Flags_Field, FileNameUploadControl.IndirectInSolution_Field, FileNameUploadControl.InSolution_Field, FileNameUploadControl.InStructureLevel_Field, FileNameUploadControl.IsOfType_Field, FileNameUploadControl.IsRootForStructureView_Field, FileNameUploadControl.LastModifiedBy_Field, FileNameUploadControl.ResourceConsoleBehavior_Field, FileNameUploadControl.ResourceHasResourceKeyDataHashes_Field, FileNameUploadControl.ResourceInFolder_Field, FileNameUploadControl.SecurityOwner_Field, FileNameUploadControl.SelectionBehavior_Field, FileNameUploadControl.ShortcutInFolder_Field };
+				return new IEntity [ ] { FileNameUploadControl.Alias_Field, FileNameUploadControl.CanDelete_Field, FileNameUploadControl.CanModify_Field, FileNameUploadControl.CreatedDate_Field, FileNameUploadControl.Description_Field, FileNameUploadControl.GroupName_Field, FileNameUploadControl.HideLabel_Field, FileNameUploadControl.MandatoryControl_Field, FileNameUploadControl.ModifiedDate_Field, FileNameUploadControl.Name_Field, FileNameUploadControl.ReadOnlyControl_Field, FileNameUploadControl.RenderingBackgroundColor_Field, FileNameUploadControl.RenderingHeight_Field, FileNameUploadControl.RenderingOrdinal_Field, FileNameUploadControl.RenderingWidth_Field, FileNameUploadControl.ShowControlHelpText_Field, FileNameUploadControl.VisibilityCalculation_Field, FileNameUploadControl.ContainedWithinStructureControlOnForm_Field, FileNameUploadControl.ControlRelatedEntityDataPathNodes_Field, FileNameUploadControl.CreatedBy_Field, FileNameUploadControl.FieldToRender_Field, FileNameUploadControl.Flags_Field, FileNameUploadControl.IndirectInSolution_Field, FileNameUploadControl.InSolution_Field, FileNameUploadControl.InStructureLevel_Field, FileNameUploadControl.IsOfType_Field, FileNameUploadControl.IsRootForStructureView_Field, FileNameUploadControl.LastModifiedBy_Field, FileNameUploadControl.ResourceConsoleBehavior_Field, FileNameUploadControl.ResourceHasResourceKeyDataHashes_Field, FileNameUploadControl.ResourceInFolder_Field, FileNameUploadControl.SecurityOwner_Field, FileNameUploadControl.SelectionBehavior_Field, FileNameUploadControl.ShortcutInFolder_Field };
 			}
 		}
 
@@ -11230,6 +11266,20 @@ namespace EDC.ReadiNow.Model
 			set
 			{
 				this.SetField( "console:showControlHelpText", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public string VisibilityCalculation
+		{
+			get
+			{
+				return ( string ) this.GetField( "console:visibilityCalculation" );
+			}
+			set
+			{
+				this.SetField( "console:visibilityCalculation", value);
 			}
 		}
 
@@ -11725,6 +11775,17 @@ namespace EDC.ReadiNow.Model
 		}
 
 		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static StringField VisibilityCalculation_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.ControlOnForm.VisibilityCalculation_Field;
+			}
+		}
+
+		/// <summary>
 		/// Public static accessor to the inherited  reverse relationship.
 		/// </summary>
 		public static IEntity ContainedWithinStructureControlOnForm_Field
@@ -11918,7 +11979,7 @@ namespace EDC.ReadiNow.Model
 		{
 			get
 			{
-				return new IEntity [ ] { FileRevisionControl.Alias_Field, FileRevisionControl.CanDelete_Field, FileRevisionControl.CanModify_Field, FileRevisionControl.CreatedDate_Field, FileRevisionControl.Description_Field, FileRevisionControl.GroupName_Field, FileRevisionControl.HideLabel_Field, FileRevisionControl.MandatoryControl_Field, FileRevisionControl.ModifiedDate_Field, FileRevisionControl.Name_Field, FileRevisionControl.ReadOnlyControl_Field, FileRevisionControl.RenderingBackgroundColor_Field, FileRevisionControl.RenderingHeight_Field, FileRevisionControl.RenderingOrdinal_Field, FileRevisionControl.RenderingWidth_Field, FileRevisionControl.ShowControlHelpText_Field, FileRevisionControl.ContainedWithinStructureControlOnForm_Field, FileRevisionControl.ControlRelatedEntityDataPathNodes_Field, FileRevisionControl.CreatedBy_Field, FileRevisionControl.FieldToRender_Field, FileRevisionControl.Flags_Field, FileRevisionControl.IndirectInSolution_Field, FileRevisionControl.InSolution_Field, FileRevisionControl.InStructureLevel_Field, FileRevisionControl.IsOfType_Field, FileRevisionControl.IsRootForStructureView_Field, FileRevisionControl.LastModifiedBy_Field, FileRevisionControl.ResourceConsoleBehavior_Field, FileRevisionControl.ResourceHasResourceKeyDataHashes_Field, FileRevisionControl.ResourceInFolder_Field, FileRevisionControl.SecurityOwner_Field, FileRevisionControl.SelectionBehavior_Field, FileRevisionControl.ShortcutInFolder_Field };
+				return new IEntity [ ] { FileRevisionControl.Alias_Field, FileRevisionControl.CanDelete_Field, FileRevisionControl.CanModify_Field, FileRevisionControl.CreatedDate_Field, FileRevisionControl.Description_Field, FileRevisionControl.GroupName_Field, FileRevisionControl.HideLabel_Field, FileRevisionControl.MandatoryControl_Field, FileRevisionControl.ModifiedDate_Field, FileRevisionControl.Name_Field, FileRevisionControl.ReadOnlyControl_Field, FileRevisionControl.RenderingBackgroundColor_Field, FileRevisionControl.RenderingHeight_Field, FileRevisionControl.RenderingOrdinal_Field, FileRevisionControl.RenderingWidth_Field, FileRevisionControl.ShowControlHelpText_Field, FileRevisionControl.VisibilityCalculation_Field, FileRevisionControl.ContainedWithinStructureControlOnForm_Field, FileRevisionControl.ControlRelatedEntityDataPathNodes_Field, FileRevisionControl.CreatedBy_Field, FileRevisionControl.FieldToRender_Field, FileRevisionControl.Flags_Field, FileRevisionControl.IndirectInSolution_Field, FileRevisionControl.InSolution_Field, FileRevisionControl.InStructureLevel_Field, FileRevisionControl.IsOfType_Field, FileRevisionControl.IsRootForStructureView_Field, FileRevisionControl.LastModifiedBy_Field, FileRevisionControl.ResourceConsoleBehavior_Field, FileRevisionControl.ResourceHasResourceKeyDataHashes_Field, FileRevisionControl.ResourceInFolder_Field, FileRevisionControl.SecurityOwner_Field, FileRevisionControl.SelectionBehavior_Field, FileRevisionControl.ShortcutInFolder_Field };
 			}
 		}
 
@@ -12148,6 +12209,20 @@ namespace EDC.ReadiNow.Model
 			set
 			{
 				this.SetField( "console:showControlHelpText", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public string VisibilityCalculation
+		{
+			get
+			{
+				return ( string ) this.GetField( "console:visibilityCalculation" );
+			}
+			set
+			{
+				this.SetField( "console:visibilityCalculation", value);
 			}
 		}
 

@@ -12,6 +12,7 @@
     <solutions>
       <solution>coreSolution</solution>
       <solution>consoleSolution</solution>
+      <solution>systemSolution</solution>
     </solutions>
     <metadata>
       <!-- Upgrade map -->
@@ -37,6 +38,7 @@
       <entities format="external" path="AuditLog_Types.xml" designTimeFolder="Schema" />
       <entities format="external" path="FeatureSwitches.xml" designTimeFolder="Schema" />
       <entities format="external" path="Board_Types.xml" designTimeFolder="Schema" />
+      <entities format="external" path="System_Global.xml" designTimeFolder="Schema" />
       <!-- Shared Resources -->
       <entities format="external" path="Shared_Types.xml" designTimeFolder="Schema" />
       <!-- Charts Resources -->
@@ -71,5 +73,24 @@
       <!-- Integrations -->
       <entities format="external" path="Integration_Types.xml" designTimeFolder="Schema" />
     </metadata>
+    
+    <doNotRemove solution="coreSolution">
+      <!-- Global tenant items moved from coreSolution to systemSolution .. but we want them removed from other tenants anyway -->
+      <!--
+      <leaveEntity id="0d27bbfe-6875-4632-af0f-bdbb9c0fca1c" />
+      <leaveEntity id="8d8b32d0-25f8-4994-a686-4f9730a71671" />
+      <leaveEntity id="e6d7f8b9-3cf8-4666-9141-ca53cd68d29c" />
+      <leaveEntity id="0f9a0ffe-cb98-413c-aad7-fe3f94786cce" />
+      <leaveEntity id="13963858-235c-40be-ae21-73a6c96743d8" />
+      <leaveEntity id="75afefa1-caca-4815-9937-75ea68285cd1" />
+      <leaveEntity id="7cfb7dc6-280d-43bf-aa54-4e814cc234fe" />
+      <leaveEntity id="c9e8762a-8f6e-404d-b47d-a374113bd6a7" />
+      -->
+    </doNotRemove>
+    <doNotRemove solution="consoleSolution">
+    </doNotRemove>
+    <doNotRemove solution="systemSolution">
+    </doNotRemove>
+    
   </configuration>
 </resource>

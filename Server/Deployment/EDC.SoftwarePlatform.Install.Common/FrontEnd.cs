@@ -235,47 +235,6 @@ namespace EDC.SoftwarePlatform.Install.Common
 		}
 
 		/// <summary>
-		/// Installs the bootstrap solution.
-		/// </summary>
-		/// <param name="solutionFilename">The solution filename.</param>
-		/// <param name="action">The action.</param>
-		private static void InstallBootstrapSolution( string solutionFilename, SolutionInstallAction action = SolutionInstallAction.Install )
-		{
-			RequestContext.SetTenantAdministratorContext( 0 );
-
-			var document = new XmlDocument( );
-			document.Load( solutionFilename );
-
-			/////
-			// Get the path to the configuration directory
-			/////
-			string configPath = Path.GetDirectoryName( solutionFilename );
-
-			XmlNodeList solutionNodes = null;
-
-			if ( XmlHelper.EvaluateNodes( document.DocumentElement, "/resources/resource" ) )
-			{
-				solutionNodes = XmlHelper.SelectNodes( document.DocumentElement, "/resources/resource" );
-			}
-			else if ( XmlHelper.EvaluateSingleNode( document.DocumentElement, "/resource" ) )
-			{
-				solutionNodes = XmlHelper.SelectNodes( document.DocumentElement, "/resource" );
-			}
-
-			if ( solutionNodes != null )
-			{
-				foreach ( XmlNode solutionNode in solutionNodes )
-				{
-					string solutionName = XmlHelper.ReadElementString( solutionNode, "name" );
-
-					EventLog.Application.WriteInformation( "Solution '{0}' is being installed.", solutionName );
-					SolutionInstallerHelper.InstallSolution( solutionNode, configPath, action );
-					EventLog.Application.WriteInformation( "Solution '{0}' has been installed.", solutionName );
-				}
-			}
-		}
-
-		/// <summary>
 		///     Applies the upload folder security.
 		/// </summary>
 		/// <param name="path">The path.</param>
@@ -707,10 +666,13 @@ namespace EDC.SoftwarePlatform.Install.Common
 
 
 		/// <summary>
-		///     Ensures the bootstrap solution exists.
+		///     Perform first-time installation bootstrapping tasks.
 		/// </summary>
+		/// <remarks>
+		///     This is a no-op if global tenant is already present.
+		/// </remarks>
 		/// <exception cref="FileNotFoundException"></exception>
-		public void EnsureBootstrapSolutionExists( )
+		public void InstallBootstrap( )
 		{
 			string databaseServer = ArgumentParser.DatabaseServer;
 			string databaseCatalog = ArgumentParser.DatabaseCatalog;
@@ -739,27 +701,22 @@ namespace EDC.SoftwarePlatform.Install.Common
 
 			using ( new InstallationContext( ) )
 			{
-				string xmlPath = ArgumentParser.Path;
-
-				if ( !File.Exists( xmlPath ) )
-				{
-					throw new FileNotFoundException( $"Missing solution file at '{xmlPath}'.", xmlPath );
-				}
-
-				InstallBootstrapSolution( xmlPath );
+				TenantManager.InstallGlobalTenant( );
 
 				WriteLine( "Rebuilding full text catalog..." );
 
-				Database.RebuildFullTextCatalog( databaseServer, databaseCatalog, false );
+			    Database.SetPlatformInstallInfo( databaseServer, databaseCatalog );
+
+                Database.RebuildFullTextCatalog( databaseServer, databaseCatalog, false );
 			}
 
 			WriteLine( "Core solution successfully installed." );
 		}
 
 		/// <summary>
-		/// Upgrades the bootstrap solution.
+		/// Upgrades bootstrap operations.
 		/// </summary>
-		public void UpgradeBootstrapSolution( )
+		public void UpgradeBootstrap( )
 		{
 			string databaseServer = ArgumentParser.DatabaseServer;
 			string databaseCatalog = ArgumentParser.DatabaseCatalog;
@@ -778,17 +735,11 @@ namespace EDC.SoftwarePlatform.Install.Common
 
 			using ( new InstallationContext( ) )
 			{
-				string xmlPath = ArgumentParser.Path;
+			    Database.RepairPackageIdInGlobal( databaseServer, databaseCatalog );
 
-				if ( !File.Exists( xmlPath ) )
-				{
-					throw new FileNotFoundException( $"Missing solution file at '{xmlPath}'.", xmlPath );
-				}
+                Database.RepairResourceKeyHashesInGlobal( databaseServer, databaseCatalog );
 
-				InstallBootstrapSolution( xmlPath, SolutionInstallAction.Upgrade );
-
-				WriteLine( "Rebuilding full text catalog..." );
-			}
+            }
 		}
 
 		/// <summary>

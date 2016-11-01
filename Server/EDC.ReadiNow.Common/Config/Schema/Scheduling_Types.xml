@@ -82,14 +82,6 @@
     <onAfterSave>scheduledItemSyncTarget</onAfterSave>
     <onAfterDelete>scheduledItemSyncTarget</onAfterDelete>
   </type>
-  <!-- system only WARNING! This does not appear to work correctly as there is nothing to trigger the sync process on installation -->
-  <type>
-    <alias>systemOnlyScheduleAction</alias>
-    <name>System Only Schedule Action</name>
-    <description>A schedule action that only resides in the global tenant.</description>
-    <inherits>scheduleAction</inherits>
-    <systemTenantOnly>true</systemTenantOnly>
-  </type>
   <!-- Item Targets -->
   <target>
     <alias>scheduleSyncTarget</alias>

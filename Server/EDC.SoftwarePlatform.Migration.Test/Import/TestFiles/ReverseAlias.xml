@@ -1,0 +1,37 @@
+﻿<!-- ReadiNow Data Package -->
+<xml version="2.0" encoding="utf-16" xmlns:k="console" xmlns="core">
+  <metadata>
+    <type>DataExport</type>
+    <platformVersion>1.0.0.0</platformVersion>
+    <publishDate>2016-10-26 10:00:13Z</publishDate>
+  </metadata>
+  <entities>
+    <group typeId="definition">
+      <definition id="66faa9ee-4f33-4e1a-98e9-380121561a37">
+        <inherits>userResource</inherits>
+        <fields>
+          <stringField id="833af7da-09d7-4a39-b371-cd2d1b18bc87">
+            <securityOwner>872fcf94-ec6e-4a31-94e3-4a5fe99be83c</securityOwner>
+          </stringField>
+        </fields>
+      </definition>
+    </group>
+  </entities>
+  <relationships />
+  <secureData />
+  <binaries />
+  <documents />
+  <aliasMap>
+    <createdBy id="69e48524-101a-4575-a636-e69c9906cab4" type="rel" />
+    <createdDate id="8c309550-868f-4f7a-b2ac-d5e4c6659a9c" type="dateTime" />
+    <definition id="22f52cc0-ecc7-49c6-9f71-2500fb832579" type="type" />
+    <fields id="d97ffa0d-5aa5-4cd2-ad48-4b82b6c1af25" type="revRel" />
+    <inherits id="50fe1b39-bb32-4825-8ab5-807a7df9b5b8" type="rel" />
+    <lastModifiedBy id="653ebcf5-66ec-4238-9aba-fac99891f192" type="rel" />
+    <modifiedDate id="58a25569-1266-4886-894f-dbd02c483561" type="dateTime" />
+    <securityOwner id="a715539d-0425-4488-a950-54dca3d88925" type="rel" />
+    <stringField id="c02c4fce-6e32-4c2c-bf23-52b8eecd23af" type="type" />
+    <userResource id="401a7efd-beae-41ee-a179-ae8846685f04" />
+  </aliasMap>
+  <doNotRemove />
+</xml>

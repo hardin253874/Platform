@@ -631,7 +631,7 @@ namespace EDC.ReadiNow.Common.ConfigParser
                 if (relType == Aliases.RelExclusiveCollection || relType == Aliases.RelDependants || relType == Aliases.RelComponents)
                     return Aliases.OneToMany;
 
-                if (relType == Aliases.RelManyToMany || relType == Aliases.RelSharedDependants || relType == Aliases.RelSharedDependantsOf || relType == Aliases.RelMultiChoiceField)
+                if (relType == Aliases.RelManyToMany || relType == Aliases.RelSharedDependants || relType == Aliases.RelSharedDependantsOf || relType == Aliases.RelMultiChoiceField || relType == Aliases.RelManyToManyFwd || relType == Aliases.RelManyToManyRev )
                     return Aliases.ManyToMany;
             }
 

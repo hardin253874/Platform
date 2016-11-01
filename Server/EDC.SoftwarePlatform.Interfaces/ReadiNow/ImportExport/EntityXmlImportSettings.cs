@@ -10,6 +10,14 @@ namespace ReadiNow.ImportExport
         /// <summary>
         /// Default settings
         /// </summary>
-        public static readonly EntityXmlImportSettings Default = new EntityXmlImportSettings( );
+        public static readonly EntityXmlImportSettings Default = new EntityXmlImportSettings
+        {
+            IgnoreMissingDependencies = false
+        };
+
+        /// <summary>
+        /// If true, an import will proceed even if there are missing dependencies.
+        /// </summary>
+        public bool IgnoreMissingDependencies { get; set; }
     }
 }

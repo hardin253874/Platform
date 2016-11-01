@@ -103,13 +103,17 @@ namespace EDC.SoftwarePlatform.Activities
                         //    direction,
                         //    replaceExisting);
 
-                        var relCollection = entityToUpdate.GetRelationships(relEntity, direction);
+                        var oldRelCollection = entityToUpdate.GetRelationships(relEntity, direction);
 
                         //Log("Before: relationship {0} {1} has {2} related entities", relEntity.Id, relEntity.Name,
                         //    relCollection.Count());
 
-                        if (replaceExisting)
-                            relCollection.Clear();
+                        var relCollection = new EntityRelationshipCollection<IEntity>();    // We need to create a new collection and set the relationship to it to deal with a bug that occurs when a resource is cloned and then modified with a relationship set to the same value.
+                        
+
+                        if (!replaceExisting)
+                            foreach (var e in oldRelCollection)
+                                relCollection.Add(e);
 
                         foreach (
                             var valueArg in
@@ -148,6 +152,8 @@ namespace EDC.SoftwarePlatform.Activities
                                 }
                             }
                         }
+
+                        entityToUpdate.SetRelationships(relEntity, relCollection, direction);
 
                         //Log("After: relationship {0} {1} has {2} related entities", relEntity.Id, relEntity.Name,
                         //    relCollection.Count());

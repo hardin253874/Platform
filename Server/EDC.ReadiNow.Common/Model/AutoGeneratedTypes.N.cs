@@ -7097,6 +7097,17 @@ namespace EDC.ReadiNow.Model
 		}
 
 		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static StringField VisibilityCalculation_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.ControlOnForm.VisibilityCalculation_Field;
+			}
+		}
+
+		/// <summary>
 		/// Public static accessor to the inherited  reverse relationship.
 		/// </summary>
 		public static IEntity ContainedWithinStructureControlOnForm_Field
@@ -7290,7 +7301,7 @@ namespace EDC.ReadiNow.Model
 		{
 			get
 			{
-				return new IEntity [ ] { NumericKFieldRenderControl.Alias_Field, NumericKFieldRenderControl.CanDelete_Field, NumericKFieldRenderControl.CanModify_Field, NumericKFieldRenderControl.CreatedDate_Field, NumericKFieldRenderControl.Description_Field, NumericKFieldRenderControl.GroupName_Field, NumericKFieldRenderControl.HideLabel_Field, NumericKFieldRenderControl.MandatoryControl_Field, NumericKFieldRenderControl.ModifiedDate_Field, NumericKFieldRenderControl.Name_Field, NumericKFieldRenderControl.ReadOnlyControl_Field, NumericKFieldRenderControl.RenderingBackgroundColor_Field, NumericKFieldRenderControl.RenderingHeight_Field, NumericKFieldRenderControl.RenderingOrdinal_Field, NumericKFieldRenderControl.RenderingWidth_Field, NumericKFieldRenderControl.ShowControlHelpText_Field, NumericKFieldRenderControl.ContainedWithinStructureControlOnForm_Field, NumericKFieldRenderControl.ControlRelatedEntityDataPathNodes_Field, NumericKFieldRenderControl.CreatedBy_Field, NumericKFieldRenderControl.FieldToRender_Field, NumericKFieldRenderControl.Flags_Field, NumericKFieldRenderControl.IndirectInSolution_Field, NumericKFieldRenderControl.InSolution_Field, NumericKFieldRenderControl.InStructureLevel_Field, NumericKFieldRenderControl.IsOfType_Field, NumericKFieldRenderControl.IsRootForStructureView_Field, NumericKFieldRenderControl.LastModifiedBy_Field, NumericKFieldRenderControl.ResourceConsoleBehavior_Field, NumericKFieldRenderControl.ResourceHasResourceKeyDataHashes_Field, NumericKFieldRenderControl.ResourceInFolder_Field, NumericKFieldRenderControl.SecurityOwner_Field, NumericKFieldRenderControl.SelectionBehavior_Field, NumericKFieldRenderControl.ShortcutInFolder_Field };
+				return new IEntity [ ] { NumericKFieldRenderControl.Alias_Field, NumericKFieldRenderControl.CanDelete_Field, NumericKFieldRenderControl.CanModify_Field, NumericKFieldRenderControl.CreatedDate_Field, NumericKFieldRenderControl.Description_Field, NumericKFieldRenderControl.GroupName_Field, NumericKFieldRenderControl.HideLabel_Field, NumericKFieldRenderControl.MandatoryControl_Field, NumericKFieldRenderControl.ModifiedDate_Field, NumericKFieldRenderControl.Name_Field, NumericKFieldRenderControl.ReadOnlyControl_Field, NumericKFieldRenderControl.RenderingBackgroundColor_Field, NumericKFieldRenderControl.RenderingHeight_Field, NumericKFieldRenderControl.RenderingOrdinal_Field, NumericKFieldRenderControl.RenderingWidth_Field, NumericKFieldRenderControl.ShowControlHelpText_Field, NumericKFieldRenderControl.VisibilityCalculation_Field, NumericKFieldRenderControl.ContainedWithinStructureControlOnForm_Field, NumericKFieldRenderControl.ControlRelatedEntityDataPathNodes_Field, NumericKFieldRenderControl.CreatedBy_Field, NumericKFieldRenderControl.FieldToRender_Field, NumericKFieldRenderControl.Flags_Field, NumericKFieldRenderControl.IndirectInSolution_Field, NumericKFieldRenderControl.InSolution_Field, NumericKFieldRenderControl.InStructureLevel_Field, NumericKFieldRenderControl.IsOfType_Field, NumericKFieldRenderControl.IsRootForStructureView_Field, NumericKFieldRenderControl.LastModifiedBy_Field, NumericKFieldRenderControl.ResourceConsoleBehavior_Field, NumericKFieldRenderControl.ResourceHasResourceKeyDataHashes_Field, NumericKFieldRenderControl.ResourceInFolder_Field, NumericKFieldRenderControl.SecurityOwner_Field, NumericKFieldRenderControl.SelectionBehavior_Field, NumericKFieldRenderControl.ShortcutInFolder_Field };
 			}
 		}
 
@@ -7520,6 +7531,20 @@ namespace EDC.ReadiNow.Model
 			set
 			{
 				this.SetField( "console:showControlHelpText", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public string VisibilityCalculation
+		{
+			get
+			{
+				return ( string ) this.GetField( "console:visibilityCalculation" );
+			}
+			set
+			{
+				this.SetField( "console:visibilityCalculation", value);
 			}
 		}
 
@@ -8015,6 +8040,17 @@ namespace EDC.ReadiNow.Model
 		}
 
 		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static StringField VisibilityCalculation_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.ControlOnForm.VisibilityCalculation_Field;
+			}
+		}
+
+		/// <summary>
 		/// Public static accessor to the inherited  reverse relationship.
 		/// </summary>
 		public static IEntity ContainedWithinStructureControlOnForm_Field
@@ -8208,7 +8244,7 @@ namespace EDC.ReadiNow.Model
 		{
 			get
 			{
-				return new IEntity [ ] { NumericKFieldRenderControl2.Alias_Field, NumericKFieldRenderControl2.CanDelete_Field, NumericKFieldRenderControl2.CanModify_Field, NumericKFieldRenderControl2.CreatedDate_Field, NumericKFieldRenderControl2.Description_Field, NumericKFieldRenderControl2.GroupName_Field, NumericKFieldRenderControl2.HideLabel_Field, NumericKFieldRenderControl2.MandatoryControl_Field, NumericKFieldRenderControl2.ModifiedDate_Field, NumericKFieldRenderControl2.Name_Field, NumericKFieldRenderControl2.ReadOnlyControl_Field, NumericKFieldRenderControl2.RenderingBackgroundColor_Field, NumericKFieldRenderControl2.RenderingHeight_Field, NumericKFieldRenderControl2.RenderingOrdinal_Field, NumericKFieldRenderControl2.RenderingWidth_Field, NumericKFieldRenderControl2.ShowControlHelpText_Field, NumericKFieldRenderControl2.ContainedWithinStructureControlOnForm_Field, NumericKFieldRenderControl2.ControlRelatedEntityDataPathNodes_Field, NumericKFieldRenderControl2.CreatedBy_Field, NumericKFieldRenderControl2.FieldToRender_Field, NumericKFieldRenderControl2.Flags_Field, NumericKFieldRenderControl2.IndirectInSolution_Field, NumericKFieldRenderControl2.InSolution_Field, NumericKFieldRenderControl2.InStructureLevel_Field, NumericKFieldRenderControl2.IsOfType_Field, NumericKFieldRenderControl2.IsRootForStructureView_Field, NumericKFieldRenderControl2.LastModifiedBy_Field, NumericKFieldRenderControl2.ResourceConsoleBehavior_Field, NumericKFieldRenderControl2.ResourceHasResourceKeyDataHashes_Field, NumericKFieldRenderControl2.ResourceInFolder_Field, NumericKFieldRenderControl2.SecurityOwner_Field, NumericKFieldRenderControl2.SelectionBehavior_Field, NumericKFieldRenderControl2.ShortcutInFolder_Field };
+				return new IEntity [ ] { NumericKFieldRenderControl2.Alias_Field, NumericKFieldRenderControl2.CanDelete_Field, NumericKFieldRenderControl2.CanModify_Field, NumericKFieldRenderControl2.CreatedDate_Field, NumericKFieldRenderControl2.Description_Field, NumericKFieldRenderControl2.GroupName_Field, NumericKFieldRenderControl2.HideLabel_Field, NumericKFieldRenderControl2.MandatoryControl_Field, NumericKFieldRenderControl2.ModifiedDate_Field, NumericKFieldRenderControl2.Name_Field, NumericKFieldRenderControl2.ReadOnlyControl_Field, NumericKFieldRenderControl2.RenderingBackgroundColor_Field, NumericKFieldRenderControl2.RenderingHeight_Field, NumericKFieldRenderControl2.RenderingOrdinal_Field, NumericKFieldRenderControl2.RenderingWidth_Field, NumericKFieldRenderControl2.ShowControlHelpText_Field, NumericKFieldRenderControl2.VisibilityCalculation_Field, NumericKFieldRenderControl2.ContainedWithinStructureControlOnForm_Field, NumericKFieldRenderControl2.ControlRelatedEntityDataPathNodes_Field, NumericKFieldRenderControl2.CreatedBy_Field, NumericKFieldRenderControl2.FieldToRender_Field, NumericKFieldRenderControl2.Flags_Field, NumericKFieldRenderControl2.IndirectInSolution_Field, NumericKFieldRenderControl2.InSolution_Field, NumericKFieldRenderControl2.InStructureLevel_Field, NumericKFieldRenderControl2.IsOfType_Field, NumericKFieldRenderControl2.IsRootForStructureView_Field, NumericKFieldRenderControl2.LastModifiedBy_Field, NumericKFieldRenderControl2.ResourceConsoleBehavior_Field, NumericKFieldRenderControl2.ResourceHasResourceKeyDataHashes_Field, NumericKFieldRenderControl2.ResourceInFolder_Field, NumericKFieldRenderControl2.SecurityOwner_Field, NumericKFieldRenderControl2.SelectionBehavior_Field, NumericKFieldRenderControl2.ShortcutInFolder_Field };
 			}
 		}
 
@@ -8438,6 +8474,20 @@ namespace EDC.ReadiNow.Model
 			set
 			{
 				this.SetField( "console:showControlHelpText", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public string VisibilityCalculation
+		{
+			get
+			{
+				return ( string ) this.GetField( "console:visibilityCalculation" );
+			}
+			set
+			{
+				this.SetField( "console:visibilityCalculation", value);
 			}
 		}
 

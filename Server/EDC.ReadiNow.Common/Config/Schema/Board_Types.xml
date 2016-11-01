@@ -177,7 +177,7 @@
         <name>Board dimension value</name>
         <description>A dimension value to show on this board.</description>
         <alias>boardDimensionValue</alias>
-        <relType>relManyToMany</relType>
+        <relType>relManyToManyFwd</relType>
         <toName>Dimension value</toName>
         <toType>resource</toType>
         <relationshipInFromTypeGroup>boardDimensionDetails</relationshipInFromTypeGroup>

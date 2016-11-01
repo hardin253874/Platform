@@ -43,7 +43,7 @@ namespace EDC.SoftwarePlatform.Migration.Processing
             using ( IDataTarget target = FileManager.CreateDataTarget( Format.XmlVer2, packagePath ) )
             {
                 var exporter = ( EntityXmlExporter )Factory.EntityXmlExporter;
-                exporter.ExportEntity( tenantId, entityId, target, context, false );
+                exporter.ExportEntity( tenantId, new[] { entityId }, target, context, false );
             }
 
             context.Report.EndTime = DateTime.Now;

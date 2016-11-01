@@ -192,7 +192,7 @@
         <alias>k:customRenderControlRequiredForms</alias>
         <reverseAlias>k:formRequiredByCustomRenderControl</reverseAlias>
         <description>Form instances that this control implementation relies upon.</description>
-        <relType>relManyToMany</relType>
+        <relType>relManyToManyFwd</relType>
         <securesTo>true</securesTo>
         <securesToReadOnly>true</securesToReadOnly>
         <toType>k:customEditForm</toType>
@@ -204,7 +204,7 @@
         <alias>k:customRenderControlRequiredReports</alias>
         <reverseAlias>k:reportRequiredByCustomRenderControl</reverseAlias>
         <description>Report instances that this control implementation relies upon.</description>
-        <relType>relManyToMany</relType>
+        <relType>relManyToManyFwd</relType>
         <securesTo>true</securesTo>
         <securesToReadOnly>true</securesToReadOnly>
         <toType>report</toType>
@@ -293,7 +293,7 @@
         <alias>k:fieldInstanceToRender</alias>
         <reverseAlias>k:fieldInstanceRenderingControl</reverseAlias>
         <toType>field</toType>
-        <relType>relManyToMany</relType>
+        <relType>relManyToManyFwd</relType>
         <generateCode>true</generateCode>
         <relationshipInFromTypeGroup>k:fieldRenderControlTypeDetails</relationshipInFromTypeGroup>
       </relationship>
@@ -451,6 +451,12 @@
         <defaultValue>false</defaultValue>
         <fieldInGroup>k:controlOnFormDetails</fieldInGroup>
       </boolField>
+      <stringField>
+        <name>Visibility calculation</name>
+        <alias>k:visibilityCalculation</alias>
+        <description>The visibility calculation.</description>
+        <fieldInGroup>k:controlOnFormDetails</fieldInGroup>
+      </stringField>
     </fields>
     <!-- The path of relationships to follow to render the current control -->
     <relationships>

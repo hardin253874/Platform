@@ -32,12 +32,6 @@
     <description>A schedule that will run once a day after business hours.</description>
     <cronDefinition>0 15 3 1/1 * ? *</cronDefinition>
   </scheduleCron>
-  <scheduleCron>
-    <alias>fileCleanupSchedule</alias>
-    <name>File cleanup schedule</name>
-    <description>A schedule that purges file.</description>
-    <cronDefinition>0 45 3 1/4 * ? *</cronDefinition>
-  </scheduleCron>
   <cleanUpWorkflowRunsAction>
     <alias>cleanUpWorkflowRunsInstance</alias>
     <name>Clean up workflow runs</name>
@@ -61,13 +55,6 @@
     <oaPostInDirectory>false</oaPostInDirectory>
     <oaEmailAddress>noreply@readinow.net</oaEmailAddress>
   </imapEmailProvider>
-  <processInboxesAction>
-    <alias>processInboxInstance</alias>
-    <name>Process Inbox Instance</name>
-    <triggerEnabled>true</triggerEnabled>
-    <scheduleForTrigger>scheduleProcessInbox</scheduleForTrigger>
-    <k:resourceInFolder>environmentSection</k:resourceInFolder>
-  </processInboxesAction>
   <inbox>
     <alias>approvalsInbox</alias>
     <name>Approvals Inbox</name>
@@ -98,11 +85,4 @@
     <inboxEmailActions>sendICalUpdateEmailsAction,matchSentToReceivedEmailsAction</inboxEmailActions>
     <inboxEnabled>false</inboxEnabled>
   </inbox>
-  <cleanupFileRepositoriesAction>
-    <alias>cleanupFileRepositoriesInstance</alias>
-    <name>Clean up file repositories</name>
-    <description>Clean up file repositories.</description>
-    <triggerEnabled>true</triggerEnabled>
-    <scheduleForTrigger>fileCleanupSchedule</scheduleForTrigger>
-  </cleanupFileRepositoriesAction>
 </resources>

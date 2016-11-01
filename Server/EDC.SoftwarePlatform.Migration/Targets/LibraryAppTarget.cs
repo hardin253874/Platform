@@ -38,14 +38,23 @@ namespace EDC.SoftwarePlatform.Migration.Targets
 		{
 			get;
 			set;
-		}
+        }
 
-		/// <summary>
-		///     Writes the binary data.
-		/// </summary>
-		/// <param name="data">The data.</param>
-		/// <param name="context">The context.</param>
-		void IDataTarget.WriteBinaryData( IEnumerable<BinaryDataEntry> data, IProcessingContext context )
+        /// <summary>
+        ///     If true, Don't write metadata to the global tenant.
+        /// </summary>
+        public bool SkipMetadata
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        ///     Writes the binary data.
+        /// </summary>
+        /// <param name="data">The data.</param>
+        /// <param name="context">The context.</param>
+        void IDataTarget.WriteBinaryData( IEnumerable<BinaryDataEntry> data, IProcessingContext context )
 		{            
             Func<DataColumn[ ]> getColumnsAction = ( ) => new[ ]
 			{
@@ -507,7 +516,13 @@ namespace EDC.SoftwarePlatform.Migration.Targets
 		/// <param name="context"></param>
 		void IDataTarget.SetMetadata( Metadata metadata, IProcessingContext context )
 		{
-			/////
+		    if ( SkipMetadata )
+		    {
+                context.WriteInfo( "Skipping app library metadata" );
+                return;
+            }
+
+            /////
 			// Write the application
 			/////
 			App app = Entity.GetByField<App>( metadata.AppId.ToString( ), new EntityRef( "core:applicationId" ) ).FirstOrDefault( );

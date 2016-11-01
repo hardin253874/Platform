@@ -91,13 +91,18 @@ namespace EDC.SoftwarePlatform.Migration.Sources
 		/// </summary>
 		private volatile ISchemaResolver _schema;
 
-		/// <summary>
-		///     Gets or sets the active solution.
-		/// </summary>
-		/// <value>
-		///     The active solution.
-		/// </value>
-		public string ActiveSolution
+	    /// <summary>
+	    ///     Package Id.
+	    /// </summary>
+	    private Guid _packageId;
+
+        /// <summary>
+        ///     Gets or sets the active solution.
+        /// </summary>
+        /// <value>
+        ///     The active solution.
+        /// </value>
+        public string ActiveSolution
 		{
 			get;
 			set;
@@ -632,18 +637,9 @@ namespace EDC.SoftwarePlatform.Migration.Sources
 			/////
 			// Get the entities that belong to the active solution.
 			/////
-			IEnumerable<Entity> activeSolutionEntities = allEntities.Where( e => e.Members.Any( m => m.MemberDefinition.Alias.Namespace == "core" && m.MemberDefinition.Alias.Value == "inSolution" && m.Value == ActiveSolution ) )
-				.Where( e => !e.Members.Any( m => m.MemberDefinition.Alias.Namespace == "core" && m.MemberDefinition.Alias.Value == "systemTenantOnly" ) );
-
-			IList<Entity> solutionEntities = activeSolutionEntities as IList<Entity> ?? activeSolutionEntities.ToList( );
-			IEnumerable<Entity> enumerable = solutionEntities.Where( e => e.Type?.Entity != null && e.Type.Entity.Members.Any( m => m.MemberDefinition.Alias.Namespace == "core" && m.MemberDefinition.Alias.Value == "systemTenantOnly" ) );
-
-			/////
-			// Remove the entities whose type is system tenant only.
-			/////
-			IEnumerable<Entity> except = solutionEntities.Except( enumerable );
-
-			return except.Select( e => new EntityEntry
+			IEnumerable<Entity> activeSolutionEntities = allEntities.Where( e => e.Members.Any( m => m.MemberDefinition.Alias.Namespace == "core" && m.MemberDefinition.Alias.Value == "inSolution" && m.Value == ActiveSolution ) );
+            
+			return activeSolutionEntities.Select( e => new EntityEntry
 			{
 				EntityId = e.Guid,
 				State = DataState.Added
@@ -682,7 +678,6 @@ namespace EDC.SoftwarePlatform.Migration.Sources
 					let intFieldValue = SchemaResolver.GetIntFieldValue( field.Field, aliasMarkerIdField )
 					where intFieldValue != null
 					where pair.Key.Members != null && pair.Key.Members.Any( m => m.MemberDefinition.Alias.Namespace == "core" && m.MemberDefinition.Alias.Value == "inSolution" && m.Value == ActiveSolution )
-					where pair.Key.Members != null && !pair.Key.Members.Any( m => m.MemberDefinition.Alias.Namespace == "core" && m.MemberDefinition.Alias.Value == "systemTenantOnly" )
 					let markerId = intFieldValue.Value
 					select new DataEntry
 					{
@@ -701,7 +696,6 @@ namespace EDC.SoftwarePlatform.Migration.Sources
 			return ( from pair in typedValues
 				from field in pair.Value
 				where pair.Key.Members != null && pair.Key.Members.Any( m => m.MemberDefinition.Alias.Namespace == "core" && m.MemberDefinition.Alias.Value == "inSolution" && m.Value == ActiveSolution )
-				where pair.Key.Members != null && !pair.Key.Members.Any( m => m.MemberDefinition.Alias.Namespace == "core" && m.MemberDefinition.Alias.Value == "systemTenantOnly" )
 				select new DataEntry
 				{
 					Data = FormatData( field ),
@@ -827,14 +821,16 @@ namespace EDC.SoftwarePlatform.Migration.Sources
 				}
 			}
 
-			/////
-			// Return the metadata.
-			/////
-			return new Metadata
+		    _packageId = GenerateAppVerId( name, version );
+
+            /////
+            // Return the metadata.
+            /////
+            return new Metadata
 			{
 				AppId = appId,
 				AppName = name,
-				AppVerId = GenerateAppVerId( name, version ),
+				AppVerId = _packageId,
 				Description = description,
 				Dependencies = dependencies,
 				Name = name,
@@ -862,7 +858,7 @@ namespace EDC.SoftwarePlatform.Migration.Sources
 
 			IEnumerable<Relationship> relationships = Relationships;
 
-			IEnumerable<Relationship> activeSolutionRelationships = relationships.Where( r => r.SolutionEntity.Alias.Namespace == "core" && r.SolutionEntity.Alias.Value == ActiveSolution ).DropSystemTenantOnlyRelationships( );
+			IEnumerable<Relationship> activeSolutionRelationships = relationships.Where( r => r.SolutionEntity.Alias.Namespace == "core" && r.SolutionEntity.Alias.Value == ActiveSolution );
 
 			return activeSolutionRelationships.Select( r => new RelationshipEntry( r.Type.Guid, r.From.Guid, r.To.Guid ) );
 		}
@@ -924,7 +920,10 @@ namespace EDC.SoftwarePlatform.Migration.Sources
         /// <returns></returns>
         public IEnumerable<Guid> GetDoNotRemove( IProcessingContext context )
         {
-            return Enumerable.Empty<Guid>( );
+            string xpath = $"//doNotRemove[@solution='{ActiveSolution}']/leaveEntity/@id";
+            var nodes = SolutionDocument.SelectNodes( xpath );
+            var guids = nodes.Cast<XmlAttribute>().Select( attr => new Guid( ( attr ).Value ) ).ToList( );
+            return guids;
         }
 
         /// <summary>
@@ -1084,12 +1083,17 @@ namespace EDC.SoftwarePlatform.Migration.Sources
 		/// </summary>
 		/// <param name="fieldData">The field data.</param>
 		/// <returns></returns>
-		private static object FormatData( FieldData fieldData )
+		private object FormatData( FieldData fieldData )
 		{
 			if ( fieldData?.Value == null )
 			{
 				return null;
 			}
+
+		    if ( fieldData.Field.Alias.Value == "packageId" )
+		    {
+		        return _packageId; // use the generated package ID, instead of the one in the XML file.
+		    }
 
 			if ( fieldData.Field?.Type != null && fieldData.Field.Type.Alias != null )
 			{

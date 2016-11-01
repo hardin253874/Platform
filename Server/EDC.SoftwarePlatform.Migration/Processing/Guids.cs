@@ -8,6 +8,14 @@ namespace EDC.SoftwarePlatform.Migration.Processing
     /// </summary>
     public static class Guids
     {
+        public static readonly Guid CoreSolution = new Guid( "7062aade-2e72-4a71-a7fa-a412d20d6f01" );
+
+        public static readonly Guid ConsoleSolution = new Guid( "34ff4d95-70c6-4ae8-8f6f-38d88546d4c4" );
+
+        public static readonly Guid CoreDataSolution = new Guid( "abf12077-6fa5-43da-b608-b8b7514d07bb" );
+
+        public static readonly Guid SystemSolution = new Guid( "3e67c1c4-aa65-4a9f-95d2-908a9f3614d1" );
+
         public static readonly Guid CloneEntities = new Guid( "c84720b5-f038-49ba-a601-4f4cbe6cdb7c" );
 
         public static readonly Guid CloneReferences = new Guid( "4c0e20fc-88ee-47b6-babb-6f444484a5f3" );
@@ -25,5 +33,7 @@ namespace EDC.SoftwarePlatform.Migration.Processing
         public static readonly Guid ReverseAlias = new Guid( "b834e145-4eb3-44a9-aec7-170f2fa354d2" );
 
         public static readonly Guid IsOfType = new Guid( "e1afc9e2-a526-4dc6-b90f-e2271e130f24" );
+
+        public static readonly Guid Solution = new Guid( "f6ebea8a-0989-4ae0-be53-5d6541cb0908" );
     }
 }

@@ -13,6 +13,8 @@ using EDC.SoftwarePlatform.Migration.Sources;
 using EDC.SoftwarePlatform.Migration.Targets;
 using ReadiNow.ImportExport;
 using EDC.ReadiNow.Security.AccessControl;
+using System.Text;
+using EDC.ReadiNow.Diagnostics;
 
 namespace EDC.SoftwarePlatform.Migration.Processing.Xml
 {
@@ -22,16 +24,22 @@ namespace EDC.SoftwarePlatform.Migration.Processing.Xml
     class EntityXmlImporter : IEntityXmlImporter
     {
         private ISecurityProcessor SecurityProcessor { get; }
+        private IUpgradeIdProvider UpgradeIdProvider { get; }
+
+        private EntityXmlImportSettings Settings { get; set; }
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="userRoleRepository"></param>
-        public EntityXmlImporter( ISecurityProcessor securityProcessor )
+        public EntityXmlImporter( ISecurityProcessor securityProcessor, IUpgradeIdProvider upgradeIdProvider )
         {
             if ( securityProcessor == null )
                 throw new ArgumentNullException( nameof( securityProcessor ) );
+            if ( upgradeIdProvider == null )
+                throw new ArgumentNullException( nameof( upgradeIdProvider ) );
             SecurityProcessor = securityProcessor;
+            UpgradeIdProvider = upgradeIdProvider;
         }
 
 
@@ -48,6 +56,7 @@ namespace EDC.SoftwarePlatform.Migration.Processing.Xml
             if ( settings == null )
                 settings = EntityXmlImportSettings.Default;
 
+            Settings = settings;
             var context = new ProcessingContext( );
 
             context.Report.StartTime = DateTime.Now;
@@ -58,15 +67,24 @@ namespace EDC.SoftwarePlatform.Migration.Processing.Xml
             /////
             // Create source to load app data from tenant
             /////
-            using ( IDataSource source = CreateDataSource( xmlReader, settings ) )
+            try
             {
-                CheckImportSecurity( source, context );
+                using ( IDataSource source = CreateDataSource( xmlReader, settings ) )
+                {
+                    CheckImportSecurity( source, context );
 
-                rootGuids = ImportEntity( tenantId, source, context );
+                    rootGuids = ImportEntity( tenantId, source, context );
+                }
+            }
+            catch ( ImportDependencyException )
+            {
+                return new EntityXmlImportResult( new long[] { } )
+                {
+                    ErrorMessage = "The import failed because some dependencies could not be found."
+                };
             }
 
             context.Report.EndTime = DateTime.Now;
-
 
             // Prepare result
             List<long> rootIds = rootGuids.Select( guid => Entity.GetIdFromUpgradeId( guid ) ).ToList( );
@@ -94,11 +112,12 @@ namespace EDC.SoftwarePlatform.Migration.Processing.Xml
         /// <param name="tenantId"></param>
         /// <param name="importSource"></param>
         /// <param name="context"></param>
+        /// <param name="settings"></param>
         internal IEnumerable<Guid> ImportEntity( long tenantId, IDataSource importSource, IProcessingContext context )
         {
-            Guid rootGuid = GetRootGuidFromMetadata( importSource, context );
+            IList<Guid> rootGuids = GetRootGuidsFromMetadata( importSource, context );
             
-            using ( IDataSource baseline = GetBaselineSourceForImport( tenantId, rootGuid ) )
+            using ( IDataSource baseline = GetBaselineSourceForImport( tenantId, rootGuids ) )
             using ( TenantMergeTarget target = new TenantMergeTarget
             {
                 TenantId = tenantId
@@ -116,13 +135,40 @@ namespace EDC.SoftwarePlatform.Migration.Processing.Xml
                 {
                     processor.MergeData( );
 
+                    CheckForMissingDependencies( context );
+
                     target.Commit( );
                 }
             }
 
             CacheManager.ClearCaches( tenantId );
 
-            return new[ ] { rootGuid };
+            return rootGuids;
+        }
+
+        /// <summary>
+        /// Check the context for missing dependencies, and if so report them.
+        /// Exception will roll back the transaction.
+        /// </summary>
+        /// <param name="context"></param>
+        private void CheckForMissingDependencies( IProcessingContext context )
+        {
+            if ( Settings.IgnoreMissingDependencies )
+                return;
+            if ( context.Report.MissingDependencies.Count == 0 )
+                return;
+
+            StringBuilder sb = new StringBuilder( );
+            sb.AppendLine( "The import failed because there are missing dependencies." );
+            foreach ( object obj in context.Report.MissingDependencies )
+            {
+                IMissingDependency dep = obj as IMissingDependency;
+                if ( dep == null )
+                    continue;
+                sb.AppendLine( dep.GetLogMessage( ) );
+            }
+            EventLog.Application.WriteWarning( sb.ToString( ) );
+            throw new ImportDependencyException( );
         }
 
         /// <summary>
@@ -131,12 +177,12 @@ namespace EDC.SoftwarePlatform.Migration.Processing.Xml
         /// <param name="context"></param>
         /// <param name="importSource"></param>
         /// <returns></returns>
-        private Guid GetRootGuidFromMetadata( IDataSource importSource, IProcessingContext context )
+        private IList<Guid> GetRootGuidsFromMetadata( IDataSource importSource, IProcessingContext context )
         {
-            Guid rootGuid = importSource.GetMetadata( context ).RootEntityId;
-            if ( rootGuid == Guid.Empty )
+            var rootEntities = importSource.GetMetadata( context ).RootEntities;
+            if ( rootEntities == null || rootEntities.Count == 0 )
                 throw new ArgumentException( "Not a valid file to import. Root entry missing." );
-            return rootGuid;
+            return rootEntities;
         }
 
         /// <summary>
@@ -148,25 +194,27 @@ namespace EDC.SoftwarePlatform.Migration.Processing.Xml
         ///     If it's not, then use an empty source so that everything gets added.
         /// </remarks>
         /// <param name="tenantId">Target tenant.</param>
-        /// <param name="rootGuid">UpgradeID of entity to be targeted, if present.</param>
+        /// <param name="rootGuids">UpgradeID of entity to be targeted, if present.</param>
         /// <returns></returns>
-        private IDataSource GetBaselineSourceForImport( long tenantId, Guid rootGuid )
+        private IDataSource GetBaselineSourceForImport( long tenantId, IEnumerable<Guid> rootGuids )
         {
             IDataSource baseline;
             using ( new TenantAdministratorContext( tenantId ) )
             {
-                long rootId = Entity.GetIdFromUpgradeId( rootGuid );
-                if ( rootId == -1 )
+                IDictionary<Guid, long> ids = UpgradeIdProvider.GetIdsFromUpgradeIds( rootGuids );
+
+                if ( ids.Count == 0 )
+                {
                     baseline = new EmptySource( );
+                }
                 else
+                {
                     baseline = new TenantGraphSource
                     {
                         TenantId = tenantId,
-                        RootEntities = new[]
-                        {
-                            rootId
-                        }
+                        RootEntities = ids.Values.ToList( )
                     };
+                }
             }
             return baseline;
         }
@@ -198,6 +246,14 @@ namespace EDC.SoftwarePlatform.Migration.Processing.Xml
             SecurityProcessor.CheckTypeCreatePermissions( source, context );
 
             SecurityProcessor.CheckEntityPermissions( source, new[ ] { Permissions.Modify }, context );
+        }
+
+        /// <summary>
+        ///     Exception caused by missing dependencies.
+        /// </summary>
+        private class ImportDependencyException : Exception
+        {
+            
         }
     }
 }

@@ -1,22 +1,15 @@
 ﻿<xml version="1.0" encoding="utf-8" xmlns:k="console" xmlns="core">
   <application id="{abf12077-6fa5-43da-b608-b8b7514d07bb}">
-    <package id="{55bda5e2-e773-407a-9211-d452868b0cb7}">
-      <name>ReadiNow Core Data Application Package 1.0.2.38</name>
+    <package id="{ff468a37-4081-489a-be19-ad5461907b11}">
+      <name>ReadiNow Core Data Application Package 1.0.2.39</name>
       <appName>ReadiNow Core Data</appName>
-      <description>Application Package for version 1.0.2.38 of ReadiNow Core Data.</description>
+      <description>Application Package for version 1.0.2.39 of ReadiNow Core Data.</description>
       <type>AppPackage</type>
-      <version>1.0.2.38</version>
+      <version>1.0.2.39</version>
       <platformVersion>1.0.0.0</platformVersion>
       <releaseDate>2016-05-18 11:49:19Z</releaseDate>
-      <publishDate>2016-10-27 22:15:08Z</publishDate>
-      <dependencies>
-        <dependency>
-          <name>ReadiNow Core Data Depends on ReadiNow Console</name>
-          <dependencyName>ReadiNow Console</dependencyName>
-          <applicationId>{34ff4d95-70c6-4ae8-8f6f-38d88546d4c4}</applicationId>
-          <isRequired>True</isRequired>
-        </dependency>
-      </dependencies>
+      <publishDate>2016-11-01 06:39:02Z</publishDate>
+      <dependencies />
       <entities>
         <entity id="{00140606-1faf-46b9-8668-36a23d9b509e}">
           <relationships>
@@ -1665,6 +1658,14 @@
             <isOfType>core:stringArgument</isOfType>
           </relationships>
         </entity>
+        <entity id="{05c1fbdd-c2d9-4566-8bec-28ace085a38b}">
+          <relationships>
+            <indirectInSolution>{abf12077-6fa5-43da-b608-b8b7514d07bb}</indirectInSolution>
+            <securityOwner>core:administratorUserAccount</securityOwner>
+            <sourceNode>{4e97434b-6a24-449b-a9bd-0d905f161152}</sourceNode>
+            <isOfType>core:idExpression</isOfType>
+          </relationships>
+        </entity>
         <entity id="{05c4de4b-61e4-42ff-817c-447cdb59dca5}">
           <name>InlineRelationship</name>
           <relationships>
@@ -2580,6 +2581,14 @@
             <isOfType>core:idExpression</isOfType>
           </relationships>
         </entity>
+        <entity id="{088f6b89-eb5b-41cf-aa90-3ed42879a1fa}">
+          <relationships>
+            <paramTypeAndDefault>{ad4397d0-5fe3-4870-914d-78b2d86e120e}</paramTypeAndDefault>
+            <indirectInSolution>{abf12077-6fa5-43da-b608-b8b7514d07bb}</indirectInSolution>
+            <securityOwner>core:administratorUserAccount</securityOwner>
+            <isOfType>core:parameter</isOfType>
+          </relationships>
+        </entity>
         <entity id="{089807d4-489c-4400-b934-3149a969fb20}">
           <exactType>False</exactType>
           <targetMustExist>True</targetMustExist>
@@ -2616,6 +2625,14 @@
           <relationships>
             <inSolution>{abf12077-6fa5-43da-b608-b8b7514d07bb}</inSolution>
             <isOfType>core:resourceArgument</isOfType>
+          </relationships>
+        </entity>
+        <entity id="{08c754cc-d6a2-40ab-9cf3-ca90ac62e86a}">
+          <name>String</name>
+          <relationships>
+            <indirectInSolution>{abf12077-6fa5-43da-b608-b8b7514d07bb}</indirectInSolution>
+            <securityOwner>core:administratorUserAccount</securityOwner>
+            <isOfType>core:stringArgument</isOfType>
           </relationships>
         </entity>
         <entity id="{08d8c4fa-2a9b-4231-9448-e3d39d8b6343}">
@@ -4005,6 +4022,15 @@
             <inSolution>{abf12077-6fa5-43da-b608-b8b7514d07bb}</inSolution>
             <k:behaviorActionMenu>{f2a2c5de-88a9-414d-8be6-88a6a7deac3e}</k:behaviorActionMenu>
             <isOfType>console:consoleBehavior</isOfType>
+          </relationships>
+        </entity>
+        <entity id="{0e14a50b-b1ce-4e9c-bff7-336256460fab}">
+          <relationships>
+            <indirectInSolution>{abf12077-6fa5-43da-b608-b8b7514d07bb}</indirectInSolution>
+            <securityOwner>core:administratorUserAccount</securityOwner>
+            <sourceNode>{2b38db78-2529-4960-86f6-55a349075278}</sourceNode>
+            <reportExpressionResultType>{637cfb64-7a2e-4d7f-903e-353eab36b8f8}</reportExpressionResultType>
+            <isOfType>core:resourceExpression</isOfType>
           </relationships>
         </entity>
         <entity id="{0e26a192-2a2d-4ff9-841d-3d9a34ab2331}">
@@ -5885,6 +5911,17 @@
             <inSolution>{abf12077-6fa5-43da-b608-b8b7514d07bb}</inSolution>
             <securityOwner>core:administratorUserAccount</securityOwner>
             <isOfType>core:parameter</isOfType>
+          </relationships>
+        </entity>
+        <entity id="{14f28e22-ce01-4d8c-978f-804d7679d809}">
+          <name>Type</name>
+          <columnIsHidden>False</columnIsHidden>
+          <columnDisplayOrder>1</columnDisplayOrder>
+          <relationships>
+            <columnExpression>{4ffc14bf-cb3d-44a3-99c2-b607ac69c1b6}</columnExpression>
+            <indirectInSolution>{abf12077-6fa5-43da-b608-b8b7514d07bb}</indirectInSolution>
+            <securityOwner>core:administratorUserAccount</securityOwner>
+            <isOfType>core:reportColumn</isOfType>
           </relationships>
         </entity>
         <entity id="{14f90436-4d86-4c7a-adc4-5a60f92c9422}">
@@ -11991,6 +12028,23 @@
             <operator>core:operIsNotNull</operator>
             <securityOwner>core:administratorUserAccount</securityOwner>
             <isOfType>core:reportCondition</isOfType>
+          </relationships>
+        </entity>
+        <entity id="{2b38db78-2529-4960-86f6-55a349075278}">
+          <followInReverse>False</followInReverse>
+          <followRecursive>False</followRecursive>
+          <checkExistenceOnly>False</checkExistenceOnly>
+          <exactType>False</exactType>
+          <targetMustExist>False</targetMustExist>
+          <constrainParent>False</constrainParent>
+          <targetNeedNotExist>False</targetNeedNotExist>
+          <includeSelfInRecursive>False</includeSelfInRecursive>
+          <relationships>
+            <resourceReportNodeType>core:type</resourceReportNodeType>
+            <indirectInSolution>{abf12077-6fa5-43da-b608-b8b7514d07bb}</indirectInSolution>
+            <securityOwner>core:administratorUserAccount</securityOwner>
+            <isOfType>core:relationshipReportNode</isOfType>
+            <followRelationship>core:inherits</followRelationship>
           </relationships>
         </entity>
         <entity id="{2b589c6b-3b75-4e51-ba33-d0fb17bb96f8}">
@@ -18707,6 +18761,14 @@ iif(r.[Mapped relationship] is not null, r.[Mapped relationship].Name + iif(r.[R
             <isOfType>console:consoleBehavior</isOfType>
           </relationships>
         </entity>
+        <entity id="{43dffdbf-41f6-4df1-8f0a-89dab076d99c}">
+          <name>String</name>
+          <relationships>
+            <indirectInSolution>{abf12077-6fa5-43da-b608-b8b7514d07bb}</indirectInSolution>
+            <securityOwner>core:administratorUserAccount</securityOwner>
+            <isOfType>core:stringArgument</isOfType>
+          </relationships>
+        </entity>
         <entity id="{43e03994-8f50-42c3-b9f0-a73ece70f348}">
           <followInReverse>False</followInReverse>
           <followRecursive>False</followRecursive>
@@ -21374,6 +21436,18 @@ iif(r.[Mapped relationship] is not null, r.[Mapped relationship].Name + iif(r.[R
             <isOfType>core:fieldExpression</isOfType>
           </relationships>
         </entity>
+        <entity id="{4e97434b-6a24-449b-a9bd-0d905f161152}">
+          <exactType>False</exactType>
+          <targetMustExist>False</targetMustExist>
+          <relationships>
+            <relatedReportNodes>{763627cf-2ea1-4630-b728-2dc59d95e359}</relatedReportNodes>
+            <relatedReportNodes>{2b38db78-2529-4960-86f6-55a349075278}</relatedReportNodes>
+            <resourceReportNodeType>core:type</resourceReportNodeType>
+            <indirectInSolution>{abf12077-6fa5-43da-b608-b8b7514d07bb}</indirectInSolution>
+            <securityOwner>core:administratorUserAccount</securityOwner>
+            <isOfType>core:resourceReportNode</isOfType>
+          </relationships>
+        </entity>
         <entity id="{4eb08aed-3bb1-4e39-8c6e-43554bbe1b56}">
           <relationships>
             <paramTypeAndDefault>{862c5409-aedc-4b8a-8998-7a516daf5472}</paramTypeAndDefault>
@@ -21635,6 +21709,16 @@ iif(r.[Mapped relationship] is not null, r.[Mapped relationship].Name + iif(r.[R
             <inSolution>{abf12077-6fa5-43da-b608-b8b7514d07bb}</inSolution>
             <securityOwner>core:administratorUserAccount</securityOwner>
             <isOfType>core:parameter</isOfType>
+          </relationships>
+        </entity>
+        <entity id="{4ffc14bf-cb3d-44a3-99c2-b607ac69c1b6}">
+          <relationships>
+            <indirectInSolution>{abf12077-6fa5-43da-b608-b8b7514d07bb}</indirectInSolution>
+            <securityOwner>core:administratorUserAccount</securityOwner>
+            <fieldExpressionField>core:name</fieldExpressionField>
+            <sourceNode>{4e97434b-6a24-449b-a9bd-0d905f161152}</sourceNode>
+            <reportExpressionResultType>{08c754cc-d6a2-40ab-9cf3-ca90ac62e86a}</reportExpressionResultType>
+            <isOfType>core:fieldExpression</isOfType>
           </relationships>
         </entity>
         <entity id="{500103ee-a1b4-4648-b400-72141b80f44b}">
@@ -24917,6 +25001,31 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
             <isOfType>core:reportColumn</isOfType>
           </relationships>
         </entity>
+        <entity id="{5c1c1f3b-32a6-430f-a0da-2a42d51c1bde}">
+          <name>All Type Picker Report</name>
+          <alias aliasMarkerId="0">console:allTypesPickerReport</alias>
+          <hideReportHeader>False</hideReportHeader>
+          <rollupOptionLabels>True</rollupOptionLabels>
+          <hideOnDesktop>False</hideOnDesktop>
+          <hideOnMobile>True</hideOnMobile>
+          <hideActionBar>False</hideActionBar>
+          <isPrivatelyOwned>False</isPrivatelyOwned>
+          <hideOnTablet>True</hideOnTablet>
+          <relationships>
+            <reportColumns>{a38749ea-d3ce-457d-8d27-0e09c0a2e0a7}</reportColumns>
+            <reportColumns>{8eb37289-5ce9-4948-8382-17a6f1985f26}</reportColumns>
+            <reportColumns>{9be97bf9-23d6-4e0a-8482-1f39a4d333dc}</reportColumns>
+            <reportColumns>{da960907-8688-44a9-b5c1-3c9133e7b51e}</reportColumns>
+            <reportColumns>{14f28e22-ce01-4d8c-978f-804d7679d809}</reportColumns>
+            <hasConditions>{6412ae8d-120b-4c50-b6fc-b4c75758fb52}</hasConditions>
+            <hasConditions>{bc67672b-a17f-428a-805f-ccda2b09b8ab}</hasConditions>
+            <inSolution>{abf12077-6fa5-43da-b608-b8b7514d07bb}</inSolution>
+            <securityOwner>core:administratorUserAccount</securityOwner>
+            <rootNode>{4e97434b-6a24-449b-a9bd-0d905f161152}</rootNode>
+            <isOfType>core:report</isOfType>
+            <reportUsesDefinition>core:type</reportUsesDefinition>
+          </relationships>
+        </entity>
         <entity id="{5c4cb031-2c10-4608-8af6-bd3d875064f8}">
           <name>Type</name>
           <conditionIsHidden>False</conditionIsHidden>
@@ -26774,6 +26883,14 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
             <reportUsesDefinition>core:exitPoint</reportUsesDefinition>
           </relationships>
         </entity>
+        <entity id="{637cfb64-7a2e-4d7f-903e-353eab36b8f8}">
+          <name>InlineRelationship</name>
+          <relationships>
+            <indirectInSolution>{abf12077-6fa5-43da-b608-b8b7514d07bb}</indirectInSolution>
+            <securityOwner>core:administratorUserAccount</securityOwner>
+            <isOfType>core:resourceArgument</isOfType>
+          </relationships>
+        </entity>
         <entity id="{638bd468-48b0-492a-8f2c-74ef8469bcac}">
           <relationships>
             <inSolution>{abf12077-6fa5-43da-b608-b8b7514d07bb}</inSolution>
@@ -26966,6 +27083,18 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
             <k:renderingVerticalResizeMode>console:resizeAutomatic</k:renderingVerticalResizeMode>
             <isOfType>console:singleLineTextControl</isOfType>
             <k:renderingHorizontalResizeMode>console:resizeAutomatic</k:renderingHorizontalResizeMode>
+          </relationships>
+        </entity>
+        <entity id="{6412ae8d-120b-4c50-b6fc-b4c75758fb52}">
+          <name>Type</name>
+          <conditionIsHidden>False</conditionIsHidden>
+          <conditionIsLocked>False</conditionIsLocked>
+          <conditionDisplayOrder>0</conditionDisplayOrder>
+          <relationships>
+            <conditionExpression>{f37b3abf-8a39-4a8e-970a-2e0ed35dcb07}</conditionExpression>
+            <indirectInSolution>{abf12077-6fa5-43da-b608-b8b7514d07bb}</indirectInSolution>
+            <securityOwner>core:administratorUserAccount</securityOwner>
+            <isOfType>core:reportCondition</isOfType>
           </relationships>
         </entity>
         <entity id="{6422f47d-b188-475c-a67c-e38ef752cb7f}">
@@ -31951,6 +32080,16 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
             <k:renderingHorizontalResizeMode>console:resizeSpring</k:renderingHorizontalResizeMode>
           </relationships>
         </entity>
+        <entity id="{762bf82e-6b76-4ab2-808d-de753ee6f347}">
+          <relationships>
+            <indirectInSolution>{abf12077-6fa5-43da-b608-b8b7514d07bb}</indirectInSolution>
+            <securityOwner>core:administratorUserAccount</securityOwner>
+            <fieldExpressionField>core:description</fieldExpressionField>
+            <sourceNode>{4e97434b-6a24-449b-a9bd-0d905f161152}</sourceNode>
+            <reportExpressionResultType>{43dffdbf-41f6-4df1-8f0a-89dab076d99c}</reportExpressionResultType>
+            <isOfType>core:fieldExpression</isOfType>
+          </relationships>
+        </entity>
         <entity id="{762e29b1-40c4-43c7-8854-8b061b1763b2}">
           <name>Description</name>
           <columnIsHidden>False</columnIsHidden>
@@ -31972,6 +32111,23 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
             <k:relationshipToRender>core:scheduleForTrigger</k:relationshipToRender>
             <isOfType>console:tabRelationshipRenderControl</isOfType>
             <k:renderingHorizontalResizeMode>console:resizeSpring</k:renderingHorizontalResizeMode>
+          </relationships>
+        </entity>
+        <entity id="{763627cf-2ea1-4630-b728-2dc59d95e359}">
+          <followInReverse>False</followInReverse>
+          <followRecursive>False</followRecursive>
+          <checkExistenceOnly>False</checkExistenceOnly>
+          <exactType>False</exactType>
+          <targetMustExist>False</targetMustExist>
+          <constrainParent>False</constrainParent>
+          <targetNeedNotExist>False</targetNeedNotExist>
+          <includeSelfInRecursive>False</includeSelfInRecursive>
+          <relationships>
+            <resourceReportNodeType>core:solution</resourceReportNodeType>
+            <indirectInSolution>{abf12077-6fa5-43da-b608-b8b7514d07bb}</indirectInSolution>
+            <securityOwner>core:administratorUserAccount</securityOwner>
+            <isOfType>core:relationshipReportNode</isOfType>
+            <followRelationship>core:inSolution</followRelationship>
           </relationships>
         </entity>
         <entity id="{76426d84-fb21-4fbe-b062-e475eef90298}">
@@ -36481,6 +36637,15 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
             <isOfType>core:reportColumn</isOfType>
           </relationships>
         </entity>
+        <entity id="{8773680b-c33b-480e-b2ff-da45b5285e9d}">
+          <relationships>
+            <indirectInSolution>{abf12077-6fa5-43da-b608-b8b7514d07bb}</indirectInSolution>
+            <securityOwner>core:administratorUserAccount</securityOwner>
+            <sourceNode>{763627cf-2ea1-4630-b728-2dc59d95e359}</sourceNode>
+            <reportExpressionResultType>{db1ad2d9-724d-4930-89e8-165f8ca23650}</reportExpressionResultType>
+            <isOfType>core:resourceExpression</isOfType>
+          </relationships>
+        </entity>
         <entity id="{8781c3a9-d50b-4c89-8315-dff9cc1638be}">
           <relationships>
             <paramTypeAndDefault>{c1c3e7d1-76f7-4cb8-b8ea-2a7c7a5b0f32}</paramTypeAndDefault>
@@ -38300,6 +38465,17 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
             <securityOwner>core:administratorUserAccount</securityOwner>
             <isOfType>core:relationshipReportNode</isOfType>
             <followRelationship>core:apiKeyUserAccount</followRelationship>
+          </relationships>
+        </entity>
+        <entity id="{8eb37289-5ce9-4948-8382-17a6f1985f26}">
+          <name>Solution</name>
+          <columnIsHidden>False</columnIsHidden>
+          <columnDisplayOrder>4</columnDisplayOrder>
+          <relationships>
+            <columnExpression>{9d41b94a-bff9-413e-a128-eb6f6d9761a9}</columnExpression>
+            <indirectInSolution>{abf12077-6fa5-43da-b608-b8b7514d07bb}</indirectInSolution>
+            <securityOwner>core:administratorUserAccount</securityOwner>
+            <isOfType>core:reportColumn</isOfType>
           </relationships>
         </entity>
         <entity id="{8eba1463-18f3-4459-a2cb-5c8fa398c9ff}">
@@ -41997,6 +42173,17 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
             <relType>core:relChoiceField</relType>
           </relationships>
         </entity>
+        <entity id="{9be97bf9-23d6-4e0a-8482-1f39a4d333dc}">
+          <name>_id</name>
+          <columnIsHidden>True</columnIsHidden>
+          <columnDisplayOrder>0</columnDisplayOrder>
+          <relationships>
+            <columnExpression>{05c1fbdd-c2d9-4566-8bec-28ace085a38b}</columnExpression>
+            <indirectInSolution>{abf12077-6fa5-43da-b608-b8b7514d07bb}</indirectInSolution>
+            <securityOwner>core:administratorUserAccount</securityOwner>
+            <isOfType>core:reportColumn</isOfType>
+          </relationships>
+        </entity>
         <entity id="{9beafc95-01c6-4d9d-a37f-5c10eb1c542f}">
           <canCreate>False</canCreate>
           <k:isReversed>True</k:isReversed>
@@ -42311,6 +42498,15 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
             <inSolution>{abf12077-6fa5-43da-b608-b8b7514d07bb}</inSolution>
             <columnExpression>{5e5dd0e7-21df-4657-b7b7-c284e4af0f3f}</columnExpression>
             <isOfType>core:reportColumn</isOfType>
+          </relationships>
+        </entity>
+        <entity id="{9d41b94a-bff9-413e-a128-eb6f6d9761a9}">
+          <relationships>
+            <indirectInSolution>{abf12077-6fa5-43da-b608-b8b7514d07bb}</indirectInSolution>
+            <securityOwner>core:administratorUserAccount</securityOwner>
+            <sourceNode>{763627cf-2ea1-4630-b728-2dc59d95e359}</sourceNode>
+            <reportExpressionResultType>{d2ce4dc8-fead-4427-a6a6-862f9c357e29}</reportExpressionResultType>
+            <isOfType>core:resourceExpression</isOfType>
           </relationships>
         </entity>
         <entity id="{9d42cc43-7481-4767-9bbb-2a636506e760}">
@@ -44173,6 +44369,17 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
           <relationships>
             <inSolution>{abf12077-6fa5-43da-b608-b8b7514d07bb}</inSolution>
             <columnExpression>{9994f830-6283-4837-bb0c-37996ced3338}</columnExpression>
+            <securityOwner>core:administratorUserAccount</securityOwner>
+            <isOfType>core:reportColumn</isOfType>
+          </relationships>
+        </entity>
+        <entity id="{a38749ea-d3ce-457d-8d27-0e09c0a2e0a7}">
+          <name>Description</name>
+          <columnIsHidden>False</columnIsHidden>
+          <columnDisplayOrder>2</columnDisplayOrder>
+          <relationships>
+            <columnExpression>{762bf82e-6b76-4ab2-808d-de753ee6f347}</columnExpression>
+            <indirectInSolution>{abf12077-6fa5-43da-b608-b8b7514d07bb}</indirectInSolution>
             <securityOwner>core:administratorUserAccount</securityOwner>
             <isOfType>core:reportColumn</isOfType>
           </relationships>
@@ -46580,13 +46787,13 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
           <hideOnDesktop>False</hideOnDesktop>
           <hideOnMobile>False</hideOnMobile>
           <hideOnTablet>False</hideOnTablet>
-          <solutionReleaseDate>2016-10-28 00:00:00Z</solutionReleaseDate>
-          <packageId>55bda5e2-e773-407a-9211-d452868b0cb7</packageId>
+          <solutionReleaseDate>2016-11-01 00:00:00Z</solutionReleaseDate>
+          <packageId>ff468a37-4081-489a-be19-ad5461907b11</packageId>
           <legacyGuid>072871fe-35e3-49d6-86da-5c2a06a56caf</legacyGuid>
-          <solutionVersionString>1.0.2.38</solutionVersionString>
+          <solutionVersionString>1.0.2.39</solutionVersionString>
           <solutionPublisherUrl>http://www.readinow.com</solutionPublisherUrl>
           <solutionPublisher>ReadiNow</solutionPublisher>
-          <solutionVersionDetails>Uploaded new icon and associated with tenantRollbackBehavior</solutionVersionDetails>
+          <solutionVersionDetails>add allTypesPickerReport</solutionVersionDetails>
           <relationships>
             <inSolution>{abf12077-6fa5-43da-b608-b8b7514d07bb}</inSolution>
             <securityOwner>core:administratorUserAccount</securityOwner>
@@ -46943,6 +47150,18 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
             <sourceNode>{ee1f57cc-6303-48c3-ba2b-9ff8230df0a0}</sourceNode>
             <reportExpressionResultType>{ff58ceba-46be-4ce6-9f9d-4d559bdddc3d}</reportExpressionResultType>
             <isOfType>core:fieldExpression</isOfType>
+          </relationships>
+        </entity>
+        <entity id="{ad4397d0-5fe3-4870-914d-78b2d86e120e}">
+          <name>InlineRelationship</name>
+          <relationships>
+            <indirectInSolution>{abf12077-6fa5-43da-b608-b8b7514d07bb}</indirectInSolution>
+            <securityOwner>core:administratorUserAccount</securityOwner>
+            <conformsToType>core:solution</conformsToType>
+            <resourceListParameterValues>core:consoleSolution</resourceListParameterValues>
+            <resourceListParameterValues>core:coreSolution</resourceListParameterValues>
+            <resourceListParameterValues>{abf12077-6fa5-43da-b608-b8b7514d07bb}</resourceListParameterValues>
+            <isOfType>core:resourceListArgument</isOfType>
           </relationships>
         </entity>
         <entity id="{ad4d968b-1654-40fe-b395-7a6be4260ee2}">
@@ -50423,6 +50642,14 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
             <isOfType>core:dateArgument</isOfType>
           </relationships>
         </entity>
+        <entity id="{bb92e761-9998-4abc-824b-f16f0a9eded2}">
+          <name>String</name>
+          <relationships>
+            <indirectInSolution>{abf12077-6fa5-43da-b608-b8b7514d07bb}</indirectInSolution>
+            <securityOwner>core:administratorUserAccount</securityOwner>
+            <isOfType>core:stringArgument</isOfType>
+          </relationships>
+        </entity>
         <entity id="{bb933a63-aeed-41ad-aa9e-037457472c8f}">
           <relationships>
             <inSolution>{abf12077-6fa5-43da-b608-b8b7514d07bb}</inSolution>
@@ -50670,6 +50897,20 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
             <sourceNode>{5743b992-e3f8-450d-add0-1c30dd1a1dec}</sourceNode>
             <reportExpressionResultType>{8281a594-53e2-42a7-bb1d-9eda062cae97}</reportExpressionResultType>
             <isOfType>core:resourceExpression</isOfType>
+          </relationships>
+        </entity>
+        <entity id="{bc67672b-a17f-428a-805f-ccda2b09b8ab}">
+          <name>Resource in application</name>
+          <conditionIsHidden>False</conditionIsHidden>
+          <conditionIsLocked>False</conditionIsLocked>
+          <conditionDisplayOrder>1</conditionDisplayOrder>
+          <relationships>
+            <conditionExpression>{8773680b-c33b-480e-b2ff-da45b5285e9d}</conditionExpression>
+            <conditionParameter>{088f6b89-eb5b-41cf-aa90-3ed42879a1fa}</conditionParameter>
+            <indirectInSolution>{abf12077-6fa5-43da-b608-b8b7514d07bb}</indirectInSolution>
+            <operator>core:operAnyExcept</operator>
+            <securityOwner>core:administratorUserAccount</securityOwner>
+            <isOfType>core:reportCondition</isOfType>
           </relationships>
         </entity>
         <entity id="{bc746e71-d06b-4b85-a5a6-87d18c6736cd}">
@@ -56824,6 +57065,14 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
             <k:renderingHorizontalResizeMode>console:resizeAutomatic</k:renderingHorizontalResizeMode>
           </relationships>
         </entity>
+        <entity id="{d2ce4dc8-fead-4427-a6a6-862f9c357e29}">
+          <name>InlineRelationship</name>
+          <relationships>
+            <indirectInSolution>{abf12077-6fa5-43da-b608-b8b7514d07bb}</indirectInSolution>
+            <securityOwner>core:administratorUserAccount</securityOwner>
+            <isOfType>core:resourceArgument</isOfType>
+          </relationships>
+        </entity>
         <entity id="{d2d1369a-dc95-4f72-8429-726d8f26c964}">
           <name>Due date</name>
           <conditionIsHidden>False</conditionIsHidden>
@@ -58714,6 +58963,17 @@ iif([Parent Organisation Level] is not null,
             <isOfType>core:reportColumn</isOfType>
           </relationships>
         </entity>
+        <entity id="{da960907-8688-44a9-b5c1-3c9133e7b51e}">
+          <name>Inherits</name>
+          <columnIsHidden>False</columnIsHidden>
+          <columnDisplayOrder>3</columnDisplayOrder>
+          <relationships>
+            <columnExpression>{0e14a50b-b1ce-4e9c-bff7-336256460fab}</columnExpression>
+            <indirectInSolution>{abf12077-6fa5-43da-b608-b8b7514d07bb}</indirectInSolution>
+            <securityOwner>core:administratorUserAccount</securityOwner>
+            <isOfType>core:reportColumn</isOfType>
+          </relationships>
+        </entity>
         <entity id="{da9701d0-0923-4728-96f2-9dcc73a03a93}">
           <relationships>
             <inSolution>{abf12077-6fa5-43da-b608-b8b7514d07bb}</inSolution>
@@ -58836,6 +59096,15 @@ iif([Parent Organisation Level] is not null,
             <k:renderingVerticalResizeMode>console:resizeAutomatic</k:renderingVerticalResizeMode>
             <isOfType>console:singleLineTextControl</isOfType>
             <k:renderingHorizontalResizeMode>console:resizeFifty</k:renderingHorizontalResizeMode>
+          </relationships>
+        </entity>
+        <entity id="{db1ad2d9-724d-4930-89e8-165f8ca23650}">
+          <name>InlineRelationship</name>
+          <relationships>
+            <indirectInSolution>{abf12077-6fa5-43da-b608-b8b7514d07bb}</indirectInSolution>
+            <securityOwner>core:administratorUserAccount</securityOwner>
+            <conformsToType>core:solution</conformsToType>
+            <isOfType>core:resourceListArgument</isOfType>
           </relationships>
         </entity>
         <entity id="{db1e4e4c-3e91-4990-b378-d8e73e0c366f}">
@@ -65359,6 +65628,16 @@ iif([Parent Organisation Level] is not null,
             <securityOwner>core:administratorUserAccount</securityOwner>
             <k:behaviorActionMenu>{ac0b33ac-412f-417a-848b-b88c4dd34320}</k:behaviorActionMenu>
             <isOfType>console:consoleBehavior</isOfType>
+          </relationships>
+        </entity>
+        <entity id="{f37b3abf-8a39-4a8e-970a-2e0ed35dcb07}">
+          <relationships>
+            <indirectInSolution>{abf12077-6fa5-43da-b608-b8b7514d07bb}</indirectInSolution>
+            <securityOwner>core:administratorUserAccount</securityOwner>
+            <fieldExpressionField>core:name</fieldExpressionField>
+            <sourceNode>{4e97434b-6a24-449b-a9bd-0d905f161152}</sourceNode>
+            <reportExpressionResultType>{bb92e761-9998-4abc-824b-f16f0a9eded2}</reportExpressionResultType>
+            <isOfType>core:fieldExpression</isOfType>
           </relationships>
         </entity>
         <entity id="{f3808aef-c2dc-45c0-b70f-c28233aa04b6}">
@@ -71889,6 +72168,10 @@ iif([Parent Organisation Level] is not null,
           <from>core:stringField</from>
           <to>{600dcfe1-044c-4cd8-89bb-263e9b26ac6f}</to>
         </defaultDisplayReport>
+        <defaultPickerReport>
+          <from>core:type</from>
+          <to>{5c1c1f3b-32a6-430f-a0da-2a42d51c1bde}</to>
+        </defaultPickerReport>
         <k:defaultEditForm>
           <from>core:type</from>
           <to>{707c119c-917b-42a9-bb0d-9982c90eba44}</to>

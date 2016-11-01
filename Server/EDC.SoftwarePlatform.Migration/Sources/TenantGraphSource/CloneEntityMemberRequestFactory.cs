@@ -28,6 +28,8 @@ namespace EDC.SoftwarePlatform.Migration.Sources
 
         private readonly HashSet<long> _rootTypes = new HashSet<long>( );
 
+        private const long RootTypesMarker = -1;
+
 
         /// <summary>
         ///     Service for gaining access to schema entities.
@@ -69,6 +71,28 @@ namespace EDC.SoftwarePlatform.Migration.Sources
         }
 
         /// <summary>
+        ///     Create an entity member request for entities of multiple types.
+        /// </summary>
+        /// <param name="typeIds">Entity types to generate a member request for.</param>
+        public EntityMemberRequest CreateRequest( IEnumerable<long> typeIds )
+        {
+            foreach ( long typeId in typeIds )
+            {
+                _rootTypes.Add( typeId );
+            }
+
+            EntityMemberRequest result = CreateAndQueueRequest( RootTypesMarker );
+
+            while ( _requestsToProcess.Count > 0 )
+            {
+                long curType = _requestsToProcess.Dequeue( );
+                DecorateRequest( curType );
+            }
+
+            return result;
+        }
+
+        /// <summary>
         ///     Find, or create and enqueue, an EntityMemberRequest for this type.
         /// </summary>
         private EntityMemberRequest CreateAndQueueRequest( long typeId )
@@ -90,14 +114,24 @@ namespace EDC.SoftwarePlatform.Migration.Sources
         {
             EntityMemberRequest request = _requests[ typeId ];
 
-            bool isRootType = _rootTypes.Contains( typeId );
+            bool isRootType = typeId == RootTypesMarker;
 
             // We will need to determine all applicable fields and relationships for any instance of this type.
             // So this will include both ancestor types, as well as fields for instances of potentially derived types.
 
             // Try and void calling this for resource.
 
-            List<long> allTypeIds = PerTenantEntityTypeCache.Instance.GetAllMemberContributors( typeId ).ToList( );
+            List<long> allTypeIds;
+
+            if ( typeId == RootTypesMarker )
+            {
+                allTypeIds = _rootTypes.SelectMany( t => PerTenantEntityTypeCache.Instance.GetAllMemberContributors( t ) ).Distinct( ).ToList( );
+            }
+            else
+            {
+                allTypeIds = PerTenantEntityTypeCache.Instance.GetAllMemberContributors( typeId ).ToList( );
+            }
+
             IEnumerable<EntityType> types = EntityRepository.Get<EntityType>( allTypeIds ).ToList( );
 
             // Add fields

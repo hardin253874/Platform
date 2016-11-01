@@ -6041,6 +6041,17 @@ namespace EDC.ReadiNow.Model
 		}
 
 		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static StringField VisibilityCalculation_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.ControlOnForm.VisibilityCalculation_Field;
+			}
+		}
+
+		/// <summary>
 		/// Public static accessor to the inherited  reverse relationship.
 		/// </summary>
 		public static IEntity ContainedWithinStructureControlOnForm_Field
@@ -6234,7 +6245,7 @@ namespace EDC.ReadiNow.Model
 		{
 			get
 			{
-				return new IEntity [ ] { GuidFieldRenderControl.Alias_Field, GuidFieldRenderControl.CanDelete_Field, GuidFieldRenderControl.CanModify_Field, GuidFieldRenderControl.CreatedDate_Field, GuidFieldRenderControl.Description_Field, GuidFieldRenderControl.GroupName_Field, GuidFieldRenderControl.HideLabel_Field, GuidFieldRenderControl.MandatoryControl_Field, GuidFieldRenderControl.ModifiedDate_Field, GuidFieldRenderControl.Name_Field, GuidFieldRenderControl.ReadOnlyControl_Field, GuidFieldRenderControl.RenderingBackgroundColor_Field, GuidFieldRenderControl.RenderingHeight_Field, GuidFieldRenderControl.RenderingOrdinal_Field, GuidFieldRenderControl.RenderingWidth_Field, GuidFieldRenderControl.ShowControlHelpText_Field, GuidFieldRenderControl.ContainedWithinStructureControlOnForm_Field, GuidFieldRenderControl.ControlRelatedEntityDataPathNodes_Field, GuidFieldRenderControl.CreatedBy_Field, GuidFieldRenderControl.FieldToRender_Field, GuidFieldRenderControl.Flags_Field, GuidFieldRenderControl.IndirectInSolution_Field, GuidFieldRenderControl.InSolution_Field, GuidFieldRenderControl.InStructureLevel_Field, GuidFieldRenderControl.IsOfType_Field, GuidFieldRenderControl.IsRootForStructureView_Field, GuidFieldRenderControl.LastModifiedBy_Field, GuidFieldRenderControl.ResourceConsoleBehavior_Field, GuidFieldRenderControl.ResourceHasResourceKeyDataHashes_Field, GuidFieldRenderControl.ResourceInFolder_Field, GuidFieldRenderControl.SecurityOwner_Field, GuidFieldRenderControl.SelectionBehavior_Field, GuidFieldRenderControl.ShortcutInFolder_Field };
+				return new IEntity [ ] { GuidFieldRenderControl.Alias_Field, GuidFieldRenderControl.CanDelete_Field, GuidFieldRenderControl.CanModify_Field, GuidFieldRenderControl.CreatedDate_Field, GuidFieldRenderControl.Description_Field, GuidFieldRenderControl.GroupName_Field, GuidFieldRenderControl.HideLabel_Field, GuidFieldRenderControl.MandatoryControl_Field, GuidFieldRenderControl.ModifiedDate_Field, GuidFieldRenderControl.Name_Field, GuidFieldRenderControl.ReadOnlyControl_Field, GuidFieldRenderControl.RenderingBackgroundColor_Field, GuidFieldRenderControl.RenderingHeight_Field, GuidFieldRenderControl.RenderingOrdinal_Field, GuidFieldRenderControl.RenderingWidth_Field, GuidFieldRenderControl.ShowControlHelpText_Field, GuidFieldRenderControl.VisibilityCalculation_Field, GuidFieldRenderControl.ContainedWithinStructureControlOnForm_Field, GuidFieldRenderControl.ControlRelatedEntityDataPathNodes_Field, GuidFieldRenderControl.CreatedBy_Field, GuidFieldRenderControl.FieldToRender_Field, GuidFieldRenderControl.Flags_Field, GuidFieldRenderControl.IndirectInSolution_Field, GuidFieldRenderControl.InSolution_Field, GuidFieldRenderControl.InStructureLevel_Field, GuidFieldRenderControl.IsOfType_Field, GuidFieldRenderControl.IsRootForStructureView_Field, GuidFieldRenderControl.LastModifiedBy_Field, GuidFieldRenderControl.ResourceConsoleBehavior_Field, GuidFieldRenderControl.ResourceHasResourceKeyDataHashes_Field, GuidFieldRenderControl.ResourceInFolder_Field, GuidFieldRenderControl.SecurityOwner_Field, GuidFieldRenderControl.SelectionBehavior_Field, GuidFieldRenderControl.ShortcutInFolder_Field };
 			}
 		}
 
@@ -6464,6 +6475,20 @@ namespace EDC.ReadiNow.Model
 			set
 			{
 				this.SetField( "console:showControlHelpText", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public string VisibilityCalculation
+		{
+			get
+			{
+				return ( string ) this.GetField( "console:visibilityCalculation" );
+			}
+			set
+			{
+				this.SetField( "console:visibilityCalculation", value);
 			}
 		}
 

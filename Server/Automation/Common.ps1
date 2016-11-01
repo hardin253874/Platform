@@ -1846,7 +1846,7 @@ function Provision-AdditionalTenants( $process, $settings)
 }
 
 # Install the specified application to the default tenant
-function Install-App($process, $appName, $settings, $deploy, $deployName)
+function Install-App($process, $appName, $settings, $bootstrap)
 {
     Log-Message "Checking installation of app '$appName'"
 	
@@ -1877,7 +1877,7 @@ function Install-App($process, $appName, $settings, $deploy, $deployName)
 
     Log-Message "Importing app '$appName'"
 	
-	Import-App $process $settings $appPath
+	Import-App $process $settings $appPath $bootstrap
 
     Log-Message "Installation of app $appName succeeded."
 }
@@ -1927,16 +1927,16 @@ function Create-TenantRestorePoints($process, $settings)
 # Install the builtin ReadiNow applications
 function Install-BuiltInReadiNowApplications($process, $settings)
 {
-	Install-App $process 'Shared' $settings $true
+	Install-App $process 'Shared' $settings $false
 
 	if ($settings.importTestAndSampleApps)
 	{
 		Log-Message "Importing test and sample applications into the application library..."
 		
-		Install-App $process 'Power Tools' $settings $true 'ReadiNow Power Tools'
-		Install-App $process 'Test Solution' $settings $true
-		Install-App $process 'Foster University' $settings $true
-		Install-App $process 'Foster University DATA' $settings $true
+		Install-App $process 'Power Tools' $settings $false 'ReadiNow Power Tools'
+		Install-App $process 'Test Solution' $settings $false
+		Install-App $process 'Foster University' $settings $false
+		Install-App $process 'Foster University DATA' $settings $false
 		
 		Log-Message "Test and sample applications imported successfully."
 	}
@@ -1945,9 +1945,17 @@ function Install-BuiltInReadiNowApplications($process, $settings)
 # Install the core applications.
 function Install-CoreApplications($process, $settings)
 {
-	Install-App $process 'coreSolution' $settings $true
-	Install-App $process 'consoleSolution' $settings $true
-	Install-App $process 'coreDataSolution' $settings $true
+	# This function should no longer be called by external scripts.
+	Log-Warning "Install-CoreApplications is deprecated. Remove it from your script."
+}
+
+# Install the core applications.
+function Install-CoreApplications-Impl($process, $settings, $bootstrap)
+{
+	Install-App $process 'coreSolution' $settings $bootstrap
+	Install-App $process 'consoleSolution' $settings $bootstrap
+	Install-App $process 'coreDataSolution' $settings $bootstrap
+	Install-App $process 'systemSolution' $settings $bootstrap
 }
 
 # Create the default tenant.
@@ -2690,42 +2698,52 @@ function Add-UserToPerformanceCounterGroup($settings)
 # PlatformConfigure REPL functions
 ##############
 
-# Install bootstrap solution.
+# Install bootstrap
 function Install-Bootstrap($process, $settings)
 {
+	Log-Message "Bootstrapping install..."
+	
+	Install-CoreApplications-Impl $platformConfigureProcess $deploymentSettings $true
+	
 	$server = $settings.database.server
 	$catalog = $settings.database.catalog
 	
-	$path = Get-InstallPath $settings
-	$xmlPath = Join-PathEx $path "Bootstrap/Solution.xml"
-	
-	Log-Message "Installing bootstrap solution..."
-
-	$process.StandardInput.WriteLine('ib'); 					#command
-	$process.StandardInput.WriteLine($xmlPath);     			#xml solution file
+	$process.StandardInput.WriteLine('installBootstrap'); 		#command
 	$process.StandardInput.WriteLine($server);                  #server
 	$process.StandardInput.WriteLine($catalog);                 #database
 	
 	Process-WaitForDone $process
 }
 
-# Upgrade bootstrap solution.
+# Upgrade bootstrap
 function Upgrade-Bootstrap($process, $settings)
 {
+	Log-Message "Bootstrapping upgrade..."
+	
 	$server = $settings.database.server
 	$catalog = $settings.database.catalog
 	
-	$path = Get-InstallPath $settings
-	$xmlPath = Join-PathEx $path "Bootstrap/Solution.xml"
-	
-	Log-Message "Upgrading bootstrap solution..."
-
-	$process.StandardInput.WriteLine('ub'); 					#command
-	$process.StandardInput.WriteLine($xmlPath);     			#xml solution file
-	$process.StandardInput.WriteLine($server);                  #server
-	$process.StandardInput.WriteLine($catalog);                 #database
+	# note: install-bootstrap called BEFORE core apps are upgraded
+	$process.StandardInput.WriteLine('upgradeBootstrap');       #command
+	$process.StandardInput.WriteLine($server); 					#server
+	$process.StandardInput.WriteLine($catalog);					#database
 	
 	Process-WaitForDone $process
+		
+	Install-CoreApplications-Impl $platformConfigureProcess $deploymentSettings $false
+	
+	# Upgrade Core in Global
+	Upgrade-App $process $settings "Global" "7062aade-2e72-4a71-a7fa-a412d20d6f01"
+	
+	# Upgrade Console in Global
+	Upgrade-App $process $settings "Global" "34ff4d95-70c6-4ae8-8f6f-38d88546d4c4"
+	
+	# Upgrade Core Data in Global
+	Upgrade-App $process $settings "Global" "abf12077-6fa5-43da-b608-b8b7514d07bb"
+	
+	# Upgrade System in Global
+	Upgrade-App $process $settings "Global" "3e67c1c4-aa65-4a9f-95d2-908a9f3614d1"
+	
 }
 
 # Turn integration mode on
@@ -2759,7 +2777,7 @@ function Grant-CanModifyApplication($process, $settings, $tenantName, $appName)
 }
 
 # Import the specified application to the application library.
-function Import-App($process, $settings, $appPath)
+function Import-App($process, $settings, $appPath, $bootstrap)
 {
 	$server = $settings.database.server
 	$catalog = $settings.database.catalog
@@ -2767,7 +2785,14 @@ function Import-App($process, $settings, $appPath)
 	if ( -Not ( [string]::IsNullOrEmpty( $appPath ) ) )
 	{
 		Log-Message "Importing application file '$appPath'..."
-		$process.StandardInput.WriteLine('importApp'); 					#command
+		if ( $bootstrap )
+		{
+			$process.StandardInput.WriteLine('bootstrapApp'); 			#command
+		}
+		else
+		{
+			$process.StandardInput.WriteLine('importApp'); 				#command
+		}
 		$process.StandardInput.WriteLine($appPath); 					#package
 		$process.StandardInput.WriteLine($server); 						#server
 		$process.StandardInput.WriteLine($catalog); 					#database
@@ -2946,6 +2971,8 @@ function Start-PlatformConfigure($settings)
 # Terminate the REPL PlatformConfigure process.
 function End-PlatformConfigure($process)
 {
+	Log-Message "Shutting down PlatformConfigure.exe REPL"
+
 	$processId = $process.Id
 
 	Stop-Process $processId

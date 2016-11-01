@@ -32735,6 +32735,17 @@ namespace EDC.ReadiNow.Model
 		}
 
 		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static StringField VisibilityCalculation_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.ControlOnForm.VisibilityCalculation_Field;
+			}
+		}
+
+		/// <summary>
 		/// Public static accessor to the inherited  reverse relationship.
 		/// </summary>
 		public static IEntity ContainedWithinStructureControlOnForm_Field
@@ -32928,7 +32939,7 @@ namespace EDC.ReadiNow.Model
 		{
 			get
 			{
-				return new IEntity [ ] { AutoNumberFieldRenderControl.Alias_Field, AutoNumberFieldRenderControl.CanDelete_Field, AutoNumberFieldRenderControl.CanModify_Field, AutoNumberFieldRenderControl.CreatedDate_Field, AutoNumberFieldRenderControl.Description_Field, AutoNumberFieldRenderControl.GroupName_Field, AutoNumberFieldRenderControl.HideLabel_Field, AutoNumberFieldRenderControl.MandatoryControl_Field, AutoNumberFieldRenderControl.ModifiedDate_Field, AutoNumberFieldRenderControl.Name_Field, AutoNumberFieldRenderControl.ReadOnlyControl_Field, AutoNumberFieldRenderControl.RenderingBackgroundColor_Field, AutoNumberFieldRenderControl.RenderingHeight_Field, AutoNumberFieldRenderControl.RenderingOrdinal_Field, AutoNumberFieldRenderControl.RenderingWidth_Field, AutoNumberFieldRenderControl.ShowControlHelpText_Field, AutoNumberFieldRenderControl.ContainedWithinStructureControlOnForm_Field, AutoNumberFieldRenderControl.ControlRelatedEntityDataPathNodes_Field, AutoNumberFieldRenderControl.CreatedBy_Field, AutoNumberFieldRenderControl.FieldToRender_Field, AutoNumberFieldRenderControl.Flags_Field, AutoNumberFieldRenderControl.IndirectInSolution_Field, AutoNumberFieldRenderControl.InSolution_Field, AutoNumberFieldRenderControl.InStructureLevel_Field, AutoNumberFieldRenderControl.IsOfType_Field, AutoNumberFieldRenderControl.IsRootForStructureView_Field, AutoNumberFieldRenderControl.LastModifiedBy_Field, AutoNumberFieldRenderControl.ResourceConsoleBehavior_Field, AutoNumberFieldRenderControl.ResourceHasResourceKeyDataHashes_Field, AutoNumberFieldRenderControl.ResourceInFolder_Field, AutoNumberFieldRenderControl.SecurityOwner_Field, AutoNumberFieldRenderControl.SelectionBehavior_Field, AutoNumberFieldRenderControl.ShortcutInFolder_Field };
+				return new IEntity [ ] { AutoNumberFieldRenderControl.Alias_Field, AutoNumberFieldRenderControl.CanDelete_Field, AutoNumberFieldRenderControl.CanModify_Field, AutoNumberFieldRenderControl.CreatedDate_Field, AutoNumberFieldRenderControl.Description_Field, AutoNumberFieldRenderControl.GroupName_Field, AutoNumberFieldRenderControl.HideLabel_Field, AutoNumberFieldRenderControl.MandatoryControl_Field, AutoNumberFieldRenderControl.ModifiedDate_Field, AutoNumberFieldRenderControl.Name_Field, AutoNumberFieldRenderControl.ReadOnlyControl_Field, AutoNumberFieldRenderControl.RenderingBackgroundColor_Field, AutoNumberFieldRenderControl.RenderingHeight_Field, AutoNumberFieldRenderControl.RenderingOrdinal_Field, AutoNumberFieldRenderControl.RenderingWidth_Field, AutoNumberFieldRenderControl.ShowControlHelpText_Field, AutoNumberFieldRenderControl.VisibilityCalculation_Field, AutoNumberFieldRenderControl.ContainedWithinStructureControlOnForm_Field, AutoNumberFieldRenderControl.ControlRelatedEntityDataPathNodes_Field, AutoNumberFieldRenderControl.CreatedBy_Field, AutoNumberFieldRenderControl.FieldToRender_Field, AutoNumberFieldRenderControl.Flags_Field, AutoNumberFieldRenderControl.IndirectInSolution_Field, AutoNumberFieldRenderControl.InSolution_Field, AutoNumberFieldRenderControl.InStructureLevel_Field, AutoNumberFieldRenderControl.IsOfType_Field, AutoNumberFieldRenderControl.IsRootForStructureView_Field, AutoNumberFieldRenderControl.LastModifiedBy_Field, AutoNumberFieldRenderControl.ResourceConsoleBehavior_Field, AutoNumberFieldRenderControl.ResourceHasResourceKeyDataHashes_Field, AutoNumberFieldRenderControl.ResourceInFolder_Field, AutoNumberFieldRenderControl.SecurityOwner_Field, AutoNumberFieldRenderControl.SelectionBehavior_Field, AutoNumberFieldRenderControl.ShortcutInFolder_Field };
 			}
 		}
 
@@ -33158,6 +33169,20 @@ namespace EDC.ReadiNow.Model
 			set
 			{
 				this.SetField( "console:showControlHelpText", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public string VisibilityCalculation
+		{
+			get
+			{
+				return ( string ) this.GetField( "console:visibilityCalculation" );
+			}
+			set
+			{
+				this.SetField( "console:visibilityCalculation", value);
 			}
 		}
 

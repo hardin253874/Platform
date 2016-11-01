@@ -18,7 +18,6 @@ using EDC.SoftwarePlatform.Migration;
 using EDC.SoftwarePlatform.Migration.Processing;
 using EDC.Threading;
 using EventLog = EDC.ReadiNow.Diagnostics.EventLog;
-using Solution = EDC.SoftwarePlatform.Install.Common.Solution;
 using Tenant = EDC.SoftwarePlatform.Install.Common.Tenant;
 using EDC.ReadiNow.Scheduling;
 using EDC.ReadiNow.Core;
@@ -635,21 +634,21 @@ namespace PlatformConfigure
 				return;
 
 			/////
-			// Install solution
-			/////
-			if ( RunAction( "installSolution", "is", InstallSolution ) )
-				return;
-
-			/////
 			// Import app package (SqLite) to app library
 			/////
 			if ( RunAction( "importApp", "ia", ImportAppPackage ) )
 				return;
 
-			/////
-			// Export app from tenant to app package (SqLite)
-			/////
-			if ( RunAction( "exportTenantApp", "eta", ExportTenantPackage ) )
+            /////
+            // Bootstrap import app package to app library
+            /////
+            if ( RunAction( "bootstrapApp", "bsa", BootstrapAppPackage ) )
+                return;
+
+            /////
+            // Export app from tenant to app package (SqLite)
+            /////
+            if ( RunAction( "exportTenantApp", "eta", ExportTenantPackage ) )
 				return;
 
 			/////
@@ -1543,13 +1542,13 @@ namespace PlatformConfigure
 		[FunctionArgument( "database", "refers to the name of the database (catalog) where the package will be imported.", "SoftwarePlatform", FunctionArgumentOptions.Optional )]
 		[FunctionArgument( "dbUser", "the username used to connect to the sql server.", null, FunctionArgumentOptions.Optional )]
 		[FunctionArgument( "dbPassword", "the password used to connect to the database.", null, FunctionArgumentOptions.Optional )]
-		private void ImportAppPackage( )
+        private void ImportAppPackage( )
 		{
 			var packagePath = GetArgument<string>( "package" );
 			var server = GetArgument<string>( "server" );
 			var database = GetArgument<string>( "database" );
 			var dbUser = GetArgument<string>( "dbUser" );
-			var dbPassword = GetArgument<string>( "dbPassword" );
+            var dbPassword = GetArgument<string>( "dbPassword" );
 
 			using ( DatabaseInfo.Override( server, database, dbUser, dbPassword ) )
 			using ( DatabaseContextInfo.SetContextInfo( $"Import app '{packagePath}'" ) )
@@ -1558,6 +1557,36 @@ namespace PlatformConfigure
 			}
 
 			Database.RebuildFullTextCatalog( server, database, false );
+        }
+
+        /// <summary>
+        ///     Imports an application from a package (SqLite) to the app library.
+        /// </summary>
+        /// <remarks>
+        ///     Command line parameters
+        ///     -bootstrapApp -package pkg [-server svr] [-database db]
+        /// </remarks>
+        [Function( "bootstrapApp", "Imports the specified package from the file-system to the application library.", "ia" )]
+        [FunctionArgument( "package", "is the path to the .db package on the file-system." )]
+        [FunctionArgument( "server", "refers to the server on which the package will be imported.", "localhost", FunctionArgumentOptions.Optional )]
+        [FunctionArgument( "database", "refers to the name of the database (catalog) where the package will be imported.", "SoftwarePlatform", FunctionArgumentOptions.Optional )]
+        [FunctionArgument( "dbUser", "the username used to connect to the sql server.", null, FunctionArgumentOptions.Optional )]
+        [FunctionArgument( "dbPassword", "the password used to connect to the database.", null, FunctionArgumentOptions.Optional )]
+        private void BootstrapAppPackage( )
+        {
+            var packagePath = GetArgument<string>( "package" );
+            var server = GetArgument<string>( "server" );
+            var database = GetArgument<string>( "database" );
+            var dbUser = GetArgument<string>( "dbUser" );
+            var dbPassword = GetArgument<string>( "dbPassword" );
+
+            using ( DatabaseInfo.Override( server, database, dbUser, dbPassword ) )
+            using ( DatabaseContextInfo.SetContextInfo( $"Bootstrap app '{packagePath}'" ) )
+            {
+                AppManager.ImportAppPackage( packagePath, bootstrapMode: true );
+            }
+
+            Database.RebuildFullTextCatalog( server, database, false );
         }
 
         /// <summary>
@@ -1625,87 +1654,44 @@ namespace PlatformConfigure
 		}
 
 		/// <summary>
-		///     Installs the solution.
-		/// </summary>
-		/// <remarks>
-		///     Command line parameters
-		///     -installSolution [-solution sln] [-server svr] [-database db]
-		/// </remarks>
-		[Function( "installSolution", "Installs the specified solution from Xml and rebuilds the full text catalog.", "is" )]
-		[FunctionArgument( "solution", "is the path to the xml solution file to install.", "C:\\Program Files\\EDC\\SoftwarePlatform\\Solutions\\Core\\Solution.xml", FunctionArgumentOptions.Optional )]
-		[FunctionArgument( "server", "refers to the server on which the solution will be installed.", "localhost", FunctionArgumentOptions.Optional )]
-		[FunctionArgument( "database", "refers to the name of the new database the solution will be installed on.", "SoftwarePlatform", FunctionArgumentOptions.Optional )]
-		[FunctionArgument( "dbUser", "the username used to connect to the sql server.", null, FunctionArgumentOptions.Optional )]
-		[FunctionArgument( "dbPassword", "the password used to connect to the database.", null, FunctionArgumentOptions.Optional )]
-		private void InstallSolution( )
-		{
-			var solutionName = GetArgument<string>( "solution" );
-			var server = GetArgument<string>( "server" );
-			var database = GetArgument<string>( "database" );
-			var dbUser = GetArgument<string>( "dbUser" );
-			var dbPassword = GetArgument<string>( "dbPassword" );
-
-			if ( !File.Exists( solutionName ) )
-			{
-				throw new FileNotFoundException( "The specified solution file cannot be found." );
-			}
-
-			using ( DatabaseInfo.Override( server, database, dbUser, dbPassword ) )
-			using ( DatabaseContextInfo.SetContextInfo( $"Install solution '{solutionName}'" ) )
-			{
-
-				Solution.InstallSolution( solutionName );
-
-				/////
-				// Perform the report migration for the solution
-				/////
-				ReportMigration.ConvertReports( );
-			}
-
-			Database.RebuildFullTextCatalog( server, database, false );
-		}
-
-		/// <summary>
 		///		Installs the bootstrap solution.
 		/// </summary>
 		[Function( "installBootstrap", "Installs the bootstrap solution if not already installed.", "ib" )]
-		[FunctionArgument( "path", "is the folder location on disk where the bootstrap solution resides." )]
 		[FunctionArgument( "databaseServer", "is the name of the database server." )]
 		[FunctionArgument( "databaseCatalog", "is the name of the database catalog." )]
 		private void InstallBootstrap( )
 		{
-			FrontEndArgumentParser argumentParser = new FrontEndArgumentParser( _parser, _attributeArgParser );
+            FrontEndArgumentParser argumentParser = new FrontEndArgumentParser( _parser, _attributeArgParser );
 
-			using ( FrontEnd frontEnd = new FrontEnd( argumentParser ) )
-			using ( DatabaseContextInfo.SetContextInfo( "Install bootstrap" ) )
-			{
-				frontEnd.EnsureBootstrapSolutionExists( );
-			}
-		}
+            using ( FrontEnd frontEnd = new FrontEnd( argumentParser ) )
+            using ( DatabaseContextInfo.SetContextInfo( "Install bootstrap" ) )
+            {
+                frontEnd.InstallBootstrap( );
+            }
+        }
 
 		/// <summary>
 		///		Upgrades the bootstrap solution.
 		/// </summary>
 		[Function( "upgradeBootstrap", "Upgrades the bootstrap solution.", "ub" )]
-		[FunctionArgument( "path", "is the folder location on disk where the bootstrap solution resides." )]
 		[FunctionArgument( "databaseServer", "is the name of the database server." )]
 		[FunctionArgument( "databaseCatalog", "is the name of the database catalog." )]
 		private void UpgradeBootstrap( )
 		{
-			FrontEndArgumentParser argumentParser = new FrontEndArgumentParser( _parser, _attributeArgParser );
+            FrontEndArgumentParser argumentParser = new FrontEndArgumentParser( _parser, _attributeArgParser );
 
-			using ( FrontEnd frontEnd = new FrontEnd( argumentParser ) )
-			using ( DatabaseContextInfo.SetContextInfo( "Upgrade bootstrap" ) )
-			{
-				frontEnd.UpgradeBootstrapSolution( );
-			}
-		}
+            using ( FrontEnd frontEnd = new FrontEnd( argumentParser ) )
+            using ( DatabaseContextInfo.SetContextInfo( "Upgrade bootstrap" ) )
+            {
+                frontEnd.UpgradeBootstrap( );
+            }
+        }
 
-		/// <summary>
-		///		Sets the integration test mode.
-		/// </summary>
-		/// <param name="value">if set to <c>true</c> turns integration test mode on.</param>
-		private void IntgTestMode( bool value )
+        /// <summary>
+        ///		Sets the integration test mode.
+        /// </summary>
+        /// <param name="value">if set to <c>true</c> turns integration test mode on.</param>
+        private void IntgTestMode( bool value )
 		{
 			ServerConfiguration configSection = ConfigurationSettings.GetServerConfigurationSection( );
 			configSection.Security.IntegratedTestingModeEnabled = value;

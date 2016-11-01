@@ -143,6 +143,7 @@
         <hideFieldDefaultForm>true</hideFieldDefaultForm>
       </boolField>
       <boolField>
+        <!-- This is pretty much deprecated, except ScheduledItemSyncTarget still makes reference to it -->
         <alias>systemTenantOnly</alias>
         <name>System tenant</name>
         <description>Flag to indicate that the type applies to the system only, and is not copied to other tenants.</description>
@@ -502,7 +503,7 @@
     <name>Resource key fields</name>
     <description>Describes which fields are in each resource key.</description>
     <reverseAlias>keyFields</reverseAlias>
-    <relType>relManyToMany</relType>
+    <relType>relManyToManyRev</relType>
     <fromType>field</fromType>
     <toType>resourceKey</toType>
     <generateCode>true</generateCode>
@@ -558,7 +559,7 @@
         <alias>fieldsInRelationshipKey</alias>
         <description>Specifies fields to key the relationship on rather than the id of the related entity.</description>
         <reverseAlias>keyRelationshipFields</reverseAlias>
-        <relType>relManyToMany</relType>
+        <relType>relManyToManyFwd</relType>
         <toType>field</toType>
         <generateCode>true</generateCode>
         <relationshipInToTypeGroup>fieldDetails</relationshipInToTypeGroup>

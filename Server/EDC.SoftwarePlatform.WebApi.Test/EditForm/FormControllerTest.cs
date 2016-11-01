@@ -7,6 +7,8 @@ using EDC.ReadiNow.Test;
 using EDC.SoftwarePlatform.WebApi.Test.Infrastructure;
 using NUnit.Framework;
 using System.IO;
+using System.Linq;
+using EDC.SoftwarePlatform.WebApi.Controllers.EditForm;
 
 namespace EDC.SoftwarePlatform.WebApi.Test.EditForm
 {
@@ -110,6 +112,36 @@ namespace EDC.SoftwarePlatform.WebApi.Test.EditForm
                     Assert.That(json, Is.Not.ContainsSubstring("fieldCalculation"));
 
                 }
+            }
+        }
+
+        [Test]
+        [RunAsDefaultTenant]
+        public void TestGetFormData()
+        {
+            var employeeType = CodeNameResolver.GetTypeByName("AA_Employee").As<EntityType>();
+            var employeeForm = employeeType.DefaultEditForm;
+            var employee = Entity.GetInstancesOfType(employeeType).FirstOrDefault();
+
+            using (var request = new PlatformHttpRequest(@"data/v1/form/data", PlatformHttpMethod.Post))
+            {
+                FormDataRequest formDataRequest = new FormDataRequest
+                {
+                    FormId = employeeForm.Id.ToString(),
+                    EntityId = employee.Id.ToString(),
+                    Query = "name, description"
+                };
+
+                request.PopulateBody(formDataRequest);
+
+                HttpWebResponse response = request.GetResponse();
+
+                var formDataResponse = request.DeserialiseResponseBody<FormDataResponse>();
+                
+                Assert.IsNotNull(formDataResponse);
+
+                // check that it worked (200)
+                Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));                
             }
         }
     }

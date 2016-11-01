@@ -611,6 +611,7 @@
   <entity alias="console:viewResourceAction" upgradeId="f898d1f1-f985-49d3-8ef8-078699ef288b" />
   <entity alias="console:viewResourceEndpointAction" upgradeId="284ca191-3bc4-4579-9731-093a00e13185" />
   <entity alias="console:viewWorkflowInDesignerAction" upgradeId="8BEAE181-8444-4F73-A331-BF7A28211DDA" />
+  <entity alias="console:visibilityCalculation" upgradeId="F59E34BC-0FAC-4E16-ACF8-5C45472C4A2C" />  
   <entity alias="console:wbcDisableControlBasedOnRelationshipControl" upgradeId="D6A59BB9-49FC-4AFC-AF30-DB1129A38437" />
   <entity alias="console:wbcDisableControlBasedOnResources" upgradeId="D11B24B5-5E08-4E95-A719-6CEE05B1E330" />
   <entity alias="console:wbcHideSuccessConfirmation" upgradeId="13F86952-092F-4565-B060-967B6242F754" />
@@ -2166,6 +2167,8 @@
   <entity alias="core:relExclusiveCollection" upgradeId="1bb9c06e-8d81-44b7-b9e7-8b2b4dba915f" />
   <entity alias="core:relLookup" upgradeId="022627f5-4409-45b3-87fc-bdeb86c728ea" />
   <entity alias="core:relManyToMany" upgradeId="32f010f4-ea1b-4de3-b0d8-9752e1683818" />
+  <entity alias="core:relManyToManyFwd" upgradeId="6ac00133-d921-483e-a369-6dde3819b009" />
+  <entity alias="core:relManyToManyRev" upgradeId="7973aa89-0b07-4220-9588-b9ef7e11462a" />
   <entity alias="core:relMultiChoiceField" upgradeId="930f0035-ac29-45da-a18d-19ca621186be" />
   <entity alias="core:relSharedDependants" upgradeId="5fee6063-c8e3-412d-a07d-cf6095360820" />
   <entity alias="core:relSharedDependantsOf" upgradeId="86fb22ba-63f8-4801-abcf-bf85eaf6e536" />
@@ -2552,6 +2555,7 @@
   <entity alias="core:systemSchedule" upgradeId="26fef08e-ad13-4763-8481-c9fc40f08443" />
   <entity alias="core:systemScheduleAlias" upgradeId="e8a4cef2-50ae-4bb9-aec2-577041634d40" />
   <entity alias="core:systemScheduleDetails" upgradeId="E5D0634D-0AF9-4C09-8B5A-156D147B44D6" />
+  <entity alias="core:systemSolution" upgradeId="3E67C1C4-AA65-4A9F-95D2-908A9F3614D1" />
   <entity alias="core:systemTenantOnly" upgradeId="d36d1096-f437-46e7-8a89-8117e7506565" />
   <entity alias="core:tagsKeywords" upgradeId="ee4eac48-887a-424d-a474-2e3feaedddcd" />
   <entity alias="core:target" upgradeId="b1c0545c-30e3-4e62-a85e-a42c5dcb7f12" />

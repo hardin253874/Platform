@@ -610,8 +610,6 @@
     <Compile Include="Metadata\Reporting\Helpers\ReportingEntityHelper.cs" />
     <Compile Include="Metadata\Reporting\ReportAggregateField.cs" />
     <Compile Include="Metadata\Reporting\ReportGroupField.cs" />
-    <Compile Include="Metadata\Solutions\BulkProviderMetadata.cs" />
-    <Compile Include="Metadata\Solutions\CsvBulkProvider.cs" />
     <Compile Include="Model\Console\NavigationHelper.cs" />
     <Compile Include="Model\EmailHelper.cs" />
     <Compile Include="Model\EntityAlias.cs" />
@@ -899,9 +897,9 @@
     <ReadiNowXmlWithSchema Include="Config\Schema\AuditLog_Types.xml">
       <SubType>Designer</SubType>
     </ReadiNowXmlWithSchema>
-    <ReadiNowXml Include="Config\Data\AuditLog.xml">
+    <ReadiNowXmlWithSchema Include="Config\Data\AuditLog.xml">
       <SubType>Designer</SubType>
-    </ReadiNowXml>
+    </ReadiNowXmlWithSchema>
     <ReadiNowXmlWithSchema Include="Config\Schema\Survey_Types.xml">
       <SubType>Designer</SubType>
     </ReadiNowXmlWithSchema>
@@ -918,20 +916,21 @@
     <ReadiNowXmlWithSchema Include="Config\Schema\Integration_Types.xml">
       <SubType>Designer</SubType>
     </ReadiNowXmlWithSchema>
+    <ReadiNowXmlWithSchema Include="Config\Schema\System_Global.xml" />
     <Content Include="Scheduling\iCalendar\Serialization\iCalendar\iCalParserTokenTypes.txt" />
     <ReadiNowXmlWithSchema Include="Config\Schema\Console_Types.xml">
       <SubType>Designer</SubType>
     </ReadiNowXmlWithSchema>
-    <ReadiNowXml Include="Config\Data\Platform_Reports.xml">
+    <ReadiNowXmlWithSchema Include="Config\Data\Platform_Reports.xml">
       <SubType>Designer</SubType>
-    </ReadiNowXml>
-    <ReadiNowXml Include="Config\Data\Console_Behaviors.xml">
+    </ReadiNowXmlWithSchema>
+    <ReadiNowXmlWithSchema Include="Config\Data\Console_Behaviors.xml">
       <SubType>Designer</SubType>
-    </ReadiNowXml>
+    </ReadiNowXmlWithSchema>
     <Compile Include="Configuration\SiteConfiguration.cs" />
-    <ReadiNowXml Include="Config\Data\Console_CustomEditForms.xml">
+    <ReadiNowXmlWithSchema Include="Config\Data\Console_CustomEditForms.xml">
       <SubType>Designer</SubType>
-    </ReadiNowXml>
+    </ReadiNowXmlWithSchema>
     <Compile Include="Core\SpecialIds.cs" />
     <Compile Include="Core\SpecialStrings.cs" />
     <Compile Include="Database\DatabaseInfoHelper.cs" />
@@ -992,13 +991,10 @@
     <Compile Include="Metadata\Reporting\Formatting\IconType.cs" />
     <Compile Include="Metadata\Reporting\GridReportDataView.cs" />
     <Compile Include="Metadata\Reporting\ReportDataView.cs" />
-    <Compile Include="Metadata\Solutions\EntityInstaller.cs" />
     <Compile Include="Metadata\ResourceAlreadyExistsException.cs" />
     <Compile Include="Diagnostics\ServerDiagnosticLevel.cs" />
     <Compile Include="Diagnostics\ServerDiagnostics.cs" />
     <Compile Include="Metadata\ResourceNotFoundException.cs" />
-    <Compile Include="Metadata\Solutions\SolutionInfo.cs" />
-    <Compile Include="Metadata\Solutions\SolutionInstallerHelper.cs" />
     <Compile Include="Metadata\Tenants\TenantHelper.cs" />
     <Compile Include="Metadata\Tenants\TenantInfo.cs" />
     <Compile Include="Database\DatabaseContext.cs" />
@@ -1172,8 +1168,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalStrings.resx</DependentUpon>
     </Compile>
-    <Compile Include="Metadata\Solutions\SolutionConfigurationAction.cs" />
-    <Compile Include="Metadata\Solutions\SolutionInstallAction.cs" />
     <Compile Include="Scheduling\EdcDelegate.cs" />
     <Compile Include="Scheduling\EdcLoggingAdapter.cs" />
     <Compile Include="Scheduling\SchedulingHelper.cs" />
@@ -1225,27 +1219,27 @@
     <ReadiNowUpgradeMap Include="Config\UpgradeMap.xml">
       <SubType>Designer</SubType>
     </ReadiNowUpgradeMap>
-    <ReadiNowXml Include="Config\Data\Console_RelationshipBehaviors.xml">
+    <ReadiNowXmlWithSchema Include="Config\Data\Console_RelationshipBehaviors.xml">
       <SubType>Designer</SubType>
-    </ReadiNowXml>
-    <ReadiNowXml Include="Config\Data\Mobile_Forms.xml">
+    </ReadiNowXmlWithSchema>
+    <ReadiNowXmlWithSchema Include="Config\Data\Mobile_Forms.xml">
       <SubType>Designer</SubType>
-    </ReadiNowXml>
-    <ReadiNowXml Include="Config\Data\Mobile_Reports.xml">
+    </ReadiNowXmlWithSchema>
+    <ReadiNowXmlWithSchema Include="Config\Data\Mobile_Reports.xml">
       <SubType>Designer</SubType>
-    </ReadiNowXml>
-    <ReadiNowXml Include="Config\Data\Security.xml">
+    </ReadiNowXmlWithSchema>
+    <ReadiNowXmlWithSchema Include="Config\Data\Security.xml">
       <SubType>Designer</SubType>
-    </ReadiNowXml>
-    <ReadiNowXml Include="Config\Data\Workflow_Data.xml">
+    </ReadiNowXmlWithSchema>
+    <ReadiNowXmlWithSchema Include="Config\Data\Workflow_Data.xml">
       <SubType>Designer</SubType>
-    </ReadiNowXml>
-    <ReadiNowXml Include="Config\Data\Misc.xml">
+    </ReadiNowXmlWithSchema>
+    <ReadiNowXmlWithSchema Include="Config\Data\Misc.xml">
       <SubType>Designer</SubType>
-    </ReadiNowXml>
-    <ReadiNowXml Include="Config\Data\Console_Navigation.xml">
+    </ReadiNowXmlWithSchema>
+    <ReadiNowXmlWithSchema Include="Config\Data\Console_Navigation.xml">
       <SubType>Designer</SubType>
-    </ReadiNowXml>
+    </ReadiNowXmlWithSchema>
     <ReadiNowXmlWithSchema Include="Config\Schema\Shared_Types.xml">
       <SubType>Designer</SubType>
     </ReadiNowXmlWithSchema>
@@ -1268,9 +1262,9 @@
       <SubType>Designer</SubType>
     </ReadiNowXmlWithSchema>
     <ReadiNowXmlWithSchema Include="Config\Schema\Mobile_Types.xml" />
-    <ReadiNowXml Include="Config\Data\Platform_DocumentTypes.xml">
+    <ReadiNowXmlWithSchema Include="Config\Data\Platform_DocumentTypes.xml">
       <SubType>Designer</SubType>
-    </ReadiNowXml>
+    </ReadiNowXmlWithSchema>
     <ReadiNowXmlWithSchema Include="Config\Data\Platform_CondFormatTypes.xml">
       <SubType>Designer</SubType>
     </ReadiNowXmlWithSchema>

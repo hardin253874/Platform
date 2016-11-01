@@ -21,6 +21,8 @@ namespace EDC.SoftwarePlatform.Migration.Contract.Statistics
 		Upgrade = 9,
         ChangeAccess = 10,
 		Remove = 11,
-		Convert = 12
-	}
+		Convert = 12,
+        InstallGlobal = 13,
+        BootstrapImport = 14
+    }
 }

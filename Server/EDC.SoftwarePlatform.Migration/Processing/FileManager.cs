@@ -21,7 +21,7 @@ namespace EDC.SoftwarePlatform.Migration.Processing
         /// <summary>
         ///     Default file format for exported files.
         /// </summary>
-        public static readonly Format DefaultFormat = Format.Xml;
+        public static readonly Format DefaultFormat = Format.XmlVer2;
 
         /// <summary>
         /// Creates the data source.

@@ -214,6 +214,17 @@ namespace EDC.ReadiNow.Model
 		}
 
 		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static StringField VisibilityCalculation_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.ControlOnForm.VisibilityCalculation_Field;
+			}
+		}
+
+		/// <summary>
 		/// Public static accessor to the inherited  forward relationship.
 		/// </summary>
 		public static IEntity ContainedControlsOnForm_Field
@@ -407,7 +418,7 @@ namespace EDC.ReadiNow.Model
 		{
 			get
 			{
-				return new IEntity [ ] { VerticalStackContainerControl.Alias_Field, VerticalStackContainerControl.CanDelete_Field, VerticalStackContainerControl.CanModify_Field, VerticalStackContainerControl.CreatedDate_Field, VerticalStackContainerControl.Description_Field, VerticalStackContainerControl.HideLabel_Field, VerticalStackContainerControl.MandatoryControl_Field, VerticalStackContainerControl.ModifiedDate_Field, VerticalStackContainerControl.Name_Field, VerticalStackContainerControl.ReadOnlyControl_Field, VerticalStackContainerControl.RenderingBackgroundColor_Field, VerticalStackContainerControl.RenderingHeight_Field, VerticalStackContainerControl.RenderingOrdinal_Field, VerticalStackContainerControl.RenderingWidth_Field, VerticalStackContainerControl.ShowControlHelpText_Field, VerticalStackContainerControl.ContainedControlsOnForm_Field, VerticalStackContainerControl.ContainedWithinStructureControlOnForm_Field, VerticalStackContainerControl.ControlRelatedEntityDataPathNodes_Field, VerticalStackContainerControl.CreatedBy_Field, VerticalStackContainerControl.Flags_Field, VerticalStackContainerControl.IndirectInSolution_Field, VerticalStackContainerControl.InSolution_Field, VerticalStackContainerControl.InStructureLevel_Field, VerticalStackContainerControl.IsOfType_Field, VerticalStackContainerControl.IsRootForStructureView_Field, VerticalStackContainerControl.LastModifiedBy_Field, VerticalStackContainerControl.ResourceConsoleBehavior_Field, VerticalStackContainerControl.ResourceHasResourceKeyDataHashes_Field, VerticalStackContainerControl.ResourceInFolder_Field, VerticalStackContainerControl.SecurityOwner_Field, VerticalStackContainerControl.SelectionBehavior_Field, VerticalStackContainerControl.ShortcutInFolder_Field };
+				return new IEntity [ ] { VerticalStackContainerControl.Alias_Field, VerticalStackContainerControl.CanDelete_Field, VerticalStackContainerControl.CanModify_Field, VerticalStackContainerControl.CreatedDate_Field, VerticalStackContainerControl.Description_Field, VerticalStackContainerControl.HideLabel_Field, VerticalStackContainerControl.MandatoryControl_Field, VerticalStackContainerControl.ModifiedDate_Field, VerticalStackContainerControl.Name_Field, VerticalStackContainerControl.ReadOnlyControl_Field, VerticalStackContainerControl.RenderingBackgroundColor_Field, VerticalStackContainerControl.RenderingHeight_Field, VerticalStackContainerControl.RenderingOrdinal_Field, VerticalStackContainerControl.RenderingWidth_Field, VerticalStackContainerControl.ShowControlHelpText_Field, VerticalStackContainerControl.VisibilityCalculation_Field, VerticalStackContainerControl.ContainedControlsOnForm_Field, VerticalStackContainerControl.ContainedWithinStructureControlOnForm_Field, VerticalStackContainerControl.ControlRelatedEntityDataPathNodes_Field, VerticalStackContainerControl.CreatedBy_Field, VerticalStackContainerControl.Flags_Field, VerticalStackContainerControl.IndirectInSolution_Field, VerticalStackContainerControl.InSolution_Field, VerticalStackContainerControl.InStructureLevel_Field, VerticalStackContainerControl.IsOfType_Field, VerticalStackContainerControl.IsRootForStructureView_Field, VerticalStackContainerControl.LastModifiedBy_Field, VerticalStackContainerControl.ResourceConsoleBehavior_Field, VerticalStackContainerControl.ResourceHasResourceKeyDataHashes_Field, VerticalStackContainerControl.ResourceInFolder_Field, VerticalStackContainerControl.SecurityOwner_Field, VerticalStackContainerControl.SelectionBehavior_Field, VerticalStackContainerControl.ShortcutInFolder_Field };
 			}
 		}
 
@@ -623,6 +634,20 @@ namespace EDC.ReadiNow.Model
 			set
 			{
 				this.SetField( "console:showControlHelpText", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public string VisibilityCalculation
+		{
+			get
+			{
+				return ( string ) this.GetField( "console:visibilityCalculation" );
+			}
+			set
+			{
+				this.SetField( "console:visibilityCalculation", value);
 			}
 		}
 

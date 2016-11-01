@@ -206,53 +206,6 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.Entity2
             return new HttpResponseMessage<IDictionary<long, Guid>>(dict, HttpStatusCode.OK);
         }
 
-
-		/// <summary>
-		///     .../entity/xmls/747483?request=name,description
-		///     .../entity/xmls/shared/person?request=*
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <param name="typeName">Name of the type.</param>
-		/// <param name="id">The identifier.</param>
-		/// <param name="ns">The ns.</param>
-		/// <param name="alias">The alias.</param>
-		/// <returns></returns>
-		[Route( "xml/{id}" )]
-		[Route( "xml/{ns}/{alias}" )]
-        [HttpGet]
-		public HttpResponseMessage GetXmlExport(
-			[FromUri( Name = "name" )] string name = null,
-			[FromUri( Name = "typename" )] string typeName = null,
-			string id = null,
-			string ns = null,
-			string alias = null
-			)
-		{
-			// Get the entityRef
-			long entityId = MakeEntityRef( id, ns, alias, name, typeName ).Id;
-
-            // Get name, and incidentally perform a root-level security check.
-		    string entityName = EDC.ReadiNow.Model.Entity.GetName( entityId );
-
-		    string xml = Factory.EntityXmlExporter.GenerateXml( entityId, EntityXmlExportSettings.Default );
-
-			var response = new HttpResponseMessage( HttpStatusCode.OK )
-			{
-				Content = new StringContent( xml, Encoding.UTF8, "text/xml" )
-			};
-
-            // filename
-		    string safeChars = " -_()";
-		    string filename = string.Concat( entityName.Where( ch => char.IsLetterOrDigit( ch ) || safeChars.Contains(ch) ) ) + ".xml";
-
-            response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue( "attachment" )
-		    {
-		        FileName = filename
-            };
-
-            return response;
-		}
-
 		/// <summary>
 		/// Gets the delete details.
 		/// </summary>
