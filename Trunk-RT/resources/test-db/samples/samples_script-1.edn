@@ -1,0 +1,10 @@
+[{:id :samples/script-1,
+  :type :testscript,
+  :steps
+  [{:script "(println \"script 1 step 1\")",
+    :metric-id "S01",
+    :wait-ng true,
+    :target-msec 2000}
+   {:script "(println \"script 1 step 2\")",
+    :wait-ng true,
+    :target-msec 2000}]}]

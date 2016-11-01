@@ -1,0 +1,11 @@
+[{:id :samples/test-2,
+  :tags [:samples]
+  :type :test,
+  :name "a test - #2",
+  :setup [{:script "(println \"test 2 setup step 1\")"}],
+  :steps
+  [{:script "(println \"step 1 of t2\")",
+    :wait-ng true,
+    :target-msec 2000}
+   {:script "(expect-equals 45 45)"}
+   {:script "(/ 22222 0)"}]}]

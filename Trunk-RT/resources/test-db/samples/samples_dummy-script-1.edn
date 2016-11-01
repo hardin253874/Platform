@@ -1,0 +1,5 @@
+[{:id :samples/dummy-script-1,
+  :tags [:samples]
+  :type :test,
+  :name "Ignore this.",
+  :steps [{:script "(samples/dummy-script-1)"}]}]

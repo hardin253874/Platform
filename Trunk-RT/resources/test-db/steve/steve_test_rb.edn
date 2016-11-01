@@ -1,0 +1,25 @@
+[{:id :steve/test/rb,
+  :tags [:samples]
+  :type :test,
+  :name "Report Builder Test",
+  :setup
+  [{:script "(rt.po.app/navigate-to \"Home\")"}
+   {:script "(rt.po.app/enable-app-toolbox)"}
+   {:script "(rt.po.app-toolbox/set-object-filter \"rt-object\")"}
+   {:script "(rt.po.app-toolbox/select-application-filter \"\")"}
+   {:script
+    "(identity {:obj-name (last (rt.po.app-toolbox/get-object-names))\r\n                      :report-name (make-test-name \"RT-Report\")})"}
+   {:script
+    "(identity {:fields #{\"Text 1\" \"Multiline 1\" \"Number 1\" \"Currency 1\" \"DateTime 1\" \"Boolean 1\"}})"}
+   {:script
+    "(identity {:fields #{\"Text 1\"}})"}],
+  :steps
+  [{:script
+    "(rt.po.app-toolbox/create-report {:name (:report-name *test-context*) :object-type (:obj-name *test-context*)})",
+    :wait-ng true,
+    :target-msec 2000}
+   {:script "(rt.po.report-builder/select-field-in-report \"Text 1\")",
+    :wait-ng true,
+    :target-msec 2000}
+   {:script
+    "(expect (clojure.set/subset? (:fields *test-context*) (set (rt.po.report-builder/get-fields-in-report-view))))"}]}]

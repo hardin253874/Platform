@@ -1,0 +1,7 @@
+[{:id :samples/test-3,
+  :tags [:samples]
+  :type :test,
+  :name "a test - #3",
+  :steps
+  [{:script "(/ 22222 0)"}
+   {:script "(println \"should not see this\")"}]}]

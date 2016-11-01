@@ -1,0 +1,6 @@
+[{:id :steve,
+  :type :testsuite,
+  :name "steve's dev suite",
+  :once-fixtures [],
+  :each-fixtures [ :steve/fixture/nexus-5 :steve/fixture/login],
+  :tests [:steve/test/fb :steve/suite/rb]}]

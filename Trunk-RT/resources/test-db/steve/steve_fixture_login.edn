@@ -1,0 +1,7 @@
+[{:id :steve/fixture/login,
+  :type :testfixture,
+  :name "App start and login",
+  :data
+  {:tenant "EDC", :username "Administrator", :password "tacoT0wn"},
+  :setup [{:script "(rn.common/start-app-and-login)"}],
+  :teardown [{:script "(rn.common/clear-all-alerts)"}]}]

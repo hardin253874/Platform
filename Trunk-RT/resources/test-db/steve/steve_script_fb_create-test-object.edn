@@ -1,0 +1,10 @@
+[{:id :steve/script/fb/create-test-object,
+  :type :testscript,
+  :steps
+  [{:script "(rt.scripts.qa-daily/form-builder-new-object)",
+    :metric-id "fb/new",
+    :wait-ng true,
+    :target-msec 2000}
+   {:script "(rt.po.form-builder/add-container-to-form)",
+    :wait-ng true,
+    :target-msec 2000}]}]

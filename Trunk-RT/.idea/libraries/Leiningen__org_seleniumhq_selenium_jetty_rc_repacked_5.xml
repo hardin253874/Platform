@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Leiningen: org.seleniumhq.selenium/jetty-rc-repacked:5">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/seleniumhq/selenium/jetty-rc-repacked/5/jetty-rc-repacked-5.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

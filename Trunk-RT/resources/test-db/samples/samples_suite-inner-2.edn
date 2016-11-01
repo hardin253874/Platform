@@ -1,0 +1,6 @@
+[{:id :samples/suite-inner-2,
+  :type :testsuite,
+  :name "an inner suite",
+  :once-fixtures [],
+  :each-fixtures [],
+  :tests [:samples/test-2]}]

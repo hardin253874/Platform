@@ -1,0 +1,14 @@
+.svn
+pom.xml
+*.jar
+/lib/
+/classes/
+/out/
+/logs/
+/target/
+/test-runs/
+.lein-deps-sum
+.lein-repl-history
+.lein-plugins/
+.idea/workspace.xml
+.idea/replstate.xml

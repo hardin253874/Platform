@@ -1,0 +1,33 @@
+{
+ ;; Configuration for the RT app.
+
+ :title             "ReadiNow Test Automation"
+
+ :state-file        "state.edn"
+ :test-db-dir       "./test-db"
+ :test-runs-dir     "./test-runs"
+
+ ;; the following is a common location for additional tests
+ ;;:shared-db-dirs        ["//spdevnas01.sp.local/Development/Shared/RnTests/test-db" "../RnTests/test-db"]
+ :shared-db-dirs    ["../RnTests/test-db"]
+ :data-dir          "../RnTests/data"
+
+ ;; used when adding a test directly to a test run, not as part of a suite
+ :default-fixtures  [:common/fixture/handle-errors]
+
+ :app-url           "https://localhost"
+ :target            :chrome
+
+ ;; this is the number of times a suite run will retry a errored test
+ :test-retry-limit  1
+
+ :tenant            "EDC"
+ :username          "Administrator"
+ :password          "tacoT0wn"
+
+ :disable-step-sync true
+
+ :chrome-options    {:driver-path "bin/chromedriver.exe"}
+ :ie-options        {:driver-path "bin/IEDriverServer.exe"}
+
+ }

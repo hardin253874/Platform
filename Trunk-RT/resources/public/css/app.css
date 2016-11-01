@@ -1,0 +1,868 @@
+/*=======================
+ * General
+ */
+
+
+/*
+
+white: rgb(255,255,255)
+off white: rgb(233,237,238)
+grey: rgb(202,202,202)
+pink: rgb(238,0,114)
+green: rgb(140,198,62)
+blue: rgb(42,171,228)
+dark grey: rgb(152,155,164)
+charcoal: rgb(47,47,55)
+
+*/
+
+
+*, *:before, *:after {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+}
+
+.right {
+    float: right;
+}
+
+.align-right {
+    text-align: right;
+}
+
+.align-center {
+    text-align: center;
+}
+
+pre.wrap {
+    white-space: pre-wrap;
+    margin: 0;
+}
+
+button, .button {
+    font-size: .9rem;
+    text-decoration: none;
+    background-color: rgb(202,202,202);
+    color: rgb(47,47,55);
+    padding: 2px 6px 3px 6px;
+    border-radius: 2px;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.46);
+    border: none;
+    margin: 0 .3em
+}
+
+button:disabled, .button:disabled {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: rgba(0, 0, 0, 0.4);
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.3);
+}
+
+table {
+    border: 0;
+    background: 0 0;
+    border-collapse: collapse;
+    width: 100%;
+    text-align: left;
+    font-size: .8rem;
+    background-color: rgb(255,255,255);
+}
+
+table tr {
+    vertical-align: top;
+}
+
+table thead {
+    background-color: rgb(202,202,202);
+}
+
+table th {
+    font-weight: normal;
+    font-style: normal;
+    color: rgb(47,47,55);
+    padding: .3em .5em;
+}
+
+table td {
+    border-top: 1px solid rgba(152,155,164,.1);
+    padding: .3em .5em;
+}
+
+table.zebra tbody tr:nth-child(odd) {
+    background-color: rgb(233,237,238);
+}
+
+.list-toolbar {
+    margin: .2rem 0;
+}
+
+input.filter {
+    margin: .3rem;
+}
+
+/***************************************
+ * Tabs
+ */
+
+.tabs {
+    margin: .5rem 0;
+    font-size: .875em;
+}
+
+.tab-header {
+    border-bottom: 1px solid rgb(238,0,114);
+    height: 1.5em;
+}
+
+.tab-header ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.tab-header li {
+    display: inline-block;
+    background-color: rgb(233,237,238);
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    padding: .2em .5em .15em .5em;
+    cursor: pointer;
+}
+
+.tab-header li.selected {
+    background-color: rgb(238,0,114);
+    color: rgb(255,255,255);
+}
+
+/*=======================
+ * Application
+ */
+
+#app {
+    height: 100%
+}
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.app-header {
+    flex: 0 0 auto;
+    padding: .5em;
+    min-height: 1em;
+    background-color: rgb(47,47,55);
+
+    display: flex;
+}
+
+.app-logo {
+    flex: 0;
+}
+
+.app-links {
+    flex: 1;
+    color: rgb(233,237,238);
+    margin-top: .25em;
+    font-size: .9em;
+}
+
+.app-links ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    text-align: right;
+}
+
+.app-links li {
+    display: inline-block;
+    margin: 0 .5em;
+}
+
+.app-links li:first-child:before {
+    content: none;
+}
+
+.app-link {
+    position: relative;
+    right: 0;
+    color: rgb(233,237,238);
+    text-decoration: inherit;
+}
+
+.app-page {
+    flex: 1 1 0;
+    min-height: 0;
+    background-color: rgb(255,255,255);
+
+    display: flex;
+    flex-direction: column;
+}
+
+.app-help {
+    position: absolute;
+    left: 50px;
+    right: 50px;
+    top: 50px;
+    bottom: 50px;
+    background-color: rgb(233,237,238);
+    z-index: 999;
+}
+
+.app-footer {
+    flex: 0 0 auto;
+    padding: .2em;
+    min-height: 1em;
+    background-color: rgb(202,202,202);
+    font-size: smaller;
+    color: rgb(152,155,164);
+}
+
+.app-debug {
+    flex: 1 1 0;
+    padding: .2em;
+    background-color: rgb(47,47,55);
+    color: rgb(238,0,114);
+    overflow: auto;
+}
+
+.warning {
+     background-color: rgb(140,198,62);
+}
+
+/***************************************
+ * Loading spinner
+ */
+
+ .loading {
+   position: fixed;
+   z-index: 999;
+   height: 2em;
+   width: 2em;
+   overflow: visible;
+   margin: auto;
+   top: 0;
+   left: 0;
+   bottom: 0;
+   right: 0;
+ }
+
+ /* Transparent Overlay */
+ .loading:before {
+   content: '';
+   display: block;
+   position: fixed;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   background-color: rgba(0,0,0,0.3);
+ }
+
+ /* :not(:required) hides these rules from IE9 and below */
+ .loading:not(:required) {
+   /* hide "loading..." text */
+   font: 0/0 a;
+   color: transparent;
+   text-shadow: none;
+   background-color: transparent;
+   border: 0;
+ }
+
+ .loading:not(:required):after {
+   content: '';
+   display: block;
+   font-size: 10px;
+   width: 1em;
+   height: 1em;
+   margin-top: -0.5em;
+   -webkit-animation: spinner 1500ms infinite linear;
+   -moz-animation: spinner 1500ms infinite linear;
+   -ms-animation: spinner 1500ms infinite linear;
+   -o-animation: spinner 1500ms infinite linear;
+   animation: spinner 1500ms infinite linear;
+   border-radius: 0.5em;
+   -webkit-box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0, rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.5) -1.5em 0 0 0, rgba(0, 0, 0, 0.5) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0, rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;
+   box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0, rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) -1.5em 0 0 0, rgba(0, 0, 0, 0.75) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0, rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;
+ }
+
+ /* Animation */
+
+ @-webkit-keyframes spinner {
+   0% {
+     -webkit-transform: rotate(0deg);
+     -moz-transform: rotate(0deg);
+     -ms-transform: rotate(0deg);
+     -o-transform: rotate(0deg);
+     transform: rotate(0deg);
+   }
+   100% {
+     -webkit-transform: rotate(360deg);
+     -moz-transform: rotate(360deg);
+     -ms-transform: rotate(360deg);
+     -o-transform: rotate(360deg);
+     transform: rotate(360deg);
+   }
+ }
+ @-moz-keyframes spinner {
+   0% {
+     -webkit-transform: rotate(0deg);
+     -moz-transform: rotate(0deg);
+     -ms-transform: rotate(0deg);
+     -o-transform: rotate(0deg);
+     transform: rotate(0deg);
+   }
+   100% {
+     -webkit-transform: rotate(360deg);
+     -moz-transform: rotate(360deg);
+     -ms-transform: rotate(360deg);
+     -o-transform: rotate(360deg);
+     transform: rotate(360deg);
+   }
+ }
+ @-o-keyframes spinner {
+   0% {
+     -webkit-transform: rotate(0deg);
+     -moz-transform: rotate(0deg);
+     -ms-transform: rotate(0deg);
+     -o-transform: rotate(0deg);
+     transform: rotate(0deg);
+   }
+   100% {
+     -webkit-transform: rotate(360deg);
+     -moz-transform: rotate(360deg);
+     -ms-transform: rotate(360deg);
+     -o-transform: rotate(360deg);
+     transform: rotate(360deg);
+   }
+ }
+ @keyframes spinner {
+   0% {
+     -webkit-transform: rotate(0deg);
+     -moz-transform: rotate(0deg);
+     -ms-transform: rotate(0deg);
+     -o-transform: rotate(0deg);
+     transform: rotate(0deg);
+   }
+   100% {
+     -webkit-transform: rotate(360deg);
+     -moz-transform: rotate(360deg);
+     -ms-transform: rotate(360deg);
+     -o-transform: rotate(360deg);
+     transform: rotate(360deg);
+   }
+ }
+
+/***************************************
+ * Setting Page
+ */
+
+.settings-page label {
+    display: block;
+    color: rgb(152,155,164);
+    margin-top: 5px;
+}
+
+.settings-page input {
+    display: block;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #cccccc;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    width: calc(100% - 8px);
+    margin-left: 4px;
+    color: rgb(152,155,164);
+}
+
+
+/***************************************
+ * Source file listing page
+ */
+
+.source-list {
+    flex: 1;
+    overflow: auto;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.source-list .toolbar {
+    flex: 0 0 auto;
+}
+
+.source-list .content {
+    flex: 1 1 100%;
+    overflow: auto;
+}
+
+.source-list ul {
+    margin: 0 0 0 0.5em;
+    padding: 0;
+    list-style: none;
+}
+
+/***************************************
+ * Source file editor
+ */
+
+.source-editor {
+    flex: 1 1 auto;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.source-editor .toolbar {
+    flex: 0 0 auto;
+    background-color: rgb(238,0,114);
+    min-height: 2rem;
+    padding: 3px;
+}
+
+.source-editor .toolbar > div {
+    float: left;
+}
+
+.source-editor .toolbar > button {
+    float: right;
+    margin-left: 2px;
+}
+
+.source-editor .editor-container {
+    flex: 1 1 auto;
+
+    display: flex;
+    flex-direction: row;
+}
+
+.source-editor .editor {
+    flex: 3 1 0;
+    overflow: auto;
+    position: relative;
+}
+
+.source-editor .eval-results {
+    flex: 1 1 0;
+    overflow: auto;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.source-editor .output {
+    flex: 1 1 100%;
+    background-color: rgb(42,171,228);
+    min-height: 1rem;
+    overflow: auto;
+    font-size: smaller;
+}
+
+.source-editor .result {
+    flex: 0 0 auto;
+    background-color: rgb(140,198,62);
+    min-height: 1rem;
+    overflow: auto;
+    font-size: smaller;
+}
+
+.CodeMirror {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+}
+
+/***************************************
+ * Report / list view page
+ */
+
+.report-page {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.report-header {
+    flex: 0 0 auto;
+}
+
+.report-content {
+    flex: 1 1 0;
+    overflow: auto;
+}
+
+.report-toolbar {
+    height: 1.65em;
+    margin: .2em 0 0 0;
+}
+
+.report-toolbar a.tab-label, .report-toolbar button {
+    padding: .2em .5em;
+}
+
+.report-toolbar input {
+    width: 10em;
+    padding: 0;
+}
+
+.report-toolbar a.tab-label {
+    text-decoration: inherit;
+    color: inherit;
+}
+
+.report-toolbar a.selected {
+    background-color: rgb(238,0,114);
+    color: white;
+}
+
+/***************************************
+ * Status page
+ */
+
+.status-page {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.status-header {
+    flex: 0 0 auto;
+}
+
+.status-content {
+    flex: 1 1 0;
+    overflow: auto;
+}
+
+.status-metric {
+    padding-left: 3px;
+}
+
+.status-metric span {
+    padding-left: 5px;
+}
+
+.status-buttons input {
+    vertical-align: middle;
+    margin-left: 5px;
+}
+
+.time-great {
+    background-color: chartreuse;
+}
+
+.time-ok {
+    background-color: goldenrod;
+}
+
+.time-just {
+    background-color: lightpink;
+}
+
+.time-unacceptable {
+    background-color: orangered;
+}
+
+/***************************************
+ * Record editor page
+ */
+
+.edit-page {
+    flex: 1;
+    overflow: scroll;
+    padding: 3px;
+    padding-top: 6px;
+}
+
+.edit-page table thead {
+    background-color: rgb(255,255,255);
+}
+
+.edit-page label {
+    display: block;
+    color: rgb(47,47,55);
+    font-weight: normal;
+    font-size: .875rem;
+    line-height: 1.5;
+    cursor: pointer;
+}
+
+.edit-page input {
+    display: block;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #cccccc;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    color: rgba(0, 0, 0, 0.75);
+    height: 1.5rem;
+    font-size: .875rem;
+    margin: 0 0 .25rem 0;
+    padding: 0 0 0 .2rem;
+}
+
+.edit-page-toolbar {
+    float: right;
+    margin-top: -4px;
+}
+
+.edit-page-toolbar button {
+}
+
+.edit-page-toolbar * {
+    margin: 0 3px;
+}
+
+
+.edit-page .tab-content .button {
+    margin: 0 3px;
+}
+
+.fixture-data {
+    height: 5rem;
+    width: 100%;
+    position: relative;
+}
+
+.step-editor-container {
+    display: flex;
+    flex-wrap: wrap;
+
+    padding: .25rem .2rem;
+    background-color: #91d1cc;
+}
+
+.step-editor {
+    flex: 1 1 50%;
+    min-width: 20em;
+    font-size: 1rem;
+}
+
+.step-editor-chooser {
+    flex: 1 1 50%;
+}
+
+.step-input {
+    height: 10em;
+
+    /* need this for the CodeMirror child elements */
+    position: relative;
+}
+
+.step-editor-buttons {
+    margin-top: 0.25rem;
+    display: flex;
+}
+
+.step-editor-buttons button {
+    width: 2em;
+}
+
+.edit-step-button {
+    cursor: pointer;
+    font-size: 1rem;
+    display: inline-block;
+    margin-top: -5px;
+}
+
+.edit-drag-handle {
+    cursor: move;
+    font-size: 1rem;
+    display: inline-block;
+    margin-top: -5px;
+}
+
+.comment {
+    color: grey;
+    font-style: italic;
+}
+
+.list-section > label {
+    font-weight: bold;
+    margin-top: .7em;
+}
+
+span.link:hover {
+    text-decoration: underline;
+}
+
+/***************************************
+ * Test Runner Pages
+ */
+
+.run-page, .run-page-test-view, .run-page-step-view {
+    overflow: auto;
+    font-size: .875rem;
+
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.run-page-header {
+    flex: 0 0 auto;
+}
+
+.run-page-content {
+    flex: 1 1 0;
+    overflow: auto;
+}
+
+.testrun-toolbar {
+    margin: .2em 0;
+}
+
+.testrun-toolbar button {
+    margin-right: .2em;
+}
+
+.run-to-here {
+    cursor: pointer;
+    display: inline-block;
+    height: 0;
+}
+
+.run-page label {
+    display: block;
+    color: dimgrey;
+}
+
+.run-page table {
+    margin-top: .5em;
+}
+
+table.testrun thead th {
+    background-color: lightgrey;
+    font-weight: bold;
+}
+
+table.testrun .status-fail {
+    background-color: pink;
+}
+
+table.testrun .status-error {
+    background-color: red;
+}
+
+table.testrun .status-pass {
+    background-color: lightgreen;
+}
+
+table.testrun .status-done {
+    background-color: beige;
+}
+
+.step-props tr td:first-child {
+    text-align: left;
+}
+
+/***************************************
+ * Test run REPL panel
+ */
+
+.repl {
+    height: 15rem;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.repl label {
+    flex: 0 0 auto;
+}
+
+.repl .editor {
+    flex: 1;
+    position: relative;
+    margin: .5rem;
+    overflow: auto;
+}
+
+/***************************************
+ * Driverfn chooser
+ */
+
+.driverfn-chooser {
+    /*
+    position: absolute;
+    top: 10%;
+    height: 80%;
+    left: 40%;
+    width: 55%;
+    z-index: 999;
+    */
+    height: 25em;
+    background-color: lightyellow;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.driverfn-header {
+    flex: 0 0 auto;
+}
+
+.driverfn-list {
+    flex: 1 1 100%;
+    overflow: auto;
+}
+
+.driverfn-preview {
+    flex: 1 1 auto;
+    overflow: auto;
+    min-height: 25%;
+}
+
+.driverfn-preview h1 {
+    font-size: 1.1em;
+    margin-bottom: .2em;
+}
+
+.driverfn-preview h2 {
+    font-size: 1.0em;
+    margin-bottom: .2em;
+}
+
+.driverfn-preview ul {
+    margin: 0;
+    padding-left: 1em;
+    list-style: none;
+    font-size: smaller;
+}
+
+table .driverfn-preview a {
+    text-decoration: underline;
+}
+
+table.driverfns tr.selected {
+    background-color: darkkhaki;
+}
+
+table.driverfns {
+    width: 100%;
+}
+
+table.stats {
+    margin-top: 5px;
+}
+
+/***************************************
+ * Media query based overrides
+ */
+
+@media all and (max-width: 900px) {
+    .source-editor .editor-container {
+        flex-direction: column;
+    }
+}
+
+@media all and (max-width: 1200px) {
+    .source-editor .editor {
+        flex: 3 1 0;
+    }
+}

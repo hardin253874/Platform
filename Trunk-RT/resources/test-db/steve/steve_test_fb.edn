@@ -1,0 +1,13 @@
+[{:id :steve/test/fb,
+  :tags [:samples]
+  :type :test,
+  :name "Form Builder Test",
+  :steps
+  [:steve/script/fb/create-test-object
+   {:script "(rt.scripts.qa-daily/form-builder-add-text)",
+    :wait-ng true,
+    :target-msec 2000}
+   {:script "(rt.po.form-builder/save)",
+    :metric-id "fb/save",
+    :wait-ng true,
+    :target-msec 2000}]}]

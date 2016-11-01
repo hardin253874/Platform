@@ -1,0 +1,7 @@
+[{:id :steve/fixture/nexus-5,
+  :type :testfixture,
+  :name "Chrome emulating a Nexus 5",
+  :data {:target :chrome :target-device "Google Nexus 5" :target-width 400 :target-height 800},
+  :setup [{:script "(println \"hello\" *tc*)"}],
+  :after-fail
+  ["(rn.common/take-screenshot)" "(rn.common/capture-browser-logs)"]}]

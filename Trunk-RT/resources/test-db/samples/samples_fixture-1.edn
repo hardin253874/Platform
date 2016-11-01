@@ -1,0 +1,6 @@
+[{:id :samples/fixture-1,
+  :type :testfixture,
+  :name "fixture 1",
+  :data {:target :chrome},
+  :setup [{:script "(println \"fixture 1 setup\")"}],
+  :after-fail ["(println \"after fail handler\")"]}]

@@ -1,0 +1,6 @@
+[{:id :samples/fixture-3,
+  :type :testfixture,
+  :name "fixture 2",
+  :data {:username "Admin", :password "Password"},
+  :setup [{:script "(println \"logging in\")"}],
+  :after-step ["(println \"wait for things to idle\")"]}]

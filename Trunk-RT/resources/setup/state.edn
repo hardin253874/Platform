@@ -1,0 +1,5 @@
+{
+  ;; Application run state.
+  ;; Generally not for user modification.
+
+  :next-id-counter 0}

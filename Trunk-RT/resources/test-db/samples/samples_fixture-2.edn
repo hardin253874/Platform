@@ -1,0 +1,4 @@
+[{:id :samples/fixture-2,
+  :type :testfixture,
+  :name "fixture 2",
+  :teardown [{:script "(println \"fixture 2 teardown\")"}]}]

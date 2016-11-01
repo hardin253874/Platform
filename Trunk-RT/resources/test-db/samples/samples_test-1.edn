@@ -1,0 +1,11 @@
+[{:id :samples/test-1,
+  :tags [:samples]
+  :type :test,
+  :name "a test",
+  :steps
+  [:samples/script-1
+   {:script "(println \"another step\")",
+    :wait-ng true,
+    :target-msec 2000}
+   {:script "(expect-equals 23 45)"}
+   {:script "(when (= 0 (rand-int 2)) (throw (Exception. \"hey\")))"}]}]
