@@ -9,7 +9,8 @@
         'spApps.reportServices',
         'mod.common.spWebService',
         'mod.common.spXsrf',
-        'ui.bootstrap'])
+        'ui.bootstrap',
+        'mod.app.spExportXml'])
         .config(function ($stateProvider) {
             $stateProvider.state('reportRunner', {
                 url: '/{tenant}/{eid}/reportRunner?path',
@@ -19,7 +20,7 @@
             window.testNavItems = window.testNavItems || {};
             window.testNavItems.reportRunner = { name: 'Report Runner' };
         })
-        .controller('reportRunnerController', function ($q, $scope, $stateParams, $http, $timeout, spEntityService, spTenantSettings, reportPageSize, spReportService, spWebService, spXsrf) {
+        .controller('reportRunnerController', function ($q, $scope, $stateParams, $http, $timeout, spEntityService, spTenantSettings, reportPageSize, spReportService, spWebService, spXsrf, spExportXml) {
             $scope.myTitle = 'Report Runner';
             $scope.title = 'Report Runner';
             $scope.data = {
@@ -64,11 +65,8 @@
             var uri = '/sp/#/' + encodeURIComponent($stateParams.tenant) + '/';
             var batch;
 
-            $scope.openXml = function(id) {
-                var xuri = spEntityService.getEntityXmlUrl(id);
-                var turi = spXsrf.addXsrfTokenAsQueryString(xuri);
-                var win = window.open(turi, '_blank');
-                win.focus();
+            $scope.openXml = function (id) {
+                spExportXml.exportEntities([id]);
             };
 
             $scope.run = function () {

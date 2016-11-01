@@ -351,6 +351,7 @@
 
             $scope.$watch('nav.getThemes()', function (getThemesCompleted) {
                 if (getThemesCompleted === true && !$scope.consoleThemeModel.consoleTheme) {
+                    $scope.getThemesCompleted = true;
                     $scope.consoleThemeModel.consoleTheme = $scope.nav.getCurrentTheme();
                 }
             });

@@ -189,6 +189,12 @@
                         case 'relSharedDependants':
                             effectiveRelType = exports.getRelType('core:relSharedDependantsOf');
                             break;
+                        case 'relManyToManyFwd':
+                            effectiveRelType = exports.getRelType('core:relManyToManyFwd');
+                            break;
+                        case 'relManyToManyRev':
+                            effectiveRelType = exports.getRelType('core:relManyToManyRev');
+                            break;
                         case 'relCustom':
                             effectiveRelType = exports.getRelType('core:relCustom');
                             break;
@@ -355,6 +361,32 @@
                             relationship.setReverseImplicitInSolution(false);       // ref only
 
                             break;
+                        case 'relManyToManyFwd':
+                            relationship.setRelType('relManyToManyFwd');
+                            relationship.setCardinality('manyToMany');
+                            //relationship.setRelationshipIsMandatory(true);        // optional
+                            //relationship.setRevRelationshipIsMandatory(true);     // optional
+                            relationship.setCascadeDelete(false);
+                            relationship.setCascadeDeleteTo(false);
+                            relationship.setCloneAction('cloneReferences');
+                            relationship.setReverseCloneAction('drop');
+                            relationship.setImplicitInSolution(false);              // ref only
+                            relationship.setReverseImplicitInSolution(false);       // ref only
+
+                            break;
+                        case 'relManyToManyRev':
+                            relationship.setRelType('relManyToManyRev');
+                            relationship.setCardinality('manyToMany');
+                            //relationship.setRelationshipIsMandatory(true);        // optional
+                            //relationship.setRevRelationshipIsMandatory(true);     // optional
+                            relationship.setCascadeDelete(false);
+                            relationship.setCascadeDeleteTo(false);
+                            relationship.setCloneAction('drop');
+                            relationship.setReverseCloneAction('cloneReferences');
+                            relationship.setImplicitInSolution(false);              // ref only
+                            relationship.setReverseImplicitInSolution(false);       // ref only
+
+                            break;
                         case 'relMultiChoiceField':
                             relationship.setRelType('relMultiChoiceField');
                             relationship.setCardinality('manyToMany');
@@ -453,6 +485,12 @@
                      },
                      {
                          id: 'core:relSharedDependants'
+                     },
+                     {
+                         id: 'core:relManyToManyFwd'
+                     },
+                     {
+                         id: 'core:relManyToManyRev'
                      },
                      {
                          id: 'core:relCustom'

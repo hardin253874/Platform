@@ -26,7 +26,8 @@
         .constant('editFormCacheSettings', {
             FormCapacity: 40,
             InstanceCapacity: 200,
-            TypeFormCapacity: 200,            
+            TypeFormCapacity: 200,
+            FormVisCalcDependencyCapacity: 200,   
             FormRefreshCycleInSeconds: 60,
             MaxAgeInMinutes: 60
         })
@@ -43,17 +44,20 @@
 
 	        var formCacheSettings = _.defaults( { capacity: editFormCacheSettings.FormCapacity},   defaultCacheSettings);          
 	        var instanceCacheSettings = _.defaults({  capacity: editFormCacheSettings.InstanceCapacity },    defaultCacheSettings);   
-	        var typeFormCacheSettings = _.defaults({ capacity: editFormCacheSettings.TypeFormCapacity }, defaultCacheSettings);	        
+	        var typeFormCacheSettings = _.defaults({ capacity: editFormCacheSettings.TypeFormCapacity }, defaultCacheSettings);
+            var formVisCalcDependencyCacheSettings = _.defaults({ capacity: editFormCacheSettings.FormVisCalcDependencyCapacity }, defaultCacheSettings);	        
 
 	        var formCache = DSCacheFactory('formCache', formCacheSettings);
 	        var instanceFormCache = DSCacheFactory('itemFormCache', instanceCacheSettings);
 	        var typeFormCache = DSCacheFactory('typeFormCache', typeFormCacheSettings);
+            var formVisCalcDependencyCache = DSCacheFactory('formVisCalcDependencyCache', formVisCalcDependencyCacheSettings);
 	        var invalidatingEntityToFormCache = {};
 
 	        var pendingFormRequests = {};
 	        var pendingInstanceRequests = {};
 	        var pendingDefRequests = {};
 	        var pendingGenRequests = {};
+            var pendingVisCalcRequests = {};
 
 	        var deserialize = spEntity.deserialize;
 	        var serialize = spEntity.serialize;
@@ -75,7 +79,16 @@
 	            }
 	        }
 
-            // Get a form from the cache
+            // Put form visibility calc dependencies in the cache
+	        function putFormVisCalcDependencies(key, data) {
+	            try {
+	                formVisCalcDependencyCache.put(key, { data: data });
+	            } catch (e) {
+	                console.error('Failed to store calc dependency data in cache', e);
+	            }
+	        }
+
+	        // Get a form from the cache
 	        function getForm(key, skipModificationCheck) {
 
 	            var cacheEntry = formCache.get(key);
@@ -112,6 +125,7 @@
                         } else {                                                            // changed
                             console.log('editFormCache: form changed on server ', key);
                             formCache.remove(key);
+                            formVisCalcDependencyCache.remove(key);
                             return undefined;
                         }
                     });
@@ -358,6 +372,7 @@
             */
 	        exports.remove = function (key) {
 	            formCache.remove(key);      // might need to deal with id v/s a26
+	            formVisCalcDependencyCache.remove(key);
 	        };
 
 
@@ -372,12 +387,43 @@
 	            formCache.removeAll();      // might need to deal with id v/s a26
 	            typeFormCache.removeAll();      // might need to deal with id v/s a26
 	            instanceFormCache.removeAll();
+	            formVisCalcDependencyCache.removeAll();
 	            invalidatingEntityToFormCache = {};
 
 	            pendingFormRequests = {};
 	            pendingInstanceRequests = {};
 	            pendingDefRequests = {};
 	            pendingGenRequests = {};
+	            pendingVisCalcRequests = {};
+	        };
+
+	        exports.getFormVisCalcDependencies = function (formId) {
+                // are we already asking for it?
+                var pendingRequest = pendingVisCalcRequests[formId];
+
+                if (pendingRequest) {
+                    return pendingRequest;
+                }
+
+                // do we have it in the cache
+                var cacheEntry = formVisCalcDependencyCache.get(formId);
+                if (cacheEntry && cacheEntry.data) {
+                    return $q.when(cacheEntry.data);
+                }
+
+	            // Not in cache. Get it.                
+
+	            var request = editFormWebServices.getFormVisCalcDependencies(formId).then(function(visibilityCalcDependencies) {
+	                    putFormVisCalcDependencies(formId, visibilityCalcDependencies);
+	                    return visibilityCalcDependencies;
+	                })
+	                .finally(function() {
+	                    pendingVisCalcRequests[formId] = undefined;
+	                });
+
+	            pendingVisCalcRequests[formId] = request;
+
+	            return request;
 	        };
 
 	        // Given an instance id or alias, return the default form for it.

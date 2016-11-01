@@ -114,7 +114,62 @@
         
         return callFormService(url);
     };
-	
+
+	exports.getFormDataAdvanced = function(eid, request, formId) {
+	    var formRequestData = {
+	        entityId: eid.toString(),
+	        formId: formId.toString(),
+	        query: request,
+	        hint: "getFormDataAdvanced"
+	    };
+
+        var logTimeKey = 'getFormDataAdvanced(' + eid + ')';
+
+        console.time(logTimeKey);
+
+	    var url = spWebService.getWebApiRoot() + '/spapi/data/v1/form/data';
+
+	    var args = { headers: spWebService.getHeaders() };
+	    return $http.post(url, formRequestData, args).then(
+	        function(response) {	                
+	            var json = response.data;
+	            var formDataEntity = _.first(spEntity.entityDataVer2ToEntities(json.formDataEntity));
+                console.timeEnd(logTimeKey);
+	            return {
+	                formDataEntity: formDataEntity,
+	                initiallyHiddenControls: json.initiallyHiddenControls	                
+	            };
+	        },
+	        function (error) {
+                console.timeEnd(logTimeKey);
+                console.error('editFormWebServices.getFormDataAdvanced error: ' + (sp.result(error, 'status') || error));
+                throw error;
+	        });
+	};
+
+    exports.getFormVisCalcDependencies = function(formId) {
+        var logTimeKey = 'getFormVisCalcDependencies(' + formId + ')';
+
+        console.time(logTimeKey);
+
+	    var url = spWebService.getWebApiRoot() + '/spapi/data/v1/form/visCalcDependencies/' + spUtils.aliasOrIdUri(formId);
+
+	    var args = { headers: spWebService.getHeaders() };
+	    return $http.get(url, args).then(
+	        function(response) {	            
+	            console.timeEnd(logTimeKey);
+                if (response.data) {
+                    return response.data.visibilityCalcDependencies;
+                }
+
+                return null;                
+	        },
+	        function (error) {
+                console.timeEnd(logTimeKey);
+                console.error('editFormWebServices.getFormVisCalcDependencies error: ' + (sp.result(error, 'status') || error));
+                throw error;
+	        });
+    };
 
     return exports;
 	});

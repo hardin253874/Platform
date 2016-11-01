@@ -155,15 +155,6 @@ angular.module('mod.common.spEntityService').factory('spEntityService', function
     };
 
     /**
-     * Make a webapi request to the entityInfo service and return the resulting XML string.
-     * @param {int|string} eid eid
-     * @returns {promise} A promise for an spEntity.EntityData
-     */
-    exports.getEntityXmlUrl = function (eid) {
-        return spWebService.getWebApiRoot() + '/spapi/data/v2/entity/xml/' + getEidUrl(eid);
-    };
-
-    /**
      * Make an async webapi request to the entityInfo service and return the resulting entity
      * @param {number | string} eid - the id or alias of the entity
      * @param {string} request - the request

@@ -68,6 +68,14 @@
                 }
             });
 
+            scope.filterHiddenPages = function(page) {
+                if (!page) {
+                    return true;
+                }
+
+                return !page.isHidden;
+            };
+
             var cachedLinkFunc = spCachingCompile.compile('editForm/directives/spPageSelector/spPageSelector.tpl.html');
             cachedLinkFunc(scope, function (clone) {
                 element.append(clone);

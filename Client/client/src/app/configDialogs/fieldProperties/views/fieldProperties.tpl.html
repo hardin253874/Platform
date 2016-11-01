@@ -38,6 +38,11 @@
                             <span ng-include="formatControlFile"></span>
                         </div>
                     </uib-tab>
+                    <uib-tab heading="Visibility" ng-show="model.isFieldControl && model.visibilityCalculationModel.isShowHideOn" disabled="!model.isFieldControl" ng-click="visibilityTabClicked()">
+                        <div class="tab-container">
+                            <span ng-include="visibilityTemplate"></span>
+                        </div>
+                    </uib-tab>
                 </uib-tabset>
             </div>
         </div>

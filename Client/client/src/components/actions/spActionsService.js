@@ -32,7 +32,8 @@
         'mod.app.formBuilder.spNewTypeDialog',
         'mod.common.ui.spDeleteService',
         'sp.app.settings',
-        'mod.app.editForm'
+        'mod.app.editForm',
+        'mod.app.spExportXml'
     ]);
 
     angular.module('mod.common.ui.spActionsService')
@@ -41,7 +42,7 @@
     /* @ngInject */
     function spActionsService($http, $q, $parse, $uibModalStack, spWebService, spEntityService, spNavService, spAlertsService, spWorkflowRunService, spUserTask,
                               spPromiseService, rptTemplateService, spExportService, spXsrf, spChartService, spDialogService, appElementDialog,
-                              spReportPropertyDialog, spNavigationElementDialog, spNewChartDialog, spEditFormDialog, spNewTypeDialog, spDeleteService, spAppSettings, spEditForm) {
+                              spReportPropertyDialog, spNavigationElementDialog, spNewChartDialog, spEditFormDialog, spNewTypeDialog, spDeleteService, spAppSettings, spEditForm, spExportXml) {
         var exports = {};
         var selectedId;
         var selectedIds = [];
@@ -635,11 +636,7 @@
         function exportXml(action, context) {
             return $q.when().then(function () {
                 var ids = context.selectionEntityIds;
-                var id = ids[0];
-                var uri = spEntityService.getEntityXmlUrl(id);
-                var turi = spXsrf.addXsrfTokenAsQueryString(uri);
-                var win = window.open(turi, '_blank');
-                win.focus();
+                spExportXml.exportEntities(ids);
             });
         }
 

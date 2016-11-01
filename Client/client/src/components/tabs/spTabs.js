@@ -147,6 +147,19 @@
                 }
             };
 
+            // Return true if a tab should be displayed, false otherwise
+            scope.canDisplayTab = function (tab) {
+                if (!tab) {
+                    return true;
+                }
+                
+                if (tab.isHidden) {
+                    return false;
+                }
+
+                return scope.filterByDataState(tab);
+            };
+
             // Filter the tabs by data state.
             scope.filterByDataState = function (tab) {
                 if (!tab || !tab.model || !tab.model.formControl) {

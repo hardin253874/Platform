@@ -15,7 +15,7 @@
 
             <div ng-controller="NavController">
 
-                <div sp-layout class="layout-container">
+                <div ng-if="getThemesCompleted" sp-layout class="layout-container">
 
                     <div class="layout-top navheader" sp-include="'navigation/header.tpl.html'"></div>
                     <div class="layout-top" sp-include="'navigation/tabs.tpl.html'"></div>

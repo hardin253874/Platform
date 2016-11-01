@@ -27,4 +27,18 @@
         </ul>
     </p>
 
+    <div class="bg-success" ng-show="model.result === 'success'">
+        <p><strong>Import Successful</strong>
+        </p>
+        <p>{{model.message}}</p>
+    </div>
+
+    <div class="bg-danger" ng-show="model.result === 'error'">
+        <p>
+            <strong>Import Failed</strong>
+        </p>
+        <p>{{model.message}}</p>
+        <p ng-show="model.showIgnoreDeps"><a style="cursor: pointer;" ng-href="" ng-click="model.ignoreDependencies();">Ignore dependencies and try again.</a></p>
+    </div>
+
 </div>

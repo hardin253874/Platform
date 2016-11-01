@@ -23,7 +23,7 @@
 
    */
 
-    angular.module('mod.app.configureDialog.relationshipProperties.spRelationshipProperties', ['mod.app.editForm', 'mod.app.editForm.designerDirectives', 'mod.app.configureDialog.relationshipProperties.spRelationshipPropertiesHelper', 'mod.app.formBuilder.services.spFormBuilderService', 'mod.app.configureDialog.relationshipProperties.spRelationshipFilters', 'mod.app.configureDialog.fieldPropertiesHelper'])
+    angular.module('mod.app.configureDialog.relationshipProperties.spRelationshipProperties', ['mod.app.editForm', 'mod.app.editForm.designerDirectives', 'mod.app.configureDialog.relationshipProperties.spRelationshipPropertiesHelper', 'mod.app.formBuilder.services.spFormBuilderService', 'mod.app.configureDialog.relationshipProperties.spRelationshipFilters', 'mod.app.configureDialog.fieldPropertiesHelper', 'mod.app.configureDialog.spVisibilityCalculationControl', 'mod.app.spFormControlVisibilityService'])
         .directive('spRelationshipProperties', function () {
             return {
                 restrict: 'E',
@@ -40,7 +40,8 @@
         .controller('spRelationshipPropertiesController', function ($scope, spEditForm, configureDialogService, controlConfigureDialogFactory,
                                                                     spFormBuilderService, spDialogService,
                                                                     spRelationshipPropertiesHelper, fieldPropertiesHelper, $timeout,
-                                                                    spAlertsService) {
+                                                                    spAlertsService,
+                                                                    spFormControlVisibilityService) {
             // init
             var helper = spRelationshipPropertiesHelper;
             var collapsedImageUrl = 'assets/images/arrow_down.png';
@@ -51,8 +52,7 @@
             $scope.controlsLoaded = false;
             var _uiToNameIsDefault, _uiFromNameIsDefault, _relNameIsDefault;
             $scope.relCanCreateComboOptions = helper.relCanCreateComboOptions;
-            $scope.typeForms = [];
-            var _definitionBeingEdited = spFormBuilderService.getDefinitionType();
+            $scope.typeForms = [];            
             // internal model
             $scope.model = {
                 errors: [],
@@ -98,7 +98,12 @@
                     placement: 'element',
                     isBusy: true
                 },
-                initialState: {}
+                initialState: {},
+                visibilityCalculationModel: {
+                    typeId: null,
+                    error: null,
+                    isShowHideOn: spFormControlVisibilityService.isShowHideFeatureOn()
+                }
             };
 
             /// Load template report then schema info
@@ -295,6 +300,33 @@
                 }
             });
 
+            $scope.onVisibilityScriptCompiled = function (script, error) {
+                $scope.model.visibilityCalculationModel.isScriptCompiling = false;
+
+                if (!$scope.model.isControl || $scope.options.showInReverse) {
+                    return;
+                }
+
+                $scope.model.visibilityCalculationModel.error = error;
+
+                if (!error) {
+                    $scope.model.formControl.visibilityCalculation = script;
+                }
+            };
+
+            $scope.onVisibilityScriptChanged = function () {
+                $scope.model.visibilityCalculationModel.isScriptCompiling = true;
+            };
+
+            $scope.isOkDisabled = function() {
+                return $scope.model.visibilityCalculationModel.isScriptCompiling;
+            };
+
+            $scope.visibilityTabClicked = function() {
+                _.delay(function() {
+                    $scope.$broadcast('sp.app.ui-refresh');
+                }, 100);
+            };
 
             function loadDialogControls(preventInitialStateUpdate) {
 
@@ -556,6 +588,8 @@
 
                 loadRelationshipControls();
 
+                initVisibilityCalculationModel();
+
                 setDataOnInitialLoad();
 
                 // set other ui values
@@ -573,6 +607,18 @@
                 $scope.model.debugInfoVisible = angular.isDefined(getEntity('core:testSolution')) ? true : false;
                 $scope.controlsLoaded = true;
                 $scope.model.busyIndicator.isBusy = false;
+            }
+
+            function initVisibilityCalculationModel() {
+                if (!$scope.model.isControl || $scope.options.showInReverse) {
+                    return;
+                }                
+
+                if ($scope.options &&
+                    $scope.options.definition &&
+                    $scope.options.definition.getDataState() !== spEntity.DataStateEnum.Create) {
+                    $scope.model.visibilityCalculationModel.typeId = $scope.options.definition.idP;                    
+                }
             }
 
             function validateForm() {
@@ -639,7 +685,7 @@
                         $scope.model.addError('The relationship script name \'' + newScriptName + '\' already exists on a different relationship');
                         return;
                     }
-                }
+                }                
             }
 
             /**
@@ -669,7 +715,8 @@
                 $scope.model.clearErrors();
                 if ($scope.form.$valid) {
                     validateForm();
-                    if ($scope.model.errors.length === 0) {
+                    if ($scope.model.errors.length === 0 &&
+                        !$scope.model.visibilityCalculationModel.error) {
                         console.log('form valid');
 
                         // check if related object is selected
@@ -690,7 +737,7 @@
                     }
                 }
                 else {
-                    raiseErrorAlert('There are errors on the page. Pls fix the error before clicking OK');
+                    raiseErrorAlert('There are errors on the page. Please fix the error before clicking OK');
                 }
             };
 
@@ -824,6 +871,9 @@
 
                     // display form
                     control.setLookup('resourceViewerConsoleForm', $scope.model.selectedConsoleForm);
+
+                    // visibility calculation
+                    control.setField('console:visibilityCalculation', $scope.model.formControl.visibilityCalculation, spEntity.DataType.String);
 
                     applyRelationshipControlFilterChanges($scope.model.formControl, control);
 
@@ -1120,6 +1170,16 @@
                                 //uiOwnership = 'part';
                                 break;
                             case 'relSharedDependants':
+                                raiseErrorAlert('not implemented yet');
+                                //uiCardinality = 'manyToMany';
+                                //uiOwnership = 'part';
+                                break;
+                            case 'relManyToManyFwd':
+                                raiseErrorAlert('not implemented yet');
+                                //uiCardinality = 'manyToMany';
+                                //uiOwnership = 'part';
+                                break;
+                            case 'relManyToManyRev':
                                 raiseErrorAlert('not implemented yet');
                                 //uiCardinality = 'manyToMany';
                                 //uiOwnership = 'part';
@@ -1650,8 +1710,7 @@
             }
 
             function calcAllNames() {
-                var relationship = $scope.model.relationshipToRender;
-                var relName = relationship.name;
+                var relationship = $scope.model.relationshipToRender;                
 
                 // set relationship Name default flag
                 _relNameIsDefault = getIsRelationshipNameDefault();
@@ -1912,7 +1971,7 @@
 
                     var options = {};
 
-                    spDialogService.showDialog(defaults, options).then(function (result) {
+                    spDialogService.showDialog(defaults, options).then(function () {
 
                     });
 

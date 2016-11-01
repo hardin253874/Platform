@@ -619,10 +619,10 @@
                             if (response.data && response.data.length > 0) {
 
                                 if ($scope.model.mode === 'install') {
-                                    $scope.model.dependencies = _.reject(response.data, 'upgrade');
-                                    $scope.model.upgrades = _.filter(response.data, 'upgrade');
+                                    $scope.model.dependencies = _.orderBy(_.reject(response.data, 'upgrade'), 'name');
+                                    $scope.model.upgrades = _.orderBy(_.filter(response.data, 'upgrade'), 'name');
                                 } else {
-                                    $scope.model.dependencies = response.data;
+                                    $scope.model.dependencies = _.orderBy(response.data, 'name');
                                 }
                             } else {
                                 $scope.model.dependencies = null;

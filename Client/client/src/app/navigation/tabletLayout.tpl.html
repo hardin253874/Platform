@@ -20,7 +20,7 @@
              
             <div class="alerts-control-box"><sp-alerts-control></sp-alerts-control></div>
 
-            <div class="layout-container page-container" ng-class="{faded: navData.showNav}">
+            <div ng-if="getThemesCompleted" class="layout-container page-container" ng-class="{faded: navData.showNav}">
 
                 <div class="content-height-container" sp-mobile-allow-default-drag ng-style="consoleThemeModel.navBarStyle">
                     <div ng-if="spState.data.region['content-header'].templateUrl"

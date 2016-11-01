@@ -98,7 +98,7 @@
         'mod.common.spMobile',
         'mod.common.spBrowserService',
         'mod.common.spFileDownloadService',
-
+        'mod.app.spFormControlVisibilityService',
 
         // Please fix
         'sp.app.appLauncher',

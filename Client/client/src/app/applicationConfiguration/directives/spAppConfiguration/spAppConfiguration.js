@@ -77,11 +77,11 @@
                         });
 
                     if (scope.model.dependsOnView === 'dependsOnViewDiagram') {
-                        generateGraph(scope.model.dependsOnTree, '.dependsOnDiagram', 'marker-end', 'url(#arrowheadDown)', 25, -38);
+                        generateGraph(scope.model.dependsOnTree, '.dependsOnDiagram', 'marker-end', 'url(#arrowheadDownDependsOn)', 25, -38, 'DependsOn');
                     }
 
                     if (scope.model.requiredByView === 'requiredByViewDiagram') {
-                        generateGraph(scope.model.requiredByTree, '.requiredByDiagram', 'marker-start', 'url(#arrowheadUp)', 38, -25);
+                        generateGraph(scope.model.requiredByTree, '.requiredByDiagram', 'marker-start', 'url(#arrowheadUpRequiredBy)', 38, -25, 'RequiredBy');
                     }
 
                 };
@@ -128,6 +128,10 @@
                     } else {
 
                         if (dependency.isEditing) {
+                            dependency.name = dependency._name;
+                            dependency.minimumVersion = dependency._minimumVersion;
+                            dependency.maximumVersion = dependency._maximumVersion;
+                            dependency.isRequired = dependency._isRequired;
                             dependency.isEditing = false;
                         } else {
                             if (checkForModifiations(dependency)) {
@@ -284,20 +288,22 @@
 
                 scope.validateVersion = function (evt) {
 
-                    if (_.includes([46, 8, 9, 27, 13, 127], evt.keyCode) || 
+                    var keyCode = evt.keyCode || evt.charCode;
+
+                    if (_.includes([46, 8, 9, 27, 13, 127], keyCode) ||
                         // Allow: Ctrl+A
-                        (evt.keyCode === 65 && evt.ctrlKey === true) ||
+                        ((keyCode === 65 || keyCode === 97) && evt.ctrlKey === true) ||
                         // Allow: Ctrl+C
-                        (evt.keyCode === 67 && evt.ctrlKey === true) ||
+                        ((keyCode === 67 || keyCode === 99) && evt.ctrlKey === true) ||
                         // Allow: Ctrl+X
-                        (evt.keyCode === 88 && evt.ctrlKey === true) ||
+                        ((keyCode === 88 || keyCode === 120) && evt.ctrlKey === true) ||
                         // Allow: home, end, left, right
-                        (evt.keyCode >= 35 && evt.keyCode <= 39)) {
+                        (keyCode >= 35 && keyCode <= 39)) {
                         // let it happen, don't do anything
                         return;
                     }
                     // Ensure that it is a number and stop the keypress
-                    if ((evt.shiftKey || (evt.keyCode < 48 || evt.keyCode > 57))) {
+                    if ((evt.shiftKey || (keyCode < 48 || keyCode > 57))) {
                         evt.preventDefault();
                     }
                 };
@@ -383,7 +389,7 @@
                         if (newVal === oldVal) {
                             return;
                         }
-                        generateGraph(scope.model.dependsOnTree, '.dependsOnDiagram', 'marker-end', 'url(#arrowheadDown)', 25, -38);
+                        generateGraph(scope.model.dependsOnTree, '.dependsOnDiagram', 'marker-end', 'url(#arrowheadDownDependsOn)', 25, -38, 'DependsOn');
                     });
 
                 scope.$watch('model.requiredByView',
@@ -392,12 +398,14 @@
                         if (newVal === oldVal) {
                             return;
                         }
-                        generateGraph(scope.model.requiredByTree, '.requiredByDiagram', 'marker-start', 'url(#arrowheadUp)', 38, -25);
+                        generateGraph(scope.model.requiredByTree, '.requiredByDiagram', 'marker-start', 'url(#arrowheadUpRequiredBy)', 38, -25, 'RequiredBy');
                     });
 
-                function generateGraph(source, parentClass, marker, markerClass, sourceOffset, targetOffset) {
+                function generateGraph(source, parentClass, marker, markerClass, sourceOffset, targetOffset, idSuffix) {
 
-                    var root = source;
+                    var root = _.cloneDeep(source);
+
+                    var transitioning = false;
 
                     var i = 0,
                         duration = 750,
@@ -429,11 +437,11 @@
                         .append("svg")
                         .attr("width", '100%')
                         .attr("height", height)
-                        .call(zm = d3.behavior.zoom().scaleExtent([1, 3]).on("zoom", redraw)).append("g")
+                        .call(zm = d3.behavior.zoom().scaleExtent([0.25, 2]).on("zoom", redraw)).append("g")
                         .attr("transform", "translate(" + horizontalOffset + "," + 20 + ")");
 
                     svg.append("defs").append("marker")
-                        .attr("id", "arrowheadDown")
+                        .attr("id", "arrowheadDown" + idSuffix)
                         .attr("viewBox", "0 -5 10 10")
                         .attr("refX", 0)
                         .attr("refY", 0)
@@ -445,7 +453,7 @@
                         .attr("d", "M0,-5L10,0L0,5");
 
                     svg.append("defs").append("marker")
-                        .attr("id", "arrowheadUp")
+                        .attr("id", "arrowheadUp" + idSuffix)
                         .attr("viewBox", "0 -5 10 10")
                         .attr("refX", 10)
                         .attr("refY", 0)
@@ -582,6 +590,12 @@
                             .duration(duration)
                             .attr("transform", function (d) {
                                 return "translate(" + d.x + "," + d.y + ")";
+                            })
+                            .each("start", function () {
+                                transitioning = true;
+                            })
+                            .each("end", function () {
+                                transitioning = false;
                             });
 
                         nodeUpdate.select("rect")
@@ -601,6 +615,12 @@
                             .duration(duration)
                             .attr("transform", function () {
                                 return "translate(" + source.x + "," + source.y + ")";
+                            })
+                            .each("start", function () {
+                                transitioning = true;
+                            })
+                            .each("end", function () {
+                                transitioning = false;
                             })
                             .remove();
 
@@ -673,6 +693,10 @@
 
                     // Toggle children on click.
                     function click(d) {
+                        if (transitioning) {
+                            return;
+                        }
+
                         if (d.children) {
                             d._children = d.children;
                             d.children = null;
@@ -1030,9 +1054,13 @@
                                             var dependencyModel = {
                                                 id: source.id(),
                                                 name: source.name,
+                                                _name: source.name,
                                                 minimumVersion: dependency.applicationMinimumVersion,
+                                                _minimumVersion: dependency.applicationMinimumVersion,
                                                 maximumVersion: dependency.applicationMaximumVersion,
+                                                _maximumVersion: dependency.applicationMaximumVersion,
                                                 isRequired: dependency.applicationIsRequired,
+                                                _isRequired: dependency.applicationIsRequired,
                                                 isDirect: true,
                                                 entity: dependency
                                             };

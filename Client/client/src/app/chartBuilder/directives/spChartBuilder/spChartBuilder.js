@@ -24,9 +24,10 @@
         'mod.common.alerts',
         'mod.common.ui.spChart',
         'mod.app.navigationProviders',
-        'app.controls.dialog.spEntitySaveAsDialog'
+        'app.controls.dialog.spEntitySaveAsDialog',
+        'mod.common.ui.spChartService'
     ])
-        .directive('spChartBuilder', ['$state', '$q', 'spChartBuilderService', 'spNavService', 'spAlertsService', 'spEditFormDialog', 'spNavigationBuilderProvider', 'spEntitySaveAsDialog', 'spState', function ($state, $q, spChartBuilderService, spNavService, spAlertsService, spEditFormDialog, spNavigationBuilderProvider, spEntitySaveAsDialog, spState) {
+        .directive('spChartBuilder', ['$state', '$q', 'spChartBuilderService', 'spNavService', 'spAlertsService', 'spEditFormDialog', 'spNavigationBuilderProvider', 'spEntitySaveAsDialog', 'spState', 'spChartService', function ($state, $q, spChartBuilderService, spNavService, spAlertsService, spEditFormDialog, spNavigationBuilderProvider, spEntitySaveAsDialog, spState, spChartService) {
 
             /////
             // Directive structure.
@@ -41,7 +42,8 @@
                 templateUrl: 'chartBuilder/directives/spChartBuilder/spChartBuilder.tpl.html',
                 link: function (scope, $document) {
 
-                    var navigationBuilderProvider = spNavigationBuilderProvider(scope);
+                    var navigationBuilderProvider = spNavigationBuilderProvider(scope);                    
+                    var chartSharesAxes = null;
                     
                     scope.svc = spChartBuilderService;
                     scope.model = scope.model || spChartBuilderService.tempModel();
@@ -54,6 +56,10 @@
                     scope.refreshChart = function() {
                         if (scope.model && scope.model.chart && scope.viewerOptions.refreshChart) {
                             scope.viewerOptions.refreshChart();
+                        }
+
+                        if (spUtils.isNullOrUndefined(chartSharesAxes) && scope.model && scope.model.chart) {
+                            chartSharesAxes = doesChartShareAxes(scope.model.chart);
                         }
                     };
 
@@ -115,6 +121,8 @@
                         var isCreate = scope.model.chart.dataState === spEntity.DataStateEnum.Create;
                         spChartBuilderService.saveChart(scope.model)
                             .then(function (id) {
+                                // Set this to null so that it is reevaluated
+                                chartSharesAxes = null;
                                 try {
                                     var message = 'Chart \'' + name + '\' saved';
                                     spAlertsService.addAlert(message, { severity: spAlertsService.sev.Success, expires: true });
@@ -147,7 +155,13 @@
                             });
                     };
 
-                    scope.onSaveAs = function() {
+                    scope.onSaveAs = function () {
+                        if (chartSharesAxes) {
+                            // Workaround for Bug 28470:Chart: getting error when using Save As for an area chart, avert your eyes                            
+                            spAlertsService.addAlert('Performing a save as on a chart with shared axes is not supported.', { severity: spAlertsService.sev.Error, expires: false });
+                            return;
+                        }
+
                         var options = {
                             entity: scope.model.chart,
                             typeName: 'Chart',
@@ -238,6 +252,33 @@
                         return true;
                     };
 
+                    function getSharedAxis(chart, series, axisAlias) {
+                        if (!chart || !series || !axisAlias)
+                            return false;                        
+
+                        var myaxis = series.getLookup(axisAlias);
+                        var count = _.filter(chart.chartHasSeries, function(s) { return s.getLookup(axisAlias) === myaxis; }).length;
+                        var res = count > 1;
+                        return res;
+                    }
+
+                    // Returns true if the chart has shared axes
+                    function doesChartShareAxes(chart) {
+                        if (!chart) {
+                            return false;
+                        }
+
+                        var series = spChartService.getSeriesOrdered(chart);
+                        if (!series || series.length <= 1) {
+                            // Only have one series
+                            return false;
+                        }
+                                            
+                        // Loop through all but the first series and see if either the primary or value axes are shared.
+                        return _.some(_.drop(series), function(s) {
+                            return getSharedAxis(chart, s, "primaryAxis") || getSharedAxis(chart, s, "valueAxis");
+                        });
+                    }
                 }
                 // end link
                 

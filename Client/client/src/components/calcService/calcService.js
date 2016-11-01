@@ -350,6 +350,36 @@
             }
             exports.compileExpression = compileExpression;
 
+            
+             /**
+             * Evaluates the specified expressions against the specified context entity.
+             *
+             * @param contextEntity - entity, the context entity
+             * @param expressions - object, a dictionary of expressions
+             * @returns {promise} a promise for a dictionary of evaluation results
+             */
+            function evaluateExpressions(contextEntity, expressions) {
+                if (!contextEntity || !expressions) {
+                    return $q.when({});
+                }
+
+                var entityData = spEntityService.packageEntityNugget(contextEntity);
+
+                return $http({
+                    method: 'POST',
+                    url: spWebService.getWebApiRoot() + '/spapi/data/v1/calcEngine/evalExpressions',
+                    data: {
+                        contextEntity: entityData, 
+                        expressions: expressions
+                    },
+                    headers: spWebService.getHeaders()
+                }).catch(function(error) {                    
+                    console.error('spCalcEngineService.evaluateExpressions error: ' + (sp.result(error, 'status') || error));
+                    throw error;
+                });
+            }
+            exports.evaluateExpressions = evaluateExpressions;
+
             return exports;
         });
 })();

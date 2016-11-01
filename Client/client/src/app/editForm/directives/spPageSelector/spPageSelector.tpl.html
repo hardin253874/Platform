@@ -6,7 +6,7 @@
     </button>
 
     <select class="related-list" ng-model="selectedPageOption"
-            ng-options="page.name for page in visiblePages">
+            ng-options="page.name for page in visiblePages | filter:filterHiddenPages">
     </select>
 
     <button type="button" class="tasks-link" ng-disabled="!haveTaskPage" ng-click="openTaskPage()"

@@ -26,7 +26,7 @@
     modalInstance is a modalinstance of a dialog to close and return the value to the parent window.
     */
 
-    angular.module('mod.app.configureDialog.containerProperties', ['ui.bootstrap', 'mod.app.editForm', 'mod.app.editFormServices', 'mod.app.editForm.designerDirectives', 'mod.common.ui.spDialogService'])
+    angular.module('mod.app.configureDialog.containerProperties', ['ui.bootstrap', 'mod.app.editForm', 'mod.app.editFormServices', 'mod.app.editForm.designerDirectives', 'mod.common.ui.spDialogService', 'mod.app.configureDialog.spVisibilityCalculationControl', 'mod.app.spFormControlVisibilityService'])
         .directive('containerProperties', function () {
             return {
                 restrict: 'E',
@@ -40,7 +40,7 @@
                 controller: 'containerPropertiesController'
             };
         })
-        .controller('containerPropertiesController', function ($scope, spEditForm, configureDialogService) {
+        .controller('containerPropertiesController', function ($scope, spEditForm, configureDialogService, spFormControlVisibilityService) {
             var schemaInfoLoaded = false;
             var entityLoaded = false;
             var controlLoaded = false;
@@ -58,12 +58,17 @@
                 showHelpText: false,
                 isInTestMode: false,
                 selectedHorizontalMode: {},
-                selectedVerticalMode:{},
+                selectedVerticalMode: {},
                 busyIndicator: {
                     type: 'spinner',
                     text: 'Loading...',
                     placement: 'element',
                     isBusy: true
+                },
+                visibilityCalculationModel: {
+                    typeId: null,
+                    error: null,
+                    isShowHideOn: spFormControlVisibilityService.isShowHideFeatureOn()
                 }
             };
 
@@ -128,6 +133,32 @@
                     });
             };
             
+            $scope.onVisibilityScriptCompiled = function (script, error) {
+                $scope.model.visibilityCalculationModel.isScriptCompiling = false;
+
+                $scope.model.visibilityCalculationModel.error = error;
+
+                if (!error) {
+                    $scope.model.formControl.visibilityCalculation = script;
+                }
+            };            
+
+            $scope.onVisibilityScriptChanged = function () {
+                $scope.model.visibilityCalculationModel.isScriptCompiling = true;
+            };
+
+            $scope.isOkDisabled = function() {
+                return $scope.model.visibilityCalculationModel.isScriptCompiling;
+            };
+
+            function initVisibilityCalculationModel() {
+                if ($scope.options &&
+                    $scope.options.definition &&
+                    $scope.options.definition.getDataState() !== spEntity.DataStateEnum.Create) {
+                    $scope.model.visibilityCalculationModel.typeId = $scope.options.definition.idP;                    
+                }
+            }
+
             //
             //Load the controls after all service calls finished.
             //
@@ -142,6 +173,8 @@
 
                     //load the form properties controls
                     $scope.controlsFile = 'configDialogs/containerProperties/views/baseControlProperties.tpl.html';
+
+                    initVisibilityCalculationModel();
                 }
             }
             
@@ -165,7 +198,8 @@
                 'console:renderingHorizontalResizeMode': jsonLookup('console:resizeAutomatic'),
                 'console:renderingVerticalResizeMode': jsonLookup('console:resizeAutomatic'),
                 'console:hideLabel': jsonBool(false),
-                'console:showControlHelpText': jsonBool(false)
+                'console:showControlHelpText': jsonBool(false),
+                'console:visibilityCalculation': jsonString(''),
             };
             
             //
@@ -197,7 +231,8 @@
             
             // OK click handler
             $scope.ok = function() {
-                if ($scope.form.$valid) {
+                if ($scope.form.$valid &&
+                    !$scope.model.visibilityCalculationModel.error) {
                     //validate all the form controls.
                     if (!spEditForm.validateFormControls([$scope.model.formNameControl], $scope.model.formData))
                         return;

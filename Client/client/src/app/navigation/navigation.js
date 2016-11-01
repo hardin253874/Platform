@@ -80,6 +80,7 @@
                 updateFlag: ''
             };
 
+            
             $scope.isNavItemOpen = function (node) {
                 return getNavTreeItemState(node).open;
             };
@@ -586,7 +587,6 @@
             };            
 
             $scope.refreshTheme = function () {
-
                 //header area
                 $scope.consoleThemeModel.navBarStyle = spThemeService.getNavBarStyle();
                 $scope.consoleThemeModel.menuStyle = spThemeService.getMenuStyle();
@@ -604,7 +604,6 @@
                 $scope.consoleThemeModel.leftNavSelectedItemStyle = spThemeService.getLeftNavSelectedItemStyle();
                 $scope.consoleThemeModel.leftNavFontStyle = spThemeService.getLeftNavFontStyle();
                 $scope.consoleThemeModel.leftNavSelectedFontStyle = spThemeService.getLeftNavSelectedFontStyle();
-
             };
 
             $scope.getTabItemStyle = function (selected) {
@@ -832,6 +831,7 @@
 
             $scope.$watch('nav.getThemes()', function (getThemesCompleted) {
                 if (getThemesCompleted === true && !$scope.consoleThemeModel.consoleTheme) {
+                    $scope.getThemesCompleted = true;
                     $scope.consoleThemeModel.consoleTheme = $scope.nav.getCurrentTheme();
                 }
             });

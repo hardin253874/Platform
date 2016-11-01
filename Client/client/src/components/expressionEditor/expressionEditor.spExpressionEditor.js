@@ -21,7 +21,8 @@
                 params: '=',
                 mode: '=', // 'full' or 'inline' with the latter the default
                 options: '=',   // {expectedResultType, disabled, choosers.{etc..} }
-                onCompile: '&'
+                onCompile: '&',
+                onScriptChanged: '&'
             },
             templateUrl: 'expressionEditor/expressionEditor.tpl.html',
             require: 'ngModel',
@@ -41,6 +42,8 @@
                 autofocus: false,
                 readOnly: scope.options && scope.options.disabled
             };
+
+            var isTestMode = sp.result(scope, '$root.__spTestMode');
 
             scope.entityTypeHints = {};
             scope.expressionTypes = {};
@@ -62,8 +65,11 @@
                 if (scope.expressionTypes[key]) {
                     return scope.expressionTypes[key];
                 }
+                safeApply(function() {
+                    scope.compileResult = null;
+                });                
                 return compileAsync(expression).then(function (result) {
-                    // run once, with proper expected type, to get real script result
+                    // run once, with proper expected type, to get real script result                    
                     scope.compileResult = result;
                     return compileAsync(expression, true);
                 }).then(function (result) {
@@ -164,7 +170,7 @@
                     .then(getEntityTypeHints);
             }
 
-            var debouncedCompile = _.debounce(compileExpression, 1000);
+            var debouncedCompile = _.debounce(compileExpression, 1000);            
 
             function handleParamsVisibility() {
                 function hasClass(c, e) {
@@ -212,12 +218,12 @@
             codeMirror.on("change", function (cm, changeObj) {
                 console.assert(cm === codeMirror, 'not my codemirror');
 
-                // move value from the DOM back to the ngModelController
+                // move value from the DOM back to the ngModelController                
 
                 var newValue = cm.getValue();
                 if (newValue !== ngModel.$viewValue) {
                     ngModel.$setViewValue(newValue);
-                }
+                }                
 
                 _.defer(function () {
                     codeMirror.refresh();
@@ -226,7 +232,11 @@
 
                 console.log('codeMirror.change: newValue %o origin %o', newValue, changeObj.origin);
 
-                if (changeObj.origin !== 'setValue') {
+                if (changeObj.origin !== 'setValue' || isTestMode) {
+                    
+                    if (scope.options && scope.options.onScriptChanged) {
+                        scope.options.onScriptChanged(newValue);
+                    }
 
                     var exp = { text: newValue };
 
@@ -242,8 +252,13 @@
                             // this isn't working... something to with the [ char being a bit special
                             console.warn('expression-editor: didn\'t think this was working');
                             showParamHint(true /*skipOpening*/);
-                        } else if (exp.text) {
+                        } else if (_.trim(exp.text)) {
                             debouncedCompile(exp.text);
+                        } else if (!_.trim(exp.text)) {
+                            scope.compileResult = {
+                                expression: "",
+                                error: null
+                            };
                         }
                     } else if (_.last(newValue) === '[') {
                         // this isn't working... something to with the [ char being a bit special
@@ -383,13 +398,24 @@
                 }
             });
 
-            scope.$on('sp.app.ui-refresh', function () {
-                _.throttle(function () {
-                    scope.$apply(function () {
-                        codeMirror.refresh();
-                    });
-                }, 200);
+            function safeApply(fn) {
+                if (!scope.$root.$$phase) {
+                    // digest or apply not in progress
+                    scope.$apply(fn);
+                } else {
+                    // digest or apply already in progress
+                    fn();
+                }
+            }
 
+            var throttledRefresh = _.throttle(function() {
+                safeApply(function() {
+                    codeMirror.refresh();
+                });
+            }, 100);
+
+            scope.$on('sp.app.ui-refresh', function () {
+                throttledRefresh();
             });
 
             scope.$on('sp.view.setDefaultFocus', function () {

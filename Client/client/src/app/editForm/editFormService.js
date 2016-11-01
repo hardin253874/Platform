@@ -58,6 +58,19 @@
          */
         exports.activeAccountEntity = undefined;
 
+         /**
+         * @ngdoc method
+         * @name getFormDataAdvanced
+         * @description Given an entity and formId gets the entity data inclduing visibility calculations
+         *
+         * @methodOf mod_app.editFormServices:editFormServices
+         */
+        exports.getFormDataAdvanced = function (id, requestStrings, formId) {
+            var formRequestQuery = _.uniq(requestStrings).join(',');
+
+            return editFormWebServices.getFormDataAdvanced(id, formRequestQuery, formId);
+        };
+
         /**
          * @ngdoc method
          * @name getFormData
@@ -65,7 +78,7 @@
          *
          * @methodOf mod_app.editFormServices:editFormServices
          */
-        exports.getFormData = function (id, requestStrings) {
+        exports.getFormData = function (id, requestStrings) {            
 
             var logTimeKey = 'getFormData(' + id + ')';
 
@@ -154,6 +167,10 @@
             } else {
                 return editFormCache.getFormForDefinition(selectedDefIdOrAlias);
             }
+        };
+
+        exports.getFormVisCalcDependencies = function(formId) {
+            return editFormCache.getFormVisCalcDependencies(formId);
         };
 
         exports.clearAllFormCaches = function () {
@@ -1826,9 +1843,9 @@
         };
 
         exports.simplifyForm = simplifyForm;
-        exports.dumpFormToConsole = dumpFormToConsole;
+        exports.dumpFormToConsole = dumpFormToConsole;        
 
-        return exports;
+        return exports;        
 
         //////////////////////////////////////////////////////////////////////////////
 

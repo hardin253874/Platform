@@ -13,8 +13,9 @@
         'mod.app.editForm',
         'mod.common.spMobile',
         'mod.common.spCachingCompile',
-        'sp.app.settings'
-    ]).directive('spTabContainerControl', function ($rootScope, spEditForm, spNavService, spMobileContext, spCachingCompile, spAppSettings) {
+        'sp.app.settings',
+        'mod.app.spFormControlVisibilityService'
+    ]).directive('spTabContainerControl', function ($rootScope, spEditForm, spNavService, spMobileContext, spCachingCompile, spAppSettings, spFormControlVisibilityService) {
 
             /////
             // Directive structure.
@@ -33,7 +34,8 @@
                     isReadOnly: '=?',
                     isInDesign: '=?',
                     isEmbedded: '=?',
-                    designData: '=?'
+                    designData: '=?',
+                    isInlineEditing: '=?'
                 },
                 link: function ($scope, element) {
                     var templateUrl = spMobileContext.isMobile ?
@@ -53,7 +55,7 @@
                     $scope.model = {
                         isReadOnly: $scope.isReadOnly,
                         isInTestMode: $scope.isInTestMode,
-                        isEmbedded: $scope.isEmbedded
+                        isEmbedded: $scope.isEmbedded                        
                     };
 
                     function configureFormControl() {
@@ -301,11 +303,31 @@
                         $scope.model.tabItems = tabItems;
                     }
 
+                    function controlVisibilityHandler(controlId, isControlVisible) {
+                        if (!$scope.model || !$scope.model.tabItems || !controlId) {
+                            return;
+                        }
+
+                        var tabItem = _.find($scope.model.tabItems, function(ti) {
+                            return ti.model && ti.model.formControl && ti.model.formControl.id() === controlId;
+                        });
+
+                        if (tabItem &&
+                            tabItem.isHidden === isControlVisible) {
+                            tabItem.isHidden = !isControlVisible;
+                        }
+                    }
+
                     function createNewTabItem(scope, control, selectedTabId) {
+                        if (!scope.isInDesign && !$scope.isInlineEditing && control && control.visibilityCalculation) {
+                            spFormControlVisibilityService.registerControlVisibilityHandler(scope, control.id(), controlVisibilityHandler);    
+                        }                        
+
                         return {
                             name: spEditForm.getControlTitle(control),
                             isTabItem: true,
                             isActive: control.id() === selectedTabId,
+                            isHidden: false,
                             tooltip: spEditForm.getControlDescription(control),
                             selectionChanged: scope.selectionChanged,
                             ordinal: control.hasField('console:renderingOrdinal') ? control.renderingOrdinal : null,

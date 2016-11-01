@@ -1,6 +1,6 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
 
-angular.module('app.editForm.structureControlOnFormController', ['mod.app.editForm'])
+angular.module('app.editForm.structureControlOnFormController', ['mod.app.editForm', 'mod.app.spFormControlVisibilityService'])
     .controller('structureControlOnFormController',
         // formControl must be set in the scope
         function ($scope, spEditForm) {
@@ -9,7 +9,7 @@ angular.module('app.editForm.structureControlOnFormController', ['mod.app.editFo
             if ($scope.childFormControl) {
                 $scope.parentControl = $scope.formControl;
                 $scope.formControl = $scope.childFormControl;
-            }
+            }            
 
             function refreshControlsOnForm(scope) {
                 if (scope.formControl) {
@@ -197,10 +197,11 @@ angular.module('app.editForm.structureControlOnFormController', ['mod.app.editFo
         }
     )
     .controller('structureControlOnFormRepeaterController',
-        function($scope, spEditForm) {
+        function($scope, $element, spEditForm, spFormControlVisibilityService) {
             "use strict";
 
             var thingToRender;
+            var cachedIsControlVisible;
 
             if ($scope.childFormControl) {
                 $scope.parentControl = $scope.formControl;
@@ -219,6 +220,14 @@ angular.module('app.editForm.structureControlOnFormController', ['mod.app.editFo
                 }
             }
 
+            if ($scope.isVerticalStackContainerControl($scope.formControl) &&
+                !$scope.isInlineEditing &&
+                !$scope.isInDesign &&
+                $scope.formControl &&
+                $scope.formControl.visibilityCalculation) {
+                spFormControlVisibilityService.registerControlVisibilityHandler($scope, $scope.formControl.id(), controlVisibilityHandler);                
+            }
+
             $scope.controlNeedsTitle = spEditForm.controlNeedsTitle;
 
             $scope.$on('controlsOnFormChanged', function (event, message) {
@@ -227,6 +236,20 @@ angular.module('app.editForm.structureControlOnFormController', ['mod.app.editFo
 
                 $scope.$broadcast('onControlsOnFormChanged');
             });
+
+            function controlVisibilityHandler(formControlId, isControlVisible) {
+                if (!formControlId || !$element || $scope.formControl.id() !== formControlId) {
+                    return;
+                }
+
+                if (cachedIsControlVisible === isControlVisible) {
+                    return;
+                }
+
+                spFormControlVisibilityService.showHideElement($element, isControlVisible);
+
+                cachedIsControlVisible = isControlVisible;
+            }
         }
     );
 

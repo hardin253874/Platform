@@ -8,7 +8,8 @@
         'mod.app.editForm',
         'mod.app.resourceScopeService',
         'mod.app.editFormMobileServices',
-        'sp.navService'
+        'sp.navService',
+        'mod.app.spFormControlVisibilityService'
     ]);
 
     angular.module('app.editForm.customEditFormController')
@@ -26,7 +27,7 @@
     }
 
     /* @ngInject*/
-    function CustomEditFormMobileController($scope, spEditForm, spEditFormMobile, spState) {
+    function CustomEditFormMobileController($scope, spEditForm, spEditFormMobile, spState, spFormControlVisibilityService) {
 
         // If some wrapping control has defined a pager we will we will use that.
         // If not we will need to create a pager with one page containing a vertical stack of controls.
@@ -82,9 +83,54 @@
             }
         }
 
+        function controlVisibilityHandler(controlId, isControlVisible) {
+            if (!$scope.pagerOptions || !$scope.pagerOptions.pages || !controlId) {
+                return;
+            }
+
+            // Find the page that the control is on
+            var page = _.find($scope.pagerOptions.pages, function (p) {
+                var pageFormControl = sp.result(p, "scope.pageFormControl");
+                if (!pageFormControl) {
+                    return false;
+                }
+                
+                return _.some(spEditForm.getFormControls(pageFormControl), function(c) {
+                    return c && c.id() === controlId;
+                });
+            });
+
+            if (page &&
+                page.isHidden === isControlVisible) {
+                page.isHidden = !isControlVisible;
+            }
+        }
+
+        function registerVisibilityHandler(formControls) {
+            if (!formControls || !spFormControlVisibilityService.isShowHideFeatureOn()) {
+                return;
+            }
+
+            // Get paged controls except for the details page            
+            _.forEach(_.drop(formControls), function(control) {
+                var controls = spFormControlVisibilityService.getControlsWithVisibilityCalculations(control);
+                if (!controls || _.isEmpty(controls)) {
+                    return true;
+                }
+
+                _.forEach(controls, function(c) {
+                    spFormControlVisibilityService.registerControlVisibilityHandler($scope, c.id(), controlVisibilityHandler);
+                });
+
+                return true;
+            });
+        }
+
         function configurePager(formControls, pagerOptions) {
             //console.log('DEBUG: configurePager', $scope.$id, pagerOptions, spState.navItem);
             //console.log('DEBUG: configurePager pages before: ', sp.result(pagerOptions.pages, 'length'), pagerOptions.selectedPage);
+
+            registerVisibilityHandler(formControls);
 
             var pages = _.map(formControls, createPageObject);
             pagerOptions.pages = pages.concat(pagerOptions.additionalPages);
@@ -107,7 +153,8 @@
 
             return {
                 template: 'editForm/partials/customEditFormMobilePage.tpl.html',
-                scope: newScope
+                scope: newScope,
+                isHidden: false
             };
         }
     }

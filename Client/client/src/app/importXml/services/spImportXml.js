@@ -23,8 +23,11 @@
 
             var uploadSession = spUploadManager.createUploadSession();
             var model = {
+                result: '',
                 uploadSession: uploadSession,
                 fileFilter: '.xml',
+                fileName: '',
+                fileUploadId: '',
                 message: '',
                 busyIndicator: {
                     type: 'progressBar',
@@ -33,31 +36,50 @@
                     isBusy: false,
                     percent: 0
                 },
-                onFileUploadComplete: function (fileName, fileUploadId) {
+                onFileUploadComplete: function(fileName, fileUploadId) {
                     return onFileUploadComplete(model, fileName, fileUploadId); // promise
                 },
-                documentMessage: ''
+                documentMessage: '',
+                ignoreDependencies: function() {
+                    return ignoreDependencies(model);
+                },
+                showIgnoreDeps: false
             };
             return model;
         }
 
         function onFileUploadComplete(model, fileName, fileUploadId) {
-            return callImportXml(fileName, fileUploadId).then(handleSuccess, handleErrorResponse);
+            model.fileName = fileName;
+            model.fileUploadId = fileUploadId;
+            return runImport(model, false);
         }
 
-        function callImportXml(fileName, fileUploadId) {
+        function runImport(model, ignoreDeps) {
+            model.result = '';
+            return callImportXml(model.fileName, model.fileUploadId, ignoreDeps).then(
+                function (data) { return handleSuccess(model, data); },
+                function (error) { return handleError(model, error); });
+        }
+
+        function callImportXml(fileName, fileUploadId, ignoreDeps) {
             var url = spWebService.getWebApiRoot() + '/spapi/data/v2/importXml';
 
             var params = {
                 fileId: fileUploadId,
                 fileName: fileName
             };
+            if (ignoreDeps)
+                params.ignoreDeps = true;
             url += '?' + $.param(params);
             return $http({
                 method: 'GET',
                 url: url,
                 headers: spWebService.getHeaders()
             }).then(returnData, returnMessage);
+        }
+
+        function ignoreDependencies(model) {
+            return runImport(model, true);
         }
 
         function returnData(response) {
@@ -68,20 +90,31 @@
             return $q.reject(response.statusText);
         }
 
-        function handleSuccess(data) {
+        function handleSuccess(model, data) {
+            model.showIgnoreDeps = false;
             var entity = sp.result(data, 'entities.0');
+            if (data.message) {
+                handleError(model, data.message);
+                return;
+            }
             if (!entity) {
-                handleErrorResponse('Failed to get result details.');
+                handleError(model, 'Failed to get result details.');
                 return;
             }
             var msg = entity.typeName + ' imported: ' + entity.name;
-            spAlertsService.addAlert(msg, { expires: 3, severity: spAlertsService.sev.Success });
+            model.result = 'success';
+            model.message = msg;
+            //spAlertsService.addAlert(msg, { expires: 3, severity: spAlertsService.sev.Success });
             spNavService.refreshTree(false);
             return data;
         }
 
-        function handleErrorResponse(errorMessage) {
-            spAlertsService.addAlert('A problem occurred: ' + errorMessage, { expires: false, severity: spAlertsService.sev.Error });
+        function handleError(model, errorMessage) {
+            var msg = 'A problem occurred: ' + errorMessage;
+            model.result = 'error';
+            model.message = msg;
+            model.showIgnoreDeps = errorMessage.includes('dependencies');
+            //spAlertsService.addAlert(msg, { expires: false, severity: spAlertsService.sev.Error });
             return errorMessage;
         }
 

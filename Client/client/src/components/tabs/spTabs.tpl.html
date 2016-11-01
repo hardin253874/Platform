@@ -1,7 +1,7 @@
 <uib-tabset id="spTabSet" style="position:relative;">
 
     <uib-tab sp-draggable="dragOptions" sp-draggable-data="tabItem" sp-droppable="dropOptions" sp-droppable-data="tabItem"
-         ng-repeat="tabItem in items | filter:filterByDataState | orderBy: 'ordinal'"
+         ng-repeat="tabItem in items | filter:canDisplayTab | orderBy: 'ordinal'"
          heading="{{tabItem.name}}" active="tabItem.isActive" select="selectionChanged(tabItem)"
          class="{{getTabStyleClass(tabItem)}}" ng-style="getTabStyle(tabItem)">
 

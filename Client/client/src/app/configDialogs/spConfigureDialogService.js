@@ -13,7 +13,7 @@ angular.module('mod.app.configureDialog.service', ['mod.common.spEntityService']
         var fieldBuildRequest = 'id,name,description,alias,{isOfType, isOfType.inherits*}.{id, alias, name,{k:renderingControl, k:defaultRenderingControls}.{name,alias,k:designControl,k:control,k:context.name}}, isRequired, allowMultiLines, pattern.{regex, regexDescription}, ' +
                       'minLength, maxLength, minInt, maxInt, minDecimal, maxDecimal, minDate, maxDate, minTime, maxTime, minDateTime, maxDateTime,decimalPlaces,fieldRepresents.{id, alias},defaultValue,fieldWatermark,fieldScriptName,isCalculatedField,fieldCalculation';
         var fieldQueryFragment = fieldBuildRequest + ',fieldIsOnType.{id, alias}, autoNumberDisplayPattern,autoNumberSeed';
-        var fieldControlQueryFragment = 'name, description, alias,isOfType.{id, alias}, k:renderingHeight, k:renderingWidth, k:renderingBackgroundColor,k:mandatoryControl, k:readOnlyControl,k:fieldToRender.{' + fieldQueryFragment + '}';
+        var fieldControlQueryFragment = 'name, description, alias,isOfType.{id, alias}, k:renderingHeight, k:renderingWidth, k:renderingBackgroundColor,k:mandatoryControl, k:readOnlyControl,k:visibilityCalculation,k:fieldToRender.{' + fieldQueryFragment + '}';
      // exports.fieldBuildRequest = fieldBuildRequest;
         
        /**
@@ -129,7 +129,7 @@ angular.module('mod.app.configureDialog.service', ['mod.common.spEntityService']
         **/
         var imageRelationshipBuildRequest = 'name, description,alias,toName,fromName,fromType.{ name,defaultPickerReport.name},fromType.inherits*.{ name,defaultPickerReport.name },toType.{ name,defaultPickerReport.name},toType.inherits*.{ name,defaultPickerReport.name},cardinality.name,relationshipIsMandatory,revRelationshipIsMandatory,toTypeDefaultValue.name,fromTypeDefaultValue.name,isRelationshipReadOnly,relType.alias,cascadeDelete,cascadeDeleteTo,cloneAction.alias,reverseCloneAction.alias,implicitInSolution,reverseImplicitInSolution';
         function getImageControlEntity(id) {
-            var imageControlBuildRequest = 'name, description, alias,isOfType.{id, alias}, k:renderingBackgroundColor,k:mandatoryControl, k:readOnlyControl, k:thumbnailScalingSetting.{ alias },k:thumbnailSizeSetting.{ alias, k:thumbnailWidth, k:thumbnailHeight,k:pickerReport.{name, alias, description}},' +
+            var imageControlBuildRequest = 'name, description, alias,isOfType.{id, alias}, k:renderingBackgroundColor,k:mandatoryControl, k:readOnlyControl, k:thumbnailScalingSetting.{ alias },k:thumbnailSizeSetting.{ alias, k:thumbnailWidth, k:thumbnailHeight,k:pickerReport.{name, alias, description}},k:visibilityCalculation,' +
                 'k:relationshipToRender.{' + imageRelationshipBuildRequest + '}';
             return spEntityService.getEntity(id, imageControlBuildRequest);
         }
@@ -184,7 +184,7 @@ angular.module('mod.app.configureDialog.service', ['mod.common.spEntityService']
        *
        **/
        function getChoiceFieldControlEntity(id) {
-           var choiceFieldControlBuildRequest = 'name, description, alias,isOfType.{id, alias}, k:renderingBackgroundColor,k:renderingHorizontalResizeMode.{id,name,alias}, k:renderingVerticalResizeMode.{id,name,alias},k:mandatoryControl, k:readOnlyControl,' +
+           var choiceFieldControlBuildRequest = 'name, description, alias,isOfType.{id, alias}, k:renderingBackgroundColor,k:renderingHorizontalResizeMode.{id,name,alias}, k:renderingVerticalResizeMode.{id,name,alias},k:mandatoryControl, k:readOnlyControl,k:visibilityCalculation,' +
                 'k:relationshipToRender.{' + choiceRelationshipBuildRequest + '}, k:relationshipControlFilters.{ k:relationshipControlFilterOrdinal, k:relationshipControlFilter.{ name, k:isReversed, k:relationshipToRender.{ name, fromName, toName } }, k:relationshipFilter.id, k:relationshipDirectionFilter.alias }';
             return spEntityService.getEntity(id, choiceFieldControlBuildRequest);
         }
@@ -240,7 +240,7 @@ angular.module('mod.app.configureDialog.service', ['mod.common.spEntityService']
        *
        **/
         function getContainerControlEntity(id) {
-            var containerControlBuildRequest = 'name, description, alias,k:renderingBackgroundColor,k:renderingHorizontalResizeMode.{id,name,alias,enumOrder},k:renderingVerticalResizeMode.{id,name,alias,enumOrder},k:hideLabel';
+            var containerControlBuildRequest = 'name, description, alias,k:renderingBackgroundColor,k:renderingHorizontalResizeMode.{id,name,alias,enumOrder},k:renderingVerticalResizeMode.{id,name,alias,enumOrder},k:hideLabel,k:visibilityCalculation';
             return spEntityService.getEntity(id, containerControlBuildRequest);
         }
         exports.getContainerControlEntity = getContainerControlEntity;
@@ -290,7 +290,8 @@ angular.module('mod.app.configureDialog.service', ['mod.common.spEntityService']
                 'console:mandatoryControl': false,
                 'console:showControlHelpText': false,
                 'console:readOnlyControl': false,
-                'console:isReversed': false
+                'console:isReversed': false,
+                'console:visibilityCalculation': ''
             });
             return dummyFormControl;
         };
@@ -298,7 +299,7 @@ angular.module('mod.app.configureDialog.service', ['mod.common.spEntityService']
         
         /// lookup/ relationship section
         var baseRelationshipRequestString = 'name, description, alias, toName, fromName, toScriptName, fromScriptName, securesTo, securesFrom, defaultFromUseCurrent, defaultToUseCurrent, hideOnFromType, hideOnFromTypeDefaultForm, hideOnToType, hideOnToTypeDefaultForm, fromType.{ name,defaultPickerReport.name},fromType.inherits*.{ name,defaultPickerReport.name },toType.{ name,defaultPickerReport.name},toType.inherits*.{ name,defaultPickerReport.name},cardinality.name,relationshipIsMandatory,revRelationshipIsMandatory,toTypeDefaultValue.name,fromTypeDefaultValue.name,isRelationshipReadOnly,relType.alias,cascadeDelete,cascadeDeleteTo,cloneAction.alias,reverseCloneAction.alias,implicitInSolution,reverseImplicitInSolution';
-        var baseRelControlOnFormRequestString = 'name, description, alias, k:isReversed, canCreate, canCreateDerivedTypes, resourceViewerConsoleForm.name, resourceViewerTabletForm.name,isOfType.{id, alias, k:designControl }, k:renderingBackgroundColor,k:mandatoryControl, k:readOnlyControl,' +
+        var baseRelControlOnFormRequestString = 'name, description, alias, k:isReversed, canCreate, canCreateDerivedTypes, resourceViewerConsoleForm.name, resourceViewerTabletForm.name,isOfType.{id, alias, k:designControl }, k:renderingBackgroundColor,k:mandatoryControl, k:readOnlyControl,k:visibilityCalculation,' +
                                                 'k:relationshipToRender.{' + baseRelationshipRequestString + '}, k:relationshipControlFilters.{ k:relationshipControlFilterOrdinal, k:relationshipControlFilter.{ name, k:isReversed, k:relationshipToRender.{ name, fromName, toName } }, k:relationshipFilter.id, k:relationshipDirectionFilter.alias }';
         
         exports.getBaseRelControlOnFormEntity = function (id) {

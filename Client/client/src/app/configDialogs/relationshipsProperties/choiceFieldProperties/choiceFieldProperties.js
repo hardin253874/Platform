@@ -23,7 +23,7 @@
         -relationshipType{string}-'choice' for edititng choice field relationship
     modalInstance is a modalinstance of a dialog to close and return the value to the parent window.
     */
-    angular.module('mod.app.configureDialog.choiceFieldProperties', ['ui.bootstrap', 'mod.app.editForm', 'mod.app.editForm.designerDirectives', 'mod.common.ui.spDialogService', 'ngGrid', 'ngGrid.services', 'mod.common.spEntityService', 'sp.navService', 'mod.app.configureDialog.relationshipProperties.spRelationshipFilters', 'spApps.enumValueService', 'mod.app.configureDialog.fieldPropertiesHelper', 'mod.app.formBuilder.services.spFormBuilderService'])
+    angular.module('mod.app.configureDialog.choiceFieldProperties', ['ui.bootstrap', 'mod.app.editForm', 'mod.app.editForm.designerDirectives', 'mod.common.ui.spDialogService', 'ngGrid', 'ngGrid.services', 'mod.common.spEntityService', 'sp.navService', 'mod.app.configureDialog.relationshipProperties.spRelationshipFilters', 'spApps.enumValueService', 'mod.app.configureDialog.fieldPropertiesHelper', 'mod.app.formBuilder.services.spFormBuilderService', 'mod.app.configureDialog.spVisibilityCalculationControl', 'mod.app.spFormControlVisibilityService'])
         .directive('choiceProperties', function() {
             return {
                 restrict: 'E',
@@ -37,7 +37,7 @@
                 controller: 'choicePropertiesController'
             };
         })        
-        .controller('choicePropertiesController', function ($scope, $templateCache, spEditForm, spFieldValidator, configureDialogService, spEntityService, spNavService, spEnumValueService, fieldPropertiesHelper, spFormBuilderService) {
+        .controller('choicePropertiesController', function ($scope, $templateCache, spEditForm, spFieldValidator, configureDialogService, spEntityService, spNavService, spEnumValueService, fieldPropertiesHelper, spFormBuilderService, spFormControlVisibilityService) {
 
             $scope.isCollapsed = true;
 
@@ -116,7 +116,12 @@
                     placement: 'element',
                     isBusy: true
                 },
-                initialState: {}
+                initialState: {},
+                visibilityCalculationModel: {
+                    typeId: null,
+                    error: null,                    
+                    isShowHideOn: spFormControlVisibilityService.isShowHideFeatureOn()
+                }
             };
 
             $scope.canEditChoiceValueCell = function (row) {
@@ -393,6 +398,34 @@
                 return value;
             }
 
+            $scope.onVisibilityScriptCompiled = function (script, error) {
+                $scope.model.visibilityCalculationModel.isScriptCompiling = false;
+
+                if (!$scope.model.isFormControl) {
+                    return;
+                }
+
+                $scope.model.visibilityCalculationModel.error = error;
+
+                if (!error) {
+                    $scope.model.formControl.visibilityCalculation = script;
+                }
+            };            
+
+            $scope.onVisibilityScriptChanged = function () {
+                $scope.model.visibilityCalculationModel.isScriptCompiling = true;
+            };
+
+            $scope.isOkDisabled = function() {
+                return $scope.model.visibilityCalculationModel.isScriptCompiling;
+            };
+
+            $scope.visibilityTabClicked = function() {
+                _.delay(function() {
+                    $scope.$broadcast('sp.app.ui-refresh');
+                }, 100);
+            };
+
             //
             //Get schema info to configure choice field properties.
             //
@@ -529,6 +562,7 @@
                     //load the form properties controls
                     $scope.formControlFile = 'configDialogs/relationshipsProperties/choiceFieldProperties/views/choiceFormProperties.tpl.html';
                     $scope.formatControlFile = 'configDialogs/relationshipsProperties/choiceFieldProperties/views/choiceFormatProperties.tpl.html';
+                    $scope.visibilityControlFile = 'configDialogs/relationshipsProperties/choiceFieldProperties/views/choiceVisibilityProperties.tpl.html';
                 }
                     
                 //set selected type Option
@@ -602,6 +636,8 @@
                 });
 
                 $scope.model.initialState.formData = $scope.model.formData.cloneDeep();
+
+                initVisibilityCalculationModel();
             }
             
             //
@@ -841,6 +877,13 @@
                         }
                     }
                 }
+
+                if ($scope.options.isFormControl &&
+                    $scope.model.formControl.visibilityCalculation &&
+                    $scope.model.formControl.relationshipToRender.relationshipIsMandatory &&
+                    !$scope.model.toTypeDefaultValue) {
+                    $scope.model.addError("Visibility calculation cannot be defined as the field is mandatory and no default value is specified.");
+                }
             }
 
             /**
@@ -860,12 +903,25 @@
                 return null;
             }
             
+            function initVisibilityCalculationModel() {
+                if (!$scope.model.isFormControl) {
+                    return;
+                }                
+
+                if ($scope.options &&
+                    $scope.options.definition &&
+                    $scope.options.definition.getDataState() !== spEntity.DataStateEnum.Create) {
+                    $scope.model.visibilityCalculationModel.typeId = $scope.options.definition.idP;                    
+                }                
+            }
+
             // OK click handler
             $scope.ok = function () {
                 $scope.model.clearErrors();
                 if ($scope.form.$valid) {
                     validateForm();
-                    if ($scope.model.errors.length === 0) {
+                    if ($scope.model.errors.length === 0 &&
+                        !$scope.model.visibilityCalculationModel.error) {
                         //validate all the form controls.
                         if (!spEditForm.validateFormControls(formControls, $scope.model.formData))
                             return;
@@ -902,7 +958,7 @@
                             $scope.options.formControl.setField('core:description', $scope.model.formControlData.getField($scope.fields[1].idP), spEntity.DataType.String);
                            
                             //show help text
-                            $scope.options.formControl.setField('console:showControlHelpText', $scope.model.formControl.showControlHelpText, spEntity.DataType.Bool);
+                            $scope.options.formControl.setField('console:showControlHelpText', $scope.model.formControl.showControlHelpText, spEntity.DataType.Bool);                            
 
 
                             if (relationshipToRender.cardinality.alias() === 'core:manyToOne') {

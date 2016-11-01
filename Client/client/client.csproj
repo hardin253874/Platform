@@ -689,6 +689,7 @@
     <Content Include="src\app\configDialogs\fieldProperties\views\fieldFormatProperties.tpl.html" />
     <Content Include="src\app\configDialogs\fieldProperties\views\fieldFormProperties.tpl.html" />
     <Content Include="src\app\configDialogs\fieldProperties\views\fieldProperties.tpl.html" />
+    <Content Include="src\app\configDialogs\fieldProperties\views\fieldVisibilityProperties.tpl.html" />
     <Content Include="src\app\configDialogs\formActions\spFormActions.js" />
     <Content Include="src\app\configDialogs\formActions\spFormActions.spec.js" />
     <Content Include="src\app\configDialogs\formActions\spFormActionsDialog.tpl.html" />
@@ -703,6 +704,7 @@
     <Content Include="src\app\configDialogs\relationshipsProperties\choiceFieldProperties\views\choiceFieldProperties.tpl.html" />
     <Content Include="src\app\configDialogs\relationshipsProperties\choiceFieldProperties\views\choiceFormatProperties.tpl.html" />
     <Content Include="src\app\configDialogs\relationshipsProperties\choiceFieldProperties\views\choiceFormProperties.tpl.html" />
+    <Content Include="src\app\configDialogs\relationshipsProperties\choiceFieldProperties\views\choiceVisibilityProperties.tpl.html" />
     <Content Include="src\app\configDialogs\relationshipsProperties\imageFieldProperties\imageFieldProperties.js" />
     <Content Include="src\app\configDialogs\relationshipsProperties\imageFieldProperties\Tests\imageFieldProperties.spec.js" />
     <Content Include="src\app\configDialogs\relationshipsProperties\imageFieldProperties\Tests\imageFieldPropertiesTestHelper.spec.js" />
@@ -711,6 +713,7 @@
     <Content Include="src\app\configDialogs\relationshipsProperties\imageFieldProperties\views\imageFieldProperties.tpl.html" />
     <Content Include="src\app\configDialogs\relationshipsProperties\imageFieldProperties\views\imageFormatProperties.tpl.html" />
     <Content Include="src\app\configDialogs\relationshipsProperties\imageFieldProperties\views\imageFormProperties.tpl.html" />
+    <Content Include="src\app\configDialogs\relationshipsProperties\imageFieldProperties\views\imageVisibilityProperties.tpl.html" />
     <Content Include="src\app\configDialogs\relationshipsProperties\spRelationshipFilters\index.js" />
     <Content Include="src\app\configDialogs\relationshipsProperties\spRelationshipFilters\spRelationshipFiltersControl.tpl.html" />
     <Content Include="src\app\configDialogs\relationshipsProperties\spRelationshipFilters\spRelationshipFiltersDialog.js" />
@@ -726,6 +729,7 @@
     <Content Include="src\app\configDialogs\relationshipsProperties\spRelationshipProperties\views\spRelationshipProperties_modal.tpl.html" />
     <Content Include="src\app\configDialogs\relationshipsProperties\spRelationshipProperties\views\spRelationshipSecurityProperties.tpl.html" />
     <Content Include="src\app\configDialogs\relationshipsProperties\spRelationshipProperties\views\spRelationshipTypeProperties.tpl.html" />
+    <Content Include="src\app\configDialogs\relationshipsProperties\spRelationshipProperties\views\spRelationshipVisibilityProperties.tpl.html" />
     <Content Include="src\app\configDialogs\relationshipsProperties\spRelationshipProperties\views\spRelDefinitionProperties.tpl.html" />
     <Content Include="src\app\configDialogs\relationshipsProperties\spRelationshipProperties\views\spRelFormProperties.tpl.html" />
     <Content Include="src\app\configDialogs\relationshipsProperties\spRelationshipProperties\views\spRelOwnershipProperties.tpl.html" />
@@ -733,6 +737,10 @@
     <Content Include="src\app\configDialogs\relationshipsProperties\svgRelationshipInfo\svgRelationshipInfo.tpl.html" />
     <Content Include="src\app\configDialogs\spConfigureDialogService.js" />
     <Content Include="src\app\configDialogs\spControlConfigureDialog.js" />
+    <None Include="src\app\configDialogs\visibilityCalculationControl\spVisibilityCalculationControl.es6" />
+    <Content Include="src\app\configDialogs\visibilityCalculationControl\spVisibilityCalculationControl.less" />
+    <None Include="src\app\configDialogs\visibilityCalculationControl\spVisibilityCalculationControl.module.es6" />
+    <Content Include="src\app\configDialogs\visibilityCalculationControl\spVisibilityCalculationControl.tpl.html" />
     <Content Include="src\app\connector\resourceEndpoint\resourceEndpoint.tpl.html" />
     <Content Include="src\app\connector\resourceEndpoint\resourceEndpoint.js" />
     <Content Include="src\app\connector\resourceEndpoint\spResourceEndpointService.js" />
@@ -961,6 +969,7 @@
     <Content Include="src\app\editForm\services\editFormWebServices.js" />
     <Content Include="src\app\editForm\services\editFormCache.js" />
     <Content Include="src\app\editForm\services\enumValueService.js" />
+    <Content Include="src\app\editForm\tests\spFormControlVisibility.service.spec.js" />
     <Content Include="src\app\editForm\tests\editForm.spec.js" />
     <Content Include="src\app\editForm\tests\editFormDesigner.spec.js" />
     <Content Include="src\app\editForm\tests\editFormDesignerDirectives.spec.js" />
@@ -1018,6 +1027,13 @@
     <Content Include="src\app\importFile\views\importPage4.tpl.html" />
     <Content Include="src\app\importFile\controllers\spMemberMappingOptions.tpl.html" />
     <Content Include="src\app\importFile\views\wizardNavigation.tpl.html" />
+    <Content Include="src\app\importXml\controllers\importXml.js" />
+    <Content Include="src\app\importXml\controllers\importXml.spec.js" />
+    <Content Include="src\app\importXml\controllers\importXml.tpl.html" />
+    <Content Include="src\app\importXml\index.js" />
+    <Content Include="src\app\importXml\services\spExportXml.js" />
+    <Content Include="src\app\importXml\services\spImportXml.js" />
+    <Content Include="src\app\importXml\services\spImportXml.spec.js" />
     <Content Include="src\app\login\directives\spReauthDialog.js" />
     <Content Include="src\app\login\directives\spReauthDialog.tpl.html" />
     <Content Include="src\app\navigation\directives\index.js" />
@@ -1375,6 +1391,9 @@
     <Content Include="src\app\formBuilder\controllers\spFormSaveAsDialog\spFormSaveAsDialog.less" />
     <Content Include="src\app\settings\tenantRollback\styles\tenantRollback.less" />
     <Content Include="src\app\editForm\custom\spTargetCampaignTargetsEditor\spTargetCampaignTargetsEditor.less" />
+    <Content Include="src\app\importXml\importXml.less" />
+    <Content Include="src\app\editForm\services\spFormControlVisibility.service.es6" />
+    <Content Include="src\app\editForm\tests\spFormControlVisibility.service.data.spec.js" />
     <None Include="src\builders\devViews\alerter\demoAlerter.es6" />
     <Content Include="src\builders\devViews\alerter\demoAlerter.tpl.html" />
     <Content Include="src\builders\devViews\applicableTasks\applicableTasksTest.js" />

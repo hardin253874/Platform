@@ -10,7 +10,8 @@
         'sp.navService', 'sp.common.filters', 'mod.common.alerts', 'mod.common.ui.spBusyIndicator', 'mod.common.spNgUtils',
         'mod.common.ui.spContextMenu', 'mod.app.navigationProviders', 'mod.common.spUserTask', 'sp.common.loginService',
         'mod.common.ui.spMeasureArrange', 'sp.themeService', 'mod.common.spMobile', 'mod.common.ui.spActionsService',
-        'mod.featureSwitch', 'sp.consoleIconService', 'mod.common.ui.spDialogService', 'mod.common.ui.rnInfoButton']);
+        'mod.featureSwitch', 'sp.consoleIconService', 'mod.common.ui.spDialogService', 'mod.common.ui.rnInfoButton',
+        'mod.app.spFormControlVisibilityService']);
 
     angular.module('mod.app.editForm')
         .config(editFormConfiguration)
@@ -55,7 +56,8 @@
     function EditFormController($scope, $element, $state, $stateParams, spAlertsService,
                                 titleService, spEntityService, $q, $timeout, spEditForm, spNavService,
                                 spNgUtils, spMobileContext, spNavigationBuilderProvider, spUserTask, spLoginService,
-                                spMeasureArrangeService, spThemeService, spActionsService, rnFeatureSwitch, consoleIconService, spDialogService) {
+                                spMeasureArrangeService, spThemeService, spActionsService, rnFeatureSwitch, consoleIconService, spDialogService,
+                                spFormControlVisibilityService) {
 
         if (!spLoginService.isSignedIn()) {
             console.log('editFormController: not signed in');
@@ -102,6 +104,7 @@
         $scope.configMenuDeleteEntity = configMenuDeleteEntity;
 
         $scope.allowFlexForm = rnFeatureSwitch.isFeatureOn('flexEditForm');
+        $scope.fsShowHideControls = spFormControlVisibilityService.isShowHideFeatureOn();
         $scope.useFlexForm = false;//$scope.allowFlexForm;
         $scope.toggleFlexForm = function () {
             if (!$scope.allowFlexForm) return;
@@ -230,7 +233,11 @@
                 haveFetchedTasks: false,                                            // have we already fetched the tasks
                 actionButtons: [],
                 haveFetchedFormActions: false,
-                areCreating: areCreating
+                areCreating: areCreating,
+                controlVisibilityModel: {
+                    controlsVisibility: {},
+                    visibilityCalcDependencies: {}
+                }
             };
 
             switch ($state.current.name) {
@@ -301,6 +308,7 @@
             showSpinner();
 
             fetchFormFn(fetchId, $scope.model.forceGenerate)
+                .then(loadVisibilityCalculationDependencies)
                 .then(loadForm, function (error) {
                     showAlert('An error occurred getting the form: ' + sp.result(error, 'data.Message'));
                     hideSpinner();
@@ -310,8 +318,40 @@
                 .then(setHeaderIconAndStyle);
         }
 
+        function updateVisibilityForAllControls() {
+            var controlsWithCalculations = spFormControlVisibilityService.getControlsWithVisibilityCalculations($scope.model.formControl);
+            var controlCalculations = {};
+
+            if (!controlsWithCalculations || _.isEmpty(controlsWithCalculations)) {
+                return;
+            }
+
+            // Get an object mapping the control id to its calculation
+            _.forEach(controlsWithCalculations, function(c) {
+                controlCalculations[c.id()] = c.visibilityCalculation;
+            });
+
+            onUpdateControlVisibility(controlCalculations);
+        }
+
+        // Load the visibility calculation dependencies if necessary
+        function loadVisibilityCalculationDependencies(formControl) {            
+            // Check if the form has any controls with visibility calculations
+            var haveVisibilityCalculations = spFormControlVisibilityService.doesFormHaveControlsWithVisibilityCalculations(formControl);
+            if (!haveVisibilityCalculations) {
+                // No visibility calculation dependencies. Can return here
+                return $q.when(formControl);
+            }
+
+            // Need to get visibility calculation dependencies
+            return spEditForm.getFormVisCalcDependencies(formControl.id()).then(function (visibilityCalcDependencies) {            
+                $scope.model.controlVisibilityModel.visibilityCalcDependencies = visibilityCalcDependencies;
+                return formControl;
+            });
+        }
+
         function loadForm(formControl) {
-            // check if user has createType access
+            // check if user has createType access            
             if (areCreating) {
                 var canCreate = hasCanCreateTypeAccess(formControl);
 
@@ -337,6 +377,7 @@
                 createEmptyForm($scope.model.typeId, formControl, parentItem).then(function () {
                     // Give the controls a chance to respond to the updated entity
                     $timeout(function () {
+                        updateVisibilityForAllControls();
                         setInitialBookmark();
                         hideSpinner();
                         doLayout();
@@ -371,25 +412,49 @@
                     $scope.$broadcast('updateFilteredControlData', {filteredControlIds: filteredIds});
                 }
             });
-        }
+        }        
 
         function requestFormData(entityId) {
             showSpinner();
-            return spEditForm.getFormData(entityId, $scope.requestStrings).then(function (formData) {
-                $scope.model.formData = formData;
-                spEditForm.markAutoCardinalityOfAllRelationships($scope.model.formControl, $scope.model.formData);
-                hideSpinner();
-            }, function (error) {
-                hideSpinner();
-                console.error('editForm.requestFormData error:', error);
-                if (error === 404) {
-                    showAlert('Requested record does not exist or you do not have access to it.');
-                } else {
-                    showAlert('An error occurred getting data: ' + error);
-                }
 
-                throw error;
-            }).finally(hideSpinner);
+            if ($scope.fsShowHideControls) {
+                return spEditForm.getFormDataAdvanced(entityId, $scope.requestStrings, $scope.model.formControl.id()).then(function(response) {
+                    $scope.model.controlVisibilityModel.controlsVisibility = {};
+                    _.forEach(response.initiallyHiddenControls, function(controlId) {
+                        $scope.model.controlVisibilityModel.controlsVisibility[controlId] = false;
+                    });
+                    var formData = response.formDataEntity;
+                    $scope.model.formData = formData;
+                    spEditForm.markAutoCardinalityOfAllRelationships($scope.model.formControl, $scope.model.formData);
+                    hideSpinner();
+                }, function(error) {
+                    hideSpinner();
+                    console.error('editForm.requestFormData error:', error);
+                    if (error === 404) {
+                        showAlert('Requested record does not exist or you do not have access to it.');
+                    } else {
+                        showAlert('An error occurred getting data: ' + error);
+                    }
+
+                    throw error;
+                }).finally(hideSpinner);
+            } else {
+                return spEditForm.getFormData(entityId, $scope.requestStrings).then(function(formData) {
+                    $scope.model.formData = formData;
+                    spEditForm.markAutoCardinalityOfAllRelationships($scope.model.formControl, $scope.model.formData);
+                    hideSpinner();
+                }, function(error) {
+                    hideSpinner();
+                    console.error('editForm.requestFormData error:', error);
+                    if (error === 404) {
+                        showAlert('Requested record does not exist or you do not have access to it.');
+                    } else {
+                        showAlert('An error occurred getting data: ' + error);
+                    }
+
+                    throw error;
+                }).finally(hideSpinner);
+            }
         }
 
         function onMeasureArrangeComplete(event) {
@@ -422,6 +487,23 @@
             }
         }
 
+        function onUpdateControlVisibility(controlCalculations) {
+            if (!$scope.model.formData || !controlCalculations || _.isEmpty(controlCalculations)) {
+                return;
+            }
+
+            spFormControlVisibilityService.evaluateVisibilityCalculations($scope.model.formData, controlCalculations).then(function (controlVisibility) {
+                if (!controlVisibility) {
+                    return;
+                }
+
+                // Update model
+                _.assign($scope.model.controlVisibilityModel.controlsVisibility, controlVisibility);
+                // Notify controls
+                spFormControlVisibilityService.updateControlsVisibility($scope, $scope.model.controlVisibilityModel.controlsVisibility);
+            });
+        }
+
         function formDataChanged() {
             if ($scope.model.formData && $scope.model.formControl) {
                 if (!$scope.model.nameFieldEntity) {
@@ -437,6 +519,12 @@
                 else {
                     updateControlTitle();
                 }
+                
+                spFormControlVisibilityService.registerFormDataChangeListener(
+                    $scope.model.formControl,
+                    $scope.model.formData,
+                    $scope.model.controlVisibilityModel.visibilityCalcDependencies,
+                    onUpdateControlVisibility);
 
                 updateToolbarAccessControlFieldValues();
             }
@@ -890,6 +978,10 @@
         function doSave() {
             var formControl = $scope.model.formToValidate || $scope.model.formControl;
             var formControls = spEditForm.getFormControls(formControl);
+
+            // Only validate controls which are visible
+            formControls = spFormControlVisibilityService.getVisibleControls(formControls, $scope.model.controlVisibilityModel.controlsVisibility);
+
             if (spEditForm.validateFormControls(formControls, $scope.model.formData)) {
                 return preSave(formControls, $scope.model.formData)
                     .then(spEditForm.saveFormData)
@@ -950,6 +1042,8 @@
         }
 
         function doLayout() {
+            spFormControlVisibilityService.updateControlsVisibility($scope, $scope.model.controlVisibilityModel.controlsVisibility);
+
             if (!$scope.useFlexForm) {
                 $timeout(function () {
                     spMeasureArrangeService.performLayout($scope.measureArrangeOptions.id);
@@ -1001,6 +1095,7 @@
             doSave().then(function () {
                 postSavePlus();
                 createEmptyForm($scope.model.typeId, $scope.model.formControl, parentItem).then(function () {
+                    updateVisibilityForAllControls();
                     setInitialBookmark();
                     hideSpinner();
                 });

@@ -26,4 +26,9 @@
     <label class="form-label">Show Help: </label>
     <input type="checkbox" ng-model="model.formControl.showControlHelpText" />
 </div>
-<div><form-control-format form-control="model.formControl" resize-options="model.resizeOptions"></form-control-format></div>
+<div>
+    <form-control-format form-control="model.formControl" resize-options="model.resizeOptions"></form-control-format>
+</div>
+<div once-if="model.visibilityCalculationModel.isShowHideOn">    
+    <sp-visibility-calculation-control script="model.formControl.visibilityCalculation" type-id="model.visibilityCalculationModel.typeId" on-script-compiled="onVisibilityScriptCompiled(script, error)" on-script-changed="onVisibilityScriptChanged(script)"></sp-visibility-calculation-control>
+</div>

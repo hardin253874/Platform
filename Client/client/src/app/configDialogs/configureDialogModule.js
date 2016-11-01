@@ -10,5 +10,6 @@ angular.module('mod.app.configureDialog', [
     'mod.app.configureDialog.relationshipProperties.spRelationshipProperties',
     'mod.app.configureDialog.relationshipProperties.spRelationshipPropertiesHelper',
     'mod.app.configureDialog.relationshipProperties.svgRelationshipInfo',
-    'mod.app.configureDialog.containerProperties'
+    'mod.app.configureDialog.containerProperties',
+    'mod.app.configureDialog.spVisibilityCalculationControl'
 ]);

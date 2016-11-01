@@ -26,7 +26,7 @@
      modalInstance is a modalinstance of a dialog to close and return the value to the parent window.
      */
 
-    angular.module('mod.app.configureDialog.fieldProperties', ['ui.bootstrap', 'mod.app.editFormServices', 'mod.app.editForm.designerDirectives', 'mod.common.ui.spDialogService', 'sp.common.fieldValidator', 'mod.app.configureDialog.fieldPropertiesHelper', 'mod.common.ui.spColorPickerConstants', 'mod.common.ui.spColorPickerUtils', 'mod.app.formBuilder.services.spFormBuilderService'])
+    angular.module('mod.app.configureDialog.fieldProperties', ['ui.bootstrap', 'mod.app.editFormServices', 'mod.app.editForm.designerDirectives', 'mod.common.ui.spDialogService', 'sp.common.fieldValidator', 'mod.app.configureDialog.fieldPropertiesHelper', 'mod.common.ui.spColorPickerConstants', 'mod.common.ui.spColorPickerUtils', 'mod.app.formBuilder.services.spFormBuilderService', 'mod.app.configureDialog.spVisibilityCalculationControl', 'mod.app.spFormControlVisibilityService'])
         .directive('fieldProperties', function () {
             return {
                 restrict: 'E',
@@ -40,13 +40,13 @@
                 controller: 'fieldPropertiesController'
             };
         })
-        .controller('fieldPropertiesController', function ($scope, spEditForm, spFieldValidator, configureDialogService, fieldPropertiesHelper, spFormBuilderService) {
+        .controller('fieldPropertiesController', function ($scope, spEditForm, spFieldValidator, configureDialogService, fieldPropertiesHelper, spFormBuilderService, spFormControlVisibilityService) {
 
             var schemaInfoLoaded = false;
             var entityLoaded = false;
             var controlLoaded = false;
             var formControls = [];
-            $scope.isCollapsed = true;
+            $scope.isCollapsed = true;            
 
             // Get option text 
             $scope.getOptionsText = function () {
@@ -113,9 +113,9 @@
                     ]
                 },
                 calc: {
-                    script: null,    // the calculation
-                    host: 'Any',     // calculation engine that may be used (so syntax checker will only allow calculations that are supported by all of them)
-                    context: null,   // typeId to use as context for resolving fields names
+                    script: null, // the calculation
+                    host: 'Any', // calculation engine that may be used (so syntax checker will only allow calculations that are supported by all of them)
+                    context: null, // typeId to use as context for resolving fields names
                     resultType: null, // alias of the result type
                     resultTypes: [], // all possible result types
                     options: {
@@ -134,7 +134,13 @@
                     placement: 'element',
                     isBusy: true
                 },
-                initialState: {}
+                initialState: {},
+                visibilityCalculationModel: {
+                    typeId: null,
+                    error: null,
+                    script: null,
+                    isShowHideOn: spFormControlVisibilityService.isShowHideFeatureOn()
+                }
             };
 
             // Clear any errors
@@ -266,7 +272,7 @@
 
             // Prep calculations
             if ($scope.options.definition && $scope.options.definition.getDataState() !== spEntity.DataStateEnum.Create) {
-                $scope.model.calc.context = $scope.options.definition.idP;
+                $scope.model.calc.context = $scope.options.definition.idP;                
             }
 
             if ($scope.model.fieldToRender) {
@@ -330,6 +336,9 @@
                         $scope.model.formControlLocal = $scope.model.formControl.cloneDeep();
                         $scope.model.mandatoryControl = $scope.model.formControl.mandatoryControl;
                         $scope.model.readOnlyControl = $scope.model.formControl.readOnlyControl;
+
+                        initVisibilityCalculationModel();
+
                         //set resize options
                         $scope.model.resizeOptions = {
                             resizeModes: $scope.resizeModes,
@@ -349,6 +358,7 @@
                         //load format control file.
                         $scope.formControlFile = 'configDialogs/fieldProperties/views/fieldFormProperties.tpl.html';
                         $scope.formatControlFile = 'configDialogs/fieldProperties/views/fieldFormatProperties.tpl.html';
+                        $scope.visibilityTemplate = 'configDialogs/fieldProperties/views/fieldVisibilityProperties.tpl.html';                        
                     } else if ($scope.model.calc.showDisplayName) {
                         $scope.model.formData.registerField(getFieldByAlias('core:name'), spEntity.DataType.String);
                     }
@@ -444,7 +454,21 @@
 
             $scope.isAutoseedReadOnlyControl = function () {
                 return $scope.isFieldTypeHasInstances && ($scope.model.fieldToRender.getDataState() !== spEntity.DataStateEnum.Create);
-            };
+            };             
+
+            function initVisibilityCalculationModel() {
+                if (!$scope.model.isFieldControl) {
+                    return;
+                }
+
+                if ($scope.options && $scope.options.definition && $scope.options.definition.getDataState() !== spEntity.DataStateEnum.Create) {
+                    $scope.model.visibilityCalculationModel.typeId = $scope.options.definition.idP;                    
+                }
+
+                if ($scope.model.formControl) {
+                    $scope.model.visibilityCalculationModel.script = $scope.model.formControl.visibilityCalculation;   
+                }             
+            }
 
             //
             // Determine whether the horizontal resize mode option is disabled.
@@ -588,7 +612,8 @@
                     'console:mandatoryControl': false,
                     'console:readOnlyControl': false,
                     'console:showControlHelpText': false,
-                    'console:isReversed': false
+                    'console:isReversed': false,
+                    'console:visibilityCalculation': ''
                 });
                 return dummyFormControl;
             }
@@ -767,6 +792,24 @@
                 }
             };
 
+            $scope.onVisibilityScriptCompiled = function (script, error) {
+                $scope.model.visibilityCalculationModel.isScriptCompiling = false;
+
+                if (!$scope.model.isFieldControl) {
+                    return;
+                }
+
+                $scope.model.visibilityCalculationModel.error = error;
+
+                if (!error) {                    
+                    $scope.model.visibilityCalculationModel.script = script;
+                }
+            };
+            
+            $scope.onVisibilityScriptChanged = function () {                
+                $scope.model.visibilityCalculationModel.isScriptCompiling = true;
+            };
+
             //
             //  sets the known fieldRepresents enum value.
             //
@@ -859,6 +902,14 @@
                     $scope.model.addError(result.message);
                     return;
                 }
+
+                if ($scope.model.isFieldControl &&
+                    $scope.model.visibilityCalculationModel.script &&
+                    $scope.model.isFieldRequired && 
+                    spUtils.isNullOrUndefined($scope.model.fieldDefaultData.getField($scope.model.defaultField.id()))) {
+                    $scope.model.addError("Visibility calculation cannot be defined as the field is mandatory and no default value is specified.");
+                    return;
+                }                
             }
 
             function loadCalculationInfo() {
@@ -886,8 +937,14 @@
                 // Disable OK button if calculation is both changed and invalid                
                 var field = $scope.model.fieldToRender;
                 var calc = $scope.model.calc;
-                var res = calc.script !== field.fieldCalculation && calc.lastResult && calc.lastResult.error;
+                var res = (calc.script !== field.fieldCalculation && calc.lastResult && calc.lastResult.error) || $scope.model.visibilityCalculationModel.error || $scope.model.visibilityCalculationModel.isScriptCompiling;
                 return res;
+            };
+
+            $scope.visibilityTabClicked = function() {
+                _.delay(function() {
+                    $scope.$broadcast('sp.app.ui-refresh');
+                }, 100);
             };
 
             // Ok click handler
@@ -910,7 +967,8 @@
 							$scope.model.formControl.setDescription($scope.model.formData.getField($scope.fields[1].id()));                               
                             $scope.model.formControl.setMandatoryControl($scope.model.mandatoryControl);
                             $scope.model.formControl.setReadOnlyControl($scope.model.readOnlyControl);
-							$scope.model.formControl.setShowControlHelpText($scope.model.showControlHelpText);                            
+                            $scope.model.formControl.setShowControlHelpText($scope.model.showControlHelpText);                            
+                            $scope.model.formControl.setField('console:visibilityCalculation', $scope.model.visibilityCalculationModel.script, spEntity.DataType.String);
 							$scope.options.formControl.setRenderingBackgroundColor($scope.model.formControlLocal.renderingBackgroundColor);
                             $scope.options.formControl.setRenderingHorizontalResizeMode($scope.model.formControlLocal.renderingHorizontalResizeMode);
                             $scope.options.formControl.setRenderingVerticalResizeMode($scope.model.formControlLocal.renderingVerticalResizeMode);
@@ -1056,7 +1114,7 @@
                                     var defaultValueString = $scope.model.fieldDefaultData.getField($scope.model.defaultField.id());
                                     var existingDefaultValueString = initialState.fieldDefaultData.getField($scope.model.defaultField.id());
                                     if (typeof (defaultValueString) !== 'undefined') {
-                                        if (defaultValueString != null) {
+                                        if (defaultValueString !== null) {
                                             if (fieldDataType === 'Time') {
                                                 defaultValueString = isDefaultHasNativeValue(defaultValueString) ? Globalize.format(spUtils.translateFromServerStorageDateTime(defaultValueString), 't') : defaultValueString;
                                             } else {

@@ -156,7 +156,7 @@
 
                     // first available app apart from Home and administration
                     var appItem = _.find(visibleAppItems, function(i) {
-                        return i.item.alias !== 'core:homeMenu' && i.item.viewType !== 'home' && i.item.alias !== 'core:adminMenu';
+                        return i.item.alias !== 'core:homeMenu' && i.item.alias !== 'core:adminMenu';
                     });
 
                     if (appItem) {

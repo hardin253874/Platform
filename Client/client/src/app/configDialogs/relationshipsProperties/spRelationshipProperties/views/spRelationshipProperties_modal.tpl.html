@@ -55,6 +55,11 @@
                             <span ng-if="controlsLoaded" ng-include="'configDialogs/relationshipsProperties/spRelationshipProperties/views/spRelationshipFormatProperties.tpl.html'"></span>
                         </div>
                     </uib-tab>
+                    <uib-tab heading="Visibility" ng-if="options.isFormControl && !options.showInReverse && model.visibilityCalculationModel.isShowHideOn" ng-click="visibilityTabClicked()">
+                        <div class="tab-container">
+                            <span ng-if="controlsLoaded" ng-include="'configDialogs/relationshipsProperties/spRelationshipProperties/views/spRelationshipVisibilityProperties.tpl.html'"></span>
+                        </div>
+                    </uib-tab>
                 </uib-tabset>
             </div>
         </div>
@@ -67,7 +72,7 @@
         </div>
 
         <span class="modal-footer">
-            <button class="btn" ng-click="ok()">OK</button><button class="btn" ng-click="cancel()">Cancel</button>
+            <button class="btn" ng-click="ok()" ng-disabled="isOkDisabled()">OK</button><button class="btn" ng-click="cancel()">Cancel</button>
         </span>
     </form>
 </div>

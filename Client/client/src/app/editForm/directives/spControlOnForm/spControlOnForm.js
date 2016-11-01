@@ -11,13 +11,13 @@
     // edit-form control is used.
     /////
     angular.module('mod.app.editForm.designerDirectives.spControlOnForm', [
-        'mod.common.spMobile', 'mod.common.spCachingCompile'
+        'mod.common.spMobile', 'mod.common.spCachingCompile', 'mod.app.spFormControlVisibilityService'
     ]);
 
     angular.module('mod.app.editForm.designerDirectives.spControlOnForm')
         .directive('spControlOnForm', spControlOnForm);
 
-    function spControlOnForm($injector, spMobileContext, spCachingCompile) {
+    function spControlOnForm($injector, spMobileContext, spCachingCompile, spFormControlVisibilityService) {
 
         /////
         // Directive structure.
@@ -65,6 +65,7 @@
             var field = scope.formControl.fieldToRender;
             var tablet = spMobileContext.isTablet;
             var mobile = spMobileContext.isMobile;
+            var cachedIsControlVisible;
 
             if (!type || !alias) {
                 return;
@@ -128,7 +129,7 @@
                 if (style.overflow) {
                     styleVal.overflow = style.overflow;
                     haveStyle = true;
-                }
+                }               
 
                 // when showing in the grid, just let it be plain and fill the cell
                 // and writing this way to have minimal impact on existing code
@@ -144,6 +145,10 @@
                 // TODO: Remove this once we have all new isolate directives created.
                 /////
                 templateKey = 'spControlOnForm-spReplace';
+            }
+
+            if (!scope.isInlineEditing && !scope.isInDesign && scope.formControl && scope.formControl.visibilityCalculation) {
+                spFormControlVisibilityService.registerControlVisibilityHandler(scope, scope.formControl.id(), controlVisibilityHandler);
             }
 
             var cachedLinkFunc = spCachingCompile.get(templateKey);
@@ -168,6 +173,20 @@
                 }
                 element.append(clone);
             });
+
+            function controlVisibilityHandler(formControlId, isControlVisible) {
+                if (!formControlId || !element || scope.formControl.id() !== formControlId) {
+                    return;
+                }
+
+                if (cachedIsControlVisible === isControlVisible) {
+                    return;
+                }
+
+                spFormControlVisibilityService.showHideElement(element, isControlVisible);
+
+                cachedIsControlVisible = isControlVisible;
+            }
         }
 
         /////
@@ -182,6 +201,6 @@
         /////
         function capitaliseFirstLetter(string) {
             return string.charAt(0).toUpperCase() + string.slice(1);
-        }
+        }        
     }
 }());

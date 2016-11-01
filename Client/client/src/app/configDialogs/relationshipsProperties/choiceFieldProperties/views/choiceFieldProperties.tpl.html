@@ -31,6 +31,11 @@
                             <span ng-include="formatControlFile"></span>
                         </div>
                     </uib-tab>
+                    <uib-tab heading="Visibility" ng-show="model.isFormControl && model.visibilityCalculationModel.isShowHideOn" ng-click="visibilityTabClicked()">
+                        <div class="tab-container">
+                            <span ng-include="visibilityControlFile"></span>
+                        </div>
+                    </uib-tab>
                 </uib-tabset>
             </div>
         </div>
@@ -40,7 +45,7 @@
             </ul>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn" ng-click="ok()">OK</button><button type="button" class="btn" ng-click="cancel()">Cancel</button>
+            <button type="button" class="btn" ng-click="ok()" ng-disabled="isOkDisabled()">OK</button><button type="button" class="btn" ng-click="cancel()">Cancel</button>
         </div>
     </form>
 </div>
