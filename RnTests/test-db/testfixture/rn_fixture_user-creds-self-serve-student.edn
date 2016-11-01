@@ -1,0 +1,12 @@
+[{:tags [:desktop],
+  :name "self serve user creds for security tests",
+  :steps [],
+  :type :testfixture,
+  :source "./test-db",
+  :modified "20160810-085407",
+  :setup
+  [{:script
+    "(identity {:user-creds-self-serve-student {:password \"Amity.Hicks1\", :username \"Amity.Hicks\"}})"}],
+  :id :rn/fixture/user-creds-self-serve-student,
+  :teardown [],
+  :modified-by "not-implemented"}]

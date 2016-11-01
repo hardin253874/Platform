@@ -1,0 +1,259 @@
+[{:tags
+  [:nomodify
+   :prod
+   :daily
+   :regression
+   :user/shaofen
+   :desktop
+   :area/security],
+  :tests [],
+  :name
+  "Ensure the security flag works - this is for operations View, Edit and Delete",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script "(rn.app/open-security \"Record Access\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Own student record\")"}
+   {:script
+    "(if (not (rt.po.access-rules/access-rule-enabled? \"Students (User Role)\" \"Student\" \"Own student record\")) (do (rt.po.access-rules/click-edit-button) (rt.po.access-rules/enable-access-rule \"Students (User Role)\" \"Student\" \"Own student record\") (rt.po.access-rules/click-save-button)))"}
+   {:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Nelle Odom\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View 'Nelle Odom'\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"Edit 'Nelle Odom'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete 'Nelle Odom'\"))"}
+   {:script "(rt.po.app/choose-context-menu \"View 'Nelle Odom'\")"}
+   {:script
+    "(expect-equals \"11111\" (rt.po.view-form/get-field-value \"Library card #\"))"}
+   {:script
+    "(rn.app/open-report \"Library cards\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script "(rt.po.report-view/right-click-row-by-text \"11111\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View '11111'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit '11111'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete '11111'\"))"}
+   {:script "(rt.po.app/choose-context-menu \"View '11111'\")"}
+   {:script
+    "(comment \"By this far, we only check students user has acess by default. And by default, students role has View and Edit access to own student record, and View access to own library card. \")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Relationships\" {:app-name \"ReadiNow Console\" :folder-name \"Resources\"})"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Student - Library card\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Student - Library card\")"}
+   {:script
+    "(expect-equals false (rt.po.edit-form/bool-field-value \"Securing 'To'\"))"}
+   {:script
+    "(expect-equals false (rt.po.edit-form/bool-field-value \"Securing 'From'\"))"}
+   {:script "(rt.po.view-form/click-edit)"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Securing 'To'\" true)"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/bool-field-value \"Securing 'To'\"))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Nelle Odom\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View 'Nelle Odom'\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"Edit 'Nelle Odom'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete 'Nelle Odom'\"))"}
+   {:script "(rt.po.app/choose-context-menu \"View 'Nelle Odom'\")"}
+   {:script
+    "(expect-equals \"11111\" (rt.po.view-form/get-field-value \"Library card #\"))"}
+   {:script
+    "(rn.app/open-report \"Library cards\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script "(rt.po.report-view/right-click-row-by-text \"11111\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View '11111'\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"Edit '11111'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete '11111'\"))"}
+   {:script "(rt.po.app/choose-context-menu \"View '11111'\")"}
+   {:script
+    "(comment \"==========================We have checked user has default access + edit access to own library card as expected. ==========================\")"}
+   {:script
+    "(comment \"========================Next I will create and enable new access rule.=======================\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script "(rt.po.access-rules/add-new-access-rule)"}
+   {:script
+    "(expect-equals true (rt.po.access-rules-new/new-dialog-visible?))"}
+   {:script
+    "(rt.po.access-rules-new/set-role \"Students (User Role)\")"}
+   {:script "(rt.po.access-rules-new/set-object \"Student\")"}
+   {:script "(rt.po.access-rules-new/click-ok)"}
+   {:script
+    "(rt.po.access-rules/edit-access-rule \"Students (User Role)\" \"Student\" \"Student\")"}
+   {:script
+    "(rt.po.report-builder/select-field-checkboxes \"User Account\" true true)"}
+   {:script
+    "(rt.po.report-builder/set-name \"Students - own record - test05-1\")"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script
+    "(expect-equals true (rt.po.report-view/analyzer-field-exists? \"User Account\"))"}
+   {:script
+    "(rt.po.report-view/set-analyzer-field-oper \"User Account\" \"Current User\")"}
+   {:script "(rt.po.report-view/apply-analyzer)"}
+   {:script "(rt.po.report-builder/save)"}
+   {:script "(rt.po.report-builder/close)"}
+   {:script ";;(rn.common/sleep 5000)"}
+   {:script
+    "(rt.po.access-rules/select-access-rule-operation \"Students (User Role)\" \"Student\" \"Students - own record - test05-1\" \"View, Edit and Delete\")"}
+   {:script
+    "(rt.po.access-rules/enable-access-rule \"Students (User Role)\" \"Student\" \"Students - own record - test05-1\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script
+    "(comment \"========================By this point, student user should have view, edit and delete access to own student record and own library card.===================\")"}
+   {:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Nelle Odom\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View 'Nelle Odom'\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"Edit 'Nelle Odom'\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"Delete 'Nelle Odom'\"))"}
+   {:script "(rt.po.app/choose-context-menu \"View 'Nelle Odom'\")"}
+   {:script
+    "(rn.app/open-report \"Library cards\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script "(rt.po.report-view/right-click-row-by-text \"11111\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View '11111'\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"Edit '11111'\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"Delete '11111'\"))"}
+   {:script "(rt.po.app/choose-context-menu \"View '11111'\")"}
+   {:script
+    "(comment \"===============================Up to this point, we have checked non-admin user has expected access as set up. ========================\")"}
+   {:script
+    "(comment \"===============================Next, I will disable existing access rule and only enable new added access rule. ============================\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/disable-access-rule \"Students (User Role)\" \"Student\" \"Own student record\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script
+    "(expect-equals false (rt.po.access-rules/access-rule-enabled? \"Students (User Role)\" \"Student\" \"Own student record\"))"}
+   {:script
+    "(comment \"===========================Setup done, non-admin checking started.============================\")"}
+   {:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Nelle Odom\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View 'Nelle Odom'\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"Edit 'Nelle Odom'\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"Delete 'Nelle Odom'\"))"}
+   {:script "(rt.po.app/choose-context-menu \"View 'Nelle Odom'\")"}
+   {:script
+    "(rn.app/open-report \"Library cards\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script "(rt.po.report-view/right-click-row-by-text \"11111\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View '11111'\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"Edit '11111'\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"Delete '11111'\"))"}
+   {:script "(rt.po.app/choose-context-menu \"View '11111'\")"}
+   {:script
+    "(comment \"==============================By this point, we have checked students user has expected access as set up.==================================\")"}
+   {:script
+    "(comment \"==============================Next is to restore the env. back as by default. ==============================\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/delete-access-rule \"Students (User Role)\" \"Student\" \"Students - own record - test05-1\")"}
+   {:script
+    "(rt.po.access-rules/enable-access-rule \"Students (User Role)\" \"Student\" \"Own student record\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/access-rule-enabled? \"Students (User Role)\" \"Student\" \"Own student record\"))"}
+   {:script
+    "(comment \"By this far, Students role's access to Student object has been reset back to default\")"}
+   {:script
+    "(rn.app/open-report \"Relationships\" {:app-name \"ReadiNow Console\" :folder-name \"Resources\"})"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Student - Library card\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Student - Library card\")"}
+   {:script "(rt.po.view-form/click-edit)"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Securing 'To'\" false)"}
+   {:script
+    "(expect-equals false (rt.po.edit-form/bool-field-value \"Securing 'To'\"))"}
+   {:script
+    "(expect-equals false (rt.po.edit-form/bool-field-value \"Securing 'From'\"))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(comment \"By this far, security flag has been reset back to default\")"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160222-135907",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds
+   :rn/fixture/reset-security-flag-in-relationship-stu-lib],
+  :id :rn/security/ensure-security-flag-works-RUD,
+  :teardown
+  [{:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Relationships\" {:app-name \"ReadiNow Console\" :folder-name \"Resources\"})"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Student - Library card\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Student - Library card\")"}
+   {:script "(rt.po.view-form/click-edit)"}
+   {:script
+    "(if (= (rt.po.edit-form/bool-field-value \"Securing 'To'\") true) (rt.po.edit-form/set-bool-field-value \"Securing 'To'\" false))"}
+   {:script
+    "(if (= (rt.po.edit-form/bool-field-value \"Securing 'From'\") true) (rt.po.edit-form/set-bool-field-value \"Securing 'From'\" false))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rn.app/open-security \"Record Access\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"System Administrator (User Account)\")"}
+   {:script
+    "(if (> (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/set-search-text \"Students - own record - test05-1\") (if (> (rt.po.report-view/count-report-row) 1) (do (rt.po.access-rules/click-edit-button) (rt.po.access-rules/delete-access-rule \"Students (User Role)\" \"Student\" \"Students - own record - test05-1\") (rt.po.access-rules/click-save-button)))))"}
+   {:script
+    "(rt.po.report-view/set-search-text \"System Administrator (User Account)\")"}
+   {:script
+    "(if (= (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/set-search-text \"Students - own record - test05-1\") (if (> (rt.po.report-view/count-report-row) 0) (do (rt.po.access-rules/click-edit-button) (rt.po.access-rules/delete-access-rule \"Students (User Role)\" \"Student\" \"Students - own record - test05-1\") (rt.po.access-rules/click-save-button)))))"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Students - own record - test05-1\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Own student record\")"}
+   {:script
+    "(if (not (rt.po.access-rules/access-rule-enabled? \"Students (User Role)\" \"Student\" \"Own student record\")) (do (rt.po.access-rules/click-edit-button) (rt.po.access-rules/enable-access-rule \"Students (User Role)\" \"Student\" \"Own student record\") (rt.po.access-rules/click-save-button)))"}],
+  :modified-by "not-implemented"}]

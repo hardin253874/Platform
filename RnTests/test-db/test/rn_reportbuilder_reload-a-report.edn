@@ -1,0 +1,62 @@
+[{:tags
+  [:area/report-builder
+   :nomodify
+   :prod
+   :regression
+   :desktop
+   :user/abida],
+  :tests [],
+  :name "Refresh button reloads the report",
+  :steps
+  [{:script "(rt.po.app/navigate-via-tiles \"Foster University\")"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(rt.po.app/enable-config-mode )"}
+   {:script "(rt.po.report-builder/access-build-mode )"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Name\" false)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Address line1\" false)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"State\" false)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Email address\" false)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Country\" false)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Balance\" false)"}
+   {:script
+    "(expect-equals nil (rt.po.report-builder/get-col-header \"Student\"))"}
+   {:script
+    "(expect-equals nil (rt.po.report-builder/get-col-header \"Address line1\"))"}
+   {:script
+    "(expect-equals nil (rt.po.report-builder/get-col-header \"State\"))"}
+   {:script
+    "(expect-equals nil (rt.po.report-builder/get-col-header \"Email address\"))"}
+   {:script
+    "(expect-equals nil (rt.po.report-builder/get-col-header \"Country\"))"}
+   {:script
+    "(expect-equals nil (rt.po.report-builder/get-col-header \"Balance\"))"}
+   {:script "(rt.po.report-builder/click-refresh-report-button )"}
+   {:script
+    "(expect-equals \"Student\" (clojure.string/trim (clj-webdriver.taxi/text (rt.po.report-builder/get-col-header \"Student\"))))"}
+   {:script
+    "(expect-equals \"Address line1\" (clojure.string/trim (clj-webdriver.taxi/text (rt.po.report-builder/get-col-header \"Address line1\"))))"}
+   {:script
+    "(expect-equals \"State\" (clojure.string/trim (clj-webdriver.taxi/text (rt.po.report-builder/get-col-header \"State\"))))"}
+   {:script
+    "(expect-equals \"Email address\" (clojure.string/trim (clj-webdriver.taxi/text (rt.po.report-builder/get-col-header \"Email address\"))))"}
+   {:script
+    "(expect-equals \"Country\" (clojure.string/trim (clj-webdriver.taxi/text (rt.po.report-builder/get-col-header \"Country\")))))"}
+   {:script
+    "(expect-equals \"Balance\" (clojure.string/trim (clj-webdriver.taxi/text (rt.po.report-builder/get-col-header \"Balance\"))))"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script "(rt.po.report-builder/click-close-button )"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150601-153822",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/reportbuilder/reload-a-report,
+  :teardown [],
+  :modified-by "not-implemented"}]

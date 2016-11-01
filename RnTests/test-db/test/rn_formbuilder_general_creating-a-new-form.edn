@@ -1,0 +1,29 @@
+[{:tags [:prod :regression :desktop],
+  :tests [],
+  :name "Creating a new form from application toolbox",
+  :steps
+  [{:script "(rt.po.app/navigate-via-tiles \"Foster University\")"}
+   {:script "(rt.po.app/enable-app-toolbox )"}
+   {:script
+    "(rt.po.app-toolbox/create-object {:name \"New Test Object\" :description \"New Test Object Description\"})"}
+   {:script
+    "(expect-equals \"New Test Object Form\" (rt.po.form-builder/get-form-title))"}
+   {:script
+    "(expect-equals true (rt.po.form-builder/has-toolbox-section? \"Fields\"))"}
+   {:script
+    "(expect-equals true (rt.po.form-builder/has-toolbox-section? \"Display\"))"}
+   {:script
+    "(expect-equals true (rt.po.form-builder/has-field-group? \"Default\"))"}
+   {:script "(expect-equals true (rt.po.form-builder/has-toolbar?))"}
+   {:script "(expect-equals true (rt.po.form-builder/has-canvas?))"}
+   {:script "(expect-equals true (rt.po.form-builder/has-fields?))"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150601-153813",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/formbuilder/general/creating-a-new-form,
+  :teardown [],
+  :modified-by "not-implemented"}]

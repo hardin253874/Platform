@@ -1,0 +1,125 @@
+[{:tags [:prod :regression :desktop],
+  :name "more Board Drivers on Chrome",
+  :steps
+  [{:script "(rt.po.app/navigate-to-item \"Test Solution\" \"\")"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script "(rt.po.app/add-board \"\")"}
+   {:script
+    "(expect-equals \"New Board\" (rt.po.common/get-string \"Name\"))"}
+   {:script "(rt.po.common/set-string \"Name\" \"Elements!\")"}
+   {:script
+    "(rt.po.common/set-multiline \"Description\" \"ReadiTest generated periodic board of elements.\")"}
+   {:script
+    "(rt.po.common/set-lookup \"Report\" \"Elements (All Fields)\")"}
+   {:script
+    "(expect-equals true (rt.po.common/get-bool \"Show quick add\"))"}
+   {:script "(expect-equals false (rt.po.common/options-expanded?))"}
+   {:script "(rt.po.common/options-expand)"}
+   {:script
+    "(expect-equals \"Test Solution\" (rt.po.common/get-lookup \"Applications\"))"}
+   {:script "(rt.po.common/click-tab-heading \"Format\")"}
+   {:script "(expect-equals \"\" (rt.po.common/get-lookup \"Icon\"))"}
+   {:script "(rt.po.common/set-lookup \"Icon\" \"Calendar.svg\")"}
+   {:script "(rt.po.common/click-ok)"}
+   {:script
+    "(expect-equals \"Elements!\" (rt.po.board/get-board-header-text))"}
+   {:script "(expect-equals \"\" (rt.po.board/get-quick-add))"}
+   {:script
+    "(expect-equals true (rt.po.board/board-header-icon-exist?))"}
+   {:script
+    "(expect-equals {:r 82, :g 135, :b 202, :a 255} (rt.po.board/get-board-header-icon-background-colour))"}
+   {:script "(rt.po.app/disable-config-mode)"}
+   {:script "(expect-equals false (rt.po.board/settings-open?))"}
+   {:script "(rt.po.board/click-settings)"}
+   {:script "(expect-equals true (rt.po.board/settings-open?))"}
+   {:script
+    "(expect-equals \"Name & description\" (rt.po.board/get-card-template))"}
+   {:script
+    "(expect-equals \"Standard state\" (rt.po.board/get-column-source))"}
+   {:script "(expect-equals \"\" (rt.po.board/get-row-source))"}
+   {:script
+    "(expect-equals \"Bonding type\" (rt.po.board/get-color-source))"}
+   {:script "(rt.po.board/set-column-source \"Metal type\")"}
+   {:script "(rt.po.board/set-row-source \"Bonding type\")"}
+   {:script "(rt.po.board/set-color-source \"Standard state\")"}
+   {:script
+    "(expect-equals \"Metal type\" (rt.po.board/get-column-source))"}
+   {:script
+    "(expect-equals \"Bonding type\" (rt.po.board/get-row-source))"}
+   {:script
+    "(expect-equals \"Standard state\" (rt.po.board/get-color-source))"}
+   {:script "(rt.po.board/set-row-source-value \"Undefined\" false)"}
+   {:script
+    "(expect-equals false (rt.po.board/row-source-value-checked? \"Undefined\"))"}
+   {:script "(rt.po.board/set-color-source-value \"Undefined\" false)"}
+   {:script
+    "(expect-equals false (rt.po.board/color-source-value-checked? \"Undefined\"))"}
+   {:script "(rt.po.board/click-settings-dialog-save)"}
+   {:script "(rt.po.board/click-refresh)"}
+   {:script "(expect-equals 3 (count (rt.po.board/get-legend)))"}
+   {:script
+    "(expect-equals true (rt.po.board/legend-contains? \"Solid\"))"}
+   {:script
+    "(expect-equals true (rt.po.board/legend-contains? \"Liquid\"))"}
+   {:script
+    "(expect-equals true (rt.po.board/legend-contains? \"Gas\"))"}
+   {:script
+    "(expect-equals 86 (rt.po.board/get-legend-item-count \"Solid\"))"}
+   {:script
+    "(expect-equals 2 (rt.po.board/get-legend-item-count \"Liquid\"))"}
+   {:script
+    "(expect-equals 11 (rt.po.board/get-legend-item-count \"Gas\"))"}
+   {:script "(expect-equals 10 (rt.po.board/get-column-count))"}
+   {:script "(expect-equals 4 (count (rt.po.board/get-rows)))"}
+   {:script "(rt.po.board/scroll-reset)"}
+   {:script
+    "(expect-equals 5 (rt.po.board/get-column-item-count \"Halogen\"))"}
+   {:script
+    "(expect-equals 5 (count (rt.po.board/get-card-elements \"Halogen\")))"}
+   {:script
+    "(expect-equals 4 (count (rt.po.board/get-card-elements-in-row \"Halogen\" \"Covalent network\")))"}
+   {:script
+    "(expect-equals 0 (count (rt.po.board/get-card-elements-in-row \"Actinoid\" \"Atomic\")))"}
+   {:script "(rt.po.board/set-quick-add \"Engelhardtium\")"}
+   {:script "(rt.po.board/click-quick-add)"}
+   {:script
+    "(expect-equals 1 (count (rt.po.board/get-card-elements-in-row \"Actinoid\" \"Atomic\")))"}
+   {:script
+    "(expect-equals true (rt.po.board/card-exists? \"Actinoid\" \"Engelhardtium\"))"}
+   {:script
+    "(expect-equals true (rt.po.board/card-exists-in-row? \"Atomic\" \"Actinoid\" \"Engelhardtium\"))"}
+   {:script
+    "(expect-equals 1 (count (rt.po.board/get-card-elements-in-row \"Nonmetal\" \"Metallic\")))"}
+   {:script
+    "(expect-equals false (rt.po.board/card-exists-in-row? \"Metallic\" \"Nonmetal\" \"Engelhardtium\"))"}
+   {:script
+    "(expect-equals true (rt.po.board/card-exists-in-row? \"Metallic\" \"Nonmetal\" \"Selenium\"))"}
+   {:script
+    "(rt.po.board/drag-card-to-dimension-and-row \"Engelhardtium\" \"Actinoid\" \"Nonmetal\" \"Atomic\" \"Metallic\")"}
+   {:script
+    "(expect-equals 0 (count (rt.po.board/get-card-elements-in-row \"Actinoid\" \"Atomic\")))"}
+   {:script
+    "(expect-equals false (rt.po.board/card-exists? \"Actinoid\" \"Engelhardtium\"))"}
+   {:script
+    "(expect-equals false (rt.po.board/card-exists-in-row? \"Atomic\" \"Actinoid\" \"Engelhardtium\"))"}
+   {:script
+    "(expect-equals 2 (count (rt.po.board/get-card-elements-in-row \"Nonmetal\" \"Metallic\")))"}
+   {:script
+    "(expect-equals true (rt.po.board/card-exists-in-row? \"Metallic\" \"Nonmetal\" \"Engelhardtium\"))"}
+   {:script
+    "(expect-equals true (rt.po.board/card-exists-in-row? \"Metallic\" \"Nonmetal\" \"Selenium\"))"}
+   {:script
+    "(rt.po.board/right-click-card-in-row \"Metallic\" \"Nonmetal\" \"Engelhardtium\")"}
+   {:script "(rt.po.app/choose-context-menu \"Delete\")"}
+   {:script "(rt.po.edit-form/click-confirm-delete-ok-button)"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script "(rt.po.app/delete-nav-item \"Elements!\")"}
+   {:script "(rt.po.app/disable-config-mode)"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160915-105037",
+  :setup [],
+  :fixtures [:common/fixture/login :common/fixture/test-account-creds],
+  :id :qa-daily/boards/test-board-drivers-with-rows,
+  :teardown [],
+  :modified-by "not-implemented"}]

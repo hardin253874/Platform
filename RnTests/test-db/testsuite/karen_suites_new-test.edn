@@ -1,0 +1,16 @@
+[{:tags [:desktop],
+  :tests [:rn/chartbuilder/chart-managing-series],
+  :name "Karen's working suite for new tests",
+  :each-fixtures [:common/fixture/login],
+  :type :testsuite,
+  :source "../RnTests/test-db",
+  :modified "20150601-153829",
+  :setup [{:script ""}],
+  :id :karen/suites/new-test,
+  :teardown [{:script ""}],
+  :modified-by "not-implemented",
+  :once-fixtures
+  [:common/fixture/chrome
+   :common/fixture/handle-errors
+   :common/fixture/test-account-creds
+   :common/fixture/wait-ng]}]

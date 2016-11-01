@@ -1,0 +1,33 @@
+[{:tags
+  [:user/conc
+   :area/console
+   :nomodify
+   :prod
+   :regression
+   :desktop],
+  :name "Login with ADFS Fail",
+  :steps
+  [{:script
+    "(def IdpConfig {:idp-user-name \"svc-test@sp.local\", :idp-name (rt.lib.util/make-test-name \"ADFS-Idp\")})"}
+   {:script
+    "(rt.scripts.login/create-adfs-id-provider (:idp-name IdpConfig))"}   
+   {:script "(rt.po.app/logout)"}
+   {:script
+    "(rt.scripts.login/login-with-id-provider (:idp-name IdpConfig))"}
+   {:script
+    "(rt.scripts.login/login-to-adfs \"sp.local\\\\svc-test\" \"Password1\")"}
+   {:script
+    "(rt.scripts.login/verify-not-logged-in)"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160519-124119",
+  :setup [],
+  :fixtures [:rn/fixture/admin-creds :common/fixture/login],
+  :id :rn/console/login-with-adfs-fail,
+  :teardown
+  [{:script
+    "(identity {:admin-creds {:password \"tacoT0wn\", :username \"Administrator\"}})"}
+   {:script "(rn.common/start-app-and-login)"}
+   {:script
+    "(rn.services.entity/delete-entity-for-name (:idp-name IdpConfig) \"oidcIdentityProvider\")"}],
+  :modified-by "not-implemented"}]

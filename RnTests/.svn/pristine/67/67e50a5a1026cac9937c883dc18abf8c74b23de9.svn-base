@@ -1,0 +1,15 @@
+[{:tags [:desktop :prod],
+  :tests [],
+  :name "First time login",
+  :steps
+  [{:script "(rn.common/start-app-and-login)",
+    :metric-id "Log in and Load Home Screen - 1st time",
+        :target-msec 2000}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150607-082824",
+  :setup [],
+  :fixtures [],
+  :id :perf/tests/t0,
+  :teardown [],
+  :modified-by "not-implemented"}]

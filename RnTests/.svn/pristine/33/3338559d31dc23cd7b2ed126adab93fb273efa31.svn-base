@@ -1,0 +1,211 @@
+[{:tags
+  [:nomodify :prod :regression :user/shaofen :desktop :area/security],
+  :tests [],
+  :name
+  "Secure new button on picker window, including 3 options for \"Enable New\" (Creating a new object library card II) - checking on the right form after bug 26586 fixed",
+  :steps
+  [{:script
+    "(comment \"===============This test will create a derived type based on Library card and check New buttons on picker window.===========\")"}
+   {:script
+    "(rn.common/start-app-and-login {:password \"Nelle.Odom1\", :username \"Nelle.Odom\"})"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script "(rt.po.report-view/view-record \"Nelle Odom\")"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script
+    "(expect (rt.po.edit-form/find-lookup \"Library card #\"))"}
+   {:script "(rt.po.edit-form/open-lookup \"Library card #\")"}
+   {:script
+    "(expect-equals false (rt.po.edit-form/check-can-create?))"}
+   {:script
+    "(comment \"===============Up to this point, we have checked student user doesn't see +NEW button on picker window by default================\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script "(rt.po.access-rules/add-new-access-rule)"}
+   {:script
+    "(expect-equals true (rt.po.access-rules-new/new-dialog-visible?))"}
+   {:script
+    "(rt.po.access-rules-new/set-role \"Students (User Role)\")"}
+   {:script "(rt.po.access-rules-new/set-object \"Library card\")"}
+   {:script "(rt.po.access-rules-new/click-ok)"}
+   {:script
+    "(rt.po.access-rules/edit-access-rule \"Students (User Role)\" \"Library card\" \"Library card\")"}
+   {:script
+    "(rt.po.report-builder/set-name \"Library card for this testing only - 21102015\")"}
+   {:script "(rt.po.report-builder/save)"}
+   {:script "(rt.po.report-builder/close)"}
+   {:script
+    "(rt.po.access-rules/select-access-rule-operation \"Students (User Role)\" \"Library card\" \"Library card for this testing only - 21102015\" \"Full (Create, View, Edit and Delete)\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Library card for this testing only - 21102015\")"}
+   {:script
+    "(rt.po.access-rules/enable-access-rule \"Students (User Role)\" \"Library card\" \"Library card for this testing only - 21102015\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script
+    "(comment \"==============Up to this point, we have granted student user the CRUD access to libary card, and we would expect see +NEW button on picker window. =================\")"}
+
+   {:script
+    "(rn.common/start-app-and-login {:password \"Nelle.Odom1\", :username \"Nelle.Odom\"})"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script "(rt.po.report-view/view-record \"Nelle Odom\")"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script
+    "(expect (rt.po.edit-form/find-lookup \"Library card #\"))"}
+   {:script "(rt.po.edit-form/open-lookup \"Library card #\")"}
+   {:script "(rn.common/sleep 5000)"}
+   {:script "(expect-equals true (rt.po.edit-form/check-can-create?))"}
+   {:script "(rt.po.common/click-cancel)"}
+
+   {:script
+    "(comment \"===============Up to this point, we have checked student user can see +NEW button on picker window when he has create access. ===================\")"}
+   {:script
+    "(comment \"TODO: put the following steps in teardown when RT supports\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script "(rt.po.app/navigate-via-tiles \"Foster University\")"}
+   {:script "(rt.po.app/enable-app-toolbox)"}
+   {:script
+    "(rt.po.app-toolbox/create-object {:description \"Library card II Description\", :name \"Library card II\", :extends-from \"Library card\"})"}
+   {:script
+    "(expect-equals \"Library card II Form\" (rt.po.form-builder/get-form-title))"}
+   {:script "(expect-equals true (rt.po.form-builder/has-canvas?))"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Text\")"}
+   {:script "(expect-equals true (rt.po.form-builder/has-fields?))"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}
+   {:script "(rt.po.form-builder/has-fields?)"}
+
+   {:script
+    "(rn.common/start-app-and-login {:password \"Nelle.Odom1\", :username \"Nelle.Odom\"})"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script "(rt.po.report-view/view-record \"Nelle Odom\")"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script
+    "(expect (rt.po.edit-form/find-lookup \"Library card #\"))"}
+   {:script "(rt.po.edit-form/open-lookup \"Library card #\")"}
+   {:script "(expect-equals true (rt.po.edit-form/check-can-create?))"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/check-can-create-derived-types?))"}
+   {:script "(rt.po.edit-form/click-new-button)"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/create-option-visible? \"Library card\"))"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/create-option-visible? \"Library card II\"))"}
+   {:script "(rt.po.report-view/close-dialog-action-menu)"}
+   {:script "(rt.po.common/click-cancel)"}
+
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script "(rt.po.access-rules/add-new-access-rule)"}
+   {:script
+    "(expect-equals true (rt.po.access-rules-new/new-dialog-visible?))"}
+   {:script
+    "(rt.po.access-rules-new/set-role \"Students (User Role)\")"}
+   {:script "(rt.po.access-rules-new/set-object \"Library card II\")"}
+   {:script "(rt.po.access-rules-new/click-ok)"}
+   {:script
+    "(rt.po.access-rules/edit-access-rule \"Students (User Role)\" \"Library card II\" \"Library card II\")"}
+   {:script
+    "(rt.po.report-builder/set-name \"Library card II for this testing only - 11112015\")"}
+   {:script "(rt.po.report-builder/save)"}
+   {:script "(rt.po.report-builder/close)"}
+   {:script
+    "(rt.po.access-rules/select-access-rule-operation \"Students (User Role)\" \"Library card II\" \"Library card II for this testing only - 11112015\" \"Full (Create, View, Edit and Delete)\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Library card II for this testing only - 11112015\")"}
+   {:script
+    "(rt.po.access-rules/enable-access-rule \"Students (User Role)\" \"Library card II\" \"Library card II for this testing only - 11112015\")"}
+   {:script
+    "(rt.po.access-rules/disable-access-rule \"Students (User Role)\" \"Library card\" \"Library card for this testing only - 21102015\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script
+    "(comment \"==============Up to this point, we have granted student user the CRUD access to libary card, and we would expect see +NEW button on picker window. =================\")"}
+
+   {:script
+    "(rn.common/start-app-and-login {:password \"Nelle.Odom1\", :username \"Nelle.Odom\"})"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script "(rt.po.report-view/view-record \"Nelle Odom\")"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script
+    "(expect (rt.po.edit-form/find-lookup \"Library card #\"))"}
+   {:script "(rt.po.edit-form/open-lookup \"Library card #\")"}
+   {:script "(rn.common/sleep 5000)"}
+   {:script "(expect-equals true (rt.po.edit-form/check-can-create?))"}
+   {:script
+    "(expect-equals false (rt.po.edit-form/check-can-create-derived-types?))"}
+   {:script
+    "(comment \"TODO: further we could check if the right form loads up. #26586\")"}
+   {:script "(rt.po.common/click-cancel)"}
+
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/delete-access-rule \"Students (User Role)\" \"Library card\" \"Library card for this testing only - 21102015\")"}
+   {:script
+    "(rt.po.access-rules/delete-access-rule \"Students (User Role)\" \"Library card II\" \"Library card II for this testing only - 11112015\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script
+    "(rn.app/open-report \"Objects\" {:app-name \"ReadiNow Console\" :folder-name \"Resources\"})"}
+   {:script "(rt.po.report-view/set-search-text \"Library card II\")"}
+   {:script "(rt.po.report-view/delete-record \"Library card II\")"}
+   {:script "(rt.po.report-view/set-search-text \"Library card II\")"}
+   {:script "(expect-equals 0 (rt.po.report-view/count-report-row))"}
+
+   {:script
+    "(rn.common/start-app-and-login {:password \"Nelle.Odom1\", :username \"Nelle.Odom\"})"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script "(rt.po.report-view/view-record \"Nelle Odom\")"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script
+    "(expect (rt.po.edit-form/find-lookup \"Library card #\"))"}
+   {:script "(rt.po.edit-form/open-lookup \"Library card #\")"}
+   {:script
+    "(expect-equals false (rt.po.edit-form/check-can-create?))"}
+   {:script
+    "(comment \"===================Up to this point, we have checked if removing create access, student user no longer sees the +New button on picker window.=================\")"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20151112-132809",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds],
+  :id :rn/security/secure-new-button-on-picker---derived-type,
+  :teardown
+  [{:script
+    "(comment \"=============================Below is to force the env. back to default so it won't impact other RT cases.========================\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Objects\" {:app-name \"ReadiNow Console\" :folder-name \"Resources\"})"}
+   {:script "(rt.po.report-view/set-search-text \"Library card II\")"}
+   {:script
+    "(if (> (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/delete-record \"Library card II\")))"}
+   {:script "(rt.po.report-view/set-search-text \"Library card II\")"}
+   {:script "(expect-equals 0 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"System Administrator (User Account)\")"}
+   {:script
+    "(if (> (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/set-search-text \"Library card for this testing only - 21102015\") (if (> (rt.po.report-view/count-report-row) 0) (do (rt.po.access-rules/click-edit-button) (rt.po.access-rules/delete-access-rule \"Students (User Role)\" \"Library card\" \"Library card for this testing only - 21102015\") (rt.po.access-rules/click-save-button))) (rt.po.report-view/set-search-text \"Library card II for this testing only - 11112015\") (if (> (rt.po.report-view/count-report-row) 0) (do (rt.po.access-rules/click-edit-button) (rt.po.access-rules/delete-access-rule \"Students (User Role)\" \"Library card II\" \"Library card II for this testing only - 11112015\") (rt.po.access-rules/click-save-button)))))"}
+   {:script
+    "(rt.po.report-view/set-search-text \"System Administrator (User Account)\")"}
+   {:script
+    "(if (= (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/set-search-text \"Library card for this testing only - 21102015\") (if (> (rt.po.report-view/count-report-row) 0) (do (rt.po.access-rules/click-edit-button) (rt.po.access-rules/delete-access-rule \"Students (User Role)\" \"Library card\" \"Library card for this testing only - 21102015\") (rt.po.access-rules/click-save-button))) (rt.po.report-view/set-search-text \"Library card II for this testing only - 11112015\") (if (> (rt.po.report-view/count-report-row) 0) (do (rt.po.access-rules/click-edit-button) (rt.po.access-rules/delete-access-rule \"Students (User Role)\" \"Library card II\" \"Library card II for this testing only - 11112015\") (rt.po.access-rules/click-save-button)))))"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Library card II for this testing only - 11112015\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Library card for this testing only - 21102015\")"}],
+  :modified-by "not-implemented"}]

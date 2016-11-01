@@ -1,0 +1,128 @@
+[{:tags
+  [:nomodify :prod :regression :user/shaofen :desktop :area/security],
+  :tests [],
+  :name
+  "Ensure access summary works fine when changing security flags  (CBA phase 2)",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script "(rn.app/open-security \"User Roles\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Students\")"}
+   {:script "(rt.po.view-form/select-form-tab \"Access Summary\")"}
+   {:script "(rt.po.access-summary/set-search-text \"Library card\")"}
+   {:script "(expect-equals 1 (rt.po.view-form/get-report-row-count))"}
+   {:script
+    "(expect (rt.po.access-summary/row-exists? \"Library card\" \"Read\" \"Filtered per user\" \"Students\"))"}
+   {:script
+    "(comment \"Next is to tick security flag and see if change reflected in access summary report\")"}
+   {:script
+    "(rn.app/open-report \"Relationships\" {:app-name \"ReadiNow Console\", :folder-name \"Resources\"})"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Student - Library card\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Student - Library card\")"}
+   {:script "(rt.po.view-form/click-edit)"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Securing 'To'\" true)"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/bool-field-value \"Securing 'To'\"))"}
+   {:script
+    "(expect-equals false (rt.po.edit-form/bool-field-value \"Securing 'From'\"))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rn.app/open-security \"User Roles\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Students\")"}
+   {:script "(rt.po.view-form/select-form-tab \"Access Summary\")"}
+   {:script "(rt.po.access-summary/set-search-text \"Library card\")"}
+   {:script "(expect-equals 2 (rt.po.view-form/get-report-row-count))"}
+   {:script
+    "(expect (rt.po.access-summary/row-exists? \"Library card\" \"Read\" \"Filtered per user\" \"Students\"))"}
+   {:script
+    "(expect (rt.po.access-summary/row-exists? \"Library card\" \"Read, Modify\" \"Via related\" \"Students\"))"}
+   {:script
+    "(rn.app/open-report \"Relationships\" {:app-name \"ReadiNow Console\", :folder-name \"Resources\"})"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Student - Library card\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Student - Library card\")"}
+   {:script "(rt.po.view-form/click-edit)"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Securing 'From'\" true)"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Securing 'To'\" true)"}
+   {:script
+    "(expect (rt.po.edit-form/bool-field-value \"Securing 'To'\"))"}
+   {:script
+    "(expect (rt.po.edit-form/bool-field-value \"Securing 'From'\"))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rn.app/open-security \"User Roles\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Students\")"}
+   {:script "(rt.po.view-form/select-form-tab \"Access Summary\")"}
+   {:script "(rt.po.access-summary/set-search-text \"Library card\")"}
+   {:script "(expect-equals 3 (rt.po.view-form/get-report-row-count))"}
+   {:script
+    "(expect (rt.po.access-summary/row-exists? \"Library card\" \"Read\" \"Filtered per user\" \"Students\"))"}
+   {:script
+    "(expect (rt.po.access-summary/row-exists? \"Library card\" \"Read, Modify\" \"Via related\" \"Students\"))"}
+   {:script
+    "(expect (rt.po.access-summary/row-exists? \"Student\" \"Read\" \"Via related\" \"Students\"))"}
+   {:script
+    "(rn.app/open-report \"Relationships\" {:app-name \"ReadiNow Console\", :folder-name \"Resources\"})"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Student - Library card\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Student - Library card\")"}
+   {:script "(rt.po.view-form/click-edit)"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Securing 'From'\" false)"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Securing 'To'\" false)"}
+   {:script
+    "(expect (not (rt.po.edit-form/bool-field-value \"Securing 'To'\")))"}
+   {:script
+    "(expect (not (rt.po.edit-form/bool-field-value \"Securing 'From'\")))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rn.app/open-security \"User Roles\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Students\")"}
+   {:script "(rt.po.view-form/select-form-tab \"Access Summary\")"}
+   {:script "(rt.po.access-summary/set-search-text \"Library card\")"}
+   {:script "(expect-equals 1 (rt.po.view-form/get-report-row-count))"}
+   {:script
+    "(expect (rt.po.access-summary/row-exists? \"Library card\" \"Read\" \"Filtered per user\" \"Students\"))"}
+   {:script
+    "(expect (not (rt.po.access-summary/row-exists? \"Library card\" \"Read, Modify\" \"Via related\" \"Students\")))"}
+   {:script
+    "(expect (not (rt.po.access-summary/row-exists? \"Student\" \"Read\" \"Via related\" \"Students\")))"}
+   {:script
+    "(expect (rt.po.access-summary/row-exists? \"Library card\" \"Read\" \"Filtered per user\" \"Students\"))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160905-113942",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds],
+  :id :rn/security/ensure-access-summary-work-fine-for-security-flag,
+  :teardown
+  [{:script
+    "(comment \"clean up access rules that may or may not have been touched. \")"}
+   {:script
+    "(rn.app/open-report \"Relationships\" {:app-name \"ReadiNow Console\", :folder-name \"Resources\"})"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Student - Library card\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Student - Library card\")"}
+   {:script "(rt.po.view-form/click-edit)"}
+   {:script
+    "(if (= (rt.po.edit-form/bool-field-value \"Securing 'To'\") true) (rt.po.edit-form/set-bool-field-value \"Securing 'To'\" false))"}
+   {:script
+    "(if (= (rt.po.edit-form/bool-field-value \"Securing 'From'\") true) (rt.po.edit-form/set-bool-field-value \"Securing 'From'\" false))"}
+   {:script "(rt.po.edit-form/save)"}],
+  :modified-by "not-implemented"}]

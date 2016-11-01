@@ -1,0 +1,17 @@
+[{:tags [:desktop],
+  :test-filter "",
+  :tests [:rn/mobile/create-new-instance],
+  :name "steves dev suite",
+  :each-fixtures
+  [:common/fixture/handle-errors
+   :common/fixture/wait-ng
+   :common/fixture/chrome-iPhone
+   :common/fixture/test-account-creds],
+  :type :testsuite,
+  :source "../RnTests/test-db",
+  :modified "20150806-173327",
+  :setup [],
+  :id :rn/suites/steve-mobile,
+  :teardown [],
+  :modified-by "not-implemented",
+  :once-fixtures []}]

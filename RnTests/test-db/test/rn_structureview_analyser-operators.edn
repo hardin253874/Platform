@@ -1,0 +1,190 @@
+[{:tags [:area/report-builder :prod :regression :desktop :user/abida],
+  :name "Testing analyser operators for structure view",
+  :steps
+  [{:script "(rt.po.app/add-report (:section *tc*))"}
+   {:script
+    "(rt.po.report-new/set-name \"AnalyserOperators_Structureview\")"}
+   {:script "(rt.po.report-new/set-report-base-on \"Faculties\")"}
+   {:script "(rt.po.report-new/click-ok)"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/add-relationship \"Staff\")"}
+   {:script "(rt.po.report-builder/select-treenode \"Staff\")"}
+   {:script "(rt.po.report-builder/click-sort-a-z \"Staff\")"}
+   {:script
+    "(rt.po.report-builder/set-in-analyzer-checkbox-field-value \"Name\" true)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Staff\" \"Format Column\")"}
+   {:script "(rt.po.report-format/click-value-formatting)"}
+   {:script
+    "(rt.po.report-format/set-hierarchy-report \"Staff Hierarchy\")"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script
+    "(expect-equals \"Erica Mcknight > Barry Sanders\" (rt.po.report-view/get-report-cell-text-content \"13\" \"Staff\"))"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script
+    "(rt.po.report-view/open-analyser-field-configure-dialog \"Staff\")"}
+   {:script
+    "(rt.po.report-view/set-analyser-field-picker-report \"Staff Hierarchy\")"}
+   {:script "(rt.po.common/click-ok)"}
+   {:script
+    "(rt.po.report-view/set-analyzer-field-oper \"Staff\" \"Any below\")"}
+   {:script
+    "(rt.po.report-view/click-analyser-field-picker-report \"Staff\")"}
+   {:script
+    "(rt.po.view-form/select-structure-view-item \"Adam Foster\")"}
+   {:script "(rt.po.common/click-ok)"}
+   {:script "(rt.po.report-view/apply-analyzer)"}
+   {:script "(expect-equals 4 (rt.po.view-form/get-report-row-count))"}
+   {:script
+    "(expect-equals \"Adam Foster > Sophia Grimes\" (rt.po.report-view/get-report-cell-text-content \"3\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Adam Foster > Axel Barker\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Adam Foster > Sharon Valdez\" (rt.po.report-view/get-report-cell-text-content \"2\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Adam Foster > Octavius Baldwin\" (rt.po.report-view/get-report-cell-text-content \"1\" \"Staff\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script
+    "(rn.app/open-report \"AnalyserOperators_Structureview\" {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script "(expect-equals 4 (rt.po.view-form/get-report-row-count))"}
+   {:script
+    "(expect-equals \"Adam Foster > Sophia Grimes\" (rt.po.report-view/get-report-cell-text-content \"3\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Adam Foster > Axel Barker\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Adam Foster > Sharon Valdez\" (rt.po.report-view/get-report-cell-text-content \"2\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Adam Foster > Octavius Baldwin\" (rt.po.report-view/get-report-cell-text-content \"1\" \"Staff\"))"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script
+    "(rt.po.report-view/set-analyzer-field-oper \"Staff\" \"Any at or below\")"}
+   {:script "(rt.po.report-view/apply-analyzer)"}
+   {:script "(expect-equals 5 (rt.po.view-form/get-report-row-count))"}
+   {:script
+    "(expect-equals \"Adam Foster > Sophia Grimes\" (rt.po.report-view/get-report-cell-text-content \"4\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Adam Foster > Axel Barker\" (rt.po.report-view/get-report-cell-text-content \"1\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Cooper Griffith > Adam Foster\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Adam Foster > Sharon Valdez\" (rt.po.report-view/get-report-cell-text-content \"3\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Adam Foster > Octavius Baldwin\" (rt.po.report-view/get-report-cell-text-content \"2\" \"Staff\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script
+    "(rn.app/open-report \"AnalyserOperators_Structureview\" {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script "(expect-equals 5 (rt.po.view-form/get-report-row-count))"}
+   {:script
+    "(expect-equals \"Adam Foster > Sophia Grimes\" (rt.po.report-view/get-report-cell-text-content \"4\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Adam Foster > Axel Barker\" (rt.po.report-view/get-report-cell-text-content \"1\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Cooper Griffith > Adam Foster\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Adam Foster > Sharon Valdez\" (rt.po.report-view/get-report-cell-text-content \"3\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Adam Foster > Octavius Baldwin\" (rt.po.report-view/get-report-cell-text-content \"2\" \"Staff\"))"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script
+    "(rt.po.report-view/set-analyzer-field-oper \"Staff\" \"Any above\")"}
+   {:script
+    "(rt.po.report-view/click-analyser-field-picker-report \"Staff\")"}
+   {:script
+    "(rt.po.view-form/select-structure-view-item \"Axel Barker\")"}
+   {:script "(rt.po.common/click-ok)"}
+   {:script "(rt.po.report-view/apply-analyzer)"}
+   {:script "(expect-equals 1 (rt.po.view-form/get-report-row-count))"}
+   {:script
+    "(expect-equals \"Cooper Griffith > Adam Foster\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Staff\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script
+    "(rn.app/open-report \"AnalyserOperators_Structureview\" {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script "(expect-equals 1 (rt.po.view-form/get-report-row-count))"}
+   {:script
+    "(expect-equals \"Cooper Griffith > Adam Foster\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Staff\"))"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script
+    "(rt.po.report-view/set-analyzer-field-oper \"Staff\" \"Any at or above\")"}
+   {:script "(rt.po.report-view/apply-analyzer)"}
+   {:script "(expect-equals 2 (rt.po.view-form/get-report-row-count))"}
+   {:script
+    "(expect-equals \"Adam Foster > Axel Barker\" (rt.po.report-view/get-report-cell-text-content \"1\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Cooper Griffith > Adam Foster\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Staff\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script
+    "(rn.app/open-report \"AnalyserOperators_Structureview\" {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script "(expect-equals 2 (rt.po.view-form/get-report-row-count))"}
+   {:script
+    "(expect-equals \"Adam Foster > Axel Barker\" (rt.po.report-view/get-report-cell-text-content \"1\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Cooper Griffith > Adam Foster\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Staff\"))"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script
+    "(rt.po.report-view/set-analyzer-field-oper \"Staff\" \"Contains\")"}
+   {:script
+    "(rt.po.report-view/set-analyzer-string \"Staff\" \"gan\")"}
+   {:script "(rt.po.report-view/apply-analyzer)"}
+   {:script "(expect-equals 1 (rt.po.view-form/get-report-row-count))"}
+   {:script
+    "(expect-equals \"Rebekah Erickson > Leroy Logan\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Staff\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script
+    "(rn.app/open-report \"AnalyserOperators_Structureview\" {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script "(expect-equals 1 (rt.po.view-form/get-report-row-count))"}
+   {:script
+    "(expect-equals \"Rebekah Erickson > Leroy Logan\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Staff\"))"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script
+    "(rt.po.report-view/set-analyzer-field-oper \"Staff\" \"Is defined\")"}
+   {:script "(rt.po.report-view/apply-analyzer)"}
+   {:script
+    "(expect-equals 38 (rt.po.view-form/get-report-row-count))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script
+    "(rn.app/open-report \"AnalyserOperators_Structureview\" {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals 38 (rt.po.view-form/get-report-row-count))"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script
+    "(rt.po.report-view/set-analyzer-field-oper \"Staff\" \"Is not defined\")"}
+   {:script "(rt.po.report-view/apply-analyzer)"}
+   {:script "(expect-equals 0 (rt.po.view-form/get-report-row-count))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/close)"}
+   {:script "(expect-equals 0 (rt.po.view-form/get-report-row-count))"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script
+    "(rt.po.report-view/open-analyser-field-configure-dialog \"Staff\")"}
+   {:script
+    "(rt.po.report-view/set-analyser-field-picker-report \"Staff Report\")"}
+   {:script "(rt.po.common/click-ok)"}
+   {:script
+    "(comment (rt.po.report-view/click-analyser-field-picker-report \"Staff\"))"}
+   {:script
+    "(rt.po.report-view/set-analyzer-picker-option \"Staff\" \"Any below\" \"Ina Harmon\")"}
+   {:script "(rt.po.report-view/apply-analyzer)"}
+   {:script "(expect-equals 0 (rt.po.view-form/get-report-row-count))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script
+    "(rn.app/open-report \"AnalyserOperators_Structureview\" {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals 0 (rt.po.view-form/get-report-row-count))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160331-151832",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :common/fixture/login
+   :rn/section/createsection],
+  :id :rn/structureview/analyser-operators,
+  :teardown [{:script "(rt.po.app/delete-nav-item (:section *tc*))"}],
+  :modified-by "not-implemented"}]

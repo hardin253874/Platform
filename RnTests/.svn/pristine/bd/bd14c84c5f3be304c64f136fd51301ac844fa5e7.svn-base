@@ -1,0 +1,148 @@
+[{:tags [:app/crm :desktop],
+  :name "Create a new lead involving new relationship",
+  :steps
+  [{:script "(reset-rendezvous)"}
+   {:script "(rendezvous {:timeout 20})"}
+   {:script "(rn.common/start-app-and-login (:login-creds *tc*))",
+    :metric-id "crm2-1"}
+   {:script "(rendezvous)"}
+   {:script "(rt.po.app/navigate-to \"CRM\")"}
+   {:script "(rendezvous)"}
+   {:script "(rt.po.app/select-app-tab \"Leads\")",
+    :metric-id "crm2-2"}
+   {:script "(rendezvous)"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")",
+    :metric-id "crm2-3"}
+   {:script "(rendezvous)"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Lead title\" (:lead-title *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"First name\" (-> *tc* :lead-details :first))"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Last name\" (-> *tc* :lead-details :last))"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Company\" (-> *tc* :company))"}
+   {:script "(rendezvous)"}
+   {:script "(rt.po.edit-form/save)", :metric-id "crm2-4"}
+   {:script "(rendezvous)"}
+   {:script
+    "(rt.po.report-view/set-search-text (-> *tc* :lead-title))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text (-> *tc* :lead-title))"}
+   {:script "(rendezvous)"}
+   {:script
+    "(println \"About to convert lead with user \" (:login-creds *tc*))",
+    :metric-id "crm2-5"}
+   {:script "(rt.po.app/choose-context-menu \"Convert Lead\")",
+    :metric-id "crm2-5"}
+   {:script
+    "(expect (taxi/wait-until #(subset? #{\"Convert\"} (set (rt.po.view-form/get-task-actions))) 240000))\n\n",
+    :metric-id "crm2-6"}
+   {:script "(rendezvous)"}
+   {:script "(rt.po.view-form/choose-task-action \"Convert\")",
+    :metric-id "crm2-7"}
+   {:script
+    "(expect (taxi/wait-until #(subset? #{\"OK\"} (set (rt.po.view-form/get-task-actions))) 240000))",
+    :metric-id "crm2-8"}
+   {:script "(rendezvous)"}
+   {:script "(rt.po.view-form/choose-task-action \"OK\")",
+    :metric-id "crm2-9"}
+   {:script "(rendezvous {:timeout 10})"}
+   {:script "(rt.po.app/select-app-tab \"Accounts\")",
+    :metric-id "crm2-10"}
+   {:script "(rendezvous)"}
+   {:script "(rt.po.report-view/set-search-text (-> *tc* :company))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text (-> *tc* :company))"}
+   {:script "(rt.po.app/choose-context-menu \"Edit\")",
+    :metric-id "crm2-11"}
+   {:script
+    "(rt.po.edit-form/set-multiline \"Description\" (str \"Discovered due to lead: \" (:lead-title *tc*)))"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Address line 1\" \"23 Apple Lane\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"City\" \"Orange Grove\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"State\" \"QLD.\")"}
+   {:script "(rt.po.view-form/select-form-tab \"Contacts\")"}
+   {:script "(rt.po.report-view/click-action-menu-button \"Contact\")",
+    :metric-id "crm2-12"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"First name\" (-> (get-random-tc-item :leads) :first))"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Last name\" (-> (get-random-tc-item :leads) :last))"}
+   {:script "(rt.po.edit-form/save)", :metric-id "crm2-13"}
+   {:script "(rt.po.edit-form/save)", :metric-id "crm2-14"}
+   {:script "(rendezvous)"}
+   {:script "(rt.po.app/select-app-tab \"Opportunities\")",
+    :metric-id "crm2-15"}
+   {:script "(rendezvous)"}
+   {:script
+    "(rt.po.report-view/set-search-text (-> *tc* :lead-title))"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text (-> *tc* :lead-title))",
+    :metric-id "crm2-16"}
+   {:script "(rt.po.view-form/select-form-tab \"Items\")"}
+   {:script
+    "(rt.po.report-view/click-action-menu-button \"One-off Item\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (make-test-name \"one-off\"))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Product Category\" \"Hardware\")"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"Quantity\" \"100\")"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"Unit price\" \"19.99\")"}
+   {:script "(rendezvous)"}
+   {:script "(rt.po.edit-form/save)", :metric-id "crm2-17"}
+   {:script "(rt.po.view-form/select-form-tab \"Items\")"}
+   {:script
+    "(rt.po.report-view/click-action-menu-button \"Recurring Item\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Item\" (make-test-name \"recurring\"))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Product Category\" \"Professional Services\")"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"Quantity\" \"13\")"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"Unit price\" \"399\")"}
+   {:script "(rendezvous)"}
+   {:script "(rt.po.edit-form/save)", :metric-id "crm2-18"}
+   {:script "(rt.po.view-form/open-tab-action-menu \"Quote\" \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Quote name\" (make-test-name \"quote\"))"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Valid until\" (make-local-date 2199 12 31))"}
+   {:script "(rendezvous)"}
+   {:script "(rt.po.edit-form/save)", :metric-id "crm2-19"}
+   {:script "(rt.po.view-form/select-form-tab \"Quote\")"}
+   {:script "(rt.po.report-view/set-search-text \"quote-\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"quote-\")"}
+   {:script
+    "(comment (rt.po.report-view/click-action-menu-button \"Create Quote\"))"}
+   {:script "(rt.po.view-form/click-edit)", :metric-id "crm2-20"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Sales stage\" \"Qualification\")"}
+   {:script "(rendezvous)"}
+   {:script "(rt.po.edit-form/save)", :metric-id "crm2-21"}
+   {:script "(rt.po.view-form/click-edit)", :metric-id "crm2-22"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Sales stage\" \"Closed Won\")"}
+   {:script "(rendezvous)"}
+   {:script "(rt.po.edit-form/save)", :metric-id "crm2-23"}
+   {:script "(rt.po.view-form/form-nav-back)"}
+   {:script "(rendezvous)"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150917-150403",
+  :setup
+  [{:script "(rendezvous {:timeout 20})"}
+   {:script
+    "(identity {:lead-title (make-test-name \"Lead\"), :lead-details (get-random-tc-item :leads), :company (make-test-name \"Company\")})"}
+   {:script "(identity {:login-creds (get-random-tc-item :creds)})"}],
+  :fixtures [:crm/fixtures/lists :common/fixture/wait-ng],
+  :id :crm/tests/concurrency-script,
+  :teardown [],
+  :doc "",
+  :modified-by "not-implemented"}]

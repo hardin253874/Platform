@@ -1,0 +1,93 @@
+[{:tags [:prod :regression :desktop],
+  :tests [],
+  :name "Chart Builder Series Drivers on Chrome",
+  :steps
+  [{:script
+    "(expect-equals \"Born Bar\" (first (rt.po.chart-builder/get-series-list)))",
+    :target-msec 100}
+   {:script "(rt.po.chart-builder/add-series)",
+        :target-msec 100}
+   {:script "(rt.po.chart-builder/set-series-name \"Last\" \"Test\")",
+        :target-msec 100}
+   {:script
+    "(expect-equals \"Test\" (last (rt.po.chart-builder/get-series-list)))",
+    :target-msec 100}
+   {:script "(rt.po.chart-builder/collapse-series \"Test\")",
+        :target-msec 100}
+   {:script
+    "(expect-equals false (rt.po.chart-builder/series-expanded? \"Test\"))",
+    :target-msec 100}
+   {:script "(rt.po.chart-builder/expand-series \"Test\")",
+        :target-msec 100}
+   {:script
+    "(expect-equals true (rt.po.chart-builder/series-expanded? \"Test\"))",
+        :target-msec 100}
+   {:script
+    "(expect-equals true (rt.po.chart-builder/series-has-axis-options? \"Test\"))",
+        :target-msec 100}
+   {:script
+    "(expect-equals true (rt.po.chart-builder/get-share-primary \"Test\"))",
+    :target-msec 100}
+   {:script "(rt.po.chart-builder/set-share-primary \"Test\" false)",
+    :target-msec 100}
+   {:script
+    "(expect-equals false (rt.po.chart-builder/get-share-primary \"Test\"))",
+    :target-msec 100}
+   {:script
+    "(expect-equals true (rt.po.chart-builder/get-share-values \"Test\"))",
+    :target-msec 100}
+   {:script "(rt.po.chart-builder/set-share-values \"Test\" false)",
+    :target-msec 100}
+   {:script
+    "(expect-equals false (rt.po.chart-builder/get-share-values \"Test\"))",
+    :target-msec 100}
+   {:script
+    "(rt.po.chart-builder/drag-series-to-series \"Born Bar\" \"Test\")",
+        :target-msec 100}
+   {:script
+    "(expect-equals \"Test\" (first (rt.po.chart-builder/get-series-list)))",
+    :target-msec 100}
+   {:script
+    "(expect-equals \"Born Bar\" (last (rt.po.chart-builder/get-series-list)))",
+    :target-msec 100}
+   {:script "(rt.po.chart-builder/remove-series \"Test\")",
+        :target-msec 100}
+   {:script
+    "(expect-equals \"Born Bar\" (first (rt.po.chart-builder/get-series-list)))",
+    :target-msec 100}
+   {:script
+    "(expect-equals \"Born Bar\" (last (rt.po.chart-builder/get-series-list)))",
+    :target-msec 100}
+   {:script
+    "(expect-equals false (rt.po.chart-builder/series-chart-type-open? \"First\"))",
+    :target-msec 100}
+   {:script "(rt.po.chart-builder/open-series-chart-type \"First\")",
+        :target-msec 100}
+   {:script
+    "(expect-equals true (rt.po.chart-builder/series-chart-type-open? \"First\"))",
+    :target-msec 100}
+   {:script
+    "(expect-equals \"Bar\" (rt.po.chart-builder/get-series-chart-type \"First\"))",
+    :target-msec 100}
+   {:script "(rt.po.chart-builder/close-series-chart-type)",
+        :target-msec 100}
+   {:script
+    "(expect-equals false (rt.po.chart-builder/series-chart-type-open? \"First\"))",
+    :target-msec 100}
+   {:script
+    "(rt.po.chart-builder/set-series-chart-type \"First\" \"Column\")",
+        :target-msec 100}
+   {:script
+    "(expect-equals \"Column\" (rt.po.chart-builder/get-series-chart-type \"First\"))",
+    :target-msec 100}],
+  :type :test,
+  :checks [],
+  :source "../RnTests/test-db",
+  :modified "20150601-153804",
+  :setup
+  [{:script "(rt.scripts.common/edit-chart (:name *test-context*))"}],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :qa-daily/charts/test-chart-builder-drivers-series,
+  :teardown [],
+  :modified-by "not-implemented",
+  :data {:name "Gantt - Scientists"}}]

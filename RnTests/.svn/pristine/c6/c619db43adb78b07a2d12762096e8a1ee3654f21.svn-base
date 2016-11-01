@@ -1,0 +1,71 @@
+[{:tags [:desktop],
+  :tests [],
+  :name "Form Builder page drivers on Chrome",
+  :steps
+  [{:script
+    "(rt.po.form-builder/set-field-group-name \"New Field Group\" \"RT_Group1\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"RT_Group1\" (rt.po.form-builder/get-field-group-name \"RT_Group1\"))",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-field-group \"Text\" \"RT_Group1\")",
+        :target-msec 500}
+   {:script
+    "(rt.po.form-builder/set-field-name \"Text\" \"RT_String1\")",
+        :target-msec 500}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-field-group \"Text\" \"RT_Group1\")",
+        :target-msec 500}
+   {:script
+    "(rt.po.form-builder/set-field-name \"Text\" \"RT_String2\")",
+        :target-msec 500}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-field-group \"MultilineText\" \"RT_Group1\")",
+        :target-msec 500}
+   {:script
+    "(rt.po.form-builder/set-field-name \"Multiline Text\" \"RT_Multiline1\")",
+        :target-msec 500}
+   {:script
+    "(rt.po.form-builder/add-field-group-from-toolbox-to-form \"RT_Group1\")",
+        :target-msec 500}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"RT_String1\")",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder-config/set-name \"String Control Test\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"String Control Test\" (rt.po.form-builder-config/get-name))",
+    :target-msec 500}
+   {:script "(rt.po.form-builder-config/click-ok)", :target-msec 500}
+   {:script "(rt.po.form-builder/delete-form-control \"RT_String2\")",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder/delete-form-control \"RT_Multiline1\")",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder/add-field-from-toolbox-to-form \"RT_String2\")",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder/add-field-from-toolbox-to-container \"RT_Multiline1\" 0)",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-form \"Number\")",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder/set-form-control-name \"Number\" \"Test Number Control\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"Test Number Control :\" (rt.po.form-builder/get-form-control-name \"Test Number Control\"))",
+    :target-msec 500}],
+  :type :test,
+  :checks [],
+  :source "../RnTests/test-db",
+  :modified "20150601-153805",
+  :setup [:qa-daily/scripts/form-builder/open-form-builder-new-mode],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :qa-daily/form-builder/test-form-builder-page-phase2,
+  :teardown [],
+  :modified-by "not-implemented",
+  :data {}}]

@@ -1,0 +1,149 @@
+[{:tags [:user/kun :app-tests/incident :desktop],
+  :tests [],
+  :name "Ensure Incident Managing Incidents",
+  :steps
+  [{:script
+    "(rn.common/start-app-and-login (:incident-user-creds-owner *tc*))"}
+   {:script "(think 1)"}
+   {:script "(rt.po.app/navigate-to \"Incident Management\")"}
+   {:script "(think 1)"}
+   {:script "(rt.po.app/select-app-tab \"Incident Management\")"}
+   {:script
+    "(rt.po.screen/open-report-menu-on-screen-by-name \"Active Incidents\" \"Action\")"}
+   {:script "(think 1)"}
+   {:script
+    "(rt.po.report-view/click-sub-menu-item \"New\" \"Fraud Incident\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:fi-name *tc*))"}
+   {:script "(rt.po.edit-form/set-today-date \"Occurred Date\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Severity\" \"Medium\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Fraud Category\" \"Financial\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Discovery Method\" \"Unusual Behaviour\")"}
+   {:script
+    "(rt.po.edit-form/set-structure-lookup-value \"Organisation Levels\" \"Org Level East\")"}
+   {:script
+    "(rt.po.edit-form/set-multiline \"Description\" \"Using credit card for unusal purchases\")"}
+   {:script
+    "(rt.po.edit-form/set-structure-lookup-value \"Sites\" \"Site East\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Incident Location\" \"Usual Workplace Site\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.report-view/set-search-text (:fi-name *tc*))"}
+   {:script
+    "(expect-equals true (rt.po.common/report-row-contains-text? (:fi-name *tc*)))"}
+   {:script
+    "(rt.po.screen/open-report-menu-on-screen-by-name \"Active Incidents\" \"Action\")",
+    :target-msec 1000}
+   {:script
+    "(rt.po.report-view/click-sub-menu-item \"New\" \"OHS Incident\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:ohs-name *tc*))"}
+   {:script "(rt.po.edit-form/set-today-date \"Occurred Date\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Severity\" \"Medium\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Incident Category\" \"Minor Injury / First Aid\")"}
+   {:script
+    "(rt.po.edit-form/set-structure-lookup-value \"Organisation Levels\" \"Org Level East\")"}
+   {:script
+    "(rt.po.edit-form/set-lookup-value \"Employee Manager\" \"Adan\")"}
+   {:script
+    "(rt.po.edit-form/set-lookup-value \"Non-Employees\" \"Aide\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Incident Location\" \"Usual Workplace Site\")"}
+   {:script
+    "(rt.po.edit-form/set-structure-lookup-value \"Sites\" \"Site North\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Nature of Injury\" \"Burn\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Body Part Injured\" \"Arm\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Cause of Injury\" \"Slip/Trip\")"}
+   {:script
+    "(rt.po.edit-form/set-multi-choice-value \"Emergency Services Notified\" [\"Ambulance\"  \"SES\"])"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"First Aid Provided\" true)"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"First Aid Provider\" \"Employee\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"External Medical Attention\" \"On-Site First Aid Officer\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.view-form/click-button-in-relationship \"Incident Log\" \"Action\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Subject\" (:note-name *tc*))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.report-view/set-search-text (:ohs-name *tc*))"}
+   {:script
+    "(expect-equals true (rt.po.common/report-row-contains-text? (:ohs-name *tc*)))"}
+   {:script
+    "(rt.po.screen/open-report-menu-on-screen-by-name \"Active Incidents\" \"Action\")",
+    :target-msec 1000}
+   {:script
+    "(rt.po.report-view/click-sub-menu-item \"New\" \"Physical Security Incident\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:pss-name *tc*))"}
+   {:script "(rt.po.edit-form/set-today-date \"Occurred Date\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Status\" \"In Progress\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Severity\" \"Medium\")"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/image-Upload-button-exists? \"Location Photo\"))"}
+   {:script
+    "(def NelleOdomPath (rt.po.common/get-data-file-path \"NelleOdom.png\"))"}
+   {:script
+    "(rt.po.edit-form/upload-image \"Location Photo\" NelleOdomPath)"}
+   {:script
+    "(rt.po.edit-form/set-structure-lookup-value \"Sites\" \"Site East\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Address\" \"12 Rye Road\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"City\" \"Norwest\")"}
+   {:script "(rt.po.edit-form/set-text-field-value \"State\" \"NSW\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Postcode\" \"2153\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Country\" \"Australia\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Incident Category\" \"Access Control\")"}
+   {:script "(rt.po.edit-form/set-lookup-value \"Employees\" \"\")"}
+   {:script
+    "(rt.po.edit-form/set-lookup-value \"Non-Employees\" \"\")"}
+   {:script "(rt.po.edit-form/set-lookup-value \"Witnesses\" \"\")"}
+   {:script
+    "(rt.po.view-form/click-button-in-relationship \"Organisation Assets Impacted\" \"Action\")"}
+   {:script "(rt.po.app/choose-context-menu \"Link to Existing\")"}
+   {:script "(rt.po.edit-form/choose-in-entity-picker-dialog \"\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Property Loss Type\" \"Damaged\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Incident Cause\" \"People\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Incident Cause Type\" \"Employee qualification, technical skills, competencies\")"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"Actual Loss\" 10000)"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"Recovered Amount\" 1000)"}
+   {:script "(rt.po.edit-form/set-number-value-v2 \"Net Loss\" 90000)"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20161024-112925",
+  :setup
+  [{:script
+    "(identity {:task-name (rt.lib.util/make-test-name \"Task\"), \r\n\t\t\t\t:issue-name (rt.lib.util/make-test-name \"Issue\"),\r\n\t\t\t\t:fi-name (rt.lib.util/make-test-name \"FraudIncident\"),\r\n\t\t\t\t:ohs-name (rt.lib.util/make-test-name \"OHSIncident\"),\r\n\t\t\t\t:pss-name (rt.lib.util/make-test-name \"PhySecIncident\"),\r\n\t\t\t\t:note-name (rt.lib.util/make-test-name \"Note\")\r\n\t\t\t\t})"}],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds-incident],
+  :id :incident/tests/managing-incidents,
+  :teardown [],
+  :modified-by "not-implemented"}]

@@ -1,0 +1,161 @@
+[{:tags [:area/workflow :prod :desktop :smoke-test],
+  :tests [],
+  :name "Approval Workflow Scenario",
+  :steps
+  [{:script "(comment \"Create the workflow\")"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Workflows\")"}
+   {:script
+    "(rt.po.app/select-non-toggle-navigator-item \"Workflows\" 1)"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script "(rn.common/wait-until-settled)"}
+   {:script "(rt.po.workflow/set-component-name (:wf-name *tc*))"}
+   {:script "(rt.po.workflow/save)"}
+   {:script "(rt.po.workflow/add-input-argument \"Student\")"}
+   {:script
+    "(rt.po.workflow/set-input-argument-type \"Student\" \"Record Argument\")"}
+   {:script
+    "(rt.po.workflow/set-input-argument-entity-type \"Student\" \"Student\")"}
+   {:script
+    "(rt.po.workflow/add-toolbox-item \"User Action\" 200 100 \"Approve\")"}
+   {:script
+    "(rt.po.workflow/add-toolbox-item \"Log\" 400 100 \"Log Approval\")"}
+   {:script
+    "(rt.po.workflow/add-toolbox-item \"Log\" 400 200 \"Log Rejection\")"}
+   {:script "(rt.po.workflow/add-sequence \"start\" nil \"Approve\")"}
+   {:script
+    "(rt.po.workflow/add-toolbox-item \"User Action\" 600 100 \"Approve2\")"}
+   {:script
+    "(rt.po.workflow/add-toolbox-item \"Log\" 800 100 \"Log Approval2\")"}
+   {:script
+    "(rt.po.workflow/add-toolbox-item \"Log\" 800 200 \"Log Rejection2\")"}
+   {:script
+    "(rt.po.workflow/add-sequence \"Log Approval\" nil \"Approve2\")"}
+   {:script
+    "(rt.po.workflow/add-sequence \"Log Approval2\" nil \"end\")"}
+   {:script
+    "(rt.po.workflow/add-sequence \"Log Rejection\" nil \"Approve2\")"}
+   {:script
+    "(rt.po.workflow/add-sequence \"Log Rejection2\" nil \"end\")"}
+   {:script
+    "(quote (rt.po.workflow/add-sequence \"Log Rejection2\" nil \"end\"))"}
+   {:script
+    "(rt.po.workflow/add-sequence \"Approve\" \"Approve\" \"Log Approval\")"}
+   {:script
+    "(rt.po.workflow/add-sequence \"Approve2\" \"Approve2\" \"Log Approval2\")"}
+   {:script
+    "(rt.po.workflow/add-sequence \"Approve\" \"Reject\" \"Log Rejection\")"}
+   {:script
+    "(rt.po.workflow/add-sequence \"Approve2\" \"Reject2\" \"Log Rejection2\")"}
+   {:script "(rt.po.workflow/select-element \"Log Approval\")"}
+   {:script
+    "(rt.po.workflow/set-parameter-expression-string \"Message\" (str \"'Approved (via \" (:wf-name *tc*) \"):' + [Student]\"))\n"}
+   {:script "(rt.po.workflow/select-element \"Log Approval2\")"}
+   {:script
+    "(rt.po.workflow/set-parameter-expression-string \"Message\" (str \"'Approved (via \" (:wf-name *tc*) \"):' + [Student]\"))"}
+   {:script "(rt.po.workflow/select-element \"Log Rejection\")"}
+   {:script
+    "(rt.po.workflow/set-parameter-expression-string \"Message\" (str \"'Rejected (via \" (:wf-name *tc*) \"):' + [Student]\"))"}
+   {:script "(rt.po.workflow/select-element \"Log Rejection2\")"}
+   {:script
+    "(rt.po.workflow/set-parameter-expression-string \"Message\" (str \"'Rejected (via \" (:wf-name *tc*) \"):' + [Student]\"))"}
+   {:script "(rt.po.workflow/select-element \"Approve\")"}
+   {:script
+    "(rt.po.workflow/open-menu-for-expression-control \"For Person\" \"Record\")"}
+   {:script "(rt.po.workflow/choose-expression-record \"Jack Admin\")"}
+   {:script
+    "(rt.po.workflow/set-parameter-expression-string \"Record\" \"[Student]\")"}
+   {:script
+    "(rt.po.workflow/set-parameter-expression-bool \"Wait for next form\" \"true\")"}
+   {:script "(rt.po.workflow/select-element \"Approve2\")"}
+   {:script
+    "(rt.po.workflow/open-menu-for-expression-control \"For Person\" \"Record\")"}
+   {:script "(rt.po.workflow/choose-expression-record \"Jack Admin\")"}
+   {:script
+    "(rt.po.workflow/set-parameter-expression-string \"Record\" \"[Student]\")"}
+   {:script "(rt.po.workflow/save)"}
+   {:script "(rt.po.workflow/close)"}
+   {:script "(comment \"Create the trigger\")"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Workflows/Triggers\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Name\" (str (:wf-name *tc*) \"-trigger\"))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value \"Triggered on\" \"Update\")"}
+   {:script
+    "(rt.po.edit-form/set-lookup-value \"Object to trigger on\" \"Student\")"}
+   {:script
+    "(rt.po.edit-form/set-lookup-value \"Workflow to run\" (:wf-name *tc*))"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Fields to Trigger on\" \"Link to Existing\")"}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog \"Balance\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(comment \"Cause the trigger\")"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Reports/Student\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Selma Terrell\")"}
+   {:script "(rt.po.app/choose-context-menu \"Edit\")"}
+   {:script
+    "(rt.po.edit-form/set-number-field-value \"Balance\" (+ 1 (rt.po.edit-form/number-field-value \"Balance\")))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(comment \"Check the tasks appear for the edited record\")"}
+   {:script
+    "(expect-equals \"Paused\" (rt.po.workflow/wait-for-workflow-run-status (:wf-name *tc*) \"Paused\"))"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Reports/Student\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Selma Terrell\")"}
+   {:script "(rt.lib.wd/wait-for-jq \".sp-task-button\" 10000)"}
+   {:script
+    "(expect-equals 1 (count (rt.po.view-form/get-task-names)))"}
+   {:script
+    "(expect-equals \"Approve\" (rt.po.view-form/get-task-name))"}
+   {:script
+    "(expect-equals '(\"Approve\" \"Reject\") (rt.po.view-form/get-task-actions))"}
+   {:script "(rt.po.view-form/choose-task-action \"Approve\")"}
+   {:script
+    "(comment \"check the workflow run and logged as expected\")"}
+   {:script
+    "(expect-equals \"Paused\" (rt.po.workflow/wait-for-workflow-run-status (:wf-name *tc*) \"Paused\"))"}
+   {:script "(rt.lib.wd/wait-for-jq \".sp-task-button\" 10000)"}
+   {:script
+    "(expect-equals (quote (\"Approve\" \"Reject\")) (rt.po.view-form/get-task-actions))"}
+   {:script "(rt.po.view-form/choose-task-action \"Approve\")"}
+   {:script
+    "(comment \"Check the workflow continued and logged as expected\")"}
+   {:script
+    "(expect-equals \"Completed\" (rt.po.workflow/wait-for-workflow-run-status (:wf-name *tc*) \"Completed\"))"}
+   {:script "(rn.common/sleep 5000)"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Audit\")"}
+   {:script
+    "(rt.po.app/select-non-toggle-navigator-item \"Event Log\" 1) ; get the second item with this text"}
+   {:script
+    "(expect (some #(re-find (re-pattern (:wf-name *tc*)) %) (rt.po.report-view/get-loaded-grid-values nil 2)))"}
+   {:script "(comment \"Restore the data\")"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Reports/Student\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Selma Terrell\")"}
+   {:script "(rt.po.app/choose-context-menu \"Edit\")"}
+   {:script
+    "(rt.po.edit-form/set-number-field-value \"Balance\" (- 1 (rt.po.edit-form/number-field-value \"Balance\")))"}
+   {:script "(rt.po.edit-form/save)"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160830-093059",
+  :setup
+  [{:script
+    "(identity {:wf-name (rt.lib.util/make-test-name \"RT - Approve Student Change\")})"}],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/workflow/approval-workflow,
+  :teardown [],
+  :doc
+  "Workflow scenario involving creating and triggering a workflow that does approvals",
+  :modified-by "not-implemented"}]

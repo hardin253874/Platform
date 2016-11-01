@@ -1,0 +1,59 @@
+[{:tags [:user/hemant :app-tests/orm :desktop],
+  :name "Create a new operational risk, assess and check risk issue",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:orm-owner-creds *tc*))"}
+   {:script "(rt.po.app/navigate-to \"Operational Risk Management\")"}
+   {:script "(rt.po.app/select-app-tab \"Control Management\")"}
+   {:script "(rt.po.app/select-navigator-item \"Control Management\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Name\" (:control-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Description\" (str \"Description for \" (:control-name *tc*)))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Control Category\" \"Preventative\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Control Type\" \"Technical\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Control Sub Type\" \"Configuration\")"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Next Review Date\" (make-local-date 2016 12 11))"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Implementation\" (str \"Buy a spare machine for implementation\"))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Control Effectiveness\" \"Effective\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"RISKS\")"}
+   {:script "(rt.po.app/choose-context-menu \"Link\")"}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog \"Coffee Machine breaking\")"}
+   {:script
+    "(comment (rt.po.edit-form/select-multi-select-choice-value \"Stakeholders\" \"Employees\"))"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"ISSUES\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Name\" (:issue-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Response Decision\" \"Remediate\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Issue Status\" \"Open\")"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Expected_Resolution_Date\" (make-local-date 2016 11 11))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.app/navigate-to \"Issues Management\")"}
+   {:script "(rt.po.report-view/set-search-text (:issue-name *tc*))"}
+   {:script
+    "(expect-equals (:issue-name *tc*) (rt.po.report-view/get-report-cell-text-content 0 \"Issue\"))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20161020-153951",
+  :setup
+  [{:script
+    "(identity {:control-name (rt.lib.util/make-test-name \"Control\"), :issue-name (rt.lib.util/make-test-name \"Issue\"), :prod-service-name (rt.lib.util/make-test-name \"ProdServ\"), :task-name (rt.lib.util/make-test-name \"Task\")})"}],
+  :fixtures [:rn/fixture/orm-owner-creds],
+  :id :orm/tests/control-and-issue-management,
+  :teardown [],
+  :modified-by "not-implemented"}]

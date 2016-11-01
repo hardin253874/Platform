@@ -1,0 +1,27 @@
+[{:tags [:user/shopwood :desktop :regression],
+  :name "Create a campaign for the university Application survey ",
+  :steps
+  [{:script "( rt.scripts.common/view-report \"University Surveys\")"}
+   {:script "( rt.po.report-view/view-record \"Application survey\")"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Recipients\" \"Link\")"}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog \"Jack Admin\")"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Campaigns\" \"New 'Survey Campaign'\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:campaign-name *tc*))"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script "(rt.scripts.common/view-report \"My Tasks\")"}
+   {:script "(rt.po.report-view/view-record \"Application survey\")"}],
+  :type :test,
+  :modified "20160218-154621",
+  :setup
+  [{:script
+    " (rt.test.core/merge-tc {:campaign-name (make-test-name \"CAMP\") })"}],
+  :fixtures [:common/fixture/login :rn/fixture/admin-creds],
+  :id :rn/survey/create-campaign,
+  :teardown [],
+  :doc
+  "A quick test to ensure that creating a survey campaign sends out the task to the recipient.",
+  :modified-by "not-implemented"}]

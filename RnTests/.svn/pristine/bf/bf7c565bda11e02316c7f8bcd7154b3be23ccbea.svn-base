@@ -1,0 +1,13 @@
+[{:tags [:desktop],
+  :modified-by "not-implemented",
+  :modified "20150601-153828",
+  :source "../RnTests/test-db",
+  :id :qa-daily/scripts/edit-form/open-form-in-view-mode,
+  :type :testscript,
+  :steps
+  [{:script "(rt.po.report-view/select-row-by-text \"Test 01\")",
+        :target-msec 2000}
+   {:script "(rt.po.report-view/right-click-row-by-text \"Test 01\")",
+        :target-msec 2000}
+   {:script "(rt.po.app/choose-context-menu \"View\")",
+        :target-msec 2000}]}]

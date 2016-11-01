@@ -1,0 +1,142 @@
+[{:tags [:app/bcm :desktop],
+  :name "Entering a BIA",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:non-admin-creds *tc*))"}
+   {:script "(rt.po.app/navigate-to \"Business Continuity Planning\")"}
+   {:script "(rt.po.app/select-app-tab \"Business Units\")"}
+   {:script "(rt.po.app/select-navigator-item \"Business Units\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(comment \"todo change the set-string calls below to use set-text\")"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Name\" (:bu-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Description\" (str \"Description for \" (:bu-name *tc*)))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Division\" \"Finance\")"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Owner\" \"Eileen Filice\") ;; workaround for a #knownissue"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Business Function\" \"New\")"}
+   {:script
+    "(expect-equals \"Business Function\" (rt.po.edit-form/get-form-title))"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Business Function\" (:bf-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Op Impact 1 day\" \"1 - Low\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Op Impact 2-5 day\" \"2 - Moderate\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Op Impact 1 week+\" \"3 - High\")"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"Fin Impact 1 day\" \"10000\")"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"Fin Impact 2-5 day\" \"20000\")"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"Fin Impact 1 week\" \"50000\")"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-container \"LEGAL/REGULATORY\")"}
+   {:script "(rt.po.app/choose-context-menu \"Link\")"}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog \"APRA PS232\")"}
+   {:script "(comment \"TODO check new related item has appeared\")"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-container \"BRAND/REPUTATION\")"}
+   {:script "(rt.po.app/choose-context-menu \"Link\")"}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog \"Customer Satisfaction\")"}
+   {:script "(comment \"TODO check new related item has appeared\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(expect (not (rt.po.app/page-has-error-alert?)))"}
+   {:script "(comment \"should be back at the Business Unit\")"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Completed\" true)"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Recovery Requirements\" \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-lookup-value \"Building\" \"Melbourne\")"}
+   {:script
+    "(rt.po.edit-form/set-lookup-value \"Recovery\" \"Box Hill\")"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"People Day 1\" \"5\")"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"People Day 2-5\" \"6\")"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"People Week 1\" \"7\")"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"Positions Day 1\" \"5\")"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"Positions Day 2-5\" \"6\")"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"Positions Week 1\" \"6\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(expect (not (rt.po.app/page-has-error-alert?)))"}
+   {:script "(comment \"should be back at the Business Unit\")"}
+   {:script "(comment \"TODO check new related item has appeared\")"}
+   {:script
+    "(comment (rt.po.report-view/select-row-by-text \"Melbourne\" (rt.po.view-form/form-tab-grid-query)))"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Completed\" true)"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"IT Recovery Requirements\" \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-lookup-value \"Technology\" \"Multi Function Device\")"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Required in 1 day\" true)"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Required in 2-5 day\" true)"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Required in 1 week\" true)"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(expect (not (rt.po.app/page-has-error-alert?)))"}
+   {:script "(comment \"should be back at the Business Unit\")"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Completed\" true)"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Products & Services Dependency\" \"Link\")"}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog \"Color Laser paper\")"}
+   {:script "(comment \"TODO check new related item has appeared\")"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Completed\" true)"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Business Critical Periods\" \"Link\")"}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog \"End of Fin\")"}
+   {:script "(comment \"TODO check new related item has appeared\")"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Completed\" true)"}
+   {:script "(rt.po.edit-form/select-form-tab \"Approval\")"}
+   {:script
+    "(rt.po.edit-form/set-lookup-value \"Approver\" \"Tony Spitera\")"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"Review cycle\" \"6\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Review period\" \"months\")"}
+   {:script
+    "(comment \"Need to use the first arg of index 1 to indicate the 2nd tab set found ... to be fixed\")"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu 1 \"Employees\" \"Link\")"}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog \"Carie T\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(expect (not (rt.po.app/page-has-error-alert?)))"}
+   {:script "(rt.po.report-view/set-search-text (:bu-name *tc*))"}
+   {:script
+    "(expect-equals 1 (count (rt.po.report-view/get-loaded-grid-values)))"}
+   {:script "(rt.po.report-view/refresh-now)"}
+   {:script "(comment \"TODO - check % complete is 85%\")"}
+   {:script "(comment \"TODO - check Max Risk rating is High\")"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20151008-112540",
+  :setup
+  [{:script
+    "(identity {:login-creds {:password \"Readi911\", :username \"BIAUser\"}})"}
+   {:script
+    "(identity {:bu-name (make-test-name \"BU\"), :bf-name (make-test-name \"BF\")})"}],
+  :fixtures [],
+  :id :bcm/tests/entering-a-BIA,
+  :teardown [],
+  :modified-by "not-implemented"}]

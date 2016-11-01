@@ -1,0 +1,14 @@
+[{:tags [:Desktop],
+  :name
+  "User creds for Key performance manager and owner (non-admin user)",
+  :type :testfixture,
+  :source "./test-db",
+  :modified "20161018-212341",
+  :setup
+  [{:script
+    "(identity {:kpm-manager-creds {:password \"Readi911\", :username \"kpm_manager\"}})"}
+   {:script
+    "(identity {:kpm-owner-creds {:password \"Readi911\", :username \"kpm_owner\"}})"}],
+  :id :rn/fixture/kpm-manager-and-owner-creds,
+  :teardown [],
+  :modified-by "not-implemented"}]

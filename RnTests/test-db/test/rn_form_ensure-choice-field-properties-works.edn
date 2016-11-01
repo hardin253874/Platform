@@ -1,0 +1,175 @@
+[{:tags [:nomodify :prod :regression :area/form :user/sri :desktop],
+  :tests [],
+  :name "Ensure choice field properties works",
+  :steps
+  [{:script "(rt.po.app/navigate-to-item \"Foster University\" \"\")"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script "(rt.po.app/add-new-nav-item \"New Object\" \"\")"}
+   {:script
+    "(rt.po.common/set-string \"Object name\" \"_choice_field_object\")"}
+   {:script "(rt.po.common/click-ok)"}
+   {:script
+    "(expect-equals \"_choice_field_object Form\" (rt.po.form-builder/get-name))"}
+   {:script
+    "(rt.po.form-builder/add-field-from-toolbox-to-form \"Name\")"}
+   {:script
+    "(rt.po.form-builder/expand-toolbox-section \"Display Options\")"}
+   {:script
+    "(expect-equals true (rt.po.form-builder/toolbox-section-expanded? \"Display Options\"))"}
+   {:script
+    "(rt.po.form-builder/add-display-option-from-toolbox-to-form \"Container\")"}
+   {:script "(rt.po.form-builder/open-container-configure-dialog 0)"}
+   {:script "(rt.po.form-builder-config/set-name \"Container1\")"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Choice\" 0)"}
+   {:script "(rt.po.form-builder-config/set-name \"New choice\")"}
+   {:script "(rt.po.form-builder-config/add-new-choice-value)"}
+   {:script "(rt.po.form-builder-config/add-new-choice-value)"}
+   {:script "(rt.po.form-builder-config/add-new-choice-value)"}
+   {:script "(rt.po.form-builder-config/add-new-choice-value)"}
+   {:script
+    "(rt.po.form-builder-config/set-choice-value \"New Value\" \"Value 1\")"}
+   {:script
+    "(rt.po.form-builder-config/set-choice-value \"New Value1\" \"Value 2\")"}
+   {:script
+    "(rt.po.form-builder-config/set-choice-value \"New Value2\" \"Value 3\")"}
+   {:script
+    "(rt.po.form-builder-config/set-choice-value \"New Value3\" \"Value 4\")"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Choice\" 0)"}
+   {:script "(rt.po.form-builder-config/set-name \"Existing choice\")"}
+   {:script
+    "(rt.po.form-builder-config/set-choice-field-option \"Use Existing\")"}
+   {:script
+    "(rt.po.form-builder-config/set-choice-field-lookup \"AA_Nationality\")"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Choice\" 0)"}
+   {:script
+    "(rt.po.form-builder-config/set-name \"Mandatory choice\")"}
+   {:script
+    "(rt.po.form-builder-config/set-choice-field-option \"Use Existing\")"}
+   {:script
+    "(rt.po.form-builder-config/set-choice-field-lookup \"AA_Condiments\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/set-control-mandatory true)"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Choice\" 0)"}
+   {:script
+    "(rt.po.form-builder-config/set-name \"Read only choice\")"}
+   {:script
+    "(rt.po.form-builder-config/set-choice-field-option \"Use Existing\")"}
+   {:script
+    "(rt.po.form-builder-config/set-choice-field-lookup \"AA_Status\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/set-control-readonly true)"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Choice\" 0)"}
+   {:script
+    "(rt.po.form-builder-config/set-name \"Multi select choice\")"}
+   {:script
+    "(rt.po.form-builder-config/set-choice-field-option \"Use Existing\")"}
+   {:script
+    "(rt.po.form-builder-config/set-choice-field-lookup \"AA_Language\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Object Detail\")"}
+   {:script
+    "(rt.po.form-builder-config/set-choice-field-type \"Multi select\")"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Choice\" 0)"}
+   {:script "(rt.po.form-builder-config/set-name \"Default choice\")"}
+   {:script
+    "(rt.po.form-builder-config/set-choice-field-option \"Use Existing\")"}
+   {:script
+    "(rt.po.form-builder-config/set-choice-field-lookup \"AA_Title\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Object Detail\")"}
+   {:script
+    "(rt.po.form-builder-config/set-choice-field-default-value \"Benevolent Dictator\")"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Choice\" 0)"}
+   {:script "(rt.po.form-builder-config/set-name \"Format choice\")"}
+   {:script
+    "(rt.po.form-builder-config/set-choice-field-option \"Use Existing\")"}
+   {:script
+    "(rt.po.form-builder-config/set-choice-field-lookup \"AA_Weekday\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Format\")"}
+   {:script
+    "(rt.po.form-builder-config/set-background-color \"Brown\")"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}
+   {:script
+    "(expect-equals true (rt.po.report-view/report-visible? \"_choice_field_object Report\"))"}
+   {:script "(rt.po.report-view/open-new-menu)"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/field-mandatory-indicator-visible? \"Mandatory choice\"))"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" \"test choice1\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(expect-equals \"A value is required.\" (rt.po.edit-form/field-error-message \"Mandatory choice\"))"}
+   {:script "(rt.po.app/clear-alerts)"}
+   {:script
+    "(rt.po.edit-form/set-choice-value \"New choice\" \"Value 2\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value \"Existing choice\" \"AUS\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value \"Mandatory choice\" \"Chili\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value \"Default choice\" \"Mr.\")"}
+   {:script
+    "(rt.po.edit-form/select-multi-select-choice-value \"Multi select choice\" \"English\")"}
+   {:script
+    "(rt.po.edit-form/select-multi-select-choice-value \"Multi select choice\" \"Shona\")"}
+   {:script
+    "(expect-equals \"English, Shona\" (rt.po.edit-form/get-multi-select-choice-value \"Multi select choice\"))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value \"Format choice\" \"Tuesday\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.view-form/form-nav-back)"}
+   {:script
+    "(expect-equals true (rt.po.report-view/report-visible? \"_choice_field_object Report\"))"}
+   {:script "(rt.po.report-view/view-record \"test choice1\")"}
+   {:script
+    "(expect-equals \"test choice1\" (rt.po.view-form/get-field-value \"Name\"))"}
+   {:script
+    "(expect-equals \"Value 2\" (rt.po.view-form/get-field-value \"New choice\"))"}
+   {:script
+    "(expect-equals \"Chili\" (rt.po.view-form/get-field-value \"Mandatory choice\"))"}
+   {:script
+    "(expect-equals \"Shona, English\" (rt.po.view-form/get-field-value \"Multi select choice\"))"}
+   {:script
+    "(expect-equals \"Mr.\" (rt.po.view-form/get-field-value \"Default choice\"))"}
+   {:script
+    "(expect-equals \"Tuesday\" (rt.po.view-form/get-field-value \"Format choice\"))"}
+   {:script "(rt.po.view-form/form-nav-back)"}
+   {:script
+    "(rt.po.app/remove-nav-item \"_choice_field_object Report\")"}
+   {:script "(rt.po.app/disable-config-mode)"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script "(rt.po.app/enable-app-toolbox)"}
+   {:script
+    "(rt.po.app-toolbox/set-application-filter \"Foster University\")"}
+   {:script
+    "(rt.po.app-toolbox/choose-object-menu \"_choice_field_object\" \"Delete\")"}
+   {:script "(rt.po.app/choose-modal-ok)"}
+   {:script "(rn.app/open-admin \"Reports\")"}
+   {:script
+    "(rt.po.report-view/delete-record \"_choice_field_object Report\")"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160718-141817",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/form/ensure-choice-field-properties-works,
+  :teardown [],
+  :doc "This test checks all the choice field properties.",
+  :modified-by "not-implemented"}]

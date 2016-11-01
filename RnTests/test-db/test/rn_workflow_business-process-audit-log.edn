@@ -1,0 +1,157 @@
+[{:tags [:modify :area/audit :prod :regression :desktop :user/abida],
+  :name "Test for business process audit log",
+  :steps
+  [{:script "(rt.po.app/navigate-via-tiles \"Foster University\")"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script "(rt.po.app/enable-app-toolbox)"}
+   {:script
+    "(rt.po.app-toolbox/set-application-filter \"ReadiNow Core\")"}
+   {:script
+    "(rt.po.screen-builder/toggle-toolbox-type \"Managed Object Log Entry\")"}
+   {:script
+    "(rt.po.app-toolbox/create-report-via-toolbox-object {:name \"Managed Object Log Entry Report\", :object-type \"Managed Object Log Entry\"})"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Managed Object Log Entry\" \"Rename Column\")"}
+   {:script "(rt.po.report-builder/set-rename-column-name \"Name\")"}
+   {:script "(rt.po.report-builder/click-ok)"}
+   {:script
+    "(expect (rt.po.report-builder/check-col-exists? \"Name\"))"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Object\" true)"}
+   {:script
+    "(comment (rt.po.report-builder/set-in-report-checkbox-field-value \"Last modified by\" true))"}
+   {:script "(rt.po.report-builder/click-add-relationship-button)"}
+   {:script "(rt.po.report-add-relationship/click-derived-type-tab)"}
+   {:script
+    "(rt.po.report-add-relationship/add-relationship \"Managed Object Log Entry as User Action Log Entry\")"}
+   {:script
+    "(rt.po.report-add-relationship/add-relationship \"Managed Object Log Entry as Log Activity Resource Entry\")"}
+   {:script "(rt.po.report-add-relationship/click-ok)"}
+   {:script "(rn.common/wait-until-settled)"}
+   {:script
+    "(rt.po.report-builder/drag-to-remove-column \"User Action Log Entry\")"}
+   {:script
+    "(rt.po.report-builder/drag-to-remove-column \"Log Activity Resource Entry\")"}
+   {:script
+    "(rt.po.report-builder/select-treenode \"Log Activity Resource Entry\")"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Description\" true)"}
+   {:script
+    "(rt.po.report-builder/select-treenode \"User Action Log Entry\")"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Action summary\" true)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"User comment\" true)"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(rt.po.app-toolbox/set-application-filter \"Foster University\")"}
+   {:script
+    "(rt.po.app-toolbox/choose-object-menu \"Staff\" \"Modify\")"}
+   {:script
+    "(rt.po.form-builder/add-field-from-toolbox-to-container \"Log entries for object\" 3)"}
+   {:script "(rt.po.form-builder/select-tab-in-tab-container 0 1)"}
+   {:script
+    "(rt.po.form-builder/open-tab-content-configure-dialog 0 1)"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script
+    "(rt.po.form-builder-config/set-display-report \"Managed Object Log Entry Report\")"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}
+   {:script "(rt.po.app/disable-app-toolbox)"}
+   {:script "(rt.po.app/navigate-to-item \"Foster University\" \"\")"}
+   {:script
+    "(rn.app/open-report \"Staff Report\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script "(rt.po.report-builder/click-saveas-report-button)"}
+   {:script
+    "(rt.po.report-builder/set-report-new-name \"Buisness Process Audit Report\")"}
+   {:script "(rt.po.report-builder/click-saveas-ok)"}
+   {:script
+    "(comment (rt.po.report-builder/click-save-report-button))"}
+   {:script
+    "(comment (rn.app/open-report \"Buisness Process Audit Report\" {:app-name \"Foster University\", :folder-name \"\"}))"}
+   {:script
+    "(comment (rn.app/open-report \"Buisness Process Audit Report\"))"}
+   {:script "(comment (rt.po.report-builder/access-build-mode))"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(comment (rt.po.report-actions/click-report-actions-tab))"}
+   {:script
+    "(rt.po.report-actions/set-enabled-value \"User Action\" \"enabled\")"}
+   {:script "(rt.po.report-actions/click-ok)"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rn.app/open-report \"Buisness Process Audit Report\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Ina Harmon\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"User Action\")"}
+   {:script "(rt.po.view-form/set-task-comment \"Approve Test\")"}
+   {:script "(rn.common/wait-until-settled)"}
+   {:script "(rt.po.view-form/choose-task-action \"Approve\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Ina Harmon\")"}
+   {:script
+    "(rt.po.edit-form/select-form-tab \"Log entries for object\")"}
+   {:script "(rn.common/wait-until-settled)"}
+   {:script
+    "(expect-equals \"User Action\" (first (rt.po.report-view/get-active-tab-column-values \"Name\")))"}
+   {:script
+    "(expect-equals \"This Staff has been approved\" (nth (rt.po.report-view/get-active-tab-column-values \"User Action Log Entry Action summary\") 0))"}
+   {:script
+    "(expect-equals \"Ina Harmon\" (nth (rt.po.report-view/get-active-tab-column-values \"Object\") 0))"}
+   {:script
+    "(expect-equals \"Approve Test\" (nth (rt.po.report-view/get-active-tab-column-values \"User Action Log Entry User comment\") 0))"}
+   {:script
+    "(expect-equals \"Log\" (nth (rt.po.report-view/get-active-tab-column-values \"Name\") 1))"}
+   {:script
+    "(expect-equals \"Ina is approved\" (nth (rt.po.report-view/get-active-tab-column-values \"Log Activity Resource Entry Description\") 1))"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.report-view/select-row-by-text \"Ina Harmon\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"User Action\")"}
+   {:script "(rn.common/wait-until-settled)"}
+   {:script "(rt.po.view-form/set-task-comment \"Reject Test\")"}
+   {:script "(rt.po.view-form/choose-task-action \"Reject\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Ina Harmon\")"}
+   {:script
+    "(rt.po.edit-form/select-form-tab \"Log entries for object\")"}
+   {:script "(rn.common/wait-until-settled)"}
+   {:script
+    "(expect-equals \"User Action\" (nth (rt.po.report-view/get-active-tab-column-values \"Name\") 2))"}
+   {:script
+    "(expect-equals \"This Staff is not approved\" (nth (rt.po.report-view/get-active-tab-column-values \"User Action Log Entry Action summary\") 2))"}
+   {:script
+    "(expect-equals \"Reject Test\" (nth (rt.po.report-view/get-active-tab-column-values \"User Action Log Entry User comment\") 2))"}
+   {:script
+    "(expect-equals \"Ina is not approved\" (nth (rt.po.report-view/get-active-tab-column-values \"Log Activity Resource Entry Description\") 3))"}
+   {:script
+    "(comment (expect-contains-match #\"This staff has not been approved\" (rt.po.report-view/get-active-tab-column-values \"User Action Log Entry Action summary\")))"}
+   {:script
+    "(comment (expect-equals \"This staff has not been approved\" (rt.po.report-view/get-active-tab-cell-value 2 \"User Action Log Entry Action summary\")))"}
+   {:script
+    "(comment (expect-equals \"This staff has not been approved\" (nth (rt.po.report-view/get-active-tab-column-values \"User Action Log Entry Action summary\") 1)))"}
+   {:script
+    "(comment (expect-contains-match #\"Log1\" (rt.po.report-view/get-active-tab-column-values \"Name\")))"}
+   {:script
+    "(comment (expect-contains-match #\"Ina Harmon has been rejected\" (rt.po.report-view/get-active-tab-column-values \"Log Activity Resource Entry Description\")))"}
+   {:script "(rt.po.app/enable-app-toolbox)"}
+   {:script
+    "(rt.po.app-toolbox/set-application-filter \"Foster University\")"}
+   {:script
+    "(rt.po.app-toolbox/choose-object-menu \"Staff\" \"Modify\")"}
+   {:script "(rt.po.form-builder/delete-tab-in-tab-container 0 1)"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}
+   {:script "(rt.po.app/disable-app-toolbox)"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160802-174044",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/workflow/business-process-audit-log,
+  :teardown
+  [{:script
+    "(rn.app/delete-report \"Buisness Process Audit Report\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}],
+  :modified-by "not-implemented"}]

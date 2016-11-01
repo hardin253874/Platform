@@ -1,0 +1,93 @@
+[{:tags [:nomodify :prod :regression :area/form :user/sri :desktop],
+  :tests [],
+  :name
+  "Ensure mandatory on choice field works on both new and edit mode.",
+  :steps
+  [{:script "(rt.po.app/navigate-to-item \"Foster University\" \"\")"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script "(rt.po.app/add-new-nav-item \"New Object\" \"\")"}
+   {:script
+    "(rt.po.common/set-string \"Object name\" (:obj-name *tc*))"}
+   {:script "(rt.po.common/click-ok)"}
+   {:script
+    "(expect-equals (clojure.string/join [(:obj-name *tc*) \" Form\"]) (rt.po.form-builder/get-name))"}
+   {:script
+    "(rt.po.form-builder/add-field-from-toolbox-to-form \"Name\")"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-form \"Choice\")"}
+   {:script "(comment (rt.scripts.common/sleep 3000))"}
+   {:script "(rt.po.form-builder-config/set-name \"New choice\")"}
+   {:script "(rt.po.form-builder-config/add-new-choice-value)"}
+   {:script "(rt.po.form-builder-config/add-new-choice-value)"}
+   {:script "(rt.po.form-builder-config/add-new-choice-value)"}
+   {:script "(rt.po.form-builder-config/add-new-choice-value)"}
+   {:script
+    "(rt.po.form-builder-config/set-choice-value \"New Value\" \"Value 1\")"}
+   {:script
+    "(rt.po.form-builder-config/set-choice-value \"New Value1\" \"Value 2\")"}
+   {:script
+    "(rt.po.form-builder-config/set-choice-value \"New Value2\" \"Value 3\")"}
+   {:script
+    "(rt.po.form-builder-config/set-choice-value \"New Value3\" \"Value 4\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/set-control-mandatory true)"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}
+   {:script
+    "(rt.po.report-view/expect-report-visible (clojure.string/join [(:obj-name *tc*) \" Report\"]))"}
+   {:script "(rt.po.report-view/open-new-menu)"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/field-mandatory-indicator-visible? \"New choice\"))"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" \"test choice1\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/field-error-marker-visible? \"New choice\"))"}
+   {:script "(rt.po.app/clear-alerts)"}
+   {:script
+    "(rt.po.edit-form/set-choice-value \"New choice\" \"Value 2\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.view-form/form-nav-back)"}
+   {:script
+    "(rt.po.report-view/expect-report-visible (clojure.string/join [(:obj-name *tc*) \" Report\"]))"}
+   {:script "(rt.po.report-view/view-record \"test choice1\")"}
+   {:script
+    "(expect-equals \"test choice1\" (rt.po.view-form/get-field-value \"Name\"))"}
+   {:script
+    "(expect-equals \"Value 2\" (rt.po.view-form/get-field-value \"New choice\"))"}
+   {:script "(rt.po.view-form/click-edit)"}
+   {:script
+    "(rt.po.edit-form/set-choice-value \"New choice\" \"[Select]\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    " (expect-equals true (rt.po.edit-form/field-error-marker-visible? \"New choice\"))"}
+   {:script "(rt.po.app/clear-alerts)"}
+   {:script
+    "(rt.po.edit-form/set-choice-value \"New choice\" \"Value 3\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.view-form/form-nav-back)"}
+   {:script
+    "(rt.po.app/remove-nav-item (clojure.string/join [(:obj-name *tc*) \" Report\"]))"}
+   {:script "(rt.po.app/enable-app-toolbox)"}
+   {:script
+    "(rt.po.app-toolbox/set-application-filter \"Foster University\")"}
+   {:script
+    "(rt.po.app-toolbox/choose-object-menu (:obj-name *tc*) \"Delete\")"}
+   {:script "(rt.po.app/choose-modal-ok)"}
+   {:script "(rn.app/open-admin \"Reports\")"}
+   {:script
+    "(rt.po.report-view/delete-record (clojure.string/join [(:obj-name *tc*) \" Report\"]))"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Resources/Choice Fields\")"}
+   {:script "(rt.po.report-view/delete-record \"New choice\")"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160916-143538",
+  :setup
+  [{:script
+    "(identity {:obj-name (rt.lib.util/make-test-name \"ChoiceObj\")})"}],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/form/ensure-mandatory-for-choice-field-works,
+  :teardown [],
+  :modified-by "not-implemented"}]

@@ -1,0 +1,44 @@
+[{:tags
+  [:user/shaofen
+   :nomodify
+   :prod
+   :regression
+   :desktop
+   :area/form-builder],
+  :tests [],
+  :name
+  "Check Deleting Field form the LHS deletes the field from the Object",
+  :steps
+  [{:script "(rt.po.app/navigate-via-tiles \"Foster University\")"}
+   {:script "(rt.po.app/enable-app-toolbox )"}
+   {:script
+    "(rt.po.app-toolbox/create-object {:name \"New Test Object17\" :description \"New Test Object Description\"})"}
+   {:script
+    "(expect-equals \"New Test Object17 Form\" (rt.po.form-builder/get-form-title))"}
+   {:script "(expect-equals true (rt.po.form-builder/has-canvas?))"}
+   {:script "(rt.po.form-builder/add-new-field-group)"}
+   {:script
+    "(rt.po.form-builder/set-field-group-name \"New Field Group\" \"Field Group 1\")"}
+   {:script
+    "(expect-equals true (rt.po.form-builder/has-field-group? \"Field Group 1\"))"}
+   {:script
+    "(expect-equals false (rt.po.form-builder/toolbox-field-exist? \"Text\"))"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-field-group \"Text\" \"Field Group 1\")"}
+   {:script
+    "(expect-equals true (rt.po.form-builder/toolbox-field-exist? \"Text\"))"}
+   {:script "(rt.po.form-builder/delete-field \"Text\")"}
+   {:script
+    "(expect-equals false (rt.po.form-builder/toolbox-field-exist? \"Text\"))"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150601-153813",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/formbuilder/DeletingFieldfromLHSCouldDeleteFieldForObject,
+  :teardown
+  [{:script
+    "(rt.po.app-toolbox/delete-object \"New Test Object17\")"}],
+  :modified-by "not-implemented"}]

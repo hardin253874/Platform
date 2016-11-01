@@ -1,0 +1,19 @@
+[{:tags [:desktop],
+  :test-filter
+  "(and (has-tags? [\"prod\" \"regression\" \"desktop\"] %) (not (has-some-tags? [\"quarantined\" \"not-on-phantomjs\"] %)) (has-index-in-range? 0 49 %))",
+  :tests [],
+  :name "Regression tests",
+  :each-fixtures
+  [:common/fixture/handle-errors
+   :common/fixture/wait-ng
+   :common/fixture/firefox
+   :common/fixture/test-account-creds],
+  :type :testsuite,
+  :source "../RnTests/test-db",
+  :modified "20150925-203303",
+  :setup [],
+  :id :rn/suites/regression-phantomjs-1,
+  :teardown [],
+  :doc "",
+  :modified-by "not-implemented",
+  :once-fixtures []}]

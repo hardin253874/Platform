@@ -1,0 +1,110 @@
+[{:tags [:desktop],
+  :tests [],
+  :name "Field config properties drivers on Chrome",
+  :steps
+  [{:script
+    "(rt.po.form-builder/add-from-field-menu-to-field-group \"Text\" \"New\")",
+        :target-msec 500}
+   {:script
+    "(rt.po.form-builder/open-field-configure-dialog \"Text\")",
+        :target-msec 2000}
+   {:script "(rt.po.form-builder-config/set-name \"String1\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"String1\" (rt.po.form-builder-config/get-name))",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder-config/set-description \"String1 description\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"String1 description\" (rt.po.form-builder-config/get-description))",
+    :target-msec 500}
+   {:script "(rt.po.form-builder-config/expand-section \"Option\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals true (rt.po.form-builder-config/section-expanded? \"Option\"))",
+    :target-msec 500}
+   {:script "(rt.po.form-builder-config/set-field-mandatory true)",
+    :target-msec 500}
+   {:script
+    "(expect-equals true (rt.po.form-builder-config/get-field-mandatory))",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder-config/set-field-minimum-value \"10\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"10\" (rt.po.form-builder-config/get-field-minimum-value))",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder-config/set-field-maximum-value \"100\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"100\" (rt.po.form-builder-config/get-field-maximum-value))",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder-config/set-field-default-value \"Enter Text\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"Enter Text\" (rt.po.form-builder-config/get-field-default-value))",
+    :target-msec 500}
+   {:script "(rt.po.form-builder-config/set-text-pattern \"Default\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"Default\" (rt.po.form-builder-config/get-text-pattern))",
+    :target-msec 500}
+   {:script "(rt.po.form-builder-config/click-ok)", :target-msec 500}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-field-group \"Decimal\" \"New\")",
+        :target-msec 500}
+   {:script
+    "(rt.po.form-builder/open-field-configure-dialog \"Decimal\")",
+        :target-msec 2000}
+   {:script "(rt.po.form-builder-config/set-name \"Decimal1\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"Decimal1\" (rt.po.form-builder-config/get-name))",
+    :target-msec 500}
+   {:script "(rt.po.form-builder-config/expand-section \"Option\")",
+    :target-msec 500}
+   {:script "(rt.po.form-builder-config/set-decimal-places \"5\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"5\" (rt.po.form-builder-config/get-decimal-places))",
+    :target-msec 500}
+   {:script "(rt.po.form-builder-config/click-ok)", :target-msec 500}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-field-group \"AutoNumber\" \"New\")",
+        :target-msec 500}
+   {:script
+    "(rt.po.form-builder/open-field-configure-dialog \"AutoNumber\")",
+        :target-msec 2000}
+   {:script "(rt.po.form-builder-config/set-name \"AutoNumber1\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"AutoNumber1\" (rt.po.form-builder-config/get-name))",
+    :target-msec 500}
+   {:script "(rt.po.form-builder-config/expand-section \"Option\")",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder-config/set-autonumber-starting-number \"5\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"5\" (rt.po.form-builder-config/get-autonumber-starting-number))",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder-config/set-autonumber-pattern \"####\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"####\" (rt.po.form-builder-config/get-autonumber-pattern))",
+    :target-msec 500}
+   {:script "(rt.po.form-builder-config/click-ok)", :target-msec 500}],
+  :type :test,
+  :checks [],
+  :source "../RnTests/test-db",
+  :modified "20150601-153805",
+  :setup [:qa-daily/scripts/form-builder/open-form-builder-new-mode],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :qa-daily/form-builder/test-field-config-properties,
+  :teardown [],
+  :modified-by "not-implemented",
+  :data {}}]

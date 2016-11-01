@@ -1,0 +1,67 @@
+[{:tags
+  [:area/report-builder
+   :nomodify
+   :prod
+   :regression
+   :desktop
+   :user/abida],
+  :tests [],
+  :name "Add fields to a report via check boxes",
+  :steps
+  [{:script "(rt.po.app/add-report (:section *tc*) )"}
+   {:script "(rt.po.report-new/set-name (:report-name *tc*))"}
+   {:script "(rt.po.report-new/set-report-base-on \"Student\")"}
+   {:script "(rt.po.report-new/click-ok )"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"First name\" true)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Postcode\" true)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"DOB\" true)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Title\" true)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Balance\" true)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Photo\" true)"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script
+    "(expect-equals \"First name\" (clojure.string/trim (clj-webdriver.taxi/text (rt.po.report-builder/get-col-header \"First name\"))))"}
+   {:script
+    "(expect-equals \"Postcode\" (clojure.string/trim (clj-webdriver.taxi/text (rt.po.report-builder/get-col-header \"Postcode\"))))"}
+   {:script
+    "(expect-equals \"DOB\" (clojure.string/trim (clj-webdriver.taxi/text (rt.po.report-builder/get-col-header \"DOB\"))))"}
+   {:script
+    "(expect-equals \"Title\" (clojure.string/trim (clj-webdriver.taxi/text (rt.po.report-builder/get-col-header \"Title\"))))"}
+   {:script
+    "(expect-equals \"Balance\" (clojure.string/trim (clj-webdriver.taxi/text (rt.po.report-builder/get-col-header \"Balance\"))))"}
+   {:script
+    "(expect-equals \"Photo\" (clojure.string/trim (clj-webdriver.taxi/text (rt.po.report-builder/get-col-header \"Photo\"))))"}
+   {:script "(rt.po.report-builder/close )"}
+   {:script
+    "(rn.app/open-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"First name\" (clojure.string/trim (clj-webdriver.taxi/text (rt.po.report-builder/get-col-header \"First name\"))))"}
+   {:script
+    "(expect-equals \"Postcode\" (clojure.string/trim (clj-webdriver.taxi/text (rt.po.report-builder/get-col-header \"Postcode\"))))"}
+   {:script
+    "(expect-equals \"DOB\" (clojure.string/trim (clj-webdriver.taxi/text (rt.po.report-builder/get-col-header \"DOB\"))))"}
+   {:script
+    "(expect-equals \"Title\" (clojure.string/trim (clj-webdriver.taxi/text (rt.po.report-builder/get-col-header \"Title\"))))"}
+   {:script
+    "(expect-equals \"Balance\" (clojure.string/trim (clj-webdriver.taxi/text (rt.po.report-builder/get-col-header \"Balance\"))))"}
+   {:script
+    "(expect-equals \"Photo\" (clojure.string/trim (clj-webdriver.taxi/text (rt.po.report-builder/get-col-header \"Photo\"))))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160916-104655",
+  :setup
+  [{:script
+    "(identity {:report-name (rt.lib.util/make-test-name \"AddCheckBox\")})"}],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :common/fixture/login
+   :rn/section/createsection],
+  :id :rn/reportbuilder/addfields-via-checkboxes,
+  :teardown [{:script "(rt.po.app/delete-nav-item (:section *tc*))"}],
+  :modified-by "not-implemented"}]

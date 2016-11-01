@@ -1,0 +1,183 @@
+[{:tags
+  [:not-on-firefox
+   :nomodify
+   :prod
+   :regression
+   :area/document-library
+   :user/sri
+   :desktop],
+  :tests [],
+  :name "Ensure object can be related to document.",
+  :steps
+  [{:script
+    "(rt.po.app/navigate-to-item \"Documents\" \"Document Library/Documents\")"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script
+    "(rt.po.app/add-new-nav-item \"New Object\" \"Report Templates\")"}
+   {:script
+    "(rt.po.common/set-string \"Object name\" \"_A_DocObject\")"}
+   {:script "(rt.po.common/click-ok)"}
+   {:script
+    "(expect-equals \"_A_DocObject Form\" (rt.po.form-builder/get-form-title))"}
+   {:script
+    "(rt.po.form-builder/add-field-from-toolbox-to-form \"Name\")"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-form \"Lookup\")"}
+   {:script
+    "(expect-equals true (rt.po.form-builder-config/config-dialog-visible?))"}
+   {:script "(rt.po.form-builder-config/set-object \"Document\")"}
+   {:script "(rt.po.form-builder-config/set-name \"Document Lookup\")"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script
+    "(rt.po.form-builder/expand-toolbox-section \"Display Options\")"}
+   {:script
+    "(rt.po.form-builder/add-display-option-from-toolbox-to-form \"Tabbed Container\")"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Relationship\" 0)"}
+   {:script
+    "(expect-equals true (rt.po.form-builder-config/config-dialog-visible?))"}
+   {:script
+    "(rt.po.form-builder-config/section-expanded? \"Options\")"}
+   {:script "(rt.po.form-builder-config/set-object \"Document\")"}
+   {:script "(rt.po.form-builder-config/set-name \"Document Rel\")"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Documents\" \"Document Library/Documents\")"}
+   {:script "(rt.po.document-library/add-new-document)"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/field-visible? \"File\"))"}
+   {:script
+    "(rt.po.document-library/upload-document (rt.po.common/get-data-file-path \"Test Excel Document.xlsx\"))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.view-form/form-nav-back)"}
+   {:script "(rt.scripts.common/sleep 2000)"}
+   {:script
+    "(expect-equals true (rt.po.document-library/doc-library-report-visible? \"Document Library\"))"}
+   {:script "(rt.po.document-library/add-new-document)"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/field-visible? \"File\"))"}
+   {:script
+    "(rt.po.document-library/upload-document (rt.po.common/get-data-file-path \"Test PDF Document.pdf\"))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.view-form/form-nav-back)"}
+   {:script "(rt.scripts.common/sleep 2000)"}
+   {:script
+    "(expect-equals true (rt.po.document-library/doc-library-report-visible? \"Document Library\"))"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Documents\" \"Document Library/_A_DocObject Report\")"}
+   {:script "(rt.po.report-view/open-new-menu)"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Name\" \"Test1\")"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Document Lookup\" \"Test Excel Document\")"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Document Rel\" \"Link to Existing\")"}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog \"Test PDF Document\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.view-form/form-nav-back)"}
+   {:script "(rt.scripts.common/sleep 2000)"}
+   {:script "(rt.po.report-view/view-record \"Test1\")"}
+   {:script
+    "(expect-equals \"Test Excel Document\" (rt.po.view-form/get-lookup-link \"Document Lookup\"))"}
+   {:script "(rt.po.view-form/click-lookup-link \"Document Lookup\")"}
+   {:script
+    "(rt.po.document-library/download-document \"Test Excel Document.xlsx\")"}
+   {:script
+    "(expect-equals true (rt.po.common/file-exist? (rt.po.common/get-download-file-path \"Test Excel Document.xlsx\")))"}
+   {:script
+    "(expect-equals true (rt.po.document-library/compare-two-files (rt.po.common/get-download-file-path \"Test Excel Document.xlsx\") (rt.po.common/get-data-file-path \"Test Excel Document.xlsx\")))"}
+   {:script "(rt.po.view-form/form-nav-back)"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Test PDF Document\")"}
+   {:script
+    "(rt.po.document-library/download-document \"Test PDF Document.pdf\")"}
+   {:script
+    "(expect-equals true (rt.po.common/file-exist? (rt.po.common/get-download-file-path \"Test PDF Document.pdf\")))"}
+   {:script
+    "(expect-equals true (rt.po.document-library/compare-two-files (rt.po.common/get-download-file-path \"Test PDF Document.pdf\") (rt.po.common/get-data-file-path \"Test PDF Document.pdf\")))"}
+   {:script "(rt.po.view-form/form-nav-back)"}
+   {:script "(rt.po.view-form/form-nav-back)"}
+   {:script "(rt.po.report-view/open-new-menu)"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Name\" \"Test2\")"}
+   {:script "(rt.po.edit-form/open-lookup \"Document Lookup\")"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/entity-report-picker-modal-exists?))"}
+   {:script "(rt.po.edit-form/click-new-button)"}
+   {:script
+    " (expect-equals true (rt.po.edit-form/field-visible? \"File\"))"}
+   {:script
+    " (rt.po.document-library/upload-document (rt.po.common/get-data-file-path \"Test PowerPoint Document.ppt\"))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.scripts.common/sleep 1000)"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.scripts.common/sleep 1000)"}
+   {:script "(rt.po.report-view/open-new-menu)"}
+   {:script
+    " (expect-equals true (rt.po.edit-form/field-visible? \"File\"))"}
+   {:script
+    "(rt.po.document-library/upload-document (rt.po.common/get-data-file-path \"Test Publisher Document.pub\"))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.scripts.common/sleep 2000)"}
+   {:script "(rt.po.view-form/form-nav-back)"}
+   {:script "(rt.scripts.common/sleep 2000)"}
+   {:script "(rt.po.report-view/view-record \"Test2\")"}
+   {:script
+    "(expect-equals \"Test PowerPoint Document\" (rt.po.view-form/get-lookup-link \"Document Lookup\"))"}
+   {:script "(rt.po.view-form/click-lookup-link \"Document Lookup\")"}
+   {:script
+    "(rt.po.document-library/download-document \"Test PowerPoint Document.ppt\")"}
+   {:script
+    "(expect-equals true (rt.po.common/file-exist? (rt.po.common/get-download-file-path \"Test PowerPoint Document.ppt\")))"}
+   {:script
+    "(expect-equals true (rt.po.document-library/compare-two-files (rt.po.common/get-download-file-path \"Test PowerPoint Document.ppt\") (rt.po.common/get-data-file-path \"Test PowerPoint Document.ppt\")))"}
+   {:script "(rt.po.view-form/form-nav-back)"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Test Publisher Document\")"}
+   {:script
+    "(rt.po.document-library/download-document \"Test Publisher Document.pub\")"}
+   {:script
+    "(expect-equals true (rt.po.common/file-exist? (rt.po.common/get-download-file-path \"Test Publisher Document.pub\")))"}
+   {:script
+    "(expect-equals true (rt.po.document-library/compare-two-files (rt.po.common/get-download-file-path \"Test Publisher Document.pub\") (rt.po.common/get-data-file-path \"Test Publisher Document.pub\")))"}
+   {:script "(rt.po.view-form/form-nav-back)"}
+   {:script "(rt.po.view-form/form-nav-back)"}
+   {:script "(rt.po.app/remove-nav-item \"_A_DocObject Report\")"}
+   {:script "(rt.po.app/enable-app-toolbox)"}
+   {:script
+    "(rt.po.app-toolbox/set-application-filter \"ReadiNow Console\")"}
+   {:script
+    "(rt.po.app-toolbox/choose-object-menu \"_A_DocObject\" \"Delete\")"}
+   {:script "(rt.po.app/choose-modal-ok)"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Documents\" \"Document Library/Documents\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Test Excel Document\")"}
+   {:script "(rt.po.app/choose-context-menu \"Delete\")"}
+   {:script "(rt.po.app/choose-modal-ok)"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Test PDF Document\")"}
+   {:script "(rt.po.app/choose-context-menu \"Delete\")"}
+   {:script "(rt.po.app/choose-modal-ok)"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Test PowerPoint Document\")"}
+   {:script "(rt.po.app/choose-context-menu \"Delete\")"}
+   {:script "(rt.po.app/choose-modal-ok)"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Test Publisher Document\")"}
+   {:script "(rt.po.app/choose-context-menu \"Delete\")"}
+   {:script "(rt.po.app/choose-modal-ok)"}
+   {:script "(rn.app/open-admin \"Reports\")"}
+   {:script
+    "(rt.po.report-view/delete-record \"_A_DocObject Report\")"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160912-101800",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/document-library/ensure-object-can-be-related-to-document,
+  :teardown [],
+  :modified-by "not-implemented"}]

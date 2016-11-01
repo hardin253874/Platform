@@ -1,0 +1,14 @@
+[{:tags [:desktop],
+  :name "2 uni admin user creds for security tests",
+  :steps [],
+  :type :testfixture,
+  :source "./test-db",
+  :modified "20151026-112048",
+  :setup
+  [{:script
+    "(identity {:user-creds-uniadmin1 {:username \"Uma.Crawford\" :password \"Uma.Crawford1\"}})"}
+   {:script
+    "(identity {:user-creds-uniadmin2 {:password \"Heidi.Shaffer1\", :username \"Heidi.Shaffer\"}})"}],
+  :id :rn/fixture/user-creds-uniadmins,
+  :teardown [],
+  :modified-by "not-implemented"}]

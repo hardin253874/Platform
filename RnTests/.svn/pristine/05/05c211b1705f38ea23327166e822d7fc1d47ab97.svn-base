@@ -1,0 +1,28 @@
+[{:tags [:desktop],
+  :tests [],
+  :name "New Report Drivers on Chrome",
+  :steps
+  [{:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"DateTime\" true)",
+        :target-msec 500}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"DateTime\" \"Format Column\")",
+        :target-msec 500}
+   {:script "(rt.po.report-format/click-value-formatting)",
+        :target-msec 500}
+   {:script
+    "(rt.po.report-format/set-datetime-format \"Day Month Time\")",
+        :target-msec 500}
+   {:script "(rt.po.report-builder/click-ok)",
+        :target-msec 500}],
+  :type :test,
+  :checks [],
+  :source "../RnTests/test-db",
+  :modified "20150601-153807",
+  :setup
+  [:qa-daily/scripts/reports/open-AutomationReport-in-build-mode],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :qa-daily/reports/test-report-column-format-drivers,
+  :teardown [],
+  :modified-by "not-implemented",
+  :data {}}]

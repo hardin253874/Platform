@@ -1,0 +1,92 @@
+[{:tags
+  [:not-on-firefox
+   :nomodify
+   :prod
+   :regression
+   :area/document-library
+   :user/sri
+   :desktop],
+  :tests [],
+  :name "Ensure version control works for documents.",
+  :steps
+  [{:script
+    "(rt.po.app/navigate-to-item \"Documents\" \"Document Library/Icons\")"}
+   {:script "(expect (> (rt.po.report-view/count-report-row) 10))"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Documents\" \"Document Library/Documents\")"}
+   {:script "(rt.po.document-library/add-new-document)"}
+   {:script
+    "(rt.po.document-library/upload-document (rt.po.common/get-data-file-path \"Test 1.txt\"))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.view-form/form-nav-back)"}
+   {:script "(rt.scripts.common/sleep 2000)"}
+   {:script "(rt.po.report-view/view-record \"Test 1\")"}
+   {:script
+    "(rt.po.document-library/download-document \"Test 1.txt\")"}
+   {:script
+    "(expect-equals \"This is the first document\" (rt.po.common/get-text-file-string (rt.po.common/get-download-file-path \"Test 1.txt\")))"}
+   {:script
+    "(expect-equals \"1.0\" (rt.po.view-form/get-field-value \"Current revision\"))"}
+   {:script
+    "(expect-equals \"Administrator\" (rt.po.view-form/get-field-value \"Created by\"))"}
+   {:script
+    "(expect-equals \"Administrator\" (rt.po.view-form/get-field-value \"Modified by\"))"}
+   {:script "(expect-equals 1 (rt.po.view-form/get-report-row-count))"}
+   {:script "(rt.po.view-form/click-edit)"}
+   {:script
+    "(expect-equals \"1.0\" (rt.po.edit-form/get-lookup \"Current revision\"))"}
+   {:script
+    "(expect-equals \"Administrator\" (rt.po.edit-form/get-lookup \"Created by\"))"}
+   {:script
+    "(expect-equals \"Administrator\" (rt.po.edit-form/get-lookup \"Modified by\"))"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/inline-lookup-read-only? \"Current revision\"))"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/inline-lookup-read-only? \"Created by\"))"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/inline-lookup-read-only? \"Modified by\"))"}
+   {:script "(rt.po.edit-form/click-cancel-button)"}
+   {:script "(rt.po.view-form/form-nav-back)"}
+   {:script "(rt.po.report-view/view-record \"Test 1\")"}
+   {:script "(rt.po.view-form/click-edit)"}
+   {:script
+    "(rt.po.document-library/upload-document (rt.po.common/get-data-file-path \"Test 2.txt\"))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.scripts.common/sleep 2000)"}
+   {:script "(rt.po.view-form/form-nav-back)"}
+   {:script "(rt.po.report-view/view-record \"Test 2\")"}
+   {:script
+    "(rt.po.document-library/download-document \"Test 2.txt\")"}
+   {:script
+    "(expect-equals \"This is the second document\" (rt.po.common/get-text-file-string (rt.po.common/get-download-file-path \"Test 2.txt\")))"}
+   {:script
+    "(expect-equals \"2.0\" (rt.po.view-form/get-field-value \"Current revision\"))"}
+   {:script "(expect-equals 2 (rt.po.view-form/get-report-row-count))"}
+   {:script "(rt.po.view-form/form-nav-back)"}
+   {:script "(rt.po.report-view/view-record \"Test 2\")"}
+   {:script "(rt.po.view-form/click-edit)"}
+   {:script
+    "(rt.po.document-library/upload-document (rt.po.common/get-data-file-path \"Test 3.txt\"))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.scripts.common/sleep 2000)"}
+   {:script "(rt.po.view-form/form-nav-back)"}
+   {:script "(rt.po.report-view/view-record \"Test 3\")"}
+   {:script
+    "(rt.po.document-library/download-document \"Test 3.txt\")"}
+   {:script
+    "(expect-equals \"This is the third document\" (rt.po.common/get-text-file-string (rt.po.common/get-download-file-path \"Test 3.txt\")))"}
+   {:script
+    "(expect-equals \"3.0\" (rt.po.view-form/get-field-value \"Current revision\"))"}
+   {:script "(expect-equals 3 (rt.po.view-form/get-report-row-count))"}
+   {:script "(rt.po.view-form/form-nav-back)"}
+   {:script "(rt.po.report-view/right-click-row-by-text \"Test 3\")"}
+   {:script "(rt.po.app/choose-context-menu \"Delete\")"}
+   {:script "(rt.po.app/choose-modal-ok)"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160718-150048",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/document-library/ensure-version-control-works-for-documents,
+  :teardown [],
+  :modified-by "not-implemented"}]

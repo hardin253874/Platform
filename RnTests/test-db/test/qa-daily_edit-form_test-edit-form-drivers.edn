@@ -1,0 +1,32 @@
+[{:tags [:prod :regression :desktop],
+  :tests [],
+  :name "Edit Form Drivers on Chrome",
+  :steps
+  [{:script
+    "(expect-equals false (rt.po.edit-form/edit-button-exists? ))"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/save-button-exists? ))"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/cancel-button-exists? ))"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Description\" \"Description of Test 1 - Dev Test 1\")"}
+   {:script "(rt.po.edit-form/click-save-button )",
+        :target-msec 2000}
+   {:script "(rt.po.edit-form/click-edit-button )"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Description\" \"Description of Test 1\")"}
+   {:script "(rt.po.edit-form/click-save-button )",
+        :target-msec 2000}],
+  :type :test,
+  :checks [],
+  :source "../RnTests/test-db",
+  :modified "20150601-153804",
+  :setup
+  [:qa-daily/scripts/edit-form/open-all-fields-report
+   :qa-daily/scripts/edit-form/open-form-in-view-mode
+   {:script "(rt.po.edit-form/click-edit-button)"}],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :qa-daily/edit-form/test-edit-form-drivers,
+  :teardown [],
+  :modified-by "not-implemented",
+  :data {}}]

@@ -1,0 +1,41 @@
+[{:tags [:desktop :prod],
+  :tests [],
+  :name "Application Building - Screen Builder Screens",
+  :steps
+  [{:script "(rt.po.app/navigate-via-tiles \"Performance Test\")",
+        :target-msec 5000}
+   {:script "(rt.po.app/select-app-tab \"Screens\")",
+        :target-msec 5000}
+   {:script "(rt.po.screen/open-screen-builder)",
+    :metric-id "Open Screen Builder - Small Screen",
+        :target-msec 2000}
+   {:script "(rt.po.screen-builder/close)",
+    :metric-id "Close Screen Builder - Small Screen",
+        :target-msec 1000}
+   {:script "(rt.po.app/select-navigator-item \"Medium Size Screen\")",
+        :target-msec 5000}
+   {:script "(rt.po.screen/open-screen-builder)",
+    :metric-id "Open Screen Builder - Medium Screen",
+        :target-msec 2000}
+   {:script "(rt.po.screen-builder/close)",
+    :metric-id "Close Screen Builder - Medium Screen",
+        :target-msec 1000}
+   {:script "(rt.po.app/select-navigator-item \"Large Size Screen\")",
+        :target-msec 5000}
+   {:script "(rt.po.screen/open-screen-builder)",
+    :metric-id "Open Screen Builder - Large Screen",
+        :target-msec 2000}
+   {:script "(rt.po.screen-builder/close)",
+    :metric-id "Close Screen Builder - Large Screen",
+        :target-msec 1000}
+   {:script "(rt.po.app/select-app-tab \"Reports\")",
+        :target-msec 5000}],
+  :type :test,
+  :checks [],
+  :source "../RnTests/test-db",
+  :modified "20150602-071315",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :perf/tests/t6,
+  :teardown [],
+  :modified-by "not-implemented"}]

@@ -1,0 +1,65 @@
+[{:tags
+  [:area/report-builder
+   :nomodify
+   :prod
+   :regression
+   :desktop
+   :user/abida],
+  :tests [],
+  :name "Check progress bar for currency field",
+  :steps
+  [{:script "(rt.po.app/add-report (:section *tc*) )"}
+   {:script "(rt.po.report-new/set-name \"ProgressBarCurrency\")"}
+   {:script "(rt.po.report-new/set-report-base-on \"Student\")"}
+   {:script "(rt.po.report-new/click-ok )"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Balance\" true)"}
+   {:script "(rt.scripts.common/sleep 3000)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Balance\" \"Format Column\")"}
+   {:script "(rt.po.report-format/set-format-type \"Progress Bar\")"}
+   {:script "(rt.po.report-format/set-format-scheme \"Light Red\")"}
+   {:script "(rt.po.report-format/set-progress-bar-minimum \"208.5\")"}
+   {:script "(rt.po.report-format/set-progress-bar-maximum \"250.0\")"}
+   {:script "(rt.po.common/click-ok )"}
+   {:script
+    "(rt.po.report-builder/click-sort-z-a \"Balance\")"}
+   {:script
+    "(expect-equals \"$208.33\" (rt.po.report-view/get-report-cell-text-content \"11\" \"Balance\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/show-report-format-progress-bar 11 \"Balance\"))"}
+   {:script
+    "(comment (expect-equals \"$212.50\" (rt.po.report-view/get-report-cell-text-content \"10\" \"Balance\")))"}
+   {:script
+    "(expect-equals \"$212.50\" (rt.po.report-view/get-report-cell-progress-bar-text-content \"10\" \"Balance\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/show-report-format-progress-bar 10 \"Balance\"))"}
+   {:script
+    "(expect-equals \"Light Red\" (rt.po.report-view/get-report-format-progress-bar-color 10 \"Balance\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script "(rt.po.report-builder/click-close-button )"}
+   {:script
+    "(rn.app/open-report \"ProgressBarCurrency\" {:app-name \"Foster University\" :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"$208.33\" (rt.po.report-view/get-report-cell-text-content \"11\" \"Balance\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/show-report-format-progress-bar 11 \"Balance\"))"}
+   {:script
+    "(comment (expect-equals \"$212.50\" (rt.po.report-view/get-report-cell-text-content \"10\" \"Balance\")))"}
+   {:script
+    "(expect-equals \"$212.50\" (rt.po.report-view/get-report-cell-progress-bar-text-content \"10\" \"Balance\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/show-report-format-progress-bar 10 \"Balance\"))"}
+   {:script
+    "(expect-equals \"Light Red\" (rt.po.report-view/get-report-format-progress-bar-color 10 \"Balance\"))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20151026-115652",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :common/fixture/login
+   :rn/section/createsection],
+  :id :rn/reportbuilder/progress-bar-currency,
+  :teardown [{:script "(rt.po.app/delete-nav-item (:section *tc*))"}],
+  :modified-by "not-implemented"}]

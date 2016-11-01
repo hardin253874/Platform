@@ -1,0 +1,16 @@
+[{:tags [:desktop],
+  :test-filter
+  "(and (has-tags? [\"prod\" \"regression\" \"desktop\"] %) (not (has-some-tags? [\"quarantined\" \"not-on-phantomjs\"] %)) (has-index-in-range? 0 999 %))",
+  :tests [],
+  :each-fixtures
+  [:common/fixture/handle-errors
+   :common/fixture/test-account-creds
+   :common/fixture/phantomjs],
+  :type :testsuite,
+  :source "../RnTests/test-db",
+  :modified "20150925-202146",
+  :setup [],
+  :id :dev/steve/phantomjs,
+  :teardown [],
+  :modified-by "not-implemented",
+  :once-fixtures []}]

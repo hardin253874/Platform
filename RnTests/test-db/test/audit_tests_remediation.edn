@@ -1,0 +1,107 @@
+[{:tags [:user/kun :app-tests/audit :desktop],
+  :tests [],
+  :name "Ensure audit remediation",
+  :steps
+  [{:script
+    "(rn.common/start-app-and-login (:audit-user-creds-manager *tc*))"}
+   {:script "(think 1)"}
+   {:script "(rt.po.app/navigate-to \"Audit Management\")"}
+   {:script "(think 1)"}
+   {:script
+    "(expect-equals true (rt.po.screen/is-report-on-screen \"My Tasks\"))"}
+   {:script
+    "(rt.po.screen/open-report-menu-on-screen-by-name \"My Tasks\" \"Action\")",
+    :target-msec 1000}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Subject\" (:task-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Due date\" (make-local-date 2016 11 11))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Task status\" \"Not started\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(expect-equals true (rt.po.common/report-row-contains-text? (:task-name *tc*)))"}
+   {:script
+    "(expect-equals true (rt.po.screen/is-report-on-screen \"My Issues\"))"}
+   {:script
+    "(rt.po.screen/open-report-menu-on-screen-by-name \"My Issue\" \"Action\")",
+    :target-msec 1000}
+   {:script
+    "(rt.po.report-view/click-sub-menu-item \"New\" \"Issue\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:issue-name *tc*))"}
+   {:script "(rt.po.edit-form/set-today-date \"Exp\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.app/select-app-tab \"Audit Reports\")"}
+   {:script
+    "(rt.po.screen/open-report-menu-on-screen-by-name \"Audit Reports\" \"Action\")",
+    :target-msec 1000}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Expected_Completion_Date\" (make-local-date 2017 11 11))"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:audit-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Audit Source\" \"Internal Audit\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Status\" \"Not Started\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.view-form/click-button-in-relationship \"Issues (Audit)\" \"Action\")",
+    :target-msec 1000}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Expected_Resolution_Date\" (make-local-date 2016 11 11))"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:audit-issue-name *tc*))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.view-form/click-button-in-relationship \"Attachments\" \"Action\")",
+    :target-msec 1000}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/field-visible? \"File\"))"}
+   {:script
+    "(rt.po.document-library/upload-document (rt.po.common/get-data-file-path \"Test 1.txt\"))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.app/open-nav-tree-node-by-name \"Reports\")"}
+   {:script
+    "(rt.po.app/select-navigator-item \"Audit Report Status\")",
+    :target-msec 1000}
+   {:script
+    "(rt.po.board/drag-card-to-dimension (:audit-name *tc*) \"Not Started\" \"On Hold\")"}
+   {:script
+    "(rt.po.app/select-navigator-item \"Audit Reports by Month\")",
+    :target-msec 1000}
+   {:script
+    "(rt.po.app/select-navigator-item \"Audit Report History\")",
+    :target-msec 1000}
+   {:script "(rt.po.report-view/open-new-menu)"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:audit-report-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Audit Source\" \"Internal Audit\")"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Expected_Completion_Date\" (make-local-date 2017 11 11))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Status\" \"Completed\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(expect-equals true (rt.po.common/report-row-contains-text? (:audit-report-name *tc*)))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20161028-104739",
+  :setup
+  [{:script
+    "(identity {:task-name (rt.lib.util/make-test-name \"Task\"), \r\n\t\t\t\t:issue-name (rt.lib.util/make-test-name \"Issue\"), \r\n\t\t\t\t:audit-name (rt.lib.util/make-test-name \"Audit\"), \r\n\t\t\t\t:audit-issue-name (rt.lib.util/make-test-name \"AuditIssue\"),\r\n\t\t\t\t:audit-report-name (rt.lib.util/make-test-name \"AuditReport\")\r\n\t\t\t\t})"}],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds-audits],
+  :id :audit/tests/remediation,
+  :teardown [],
+  :modified-by "not-implemented"}]

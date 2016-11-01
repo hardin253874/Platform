@@ -1,0 +1,40 @@
+[{:tags
+  [:nomodify
+   :prod
+   :regression
+   :user/karen
+   :desktop
+   :area/chart-builder],
+  :tests [],
+  :name "Basic test of chart header area",
+  :steps
+  [{:script "(rt.po.app/add-chart (:section *tc*))"}
+   {:script
+    "(rt.po.common/set-string \"Name\" \"Chart Testing Header Area\")"}
+   {:script "(rt.po.common/set-lookup \"Report\" \"Student report\")"}
+   {:script "(rt.po.chart-new/set-chart-type \"Line\")"}
+   {:script
+    "(rt.po.common/set-multiline \"Description\" \"My new chart description\")"}
+   {:script "(rt.po.common/click-ok)"}
+   {:script
+    "(expect-equals \"Chart Testing Header Area\" (rt.po.common/get-name ))"}
+   {:script "(rt.po.common/set-name \"Name set by inline edit\")"}
+   {:script
+    "(expect-equals \"Name set by inline edit\" (rt.po.common/get-name ))"}
+   {:script
+    "(expect-equals \"My new chart description\" (rt.po.common/get-description ))"}
+   {:script
+    "(rt.po.common/set-description \"Description from inline edit\")"}
+   {:script
+    "(expect-equals \"Description from inline edit\" (rt.po.common/get-description ))"}
+   {:script "(rt.po.common/set-description \"\")"}
+   {:script
+    "(expect-equals \"Description\" (rt.po.common/get-description ))"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150601-153808",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login :rn/section/createsection-charts],
+  :id :rn/chartbuilder/chart-header-area,
+  :teardown [],
+  :modified-by "not-implemented"}]

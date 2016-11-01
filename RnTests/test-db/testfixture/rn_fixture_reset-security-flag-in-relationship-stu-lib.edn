@@ -1,0 +1,23 @@
+[{:tags [:desktop],
+  :name "Reset security flags in relationship Student-Library card",
+  :steps [],
+  :type :testfixture,
+  :source "./test-db",
+  :modified "20151012-100911",
+  :setup
+  [{:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Resources/Relationships\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Student - Library card\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Student - Library card\")"}
+   {:script "(rt.po.view-form/click-edit)"}
+   {:script
+    "(if (= (rt.po.edit-form/bool-field-value \"Securing 'To'\") true) (rt.po.edit-form/set-bool-field-value \"Securing 'To'\" false))"}
+   {:script
+    "(if (= (rt.po.edit-form/bool-field-value \"Securing 'From'\") true) (rt.po.edit-form/set-bool-field-value \"Securing 'From'\" false))"}
+   {:script "(rt.po.edit-form/save)"}],
+  :id :rn/fixture/reset-security-flag-in-relationship-stu-lib,
+  :teardown [],
+  :modified-by "not-implemented"}]

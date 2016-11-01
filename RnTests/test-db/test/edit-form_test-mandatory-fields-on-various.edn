@@ -1,0 +1,14 @@
+[{:tags [:prod :regression :desktop],
+  :tests [],
+  :name "mandatory fields",
+  :steps
+  [{:script
+    "(rt.scripts.edit-form/test-mandatory-fields-on-various)"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150601-153802",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :edit-form/test-mandatory-fields-on-various,
+  :teardown [],
+  :modified-by "not-implemented"}]

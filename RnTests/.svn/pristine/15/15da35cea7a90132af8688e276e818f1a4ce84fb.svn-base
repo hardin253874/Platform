@@ -1,0 +1,100 @@
+[{:tags
+  [:user/shaofen
+   :nomodify
+   :prod
+   :regression
+   :desktop
+   :area/form-builder],
+  :tests [],
+  :name "AddFieldsfromLHStoForm-AllFields",
+  :steps
+  [{:script "(rt.po.app/navigate-via-tiles \"Foster University\")"}
+   {:script "(rt.po.app/enable-app-toolbox )"}
+   {:script
+    "(rt.po.app-toolbox/create-object {:description \"New Test Object Description\", :name (:obj-name *tc*)})"}
+   {:script
+    "(expect-equals (clojure.string/join [(:obj-name *tc*) \" Form\"]) (rt.po.form-builder/get-form-title))"}
+   {:script "(rt.po.form-builder/add-new-field-group)"}
+   {:script
+    "(rt.po.form-builder/set-field-group-name \"New Field Group\" \"Field Group 1\")"}
+   {:script
+    "(expect-equals true (rt.po.form-builder/has-field-group? \"Field Group 1\"))"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-field-group \"Text\" \"Field Group 1\")"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-field-group \"Multiline Text\" \"Field Group 1\")"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-field-group \"Number\" \"Field Group 1\")"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-field-group \"AutoNumber\" \"Field Group 1\")"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-field-group \"Decimal\" \"Field Group 1\")"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-field-group \"Currency\" \"Field Group 1\")"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-field-group \"Date\" \"Field Group 1\")"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-field-group \"Time\" \"Field Group 1\")"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-field-group \"Date and Time\" \"Field Group 1\")"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-field-group \"Yes/No\" \"Field Group 1\")"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-field-group \"Image\" \"Field Group 1\")"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-field-group \"Choice\" \"Field Group 1\")"}
+   {:script "(rt.po.form-builder-config/set-name \"Choice Name\")"}
+   {:script "(rt.po.form-builder-config/add-new-choice-value )"}
+   {:script "(rt.po.form-builder-config/click-ok )"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-field-group \"Lookup\" \"Field Group 1\")"}
+   {:script "(rt.po.form-builder-config/set-name \"Lookup Name\")"}
+   {:script "(rt.po.form-builder-config/set-object \"AA_Actor\")"}
+   {:script "(rt.po.form-builder-config/click-ok )"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-field-group \"Relationship\" \"Field Group 1\")"}
+   {:script
+    "(rt.po.form-builder-config/set-name \"Relationship Name\")"}
+   {:script "(rt.po.form-builder-config/set-object \"AA_Actor\")"}
+   {:script "(rt.po.form-builder-config/click-ok )"}
+   {:script "(rt.po.form-builder/add-container-to-form )"}
+   {:script
+    "(rt.po.form-builder/add-field-from-toolbox-to-container \"Text\" 0)"}
+   {:script
+    "(rt.po.form-builder/add-field-from-toolbox-to-container \"Multiline Text\" 0)"}
+   {:script
+    "(rt.po.form-builder/add-field-from-toolbox-to-container \"Number\" 0)"}
+   {:script
+    "(rt.po.form-builder/add-field-from-toolbox-to-container \"AutoNumber\" 0)"}
+   {:script
+    "(rt.po.form-builder/add-field-from-toolbox-to-container \"Decimal\" 0)"}
+   {:script
+    "(rt.po.form-builder/add-field-from-toolbox-to-container \"Currency\" 0)"}
+   {:script
+    "(rt.po.form-builder/add-field-from-toolbox-to-container \"Date\" 0)"}
+   {:script
+    "(rt.po.form-builder/add-field-from-toolbox-to-container \"Time\" 0)"}
+   {:script
+    "(rt.po.form-builder/add-field-from-toolbox-to-container \"Date and Time\" 0)"}
+   {:script
+    "(rt.po.form-builder/add-field-from-toolbox-to-container \"Yes/No\" 0)"}
+   {:script
+    "(rt.po.form-builder/add-field-from-toolbox-to-container \"Image\" 0)"}
+   {:script
+    "(rt.po.form-builder/add-field-from-toolbox-to-container \"Choice Name\" 0)"}
+   {:script
+    "(rt.po.form-builder/add-field-from-toolbox-to-container \"Lookup Name\" 0)"}
+   {:script
+    "(rt.po.form-builder/add-field-from-toolbox-to-container \"Relationship Name\" 0)"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160916-145151",
+  :setup
+  [{:script
+    "(identity {:obj-name (rt.lib.util/make-test-name \"TestObj\")})"}],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/formbuilder/AddFieldsfromLHStoForm-All-fields,
+  :teardown [],
+  :modified-by "not-implemented"}]

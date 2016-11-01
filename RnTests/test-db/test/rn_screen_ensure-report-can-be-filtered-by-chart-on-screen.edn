@@ -1,0 +1,89 @@
+[{:tags [:nomodify :prod :regression :user/sri :desktop :area/screen],
+  :tests [],
+  :name
+  "Ensure report can be filtered by chart after coming back to screen from edit form.",
+  :steps
+  [{:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Screens/Staff screen - all three\")"}
+   {:script
+    "(rt.po.chart-view/select-pie-slice nil \"Faculty of Medicine\")"}
+   {:script "(rt.po.report-view/expect-report-row-count 3)"}
+   {:script
+    "(rt.po.chart-view/select-pie-slice nil \"Faculty of Law\")"}
+   {:script "(rt.po.report-view/expect-report-row-count 4)"}
+   {:script "(rt.po.report-view/view-record \"Aladdin Farrell\")"}
+   {:script "(rt.po.view-form/form-nav-back)"}
+   {:script
+    "(rt.po.chart-view/select-pie-slice nil \"Faculty of Medicine\")"}
+   {:script "(rt.po.report-view/expect-report-row-count 3)"}
+   {:script
+    "(rt.po.chart-view/select-pie-slice nil \"Faculty of Law\")"}
+   {:script
+    "(rt.po.report-view/expect-report-row-count-in-screen 4 \"Staff Report\")"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Screens/Linked charts screen\")"}
+   {:script
+    "(rt.po.chart-view/select-data-point \"1. Student by faculty\" \"Faculty of Medicine\")"}
+   {:script
+    "(def StudentsByGender (rt.po.chart-view/get-data-point-values \"2. Student by gender\"))"}
+   {:script "(expect-equals (count StudentsByGender) 2)"}
+   {:script
+    "(expect-equals (rt.po.chart-view/get-first-data-point-value StudentsByGender \"Male\") \"1\")"}
+   {:script
+    "(expect-equals (rt.po.chart-view/get-first-data-point-value StudentsByGender \"Female\") \"3\")"}
+   {:script
+    "(def StudentsByState (rt.po.chart-view/get-data-point-values \"3. Student by state\"))"}
+   {:script "(expect-equals (count StudentsByState) 3)"}
+   {:script
+    "(expect-equals (rt.po.chart-view/get-first-data-point-value StudentsByState \"NSW\") \"1\")"}
+   {:script
+    "(expect-equals (rt.po.chart-view/get-first-data-point-value StudentsByState \"QLD\") \"2\")"}
+   {:script
+    "(expect-equals (rt.po.chart-view/get-first-data-point-value StudentsByState \"ACT\") \"1\")"}
+   {:script
+    "(rt.po.chart-view/select-data-point \"1. Student by faculty\" \"Faculty of Sciences\")"}
+   {:script
+    "(def StudentsByGender (rt.po.chart-view/get-data-point-values \"2. Student by gender\"))"}
+   {:script "(expect-equals (count StudentsByGender) 2)"}
+   {:script
+    "(expect-equals (rt.po.chart-view/get-first-data-point-value StudentsByGender \"Male\") \"2\")"}
+   {:script
+    "(expect-equals (rt.po.chart-view/get-first-data-point-value StudentsByGender \"Female\") \"3\")"}
+   {:script
+    "(def StudentsByState (rt.po.chart-view/get-data-point-values \"3. Student by state\"))"}
+   {:script "(expect-equals (count StudentsByState) 5)"}
+   {:script
+    "(expect-equals (rt.po.chart-view/get-first-data-point-value StudentsByState \"[Blank]\") \"1\")"}
+   {:script
+    "(expect-equals (rt.po.chart-view/get-first-data-point-value StudentsByState \"VIC\") \"1\")"}
+   {:script
+    "(expect-equals (rt.po.chart-view/get-first-data-point-value StudentsByState \"SA\") \"1\")"}
+   {:script
+    "(expect-equals (rt.po.chart-view/get-first-data-point-value StudentsByState \"WA\") \"1\")"}
+   {:script
+    "(expect-equals (rt.po.chart-view/get-first-data-point-value StudentsByState \"QLD\") \"1\")"}
+   {:script
+    "(rt.po.chart-view/select-data-point \"2. Student by gender\" \"Male\")"}
+   {:script
+    "(def StudentsByState (rt.po.chart-view/get-data-point-values \"3. Student by state\"))"}
+   {:script "(expect-equals (count StudentsByState) 2)"}
+   {:script
+    "(expect-equals (rt.po.chart-view/get-first-data-point-value StudentsByState \"[Blank]\") \"1\")"}
+   {:script
+    "(expect-equals (rt.po.chart-view/get-first-data-point-value StudentsByState \"WA\") \"1\")"}
+   {:script
+    "(rt.po.chart-view/select-data-point \"3. Student by state\" \"WA\")"}
+   {:script "(rt.po.report-view/expect-report-row-count 1)"}
+   {:script
+    "(expect-equals \"WA\" (rt.po.report-view/get-report-cell-text-content 0 \"State\"))"}
+   {:script
+    "(expect-equals \"Male\" (rt.po.report-view/get-report-cell-text-content 0 \"Gender\"))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20151021-173300",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/screen/ensure-report-can-be-filtered-by-chart-on-screen,
+  :teardown [],
+  :doc "This test is written against bug No: 24925",
+  :modified-by "not-implemented"}]

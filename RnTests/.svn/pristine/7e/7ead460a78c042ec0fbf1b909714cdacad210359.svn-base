@@ -1,0 +1,234 @@
+[{:tags
+  [:nomodify :prod :regression :user/shaofen :desktop :area/security],
+  :tests [],
+  :name
+  "Ensure multiple access rules works --- default access rule + analyser condition on lookup",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(comment \"==========================Up to this step, we checked the testing env. is clean to continue. ========================\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script "(rt.po.access-rules/add-new-access-rule)"}
+   {:script
+    "(expect-equals true (rt.po.access-rules-new/new-dialog-visible?))"}
+   {:script
+    "(rt.po.access-rules-new/set-role \"Students (User Role)\")"}
+   {:script "(rt.po.access-rules-new/set-object \"Student\")"}
+   {:script "(rt.po.access-rules-new/click-ok)"}
+   {:script
+    "(rt.po.access-rules/edit-access-rule \"Students (User Role)\" \"Student\" \"Student\")"}
+   {:script
+    "(rt.po.report-builder/select-field-checkboxes \"Library card #\" true true)"}
+   {:script
+    "(rt.po.report-builder/set-name \"Students with library card ending with '9'\")"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script
+    "(expect-equals true (rt.po.report-view/analyzer-field-exists? \"Library card\"))"}
+   {:script
+    "(rt.po.report-view/set-analyzer-field-oper \"Library card #\" \"Ends with\")"}
+   {:script
+    "(rt.po.report-view/set-analyzer-string \"Library card #\" \"9\")"}
+   {:script "(rt.po.report-view/apply-analyzer)"}
+   {:script "(rt.po.report-builder/save)"}
+   {:script "(rt.po.report-builder/close)"}
+   {:script
+    "(rt.po.access-rules/enable-access-rule \"Students (User Role)\" \"Student\" \"Students with library card ending with '9'\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script
+    "(comment \"=============================Up to this step, we have added and enabled a new access rule with analyser condition set to lookup.========================\")"}
+   {:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 11 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Gray Byrd\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Gray Byrd\")"}
+   {:script
+    "(comment \"=====================Done Checking student No.1 \" ======================)"}
+   {:script "(rt.po.report-view/set-search-text \"Nelle Odom\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Nelle Odom\")"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"Edit\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Nelle Odom\")"}
+   {:script
+    "(comment \"=====================Done Checking student No.2 \" ======================)"}
+   {:script "(rt.po.report-view/set-search-text \"Callie Clark\")"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Callie Clark\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Callie Clark\")"}
+   {:script
+    "(comment \"=====================Done Checking student No.3 \" ======================)"}
+   {:script "(rt.po.report-view/set-search-text \"Scarlett Huff\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Scarlett Huff\")"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Scarlett Huff\")"}
+   {:script
+    "(comment \"=====================Done Checking student No.4 \" ======================)"}
+   {:script "(rt.po.report-view/set-search-text \"Nerea Wiley\")"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Nerea Wiley\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Nerea Wiley\")"}
+   {:script
+    "(comment \"=====================Done Checking student No.5 \" ======================)"}
+   {:script "(rt.po.report-view/set-search-text \"Caleb Andrews\")"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Caleb Andrews\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Caleb Andrews\")"}
+   {:script
+    "(comment \"=====================Done Checking student No.6 \" ======================)"}
+   {:script "(rt.po.report-view/set-search-text \"Virginia Powers\")"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Virginia Powers\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Virginia Powers\")"}
+   {:script
+    "(comment \"=====================Done Checking student No.7 \" ======================)"}
+   {:script "(rt.po.report-view/set-search-text \"Plato Parks\")"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Plato Parks\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Plato Parks\")"}
+   {:script
+    "(comment \"=====================Done Checking student No.8 \" ======================)"}
+   {:script "(rt.po.report-view/set-search-text \"Noelle Watson\")"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Noelle Watson\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Noelle Watson\")"}
+   {:script
+    "(comment \"=====================Done Checking student No.9 \" ======================)"}
+   {:script "(rt.po.report-view/set-search-text \"Hashim Alvarado\")"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Hashim Alvarado\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Hashim Alvarado\")"}
+   {:script
+    "(comment \"=====================Done Checking student No.10 \" ======================)"}
+   {:script "(rt.po.report-view/set-search-text \"William Mcdowell\")"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"William Mcdowell\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"William Mcdowell\")"}
+   {:script
+    "(comment \"=====================Done Checking student No.11 \" ======================)"}
+   {:script
+    "(comment \"============================Up to this point, we have checked non admin user works as expected for given access rule. =============================\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/delete-access-rule \"Students (User Role)\" \"Student\" \"Students with library card ending with '9'\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20151013-141309",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds],
+  :id
+  :rn/security/multiple-access-rules---analyser-condition-on-lookup,
+  :teardown
+  [{:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"System Administrator (User Account)\")"}
+   {:script
+    "(if (> (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/set-search-text \"Students with library card ending with '9'\") (if (> (rt.po.report-view/count-report-row) 1) (do (rt.po.access-rules/click-edit-button) (rt.po.access-rules/delete-access-rule \"Students (User Role)\" \"Student\" \"Students with library card ending with '9'\") (rt.po.access-rules/click-save-button)))))"}
+   {:script
+    "(rt.po.report-view/set-search-text \"System Administrator (User Account)\")"}
+   {:script
+    "(if (= (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/set-search-text \"Students with library card ending with '9'\") (if (> (rt.po.report-view/count-report-row) 0) (do (rt.po.access-rules/click-edit-button) (rt.po.access-rules/delete-access-rule \"Students (User Role)\" \"Student\" \"Students with library card ending with '9'\") (rt.po.access-rules/click-save-button)))))"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Students with library card ending with '9'\")"}],
+  :modified-by "not-implemented"}]

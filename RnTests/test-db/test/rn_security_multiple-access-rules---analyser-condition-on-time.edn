@@ -1,0 +1,214 @@
+[{:tags
+  [:nomodify
+   :prod
+   :daily
+   :regression
+   :user/shaofen
+   :desktop
+   :area/security],
+  :tests [],
+  :name
+  "Ensure multiple access rules works --- default access rule + analyser condition on time",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Reports/Student report\")"}
+   {:script
+    "(rt.po.report-builder/create-report \"Reports\" \"Subject Timetables Report\" \"My Description\" \"Subject Timetables\")"}
+   {:script
+    "(rt.po.report-builder/select-field-checkboxes \"Start time\" true true)"}
+   {:script
+    "(rt.po.report-builder/select-field-checkboxes \"End time\" true true)"}
+   {:script
+    "(rt.po.report-builder/select-field-checkboxes \"Weekday\" true true)"}
+   {:script "(rt.po.report-builder/save)"}
+   {:script "(rt.po.report-builder/close)"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(rt.po.app/choose-context-menu \"New 'Subject Timetables'\")"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Name\" \"Test1\")"}
+   {:script
+    "(rt.po.edit-form/set-dropdown-control \"Weekday\" \"Friday\")"}
+   {:script
+    "(rt.po.edit-form/set-time-value \"Start time\" \"2\" \"05\" \"PM\")"}
+   {:script
+    "(rt.po.edit-form/set-time-value \"End time\" \"2\" \"45\" \"PM\")"}
+   {:script
+    "(rt.po.edit-form/set-lookup-value \"Room\" \"Build 5D-LR1\")"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script "(rt.po.view-form/form-nav-back)"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(rt.po.app/choose-context-menu \"New 'Subject Timetables'\")"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Name\" \"Test2\")"}
+   {:script
+    "(rt.po.edit-form/set-dropdown-control \"Weekday\" \"Monday\")"}
+   {:script
+    "(rt.po.edit-form/set-time-value \"Start time\" \"3\" \"15\" \"PM\")"}
+   {:script
+    "(rt.po.edit-form/set-time-value \"End time\" \"3\" \"35\" \"PM\")"}
+   {:script
+    "(rt.po.edit-form/set-lookup-value \"Room\" \"Build 5D-LR2\")"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Reports for Charts Section/Subject Timetables Report\")"}
+   {:script
+    "(expect-equals true (rt.po.app/node-in-nav-tree-exists? \"Subject Timetables Report\"))"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script "(rn.app/open-security \"Navigation Access\")"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/application-option-exists? \"Foster University\"))"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/set-application \"Foster University\")"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/user-or-role-option-exists? \"Students (User Role)\"))"}
+   {:script
+    "(rt.po.access-rules/set-user-or-role \"Students (User Role)\")"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/node-in-nav-tree-exists? \"Subject Timetables Report\"))"}
+   {:script
+    "(expect-equals \"Foster University > Reports for Charts Section > Subject Timetables Report\" (rt.po.access-rules/get-node-path \"Subject Timetables Report\"))"}
+   {:script
+    "(rt.po.access-rules/set-node-value \"Subject Timetables Report\" true)"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Reports for Charts Section/Subject Timetables Report\")"}
+   {:script
+    "(expect-equals true (rt.po.app/node-in-nav-tree-exists? \"Subject Timetables Report\"))"}
+   {:script "(expect-equals 2 (rt.po.report-view/count-report-row))"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script "(rt.po.access-rules/add-new-access-rule)"}
+   {:script
+    "(expect-equals true (rt.po.access-rules-new/new-dialog-visible?))"}
+   {:script
+    "(rt.po.access-rules-new/set-role \"Students (User Role)\")"}
+   {:script
+    "(rt.po.access-rules-new/set-object \"Subject Timetables\")"}
+   {:script "(rt.po.access-rules-new/click-ok)"}
+   {:script
+    "(rt.po.access-rules/edit-access-rule \"Students (User Role)\" \"Subject Timetables\" \"Subject Timetables\")"}
+   {:script
+    "(rt.po.report-builder/select-field-checkboxes \"End time\" true true)"}
+   {:script
+    "(rt.po.report-builder/set-name \"Students with end time greater than 15:00PM\")"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script
+    "(expect-equals true (rt.po.report-view/analyzer-field-exists? \"End time\"))"}
+   {:script
+    "(rt.po.report-view/set-analyzer-field-oper \"End time\" \">\")"}
+   {:script
+    "(rt.po.report-view/set-analyzer-time \"End time\" \"3\" \"00\" \"PM\")"}
+   {:script "(rt.po.report-view/apply-analyzer)"}
+   {:script "(rt.po.report-builder/save)"}
+   {:script "(rt.po.report-builder/close)"}
+   {:script
+    "(rt.po.access-rules/enable-access-rule \"Students (User Role)\" \"Subject Timetables\" \"Students with end time greater than 15:00PM\")"}
+   {:script
+    "(rt.po.access-rules/disable-access-rule \"Students (User Role)\" \"Subject Timetables\" \"Subject Timetables\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Reports for Charts Section/Subject Timetables Report\")"}
+   {:script "(rt.po.report-view/set-search-text \"Test\")"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Reports for Charts Section/Subject Timetables Report\")"}
+   {:script "(rt.po.report-view/set-search-text \"Test\")"}
+   {:script "(rt.po.report-view/right-click-row-by-text \"Test2\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View 'Test2'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit 'Test2'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete 'Test2'\"))"}
+   {:script "(rt.po.report-view/right-click-row-by-text \"Test2\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/delete-access-rule \"Students (User Role)\" \"Subject Timetables\" \"Students with end time greater than 15:00PM\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Reports for Charts Section/Subject Timetables Report\")"}
+   {:script "(expect-equals 0 (rt.po.report-view/count-report-row))"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Reports for Charts Section/Subject Timetables Report\")"}
+   {:script "(expect-equals 2 (rt.po.report-view/count-report-row))"}
+   {:script "(rt.po.report-view/set-search-text \"Test1\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"Delete 'Test1'\")"}
+   {:script "(rt.po.edit-form/click-confirm-delete-ok-button)"}
+   {:script "(rt.po.report-view/set-search-text \"Test2\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"Delete 'Test2'\")"}
+   {:script "(rt.po.edit-form/click-confirm-delete-ok-button)"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Reports for Charts Section/Subject Timetables Report\")"}
+   {:script "(expect-equals 0 (rt.po.report-view/count-report-row))"}
+   {:script "(rn.app/open-security \"Navigation Access\")"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/application-option-exists? \"Foster University\"))"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/set-application \"Foster University\")"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/user-or-role-option-exists? \"Students (User Role)\"))"}
+   {:script
+    "(rt.po.access-rules/set-node-value \"Subject Timetables Report\" false)"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/enable-access-rule \"Students (User Role)\" \"Subject Timetables\" \"Subject Timetables\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script "(rn.app/open-admin \"Reports\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Subject Timetables Report\")"}
+   {:script
+    "(rt.po.report-view/select-row-by-text \"Subject Timetables Report\")"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(rt.po.app/choose-context-menu \"Delete 'Subject Timetables Report'\")"}
+   {:script "(rt.po.edit-form/click-confirm-delete-ok-button)"}
+   {:script "(expect-equals 0 (rt.po.report-view/count-report-row))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160719-100720",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds],
+  :id :rn/security/multiple-access-rules---analyser-condition-on-time,
+  :teardown
+  [{:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script "(rn.app/open-admin \"Reports\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Subject Timetables Report\")"}
+   {:script
+    "(if (> (rt.po.report-view/count-report-row) 0) (do (rt.po.app/navigate-to-item \"Foster University\" \"Reports for Charts Section/Subject Timetables Report\") (rt.po.report-view/set-search-text \"Test1\") (if (> (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/open-action-menu) (rt.po.app/choose-context-menu \"Delete 'Test1'\") (rt.po.edit-form/click-confirm-delete-ok-button))) (rt.po.report-view/set-search-text \"Test2\") (if (> (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/open-action-menu) (rt.po.app/choose-context-menu \"Delete 'Test2'\") (rt.po.edit-form/click-confirm-delete-ok-button))) (rt.po.app/navigate-to-item \"Administration\" \"Resources/Reports\") (rt.po.report-view/set-search-text \"Subject Timetables Report\") (rt.po.report-view/select-row-by-text \"Subject Timetables Report\") (rt.po.report-view/open-action-menu) (rt.po.app/choose-context-menu \"Delete 'Subject Timetables Report'\") (rt.po.edit-form/click-confirm-delete-ok-button)))"}
+   {:script
+    "(comment \"==========Below is the forced delete access rule that we added.============\")"}
+   {:script "(rn.app/open-security \"Record Access\")"}
+   {:script
+    "(if (not (rt.po.access-rules/access-rule-enabled? \"Students (User Role)\" \"Subject Timetables\" \"Subject Timetables\")) (do (rt.po.access-rules/click-edit-button) (rt.po.access-rules/enable-access-rule \"Students (User Role)\" \"Subject Timetables\" \"Subject Timetables\") (rt.po.access-rules/click-save-button)))"}
+   {:script
+    "(rt.po.report-view/set-search-text \"System Administrator (User Account)\")"}
+   {:script
+    "(if (> (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/set-search-text \"Students with end time greater than 15:00PM\") (if (> (rt.po.report-view/count-report-row) 0) (do (rt.po.access-rules/click-edit-button) (rt.po.access-rules/delete-access-rule \"Students (User Role)\" \"Subject Timetables\" \"Subject Timetables\") (rt.po.access-rules/click-save-button)))))"}
+   {:script
+    "(rt.po.report-view/set-search-text \"System Administrator (User Account)\")"}
+   {:script
+    "(if (= (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/set-search-text \"Students with end time greater than 15:00PM\") (if (> (rt.po.report-view/count-report-row) 0) (do (rt.po.access-rules/click-edit-button) (rt.po.access-rules/delete-access-rule \"Students (User Role)\" \"Subject Timetables\" \"Students with end time greater than 15:00PM\") (rt.po.access-rules/click-save-button)))))"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Students with end time greater than 15:00PM\")"}],
+  :modified-by "not-implemented"}]

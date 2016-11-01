@@ -1,0 +1,184 @@
+[{:tags
+  [:area/report-builder
+   :nomodify
+   :prod
+   :regression
+   :desktop
+   :user/abida],
+  :tests [],
+  :name
+  "Ensure we can set analyser condition for various data type-1  ",
+  :steps
+  [{:script "(rt.po.app/add-report (:section *tc*) )"}
+   {:script "(rt.po.report-new/set-name (:report-name *tc*))"}
+   {:script "(rt.po.report-new/set-report-base-on \"Student\")"}
+   {:script "(rt.po.report-new/click-ok )"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"First name\" true)"}
+   {:script
+    "(rt.po.report-builder/set-in-analyzer-checkbox-field-value \"First name\" true)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Balance\" true)"}
+   {:script
+    "(rt.po.report-builder/set-in-analyzer-checkbox-field-value \"Balance\" true)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"DOB\" true)"}
+   {:script
+    "(rt.po.report-builder/set-in-analyzer-checkbox-field-value \"DOB\" true)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Club\" true)"}
+   {:script
+    "(rt.po.report-builder/set-in-analyzer-checkbox-field-value \"Club\" true)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Library card #\" true)"}
+   {:script
+    "(rt.po.report-builder/set-in-analyzer-checkbox-field-value \"Library card #\" true)"}
+   {:script
+    "(rt.po.report-builder/set-in-analyzer-checkbox-field-value \"Name\" false)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Name\" false)"}
+   {:script "(rt.po.report-builder/click-add-relationship-button )"}
+   {:script
+    "(rt.po.report-add-relationship/add-relationship \"Subjects\")"}
+   {:script "(rt.po.report-builder/click-ok )"}
+   {:script "(rt.po.report-builder/select-treenode \"Subjects\")"}
+   {:script
+    "(rt.po.report-builder/set-in-analyzer-checkbox-field-value \"Name\" true)"}
+   {:script "(rt.po.report-view/open-analyzer )"}
+   {:script
+    "(expect-equals true (rt.po.report-view/analyzer-field-exists? \"First name\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/analyzer-field-exists? \"Balance\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/analyzer-field-exists? \"DOB\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/analyzer-field-exists? \"Club\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/analyzer-field-exists? \"Library card\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/analyzer-field-exists? \"Subjects\"))"}
+   {:script
+    "(rt.po.report-view/set-analyzer-field-oper \"First name\" \"Starts with\")"}
+   {:script
+    "(rt.po.report-view/set-analyzer-string \"First name\" \"Se\" )"}
+   {:script "(rt.po.report-view/apply-analyzer )"}
+   {:script
+    "(expect-equals \"Selma\" (rt.po.report-view/get-report-cell-text-content \"0\" \"First name\"))"}
+   {:script
+    "(expect-equals \"Selma\" (rt.po.report-view/get-report-cell-text-content \"7\" \"First name\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script "(rt.po.report-builder/click-close-button )"}
+   {:script
+    "(rn.app/open-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"Selma\" (rt.po.report-view/get-report-cell-text-content \"0\" \"First name\"))"}
+   {:script
+    "(expect-equals \"Selma\" (rt.po.report-view/get-report-cell-text-content \"7\" \"First name\"))"}
+   {:script "(rt.po.report-builder/access-build-mode )"}
+   {:script "(rt.po.report-view/open-analyzer )\n"}
+   {:script "(rt.po.report-view/reset-analyzer )"}
+   {:script "(rt.po.report-view/open-analyzer )"}
+   {:script
+    "(rt.po.report-view/set-analyzer-field-oper \"Balance\" \">\")"}
+   {:script
+    "(rt.po.report-view/set-analyzer-string \"Balance\" \"250.00\" )"}
+   {:script "(rt.po.report-view/apply-analyzer )"}
+   {:script
+    "(expect-equals \"$254.17\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Balance\"))"}
+   {:script
+    "(expect-equals \"$254.17\" (rt.po.report-view/get-report-cell-text-content \"23\" \"Balance\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script "(rt.po.report-builder/click-close-button )"}
+   {:script
+    "(rn.app/open-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"$254.17\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Balance\"))"}
+   {:script
+    "(expect-equals \"$254.17\" (rt.po.report-view/get-report-cell-text-content \"23\" \"Balance\"))"}
+   {:script "(rt.po.report-builder/access-build-mode )"}
+   {:script "(rt.po.report-view/open-analyzer )"}
+   {:script "(rt.po.report-view/reset-analyzer )"}
+   {:script "(rt.po.report-view/open-analyzer )"}
+   {:script
+    "(rt.po.report-view/set-analyzer-field-oper \"DOB\" \"=\")"}
+   {:script
+    "(rt.po.report-view/set-analyzer-string \"DOB\" \"11/24/2000\" )"}
+   {:script "(rt.po.report-view/apply-analyzer )"}
+   {:script
+    "(expect-equals \"11/24/2000\" (rt.po.report-view/get-report-cell-text-content \"0\" \"DOB\"))"}
+   {:script
+    "(expect-equals \"11/24/2000\" (rt.po.report-view/get-report-cell-text-content \"5\" \"DOB\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script "(rt.po.report-builder/click-close-button )"}
+   {:script
+    "(rn.app/open-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"11/24/2000\" (rt.po.report-view/get-report-cell-text-content \"0\" \"DOB\"))"}
+   {:script
+    "(expect-equals \"11/24/2000\" (rt.po.report-view/get-report-cell-text-content \"5\" \"DOB\"))"}
+   {:script "(rt.po.report-builder/access-build-mode )"}
+   {:script "(rt.po.report-view/open-analyzer )"}
+   {:script "(rt.po.report-view/reset-analyzer )"}
+   {:script "(rt.po.report-view/open-analyzer )"}
+   {:script
+    "(rt.po.report-view/set-analyzer-choice-option \"Club\" \"Any of\" \"Dance\")"}
+   {:script
+    "(expect-equals \"Dance\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Club\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script "(rt.po.report-builder/click-close-button )"}
+   {:script
+    "(rn.app/open-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"Dance\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Club\"))"}
+   {:script "(rt.po.report-builder/access-build-mode )"}
+   {:script "(rt.po.report-view/open-analyzer )"}
+   {:script "(rt.po.report-view/reset-analyzer )"}
+   {:script "(rt.po.report-view/open-analyzer )"}
+   {:script
+    "(rt.po.report-view/set-analyzer-picker-option \"Library card #\" \"Any of\" \"11154\")"}
+   {:script "(rt.po.report-view/apply-analyzer )"}
+   {:script
+    "(expect-equals \"11154\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Library card #\"))"}
+   {:script
+    "(expect-equals \"11154\" (rt.po.report-view/get-report-cell-text-content \"3\" \"Library card #\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script "(rt.po.report-builder/click-close-button )"}
+   {:script
+    "(rn.app/open-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"11154\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Library card #\"))"}
+   {:script
+    "(expect-equals \"11154\" (rt.po.report-view/get-report-cell-text-content \"3\" \"Library card #\"))"}
+   {:script "(rt.po.report-builder/access-build-mode )"}
+   {:script "(rt.po.report-view/open-analyzer )"}
+   {:script "(rt.po.report-view/reset-analyzer )"}
+   {:script "(rt.po.report-view/open-analyzer )"}
+   {:script
+    "(rt.po.report-view/set-analyzer-picker-option \"Subjects\" \"Any of\" \"Practical Experience\")"}
+   {:script "(rt.po.report-view/apply-analyzer )"}
+   {:script
+    "(expect-equals \"Practical Experience\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Subjects\"))"}
+   {:script
+    "(expect-equals \"Practical Experience\" (rt.po.report-view/get-report-cell-text-content \"7\" \"Subjects\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script "(rt.po.report-builder/click-close-button )"}
+   {:script
+    "(rn.app/open-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"Practical Experience\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Subjects\"))"}
+   {:script
+    "(expect-equals \"Practical Experience\" (rt.po.report-view/get-report-cell-text-content \"7\" \"Subjects\"))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160916-164733",
+  :setup
+  [{:script
+    "(identity {:report-name (rt.lib.util/make-test-name \"FieldsSetInAnalyser\")})"}],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :common/fixture/login
+   :rn/section/createsection],
+  :id :rn/reportbuilder/set-analyser-condition-for-datatypes-1,
+  :teardown [{:script "(rt.po.app/delete-nav-item (:section *tc*))"}],
+  :doc "Covered text, currency , date and multi choice field",
+  :modified-by "not-implemented"}]

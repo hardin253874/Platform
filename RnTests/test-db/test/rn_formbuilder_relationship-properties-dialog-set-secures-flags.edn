@@ -1,0 +1,156 @@
+[{:tags
+  [:user/conc
+   :nomodify
+   :prod
+   :regression
+   :desktop
+   :area/form-builder],
+  :tests [],
+  :name "Set secures flags via the relationship properties dialog",
+  :steps
+  [{:script
+    "(rt.po.app-toolbox/create-app {:name (:app-name *tc*) :description \"\"})"}
+   {:script "(rt.po.app/add-object (:toobj-name *tc*) \"\")"}
+   {:script
+    "(rt.po.form-builder/add-field-from-toolbox-to-form \"Name\")"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}
+   {:script "(rt.po.app/add-object (:fromobj-name *tc*) \"\")"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-form \"Lookup\")"}
+   {:script
+    "(rt.po.form-builder/set-lookup-entity-type (:toobj-name *tc*))"}
+   {:script "(rt.po.form-builder-config/set-name (:lookup-name *tc*))"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Object Detail\")"}
+   {:script
+    "(rt.po.form-builder-config/set-relationship-name (:lookup-name *tc*))"}
+   {:script "(rt.po.form-builder-config/collapse-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Security\")"}
+   {:script "(rt.po.form-builder-config/set-secures-to true)"}
+   {:script "(rt.po.form-builder-config/set-secures-from false)"}
+   {:script "(rt.po.form-builder/click-ok)"}
+   {:script "(rt.po.form-builder/add-tabbed-container-to-form)"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Relationship\" 0)"}
+   {:script
+    "(rt.po.form-builder/set-lookup-entity-type (:toobj-name *tc*))"}
+   {:script
+    "(rt.po.form-builder-config/set-name (:relationship-name *tc*))"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Object Detail\")"}
+   {:script
+    "(rt.po.form-builder-config/set-relationship-name (:relationship-name *tc*))"}
+   {:script "(rt.po.form-builder-config/collapse-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Security\")"}
+   {:script "(rt.po.form-builder-config/set-secures-to false)"}
+   {:script "(rt.po.form-builder-config/set-secures-from true)"}
+   {:script "(rt.po.form-builder/click-ok)"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}
+   {:script "(rt.lib.wd-ng/wait-for-angular)"}
+   {:script
+    "(rn.app/open-report \"Relationships\" {:app-name \"ReadiNow Console\" :folder-name \"Resources\"})"}
+   {:script "(rt.po.report-view/set-search-text (:lookup-name *tc*))"}
+   {:script
+    "(expect-equals (rt.po.report-view/get-value-for-row-and-column (:lookup-name *tc*) \"Secures 'from' type\") \"No\")"}
+   {:script
+    "(expect-equals (rt.po.report-view/get-value-for-row-and-column (:lookup-name *tc*) \"Secures 'to' type\") \"Yes\")"}
+   {:script
+    "(expect-equals (rt.po.report-view/get-value-for-row-and-column (:lookup-name *tc*) \"From Object\") (:fromobj-name *tc*))"}
+   {:script
+    "(expect-equals (rt.po.report-view/get-value-for-row-and-column (:lookup-name *tc*) \"To Object\") (:toobj-name *tc*))"}
+   {:script
+    "(rt.po.report-view/set-search-text (:relationship-name *tc*))"}
+   {:script
+    "(expect-equals (rt.po.report-view/get-value-for-row-and-column (:relationship-name *tc*) \"Secures 'from' type\") \"Yes\")"}
+   {:script
+    "(expect-equals (rt.po.report-view/get-value-for-row-and-column (:relationship-name *tc*) \"Secures 'to' type\") \"No\")"}
+   {:script
+    "(expect-equals (rt.po.report-view/get-value-for-row-and-column (:relationship-name *tc*) \"From Object\") (:fromobj-name *tc*))"}
+   {:script
+    "(expect-equals (rt.po.report-view/get-value-for-row-and-column (:relationship-name *tc*) \"To Object\") (:toobj-name *tc*))"}
+   {:script "(rt.po.app/enable-app-toolbox)"}
+   {:script
+    "(rt.po.app-toolbox/set-application-filter (:app-name *tc*))"}
+   {:script
+    "(rt.po.app-toolbox/choose-object-menu (:fromobj-name *tc*) \"Modify Object\")"}
+   {:script
+    "(rt.po.form-builder/show-field-properties-dialog (:lookup-name *tc*))"}
+   {:script "(rt.po.form-builder-config/expand-section \"Security\")"}
+   {:script
+    "(expect-equals (rt.po.form-builder-config/get-secures-to) true)"}
+   {:script
+    "(expect-equals (rt.po.form-builder-config/get-secures-from) false)"}
+   {:script "(rt.po.form-builder-config/collapse-section \"Security\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Object Detail\")"}
+   {:script
+    "(rt.po.form-builder-config/click-show-properties-in-reverse-direction-link)"}
+   {:script "(rt.po.form-builder-config/expand-section \"Security\")"}
+   {:script
+    "(expect-equals (rt.po.form-builder-config/get-secures-to) true)"}
+   {:script
+    "(expect-equals (rt.po.form-builder-config/get-secures-from) false)"}
+   {:script "(rt.po.form-builder-config/set-secures-to false)"}
+   {:script "(rt.po.form-builder-config/set-secures-from true)"}
+   {:script "(rt.po.form-builder/click-ok)"}
+   {:script "(rt.po.form-builder/click-ok)"}
+   {:script
+    "(rt.po.form-builder/open-tab-content-configure-dialog 0 0)"}
+   {:script "(rt.po.form-builder-config/expand-section \"Security\")"}
+   {:script
+    "(expect-equals (rt.po.form-builder-config/get-secures-to) false)"}
+   {:script
+    "(expect-equals (rt.po.form-builder-config/get-secures-from) true)"}
+   {:script "(rt.po.form-builder-config/collapse-section \"Security\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Object Detail\")"}
+   {:script
+    "(rt.po.form-builder-config/click-show-properties-in-reverse-direction-link)"}
+   {:script "(rt.po.form-builder-config/expand-section \"Security\")"}
+   {:script
+    "(expect-equals (rt.po.form-builder-config/get-secures-to) false)"}
+   {:script
+    "(expect-equals (rt.po.form-builder-config/get-secures-from) true)"}
+   {:script "(rt.po.form-builder-config/set-secures-to true)"}
+   {:script "(rt.po.form-builder-config/set-secures-from false)"}
+   {:script "(rt.po.form-builder/click-ok)"}
+   {:script "(rt.po.form-builder/click-ok)"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}
+   {:script "(rt.lib.wd-ng/wait-for-angular)"}
+   {:script
+    "(rn.app/open-report \"Relationships\" {:app-name \"ReadiNow Console\" :folder-name \"Resources\"})"}
+   {:script "(rt.po.report-view/set-search-text (:lookup-name *tc*))"}
+   {:script
+    "(expect-equals (rt.po.report-view/get-value-for-row-and-column (:lookup-name *tc*) \"Secures 'from' type\") \"Yes\")"}
+   {:script
+    "(expect-equals (rt.po.report-view/get-value-for-row-and-column (:lookup-name *tc*) \"Secures 'to' type\") \"No\")"}
+   {:script
+    "(expect-equals (rt.po.report-view/get-value-for-row-and-column (:lookup-name *tc*) \"From Object\") (:fromobj-name *tc*))"}
+   {:script
+    "(expect-equals (rt.po.report-view/get-value-for-row-and-column (:lookup-name *tc*) \"To Object\") (:toobj-name *tc*))"}
+   {:script
+    "(rt.po.report-view/set-search-text (:relationship-name *tc*))"}
+   {:script
+    "(expect-equals (rt.po.report-view/get-value-for-row-and-column (:relationship-name *tc*) \"Secures 'from' type\") \"No\")"}
+   {:script
+    "(expect-equals (rt.po.report-view/get-value-for-row-and-column (:relationship-name *tc*) \"Secures 'to' type\") \"Yes\")"}
+   {:script
+    "(expect-equals (rt.po.report-view/get-value-for-row-and-column (:relationship-name *tc*) \"From Object\") (:fromobj-name *tc*))"}
+   {:script
+    "(expect-equals (rt.po.report-view/get-value-for-row-and-column (:relationship-name *tc*) \"To Object\") (:toobj-name *tc*))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20150603-073021",
+  :setup
+  [{:script
+    "(identity {:app-name (rt.lib.util/make-test-name \"Relationship-Properties-Security\")\n               :fromobj-name (rt.lib.util/make-test-name \"FromObj\")\n               :toobj-name (rt.lib.util/make-test-name \"ToObj\")\n               :lookup-name (rt.lib.util/make-test-name \"Lookup\")\n               :relationship-name (rt.lib.util/make-test-name \"Relationship\")\n               })"}],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/formbuilder/relationship-properties-dialog-set-secures-flags,
+  :teardown
+  [{:script "(rt.po.app/uninstall-application (:app-name *tc*))"}],
+  :doc
+  "Automated test for Product Backlog Item 24672:Implement Secures Flag to Relationship Dialogue",
+  :modified-by "not-implemented"}]

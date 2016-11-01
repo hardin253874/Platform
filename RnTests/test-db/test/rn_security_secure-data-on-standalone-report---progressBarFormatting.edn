@@ -1,0 +1,164 @@
+[{:tags
+  [:nomodify :prod :regression :user/shaofen :desktop :area/security],
+  :tests [],
+  :name
+  "Ensure multiple access rules works on stand alone report --- Conditional Formatting with progress bar",
+  :steps
+  [{:script
+    "(comment \"=========== Checking if env is clean to start the test. =============\")"}
+   {:script "(rn.common/start-app-and-login (:user-creds-staff *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect (> (rt.po.report-view/count-report-row) 15))"}
+   {:script
+    "(comment \"=========== Create a new report for conditional formatting - highlight, grant navigation access to new report, then check if value formatting works for non-admin user.  ==================\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script "(rt.po.report-builder/click-saveas-report-button)"}
+   {:script
+    "(rt.po.report-builder/set-report-new-name \"Security progressBarFormat - Student\")"}
+   {:script "(rt.po.report-builder/click-saveas-ok)"}
+   {:script
+    "(rt.po.report-builder/select-field-checkboxes \"Email address\" false false)"}
+   {:script
+    "(rt.po.report-builder/select-field-checkboxes \"Country\" false false)"}
+   {:script
+    "(rt.po.report-builder/select-field-checkboxes \"Gender\" false false)"}
+   {:script
+    "(rt.po.report-builder/select-field-checkboxes \"State\" false false)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Balance\" \"Format Column\")"}
+   {:script "(rt.po.report-format/set-format-type \"Progress Bar\")"}
+   {:script "(rt.po.report-format/set-format-scheme \"Light Red\")"}
+   {:script "(rt.po.report-format/set-progress-bar-minimum \"208.5\")"}
+   {:script "(rt.po.report-format/set-progress-bar-maximum \"250.0\")"}
+   {:script "(rt.po.common/click-ok)"}
+   {:script
+    "(rt.po.report-builder/click-sort-z-a \"Balance\")"}
+   {:script
+    "(expect-equals \"$208.33\" (rt.po.report-view/get-report-cell-text-content \"11\" \"Balance\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/show-report-format-progress-bar 11 \"Balance\"))"}
+   {:script
+    "(expect-equals \"$212.50\" (rt.po.report-view/get-report-cell-progress-bar-text-content \"10\" \"Balance\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/show-report-format-progress-bar 10 \"Balance\"))"}
+   {:script
+    "(expect-equals \"Light Red\" (rt.po.report-view/get-report-format-progress-bar-color 10 \"Balance\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Reports/Security progressBarFormat - Student\")"}
+   {:script
+    "(expect-equals \"$254.17\" (rt.po.report-view/get-report-cell-progress-bar-text-content \"0\" \"Balance\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/show-report-format-progress-bar 0 \"Balance\"))"}
+   {:script
+    "(expect-equals \"Light Red\" (rt.po.report-view/get-report-format-progress-bar-color 0 \"Balance\"))"}
+   {:script
+    "(expect-equals \"$233.33\" (rt.po.report-view/get-report-cell-progress-bar-text-content \"5\" \"Balance\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/show-report-format-progress-bar 5 \"Balance\"))"}
+   {:script
+    "(expect-equals \"Light Red\" (rt.po.report-view/get-report-format-progress-bar-color 5 \"Balance\"))"}
+   {:script
+    "(expect-equals \"$212.50\" (rt.po.report-view/get-report-cell-progress-bar-text-content \"10\" \"Balance\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/show-report-format-progress-bar 10 \"Balance\"))"}
+   {:script
+    "(expect-equals \"Light Red\" (rt.po.report-view/get-report-format-progress-bar-color 10 \"Balance\"))"}
+   {:script
+    "(expect-equals \"$208.33\" (rt.po.report-view/get-report-cell-text-content \"11\" \"Balance\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/show-report-format-progress-bar 11 \"Balance\"))"}
+   {:script
+    "(expect-equals \"$204.17\" (rt.po.report-view/get-report-cell-text-content \"12\" \"Balance\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/show-report-format-progress-bar 12 \"Balance\"))"}
+   {:script "(rn.common/sleep 3000)"}
+   {:script "(rn.app/open-security \"Navigation Access\")"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/application-option-exists? \"Foster University\"))"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/set-application \"Foster University\")"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/user-or-role-option-exists? \"Staff (User Role)\"))"}
+   {:script
+    "(rt.po.access-rules/set-user-or-role \"Staff (User Role)\")"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/node-in-nav-tree-exists? \"Security progressBarFormat - Student\"))"}
+   {:script
+    "(expect-equals \"Foster University > Reports > Security progressBarFormat - Student\" (rt.po.access-rules/get-node-path \"Security progressBarFormat - Student\"))"}
+   {:script
+    "(expect-equals false (rt.po.access-rules/node-checked? \"Security progressBarFormat - Student\"))"}
+   {:script
+    "(rt.po.access-rules/set-node-value \"Security progressBarFormat - Student\" true)"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script "(rn.common/start-app-and-login (:user-creds-staff *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect (> (rt.po.report-view/count-report-row) 15))"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Reports/Security progressBarFormat - Student\")"}
+   {:script "(expect (> (rt.po.report-view/count-report-row) 15))"}
+   {:script
+    "(expect-equals \"$250.00\" (rt.po.report-view/get-report-cell-progress-bar-text-content \"0\" \"Balance\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/show-report-format-progress-bar 0 \"Balance\"))"}
+   {:script
+    "(expect-equals \"Light Red\" (rt.po.report-view/get-report-format-progress-bar-color 0 \"Balance\"))"}
+   {:script
+    "(expect-equals \"$208.33\" (rt.po.report-view/get-report-cell-progress-bar-text-content \"1\" \"Balance\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/show-report-format-progress-bar 1 \"Balance\"))"}
+   {:script
+    "(expect-equals \"$154.17\" (rt.po.report-view/get-report-cell-progress-bar-text-content \"2\" \"Balance\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/show-report-format-progress-bar 2 \"Balance\"))"}
+   {:script "(comment \"TODO: check for non-admin users\")"}
+   {:script
+    "(comment \"==================== Clearing env back as by default. ===================\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script "(rn.app/open-security \"Navigation Access\")"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/application-option-exists? \"Foster University\"))"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/set-application \"Foster University\")"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/user-or-role-option-exists? \"Staff (User Role)\"))"}
+   {:script
+    "(rt.po.access-rules/set-user-or-role \"Staff (User Role)\")"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/node-checked? \"Security progressBarFormat - Student\"))"}
+   {:script
+    "(rt.po.access-rules/set-node-value \"Security progressBarFormat - Student\" false)"}
+   {:script
+    "(expect-equals false (rt.po.access-rules/node-checked? \"Security progressBarFormat - Student\"))"}
+   {:script "(rt.po.access-rules/click-save-button)"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20160211-004434",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds
+   :rn/fixture/user-creds-staff],
+  :id
+  :rn/security/secure-data-on-standalone-report---progressBarFormatting,
+  :teardown
+  [{:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-admin \"Reports\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Security progressBarFormat - Student\")"}
+   {:script
+    "(while (> (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/select-row-by-text \"Security progressBarFormat - Student\") (rt.po.report-view/open-action-menu) (rt.po.app/choose-context-menu \"Delete 'Security progressBarFormat - Student'\") (rt.po.edit-form/click-confirm-delete-ok-button)))"}
+   {:script "(expect-equals 0 (rt.po.report-view/count-report-row))"}
+   {:script "(rn.common/start-app-and-login (:user-creds-staff *tc*))"}],
+  :modified-by "not-implemented"}]

@@ -1,0 +1,9 @@
+[{:modified-by "not-implemented",
+  :modified "20150925-200843",
+  :source "resources/test-db",
+  :id :common/fixture/phantomjs,
+  :type :testfixture,
+  :name "Firefox",
+  :data {:target "phantomjs"},
+  :setup [],
+  :teardown []}]

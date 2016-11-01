@@ -1,0 +1,57 @@
+[{:tags [:area/report-builder :prod :regression :desktop :user/abida],
+  :tests [],
+  :name "Remove fields from a report via check boxes",
+  :steps
+  [{:script "(rt.po.app/add-report (:section *tc*) )"}
+   {:script "(rt.po.report-new/set-name \"RemoveFieldsByCheckBox\")"}
+   {:script "(rt.po.report-new/set-report-base-on \"Student\")"}
+   {:script "(rt.po.report-new/click-ok )"}
+   {:script
+    "(rt.po.report-builder/select-fields-in-report \"First name\" \"Postcode\" \"DOB\" \"Title\" \"Balance\" \"Photo\")"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script "(expect (not (rt.po.app/page-has-error-alert?)))"}
+   {:script "(rt.po.report-builder/close )"}
+   {:script "(rt.po.report-builder/access-build-mode )"}
+   {:script
+    "(rt.po.report-builder/deselect-fields-in-report \"First name\" \"Postcode\" \"DOB\" \"Title\" \"Balance\" \"Photo\")"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script "(expect (not (rt.po.app/page-has-error-alert?)))"}
+   {:script
+    "(expect-equals nil (rt.po.report-builder/get-col-header \"First name\"))"}
+   {:script
+    "(expect-equals nil (rt.po.report-builder/get-col-header \"Postcode\"))"}
+   {:script
+    "(expect-equals nil (rt.po.report-builder/get-col-header \"DOB\"))"}
+   {:script
+    "(expect-equals nil (rt.po.report-builder/get-col-header \"Title\"))"}
+   {:script
+    "(expect-equals nil (rt.po.report-builder/get-col-header \"Balance\"))"}
+   {:script
+    "(expect-equals nil (rt.po.report-builder/get-col-header \"Photo\"))"}
+   {:script "(rt.po.report-builder/close )"}
+   {:script "(expect (not (rt.po.app/are-changes-pending?)))"}
+   {:script
+    "(rn.app/open-report \"RemoveFieldsByCheckBox\" {:app-name \"Foster University\" :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals nil (rt.po.report-builder/get-col-header \"First name\"))"}
+   {:script
+    "(expect-equals nil (rt.po.report-builder/get-col-header \"Postcode\"))"}
+   {:script
+    "(expect-equals nil (rt.po.report-builder/get-col-header \"DOB\"))"}
+   {:script
+    "(expect-equals nil (rt.po.report-builder/get-col-header \"Title\"))"}
+   {:script
+    "(expect-equals nil (rt.po.report-builder/get-col-header \"Balance\"))"}
+   {:script
+    "(expect-equals nil (rt.po.report-builder/get-col-header \"Photo\"))"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150609-172424",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :common/fixture/login
+   :rn/section/createsection],
+  :id :rn/reportbuilder/removefields-via-checkboxes,
+  :teardown [{:script "(rt.po.app/delete-nav-item (:section *tc*))"}],
+  :modified-by "not-implemented"}]

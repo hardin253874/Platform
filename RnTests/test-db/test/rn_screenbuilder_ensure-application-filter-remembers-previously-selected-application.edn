@@ -1,0 +1,32 @@
+[{:tags [:nomodify :prod :regression :area/form :user/sri :desktop],
+  :tests [],
+  :name
+  "Ensure application filter remembers the selected application after navigating back from child page.",
+  :steps
+  [{:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Screens/Staff screen - all three\")"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script "(rt.po.app/modify-nav-item \"Staff screen - all three\")"}
+   {:script
+    "(expect-equals \"Foster University\" (rt.po.app-toolbox/get-application-filter))"}
+   {:script
+    "(rt.po.app-toolbox/set-application-filter \"Test Solution\")"}
+   {:script
+    "(rt.po.app-toolbox/choose-object-menu \"AA_Actor\" \"Modify\")"}
+   {:script "(rt.po.form-builder/close)"}
+   {:script
+    "(expect-equals \"Test Solution\" (rt.po.app-toolbox/get-application-filter))"}
+   {:script "(rt.po.screen-builder/close)"}
+   {:script "(rt.po.app/modify-nav-item \"Staff screen - all three\")"}
+   {:script
+    "(expect-equals \"Foster University\" (rt.po.app-toolbox/get-application-filter))"}
+   {:script "(rt.po.screen-builder/close)"}],
+  :type :test,
+  :modified "20150612-141009",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id
+  :rn/screenbuilder/ensure-application-filter-remembers-previously-selected-application,
+  :teardown [],
+  :doc "This test is written against the bug no:24911",
+  :modified-by "not-implemented"}]

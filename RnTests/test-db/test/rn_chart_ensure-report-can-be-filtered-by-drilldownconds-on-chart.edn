@@ -1,0 +1,30 @@
+[{:tags [:user/kun :area/chart :nomodify :prod :regression],
+  :tests [],
+  :name
+  "Ensure report can be filtered by chart by drilldown condtions.",
+  :steps
+  [{:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Charts/1. Students by faculty (p)\")"}
+   {:script "(rt.scripts.common/sleep 2000)"}
+   {:script
+    "(rt.po.chart-view/select-data-point nil \"Faculty of Medicine\")"}   
+   {:script "(rt.po.report-view/expect-report-row-count 4)"}
+   {:script "(clj-webdriver.taxi/back)"}
+   {:script "(rt.scripts.common/sleep 2000)"}
+   {:script
+    "(rt.po.chart-view/select-data-point nil \"Faculty of Sciences\")"}   
+   {:script "(rt.po.report-view/expect-report-row-count 5)"}
+   {:script "(clj-webdriver.taxi/back)"}
+   {:script "(rt.scripts.common/sleep 2000)"}
+   {:script
+    "(rt.po.chart-view/select-data-point nil \"Faculty of Agriculture\")"}   
+   {:script "(rt.po.report-view/expect-report-row-count 7)"}
+   ],
+  :type :test,
+  :modified "20150618-112530",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/chart/ensure-report-can-be-filtered-by-drilldownconds-on-chart,
+  :teardown [],
+  :doc "This test is written against bug No: 25311",
+  :modified-by "not-implemented"}]

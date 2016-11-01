@@ -1,0 +1,9 @@
+[{:type :testsuite,
+  :id :rn/suites/scott,
+  :setup [],
+  :teardown [],
+  :once-fixtures [],
+  :each-fixtures [],
+  :tests [],
+  :modified "20160218-131356",
+  :modified-by "not-implemented"}]

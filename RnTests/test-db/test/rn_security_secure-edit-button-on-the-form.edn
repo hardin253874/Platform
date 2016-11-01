@@ -1,0 +1,80 @@
+[{:tags
+  [:nomodify
+   :prod
+   :daily
+   :regression
+   :user/shaofen
+   :desktop
+   :area/security],
+  :tests [],
+  :name "Ensure edit button on the form",
+  :steps
+  [{:script
+    "(rn.common/start-app-and-login {:password \"Maite.Walls1\", :username \"Maite.Walls\"})"}
+   {:script
+    "(rn.app/open-report \"Staff report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 4 (rt.po.report-view/count-report-row))"}
+   {:script "(rt.po.report-view/select-row-by-text \"Nolan Horne\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect (rt.po.app/context-menu-exists? \"View 'Nolan Horne\"))"}
+   {:script
+    "(expect (not (rt.po.report-view/does-action-menu-button-exist? \"Edit 'Nolan Horne'\")))"}
+   {:script
+    "(expect (not (rt.po.report-view/does-action-menu-button-exist? \"Delete 'Nolan Horne'\")))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Nolan Horne\")"}
+   {:script "(expect (not (rt.po.edit-form/edit-button-exists?)))"}
+   {:script "(expect (rt.po.edit-form/back-button-exists?))"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.report-view/select-row-by-text \"Maite Walls\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect (rt.po.app/context-menu-exists? \"View 'Maite Walls'\"))"}
+   {:script
+    "(expect (rt.po.app/context-menu-exists? \"Edit 'Maite Walls'\"))"}
+   {:script
+    "(expect (not (rt.po.report-view/does-action-menu-button-exist? \"Delete 'Maite Walls'\")))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Maite Walls\")"}
+   {:script "(expect (rt.po.edit-form/edit-button-exists?))"}
+   {:script "(expect (rt.po.edit-form/back-button-exists?))"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(rt.po.report-view/select-row-by-text \"Demetrius Brooks\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect (rt.po.app/context-menu-exists? \"View 'Demetrius Brooks'\"))"}
+   {:script
+    "(expect (not (rt.po.report-view/does-action-menu-button-exist? \"Edit 'Demetrius Brooks'\")))"}
+   {:script
+    "(expect (not (rt.po.report-view/does-action-menu-button-exist? \"Delete 'Demetrius Brooks'\")))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Demetrius Brooks\")"}
+   {:script "(expect (not (rt.po.edit-form/edit-button-exists?)))"}
+   {:script "(expect (rt.po.edit-form/back-button-exists?))"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.report-view/select-row-by-text \"8412\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect (rt.po.app/context-menu-exists? \"View 'Lucian Harris'\"))"}
+   {:script
+    "(expect (not (rt.po.report-view/does-action-menu-button-exist? \"Edit 'Lucian Harris'\")))"}
+   {:script
+    "(expect (not (rt.po.report-view/does-action-menu-button-exist? \"Delete 'Lucian Harris'\")))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+   {:script "(rt.po.report-view/double-click-row-by-text \"8412\")"}
+   {:script "(expect (not (rt.po.edit-form/edit-button-exists?)))"}
+   {:script "(expect (rt.po.edit-form/back-button-exists?))"}
+   {:script "(rt.po.edit-form/click-back-button)"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20151103-142944",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds],
+  :id :rn/security/secure-edit-button-on-the-form,
+  :teardown [],
+  :modified-by "not-implemented"}]

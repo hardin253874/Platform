@@ -1,0 +1,50 @@
+[{:tags [:user/conc :area/console :prod :regression :desktop],
+  :tests [],
+  :name "Set the currency symbol to pound",
+  :steps
+  [{:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Settings/General Settings\")"}
+   {:script
+    "(def OldCurrencySymbol (clojure.string/trim (rt.po.view-form/get-field-value \"Currency symbol\")))"}
+   {:script "(def NewCurrencySymbol \"£\")"}
+   {:script "(expect (not (= OldCurrencySymbol NewCurrencySymbol)))"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Currency symbol\" \"£\")"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script
+    "(expect-equals (clojure.string/trim (rt.po.view-form/get-field-value \"Currency symbol\")) NewCurrencySymbol)"}
+   {:script "(rt.po.app/logout)"}
+   {:script "(comment (rt.po.app/login))"}
+   {:script "(rn.common/start-app-and-login)"}
+   {:script
+    "(rn.app/open-report \"Deans of University report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script
+    "(def ExpenditureColumnIndex (remove clojure.string/blank? (rt.po.report-view/get-loaded-grid-values \".spreport-view\" (.indexOf (rt.po.report-view/get-report-column-names) \"Expenditure limit\"))))"}
+   {:script
+    "(expect-equals (every? #(.startsWith % NewCurrencySymbol) ExpenditureColumnIndex) true)"}
+   {:script
+    "(expect-equals (not-any? #(.contains % OldCurrencySymbol) ExpenditureColumnIndex) true)"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text (rt.po.report-view/get-report-cell-text-content 5 \"Dean\"))"}
+   {:script
+    "(expect-equals (.startsWith (clojure.string/trim (rt.po.view-form/get-field-value \"Salary\")) NewCurrencySymbol) true)"}
+   {:script
+    "(expect-equals (.contains (clojure.string/trim (rt.po.view-form/get-field-value \"Salary\")) OldCurrencySymbol) false)"}
+   {:script
+    "(expect-equals (.startsWith (clojure.string/trim (rt.po.view-form/get-field-value \"Expenditure limit\")) NewCurrencySymbol) true)"}
+   {:script
+    "(expect-equals (.contains (clojure.string/trim (rt.po.view-form/get-field-value \"Expenditure limit\")) OldCurrencySymbol) false)"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160301-153556",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/console/set-currency-symbol-to-pound,
+  :teardown
+  [{:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Settings/General Settings\")"}
+   {:script
+    "(when (not= \"$\" (rt.po.view-form/get-field-value \"Currency symbol\")) (rt.po.edit-form/click-edit-button) (rt.po.edit-form/set-string-field-value \"Currency symbol\" \"$\") (rt.po.edit-form/click-save-button) (rn.common/start-app-and-login))"}
+   {:script "(comment (rn.common/start-app-and-login))"}],
+  :modified-by "not-implemented"}]

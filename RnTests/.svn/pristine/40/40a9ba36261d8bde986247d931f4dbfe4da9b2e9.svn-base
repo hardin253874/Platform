@@ -1,0 +1,18 @@
+[{:tags [:desktop],
+  :test-filter
+  "(and (has-tags? [\"prod\" \"regression\" \"desktop\"] %) (not (has-some-tags? [\"quarantined\" \"not-on-firefox\"] %)) (has-index-in-range? 28 28 %))",
+  :tests
+  [:rn/form/check-currency-field-object-properties
+   :rn/security/ensure-multiple-access-rules-works],
+  :each-fixtures
+  [:common/fixture/handle-errors
+   :common/fixture/test-account-creds
+   :common/fixture/firefox],
+  :type :testsuite,
+  :source "../RnTests/test-db",
+  :modified "20150807-062525",
+  :setup [],
+  :id :dev/steve/firefox,
+  :teardown [],
+  :modified-by "not-implemented",
+  :once-fixtures []}]

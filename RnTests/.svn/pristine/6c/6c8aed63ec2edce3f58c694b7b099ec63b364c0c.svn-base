@@ -1,0 +1,36 @@
+[{:tags [:desktop],
+  :name "New Report Drivers on Chrome",
+  :steps
+  [{:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Number\" true)",
+        :target-msec 500}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Autonumber\" true)",
+        :target-msec 500}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"DateTime\" true)",
+        :target-msec 500}
+   {:script "(rt.po.report-builder/click-summarise-button)",
+        :target-msec 500}
+   {:script
+    "(rt.po.report-summarise/set-summarise-option \"AA_All Fields\" \"Count all\" true)",
+        :target-msec 500}
+   {:script
+    "(rt.po.report-summarise/set-summarise-option \"Number 1\" \"Max\" true)",
+        :target-msec 500}
+   {:script
+    "(rt.po.report-summarise/set-summarise-option \"Autonumber\" \"Sum\" true)",
+        :target-msec 500}
+   {:script "(rt.po.report-summarise/click-ok)",
+        :target-msec 500}],
+  :type :test,
+  :checks [],
+  :source "../RnTests/test-db",
+  :modified "20150601-153808",
+  :setup
+  [:qa-daily/scripts/reports/open-AutomationReport-in-build-mode],
+  :id :qa-daily/reports/test-report-summarise-drivers,
+  :teardown [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :modified-by "not-implemented",
+  :data {}}]

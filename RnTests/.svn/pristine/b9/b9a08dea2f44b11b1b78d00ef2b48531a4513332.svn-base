@@ -1,0 +1,13 @@
+[{:tags [:prod :regression :desktop],
+  :tests [],
+  :name "create, edit, save, reopen and more",
+  :steps
+  [{:script "(rt.scripts.edit-form/test-edit-fields-in-all-fields)"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150601-153802",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :edit-form/test-edit-fields-in-all-fields,
+  :teardown [],
+  :modified-by "not-implemented"}]

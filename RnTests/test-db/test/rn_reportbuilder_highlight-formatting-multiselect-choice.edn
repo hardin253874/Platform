@@ -1,0 +1,195 @@
+[{:tags [:area/report-builder :regression :prod :desktop :user/abida],
+  :tests [],
+  :name
+  "Checking highlight conditional formatting for multiselect choice field",
+  :steps
+  [{:script "(rt.po.app/add-report (:section *tc*))"}
+   {:script "(rt.po.report-new/set-name (:report-name *tc*))"}
+   {:script "(rt.po.report-new/set-report-base-on \"Student\")"}
+   {:script "(rt.po.report-new/click-ok)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Club\" true)"}
+   {:script "(rt.po.report-builder/select-treenode \"Club\")"}
+   {:script "(rt.po.report-builder/click-summarise-button)"}
+   {:script
+    "(rt.po.report-summarise/set-summarise-option \"Club\" \"List\" true)"}
+   {:script "(rt.po.report-summarise/click-ok)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"List: Club\" \"Format Column\")"}
+   {:script "(rt.po.report-format/set-format-type \"Highlight\")"}
+   {:script
+    "(rt.po.report-format/set-format-scheme \"2 step - Red, Green\")"}
+   {:script
+    "(rt.po.report-format/set-highlight-conditions [{:value \"\", :oper \"Is defined\", :colour \"Black on Red\"} {:value \"\", :oper \"\", :colour \"Black on Green\"}])"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script
+    "(expect-equals \"Vivid Green\" (rt.po.report-view/get-report-format-highlight-background-color 0 \"List: Club\"))"}
+   {:script
+    "(expect-equals \"\" (rt.po.report-view/get-report-cell-text-content \"0\" \"List: Club\"))"}
+   {:script
+    "(expect-equals \"Vivid Red\" (rt.po.report-view/get-report-format-highlight-background-color 1 \"List: Club\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 1 \"List: Club\"))"}
+   {:script
+    "(expect-equals \"Dance, Sports\" (rt.po.report-view/get-report-cell-text-content \"1\" \"List: Club\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button )"}
+   {:script
+    "(rn.app/open-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"Vivid Green\" (rt.po.report-view/get-report-format-highlight-background-color 0 \"List: Club\"))"}
+   {:script
+    "(expect-equals \"\" (rt.po.report-view/get-report-cell-text-content \"0\" \"List: Club\"))"}
+   {:script
+    "(expect-equals \"Vivid Red\" (rt.po.report-view/get-report-format-highlight-background-color 1 \"List: Club\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 1 \"List: Club\"))"}
+   {:script
+    "(expect-equals \"Dance, Sports\" (rt.po.report-view/get-report-cell-text-content \"1\" \"List: Club\"))"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"List: Club\" \"Format Column\")"}
+   {:script
+    "(rt.po.report-format/set-format-scheme \"2 step - Red, Green\")"}
+   {:script
+    "(rt.po.report-format/set-highlight-conditions [{:value \"\", :oper \"Is not defined\", :colour \"Black on Orange\"} {:value \"\", :oper \"\", :colour \"Black on Green\"}])"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script
+    "(expect-equals \"\" (rt.po.report-view/get-report-cell-text-content \"0\" \"List: Club\"))"}
+   {:script
+    "(expect-equals \"Vivid Orange\" (rt.po.report-view/get-report-format-highlight-background-color 0 \"List: Club\"))"}
+   {:script
+    "(expect-equals \"Dance, Sports\" (rt.po.report-view/get-report-cell-text-content \"1\" \"List: Club\"))"}
+   {:script
+    "(expect-equals \"Vivid Green\" (rt.po.report-view/get-report-format-highlight-background-color 1 \"List: Club\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 1 \"List: Club\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(rn.app/open-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"\" (rt.po.report-view/get-report-cell-text-content \"0\" \"List: Club\"))"}
+   {:script
+    "(expect-equals \"Vivid Orange\" (rt.po.report-view/get-report-format-highlight-background-color 0 \"List: Club\"))"}
+   {:script
+    "(expect-equals \"Dance, Sports\" (rt.po.report-view/get-report-cell-text-content \"1\" \"List: Club\"))"}
+   {:script
+    "(expect-equals \"Vivid Green\" (rt.po.report-view/get-report-format-highlight-background-color 1 \"List: Club\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 1 \"List: Club\"))"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"List: Club\" \"Format Column\")"}
+   {:script
+    "(rt.po.report-format/set-format-scheme \"2 step - Red, Green\")"}
+   {:script
+    "(rt.po.report-format/set-highlight-conditions [{:value \"Dance;Sports\", :oper \"Any of\", :colour \"Black on Red\"} {:value \"\", :oper \"\", :colour \"Black on Blue\"}])"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script
+    "(expect-equals \"Dance, Sports\" (rt.po.report-view/get-report-cell-text-content \"1\" \"List: Club\"))"}
+   {:script
+    "(expect-equals \"Vivid Red\" (rt.po.report-view/get-report-format-highlight-background-color 1 \"List: Club\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 1 \"List: Club\"))"}
+   {:script
+    "(expect-equals \"Dance, Drama, Music\" (rt.po.report-view/get-report-cell-text-content \"2\" \"List: Club\"))"}
+   {:script
+    "(expect-equals \"Vivid Red\" (rt.po.report-view/get-report-format-highlight-background-color 2 \"List: Club\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 2 \"List: Club\"))"}
+   {:script
+    "(expect-equals \"Chess, Debating\" (rt.po.report-view/get-report-cell-text-content \"3\" \"List: Club\"))"}
+   {:script
+    "(expect-equals \"Vivid Blue\" (rt.po.report-view/get-report-format-highlight-background-color 3 \"List: Club\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 3 \"List: Club\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(rn.app/open-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"Dance, Sports\" (rt.po.report-view/get-report-cell-text-content \"1\" \"List: Club\"))"}
+   {:script
+    "(expect-equals \"Vivid Red\" (rt.po.report-view/get-report-format-highlight-background-color 1 \"List: Club\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 1 \"List: Club\"))"}
+   {:script
+    "(expect-equals \"Dance, Drama, Music\" (rt.po.report-view/get-report-cell-text-content \"2\" \"List: Club\"))"}
+   {:script
+    "(expect-equals \"Vivid Red\" (rt.po.report-view/get-report-format-highlight-background-color 2 \"List: Club\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 2 \"List: Club\"))"}
+   {:script
+    "(expect-equals \"Chess, Debating\" (rt.po.report-view/get-report-cell-text-content \"3\" \"List: Club\"))"}
+   {:script
+    "(expect-equals \"Vivid Blue\" (rt.po.report-view/get-report-format-highlight-background-color 3 \"List: Club\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 3 \"List: Club\"))"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"List: Club\" \"Format Column\")"}
+   {:script
+    "(rt.po.report-format/set-format-scheme \"2 step - Red, Green\")"}
+   {:script
+    "(rt.po.report-format/set-highlight-conditions [{:value \"Dance;Sports\", :oper \"Any except\", :colour \"Black on Red\"} {:value \"\", :oper \"\", :colour \"Black on Blue\"}])"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script
+    "(expect-equals \"Dance, Sports\" (rt.po.report-view/get-report-cell-text-content \"1\" \"List: Club\"))"}
+   {:script
+    "(expect-equals \"Vivid Blue\" (rt.po.report-view/get-report-format-highlight-background-color 1 \"List: Club\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 1 \"List: Club\"))"}
+   {:script
+    "(expect-equals \"Dance, Drama, Music\" (rt.po.report-view/get-report-cell-text-content \"2\" \"List: Club\"))"}
+   {:script
+    "(expect-equals \"Vivid Blue\" (rt.po.report-view/get-report-format-highlight-background-color 2 \"List: Club\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 2 \"List: Club\"))"}
+   {:script
+    "(expect-equals \"Chess, Debating\" (rt.po.report-view/get-report-cell-text-content \"3\" \"List: Club\"))"}
+   {:script
+    "(expect-equals \"Vivid Red\" (rt.po.report-view/get-report-format-highlight-background-color 3 \"List: Club\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 3 \"List: Club\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(rn.app/open-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"Dance, Sports\" (rt.po.report-view/get-report-cell-text-content \"1\" \"List: Club\"))"}
+   {:script
+    "(expect-equals \"Vivid Blue\" (rt.po.report-view/get-report-format-highlight-background-color 1 \"List: Club\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 1 \"List: Club\"))"}
+   {:script
+    "(expect-equals \"Dance, Drama, Music\" (rt.po.report-view/get-report-cell-text-content \"2\" \"List: Club\"))"}
+   {:script
+    "(expect-equals \"Vivid Blue\" (rt.po.report-view/get-report-format-highlight-background-color 2 \"List: Club\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 2 \"List: Club\"))"}
+   {:script
+    "(expect-equals \"Chess, Debating\" (rt.po.report-view/get-report-cell-text-content \"3\" \"List: Club\"))"}
+   {:script
+    "(expect-equals \"Vivid Red\" (rt.po.report-view/get-report-format-highlight-background-color 3 \"List: Club\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 3 \"List: Club\"))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160920-161132",
+  :setup
+  [{:script
+    "(identity {:report-name (rt.lib.util/make-test-name \"HighlightFormattingMultiselect\")})"}],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :common/fixture/login
+   :rn/section/createsection],
+  :id :rn/reportbuilder/highlight-formatting-multiselect-choice,
+  :teardown
+  [{:script "(rt.po.report-view/set-search-text \"AStudent1\")"}
+   {:script
+    "(comment (if (> (rt.po.view-form/get-report-row-count) 0) (do (rt.po.report-view/select-row-by-text \"AStudent1\") (rt.po.report-view/delete-record \"AStudent1\"))))"}
+   {:script
+    "(if (> (rt.po.view-form/get-report-row-count) 0) (do (rt.po.report-view/select-row-by-text \"\") (rt.po.report-view/delete-record \"\")))"}
+   {:script "(comment (rt.po.app/delete-nav-item (:section *tc*)))"}],
+  :modified-by "not-implemented"}]

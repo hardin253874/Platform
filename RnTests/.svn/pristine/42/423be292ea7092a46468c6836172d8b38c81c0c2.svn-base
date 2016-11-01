@@ -1,0 +1,48 @@
+[{:tags [:user/hemant :app-tests/orm :desktop],
+  :name "Create a new insurance policy and manage it on the dashboard",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:orm-owner-creds *tc*))"}
+   {:script "(rt.po.app/navigate-to \"Operational Risk Management\")"}
+   {:script
+    "(rt.po.app/select-app-tab \"Insurance Policy Management\")"}
+   {:script
+    "(rt.po.app/select-navigator-item \"Insurance Policy Management\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Name\" (:insurance-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Description\" (str \"Description for \" (:insurance-name *tc*)))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Insurance Type\" \"Crime Insurance\")"}
+   {:script
+    "  (rt.po.edit-form/set-date-field-value \"Policy_Start_Date\" (make-local-date (rt.po.common/get-today-year) (rt.po.common/get-today-month ) (rt.po.common/get-today-day )))"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Policy_Expiration_Date\" (make-local-date (rt.po.common/get-today-year) (rt.po.common/get-today-month) (rt.po.common/get-today-day)))"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"Annual Premium\" \"30000\")"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"Insurance Amount\" \"5000000\")"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"RISKS\")"}
+   {:script "(rt.po.app/choose-context-menu \"Link\")"}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog \"Operational Risk\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(rt.po.report-view/set-search-text (:insurance-name *tc*))"}
+   {:script
+    "(expect-equals (:insurance-name *tc*) (rt.po.report-view/get-report-cell-text-content 0 \"Insurance\"))"}
+   {:script
+    "(expect-equals true (>= 1 (Integer/parseInt (rt.po.screen/get-hero-text-data-on-screen \"Expiring Today\"))))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20161017-185434",
+  :setup
+  [{:script
+    "(identity {:issue-name (rt.lib.util/make-test-name \"Issue\"), :task-name (rt.lib.util/make-test-name \"Task\"), :insurance-name (rt.lib.util/make-test-name \"Insurance\")})"}],
+  :fixtures [:rn/fixture/bcm-owner-creds :rn/fixture/orm-owner-creds],
+  :id :orm/tests/insurance-policy-management,
+  :teardown [],
+  :modified-by "not-implemented"}]

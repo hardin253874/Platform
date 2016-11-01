@@ -1,0 +1,40 @@
+[{:tags
+  [:user/tina :area/report-viewer :nomodify :regression :desktop],
+  :name "check report can be exported to excel, csv and word",
+  :steps
+  [{:script "(rt.po.app/navigate-via-tiles \"Foster University\")"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script
+    "(rt.po.common/delete-file-in-download-folder \"Student report.xlsx\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(rt.po.report-view/click-sub-menu-item \"Export to...\" \"Excel\")"}  
+   {:script
+    "(expect-equals true (rt.po.common/wait-until-file-exist? (rt.po.common/get-download-file-path \"Student report.xlsx\")))"}
+   {:script
+    "(rt.po.common/delete-file-in-download-folder \"Student report.csv\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(rt.po.report-view/click-sub-menu-item \"Export to...\" \"CSV\")"}   
+   {:script
+    "(expect-equals true (rt.po.common/wait-until-file-exist? (rt.po.common/get-download-file-path \"Student report.csv\")))"}
+   {:script
+    "(rt.po.common/delete-file-in-download-folder \"Student report.docx\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(rt.po.report-view/click-sub-menu-item \"Export to...\" \"Word\")"}   
+   {:script
+    "(expect-equals true (rt.po.common/wait-until-file-exist? (rt.po.common/get-download-file-path \"Student report.docx\")))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20151120-105839",
+  :setup [],
+  :fixtures
+  [:common/fixture/chrome
+   :common/fixture/handle-errors
+   :common/fixture/login
+   :common/fixture/test-account-creds],
+  :id :rn/report/export-to-excel,
+  :teardown [],
+  :modified-by "not-implemented"}]

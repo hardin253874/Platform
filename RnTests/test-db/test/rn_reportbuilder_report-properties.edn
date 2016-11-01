@@ -1,0 +1,83 @@
+[{:tags
+  [:area/report-builder
+   :nomodify
+   :regression
+   :desktop
+   :user/abida
+   :prod],
+  :tests [],
+  :name "Testing all the field in report properties",
+  :steps
+  [{:script "(rt.po.app/add-report (:section *tc*) )"}
+   {:script "(rt.po.report-new/set-name (:report-name *tc*))"}
+   {:script
+    "(rt.po.report-new/set-description \"Testing report properties\")"}
+   {:script "(rt.po.report-new/set-report-base-on \"Student\")"}
+   {:script "(rt.po.report-new/options-expand )"}
+   {:script
+    "(rt.po.report-new/set-application-used-in \"Test Solution\")"}
+   {:script "(rt.scripts.common/sleep 2000)"}
+   {:script "(rt.po.report-new/set-report-form \"Students Form\")"}
+   {:script "(rt.po.report-new/set-default-display-report true)"}
+   {:script "(rt.po.report-new/set-default-picker-report true)"}
+   {:script "(rt.po.report-new/set-icon \"Black Square Format Icon\")"}
+   {:script "(rt.po.report-new/set-style \"Default\")"}
+   {:script "(rt.po.report-new/set-hide-action-bar true)"}
+   {:script "(rt.po.report-new/set-hide-report-header true)"}
+   {:script "(rt.po.report-new/click-deploy-tab )"}
+   {:script "(rt.po.report-new/click-tablet )"}
+   {:script "(rt.po.report-new/click-mobile )"}
+   {:script "(rt.po.report-new/click-ok )"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script "(rt.po.report-builder/close )"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Foster University\" (str (:section *tc*) \"/ReportProperties\"))"}
+   {:script
+    "(rt.po.app/load-property-of-nav-item \"ReportProperties\")"}
+   {:script
+    "(expect-equals (:report-name *tc*) (rt.po.report-new/get-name))"}
+   {:script
+    "(expect-equals \"Testing report properties\" (rt.po.report-new/get-description ))"}
+   {:script
+    "(expect-equals \"Student\" (rt.po.report-new/get-report-base-on ))"}
+   {:script "(rt.po.report-new/options-expand )"}
+   {:script
+    "(expect-equals \"Test Solution\" (rt.po.report-new/get-application-used-in-only true ))"}
+   {:script
+    "(when-not (= \"Students Form\" (rt.po.report-new/get-report-form-only))\n  (println \"waiting a little...\") (rn.common/sleep 2000))"}
+   {:script
+    "(expect-equals \"Students Form\" (rt.po.report-new/get-report-form-only true ))"}
+   {:script
+    "(expect-equals true (rt.po.report-new/get-default-display-report ))"}
+   {:script
+    "(expect-equals true (rt.po.report-new/get-default-picker-report ))"}
+   {:script "(rt.po.report-new/click-format-tab )"}
+   {:script
+    "(expect-equals \"Black Square Format Icon\" (rt.po.report-new/get-icon ))"}
+   {:script
+    "(expect-equals \"Default\" (rt.po.report-new/get-style-only ))"}
+   {:script
+    "(expect-equals true (rt.po.report-new/get-hide-action-bar-only ))"}
+   {:script
+    "(expect-equals true (rt.po.report-new/get-hide-report-header-only ))"}
+   {:script "(rt.po.report-new/click-deploy-tab )"}
+   {:script
+    "(expect-equals true (rt.po.report-new/get-enable-on-desktop-only ))"}
+   {:script
+    "(expect-equals true (rt.po.report-new/get-enable-on-mobile-only ))"}
+   {:script
+    "(expect-equals true (rt.po.report-new/get-enable-on-tablet-only ))"}
+   {:script "(rt.po.report-new/click-ok )"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160920-114520",
+  :setup
+  [{:script
+    "(identity {:report-name (rt.lib.util/make-test-name \"ReportProperties\")})"}],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :common/fixture/login
+   :rn/section/createsection],
+  :id :rn/reportbuilder/report-properties,
+  :teardown [{:script "(rt.po.app/delete-nav-item (:section *tc*))"}],
+  :modified-by "not-implemented"}]

@@ -1,0 +1,26 @@
+[{:tags [:desktop :prod],
+  :tests [],
+  :name "Import Perf Stats into Perf Metric App",
+  :steps
+  [{:script "(rt.scripts.common/start-app-and-login )"}
+   {:script "(rt.po.app/enable-app-toolbox )"}
+   {:script
+    "(rt.po.app-toolbox/open-quick-link \"Import Spreadsheet\")"}
+   {:script
+    "(rt.po.import-spreadsheet/choose-file-to-import (str (System/getProperty \"user.dir\") \"\\\\suitemetrics--perf-suites-daily.csv\"))"}
+   {:script "(rt.po.import-spreadsheet/choose-next )"}
+   {:script
+    "(rt.po.import-spreadsheet/choose-target-object \"Performance Metric\")"}
+   {:script "(rt.po.import-spreadsheet/choose-next )"}
+   {:script "(rt.po.import-spreadsheet/choose-next )"}
+   {:script "(rt.po.import-spreadsheet/wait-for-complete )"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150602-070451",
+  :setup
+  [{:script
+    "(identity {:username \"Service.Import\" :password \"NH8Y6XZKEj\"})"}],
+  :fixtures [:common/fixture/chrome],
+  :id :perf/tests/import-perf-stats,
+  :teardown [],
+  :modified-by "not-implemented"}]

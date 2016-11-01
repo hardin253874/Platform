@@ -1,0 +1,54 @@
+[{:tags
+  [:nomodify
+   :prod
+   :regression
+   :user/karen
+   :desktop
+   :area/chart-builder],
+  :tests [],
+  :name "Basic test of managing series",
+  :steps
+  [{:script "(rt.po.app/add-chart (:section *tc*))"}
+   {:script "(rt.po.common/set-string \"Name\" \"Managing Series\")"}
+   {:script "(rt.po.common/set-lookup \"Report\" \"Temperature\")"}
+   {:script "(rt.po.chart-new/set-chart-type \"Line\")"}
+   {:script "(rt.po.common/click-ok)"}
+   {:script
+    "(expect (some #(re-find #\"Line$\" %) (rt.po.chart-builder/get-series-list)))"}
+   {:script
+    "(expect (some #(re-find #\"^Blackfriars\" %) (rt.po.chart-builder/get-series-list)))"}
+   {:script
+    "(rt.po.chart-builder/set-series-name \"Blackfriars Line\" \"My New Name\")"}
+   {:script
+    "(rt.po.chart-builder/set-series-name \"My New Name\" \"\")"}
+   {:script "(rt.po.chart-builder/add-series)"}
+   {:script
+    "(expect-equals \"Line\" (last (rt.po.chart-builder/get-series-list)))"}
+   {:script "(rt.po.chart-builder/open-series-chart-type \"Line\")"}
+   {:script
+    "(rt.po.chart-builder/set-series-chart-type \"Line\" \"Column\")\n"}
+   {:script "(rt.po.chart-builder/close-series-chart-type)"}
+   {:script
+    "(expect-equals \"Column\" (rt.po.chart-builder/get-series-chart-type \"Last\"))"}
+   {:script
+    "(expect-equals true (rt.po.chart-builder/series-has-axis-options? \"Last\"))"}
+   {:script
+    "(rt.po.chart-builder/drag-source-to-target \"Month\" {:series \"Last\" :target \"Primary\"})"}
+   {:script
+    "(rt.po.chart-builder/drag-source-to-target \"Broadway\" {:series \"Last\" :target \"Values\"})"}
+   {:script "(rt.po.chart-builder/expand-series \"First\")"}
+   {:script
+    "(expect-equals true (rt.po.chart-builder/series-expanded? \"First\"))"}
+   {:script
+    "(expect-equals true (rt.po.chart-builder/series-expanded? \"Last\"))"}
+   {:script "(rt.po.chart-builder/remove-series \"Last\")"}
+   {:script
+    "(expect-equals \"Blackfriars Column\" (last (rt.po.chart-builder/get-series-list)))"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150601-153808",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login :rn/section/createsection-charts],
+  :id :rn/chartbuilder/chart-managing-series,
+  :teardown [],
+  :modified-by "not-implemented"}]

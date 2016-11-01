@@ -1,0 +1,25 @@
+[{:tags [:user/steve :desktop :samples],
+  :tests
+  [:steve-debug-1 :test-autogen-form-boolean :steve-debug-1 :perf],
+  :name "my debug 1 test",
+  :steps
+  [{:script "(start-browser :chrome)"}
+   {:script "(rt.po.app/start-app)"}
+   {:script ";;(rn.common/take-screenshot)"}
+   {:script "(rt.po.app/login)"}
+   {:script "(rn.common/capture-browser-logs)"}
+   {:script ";;(rn.common/take-screenshot)"}
+   {:script "(rn.common/sleep 5000)"}
+   {:script "(rt.lib.wd-rn/get-authenticated-identity)"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20160412-045851",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :samples/fixture-1
+   :common/fixture/chrome-iPhone],
+  :id :aaa/steve-debug-1,
+  :teardown [],
+  :doc "steve tests",
+  :modified-by "not-implemented"}]

@@ -1,0 +1,12 @@
+[{:tags [:prod :regression :desktop],
+  :tests [],
+  :name "script to open a form in view mode",
+  :steps [{:script "(rt.scripts.edit-form/test-view-form)"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150601-153802",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :edit-form/test-view-form,
+  :teardown [],
+  :modified-by "not-implemented"}]

@@ -1,0 +1,108 @@
+[{:tags
+  [:nomodify :prod :regression :user/shaofen :desktop :area/security],
+  :tests [],
+  :name "Secure new button on picker window",
+  :steps
+  [{:script
+    "(rn.common/start-app-and-login {:password \"Nelle.Odom1\", :username \"Nelle.Odom\"})"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script "(rt.po.report-view/view-record \"Nelle Odom\")"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script
+    "(expect (rt.po.edit-form/find-lookup \"Library card #\"))"}
+   {:script "(rt.po.edit-form/open-lookup \"Library card #\")"}
+   {:script
+    "(expect-equals false (rt.po.edit-form/check-can-create?))"}
+   {:script
+    "(comment \"===============Up to this point, we have checked student user doesn't see +NEW button on picker window by default================\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script "(rt.po.access-rules/add-new-access-rule)"}
+   {:script
+    "(expect-equals true (rt.po.access-rules-new/new-dialog-visible?))"}
+   {:script
+    "(rt.po.access-rules-new/set-role \"Students (User Role)\")"}
+   {:script "(rt.po.access-rules-new/set-object \"Library card\")"}
+   {:script "(rt.po.access-rules-new/click-ok)"}
+   {:script
+    "(rt.po.access-rules/edit-access-rule \"Students (User Role)\" \"Library card\" \"Library card\")"}
+   {:script
+    "(rt.po.report-builder/set-name \"Library card for this testing only - 1\")"}
+   {:script "(rt.po.report-builder/save)"}
+   {:script "(rt.po.report-builder/close)"}
+   {:script
+    "(rt.po.access-rules/select-access-rule-operation \"Students (User Role)\" \"Library card\" \"Library card for this testing only - 1\" \"Full (Create, View, Edit and Delete)\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Library card for this testing only - 1\")"}
+   {:script
+    "(rt.po.access-rules/enable-access-rule \"Students (User Role)\" \"Library card\" \"Library card for this testing only - 1\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script
+    "(comment \"==============Up to this point, we have granted student user the CRUD access to libary card, and we would expect see +NEW button on picker window. =================\")"}
+
+   {:script
+    "(rn.common/start-app-and-login {:password \"Nelle.Odom1\", :username \"Nelle.Odom\"})"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script "(rt.po.report-view/view-record \"Nelle Odom\")"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script
+    "(expect (rt.po.edit-form/find-lookup \"Library card #\"))"}
+   {:script "(rt.po.edit-form/open-lookup \"Library card #\")"}
+   {:script "(rn.common/sleep 3000)"}
+   {:script "(expect-equals true (rt.po.edit-form/check-can-create?))"}
+   {:script "(rt.po.common/click-cancel)"}
+   {:script
+    "(comment \"===============Up to this point, we have checked student user can see +NEW button on picker window when he has create access. ===================\")"}
+   {:script
+    "(comment \"TODO: put the following steps in teardown when RT supports\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/delete-access-rule \"Students (User Role)\" \"Library card\" \"Library card for this testing only - 1\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+
+   {:script
+    "(rn.common/start-app-and-login {:password \"Nelle.Odom1\", :username \"Nelle.Odom\"})"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script "(rt.po.report-view/view-record \"Nelle Odom\")"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script
+    "(expect (rt.po.edit-form/find-lookup \"Library card #\"))"}
+   {:script "(rt.po.edit-form/open-lookup \"Library card #\")"}
+   {:script
+    "(expect-equals false (rt.po.edit-form/check-can-create?))"}
+   {:script
+    "(comment \"===================Up to this point, we have checked if removing create access, student user no longer sees the +New button on picker window.=================\")"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20151103-162407",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds],
+  :id :rn/security/secure-new-button-on-picker,
+  :teardown
+  [{:script
+    "(comment \"=============================Below is to force the env. back to default so it won't impact other RT cases.========================\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+    {:script
+    "(rt.po.report-view/set-search-text \"System Administrator (User Account)\")"}
+   {:script
+    "(if (> (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/set-search-text \"Library card for this testing only - 1\") (if (> (rt.po.report-view/count-report-row) 0) (do (rt.po.access-rules/click-edit-button) (rt.po.access-rules/delete-access-rule \"Students (User Role)\" \"Library card\" \"Library card for this testing only - 1\") (rt.po.access-rules/click-save-button)))))"}
+   {:script
+    "(rt.po.report-view/set-search-text \"System Administrator (User Account)\")"}
+   {:script
+    "(if (= (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/set-search-text \"Library card for this testing only - 1\") (if (> (rt.po.report-view/count-report-row) 0) (do (rt.po.access-rules/click-edit-button) (rt.po.access-rules/delete-access-rule \"Students (User Role)\" \"Library card\" \"Library card for this testing only - 1\") (rt.po.access-rules/click-save-button)))))"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Library card for this testing only - 1\")"}],
+  :modified-by "not-implemented"}]

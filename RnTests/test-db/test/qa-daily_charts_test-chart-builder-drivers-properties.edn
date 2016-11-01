@@ -1,0 +1,59 @@
+[{:tags [:regression :desktop :prod],
+  :tests [],
+  :name "Chart Builder Properties Drivers on Chrome",
+  :steps
+  [{:script "(rt.po.chart-builder/click-chart-toolbar-properties)",
+    :target-msec 100}
+   {:script "(rt.po.chart-builder/set-name \"Test name\")",
+    :target-msec 100}
+   {:script
+    "(rt.po.chart-builder/set-description \"Test description\")",
+    :target-msec 100}
+   {:script "(rt.po.chart-builder/set-chart-title \"Title test\")",
+    :target-msec 100}
+   {:script "(rt.po.chart-builder/set-alignment \"Right\")",
+    :target-msec 100}
+   {:script "(rt.po.chart-builder/set-applications \"Test Solution\")",
+    :target-msec 100}
+   {:script
+    "(rt.po.chart-builder/set-icon \"Black Cross Format Icon\")",
+    :target-msec 100}
+   {:script "(rt.po.chart-builder/click-ok)", :target-msec 100}
+   {:script "(rt.po.chart-builder/click-chart-toolbar-properties)",
+    :target-msec 100}
+   {:script
+    "(expect-equals \"Test name\" (rt.po.chart-builder/get-name))",
+    :target-msec 100}
+   {:script
+    "(expect-equals \"Test description\" (rt.po.chart-builder/get-description))",
+    :target-msec 100}
+   {:script
+    "(expect-equals \"Title test\" (rt.po.chart-builder/get-chart-title))",
+    :target-msec 100}
+   {:script
+    "(expect-equals \"Right\" (rt.po.chart-builder/get-alignment))",
+    :target-msec 100}
+   {:script
+    "(expect-equals \"Test Solution\" (rt.po.chart-builder/get-applications))",
+    :target-msec 100}
+   {:script "(rt.po.chart-builder/clear-applications)",
+    :target-msec 100}
+   {:script
+    "(expect-equals \"Black Cross Format Icon\" (rt.po.chart-builder/get-icon))",
+    :target-msec 100}
+   {:script "(rt.po.chart-builder/clear-icon)", :target-msec 100}
+   {:script
+    "(expect-equals \"Scientists\" (rt.po.chart-builder/get-report))",
+    :target-msec 100}
+   {:script "(rt.po.chart-builder/click-cancel)", :target-msec 100}],
+  :type :test,
+  :checks [],
+  :source "./test-db",
+  :modified "20160809-170124",
+  :setup
+  [{:script "(rt.scripts.common/edit-chart (:name *test-context*))"}],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :qa-daily/charts/test-chart-builder-drivers-properties,
+  :teardown [],
+  :modified-by "not-implemented",
+  :data {:name "Gantt - Scientists"}}]

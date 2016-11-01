@@ -1,0 +1,205 @@
+[{:tags [:desktop],
+  :name "Test Workflow",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:login-creds *tc*))"}
+   {:script "(think 1)"}
+   {:script "(comment Set Technology online/offline)"}
+   {:script "(rt.po.app/navigate-to \"Disaster Recovery\")",
+    :target-msec 10000}
+   {:script "(rt.po.app/select-app-tab \"Technology\")",
+    :target-msec 10000}
+   {:script "(rt.po.app/select-navigator-item \"IT Equipment\")",
+    :target-msec 1000}
+   {:script "(rt.po.report-view/set-search-text (:tech-sw *tc*))",
+    :target-msec 5000}
+   {:script "(think 5)"}
+   {:script "(rt.po.report-view/select-row-by-text (:tech-sw *tc*))",
+    :target-msec 5000}
+   {:script "(rt.po.report-view/open-action-menu)", :target-msec 1000}
+   {:script "(rt.po.app/choose-context-menu \"Set as Impacted\")",
+    :target-msec 3000}
+   {:script "(rt.po.report-view/open-action-menu)", :target-msec 1000}
+   {:script "(rt.po.app/choose-context-menu \"Set as Offline\")",
+    :target-msec 3000}
+   {:script "(rt.po.report-view/open-action-menu)", :target-msec 1000}
+   {:script "(rt.po.app/choose-context-menu \"Set as Online\")",
+    :target-msec 3000}
+   {:script "(think 5)"}
+   {:script "(comment Activate plan in Incident)"}
+   {:script "(rt.po.app/navigate-to \"Incident Management\")",
+    :target-msec 10000}
+   {:script "(rt.po.app/select-app-tab \"CMT Dashboard\")",
+    :target-msec 10000}
+   {:script "(think 5)"}
+   {:script "(rt.po.report-view/open-action-menu)", :target-msec 2000}
+   {:script "(rt.po.app/choose-context-menu \"New\")",
+    :target-msec 5000}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:inc-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-multiline \"Description\" (str \"Description for \" (:inc-name *tc*)))"}
+   {:script "(think 5)"}
+   {:script "(comment \"---select a plan for incident\")"}
+   {:script "(def pn-name (get-random-test-data :bau-plans-list))"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Plan Selection\" \"Link\")"}
+   {:script "(rt.po.edit-form/choose-in-entity-picker-dialog pn-name)"}
+   {:script "(think 5)"}
+   {:script "(rt.po.edit-form/save) ;; save Incident"}
+   {:script "(rt.po.report-view/set-search-text (:inc-name *tc*))",
+    :target-msec 5000}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text (:inc-name *tc*))",
+    :target-msec 5000}
+   {:script "(rt.po.edit-form/select-form-tab \"Plan Selection\")"}
+   {:script "(rt.po.report-view/set-search-text pn-name)",
+    :target-msec 5000}
+   {:script "(rt.po.report-view/open-action-menu)", :target-msec 1000}
+   {:script "(rt.po.app/choose-context-menu \"Activate plan\")",
+    :target-msec 3000}
+   {:script "(think 5)"}
+   {:script "(comment KRI Data input)"}
+   {:script "(rt.po.app/navigate-to \"Risk Management\")",
+    :target-msec 4000}
+   {:script "(rt.po.app/select-app-tab \"KRI\")", :target-msec 4000}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text (:grc-kri *tc*))"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"KRI Data\" \"New\")",
+    :target-msec 3000}
+   {:script
+    "(rt.po.edit-form/set-number-field-value \"Result\" (rand-int 20))",
+    :target-msec 3000}
+   {:script "(rt.po.edit-form/save) ;; save KRI Data",
+    :target-msec 3000}
+   {:script "(think 5 4)"}
+   {:script "(comment Risk Inherent rating calculation)"}
+   {:script "(rt.po.app/navigate-to \"Risk Management\")",
+    :target-msec 4000}
+   {:script "(rt.po.app/select-app-tab \"Operational Risk\")",
+    :target-msec 4000}
+   {:script
+    "(rt.po.app/select-navigator-item \"Business Unit Risks\")",
+    :target-msec 3000}
+   {:script "(think 5)"}
+   {:script
+    "(rt.po.screen/open-report-action-menu-on-screen \"Business Unit Risk Report\")",
+    :target-msec 1000}
+   {:script "(rt.po.app/choose-context-menu \"New\")",
+    :target-msec 3000}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:br-name *tc*))"}
+   {:script
+    "(rn.scripts.bcm/fill-bu-risk-form {:impacts (get-test-data :risk-impacts), :likelihoods (get-test-data :likelihoods), :drivers (get-test-data :risk-drivers), :levels (get-test-data :risk-levels)})"}
+   {:script "(rt.po.edit-form/save)", :target-msec 4000}
+   {:script "(think 5)"}
+   {:script
+    "(comment Test Business % Completed by updating all completed fields)"}
+   {:script "(rt.po.app/navigate-to \"Business Continuity Planning\")",
+    :target-msec 10000}
+   {:script "(rt.po.app/select-app-tab \"Business Units\")",
+    :target-msec 10000}
+   {:script "(rt.po.app/select-navigator-item \"Business Units\")",
+    :target-msec 10000}
+   {:script "(think 5)"}
+   {:script "(rt.po.report-view/set-search-text (:bu-name *tc*))",
+    :target-msec 5000}
+   {:script "(rt.po.report-view/select-row-by-text (:bu-name *tc*))",
+    :target-msec 5000}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text (:bu-name *tc*))",
+    :target-msec 5000}
+   {:script "(rt.po.access-rules/click-edit-button)",
+    :target-msec 5000}
+   {:script "(think 5)"}
+   {:script "(rt.po.edit-form/select-form-tab \"Business Function\")"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Completed\" true)"}
+   {:script
+    "(rt.po.edit-form/select-form-tab \"Recovery Requirements\")"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Completed\" true)"}
+   {:script
+    "(rt.po.edit-form/select-form-tab \"IT Recovery Requirements\")"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Completed\" true)"}
+   {:script
+    "(rt.po.edit-form/select-form-tab \"Products & Services Dependency\")"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Completed\" true)"}
+   {:script "(rt.po.edit-form/select-form-tab \"Risk Assessment\")"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Completed\" true)"}
+   {:script
+    "(rt.po.edit-form/select-form-tab \"Business Critical Periods\")"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Completed\" true)"}
+   {:script "(rt.po.edit-form/select-form-tab \"Business Unit Plan\")"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Completed\" true)"}
+   {:script "(think 2)"}
+   {:script "(rt.po.edit-form/save)", :target-msec 5000}
+   {:script "(think 5)"}
+   {:script
+    "(comment Test Business unit MAO Calculation by updating Business Function)"}
+   {:script "(rt.po.app/navigate-to \"Business Continuity Planning\")",
+    :target-msec 5000}
+   {:script "(rt.po.app/select-app-tab \"Business Units\")",
+    :target-msec 5000}
+   {:script "(rt.po.app/select-navigator-item \"Business Units\")",
+    :target-msec 5000}
+   {:script "(rt.po.report-view/set-search-text (:bu-name *tc*))",
+    :target-msec 5000}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text (:bu-name *tc*))",
+    :target-msec 5000}
+   {:script "(rn.scripts.bcm/edit-bu (:bu-name *tc*))",
+    :target-msec 5000}
+   {:script "(think 5)"}
+   {:script
+    "(rn.scripts.bcm/fill-bf-form {:op-impacts (get-test-data :op-impacts), :name (str (:bf-name *tc*) \"-a\"), :owner (:owner-name *tc*)})"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(think 5)"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20151103-114851",
+  :setup
+  [{:script
+    "(when (empty? (get-test-data :bia-user-creds :quiet)) (rn.common/start-app-and-login))"}
+   {:script
+    "(setonce-test-data :bcp-user-creds rn.services.security/ensure-test-accounts [\"BCP Manager\" \"Technology Manager\" \"Risk Manager\" \"CMT Member\"] \"GRC\" 2000)"}
+   {:script
+    "(identity {:login-creds (get-random-test-data :bcp-user-creds)})"}
+   {:script "(rn.common/start-app-and-login (:login-creds *tc*))"}
+   {:script
+    "(identity {:owner-name (rn.services.security/get-account-holder-name (-> *tc* :login-creds :username))})"}
+   {:script
+    "(identity {:br-name (make-test-name \"BR\"), :bu-name (make-test-name \"BU\"), :bf-name (make-test-name \"BF\"), :inc-name (make-test-name \"INC\")})"}
+   {:script
+    "(setonce-test-data :employees-for-bia-user rn.common/get-record-names-for-type-via-report \"Employee\")"}
+   {:script
+    "(setonce-test-data :business-unit-list rn.common/get-record-names-for-type \"Business Unit\")"}
+   {:script
+    "(setonce-test-data :bau-plans-list rn.common/get-record-names-for-type \"BAU Plan\")"}
+   {:script
+    "(setonce-test-data :tech-sw-list rn.common/get-record-names-for-type \"IT Equipment\")"}
+   {:script
+    "(setonce-test-data :grc-kri rn.common/get-record-names-for-type \"KRI\")"}
+   {:script
+    "(setonce-test-data :risk-drivers rn.common/get-choice-values \"Risk Type (Source)\" {:app-name \"ReadiBCM\"})"}
+   {:script
+    "(setonce-test-data :risk-levels rn.common/get-choice-values \"Level of Risk\" {:app-name \"ReadiBCM\"})"}
+   {:script
+    "(setonce-test-data :risk-impacts rn.common/get-record-names-for-type \"Risk Impact\" {:app-name \"ReadiBCM\"})"}
+   {:script
+    "(setonce-test-data :likelihoods rn.common/get-record-names-for-type \"Risk Likelihood Rating\" {:app-name \"ReadiBCM\"})"}
+   {:script
+    "(setonce-test-data :op-impacts rn.common/get-choice-values \"Function Operational Impact\" {:app-name \"ReadiBCM\"})"}
+   {:script
+    "(identity {:bu-name (get-random-test-data :business-unit-list)})"}
+   {:script
+    "(identity {:tech-sw (get-random-test-data :tech-sw-list)})"}],
+  :fixtures [:common/fixture/wait-ng],
+  :id :grc/tests/workflow-1,
+  :teardown [],
+  :modified-by "not-implemented"}]

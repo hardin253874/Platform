@@ -1,0 +1,14 @@
+[{:tags [:desktop],
+  :name "Create a bunch of names for a test",
+  :steps [],
+  :type :testfixture,
+  :source "../RnTests/test-db",
+  :modified "20150601-153828",
+  :setup
+  [{:script
+    "(identity {:section-name (make-test-name \"RT-Section\")})"}
+   {:script
+    "(println \"Test section name is\" (:section-name *tc*))"}],
+  :id :samples/fixtures/create-test-names,
+  :teardown [],
+  :modified-by "not-implemented"}]

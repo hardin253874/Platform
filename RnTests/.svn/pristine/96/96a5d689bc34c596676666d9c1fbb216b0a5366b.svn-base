@@ -1,0 +1,739 @@
+[{:tags
+  [:nomodify
+   :prod
+   :daily
+   :regression
+   :user/shaofen
+   :desktop
+   :area/security],
+  :tests [],
+  :name
+  "Ensure two users in same rule set have reasonable access --- Secure buttons and menu items on stand alone report (Object stock used)",
+  :steps
+  [{:script
+    "(comment \"=========NOTE: there is forced env. back in teardown.=======================================================================\")"}
+   {:script
+    "(comment \"=========================By default, student user doesn't have any access to stock instances.========================\")"}
+   {:script
+    "(rn.common/start-app-and-login (:user-creds-student1 *tc*))"}
+   {:script
+    "(rn.app/open-report \"Stock Report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script
+    "(expect-equals false (rt.po.report-view/single-new-button-exists?))"}
+   {:script "(expect-equals 0 (rt.po.report-view/count-report-row))"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"New 'Student'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+   {:script
+    "(rn.common/start-app-and-login (:user-creds-student2 *tc*))"}
+   {:script
+    "(rn.app/open-report \"Stock Report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script
+    "(expect-equals false (rt.po.report-view/single-new-button-exists?))"}
+   {:script "(expect-equals 0 (rt.po.report-view/count-report-row))"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"New 'Student'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+   {:script
+    "(comment \"==========================Up to this point, we have checked student user has correct access as by deafult. ==================== \")"}
+   {:script
+    "(comment \"==========================Next, I am about to create a new access rule for testing purpose.====================\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script
+    "(comment \"======================Next is to add 1 new access rule to check modify related buttons and action menu items. =========================\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script "(rt.po.access-rules/add-new-access-rule)"}
+   {:script
+    "(expect-equals true (rt.po.access-rules-new/new-dialog-visible?))"}
+   {:script
+    "(rt.po.access-rules-new/set-role \"Students (User Role)\")"}
+   {:script "(rt.po.access-rules-new/set-object \"Stock\")"}
+   {:script "(rt.po.access-rules-new/click-ok)"}
+   {:script
+    "(rt.po.access-rules/edit-access-rule \"Students (User Role)\" \"Stock\" \"Stock\")"}
+   {:script
+    "(rt.po.report-builder/set-name \"Stocks - my test today - 02112015\")"}
+   {:script "(rt.po.report-builder/save)"}
+   {:script "(rt.po.report-builder/close)"}
+   {:script "(rn.common/sleep 5000)"}
+   {:script
+    "(rt.po.access-rules/enable-access-rule \"Students (User Role)\" \"Stock\" \"Stocks - my test today - 02112015\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+
+   {:script
+    "(comment \"===================================================>View ===================================\")"}
+   {:script
+    "(rn.common/start-app-and-login (:user-creds-student1 *tc*))"}
+   {:script
+    "(rn.app/open-report \"Stock Report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect (> (rt.po.report-view/count-report-row) 18))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/single-new-button-exists?))"}
+   {:script "(rt.po.report-view/set-search-text \"Stock 004\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Stock 004\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"New 'Stock'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"View 'Stock 004'\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"Edit 'Stock 004'\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"Delete 'Stock 004'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+   {:script "(rt.po.report-view/set-search-text \"Stock 099\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Stock 099\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"New 'Stock'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"View 'Stock 099'\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"Edit 'Stock 099'\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"Delete 'Stock 099'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+   {:script "(rt.po.report-view/set-search-text \"Stock 199\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Stock 199\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"New 'Stock'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"View 'Stock 199'\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"Edit 'Stock 199'\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"Delete 'Stock 199'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+   {:script "(rt.po.report-view/set-search-text \"Stock 252\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Stock 252\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"New 'Stock'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"View 'Stock 252'\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"Edit 'Stock 252'\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"Delete 'Stock 252'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+
+   {:script
+    "(rn.common/start-app-and-login (:user-creds-student2 *tc*))"}
+   {:script
+    "(rn.app/open-report \"Stock Report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect (> (rt.po.report-view/count-report-row) 18))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/single-new-button-exists?))"}
+   {:script "(rt.po.report-view/set-search-text \"Stock 004\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Stock 004\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"New 'Stock'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"View 'Stock 004'\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"Edit 'Stock 004'\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"Delete 'Stock 004'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+   {:script "(rt.po.report-view/set-search-text \"Stock 099\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Stock 099\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"New 'Stock'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"View 'Stock 099'\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"Edit 'Stock 099'\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"Delete 'Stock 099'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+   {:script "(rt.po.report-view/set-search-text \"Stock 199\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Stock 199\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"New 'Stock'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"View 'Stock 199'\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"Edit 'Stock 199'\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"Delete 'Stock 199'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+   {:script "(rt.po.report-view/set-search-text \"Stock 252\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Stock 252\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"New 'Stock'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"View 'Stock 252'\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"Edit 'Stock 252'\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"Delete 'Stock 252'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+
+   {:script
+    "(comment \"===================================================>View and Edit==========================\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script "(rn.common/sleep 5000)"}
+   {:script
+    "(rt.po.access-rules/select-access-rule-operation \"Students (User Role)\" \"Stock\" \"Stocks - my test today - 02112015\" \"View and Edit\")"}
+   {:script
+    "(rt.po.access-rules/enable-access-rule \"Students (User Role)\" \"Stock\" \"Stocks - my test today - 02112015\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script
+    "(rn.common/start-app-and-login (:user-creds-student1 *tc*))"}
+   {:script
+    "(rn.app/open-report \"Stock Report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect (> (rt.po.report-view/count-report-row) 18))"}
+   {:script "(rt.po.report-view/set-search-text \"Stock 004\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Stock 004\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"New 'Stock'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"View 'Stock 004'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Edit 'Stock 004'\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"Delete 'Stock 004'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+   {:script "(rt.po.report-view/set-search-text \"Stock 099\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Stock 099\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"New 'Stock'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"View 'Stock 099'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Edit 'Stock 099'\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"Delete 'Stock 099'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+   {:script "(rt.po.report-view/set-search-text \"Stock 199\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Stock 199\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"New 'Stock'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"View 'Stock 199'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Edit 'Stock 199'\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"Delete 'Stock 199'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+   {:script "(rt.po.report-view/set-search-text \"Stock 252\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Stock 252\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"New 'Stock'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"View 'Stock 252'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Edit 'Stock 252'\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"Delete 'Stock 252'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+
+   {:script
+    "(rn.common/start-app-and-login (:user-creds-student2 *tc*))"}
+   {:script
+    "(rn.app/open-report \"Stock Report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect (> (rt.po.report-view/count-report-row) 18))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/single-new-button-exists?))"}
+   {:script "(rt.po.report-view/set-search-text \"Stock 004\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Stock 004\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"New 'Stock'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"View 'Stock 004'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Edit 'Stock 004'\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"Delete 'Stock 004'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+   {:script "(rt.po.report-view/set-search-text \"Stock 099\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Stock 099\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"New 'Stock'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"View 'Stock 099'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Edit 'Stock 099'\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"Delete 'Stock 099'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+   {:script "(rt.po.report-view/set-search-text \"Stock 199\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Stock 199\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"New 'Stock'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"View 'Stock 199'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Edit 'Stock 199'\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"Delete 'Stock 199'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+   {:script "(rt.po.report-view/set-search-text \"Stock 252\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Stock 252\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"New 'Stock'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"View 'Stock 252'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Edit 'Stock 252'\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"Delete 'Stock 252'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+
+   {:script
+    "(comment \"===================================================>View, Edit and Delete==========================\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/select-access-rule-operation \"Students (User Role)\" \"Stock\" \"Stocks - my test today - 02112015\" \"View, Edit and Delete\")"}
+   {:script
+    "(rt.po.access-rules/enable-access-rule \"Students (User Role)\" \"Stock\" \"Stocks - my test today - 02112015\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+
+   {:script
+    "(rn.common/start-app-and-login (:user-creds-student1 *tc*))"}
+   {:script
+    "(rn.app/open-report \"Stock Report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect (> (rt.po.report-view/count-report-row) 18))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/single-new-button-exists?))"}
+   {:script "(rt.po.report-view/set-search-text \"Stock 004\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Stock 004\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"New 'Stock'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"View 'Stock 004'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Edit 'Stock 004'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Delete 'Stock 004'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+   {:script "(rt.po.report-view/set-search-text \"Stock 099\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Stock 099\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"New 'Stock'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"View 'Stock 099'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Edit 'Stock 099'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Delete 'Stock 099'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+   {:script "(rt.po.report-view/set-search-text \"Stock 199\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Stock 199\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"New 'Stock'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"View 'Stock 199'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Edit 'Stock 199'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Delete 'Stock 199'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+   {:script "(rt.po.report-view/set-search-text \"Stock 252\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Stock 252\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"New 'Stock'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"View 'Stock 252'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Edit 'Stock 252'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Delete 'Stock 252'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+
+   {:script
+    "(rn.common/start-app-and-login (:user-creds-student2 *tc*))"}
+   {:script
+    "(rn.app/open-report \"Stock Report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect (> (rt.po.report-view/count-report-row) 18))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/single-new-button-exists?))"}
+   {:script "(rt.po.report-view/set-search-text \"Stock 004\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Stock 004\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"New 'Stock'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"View 'Stock 004'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Edit 'Stock 004'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Delete 'Stock 004'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+   {:script "(rt.po.report-view/set-search-text \"Stock 099\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Stock 099\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"New 'Stock'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"View 'Stock 099'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Edit 'Stock 099'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Delete 'Stock 099'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+   {:script "(rt.po.report-view/set-search-text \"Stock 199\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Stock 199\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"New 'Stock'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"View 'Stock 199'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Edit 'Stock 199'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Delete 'Stock 199'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+   {:script "(rt.po.report-view/set-search-text \"Stock 252\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Stock 252\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"New 'Stock'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"View 'Stock 252'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Edit 'Stock 252'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Delete 'Stock 252'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+
+   {:script
+    "(comment \"===================================================>Students - my test today - 16102015: Create, View and Delete ===============\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/select-access-rule-operation \"Students (User Role)\" \"Stock\" \"Stocks - my test today - 02112015\" \"Create, View and Edit\")"}
+   {:script
+    "(rt.po.access-rules/enable-access-rule \"Students (User Role)\" \"Stock\" \"Stocks - my test today - 02112015\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script
+    "(rn.common/start-app-and-login (:user-creds-student1 *tc*))"}
+   {:script
+    "(rn.app/open-report \"Stock Report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect (> (rt.po.report-view/count-report-row) 18))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/single-new-button-exists?))"}
+   {:script "(rt.po.report-view/set-search-text \"Stock 004\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Stock 004\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"New 'Stock'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"View 'Stock 004'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Edit 'Stock 004'\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"Delete 'Stock 004'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+   {:script "(rt.po.report-view/set-search-text \"Stock 099\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Stock 099\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"New 'Stock'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"View 'Stock 099'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Edit 'Stock 099'\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"Delete 'Stock 099'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+   {:script "(rt.po.report-view/set-search-text \"Stock 199\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Stock 199\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"New 'Stock'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"View 'Stock 199'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Edit 'Stock 199'\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"Delete 'Stock 199'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+   {:script "(rt.po.report-view/set-search-text \"Stock 252\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Stock 252\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"New 'Stock'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"View 'Stock 252'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Edit 'Stock 252'\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"Delete 'Stock 252'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+
+   {:script
+    "(rn.common/start-app-and-login (:user-creds-student2 *tc*))"}
+   {:script
+    "(rn.app/open-report \"Stock Report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect (> (rt.po.report-view/count-report-row) 18))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/single-new-button-exists?))"}
+   {:script "(rt.po.report-view/set-search-text \"Stock 004\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Stock 004\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"New 'Stock'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"View 'Stock 004'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Edit 'Stock 004'\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"Delete 'Stock 004'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+   {:script "(rt.po.report-view/set-search-text \"Stock 099\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Stock 099\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"New 'Stock'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"View 'Stock 099'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Edit 'Stock 099'\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"Delete 'Stock 099'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+   {:script "(rt.po.report-view/set-search-text \"Stock 199\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Stock 199\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"New 'Stock'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"View 'Stock 199'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Edit 'Stock 199'\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"Delete 'Stock 199'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+   {:script "(rt.po.report-view/set-search-text \"Stock 252\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Stock 252\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"New 'Stock'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"View 'Stock 252'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Edit 'Stock 252'\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"Delete 'Stock 252'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+
+   {:script
+    "(comment \"===================================================>Create, View, Edit and Delete =======================\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/select-access-rule-operation \"Students (User Role)\" \"Stock\" \"Stocks - my test today - 02112015\" \"Full (Create, View, Edit and Delete)\")"}
+   {:script
+    "(rt.po.access-rules/enable-access-rule \"Students (User Role)\" \"Stock\" \"Stocks - my test today - 02112015\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script
+    "(rn.common/start-app-and-login (:user-creds-student1 *tc*))"}
+   {:script
+    "(rn.app/open-report \"Stock Report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect (> (rt.po.report-view/count-report-row) 18))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/single-new-button-exists?))"}
+   {:script "(rt.po.report-view/set-search-text \"Stock 004\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Stock 004\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"New 'Stock'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"View 'Stock 004'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Edit 'Stock 004'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Delete 'Stock 004'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+   {:script "(rt.po.report-view/set-search-text \"Stock 099\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Stock 099\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"New 'Stock'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"View 'Stock 099'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Edit 'Stock 099'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Delete 'Stock 099'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+   {:script "(rt.po.report-view/set-search-text \"Stock 199\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Stock 199\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"New 'Stock'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"View 'Stock 199'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Edit 'Stock 199'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Delete 'Stock 199'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+   {:script "(rt.po.report-view/set-search-text \"Stock 252\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Stock 252\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"New 'Stock'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"View 'Stock 252'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Edit 'Stock 252'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Delete 'Stock 252'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+
+   {:script
+    "(rn.common/start-app-and-login (:user-creds-student2 *tc*))"}
+   {:script
+    "(rn.app/open-report \"Stock Report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect (> (rt.po.report-view/count-report-row) 18))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/single-new-button-exists?))"}
+   {:script "(rt.po.report-view/set-search-text \"Stock 004\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Stock 004\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"New 'Stock'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"View 'Stock 004'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Edit 'Stock 004'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Delete 'Stock 004'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+   {:script "(rt.po.report-view/set-search-text \"Stock 099\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Stock 099\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"New 'Stock'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"View 'Stock 099'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Edit 'Stock 099'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Delete 'Stock 099'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+   {:script "(rt.po.report-view/set-search-text \"Stock 199\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Stock 199\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"New 'Stock'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"View 'Stock 199'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Edit 'Stock 199'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Delete 'Stock 199'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+   {:script "(rt.po.report-view/set-search-text \"Stock 252\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Stock 252\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"New 'Stock'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"View 'Stock 252'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Edit 'Stock 252'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Delete 'Stock 252'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+
+   {:script
+    "(comment \"===================================================> None =======================\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/select-access-rule-operation \"\" \"Stock\" \"Stocks - my test today - 02112015\" \"None\")"}
+   {:script
+    "(rt.po.access-rules/enable-access-rule \"Students (User Role)\" \"Stock\" \"Stocks - my test today - 02112015\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script
+    "(rn.common/start-app-and-login (:user-creds-student1 *tc*))"}
+   {:script
+    "(rn.app/open-report \"Stock Report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect (= (rt.po.report-view/count-report-row) 0))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/single-new-button-exists?))"}
+
+   {:script
+    "(rn.common/start-app-and-login (:user-creds-student2 *tc*))"}
+   {:script
+    "(rn.app/open-report \"Stock Report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect (= (rt.po.report-view/count-report-row) 0))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/single-new-button-exists?))"}
+
+   {:script
+    "(comment \"===========Below is to restore env back to default. ==============\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/delete-access-rule \"Students (User Role)\" \"Stock\" \"Stocks - my test today - 02112015\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   ],
+  :type :test,
+  :source "./test-db",
+  :modified "20151111-101453",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds-students],
+  :id
+  :rn/security/usersInSameRuleSet--buttons-and-menu-items-on-report,
+  :teardown
+  [{:script
+    "(comment \"+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\")"}
+   {:script
+    "(comment \"======================Below is forced evn. reset to bring no impact for other test cases. ==========================\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"System Administrator (User Account)\")"}
+   {:script
+    "(if (> (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/set-search-text \"Stocks - my test today - 02112015\") (if (> (rt.po.report-view/count-report-row) 1) (do (rt.po.access-rules/click-edit-button) (rt.po.access-rules/delete-access-rule \"Students (User Role)\" \"Stock\" \"Stocks - my test today - 02112015\") (rt.po.access-rules/click-save-button)))))"}
+   {:script
+    "(rt.po.report-view/set-search-text \"System Administrator (User Account)\")"}
+   {:script
+    "(if (= (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/set-search-text \"Stocks - my test today - 02112015\") (if (> (rt.po.report-view/count-report-row) 0) (do (rt.po.access-rules/click-edit-button) (rt.po.access-rules/delete-access-rule \"Students (User Role)\" \"Stock\" \"Stocks - my test today - 02112015\") (rt.po.access-rules/click-save-button)))))"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Stocks - my test today - 02112015\")"}],
+  :modified-by "not-implemented"}]

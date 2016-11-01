@@ -1,0 +1,19 @@
+[{:tags [:desktop],
+  :test-filter
+  "(and (has-tags? [\"prod\" \"regression\" \"desktop\"] %) (not (has-some-tags? [\"quarantined\" \"not-on-firefox\"] %)) (has-index-in-range? 100 199 %))",
+  :tests [],
+  :name "Regression tests",
+  :each-fixtures
+  [:common/fixture/handle-errors
+   :common/fixture/wait-ng
+   :common/fixture/firefox
+   :common/fixture/test-account-creds],
+  :type :testsuite,
+  :source "../RnTests/test-db",
+  :modified "20150810-133722",
+  :setup [],
+  :id :rn/suites/regression-firefox-3,
+  :teardown [],
+  :doc "",
+  :modified-by "not-implemented",
+  :once-fixtures []}]

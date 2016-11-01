@@ -1,0 +1,54 @@
+[{:tags
+  [:nomodify
+   :prod
+   :area/report_builder
+   :regression
+   :desktop
+   :user/abida],
+  :tests [],
+  :name "Ensure we can expand and collapse a grouped report",
+  :steps
+  [{:script "(rt.po.app/navigate-via-tiles \"Foster University\")"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(rt.po.app/enable-config-mode )"}
+   {:script "(rt.po.report-builder/access-build-mode )"}
+   {:script "(rt.po.report-builder/click-saveas-report-button )"}
+   {:script
+    "(rt.po.report-builder/set-report-new-name \"Expand_Collapse\")"}
+   {:script "(rt.po.report-builder/click-ok )"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Postcode\" true)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Postcode\" \"Group By\")"}
+   {:script
+    "(expect-equals \"0632\" (rt.po.report-builder/get-group-by-row-text \"0632\"))"}
+   {:script "(rt.po.report-builder/click-group-by-row \"0632\")"}
+   {:script
+    "(expect-equals false (rt.po.report-builder/check-group-by-row-expand? \"0632\"))"}
+   {:script "(rt.po.report-builder/click-group-by-row \"0632\")"}
+   {:script
+    "(expect-equals true (rt.po.report-builder/check-group-by-row-expand? \"0632\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script "(rt.po.report-builder/click-close-button )"}
+   {:script
+    "(comment (rt.po.app/navigate-to-item \"Foster University\" \"Reports/Expand_Collapse\"))"}
+   {:script
+    "(rn.app/open-report \"Expand_Collapse\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script
+    "(expect-equals \"0632\" (rt.po.report-builder/get-group-by-row-text \"0632\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-builder/check-group-by-row-expand? \"0632\"))"}
+   {:script "(rt.po.report-builder/click-group-by-row \"0632\")"}
+   {:script
+    "(expect-equals false (rt.po.report-builder/check-group-by-row-expand? \"0632\"))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160913-112230",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/reportbuilder/expand-collapse-grouped-report,
+  :teardown
+  [{:script
+    "(comment (rt.po.app/remove-nav-item \"Expand_Collapse\"))"}],
+  :modified-by "not-implemented"}]

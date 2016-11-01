@@ -1,0 +1,39 @@
+[{:tags [:desktop],
+  :tests [],
+  :name "New Report Drivers on Chrome",
+  :steps
+  [{:script "(rt.po.report-builder/click-add-relationship-button)",
+        :target-msec 500}
+   {:script
+    "(rt.po.report-add-relationship/add-relationship \"AA_Herb\")",
+        :target-msec 500}
+   {:script
+    "(rt.po.report-add-relationship/add-relationship \"AA_Herb\")",
+        :target-msec 500}
+   {:script
+    "(rt.po.report-add-relationship/remove-relationship \"AA_Herb\")",
+        :target-msec 500}
+   {:script
+    "(rt.po.report-add-relationship/remove-relationship \"AA_Herb\")",
+        :target-msec 500}
+   {:script
+    "(rt.po.report-add-relationship/add-relationship \"AA_Truck\")",
+        :target-msec 500}
+   {:script "(rt.po.report-add-relationship/set-type \"Lookups\")",
+        :target-msec 500}
+   {:script
+    "(rt.po.report-add-relationship/add-relationship \"AA_Drinks\")",
+        :target-msec 500}
+   {:script " (rt.po.report-add-relationship/click-ok)",
+        :target-msec 500}],
+  :type :test,
+  :checks [],
+  :source "../RnTests/test-db",
+  :modified "20150601-153807",
+  :setup
+  [:qa-daily/scripts/reports/open-AutomationReport-in-build-mode],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :qa-daily/reports/test-add-report-relationship-drivers,
+  :teardown [],
+  :modified-by "not-implemented",
+  :data {}}]

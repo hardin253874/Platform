@@ -1,0 +1,80 @@
+[{:tags [:desktop :prod],
+  :tests [],
+  :name "Application Building - Form Builder",
+  :steps
+  [{:script "(rt.po.app/navigate-via-tiles \"Performance Test\")",
+    :target-msec 5000}
+   {:script "(rt.po.app/select-app-tab \"Forms\")",
+    :target-msec 5000}
+   {:script
+    "(rt.po.report-view/choose-report-row-action \"Plane 01\" \"View\")",
+    :target-msec 2000}
+   {:script "(rt.po.view-form/open-form-builder)",
+    :metric-id "Open Form Builder - Small Form",
+    :target-msec 2000}
+   {:script
+    "(rt.po.form-builder/show-field-properties-dialog \"Pilot\")",
+    :metric-id "Open Field Properties - Small Form",
+    :target-msec 2000}
+   {:script "(rt.po.app/choose-modal-ok)",
+    :metric-id "Close Field Properties - Small Form",
+    :target-msec 2000}
+   {:script "(rt.po.form-builder/save)",
+    :metric-id "Save Form Builder - Small Form",
+    :target-msec 2000}
+   {:script "(rt.po.form-builder/close)",
+    :metric-id "Close Form Builder - Small Form",
+    :target-msec 2000}
+   {:script "(rt.po.app/select-navigator-item \"Medium Form\")",
+    :target-msec 5000}
+   {:script
+    "(rt.po.report-view/choose-report-row-action \"Truck 01\" \"View\")",
+    :target-msec 2000}
+   {:script "(rt.po.view-form/open-form-builder)",
+    :metric-id "Open Form Builder - Medium Form",
+    :target-msec 2000}
+   {:script
+    "(rt.po.form-builder/show-field-properties-dialog \"Type\")",
+    :metric-id "Open Field Properties - Medium Form",
+    :target-msec 2000}
+   {:script "(rt.po.app/choose-modal-ok)",
+    :metric-id "Close Field Properties - Medium Form",
+    :target-msec 2000}
+   {:script "(rt.po.form-builder/save)",
+    :metric-id "Save Form Builder - Medium Form",
+    :target-msec 2000}
+   {:script "(rt.po.form-builder/close)",
+    :metric-id "Close Form Builder - Medium Form",
+    :target-msec 2000}
+   {:script "(rt.po.app/select-navigator-item \"Large Form\")",
+    :target-msec 5000}
+   {:script
+    "(rt.po.report-view/choose-report-row-action \"Car 0001\" \"View\")",
+    :target-msec 2000}
+   {:script "(rt.po.view-form/open-form-builder)",
+    :metric-id "Open Form Builder - Large Form",
+    :target-msec 2000}
+   {:script
+    "(rt.po.form-builder/show-field-properties-dialog \"Colour\")",
+    :metric-id "Open Field Properties - Large Form",
+    :target-msec 2000}
+   {:script "(rt.po.app/choose-modal-ok)",
+    :metric-id "Close Field Properties - Large Form",
+    :target-msec 2000}
+   {:script "(rt.po.form-builder/save)",
+    :metric-id "Save Form Builder - Large Form",
+    :target-msec 2000}
+   {:script "(rt.po.form-builder/close)",
+    :metric-id "Close Form Builder - Large Form",
+    :target-msec 2000}
+   {:script "(rt.po.app/select-app-tab \"Reports\")",
+    :target-msec 5000}],
+  :type :test,
+  :checks [],
+  :source "../RnTests/test-db",
+  :modified "20150602-071320",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :perf/tests/t8,
+  :teardown [],
+  :modified-by "not-implemented"}]

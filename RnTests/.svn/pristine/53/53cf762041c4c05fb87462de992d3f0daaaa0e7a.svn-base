@@ -1,0 +1,13 @@
+[{:tags [:prod :regression :desktop],
+  :tests [],
+  :name "can open default form for a known entity",
+  :steps
+  [{:script "(rt.scripts.edit-form/test-autogen-form-boolean)"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150601-192144",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :edit-form/test-autogen-form-boolean,
+  :teardown [],
+  :modified-by "not-implemented"}]

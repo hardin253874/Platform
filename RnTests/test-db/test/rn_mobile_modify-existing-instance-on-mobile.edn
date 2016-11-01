@@ -1,0 +1,94 @@
+[{:tags [:mobile :modify :user/alex :prod :regression],
+  :tests [],
+  :name "Modify existing instance on Mobile",
+  :steps
+  [{:script "(rn.mobile.app/navigate-to-app-launcher)"}
+   {:script
+    "(rn.mobile.app/navigate-to-application \"Foster University\")"}
+   {:script "(rn.mobile.app/open-navigator)"}
+   {:script "(rn.mobile.app/navigate-to-item nil \"Student report\")"}
+   {:script
+    "(if (rn.mobile.app/navigator-open?) (rn.mobile.app/close-navigator))"}
+   {:script "(rn.mobile.report/expect-row-by-text \"1221\")"}
+   {:script "(rn.mobile.report/double-click-row-by-text \"1221\")"}
+   {:script "(rn.mobile.form/expect-form-title \"Yoshi Joseph\")"}
+   {:script "(rn.mobile.form/edit)"}
+   {:script "(rn.mobile.form/set-choice-value \"Title\" \"Mrs.\")"}
+   {:script
+    "(rn.mobile.form/set-text-field-value \"Full name\" \"John Mathew\")"}
+   {:script
+    "(rn.mobile.form/set-date-field-value \"DOB\" \"10/07/1988\")"}
+   {:script "(rn.mobile.form/clear-lookup \"User Account\")"}
+   {:script
+    "(rn.mobile.form/set-multi-select-choice-value \"Club\" \"Sports\" false)"}
+   {:script
+    "(rn.mobile.form/set-multi-select-choice-value \"Club\" \"Dance\" false)"}
+   {:script
+    "(rn.mobile.form/set-multi-select-choice-value \"Club\" \"Chess\")"}
+   {:script
+    "(rn.mobile.form/set-number-field-value \"Balance\" 67.70)"}
+   {:script "(rn.mobile.form/select-page 4)"}
+   {:script "(rn.mobile.report/click-add)"}
+   {:script "(rn.mobile.report/choose-picker-row \"C10066\")"}
+   {:script
+    "; choosing row in prv step already closes picker .... (rn.mobile.report/close-picker-ok)"}
+   {:script
+    "(when (= (rn.mobile.report/count-report-rows) 2)\n        (rn.mobile.report/right-click-row-by-text \"C10069\")\n        (rn.mobile.report/choose-context-menu \"Remove Link\"))"}
+   {:script "(rn.mobile.form/save)"}
+   {:script "(rn.mobile.form/back)"}
+   {:script "(comment --verify the details just saved-- )"}
+   {:script "(rn.mobile.report/expect-row-by-text \"1221\")"}
+   {:script "(rn.mobile.report/double-click-row-by-text \"1221\")"}
+   {:script "(rn.mobile.form/expect-form-title \"John Mathew\")"}
+   {:script
+    "(rt.test.expects/expect-equals (rn.mobile.form/get-field-value \"Title\") \"Mrs.\")"}
+   {:script
+    "(rt.test.expects/expect-equals (rn.mobile.form/get-field-value \"Full name\") \"John Mathew\")"}
+   {:script
+    "(rt.test.expects/expect-equals (rn.mobile.form/get-field-value \"DOB\") \"10/7/1988\")"}
+   {:script
+    "(rt.test.expects/expect-equals (rn.mobile.form/get-field-value \"User Account\") \"\")"}
+   {:script
+    "(rt.test.expects/expect-equals (rn.mobile.form/get-field-value \"Club\") \"Chess\")"}
+   {:script
+    "(rt.test.expects/expect-equals (rn.mobile.form/get-field-value \"Balance\") \"$ 67.70\")"}
+   {:script "(rn.mobile.form/select-page 4)"}
+   {:script
+    "(rt.test.expects/expect-equals (rn.mobile.report/count-report-rows) 1)"}
+   {:script
+    "(rt.test.expects/expect-equals (rn.mobile.report/get-report-cell-text-content 0 \"Qualification Code\") \"C10066\")"}
+   {:script "(comment --undo... in reverse!!!-- )"}
+   {:script "(rn.mobile.form/edit)"}
+   {:script "(rn.mobile.report/click-add)"}
+   {:script "(rn.mobile.report/choose-picker-row \"C10069\")"}
+   {:script
+    "; choosing row in prev step already closes picker .... (rn.mobile.report/close-picker-ok)"}
+   {:script
+    "(when (= (rn.mobile.report/count-report-rows) 2)\n        (rn.mobile.report/right-click-row-by-text \"C10066\")\n        (rn.mobile.report/choose-context-menu \"Remove Link\"))"}
+   {:script "(rn.mobile.form/select-page 1)"}
+   {:script
+    "(rn.mobile.form/set-number-field-value \"Balance\" 237.5)"}
+   {:script
+    "(rn.mobile.form/set-multi-select-choice-value \"Club\" \"Sports\")"}
+   {:script
+    "(rn.mobile.form/set-multi-select-choice-value \"Club\" \"Dance\")"}
+   {:script
+    "(rn.mobile.form/set-multi-select-choice-value \"Club\" \"Chess\" false)"}
+   {:script
+    "(rn.mobile.form/set-lookup \"User Account\" \"Yoshi.Joseph\")"}
+   {:script
+    "(rn.mobile.form/set-date-field-value \"DOB\" \"10/13/1988\")"}
+   {:script
+    "(rn.mobile.form/set-text-field-value \"Full name\" \"Yoshi Joseph\")"}
+   {:script "(rn.mobile.form/set-choice-value \"Title\" \"Mr.\")"}
+   {:script "(rn.mobile.form/save)"}
+   {:script "(rn.mobile.form/back)"}
+   {:script "(rn.mobile.app/navigate-to-app-launcher)"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150730-145933",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/mobile/modify-existing-instance-on-mobile,
+  :teardown [],
+  :modified-by "not-implemented"}]

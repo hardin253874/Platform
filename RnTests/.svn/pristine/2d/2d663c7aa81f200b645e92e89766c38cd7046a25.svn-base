@@ -1,0 +1,179 @@
+[{:tags
+  [:nomodify :prod :regression :user/shaofen :desktop :area/security],
+  :tests [],
+  :name
+  "Access check when access rule report has analyser condition on currency field and data change in currency field",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script "(rt.po.access-rules/add-new-access-rule)"}
+   {:script
+    "(expect-equals true (rt.po.access-rules-new/new-dialog-visible?))"}
+   {:script
+    "(rt.po.access-rules-new/set-role \"Students (User Role)\")"}
+   {:script "(rt.po.access-rules-new/set-object \"Student\")"}
+   {:script "(rt.po.access-rules-new/click-ok)"}
+   {:script
+    "(rt.po.access-rules/edit-access-rule \"Students (User Role)\" \"Student\" \"Student\")"}
+   {:script
+    "(rt.po.report-builder/select-field-checkboxes \"Balance\" true true)"}
+   {:script
+    "(rt.po.report-builder/set-name \"Students with balance lower than or = -150.0\")"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script
+    "(expect-equals true (rt.po.report-view/analyzer-field-exists? \"Balance\"))"}
+   {:script
+    "(rt.po.report-view/set-analyzer-field-oper \"Balance\" \"<=\")"}
+   {:script
+    "(rt.po.report-view/set-analyzer-string \"Balance\" \"-150.0\")"}
+   {:script "(rt.po.report-view/apply-analyzer)"}
+   {:script "(rt.po.report-builder/save)"}
+   {:script "(rt.po.report-builder/close)"}
+   {:script
+    "(rt.po.access-rules/enable-access-rule \"Students (User Role)\" \"Student\" \"Students with balance lower than or = -150.0\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 3 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Akeem Pierce\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View 'Akeem Pierce'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit 'Akeem Pierce'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete 'Akeem Pierce'\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Akeem Pierce\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Nelle Odom\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"Edit\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Nelle Odom\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Latifah Guy\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View 'Latifah Guy'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit 'Latifah Guy'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete 'Latifah Guy'\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Latifah Guy\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(rt.po.report-view/set-search-text \"Latifah Guy\")"}
+   {:script
+    "(comment \"TODO: the following a few steps are to modify currency value in form.\")"}
+   {:script
+    "(expect-equals \"$-154.17\" (rt.po.report-view/get-value-for-row-and-column \"1127\" \"Balance\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Latifah Guy\")"}
+   {:script "(rt.po.app/choose-context-menu \"Edit\")"}
+   {:script
+    "(expect-equals -154.17 (rt.po.edit-form/number-field-value \"Balance\"))"}
+   {:script
+    "(rt.po.edit-form/set-number-field-value \"Balance\" \"$154.17\")"}
+   {:script
+    "(expect-equals 154.17 (rt.po.edit-form/number-field-value \"Balance\"))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script ";; todo: please doc reason for long sleep"}
+   {:script "(rn.common/sleep 60000)"}
+   {:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 2 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Akeem Pierce\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View 'Akeem Pierce'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit 'Akeem Pierce'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete 'Akeem Pierce'\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Akeem Pierce\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Nelle Odom\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"Edit\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Nelle Odom\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(rt.po.report-view/set-search-text \"Latifah Guy\")"}
+   {:script
+    "(expect-equals \"$154.17\" (rt.po.report-view/get-value-for-row-and-column \"1127\" \"Balance\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Latifah Guy\")"}
+   {:script "(rt.po.app/choose-context-menu \"Edit\")"}
+   {:script
+    "(expect-equals 154.17 (rt.po.edit-form/number-field-value \"Balance\"))"}
+   {:script
+    "(rt.po.edit-form/set-number-field-value \"Balance\" \"$-154.17\")"}
+   {:script
+    "(expect-equals -154.17 (rt.po.edit-form/number-field-value \"Balance\"))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/delete-access-rule \"Students (User Role)\" \"Student\" \"Students with balance lower than or = -150.0\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20151109-095555",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds],
+  :id :rn/security/multiAccessRules-and-DataChange---currency,
+  :teardown
+  [{:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(rt.po.report-view/set-search-text \"Latifah Guy\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Latifah Guy\")"}
+   {:script "(rt.po.app/choose-context-menu \"Edit\")"}
+   {:script
+    "(if (> (rt.po.edit-form/number-field-value \"Balance\") 0) (do (rt.po.edit-form/set-number-field-value \"Balance\" \"$-154.17\")))"}
+   {:script
+    "(expect-equals -154.17 (rt.po.edit-form/number-field-value \"Balance\"))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"System Administrator (User Account)\")"}
+   {:script
+    "(if (> (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/set-search-text \"Students with balance lower than or = -150.0\") (if (> (rt.po.report-view/count-report-row) 1) (do (rt.po.access-rules/click-edit-button) (rt.po.access-rules/delete-access-rule \"Students (User Role)\" \"Student\" \"Students with balance lower than or = -150.0\") (rt.po.access-rules/click-save-button)))))"}
+   {:script
+    "(rt.po.report-view/set-search-text \"System Administrator (User Account)\")"}
+   {:script
+    "(if (= (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/set-search-text \"Students with balance lower than or = -150.0\") (if (> (rt.po.report-view/count-report-row) 0) (do (rt.po.access-rules/click-edit-button) (rt.po.access-rules/delete-access-rule \"Students (User Role)\" \"Student\" \"Students with balance lower than or = -150.0\") (rt.po.access-rules/click-save-button)))))"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Students with balance lower than or = -150.0\")"}],
+  :modified-by "not-implemented"}]

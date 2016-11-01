@@ -1,0 +1,119 @@
+[{:tags
+  [:area/report-builder
+   :nomodify
+   :prod
+   :regression
+   :desktop
+   :user/abida],
+  :tests [],
+  :name "Apply and remove summarize",
+  :steps
+  [{:script "(rt.po.app/add-report (:section *tc*) )"}
+   {:script "(rt.po.report-new/set-name \"SummarizeReport\")"}
+   {:script "(rt.po.report-new/set-report-base-on \"Student\")"}
+   {:script "(rt.po.report-new/click-ok )"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Name\" true)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"State\" true)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Email address\" true)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"DOB\" true)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Balance\" true)"}
+   {:script "(rt.po.report-builder/click-add-relationship-button )"}
+   {:script "(rt.po.report-add-relationship/set-type \"Lookups\")"}
+   {:script
+    "(rt.po.report-add-relationship/add-relationship \"Library card #\")"}
+   {:script "(rt.po.report-add-relationship/options-expand )"}
+   {:script "(rt.scripts.common/sleep 2000)"}
+   {:script
+    "(rt.po.report-add-relationship/set-add-name-field-to-the-report false)"}
+   {:script "(rt.po.report-builder/click-ok )"}
+   {:script
+    "(rt.po.report-builder/select-treenode \"Library card #\")"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Borrow limit\" true)"}
+   {:script "(rt.po.report-builder/select-treenode \"Student\")"}
+   {:script "(rt.po.report-builder/click-summarise-button )"}
+   {:script
+    "(rt.po.report-summarise/set-summarise-option \"Student\" \"Count unique\" true)"}
+   {:script
+    "(rt.po.report-summarise/set-summarise-option \"State\" \"Count\" true)"}
+   {:script
+    "(rt.po.report-summarise/set-summarise-option \"Email address\" \"Count all\" true)"}
+   {:script
+    "(rt.po.report-summarise/set-summarise-option \"DOB\" \"Min\" true)"}
+   {:script
+    "(rt.po.report-summarise/set-summarise-option \"Balance\" \"Sum\" true)"}
+   {:script
+    "(rt.po.report-summarise/set-summarise-option \"Library card # Borrow limit\" \"Max\" true)"}
+   {:script "(rt.po.report-builder/click-ok )"}
+   {:script
+    "(expect-equals \"100\" (rt.po.report-view/get-report-cell-text-content 0 \"Count unique: Student\"))"}
+   {:script
+    "(expect-equals \"91\" (rt.po.report-view/get-report-cell-text-content 0 \"Count: State\"))"}
+   {:script
+    "(expect-equals \"100\" (rt.po.report-view/get-report-cell-text-content 0 \"Count all: Email address\"))"}
+   {:script
+    "(expect-equals \"8/11/1975\" (rt.po.report-view/get-report-cell-text-content 0 \"Min: DOB\"))"}
+   {:script
+    "(expect-equals \"$4,791.67\" (rt.po.report-view/get-report-cell-text-content 0 \"Sum: Balance\"))"}
+   {:script
+    "(expect-equals \"10\" (rt.po.report-view/get-report-cell-text-content 0 \"Max: Library card # Borrow limit\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script "(rt.po.report-builder/click-close-button )"}
+   {:script
+    "(rn.app/open-report \"SummarizeReport\" {:app-name \"Foster University\" :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"100\" (rt.po.report-view/get-report-cell-text-content 0 \"Count unique: Student\"))"}
+   {:script
+    "(expect-equals \"91\" (rt.po.report-view/get-report-cell-text-content 0 \"Count: State\"))"}
+   {:script
+    "(expect-equals \"100\" (rt.po.report-view/get-report-cell-text-content 0 \"Count all: Email address\"))"}
+   {:script
+    "(expect-equals \"8/11/1975\" (rt.po.report-view/get-report-cell-text-content 0 \"Min: DOB\"))"}
+   {:script
+    "(expect-equals \"$4,791.67\" (rt.po.report-view/get-report-cell-text-content 0 \"Sum: Balance\"))"}
+   {:script
+    "(expect-equals \"10\" (rt.po.report-view/get-report-cell-text-content 0 \"Max: Library card # Borrow limit\"))"}
+   {:script "(rt.po.report-builder/access-build-mode )"}
+   {:script "(rt.po.report-builder/click-summarise-button )"}
+   {:script "(rt.po.report-summarise/click-remove-summarise )"}
+   {:script
+    "(expect-equals \"Selma Terrell\" (rt.po.report-view/get-report-cell-text-content 0 \"Student\"))"}
+   {:script
+    "(expect-equals \"SA\" (rt.po.report-view/get-report-cell-text-content 0 \"State\"))"}
+   {:script
+    "(expect-equals \"Selma.Terrell@non.ca\" (rt.po.report-view/get-report-cell-text-content 0 \"Email address\"))"}
+   {:script
+    "(expect-equals \"1/9/1988\" (rt.po.report-view/get-report-cell-text-content 0 \"DOB\"))"}
+   {:script
+    "(expect-equals \"$-79.17\" (rt.po.report-view/get-report-cell-text-content 0 \"Balance\"))"}
+   {:script
+    "(expect-equals \"6\" (rt.po.report-view/get-report-cell-text-content 0 \"Library card # Borrow limit\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script "(rt.po.report-builder/click-close-button )"}
+   {:script
+    "(rn.app/open-report \"SummarizeReport\" {:app-name \"Foster University\" :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"Selma Terrell\" (rt.po.report-view/get-report-cell-text-content 0 \"Student\"))"}
+   {:script
+    "(expect-equals \"SA\" (rt.po.report-view/get-report-cell-text-content 0 \"State\"))"}
+   {:script
+    "(expect-equals \"Selma.Terrell@non.ca\" (rt.po.report-view/get-report-cell-text-content 0 \"Email address\"))"}
+   {:script
+    "(expect-equals \"1/9/1988\" (rt.po.report-view/get-report-cell-text-content 0 \"DOB\"))"}
+   {:script
+    "(expect-equals \"$-79.17\" (rt.po.report-view/get-report-cell-text-content 0 \"Balance\"))"}
+   {:script
+    "(expect-equals \"6\" (rt.po.report-view/get-report-cell-text-content 0 \"Library card # Borrow limit\"))"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150601-153821",
+  :setup [],
+    :fixtures [:common/fixture/test-account-creds :common/fixture/login :rn/section/createsection], ,
+  :id :rn/reportbuilder/apply-and-remove-summarise,
+  :teardown [{:script "(rt.po.app/delete-nav-item (:section *tc*))"}],
+  :modified-by "not-implemented"}]

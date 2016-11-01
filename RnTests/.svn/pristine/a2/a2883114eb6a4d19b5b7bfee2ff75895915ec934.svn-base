@@ -1,0 +1,21 @@
+[{:tags [:desktop],
+  :test-filter
+  "(and (has-tags? [\"mobile\"] %) (not (has-some-tags? [\"prod\" \"samples\"] %)))",
+  :tests [],
+  :name "Non-prod mobile tests ",
+  :each-fixtures
+  [:common/fixture/handle-errors
+   :common/fixture/wait-ng
+   :common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds
+   :common/fixture/chrome-iPhone],
+  :type :testsuite,
+  :source "../RnTests/test-db",
+  :modified "20150601-184636",
+  :setup [{:script ""}],
+  :id :rn/suites/development-mobile,
+  :teardown [{:script ""}],
+  :doc "",
+  :modified-by "not-implemented",
+  :once-fixtures []}]

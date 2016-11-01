@@ -1,0 +1,9 @@
+[{:id :common/fixture/handle-errors,
+  :type :testfixture,
+  :name "Take screenshots and browser logs on failures and errors",
+  :setup ["(rn.common/clear-browser-logs)" "(rn.common/log-free-java-mem)"]
+  :teardown ["(rn.common/capture-browser-logs :errors-only)"]
+  :after-fail
+  ["(rn.common/take-screenshot)" "(rn.common/capture-browser-logs)"],
+  :after-error
+  ["(rn.common/take-screenshot)" "(rn.common/capture-browser-logs)"]}]

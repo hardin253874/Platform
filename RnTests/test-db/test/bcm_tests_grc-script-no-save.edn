@@ -1,0 +1,55 @@
+[{:tags [:desktop :app/bcm],
+  :steps
+  [{:script "(rn.common/start-app-and-login (:login-creds *tc*))",
+    :target-msec 4000}
+   {:script "(think 5)"}
+   {:script "(rt.po.app/navigate-to \"Business Continuity Planning\")",
+    :target-msec 4000}
+   {:script "(think 5)", :target-msec 4000}
+   {:script "(rt.po.app/select-app-tab \"Business Units\")",
+    :target-msec 3500}
+   {:script "(rt.po.app/select-navigator-item \"Business Units\")",
+    :target-msec 3500}
+   {:script "(think 5)"}
+   {:script "(rt.po.app/navigate-to \"Risk Management\")",
+    :target-msec 4000}
+   {:script "(rt.po.app/select-app-tab \"Operational Risk\")",
+    :target-msec 4000}
+   {:script
+    "(rt.po.app/select-navigator-item \"Business Unit Risks\")",
+    :target-msec 3000}
+   {:script "(think 10)"}
+   {:script
+    "(rt.po.screen/open-report-action-menu-on-screen \"Business Unit Risk Report\")",
+    :target-msec 1000}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20151008-112659",
+  :setup
+  [{:script
+    "(when (empty? (get-test-data :grc-creds :quiet)) (rn.common/start-app-and-login))"}
+   {:script
+    "(setonce-test-data :grc-creds rn.services.security/ensure-test-accounts [\"BCP Manager\" \"Compliance Manager\" \"Risk Manager\"] \"GRC\" 20)"}
+   {:script
+    "(identity {:login-creds (get-random-test-data :grc-creds)})"}
+   {:script "(rn.common/start-app-and-login (:login-creds *tc*))"}
+   {:script
+    "(identity {:owner-name (rn.services.security/get-account-holder-name (-> *tc* :login-creds :username))})"}
+   {:script
+    "(identity {:br-name (make-test-name \"BR\"), :bu-name (make-test-name \"BU\"), :bf-name (make-test-name \"BF\")})"}
+   {:script
+    "(setonce-test-data :risk-impacts rn.common/get-record-names-for-type \"Risk Impact\" {:app-name \"ReadiBCM\"})"}
+   {:script
+    "(setonce-test-data :likelihoods rn.common/get-record-names-for-type \"Risk Likelihood Rating\" {:app-name \"ReadiBCM\"})"}
+   {:script
+    "(setonce-test-data :risk-drivers rn.common/get-choice-values \"Risk Type (Source)\" {:app-name \"ReadiBCM\"})"}
+   {:script
+    "(setonce-test-data :risk-levels rn.common/get-choice-values \"Level of Risk\" {:app-name \"ReadiBCM\"})"}
+   {:script
+    "(setonce-test-data :op-impacts rn.common/get-choice-values \"Function Operational Impact\" {:app-name \"ReadiBCM\"})"}
+   {:script
+    "(setonce-test-data :grc-mitigating-controls rn.common/get-record-names-for-type-via-report \"Mitigating Control\")"}],
+  :fixtures [:common/fixture/wait-ng],
+  :id :bcm/tests/grc-script-no-save,
+  :teardown [],
+  :modified-by "not-implemented"}]

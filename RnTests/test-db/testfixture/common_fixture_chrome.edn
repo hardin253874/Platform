@@ -1,0 +1,4 @@
+[{:id :common/fixture/chrome,
+  :type :testfixture,
+  :name "Chrome",
+  :data {:target :chrome}}]

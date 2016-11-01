@@ -1,0 +1,182 @@
+[{:tags [:user/abida :prod :desktop],
+  :name "Submitting a leave",
+  :steps
+  [{:script
+    "(rn.common/start-app-and-login {:password \"Readi911\", :username \"dj.submitter\"})"}
+   {:script "(rt.po.app/navigate-via-tiles \"Leave\")"}
+   {:script
+    "(rn.app/open-report \"My Leave Requests\" {:app-name \"Leave\"})"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New 'Leave'\")"}
+   {:script "(rt.scripts/think 2)"}
+   {:script
+    "(comment loading the form takes time andThe next step is to immediately open the lookup picker hence it needs time)"}
+   {:script
+    "(rt.po.edit-form/set-lookup-value \"Manager\" \"Jude Jacobs\")"}
+   {:script
+    "(rt.po.edit-form/set-multiline \"Comments/Reason\" \"Got personal work\")"}
+   {:script "(rt.po.common/form-scroll-to-bottom)"}
+   {:script
+    "(rt.po.edit-form/set-choice-value \"Leave Type\" \"Annual Leave\")"}
+   {:script
+    "(comment (rt.po.edit-form/set-date-field-value \"First Day of Leave\" (make-local-date 2016 6 6)))"}
+   {:script "(rt.po.edit-form/set-today-date \"First Day of Leave\")"}
+   {:script
+    "(comment (rt.po.edit-form/set-date-field-value \"Last Day of Leave\" (make-local-date 2016 6 6)))"}
+   {:script "(rt.po.edit-form/set-today-date \"Last Day of Leave\")"}
+   {:script
+    "(rt.po.edit-form/set-number-field-value \"Number of Days\" \"1\")"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script
+    "(rn.app/open-report \"My Leave Requests\" {:app-name \"Leave\"})"}
+   {:script
+    "(expect-equals \"Darren Jacobs\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Employee\"))"}
+   {:script
+    "(comment (expect-equals \"\" (rt.po.report-view/get-report-cell-text-content \"0\" \"First Day of Leave\")))"}
+   {:script
+    "(comment (expect-equals (rt.po.common/get-today-local-date-string \"dd/MM/yyyy\") (rt.po.report-view/get-report-cell-text-content \"0\" \"First Day of Leave\")))"}
+   {:script
+    "(expect-equals (rt.po.common/get-today-local-date-string-us-format) (rt.po.report-view/get-report-cell-text-content \"0\" \"First Day of Leave\"))"}
+   {:script
+    "(comment (expect-equals (rt.po.common/get-today-local-date-string \"dd/MM/yyyy\") (rt.po.report-view/get-report-cell-text-content \"0\" \"Last Day of Leave\")))"}
+   {:script
+    "(expect-equals (rt.po.common/get-today-local-date-string-us-format) (rt.po.report-view/get-report-cell-text-content \"0\" \"Last Day of Leave\"))"}
+   {:script
+    "(expect-equals \"Annual Leave\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Leave Type\"))"}
+   {:script
+    "(expect-equals \"Awaiting Approval\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Leave Status\"))"}
+   {:script
+    "(expect-equals \"1.0\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Number of Days\"))"}
+   {:script
+    "(comment (rn.common/start-app-and-login {:password \"Password@123\", :username \"MMcGonagall\"}))"}
+   {:script
+    "(rn.common/start-app-and-login {:password \"Readi911\", :username \"jj.approver\"})"}
+   {:script "(rt.po.app/navigate-via-tiles \"Leave\")"}
+   {:script
+    "(rn.app/open-report \"My Open Approvals\" {:app-name \"Leave\"})"}
+   {:script "(rt.po.report-view/set-search-text \"Darren\")"}
+   {:script "(rn.common/sleep 2000)"}
+   {:script "(comment search needs some time to fetch the result)"}
+   {:script
+    "(comment (expect-equals 1 (rt.po.view-form/get-report-row-count)))"}
+   {:script "(rt.po.report-view/select-row-by-text \"Darren Jacobs\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"View 'Leave'\")"}
+   {:script "(comment context menu takes some time to open)"}
+   {:script "(comment (rt.scripts/think 1))"}
+   {:script "(comment (rt.po.edit-form/click-back-button))"}
+   {:script
+    "(comment (rt.po.report-view/double-click-row-by-text \"Darren Jacobs\"))"}
+   {:script
+    "(comment (when (empty? (rt.po.view-form/get-task-name)) (do (rt.po.edit-form/click-back-button) (rt.po.report-view/open-action-menu) (rt.po.app/choose-context-menu \"View 'Leave'\"))))"}
+   {:script
+    "(comment (when (empty? (rt.po.view-form/get-task-name)) (do (rt.po.edit-form/click-back-button) (rt.po.report-view/double-click-row-by-text \"Darren Jacobs\"))))"}
+   {:script "(rn.common/sleep 2000)"}
+   {:script "(rt.po.view-form/set-task-comment \"Leave Approved\")"}
+   {:script "(rt.po.view-form/choose-task-action \"Approve\")"}
+   {:script "(rt.scripts/think 2)"}
+   {:script
+    "(comment after approving the page takes some time to load)"}
+   {:script "(rt.po.report-view/set-search-text \"Darren\")"}
+   {:script
+    "(comment (rt.po.report-view/select-row-by-text \"Joe Smith\"))"}
+   {:script
+    "(comment (rt.po.report-view/double-click-row-by-text \"Joe Smith\"))"}
+   {:script "(comment (rt.po.edit-form/click-back-button))"}
+   {:script "(expect-equals 0 (rt.po.view-form/get-report-row-count))"}
+   {:script
+    "(rn.common/start-app-and-login {:password \"Readi911\", :username \"ps.processor\"})"}
+   {:script
+    "(rn.app/open-report \"Process Leave\" {:app-name \"Leave\"})"}
+   {:script "(rt.po.report-view/set-search-text \"Darren\")"}
+   {:script "(rt.scripts/think 2)"}
+   {:script "(comment needs time to load the data)"}
+   {:script
+    "(comment (expect-equals 1 (rt.po.view-form/get-report-row-count)))"}
+   {:script
+    "(expect-equals \"Approved\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Leave Status\"))"}
+   {:script
+    "(comment (rt.po.report-view/double-click-row-by-text \"Joe Smith\"))"}
+   {:script "(rt.po.report-view/select-row-by-text \"Darren Jacobs\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"View 'Leave'\")"}
+   {:script "(rn.common/sleep 2000)"}
+   {:script "(comment again context menu opens slowly)"}
+   {:script "(comment (rt.po.edit-form/click-back-button))"}
+   {:script "(comment (rt.po.report-view/open-action-menu))"}
+   {:script
+    "(comment (rt.po.app/choose-context-menu \"View 'Leave'\"))"}
+   {:script
+    "(comment (when (empty? (rt.po.view-form/get-task-name)) (do (rt.po.edit-form/click-back-button) (rt.po.report-view/open-action-menu) (rt.po.app/choose-context-menu \"View 'Leave'\"))))"}
+   {:script "(rt.po.view-form/choose-task-action \"Complete\")"}
+   {:script
+    "(comment (rt.po.report-view/select-row-by-text \"Darren Jacobs\"))"}
+   {:script
+    "(comment (rt.po.report-view/double-click-row-by-text \"Darren Jacobs\"))"}
+   {:script "(comment (rt.po.edit-form/click-back-button))"}
+   {:script
+    "(expect-equals \"Green Tick Format Icon\" (rt.po.report-view/get-report-format-icon \"0\" \"Processed\"))"}
+   {:script
+    "(rn.common/start-app-and-login {:password \"Readi911\", :username \"dj.submitter\"})"}
+   {:script "(rt.po.app/navigate-via-tiles \"Leave\")"}
+   {:script
+    "(rn.app/open-report \"My Leave Requests\" {:app-name \"Leave\"})"}
+   {:script "(rt.po.report-view/set-search-text \"Darren\")"}
+   {:script "(rt.scripts/think 2)"}
+   {:script
+    "(comment needs time to load the values from quick search else the next step is failing)"}
+   {:script "(expect-equals 1 (rt.po.view-form/get-report-row-count))"}
+   {:script
+    "(expect-equals \"Approved\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Leave Status\"))"}
+   {:script
+    "(rn.common/start-app-and-login {:password \"tacoT0wn\", :username \"Administrator\"})"}
+   {:script "(rt.po.app/navigate-via-tiles \"Administration\")"}
+   {:script "(rt.po.app/open-nav-tree-node \"Settings\")"}
+   {:script "(rt.po.app/select-navigator-item \"Email Settings\")"}
+   {:script "(rt.po.view-form/click-lookup-link \"Approvals inbox\")"}
+   {:script "(rt.po.view-form/select-form-tab \"Sent Messages\")"}
+   {:script "(rt.scripts/think 2)"}
+   {:script
+    "(comment i need to put a thiknk of 2 sec to select the tab and load the data else the successive step was failing)"}
+   {:script
+    "(rt.po.report-view/sort-column-by-click-header \"Sent Messages\" \"Sent\")"}
+   {:script "(rt.po.report-view/click-report-header \"Sent\")"}
+   {:script
+    "(comment (def date1 (first (rt.po.report-view/get-active-tab-column-values \"Sent\"))))"}
+   {:script
+    "(comment (rt.po.common/get-date-string-from-date-time-string date1))"}
+   {:script
+    "(comment (def today (rt.po.common/get-today-local-date-string-aus-format)))"}
+   {:script
+    "(expect-equals (rt.po.common/get-today-local-date-string-us-format) (rt.po.common/get-date-string-from-date-time-string (first (rt.po.report-view/get-active-tab-column-values \"Sent\"))))"}
+   {:script
+    "(comment need to comapre the date from the tab report and compare it with today's date to confirm that the workflow is run on so and so date)"}
+   {:script "(comment (rt.po.edit-form/click-back-button))"}
+   {:script "(comment (rt.po.edit-form/click-back-button))"}
+   {:script "(rt.po.app/open-nav-tree-node \"Workflows\")"}
+   {:script "(rt.po.app/select-navigator-item \"Workflow Runs\")"}
+   {:script "(rt.po.report-view/set-search-text \"Leave Approval\")"}
+   {:script "(rt.scripts/think 2)"}
+   {:script
+    "(comment need time to fetch the results from quick search)"}
+   {:script
+    "(expect-equals \"Leave Approval\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Workflow\"))"}
+   {:script
+    "(expect-equals \"Completed\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Status\"))"}
+   {:script "(comment compare the date column)"}
+   {:script "(rt.po.app/navigate-to \"Leave\")"}
+   {:script
+    "(rn.app/open-report \"Process Leave\" {:app-name \"Leave\"})"}
+   {:script "(rt.po.report-view/set-search-text \"Darren\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Darren Jacobs\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"Delete 'Leave'\")"}
+   {:script "(rt.po.edit-form/click-confirm-delete-ok-button)"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20161013-092736",
+  :setup [],
+  :fixtures [],
+  :id :leave/test/submitter,
+  :teardown [],
+  :modified-by "not-implemented"}]

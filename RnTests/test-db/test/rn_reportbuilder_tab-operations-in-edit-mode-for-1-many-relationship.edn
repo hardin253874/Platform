@@ -1,0 +1,93 @@
+[{:tags
+  [:area/report-builder
+   :nomodify
+   :prod
+   :regression
+   :desktop
+   :user/abida],
+  :name "Writing RT Test for the bug 27520",
+  :steps
+  [{:script "(rt.po.app/navigate-via-tiles \"Foster University\")"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script "(rt.po.report-builder/click-saveas-report-button)"}
+   {:script
+    "(rt.po.report-builder/set-report-new-name (:report-name *tc*))"}
+   {:script "(rt.po.report-builder/click-ok)"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-add-relationship-button)"}
+   {:script
+    "(rt.po.report-add-relationship/add-relationship \"Results\")"}
+   {:script "(rt.po.report-add-relationship/click-ok)"}
+   {:script "(rt.po.report-builder/select-treenode \"Results\")"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Selma Terrell\")"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script "(comment (rt.po.edit-form/select-form-tab \"Results\"))"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Results\" \"New 'Results'\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Result name\" \"English Results\")"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script
+    "(expect-equals \"English Results\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Name\"))"}
+   {:script "(rt.po.report-view/refresh-now)"}
+   {:script
+    "(expect-equals \"English Results\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Name\"))"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script
+    "(expect-equals \"English Results\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Name\"))"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Selma Terrell\")"}
+   {:script "(rt.po.edit-form/select-form-tab \"Results\")"}
+   {:script "(rt.po.report-view/set-search-text \"English Results\")"}
+   {:script "(expect-equals 1 (rt.po.view-form/get-report-row-count))"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Results\" \"Delete 'English Results'\")"}
+   {:script
+    "(expect-equals \"English Results\" (first (rt.po.report-view/get-active-tab-column-values \"Name\")))"}
+   {:script "(rt.po.edit-form/click-confirm-delete-ok-button)"}
+   {:script "(rt.po.report-view/set-search-text \"English Results\")"}
+   {:script "(expect-equals 0 (rt.po.view-form/get-report-row-count))"}
+   {:script
+    ";(comment (creating and deleting new instance in view mode for 1-many relationships))"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Results\" \"New 'Results'\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Result name\" \"Mathematics Results\")"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script
+    "(expect-equals \"Mathematics Results\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Name\"))"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Selma Terrell\")"}
+   {:script "(rt.po.edit-form/select-form-tab \"Results\")"}
+   {:script "(rt.po.report-view/set-search-text \"Mathematics\")"}
+   {:script "(expect-equals 1 (rt.po.view-form/get-report-row-count))"}
+   {:script
+    "(expect-equals \"Mathematics Results\" (first (rt.po.report-view/get-active-tab-column-values \"Name\")))"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Results\" \"Delete 'Mathematics Results'\")"}
+   {:script "(rt.po.edit-form/click-confirm-delete-ok-button)"}
+   {:script "(rt.po.report-view/set-search-text \"Mathematics\")"}
+   {:script "(expect-equals 0 (rt.po.view-form/get-report-row-count))"}
+   {:script
+    "(comment (expect-equals \"English Results\" (first (rt.po.report-view/get-active-tab-column-values \"Name\"))))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160920-111431",
+  :setup
+  [{:script
+    "(identity {:report-name (rt.lib.util/make-test-name \"TabOpsForOneToManyInEdit\")})"}],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id
+  :rn/reportbuilder/tab-operations-in-edit-mode-for-1-many-relationship,
+  :teardown
+  [{:script
+    "(rn.app/delete-report \"TabOperationsForOneToManyInEditMode\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}],
+  :modified-by "not-implemented"}]

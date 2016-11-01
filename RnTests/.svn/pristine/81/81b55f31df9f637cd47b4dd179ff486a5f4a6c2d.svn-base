@@ -1,0 +1,26 @@
+[{:tags [:desktop],
+  :tests
+  [:perf/tests/t0
+   :perf/tests/t1
+   :perf/tests/t2
+   :perf/tests/t3
+   :perf/tests/t4
+   :perf/tests/t5
+   :perf/tests/t6
+   :perf/tests/t7
+   :perf/tests/t8],
+  :name "perf app suite",
+  :each-fixtures [],
+  :type :testsuite,
+  :source "../RnTests/test-db",
+  :modified "20150601-153829",
+  :setup [{:script ""}],
+  :id :perf/suites/daily,
+  :teardown [{:script ""}],
+  :modified-by "not-implemented",
+  :once-fixtures
+  [:common/fixture/chrome
+   :common/fixture/test-account-creds
+   :common/fixture/handle-errors
+   :common/fixture/wait-ng
+   :common/fixture/stop-all]}]

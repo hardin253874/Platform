@@ -1,0 +1,11 @@
+[{:tags [:Desktop],
+  :name "User creds for non-admin user",
+  :type :testfixture,
+  :source "./test-db",
+  :modified "20161020-120122",
+  :setup
+  [{:script
+    "(identity {:bcm-owner-creds {:password \"Readi911\", :username \"bcm_owner\"}})"}],
+  :id :rn/fixture/bcm-owner-creds,
+  :teardown [],
+  :modified-by "not-implemented"}]

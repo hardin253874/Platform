@@ -1,0 +1,105 @@
+[{:tags
+  [:nomodify :prod :regression :user/shaofen :desktop :area/security],
+  :tests [],
+  :name "Ensure navigation access works in general",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Objects\" {:app-name \"ReadiNow Console\" :folder-name \"Resources\"})"}
+   {:script "(rt.po.report-view/set-search-text \"SecurityObj1\")"}
+   {:script
+    "(if (> (rt.po.report-view/count-report-row) 0) (rt.po.report-view/delete-record \"SecurityObj1\"))"}
+   {:script "(rt.po.report-view/set-search-text \"SecurityObj1\")"}
+   {:script "(expect-equals 0 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Security/User Roles\")"}
+   {:script "(rt.po.report-view/set-search-text \"QAs\")"}
+   {:script
+    "(if (> (rt.po.report-view/count-report-row) 0) (rt.po.report-view/delete-record \"QAs\"))"}
+   {:script "(rt.po.report-view/set-search-text \"QAs\")"}
+   {:script "(expect-equals 0 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(comment \"========================Up to this step, we checked that the testing evn. is clean for us to continue. If error happens before here, it means env. is not clean=========================\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rt.po.app-toolbox/create-app {:description \"\", :name \"App for Security 09102015\"})"}
+   {:script "(rt.po.app/enable-app-toolbox)"}
+   {:script
+    "(rt.po.app-toolbox/set-application-filter \"App for Security 09102015\")"}
+   {:script
+    "(rt.po.app-toolbox/create-object {:description \"Security testing - Object 1\", :name \"SecurityObj1\"})"}
+   {:script "(rt.po.form-builder/add-container-to-form)"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Text\" 0)"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}
+   {:script "(rt.po.app/navigate-to \"App for Security 09102015\")"}
+   {:script
+    "(comment (identity {:section (make-test-name \"RT-Section\")}))\n"}
+   {:script
+    "(rt.po.app/add-sections [{:name \"Security Section 1\"}])"}
+   {:script "(rt.po.app/add-existing-report \"SecurityObj1 Report\")"}
+   {:script
+    "(rt.po.app/add-existing-report \"Student Report - Faculties\" \"Security Section 1\")"}
+   {:script
+    "(expect-equals false (rt.po.form-builder-config/section-expanded? \"Security Section 1\"))"}
+   {:script
+    "(rt.po.app/add-existing-chart \"Students by faculty (p)\" \"Security Section 1\")"}
+   {:script
+    "(rt.po.app/add-document-folder \"Security doc folder\" \"Security Section 1\")"}
+   {:script
+    "(rn.app/open-security \"Navigation Access\")"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/application-option-exists? \"App for Security 09102015\"))"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/set-application \"App for Security 09102015\")"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/user-or-role-option-exists? \"Students (User Role)\"))"}
+   {:script
+    "(rt.po.access-rules/set-user-or-role \"Students (User Role)\")"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/node-in-nav-tree-exists? \"Security Section 1\"))"}
+   {:script
+    "(expect-equals \"App for Security 09102015 > Security Section 1\" (rt.po.access-rules/get-node-path \"Security Section 1\"))"}
+   {:script
+    "(expect-equals false (rt.po.access-rules/node-checked? \"Security Section 1\"))"}
+   {:script
+    "(expect-equals \"App for Security 09102015 > SecurityObj1 Report\" (rt.po.access-rules/get-node-path \"SecurityObj1 Report\"))"}
+   {:script
+    "(rt.po.access-rules/set-node-value \"Security Section 1\" true)"}
+   {:script
+    "(rt.po.access-rules/set-node-value \"SecurityObj1 Report\" true)"}
+   {:script
+    "(rt.po.access-rules/set-node-value \"Student Report - Faculties\" true)"}
+   {:script
+    "(rt.po.access-rules/set-node-value \"Students by faculty (p)\" true)"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rt.po.app/navigate-to-item \"App for Security 09102015\" \"Security Section 1/Student Report - Faculties\")"}
+   {:script
+    "(rt.po.app/navigate-to-item \"App for Security 09102015\" \"Security Section 1/Students by faculty (p)\")"}
+   {:script
+    "(rt.po.app/navigate-to-item \"App for Security 09102015\" \"SecurityObj1 Report\")"}
+   {:script
+    "(expect-equals false (rt.po.app/node-in-nav-tree-exists? \"Security doc folder\"))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20151015-124104",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds],
+  :id :rn/security/ensure-navigation-access-works-in-general,
+  :teardown
+  [{:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Objects\" {:app-name \"ReadiNow Console\" :folder-name \"Resources\"})"}
+   {:script "(rt.po.report-view/set-search-text \"SecurityObj1\")"}
+   {:script
+    "(if (> (rt.po.report-view/count-report-row) 0) (rt.po.report-view/delete-record \"SecurityObj1\"))"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script "(rt.po.app/delete-app \"App for Security 09102015\")"}],
+  :modified-by "not-implemented"}]

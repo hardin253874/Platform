@@ -1,0 +1,41 @@
+[{:tags
+  [:area/report-builder
+   :nomodify
+   :prod
+   :regression
+   :desktop
+   :user/abida],
+  :tests [],
+  :name "Add fields one or two level deep to report",
+  :steps
+  [{:script "(rt.po.app/navigate-via-tiles \"Foster University\")"}
+   {:script
+    "(rn.app/open-report \"Qualification Report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(rt.po.app/enable-config-mode )"}
+   {:script "(rt.po.report-builder/access-build-mode )"}
+   {:script "(rt.po.report-builder/select-treenode \"Faculties\")"}
+   {:script "(rt.po.report-builder/click-add-relationship-button )"}
+   {:script
+    "(rt.po.report-add-relationship/add-relationship \"Staff\")"}
+   {:script "(rt.po.report-builder/click-ok )"}
+   {:script
+    "(expect-equals \"Staff\" (clojure.string/trim (clj-webdriver.taxi/text (rt.po.report-builder/get-col-header \"Staff\"))))"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script "(rt.po.report-builder/click-close-button )"}
+   {:script
+    "(rn.app/open-report \"Qualification Report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script
+    "(expect-equals \"Staff\" (clojure.string/trim (clj-webdriver.taxi/text (rt.po.report-builder/get-col-header \"Staff\"))))"}
+   {:script "(rt.po.report-builder/access-build-mode )"}
+   {:script "(rt.po.report-builder/select-treenode \"Staff\")"}
+   {:script "(rt.po.report-builder/remove-relationship \"Staff\")"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script "(rt.po.report-builder/click-close-button )"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150601-153820",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/reportbuilder/add-field-for-two-level,
+  :teardown [],
+  :modified-by "not-implemented"}]

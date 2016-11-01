@@ -1,0 +1,11 @@
+[{:tags [:Desktop],
+  :name "User creds for non-admin user",
+  :type :testfixture,
+  :source "./test-db",
+  :modified "20150928-133351",
+  :setup
+  [{:script
+    "(identity {:non-admin-creds {:password \"Uma.Crawford1\", :username \"Uma.Crawford\"}})"}],
+  :id :rn/fixture/non-admin-creds,
+  :teardown [],
+  :modified-by "not-implemented"}]

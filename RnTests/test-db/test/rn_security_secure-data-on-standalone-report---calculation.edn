@@ -1,0 +1,206 @@
+[{:tags
+  [:nomodify :prod :regression :user/shaofen :desktop :area/security],
+  :tests [],
+  :name
+  "Ensure multiple access rules works on stand alone report --- Calculation",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Staff Report\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script "(expect-equals 3 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/report-header-visible? \"Staff Report\" \"SecurityTest\"))"}
+   {:script "(rn.common/start-app-and-login (:user-creds-staff *tc*))"}
+   {:script
+    "(rn.app/open-report \"Staff Report\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script "(expect-equals 4 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/report-header-visible? \"Staff Report\" \"SecurityTest\"))"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Staff Report\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script
+    "(expect-equals false (rt.po.report-view/report-header-visible? \"Staff Report\" \"SecurityTest\"))"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script "(rt.po.report-builder/click-calculation-button)"}
+   {:script
+    "(rt.po.report-calculated/set-column-name \"SecurityTest\")"}
+   {:script
+    "(rt.po.report-calculated/set-calculation-script \"isnull([Manager], 'HELLO!!!')\")"}
+   {:script "(rt.po.report-calculated/click-ok)"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script
+    "(expect-equals true (rt.po.report-view/analyzer-field-exists? \"SecurityTest\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(rn.app/open-report \"Staff Report\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script
+    "(expect-equals true (rt.po.report-view/report-header-visible? \"Staff Report\" \"SecurityTest\"))"}
+   {:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Staff Report\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script "(expect-equals 3 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(expect-equals \"\" (rt.po.report-view/get-value-for-row-and-column \"2466\" \"Manager\"))"}
+   {:script
+    "(expect-equals \"HELLO!!!\" (rt.po.report-view/get-value-for-row-and-column \"2466\" \"SecurityTest\"))"}
+   {:script
+    "(expect-equals \"Alec Summers\" (rt.po.report-view/get-value-for-row-and-column \"6500\" \"Manager\"))"}
+   {:script
+    "(expect-equals \"Alec Summers\" (rt.po.report-view/get-value-for-row-and-column \"6500\" \"SecurityTest\"))"}
+   {:script
+    "(expect-equals \"Alec Summers\" (rt.po.report-view/get-value-for-row-and-column \"4173\" \"Manager\"))"}
+   {:script
+    "(expect-equals \"Alec Summers\" (rt.po.report-view/get-value-for-row-and-column \"4173\" \"SecurityTest\"))"}
+   {:script "(rn.common/start-app-and-login (:user-creds-staff *tc*))"}
+   {:script
+    "(rn.app/open-report \"Staff Report\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script "(expect-equals 4 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(expect-equals \"\" (rt.po.report-view/get-value-for-row-and-column \"8412\" \"Manager\"))"}
+   {:script
+    "(expect-equals \"HELLO!!!\" (rt.po.report-view/get-value-for-row-and-column \"8412\" \"SecurityTest\"))"}
+   {:script
+    "(expect-equals \"Lucian Harris\" (rt.po.report-view/get-value-for-row-and-column \"8995\" \"Manager\"))"}
+   {:script
+    "(expect-equals \"Lucian Harris\" (rt.po.report-view/get-value-for-row-and-column \"8995\" \"SecurityTest\"))"}
+   {:script
+    "(expect-equals \"Lucian Harris\" (rt.po.report-view/get-value-for-row-and-column \"6099\" \"Manager\"))"}
+   {:script
+    "(expect-equals \"Lucian Harris\" (rt.po.report-view/get-value-for-row-and-column \"6099\" \"SecurityTest\"))"}
+   {:script
+    "(expect-equals \"Lucian Harris\" (rt.po.report-view/get-value-for-row-and-column \"4335\" \"Manager\"))"}
+   {:script
+    "(expect-equals \"Lucian Harris\" (rt.po.report-view/get-value-for-row-and-column \"4335\" \"SecurityTest\"))"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script "(rt.po.access-rules/add-new-access-rule)"}
+   {:script
+    "(expect-equals true (rt.po.access-rules-new/new-dialog-visible?))"}
+   {:script
+    "(rt.po.access-rules-new/set-role \"Foster Common (User Role)\")"}
+   {:script "(rt.po.access-rules-new/set-object \"Dean\")"}
+   {:script "(rt.po.access-rules-new/click-ok)"}
+   {:script
+    "(rt.po.access-rules/edit-access-rule \"Foster Common (User Role)\" \"Dean\" \"Dean\")"}
+   {:script
+    "(rt.po.report-builder/select-field-checkboxes \"Name\" true true)"}
+   {:script
+    "(rt.po.report-builder/set-name \"Dean Cooper - 11112015\")"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script
+    "(expect-equals true (rt.po.report-view/analyzer-field-exists? \"Dean\"))"}
+   {:script
+    "(rt.po.report-view/set-analyzer-string \"Dean\" \"Cooper\")"}
+   {:script "(rt.po.report-view/apply-analyzer)"}
+   {:script "(rt.po.report-builder/save)"}
+   {:script "(rt.po.report-builder/close)"}
+   {:script
+    "(rt.po.access-rules/enable-access-rule \"Foster Common (User Role)\" \"Dean\" \"Dean Cooper - 11112015\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Staff Report\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script "(expect-equals 4 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(expect-equals \"Cooper Griffith\" (rt.po.report-view/get-value-for-row-and-column \"2466\" \"Manager\"))"}
+   {:script
+    "(expect-equals \"Cooper Griffith\" (rt.po.report-view/get-value-for-row-and-column \"2466\" \"SecurityTest\"))"}
+   {:script
+    "(expect-equals \"Alec Summers\" (rt.po.report-view/get-value-for-row-and-column \"6500\" \"Manager\"))"}
+   {:script
+    "(expect-equals \"Alec Summers\" (rt.po.report-view/get-value-for-row-and-column \"6500\" \"SecurityTest\"))"}
+   {:script
+    "(expect-equals \"Alec Summers\" (rt.po.report-view/get-value-for-row-and-column \"4173\" \"Manager\"))"}
+   {:script
+    "(expect-equals \"Alec Summers\" (rt.po.report-view/get-value-for-row-and-column \"4173\" \"SecurityTest\"))"}
+   {:script
+    "(expect-equals \"\" (rt.po.report-view/get-value-for-row-and-column \"3177\" \"Manager\"))"}
+   {:script
+    "(expect-equals \"HELLO!!!\" (rt.po.report-view/get-value-for-row-and-column \"3177\" \"SecurityTest\"))"}
+   {:script "(rn.common/start-app-and-login (:user-creds-staff *tc*))"}
+   {:script
+    "(rn.app/open-report \"Staff Report\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script "(expect-equals 5 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(expect-equals \"Cooper Griffith\" (rt.po.report-view/get-value-for-row-and-column \"8412\" \"Manager\"))"}
+   {:script
+    "(expect-equals \"Cooper Griffith\" (rt.po.report-view/get-value-for-row-and-column \"8412\" \"SecurityTest\"))"}
+   {:script
+    "(expect-equals \"Lucian Harris\" (rt.po.report-view/get-value-for-row-and-column \"8995\" \"Manager\"))"}
+   {:script
+    "(expect-equals \"Lucian Harris\" (rt.po.report-view/get-value-for-row-and-column \"8995\" \"SecurityTest\"))"}
+   {:script
+    "(expect-equals \"Lucian Harris\" (rt.po.report-view/get-value-for-row-and-column \"6099\" \"Manager\"))"}
+   {:script
+    "(expect-equals \"Lucian Harris\" (rt.po.report-view/get-value-for-row-and-column \"6099\" \"SecurityTest\"))"}
+   {:script
+    "(expect-equals \"Lucian Harris\" (rt.po.report-view/get-value-for-row-and-column \"4335\" \"Manager\"))"}
+   {:script
+    "(expect-equals \"Lucian Harris\" (rt.po.report-view/get-value-for-row-and-column \"4335\" \"SecurityTest\"))"}
+   {:script
+    "(expect-equals \"\" (rt.po.report-view/get-value-for-row-and-column \"3177\" \"Manager\"))"}
+   {:script
+    "(expect-equals \"HELLO!!!\" (rt.po.report-view/get-value-for-row-and-column \"3177\" \"SecurityTest\"))"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/delete-access-rule \"Foster Common (User Role)\" \"Dean\" \"Dean Cooper - 11112015\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script
+    "(rn.app/open-report \"Staff Report\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"SecurityTest\" \"Remove Column\")"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script
+    "(expect-equals false (rt.po.report-view/analyzer-field-exists? \"SecurityTest\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Staff Report\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script "(expect-equals 3 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/report-header-visible? \"Staff Report\" \"SecurityTest\"))"}
+   {:script "(rn.common/start-app-and-login (:user-creds-staff *tc*))"}
+   {:script
+    "(rn.app/open-report \"Staff Report\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script "(expect-equals 4 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/report-header-visible? \"Staff Report\" \"SecurityTest\"))"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20160324-153448",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds
+   :rn/fixture/user-creds-staff],
+  :id :rn/security/secure-data-on-standalone-report---calculation,
+  :teardown
+  [{:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Staff Report\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script
+    "(if (= (rt.po.report-view/report-header-visible? \"Staff Report\" \"SecurityTest\") true) (do (rt.po.app/enable-config-mode) (rt.po.report-builder/access-build-mode) (rt.po.report-builder/choose-column-menu-item \"SecurityTest\" \"Remove Column\") (rt.po.report-builder/click-save-report-button) (rt.po.report-builder/click-close-button)))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/report-header-visible? \"Staff Report\" \"SecurityTest\"))"}
+   {:script "(rn.app/open-security \"Record Access\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"System Administrator (User Account)\")"}
+   {:script
+    "(if (> (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/set-search-text \"Dean Cooper - 11112015\") (if (> (rt.po.report-view/count-report-row) 1) (do (rt.po.access-rules/click-edit-button) (rt.po.access-rules/delete-access-rule \"Foster Common (User Role)\" \"Dean\" \"Dean Cooper - 11112015\") (rt.po.access-rules/click-save-button)))))"}
+   {:script
+    "(rt.po.report-view/set-search-text \"System Administrator (User Account)\")"}
+   {:script
+    "(if (= (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/set-search-text \"Faculty of Arts - 10112015\") (if (> (rt.po.report-view/count-report-row) 0) (do (rt.po.access-rules/click-edit-button) (rt.po.access-rules/delete-access-rule \"Foster Common (User Role)\" \"Dean\" \"Dean Cooper - 11112015\") (rt.po.access-rules/click-save-button)))))"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Dean Cooper - 11112015\")"}],
+  :modified-by "not-implemented"}]

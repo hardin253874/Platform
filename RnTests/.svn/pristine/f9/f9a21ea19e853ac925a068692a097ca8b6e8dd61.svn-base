@@ -1,0 +1,33 @@
+[{:tags [:prod :desktop :smoke-test],
+  :tests [],
+  :name "Navigation Builder Test on Chrome",
+  :steps
+  [{:script "(rt.po.app/navigate-to \"Home\")",
+        :target-msec 2000}
+   {:script "(expect-equals \"Home\" (rt.po.app/top-menu-name))"}
+   {:script "(rt.po.app/enable-config-mode)",
+        :target-msec 500}
+   {:script "(rt.po.app/add-sections [{:name \"RT-Section-1\"}])",
+        :target-msec 500}
+   {:script
+    "(rt.po.app/add-screens [{:name \"RT-Screen-1\" :parent \"RT-Section-1\"}])",
+        :target-msec 1000}],
+  :type :test,
+  :checks [],
+  :source "../RnTests/test-db",
+  :modified "20150601-153808",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :qa-daily/test-nb,
+  :teardown
+  [{:script "(rn.common/clear-all-alerts)"}
+   {:script "(rt.po.app/navigate-to \"Home\")",
+        :target-msec 2000}
+   {:script "(rt.po.app/enable-config-mode)",
+        :target-msec 500}
+   {:script "(rt.po.app/delete-nav-items-matching #\"RT-Screen-1\")",
+        :target-msec 1000}
+   {:script "(rt.po.app/delete-nav-items-matching #\"RT-Section-1\")",
+        :target-msec 1000}],
+  :modified-by "not-implemented",
+  :data {}}]

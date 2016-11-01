@@ -1,0 +1,148 @@
+[{:tags
+  [:nomodify :prod :regression :user/shaofen :desktop :area/security],
+  :tests [],
+  :name "Ensure fields of related type secured on stand alone report",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Staff report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 3 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(expect-equals \"Alec Summers\" (rt.po.report-view/get-value-for-row-and-column \"6500\" \"Manager\"))"}
+   {:script
+    "(expect-equals \"\" (rt.po.report-view/get-value-for-row-and-column \"2466\" \"Manager\"))"}
+   {:script
+    "(expect-equals \"Alec Summers\" (rt.po.report-view/get-value-for-row-and-column \"4173\" \"Manager\"))"}
+
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Relationships\" {:app-name \"ReadiNow Console\" :folder-name \"Resources\"})"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Student - Library card\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Manager - Direct Reports\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Foster University\")"}
+   {:script "(rt.po.view-form/click-edit)"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Securing 'From'\" true)"}
+   {:script "(rt.po.edit-form/save)"}
+
+   {:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Staff report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 4 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(expect-equals \"Alec Summers\" (rt.po.report-view/get-value-for-row-and-column \"6500\" \"Manager\"))"}
+   {:script
+    "(expect-equals \"Cooper Griffith\" (rt.po.report-view/get-value-for-row-and-column \"2466\" \"Manager\"))"}
+   {:script
+    "(expect-equals \"Alec Summers\" (rt.po.report-view/get-value-for-row-and-column \"4173\" \"Manager\"))"}
+   {:script
+    "(expect-equals \"\" (rt.po.report-view/get-value-for-row-and-column \"3177\" \"Manager\"))"}
+
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Relationships\" {:app-name \"ReadiNow Console\" :folder-name \"Resources\"})"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Student - Library card\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Manager - Direct Reports\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Foster University\")"}
+   {:script "(rt.po.view-form/click-edit)"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Securing 'To'\" true)"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Securing 'From'\" false)"}
+   {:script "(rt.po.edit-form/save)"}
+
+   {:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Staff report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 3 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(expect-equals \"Alec Summers\" (rt.po.report-view/get-value-for-row-and-column \"6500\" \"Manager\"))"}
+   {:script
+    "(expect-equals \"\" (rt.po.report-view/get-value-for-row-and-column \"2466\" \"Manager\"))"}
+   {:script
+    "(expect-equals \"Alec Summers\" (rt.po.report-view/get-value-for-row-and-column \"4173\" \"Manager\"))"}
+
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Relationships\" {:app-name \"ReadiNow Console\" :folder-name \"Resources\"})"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Manager - Direct Reports\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Foster University\")"}
+   {:script "(rt.po.view-form/click-edit)"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Securing 'From'\" true)"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Securing 'To'\" true)"}
+   {:script "(rt.po.edit-form/save)"}
+
+   {:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Staff report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect (> (rt.po.report-view/count-report-row) 15))"}
+   {:script "(rt.po.report-view/set-search-text \"6500\")"}
+   {:script
+    "(expect-equals \"Alec Summers\" (rt.po.report-view/get-value-for-row-and-column \"6500\" \"Manager\"))"}
+   {:script "(rt.po.report-view/set-search-text \"2466\")"}
+   {:script
+    "(expect-equals \"Cooper Griffith\" (rt.po.report-view/get-value-for-row-and-column \"2466\" \"Manager\"))"}
+   {:script "(rt.po.report-view/set-search-text \"4173\")"}
+   {:script
+    "(expect-equals \"Alec Summers\" (rt.po.report-view/get-value-for-row-and-column \"4173\" \"Manager\"))"}
+   {:script "(rt.po.report-view/set-search-text \"3177\")"}
+   {:script
+    "(expect-equals \"\" (rt.po.report-view/get-value-for-row-and-column \"3177\" \"Manager\"))"}
+   {:script "(rt.po.report-view/set-search-text \"8464\")"}
+   {:script
+    "(expect-equals \"Prescott Dawson\" (rt.po.report-view/get-value-for-row-and-column \"8464\" \"Manager\"))"}
+   {:script "(rt.po.report-view/set-search-text \"4245\")"}
+   {:script
+    "(expect-equals \"Cooper Griffith\" (rt.po.report-view/get-value-for-row-and-column \"4245\" \"Manager\"))"}
+   {:script "(rt.po.report-view/set-search-text \"5135\")"}
+   {:script
+    "(expect-equals \"Rebekah Erickson\" (rt.po.report-view/get-value-for-row-and-column \"5135\" \"Manager\"))"}
+
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Relationships\" {:app-name \"ReadiNow Console\" :folder-name \"Resources\"})"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Manager - Direct Reports\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Foster University\")"}
+   {:script "(rt.po.view-form/click-edit)"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Securing 'To'\" false)"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Securing 'From'\" false)"}
+   {:script "(rt.po.edit-form/save)"}
+   ],
+  :type :test,
+  :source "./test-db",
+  :modified "20151027-161533",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds],
+  :id :rn/security/secure-field-of-related-type-on-report,
+  :teardown
+  [{:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Relationships\" {:app-name \"ReadiNow Console\" :folder-name \"Resources\"})"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Manager - Direct Reports\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Foster University\")"}
+   {:script "(rt.po.view-form/click-edit)"}
+   {:script
+    "(if (= (rt.po.edit-form/bool-field-value \"Securing 'To'\") true) (rt.po.edit-form/set-bool-field-value \"Securing 'To'\" false))"}
+   {:script
+    "(if (= (rt.po.edit-form/bool-field-value \"Securing 'From'\") true) (rt.po.edit-form/set-bool-field-value \"Securing 'From'\" false))"}
+   {:script "(rt.po.edit-form/save)"}],
+  :modified-by "not-implemented"}]

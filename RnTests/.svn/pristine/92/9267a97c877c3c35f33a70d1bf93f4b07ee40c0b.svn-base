@@ -1,0 +1,67 @@
+[{:tags
+  [:area/report-builder
+   :nomodify
+   :prod
+   :regression
+   :desktop
+   :user/abida],
+  :name
+  "When creating a new record, newly created related records do not appear in the rel tab after saving - Bug 26269",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:non-admin-creds *tc*))"}
+   {:script "(rt.po.app/navigate-via-tiles \"Foster University\")"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script "(rt.po.edit-form/set-text-field-value \"name\" \"AStudent1\")"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Subjects\" \"New\")"}
+	{:script "(expect (rt.po.app/page-has-error-alert?))"}
+   {:script "(rt.po.app/clear-alerts)"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Subjects\" \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Subject name\" \"Textile Designing\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Subject ID\" \"34567\")"}
+   {:script
+    "(rt.po.edit-form/set-number-field-value \"Subject Fee\" \"700\")"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script "(rt.po.report-view/set-search-text \"Textile\")"}
+   {:script "(expect-equals 1 (rt.po.view-form/get-report-row-count))"}
+   {:script
+    "(expect-equals \"Textile Designing\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Subjects\"))"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script "(rt.po.view-form/form-nav-back)"}
+   {:script "(rt.po.report-view/set-search-text \"AStudent1\")"}
+   {:script "(expect-equals 1 (rt.po.view-form/get-report-row-count))"}
+   {:script "(rt.po.report-view/select-row-by-text \"AStudent1\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"Edit 'AStudent1'\")"}
+   {:script "(rt.po.report-view/set-search-text \"Textile\")"}
+   {:script "(expect-equals 1 (rt.po.view-form/get-report-row-count))"}
+   {:script
+    "(expect-equals \"Textile Designing\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Subjects\"))"}
+   {:script
+    "(rt.po.report-view/select-row-by-text \"Textile Designing\")"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Subjects\" \"Delete 'Textile Designing'\")"}
+   {:script "(rt.po.edit-form/click-confirm-delete-ok-button)"}
+   {:script "(expect-equals 0 (rt.po.view-form/get-report-row-count))"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script "(rt.po.report-view/set-search-text \"AStudent1\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"AStudent1\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"Delete 'AStudent1'\")"}
+   {:script "(rt.po.edit-form/click-confirm-delete-ok-button)"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160718-134116",
+  :setup [],
+  :fixtures [:rn/fixture/non-admin-creds],
+  :id :rn/reports/verify-new-tab-instance-in-new-form,
+  :teardown [],
+  :modified-by "not-implemented"}]

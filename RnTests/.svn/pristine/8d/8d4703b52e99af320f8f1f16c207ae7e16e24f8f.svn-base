@@ -1,0 +1,945 @@
+(ns rt.po.report-view
+  (:require [rt.lib.util :refer [throw-not-implemented] :as util]
+            [rt.lib.wd :refer [right-click double-click wait-for-jq set-input-value prepare-script-arg wait-until-displayed find-element-with-text]]
+            [rt.lib.wd-ng :refer [wait-for-angular]]
+            [rt.lib.wd-rn :refer [get-entity get-color-name-from-rgb-css]]
+            [rt.test.expects :refer [expect expect-equals]]
+            [rn.services.entity :refer [get-entity-id-for-name]]
+            [clojure.string :as string]
+            [rt.po.common :as common :refer [set-time-control-value exists-present? wait-until wait-until-busy-indicator-done]]
+            [rt.po.app :as app :refer [make-app-url enable-config-mode context-menu-exists? choose-context-menu choose-modal-ok]]
+            [clj-webdriver.taxi :refer [flash to element elements *driver* find-elements-under find-element-under attribute clear input-text value select-by-text
+                                        text click select-option selected? displayed? exists? execute-script present?]]
+            [clj-webdriver.core :refer [by-css by-xpath ->actions move-to-element]]
+            [clj-webdriver.taxi :as taxi]))
+
+(defn- get-styles [e]
+  (util/style-string->map (attribute (element e) "style")))
+
+(defn- image-url->id [url]
+  (let [path-array (string/split url #"/")
+        index (.indexOf path-array "thumbnail")]
+    (when (>= index 0)
+      (get path-array (inc index)))))
+
+(defn- get-entity-name [id]
+  (get-in (get-entity id "name") [:result :name]))
+
+(defn- report-column-selector [report column-name]
+  (str ".spreport-view .ngHeaderSortColumn:has(.ngHeaderText:contains('" column-name "'))"))
+
+(defn- report-column-header-selector [report column-name]
+  (str ".spreport-view .ngHeaderSortColumn .ngHeaderText:contains('" column-name "')"))
+
+(defn report-header-selector [report]
+  (str ".report-view .report-header:contains('" report "')"))
+
+(defn get-open-report-name []
+  (text ".report-header"))
+
+(defn report-visible? [report]
+  (exists? (report-header-selector report)))
+
+(defn wait-until-report-visible [report]
+  (rt.po.common/wait-until #(report-visible? report) 5000))
+
+(defn expect-report-visible [report]
+  (wait-until-report-visible report)
+  (rt.test.expects/expect (report-visible? report)))
+
+(defn report-header-icon-exist?[]
+	(exists? (str ".report-header img")))
+
+(defn get-report-header-icon-background-colour []
+	(rt.po.common/get-colour-from-css-colour (rt.po.common/get-element-css-value ".report-header span[ng-if='model.headerIconUrl']" "background-color")))
+
+(defn get-report-header-icon-background-rgb-colour-string []
+	(rt.po.common/get-element-css-value ".report-header span[ng-if='model.headerIconUrl']" "background-color"))
+
+(defn report-header-visible?
+  "is report header visible?
+
+Syntax:
+  (rt.po.report-view/report-header-visible? report column-name)
+
+Examples:
+  (rt.po.report-view/report-header-visible? \"My Report Name\" \"column name\")
+
+Prerequisites:
+  Report builder or viewer"
+  [report column-name]
+  (exists? (report-column-header-selector report column-name)))
+
+(defn get-report-column-header-style
+  "get the value of style attribute of a given report column header
+Syntax:
+  (rt.po.report-view/report-header-visible? report column-name)
+
+Examples:
+  (rt.po.report-view/get-report-column-header-style \"My Report Name\" \"column name\")
+
+Prerequisites:
+  Report builder or viewer"
+
+  [report column-name]
+  (wait-until #(exists-present? (report-column-header-selector report column-name)) 5000)
+  (taxi/attribute (report-column-header-selector report column-name) :style))
+
+
+(defn count-report-row
+  "count the number of curent page's report rows
+   after scroll down, the number will be different
+
+Syntax:
+  (rt.po.report-view count-report-row)
+
+Examples:
+  (rt.po.report-view/ count-report-row)
+
+Prerequisites:
+  Report builder or viewer"
+  []
+  (count (elements ".spreport-view [ng-repeat='row in renderedRows']")))
+
+
+(defn count-report-row-in-screen
+  "count the number of curent page's report rows
+   after scroll down, the number will be different
+
+Syntax:
+  (rt.po.report-view count-report-row-in-screen)
+
+Examples:
+  (rt.po.report-view/count-report-row-in-screen \"report-name\")
+
+Prerequisites:
+  Report builder or viewer"
+  [report-name]
+  (count (elements (str ".report-render-control:contains('" report-name "') [ng-repeat='row in renderedRows']"))))
+
+(defn wait-until-report-row-count
+  "Waits until the report row count equals the specified value."
+  [count]
+  (rt.po.common/wait-until #(= (count-report-row) count) 5000))
+
+
+(defn wait-until-report-row-count-in-screen
+  "Waits until the report row count equals the specified value."
+  [count report-name]
+  (rt.po.common/wait-until #(= (count-report-row-in-screen report-name) count) 5000))
+
+(defn expect-report-row-count [count]
+  "Tests that the report row count equals the specified value."
+  (wait-until-report-row-count count)
+  (expect-equals count (count-report-row)))
+
+(defn expect-report-row-count-in-screen [count report-name]
+  "Tests that the report row count equals the specified value."
+  (wait-until-report-row-count-in-screen count report-name)
+  (expect-equals count (count-report-row-in-screen report-name)))
+
+(defn get-report-column-names [& [grid-locator]]
+  (->> (elements (str (or grid-locator "") " .ngHeaderText"))
+       (map #(text %))
+       (remove empty?)
+       vec))
+
+(defn get-report-column-index [column-name & [grid-locator]]
+  (.indexOf (get-report-column-names grid-locator) column-name))
+
+(defn report-row-exists? [row-index]
+  (exists? (str "[rowindex=" row-index "]")))
+
+(defn get-report-cell-element-by-row [row column-name]
+  (let [col-index (get-report-column-index column-name)
+        cells (find-elements-under row (by-css "[sp-data-grid-row-col-scope]"))]
+    (when (and (>= col-index 0) (< col-index (count cells)))
+      (nth cells col-index))))
+
+(defn- get-report-cell-element
+  [row-index column-name]
+
+  (println row-index column-name)
+
+  (wait-until #(exists-present? (str "[rowindex=" row-index "]")) 10000)
+
+  (when (not (exists? (str "[rowindex=" row-index "]")))
+    (throw (Exception. (format "Expected row %s to be present." row-index))))
+
+  (let [col-index (get-report-column-index column-name)
+        row (element (str "[rowindex=" row-index "]"))
+        cells (find-elements-under row (by-css "[sp-data-grid-row-col-scope]"))]
+    (when (and (>= col-index 0) (< col-index (count cells)))
+      (nth cells col-index))))
+
+(defn get-report-cell-text-content
+  "
+  get report grid cell content
+
+Returns text of report cell contect
+
+Syntax:
+    (rt.po.report-view/get-report-cell-text-content row-index column-name)
+
+
+Examples:
+    (rt.po.report-view/get-report-cell-text-content 0 \"Name\")
+
+Prerequisites:
+    Report builder or viewer"
+
+  [row-index column-name]
+  (when-let [e (get-report-cell-element row-index column-name)]
+    (text e)))
+	
+
+(defn check-report-cell-contain-image?
+  "
+  check the current report cell contains image object or not
+
+Returns true or false
+
+Syntax:
+    (rt.po.report-view/check-report-cell-contain-image? row-index column-name)
+
+Examples:
+    (rt.po.report-view/check-report-cell-contain-image? 0 \"Name\")
+
+Prerequisites:
+    Report builder or viewer"
+
+  [row-index column-name]
+  (let [cell (get-report-cell-element row-index column-name)]
+    (try
+      (find-element-under cell (by-css ".dataGridImageCell"))
+      true
+      (catch Exception _ false))))
+
+(defn get-report-format-icon [row-index column-name]
+  (-> (get-report-cell-element row-index column-name)
+      (find-element-under (by-css "[ng-click='showImageViewerDialog(row,col)']"))
+      get-styles
+      :background-image
+      image-url->id
+      get-entity-name))
+
+
+(defn get-format-icons-in-report [column-name icon-name]
+  (let [report ".dataGrid-view"]
+    (let [report-rows (find-elements-under report {:tag :sp-data-grid-row})]
+      (let [icons (map-indexed (fn [index row]
+                                 (-> (get-report-cell-element-by-row row column-name)
+                                     (find-element-under (by-css "[ng-click='showImageViewerDialog(row,col)']"))
+                                     get-styles
+                                     :background-image
+                                     image-url->id
+                                     get-entity-name)
+                                 )
+                               report-rows)]   
+		  (contains? (set icons) icon-name)))))
+
+
+(defn get-report-format-progress-bar-color [row-index column-name]
+  (-> (get-report-cell-element row-index column-name)
+      (find-element-under (by-css ".dataGridCellProgressBarGradient"))
+      get-styles
+      :background-color
+      get-color-name-from-rgb-css))
+
+(defn get-report-cell-progress-bar-text-content
+  "
+  get report grid cell with progress bar content
+
+Returns text of report cell with progress bar contect
+
+Syntax:
+    (rt.po.report-view/get-report-cell-progress-bar-text-content row-index column-name)
+
+
+Examples:
+    (rt.po.report-view/get-report-cell-progress-bar-text-content 0 \"Name\")
+
+Prerequisites:
+    Report builder or viewer"
+
+  [row-index column-name]
+  (get (string/split (rt.po.report-view/get-report-cell-text-content row-index column-name) #"\n+") 0))
+
+(defn get-report-format-progress-bar-width [row-index column-name]
+  (-> (get-report-cell-element row-index column-name)
+      (find-element-under (by-css ".dataGridCellProgressBarGradient"))
+      get-styles
+      :width))
+
+(defn show-report-format-progress-bar [row-index column-name]
+  (let [bar-width (get-report-format-progress-bar-width row-index column-name)]
+    (case bar-width
+      "0px" false
+      true)))
+
+(defn get-report-format-highlight-background-color-as-rgb-css [row-index column-name]
+  (-> (get-report-cell-element row-index column-name)
+      (find-element-under (by-css "[sp-evt-style='getFormattedCellBackgroundStyle(row,col)']"))
+      get-styles
+      :background-color))
+
+(defn get-report-format-highlight-background-color [row-index column-name]
+  (-> (get-report-format-highlight-background-color-as-rgb-css row-index column-name)
+      (get-color-name-from-rgb-css)))
+
+(defn get-report-format-highlight-font-color-as-rgb-css [row-index column-name]
+  (-> (get-report-cell-element row-index column-name)
+      (find-element-under (by-css "[sp-evt-style='getFormattedCellForegroundStyle(row,col)']"))
+      get-styles
+      :color))
+
+(defn get-report-format-highlight-font-color [row-index column-name]
+  (-> (get-report-format-highlight-font-color-as-rgb-css row-index column-name)
+      (get-color-name-from-rgb-css)))
+
+(defn get-grand-total-row []
+  (str ".rowDataHeaderRow"))
+
+
+(defn get-grand-total-cells []
+  (find-elements-under (get-grand-total-row) {:css "[ng-show*=showGrandTotals]"}))
+
+(defn get-grand-total-cells-content []
+  (mapv #(text %) (get-grand-total-cells)))
+
+
+(defn get-grand-total-cell [column-name]
+  (let [col-index (get-report-column-index column-name)]
+    (cond
+      (= (count (rt.po.report-view/get-report-column-names)) (count (rt.po.report-view/get-grand-total-cells-content))) (get (get-grand-total-cells-content) col-index)
+      :else (get (get-grand-total-cells-content) (inc col-index)))))
+
+(defn get-grand-total-cell-content-list [column-name]
+  (mapv #(string/trim %) (string/split (get-grand-total-cell column-name) #"\n")))
+
+(defn compare-grand-total-cell-content-list? [column-name expect-grand-total]
+  (let [grand-total (get-grand-total-cell-content-list column-name)]
+    (rt.test.expects/expect-equals (sort grand-total) (sort expect-grand-total))))
+
+
+(defn get-grand-total-value-index [column-name grand-total-value]
+  (.indexOf (get-grand-total-cell-content-list column-name) grand-total-value))
+
+(defn get-sub-total-rows []
+  (str ".dataGridAggregateHeader"))
+
+(defn get-sub-total-rows-labels []
+  (mapv #(text %) (elements ".dataGridAggregateTextRow")))
+
+(defn get-sub-total-cells [group-by-value]
+  (let [col-index (.indexOf (rt.po.report-view/get-sub-total-rows-labels) group-by-value)]
+    (let [group-by-row (get (to-array (elements ".dataGridAggregateHeader")) col-index)]
+      (find-elements-under group-by-row {:css "[ng-if*=showSubTotals]"}))))
+
+(defn get-sub-total-cells-content [group-by-value]
+  (mapv #(text %) (get-sub-total-cells group-by-value)))
+
+(defn get-sub-total-cell [group-by-value column-name]
+  (let [col-index (get-report-column-index column-name)]
+    (cond
+      (= (count (rt.po.report-view/get-report-column-names)) (count (rt.po.report-view/get-sub-total-cells-content group-by-value))) (get (get-sub-total-cells-content group-by-value) col-index)
+      :else (get (get-sub-total-cells-content group-by-value) (inc col-index)))))
+
+(defn get-sub-total-cell-content-list [group-by-value column-name]
+  (mapv #(string/trim %) (string/split (get-sub-total-cell group-by-value column-name) #"\n")))
+
+(defn compare-sub-total-cell-content-list? [group-by-value column-name expect-sub-total]
+  (let [sub-total (get-sub-total-cell-content-list group-by-value column-name)]
+    (rt.test.expects/expect-equals (sort sub-total) (sort expect-sub-total))))
+
+(defn get-sub-total-value-index [group-by-value column-name sub-total-value]
+  (.indexOf (get-sub-total-cell-content-list group-by-value column-name) sub-total-value))
+
+(defn get-actionmenu []
+  (text ".headerPanel"))
+
+(defn get-quick-search
+  "get quick search
+
+Syntax:
+    (rt.po.report-view/get-quick-search report)
+
+Examples:
+    (rt.po.report-view/get-quick-search \"My Report Name\")
+
+Prerequisites:
+    Viewing or editing an existing report"
+  [report]
+  (text ".sp-search-control"))
+
+(defn set-search-text [text]
+  ;; find the first useable search box...
+  ;; this may not get desired result if more than one... to come back to
+  (if-let [el (->> (elements ".spreport-view .sp-search-control-input")
+                   (filter displayed?)
+                   first)]
+    (do
+      (set-input-value el text)
+      (wait-for-angular)
+      (Thread/sleep 500)
+      (wait-for-angular))
+    (throw (Exception. "Cannot find displayed search box"))))
+
+
+(defn apply-quick-search
+  "Set quick search
+
+Syntax:
+    (rt.po.report-view/set-search-text text)
+
+Examples:
+    (rt.po.report-view/set-search-text  \"My text to add\")
+
+Prerequisites:
+    Viewing or editing an existing report"
+  [report text]
+  ( if (empty? report) (set-search-text text) (set-search-text text)))
+
+(defn get-loaded-grid-values
+  "Get values in the given grid column. Only gets those already loaded in the grid,
+  not those that may be paged in."
+  [& [grid-locator col]]
+  (wait-for-angular)
+  (let [grid-locator (or grid-locator ".spreport-view")
+        col-query (str ".ngCell.col" (or col 0))
+        elements (->> (find-elements-under grid-locator (by-css col-query))
+                      (filter :webelement))]
+    (->> elements
+         (map #(text %)))))
+
+(def get-grid-row-element-by-text rt.po.common/get-grid-row-element-by-text)
+(def select-row-by-text rt.po.common/select-row-by-text)
+
+(defn select-structure-item-row-by-text [text]
+  (when (exists? (str ".structureItem:contains(\"" text "\")"))
+    (click (element (str ".structureItem:contains(\"" text "\")")))))
+
+
+(defn right-click-row-by-text [row-text & [grid-locator]]
+  (when-let [element (get-grid-row-element-by-text row-text grid-locator)]
+    (right-click element)))
+
+(defn view-record-by-text
+  "Select the view action on the right click menu for the row with the given text.
+  Assumes the desired row is already loaded - i.e. in the current report page."
+  [row-text & [grid-locator]]
+  (right-click-row-by-text row-text grid-locator)
+  (app/choose-context-menu "View")
+  (wait-for-angular))
+
+(defn double-click-row-by-text [row-text & [grid-locator]]
+  (when-let [element (get-grid-row-element-by-text row-text grid-locator)]
+    (double-click element)
+    (wait-for-angular)))
+
+(defn double-click-row-by-text-in-relationship [rel-title row-text]
+  (if-let [rel-locator  (str ".tab-relationship-render-control:has(.structure-control-header:contains(\"" rel-title "\"))")]
+    (do
+       (double-click-row-by-text row-text rel-locator)
+       (wait-for-angular))     
+   ))
+
+(defn click-send-notification-button-in-relationship [rel-title]
+	(if-let [btn-ele  (str ".tab-relationship-render-control:has(.structure-control-header:contains(\"" rel-title "\")) button[title='Send Notification']")]
+    (do
+       (click btn-ele)
+       (wait-for-angular))     
+   ))
+
+(defn click-refresh-now-in-relationship [rel-title]
+	(if-let [btn-ele  (str ".tab-relationship-render-control:has(.structure-control-header:contains(\"" rel-title "\"))  .refreshButton")]
+    (do
+       (click btn-ele)
+       (wait-for-angular))     
+   ))
+      
+(defn close-dialog-action-menu []
+  (when (exists? (str " ul.action-view" :visible))
+    (click ".contextmenu-backdrop")))
+
+(defn action-menu-open? [grid-selector]
+  (exists? (str grid-selector " .spreport-view ul.action-view" :visible)))
+
+(defn open-action-menu
+  "Open the action menu of a report view. If no arguments then do so for the
+  first report on the page, otherwise the argument is a selector that is a
+  ancestor of the report view. At present this needs to be a string based css
+  selector."
+  ([] (open-action-menu ""))
+  ([grid-selector]
+   (when-not (action-menu-open? grid-selector)
+     (click (str grid-selector " .spreport-view button[title=Action]" :visible))
+     (wait-for-angular))))
+
+(defn close-action-menu
+  "Close the action menu of a report view. If no arguments then do so for the
+  first report on the page, otherwise the argument is a selector that is a
+  ancestor of the report view. At present this needs to be a string based css
+  selector."
+  ([] (close-action-menu ""))
+  ([grid-selector]
+   (when (action-menu-open? grid-selector)
+     (click ".contextmenu-backdrop"))))
+
+(defn open-new-menu
+  "Open the \"NEW\" menu of a report view. If no arguments then do so for the
+  first report on the page, otherwise the argument is a selector that is a
+  ancestor of the report view. At present this needs to be a string based css
+  selector."
+  ([] (open-new-menu ""))
+  ([grid-selector]
+   (click (str grid-selector " .spreport-view button:contains(New):visible"))
+   (wait-for-angular)))
+   
+(defn open-menu-by-name
+  "Open the any menu of a report view by name. If no arguments then do so for the
+  first report on the page, otherwise the argument is a selector that is a
+  ancestor of the report view. At present this needs to be a string based css
+  selector."
+  ([button-name] (open-menu-by-name button-name ""))
+  ([button-name grid-selector]
+   (click (str grid-selector " .spreport-view button:contains('" button-name "'):visible"))
+   (wait-for-angular)))   
+
+;;  Action buttons and 'create' context menu
+(defn single-new-button-exists? []
+  (exists? (str "button[ng-click='executeNewAction()']" ":visible")))
+
+(defn new-context-menu-button-exists? []
+  (exists? (str "button[sp-context-menu='model.newMenu']" ":visible")))
+
+(defn button-exists? [title]
+  (exists? (str "button[title='" title "']:visible")))
+
+(defn open-new-context-menu []
+  (when (new-context-menu-button-exists?)
+    (click (str "button[sp-context-menu='model.newMenu']" ":visible"))
+    (wait-for-angular)))
+
+;; internal
+(defn find-create-option [type]
+  (str ".contextmenu-view a:has(span:contains('" type "')):visible"))
+
+;; open context menu before checking if given option exist in create context menu that includes derived types
+(defn create-option-exists? [label]
+  (exists? (find-create-option label)))
+
+(defn click-create-option [label]
+  (if (exists? (find-create-option label))
+    (click (find-create-option label))))
+
+;;  Action menu
+(defn action-menu-item-exists? [text]
+  (app/context-menu-exists? text))
+
+(defn select-action-menu-item [text]
+  (app/choose-context-menu text))
+
+(defn click-sub-menu-item
+  "Assumes the menu is already open. Hovers over top menu item which opens sub menu.
+   and then clicks on sub menu item."
+  [parent-item-name sub-item-name]
+  (let [s (taxi/element (str "ul.contextmenu-view span:contains('" parent-item-name "')"))]
+    (do
+      (->actions taxi/*driver* (move-to-element s))
+      ;;(wait-for-jq (taxi/element "ul.contextmenu-view span:contains('Excel')"))
+      (app/choose-context-menu sub-item-name))))
+
+(defn analyser-open? []
+  (and (exists? ".analyzer-view") (displayed? ".analyzer-view")))
+
+(defn open-analyzer []
+  (when-not (analyser-open?)
+    (click "button[ng-click*=analyzerButtonClick]")))
+
+(defn close-analyzer []
+  (when (analyser-open?)
+    (click "button[ng-click*=analyzerButtonClick]")))
+
+(defn find-analyzer-field [name]
+  (str ".analyzerFieldContainer:contains('" name "')"))
+
+(defn analyzer-field-exists? [name]
+  (exists? (find-analyzer-field name)))
+
+(defn open-analyser-field-configure-dialog [field-name]
+  (-> (rt.po.report-view/find-analyzer-field field-name)
+      (element)
+      (#(do (->actions *driver* (move-to-element %)) %))
+      )
+  (click (str (rt.po.report-view/find-analyzer-field field-name) " .analyzerConfigFieldButton")))
+
+(defn set-analyser-field-picker-report [value]
+  (select-by-text (element (str ".spAnalyzerFieldConfigDialog-view select[ng-model='model.selectedPickerReport']")) value))
+
+(defn click-analyser-field-picker-report [name]
+   "click analyser field picker report
+
+Syntax:
+    (rt.po.report-view/find-analyzer-field analysername)
+
+
+Examples:
+    (rt.po.report-view/find-analyzer-field \"User Account\")
+
+Prerequisites:
+    Report builder or viewer"  
+  
+    (let [elem-str (find-element-under (element (find-analyzer-field name)) (by-css ".inlineRelPicker-button"))]
+           (click elem-str)))
+
+
+(defn set-analyzer-field-oper [name oper]
+  (let [elem-str (str (find-analyzer-field name) " select.operatorSelect")]
+    (select-option elem-str {:text oper})))
+
+(defn get-analyzer-string [name]
+  (let [elem-str (str (find-analyzer-field name) " .valueEditorContainerStyle input")]
+    (value elem-str)))
+
+(defn set-analyzer-string [name value]
+  (let [elem-str (str (find-analyzer-field name) " .valueEditorContainerStyle input")]
+    (clear elem-str)
+    (input-text elem-str value)))
+
+(defn set-analyzer-time [label h m meridian]
+  (let [time-elem (str (find-analyzer-field label))]
+    (common/set-time-control-value time-elem h m meridian)))
+
+(defn get-picker-for-analyzer-field [picker-name]
+  ;;todo - make this more robust ... multiple calls to $parent is no good
+  (let [pickers (->> (elements "ul.entityPickers-view")
+                     (map #(hash-map :el %
+                                     :field-name (rt.lib.wd-ng/evaluate-angular-expression % "$parent.$parent.$parent.field.name"))))]
+    ;; pickers is a list of maps of :el and :field-name
+    (->> pickers
+         (filter #(= picker-name (:field-name %)))
+         first
+         :el)))
+
+(defn is-analyzer-picker-open [picker-name]
+  (when-let [picker (get-picker-for-analyzer-field picker-name)]
+    (let [options (-> picker
+                      (find-elements-under (by-css "li"))
+                      (->> (map #(hash-map :el % :text (text %)))
+                           (filter #(not= "" (:text %)))))]
+      (not (empty? options)))))
+
+(defn toggle-analyzer-picker [picker-name]
+  (click (str (find-analyzer-field picker-name) " .valueEditor-view a[ng-click*=dropDownButtonClicked]")))
+
+(defn open-analyzer-picker [picker-name]
+  (when-not (is-analyzer-picker-open picker-name)
+    (toggle-analyzer-picker picker-name)
+    (Thread/sleep 500)))
+
+(defn close-analyzer-picker [picker-name]
+  (when (is-analyzer-picker-open picker-name)
+    (click (str ".analyzerFieldLeftContainer:contains('" picker-name "')"))))
+
+(defn toggle-analyzer-field-multiselect [picker-name option-name]
+  ;; if the dropdown has never been clicked on the picker won't exist
+  ;; if it has been clicked on but is not open then the picker exists but getting
+  ;; the text on its items return empty strings
+
+  ;;todo refactor to use is-analyzer-picker-open
+  ;;todo support multiple options
+  ;;todo allow setting or clearing, not just toggling
+
+  (when-let [picker (get-picker-for-analyzer-field picker-name)]
+    (let [options (-> picker
+                      (find-elements-under (by-css "li"))
+                      (->> (map #(hash-map :el % :text (text %)))
+                           (filter #(= option-name (:text %)))))]
+      (when-not (empty? options)
+        (when-let [input (-> options first :el
+                             (find-element-under (by-css "input")))]
+          (let [was-selected (selected? input)]
+            (click input)
+            (not was-selected)))))))
+
+(defn apply-analyzer []
+  (click "button.analyzerButton[ng-click*=Apply]")
+  (wait-until #(not= (exists-present? ".analyzer-view")))
+  (wait-for-angular)
+  (wait-until-busy-indicator-done))
+
+(defn reset-analyzer []
+  (click "button.analyzerButton[ng-click*=Reset]")
+  (wait-until #(not= (exists-present? ".analyzer-view")))
+  (wait-for-angular)
+  (wait-until-busy-indicator-done))
+
+(defn set-search-exact [name value]
+  ;; Causes the specified input to be set to exactly match the specified text
+  (open-analyzer)
+  (set-analyzer-field-oper name "=")
+  (set-analyzer-string name value)
+  (apply-analyzer))
+
+(defn view-record
+  "view the given record in the current report"
+  [name]
+  (set-search-text name)
+  (right-click-row-by-text name)
+  (choose-context-menu "View"))
+
+(defn view-recode-with-text [name]
+  (try (view-record name)
+       (catch Exception e
+         (double-click-row-by-text name))))
+
+(defn delete-record
+  "delete the given record in the current report"
+  [name]
+  (set-search-text name)
+  (when-not (empty? (get-loaded-grid-values))
+    (right-click-row-by-text name)
+    (choose-context-menu "Delete")
+    (choose-modal-ok))
+  (wait-for-angular))
+
+(defn choose-report-row-action [row-text menu-item]
+  (right-click-row-by-text row-text)
+  (choose-context-menu menu-item))
+
+(defn choose-picker-record [text & [column-index]]
+  ((resolve 'rt.po.common/set-search-text-input-value) ".entityReportPickerDialog .sp-search-control input" text)
+
+  (select-row-by-text text ".entityReportPickerDialog .dataGrid-view" column-index)
+  ((resolve 'rt.po.common/click-modal-dialog-button-and-wait) ".inlineRelationPickerDialog .modal-footer button[ng-click*=ok]"))
+
+(defn set-analyzer-choice-option [field-name oper option-name]
+
+  ;; this will toggle the option... todo fix to set it
+  (open-analyzer)
+  (set-analyzer-field-oper field-name oper)
+  (open-analyzer-picker field-name)
+  (toggle-analyzer-field-multiselect field-name option-name)
+  (close-analyzer-picker field-name)
+  (apply-analyzer)
+  (close-analyzer))
+
+
+(defn set-analyzer-multi-choice-options [field-name oper option-names]
+
+  ;; this will toggle the option... todo fix to set it
+  (open-analyzer)
+  (set-analyzer-field-oper field-name oper)
+  (open-analyzer-picker field-name)
+  (doall (map-indexed (fn [index option-name]
+                        (toggle-analyzer-field-multiselect field-name option-name)
+                        )
+                      option-names))
+
+  (close-analyzer-picker field-name)
+  (apply-analyzer)
+  (close-analyzer))
+
+
+(defn set-analyzer-picker-option [field-name oper value]
+  (open-analyzer)
+  (set-analyzer-field-oper field-name oper)
+  (let [elem-str (str (find-analyzer-field field-name) " button[ng-click*=spEntityCompositePickerModal]")]
+    (click (element elem-str)))
+  (choose-picker-record value))
+
+
+(defn open-builder
+  "Open the report builder on the current screen via the configure icon."
+  []
+  (enable-config-mode)
+  (click ".report-config-panel [src*=configure]")
+  (choose-context-menu "Modify"))
+
+
+(defn column-with-up-caret? [column-name]
+  (let [column-header (find-element-with-text ".ngHeaderContainer [ng-repeat='col in renderedColumns']" column-name)]
+    (try      
+      (exists? (find-element-under column-header (by-css ".ngSortButtonDown")))
+      (catch Exception e false))))
+
+(defn column-with-down-caret? [column-name]
+  (let [column-header (find-element-with-text ".ngHeaderContainer [ng-repeat='col in renderedColumns']" column-name)]
+    (try
+      (exists? (find-element-under column-header (by-css ".ngSortButtonUp")))
+      (catch Exception e false))))
+
+(defn get-column-sort-caret
+  "
+  column has sort caret
+
+Returns either \"Up\" or \"Down\" or \"None\"
+
+Prerequisites:
+    Report builder or viewer"
+  [column-name]
+  (cond
+    (= (column-with-up-caret? column-name) true) "Up"
+    (= (column-with-down-caret? column-name) true) "Down"
+    :else "None"))
+
+(defn refresh-now []
+  (->> (taxi/elements "button.refreshButton")
+       (filter taxi/visible?)
+       first
+       taxi/click))
+
+(defn get-value-for-row-and-column [row-text col-name]
+  (wait-until #(> (count (elements (str ".ngCell:contains('" row-text "')"))) 0) 10000)
+  
+  (-> (.indexOf (rt.po.report-view/get-loaded-grid-values) row-text)
+      (rt.po.report-view/get-report-cell-text-content col-name)))
+
+(defn get-open-doclibrary-report-name
+  []
+  (text ".docLibrary-header"))
+
+(defn select-row-with-ctrl-key
+  "Selects the specified row with the ctrl key down. This adds the specified element to
+  the list of selected elements."
+  [element]
+  (taxi/execute-script
+    "var element = arguments[0];
+
+     var e = jQuery.Event('click');
+     e.ctrlKey = true;
+
+     $(element).trigger(e);"
+    [(rt.lib.wd/prepare-script-arg element)]))
+
+(defn select-row-with-ctrl-key-by-text
+  "Selects the specified row with the ctrl key down by text. This adds the specified element
+  to the list of selected elements."
+  ([text grid-locator]
+   (wait-for-angular)
+   (select-row-with-ctrl-key (get-grid-row-element-by-text text grid-locator)))
+  ([text]
+   (select-row-with-ctrl-key-by-text text ".spreport-view")))
+
+(defn select-row-range
+  "Selects the specified row range between the specified Html elements."
+  [start-element end-element]
+  (taxi/execute-script
+    "var startElement = arguments[0];
+     var endElement = arguments[1];
+
+     var e = jQuery.Event('click');
+     e.shiftKey = true;
+
+     $(startElement).click();
+     $(endElement).trigger(e);"
+    [(rt.lib.wd/prepare-script-arg start-element) (rt.lib.wd/prepare-script-arg end-element)]))
+
+(defn select-row-range-by-text
+  "Selects the specified row range between rows containing the specified text."
+  ([start-text end-text grid-locator]
+   (wait-for-angular)
+   (select-row-range (get-grid-row-element-by-text start-text grid-locator) (get-grid-row-element-by-text end-text grid-locator)))
+  ([start-text end-text]
+   (select-row-range-by-text start-text end-text ".spreport-view")))
+
+(defn get-selected-row-grid-values
+  "Gets the specified column values for the selected rows."
+  ([column-name grid-locator]
+   (wait-for-angular)
+   (let [col-index (get-report-column-index column-name)
+         elements (elements (str grid-locator " div.ngRow.selected div.dataGridCell.col" col-index))]
+     (map #(text %) elements)))
+  ([column-name]
+   (get-selected-row-grid-values column-name ".spreport-view")))
+
+(defn get-selected-row-indexes
+  "Gets the selected row indexes."
+  ([grid-locator]
+   (wait-for-angular)
+   (let [elements (elements (str grid-locator " div.ngRow.selected"))]
+     (map #(Integer. (attribute % "rowindex")) elements)))
+  ([]
+   (get-selected-row-indexes ".spreport-view")))
+
+(defn get-first-selected-row-index
+  "Gets the first selected row index.
+
+  Example:
+  =========
+
+  (get-first-selected-row-index)"
+  ([grid-locator]
+    (wait-until #(exists-present? (str grid-locator " div.ngRow.selected")) 20000)
+    (first (get-selected-row-indexes grid-locator)))   
+  ([]
+   (get-first-selected-row-index ".spreport-view")))
+
+(defn does-action-menu-button-exist?
+  "Checks if the action menu button exists."
+  ([action-name grid-locator]
+   (wait-for-angular)
+   (exists? (str grid-locator " div.headerPanel-left :button[ng-repeat='ab in model.actionButtons']:contains('" action-name "')")))
+  ([action-name]
+   (does-action-menu-button-exist? action-name ".spreport-view")))
+
+(defn click-action-menu-button
+  "Clicks an action menu button."
+  ([action-name grid-locator]
+   (wait-for-angular)
+   (click (str grid-locator " div.headerPanel-left :button[ng-repeat='ab in model.actionButtons']:contains('" action-name "')"))
+   (wait-for-angular))
+  ([action-name]
+   (click-action-menu-button action-name ".spreport-view")))
+
+(defn does-new-menu-button-exist?
+  "Checks if the new action menu button exists."
+  ([grid-locator]
+   (wait-for-angular)
+   (exists? (str grid-locator " div.headerPanel-left :button[sp-context-menu='model.newMenu']:contains('New'):visible")))
+  ([]
+   (does-new-menu-button-exist? ".spreport-view")))
+
+(defn get-loaded-column-values [col-name & [grid-locator]]
+  (let [i (get-report-column-index col-name grid-locator)]
+    (if (>= i 0)
+      (get-loaded-grid-values grid-locator i)
+      (throw (Exception. (str "Failed to find column: " col-name))))))
+
+(defn sort-column-by-click-header [report column-name]
+  (let [sort-caret (get-column-sort-caret column-name)]
+    (click (report-column-header-selector report column-name))
+    (wait-until #(not= (get-column-sort-caret column-name) sort-caret))))
+
+(defn click-report-header
+  "
+Prerequisites:
+    Report builder or viewer"
+  [column-name]
+  (sort-column-by-click-header "" column-name))
+
+(defn- active-tab-report
+  "Returns the a 'selector' for the report grid on the active tab.
+  Useful in functions like get-loaded-grid-values and get-loaded-column-values,
+  for example:
+
+  (get-loaded-column-values \"Name\" (active-tab-report))
+  "
+  []
+  ".tab-pane.active .spreport-view")
+
+(defn get-active-tab-column-values [col-name]
+  (get-loaded-column-values col-name (active-tab-report)))
+
+(defn get-active-tab-cell-value [row-index col-name]
+  (let [values (get-active-tab-column-values col-name)]
+    (when (< row-index (count values)) (nth values row-index))))
+
+
+(defn get-column-values-in-relationship [rel-title col-name]
+  (let [rel-locator  (str ".tab-relationship-render-control:has(.structure-control-header:contains('" rel-title "'))")]
+      (get-loaded-column-values col-name rel-locator)      
+   ))
+
+

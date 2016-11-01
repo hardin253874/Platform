@@ -1,0 +1,81 @@
+[{:tags
+  [:nomodify
+   :prod
+   :daily
+   :regression
+   :user/sri
+   :desktop
+   :area/security],
+  :tests [],
+  :name "Ensure the security flag works.",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1(rt.po.report-view/count-report-row ))"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Nelle Odom\")"}
+   {:script
+    "(expect-equals \"11111\" (rt.po.view-form/get-field-value \"Library card #\"))"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/disable-access-rule \"Students (User Role)\" \"Library card\" \"Own library card\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Nelle Odom\")"}
+   {:script
+    "(expect-equals \"\" (rt.po.view-form/get-field-value \"Library card #\"))"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Relationships\" {:app-name \"ReadiNow Console\" :folder-name \"Resources\"})"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Student - Library card\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Student - Library card\")"}
+   {:script "(rt.po.view-form/click-edit)"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Securing 'To'\" true)"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Nelle Odom\")"}
+   {:script
+    "(expect-equals \"11111\" (rt.po.view-form/get-field-value \"Library card #\"))"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/enable-access-rule \"Students (User Role)\" \"Library card\" \"Own library card\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script
+    "(rn.app/open-report \"Relationships\" {:app-name \"ReadiNow Console\" :folder-name \"Resources\"})"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Student - Library card\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Student - Library card\")"}
+   {:script "(rt.po.view-form/click-edit)"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Securing 'To'\" false)"}
+   {:script "(rt.po.edit-form/save)"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20151103-142549",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds],
+  :id :rn/security/ensure-security-flag-works,
+  :teardown [],
+  :modified-by "not-implemented"}]

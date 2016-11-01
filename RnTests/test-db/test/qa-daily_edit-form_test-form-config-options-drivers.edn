@@ -1,0 +1,24 @@
+[{:tags [:prod :regression :desktop],
+  :tests [],
+  :name "Form Config Options Drivers",
+  :steps
+  [{:script "(rt.po.app/enable-config-mode)",
+        :target-msec 2000}
+   {:script
+    "(expect-equals true (rt.po.edit-form/config-button-exists?))"}
+   {:script "(rt.po.edit-form/click-config-button)"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/modify-form-option-exists?))"}
+   {:script "(rt.po.edit-form/click-modify-form-option)"}],
+  :type :test,
+  :checks [],
+  :source "../RnTests/test-db",
+  :modified "20150601-153804",
+  :setup
+  [:qa-daily/scripts/edit-form/open-all-fields-report
+   :qa-daily/scripts/edit-form/open-form-in-view-mode],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :qa-daily/edit-form/test-form-config-options-drivers,
+  :teardown [],
+  :modified-by "not-implemented",
+  :data {}}]

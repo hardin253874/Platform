@@ -1,0 +1,46 @@
+[{:tags
+  [:user/tina
+   :area/report-builder
+   :nomodify
+   :regression
+   :desktop
+   :prod],
+  :tests [],
+  :name "Grand totals for Multiline",
+  :steps
+  [{:script "(rt.po.app/navigate-via-tiles \"Foster University\")"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Reports/Faculties Report\")"}
+   {:script "(rt.po.app/enable-config-mode )"}
+   {:script "(rt.po.report-builder/access-build-mode )"}
+   {:script "(rt.po.report-builder/click-saveas-report-button )"}
+   {:script
+    "(rt.po.report-builder/set-report-new-name \"Totals-Multiline\")"}
+   {:script "(rt.po.report-builder/click-ok )"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script
+    "(rt.po.report-builder/show-column-context-menu \"Description\")"}
+   {:script "(rt.po.app/choose-context-menu \"Show Totals\")"}
+   {:script "(rt.po.report-total/set-show-grand-total true)"}
+   {:script "(rt.po.report-total/set-show-option-label true)"}
+   {:script "(rt.po.report-total/set-count true)"}
+   {:script "(rt.po.report-total/set-count-all true)"}
+   {:script "(rt.po.report-total/set-count-unique true)"}
+   {:script "(rt.po.common/click-ok )"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script
+    "(expect-equals true (rt.po.report-view/compare-grand-total-cell-content-list? \"Description\" [\"Count: 9\" \"Count unique: 9\" \"Count all: 9\"]))"}
+   {:script "(rt.po.report-builder/click-close-button )"}
+   {:script
+    "(rn.app/open-report \"Totals-Multiline\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script
+    "(expect-equals true (rt.po.report-view/compare-grand-total-cell-content-list? \"Description\" [\"Count: 9\" \"Count unique: 9\" \"Count all: 9\"]))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20150605-110032",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/reportbuilder/grandtotals-multiline,
+  :teardown
+  [{:script "(rn.app/delete-report \"Totals-Multiline\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}],
+  :modified-by "not-implemented"}]

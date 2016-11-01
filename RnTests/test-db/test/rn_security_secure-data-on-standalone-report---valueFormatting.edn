@@ -1,0 +1,148 @@
+[{:tags
+  [:nomodify :prod :regression :user/shaofen :desktop :area/security],
+  :tests [],
+  :name
+  "Ensure multiple access rules works on stand alone report --- Value Formatting on date field",
+  :steps
+  [{:script
+    "(comment \"=========== Checking if env is clean to start the test. =============\")"}
+   {:script "(rn.common/start-app-and-login (:user-creds-staff *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect (> (rt.po.report-view/count-report-row) 15))"}
+
+   {:script
+    "(comment \"=========== Create a new report for value formatting, grant navigation access to new report, then check if value formatting works for non-admin user.  ==================\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script "(rt.po.app/navigate-via-tiles \"Foster University\")"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script "(rt.po.report-builder/click-saveas-report-button)"}
+   {:script
+    "(rt.po.report-builder/set-report-new-name \"Security ValueFormat - Student\")"}
+   {:script "(rt.po.report-builder/click-saveas-ok)"}
+   {:script
+    "(rt.po.report-builder/select-field-checkboxes \"DOB\" true false)"}
+   {:script
+    "(rt.po.report-builder/select-field-checkboxes \"Gender\" false false)"}
+   {:script
+    "(rt.po.report-builder/select-field-checkboxes \"State\" false false)"}
+   {:script
+    "(rt.po.report-builder/select-field-checkboxes \"Balance\" false false)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"DOB\" \"Format Column\")"}
+   {:script "(rt.po.report-format/click-value-formatting)"}
+   {:script "(rt.po.report-format/set-datetime-format \"Day Month\")"}
+   {:script "(rt.po.report-builder/click-ok)"}
+   {:script
+    "(expect-equals \"January 09\" (rt.po.report-view/get-report-cell-text-content \"0\" \"DOB\"))"}
+   {:script
+    "(expect-equals \"October 13\" (rt.po.report-view/get-report-cell-text-content \"1\" \"DOB\"))"}
+   {:script
+    "(expect-equals \"November 26\" (rt.po.report-view/get-report-cell-text-content \"2\" \"DOB\"))"}
+   {:script
+    "(expect-equals \"May 28\" (rt.po.report-view/get-report-cell-text-content \"3\" \"DOB\"))"}
+   {:script
+    "(expect-equals \"October 18\" (rt.po.report-view/get-report-cell-text-content \"4\" \"DOB\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(rn.app/open-report \"Security ValueFormat - Student\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(rn.common/sleep 3000)"}
+   {:script
+    "(expect-equals \"January 09\" (rt.po.report-view/get-report-cell-text-content \"0\" \"DOB\"))"}
+   {:script
+    "(expect-equals \"October 13\" (rt.po.report-view/get-report-cell-text-content \"1\" \"DOB\"))"}
+   {:script
+    "(expect-equals \"November 26\" (rt.po.report-view/get-report-cell-text-content \"2\" \"DOB\"))"}
+   {:script
+    "(expect-equals \"May 28\" (rt.po.report-view/get-report-cell-text-content \"3\" \"DOB\"))"}
+   {:script
+    "(expect-equals \"October 18\" (rt.po.report-view/get-report-cell-text-content \"4\" \"DOB\"))"}
+   {:script
+    "(rn.app/open-security \"Navigation Access\")"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/application-option-exists? \"Foster University\"))"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/set-application \"Foster University\")"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/user-or-role-option-exists? \"Staff (User Role)\"))"}
+   {:script
+    "(rt.po.access-rules/set-user-or-role \"Staff (User Role)\")"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/node-in-nav-tree-exists? \"Security ValueFormat - Student\"))"}
+   {:script
+    "(expect-equals \"Foster University > Reports > Security ValueFormat - Student\" (rt.po.access-rules/get-node-path \"Security ValueFormat - Student\"))"}
+   {:script
+    "(expect-equals false (rt.po.access-rules/node-checked? \"Security ValueFormat - Student\"))"}
+   {:script
+    "(rt.po.access-rules/set-node-value \"Security ValueFormat - Student\" true)"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+
+   {:script "(rn.common/start-app-and-login (:user-creds-staff *tc*))"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Reports/Security ValueFormat - Student\")"}
+   {:script "(expect (> (rt.po.report-view/count-report-row) 15))"}
+   {:script
+    "(expect (rt.po.app/node-in-nav-tree-exists? \"Security ValueFormat - Student\"))"}
+   {:script
+    "(expect-equals \"May 28\" (rt.po.report-view/get-value-for-row-and-column \"1139\" \"DOB\"))"}
+   {:script
+    "(expect-equals \"August 17\" (rt.po.report-view/get-value-for-row-and-column \"1173\" \"DOB\"))"}
+   {:script
+    "(expect-equals \"June 12\" (rt.po.report-view/get-value-for-row-and-column \"1214\" \"DOB\"))"}
+   {:script
+    "(expect-equals \"December 31\" (rt.po.report-view/get-value-for-row-and-column \"1155\" \"DOB\"))"}
+   {:script
+    "(expect-equals \"April 10\" (rt.po.report-view/get-value-for-row-and-column \"1191\" \"DOB\"))"}
+   {:script
+    "(expect-equals \"August 26\" (rt.po.report-view/get-value-for-row-and-column \"1166\" \"DOB\"))"}
+   {:script
+    "(expect-equals \"July 15\" (rt.po.report-view/get-value-for-row-and-column \"1156\" \"DOB\"))"}
+
+   {:script
+    "(comment \"==================== Clearing env back as by default. ===================\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Navigation Access\")"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/application-option-exists? \"Foster University\"))"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/set-application \"Foster University\")"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/user-or-role-option-exists? \"Staff (User Role)\"))"}
+   {:script
+    "(rt.po.access-rules/set-user-or-role \"Staff (User Role)\")"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/node-checked? \"Security ValueFormat - Student\"))"}
+   {:script
+    "(rt.po.access-rules/set-node-value \"Security ValueFormat - Student\" false)"}
+   {:script
+    "(expect-equals false (rt.po.access-rules/node-checked? \"Security ValueFormat - Student\"))"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   ],
+  :type :test,
+  :source "./test-db",
+  :modified "20151119-153607",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds
+   :rn/fixture/user-creds-staff],
+  :id :rn/security/secure-data-on-standalone-report---valueFormatting,
+  :teardown
+  [{:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-admin \"Reports\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Security ValueFormat - Student\")"}
+   {:script
+    "(if (> (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/select-row-by-text \"Security ValueFormat - Student\") (rt.po.report-view/open-action-menu) (rt.po.app/choose-context-menu \"Delete 'Security ValueFormat - Student'\") (rt.po.edit-form/click-confirm-delete-ok-button)))"}
+   {:script "(expect-equals 0 (rt.po.report-view/count-report-row))"}
+],
+  :modified-by "not-implemented"}]

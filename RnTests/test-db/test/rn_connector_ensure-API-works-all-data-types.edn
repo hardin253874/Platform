@@ -1,0 +1,54 @@
+[{:tags [:nomodify :regression :user/shaofen :desktop :area/connector],
+  :tests [],
+  :name "Ensure web API works in all data types - just save the idea.",
+  :steps
+  [{:script
+    "(comment \"++++++++++++++Add new API for foster.++++++++++++++\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Integration/APIs\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" \"Foster API\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Address\" \"foster\")"}
+   {:script
+    "(comment \"++++++++++++++Add new endpoint for object Student++++++++++++++\")"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Endpoints\" \"New\")"}
+   {:script
+    "(comment \"TODO: how to check Save and Cancel button? Those on edit form seem not working.\")"}
+   {:script "(expect (not (rt.po.edit-form/back-button-exists?)))"}
+   {:script "(expect (not (rt.po.edit-form/edit-button-exists?)))"}
+   {:script
+    "(comment \"How to check if lookup exists. get-lookup/find-lookup seems not working. \")"}
+   {:script "(rn.common/sleep 3000)"}
+   {:script "(rt.po.report-view/set-search-text \"Student\")"}
+   {:script "(rt.po.edit-form/click-ok-button)"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Address\" \"students\")"}
+   {:script "(rt.po.edit-form/set-bool-field-value \"Enabled\" true)"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script
+    "(comment \"++++++++++++++Add new API Key for foster.++++++++++++++\")"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"API Keys\" \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"API Key\" \"fdfb3b54-67b7-48bb-b3bd-2a2aad3a0b18\")"}
+   {:script "(rt.po.edit-form/open-lookup \"Run as User\")"}
+   {:script "(rn.common/sleep 3000)"}
+   {:script "(rt.po.report-view/set-search-text \"Administrator\")"}
+   {:script "(rt.po.edit-form/click-ok-button)"}
+   {:script "(rt.po.edit-form/click-save-button)"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20151222-155012",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds],
+  :id :rn/connector/ensure-API-works-all-data-types,
+  :teardown [],
+  :modified-by "not-implemented"}]

@@ -1,0 +1,156 @@
+[{:tags
+  [:user/kun :app-tests/lossevent :desktop],
+  :tests [],
+  :name
+  "Ensure Loss Event Manage",
+  :steps
+  [{:script
+    "(rn.common/start-app-and-login (:lossevent-user-creds-owner *tc*))"}
+   {:script "(think 1)"}
+   {:script "(rt.po.app/navigate-to \"Loss Event Management\")"}
+   {:script "(think 1)"}  
+   {:script
+    "(expect-equals true (rt.po.screen/is-report-on-screen \"My Tasks\"))"}
+   {:script
+    "(rt.po.screen/open-report-menu-on-screen-by-name \"My Tasks\" \"Action\")",
+    :target-msec 1000}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Subject\" (:task-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Due date\" (make-local-date 2017 11 11))"}   
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Task status\" \"Not started\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(expect-equals true (rt.po.common/report-row-contains-text? (:task-name *tc*)))"}	
+   {:script
+    "(expect-equals true (rt.po.screen/is-report-on-screen \"My Issues\"))"}
+   {:script
+    "(rt.po.screen/open-report-menu-on-screen-by-name \"My Issue\" \"Action\")",
+    :target-msec 1000}
+   {:script
+	"(rt.po.report-view/click-sub-menu-item \"New\" \"Issue\")"}
+	{:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:issue-name *tc*))"}
+    {:script
+    "(rt.po.edit-form/set-today-date \"Exp Resolution Date\")"}	
+	{:script "(rt.po.edit-form/save)"}
+   	{:script "(rt.po.view-form/click-button-in-relationship \"Tasks\" \"Action\")",
+    :target-msec 1000}	
+	{:script "(rt.po.app/choose-context-menu \"New\")"}
+	{:script
+    "(rt.po.edit-form/set-text-field-value \"Subject\" (:issuetask-name *tc*))"}
+    {:script
+	"(rt.po.edit-form/set-date-field-value \"Due date\" (make-local-date 2017 11 11))"}   
+    {:script
+	"(rt.po.edit-form/set-choice-value-v2 \"Task status\" \"Not started\")"}
+    {:script "(rt.po.edit-form/save)"}
+    {:script "(rt.po.view-form/click-button-in-relationship \"Attachments\" \"Action\")",
+	:target-msec 1000}	
+	{:script "(rt.po.app/choose-context-menu \"New\")"}
+	{:script
+	"(expect-equals true (rt.po.edit-form/field-visible? \"File\"))"}
+    {:script
+	"(rt.po.document-library/upload-document (rt.po.common/get-data-file-path \"Test Excel Document.xlsx\"))"}
+    {:script "(rt.po.edit-form/save)"}
+	{:script "(rt.po.app/select-app-tab \"Loss Event Managment\")"}
+	{:script
+    "(expect-equals true (rt.po.screen/is-report-on-screen \"Active Loss Events\"))"}
+	{:script
+    "(rt.po.screen/open-report-menu-on-screen-by-name \"Active Loss Events\" \"Action\")",
+    :target-msec 1000}
+    {:script "(rt.po.app/choose-context-menu \"New\")"}
+	{:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:lossevent-name *tc*))"}
+	{:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Event Type\" \"Actual Loss\")"}
+	{:script "(rt.po.edit-form/set-today-date \"Occurrence Date\")"}
+	{:script "(rt.po.edit-form/set-today-date \"Discovered Date\")"}
+	{:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Event Status\" \"Not Started\")"}
+	{:script
+    "(rt.po.edit-form/set-lookup-value \"Category\" \"1.1 Unauthorised Activity\")"}	
+	{:script
+    "(rt.po.edit-form/set-structure-lookup-value \"Organisation Levels\" \"Customer Services\")"}
+	{:script
+    "(rt.po.edit-form/set-structure-lookup-value \"Sites\" \"Australia\")"}	
+	{:script "(rt.po.edit-form/save)"}
+	{:script
+    "(rt.po.view-form/click-button-in-relationship \"Affected Assets\" \"Action\")"}
+	{:script "(rt.po.app/choose-context-menu \"Link to Existing\")"}
+	{:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog \"Call Centre\")"}	
+	{:script "(rt.po.view-form/click-button-in-relationship \"Related Operational Risks\" \"Action\")",
+    :target-msec 1000}	
+	{:script "(rt.po.app/choose-context-menu \"New\")"}
+	{:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:or-name *tc*))"}
+	{:script
+    "(rt.po.edit-form/set-date-field-value \"Next Review Date\" (make-local-date 2017 11 11))"}
+	{:script "(rt.po.edit-form/save)"}
+	{:script "(rt.po.view-form/click-button-in-relationship \"Related Operational Risks\" \"Action\")",
+    :target-msec 1000}
+    {:script "(rt.po.app/choose-context-menu \"Link to Existing\")"}
+	{:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog \"Accepting expensive gifts from vendors\")"}	
+	{:script "(rt.po.edit-form/click-back-button)"}
+    {:script
+    "(rt.po.chart-view/select-data-point \"By Event Type\" \"Actual Loss\")"}
+	{:script
+    "(expect-equals true (> (rt.po.report-view/count-report-row) 0))"}
+	{:script "(rt.po.app/select-navigator-item \"Loss Event Management\")",
+    :target-msec 1000}
+	{:script
+    "(expect-equals true (rt.po.screen/is-hero-text-on-screen \"Critical Loss Events Over 100K\"))"}
+	{:script "(rt.po.screen/click-hero-text-on-screen \"Critical Loss Events Over 100K\")"}
+	{:script
+    "(expect-equals true (> (rt.po.report-view/count-report-row) 0))"}
+	{:script "(rt.po.app/select-navigator-item \"Loss Event Register\")",
+    :target-msec 1000}
+	{:script
+    "(rt.po.chart-view/select-data-point \"By Loss Impact\" \"Actual Loss\")"}
+	{:script
+    "(rt.po.chart-view/select-data-point \"By Root Cause Group\" \"Process\")"}
+	{:script
+    "(expect-equals true (> (rt.po.report-view/count-report-row) 0))"}
+	{:script "(rt.po.app/select-navigator-item \"Loss Event Trend\")",
+    :target-msec 1000}
+	{:script
+    "(rt.po.chart-view/select-data-point \"Loss Event Gross Vs Net\" \"July 2016\")"}
+	{:script
+    "(expect-equals true (> (rt.po.report-view/count-report-row) 0))"}
+	{:script "(rt.po.app/select-navigator-item \"Loss Event Trend\")",
+    :target-msec 1000}
+	{:script
+    "(rt.po.chart-view/select-data-point \"Loss Amount by Organisation\" \"Futures Investment\")"}
+	{:script
+    "(expect-equals true (> (rt.po.report-view/count-report-row) 0))"}
+	{:script "(rt.po.app/open-nav-tree-node-by-name \"Reports\")"}
+	{:script "(rt.po.app/select-navigator-item \"Loss by Organisation\")",
+	:target-msec 1000}	
+	{:script
+    "(expect-equals true (> (rt.po.report-view/count-report-row) 0))"}
+	{:script "(rt.po.app/select-navigator-item \"Loss by Risk\")",
+	:target-msec 1000}
+	{:script
+    "(expect-equals true (> (rt.po.report-view/count-report-row) 0))"}	
+   ],
+  :type :test,
+  :source "./test-db",
+  :modified "20161014-110101",
+  :setup [{:script
+    "(identity {:task-name (rt.lib.util/make-test-name \"Task\"), 
+				:issue-name (rt.lib.util/make-test-name \"Issue\"), 
+				:issuetask-name (rt.lib.util/make-test-name \"IssueTask\"),
+				:lossevent-name (rt.lib.util/make-test-name \"LossEvent\"),
+				:or-name (rt.lib.util/make-test-name \"OperationalRisk\")
+				})"}],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds   
+   :rn/fixture/user-creds-lossevent],
+  :id :lossevent/tests/management,
+  :teardown [],
+  :modified-by "not-implemented"}]

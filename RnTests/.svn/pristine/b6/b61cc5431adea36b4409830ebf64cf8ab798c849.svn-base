@@ -1,0 +1,109 @@
+[{:tags
+  [:nomodify :prod :regression :user/shaofen :desktop :area/security],
+  :tests [],
+  :name
+  "Ensure multiple access rules works on stand alone report --- AddColumn",
+  :steps
+  [{:script
+    "(comment \"=========== Checking if env is clean to start the test. =============\")"}
+   {:script "(rn.common/start-app-and-login (:user-creds-staff *tc*))"}
+   {:script
+    "(rn.app/open-report \"Stock report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect (= (rt.po.report-view/count-report-row) 0))"}
+   {:script
+    "(comment \"=========== Create a new report to add column, grant navigation access to new report and also grant record access for Staff users. ==================\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Stock report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script "(rt.po.report-builder/click-saveas-report-button)"}
+   {:script
+    "(rt.po.report-builder/set-report-new-name \"Security - Stock - addColumn\")"}
+   {:script "(rt.po.report-builder/click-saveas-ok)"}
+   {:script
+    "(expect-equals 0 (rt.po.report-builder/get-count-matched-columns-name \"Quarter\"))"}
+   {:script
+    "(rt.po.report-builder/select-field-checkboxes \"Quarter\" true false)"}
+   {:script
+    "(expect-equals 1 (rt.po.report-builder/get-count-matched-columns-name \"Quarter\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(rn.app/open-report \"Security - Stock - addColumn\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script
+    "(expect-equals 1 (rt.po.report-builder/get-count-matched-columns-name \"Quarter\"))"}
+   {:script "(rn.app/open-security \"Navigation Access\")"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/application-option-exists? \"Foster University\"))"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/set-application \"Foster University\")"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/user-or-role-option-exists? \"Staff (User Role)\"))"}
+   {:script
+    "(rt.po.access-rules/set-user-or-role \"Staff (User Role)\")"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/node-in-nav-tree-exists? \"Security - Stock - addColumn\"))"}
+   {:script
+    "(expect-equals \"Foster University > Reports > Security - Stock - addColumn\" (rt.po.access-rules/get-node-path \"Security - Stock - addColumn\"))"}
+   {:script
+    "(expect-equals false (rt.po.access-rules/node-checked? \"Security - Stock - addColumn\"))"}
+   {:script
+    "(rt.po.access-rules/set-node-value \"Security - Stock - addColumn\" true)"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script "(rn.common/start-app-and-login (:user-creds-staff *tc*))"}
+   {:script
+    "(rn.app/open-report \"Stock report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script
+    "(expect-equals 0 (rt.po.report-builder/get-count-matched-columns-name \"Quarter\"))"}
+   {:script "(expect (= (rt.po.report-view/count-report-row) 0))"}
+   {:script
+    "(rn.app/open-report \"Security - Stock - addColumn\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script "(expect (= (rt.po.report-view/count-report-row) 0))"}
+   {:script
+    "(expect-equals 1 (rt.po.report-builder/get-count-matched-columns-name \"Quarter\"))"}
+   {:script
+    "(comment \"==================== Clearing env back as by default. ===================\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script "(rn.app/open-security \"Navigation Access\")"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/application-option-exists? \"Foster University\"))"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/set-application \"Foster University\")"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/user-or-role-option-exists? \"Staff (User Role)\"))"}
+   {:script
+    "(rt.po.access-rules/set-user-or-role \"Staff (User Role)\")"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/node-checked? \"Security - Stock - addColumn\"))"}
+   {:script
+    "(rt.po.access-rules/set-node-value \"Security - Stock - addColumn\" false)"}
+   {:script
+    "(expect-equals false (rt.po.access-rules/node-checked? \"Security - Stock - addColumn\"))"}
+   {:script "(rt.po.access-rules/click-save-button)"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20160211-010619",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds
+   :rn/fixture/user-creds-staff],
+  :id :rn/security/secure-data-on-standalone-report---addColumn,
+  :teardown
+  [{:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-admin \"Reports\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Security - Stock - removeColumn\")"}
+   {:script
+    "(while (> (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/select-row-by-text \"Security - Stock - addColumn\") (rt.po.report-view/open-action-menu) (rt.po.app/choose-context-menu \"Delete 'Security - Stock - addColumn'\") (rt.po.edit-form/click-confirm-delete-ok-button)))"}
+   {:script "(expect-equals 0 (rt.po.report-view/count-report-row))"}
+   {:script "(rn.common/start-app-and-login (:user-creds-staff *tc*))"}
+   {:script
+    "(rn.app/open-report \"Stock report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect (= (rt.po.report-view/count-report-row) 0))"}],
+  :modified-by "not-implemented"}]

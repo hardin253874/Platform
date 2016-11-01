@@ -1,0 +1,23 @@
+[{:tags [:desktop],
+  :test-filter "",
+  :tests
+  [:rn/form/ensure-choice-field-properties-works
+   :rn/form/check-date-and-time-field-object-properties
+   :rn/form/check-date-field-object-properties
+   :rn/form/check-lookup-field-object-properties],
+  :name
+  "Tests that are themselves problematic, often intermittently failing",
+  :each-fixtures
+  [:common/fixture/handle-errors
+   :common/fixture/wait-ng
+   :common/fixture/test-account-creds
+   :common/fixture/chrome],
+  :type :testsuite,
+  :source "../RnTests/test-db",
+  :modified "20150618-105412",
+  :setup [{:script ""}],
+  :id :rn/suites/problematic-tests,
+  :teardown [{:script ""}],
+  :doc "",
+  :modified-by "not-implemented",
+  :once-fixtures []}]

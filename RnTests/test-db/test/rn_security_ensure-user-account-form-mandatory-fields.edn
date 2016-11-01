@@ -1,0 +1,77 @@
+[{:tags
+  [:user/conc
+   :nomodify
+   :daily
+   :prod
+   :regression
+   :desktop
+   :area/security],
+  :tests [],
+  :name "Ensure user account form mandatory fields",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script "(rn.app/open-security \"User Accounts\")"}
+   {:script "(rt.po.report-view/open-new-menu)"}
+   {:script "(rt.po.edit-form/is-string-field-password? \"Password\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(expect (rt.po.app/page-has-error-alert?))"}
+   {:script
+    "(expect (rt.po.edit-form/field-mandatory-indicator-visible? \"Username\"))"}
+   {:script
+    "(expect (rt.po.edit-form/field-mandatory-indicator-visible? \"Password\"))"}
+   {:script
+    "(expect (rt.po.edit-form/field-mandatory-indicator-visible? \"Account status\"))"}
+   {:script
+    "(expect-equals (rt.po.common/get-combo \"Account status\") \"Active\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value \"Account status\" \"[Select]\")"}
+   {:script
+    "(expect-equals (rt.po.edit-form/field-error-message \"Username\") \"A value is required.\")"}
+   {:script
+    "(expect-equals (rt.po.edit-form/field-error-message \"Password\") \"A value is required.\")"}
+   {:script
+    "(expect-equals (rt.po.edit-form/field-error-message \"Account status\") \"A value is required.\")"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Name\" (:user-account-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Password\" (:account-password *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value \"Account status\" \"Active\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.view-form/form-nav-back)"}
+   {:script "(rt.lib.wd-ng/wait-for-angular)"}
+   {:script
+    "(rt.po.report-view/set-search-text (:user-account-name *tc*))"}
+   {:script "(expect-equals (rt.po.report-view/count-report-row) 1)"}
+   {:script
+    "(rt.po.report-view/choose-report-row-action (:user-account-name *tc*) \"View\")"}
+   {:script "(rt.po.edit-form/is-string-field-password? \"Password\")"}
+   {:script
+    "(expect-equals (rt.po.view-form/get-field-value \"Account status\") \"Active\")"}
+   {:script "(rt.po.view-form/click-edit)"}
+   {:script
+    "(expect (rt.po.edit-form/field-mandatory-indicator-visible? \"Username\"))"}
+   {:script
+    "(expect (rt.po.edit-form/field-mandatory-indicator-visible? \"Password\"))"}
+   {:script
+    "(expect (rt.po.edit-form/field-mandatory-indicator-visible? \"Account status\"))"}
+   {:script "(rt.po.edit-form/is-string-field-password? \"Password\")"}
+   {:script "(rt.po.edit-form/click-cancel-button)"}
+   {:script "(rt.po.view-form/form-nav-back)"}
+   {:script
+    "(rt.po.report-view/delete-record (:user-account-name *tc*))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160719-095109",
+  :setup
+  [{:script
+    "(identity {:user-account-name (rt.lib.util/make-test-name \"Mandatory fields username\")\n               :account-password \"P@ssword1\"})"}],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds],
+  :id :rn/security/ensure-user-account-form-mandatory-fields,
+  :teardown [],
+  :doc
+  "Test for Bug 23624:Security: username/password field shall marked as mandatory when creating new users",
+  :modified-by "not-implemented"}]

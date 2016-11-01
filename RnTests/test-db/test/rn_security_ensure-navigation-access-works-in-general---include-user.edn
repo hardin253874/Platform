@@ -1,0 +1,111 @@
+[{:tags
+  [:nomodify :prod :regression :user/shaofen :desktop :area/security],
+  :tests [],
+  :name
+  "Ensure navigation access works in general ---- this is to cover the scenario to tick \"Include User\"",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rt.po.app-toolbox/create-app {:description \"\", :name \"App for Security 18112015\"})"}
+   {:script "(rt.po.app/enable-app-toolbox)"}
+   {:script
+    "(rt.po.app-toolbox/set-application-filter \"App for Security 18112015\")"}
+   {:script
+    "(rt.po.app-toolbox/create-object {:description \"Security testing - Object 1\", :name \"SecurityObj1\"})"}
+   {:script "(rt.po.form-builder/add-container-to-form)"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Text\" 0)"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}
+   {:script "(rt.po.app/navigate-to \"App for Security 18112015\")"}
+   {:script
+    "(comment (identity {:section (make-test-name \"RT-Section\")}))\n"}
+   {:script
+    "(rt.po.app/add-sections [{:name \"Security Section 1\"}])"}
+   {:script "(rt.po.app/add-existing-report \"SecurityObj1 Report\")"}
+   {:script
+    "(rt.po.app/add-existing-report \"Student Report - Faculties\" \"Security Section 1\")"}
+   {:script
+    "(expect-equals false (rt.po.form-builder-config/section-expanded? \"Security Section 1\"))"}
+   {:script
+    "(rt.po.app/add-existing-chart \"Students by faculty (p)\" \"Security Section 1\")"}
+   {:script
+    "(rt.po.app/add-document-folder \"Security doc folder\" \"Security Section 1\")"}
+   {:script "(rn.app/open-security \"User Accounts\")"}
+   {:script "(rt.po.report-view/set-search-text \"Mary.Qian\")"}
+   {:script "(expect-equals 0 (rt.po.report-view/count-report-row))"}
+   {:script "(rt.po.report-view/open-new-menu)"}
+   {:script "(rt.po.edit-form/is-string-field-password? \"Password\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(expect-equals (rt.po.common/get-combo \"Account status\") \"Active\")"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Name\" \"Mary.Qian\")"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Password\" \"Mary.Qian1\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rn.app/open-security \"Navigation Access\")"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/application-option-exists? \"App for Security 18112015\"))"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/set-application \"App for Security 18112015\")"}
+   {:script "(rt.po.access-rules/set-include-users-value true)"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/get-include-users-value))"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/user-or-role-option-exists? \"Mary.Qian (User Account)\"))"}
+   {:script
+    "(rt.po.access-rules/set-user-or-role \"Mary.Qian (User Account)\")"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/node-in-nav-tree-exists? \"Security Section 1\"))"}
+   {:script
+    "(expect-equals \"App for Security 18112015 > Security Section 1\" (rt.po.access-rules/get-node-path \"Security Section 1\"))"}
+   {:script
+    "(expect-equals false (rt.po.access-rules/node-checked? \"Security Section 1\"))"}
+   {:script
+    "(expect-equals \"App for Security 18112015 > SecurityObj1 Report\" (rt.po.access-rules/get-node-path \"SecurityObj1 Report\"))"}
+   {:script
+    "(rt.po.access-rules/set-node-value \"Security Section 1\" true)"}
+   {:script
+    "(rt.po.access-rules/set-node-value \"SecurityObj1 Report\" true)"}
+   {:script
+    "(rt.po.access-rules/set-node-value \"Student Report - Faculties\" true)"}
+   {:script
+    "(rt.po.access-rules/set-node-value \"Students by faculty (p)\" true)"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script
+    "(rn.common/start-app-and-login (:user-creds-without-role *tc*))"}
+   {:script
+    "(expect (rt.po.app/app-tile-exists? \"App for Security 18112015\"))"}
+   {:script
+    "(if (rt.po.app/app-tile-exists? \"App for Security 18112015\") (do (rt.po.app/navigate-to-item \"App for Security 18112015\" \"Security Section 1/Student Report - Faculties\") (rt.po.app/navigate-to-item \"App for Security 18112015\" \"Security Section 1/Students by faculty (p)\") (rt.po.app/navigate-to-item \"App for Security 18112015\" \"SecurityObj1 Report\") (expect (not (rt.po.app/node-in-nav-tree-exists? \"Security doc folder\")))))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160229-114133",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds
+   :rn/fixture/user-creds-without-role],
+  :id
+  :rn/security/ensure-navigation-access-works-in-general---include-user,
+  :teardown
+  [{:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Objects\" {:app-name \"ReadiNow Console\" :folder-name \"Resources\"})"}
+   {:script "(rt.po.report-view/set-search-text \"SecurityObj1\")"}
+   {:script
+    "(if (> (rt.po.report-view/count-report-row) 0) (rt.po.report-view/delete-record \"SecurityObj1\"))"}
+   {:script "(rt.po.report-view/set-search-text \"SecurityObj1\")"}
+   {:script "(expect-equals 0 (rt.po.report-view/count-report-row))"}
+   {:script "(rn.app/open-security \"User Accounts\")"}
+   {:script "(rt.po.report-view/set-search-text \"Mary.Qian\")"}
+   {:script
+    "(if (> (rt.po.report-view/count-report-row) 0) (rt.po.report-view/delete-record \"Mary.Qian\"))"}
+   {:script "(rt.po.report-view/set-search-text \"Mary.Qian\")"}
+   {:script "(expect-equals 0 (rt.po.report-view/count-report-row))"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script "(rt.po.app/delete-app \"App for Security 18112015\")"}],
+  :modified-by "not-implemented"}]

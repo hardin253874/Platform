@@ -1,0 +1,338 @@
+[{:tags
+  [:nomodify :prod :regression :user/shaofen :desktop :area/security],
+  :tests [],
+  :name
+  "Ensure two users in same rule set have reasonable access --- partial access rule referring to current user, when security flag set",
+  :steps
+  [{:script
+    "(rn.common/start-app-and-login (:user-creds-student1 *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rn.app/open-report \"Library cards\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+
+   {:script
+    "(rn.common/start-app-and-login (:user-creds-student2 *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rn.app/open-report \"Library cards\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+
+   {:script
+    "(comment \"======================Next is to create a new access rule and enable it, and to set security flag.===================\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script "(rt.po.access-rules/add-new-access-rule)"}
+   {:script
+    "(expect-equals true (rt.po.access-rules-new/new-dialog-visible?))"}
+   {:script
+    "(rt.po.access-rules-new/set-role \"Students (User Role)\")"}
+   {:script "(rt.po.access-rules-new/set-object \"Student\")"}
+   {:script "(rt.po.access-rules-new/click-ok)"}
+   {:script
+    "(rt.po.access-rules/edit-access-rule \"Students (User Role)\" \"Student\" \"Student\")"}
+   {:script
+    "(rt.po.report-builder/select-field-checkboxes \"Postcode\" true true)"}
+   {:script "(comment \"TODO: add relationship to Qualification\")"}
+   {:script "(rt.po.report-builder/click-add-relationship-button)"}
+   {:script
+    "(rt.po.report-add-relationship/add-relationship \"Qualifications\")"}
+   {:script "(rt.po.report-add-relationship/click-ok)"}
+   {:script
+    "(rt.po.report-builder/select-treenode \"Qualifications\")"}
+   {:script
+    "(rt.po.report-builder/select-field-checkboxes \"Abbrev\" false true)"}
+   {:script
+    "(rt.po.report-builder/set-name \"Students with postcode = 2153 and Qua-abbr contains BH - 3\")"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script
+    "(expect-equals true (rt.po.report-view/analyzer-field-exists? \"Qualifications Abbrev\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/analyzer-field-exists? \"Postcode\"))"}
+   {:script
+    "(rt.po.report-view/set-analyzer-field-oper \"Postcode\" \"=\")"}
+   {:script
+    "(rt.po.report-view/set-analyzer-string \"Postcode\" \"2153\")"}
+   {:script
+    "(rt.po.report-view/set-analyzer-field-oper \"Qualifications Abbrev\" \"Contains\")"}
+   {:script
+    "(rt.po.report-view/set-analyzer-string \"Qualifications Abbrev\" \"BH\")"}
+   {:script "(rt.po.report-view/apply-analyzer)"}
+   {:script "(rt.po.report-builder/save)"}
+   {:script "(rt.po.report-builder/close)"}
+   {:script
+    "(rt.po.access-rules/enable-access-rule \"Students (User Role)\" \"Student\" \"Students with postcode = 2153 and Qua-abbr contains BH - 3\")"}
+   {:script
+    "(rt.po.access-rules/select-access-rule-operation \"Students (User Role)\" \"Student\" \"Students with postcode = 2153 and Qua-abbr contains BH - 3\" \"Create, View and Edit\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script
+    "(rn.app/open-report \"Relationships\" {:app-name \"ReadiNow Console\" :folder-name \"Resources\"})"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Student - Library card\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Student - Library card\")"}
+   {:script
+    "(expect-equals false (rt.po.edit-form/bool-field-value \"Securing 'To'\"))"}
+   {:script
+    "(expect-equals false (rt.po.edit-form/bool-field-value \"Securing 'From'\"))"}
+   {:script "(rt.po.view-form/click-edit)"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Securing 'To'\" true)"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/bool-field-value \"Securing 'To'\"))"}
+   {:script "(rt.po.edit-form/save)"}
+
+   {:script "(comment \"============Student user 1==============\")"}
+   {:script
+    "(rn.common/start-app-and-login (:user-creds-student1 *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 2 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Vivian Rhodes\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View 'Vivian Rhodes'\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"Edit 'Vivian Rhodes'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete 'Vivian Rhodes'\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Vivian Rhodes\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"New 'Student'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"View 'Vivian Rhodes'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Edit 'Vivian Rhodes'\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"Delete 'Vivian Rhodes'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Nelle Odom\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View 'Nelle Odom'\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"Edit 'Nelle Odom'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete 'Nelle Odom'\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Nelle Odom\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"New 'Student'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"View 'Nelle Odom'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Edit 'Nelle Odom'\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"Delete 'Nelle Odom'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+   {:script
+    "(rn.app/open-report \"Library cards\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 2 (rt.po.report-view/count-report-row))"}
+   {:script "(rt.po.report-view/right-click-row-by-text \"11111\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View '11111'\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"Edit '11111'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete '11111'\"))"}
+   {:script "(rt.po.report-view/right-click-row-by-text \"11111\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"New 'Library card'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"View '11111'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Edit '11111'\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"Delete '11111'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+   {:script "(rt.po.report-view/right-click-row-by-text \"11208\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View '11208'\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"Edit '11208'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete '11208'\"))"}
+   {:script "(rt.po.report-view/right-click-row-by-text \"11208\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"New 'Library card'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"View '11208'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Edit '11208'\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"Delete '11208'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+
+   {:script
+    "(comment \"==============Student user 2===============\")"}
+   {:script
+    "(rn.common/start-app-and-login (:user-creds-student2 *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 2 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Vivian Rhodes\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View 'Vivian Rhodes'\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"Edit 'Vivian Rhodes'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete 'Vivian Rhodes'\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Vivian Rhodes\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"New 'Student'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"View 'Vivian Rhodes'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Edit 'Vivian Rhodes'\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"Delete 'Vivian Rhodes'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Plato Parks\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View 'Plato Parks'\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"Edit 'Plato Parks'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete 'Plato Parks'\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Plato Parks\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"New 'Student'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"View 'Plato Parks'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Edit 'Plato Parks'\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"Delete 'Plato Parks'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+   {:script
+    "(rn.app/open-report \"Library cards\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 2 (rt.po.report-view/count-report-row))"}
+   {:script "(rt.po.report-view/right-click-row-by-text \"11149\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View '11149'\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"Edit '11149'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete '11149'\"))"}
+   {:script "(rt.po.report-view/right-click-row-by-text \"11149\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"New 'Library card'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"View '11149'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Edit '11149'\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"Delete '11149'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+   {:script "(rt.po.report-view/right-click-row-by-text \"11208\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View '11208'\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"Edit '11208'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete '11208'\"))"}
+   {:script "(rt.po.report-view/right-click-row-by-text \"11208\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"New 'Library card'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"View '11208'\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/action-menu-item-exists? \"Edit '11208'\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/action-menu-item-exists? \"Delete '11208'\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+   {:script
+    "(comment \"==========================Below is to reset env back.==========================\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/delete-access-rule \"Students (User Role)\" \"Student\" \"Students with postcode = 2153 and Qua-abbr contains BH - 3\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script
+    "(rn.app/open-report \"Relationships\" {:app-name \"ReadiNow Console\" :folder-name \"Resources\"})"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Student - Library card\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Student - Library card\")"}
+   {:script "(rt.po.view-form/click-edit)"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Securing 'To'\" false)"}
+   {:script
+    "(expect-equals false (rt.po.edit-form/bool-field-value \"Securing 'To'\"))"}
+
+   {:script
+    "(rn.common/start-app-and-login (:user-creds-student1 *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rn.app/open-report \"Library cards\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+
+   {:script
+    "(rn.common/start-app-and-login (:user-creds-student2 *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rn.app/open-report \"Library cards\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   ],
+  :type :test,
+  :source "./test-db",
+  :modified "20151027-101106",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds-students],
+  :id
+  :rn/security/usersInSameRuleSet--partially-referring-to-current-user-with-flag,
+  :teardown
+  [{:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Relationships\" {:app-name \"ReadiNow Console\" :folder-name \"Resources\"})"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Student - Library card\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Student - Library card\")"}
+   {:script "(rt.po.view-form/click-edit)"}
+   {:script
+    "(if (= (rt.po.edit-form/bool-field-value \"Securing 'To'\") true) (rt.po.edit-form/set-bool-field-value \"Securing 'To'\" false))"}
+   {:script
+    "(if (= (rt.po.edit-form/bool-field-value \"Securing 'From'\") true) (rt.po.edit-form/set-bool-field-value \"Securing 'From'\" false))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"System Administrator (User Account)\")"}
+   {:script
+    "(if (> (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/set-search-text \"Students with postcode = 2153 and Qua-abbr contains BH - 3\") (if (> (rt.po.report-view/count-report-row) 1) (do (rt.po.access-rules/click-edit-button) (rt.po.access-rules/delete-access-rule \"Students (User Role)\" \"Student\" \"Students with postcode = 2153 and Qua-abbr contains BH - 3\") (rt.po.access-rules/click-save-button)))))"}
+   {:script
+    "(rt.po.report-view/set-search-text \"System Administrator (User Account)\")"}
+   {:script
+    "(if (= (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/set-search-text \"Students with postcode = 2153 and Qua-abbr contains BH - 3\") (if (> (rt.po.report-view/count-report-row) 0) (do (rt.po.access-rules/click-edit-button) (rt.po.access-rules/delete-access-rule \"Students (User Role)\" \"Student\" \"Students with postcode = 2153 and Qua-abbr contains BH - 3\") (rt.po.access-rules/click-save-button)))))"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Students with postcode = 2153 and Qua-abbr contains BH - 3\")"}],
+  :modified-by "not-implemented"}]

@@ -1,0 +1,63 @@
+[{:tags [:prod :desktop :smoke-test],
+  :tests [],
+  :name "Use import spreadsheet to import test data",
+  :steps
+  [{:script
+    "(rt.po.app-toolbox/open-quick-link \"Import Spreadsheet\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"Import Configuration\")"}
+   {:script
+    "(rt.po.import-spreadsheet/choose-file-to-import (rt.po.common/get-data-file-path \"DailyRegressionTestData.xlsx\"))"}
+   {:script "(rt.scripts.common/sleep 2000)"}
+   {:script "(rt.po.import-spreadsheet/set-heading-row 2)"}
+   {:script "(rt.scripts.common/sleep 2000)"}
+   {:script "(rt.po.import-spreadsheet/set-data-start-row 3)"}
+   {:script "(rt.scripts.common/sleep 2000)"}
+   {:script "(rt.po.import-spreadsheet/choose-next )"}
+   {:script
+    "(rt.po.import-spreadsheet/choose-target-object \"RT-Object\")"}
+   {:script "(rt.po.import-spreadsheet/choose-next )"}
+   {:script
+    "(comment -choice is not on the object due to another issue- (rt.po.import-spreadsheet/set-field-mapping {\"String\" \"Text 1\" \"Currency\" \"Currency 1\" \"DateTime\" \"DateTime 1\" \"Boolean\" \"Boolean 1\" \"Weekday\" \"Choice 1\" \"AA_Employee\" \"Lookup 1\"}))"}
+   {:script
+    "(rt.po.import-spreadsheet/set-field-mapping \"String\" \"Text 1\")"}
+   {:script
+    "(rt.po.import-spreadsheet/set-field-mapping \"Currency\" \"Currency 1\")"}
+   {:script
+    "(rt.po.import-spreadsheet/set-field-mapping \"DateTime\" \"DateTime 1\")"}
+   {:script
+    "(rt.po.import-spreadsheet/set-field-mapping \"Boolean\" \"Boolean 1\")"}
+   {:script
+    "(rt.po.import-spreadsheet/set-field-mapping \"AA_Employee\" \"Owned by\")"}
+   {:script
+    "(rt.po.import-spreadsheet/click-field-options \"AA_Employee\")"}
+   {:script
+    "(rt.po.import-spreadsheet/set-find-using \"Description\")"}
+   {:script "(rt.po.import-spreadsheet/click-ok)"}
+   {:script
+    "(expect-equals (rt.po.import-spreadsheet/get-field-details \"AA_Employee\") \"Lookup using Description\")"}
+   {:script
+    "(rt.po.import-spreadsheet/set-field-mapping \"AA_Employee\" \"--select--\")"}
+   {:script "(rt.po.import-spreadsheet/choose-next )"}
+   {:script
+    "(rt.po.import-spreadsheet/set-config-name \"Test import\")"}
+   {:script "(rt.po.import-spreadsheet/set-suppress-workflows true)"}
+   {:script "(rt.po.import-spreadsheet/set-test-import false)"}
+   {:script "(rt.po.import-spreadsheet/save-without-importing)"}
+   {:script "(rt.scripts.common/sleep 2000)"}
+   {:script "(rt.po.import-spreadsheet/choose-next)"}],
+  :type :test,
+  :checks [],
+  :source "./test-db",
+  :modified "20160519-163605",
+  :setup
+  [{:script "(rt.po.app/enable-app-toolbox )"}
+   {:script
+    "(rt.po.app-toolbox/set-application-filter \"Unassigned\")"}
+   {:script "(rt.po.app-toolbox/set-object-filter \"rt-object\")"}
+   {:script
+    "(when (empty? (rt.po.app-toolbox/get-object-names)) (throw (Exception. \"Failed to find RT Object to import into... earlier test failed??\")))"}],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :qa-daily/import-spreadsheet,
+  :teardown [],
+  :modified-by "not-implemented"}]

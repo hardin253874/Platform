@@ -1,0 +1,79 @@
+[{:tags
+  [:nomodify
+   :prod
+   :daily
+   :regression
+   :user/sri
+   :desktop
+   :area/security],
+  :tests [],
+  :name "Ensure existing access rules works for Students role.",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/access-rule-enabled? \"Students (User Role)\" \"Staff\" \"Staff in my faculty\") )"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/access-rule-enabled? \"Students (User Role)\" \"Student\" \"Own student record\") )"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/access-rule-enabled? \"Students (User Role)\" \"Qualifications\" \"My qualifications\") )"}
+   {:script
+    "(expect-equals true  (rt.po.access-rules/access-rule-enabled? \"Students (User Role)\" \"Library card\" \"Own library card\") )"}
+   {:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script "(rt.po.report-view/view-record \"Nelle Odom\")"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"First name\" \"Nelle1\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(expect-equals \"Nelle1\" (rt.po.view-form/get-field-value \"First name\"))"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"First name\" \"Nelle\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.view-form/form-nav-back)"}
+   {:script
+    "(rn.app/open-report \"Staff report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 3 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rn.app/open-report \"Deans of University report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script "(rt.po.report-view/view-record \"Alec\")"}
+   {:script "(rt.po.view-form/select-form-tab \"Direct Reports\")"}
+   {:script "(expect-equals 2 (rt.po.view-form/get-report-row-count))"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Reports/Qualification Report\")"}
+   {:script "(expect-equals 2 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(rt.po.report-view/view-record \"Nelle Odom\")"}
+   {:script "(rt.po.view-form/select-form-tab \"Qualifications\")"}
+   {:script "(expect-equals 2 (rt.po.view-form/get-report-row-count))"}
+   {:script
+    "(rn.app/open-report \"Library cards\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script "(rt.po.report-view/view-record \"11111\")"}
+   {:script
+    "(expect-equals \"11111\" (rt.po.view-form/get-field-value \"Library Card #\"))"}
+   {:script "(rt.po.view-form/form-nav-back)"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(rt.po.report-view/view-record \"Nelle Odom\")"}
+   {:script
+    "(expect-equals \"11111\" (rt.po.view-form/get-field-value \"Library card #\"))"}
+   {:script "(rt.po.view-form/form-nav-back)"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20151103-143555",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds],
+  :id :rn/security/ensure-existing-access-rules-work-for-students-role,
+  :teardown [],
+  :modified-by "not-implemented"}]

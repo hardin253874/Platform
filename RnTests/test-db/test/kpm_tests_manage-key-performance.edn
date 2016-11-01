@@ -1,0 +1,165 @@
+[{:tags [:user/hemant :app-tests/kpm :desktop],
+  :name
+  "Create Key Performance Indicator (Average, Forecast, Percentage Chart, Threshold)",
+  :steps
+  [{:script
+    "(rn.common/start-app-and-login (:kpm-manager-creds *tc*))"}
+   {:script "(rt.po.app/navigate-to \"Key Performance Management\")"}
+   {:script
+    "(rt.po.app/select-app-tab \"Key Performance Management\")"}
+   {:script
+    "(rt.po.app/select-navigator-item \"Key Performance Management\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:kpi-avg-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Indicator Type\" \"KCI\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Monitoring Type\" \"Average\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Expected Trend\" \"Increasing\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Reporting Frequency\" \"Monthly\")"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"Target Value\" 100)"}
+   {:script
+    "(comment (rt.po.edit-form/set-choice-value-v2 \"Period of Measure\" \"Monthly\"))"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"% Maximum Delta\" 10)"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Next Review Date\" (make-local-date 2016 12 12))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Approval status\" \"Not Started\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"KEY INDICATOR RESULTS\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:kpiavg-result-name *tc*))"}
+   {:script "(rt.po.edit-form/set-number-value-v2 \"Value\" 95)"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.report-view/set-search-text (:kpi-avg-name *tc*))"}
+   {:script
+    "(expect-equals (:kpi-avg-name *tc*) (rt.po.report-view/get-report-cell-text-content 0 \"Key Performance Indicator\"))"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:kpi-forecast-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Indicator Type\" \"KPI\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Monitoring Type\" \"Forecast\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Expected Trend\" \"Increasing\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Reporting Frequency\" \"Monthly\")"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"Forecast Value\" 200)"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"% Maximum Delta\" 10)"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Next Review Date\" (make-local-date 2016 12 12))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Approval status\" \"Not Started\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"KEY INDICATOR RESULTS\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:kpiforecast-result *tc*))"}
+   {:script "(rt.po.edit-form/set-number-value-v2 \"Value\" 50)"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(rt.po.report-view/set-search-text (:kpi-forecast-name *tc*))"}
+   {:script
+    "(expect-equals (:kpi-forecast-name *tc*) (rt.po.report-view/get-report-cell-text-content 0 \"Key Performance Indicator\"))"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:kpi-percent-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Indicator Type\" \"KRI\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Monitoring Type\" \"Percentage Change\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Expected Trend\" \"Increasing\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Reporting Frequency\" \"Monthly\")"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Next Review Date\" (make-local-date 2016 12 12))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Approval status\" \"Not Started\")"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"Forecast Value\" 200)"}
+   {:script "(rt.po.edit-form/set-number-value-v2 \"% Change\" 50)"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"KEY INDICATOR RESULTS\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:kpipercent-result *tc*))"}
+   {:script "(rt.po.edit-form/set-number-value-v2 \"Value\" 50)"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(rt.po.report-view/set-search-text (:kpi-percent-name *tc*))"}
+   {:script
+    "(expect-equals (:kpi-percent-name *tc*) (rt.po.report-view/get-report-cell-text-content 0 \"Key Performance Indicator\"))"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:kpi-threshold-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Indicator Type\" \"SLA\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Monitoring Type\" \"Threshold\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Expected Trend\" \"Increasing\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Reporting Frequency\" \"Monthly\")"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Next Review Date\" (make-local-date 2016 12 12))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Approval status\" \"Not Started\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Threshold Type\" \"Above Upper Threshold\")"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"Upper Threshold\" 200)"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"KEY INDICATOR RESULTS\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:kpithreshold-result *tc*))"}
+   {:script "(rt.po.edit-form/set-number-value-v2 \"Value\" 201)"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(rt.po.report-view/set-search-text (:kpi-threshold-name *tc*))"}
+   {:script
+    "(expect-equals (:kpi-threshold-name *tc*) (rt.po.report-view/get-report-cell-text-content 0 \"Key Performance Indicator\"))"}
+   {:script
+    "(comment (rt.po.report-view/set-search-text (:corp-obj-name *tc*)))"}
+   {:script
+    "(comment (expect-equals (:corp-obj-name *tc*) (rt.po.report-view/get-report-cell-text-content 0 \"Corporate Objectives\")))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20161021-173958",
+  :setup
+  [{:script
+    "(identity {:kpi-avg-name (rt.lib.util/make-test-name \"KPI-Avg\"), :kpiavg-result-name (rt.lib.util/make-test-name \"KPI-Result1\")})"}
+   {:script
+    "(identity {:kpiforecast-result (rt.lib.util/make-test-name \"KPIForecast-Result\"), :kpi-forecast-name (rt.lib.util/make-test-name \"KPI-Forecast\")})"}
+   {:script
+    "(identity {:kpi-percent-name (rt.lib.util/make-test-name \"KPI-Percent\"), :kpipercent-result (rt.lib.util/make-test-name \"KPIPercent-Result\")})"}
+   {:script
+    "(identity {:kpithreshold-result (rt.lib.util/make-test-name \"KPIThreshold-Result\"), :kpi-threshold-name (rt.lib.util/make-test-name \"KPI-Threshold\")})"}
+   {:script
+    "(identity {:issue-name (rt.lib.util/make-test-name \"Issue\"), :task-name (rt.lib.util/make-test-name \"Task\")})"}],
+  :fixtures [:rn/fixture/kpm-manager-and-owner-creds],
+  :id :kpm/tests/manage-key-performance,
+  :teardown [],
+  :modified-by "not-implemented"}]

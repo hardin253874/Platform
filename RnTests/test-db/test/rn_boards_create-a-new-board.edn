@@ -1,0 +1,88 @@
+[{:tags [:desktop],
+  :name "Ensure you can create a new board",
+  :steps
+  [{:script "(rt.po.app/navigate-via-tiles \"Foster University\")"}
+   {:script "(rt.po.app/add-board \" \")"}
+   {:script "(rt.po.common/set-string \"Name\" (:board-name *tc*))"}
+   {:script "(rt.po.common/set-lookup \"Report\" \"Student report\")"}
+   {:script
+    "(expect-equals true (rt.po.common/get-bool \"Show quick add\"))"}
+   {:script "(rt.po.common/click-ok)"}
+   {:script "(rt.po.board/set-quick-add (:student-name *tc*))"}
+   {:script "(rt.po.board/click-quick-add)"}
+   {:script "(rt.po.board/click-refresh)"}
+   {:script
+    "(expect-equals 10 (rt.po.board/get-column-item-count \"Undefined\"))"}
+   {:script
+    "(rt.po.board/card-exists? \"Undefined\" (:student-name *tc*))"}
+   {:script "(rt.po.board/set-search (:student-name *tc*))"}
+   {:script
+    "(expect-equals 1 (rt.po.board/get-column-item-count \"Undefined\"))"}
+   {:script "(rt.po.board/clear-search)"}
+   {:script
+    "(comment (rt.po.board/right-click-card \"Undefined\" (:student-name *tc*)))"}
+   {:script "(comment (rt.po.app/choose-context-menu \"Delete\"))"}
+   {:script
+    "(comment (rt.po.edit-form/click-confirm-delete-ok-button))"}
+   {:script "(rt.po.board/click-settings)"}
+   {:script "(rt.po.board/set-row-source \"Gender\")"}
+   {:script "(rt.po.board/click-settings-dialog-save)"}
+   {:script "(expect-equals 2 (count (rt.po.board/get-rows)))"}
+   {:script "(expect-equals true (rt.po.board/row-exists? \"Male\"))"}
+   {:script
+    "(expect-equals true (rt.po.board/row-exists? \"Female\"))"}
+   {:script
+    "(rt.po.board/drag-card-to-dimension-and-row \"Wayne Avery\" \"Undefined\" \"NSW\" \"Male\" \"Female\")"}
+   {:script "(rt.po.board/set-search \"Wayne Avery\")"}
+   {:script "(rt.po.board/click-card-link \"NSW\" \"Wayne Avery\")"}
+   {:script
+    "(expect-equals \"NSW\" (rt.po.edit-form/get-multi-select-choice-value \"State\"))"}
+   {:script
+    "(expect-equals \"Female\" (rt.po.edit-form/get-multi-select-choice-value \"Gender\"))"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(rt.po.board/drag-card-to-dimension-and-row \"Wayne Avery\" \"NSW\" \"Undefined\" \"Female\" \"Male\")"}
+   {:script "(rt.po.board/set-search (:student-name *tc*))"}
+   {:script
+    "(rt.po.board/right-click-card \"Undefined\" (:student-name *tc*))"}
+   {:script "(rt.po.app/choose-context-menu \"Delete\")"}
+   {:script "(rt.po.edit-form/click-confirm-delete-ok-button)"}
+   {:script "(rt.po.board/click-settings)"}
+   {:script "(rt.po.board/set-column-source \"Country\")"}
+   {:script "(rt.po.board/set-color-source \"State\")"}
+   {:script "(rt.po.board/click-settings-dialog-save)"}
+   {:script "(expect-equals 2 (rt.po.board/get-column-count))"}
+   {:script "(rt.po.board/column-exists? \"Australia\")"}
+   {:script "(rt.po.board/column-exists? \"New Zealand\")"}
+   {:script
+    "(expect-equals 8 (rt.po.board/get-legend-item-count \"Undefined\"))"}
+   {:script
+    "(expect-equals 15 (rt.po.board/get-legend-item-count \"NSW\"))"}
+   {:script
+    "(expect-equals 7 (rt.po.board/get-legend-item-count \"VIC\"))"}
+   {:script
+    "(expect-equals 16 (rt.po.board/get-legend-item-count \"SA\"))"}
+   {:script
+    "(expect-equals 11 (rt.po.board/get-legend-item-count \"WA\"))"}
+   {:script
+    "(expect-equals 12 (rt.po.board/get-legend-item-count \"QLD\"))"}
+   {:script
+    "(expect-equals 8 (rt.po.board/get-legend-item-count \"TAS\"))"}
+   {:script
+    "(expect-equals 6 (rt.po.board/get-legend-item-count \"NT\"))"}
+   {:script "(rt.po.board/scroll-right)"}
+   {:script
+    "(expect-equals 17 (rt.po.board/get-legend-item-count \"ACT\"))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20161017-141358",
+  :setup
+  [{:script
+    "(identity {:board-name (rt.lib.util/make-test-name \"StudentBoard\")})"}
+   {:script
+    "(identity {:student-name (rt.lib.util/make-test-name \"Student\")})"}],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/boards/create-a-new-board,
+  :teardown
+  [{:script "(rt.po.app/delete-nav-item (:board-name *tc*))"}],
+  :modified-by "not-implemented"}]

@@ -1,0 +1,12 @@
+[{:tags [:desktop],
+  :name "user creds for security tests",
+  :steps [],
+  :type :testfixture,
+  :source "./test-db",
+  :modified "20160229-113541",
+  :setup
+  [{:script
+    "(identity {:user-creds-without-role {:password \"Mary.Qian1\", :username \"Mary.Qian\"}})"}],
+  :id :rn/fixture/user-creds-without-role,
+  :teardown [],
+  :modified-by "not-implemented"}]

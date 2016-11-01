@@ -1,0 +1,91 @@
+[{:tags [:nomodify :prod :regression :user/sri :area/report :desktop],
+  :tests [],
+  :name "Ensure the report instance can be viewed and modified",
+  :steps
+  [{:script
+    "(rn.app/open-report \"Staff report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect (> (rt.po.report-view/count-report-row) 15))"}
+   {:script
+    "(rt.po.report-view/select-row-by-text \"Indigo Huffman\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View 'Indigo Huf\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"Edit 'Indigo Huf\"))"}
+   {:script "(rt.po.report-view/close-action-menu)"}
+   {:script
+    "(rt.po.report-view/select-row-by-text \"Timon Valentine\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View 'Timon Val\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"Edit 'Timon Val\"))"}
+   {:script "(rt.po.app/choose-context-menu \"View\")"}
+   {:script
+    "(expect-equals \"Timon.Valentine\" (rt.po.view-form/get-lookup-link \"User Account\"))"}
+   {:script
+    "(expect-equals \"Cooper Griffith\" (rt.po.view-form/get-lookup-link \"Manager\"))"}
+   {:script "(expect (> (rt.po.view-form/get-report-row-count) 1))"}
+   {:script "(rt.po.view-form/click-lookup-link \"User Account\")"}
+   {:script
+    "(expect-equals \"Timon.Valentine\" (rt.po.view-form/get-field-value \"Username\"))"}
+   {:script "(rt.po.view-form/form-nav-back)"}
+   {:script "(rt.po.view-form/click-lookup-link \"Manager\")"}
+   {:script
+    "(expect-equals \"Cooper.Griffith\" (rt.po.view-form/get-field-value \"User Account\"))"}
+   {:script "(rt.po.view-form/form-nav-back)"}
+   {:script "(expect (> (rt.po.view-form/get-report-row-count) 1))"}
+   {:script "(rt.po.report-view/view-record \"Ifeoma Woodard\")"}
+   {:script
+    "(expect-equals \"Ifeoma Woodard\" (rt.po.view-form/get-field-value \"Full name\"))"}
+   {:script "(rt.po.view-form/form-nav-back)"}
+   {:script "(rt.po.view-form/click-edit)"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Last name\" \"Danielle\")"}
+   {:script "(rt.po.edit-form/set-choice-value \"Title\" \"Mr.\")"}
+   {:script "(rt.po.edit-form/set-lookup \"Manager\" \"Ina Harmon\")"}
+   {:script "(rt.po.report-view/view-record \"Ifeoma Woodard\")"}
+   {:script "(rt.po.view-form/click-edit)"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Last name\" \"Smith\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Full name\" \"Ifeoma Smith\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.view-form/form-nav-back)"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(expect-equals \"Danielle\" (rt.po.view-form/get-field-value \"Last name\"))"}
+   {:script
+    "(expect-equals \"Mr.\" (rt.po.view-form/get-field-value \"Title\"))"}
+   {:script
+    "(expect-equals \"Ina Harmon\" (rt.po.view-form/get-lookup-link \"Manager\"))"}
+   {:script "(rt.po.report-view/view-record \"Ifeoma Smith\")"}
+   {:script
+    "(expect-equals \"Ifeoma Smith\" (rt.po.view-form/get-field-value \"Full name\"))"}
+   {:script "(rt.po.view-form/form-nav-back)"}
+   {:script "(rt.po.view-form/click-edit)"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Last name\" \"Valentine\")"}
+   {:script "(rt.po.edit-form/set-choice-value \"Title\" \"Dr.\")"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Manager\" \"Cooper Griffith\" 1)"}
+   {:script "(comment (rt.scripts.common/sleep 2000))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.report-view/view-record \"Ifeoma Smith\")"}
+   {:script "(rt.po.view-form/click-edit)"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Last name\" \"Woodard\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Full name\" \"Ifeoma Woodard\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.view-form/form-nav-back)"}
+   {:script "(rt.po.view-form/form-nav-back)"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160916-112008",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/report/ensure-report-instance-can-be-viewed-and-modified,
+  :teardown [],
+  :doc "Covered Text, choice , lookup and relationships field",
+  :modified-by "not-implemented"}]

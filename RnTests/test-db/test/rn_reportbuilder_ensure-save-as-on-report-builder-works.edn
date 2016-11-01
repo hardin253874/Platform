@@ -1,0 +1,29 @@
+[{:tags [:area/report-builder :nomodify :user/sri :desktop],
+  :tests [],
+  :name
+  "Ensure report created through save as button on report builder does not create multiple reports.",
+  :steps
+  [{:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Reports/Textbooks\")"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script "(rt.po.app/modify-nav-item \"Textbooks\")"}
+   {:script "(rt.po.report-builder/click-saveas-report-button)"}
+   {:script
+    "(rt.po.report-builder/set-report-new-name (:report-name *tc*))"}
+   {:script "(rt.po.report-builder/double-click-saveas-ok)"}
+   {:script "(rt.po.report-builder/close)"}
+   {:script
+    "(expect-equals 1 (rt.po.app/count-matching-nav-items (:report-name *tc*)))"}
+   {:script
+    "(comment (rn.app/delete-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name \"Reports\"}))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160916-110028",
+  :setup
+  [{:script
+    "(identity {:report-name (rt.lib.util/make-test-name \"Textbooks Copy\")})"}],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/reportbuilder/ensure-save-as-on-report-builder-works,
+  :teardown [],
+  :doc "This test is written against bug No: 24964",
+  :modified-by "not-implemented"}]

@@ -1,0 +1,20 @@
+[{:tags [:desktop],
+  :test-filter
+  "(and (has-tags? [\"area/security\" \"prod\"] %) (and (not (has-tags? [\"daily\"] %)) ))",
+  :tests [],
+  :name "Security tests that runs after every commit",
+  :each-fixtures [:common/fixture/login],
+  :type :testsuite,
+  :source "./test-db",
+  :modified "20151103-143258",
+  :setup [],
+  :id :rn/suites/security-not-daily,
+  :teardown [],
+  :doc "",
+  :modified-by "not-implemented",
+  :once-fixtures
+  [:common/fixture/chrome
+   :common/fixture/test-account-creds
+   :common/fixture/handle-errors
+   :common/fixture/wait-ng
+   :common/fixture/stop-all]}]

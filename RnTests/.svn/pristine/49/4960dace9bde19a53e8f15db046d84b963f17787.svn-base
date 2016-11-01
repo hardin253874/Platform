@@ -1,0 +1,146 @@
+[{:tags
+  [:area/report-builder
+   :nomodify
+   :prod
+   :regression
+   :desktop
+   :user/abida],
+  :tests [],
+  :name
+  "Ensure show/Hide label, count and sorting works on grouped report",
+  :steps
+  [{:script "(rt.po.app/navigate-via-tiles \"Foster University\")"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(rt.po.app/enable-config-mode )"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script "(rt.po.report-builder/click-saveas-report-button)"}
+   {:script
+    "(rt.po.report-builder/set-report-new-name (:report-name *tc*))"}
+   {:script "(rt.po.report-builder/click-saveas-ok)"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Postcode\" true)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Postcode\" \"Group By\")"}
+   {:script
+    "(expect-equals \"0632\" (rt.po.report-builder/get-group-by-row-text \"0632\"))"}
+   {:script
+    "(expect (rt.po.report-builder/check-group-by-row-exists? \"0632\"))"}
+   {:script
+    "(expect-equals \"0800\" (rt.po.report-builder/get-group-by-row-text \"0800\"))"}
+   {:script
+    "(expect (rt.po.report-builder/check-group-by-row-exists? \"0800\"))"}
+   {:script
+    "(rt.po.report-builder/choose-group-by-row-menu-item \"0632\" \"Sort Z-A\")"}
+   {:script
+    "(expect-equals \"7004\" (rt.po.report-builder/get-group-by-row-text \"7004\"))"}
+   {:script
+    "(expect (rt.po.report-builder/check-group-by-row-exists? \"7004\"))"}
+   {:script
+    "(expect-equals \"7000\" (rt.po.report-builder/get-group-by-row-text \"7000\"))"}
+   {:script
+    "(expect (rt.po.report-builder/check-group-by-row-exists? \"7000\"))"}
+   {:script
+    "(rt.po.report-builder/choose-group-by-row-menu-item \"7004\" \"Show Label\")"}
+   {:script
+    "(expect-equals \"Postcode: 7004\" (rt.po.report-builder/get-group-by-row-text \"Postcode: 7004\"))"}
+   {:script
+    "(expect (rt.po.report-builder/check-group-by-row-exists? \"Postcode: 7004\"))"}
+   {:script
+    "(rt.po.report-builder/choose-group-by-row-menu-item \"Postcode: 7004\" \"Show Count\")"}
+   {:script
+    "(expect-equals \"Postcode: 7004 (3)\" (rt.po.report-builder/get-group-by-row-text \"Postcode: 7004 (3)\"))"}
+   {:script
+    "(expect (rt.po.report-builder/check-group-by-row-exists? \"Postcode: 7004 (3)\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script "(rt.po.report-builder/click-close-button )"}
+   {:script
+    "(rn.app/open-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script
+    "(expect-equals \"Postcode: 7004 (3)\" (rt.po.report-builder/get-group-by-row-text \"Postcode: 7004 (3)\"))"}
+   {:script
+    "(expect (rt.po.report-builder/check-group-by-row-exists? \"Postcode: 7004 (3)\"))"}
+   {:script
+    "(expect-equals \"Postcode: 7000 (5)\" (rt.po.report-builder/get-group-by-row-text \"Postcode: 7000 (5)\"))"}
+   {:script
+    "(expect (rt.po.report-builder/check-group-by-row-exists? \"Postcode: 7000 (5)\"))"}
+   {:script "(rt.po.report-builder/access-build-mode )"}
+   {:script
+    "(rt.po.report-builder/choose-group-by-row-menu-item \"Postcode: 7004 (3)\" \"Hide Count\")"}
+   {:script
+    "(expect-equals \"Postcode: 7004\" (rt.po.report-builder/get-group-by-row-text \"Postcode: 7004\"))"}
+   {:script
+    "(expect (rt.po.report-builder/check-group-by-row-exists? \"Postcode: 7004\"))"}
+   {:script
+    "(expect-equals \"Postcode: 7000\" (rt.po.report-builder/get-group-by-row-text \"Postcode: 7000\"))"}
+   {:script
+    "(expect (rt.po.report-builder/check-group-by-row-exists? \"Postcode: 7000\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(expect (rt.po.report-builder/check-group-by-row-exists? \"Postcode: 7004\"))"}
+   {:script
+    "(expect (rt.po.report-builder/check-group-by-row-exists? \"Postcode: 7000\"))"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script
+    "(rt.po.report-builder/choose-group-by-row-menu-item \"Postcode: 7004\" \"Hide Label\")"}
+   {:script
+    "(expect-equals \"7004\" (rt.po.report-builder/get-group-by-row-text \"7004\"))"}
+   {:script
+    "(expect (rt.po.report-builder/check-group-by-row-exists? \"7004\"))"}
+   {:script
+    "(expect-equals \"7000\" (rt.po.report-builder/get-group-by-row-text \"7000\"))"}
+   {:script
+    "(expect (rt.po.report-builder/check-group-by-row-exists? \"7000\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(expect (rt.po.report-builder/check-group-by-row-exists? \"7004\"))"}
+   {:script
+    "(expect (rt.po.report-builder/check-group-by-row-exists? \"7000\"))"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script
+    "(rt.po.report-builder/choose-group-by-row-menu-item \"7004\" \"Sort A-Z\")"}
+   {:script
+    "(expect-equals \"0632\" (rt.po.report-builder/get-group-by-row-text \"0632\"))"}
+   {:script
+    "(expect (rt.po.report-builder/check-group-by-row-exists? \"0632\"))"}
+   {:script
+    "(expect-equals \"0800\" (rt.po.report-builder/get-group-by-row-text \"0800\"))"}
+   {:script
+    "(expect (rt.po.report-builder/check-group-by-row-exists? \"0800\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(expect (rt.po.report-builder/check-group-by-row-exists? \"0632\"))"}
+   {:script
+    "(expect (rt.po.report-builder/check-group-by-row-exists? \"0800\"))"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script
+    "(rt.po.report-builder/choose-group-by-row-menu-item \"0632\" \"Cancel Group By\")"}
+   {:script "(rt.po.report-builder/click-sort-a-z \"Postcode\")"}
+   {:script
+    "(expect (rt.po.report-builder/check-group-by-row-not-exists? \"0632\"))"}
+   {:script
+    "(expect (rt.po.report-builder/check-group-by-row-not-exists? \"0800\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script "(rt.po.report-builder/click-sort-a-z \"Postcode\")"}
+   {:script
+    "(expect (rt.po.report-builder/check-group-by-row-not-exists? \"0632\"))"}
+   {:script
+    "(expect (rt.po.report-builder/check-group-by-row-not-exists? \"0800\"))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160919-174932",
+  :setup
+  [{:script
+    "(identity {:report-name (rt.lib.util/make-test-name \"LabelCountOnGroupBy\")})"}],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id
+  :rn/reportbuilder/show-label-count-and-sorting-for-groupby-report,
+  :teardown
+  [{:script
+    "(comment (rn.app/delete-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name \"Reports\"}))"}],
+  :modified-by "not-implemented"}]

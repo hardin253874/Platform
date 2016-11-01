@@ -1,0 +1,29 @@
+[{:tags [:desktop :prod],
+  :tests [],
+  :name "Login and nav a bit - uses Foster University",
+  :steps
+  [{:script "(rn.common/start-app-and-login)",
+    :metric-id "Log in and load app lauch page",
+    :target-msec 6000}
+   {:script "(think 5)"}
+   {:script "(rt.po.app/navigate-to \"Foster University\")",
+    :metric-id "Nav to application and its default page",
+    :target-msec 6000}
+   {:script "(rt.po.app/select-navigator-item \"Screens\")"}
+   {:script
+    "(rt.po.app/select-navigator-item \"Staff screen - all three\")",
+    :metric-id "Nav to benchmark screen",
+    :target-msec 6000}
+   {:script "(think 5 30)"}
+   {:script "(rt.po.app/select-navigator-item \"Reports\")"}
+   {:script "(rt.po.app/select-navigator-item \"Student report\")",
+    :metric-id "View a report",
+    :target-msec 6000}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150928-075210",
+  :setup [],
+  :fixtures [],
+  :id :basic,
+  :teardown [],
+  :modified-by "not-implemented"}]

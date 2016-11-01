@@ -1,0 +1,120 @@
+[{:tags [:user/conc :nomodify :prod :regression :area/report :desktop],
+  :tests [],
+  :name "Name and relationship column operators",
+  :steps
+  [{:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Reports/Subjects Report\")"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script
+    "(rt.po.report-view/set-analyzer-picker-option \"Subjects\" \"Any of\" \"Practical Experience\")"}
+   {:script "(rt.po.report-view/apply-analyzer)"}
+   {:script
+    "(def Subjects (rt.po.report-view/get-loaded-grid-values \".spreport-view\" (.indexOf (rt.po.report-view/get-report-column-names) \"Subjects\")))"}
+   {:script
+    "(expect-equals (every? #(= % \"Practical Experience\") Subjects) true)"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script "(rt.po.report-view/reset-analyzer)"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script
+    "(rt.po.report-view/set-analyzer-field-oper \"Qualifications\" \"=\")"}
+   {:script
+    "(rt.po.report-view/set-analyzer-string \"Qualifications\" \"Bachelor of Laws\")"}
+   {:script "(rt.po.report-view/apply-analyzer)"}
+   {:script
+    "(def Qualifications (rt.po.report-view/get-loaded-grid-values \".spreport-view\" (.indexOf (rt.po.report-view/get-report-column-names) \"Qualifications\")))"}
+   {:script
+    "(expect-equals (every? #(= % \"Bachelor of Laws\") Qualifications) true)"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Subjects\" \"Format Column\")"}
+   {:script "(rt.po.report-format/set-format-type \"Highlight\")"}
+   {:script
+    "(rt.po.report-format/set-format-scheme \"2 step - Red, Green\")"}
+   {:script
+    "(rt.po.report-format/set-highlight-conditions  [{:oper \"Any of\" :value \"Practical Experience\" :colour \"Black on Red\"} {:oper \"\" :value \"\" :colour \"Black on Green\"}])"}
+   {:script "(rt.po.report-builder/click-ok)"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script
+    "(rt.po.report-view/set-analyzer-picker-option \"Subjects\" \"Any of\" \"Practical Experience\")"}
+   {:script "(rt.po.report-view/apply-analyzer)"}
+   {:script
+    "(expect-equals \"rgb(255, 90, 90)\" (rt.po.report-view/get-report-format-highlight-background-color-as-rgb-css 0 \"Subjects\"))"}
+   {:script
+    "(expect-equals \"rgb(0, 0, 0)\" (rt.po.report-view/get-report-format-highlight-font-color-as-rgb-css 0 \"Subjects\"))"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script
+    "(rt.po.report-view/set-analyzer-picker-option \"Subjects\" \"Any except\" \"Practical Experience\")"}
+   {:script "(rt.po.report-view/apply-analyzer)"}
+   {:script
+    "(expect-equals \"rgb(129, 255, 103)\" (rt.po.report-view/get-report-format-highlight-background-color-as-rgb-css 0 \"Subjects\"))"}
+   {:script
+    "(expect-equals \"rgb(0, 0, 0)\" (rt.po.report-view/get-report-format-highlight-font-color-as-rgb-css 0 \"Subjects\"))"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script "(rt.po.report-view/reset-analyzer)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Qualifications\" \"Format Column\")"}
+   {:script "(rt.po.report-format/set-format-type \"Highlight\")"}
+   {:script
+    "(rt.po.report-format/set-format-scheme \"2 step - Red, Green\")"}
+   {:script
+    "(rt.po.report-format/set-highlight-conditions  [{:oper \"=\" :value \"Bachelor of Laws\" :colour \"Black on Red\"} {:oper \"\" :value \"\" :colour \"Black on Green\"}])"}
+   {:script "(rt.po.report-builder/click-ok)"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script
+    "(rt.po.report-view/set-analyzer-field-oper \"Qualifications\" \"=\")"}
+   {:script
+    "(rt.po.report-view/set-analyzer-string \"Qualifications\" \"Bachelor of Laws\")"}
+   {:script "(rt.po.report-view/apply-analyzer)"}
+   {:script "(rt.lib.wd-ng/wait-for-angular)"}
+   {:script
+    "(expect-equals \"rgb(255, 90, 90)\" (rt.po.report-view/get-report-format-highlight-background-color-as-rgb-css 0 \"Qualifications\"))"}
+   {:script
+    "(expect-equals \"rgb(0, 0, 0)\" (rt.po.report-view/get-report-format-highlight-font-color-as-rgb-css 0 \"Qualifications\"))"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script
+    "(rt.po.report-view/set-analyzer-field-oper \"Qualifications\" \"<>\")"}
+   {:script
+    "(rt.po.report-view/set-analyzer-string \"Qualifications\" \"Bachelor of Laws\")"}
+   {:script "(rt.po.report-view/apply-analyzer)"}
+   {:script
+    "(expect-equals \"rgb(129, 255, 103)\" (rt.po.report-view/get-report-format-highlight-background-color-as-rgb-css 0 \"Qualifications\"))"}
+   {:script
+    "(expect-equals \"rgb(0, 0, 0)\" (rt.po.report-view/get-report-format-highlight-font-color-as-rgb-css 0 \"Qualifications\"))"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script
+    "(rt.po.report-view/set-analyzer-picker-option \"Subjects\" \"Any of\" \"Practical Experience\")"}
+   {:script
+    "(rt.po.report-view/set-analyzer-field-oper \"Qualifications\" \"=\")"}
+   {:script
+    "(rt.po.report-view/set-analyzer-string \"Qualifications\" \"Bachelor of Laws\")"}
+   {:script "(rt.po.report-view/apply-analyzer)"}
+   {:script "(rt.po.report-builder/click-saveas-report-button )"}
+   {:script
+    "(rt.po.report-builder/set-report-new-name (:new-report-name *tc*))"}
+   {:script "(rt.po.report-builder/click-ok )"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script "(rt.po.report-builder/click-close-button )"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Foster University\" (str \"Reports/\" (:new-report-name *tc*)))"}
+   {:script
+    "(expect-equals \"rgb(255, 90, 90)\" (rt.po.report-view/get-report-format-highlight-background-color-as-rgb-css 0 \"Subjects\"))"}
+   {:script
+    "(expect-equals \"rgb(0, 0, 0)\" (rt.po.report-view/get-report-format-highlight-font-color-as-rgb-css 0 \"Subjects\"))"}
+   {:script
+    "(expect-equals \"rgb(255, 90, 90)\" (rt.po.report-view/get-report-format-highlight-background-color-as-rgb-css 0 \"Qualifications\"))"}
+   {:script
+    "(expect-equals \"rgb(0, 0, 0)\" (rt.po.report-view/get-report-format-highlight-font-color-as-rgb-css 0 \"Qualifications\"))"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150805-211913",
+  :setup
+  [{:script
+    "(identity {:new-report-name  (rt.lib.util/make-test-name \"Subjects\")})"}],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/report/name-and-relationship-column-operators,
+  :teardown
+  [{:script "(rn.app/delete-report (:new-report-name *tc*) {:app-name \"Foster University\" :folder-name \"Reports\"})"}],
+  :doc
+  "Test for Bug 24646:Reports: When applying conditional formatting to a relationship column, we need to include the string operators",
+  :modified-by "not-implemented"}]

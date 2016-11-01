@@ -1,0 +1,166 @@
+[{:tags [:app/crm :desktop],
+  :name
+  "Create a new lead, convert, update the opportunity and generate a quote",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:login-creds *tc*))",
+    :metric-id "crm2-1"}
+   {:script "(think 5)"}
+   {:script "(rt.po.app/navigate-to \"CRM\")"}
+   {:script "(think 5)"}
+   {:script "(rt.po.app/select-app-tab \"Leads\")",
+    :metric-id "crm2-2"}
+   {:script "(think 5)"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")",
+    :metric-id "crm2-3"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Lead title\" (:lead-title *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"First name\" (-> *tc* :lead-details :first))"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Last name\" (-> *tc* :lead-details :last))"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Company\" (-> *tc* :company))"}
+   {:script "(think 50)"}
+   {:script "(rt.po.edit-form/save)", :metric-id "crm2-4"}
+   {:script
+    "(rt.po.report-view/set-search-text (-> *tc* :lead-title))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text (-> *tc* :lead-title))"}
+   {:script "(think 5)"}
+   {:script
+    "(println \"About to convert lead with user \" (:login-creds *tc*))",
+    :metric-id "crm2-5"}
+   {:script "(rt.po.app/choose-context-menu \"Convert Lead\")",
+    :metric-id "crm2-5"}
+   {:script
+    "(comment(expect (taxi/wait-until #(subset? #{\"Convert\"} (set (rt.po.view-form/get-task-actions))) 240000)))\n\n",
+    :metric-id "crm2-6"}
+   {:script "(rt.po.view-form/choose-task-action \"Convert\")",
+    :metric-id "crm2-7"}
+   {:script
+    "(comment(expect (taxi/wait-until #(subset? #{\"OK\"} (set (rt.po.view-form/get-task-actions))) 240000)))\n",
+    :metric-id "crm2-8"}
+   {:script "(think 15)"}
+   {:script "(rt.po.view-form/choose-task-action \"OK\")",
+    :metric-id "crm2-9"}
+   {:script "(think 15)"}
+   {:script "(rt.po.app/select-app-tab \"Accounts\")",
+    :metric-id "crm2-10"}
+   {:script "(think 15)"}
+   {:script "(rt.po.report-view/set-search-text (-> *tc* :company))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text (-> *tc* :company))"}
+   {:script "(rt.po.app/choose-context-menu \"Edit\")",
+    :metric-id "crm2-11"}
+   {:script
+    "(rt.po.edit-form/set-multiline \"Description\" (str \"Discovered due to lead: \" (:lead-title *tc*)))"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Address line 1\" \"23 Apple Lane\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"City\" \"Orange Grove\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"State\" \"QLD.\")"}
+   {:script "(rt.po.view-form/select-form-tab \"Contacts\")"}
+   {:script "(rt.po.report-view/click-action-menu-button \"Contact\")",
+    :metric-id "crm2-12"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"First name\" (-> (get-random-tc-item :leads) :first))"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Last name\" (-> (get-random-tc-item :leads) :last))"}
+   {:script "(rt.po.edit-form/save)", :metric-id "crm2-13"}
+   {:script "(rt.po.edit-form/save)", :metric-id "crm2-14"}
+   {:script "(think 60)"}
+   {:script "(rt.po.app/select-app-tab \"Opportunities\")",
+    :metric-id "crm2-15"}
+   {:script "(think 5)"}
+   {:script
+    "(rt.po.report-view/set-search-text (-> *tc* :lead-title))"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text (-> *tc* :lead-title))",
+    :metric-id "crm2-16"}
+   {:script "(rt.po.view-form/click-edit)", :metric-id "crm2-16"}
+   {:script "(rt.po.view-form/select-form-tab \"Sales Coach\")",
+    :metric-id "crm2-16"}
+   {:script
+    "(rt.po.edit-form/set-multiline \"Budget\" (str \"The budget for this project: \" (:lead-title *tc*)))",
+    :metric-id "crm2-16"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Completed\" true)",
+    :metric-id "crm2-16"}
+   {:script "(think 40)", :metric-id "crm2-16"}
+   {:script
+    "(rt.po.edit-form/set-multiline \"Buying process\" (str \"The buying process for this account is \" (:lead-title *tc*)))",
+    :metric-id "crm2-16"}
+   {:script "(think 40)", :metric-id "crm2-16"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.view-form/select-form-tab \"Items\")"}
+   {:script
+    "(rt.po.report-view/click-action-menu-button \"One-off Item\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (make-test-name \"one-off\"))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Product Category\" \"Hardware\")"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"Quantity\" \"100\")"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"Unit price\" \"19.99\")"}
+   {:script "(think 50)"}
+   {:script "(rt.po.edit-form/save)", :metric-id "crm2-17"}
+   {:script "(rt.po.view-form/select-form-tab \"Items\")"}
+   {:script
+    "(rt.po.report-view/click-action-menu-button \"Recurring Item\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Item\" (make-test-name \"recurring\"))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Product Category\" \"Professional Services\")"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"Quantity\" \"13\")"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"Unit price\" \"399\")"}
+   {:script "(think 50)"}
+   {:script "(rt.po.edit-form/save)", :metric-id "crm2-18"}
+   {:script "(rt.po.view-form/open-tab-action-menu \"Quote\" \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Quote name\" (make-test-name \"quote\"))"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Valid until\" (make-local-date 2199 12 31))"}
+   {:script "(think 35)"}
+   {:script "(rt.po.edit-form/save)", :metric-id "crm2-19"}
+   {:script "(rt.po.view-form/select-form-tab \"Quote\")"}
+   {:script "(rt.po.report-view/set-search-text \"quote-\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"quote-\")"}
+   {:script "(think 5)"}
+   {:script
+    "(rt.po.report-view/click-action-menu-button \"Create Quote\")"}
+   {:script "(rt.po.view-form/click-edit)", :metric-id "crm2-20"}
+   {:script "(think 180)", :metric-id "crm2-20"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Sales stage\" \"Qualification\")"}
+   {:script "(think 20)"}
+   {:script "(rt.po.edit-form/save)", :metric-id "crm2-21"}
+   {:script "(rt.po.view-form/click-edit)", :metric-id "crm2-22"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Sales stage\" \"Closed Won\")"}
+   {:script "(think 20)"}
+   {:script "(rt.po.edit-form/save)", :metric-id "crm2-23"}
+   {:script "(rt.po.view-form/form-nav-back)"}
+   {:script "(think 60)"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20151016-114907",
+  :setup
+  [{:script
+    "(identity {:lead-title (make-test-name \"Lead\"), :lead-details (get-random-tc-item :leads), :company (make-test-name \"Company\")})"}
+   {:script "(identity {:login-creds (get-random-tc-item :creds)})"}
+   {:script
+    "(when (empty? (get-test-data :sales-creds :quiet)) (rn.common/start-app-and-login))"}
+   {:script
+    "(setonce-test-data :sales-creds rn.services.security/ensure-test-accounts [\"Sales\"] \"SALESUSER\" 20)"}
+   {:script
+    "(identity {:login-creds (get-random-test-data :sales-creds)})"}],
+  :fixtures [:crm/fixtures/lists :common/fixture/wait-ng],
+  :id :crm/tests/sales-person-lead-to-quote-script,
+  :teardown [],
+  :doc "",
+  :modified-by "not-implemented"}]

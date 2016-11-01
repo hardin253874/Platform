@@ -1,0 +1,376 @@
+[{:tags
+  [:nomodify
+   :prod
+   :daily
+   :regression
+   :user/shaofen
+   :desktop
+   :area/security],
+  :tests [],
+  :name "Ensure navigation access works for nested user roles",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:user-creds-dean *tc*))"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Reports/Student report\")"}
+   {:script
+    "(expect-equals true (rt.po.app/node-in-nav-tree-exists? \"Staff Report\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/node-in-nav-tree-exists? \"Deans of University report\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/node-in-nav-tree-exists? \"Library cards\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/node-in-nav-tree-exists? \"Qualification Report\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/node-in-nav-tree-exists? \"Subjects Report\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/node-in-nav-tree-exists? \"Faculties Report\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/node-in-nav-tree-exists? \"Campuses\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/node-in-nav-tree-exists? \"Textbooks\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/node-in-nav-tree-exists? \"Temperature\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/node-in-nav-tree-exists? \"Stock Report\"))"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Navigation Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/application-option-exists? \"Foster University\"))"}
+   {:script
+    "(rt.po.access-rules/set-application \"Foster University\")"}
+   {:script
+    "(comment \"=====================Next is to check the default navigation acess setting by default for each role, Deans/Staff Common/Foster Comon. =================\")"}
+   {:script
+    "(comment \"=====================Firstly, checking on Deans role.============================\")"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/user-or-role-option-exists? \"Deans (User Role)\"))"}
+   {:script
+    "(rt.po.access-rules/set-user-or-role \"Deans (User Role)\")"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/node-checked? \"Staff Report\"))"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/node-checked? \"Deans of University report\"))"}
+   {:script
+    "(expect-equals false (rt.po.access-rules/node-checked? \"Library cards\"))"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/node-checked? \"Qualification Report\"))"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/node-checked? \"Subjects Report\"))"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/node-checked? \"Faculties Report\"))"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/node-checked? \"Campuses\"))"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/node-checked? \"Textbooks\"))"}
+   {:script
+    "(expect-equals false (rt.po.access-rules/node-checked? \"Temperature\"))"}
+   {:script
+    "(expect-equals false (rt.po.access-rules/node-checked? \"Stock Report\"))"}
+   {:script
+    "(comment \"=============== We have checked correct navigation access by default for Deans role. ===================== \")"}
+   {:script
+    "(comment \"=====================Secondly, checking on Staff Common role.============================\")"}
+   {:script
+    "(rt.po.access-rules/set-user-or-role \"Staff Common (User Role)\")"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/node-checked? \"Staff Report\"))"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/node-checked? \"Deans of University report\"))"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/node-checked? \"Library cards\"))"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/node-checked? \"Qualification Report\"))"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/node-checked? \"Subjects Report\"))"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/node-checked? \"Faculties Report\"))"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/node-checked? \"Campuses\"))"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/node-checked? \"Textbooks\"))"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/node-checked? \"Temperature\"))"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/node-checked? \"Stock Report\"))"}
+   {:script
+    "(comment \"=============== We have checked correct navigation access by default for Staff Common role. ===================== \")"}
+   {:script
+    "(comment \"=====================Thirdly, checking on Foster Common role.============================\")"}
+   {:script
+    "(rt.po.access-rules/set-user-or-role \"Foster Common (User Role)\")"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/node-checked? \"Staff Report\"))"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/node-checked? \"Deans of University report\"))"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/node-checked? \"Library cards\"))"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/node-checked? \"Qualification Report\"))"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/node-checked? \"Subjects Report\"))"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/node-checked? \"Faculties Report\"))"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/node-checked? \"Campuses\"))"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/node-checked? \"Textbooks\"))"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/node-checked? \"Temperature\"))"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/node-checked? \"Stock Report\"))"}
+   {:script
+    "(comment \"=============== We have checked correct navigation access by default for Foster Common role. ===================== \")"}
+   {:script
+    "(comment \"==============Next we will change navigation access as follows and check if they work as expected.================\")"}
+   {:script
+    "(comment \"=======================================================================================================================================================\")"}
+   {:script
+    "(comment \"============________________________________________|_____Foster Common(role)_____|_______Staff Common(role)____|________Deans(role)________|================\")"}
+   {:script
+    "(comment \"============  Report/Student Report_____________________|____________YES____________|____________YES______________|__________YES______________|================\")"}
+   {:script
+    "(comment \"============  Report/Staff Report_______________________|____________YES____________|____________NO_______________|__________NO_______________|================\")"}
+   {:script
+    "(comment \"============  Report/Deans of University report_________|____________YES____________|____________YES______________|__________NO_______________|================\")"}
+   {:script
+    "(comment \"============  Report/Library cards______________________|____________YES____________|____________YES______________|__________YES______________|================\")"}
+   {:script
+    "(comment \"============  Report/Qualification Report_______________|____________NO_____________|____________YES______________|__________NO_______________|================\")"}
+   {:script
+    "(comment \"============  Report/Subjects Report____________________|____________NO_____________|____________YES______________|__________YES______________|================\")"}
+   {:script
+    "(comment \"============  Report/Faculties Report___________________|____________YES____________|____________YES______________|__________YES______________|================\")"}
+   {:script
+    "(comment \"============  Report/Report/Campuses____________________|____________NO_____________|____________NO_______________|__________YES______________|================\")"}
+   {:script
+    "(comment \"============  Report/Textbooks__________________________|____________YES____________|____________NO_______________|__________YES______________|================\")"}
+   {:script
+    "(comment \"============  Report/Temperature________________________|____________YES____________|____________YES______________|__________YES______________|================\")"}
+   {:script
+    "(comment \"============  Report/Stock Report_______________________|____________NO_____________|____________NO_______________|__________NO_______________|================\")"}
+   {:script
+    "(comment \"============================================================================================================================================================\")"}
+   {:script
+    "(comment \"=====================Next is to set navaigation access for each role as above. =================\")"}
+   {:script
+    "(comment \"=====================Firstly, we set navaigation access for Foster Common role. =================\")"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/user-or-role-option-exists? \"Foster Common (User Role)\"))"}
+   {:script
+    "(rt.po.access-rules/set-user-or-role \"Foster Common (User Role)\")"}
+   {:script
+    "(rt.po.access-rules/set-node-value \"Staff Report\" true)"}
+   {:script
+    "(rt.po.access-rules/set-node-value \"Deans of University report\" true)"}
+   {:script
+    "(rt.po.access-rules/set-node-value \"Library cards\" true)"}
+   {:script
+    "(rt.po.access-rules/set-node-value \"Qualification Report\" false)"}
+   {:script
+    "(rt.po.access-rules/set-node-value \"Subjects Report\" false)"}
+   {:script
+    "(rt.po.access-rules/set-node-value \"Faculties Report\" true)"}
+   {:script "(rt.po.access-rules/set-node-value \"Campuses\" false)"}
+   {:script "(rt.po.access-rules/set-node-value \"Textbooks\" true)"}
+   {:script "(rt.po.access-rules/set-node-value \"Temperature\" true)"}
+   {:script
+    "(rt.po.access-rules/set-node-value \"Stock Report\" false)"}
+   {:script
+    "(comment \"============We have set for Foster Common role, next is for Staff common role.=============\")"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/user-or-role-option-exists? \"Staff Common (User Role)\"))"}
+   {:script
+    "(rt.po.access-rules/set-user-or-role \"Staff Common (User Role)\")"}
+   {:script
+    "(rt.po.access-rules/set-node-value \"Staff Report\" false)"}
+   {:script
+    "(rt.po.access-rules/set-node-value \"Deans of University report\" true)"}
+   {:script
+    "(rt.po.access-rules/set-node-value \"Library cards\" true)"}
+   {:script
+    "(rt.po.access-rules/set-node-value \"Qualification Report\" true)"}
+   {:script
+    "(rt.po.access-rules/set-node-value \"Subjects Report\" true)"}
+   {:script
+    "(rt.po.access-rules/set-node-value \"Faculties Report\" true)"}
+   {:script "(rt.po.access-rules/set-node-value \"Campuses\" false)"}
+   {:script "(rt.po.access-rules/set-node-value \"Textbooks\" false)"}
+   {:script "(rt.po.access-rules/set-node-value \"Temperature\" true)"}
+   {:script
+    "(rt.po.access-rules/set-node-value \"Stock Report\" false)"}
+   {:script
+    "(comment \"============We have set for Staff Common role, next is for Deans role.=============\")"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/user-or-role-option-exists? \"Deans (User Role)\"))"}
+   {:script
+    "(rt.po.access-rules/set-user-or-role \"Deans (User Role)\")"}
+   {:script
+    "(rt.po.access-rules/set-node-value \"Staff Report\" false)"}
+   {:script
+    "(rt.po.access-rules/set-node-value \"Deans of University report\" false)"}
+   {:script
+    "(rt.po.access-rules/set-node-value \"Library cards\" true)"}
+   {:script
+    "(rt.po.access-rules/set-node-value \"Qualification Report\" false)"}
+   {:script
+    "(rt.po.access-rules/set-node-value \"Subjects Report\" true)"}
+   {:script
+    "(rt.po.access-rules/set-node-value \"Faculties Report\" true)"}
+   {:script "(rt.po.access-rules/set-node-value \"Campuses\" true)"}
+   {:script "(rt.po.access-rules/set-node-value \"Textbooks\" true)"}
+   {:script "(rt.po.access-rules/set-node-value \"Temperature\" true)"}
+   {:script
+    "(rt.po.access-rules/set-node-value \"Stock Report\" false)"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20151103-143735",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds-dean],
+  :id :rn/security/ensure-navigation-access-works-for-nested-roles,
+  :teardown
+  [{:script
+    "(comment \"++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ \")"}
+   {:script
+    "(comment \"++++++++++++++++++++++++++++++ TEARDOWN: forced navigation access reset to default +++++++++++++++++ \")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Navigation Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/application-option-exists? \"Foster University\"))"}
+   {:script
+    "(rt.po.access-rules/set-application \"Foster University\")"}
+   {:script
+    "(comment \"=====================Firstly, checking on Foster Common role.============================\")"}
+   {:script
+    "(rt.po.access-rules/set-user-or-role \"Foster Common (User Role)\")"}
+   {:script
+    "(if (not (rt.po.access-rules/node-checked? \"Staff Report\")) (rt.po.access-rules/set-node-value \"Staff Report\" true))"}
+   {:script
+    "(if (not (rt.po.access-rules/node-checked? \"Deans of University report\")) (rt.po.access-rules/set-node-value \"Deans of University report\" true))"}
+   {:script
+    "(if (not (rt.po.access-rules/node-checked? \"Library cards\")) (rt.po.access-rules/set-node-value \"Library cards\" true))"}
+   {:script
+    "(if (not (rt.po.access-rules/node-checked? \"Qualification Report\")) (rt.po.access-rules/set-node-value \"Qualification Report\" true))"}
+   {:script
+    "(if (not (rt.po.access-rules/node-checked? \"Subjects Report\")) (rt.po.access-rules/set-node-value \"Subjects Report\" true))"}
+   {:script
+    "(if (not (rt.po.access-rules/node-checked? \"Faculties Report\")) (rt.po.access-rules/set-node-value \"Faculties Report\" true))"}
+   {:script
+    "(if (not (rt.po.access-rules/node-checked? \"Campuses\")) (rt.po.access-rules/set-node-value \"Campuses\" true))"}
+   {:script
+    "(if (not (rt.po.access-rules/node-checked? \"Textbooks\")) (rt.po.access-rules/set-node-value \"Textbooks\" true))"}
+   {:script
+    "(if (not (rt.po.access-rules/node-checked? \"Staff Report\")) (rt.po.access-rules/set-node-value \"Staff Report\" true))"}
+   {:script
+    "(if (not (rt.po.access-rules/node-checked? \"Temperature\")) (rt.po.access-rules/set-node-value \"Temperature\" true))"}
+   {:script
+    "(if (not (rt.po.access-rules/node-checked? \"Stock Report\")) (rt.po.access-rules/set-node-value \"Stock Report\" true))"}
+   {:script
+    "(comment \"=====================Secondly, checking on Staff Common role.============================\")"}
+   {:script
+    "(rt.po.access-rules/set-user-or-role \"Staff Common (User Role)\")"}
+   {:script
+    "(if (not (rt.po.access-rules/node-checked? \"Staff Report\")) (rt.po.access-rules/set-node-value \"Staff Report\" true))"}
+   {:script
+    "(if (not (rt.po.access-rules/node-checked? \"Deans of University report\")) (rt.po.access-rules/set-node-value \"Deans of University report\" true))"}
+   {:script
+    "(if (not (rt.po.access-rules/node-checked? \"Library cards\")) (rt.po.access-rules/set-node-value \"Library cards\" true))"}
+   {:script
+    "(if (not (rt.po.access-rules/node-checked? \"Qualification Report\")) (rt.po.access-rules/set-node-value \"Qualification Report\" true))"}
+   {:script
+    "(if (not (rt.po.access-rules/node-checked? \"Subjects Report\")) (rt.po.access-rules/set-node-value \"Subjects Report\" true))"}
+   {:script
+    "(if (not (rt.po.access-rules/node-checked? \"Faculties Report\")) (rt.po.access-rules/set-node-value \"Faculties Report\" true))"}
+   {:script
+    "(if (not (rt.po.access-rules/node-checked? \"Campuses\")) (rt.po.access-rules/set-node-value \"Campuses\" true))"}
+   {:script
+    "(if (not (rt.po.access-rules/node-checked? \"Textbooks\")) (rt.po.access-rules/set-node-value \"Textbooks\" true))"}
+   {:script
+    "(if (not (rt.po.access-rules/node-checked? \"Staff Report\")) (rt.po.access-rules/set-node-value \"Staff Report\" true))"}
+   {:script
+    "(if (not (rt.po.access-rules/node-checked? \"Temperature\")) (rt.po.access-rules/set-node-value \"Temperature\" true))"}
+   {:script
+    "(if (not (rt.po.access-rules/node-checked? \"Stock Report\")) (rt.po.access-rules/set-node-value \"Stock Report\" true))"}
+   {:script
+    "(comment \"=====================Thirdly, checking on Deans role.============================\")"}
+   {:script
+    "(rt.po.access-rules/set-user-or-role \"Deans (User Role)\")"}
+   {:script
+    "(if (not (rt.po.access-rules/node-checked? \"Staff Report\")) (rt.po.access-rules/set-node-value \"Staff Report\" true))"}
+   {:script
+    "(if (not (rt.po.access-rules/node-checked? \"Deans of University report\")) (rt.po.access-rules/set-node-value \"Deans of University report\" true))"}
+   {:script
+    "(if (rt.po.access-rules/node-checked? \"Library cards\") (rt.po.access-rules/set-node-value \"Library cards\" false))"}
+   {:script
+    "(if (not (rt.po.access-rules/node-checked? \"Qualification Report\")) (rt.po.access-rules/set-node-value \"Qualification Report\" true))"}
+   {:script
+    "(if (not (rt.po.access-rules/node-checked? \"Subjects Report\")) (rt.po.access-rules/set-node-value \"Subjects Report\" true))"}
+   {:script
+    "(if (not (rt.po.access-rules/node-checked? \"Faculties Report\")) (rt.po.access-rules/set-node-value \"Faculties Report\" true))"}
+   {:script
+    "(if (not (rt.po.access-rules/node-checked? \"Campuses\")) (rt.po.access-rules/set-node-value \"Campuses\" true))"}
+   {:script
+    "(if (not (rt.po.access-rules/node-checked? \"Textbooks\")) (rt.po.access-rules/set-node-value \"Textbooks\" true))"}
+   {:script
+    "(if (not (rt.po.access-rules/node-checked? \"Staff Report\")) (rt.po.access-rules/set-node-value \"Staff Report\" true))"}
+   {:script
+    "(if (rt.po.access-rules/node-checked? \"Temperature\") (rt.po.access-rules/set-node-value \"Temperature\" false))"}
+   {:script
+    "(if (rt.po.access-rules/node-checked? \"Stock Report\") (rt.po.access-rules/set-node-value \"Stock Report\" false))"}
+   {:script
+    "(comment \"=====================Lastly, checking on Staff role.============================\")"}
+   {:script
+    "(rt.po.access-rules/set-user-or-role \"Staff (User Role)\")"}
+   {:script
+    "(if (not (rt.po.access-rules/node-checked? \"Staff Report\")) (rt.po.access-rules/set-node-value \"Staff Report\" true))"}
+   {:script
+    "(if (not (rt.po.access-rules/node-checked? \"Deans of University report\")) (rt.po.access-rules/set-node-value \"Deans of University report\" true))"}
+   {:script
+    "(if (rt.po.access-rules/node-checked? \"Library cards\") (rt.po.access-rules/set-node-value \"Library cards\" false))"}
+   {:script
+    "(if (not (rt.po.access-rules/node-checked? \"Qualification Report\")) (rt.po.access-rules/set-node-value \"Qualification Report\" true))"}
+   {:script
+    "(if (not (rt.po.access-rules/node-checked? \"Subjects Report\")) (rt.po.access-rules/set-node-value \"Subjects Report\" true))"}
+   {:script
+    "(if (not (rt.po.access-rules/node-checked? \"Faculties Report\")) (rt.po.access-rules/set-node-value \"Faculties Report\" true))"}
+   {:script
+    "(if (not (rt.po.access-rules/node-checked? \"Campuses\")) (rt.po.access-rules/set-node-value \"Campuses\" true))"}
+   {:script
+    "(if (not (rt.po.access-rules/node-checked? \"Textbooks\")) (rt.po.access-rules/set-node-value \"Textbooks\" true))"}
+   {:script
+    "(if (not (rt.po.access-rules/node-checked? \"Staff Report\")) (rt.po.access-rules/set-node-value \"Staff Report\" true))"}
+   {:script
+    "(if (rt.po.access-rules/node-checked? \"Temperature\") (rt.po.access-rules/set-node-value \"Temperature\" false))"}
+   {:script
+    "(if (rt.po.access-rules/node-checked? \"Stock Report\") (rt.po.access-rules/set-node-value \"Stock Report\" false))"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script "(rn.common/start-app-and-login (:user-creds-dean *tc*))"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Reports/Student report\")"}
+   {:script
+    "(expect-equals true (rt.po.app/node-in-nav-tree-exists? \"Staff Report\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/node-in-nav-tree-exists? \"Deans of University report\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/node-in-nav-tree-exists? \"Library cards\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/node-in-nav-tree-exists? \"Qualification Report\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/node-in-nav-tree-exists? \"Subjects Report\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/node-in-nav-tree-exists? \"Faculties Report\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/node-in-nav-tree-exists? \"Campuses\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/node-in-nav-tree-exists? \"Textbooks\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/node-in-nav-tree-exists? \"Temperature\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/node-in-nav-tree-exists? \"Stock Report\"))"}],
+  :modified-by "not-implemented"}]

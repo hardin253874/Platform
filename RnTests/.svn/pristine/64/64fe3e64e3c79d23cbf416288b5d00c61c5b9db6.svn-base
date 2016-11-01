@@ -1,0 +1,197 @@
+[{:tags [:area/report-builder :regression :prod :desktop :user/abida],
+  :tests [],
+  :name "Checking icon conditional formatting for name field",
+  :steps
+  [{:script "(rt.po.app/add-report (:section *tc*))"}
+   {:script "(rt.po.report-new/set-name (:report-name *tc*))"}
+   {:script "(rt.po.report-new/set-report-base-on \"Student\")"}
+   {:script "(rt.po.report-new/click-ok)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"First name\" true)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Student\" \"Format Column\")"}
+   {:script "(rt.po.report-format/set-format-type \"Icon\")"}
+   {:script
+    "(rt.po.report-format/set-format-scheme \"4 step - Circle\")"}
+   {:script
+    "(comment (rt.po.report-format/set-highlight-conditions [{:value \"Selma Terrell\", :oper \"Any of\", :colour \"Black on Red\"} {:value \"Yoshi Joseph\", :oper \"=\", :colour \"Black on Yellow\"} {:value \"Wayne Avery\", :oper \"Any except\", :colour \"Black on Green\"} {:value \"\", :oper \"\", :colour \"Black on Blue\"}]))"}
+   {:script
+    "(rt.po.report-format/set-icon-conditions [{:value \"Selma Terrell\", :oper \"Any of\", :icon \"Green Circle Format Icon\"} {:value \"Yoshi Joseph\", :oper \"=\", :icon \"Yellow Circle Format Icon\"} {:value \"Wayne Avery\", :oper \"Any except\", :icon \"Red Circle Format Icon\"} {:value \"\", :oper \"\", :icon \"Black Circle Format Icon\"}])"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script "(rt.scripts.common/sleep 2000)"}
+   {:script
+    "(expect-equals \"Selma Terrell\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Student\"))"}
+   {:script
+    "(expect-equals \"Green Circle Format Icon\" (rt.po.report-view/get-report-format-icon \"0\" \"Student\"))"}
+   {:script
+    "(expect-equals \"Yoshi Joseph\" (rt.po.report-view/get-report-cell-text-content \"1\" \"Student\"))"}
+   {:script
+    "(expect-equals \"Yellow Circle Format Icon\" (rt.po.report-view/get-report-format-icon \"1\" \"Student\"))"}
+   {:script
+    "(expect-equals \"Meredith Alvarez\" (rt.po.report-view/get-report-cell-text-content \"2\" \"Student\"))"}
+   {:script
+    "(expect-equals \"Red Circle Format Icon\" (rt.po.report-view/get-report-format-icon \"2\" \"Student\"))"}
+   {:script
+    "(expect-equals \"Wayne Avery\" (rt.po.report-view/get-report-cell-text-content \"3\" \"Student\"))"}
+   {:script
+    "(expect-equals \"Black Circle Format Icon\" (rt.po.report-view/get-report-format-icon \"3\" \"Student\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button )"}
+   {:script
+    "(rn.app/open-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"Selma Terrell\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Student\"))"}
+   {:script
+    "(expect-equals \"Green Circle Format Icon\" (rt.po.report-view/get-report-format-icon \"0\" \"Student\"))"}
+   {:script
+    "(expect-equals \"Yoshi Joseph\" (rt.po.report-view/get-report-cell-text-content \"1\" \"Student\"))"}
+   {:script
+    "(expect-equals \"Yellow Circle Format Icon\" (rt.po.report-view/get-report-format-icon \"1\" \"Student\"))"}
+   {:script
+    "(expect-equals \"Meredith Alvarez\" (rt.po.report-view/get-report-cell-text-content \"2\" \"Student\"))"}
+   {:script
+    "(expect-equals \"Red Circle Format Icon\" (rt.po.report-view/get-report-format-icon \"2\" \"Student\"))"}
+   {:script
+    "(expect-equals \"Wayne Avery\" (rt.po.report-view/get-report-cell-text-content \"3\" \"Student\"))"}
+   {:script
+    "(expect-equals \"Black Circle Format Icon\" (rt.po.report-view/get-report-format-icon \"3\" \"Student\"))"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"First name\" \"AStudent1\")"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script "(rt.po.view-form/form-nav-back)"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Student\" \"Format Column\")"}
+   {:script
+    "(rt.po.report-format/set-format-scheme \"2 step - Circle\")"}
+   {:script
+    "(rt.po.report-format/set-icon-conditions [{:value \"\", :oper \"Is defined\", :icon \"Green Circle Format Icon\"} {:value \"\", :oper \"\", :icon \"Red Circle Format Icon\"}])"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script
+    "(expect-equals \"Selma Terrell\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Student\"))"}
+   {:script
+    "(expect-equals \"Green Circle Format Icon\" (rt.po.report-view/get-report-format-icon \"0\" \"Student\"))"}
+   {:script "(rt.po.report-builder/click-sort-a-z \"Student\")"}
+   {:script
+    "(expect-equals \"\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Student\"))"}
+   {:script
+    "(expect-equals \"Red Circle Format Icon\" (rt.po.report-view/get-report-format-icon \"0\" \"Student\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(rn.app/open-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Student\"))"}
+   {:script
+    "(expect-equals \"Red Circle Format Icon\" (rt.po.report-view/get-report-format-icon \"0\" \"Student\"))"}
+   {:script
+    "(expect-equals \"Abraham Mcdonald\" (rt.po.report-view/get-report-cell-text-content \"1\" \"Student\"))"}
+   {:script
+    "(expect-equals \"Green Circle Format Icon\" (rt.po.report-view/get-report-format-icon \"1\" \"Student\"))"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script "(rt.po.report-builder/click-cancel-sort \"Student\")"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Student\" \"Format Column\")"}
+   {:script
+    "(rt.po.report-format/set-format-scheme \"4 step - Circle\")"}
+   {:script
+    "(rt.po.report-format/set-icon-conditions [{:value \"Selma\", :oper \"Contains\", :icon \"Green Circle Format Icon\"} {:value \"Yo\", :oper \"Starts with\", :icon \"Yellow Circle Format Icon\"} {:value \"ry\", :oper \"Ends with\", :icon \"Red Circle Format Icon\"} {:value \"\", :oper \"\", :icon \"Black Circle Format Icon\"}])"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script
+    "(expect-equals \"Selma Terrell\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Student\"))"}
+   {:script
+    "(expect-equals \"Green Circle Format Icon\" (rt.po.report-view/get-report-format-icon \"0\" \"Student\"))"}
+   {:script
+    "(expect-equals \"Yoshi Joseph\" (rt.po.report-view/get-report-cell-text-content \"1\" \"Student\"))"}
+   {:script
+    "(expect-equals \"Yellow Circle Format Icon\" (rt.po.report-view/get-report-format-icon \"1\" \"Student\"))"}
+   {:script
+    "(expect-equals \"Meredith Alvarez\" (rt.po.report-view/get-report-cell-text-content \"2\" \"Student\"))"}
+   {:script
+    "(expect-equals \"Black Circle Format Icon\" (rt.po.report-view/get-report-format-icon \"2\" \"Student\"))"}
+   {:script
+    "(expect-equals \"Wayne Avery\" (rt.po.report-view/get-report-cell-text-content \"3\" \"Student\"))"}
+   {:script
+    "(expect-equals \"Red Circle Format Icon\" (rt.po.report-view/get-report-format-icon \"3\" \"Student\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(rn.app/open-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"Selma Terrell\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Student\"))"}
+   {:script
+    "(expect-equals \"Green Circle Format Icon\" (rt.po.report-view/get-report-format-icon \"0\" \"Student\"))"}
+   {:script
+    "(expect-equals \"Yoshi Joseph\" (rt.po.report-view/get-report-cell-text-content \"1\" \"Student\"))"}
+   {:script
+    "(expect-equals \"Yellow Circle Format Icon\" (rt.po.report-view/get-report-format-icon \"1\" \"Student\"))"}
+   {:script
+    "(expect-equals \"Meredith Alvarez\" (rt.po.report-view/get-report-cell-text-content \"2\" \"Student\"))"}
+   {:script
+    "(expect-equals \"Black Circle Format Icon\" (rt.po.report-view/get-report-format-icon \"2\" \"Student\"))"}
+   {:script
+    "(expect-equals \"Wayne Avery\" (rt.po.report-view/get-report-cell-text-content \"3\" \"Student\"))"}
+   {:script
+    "(expect-equals \"Red Circle Format Icon\" (rt.po.report-view/get-report-format-icon \"3\" \"Student\"))"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Name\" false)"}
+   {:script "(rt.scripts/think 3)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Name\" true)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Student\" \"Format Column\")"}
+   {:script "(rt.po.report-format/set-format-type \"Icon\")"}
+   {:script
+    "(rt.po.report-format/set-format-scheme \"3 step - Circle\")"}
+   {:script
+    "(rt.po.report-format/set-icon-conditions [{:value \"\", :oper \"Is not defined\", :icon \"Green Circle Format Icon\"} {:value \"Abraham Mcdonald\", :oper \"<>\", :icon \"Yellow Circle Format Icon\"} {:value \"\", :oper \"\", :icon \"Red Circle Format Icon\"}])"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script "(rt.po.report-builder/click-sort-a-z \"Student\")"}
+   {:script
+    "(expect-equals \"\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Student\"))"}
+   {:script
+    "(expect-equals \"Green Circle Format Icon\" (rt.po.report-view/get-report-format-icon \"0\" \"Student\"))"}
+   {:script
+    "(expect-equals \"Abraham Mcdonald\" (rt.po.report-view/get-report-cell-text-content \"1\" \"Student\"))"}
+   {:script
+    "(expect-equals \"Red Circle Format Icon\" (rt.po.report-view/get-report-format-icon \"1\" \"Student\"))"}
+   {:script
+    "(expect-equals \"Adrienne Mckay\" (rt.po.report-view/get-report-cell-text-content \"2\" \"Student\"))"}
+   {:script
+    "(expect-equals \"Yellow Circle Format Icon\" (rt.po.report-view/get-report-format-icon \"2\" \"Student\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(rn.app/open-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Student\"))"}
+   {:script
+    "(expect-equals \"Green Circle Format Icon\" (rt.po.report-view/get-report-format-icon \"0\" \"Student\"))"}
+   {:script
+    "(expect-equals \"Abraham Mcdonald\" (rt.po.report-view/get-report-cell-text-content \"1\" \"Student\"))"}
+   {:script
+    "(expect-equals \"Red Circle Format Icon\" (rt.po.report-view/get-report-format-icon \"1\" \"Student\"))"}
+   {:script
+    "(expect-equals \"Adrienne Mckay\" (rt.po.report-view/get-report-cell-text-content \"2\" \"Student\"))"}
+   {:script
+    "(expect-equals \"Yellow Circle Format Icon\" (rt.po.report-view/get-report-format-icon \"2\" \"Student\"))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160920-144007",
+  :setup
+  [{:script
+    "(identity {:report-name (rt.lib.util/make-test-name \"IconFormattingName\")})"}],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :common/fixture/login
+   :rn/section/createsection],
+  :id :rn/reportbuilder/icon-formatting-name,
+  :teardown
+  [{:script "(rt.po.report-view/set-search-text \"AStudent1\")"}
+   {:script
+    "(if (> (rt.po.view-form/get-report-row-count) 0) (do (rt.po.report-view/select-row-by-text \"AStudent1\") (rt.po.report-view/delete-record \"\")))"}
+   {:script "(rt.po.app/delete-nav-item (:section *tc*))"}],
+  :modified-by "not-implemented"}]

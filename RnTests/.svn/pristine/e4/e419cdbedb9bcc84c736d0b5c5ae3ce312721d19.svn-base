@@ -1,0 +1,20 @@
+[{:tags [:area/report-builder :prod :regression :desktop :user/abida],
+  :tests [],
+  :name "Clicking on Save saves the report",
+  :steps
+  [{:script "(rt.po.app/add-report (:section *tc*) )"}
+   {:script "(rt.po.report-new/set-name \"SaveReport\")"}
+   {:script "(rt.po.report-new/set-report-base-on \"Student\")"}
+   {:script "(rt.po.report-new/click-ok )"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script "(rt.po.report-builder/close )"}
+   {:script
+    "(rn.app/open-report \"SaveReport\" {:app-name \"Foster University\" :folder-name (:section *tc*)})"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150601-153823",
+  :setup [],
+    :fixtures [:common/fixture/test-account-creds :common/fixture/login :rn/section/createsection], ,
+  :id :rn/reportbuilder/saving-a-report,
+  :teardown [{:script "(rt.po.app/delete-nav-item (:section *tc*))"}],
+  :modified-by "not-implemented"}]

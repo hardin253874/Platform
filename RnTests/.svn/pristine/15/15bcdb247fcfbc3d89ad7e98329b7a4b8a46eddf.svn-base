@@ -1,0 +1,14 @@
+[{:tags [:user/kun app-tests/lossevent,desktop],
+  :name "2 user creds for loss event tests",
+  :steps [],
+  :type :testfixture,
+  :source "./test-db",
+  :modified "20161014-101045",
+  :setup
+  [{:script
+    "(identity {:lossevent-user-creds-owner {:username \"LossEvent.Owner\" :password \"Readi911\"}})"}
+   {:script
+    "(identity {:lossevent-user-creds-manager {:username \"LossEvent.manager\", :password \"Readi911\"}})"}],
+  :id :rn/fixture/user-creds-lossevent,
+  :teardown [],
+  :modified-by "not-implemented"}]

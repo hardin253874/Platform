@@ -1,0 +1,737 @@
+(ns rt.po.edit-form
+  (:import (sun.reflect.generics.reflectiveObjects NotImplementedException))
+  (:require [rt.lib.wd :refer [right-click set-input-value wait-for-jq get-repeated-elements]]
+            [rt.lib.wd-rn :refer [test-id-css]]
+            [rt.lib.wd-ng :refer [wait-for-angular evaluate-angular-expression]]
+            [rt.po.app :refer [make-app-url]]
+            rt.po.view-form
+            [rt.po.common :as common :refer [exists-present? set-time-control-value set-search-text-input-value click-modal-dialog-button-and-wait wait-until]]
+            [rt.po.report-view :refer [select-row-by-text]]
+            [clj-webdriver.taxi :as taxi :refer [to exists? displayed? value text attribute click
+                                                 select-option flash focus
+                                                 element elements find-elements-under find-element-under selected?]]
+            [clj-webdriver.core :refer [by-css by-xpath]]
+            [clojure.string :as string :refer [trim]]
+            [clojure.edn :as edn]
+            [clj-time.core :as t]
+            [clj-time.format :as tf]
+            [clj-time.coerce :as tc]))
+
+;; TODO
+;; set-lookup-value vs set-lookup?? The latter to replace the former??
+
+(defn to-edit-form
+  "Open the given record in edit mode. Uses the given form if specified otherwis it uses the default"
+  [id & [formId]]
+  (to (make-app-url (str "/" id "/editForm?formId=" (or formId "") "&test=true")))
+  (wait-for-angular))
+
+(defn to-create-form
+  "Open the a new record of the given type in edit mode. Uses the given form if specified otherwis it uses the default"
+  [type-id & [formId]]
+  (to (make-app-url (str "/" type-id "/createForm?formId=" (or formId "") "&test=true")))
+  (wait-for-angular))
+
+(defn save []
+  (rt.lib.wd/debug-click (str "button[test-id='save']"))
+  (wait-for-angular))
+
+(defn click-workflow-done []
+  (rt.lib.wd/debug-click (str ".workflow-input-accept-button"))
+  (wait-for-angular))
+
+(defn cancel []
+  (click (str "button[test-id='cancel']")))
+
+(defn field-exists? [id]
+  (exists? (test-id-css id)))
+
+(defn field-value [selector-fn name]
+  (-> (selector-fn name)
+      (attribute "value")
+      trim))
+
+(defn set-field-value [selector-fn name value]
+  (set-input-value (selector-fn name) (str value)))
+
+(defn form-title-exists? []
+  (exists-present? (str ".form-title ")))
+
+(defn get-form-title []
+  (if (form-title-exists?)
+    (text (str ".form-title"))))
+
+(defn form-header-icon-exists? []
+  (exists-present? (str ".form-title img")))
+
+(defn get-form-header-icon-background-colour []
+  (rt.po.common/get-colour-from-css-colour (rt.po.common/get-element-css-value ".form-title div[ng-if='model.headerIconUrl']" "background-color")))
+
+(defn string-field [name]
+  (str (test-id-css name) " [ng-model='model.fieldValue']"))
+
+(defn number-field [name]
+  (str (test-id-css name) " [ng-model='model.value']"))
+
+(defn date-field [name]
+  (str (test-id-css name) " .sp-date-control [ng-model='internalModel.value']"))
+
+(defn bool-field [label]
+  (str ".edit-form-control-container:contains(" label ") .edit-form-value input[type=checkbox]"))
+
+(defn nth-bool-field [label index]
+  (nth (elements (str ".edit-form-control-container:contains(" label ") .edit-form-value input[type=checkbox]")) index))
+
+(defn string-field-value [name]
+  (field-value string-field name))
+
+(defn set-string-field-value [name value]
+  (set-field-value string-field name value))
+
+(defn number-field-value [name]
+  (edn/read-string (field-value number-field name)))
+
+(defn set-number-field-value [name value]
+  (set-field-value number-field name (str value)))
+
+(defn bool-field-value [name]
+  (taxi/selected? (bool-field name)))
+
+(defn date-field-value [name]
+  (value (date-field name)))
+
+(defn set-bool-field-value
+  "Use this for checkbox field types."
+  [label value]
+  (let [e (->> (elements (bool-field label))
+               (filter taxi/visible?)
+               first)]
+    (when-not (= (taxi/selected? e) value) (taxi/click e))))
+
+(defn set-nth-bool-field-value
+  "Use this for checkbox field types."
+  [label index value]
+  (let [e (element (nth-bool-field label index))]
+    (when-not (= (taxi/selected? e) value) (taxi/click e))))
+
+;; commented out as I don't think it is used anymore
+#_(defn date-string
+    "Return the given date in the string format we are expecting.
+    TODO consider using clj-time
+    TODO need to handle locales and various formats"
+    [d]
+    (if (nil? d)
+      ""
+      (let [m (inc (.getMonth d))
+            m (str (when (< m 10) "0") m)]
+        (str (.getDate d) "/" m "/" (+ 1900 (.getYear d))))))
+#_(defn time-string
+    "Return the given item in the string format we are expecting.
+
+    TODO consider using clj-time
+    TODO need to handle locales and various formats"
+    [d]
+    (if (nil? d)
+      ""
+      (let [h (.getHours d)]
+        (str (if h (mod h 12) 12) ":" (.getMinutes d) ":" (.getSeconds d)
+             (if (> h 12) " PM" " AM")))))
+
+(defn set-date-field-value
+  "Set the value of the date control.
+
+  Warning - using test-ids to find the control (to be deprecated)
+  Warning 2 - uses the datepicker-popup attribute to determine the date format"
+
+  [name value]
+  (if-let [date-input (element (date-field name))]
+    (let [fmt-str (taxi/attribute date-input "uib-datepicker-popup")
+          value-str (tf/unparse (tf/formatter fmt-str) (tc/from-date value))]
+      (set-input-value date-input value-str))
+
+    (throw (Exception. (str "Failed to find date control for: " name)))))
+
+
+(defn click-calendar-btn [title]
+  (if-let [cal-btn (element (str ".edit-form-control-container:contains('" title "') .edit-form-value button "))]
+    (click cal-btn)))
+
+(defn click-today-btn []
+  (if-let [today-btn (element (str "button[ng-click*='select(\\'today\\')']:visible"))]
+    (click today-btn)))
+
+(defn set-today-date [title]
+  (click-calendar-btn title)
+  (click-today-btn)
+  )
+
+(defn time-control-input
+  "Return the input element for the given field name and time part"
+  [part id]
+  (element (str (test-id-css id) " [ng-model='" part "']")))
+
+(defn set-time-field-value [name value]
+  (let [hours-input (partial time-control-input "hours")
+        minutes-input (partial time-control-input "minutes")]
+    (if value
+      (do
+        (set-field-value hours-input name (if (.getHours value) (mod (.getHours value) 12)))
+        (set-field-value minutes-input name (.getMinutes value))
+        (when (>= (.getHours value) 12)
+          (click (str (test-id-css name) " button[ng-click*='Meridian']"))))
+      (do
+        (set-field-value hours-input name "")
+        (set-field-value minutes-input name "")))))
+
+(defn set-time-value [label h m meridian]
+  (let [elm (common/find-field label)]
+    (common/set-time-control-value elm h m meridian)))
+
+(defn set-choice-value [id text]
+  (select-option (str (test-id-css id) " select") {:text text}))
+
+(defn get-field-control-element [field-name]
+  (let [els (elements ".edit-form-control-container")
+        el (first (filter #(.contains (text %) field-name) els))]
+    el))
+
+(defn get-multi-select-choice-value [field-name]
+  (text (find-element-under (get-field-control-element field-name) {:class "edit-form-value"})))
+
+(defn select-multi-select-choice-value [field-name choice-value]
+  (let [el (get-field-control-element field-name)]
+    (click (find-element-under el {:tag :div :class "dropdownIcon"}))
+    (let [lis (elements "li[ng-repeat*='entityCheckBoxItem in']")
+          li (first (filter #(.contains (text %) choice-value) lis))]
+      (when-not (selected? (find-element-under li {:tag :input}))
+        (click (find-element-under li {:tag :input}))))
+    (click (find-element-under el {:tag :div :class "dropdownIcon"}))))
+
+(defn unselect-multi-select-choice-value [field-name choice-value]
+  (let [el (get-field-control-element field-name)]
+    (click (find-element-under el {:tag :div :class "dropdownIcon"}))
+    (let [lis (elements "li[ng-repeat*='entityCheckBoxItem in']")
+          li (first (filter #(.contains (text %) choice-value) lis))]
+      (when (selected? (find-element-under li {:tag :input}))
+        (click (find-element-under li {:tag :input}))))
+    (click (find-element-under el {:tag :div :class "dropdownIcon"}))))
+
+(defn get-mandatory-indicators
+  "Get the names of the fields showing a mandatory marker."
+  []
+  (->> (elements "img[alt*=andatory")
+       (filter #(displayed? %))))
+
+(defn get-error-indicators
+  "Get the names of the fields showing an error marker."
+  []
+  (->> (elements "img[alt*='Error on field']")
+       (filter #(displayed? %))))
+
+(defn choose-in-entity-picker-dialog [value]
+  (set-search-text-input-value ".entityReportPickerDialog .sp-search-control input" value)
+  (select-row-by-text value ".entityReportPickerDialog .dataGrid-view")
+  ;; click the ok button and wait for it to be gone
+  (click-modal-dialog-button-and-wait ".inlineRelationPickerDialog .modal-footer button[ng-click*=ok]"))
+
+
+(defn click-lookup-button [name]
+  (let [selector (str "sp-control-on-form:contains(\"" name "\"):last button[ng-click*=spEntityCompositePickerModal]")]
+    (wait-for-jq selector)
+    (click selector)
+    (wait-for-angular)))
+
+
+(defn set-lookup-value
+  "Set the given lookup to the entity with matching value based
+  on the default lookup picker report."
+  ;; todo refactor - similar logic existing else, e.g. form builder and toolbox...
+  [name value]
+  (click-lookup-button name)
+  (choose-in-entity-picker-dialog value))
+
+(defn set-structure-lookup-value [name value]
+  (click-lookup-button name)
+  (rt.po.view-form/select-structure-view-item value)
+  (rt.po.common/click-ok))
+
+
+(defn find-button [title]
+  (element (str ".sp-edit-save-cancel button [title=\"" title "\"]")))
+
+(defn button-exists? [title]
+  ;; check the button exists and also visible
+  (let [q (str ".sp-edit-save-cancel button [title=\"" title "\"]")]
+    (wait-until #(exists-present? q) 1000)
+    (exists-present? q)))
+
+(defn back-button-exists? []
+  (button-exists? "Back"))
+
+(defn click-back-button []
+  (when (back-button-exists?)
+    (click (find-button "Back"))
+    (wait-for-angular)))
+
+(defn edit-button-exists? []
+  (button-exists? "Edit"))
+
+(defn click-edit-button []
+  (when (edit-button-exists?)
+    (click (find-button "Edit"))
+    (wait-for-angular)))
+
+(defn save-button-exists? []
+  (button-exists? "Save"))
+
+(defn click-save-button []
+  (when (save-button-exists?)
+    (click (find-button "Save"))
+    (wait-for-angular)))
+
+(defn save-plus-button-exists? []
+  (button-exists? "Save and New"))
+
+(defn click-save-plus-button []
+  (when (save-plus-button-exists?)
+    (click (find-button "Save and New"))
+    (wait-for-angular)))
+
+(defn cancel-button-exists? []
+  (button-exists? "Cancel"))
+
+(defn click-cancel-button []
+  (when (cancel-button-exists?)
+    (click (find-button "Cancel"))
+    (wait-for-angular)))
+
+(defn form-properties-modal-exists? []
+  (exists? (str ".modal-header h6:contains('Form Properties')")))
+
+(defn config-button-exists? []
+  (exists-present? (str ".editForm-config-panel img[src*=configure]")))
+
+(defn click-config-button []
+  (if (config-button-exists?)
+    (click (str ".editForm-config-panel img[src*=configure]"))))
+
+(defn modify-form-option-exists? []
+  (exists-present? (str "a[ng-click*=configMenuModifyEntity]")))
+
+(defn click-modify-form-option []
+  (if (modify-form-option-exists?)
+    (click (str "a[ng-click*=configMenuModifyEntity]"))))
+
+;; lookup functions
+
+(defn find-lookup [label]
+  (str ".edit-form-control-container:has(.edit-form-title span:contains(" label ")) .edit-form-value"))
+
+(defn find-workflow-lookup [label]
+  (str ".workflow-input-row:has(.workflow-input-label span:contains(" label ")) .workflow-input-field"))
+
+(defn get-lookup [label]
+  (let [field (find-lookup label)]
+    (if
+      (exists-present? (str field " input"))
+      (value (str (find-lookup label) " input")))))
+
+(defn set-lookup [label value & [column-index]]
+  ;; Open picker report
+  (click (str (find-lookup label) " button[uib-popover=Edit]"))
+
+  ;; If not already seen in the grid then filter to the desired type
+  (when-not (->> (rt.po.report-view/get-loaded-grid-values ".entityReportPickerDialog .dataGrid-view")
+                 (filter #(.contains (.toLowerCase %) (.toLowerCase value)))
+                 first)
+    (set-search-text-input-value ".entityReportPickerDialog .sp-search-control input" value))
+
+  ;; choose the type
+  (select-row-by-text value ".entityReportPickerDialog .dataGrid-view" column-index)
+  ;; ok the typepicker
+  (click-modal-dialog-button-and-wait ".inlineRelationPickerDialog .modal-footer button[ng-click*=ok]"))
+
+
+(defn set-workflow-lookup [label value & [column-index]]
+  ;; Open picker report
+  (click (str (find-workflow-lookup label) " button[uib-popover=Edit]"))
+
+  ;; If not already seen in the grid then filter to the desired type
+  (when-not (->> (rt.po.report-view/get-loaded-grid-values ".entityReportPickerDialog .dataGrid-view")
+                 (filter #(.contains (.toLowerCase %) (.toLowerCase value)))
+                 first)
+    (set-search-text-input-value ".entityReportPickerDialog .sp-search-control input" value))
+
+  ;; choose the type
+  (select-row-by-text value ".entityReportPickerDialog .dataGrid-view" column-index)
+  ;; ok the typepicker
+  (click-modal-dialog-button-and-wait ".inlineRelationPickerDialog .modal-footer button[ng-click*=ok]"))
+
+(defn clear-lookup [label]
+  (click (str ".edit-form-control-container:contains(" label ") button[ng-click*=clear]")))
+
+(defn open-lookup [label]
+  (click (str ".relControl:contains(" label ") button[ng-click*=spEntityCompositePickerModal]")))
+
+;; GENERAL FIELD FUNCTIONS
+
+(defn find-field [label]
+  (common/find-field label))
+
+(defn field-visible? [label]
+  (common/field-visible? label))
+
+(defn find-field-title [label]
+  (str ".edit-form-control-container:has(.edit-form-title span:contains(" label ")) .edit-form-title"))
+
+(defn field-mandatory-indicator-visible? [label]
+  (let [field (find-field-title label)]
+    (exists-present? (str field " img[src*=MandatoryIndicator]"))))
+
+(defn field-read-only? [label]
+  (let [field (find-field label)]
+    (exists-present? (str field " span[ng-if='!(!isReadOnly || isInDesign)']"))))
+
+(defn multiline-field-read-only? [label]
+  (let [field (find-field label)]
+    (exists-present?
+      (str field " div[ng-if='isReadOnly']"))))
+
+(defn bool-field-read-only? [label]
+  (let [field (find-field label)]
+    (exists-present?
+      (str field " input[disabled='disabled']"))))
+
+(defn numeric-field-read-only? [label]
+  (let [field (find-field label)]
+    (exists-present?
+      (str field " span[ng-if='!(!model.isReadOnly || model.isInDesign)']"))))
+
+(defn inline-lookup-read-only? [label]
+  (let [field (find-field label)]
+    (exists-present?
+      (str field " input[disabled='disabled']"))))
+
+(defn date-field-read-only? [label]
+  (let [field (find-field label)]
+    (exists-present? (str field " span[ng-if='model.isReadOnly']"))))
+
+(defn date-and-time-field-read-only? [label]
+  (let [field (find-field label)]
+    (exists-present? (str field " span[ng-if*='model.isReadOnly && !model.isInDesign']"))))
+
+(defn find-error-marker [label]
+  (let [field (find-field-title label)]
+    (str field " img[src*=validationMessage]")))
+
+(defn field-error-marker-visible? [label]
+  (let [marker (find-error-marker label)]
+    ;(flash (str marker))
+    (exists-present? marker)))
+
+(defn field-error-message [label]
+  (let [marker (find-error-marker label)]
+    (attribute marker :uib-tooltip)))
+
+(defn field-tooltip [label]
+  (let [field (find-field-title label)]
+    (let [tool-span (str field " span[ng-if='model.hasName']")]
+      (attribute tool-span :uib-tooltip))))
+
+(defn is-string-field-password? [label]
+  (let [field (find-field label)]
+    (exists-present?
+      (str field " input[type='password']"))))
+
+;; internal
+(defn find-multiline-expander [label]
+  (str (find-field label) " img[src*=btn_expand_textbox]"))
+
+(defn field-multiline? [label]
+  (exists-present? (str (find-field label) " textarea")))
+
+(defn multiline-expander-visible? [label]
+  (exists-present? (find-multiline-expander label)))
+
+(defn click-multiline-expander [label]
+  (click (find-multiline-expander label)))
+
+(defn get-modal-multiline []
+  (value (str ".modal-body textarea")))
+
+(defn get-multiline [label]
+  (common/get-multiline label))
+
+(defn set-multiline [label value]
+  (common/set-multiline label value))
+
+;; TODO:
+(defn set-focus-on-field [label]
+  (let [field (find-field label)]
+    (focus (str field " input"))))
+
+;; TODO:
+(defn field-has-focus? [label]
+  (let [field (find-field label)]
+    (let [innnt (str field " input")]
+      (let [focused (str ":focus")]
+        (= innnt focused)))))
+
+;; common dialog
+(defn click-ok []
+  (common/click-ok))
+
+(defn click-cancel []
+  (common/click-cancel))
+
+;; move following to entity report picker modal?
+
+(defn entity-report-picker-modal-exists? []
+  (exists? (str ".entityReportPickerDialog")))
+
+;; internal
+(defn single-option-button-exists? []
+  (exists-present? (str ".entityReportPickerDialog button[ng-click*=singleOptionClick]")))
+
+;; internal
+(defn multi-option-button-exists? []
+  (exists-present? (str ".entityReportPickerDialog button[name=multiOptionsButton]")))
+
+;; internal
+(defn find-create-option [type]
+  (str ".contextmenu-view a:has(span:contains('" type "'))"))
+
+;; picker report new button
+(defn find-new-button []
+  (or (first
+        (filter
+          exists-present?
+          (list
+            (str ".entityReportPickerDialog button[ng-click*=singleOptionClick]")
+            (str ".entityReportPickerDialog button[name=multiOptionsButton]"))))
+      (str ":contains('No new button found')")))            ;; encode warning message in a valid selector
+
+(defn click-new-button []
+  (click (find-new-button)))
+
+(defn create-option-visible? [label]
+  (exists-present? (find-create-option label)))
+
+(defn click-create-option [label]
+  (if (create-option-visible? label)
+    (click (find-create-option label))))
+
+(defn check-can-create? []
+  (exists-present? (find-new-button)))
+
+;; to be used only with a type that has derived types while testing
+(defn check-can-create-this-type-only? []
+  (single-option-button-exists?))
+
+;; to be used only with a type that has derived types while testing
+(defn check-can-create-derived-types? []
+  (multi-option-button-exists?))
+
+(defn select-form-tab
+  "Same as view-form/select-form-tab"
+  [tab-name]
+  (rt.po.view-form/select-form-tab tab-name))
+
+;; move following to common area?
+
+(defn confirm-delete-modal-exists? []
+  (exists? (str ".modal-header h6:contains('Confirm delete')")))
+
+(defn click-confirm-delete-ok-button []
+  (if (confirm-delete-modal-exists?)
+    (click-modal-dialog-button-and-wait (str ".modal-footer button:contains('OK')"))))
+
+(defn click-confirm-delete-cancel-button []
+  (if (confirm-delete-modal-exists?)
+    (click-modal-dialog-button-and-wait (str ".modal-footer button:contains('Cancel')"))))
+
+(defn page-dirty-check-exists? []
+  (exists-present? (str ".client-nav-pending-panel")))
+
+(defn page-dirty-cancel-button-exists? []
+  (exists-present? (str ".client-nav-pending-panel button[test-id='navCancel']")))
+
+(defn page-dirty-continue-button-exists? []
+  (exists-present? (str ".client-nav-pending-panel button[test-id='navContinue']")))
+
+(defn click-page-dirty-continue-button []
+  (if (page-dirty-continue-button-exists?)
+    (click (str ".client-nav-pending-panel button[test-id='navContinue']"))))
+
+(defn click-page-dirty-cancel-button []
+  (if (page-dirty-cancel-button-exists?)
+    (click (str ".client-nav-pending-panel button[test-id='navCancel']"))))
+
+;; IMAGE FIELD Driver functions 
+(defn image-detail-button-exists? [label]
+  (common/exists-present? (str (common/find-field label) " button:contains('Details'):visible")))
+
+(defn upload-image [label value]
+  (let [elem (->> (get-repeated-elements ".edit-form-control-container"
+                                         {:label ".edit-form-title" :value ".edit-form-value"})
+                  (filter #(re-find (re-pattern (str "(?i)^" label "[\\s:]*"))
+                                    (taxi/text (:label %))))
+                  first
+                  :value)]
+    (if-let [input-element (and elem (taxi/find-element-under elem {:css ".image-upload input[type=file]"}))]
+      (do
+        (taxi/send-keys input-element value)
+        (wait-until #(image-detail-button-exists? label)))
+      ;;else
+      (throw (Exception. (str "Failed to find form control for:" label))))))
+
+(defn upload-image-nth-control [label index value]
+  (let [my-elem (nth (elements (str "div.edit-form-control-container:has(span.editable-label-readonly-readonly:contains('" label "')) input.upload[type=file]")) index)]
+    (taxi/send-keys my-elem value)
+    )
+  ;;(click (nth (elements (str "div.edit-form-control-container:has(span.editable-label-readonly-readonly:contains('" label "')) input.upload[type=file]")) index ))
+  )
+
+(defn open-image-field-context-menu [label]
+  (taxi/click (str (common/find-field label) " button[name='contextMenuButton']")))
+
+(defn image-Upload-button-exists? [label]
+  (common/exists-present? (str (common/find-field label) " button:contains('Upload'):visible")))
+
+(defn click-image-detail-button [label]
+  (taxi/click (str (common/find-field label) " button:contains('Details'):visible")))
+
+
+
+;;Driver functions with out using test-id
+
+(defn get-text-field-value [field-name]
+  (let [elements (elements ".edit-form-control-container")
+        element (first (filter #(.contains (text %) field-name) elements))]
+    (attribute (find-element-under element {:tag :input, :name "fieldValue"}) "value")))
+
+(defn set-text-field-value-v2 [container-name field-name field-value]
+  (let [container (element "sp-vertical-stack-container-control.structure-depth-3:contains('Email Contact Detail')")]
+    (let [elements (find-elements-under container {:css ".edit-form-control-container"})
+          element (first (filter #(.contains (text %) field-name) elements))]
+      (set-input-value (find-element-under element {:tag :input, :name "fieldValue"}) (str field-value)))
+    ))
+
+(defn set-last-text-field-value [field-name field-value]
+  (let [elements (elements ".edit-form-control-container")
+        element (last (filter #(.contains (text %) field-name) elements))]
+    (set-input-value (find-element-under element {:tag :input, :name "fieldValue"}) (str field-value))))
+
+(defn set-text-field-value [field-name field-value]
+  (let [elements (elements ".edit-form-control-container")
+        element (first (filter #(.contains (text %) field-name) elements))]
+    (set-input-value (find-element-under element {:tag :input, :name "fieldValue"}) (str field-value))))
+
+(defn click-colour-dropdown
+  "Click the colour dropdown for the specified label.
+  "
+  [label]
+  (click (str "div.edit-form-control-container:has(span.editable-label-readonly-readonly:contains('" label "')) div.spColorPicker-view a.dropdownButton[ng-click*=dropDownButtonClicked]")))
+
+(defn choose-colour-dropdown-colour
+  "Select the specified colour from the currently open colour dropdown. Call click-colour-dropdown before calling this method."
+  [colourName]
+  (let [elements (elements (str "ul.colorPickerDropdownMenu:visible a.dropdownMenuItem:has(span:contains('" colourName "'))"))
+        element (first (filter #(= (text %) colourName) elements))]
+    (click element)))
+
+(defn set-colour-dropdown-colour
+  "Sets the specified colour dropdown with the specified colour name."
+  [label colourName]
+  (click-colour-dropdown label)
+  (wait-until #(exists? "ul.colorPickerDropdownMenu:visible"))
+  (choose-colour-dropdown-colour colourName))
+
+(defn click-nth-colour-dropdown
+  "Click the colour dropdown for the specified label."
+  [label index]
+  (click (nth (elements (str "div.edit-form-control-container:has(span.editable-label-readonly-readonly:contains('" label "')) div.spColorPicker-view a.dropdownButton[ng-click*=dropDownButtonClicked]")) index)))
+
+(defn set-nth-colour-dropdown-colour
+  "Sets the specified colour dropdown with the specified colour name."
+  [label index colourName]
+  (click-nth-colour-dropdown label index)
+  (wait-until #(exists? "ul.colorPickerDropdownMenu:visible"))
+  (choose-colour-dropdown-colour colourName))
+
+;; todo - reconcile this with the driver with the similar name
+;; ... this one is more accurate as it is only checking the name in the
+;; title as opposed to the enture control ... header and value
+(defn- get-control-element [control-name]
+  (->> (rt.lib.wd/get-repeated-elements ".edit-form-control-container"
+                                        {:title-elem ".edit-form-title"
+                                         :value-elem ".edit-form-value"})
+       (map #(assoc % :title-label (taxi/text (:title-elem %))))
+       ;(map #(do (println (:title-label %)) %)) ; handy for debugging
+       (filter #(re-find (re-pattern control-name) (:title-label %)))
+       first))
+
+(defn set-choice-value-v2
+  "Set the choice value for the choice field with the given choice control label."
+  [control-name choice-value]
+  (let [e (get-control-element control-name)]
+    (when-not e
+      (throw (Exception. (str "Failed to find choice field with label \"" control-name "\""))))
+    (some-> e :value-elem
+            (taxi/find-element-under {:css "select"})
+            (select-option {:text choice-value})))
+  nil)
+  
+(defn set-dropdown-control
+  "Set the value for the field with the given control label.
+  May be a choice or a lookup using a dropdown style control."
+  [control-name value]
+  (set-choice-value-v2 control-name value))
+
+(defn set-number-value-v2
+  "Set the value for the number field with the given control label."
+  [control-name value]
+  (let [e (get-control-element control-name)]
+    (when-not e
+      (throw (Exception. (str "Failed to find number field with label \"" control-name "\""))))
+    (some-> e :value-elem
+            (find-element-under {:css "[ng-model='model.value']"})
+            (set-input-value (str value))))
+  nil)
+
+(defn toggle-field-multiselect [choice-value]
+	(println "start here")
+	(when-let [picker (element "ul.entityPickers-view")]		
+		(let [options (-> picker
+                      (find-elements-under (by-css "li"))
+                      (->> (map #(hash-map :el % :text (text %)))
+                           (filter #(= choice-value (:text %)))))]		  
+          (when-not (empty? options)
+            (println options)
+			(when-let [input (-> options first :el
+                             (find-element-under (by-css "input")))]
+				(println input)
+               (let [was-selected (selected? input)]
+					(click input)
+					(not was-selected)))))))
+
+(defn toggle-dropdown-button [control-name]
+	(let [e (common/find-field control-name)]
+		(when-not e
+		  (throw (Exception. (str "Failed to find choice field with label \"" control-name "\""))))
+		(let [button (taxi/find-element-under e (by-css ".dropdownButton"))]
+			(click button)
+		)))
+									
+(defn set-multi-choice-value
+  "Set the multi choice value for the multi choice field with the given choice control label."
+  [control-name choice-values]
+  
+  (toggle-dropdown-button control-name)   
+  (wait-until #(exists? "ul.entityPickers-view") 5000)
+  (doall (map-indexed (fn [index choice-value]
+                        (toggle-field-multiselect choice-value)
+                        )
+                      choice-values))
+  (toggle-dropdown-button control-name)					  
+  nil)    

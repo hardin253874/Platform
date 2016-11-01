@@ -1,0 +1,171 @@
+[{:tags [:user/hemant :app-tests/bcm :desktop],
+  :name "Create a new process and link it to a new BIA",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:bcm-owner-creds *tc*))"}
+   {:script
+    "(rt.po.app/navigate-to \"Business Continuity Management\")"}
+   {:script "(rt.po.app/select-app-tab \"Business Impact Analysis\")"}
+   {:script "(rt.po.app/select-navigator-item \"Process Register\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Name\" (:process-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Description\" (str \"Description for \" (:process-name *tc*)))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Process Type\" \"Customer Facing\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Criticality\" \"High\")"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Next Review Date\" (make-local-date 2016 12 11))"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Owner\" \"Business Continuity Owner\")"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Manager(s)\" \"Business Continuity Manager\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"APPLICATION DEPENDENCIES\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(expect-equals \"Application\" (rt.po.edit-form/get-form-title))"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:appDep-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Application Type\" \"Web Application\")"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Owner\" \"Business Continuity Owner\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"PRODUCTS AND SERVICES DEPENDENCIES\")"}
+   {:script "(rt.po.app/choose-context-menu \"Link\")"}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog \"External Product 1\")"}
+   {:script "(comment (rt.po.edit-form/save))"}
+   {:script
+    "(rt.po.app/select-navigator-item \"Business Impact Analysis\")"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"BUSINESS IMPACT ANALYSIS\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(expect-equals \"Business Impact Analysis\" (rt.po.edit-form/get-form-title))"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:bim-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Process\" (:process-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Owner\" \"Business Continuity Owner\")"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Approver\" \"Business Continuity Manager\")"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Next Review Date\" (make-local-date 2016 12 11))"}
+   {:script
+    "(rt.po.edit-form/select-multi-select-choice-value \"Impact Type(s)\" \"Customer\")"}
+   {:script
+    "(rt.po.edit-form/select-multi-select-choice-value \"Impact Type(s)\" \"Legal\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"1 Hour\" \"Medium\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"1 Day\" \"Medium\")"}
+   {:script "(rt.po.edit-form/set-choice-value-v2 \"1 Week\" \"Low\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"1 Month\" \"High\")"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"Financial Impact\" 10000)"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Last Completed\" (make-local-date 2016 11 11))"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Owner\" \"Business Continuity Owner\")"}
+   {:script "(rt.po.edit-form/set-lookup \"Key People\" \"Adam\")"}
+   {:script "(rt.po.edit-form/set-number-value-v2 \"# Seats BAU\" 5)"}
+   {:script "(rt.po.edit-form/open-lookup \"Recovery Site\")"}
+   {:script
+    "(comment (rt.po.view-form/expand-structure-view-item-node \"China\"))"}
+   {:script
+    "(rt.po.view-form/select-structure-view-item-with-ctrl-key-by-text \"China\" \"\")"}
+   {:script "(rt.po.common/click-ok)"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"# Seats 1 Hour\" 1)"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"# Seats 1 Day\" 1)"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"# Seats 1 Week\" 3)"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"# Seats 1 Month\" 5)"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"KEY DEPENDENCIES\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Organisation Asset\" \"IP Phone 1\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"RPO\" \"8 hours\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"RTO\" \"8 hours\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.app/select-navigator-item \"Business Impact Analysis\")"}
+   {:script "(rt.po.report-view/set-search-text (:bim-name *tc*))"}
+   {:script "(expect (= (rt.po.report-view/count-report-row) 1))"}
+   {:script
+    "(comment \"TO DO Validate the content displayed on the charts \")"}
+   {:script
+    "(rt.po.app/select-navigator-item \"Disruptive Risk Register\")"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"DISRUPTIVE RISK REGISTER\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(expect-equals \"Disruptive Risk\" (rt.po.edit-form/get-form-title))"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:disrupRisk-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Owner\" \"Business Continuity Owner\")"}
+   {:script
+    "(rt.po.edit-form/select-multi-select-choice-value \"Areas of Risk\" \"Financial\")"}
+   {:script
+    "(rt.po.edit-form/select-multi-select-choice-value \"Areas of Risk\" \"Regulatory\")"}
+   {:script "(rt.po.edit-form/open-lookup \"Organisation Levels\")"}
+   {:script
+    "(rt.po.view-form/select-structure-view-item-with-ctrl-key-by-text \"Top Org Level\" \"\")"}
+   {:script "(rt.po.common/click-ok)"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Impact\" \"Minor\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Likelihood\" \"Possible\")"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Next Review Date\" (make-local-date 2016 11 11))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"ISSUES\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:issue-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Owner\" \"Business Continuity Owner\")"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Expected_Resolution_Date\" (make-local-date 2016 11 11))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.app/select-navigator-item \"Disruptive Risk Register\")"}
+   {:script
+    "(rt.po.report-view/set-search-text (:disrupRisk-name *tc*))"}
+   {:script "(expect (= (rt.po.report-view/count-report-row) 1))"}
+   {:script
+    "(rn.app/open-board \"BIA Status Board\" {:app-name \"Business Continuity Application\", :folder-name \"Reports\"})"}
+   {:script
+    "(expect-equals \"BIA Status Board\" (rt.po.board/get-board-header-text))"}
+   {:script
+    "(expect (rt.po.board/card-exists-in-row? \"\" \"Not Started\" (:bim-name *tc*)))"}
+   {:script
+    "(rt.po.board/drag-card-to-dimension (:bim-name *tc*) \"Not Started\" \"Approved\")"}
+   {:script
+    "(expect (rt.po.board/card-exists-in-row? \"\" \"Approved\" (:bim-name *tc*)))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20161020-135255",
+  :setup
+  [{:script
+    "(identity {:appDep-name (rt.lib.util/make-test-name \"AppDep\"), :bim-name (rt.lib.util/make-test-name \"BIM\"), :issue-name (rt.lib.util/make-test-name \"Issue\"), :process-name (rt.lib.util/make-test-name \"BIA-process\"), :disrupRisk-name (rt.lib.util/make-test-name \"DisrupRisk\")})"}],
+  :fixtures [:rn/fixture/bcm-owner-creds],
+  :id :bcm/tests/business-impact-analysis,
+  :teardown [],
+  :modified-by "not-implemented"}]

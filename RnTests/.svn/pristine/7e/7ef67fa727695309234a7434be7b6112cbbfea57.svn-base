@@ -1,0 +1,130 @@
+[{:tags
+  [:area/security :prod :nomodify :regression :desktop :user/shaofen],
+  :tests [],
+  :name
+  "Check self serve user can create private report/chart/screen and other user can't see them (later when having drivers in screen builder, better add steps to check self server use can delete private items but not public ones)",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script "(rt.po.app/navigate-to \"Home\")"}
+   {:script
+    "(def PrivateContentSection (rt.lib.util/make-test-name \"PersonalZone\"))"}
+   {:script
+    "(rt.po.app/add-private-content-section PrivateContentSection \"\")"}
+   {:script "(rn.app/open-security \"Navigation Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script "(rt.po.access-rules/set-application \"Home\")"}
+   {:script
+    "(rt.po.access-rules/set-user-or-role \"Students (User Role)\")"}
+   {:script "(rt.po.access-rules/set-node-value \"Home\" true)"}
+   {:script
+    "(rt.po.access-rules/set-node-value PrivateContentSection true)"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script
+    "(rn.common/start-app-and-login (:user-creds-self-serve-student *tc*))"}
+   {:script "(expect (rt.po.app/config-mode-visible?))"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script "(rt.po.app/navigate-via-tiles \"Foster University\")"}
+   {:script "(rt.po.app/navigate-to \"Home\")"}
+   {:script
+    "(comment \"Need check if + button doesn't appear on any other App than Home\")"}
+   {:script "(rt.po.app/click-nav-builder-tool)"}
+   {:script
+    "(expect (rt.po.app/new-nav-item-visible? \"New Screen\"))"}
+   {:script "(expect (rt.po.app/new-nav-item-visible? \"New Chart\"))"}
+   {:script
+    "(expect (rt.po.app/new-nav-item-visible? \"New Report\"))"}
+   {:script
+    "(expect (not (rt.po.app/new-nav-item-visible? \"New Object\")))"}
+   {:script
+    "(expect (not (rt.po.app/new-nav-item-visible? \"New Section\")))"}
+   {:script "(rt.po.app/click-nav-builder-tool)"}
+   {:script
+    "(comment \"------------Adding a private report----------------\")"}
+   {:script "(rt.po.app/add-report PrivateContentSection)"}
+   {:script "(rt.po.report-new/set-name \"Amity - private report 1\")"}
+   {:script "(rt.po.report-new/set-report-base-on \"Student\")"}
+   {:script "(rt.po.report-new/click-ok )"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(comment \"------------Adding a private chart----------------\")"}
+   {:script "(rt.po.app/add-chart PrivateContentSection)"}
+   {:script
+    "(expect-equals \"New Chart\" (rt.po.common/get-string \"Name\"))"}
+   {:script
+    "(rt.po.common/set-string \"Name\" \"Amity - private column chart - student\")"}
+   {:script
+    "(expect-equals \"Amity - private column chart - student\" (rt.po.common/get-string \"Name\"))"}
+   {:script
+    "(rt.po.common/set-multiline \"Description\" \"Chart created by ReadiTest - Amity\")"}
+   {:script
+    "(expect-equals \"Chart created by ReadiTest - Amity\" (rt.po.common/get-multiline \"Description\"))"}
+   {:script
+    "(rt.po.common/set-lookup \"Report\" \"Amity - private report 1\")"}
+   {:script
+    "(expect-equals \"Amity - private report 1\" (rt.po.common/get-lookup \"Report\"))"}
+   {:script "(rt.po.chart-new/set-chart-type \"Column\")"}
+   {:script
+    "(expect-equals \"Column\" (rt.po.chart-new/get-chart-type))"}
+   {:script "(rt.po.common/click-ok)"}
+   {:script "(rt.po.chart-builder/click-chart-toolbar-save)"}
+   {:script "(rt.po.chart-builder/click-chart-toolbar-close)"}
+   {:script
+    "(comment \"------------Adding a private screen----------------\")"}
+   {:script
+    "(rt.po.app/add-new-nav-item \"New Screen\" PrivateContentSection)"}
+   {:script
+    "(rt.po.common/set-string \"Name\" \"Amity - private screen\")"}
+   {:script "(rt.po.common/click-ok)"}
+   {:script
+    "(rt.po.screen-builder/select-application \"Foster University\")"}
+   {:script "(expect (rt.po.screen-builder/public-private-visible?))"}
+   {:script
+    "(expect-equals \"Public and personal\" (rt.po.screen-builder/public-private-text))"}
+   {:script "(rt.po.screen-builder/click-public-private)"}
+   {:script
+    "(expect-equals \"Public only\" (rt.po.screen-builder/public-private-text))"}
+   {:script "(rt.po.screen-builder/click-public-private)"}
+   {:script
+    "(expect-equals \"Personal only\" (rt.po.screen-builder/public-private-text))"}
+   {:script "(rt.po.screen-builder/toggle-toolbox-type \"Student\")"}
+   {:script
+    "(rt.po.screen-builder/add-chart-from-toolbox \"Student\" \"Amity - private column chart - student\")"}
+   {:script
+    "(rt.po.screen-builder/add-report-from-toolbox \"Student\" \"Amity - private report 1\")"}
+   {:script "(rt.po.screen-builder/click-public-private)"}
+   {:script
+    "(expect-equals \"Public and personal\" (rt.po.screen-builder/public-private-text))"}
+   {:script
+    "(rt.po.screen-builder/add-form-from-toolbox \"Student\" \"Students Form\")"}
+   {:script "(rt.po.screen-builder/save)"}
+   {:script "(rt.po.screen-builder/close)"}
+   {:script
+    "(comment \"------------checking if other user can see Amity's private items----------------\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script "(rn.app/open-admin \"Reports\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Amity - private report 1\")"}
+   {:script "(expect (= (rt.po.report-view/count-report-row) 0))"}
+   {:script "(rn.app/open-admin \"Charts\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Amity - private column chart - student\")"}
+   {:script "(expect (= (rt.po.report-view/count-report-row) 0))"}
+   {:script "(rn.app/open-admin \"Screens\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Amity - private screen\")"}
+   {:script "(expect (= (rt.po.report-view/count-report-row) 0))"}
+   {:script
+    "(comment \"------------Next is test self serve user can delete private items and also this is part of env clean up. Hold on, maybe better to leave them.----------------\")"}
+   {:script
+    "(comment \"------------No drivers in screen builder to use. ------------\")"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20161010-113325",
+  :setup [],
+  :fixtures
+  [:rn/fixture/user-creds-self-serve-student
+   :common/fixture/test-account-creds],
+  :id :rn/security/self-serve---addPrivateReportChartScreen,
+  :teardown [],
+  :modified-by "not-implemented"}]

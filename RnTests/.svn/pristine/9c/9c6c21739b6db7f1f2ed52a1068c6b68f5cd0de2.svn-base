@@ -1,0 +1,58 @@
+[{:tags [:area/forms :nomodify :prod :regression :desktop :user/abida],
+  :name
+  "Ensure you see an action button on the form if the object is involved in any workflow",
+  :steps
+  [{:script
+    "(rn.app/open-report \"Staff Report\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Ina Harmon\")"}
+   {:script
+    "(expect (not (rt.po.view-form/action-button-on-form-exists? \"Action\")))"}
+   {:script
+    "(rn.app/open-form-builder \"Staff Form\" {:app-name \"Foster University\"})"}
+   {:script
+    "(expect (rt.po.form-builder-config/actions-popup-launcher-button-exists?))"}
+   {:script
+    "(rt.po.form-builder-config/click-actions-popup-launcher-button)"}
+   {:script
+    "(rt.po.form-builder-config/set-action-enabled \"User Action on Staff\" true)"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script
+    "(expect (rt.po.form-builder-config/action-button-exists? \"User Action on Staff\"))"}
+   {:script
+    "(rn.app/open-report \"Staff Report\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Ina Harmon\")"}
+   {:script
+    "(expect (rt.po.view-form/action-button-on-form-exists? \"User Action on Staff\"))"}
+   {:script
+    "(rt.po.view-form/click-action-button-on-form \"User Action on Staff\")"}
+   {:script "(rn.common/wait-until-settled)"}
+   {:script "(rt.po.view-form/choose-task-action \"Approve\")"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(rn.app/open-form-builder \"Staff Form\" {:app-name \"Foster University\"})"}
+   {:script
+    "(rt.po.form-builder-config/click-actions-popup-launcher-button)"}
+   {:script
+    "(rt.po.form-builder-config/set-action-enabled \"User Action on Staff\" false)"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script
+    "(expect (not (rt.po.form-builder-config/action-button-exists? \"User Action on Staff\")))"}
+   {:script
+    "(rn.app/open-report \"Staff Report\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Ina Harmon\")"}
+   {:script
+    "(expect (not (rt.po.view-form/action-button-on-form-exists? \"User Action on Staff\")))"}
+   {:script "(rt.po.edit-form/click-back-button)"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20161028-121849",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/form/testing-for-action-button-on-the-form,
+  :teardown [],
+  :modified-by "not-implemented"}]

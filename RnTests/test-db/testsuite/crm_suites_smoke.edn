@@ -1,0 +1,14 @@
+[{:tags [:desktop],
+  :test-filter "(has-tags? [:app/crm] %)",
+  :tests [],
+  :name "Smoke tests for CRM",
+  :each-fixtures
+  [:common/fixture/chrome :common/fixture/handle-errors],
+  :type :testsuite,
+  :source "../RnTests/test-db",
+  :modified "20150716-072536",
+  :setup [],
+  :id :crm/suites/smoke,
+  :teardown [],
+  :modified-by "not-implemented",
+  :once-fixtures []}]

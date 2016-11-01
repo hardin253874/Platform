@@ -1,0 +1,46 @@
+[{:tags
+  [:area/report-builder
+   :nomodify
+   :regression
+   :desktop
+   :user/abida
+   :prod],
+  :tests [],
+  :name "Add relationship field to report",
+  :steps
+  [{:script "(rt.po.app/navigate-via-tiles \"Foster University\")"}
+   {:script
+    "(rn.app/open-report \"Subjects Report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(rt.po.app/enable-config-mode )"}
+   {:script "(rt.po.report-builder/access-build-mode )"}
+   {:script "(rt.po.report-builder/click-add-relationship-button )"}
+   {:script "(rt.scripts.common/sleep 3000)"}
+   {:script
+    "(rt.po.report-add-relationship/add-relationship \"Textbooks\")"}
+   {:script "(rt.po.report-add-relationship/click-ok )"}
+   {:script "(rt.po.report-builder/select-treenode \"Textbooks\")"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Name\" true)"}
+   {:script
+    "(expect-equals \"Textbooks\" (clojure.string/trim (clj-webdriver.taxi/text (rt.po.report-builder/get-col-header \"Textbooks\"))))"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script "(rt.po.report-builder/click-close-button )"}
+   {:script
+    "(rn.app/open-report \"Subjects Report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script
+    "(expect-equals \"Textbooks\" (clojure.string/trim (clj-webdriver.taxi/text (rt.po.report-builder/get-col-header \"Textbooks\"))))"}
+   {:script "(rt.po.report-builder/access-build-mode )"}
+   {:script "(rt.po.report-builder/select-treenode \"Textbooks\")"}
+   {:script "(rt.po.report-builder/remove-relationship \"Textbooks\")"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script "(rt.po.report-builder/click-close-button )"}
+   {:script
+    "(rn.app/open-report \"Subjects Report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150610-082556",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/reportbuilder/add-relationship-field-to-report,
+  :teardown [],
+  :modified-by "not-implemented"}]

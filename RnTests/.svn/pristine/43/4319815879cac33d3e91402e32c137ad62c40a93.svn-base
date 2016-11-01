@@ -1,0 +1,147 @@
+[{:tags
+  [:nomodify
+   :prod
+   :regression
+   :user/shaofen
+   :desktop
+   :area/calculation],
+  :tests [],
+  :name
+  "Calculated fields behaves on report and on form when data or formula is changed",
+  :steps
+  [{:script
+    "(comment \"==================================== Following is to test if data change is reflected in calculated field. ==================================\")"}
+   {:script
+    "(rn.app/open-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script
+    "(expect-equals \"\" (rt.po.report-view/get-value-for-row-and-column \"1145\" \"Number\"))"}
+   {:script
+    "(expect-equals \"\" (rt.po.report-view/get-value-for-row-and-column \"1145\" \"Cal-Decimal\"))"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Selma Terrell\")"}
+   {:script "(expect (rt.po.edit-form/edit-button-exists?))"}
+   {:script
+    "(expect-equals \"\" (rt.po.view-form/get-field-value \"Number\"))"}
+   {:script
+    "(expect-equals \"\" (rt.po.view-form/get-field-value \"Cal-Decimal\"))"}
+   {:script "(rt.po.view-form/click-edit)"}
+   {:script
+    "(rt.po.edit-form/set-number-field-value \"Number\" \"1\")"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script
+    "(expect-equals \"-78.17\" (rt.po.view-form/get-field-value \"Cal-Decimal\"))"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(expect-equals \"$-78.170\" (rt.po.report-view/get-value-for-row-and-column \"1145\" \"Cal-Decimal\"))"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Selma Terrell\")"}
+   {:script
+    "(comment \"==================================== Following is to test if formula change is reflected in calculated field. ==================================\")"}
+   {:script "(rt.po.app/enable-app-toolbox)"}
+   {:script
+    "(rt.po.app-toolbox/set-application-filter \"Foster University\")"}
+   {:script
+    "(rt.po.app-toolbox/choose-object-menu \"Student\" \"Modify Object\")"}
+   {:script
+    "(rt.po.form-builder/open-field-configure-dialog \"Cal-Decimal\")"}
+   {:script
+    "(rt.po.form-builder-config/set-calculation \"[Number]*2+[Balance]\")"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script
+    "(rn.app/open-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script
+    "(expect-equals \"$-77.170\" (rt.po.report-view/get-value-for-row-and-column \"1145\" \"Cal-Decimal\"))"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Selma Terrell\")"}
+   {:script
+    "(expect-equals \"-77.17\" (rt.po.view-form/get-field-value \"Cal-Decimal\"))"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20160515-164532",
+  :setup
+  [{:script
+    "(identity {:form-name (make-test-name \"RT-Student Form\"), :report-name (make-test-name \"RT-Student Report\")})"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(comment \"==================================== Adding a new form for Dean with calcualted field (Yes/No used for group by)for test purpose. ==================================\")"}
+   {:script
+    "(rn.app/open-report \"Deans of University report\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script "(rt.po.app/enable-app-toolbox)"}
+   {:script
+    "(rt.po.app-toolbox/set-application-filter \"Foster University\")"}
+   {:script
+    "(rt.po.app-toolbox/create-form-via-toolbox-object \"Student\")"}
+   {:script
+    "(expect-equals \"New 'Student' Form\" (rt.po.form-builder/get-form-title))"}
+   {:script "(rt.po.form-builder/set-name (:form-name *tc*))"}
+   {:script
+    "(rt.po.form-builder/add-field-from-toolbox-to-form \"Name\")"}
+   {:script
+    "(rt.po.form-builder/add-field-from-toolbox-to-form \"Balance\")"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Number\")"}
+   {:script
+    "(rt.po.form-builder/save) ;; suspect this is needed for the calc field to work.. to be investigated"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Calculation\")"}
+   {:script
+    "(expect-equals \"Calculation\" (rt.po.form-builder-config/get-name))"}
+   {:script "(rt.po.form-builder-config/set-name \"Cal-Decimal\")"}
+   {:script
+    "(expect-equals \"Text\" (rt.po.form-builder-config/get-calculation-field-type))"}
+   {:script
+    "(rt.po.form-builder-config/set-calculation \"[Number]+[Balance]\")"}
+   {:script "(expect (not (rt.po.form-builder-config/ok-disabled?)))"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"Cal-Decimal\")"}
+   {:script
+    "(expect (rt.po.form-builder-config/config-dialog-visible?))"}
+   {:script
+    "(expect (rt.po.form-builder-config/calculation-field-type-read-only?))"}
+   {:script "(rt.po.form-builder-config/click-cancel)"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}
+   {:script
+    "(rt.po.app-toolbox/set-application-filter \"Foster University\")"}
+   {:script
+    "(comment \"==================================== Adding a new report for student with caluculated date field to test data/formula change. ==================================\")"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script "(rt.po.report-builder/click-saveas-report-button)"}
+   {:script
+    "(rt.po.report-builder/set-report-new-name (:report-name *tc*))"}
+   {:script "(rt.po.report-builder/click-saveas-ok)"}
+   {:script
+    "(rt.po.report-builder/select-fields-in-report \"Cal-Decimal\" \"Number\")"}
+   {:script
+    "(rt.po.report-builder/deselect-fields-in-report \"DOB\" \"Email address\" \"Address line1\" \"State\" \"Gender\" \"Balance\")"}
+   {:script
+    "(expect-equals 1 (rt.po.report-builder/get-count-matched-columns-name \"Cal-Decimal\"))"}
+   {:script "(rt.po.report-builder/click-property-report-button)"}
+   {:script "(rt.po.report-new/set-report-form (:form-name *tc*))"}
+   {:script "(rt.po.report-new/click-ok)"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}],
+  :fixtures
+  [:common/fixture/test-account-creds :rn/fixture/admin-creds],
+  :id :rn/calculation/calculated-field-on-report---dataChange,
+  :teardown
+  [{:script
+    "(comment \"==================================== Forced env. reset. ==================================\")"}
+   {:script "(rt.po.app/enable-app-toolbox)"}
+   {:script
+    "(rt.po.app-toolbox/set-application-filter \"Foster University\")"}
+   {:script
+    "(rt.po.app-toolbox/choose-object-menu \"Student\" \"Modify Object\")"}
+   {:script
+    "(expect-equals \"Students Form\" (rt.po.form-builder/get-form-title))"}
+   {:script
+    "(rt.po.form-builder/delete-fields-and-save \"Cal-Decimal\" \"Number\")"}
+   {:script
+    "(expect-equals false (rt.po.form-builder/toolbox-field-exist? \"Cal-Decimal\"))"}
+   {:script "(rn.app/delete-form (:form-name *tc*))"}
+   {:script "(rn.app/delete-report (:report-name *tc*))"}],
+  :doc "",
+  :modified-by "not-implemented"}]

@@ -1,0 +1,37 @@
+[{:tags [:area/form-builder :prod :regression :desktop :user/abida],
+  :name
+  "Ensure you don’t see an action button on the form if the object is not involved in any workflow",
+  :steps
+  [{:script
+    "(rn.app/open-report \"Student Report\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script "(rt.po.report-view/set-search-text \"Selma Terrell\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Selma Terrell\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Selma Terrell\")"}
+   {:script
+    "(expect (not (rt.po.view-form/action-button-on-form-exists? \"Action\")))"}
+   {:script
+    "(rn.app/open-form-builder \"Students Form\" {:app-name \"Foster University\"})"}
+   {:script
+    "(expect (not (rt.po.view-form/action-button-on-form-exists? \"Action\")))"}
+   {:script "(rt.po.app/navigate-to \"Home\")"}
+   {:script "(comment (rt.po.form-builder/close))"}
+   {:script "(rt.po.app/enable-app-toolbox)"}
+   {:script
+    "(rt.po.app-toolbox/create-object {:description \"Object to test Action_Button\", :name \"Action_Button\"})"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Text\")"}
+   {:script
+    "(expect (not (rt.po.view-form/action-button-on-form-exists? \"Action\")))"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script
+    "(expect (not (rt.po.view-form/action-button-on-form-exists? \"Action\")))"}
+   {:script "(rt.po.form-builder/close)"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160603-104559",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/form/testing-for-no-action-button-on-the-form,
+  :teardown
+  [{:script "(rt.po.app-toolbox/delete-object \"Action_Button\")"}],
+  :modified-by "not-implemented"}]

@@ -1,0 +1,44 @@
+[{:tags [:desktop],
+  :steps
+  [{:script
+    "(comment (rn.app/open-report \"Student report\" {:app-name \"Foster University\", :folder-name \"Reports\"}))"}
+   {:script "(rt.po.app/navigate-to \"Foster University\")"}
+   {:script "(rt.po.app/add-report \"\")"}
+   {:script "(rt.po.report-new/set-name (:report-name *tc*))"}
+   {:script "(rt.po.report-new/set-report-base-on \"Student\")"}
+   {:script "(rt.po.report-new/click-ok)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"StudentID\" true)"}
+   {:script "(rt.po.report-builder/click-sort-z-a \"StudentID\")"}
+   {:script "(rt.po.report-builder/save)"}
+   {:script "(rt.po.report-builder/close)"}
+   {:script
+    "(def AutonumberValue (rt.po.report-view/get-report-cell-text-content 0 \"StudentID\"))"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Full name\" \"NewInstance\")"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script "(rt.po.report-view/set-search-text \"NewInstance\")"}
+   {:script
+    "(def AutoNewValue (rt.po.report-view/get-report-cell-text-content 0 \"StudentID\"))"}
+   {:script "(comment (def B (read-string AutoSecValue)))"}
+   {:script
+    "(comment (expect (> (read-string AutonumberValue) 1225)))"}
+   {:script
+    "(expect (> (read-string AutoNewValue) (read-string AutonumberValue)))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160623-090646",
+  :setup
+  [{:script
+    "(identity {:report-name (rt.lib.util/make-test-name \"Actions Report\")})"}],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/form/check-autonumber-count-on-creating-new-instance,
+  :teardown
+  [{:script
+    "(comment (when (> (rt.po.view-form/get-report-row-count) 0) (rt.po.report-view/select-row-by-text \"NewInstance\") (rt.po.report-view/open-action-menu) (rt.po.app/choose-context-menu \"Delete 'NewInstance'\") (rt.po.edit-form/click-confirm-delete-ok-button)))"}
+   {:script
+    "(if (> (rt.po.view-form/get-report-row-count) 0) (do (rt.po.report-view/select-row-by-text \"NewInstance\") (rt.po.report-view/delete-record \"NewInstance\")))"}
+   {:script "(rn.app/delete-report \"Actions Report *tc*\")"}],
+  :modified-by "not-implemented"}]

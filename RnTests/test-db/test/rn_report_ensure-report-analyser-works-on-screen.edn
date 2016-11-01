@@ -1,0 +1,41 @@
+[{:tags [:nomodify :prod :regression :user/sri :area/report :desktop],
+  :tests [],
+  :name "Ensure report analyser works on a screen.",
+  :steps
+  [{:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Screens/Student screen - chart (p)\")"}
+   {:script "(rt.lib.wd-rn/page-scroll-down)"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script
+    "(rt.po.report-view/set-analyzer-choice-option \"State\" \"Any of\" \"NSW\")"}
+   {:script
+    "(expect-equals \"NSW\" (rt.po.report-view/get-report-cell-text-content 0 \"State\"))"}
+   {:script
+    "(expect-equals \"NSW\" (rt.po.report-view/get-report-cell-text-content 1 \"State\"))"}
+   {:script
+    "(expect-equals \"NSW\" (rt.po.report-view/get-report-cell-text-content (- (rt.po.report-view/count-report-row) 1) \"State\"))"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Screens/Student screen - chart (np)\")"}
+   {:script "(rt.lib.wd-rn/page-scroll-down)"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script
+    "(rt.po.report-view/set-analyzer-field-oper \"Balance\" \"<\")"}
+   {:script
+    "(rt.po.report-view/set-analyzer-string \"Balance\" \"0\")"}
+   {:script "(rt.po.report-view/apply-analyzer)"}
+   {:script
+    "(expect-equals true (.startsWith (rt.po.report-view/get-report-cell-text-content 0 \"Balance\") \"$-\"))"}
+   {:script
+    "(expect-equals true (.startsWith (rt.po.report-view/get-report-cell-text-content 1 \"Balance\") \"$-\"))"}
+   {:script
+    "(expect-equals true (.startsWith (rt.po.report-view/get-report-cell-text-content (- (rt.po.report-view/count-report-row) 1) \"Balance\") \"$-\"))"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150601-153824",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/report/ensure-report-analyser-works-on-screen,
+  :teardown [],
+  :doc
+  "The test covers the scenario where there is a chart and report on a screen and chart assigned as a parent.",
+  :modified-by "not-implemented"}]

@@ -1,0 +1,49 @@
+[{:tags [:prod :regression :desktop],
+  :tests [],
+  :name "View Chart Drivers on Chrome",
+  :steps
+  [{:script
+    "(expect-equals true (rt.po.chart-view/chart-visible? nil))",
+    :target-msec 100}
+   {:script
+    "(expect-equals true (rt.po.chart-view/chart-loaded-ok? nil))",
+    :target-msec 100}
+   {:script
+    "(expect-equals nil (rt.po.chart-view/get-chart-title nil))",
+    :target-msec 100}
+   {:script
+    "(expect-equals \"Born\" (rt.po.chart-view/get-x-axis-title nil))",
+    :target-msec 100}
+   {:script
+    "(expect-equals \"1/1/1800\" (first (rt.po.chart-view/get-x-axis-values nil)))",
+    :target-msec 100}
+   {:script
+    "(expect-equals \"1/1/2000\" (last (rt.po.chart-view/get-x-axis-values nil)))",
+    :target-msec 100}
+   {:script
+    "(expect-equals \"Scientist\" (rt.po.chart-view/get-y-axis-title nil))",
+    :target-msec 100}
+   {:script
+    "(expect-equals \"Ada Lovelace\" (first (rt.po.chart-view/get-y-axis-values nil)))",
+    :target-msec 100}
+   {:script
+    "(expect-equals \"Werner Heisenberg\" (last (rt.po.chart-view/get-y-axis-values nil)))",
+    :target-msec 100}
+   {:script "(expect-equals true (rt.po.chart-view/has-legend? nil))",
+    :target-msec 100}
+   {:script
+    "(expect-equals true (some #(= \"Mathematics\" % ) (rt.po.chart-view/get-legend-values nil)))",
+    :target-msec 100}
+   {:script
+    "(expect-equals \"Born Bar\" (first (rt.po.chart-view/get-series-on-chart nil)))"}],
+  :type :test,
+  :checks [],
+  :source "../RnTests/test-db",
+  :modified "20150601-153804",
+  :setup
+  [{:script "(rt.scripts.common/view-chart (:name *test-context*))"}],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :qa-daily/charts/test-view-chart-drivers,
+  :teardown [],
+  :modified-by "not-implemented",
+  :data {:name "Gantt - Scientists"}}]

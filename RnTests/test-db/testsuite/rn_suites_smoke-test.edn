@@ -1,0 +1,16 @@
+[{:tags [:desktop],
+  :test-filter "(has-tags? [\"prod\" \"smoke-test\"] %)",
+  :tests [:qa-daily/test-fb],
+  :name "Build verification tests",
+  :each-fixtures
+  [:common/fixture/handle-errors
+   :common/fixture/test-account-creds
+   :common/fixture/chrome],
+  :type :testsuite,
+  :source "../RnTests/test-db",
+  :modified "20150727-190554",
+  :setup [],
+  :id :rn/suites/smoke-test,
+  :teardown [],
+  :modified-by "not-implemented",
+  :once-fixtures []}]

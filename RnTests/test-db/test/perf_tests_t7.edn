@@ -1,0 +1,44 @@
+[{:tags [:desktop :prod],
+  :tests [],
+  :name "Application Building - Report Builder",
+  :steps
+  [{:script "(rt.po.app/navigate-via-tiles \"Performance Test\")",
+        :target-msec 5000}
+   {:script "(rt.po.app/select-app-tab \"Reports\")",
+        :target-msec 5000}
+   {:script
+    "(rt.po.app/select-navigator-item \"5 Column (500 Rows).\")",
+        :target-msec 5000}
+   {:script "(rt.po.report-view/open-builder)",
+    :metric-id "Open Report Builder - 5 Column Report (500 Rows)",
+        :target-msec 2000}
+   {:script "(rt.po.report-builder/close)",
+    :metric-id "Close Report Builder - 5 Column Report (500 Rows)",
+        :target-msec 2000}
+   {:script
+    "(rt.po.app/select-navigator-item \"10 Column (500 Rows).\")",
+        :target-msec 5000}
+   {:script "(rt.po.report-view/open-builder)",
+    :metric-id "Open Report Builder - 10 Column Report (500 Rows)",
+        :target-msec 2000}
+   {:script "(rt.po.report-builder/close)",
+    :metric-id "Close Report Builder - 10 Column Report (500 Rows)",
+        :target-msec 2000}
+   {:script
+    "(rt.po.app/select-navigator-item \"20 Column (500 Rows).\")",
+        :target-msec 5000}
+   {:script "(rt.po.report-view/open-builder)",
+    :metric-id "Open Report Builder - 20 Column Report (500 Rows)",
+        :target-msec 2000}
+   {:script "(rt.po.report-builder/close)",
+    :metric-id "Close Report Builder - 20 Column Report (500 Rows)",
+        :target-msec 2000}],
+  :type :test,
+  :checks [],
+  :source "../RnTests/test-db",
+  :modified "20150602-071333",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :perf/tests/t7,
+  :teardown [],
+  :modified-by "not-implemented"}]

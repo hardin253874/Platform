@@ -1,0 +1,69 @@
+[{:tags [:user/kun :app-tests/incident :desktop],
+  :tests [],
+  :name "Ensure Incident Managing Cases",
+  :steps
+  [{:script
+    "(rn.common/start-app-and-login (:incident-user-creds-manager *tc*))"}
+   {:script "(think 1)"}
+   {:script "(rt.po.app/navigate-to \"Incident Management\")"}
+   {:script "(think 1)"}
+   {:script "(rt.po.app/select-app-tab \"Case Management\")",
+    :target-msec 1000}
+   {:script
+    "(expect-equals true (rt.po.screen/is-report-on-screen \"Active Cases\"))"}
+   {:script
+    "(rt.po.screen/open-report-menu-on-screen-by-name \"Active Cases\" \"Action\")",
+    :target-msec 1000}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Case Name\" (:case-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-lookup-value \"Incident\" \"Fraud Incident - Financial 01\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Case Type\" \"Legal/Litigation\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Status\" \"In Progress\")"}
+   {:script
+    "(rt.po.edit-form/set-lookup-value \"Organisation Assets\" \"\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.view-form/click-button-in-relationship \"Evidence\" \"Action\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:evidence-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-today-date \"Collection Date/Time\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Evidence Status\" \"Collection\")"}
+   {:script
+    "(rt.po.edit-form/set-multiline \"Description\" \"Recording of bomb threat phone\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.view-form/click-button-in-relationship \"Interviews\" \"Action\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-lookup-value \"Investigation\" \"Case 01\")"}
+   {:script "(rt.po.edit-form/set-lookup-value \"Interviewee\" \"\")"}
+   {:script
+    "(rt.po.edit-form/set-multiline \"Introduction\" \"Recording phone call\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.view-form/click-button-in-relationship \"Case Journal\" \"Action\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Subject\" (:note-name *tc*))"}
+   {:script "(rt.po.edit-form/save)"}
+    {:script "(rt.po.edit-form/click-back-button)"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20161024-124438",
+  :setup
+  [{:script
+    "(identity {:task-name (rt.lib.util/make-test-name \"Task\"), \r\n\t\t\t\t:issue-name (rt.lib.util/make-test-name \"Issue\"),\r\n\t\t\t\t:case-name (rt.lib.util/make-test-name \"Case\"),\r\n\t\t\t\t:control-name (rt.lib.util/make-test-name \"Control\"),\r\n\t\t\t\t:evidence-name (rt.lib.util/make-test-name \"Evidence\"),\r\n\t\t\t\t:interview-name (rt.lib.util/make-test-name \"Interview\"),\r\n\t\t\t\t:note-name (rt.lib.util/make-test-name \"Note\")\r\n\t\t\t\t})"}],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds-incident],
+  :id :incident/tests/managing-cases,
+  :teardown [],
+  :modified-by "not-implemented"}]

@@ -1,0 +1,19 @@
+[{:tags [:desktop],
+  :test-filter "(has-tags? [\"area/chart-builder\"] %)",
+  :tests [],
+  :name "All chart builder tests",
+  :each-fixtures
+  [:common/fixture/handle-errors
+   :common/fixture/wait-ng
+   :common/fixture/test-account-creds
+   :common/fixture/chrome
+   :common/fixture/login],
+  :type :testsuite,
+  :source "../RnTests/test-db",
+  :modified "20150601-153829",
+  :setup [{:script ""}],
+  :id :rn/suites/chart-builder,
+  :teardown [{:script ""}],
+  :doc "",
+  :modified-by "not-implemented",
+  :once-fixtures []}]

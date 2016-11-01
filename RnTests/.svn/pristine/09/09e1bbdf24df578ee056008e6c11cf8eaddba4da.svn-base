@@ -1,0 +1,207 @@
+[{:tags
+  [:area/report-builder
+   :nomodify
+   :prod
+   :regression
+   :desktop
+   :user/abida],
+  :name "Playing with tab instance in view mode",
+  :steps
+  [{:script "(rt.po.app/navigate-via-tiles \"Foster University\")"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script "(rt.po.report-builder/click-saveas-report-button)"}
+   {:script
+    "\t(rt.po.report-builder/set-report-new-name (:report-name *tc*))"}
+   {:script "(rt.po.report-builder/click-ok)"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-add-relationship-button)"}
+   {:script
+    "(rt.po.report-add-relationship/add-relationship \"Subjects\")"}
+   {:script "(rt.po.report-add-relationship/click-ok)"}
+   {:script "(rt.po.report-builder/select-treenode \"Subjects\")"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script "(rt.po.report-view/select-row-by-text \"Yoshi Joseph\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"View\")"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Subjects\" \"Link to Existing\")"}
+   {:script
+    "(rt.po.report-view/choose-picker-record \"Writing Through Genre\")"}
+   {:script "(rt.po.report-view/set-search-text \"Writing\")"}
+   {:script
+    "(expect-equals \"Writing Through Genre\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Subjects\"))"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Subjects\" \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Subject name\" \"Accounts and Mathematics\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Subject ID\" \"23456\")"}
+   {:script
+    "(rt.po.edit-form/set-number-field-value \"Subject Fee\" \"200\")"}
+   {:script "(rt.po.edit-form/click-save-plus-button)"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Subject name\" \"Accounts and Statistics\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Subject ID\" \"23457\")"}
+   {:script
+    "(rt.po.edit-form/set-number-field-value \"Subject Fee\" \"400\")"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script "(rt.po.report-view/set-search-text \"Accounts\")"}
+   {:script "(expect-equals 2 (rt.po.view-form/get-report-row-count))"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.report-view/set-search-text \"Yoshi Joseph\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Yoshi Joseph\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"View\")"}
+   {:script "(rt.po.report-view/set-search-text \"Accounts\")"}
+   {:script "(expect-equals 2 (rt.po.view-form/get-report-row-count))"}
+   {:script "(rt.po.report-view/set-search-text \"Writing\")"}
+   {:script
+    "(expect-equals \"Writing Through Genre\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Subjects\"))"}
+   {:script
+    "(rt.po.report-view/select-row-by-text \"Writing Through Genre\")"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Subjects\" \"Remove Link\")"}
+   {:script "(rt.po.report-view/set-search-text \"Writing\")"}
+   {:script "(expect-equals 0 (rt.po.view-form/get-report-row-count))"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Subjects\" \"Link to Existing\")"}
+   {:script
+    "(rt.po.report-view/choose-picker-record \"Practical Experience\")"}
+   {:script "(rt.po.report-view/set-search-text \"Practical\")"}
+   {:script
+    "(expect-equals \"Practical Experience\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Subjects\"))"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.report-view/set-search-text \"Yoshi Joseph\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Yoshi Joseph\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"View\")"}
+   {:script "(rt.po.report-view/set-search-text \"Practical\")"}
+   {:script "(expect-equals 1 (rt.po.view-form/get-report-row-count))"}
+   {:script
+    "(expect-equals \"Practical Experience\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Subjects\"))"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Accounts and Mathematics\")"}
+   {:script
+    "(expect-equals \"Accounts and Mathematics\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Subjects\"))"}
+   {:script
+    "(rt.po.report-view/select-row-by-text \"Accounts and Mathematics\")"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Subjects\" \"Delete 'Accounts and Mathematics'\")"}
+   {:script "(rt.po.edit-form/click-confirm-delete-ok-button)"}
+   {:script "(expect-equals 0 (rt.po.view-form/get-report-row-count))"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Subjects\" \"Link to Existing\")"}
+   {:script
+    "(rt.po.report-view/choose-picker-record \"Alpine and Lowland Ecology\")"}
+   {:script "(rt.po.report-view/set-search-text \"Alpine\")"}
+   {:script "(expect-equals 1 (rt.po.view-form/get-report-row-count))"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.report-view/set-search-text \"Yoshi Joseph\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Yoshi Joseph\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"View\")"}
+   {:script "(rt.po.report-view/set-search-text \"Alpine\")"}
+   {:script
+    "(expect-equals \"Alpine and Lowland Ecology\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Subjects\"))"}
+   {:script "(rt.po.report-view/set-search-text \"Practical\")"}
+   {:script
+    "(expect-equals \"Practical Experience\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Subjects\"))"}
+   {:script
+    "(rt.po.report-view/select-row-by-text \"Practical Experience\")"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Subjects\" \"Remove Link\")"}
+   {:script "(expect-equals 0 (rt.po.view-form/get-report-row-count))"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Subjects\" \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Subject name\" \"Accounts and English\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Subject ID\" \"23458\")"}
+   {:script
+    "(rt.po.edit-form/set-number-field-value \"Subject Fee\" \"300\")"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script "(rt.po.report-view/set-search-text \"English\")"}
+   {:script
+    "(expect-equals \"Accounts and English\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Subjects\"))"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.report-view/set-search-text \"Yoshi Joseph\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Yoshi Joseph\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"View\")"}
+   {:script "(rt.po.report-view/set-search-text \"English\")"}
+   {:script
+    "(expect-equals \"Accounts and English\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Subjects\"))"}
+   {:script "(rt.po.report-view/set-search-text \"Practical\")"}
+   {:script "(expect-equals 0 (rt.po.view-form/get-report-row-count))"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Accounts and Statistics\")"}
+   {:script
+    "(expect-equals \"Accounts and Statistics\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Subjects\"))"}
+   {:script
+    "(rt.po.report-view/select-row-by-text \"Accounts and Statistics\")"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Subjects\" \"Delete 'Accounts and Statistics'\")"}
+   {:script "(rt.po.edit-form/click-confirm-delete-ok-button)"}
+   {:script "(expect-equals 0 (rt.po.view-form/get-report-row-count))"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Subjects\" \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Subject name\" \"Accounts and Commerce\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Subject ID\" \"23459\")"}
+   {:script
+    "(rt.po.edit-form/set-number-field-value \"Subject Fee\" \"500\")"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script "(rt.po.report-view/set-search-text \"Commerce\")"}
+   {:script
+    "(expect-equals \"Accounts and Commerce\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Subjects\"))"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.report-view/set-search-text \"Yoshi Joseph\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Yoshi Joseph\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"View\")"}
+   {:script "(rt.po.report-view/set-search-text \"Commerce\")"}
+   {:script "(expect-equals 1 (rt.po.view-form/get-report-row-count))"}
+   {:script "(rt.po.report-view/set-search-text \"Statistics\")"}
+   {:script "(expect-equals 0 (rt.po.view-form/get-report-row-count))"}
+   {:script "(rt.po.report-view/set-search-text \"Accounts\")"}
+   {:script "(expect-equals 2 (rt.po.view-form/get-report-row-count))"}
+   {:script
+    "(rt.po.report-view/select-row-by-text \"Accounts and Commerce\")"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Subjects\" \"Delete 'Accounts and Commerce'\")"}
+   {:script "(rt.po.edit-form/click-confirm-delete-ok-button)"}
+   {:script "(expect-equals 1 (rt.po.view-form/get-report-row-count))"}
+   {:script
+    "(rt.po.report-view/select-row-by-text \"Accounts and English\")"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Subjects\" \"Delete 'Accounts and English'\")"}
+   {:script "(rt.po.edit-form/click-confirm-delete-ok-button)"}
+   {:script "(expect-equals 0 (rt.po.view-form/get-report-row-count))"}
+   {:script "(rt.po.report-view/set-search-text \"Alpine\")"}
+   {:script
+    "(rt.po.report-view/select-row-by-text \"Alpine and Lowland Ecology\")"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Subjects\" \"Remove Link\")"}
+   {:script "(expect-equals 0 (rt.po.view-form/get-report-row-count))"}
+   {:script "(rt.po.edit-form/click-back-button)"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160920-091840",
+  :setup
+  [{:script
+    "(identity {:report-name (rt.lib.util/make-test-name \"TabOperations\")})"}],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :common/fixture/chrome
+   :common/fixture/login],
+  :id :rn/reportbuilder/tab-operations-in-new-mode,
+  :teardown
+  [{:script
+    "(rn.app/delete-report \"TabOperations\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}],
+  :modified-by "not-implemented"}]

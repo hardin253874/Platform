@@ -1,0 +1,11 @@
+[{:tags [:Desktop],
+  :name "User creds for ITDR owner (non-admin user)",
+  :type :testfixture,
+  :source "./test-db",
+  :modified "20161007-120020",
+  :setup
+  [{:script
+    "(identity {:itdr-owner-creds {:password \"Readi911\", :username \"itdr_owner\"}})"}],
+  :id :rn/fixture/itdr-owner-creds,
+  :teardown [],
+  :modified-by "not-implemented"}]

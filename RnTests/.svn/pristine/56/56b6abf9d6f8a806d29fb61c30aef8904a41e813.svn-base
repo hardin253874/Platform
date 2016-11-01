@@ -1,0 +1,9 @@
+[{:name "Set the default test acount for the test tenant.",
+  :type :testfixture,
+  :source "./test-db",
+  :modified "20161010-172250",
+  :setup [],
+  :id :common/fixture/test-account-creds,
+  :teardown [],
+  :modified-by "not-implemented",
+  :data {:password "tacoT0wn", :username "Administrator"}}]

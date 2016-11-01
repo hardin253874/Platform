@@ -1,0 +1,52 @@
+[{:tags
+  [:nomodify
+   :prod
+   :regression
+   :user/karen
+   :desktop
+   :area/chart-builder],
+  :tests [],
+  :name "Create Faculties by Campus matrix chart - FU",
+  :steps
+  [{:script "(rt.po.app/navigate-to \"Foster University\")"}
+   {:script
+    "(expect-equals \"Foster University\" (rt.po.app/top-menu-name))"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script "(rt.po.app/add-chart \"Charts\")"}
+   {:script
+    "(expect-equals \"New Chart\" (rt.po.common/get-string \"Name\"))"}
+   {:script
+    "(rt.po.common/set-string \"Name\" \"Faculties by Campus Matrix Chart\")"}
+   {:script
+    "(expect-equals \"Faculties by Campus Matrix Chart\" (rt.po.common/get-string \"Name\"))"}
+   {:script
+    "(rt.po.common/set-multiline \"Description\" \"Chart created by ReadiTest\")"}
+   {:script
+    "(expect-equals \"Chart created by ReadiTest\" (rt.po.common/get-multiline \"Description\"))"}
+   {:script
+    "(rt.po.common/set-lookup \"Report\" \"Faculties Report\")"}
+   {:script
+    "(expect-equals \"Faculties Report\" (rt.po.common/get-lookup \"Report\"))"}
+   {:script "(rt.po.chart-new/set-chart-type \"Matrix\")"}
+   {:script
+    "(expect-equals \"Matrix\" (rt.po.chart-new/get-chart-type))"}
+   {:script "(rt.po.common/click-ok)"}
+   {:script
+    "(rt.po.chart-builder/drag-source-to-target \"Campuses\" \"Primary\")"}
+   {:script
+    "(rt.po.chart-builder/drag-source-to-target \"Faculties\" \"Values\")"}
+   {:script
+    "(rt.po.chart-builder/drag-source-to-target \"Faculties\" \"Colour\")"}
+   {:script "(rt.po.chart-builder/click-target-properties \"Colour\")"}
+   {:script "(rt.po.chart-builder/set-hide-legend \"True\")"}
+   {:script "(rt.po.common/click-ok )"}
+   {:script "(rt.po.chart-builder/click-chart-toolbar-save )"}
+   {:script "(rt.po.chart-builder/click-chart-toolbar-close )"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150601-153809",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/chartbuilder/create-new-matrix-chart,
+  :teardown [],
+  :modified-by "not-implemented"}]

@@ -1,0 +1,180 @@
+[{:tags [:user/hemant :app-tests/orm :desktop],
+  :name
+  "Create a new operational risk, assess, check risk issue and verify the risk and control assessment",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:orm-owner-creds *tc*))"}
+   {:script "(rt.po.app/navigate-to \"Operational Risk Management\")"}
+   {:script
+    "(rt.po.app/select-app-tab \"Operational Risk Management\")"}
+   {:script
+    "(rt.po.app/select-navigator-item \"Operational Risk Management\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Name\" (:orm-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Description\" (str \"Description for \" (:orm-name *tc*)))"}
+   {:script
+    "(rt.po.edit-form/select-multi-select-choice-value \"Areas of Risk\" \"Customer\")"}
+   {:script
+    "(rt.po.edit-form/select-multi-select-choice-value \"Areas of Risk\" \"Financial\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Risk Driver\" \"Internal\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Risk Source\" \"Information\")"}
+   {:script
+    "(rt.po.edit-form/select-multi-select-choice-value \"Stakeholders\" \"Employees\")"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"Potential Loss\" \"10000\")"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Next Review Date\" (make-local-date 2016 12 11))"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Owner\" \"Operational Risk Owner\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script "(rt.po.edit-form/open-lookup \"Organisation Levels\")"}
+   {:script
+    "(rt.po.view-form/select-structure-view-item-with-ctrl-key-by-text \"Org Level East\" \"\")"}
+   {:script "(rt.po.common/click-ok)"}
+   {:script "(rt.po.edit-form/set-lookup \"Process\" \"Process 1\")"}
+   {:script "(rt.po.edit-form/open-lookup \"Products and Services\")"}
+   {:script "(rt.po.edit-form/click-new-button)"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Name\" (:prod-service-name *tc*))"}
+   {:script "(rt.po.edit-form/open-lookup \"Organisation levels\")"}
+   {:script
+    "(rt.po.view-form/select-structure-view-item-with-ctrl-key-by-text \"Org Level East\" \"\")"}
+   {:script "(rt.po.common/click-ok)"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Inherent Impact\" \"Major\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Inherent Likelihood\" \"Possible\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Risk Response\" \"Avoid\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Residual Impact\" \"Moderate\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Residual Likelihood\" \"Possible\")"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"Financial Impact\" \"10000\")"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"CONTROLS\")"}
+   {:script "(rt.po.app/choose-context-menu \"Link\")"}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog \"Control 1\")"}
+   {:script
+    "(comment \"Get the data for Insurance and uncomment these steps \")"}
+   {:script
+    "(comment (rt.po.view-form/open-action-menu-for-relationship \"INSURANCE\"))"}
+   {:script "(comment (rt.po.app/choose-context-menu \"Link\"))"}
+   {:script
+    "(comment (rt.po.edit-form/choose-in-entity-picker-dialog \"Buy a spare coffee machine\"))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Issues\" \"New 'Issue'\")"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Name\" (:issue-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Response Decision\" \"Remediate\")"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Expected_Resolution_Date\" (make-local-date 2016 11 11))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.common/click-tab-heading \"Issues\")"}
+   {:script "(rt.po.report-view/set-search-text (:issue-name *tc*))"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text (:issue-name *tc*))"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"TASKS\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Subject\" (:task-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Due date\" (make-local-date 2016 12 12))"}
+   {:script "(rt.po.edit-form/set-lookup \"Assigned to\" \"Adam\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Task status\" \"Not started\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.app/open-nav-tree-node \"Reports\")"}
+   {:script
+    "(rt.po.app/select-navigator-item \"Prod & Serv - Risks\")"}
+   {:script "(rt.po.report-view/refresh-now)"}
+   {:script
+    "(rt.po.report-view/set-search-text (:prod-service-name *tc*))"}
+   {:script
+    "(expect-equals (:prod-service-name *tc*) (rt.po.report-view/get-report-cell-text-content 0 \"Product or Service\"))"}
+   {:script "(rt.po.app/select-navigator-item \"Process - Risks\")"}
+   {:script "(rt.po.report-view/set-search-text \"Process 1\")"}
+   {:script
+    "(expect-equals \"Process 1\" (rt.po.report-view/get-report-cell-text-content 0 \"Process\"))"}
+   {:script
+    "(rt.po.app/select-navigator-item \"Organisation - Risks\")"}
+   {:script "(rt.po.report-view/set-search-text \"Org Level East\")"}
+   {:script
+    "(expect-equals \"Org Level East\" (rt.po.report-view/get-report-cell-text-content 0 \"Organisation Level\"))"}
+   {:script
+    "(expect (not (= \"0\" (rt.po.report-view/get-report-cell-text-content 0 \"Number of risks\"))))"}
+   {:script "(rt.po.app/navigate-to \"Issues Management\")"}
+   {:script "(rt.po.report-view/set-search-text (:issue-name *tc*))"}
+   {:script
+    "(expect-equals (:issue-name *tc*) (rt.po.report-view/get-report-cell-text-content 0 \"Issue\"))"}
+   {:script "(rt.po.app/navigate-to \"Operational Risk Management\")"}
+   {:script
+    "(rt.po.app/select-app-tab \"Risk and Control Assessment\")"}
+   {:script
+    "(rt.po.app/select-navigator-item \"RCSA By Organisation\")"}
+   {:script "(rt.po.report-view/set-search-text (:orm-name *tc*))"}
+   {:script "(rt.po.report-view/select-row-by-text (:orm-name *tc*))"}
+   {:script "(rt.po.screen/click-form-edit-button \"\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Inherent Impact\" \"Catastrophic\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Inherent Likelihood\" \"Almost Certain\")"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-container \"CONTROLS\")"}
+   {:script "(rt.po.app/choose-context-menu \"Link\")"}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog \"Control 1\")"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"Financial Impact\" \"120000\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Residual Impact\" \"Moderate\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Residual Likelihood\" \"Possible\")"}
+   {:script "(rt.po.screen/click-form-save-button \"\")"}
+   {:script "(rt.po.app/select-navigator-item \"RCSA By Process\")"}
+   {:script "(rt.po.report-view/set-search-text (:orm-name *tc*))"}
+   {:script "(rt.po.report-view/select-row-by-text (:orm-name *tc*))"}
+   {:script
+    "(expect-equals \"Catastrophic\" (rt.po.view-form/get-field-value \"Inherent Impact\"))"}
+   {:script
+    "(expect-equals \"Almost Certain\" (rt.po.view-form/get-field-value \"Inherent Likelihood\"))"}
+   {:script "(rt.po.screen/click-form-edit-button \"\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Inherent Impact\" \"Major\")"}
+   {:script "(rt.po.screen/click-form-save-button \"\")"}
+   {:script
+    "(rt.po.app/select-navigator-item \"RCSA By Product and Services\")"}
+   {:script "(rt.po.report-view/set-search-text (:orm-name *tc*))"}
+   {:script "(rt.po.report-view/select-row-by-text (:orm-name *tc*))"}
+   {:script
+    "(expect-equals \"Major\" (rt.po.view-form/get-field-value \"Inherent Impact\"))"}
+   {:script
+    "(expect-equals \"Almost Certain\" (rt.po.view-form/get-field-value \"Inherent Likelihood\"))"}
+   {:script "(rt.po.screen/click-form-edit-button \"\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Inherent Likelihood\" \"Likely\")"}
+   {:script "(rt.po.screen/click-form-save-button \"\")"}
+   {:script
+    "(expect-equals \"Likely\" (rt.po.view-form/get-field-value \"Inherent Likelihood\"))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20161020-164817",
+  :setup
+  [{:script
+    "(identity {:orm-name (rt.lib.util/make-test-name \"Op-Risk\"), :issue-name (rt.lib.util/make-test-name \"Issue\"), :prod-service-name (rt.lib.util/make-test-name \"ProdServ\"), :task-name (rt.lib.util/make-test-name \"Task\")})"}],
+  :fixtures [:rn/fixture/orm-owner-creds],
+  :id :orm/tests/operational-risk-and-issue-management,
+  :teardown [],
+  :modified-by "not-implemented"}]

@@ -1,0 +1,37 @@
+[{:tags [:desktop],
+  :name "New Chart Drivers on Chrome",
+  :steps
+  [{:script
+    "(expect-equals \"New Chart\" (rt.po.common/get-string \"Name\"))",
+        :target-msec 500}
+   {:script "(rt.po.common/set-string \"Name\" \"RT Chart 1\")",
+        :target-msec 500}
+   {:script
+    "(expect-equals \"RT Chart 1\" (rt.po.common/get-string \"Name\"))",
+        :target-msec 500}
+   {:script
+    "(rt.po.common/set-multiline \"Description\" \"Chart created by ReadiTest\")",
+        :target-msec 500}
+   {:script
+    "(expect-equals \"Chart created by ReadiTest\" (rt.po.common/get-multiline \"Description\"))",
+        :target-msec 500}
+   {:script "(rt.po.common/set-lookup \"Report\" \"Scientists\")",
+        :target-msec 500}
+   {:script
+    "(expect-equals \"Scientists\" (rt.po.common/get-lookup \"Report\"))",
+        :target-msec 500}
+   {:script "(rt.po.chart-new/set-chart-type \"Bar\")",
+        :target-msec 500}
+   {:script "(expect-equals \"Bar\" (rt.po.chart-new/get-chart-type))",
+        :target-msec 500}
+   {:script "(rt.po.common/click-ok)",
+        :target-msec 500}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150601-153804",
+  :setup [:qa-daily/scripts/charts/open-new-chart-dialog],
+  :id :qa-daily/charts/test-new-chart-drivers,
+  :teardown [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :modified-by "not-implemented",
+  :data {}}]

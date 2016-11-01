@@ -1,0 +1,26 @@
+[{:tags [:desktop :prod :regression],
+  :tests [],
+  :name "Some basic workflow builder operations",
+  :steps
+  [{:script "(rt.po.workflow/open-new)"}
+   {:script "(expect (not (rt.po.workflow/isDirty?)))"}
+   {:script "(rt.po.workflow/set-component-name (:wfname *tc*))"}
+   {:script
+    "(expect (= (:wfname *tc*) (rt.po.workflow/component-name)))"}
+   {:script
+    "(doseq [a (rt.po.workflow/load-workflow-data (rt.po.common/get-data-file-path \"activities.csv\"))] (rt.po.workflow/add-toolbox-item a))"}
+   {:script
+    "(doseq [a (rt.po.workflow/load-workflow-data (rt.po.common/get-data-file-path \"sequences.csv\"))] (rt.po.workflow/add-sequence a))"}
+   {:script "(expect (rt.po.workflow/isDirty?))"}
+   {:script "(rt.po.workflow/save)"}
+   {:script "(rt.po.workflow/open {:name (:wfname *tc*)})"}
+   {:script "(expect (not (rt.po.workflow/isDirty?)))"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150609-210008",
+  :setup
+  [{:script "(identity {:wfname (make-test-name \"Workflow\")})"}],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :workflow/wb-test-1,
+  :teardown [],
+  :modified-by "not-implemented"}]

@@ -1,0 +1,14 @@
+[{:tags [:desktop],
+  :test-filter "(has-tags? [\"app-tests/com\"] %)",
+  :tests [],
+  :name "RT for COM App",
+  :each-fixtures
+  [:common/fixture/handle-errors :common/fixture/chrome],
+  :type :testsuite,
+  :source "./test-db",
+  :modified "20161018-100015",
+  :setup [],
+  :id :app-tests/suites/grcprofV2-com,
+  :teardown [],
+  :modified-by "not-implemented",
+  :once-fixtures []}]

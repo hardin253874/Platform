@@ -1,0 +1,104 @@
+[{:tags [:user/hemant :app-tests/itdr :desktop],
+  :name
+  "Create a IT recovery plan, create actions and move a plan on status board",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:itdr-owner-creds *tc*))"}
+   {:script
+    "(rt.po.app/navigate-to \"IT Disaster Recovery Management\")"}
+   {:script "(rt.po.app/select-app-tab \"IT Recovery Planning\")"}
+   {:script
+    "(rt.po.app/select-navigator-item \"IT Recovery Planning\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:itdr-plan *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Plan Type\" \"Application Recovery\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Criticality\" \"Medium\")"}
+   {:script "(rt.po.edit-form/set-lookup \"Approver\" \"Alva\")"}
+   {:script "(rt.po.edit-form/set-lookup \"Devices\" \"IP Phone 1\")"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Applications\" \"App_PC_1\")"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Information\" \"Information Record 2\")"}
+   {:script "(rt.po.edit-form/open-lookup \"Sites\")"}
+   {:script
+    "(comment (rt.po.view-form/expand-structure-view-item-node \"All Sites\"))"}
+   {:script
+    "(rt.po.view-form/select-structure-view-item-with-ctrl-key-by-text \"Site East\" \"\")"}
+   {:script "(rt.po.common/click-ok)"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Next Review Date\" (make-local-date 2016 11 11))"}
+   {:script "(rt.po.edit-form/set-lookup \"Team Leader\" \"Adam\")"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Deputy Team Leader\" \"Aide\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"IT RECOVERY ACTIONS\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Stage\" \"Immediate\")"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"Sequence Number\" \"1\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Recovery Action\" \"Find replacement Server\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Priority\" \"Normal\")"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"Sequence Number\" \"1\")"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Milestone?\" true)"}
+   {:script
+    "(rt.po.edit-form/set-number-field-value \"Expected_Duration\" \"2.5\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"IT RECOVERY ACTIONS\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Stage\" \"Ongoing\")"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"Sequence Number\" \"1\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Recovery Action\" \"Install Patches\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Priority\" \"High\")"}
+   {:script
+    "(rt.po.edit-form/set-number-field-value \"Expected_Duration\" \"5\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"TEAM MEMBERS\")"}
+   {:script "(rt.po.app/choose-context-menu \"Link\")"}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog \"Carie\")"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"TEAM MEMBERS\")"}
+   {:script "(rt.po.app/choose-context-menu \"Link\")"}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog \"Aureen\")"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"CALL TREE\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script "(rt.po.edit-form/set-lookup \"Caller\" \"Adam\")"}
+   {:script "(rt.po.edit-form/set-lookup \"To Call\" \"Aureen\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rn.app/open-board \"Plan Status Board\" {:app-name \"IT Disaster Recovery Management\", :folder-name \"Reports\"})"}
+   {:script
+    "(expect-equals \"Plan Status Board\" (rt.po.board/get-board-header-text))"}
+   {:script
+    "(expect (rt.po.board/card-exists-in-row? \"Application Recovery\" \"Not Started\" (:itdr-plan *tc*)))"}
+   {:script
+    "(rt.po.board/drag-card-to-dimension (:itdr-plan *tc*) \"Not Started\" \"In Progress\")"}
+   {:script
+    "(expect (rt.po.board/card-exists-in-row? \"Application Recovery\" \"In Progress\" (:itdr-plan *tc*)))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20161020-141912",
+  :setup
+  [{:script
+    "(identity {:notif-name (rt.lib.util/make-test-name \"ITDR-Notif\"), :itdr-plan (rt.lib.util/make-test-name \"ITDR-Plan\"), :task-name (rt.lib.util/make-test-name \"Task\")})"}],
+  :fixtures [:rn/fixture/itdr-owner-creds],
+  :id :itdr/tests/managing-plans,
+  :teardown [],
+  :modified-by "not-implemented"}]

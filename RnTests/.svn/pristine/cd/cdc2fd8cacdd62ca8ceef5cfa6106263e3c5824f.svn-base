@@ -1,0 +1,48 @@
+[{:tags
+  [:user/tina :area/report-viewer :nomodify :regression :desktop],
+  :name
+  "check report can be exported to excel, csv and word with analyzer condition",
+  :steps
+  [{:script "(rt.po.app/navigate-via-tiles \"Foster University\")"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script "(rt.po.app/add-report \"\")"}
+   {:script "(rt.po.report-new/set-name \"Export-using-Analyser\")"}
+   {:script "(rt.po.report-new/set-report-base-on \"Student\")"}
+   {:script "(rt.po.report-builder/click-ok)"}
+   {:script "(rt.po.report-builder/select-field-in-report \"State\")"}
+   {:script
+    "(rt.po.report-builder/select-field-in-report \"Country\")"}
+   {:script
+    "(rt.po.report-builder/set-in-analyzer-checkbox-field-value \"State\" true)"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script "(rt.po.app/disable-config-mode)"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script
+    "(expect-equals true (rt.po.report-view/analyzer-field-exists? \"State\"))"}
+   {:script
+    "(rt.po.report-view/set-analyzer-choice-option \"State\" \"Any of\" \"NSW\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"Export to...\")"}
+   {:script "Excel"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"Export to...\")"}
+   {:script "CSV"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"Export to...\")"}
+   {:script "Word"}
+   {:script "Check-file-format-and-file-exsist"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20151001-162214",
+  :setup [],
+  :fixtures
+  [:common/fixture/chrome
+   :common/fixture/handle-errors
+   :common/fixture/login
+   :common/fixture/test-account-creds],
+  :id :rn/report/export-to-excel-using-analyser,
+  :teardown [],
+  :modified-by "not-implemented"}]

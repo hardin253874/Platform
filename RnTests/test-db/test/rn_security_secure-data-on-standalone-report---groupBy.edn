@@ -1,0 +1,165 @@
+[{:tags
+  [:nomodify :prod :regression :user/shaofen :desktop :area/security],
+  :tests [],
+  :name
+  "Ensure multiple access rules works on stand alone report --- group by",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Faculties Report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script
+    "(expect-equals true (rt.po.report-builder/check-group-by-row-exists? \"Blackfriars Campus\"))"}
+   {:script
+    "(expect-equals 3 (rt.po.report-builder/get-rows-number-under-group-by-row \"Blackfriars Campus\"))"}
+   {:script
+    "(expect-equals \"Faculty of Agriculture\" (rt.po.report-builder/get-grouped-row-content \"Blackfriars Campus\" 0 \"Faculties\"))"}
+   {:script
+    "(expect-equals \"Faculty of Education\" (rt.po.report-builder/get-grouped-row-content \"Blackfriars Campus\" 1 \"Faculties\"))"}
+   {:script
+    "(expect-equals \"Faculty of Sciences\" (rt.po.report-builder/get-grouped-row-content \"Blackfriars Campus\" 2 \"Faculties\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-builder/check-group-by-row-exists? \"Broadway Campus\"))"}
+   {:script
+    "(expect-equals 4 (rt.po.report-builder/get-rows-number-under-group-by-row \"Broadway Campus\"))"}
+   {:script
+    "(expect-equals \"Faculty of Medicine\" (rt.po.report-builder/get-grouped-row-content \"Broadway Campus\" 0 \"Faculties\"))"}
+   {:script
+    "(expect-equals \"Faculty of Engineering\" (rt.po.report-builder/get-grouped-row-content \"Broadway Campus\" 1 \"Faculties\"))"}
+   {:script
+    "(expect-equals \"Faculty of Arts\" (rt.po.report-builder/get-grouped-row-content \"Broadway Campus\" 2 \"Faculties\"))"}
+   {:script
+    "(expect-equals \"Faculty of Commerce\" (rt.po.report-builder/get-grouped-row-content \"Broadway Campus\" 3 \"Faculties\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-builder/check-group-by-row-exists? \"Haymarket campus\"))"}
+   {:script
+    "(expect-equals 2 (rt.po.report-builder/get-rows-number-under-group-by-row \"Haymarket campus\"))"}
+   {:script
+    "(expect-equals \"Faculty of Law\" (rt.po.report-builder/get-grouped-row-content \"Haymarket campus\" 0 \"Faculties\"))"}
+   {:script
+    "(expect-equals \"Faculty of Information Technology\" (rt.po.report-builder/get-grouped-row-content \"Haymarket campus\" 1 \"Faculties\"))"}
+
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script "(rt.po.access-rules/add-new-access-rule)"}
+   {:script
+    "(expect-equals true (rt.po.access-rules-new/new-dialog-visible?))"}
+   {:script
+    "(rt.po.access-rules-new/set-role \"Students (User Role)\")"}
+   {:script "(rt.po.access-rules-new/set-object \"Faculties\")"}
+   {:script "(rt.po.access-rules-new/click-ok)"}
+   {:script
+    "(rt.po.access-rules/edit-access-rule \"Students (User Role)\" \"Faculties\" \"Faculties\")"}
+   {:script
+    "(rt.po.report-builder/select-field-checkboxes \"Name\" true true)"}
+   {:script
+    "(rt.po.report-builder/set-name \"Faculty of Arts - 10112015\")"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script
+    "(expect-equals true (rt.po.report-view/analyzer-field-exists? \"Faculties\"))"}
+   {:script
+    "(rt.po.report-view/set-analyzer-field-oper \"Faculties\" \"Contains\")"}
+   {:script
+    "(rt.po.report-view/set-analyzer-string \"Faculties\" \"Arts\")"}
+   {:script "(rt.po.report-view/apply-analyzer)"}
+   {:script "(rt.po.report-builder/save)"}
+   {:script "(rt.po.report-builder/close)"}
+   {:script
+    "(rt.po.access-rules/enable-access-rule \"Students (User Role)\" \"Faculties\" \"Faculty of Arts - 10112015\")"}
+   {:script
+    "(rt.po.access-rules/disable-access-rule \"Foster Common (User Role)\" \"Faculties\" \"Faculties\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+
+   {:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Faculties Report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script
+    "(expect-equals false (rt.po.report-builder/check-group-by-row-exists? \"Blackfriars Campus\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-builder/check-group-by-row-exists? \"Haymarket campus\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-builder/check-group-by-row-exists? \"Broadway Campus\"))"}
+   {:script
+    "(expect-equals 1 (rt.po.report-builder/get-rows-number-under-group-by-row \"Broadway Campus\"))"}
+   {:script
+    "(expect-equals \"Faculty of Arts\" (rt.po.report-builder/get-grouped-row-content \"Broadway Campus\" 0 \"Faculties\"))"}
+
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/disable-access-rule \"Foster Common (User Role)\" \"Campuses\" \"Campuses\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+
+   {:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Faculties Report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script
+    "(expect-equals false (rt.po.report-builder/check-group-by-row-exists? \"Blackfriars Campus\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-builder/check-group-by-row-exists? \"Broadway Campus\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-builder/check-group-by-row-exists? \"Haymarket campus\"))"}
+   {:script
+    "(expect-equals 1 (rt.po.report-builder/get-rows-number-under-group-by-row \"None\"))"}
+   {:script
+    "(expect-equals \"Faculty of Arts\" (rt.po.report-builder/get-grouped-row-content \"None\" 0 \"Faculties\"))"}
+
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/delete-access-rule \"Students (User Role)\" \"Faculties\" \"Faculty of Arts - 10112015\")"}
+   {:script
+    "(rt.po.access-rules/enable-access-rule \"Foster Common (User Role)\" \"Campuses\" \"Campuses\")"}
+   {:script
+    "(rt.po.access-rules/enable-access-rule \"Foster Common (User Role)\" \"Faculties\" \"Faculties\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+
+   {:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Faculties Report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script
+    "(expect-equals true (rt.po.report-builder/check-group-by-row-exists? \"Blackfriars Campus\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-builder/check-group-by-row-exists? \"Broadway Campus\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-builder/check-group-by-row-exists? \"Haymarket campus\"))"}
+   {:script
+    "(expect-equals 3 (rt.po.report-builder/get-rows-number-under-group-by-row \"Blackfriars Campus\"))"}
+   {:script
+    "(expect-equals 4 (rt.po.report-builder/get-rows-number-under-group-by-row \"Broadway Campus\"))"}
+   {:script
+    "(expect-equals 2 (rt.po.report-builder/get-rows-number-under-group-by-row \"Haymarket campus\"))"}
+   ],
+  :type :test,
+  :source "./test-db",
+  :modified "20151110-145209",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds],
+  :id :rn/security/secure-data-on-standalone-report---group-by,
+  :teardown
+  [{:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script
+    "(if (not (rt.po.access-rules/access-rule-enabled? \"Foster Common (User Role)\" \"Campuses\" \"Campuses\")) (do (rt.po.access-rules/click-edit-button) (rt.po.access-rules/enable-access-rule \"Foster Common (User Role)\" \"Campuses\" \"Campuses\") (rt.po.access-rules/click-save-button)))"}
+   {:script
+    "(if (not (rt.po.access-rules/access-rule-enabled? \"Foster Common (User Role)\" \"Faculties\" \"Faculties\")) (do (rt.po.access-rules/click-edit-button) (rt.po.access-rules/enable-access-rule \"Foster Common (User Role)\" \"Faculties\" \"Faculties\") (rt.po.access-rules/click-save-button)))"}
+   {:script
+    "(rt.po.report-view/set-search-text \"System Administrator (User Account)\")"}
+   {:script
+    "(if (> (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/set-search-text \"Faculty of Arts - 10112015\") (if (> (rt.po.report-view/count-report-row) 0) (do (rt.po.access-rules/click-edit-button) (rt.po.access-rules/delete-access-rule \"Students (User Role)\" \"Faculties\" \"Faculty of Arts - 10112015\") (rt.po.access-rules/click-save-button)))))"}
+   {:script
+    "(rt.po.report-view/set-search-text \"System Administrator (User Account)\")"}
+   {:script
+    "(if (= (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/set-search-text \"Faculty of Arts - 10112015\") (if (> (rt.po.report-view/count-report-row) 0) (do (rt.po.access-rules/click-edit-button) (rt.po.access-rules/delete-access-rule \"Students (User Role)\" \"Faculties\" \"Faculty of Arts - 10112015\") (rt.po.access-rules/click-save-button)))))"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Faculty of Arts - 10112015\")"}],
+  :modified-by "not-implemented"}]

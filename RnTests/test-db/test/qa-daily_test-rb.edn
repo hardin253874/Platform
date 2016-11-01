@@ -1,0 +1,53 @@
+[{:tags [:prod :desktop :smoke-test],
+  :tests [],
+  :name "Report Builder Test on Chrome",
+  :steps
+  [{:script
+    "(rt.po.app-toolbox/create-report {:name (:report-name *test-context*) :object-type (:obj-name *test-context*)})",
+        :target-msec 2000}
+   {:script "(rt.po.report-builder/select-field-in-report \"Text 1\")",
+        :target-msec 2000}
+   {:script
+    "(rt.po.report-builder/select-field-in-report \"Multiline 1\")",
+        :target-msec 2000}
+   {:script
+    "(rt.po.report-builder/select-field-in-report \"Number 1\")",
+        :target-msec 2000}
+   {:script
+    "(rt.po.report-builder/select-field-in-report \"Currency 1\")",
+        :target-msec 2000}
+   {:script
+    "(rt.po.report-builder/select-field-in-report \"DateTime 1\")",
+        :target-msec 2000}
+   {:script
+    "(rt.po.report-builder/select-field-in-report \"Boolean 1\")",
+        :target-msec 2000}
+   {:script "(rn.common/wait-until-settled)"}
+   {:script
+    "(expect (clojure.set/subset? (:fields *test-context*) (set (rt.po.report-builder/get-fields-in-report-view))))"}
+   {:script
+    "(expect (clojure.set/subset? (:fields *test-context*) (set (rt.po.report-builder/get-selected-fields-in-toolbox))))"}],
+  :type :test,
+  :checks [],
+  :source "../RnTests/test-db",
+  :modified "20150614-101821",
+  :setup
+  [{:script "(rt.po.app/navigate-to \"Home\")"}
+   {:script "(rt.po.app/enable-app-toolbox)"}
+   {:script
+    "(rt.po.app-toolbox/set-application-filter \"Unassigned\")",
+        :target-msec 2000}
+   {:script "(rt.po.app-toolbox/set-object-filter \"rt-object\")"}
+   {:script
+    "(identity {:obj-name (last (rt.po.app-toolbox/get-object-names))\r\n                       :report-name (make-test-name \"RT-Report\")})"}
+   {:script
+    "(identity {:fields #{\"Text 1\" \"Multiline 1\" \"Number 1\" \"Currency 1\" \"DateTime 1\" \"Boolean 1\" \"Choice 1\" \"Lookup 1\"}})"}
+   {:script
+    "(identity {:fields #{\"Text 1\" \"Multiline 1\" \"Number 1\" \"Currency 1\" \"DateTime 1\" \"Boolean 1\"}})"}
+   {:script
+    "(expect (not (nil? (:obj-name *test-context*))) \"Failed to find RT Object to report on... earlier test failed??\")"}],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :qa-daily/test-rb,
+  :teardown [],
+  :modified-by "not-implemented",
+  :data {}}]

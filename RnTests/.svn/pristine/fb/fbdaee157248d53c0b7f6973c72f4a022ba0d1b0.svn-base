@@ -1,0 +1,39 @@
+[{:tags [:prod :desktop :smoke-test],
+  :tests [],
+  :name "Form Builder Test on Chrome",
+  :steps
+  [{:script "(rt.po.app/enable-app-toolbox)"}
+   {:script
+    "(rt.po.app-toolbox/create-object {:name (:name *tc*) :description (:desc *tc*)})"}
+   {:script "(rt.po.form-builder/add-container-to-form)",
+        :target-msec 2000}
+   {:script "(rt.scripts.qa-daily/form-builder-add-text)",
+        :target-msec 2000}
+   {:script "(rt.scripts.qa-daily/form-builder-add-multiline)",
+        :target-msec 2000}
+   {:script "(rt.scripts.qa-daily/form-builder-add-number)",
+        :target-msec 2000}
+   {:script "(rt.scripts.qa-daily/form-builder-add-boolean)",
+        :target-msec 2000}
+   {:script "(rt.scripts.qa-daily/form-builder-add-currency)",
+        :target-msec 2000}
+   {:script "(rt.scripts.qa-daily/form-builder-add-datetime)",
+        :target-msec 2000}
+   {:script "(rt.po.form-builder/save)",
+        :target-msec 2000}
+   {:script "(rt.po.app/navigate-to \"Home\")",
+        :target-msec 2000}
+   {:script "(expect (not (rt.po.app/are-changes-pending?)))",
+        :target-msec 2000}],
+  :type :test,
+  :checks [],
+  :source "../RnTests/test-db",
+  :modified "20150614-103315",
+  :setup
+  [{:script
+    "(identity {:name (make-test-name \"RT-Object\") :desc \"Test object - to be deleted\"})"}],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :qa-daily/test-fb,
+  :teardown [],
+  :modified-by "not-implemented",
+  :data {}}]

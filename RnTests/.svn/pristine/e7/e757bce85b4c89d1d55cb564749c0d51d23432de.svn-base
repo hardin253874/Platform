@@ -1,0 +1,52 @@
+[{:tags
+  [:user/shaofen :prod :nomodify :regression :desktop :area/security],
+  :tests [],
+  :name "Ensure last logon saved with login date for user account",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script "(rn.app/open-security \"User Accounts\")"}
+   {:script "(rt.po.report-view/open-new-menu)"}
+   {:script "(rt.po.edit-form/is-string-field-password? \"Password\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(expect-equals (rt.po.common/get-combo \"Account status\") \"Active\")"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Name\" \"S1.Ning\")"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Password\" \"S1.Ning1\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.view-form/form-nav-back)"}
+   {:script "(rt.po.report-view/set-search-text \"S1.Ning\")"}
+   {:script "(expect (= (rt.po.report-view/count-report-row) 1))"}
+   {:script "(rt.po.report-view/double-click-row-by-text \"S1.Ning\")"}
+   {:script
+    "(expect-equals \"\" (rt.po.view-form/get-field-value \"Last logon\"))"}
+   {:script
+    "(rn.common/start-app-and-login {:password \"S1.Ning1\", :username \"S1.Ning\"})"}
+   {:script
+    "(expect-equals true (rt.po.app/app-tile-exists? \"Home\"))"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script "(rn.app/open-security \"User Accounts\")"}
+   {:script "(rt.po.report-view/set-search-text \"S1.Ning\")"}
+   {:script "(expect (= (rt.po.report-view/count-report-row) 1))"}
+   {:script "(rt.po.report-view/double-click-row-by-text \"S1.Ning\")"}
+   {:script
+    "(expect-not (empty? (rt.po.view-form/get-field-value \"Last logon\")))"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.report-view/delete-record \"S1.Ning\")"}
+   {:script "(expect (= (rt.po.report-view/count-report-row) 0))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160718-134739",
+  :setup
+  [{:script
+    "(identity {:user-account-name (rt.lib.util/make-test-name \"Mandatory fields username\")\n               :account-password \"P@ssword1\"})"}],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds],
+  :id :rn/security/ensure-last-logon-saved-with-login-date,
+  :teardown [],
+  :doc
+  "Test for Bug 27327: Security: User accounts last logon not saving the login date ",
+  :modified-by "not-implemented"}]

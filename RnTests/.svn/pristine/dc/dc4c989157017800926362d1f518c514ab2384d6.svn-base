@@ -1,0 +1,81 @@
+[{:tags
+  [:area/report-builder
+   :nomodify
+   :prod
+   :regression
+   :desktop
+   :user/abida],
+  :tests [],
+  :name "Text, Currencyand relationship field added to analyser",
+  :steps
+  [{:script "(rt.po.app/navigate-via-tiles \"Foster University\")"}
+   {:script
+    "(rn.app/open-report \"Subjects Report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(rt.po.app/enable-config-mode )"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script "(rt.po.report-builder/click-saveas-report-button)"}
+   {:script
+    "(rt.po.report-builder/set-report-new-name (:report-name *tc*))"}
+   {:script "(rt.po.report-builder/click-ok)"}
+   {:script
+    "(rt.po.report-builder/set-in-analyzer-checkbox-field-value \"Subject ID\" true)"}
+   {:script
+    "(rt.po.report-builder/set-in-analyzer-checkbox-field-value \"Subject Fee\" true)"}
+   {:script
+    "(comment \" \" (rt.po.report-builder/set-in-analyzer-checkbox-field-value \"Subject mode\" true))"}
+   {:script "(rt.po.report-builder/click-add-relationship-button )"}
+   {:script
+    "(rt.po.report-add-relationship/add-relationship \"Textbooks\")"}
+   {:script "(rt.po.report-builder/click-ok )"}
+   {:script "(rt.po.report-builder/select-treenode \"Textbooks\")"}
+   {:script
+    "(rt.po.report-builder/set-in-analyzer-checkbox-field-value \"Name\" true)"}
+   {:script "(rt.po.report-view/open-analyzer )"}
+   {:script
+    "(expect-equals true (rt.po.report-view/analyzer-field-exists?  \"Subject Fee\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/analyzer-field-exists? \"Subject ID\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/analyzer-field-exists? \"Textbooks\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script "(rt.po.report-builder/click-close-button )"}
+   {:script
+    "(rn.app/open-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script "(rt.po.report-view/open-analyzer )"}
+   {:script
+    "(expect-equals true (rt.po.report-view/analyzer-field-exists? \"Subject Fee\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/analyzer-field-exists? \"Subject ID\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/analyzer-field-exists? \"Textbooks\"))"}
+   {:script "(rt.po.report-view/apply-analyzer )"}
+   {:script "(rt.po.report-builder/access-build-mode )"}
+   {:script
+    "(rt.po.report-builder/set-in-analyzer-checkbox-field-value \"Subject ID\" false)"}
+   {:script
+    "(rt.po.report-builder/set-in-analyzer-checkbox-field-value \"Subject Fee\" false)"}
+   {:script "(rt.po.report-builder/select-treenode \"Textbooks\")"}
+   {:script
+    "(rt.po.report-builder/set-in-analyzer-checkbox-field-value \"Name\" false)"}
+   {:script "(rt.po.report-builder/remove-relationship \"Textbooks\")"}
+   {:script "(rt.po.report-view/open-analyzer )"}
+   {:script
+    "(expect-equals false (rt.po.report-view/analyzer-field-exists? \"Subject Fee\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/analyzer-field-exists? \"Subject ID\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/analyzer-field-exists? \"Textbooks\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script "(rt.po.report-builder/click-close-button )"}
+   {:script
+    "(comment (rn.app/open-report \"Subjects Report\" {:app-name \"Foster University\", :folder-name \"Reports\"}))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160914-121816",
+  :setup
+  [{:script
+    "(identity {:report-name (rt.lib.util/make-test-name \"FieldAnalyser\")})"}],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/reportbuilder/add-field-to-analyser,
+  :teardown [],
+  :modified-by "not-implemented"}]

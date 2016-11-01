@@ -1,0 +1,175 @@
+[{:tags [:desktop],
+  :name "Summarise for a structure view column",
+  :steps
+  [{:script "(rt.po.app/add-report (:section *tc*))"}
+   {:script "(rt.po.report-new/set-name \"Summarise_Structureview\")"}
+   {:script "(rt.po.report-new/set-report-base-on \"Faculties\")"}
+   {:script "(rt.po.report-new/click-ok)"}
+   {:script "(rt.po.report-builder/add-relationship \"Staff\")"}
+   {:script
+    "(comment (rt.po.report-builder/click-save-report-button))"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Staff\" \"Format Column\")"}
+   {:script "(rt.po.report-format/click-value-formatting)"}
+   {:script
+    "(rt.po.report-format/set-hierarchy-report \"Staff Hierarchy\")"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script
+    "(expect-equals \"Erica Mcknight > Barry Sanders\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Staff\"))"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Staff\" \"Summarise\")"}
+   {:script
+    "(rt.po.report-summarise/set-summarise-option \"Staff\" \"Count\" true)"}
+   {:script "(rt.po.report-builder/click-ok)"}
+   {:script
+    "(expect-equals \"Faculty of Medicine\" (rt.po.report-view/get-report-cell-text-content 0 \"Faculties\"))"}
+   {:script
+    "(expect-equals \"3\" (rt.po.report-view/get-report-cell-text-content 0 \"Count: Staff\"))"}
+   {:script
+    "(expect-equals \"Faculty of Engineering\" (rt.po.report-view/get-report-cell-text-content 1 \"Faculties\"))"}
+   {:script
+    "(expect-equals \"5\" (rt.po.report-view/get-report-cell-text-content 1 \"Count: Staff\"))"}
+   {:script
+    "(expect-equals \"Faculty of Agriculture\" (rt.po.report-view/get-report-cell-text-content 2 \"Faculties\"))"}
+   {:script
+    "(expect-equals \"4\" (rt.po.report-view/get-report-cell-text-content 2 \"Count: Staff\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script
+    "(rn.app/open-report \"Summarise_Structureview\" {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"Faculty of Medicine\" (rt.po.report-view/get-report-cell-text-content 0 \"Faculties\"))"}
+   {:script
+    "(expect-equals \"3\" (rt.po.report-view/get-report-cell-text-content 0 \"Count: Staff\"))"}
+   {:script
+    "(expect-equals \"Faculty of Engineering\" (rt.po.report-view/get-report-cell-text-content 1 \"Faculties\"))"}
+   {:script
+    "(expect-equals \"5\" (rt.po.report-view/get-report-cell-text-content 1 \"Count: Staff\"))"}
+   {:script
+    "(expect-equals \"Faculty of Agriculture\" (rt.po.report-view/get-report-cell-text-content 2 \"Faculties\"))"}
+   {:script
+    "(expect-equals \"4\" (rt.po.report-view/get-report-cell-text-content 2 \"Count: Staff\"))"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Count: Staff\" \"Summarise\")"}
+   {:script "(rt.po.report-summarise/click-remove-summarise)"}
+   {:script
+    "(expect-equals \"Erica Mcknight > Barry Sanders\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Staff\"))"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Staff\" \"Summarise\")"}
+   {:script
+    "(rt.po.report-summarise/set-summarise-option \"Staff\" \"Count unique\" true)"}
+   {:script "(rt.po.report-builder/click-ok)"}
+   {:script
+    "(expect-equals \"Faculty of Medicine\" (rt.po.report-view/get-report-cell-text-content 0 \"Faculties\"))"}
+   {:script
+    "(expect-equals \"3\" (rt.po.report-view/get-report-cell-text-content 0 \"Count unique: Staff\"))"}
+   {:script
+    "(expect-equals \"Faculty of Engineering\" (rt.po.report-view/get-report-cell-text-content 1 \"Faculties\"))"}
+   {:script
+    "(expect-equals \"5\" (rt.po.report-view/get-report-cell-text-content 1 \"Count unique: Staff\"))"}
+   {:script
+    "(expect-equals \"Faculty of Agriculture\" (rt.po.report-view/get-report-cell-text-content 2 \"Faculties\"))"}
+   {:script
+    "(expect-equals \"4\" (rt.po.report-view/get-report-cell-text-content 2 \"Count unique: Staff\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script
+    "(rn.app/open-report \"Summarise_Structureview\" {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"Faculty of Medicine\" (rt.po.report-view/get-report-cell-text-content 0 \"Faculties\"))"}
+   {:script
+    "(expect-equals \"3\" (rt.po.report-view/get-report-cell-text-content 0 \"Count unique: Staff\"))"}
+   {:script
+    "(expect-equals \"Faculty of Engineering\" (rt.po.report-view/get-report-cell-text-content 1 \"Faculties\"))"}
+   {:script
+    "(expect-equals \"5\" (rt.po.report-view/get-report-cell-text-content 1 \"Count unique: Staff\"))"}
+   {:script
+    "(expect-equals \"Faculty of Agriculture\" (rt.po.report-view/get-report-cell-text-content 2 \"Faculties\"))"}
+   {:script
+    "(expect-equals \"4\" (rt.po.report-view/get-report-cell-text-content 2 \"Count unique: Staff\"))"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Count unique: Staff\" \"Summarise\")"}
+   {:script "(rt.po.report-summarise/click-remove-summarise)"}
+   {:script
+    "(expect-equals \"Erica Mcknight > Barry Sanders\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Staff\"))"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Staff\" \"Summarise\")"}
+   {:script
+    "(rt.po.report-summarise/set-summarise-option \"Staff\" \"Count all\" true)"}
+   {:script "(rt.po.report-builder/click-ok)"}
+   {:script
+    "(expect-equals \"Faculty of Medicine\" (rt.po.report-view/get-report-cell-text-content 0 \"Faculties\"))"}
+   {:script
+    "(expect-equals \"3\" (rt.po.report-view/get-report-cell-text-content 0 \"Count all: Staff\"))"}
+   {:script
+    "(expect-equals \"Faculty of Engineering\" (rt.po.report-view/get-report-cell-text-content 1 \"Faculties\"))"}
+   {:script
+    "(expect-equals \"5\" (rt.po.report-view/get-report-cell-text-content 1 \"Count all: Staff\"))"}
+   {:script
+    "(expect-equals \"Faculty of Agriculture\" (rt.po.report-view/get-report-cell-text-content 2 \"Faculties\"))"}
+   {:script
+    "(expect-equals \"4\" (rt.po.report-view/get-report-cell-text-content 2 \"Count all: Staff\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script
+    "(rn.app/open-report \"Summarise_Structureview\" {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"Faculty of Medicine\" (rt.po.report-view/get-report-cell-text-content 0 \"Faculties\"))"}
+   {:script
+    "(expect-equals \"3\" (rt.po.report-view/get-report-cell-text-content 0 \"Count all: Staff\"))"}
+   {:script
+    "(expect-equals \"Faculty of Engineering\" (rt.po.report-view/get-report-cell-text-content 1 \"Faculties\"))"}
+   {:script
+    "(expect-equals \"5\" (rt.po.report-view/get-report-cell-text-content 1 \"Count all: Staff\"))"}
+   {:script
+    "(expect-equals \"Faculty of Agriculture\" (rt.po.report-view/get-report-cell-text-content 2 \"Faculties\"))"}
+   {:script
+    "(expect-equals \"4\" (rt.po.report-view/get-report-cell-text-content 2 \"Count all: Staff\"))"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Count all: Staff\" \"Summarise\")"}
+   {:script "(rt.po.report-summarise/click-remove-summarise)"}
+   {:script
+    "(expect-equals \"Erica Mcknight > Barry Sanders\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Staff\"))"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Staff\" \"Summarise\")"}
+   {:script
+    "(rt.po.report-summarise/set-summarise-option \"Staff\" \"List\" true)"}
+   {:script "(rt.po.report-builder/click-ok)"}
+   {:script
+    "(expect-equals \"Faculty of Medicine\" (rt.po.report-view/get-report-cell-text-content 0 \"Faculties\"))"}
+   {:script
+    "(expect-equals \"Cooper Griffith > Erica Mcknight, Erica Mcknight > Barry Sanders, Erica Mcknight > Buckminster Alexander\" (rt.po.report-view/get-report-cell-text-content 0 \"List: Staff\"))"}
+   {:script
+    "(expect-equals \"Faculty of Engineering\" (rt.po.report-view/get-report-cell-text-content 1 \"Faculties\"))"}
+   {:script
+    "(expect-equals \"Cooper Griffith > Adam Foster, Adam Foster > Axel Barker, Adam Foster > Octavius Baldwin, Adam Foster > Sharon Valdez, Adam Foster > Sophia Grimes\" (rt.po.report-view/get-report-cell-text-content 1 \"List: Staff\"))"}
+   {:script
+    "(expect-equals \"Faculty of Agriculture\" (rt.po.report-view/get-report-cell-text-content 2 \"Faculties\"))"}
+   {:script
+    "(expect-equals \"Cooper Griffith > Paul Larson, Paul Larson > Marah Sampson, Paul Larson > Nell Bartlett, Paul Larson > Sasha Jacobs\" (rt.po.report-view/get-report-cell-text-content 2 \"List: Staff\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script
+    "(rn.app/open-report \"Summarise_Structureview\" {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"Faculty of Medicine\" (rt.po.report-view/get-report-cell-text-content 0 \"Faculties\"))"}
+   {:script
+    "(expect-equals \"Cooper Griffith > Erica Mcknight, Erica Mcknight > Barry Sanders, Erica Mcknight > Buckminster Alexander\" (rt.po.report-view/get-report-cell-text-content 0 \"List: Staff\"))"}
+   {:script
+    "(expect-equals \"Faculty of Engineering\" (rt.po.report-view/get-report-cell-text-content 1 \"Faculties\"))"}
+   {:script
+    "(expect-equals \"Cooper Griffith > Adam Foster, Adam Foster > Axel Barker, Adam Foster > Octavius Baldwin, Adam Foster > Sharon Valdez, Adam Foster > Sophia Grimes\" (rt.po.report-view/get-report-cell-text-content 1 \"List: Staff\"))"}
+   {:script
+    "(expect-equals \"Faculty of Agriculture\" (rt.po.report-view/get-report-cell-text-content 2 \"Faculties\"))"}
+   {:script
+    "(expect-equals \"Cooper Griffith > Paul Larson, Paul Larson > Marah Sampson, Paul Larson > Nell Bartlett, Paul Larson > Sasha Jacobs\" (rt.po.report-view/get-report-cell-text-content 2 \"List: Staff\"))"}],
+  :type :test,
+  :modified "20160401-171116",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :common/fixture/login
+   :rn/section/createsection],
+  :id :rn/structureview/summarise,
+  :teardown [{:script "(rt.po.app/delete-nav-item (:section *tc*))"}],
+  :doc "Group By for a structure view column",
+  :modified-by "not-implemented"}]

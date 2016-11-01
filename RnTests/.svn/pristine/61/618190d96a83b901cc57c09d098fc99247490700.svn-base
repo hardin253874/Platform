@@ -1,0 +1,42 @@
+[{:tags
+  [:user/shaofen
+   :nomodify
+   :prod
+   :regression
+   :desktop
+   :area/form-builder],
+  :tests [],
+  :name "AddFieldstoContainer-SystemFields",
+  :steps
+  [{:script "(rt.po.app/navigate-via-tiles \"Foster University\")"}
+   {:script "(rt.po.app/enable-app-toolbox )"}
+   {:script
+    "(rt.po.app-toolbox/create-object {:name \"New Test Object2\" :description \"New Test Object Description\"})"}
+   {:script
+    "(expect-equals \"New Test Object2 Form\" (rt.po.form-builder/get-form-title))"}
+   {:script "(expect-equals true (rt.po.form-builder/has-canvas?))"}
+   {:script "(rt.po.form-builder/add-container-to-form )"}
+   {:script
+    "(rt.po.form-builder/add-field-from-toolbox-to-container \"Created by\" 0)"}
+   {:script
+    "(rt.po.form-builder/add-field-from-toolbox-to-container \"Created date\" 0)"}
+   {:script
+    "(rt.po.form-builder/add-field-from-toolbox-to-container \"Last modified by\" 0)"}
+   {:script
+    "(rt.po.form-builder/add-field-from-toolbox-to-container \"Modified date\" 0)"}
+   {:script
+    "(rt.po.form-builder/add-field-from-toolbox-to-container \"Owned by\" 0)"}
+   {:script
+    "(rt.po.form-builder/add-field-from-toolbox-to-container \"Resource type\" 0)"}
+   {:script "(expect-equals true (rt.po.form-builder/has-fields?))"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150601-153811",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/formbuilder/AddFieldstoContainer-SystemFields,
+  :teardown
+  [{:script "(rt.po.app-toolbox/delete-object \"New Test Object2\")"}],
+  :modified-by "not-implemented"}]

@@ -1,0 +1,130 @@
+[{:tags
+  [:user/tina
+   :area/report-viewer
+   :nomodify
+   :regression
+   :desktop
+   :prod],
+  :name "check lookup operators in analyser",
+  :steps
+  [{:script "(rt.po.app/navigate-via-tiles \"Foster University\")"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script "(rt.po.app/add-report \"\")"}
+   {:script "(rt.po.report-new/set-name (:report-name *tc*))"}
+   {:script "(rt.po.report-new/set-report-base-on \"Student\")"}
+   {:script "(rt.po.report-builder/click-ok)"}
+   {:script
+    "(rt.po.report-builder/select-field-in-report \"Address line1\")"}
+   {:script
+    "(rt.po.report-builder/set-in-analyzer-checkbox-field-value \"Address line1\" true)"}
+   {:script "(rt.po.report-builder/select-field-in-report \"State\")"}
+   {:script
+    "(rt.po.report-builder/set-in-analyzer-checkbox-field-value \"State\" true)"}
+   {:script
+    "(rt.po.report-builder/select-field-in-report \"Library card #\")"}
+   {:script
+    "(rt.po.report-builder/set-in-analyzer-checkbox-field-value \"Library card #\" true)"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script "(rt.po.app/disable-config-mode)"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Name\" \"TestStudent1\")"}
+   {:script "(rt.po.edit-form/click-save-plus-button)"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Name\" \"TestStudent2\")"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script "(rt.po.view-form/form-nav-back)"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script
+    "(expect-equals true (rt.po.report-view/analyzer-field-exists? \"Library card #\"))"}
+   {:script
+    "(rt.po.report-view/set-analyzer-field-oper \"Library card #\" \"=\")"}
+   {:script
+    "(rt.po.report-view/set-analyzer-string \"Library card #\" \"11200\")"}
+   {:script "(rt.po.report-view/apply-analyzer)"}
+   {:script
+    "(expect-equals \"11200\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Library card #\"))"}
+   {:script "(expect-equals 1 (rt.po.view-form/get-report-row-count))"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script "(rt.po.report-view/reset-analyzer)"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script
+    "(rt.po.report-view/set-analyzer-field-oper \"Library card #\" \"Contains\")"}
+   {:script
+    "(rt.po.report-view/set-analyzer-string \"Library card #\" \"11151\")"}
+   {:script "(rt.po.report-view/apply-analyzer)"}
+   {:script "(expect-equals 1 (rt.po.view-form/get-report-row-count))"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script "(rt.po.report-view/reset-analyzer)"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script
+    "(rt.po.report-view/set-analyzer-field-oper \"Library card #\" \"Starts with\")"}
+   {:script
+    "(rt.po.report-view/set-analyzer-string \"Library card #\" \"112\")"}
+   {:script "(rt.po.report-view/apply-analyzer)"}
+   {:script
+    "(expect-equals 11 (rt.po.view-form/get-report-row-count))"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script "(rt.po.report-view/reset-analyzer)"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script
+    "(rt.po.report-view/set-analyzer-field-oper \"Library card #\" \"Ends with\")"}
+   {:script
+    "(rt.po.report-view/set-analyzer-string \"Library card #\" \"4\")"}
+   {:script "(rt.po.report-view/apply-analyzer)"}
+   {:script
+    "(expect-equals 10 (rt.po.view-form/get-report-row-count))"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script "(rt.po.report-view/reset-analyzer)"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script
+    "(comment (rt.po.report-view/set-analyzer-field-oper \"Library card#\" \"Is defined\"))"}
+   {:script "(comment (rt.po.report-view/apply-analyzer))"}
+   {:script
+    "(comment (def Addresses (rt.po.report-view/get-loaded-grid-values \".spreport-view\" (.indexOf (rt.po.report-view/get-report-column-names) \"Address line1\"))))"}
+   {:script
+    "(comment (expect-equals 102 (rt.po.view-form/get-report-row-count)))"}
+   {:script
+    "(comment (rt.po.report-view/expect-report-row-count \"102\"))"}
+   {:script
+    "(comment(expect-equals (every? #(not (= % \"\")) Addresses) true))\n"}
+   {:script "(comment (rt.po.report-view/open-analyzer))"}
+   {:script "(comment (rt.po.report-view/reset-analyzer))"}
+   {:script "(comment (rt.po.report-view/open-analyzer))"}
+   {:script
+    "(rt.po.report-view/set-analyzer-field-oper \"Library card #\" \"Is not defined\")"}
+   {:script "(rt.po.report-view/apply-analyzer)"}
+   {:script "(expect-equals 2 (rt.po.view-form/get-report-row-count))"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script "(rt.po.report-view/reset-analyzer)"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script
+    "(comment (rt.po.report-view/set-analyzer-field-oper \"Library card#\" \"<>\"))"}
+   {:script
+    "(comment (rt.po.report-view/set-analyzer-string \"Library card#\" \"11177\"))"}
+   {:script "(comment (rt.po.report-view/apply-analyzer))"}
+   {:script
+    "(comment (expect-equals 99 (rt.po.view-form/get-report-row-count)))"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script "(rt.po.report-view/reset-analyzer)"}
+   {:script "(rt.po.report-view/delete-record \"TestStudent1\")"}
+   {:script "(rt.po.report-view/delete-record \"TestStudent2\")"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script "(rt.po.app/remove-nav-item (:report-name *tc*))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160915-173023",
+  :setup
+  [{:script
+    "(identity {:report-name (rt.lib.util/make-test-name \"LookupOper\")})"}],
+  :fixtures
+  [:common/fixture/chrome
+   :common/fixture/handle-errors
+   :common/fixture/test-account-creds
+   :common/fixture/wait-ng
+   :common/fixture/login],
+  :id :rn/report/Lookup-operators-in-analyser,
+  :teardown [],
+  :modified-by "not-implemented"}]

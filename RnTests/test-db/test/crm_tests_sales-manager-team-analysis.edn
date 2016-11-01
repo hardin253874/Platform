@@ -1,0 +1,81 @@
+[{:tags [:app/crm :desktop],
+  :name
+  "Create a new lead, convert, update the opportunity and generate a quote",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:login-creds *tc*))",
+    :metric-id "crm2-1"}
+   {:script "(think 5)"}
+   {:script "(rt.po.app/navigate-to \"CRM\")"}
+   {:script "(think 5)"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-container \"My Appointments\")",
+    :metric-id "crm2-3"}
+   {:script "(rt.po.app/choose-context-menu \"New\")",
+    :metric-id "crm2-3"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Subject\" (:lead-title *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Start date\" (make-local-date 2017 12 31))"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"End date\" (make-local-date 2017 12 31))"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Location\" \"Cafe\")"}
+   {:script "(think 1)"}
+   {:script "(rt.po.edit-form/save)", :metric-id "crm2-4"}
+   {:script "(rt.po.app/select-app-tab \"Sales Dashboards\")"}
+   {:script
+    "(comment (rt.po.chart-view/select-data-point \"Forecast by Sales Stage\" \"Prospecting\"))"}
+   {:script "(comment (clj-webdriver.taxi/back))"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script
+    "(rt.po.report-view/set-analyzer-picker-option \"Sales Rep\" \"Any of\" \"Jeffrey Ford\")"}
+   {:script "(rt.po.report-view/apply-analyzer)"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"60 Units\")"}
+   {:script "(think 1)\n"}
+   {:script "(rt.po.view-form/select-form-tab \"Activities\")"}
+   {:script "(think 1)"}
+   {:script "(rt.po.view-form/select-form-tab \"Pipeline History\")"}
+   {:script "(think 1)"}
+   {:script "(rt.po.view-form/select-form-tab \"Sales Coach\")"}
+   {:script "(think 1)"}
+   {:script
+    "(comment (rt.po.view-form/open-tab-action-menu \"Activities\" \"Note\"))"}
+   {:script "(rt.po.view-form/select-form-tab \"Activities\")"}
+   {:script "(rt.po.report-view/click-action-menu-button \"Note\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Subject\" (:lead-title *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-multiline \"Notes\" \"Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fringilla magna nec eleifend gravida. Cras dapibus justo eget libero feugiat congue. In vulputate auctor nibh id tempor. Aenean quis metus a mauris sollicitudin fermentum non sed arcu. Vivamus vel porttitor lorem. Suspendisse mollis lectus a lorem iaculis, a interdum magna malesuada. Aenean semper interdum elit quis pharetra. Aenean tempor risus non quam sollicitudin, at dapibus nulla aliquet. Praesent sed orci tempus leo finibus tincidunt. \")"}
+   {:script "(think 1)"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(think 1)"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script "(rt.po.report-view/reset-analyzer)"}
+   {:script
+    "(rt.po.report-view/sort-column-by-click-header nil \"Amount\")"}
+   {:script "(think 1)"}
+   {:script
+    "(rt.po.report-view/sort-column-by-click-header nil \"Monthly recurring\")"}
+   {:script "(think 1)"}
+   {:script
+    "(rt.po.app/select-navigator-item \"Target vs Actual (one-off)\")"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20151029-102333",
+  :setup
+  [{:script
+    "(identity {:lead-title (make-test-name \"Lead\"), :lead-details (get-random-tc-item :leads), :company (make-test-name \"Company\")})"}
+   {:script "(identity {:login-creds (get-random-tc-item :creds)})"}
+   {:script
+    "(when (empty? (get-test-data :salesmanager-creds :quiet)) (rn.common/start-app-and-login))"}
+   {:script
+    "(setonce-test-data :salesmanager-creds rn.services.security/ensure-test-accounts [\"Sales Manager\"] \"SMANAGERUSER\" 20)"}
+   {:script
+    "(identity {:login-creds (get-random-test-data :salesmanager-creds)})"}],
+  :fixtures [:crm/fixtures/lists :common/fixture/wait-ng],
+  :id :crm/tests/sales-manager-team-analysis,
+  :teardown [],
+  :doc "",
+  :modified-by "not-implemented"}]

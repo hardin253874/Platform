@@ -1,0 +1,17 @@
+[{:tags [:desktop :samples],
+  :tests [],
+  :name "A test using generated test names",
+  :steps
+  [{:script
+    "(comment \"to use the test name from the fixture... something like: (some-driver-fn (:section-name *tc*))  \")"}
+   {:script "(println \"Test section name is\" (:section-name *tc*))"}
+   {:script
+    "(println \"Test section name is\" (:section-name *tc*))"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150601-153828",
+  :setup [],
+  :fixtures [:samples/fixtures/create-test-names],
+  :id :samples/tests/using-test-names,
+  :teardown [],
+  :modified-by "not-implemented"}]

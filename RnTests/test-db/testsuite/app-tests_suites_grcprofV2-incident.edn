@@ -1,0 +1,14 @@
+[{:tags [:desktop],
+  :test-filter "(has-tags? [\"app-tests/incident\"] %)",
+  :tests [],
+  :name "RT for incident App",
+  :each-fixtures
+  [:common/fixture/handle-errors :common/fixture/chrome],
+  :type :testsuite,
+  :source "./test-db",
+  :modified "20161020-100015",
+  :setup [],
+  :id :app-tests/suites/grcprofV2-incident,
+  :teardown [],
+  :modified-by "not-implemented",
+  :once-fixtures []}]

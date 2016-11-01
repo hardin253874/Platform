@@ -1,0 +1,124 @@
+[{:tags
+  [:nomodify
+   :prod
+   :daily
+   :regression
+   :user/shaofen
+   :desktop
+   :area/security],
+  :tests [],
+  :name
+  "Ensure multiple access rules works --- default access rule + analyser condition on text",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script "(rt.po.access-rules/add-new-access-rule)"}
+   {:script
+    "(expect-equals true (rt.po.access-rules-new/new-dialog-visible?))"}
+   {:script
+    "(rt.po.access-rules-new/set-role \"Students (User Role)\")"}
+   {:script "(rt.po.access-rules-new/set-object \"Student\")"}
+   {:script "(rt.po.access-rules-new/click-ok)"}
+   {:script
+    "(rt.po.access-rules/edit-access-rule \"Students (User Role)\" \"Student\" \"Student\")"}
+   {:script
+    "(rt.po.report-builder/select-field-checkboxes \"Email address\" true true)"}
+   {:script
+    "(rt.po.report-builder/set-name \"Students with emails address contains 'Ba'\")"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script
+    "(expect-equals true (rt.po.report-view/analyzer-field-exists? \"Email address\"))"}
+   {:script
+    "(rt.po.report-view/set-analyzer-field-oper \"Email address\" \"Contains\")"}
+   {:script
+    "(rt.po.report-view/set-analyzer-string \"Email address\" \"Ba\")"}
+   {:script "(rt.po.report-view/apply-analyzer)"}
+   {:script "(rt.po.report-builder/save)"}
+   {:script "(rt.po.report-builder/close)"}
+   {:script
+    "(rt.po.access-rules/enable-access-rule \"Students (User Role)\" \"Student\" \"Students with emails address contains 'Ba'\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 4 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Baker Sparks\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Baker Sparks\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Nelle Odom\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"Edit\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Nelle Odom\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Guinevere Barrera\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Guinevere Barrera\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Guinevere Barrera\")"}
+   {:script "(rt.po.report-view/set-search-text \"Barrett Dudley\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Barrett Dudley\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Barrett Dudley\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/delete-access-rule \"Students (User Role)\" \"Student\" \"Students with emails address contains 'Ba'\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20151103-142744",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds],
+  :id :rn/security/multiple-access-rules---analyser-condition-on-text,
+  :teardown
+  [{:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"System Administrator (User Account)\")"}
+   {:script
+    "(if (> (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/set-search-text \"Students with emails address contains 'Ba'\") (if (> (rt.po.report-view/count-report-row) 1) (do (rt.po.access-rules/click-edit-button) (rt.po.access-rules/delete-access-rule \"Students (User Role)\" \"Student\" \"Students with emails address contains 'Ba'\") (rt.po.access-rules/click-save-button)))))"}
+   {:script
+    "(rt.po.report-view/set-search-text \"System Administrator (User Account)\")"}
+   {:script
+    "(if (= (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/set-search-text \"Students with emails address contains 'Ba'\") (if (> (rt.po.report-view/count-report-row) 0) (do (rt.po.access-rules/click-edit-button) (rt.po.access-rules/delete-access-rule \"Students (User Role)\" \"Student\" \"Students with emails address contains 'Ba'\") (rt.po.access-rules/click-save-button)))))"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Students with emails address contains 'Ba'\")"}],
+  :modified-by "not-implemented"}]

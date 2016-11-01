@@ -1,0 +1,22 @@
+[{:tags [:desktop],
+  :tests [],
+  :name "Create a section (temp)",
+  :steps
+  [{:script "(rt.po.app/navigate-via-tiles \"Foster University\")"}
+   {:script "(rt.po.app/enable-config-mode )"}
+   {:script
+    "(rt.po.app/add-sections [{:name \"Automation Section X\"}])"}
+   {:script "(rt.scripts.common/sleep 3000)"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150601-153821",
+  :setup [],
+  :fixtures
+  [:common/fixture/chrome
+   :common/fixture/login
+   :common/fixture/test-account-creds
+   :common/fixture/handle-errors],
+  :id :rn/reportbuilder/createsection-temp,
+  :teardown
+  [{:script "(rt.po.app/delete-nav-item #\"Automation Section X\")"}],
+  :modified-by "not-implemented"}]

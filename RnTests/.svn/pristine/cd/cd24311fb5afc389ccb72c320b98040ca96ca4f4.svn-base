@@ -1,0 +1,46 @@
+[{:tags [:area/report-builder :prod :regression :desktop :user/abida],
+  :tests [],
+  :name "Sorting text field using sort options",
+  :steps
+  [{:script "(rt.po.app/navigate-via-tiles \"Foster University\")"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(rt.po.app/enable-config-mode )"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script "(rt.po.report-builder/click-saveas-report-button)"}
+   {:script
+    "(rt.po.report-builder/set-report-new-name \"SortViaSortOptions\")"}
+   {:script "(rt.po.report-builder/click-saveas-ok)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"StudentID\" false)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Student\" \"Sort Options\")"}
+   {:script "(rt.po.report-sort-option/click-add-sorting )"}
+   {:script
+    "(rt.po.report-sort-option/set-sortings [{:colname \"Student\" :dir \"Ascending\"}])"}
+   {:script "(rt.po.report-sort-option/click-ok)"}
+   {:script
+    "(expect-equals \"Abraham Mcdonald\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Student\"))"}
+   {:script
+    "(expect-equals \"Baker Sparks\" (rt.po.report-view/get-report-cell-text-content \"13\" \"Student\"))"}
+   {:script
+    "(expect-equals \"Cain Bonner\" (rt.po.report-view/get-report-cell-text-content \"17\" \"Student\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script "(rt.po.report-builder/click-close-button )"}
+   {:script
+    "(rn.app/open-report \"SortViaSortOptions\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script
+    "(expect-equals \"Abraham Mcdonald\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Student\"))"}
+   {:script
+    "(expect-equals \"Baker Sparks\" (rt.po.report-view/get-report-cell-text-content \"13\" \"Student\"))"}
+   {:script
+    "(expect-equals \"Cain Bonner\" (rt.po.report-view/get-report-cell-text-content \"17\" \"Student\"))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20151013-140536",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/reportbuilder/sorting-via-sortoptions-textfield,
+  :teardown
+  [{:script "(rn.app/delete-report \"SortViaSortOptions\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}],
+  :modified-by "not-implemented"}]

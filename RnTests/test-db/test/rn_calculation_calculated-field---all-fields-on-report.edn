@@ -1,0 +1,457 @@
+[{:tags
+  [:nomodify
+   :prod
+   :regression
+   :user/shaofen
+   :desktop
+   :area/calculation],
+  :tests [],
+  :name
+  "Calculated fields behaves on report - all data types - Bug #27082",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(comment \"======================Add a new test object with all types of fields .======================\")"}
+   {:script "(rt.po.app/enable-app-toolbox)"}
+   {:script
+    "(rt.po.app-toolbox/create-object {:description \"New Test Object Description\", :name (:obj-name *tc*)})"}
+   {:script
+    "(expect-equals (clojure.string/join [(:obj-name *tc*) \" Form\"]) (rt.po.form-builder/get-form-title))"}
+   {:script "(rt.po.form-builder/add-container-to-form)"}
+   {:script "(expect-equals true (rt.po.form-builder/has-canvas?))"}
+   {:script
+    "(rt.po.form-builder/add-field-from-toolbox-to-form \"Name\")"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Text\")"}
+   {:script
+    "(rt.po.form-builder/add-field-to-form \"Multiline Text\")"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Number\")"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Currency\")"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Decimal\")"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Date\")"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Time\")"}
+   {:script
+    "(rt.po.form-builder/set-field-name \"Time\" \"Time2\") ;; so not to confuse with \"Date and Time\" control .. workaround driver shortcoming"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Date and Time\")"}
+   {:script
+    "(comment \"======================Adding calculated fields one by one.======================\")"}
+   {:script
+    "(comment \"==================================Text======================\")"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Calculation\")"}
+   {:script
+    "(expect-equals \"Calculation\" (rt.po.form-builder-config/get-name))"}
+   {:script "(rt.po.form-builder-config/set-name \"Cal-Text\")"}
+   {:script
+    "(expect-equals true (rt.po.form-builder-config/calculation-field-type-visible?))"}
+   {:script
+    "(expect-equals \"Text\" (rt.po.form-builder-config/get-calculation-field-type))"}
+   {:script
+    "(expect-equals \"\" (rt.po.form-builder-config/get-calculation))"}
+   {:script
+    "(rt.po.form-builder-config/set-calculation \"'Hello World!'\")"}
+   {:script
+    "(expect-equals \"'Hello World!'\" (rt.po.form-builder-config/get-calculation))"}
+   {:script
+    "(expect-equals false (rt.po.form-builder-config/ok-disabled?))"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script
+    "(comment \"==================================Multiline Text======================\")"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Calculation\")"}
+   {:script
+    "(expect-equals \"Calculation\" (rt.po.form-builder-config/get-name))"}
+   {:script "(rt.po.form-builder-config/set-name \"Cal-Multiline\")"}
+   {:script
+    "(expect-equals true (rt.po.form-builder-config/calculation-field-type-visible?))"}
+   {:script
+    "(rt.po.form-builder-config/set-calculation-field-type \"Multiline Text\")"}
+   {:script
+    "(expect-equals \"Multiline Text\" (rt.po.form-builder-config/get-calculation-field-type))"}
+   {:script
+    "(expect-equals \"\" (rt.po.form-builder-config/get-calculation))"}
+   {:script
+    "(rt.po.form-builder-config/set-calculation \"'Australia is a country, and continent, surrounded by the Indian and Pacific oceans. '\")"}
+   {:script
+    "(expect-equals \"'Australia is a country, and continent, surrounded by the Indian and Pacific oceans. '\" (rt.po.form-builder-config/get-calculation))"}
+   {:script
+    "(expect-equals false (rt.po.form-builder-config/ok-disabled?))"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script
+    "(comment \"==================================Number======================\")"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Calculation\")"}
+   {:script
+    "(expect-equals \"Calculation\" (rt.po.form-builder-config/get-name))"}
+   {:script "(rt.po.form-builder-config/set-name \"Cal-Number\")"}
+   {:script
+    "(expect-equals true (rt.po.form-builder-config/calculation-field-type-visible?))"}
+   {:script
+    "(rt.po.form-builder-config/set-calculation-field-type \"Number\")"}
+   {:script
+    "(expect-equals \"Number\" (rt.po.form-builder-config/get-calculation-field-type))"}
+   {:script
+    "(expect-equals \"\" (rt.po.form-builder-config/get-calculation))"}
+   {:script "(rt.po.form-builder-config/set-calculation \"2016\")"}
+   {:script
+    "(expect-equals \"2016\" (rt.po.form-builder-config/get-calculation))"}
+   {:script
+    "(expect-equals false (rt.po.form-builder-config/ok-disabled?))"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script
+    "(comment \"==================================Decimal======================\")"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Calculation\")"}
+   {:script
+    "(expect-equals \"Calculation\" (rt.po.form-builder-config/get-name))"}
+   {:script "(rt.po.form-builder-config/set-name \"Cal-Decimal\")"}
+   {:script
+    "(expect-equals true (rt.po.form-builder-config/calculation-field-type-visible?))"}
+   {:script
+    "(rt.po.form-builder-config/set-calculation-field-type \"Decimal\")"}
+   {:script
+    "(expect-equals \"Decimal\" (rt.po.form-builder-config/get-calculation-field-type))"}
+   {:script
+    "(expect-equals \"\" (rt.po.form-builder-config/get-calculation))"}
+   {:script "(rt.po.form-builder-config/set-calculation \"2016.123\")"}
+   {:script
+    "(expect-equals \"2016.123\" (rt.po.form-builder-config/get-calculation))"}
+   {:script
+    "(expect-equals false (rt.po.form-builder-config/ok-disabled?))"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script
+    "(comment \"==================================Currency======================\")"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Calculation\")"}
+   {:script
+    "(expect-equals \"Calculation\" (rt.po.form-builder-config/get-name))"}
+   {:script "(rt.po.form-builder-config/set-name \"Cal-Currency\")"}
+   {:script
+    "(expect-equals true (rt.po.form-builder-config/calculation-field-type-visible?))"}
+   {:script
+    "(rt.po.form-builder-config/set-calculation-field-type \"Currency\")"}
+   {:script
+    "(expect-equals \"Currency\" (rt.po.form-builder-config/get-calculation-field-type))"}
+   {:script
+    "(expect-equals \"\" (rt.po.form-builder-config/get-calculation))"}
+   {:script "(rt.po.form-builder-config/set-calculation \"-25.6\")"}
+   {:script
+    "(expect-equals \"-25.6\" (rt.po.form-builder-config/get-calculation))"}
+   {:script
+    "(expect-equals false (rt.po.form-builder-config/ok-disabled?))"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script
+    "(comment \"==================================Date======================\")"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Calculation\")"}
+   {:script
+    "(expect-equals \"Calculation\" (rt.po.form-builder-config/get-name))"}
+   {:script "(rt.po.form-builder-config/set-name \"Cal-Date\")"}
+   {:script
+    "(expect-equals true (rt.po.form-builder-config/calculation-field-type-visible?))"}
+   {:script
+    "(rt.po.form-builder-config/set-calculation-field-type \"Date only\")"}
+   {:script
+    "(expect-equals \"Date only\" (rt.po.form-builder-config/get-calculation-field-type))"}
+   {:script
+    "(expect-equals \"\" (rt.po.form-builder-config/get-calculation))"}
+   {:script
+    "(rt.po.form-builder-config/set-calculation \"DateFromParts(1970,10,20)\")"}
+   {:script
+    "(expect-equals \"DateFromParts(1970,10,20)\" (rt.po.form-builder-config/get-calculation))"}
+   {:script
+    "(expect-equals false (rt.po.form-builder-config/ok-disabled?))"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script
+    "(comment \"==================================Time======================\")"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Calculation\")"}
+   {:script
+    "(expect-equals \"Calculation\" (rt.po.form-builder-config/get-name))"}
+   {:script "(rt.po.form-builder-config/set-name \"Cal-Time\")"}
+   {:script
+    "(expect-equals true (rt.po.form-builder-config/calculation-field-type-visible?))"}
+   {:script
+    "(rt.po.form-builder-config/set-calculation-field-type \"Time only\")"}
+   {:script
+    "(expect-equals \"Time only\" (rt.po.form-builder-config/get-calculation-field-type))"}
+   {:script
+    "(expect-equals \"\" (rt.po.form-builder-config/get-calculation))"}
+   {:script
+    "(rt.po.form-builder-config/set-calculation \"TimeFromParts(23,59,59)\")"}
+   {:script
+    "(expect-equals \"TimeFromParts(23,59,59)\" (rt.po.form-builder-config/get-calculation))"}
+   {:script
+    "(expect-equals false (rt.po.form-builder-config/ok-disabled?))"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script
+    "(comment \"==================================Date and Time======================\")"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Calculation\")"}
+   {:script
+    "(expect-equals \"Calculation\" (rt.po.form-builder-config/get-name))"}
+   {:script
+    "(rt.po.form-builder-config/set-name \"Cal-Date and Time\")"}
+   {:script
+    "(expect-equals true (rt.po.form-builder-config/calculation-field-type-visible?))"}
+   {:script
+    "(rt.po.form-builder-config/set-calculation-field-type \"Date and Time\")"}
+   {:script
+    "(expect-equals \"Date and Time\" (rt.po.form-builder-config/get-calculation-field-type))"}
+   {:script
+    "(expect-equals \"\" (rt.po.form-builder-config/get-calculation))"}
+   {:script
+    "(rt.po.form-builder-config/set-calculation \"DateTimeFromParts(1970,10,20,23,59,59)\")"}
+   {:script
+    "(expect-equals \"DateTimeFromParts(1970,10,20,23,59,59)\" (rt.po.form-builder-config/get-calculation))"}
+   {:script
+    "(expect-equals false (rt.po.form-builder-config/ok-disabled?))"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script
+    "(comment \"==================================Yes/No======================\")"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Calculation\")"}
+   {:script
+    "(expect-equals \"Calculation\" (rt.po.form-builder-config/get-name))"}
+   {:script "(rt.po.form-builder-config/set-name \"Cal-Yes/No\")"}
+   {:script
+    "(expect-equals true (rt.po.form-builder-config/calculation-field-type-visible?))"}
+   {:script
+    "(rt.po.form-builder-config/set-calculation-field-type \"Yes/No\")"}
+   {:script
+    "(expect-equals \"Yes/No\" (rt.po.form-builder-config/get-calculation-field-type))"}
+   {:script
+    "(expect-equals \"\" (rt.po.form-builder-config/get-calculation))"}
+   {:script
+    "(rt.po.form-builder-config/set-calculation \"Text <> 'Shaofen Ning'\")"}
+   {:script
+    "(expect-equals \"Text <> 'Shaofen Ning'\" (rt.po.form-builder-config/get-calculation))"}
+   {:script
+    "(expect-equals false (rt.po.form-builder-config/ok-disabled?))"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script
+    "(comment \"============================Checking each calculated field now can't change data type.======================\")"}
+   {:script
+    "(comment \"=================================== Text ======================\")"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"Cal-Text\")"}
+   {:script
+    "(expect-equals true (rt.po.form-builder-config/config-dialog-visible?))"}
+   {:script
+    "(expect-equals true (rt.po.form-builder-config/calculation-field-type-read-only?))"}
+   {:script "(rt.po.form-builder-config/click-cancel)"}
+   {:script
+    "(comment \"=================================== Multiline ======================\")"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"Cal-Multiline\")"}
+   {:script
+    "(expect-equals true (rt.po.form-builder-config/config-dialog-visible?))"}
+   {:script
+    "(expect-equals true (rt.po.form-builder-config/calculation-field-type-read-only?))"}
+   {:script "(rt.po.form-builder-config/click-cancel)"}
+   {:script
+    "(comment \"=================================== Number ======================\")"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"Cal-Number\")"}
+   {:script
+    "(expect-equals true (rt.po.form-builder-config/config-dialog-visible?))"}
+   {:script
+    "(expect-equals true (rt.po.form-builder-config/calculation-field-type-read-only?))"}
+   {:script "(rt.po.form-builder-config/click-cancel)"}
+   {:script
+    "(comment \"=================================== Currency ======================\")"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"Cal-Currency\")"}
+   {:script
+    "(expect-equals true (rt.po.form-builder-config/config-dialog-visible?))"}
+   {:script
+    "(expect-equals true (rt.po.form-builder-config/calculation-field-type-read-only?))"}
+   {:script "(rt.po.form-builder-config/click-cancel)"}
+   {:script
+    "(comment \"=================================== Decimal ======================\")"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"Cal-Decimal\")"}
+   {:script
+    "(expect-equals true (rt.po.form-builder-config/config-dialog-visible?))"}
+   {:script
+    "(expect-equals true (rt.po.form-builder-config/calculation-field-type-read-only?))"}
+   {:script "(rt.po.form-builder-config/click-cancel)"}
+   {:script
+    "(comment \"=================================== Date ======================\")"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"Cal-Date\")"}
+   {:script
+    "(expect-equals true (rt.po.form-builder-config/config-dialog-visible?))"}
+   {:script
+    "(expect-equals true (rt.po.form-builder-config/calculation-field-type-read-only?))"}
+   {:script "(rt.po.form-builder-config/click-cancel)"}
+   {:script
+    "(comment \"=================================== Time ======================\")"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"Cal-Time\")"}
+   {:script
+    "(expect-equals true (rt.po.form-builder-config/config-dialog-visible?))"}
+   {:script
+    "(expect-equals true (rt.po.form-builder-config/calculation-field-type-read-only?))"}
+   {:script "(rt.po.form-builder-config/click-cancel)"}
+   {:script
+    "(comment \"=================================== Date and Time ======================\")"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"Cal-Date and Time\")"}
+   {:script
+    "(expect-equals true (rt.po.form-builder-config/config-dialog-visible?))"}
+   {:script
+    "(expect-equals true (rt.po.form-builder-config/calculation-field-type-read-only?))"}
+   {:script "(rt.po.form-builder-config/click-cancel)"}
+   {:script
+    "(comment \"=================================== Yes/No ======================\")"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"Cal-Yes/No\")"}
+   {:script
+    "(expect-equals true (rt.po.form-builder-config/config-dialog-visible?))"}
+   {:script
+    "(expect-equals true (rt.po.form-builder-config/calculation-field-type-read-only?))"}
+   {:script "(rt.po.form-builder-config/click-cancel)"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}
+   {:script "(rt.po.app/disable-app-toolbox)"}
+   {:script
+    "(comment \"=========================== Adding report to navigation ======================\")"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Reports\")"}
+   {:script "(rt.po.app/add-report (:section *tc*))"}
+   {:script
+    "(rt.po.report-new/set-name (clojure.string/join [(:obj-name *tc*) \" Report\"]))"}
+   {:script "(rt.po.report-new/set-report-base-on (:obj-name *tc*))"}
+   {:script "(rt.po.report-new/click-ok)"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Text\" true)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Cal-Text\" true)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Multiline Text\" true)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Cal-Multiline\" true)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Number\" true)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Cal-Number\" true)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Decimal\" true)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Cal-Decimal\" true)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Currency\" true)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Cal-Currency\" true)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Date\" true)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Cal-Date\" true)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Time2\" true)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Cal-Time\" true)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Date and Time\" true)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Cal-Date and Time\" true)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Cal-Yes/No\" true)"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(comment \"=================================== Adding data for the report ======================\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script "(expect (rt.po.edit-form/save-button-exists?))"}
+   {:script "(expect (not (rt.po.edit-form/back-button-exists?)))"}
+   {:script "(rt.po.edit-form/field-visible? \"Name\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" \"Test1\")"}
+   {:script "(rt.po.edit-form/field-visible? \"Text\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Text\" \"Test1\")"}
+   {:script "(rt.po.edit-form/field-visible? \"Cal-Text\")"}
+   {:script "(rt.po.edit-form/field-visible? \"Multiline Text\")"}
+   {:script "(rt.po.edit-form/field-visible? \"Cal-Multiline\")"}
+   {:script
+    "(rt.po.edit-form/set-multiline \"Multiline Text\" \"Hello, have a good day!\")"}
+   {:script "(rt.po.edit-form/field-visible? \"Number\")"}
+   {:script "(rt.po.edit-form/field-visible? \"Cal-Number\")"}
+   {:script
+    "(rt.po.edit-form/set-number-field-value \"Number\" \"123\")"}
+   {:script "(rt.po.edit-form/field-visible? \"Currency\")"}
+   {:script "(rt.po.edit-form/field-visible? \"Cal-Currency\")"}
+   {:script
+    "(rt.po.edit-form/set-number-field-value \"Currency\" \"$-154.17\")"}
+   {:script "(rt.po.edit-form/field-visible? \"Decimal\")"}
+   {:script "(rt.po.edit-form/field-visible? \"Cal-Decimal\")"}
+   {:script
+    "(rt.po.edit-form/set-number-field-value \"Decimal\" \"-154.17\")"}
+   {:script "(rt.po.edit-form/field-visible? \"Date\")"}
+   {:script "(rt.po.edit-form/field-visible? \"Cal-Date\")"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Date\" (make-local-date 1998 3 11))"}
+   {:script "(rt.po.edit-form/field-visible? \"Time2\")"}
+   {:script "(rt.po.edit-form/field-visible? \"Cal-Time\")"}
+   {:script
+    "(rt.po.edit-form/set-time-value \"Time2\" \"2\" \"05\" \"PM\")"}
+   {:script "(rt.po.edit-form/field-visible? \"Date and Time\")"}
+   {:script "(rt.po.edit-form/field-visible? \"Cal-Date and Time\")"}
+   {:script
+    "(comment \"no driver to set a value for dateTime field on edit form.\")"}
+   {:script "(rt.po.edit-form/field-visible? \"Cal-Yes/No\")"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/field-read-only? \"Cal-Text\"))"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/multiline-field-read-only? \"Cal-Multiline\"))"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/numeric-field-read-only? \"Cal-Number\"))"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/numeric-field-read-only? \"Cal-Decimal\"))"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/numeric-field-read-only? \"Cal-Currency\"))"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/date-field-read-only? \"Cal-Date\"))"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/date-field-read-only? \"Cal-Time\"))"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/date-and-time-field-read-only? \"Cal-Date and Time\"))"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/bool-field-read-only? \"Cal-Yes/No\"))"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script
+    "(comment \"====================================== Checking calclated fields on report. ====================\")"}
+   {:script
+    "(rn.app/open-report (clojure.string/join [(:obj-name *tc*) \" Report\"]) {:app-name \"Foster University\"})"}
+   {:script
+    "(expect-equals \"Hello World!\" (rt.po.report-view/get-value-for-row-and-column \"Test1\" \"Cal-Text\"))"}
+   {:script
+    "(expect-equals \"Australia is a country, and continent, surrounded by the Indian and Pacific oceans.\" (rt.po.report-view/get-value-for-row-and-column \"Test1\" \"Cal-Multiline\"))"}
+   {:script
+    "(expect-equals \"2,016\" (rt.po.report-view/get-value-for-row-and-column \"Test1\" \"Cal-Number\"))"}
+   {:script
+    "(expect-equals \"2,016.123\" (rt.po.report-view/get-value-for-row-and-column \"Test1\" \"Cal-Decimal\"))"}
+   {:script
+    "(expect-equals \"-25.600\" (rt.po.report-view/get-value-for-row-and-column \"Test1\" \"Cal-Currency\"))"}
+   {:script
+    "(expect-equals \"10/20/1970\" (rt.po.report-view/get-value-for-row-and-column \"Test1\" \"Cal-Date\"))"}
+   {:script
+    "(expect-equals \"11:59 PM\" (rt.po.report-view/get-value-for-row-and-column \"Test1\" \"Cal-Time\"))"}
+   {:script
+    "(comment \"(expect-equals -quote10/20/1970 11:59 AMquote- (rt.po.report-view/get-value-for-row-and-column \" Test1 \" \" Cal-Date and Time \"))\")"}
+   {:script
+    "(expect-equals \"Yes\" (rt.po.report-view/get-value-for-row-and-column \"Test1\" \"Cal-Yes/No\"))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160915-154651",
+  :setup
+  [{:script
+    "(identity {:app-name (rt.lib.util/make-test-name \"RT-Test\"), :obj-name (rt.lib.util/make-test-name \"CalcObj\")})"}],
+  :fixtures
+  [:common/fixture/test-account-creds :rn/fixture/admin-creds],
+  :id :rn/calculation/calculated-field---all-fields-on-report,
+  :teardown
+  [{:script
+    "(comment (rn.common/start-app-and-login (:admin-creds *tc*)))"}
+   {:script
+    "(comment (rn.app/open-report \"Objects\" {:app-name \"ReadiNow Core Data\", :folder-name \"Resources\"}))"}
+   {:script
+    "(comment (rt.po.report-view/set-search-text \"CalculedField-Object1\"))"}
+   {:script
+    "(comment (if (> (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/right-click-row-by-text \"CalculedField-Object1\") (rt.po.app/choose-context-menu \"Delete\") (rt.po.edit-form/click-confirm-delete-ok-button))))"}],
+  :doc "",
+  :modified-by "not-implemented"}]

@@ -1,0 +1,25 @@
+[{:tags [:desktop],
+  :name "Install an application from Application Library",
+  :steps
+  [{:script "(rt.po.app/navigate-to \"Administration\")"}
+   {:script "(rt.po.app/select-navigator-item \"Applications\")"}
+   {:script
+    "(rt.po.app/select-navigator-item \"Application Library\")"}
+   {:script
+    "(rt.po.report-view/select-row-by-text \"Application for Scott\")"}
+   {:script
+    "(comment (rt.po.report-view/right-click-row-by-text \"Application for Scott\"))"}
+   {:script "(rt.po.report-view/click-action-menu-button \"Install\")"}
+   {:script
+    "(comment (rt.po.common/wait-until (expect (not (rt.po.report-view/get-report-cell-text-content \"0\" \"Installed version\") nil))))"}
+   {:script
+    "(rt.po.common/wait-until (expect (rt.po.report-view/get-report-cell-text-content \"0\" \"Installed version\" nil)))"}
+   {:script
+    "(expect-equals (rt.po.report-view/get-report-cell-text-content \"0\" \"Installed version\") (rt.po.report-view/get-report-cell-text-content \"0\" \"Available version\"))"}],
+  :type :test,
+  :modified "20160909-171447",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/applib/install-an-application,
+  :teardown [],
+  :modified-by "not-implemented"}]

@@ -1,0 +1,15 @@
+[{:tags [:desktop],
+  :name "iPad emulation with Chrome",
+  :steps [],
+  :type :testfixture,
+  :source "../RnTests/test-db",
+  :modified "20150601-153828",
+  :setup [],
+  :id :common/fixture/chrome-iPad,
+  :teardown [],
+  :modified-by "not-implemented",
+  :data
+  {:target "chrome",
+   :target-device "Apple iPad",
+   :target-height 768,
+   :target-width 1024}}]

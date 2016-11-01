@@ -1,0 +1,660 @@
+(ns rt.po.report-builder
+  (:require [rt.lib.wd :as wd :refer [right-click double-click set-input-value find-element-with-text find-partial-tree
+                                      wait-for-jq wait-until-displayed]]
+            [rt.lib.wd-rn :refer [drag-n-drop drag-n-drop-in-report-builder drag-n-drop-reorder-analyzer
+                                  drag-n-drop-remove-column drag-n-drop-remove-analyzer set-click-to-edit-value
+                                  get-grouped-rows-by-value get-grouped-agg-rows-by-value
+                                  navitem-isdirty?]]
+            [rt.lib.wd-ng :refer [apply-angular-expression wait-for-angular]]
+            [rn.services.entity :refer [get-entity-id-for-name]]
+            [rt.po.app :as app :refer [make-app-url choose-context-menu enable-config-mode]]
+            [rt.po.common :refer [exists-present? click-modal-dialog-button-and-wait wait-until]]
+            [rt.po.edit-form :as ef]
+            [rt.po.report-new :as rn]
+            [rt.test.expects :refer [expect expect-equals]]
+            [clj-webdriver.taxi :as taxi :refer [to text exists? click value selected? find-element select-by-text selected-options select-option find-element-under find-elements-under element elements element attribute visible? *driver*]]
+            [clj-webdriver.core :refer [by-css by-xpath ->actions move-to-element]]
+            [clojure.string :as string]
+            [taoensso.timbre :refer [trace debug info warn error tracef debugf infof warnf errorf]])
+  (:import (org.openqa.selenium TimeoutException StaleElementReferenceException)))
+
+;; TODO - do case insensitive matching on fields names etc.
+;; TODO - allow partial name matching but prefer exact match
+;; TODO - refactor these functions ... begging for it!
+
+(defn create-report
+  "AAAA Create new report by dropping into left navigation section\n\nparent-name is the section or folder that gets the report. Or pass an empty string.\n\ntype is the report base on type\n\ne.g. rt.po.report-builder/create-report \"Test Solution\" \"new report\" \"new report description\" \"AA_All Fields\"\n\nSyntax:\n    (rt.po.report-builder/create-report parent-name name description type)\n\nExamples:\n    (rt.po.report-builder/create-report \"Fodler 1\" \"Report Name\" \"My Description\" \"AA_All Fields\")\n\nPrerequisites:\n    Configure mode"
+  #_"Create new report by dropping into left navigation section
+
+parent-name is the section or folder that gets the report. Or pass an empty string.
+
+type is the report base on type
+
+e.g. rt.po.report-builder/create-report \"Test Solution\" \"new report\" \"new report description\" \"AA_All Fields\"
+
+Syntax:
+    (rt.po.report-builder/create-report parent-name name description type)
+
+Examples:
+    (rt.po.report-builder/create-report \"Fodler 1\" \"Report Name\" \"My Description\" \"AA_All Fields\")
+
+Prerequisites:
+    Configure mode"
+
+  [parent-name name description type]
+  (rt.po.app/add-report parent-name)
+  (rt.po.report-new/set-name name)
+  (rt.po.report-new/set-description description)
+  (rt.po.report-new/set-report-base-on type)
+  (rt.po.report-new/click-ok))
+
+(defn report-visible?
+  "verify report data grid exists
+
+True/false
+
+Syntax:
+    (rt.po.report-view/report-visible? report)
+
+Examples:
+    �(rt.po.report-view/report-visible? \"My Report Name\")
+
+Prerequisites:
+    Viewing or editing an existing report"
+  [report-name]
+  (exists? (str ".report-view [ng-style='consoleThemeModel.titleStyle']:contains('" report-name "')")))
+
+
+(defn wait-for-report-load []
+  (wait-for-jq ".dataGrid-view"))
+
+(defn wait-for-report-builder []
+  (wait-for-jq ".report-Builder-Page"))
+
+
+(defn wait-for-grouped-by []
+  (let [grouped-by (str "div[ng-click*=aggregateRowToggleExpand]")]
+    (wait-for-jq grouped-by)
+    (wait-for-angular)
+    ;; the group by Expand take 400ms to load, make as
+    (Thread/sleep 500)))
+
+(defn access-build-mode []
+  (when (exists-present? ".contextmenu-backdrop")
+    (println "*** Context menu appears to be open. Clicking backdrop.")
+    (click ".contextmenu-backdrop")
+    (wait-until #(not (exists-present? ".contextmenu-backdrop"))))
+
+  (click ".report-config-panel-button")
+  (click (find-element {:tag :span, :text "Modify Report"}))
+  (wait-for-angular)
+  (wait-for-report-builder))
+
+#_(defn view-report-direct
+    "Open the report at the end of the given path in view mode. Navigate directly.
+
+  app-name is the name of the application
+  report-path is the full path of the report location
+
+  e.g. rt.po.report-builder/view-report \"Test Solution\" \"Test Solution/AA_Automation/AA_AutomationReport
+
+  Syntax:
+      �(rt.po.report-builder/view-report app-name report-path)
+
+  Examples:
+      �(rt.po.report-builder/view-report \"Test Solution\" \"Test Solution/AA_Automation/AA_AutomationReport)"
+
+    [app-name path]
+    (let [parts (some-> path (string/split #"/") reverse)
+          options {:app-name app-name}
+          ;; if the path is more than just the report name, then grab the immediate parent as the folder name
+          options (merge options (when (> (count parts) 1) {:folder-name (second parts)}))]
+      (rt.po.report-view/to-view-report-by-name (first parts) options)
+      (rt.lib.wd-rn/report-grid-scroll-to-top)))
+
+;; use rn.app/open-report instead
+#_(defn view-report
+    "Open existing report for view
+
+  app-name is the name of application
+  report-path is the full path of the report location
+
+  e.g. rt.po.report-builder/view-report \"Test Solution\" \"Test Solution/AA_Automation/AA_AutomationReport\"
+
+  Syntax:
+      �(rt.po.report-builder/view-report app-name report-path)
+
+  Examples:
+      �(rt.po.report-builder/view-report \"Test Solution\" \"Test Solution/AA_Automation/AA_AutomationReport\")"
+
+    [app-name report-path]
+    #_(rt.po.app/navigate-to-item app-name report-path)
+    (view-report-direct app-name report-path))
+
+(defn edit-report
+  "Open existing report for edit
+
+Applicatiion-name is the name of current application
+
+report-path is the full path of the report location
+
+e.g. rt.po.report-builder/edit-report \"Test Solution\" \"Test Solution/AA_Automation/AA_AutomationReport\"
+
+Syntax:
+    �(rt.po.report-builder/edit-report parent-folder report-path)
+
+Examples:
+    �(�rt.po.report-builder/edit-report \"Test Solution\" \"Test Solution/AA_Automation/AA_AutomationReport\")
+
+Prerequisites:
+    Be in the correct application with the path expanded"
+
+  [parent-folder report-path]
+  (rt.po.app/navigate-to-item parent-folder report-path)
+  (enable-config-mode)
+  (access-build-mode))
+
+
+(defn get-rootnode-name []
+  (str ".selectedrootnodename"))
+
+(defn summarise-button-visible? []
+  (and (exists? ".report-Builder-Toolbox button[ng-click*=summariseOption]")))
+
+(defn click-summarise-button []
+  (click ".report-Builder-Toolbox button[ng-click*=summariseOption]"))
+
+(defn click-calculation-button []
+  (click ".report-Builder-Toolbox button[ng-click*=calculationEditor]"))
+
+(defn click-advanced-button []
+  (click ".report-Builder-Toolbox button[ng-click*=advanced]"))
+
+(defn click-add-relationship-button []
+  (click ".report-Builder-Toolbox button[ng-click*=pickRelationship]"))
+
+;; field manager filter
+
+(defn get-filter-field-name []
+  (attribute (element ".report-Builder-Toolbox [ng-change*=onSearchValueChanged]") "value"))
+
+(defn set-filter-field-name [value]
+  (set-input-value ".report-Builder-Toolbox [ng-change*=onSearchValueChanged]" value))
+
+;; add/remove field to report and analyzer by click
+(defn find-in-report-checkbox-field [name]
+  (str ".itemcontainer [title='" name "'] [ng-model*=inrep] "))
+
+(defn find-in-analyzer-checkbox-field [name]
+  (str ".itemcontainer [title='" name "'] [ng-model*=inanal] "))
+
+(defn get-in-report-checkbox-field-value [name]
+  (selected? (find-in-report-checkbox-field name)))
+
+(defn set-in-report-checkbox-field-value [name value]
+  (when (not= (get-in-report-checkbox-field-value name) value)
+    (click (find-in-report-checkbox-field name))
+    (Thread/sleep 450)                                      ;; the product has a debounced method with a wait of 400ms
+    (wait-for-angular)))
+
+(defn get-in-analyzer-checkbox-field-value [name]
+  (selected? (find-in-analyzer-checkbox-field name)))
+
+(defn set-in-analyzer-checkbox-field-value [name value]
+  (when (not= (get-in-analyzer-checkbox-field-value name) value)
+    (click (find-in-analyzer-checkbox-field name))
+    (Thread/sleep 450)                                      ;; the product has a debounced method with a wait of 400ms
+    (wait-for-angular)))
+
+;; selelct treenode
+(defn select-treenode [name]
+  (click (str ".report-Builder-Treeview-Item [ng-click*='selectChildNode']:has(:contains('" name "'))")))
+
+(defn treenode-select? [name]
+  (exists? (str ".report-Builder-Treeview-Item [ng-click*='selectChildNode']:has(:contains('" name "')) [class*=displayremovebutton]")))
+
+(defn remove-relationship [name]
+  (when (treenode-select? name)
+    (click (str ".report-Builder-Treeview-Item [ng-click*='selectChildNode']:has(:contains('" name "')) [ng-click*=removeChildNode]"))))
+
+;; rename report column
+
+(defn get-rename-column-name []
+  (attribute (element ".spRenameColumnDialog-view [ng-model*=columnName]") "value"))
+
+(defn set-rename-column-name [value]
+  (set-input-value ".spRenameColumnDialog-view [ng-model*=columnName]" value))
+
+
+(defn click-refresh-report-button []
+  (click ".report-Builder-ToolBar button[ng-click*=reloadReportEntity]")
+  (wait-for-angular))
+
+(defn click-save-report-button []
+  (click (element ".report-Builder-ToolBar button[ng-click*=saveReportEntity]"))
+  (wait-for-angular)
+  (wait-until #(not (navitem-isdirty?)) 20000 500))
+
+(defn click-saveas-report-button []
+  (click ".report-Builder-ToolBar button[ng-click*=saveAsReportEntity]")
+  (wait-for-angular))
+
+(defn click-property-report-button []
+  (click ".report-Builder-ToolBar button[ng-click*=updateReportProperty]"))
+
+(defn click-close-button []
+  (click ".report-Builder-ToolBar button[ng-click*=close]")
+  (wait-for-angular))
+
+
+(defn select-field-in-report
+  ([name] (select-field-in-report name true))
+  ([name select]
+   (wait-for-jq "[ng-model='field.inrep']")
+   (let [check-box (element (str "[ng-model='field.inrep'][title= '" name "']"))]
+
+     (when-not check-box (throw (Exception. (str "Failed to find report field: " name))))
+     (when-not (= select (selected? check-box)) (click check-box)))))
+
+(defn select-fields-in-report [& fields]
+  (wait-for-angular)
+  (binding [taxi/*finder-fn* wd/find-by-jq]
+    (doseq [f fields]
+      (select-field-in-report f true))))
+
+(defn deselect-fields-in-report [& fields]
+  (wait-for-angular)
+  (binding [taxi/*finder-fn* wd/find-by-jq]
+    (doseq [f fields]
+      (select-field-in-report f false))))
+
+(defn select-field-in-analyser
+  ([name] (select-field-in-analyser name true))
+  ([name select]
+   (let [check-box (element (str "[ng-model='field.inanal'][title= '" name "']"))]
+     (when-not (= select (selected? check-box)) (click check-box)))))
+
+(defn select-field-checkboxes
+  "Set the field checkboxes in the report builder toolbox.
+
+  Pass nil if you want to leave the checkbox unchanged.
+
+  # Usage
+  (select-field-checkboxes field-name in-report? in-analyser?)
+
+  where field-name is the name of the field as seen in the toolbox
+   and in-report? and in-analyser? are true, false or nil
+
+  # Examples
+  (select-field-checkboxes \"Some Field\" true false)
+  (select-field-checkboxes \"Some Field\" nil true)"
+  [field-name in-report? in-analyser?]
+  (select-field-in-report field-name in-report?)
+  (select-field-in-analyser field-name in-analyser?))
+
+(defn field-in-report?
+  [name]
+  (let [check-box (element (str "[ng-model='field.inrep'][title= '" name "']"))]
+    (selected? check-box)))
+
+(defn field-in-analyser?
+  [name]
+  (let [check-box (element (str "[ng-model='field.inanal'][title= '" name "']"))]
+    (selected? check-box)))
+
+(defn get-analyser-fields-in-popup []
+  (wait-until #(exists? "button[ng-click*=analyzerButtonClick]"))
+  (click "button[ng-click*=analyzerButtonClick]")
+  (let [xs (vec (map #(text %) (elements ".analyzerFieldText.ng-binding")))]
+    (click "button[ng-click*=analyzerButtonClick]")
+    xs))
+
+(defn get-analyser-fields-in-toolbox []
+  (let [fields (elements "[ng-repeat*='group.fields']")
+        get-inanal-checkbox (fn [e] (find-element-under e {:css "input[ng-model='field.inanal']"}))]
+    (->> fields
+         (map (fn [e] {:f e :c (get-inanal-checkbox e)}))
+         (filter #(selected? (:c %)))
+         (map #(text (:f %))))))
+
+(defn get-selected-fields-in-toolbox []
+  (let [fields (elements "[ng-repeat*='group.fields']")
+        get-inanal-checkbox (fn [e] (find-element-under e {:css "input[ng-model='field.inrep']"}))]
+    (->> fields
+         (map (fn [e] {:f e :c (get-inanal-checkbox e)}))
+         (filter #(selected? (:c %)))
+         (map #(text (:f %))))))
+
+(defn get-fields-in-report-view []
+  (map #(text %) (elements ".ngHeaderContainer [ng-repeat='col in renderedColumns'] .ngHeaderText")))
+
+(defn check-col-exists? [column-name]
+  (exists-present? (find-element-with-text ".ngHeaderContainer [ng-repeat='col in renderedColumns']" column-name)))
+
+(defn get-col-header [column-name]
+  (wait-until #(check-col-exists? column-name) 5000)
+  (find-element-with-text ".ngHeaderContainer [ng-repeat='col in renderedColumns']" column-name))
+
+(defn show-column-context-menu [column-name]
+  (Thread/sleep 500)
+
+  (try
+    (wait-until #(visible? (get-col-header column-name)) 5000)
+    (catch TimeoutException _
+      (throw (Exception. (str "Failed to find column: \"" column-name "\"")))))
+
+  (-> (get-col-header column-name)
+      (#(do (->actions *driver* (move-to-element %)) %))
+      (find-element-under {:css "button.headerContextMenuButton"})
+      (click))
+
+  (when-not (exists-present? "ul.contextmenu-view")
+    (throw (Exception. (str "Failed to open context menu for column: \"" column-name "\"")))))
+
+(defn choose-column-menu-item [column-name item-name]
+  (wait-for-angular)
+  (show-column-context-menu column-name)
+  (app/choose-context-menu item-name)
+  (wait-for-angular)
+  (Thread/sleep 500))
+
+(defn click-column-header-menu [column-name]
+  (show-column-context-menu column-name))
+
+(defn click-sort-a-z [column-name]
+  (choose-column-menu-item column-name "Sort A-Z")
+  (wait-until #(= (rt.po.report-view/get-column-sort-caret column-name) "Up")))
+
+(defn click-sort-z-a [column-name]
+  (choose-column-menu-item column-name "Sort Z-A")
+  (wait-until #(= (rt.po.report-view/get-column-sort-caret column-name) "Down")))
+
+(defn click-cancel-sort [column-name]
+  (choose-column-menu-item column-name "Cancel Sort"))
+
+(defn click-sort-option [column-name]
+  (choose-column-menu-item column-name "Sort Options"))
+
+(defn click-group-by [column-name]
+  (choose-column-menu-item column-name "Group By"))
+
+(defn click-summarise [column-name]
+  (choose-column-menu-item column-name "Summarise"))
+
+(defn click-rename [column-name]
+  (choose-column-menu-item column-name "Rename Column"))
+
+(defn click-remove-column [column-name]
+  (choose-column-menu-item column-name "Remove Column"))
+
+(defn click-format-column [column-name]
+  (choose-column-menu-item column-name "Format Column"))
+
+(defn click-show-total [column-name]
+  (choose-column-menu-item column-name "Show Totals"))
+
+(defn get-field-item [field-name]
+  (str ".item [title='" field-name "'] [sp-draggable='dragOptions'] "))
+
+(defn get-field-item-element [field-name]
+  (element {:tag :div, :title field-name}))
+
+(defn drag-field-to-report [field-name column-name]
+  (drag-n-drop-in-report-builder
+    (str ".report-Builder-Fieldmanager div[title='" field-name "']")
+    (str ".ngHeaderContainer [ng-click='sortColumnToggle(col)']:contains('" column-name "')") "addColumnByDragDrop"))
+
+(defn drag-field-to-analyzer [field-name analyzer-name]
+  (drag-n-drop-in-report-builder
+    (str ".report-Builder-Fieldmanager div[title='" field-name "']")
+    (str ".conditionsPanel [sp-droppable='dropOptions']:contains('" analyzer-name "')") "addAnalyzerByDragDrop"))
+
+(defn drag-column-to-reorder [column-name1 column-name2]
+  (drag-n-drop-in-report-builder
+    (str ".ngHeaderContainer [sp-draggable='dragOptions']:contains('" column-name1 "')")
+    (str ".ngHeaderContainer [ng-click='sortColumnToggle(col)']:contains('" column-name2 "')") "reOrderColumnByDragDrop"))
+
+(defn drag-analyzer-to-reorder [analyzer-name1 analyzer-name2]
+  (drag-n-drop-reorder-analyzer
+    (str ".conditionsPanel [sp-droppable='dropOptions']:contains('" analyzer-name1 "')")
+    (str ".conditionsPanel [sp-droppable='dropOptions']:contains('" analyzer-name2 "')")))
+
+(defn drag-to-remove-column [column-name]
+  (drag-n-drop-remove-column
+    (str ".ngHeaderContainer [sp-draggable='dragOptions']:contains('" column-name "')")))
+
+(defn drag-to-remove-analyzer [analzyer-name]
+  (drag-n-drop-remove-analyzer
+    (str ".conditionsPanel [sp-droppable='dropOptions']:contains('" analzyer-name "')")))
+
+(defn- retry-on-stale-element [f & args]
+  (loop [n 2]
+    (when (pos? n)
+      (let [result (try (apply f args)
+                        (catch StaleElementReferenceException _
+                          (warn "Ignoring StaleElementReferenceException")
+                          nil))]
+        (if (nil? result)
+          (recur (dec n))
+          result)))))
+
+(defn get-count-matched-columns-name [column-name]
+  "
+ get count of matched report columns' name
+
+Returns the count number of report columns' name
+
+Syntax:
+   �(rt.po.report-builder/get-count-matched-columns-name column-name)
+
+Examples:
+   �(rt.po.report-builder/get-count-matched-columns-name \"Date\")
+
+Prerequisites:
+   Report builder or viewer"
+
+  (let [f (fn [column-name]
+            (wait-until #(element (str ".ngHeaderText:contains('" column-name "')")) 20000)
+            (count (filter #(= % (str column-name)) (mapv taxi/text (elements ".ngHeaderText")))))]
+    (retry-on-stale-element f column-name)))
+
+(defn get-count-matched-nodes-name [node-name]
+  "
+ get count of matched report treeview nodes' name
+
+Returns the count number of report treeview nodes' name
+
+Syntax:
+   �(rt.po.report-builder/get-count-matched-nodes-name node-name)
+
+Examples:
+   �(rt.po.report-builder/get-count-matched-nodes-name \"AA_Herb\")
+
+Prerequisites:
+   Report builder"
+  (count (filter #(= % (str node-name)) (mapv #(text %) (elements ".report-Builder-Treeview-Item")))))
+
+(defn get-report-new-name []
+  (attribute (element ".reportSaveAsDialog-view [ng-model*=reportName]") "value"))
+
+(defn set-report-new-name [report-name]
+  (set-input-value ".reportSaveAsDialog-view [ng-model*=reportName]" report-name))
+
+(defn- get-group-by-row [group-by-value]
+  (str ".dataGridAggregateTextRow:visible:contains(\"" group-by-value "\")"))
+
+(defn- get-group-by-row-element [group-by-value]
+  (element (str "div.ngAggregate:contains(\"" group-by-value "\")")))
+
+(defn- get-group-by-row-index [group-by-value]
+  (.indexOf (mapv #(text %) (elements ".dataGridAggregateTextRow")) group-by-value))
+
+(defn wait-for-group [group-by-value]
+  (wait-until #(not (string/blank? (text (get-group-by-row group-by-value)))) 20000))
+
+(defn get-group-by-row-text [group-by-value]
+  (wait-for-group group-by-value)
+  (text (get-group-by-row group-by-value)))
+
+(defn check-group-by-row-not-exists? [group-by-value]
+  (wait-until #(exists-present? (element (str ".ngRow:contains(\"" group-by-value "\")" )) ) 1500))
+
+(defn check-group-by-row-exists? [group-by-value]
+  (try
+    (wait-for-group group-by-value)
+    (text (get-group-by-row group-by-value))
+    true
+    (catch Exception e false)))
+
+
+(defn check-group-by-row-expand? [group-by-value]
+  (let [group-by-row (get-group-by-row-element group-by-value)]
+    (try
+      (find-element-under group-by-row (by-css ".ngAggArrowExpanded"))
+      true
+      (catch Exception e false))))
+
+(defn get-rows-number-under-group-by-row
+  "
+  get the number of report grid grouped rows
+  Returns the number of report grid grouped rows
+  Syntax:
+      (rt.po.report-builder/get-rows-number-under-group-by-row  group-by-value)
+  Examples:
+      (rt.po.report-builder/get-rows-number-under-group-by-row \"Monday\")
+
+  Prerequisites:
+      Report builder or viewer"
+  [group-by-value]
+  (try (count (get-grouped-rows-by-value (str "div.ngAggregate:contains('" group-by-value "')")))
+       (catch Exception e 0)))
+
+(defn get-grouped-row-by-index [group-by-value index]
+  (let [group-by-row-index-list (get-grouped-rows-by-value (str "div.ngAggregate:contains('" group-by-value "')"))]
+    (let [row-index (get (to-array group-by-row-index-list) index)]
+      (element (str ".ngRow[rowindex=" row-index "]")))))
+
+(defn get-grouped-row-content
+  "
+  get report grid grouped row cell content
+  Returns text of report cell contect
+  Syntax:
+      (rt.po.report-builder/get-grouped-row-content  group-by-value row-index column-name)
+  Examples:
+      (rt.po.report-builder/get-grouped-row-content \"Monday\" 0 \"Name\")
+
+  Prerequisites:
+      Report builder or viewer"
+
+  [group-by-value index column-name]
+  (try (let [col-index (.indexOf (rt.po.report-view/get-report-column-names) column-name)]
+         (let [row (get-grouped-row-by-index group-by-value index)]
+           (get (mapv #(text %) (find-elements-under row (by-css "[sp-data-grid-row-col-scope]"))) (+ col-index 1))))
+       (catch Exception e "")))
+	   
+
+(defn get-group-by-context-menu-button [group-by-value]
+  (let [group-by-row (get-group-by-row-element group-by-value)]
+    (get (find-elements-under group-by-row (by-css "[ng-repeat='col in renderedColumns']")) 1)))
+
+
+
+(defn click-group-by-row [group-by-value]
+  (wait-for-group group-by-value)
+
+  (let [group-by-row (element (get-group-by-row group-by-value))]
+    (click group-by-row)))
+
+;; the second query should be css based, i.e. can't use our jquery based selector
+(defn- hover-then-click-child [q1 css_q]
+  (->actions *driver* (move-to-element (element q1)))
+  (-> (find-element-under q1 css_q)
+      (click)))
+
+(defn show-group-by-context-menu [group-by-value]
+  (wait-for-group group-by-value)
+
+  (wait-until #(try
+                (hover-then-click-child (get-group-by-row group-by-value)
+                                        {:css "button.aggregateHeaderContextMenuButton"})
+                true
+                (catch StaleElementReferenceException _
+                  (warn "StaleElementReferenceException in show-group-by-context-menu - retrying")
+                  false)) 1000 200)
+
+  (when-not (exists-present? "ul.contextmenu-view")
+    (throw (Exception. (str "Failed to open context menu for group by: \"" group-by-value "\"")))))
+
+(defn choose-group-by-row-menu-item
+  "choose group by row context menu item
+
+Syntax:
+  (rt.po.report-builder/choose-group-by-row-menu-item group-by-value item-name)
+
+Examples:
+  (rt.po.report-builder/choose-group-by-row-menu-item \"No\" \"Cancel Group\" )
+
+Prerequisites:
+  editing an existing group by report"
+  [group-by-value item-name]
+  (show-group-by-context-menu group-by-value)
+  (app/choose-context-menu item-name))
+
+(defn click-saveas-ok []
+  (click "button:contains(OK)"))
+
+(defn double-click-saveas-ok []
+  (double-click "button:contains(OK)"))
+
+(defn click-saveas-cancel []
+  (click "button:contains(Cancel)"))
+
+(defn add-relationship [rel-name]
+
+  (click "#reportBuildToolBox button.report-Builder-Control-Add")
+  (set-input-value ".relationshipdialog-view .modal-body input[ng-model*=searchText]" rel-name)
+
+  (let [root-q ".relationshipdialog-view .modal-body [ng-repeat*='rel in']"
+        text-q "td"
+        button-q "button[ng-click*=addRel]"
+        tree (find-partial-tree root-q text-q button-q)
+        rel-row (first (filter #(= rel-name (text (second %))) tree))
+        add-button (nth rel-row 2)]
+    (click add-button))
+
+  (click-modal-dialog-button-and-wait ".modal-footer button:contains(OK)"))
+
+(defn add-calculated-field [name expr]
+  (click "button.report-Builder-Control-Calculate")
+  (set-input-value ".calculatedfielddialog-view input" name)
+  (apply-angular-expression
+    ".calculatedfielddialog-view .expression-editor-control"
+    (str "model.script = \"" expr "\""))
+  (app/choose-modal-ok))
+
+(defn rename [text]
+  (taxi/click ".editable-label-readonly-container")
+  (taxi/send-keys "input.editable-label-edit" (str text (clj-webdriver.core/key-code :enter))))
+
+(defn save []
+  (click-save-report-button))
+
+(defn close []
+  (click-close-button))
+
+;; BUTTONS
+
+(defn click-ok []
+  (click-modal-dialog-button-and-wait "button:contains(OK)")
+  (wait-for-angular))
+
+(defn click-cancel []
+  (click-modal-dialog-button-and-wait "button:contains(Cancel)")
+  (wait-for-angular))
+
+(defn get-name []
+  (text ".report-header"))
+
+(defn set-name [value]
+  (set-click-to-edit-value ".report-header" value))
+

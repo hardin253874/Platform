@@ -1,0 +1,123 @@
+[{:tags
+  [:user/conc
+   :nomodify
+   :prod
+   :regression
+   :desktop
+   :area/screenbuilder],
+  :tests [],
+  :name "Screen builder basic tests",
+  :steps
+  [{:script
+    "(rt.po.app-toolbox/create-app {:name (:app-name *tc*) :description \"\"})"}
+   {:script "(rt.po.app/add-section \"New Screen Section\" \"\")"}
+   {:script
+    "(rt.po.app/add-screen (:screen-name *tc*) \"New Screen Section\")"}
+   {:script
+    "(rt.po.screen-builder/select-application \"Foster University\")"}
+   {:script "(rt.po.form-builder/set-toolbox-search-text \"Student\")"}
+   {:script "(rt.po.screen-builder/toggle-toolbox-type \"Student\")"}
+   {:script
+    "(rt.po.screen-builder/add-chart-from-toolbox \"Student\" \"1. Students by faculty (p)\")"}
+   {:script
+    "(rt.po.screen-builder/add-report-from-toolbox \"Student\" \"Student report\")"}
+   {:script
+    "(rt.po.screen-builder/add-form-from-toolbox \"Student\" \"Students Form\")"}
+   {:script "(rt.po.screen-builder/save)"}
+   {:script "(rt.po.screen-builder/close)"}
+   {:script
+    "(rt.po.app/navigate-to-item (:app-name *tc*) (str \"New Screen Section/\" (:screen-name *tc*)))"}
+   {:script
+    "(expect (rt.po.screen/is-chart-on-screen \"1. Students by faculty (p)\"))"}
+   {:script
+    "(expect (rt.po.screen/is-report-on-screen \"Student report\"))"}
+   {:script
+    "(expect (rt.po.screen/is-form-on-screen \"Students Form\"))"}
+   {:script "(rt.po.screen/show-config-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"Modify Screen\")"}
+   {:script
+    "(expect-equals (rt.po.screen-builder/get-name) (:screen-name *tc*))"}
+   {:script
+    "(expect (rt.po.screen-builder/is-chart-on-screen \"1. Students by faculty (p)\"))"}
+   {:script
+    "(expect (rt.po.screen-builder/is-report-on-screen \"Student report\"))"}
+   {:script
+    "(expect (rt.po.screen-builder/is-form-on-screen \"Students Form\"))"}
+   {:script
+    "(rt.po.screen-builder/select-application \"Foster University\")"}
+   {:script "(rt.po.form-builder/set-toolbox-search-text \"Student\")"}
+   {:script "(rt.po.screen-builder/toggle-toolbox-type \"Student\")"}
+   {:script
+    "(rt.po.screen-builder/delete-chart-from-screen \"1. Students by faculty (p)\")"}
+   {:script
+    "(rt.po.screen-builder/add-chart-from-toolbox \"Student\" \"3. Students by state (p)\")"}
+   {:script "(rt.po.screen-builder/save)"}
+   {:script
+    "(expect (not (rt.po.screen-builder/is-chart-on-screen \"1. Students by faculty (p)\")))"}
+   {:script
+    "(expect (rt.po.screen-builder/is-chart-on-screen \"3. Students by state (p)\"))"}
+   {:script "(rt.po.screen-builder/click-new-form \"Student\")"}
+   {:script "(rt.po.form-builder/set-name (:studentform-name *tc*))"}
+   {:script
+    "(rt.po.form-builder/add-field-from-toolbox-to-form \"Name\")"}
+   {:script
+    "(rt.po.form-builder/add-field-from-toolbox-to-form \"DOB\")"}
+   {:script
+    "(rt.po.form-builder/add-field-from-toolbox-to-form \"Photo\")"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}
+   {:script
+    "(rt.po.screen-builder/select-application \"Foster University\")"}
+   {:script "(rt.po.form-builder/set-toolbox-search-text \"Student\")"}
+   {:script "(rt.po.screen-builder/toggle-toolbox-type \"Student\")"}
+   {:script
+    "(expect (rt.po.screen-builder/toolbox-form-exists \"Student\" (:studentform-name *tc*)))"}
+   {:script
+    "(expect (rt.po.screen-builder/toolbox-form-exists \"Student\" \"Students Form\"))"}
+   {:script
+    "(rt.po.screen-builder/show-form-config-menu \"Students Form\")"}
+   {:script "(rt.po.app/choose-context-menu \"Assign Parent\")"}
+   {:script
+    "(rt.po.form-builder-assign-parent/set-parent-element \"Student report (Student Report)\")"}
+   {:script "(rt.po.form-builder-assign-parent/click-ok)"}
+   {:script
+    "(rt.po.screen-builder/show-report-config-menu \"Student report\")"}
+   {:script "(rt.po.app/choose-context-menu \"Assign Parent\")"}
+   {:script
+    "(rt.po.form-builder-assign-parent/set-parent-element \"3. Students by state (p) (Student Chart)\")"}
+   {:script "(rt.po.form-builder-assign-parent/click-ok)"}
+   {:script "(rt.po.screen-builder/save)"}
+   {:script "(rt.po.screen-builder/close)"}
+   {:script
+    "(rt.po.screen/is-chart-on-screen \"3. Students by state (p)\")"}
+   {:script "(rt.po.screen/is-report-on-screen \"Student report\")"}
+   {:script "(rt.po.screen/is-form-on-screen \"Students Form\")"}
+   {:script
+    "(def StudentId1 (rt.po.report-view/get-report-cell-text-content 2 \"StudentID\"))"}
+   {:script
+    "(def StudentName1 (rt.po.report-view/get-report-cell-text-content 2 \"Student\"))"}
+   {:script "(rt.po.report-view/select-row-by-text StudentId1)"}
+   {:script
+    "(expect-equals (rt.po.view-form/get-field-value \"StudentID\") StudentId1)"}
+   {:script
+    "(expect-equals (rt.po.view-form/get-field-value \"Full name\") StudentName1)"}
+   {:script
+    "(def StudentId2 (rt.po.report-view/get-report-cell-text-content 3 \"StudentID\"))"}
+   {:script
+    "(def StudentName2 (rt.po.report-view/get-report-cell-text-content 3 \"Student\"))"}
+   {:script "(rt.po.report-view/select-row-by-text StudentId2)"}
+   {:script
+    "(expect-equals (rt.po.view-form/get-field-value \"StudentID\") StudentId2)"}
+   {:script
+    "(expect-equals (rt.po.view-form/get-field-value \"Full name\") StudentName2)"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150601-153825",
+  :setup
+  [{:script
+    "(identity {:app-name (rt.lib.util/make-test-name \"Screen-Test-App\")\n               :screen-name (rt.lib.util/make-test-name \"New Screen\")\n               :studentform-name (rt.lib.util/make-test-name \"Student Form\")\n               })"}],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/screenbuilder/screen-builder-basic-tests,
+  :teardown
+  [{:script "(rt.po.app/uninstall-application (:app-name *tc*))"}],
+  :modified-by "not-implemented"}]

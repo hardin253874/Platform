@@ -1,0 +1,92 @@
+[{:tags [:user/hemant :app-tests/bcm :desktop],
+  :name "Create a new recovery plan and move it to approved",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:bcm-owner-creds *tc*))"}
+   {:script
+    "(rt.po.app/navigate-to \"Business Continuity Management\")"}
+   {:script "(rt.po.app/select-app-tab \"Recovery Planning\")"}
+   {:script "(rt.po.app/select-navigator-item \"Recovery Planning\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Name\" (:bcm-plan-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Criticality\" \"Medium\")"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Associated Processes\" \"Process 1\")"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"% Complete\" \"50\")"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Next Review Date\" (make-local-date 2016 12 11))"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Team Leader\" \"Business Continuity Owner\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"RECOVERY ACTIONS\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(expect-equals \"Recovery Action\" (rt.po.edit-form/get-form-title))"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"Sequence Number\" \"1\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Stage\" \"Immediate\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Recovery Action\" \"Make Action 1\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Priority\" \"Normal\")"}
+   {:script
+    "(comment (rt.po.edit-form/set-bool-field-value \"Milestone?\" true))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"RECOVERY ACTIONS\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(expect-equals \"Recovery Action\" (rt.po.edit-form/get-form-title))"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"Sequence Number\" \"2\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Stage\" \"Ongoing\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Recovery Action\" \"Make Ongoing Action 2\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Priority\" \"High\")"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Milestone?\" true)"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"TEAM MEMBERS\")"}
+   {:script "(rt.po.app/choose-context-menu \"Link\")"}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog \"Adam\")"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"TEAM MEMBERS\")"}
+   {:script "(rt.po.app/choose-context-menu \"Link\")"}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog \"Aureen\")"}
+   {:script "(expect (not (rt.po.app/page-has-error-alert?)))"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"CALL TREE\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script "(rt.po.edit-form/set-lookup \"Caller\" \"Adam\")"}
+   {:script "(rt.po.edit-form/set-lookup \"To Call\" \"Aureen\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rn.app/open-board \"Plan Status Board\" {:app-name \"Business Continuity Application\", :folder-name \"Reports\"})"}
+   {:script
+    "(expect-equals \"Plan Status Board\" (rt.po.board/get-board-header-text))"}
+   {:script
+    "(expect (rt.po.board/card-exists-in-row? \"Business Continuity Plan\" \"Not Started\" (:bcm-plan-name *tc*)))"}
+   {:script
+    "(rt.po.board/drag-card-to-dimension (:bcm-plan-name *tc*) \"Not Started\" \"Approved\")"}
+   {:script
+    "(expect (rt.po.board/card-exists-in-row? \"Business Continuity Plan\" \"Approved\" (:bcm-plan-name *tc*)))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20161020-140725",
+  :setup
+  [{:script
+    "(identity {:bcm-plan-name (rt.lib.util/make-test-name \"BCM-Plan\")})"}],
+  :fixtures [:rn/fixture/bcm-owner-creds],
+  :id :bcm/tests/recovery-planning,
+  :teardown [],
+  :modified-by "not-implemented"}]

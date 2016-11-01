@@ -1,0 +1,59 @@
+[{:tags
+  [:nomodify
+   :prod
+   :daily
+   :regression
+   :user/shaofen
+   :desktop
+   :area/security],
+  :tests [],
+  :name "Ensure access rules work for user",
+  :steps
+  [{:script
+    "(rn.common/start-app-and-login {:username \"Maite.Walls\" :password \"Maite.Walls1\"})"}
+   {:script
+    "(rn.app/open-report \"Deans of University report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script "(rt.po.access-rules/add-new-access-rule)"}
+   {:script
+    "(expect-equals true (rt.po.access-rules-new/new-dialog-visible?))"}
+   {:script "(rt.po.access-rules-new/set-include-user true)"}
+   {:script
+    "(rt.po.access-rules-new/set-role \"Maite.Walls (User Account)\")"}
+   {:script "(rt.po.access-rules-new/set-object \"Dean\")"}
+   {:script "(rt.po.access-rules-new/click-ok)"}
+   {:script
+    "(rt.po.access-rules/enable-access-rule \"Maite.Walls (User Account)\" \"Dean\" \"Dean\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script
+    "(rn.common/start-app-and-login {:username \"Maite.Walls\" :password \"Maite.Walls1\"})"}
+   {:script
+    "(rn.app/open-report \"Deans of University report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect (> (rt.po.report-view/count-report-row) 8))"}
+   {:script
+    "(rn.common/start-app-and-login {:username \"Nolan.Horne\" :password \"Nolan.Horne1\"})"}
+   {:script
+    "(rn.app/open-report \"Deans of University report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/delete-access-rule \"Maite.Walls (User Account)\" \"Dean\" \"Dean\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20151118-164618",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds],
+  :id :rn/security/ensure-access-rules-works-for-user,
+  :teardown [],
+  :modified-by "not-implemented"}]

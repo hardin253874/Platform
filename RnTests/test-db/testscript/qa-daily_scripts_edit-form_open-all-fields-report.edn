@@ -1,0 +1,15 @@
+[{:tags [:desktop],
+  :modified-by "not-implemented",
+  :modified "20150601-153828",
+  :source "../RnTests/test-db",
+  :id :qa-daily/scripts/edit-form/open-all-fields-report,
+  :type :testscript,
+  :steps
+  [{:script "(rt.po.app/navigate-to \"Test Solution\")",
+        :target-msec 2000}
+   {:script "(rt.po.app/open-nav-tree-node \"Test Solution\")",
+        :target-msec 2000}
+   {:script "(rt.po.app/open-nav-tree-node \"AA_Reports\")",
+        :target-msec 2000}
+   {:script "(rt.po.app/select-navigator-item \"AA_All Fields\")",
+        :target-msec 2000}]}]

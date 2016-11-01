@@ -1,0 +1,35 @@
+[{:tags
+  [:nomodify
+   :prod
+   :regression
+   :user/karen
+   :desktop
+   :area/chart-builder],
+  :tests [],
+  :name "Check targets for tree map chart",
+  :steps
+  [{:script "(rt.po.app/add-chart (:section *tc*))"}
+   {:script
+    "(rt.po.common/set-string \"Name\" \"Targets for Tree Map Chart\")"}
+   {:script "(rt.po.common/set-lookup \"Report\" \"Student report\")"}
+   {:script "(rt.po.chart-new/set-chart-type \"Tree Map\")"}
+   {:script "(rt.po.common/click-ok)"}
+   {:script
+    "(rt.po.chart-builder/drag-source-to-target \"Count\" \"Values\")"}
+   {:script
+    "(expect-equals #{\"Primary\" \"Values\" \"Associate\" \"Colour\" \"Text\" \"Image\" } (set (rt.po.chart-builder/get-targets \"\")))"}
+   {:script
+    "(rt.po.chart-builder/click-target-properties \"Primary\")"}
+   {:script
+    "(expect-equals false (rt.po.chart-builder/show-labels-visible? ))"}
+   {:script
+    " (expect-equals false (rt.po.chart-builder/stack-visible? ))"}
+   {:script "(rt.po.common/click-cancel )"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150601-153809",
+  :setup [],
+    :fixtures [:common/fixture/test-account-creds :common/fixture/login :rn/section/createsection-charts], ,
+  :id :rn/chartbuilder/check-targets-for-tree-map-chart,
+  :teardown [],
+  :modified-by "not-implemented"}]

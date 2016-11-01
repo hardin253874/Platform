@@ -1,0 +1,11 @@
+[{:tags [:Desktop],
+  :name "User creds for ORM manager (non-admin user)",
+  :type :testfixture,
+  :source "./test-db",
+  :modified "20161012-123424",
+  :setup
+  [{:script
+    "(identity {:orm-manager-creds {:password \"Readi911\", :username \"orm_manager\"}})"}],
+  :id :rn/fixture/orm-manager-creds,
+  :teardown [],
+  :modified-by "not-implemented"}]

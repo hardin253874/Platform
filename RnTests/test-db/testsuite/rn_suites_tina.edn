@@ -1,0 +1,19 @@
+[{:tags [:desktop],
+  :test-filter
+  "(and (has-tags? [\"user/tina\"] %) (not (has-tags? [\"prod\"] %)) )",
+  :tests [],
+  :name "Tina's tests",
+  :each-fixtures [:common/fixture/login],
+  :type :testsuite,
+  :source "../RnTests/test-db",
+  :modified "20150601-153830",
+  :setup [{:script ""}],
+  :id :rn/suites/tina,
+  :teardown [{:script ""}],
+  :modified-by "not-implemented",
+  :once-fixtures
+  [:common/fixture/chrome
+   :common/fixture/test-account-creds
+   :common/fixture/handle-errors
+   :common/fixture/wait-ng
+   :common/fixture/stop-all]}]

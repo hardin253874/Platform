@@ -1,0 +1,46 @@
+[{:tags [:desktop],
+  :name "Chart Builder Color Properties Drivers on Chrome",
+  :steps
+  [{:script "(rt.po.chart-builder/click-target-properties \"Colour\")",
+        :target-msec 100}
+   {:script "(rn.common/sleep 500)"}
+   {:script "(rt.po.chart-builder/set-color \"Light Green\")",
+        :target-msec 100}
+   {:script "(rt.po.chart-builder/set-negatives \"Olive\")",
+        :target-msec 100}
+   {:script
+    "(expect-equals \"Light Green\" (rt.po.chart-builder/get-color))",
+        :target-msec 100}
+   {:script
+    "(expect-equals \"Olive\" (rt.po.chart-builder/get-negatives))",
+        :target-msec 100}
+   {:script "(rt.po.chart-builder/set-hide-legend false)",
+        :target-msec 100}
+   {:script "(rt.po.chart-builder/set-conditional-formatting true)",
+        :target-msec 100}
+   {:script
+    "(expect-equals false (rt.po.chart-builder/get-hide-legend))",
+    :target-msec 100}
+   {:script
+    "(expect-equals true (rt.po.chart-builder/get-conditional-formatting))",
+    :target-msec 100}
+   {:script "(rt.po.chart-builder/click-defaults)",
+        :target-msec 100}
+   {:script
+    "(expect-equals false (rt.po.chart-builder/get-conditional-formatting))",
+    :target-msec 100}
+   {:script
+    "(expect-equals \"Red\" (rt.po.chart-builder/get-negatives))",
+    :target-msec 100}
+   {:script "(rt.po.chart-builder/click-cancel)", :target-msec 100}],
+  :type :test,
+  :checks [],
+  :source "../RnTests/test-db",
+  :modified "20150601-153808",
+  :setup
+  [{:script "(rt.scripts.common/edit-chart (:name *test-context*))"}],
+  :id :qa-daily/test-chart-builder-drivers-color-properties,
+  :teardown [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :modified-by "not-implemented",
+  :data {:name "Gantt - Scientists"}}]

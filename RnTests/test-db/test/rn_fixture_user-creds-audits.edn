@@ -1,0 +1,14 @@
+[{:tags [:user/kun app-tests/audit,desktop],
+  :name "2 user creds for audit tests",
+  :steps [],
+  :type :testfixture,
+  :source "./test-db",
+  :modified "20161007-141045",
+  :setup
+  [{:script
+    "(identity {:audit-user-creds-owner {:username \"audit_owner\" :password \"Readi911\"}})"}
+   {:script
+    "(identity {:audit-user-creds-manager {:username \"audit_manager\", :password \"Readi911\"}})"}],
+  :id :rn/fixture/user-creds-audits,
+  :teardown [],
+  :modified-by "not-implemented"}]

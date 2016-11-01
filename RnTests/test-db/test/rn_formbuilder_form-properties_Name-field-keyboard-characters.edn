@@ -1,0 +1,25 @@
+[{:tags [:prod :regression :desktop],
+  :tests [],
+  :name "Check that  name field accepts all keyboard characters",
+  :steps
+  [{:script "(rt.po.app/navigate-via-tiles \"Foster University\")"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script
+    "(rt.po.report-view/choose-report-row-action \"1145\" \"View\")"}
+   {:script "(rt.po.view-form/open-form-builder)"}
+   {:script "(rt.po.form-builder/open-form-properties-dialog)"}
+   {:script
+    "(rt.po.form-properties/set-form-name \"abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789|?|-=[];.\")"}
+   {:script "(rt.po.form-properties/click-ok )"}
+   {:script
+    "(expect-equals \"abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789|?|-=[];.\" (rt.po.form-builder/get-form-title))"}
+   {:script "(rt.po.form-builder/close)"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150601-153813",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/formbuilder/form-properties/Name-field-keyboard-characters,
+  :teardown [],
+  :modified-by "not-implemented"}]

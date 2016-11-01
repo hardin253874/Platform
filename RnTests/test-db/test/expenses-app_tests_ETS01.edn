@@ -1,0 +1,61 @@
+[{:tags [:desktop],
+  :tests [],
+  :name "Golden Path",
+  :steps
+  [{:script "(rn.common/start-app-and-login {:username \"ANatto\" :password \"Password1\"})"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Expense Approval\" \"My Open Expenses\")"}
+   {:script "(rt.po.report-view/open-action-menu )"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Name\" (:expense-name *tc*))",
+    :doc
+    "The Claim field has been renamed - its actually the Name field. c"}
+   {:script "(rt.po.common/set-lookup \"Approver\" \"David Smith\")"}
+   {:script "(comment \"**Create the expense**\")"}
+   {:script "(rt.po.view-form/select-form-tab \"Expense Items\")"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Expense Items\" \"New\")"}
+   {:script
+    "(comment set-date-field-value \"Expense Date\" \"1/1/2015\")",
+    :doc "Skipping till the driver works"}
+   {:script "(rt.scripts.common/sleep 2000)"}
+   {:script
+    "(rt.po.common/set-lookup \"Category\" \"Milk/Tea/Coffee/Etc - Syd\")"}
+   {:script
+    "(rt.po.edit-form/set-number-field-value \"Amount\" \"50\")"}
+   {:script "(rt.po.edit-form/save )"}
+   {:script "(rt.po.edit-form/save )"}
+   {:script "(comment \"** Submit **\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text (:expense-name *tc*) )"}
+   {:script "(rt.po.view-form/choose-task-action \"Submit Claim\")"}
+   {:script "(rt.po.app/logout )"}
+   {:script "(comment \"** Approver **\")"}
+   {:script "(rt.po.app/login \"dsmith\" \"Password1\" )"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Expense Approval\" \"My Approvals\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text (:expense-name *tc*) )"}
+   {:script "(rt.po.view-form/choose-task-action \"Approve\")"}
+   {:script "(rt.po.app/logout )"}
+   {:script "(comment \"** Financial Processor **\")"}
+   {:script "(rt.po.app/login \"mwozter\" \"Password1\" )"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Expense Approval\" \"My Approvals\") "}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text (:expense-name *tc*) )"}
+   {:script "(rt.po.view-form/choose-task-action \"Complete\")"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150601-153802",
+  :setup
+  [{:script
+    "(identity {:expense-name (rt.lib.util/make-test-name \"Expense ETS01\")})"}
+   {:script " (pr (:expense-name *tc*))"}],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :expenses-app/tests/ETS01,
+  :teardown [],
+  :doc
+  "Alex submits an expense with an attached receipt which is approved and processed. ",
+  :modified-by "not-implemented"}]

@@ -1,0 +1,50 @@
+[{:tags
+  [:user/tina
+   :area/report-builder
+   :nomodify
+   :regression
+   :desktop
+   :prod],
+  :tests [],
+  :name "Grand totals for Autonumbers",
+  :steps
+  [{:script "(rt.po.app/navigate-via-tiles \"Foster University\")"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(rt.po.app/enable-config-mode )"}
+   {:script "(rt.po.report-builder/access-build-mode )"}
+   {:script "(rt.po.report-builder/click-saveas-report-button )"}
+   {:script
+    "(rt.po.report-builder/set-report-new-name \"Totals-Autonumber\")"}
+   {:script "(rt.po.report-builder/click-ok )"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script
+    "(rt.po.report-builder/show-column-context-menu \"StudentID\")"}
+   {:script "(rt.po.app/choose-context-menu \"Show Totals\")"}
+   {:script "(rt.po.report-total/set-show-grand-total true)"}
+   {:script "(rt.po.report-total/set-show-option-label true)"}
+   {:script "(rt.po.report-total/set-count true)"}
+   {:script "(rt.po.report-total/set-count-all true)"}
+   {:script "(rt.po.report-total/set-count-unique true)"}
+   {:script "(rt.po.report-total/set-sum true)"}
+   {:script "(rt.po.report-total/set-avg true)"}
+   {:script "(rt.po.report-total/set-max true)"}
+   {:script "(rt.po.report-total/set-min true)"}
+   {:script "(rt.po.common/click-ok )"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script
+    "(expect-equals true (rt.po.report-view/compare-grand-total-cell-content-list? \"StudentID\" [\"Count: 100\" \"Count unique: 100\" \"Count all: 100\" \"Sum: 117550\" \"Average: 1,175.500\" \"Max: 1225\" \"Min: 1126\"]))"}
+   {:script "(rt.po.report-builder/click-close-button )"}
+   {:script    "(rn.app/open-report \"Totals-Autonumber\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script
+    "(expect-equals true (rt.po.report-view/compare-grand-total-cell-content-list? \"StudentID\" [\"Count: 100\" \"Count unique: 100\" \"Count all: 100\" \"Sum: 117550\" \"Average: 1,175.500\" \"Max: 1225\" \"Min: 1126\"]))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20150605-110103",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/reportbuilder/grandtotals-autonumber,
+  :teardown
+  [   {:script    "(rn.app/delete-report \"Totals-Autonumber\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   ],
+  :modified-by "not-implemented"}]

@@ -1,0 +1,79 @@
+[{:tags
+  [:user/shaofen
+   :nomodify
+   :prod
+   :regression
+   :desktop
+   :area/form-builder],
+  :tests [],
+  :name "SetFieldProperties-Image",
+  :steps
+  [{:script "(rt.po.app/navigate-via-tiles \"Foster University\")"}
+   {:script "(rt.po.app/enable-app-toolbox )"}
+   {:script
+    "(rt.po.app-toolbox/create-object {:name \"SetField Object107\" :description \"New Test Object Description\"})"}
+   {:script
+    "(expect-equals \"SetField Object107 Form\" (rt.po.form-builder/get-form-title))"}
+   {:script "(rt.po.form-builder/add-container-to-form )"}
+   {:script "(expect-equals true (rt.po.form-builder/has-canvas?))"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Image\")"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"Image\")"}
+   {:script "(rt.po.form-builder-config/set-name \"Image1\")"}
+   {:script
+    "(rt.po.form-builder-config/set-display-name \"Test Image Field\")"}
+   {:script
+    "(rt.po.form-builder-config/set-description \"This is a Image Field.\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Form Detail\")"}
+   {:script "(rt.po.form-builder-config/set-control-mandatory true)"}
+   {:script
+    "(expect-equals true (rt.po.form-builder-config/get-control-mandatory))"}
+   {:script "(rt.po.form-builder-config/set-control-mandatory false)"}
+   {:script
+    "(expect-equals false (rt.po.form-builder-config/get-control-mandatory))"}
+   {:script "(rt.po.form-builder-config/set-control-readonly true)"}
+   {:script
+    "(expect-equals true (rt.po.form-builder-config/get-control-readonly))"}
+   {:script "(rt.po.form-builder-config/set-control-readonly false)"}
+   {:script
+    "(expect-equals false (rt.po.form-builder-config/get-control-readonly))"}
+   {:script "(rt.po.form-builder-config/select-tab \"Object Detail\")"}
+   {:script
+    "(rt.po.form-builder-config/set-relationship-mandatory true)"}
+   {:script
+    "(expect-equals true (rt.po.form-builder-config/get-relationship-mandatory))"}
+   {:script
+    "(rt.po.form-builder-config/set-relationship-mandatory false)"}
+   {:script
+    "(expect-equals false (rt.po.form-builder-config/get-relationship-mandatory))"}
+   {:script
+    "(rt.po.form-builder-config/set-relationship-default-value \"Default Logo Image\" )"}
+   {:script
+    "(expect-equals \"Default Logo Image\" (rt.po.form-builder-config/get-relationship-default-value ))"}
+   {:script "(rt.po.form-builder-config/select-tab \"Format\")"}
+   {:script
+    "(rt.po.form-builder-config/set-background-color \"Silver\")"}
+   {:script
+    "(expect-equals \"Silver\" (rt.po.form-builder-config/get-background-color ))"}
+   {:script
+    "(rt.po.form-builder-config/set-horizontal-resize \"50%\")"}
+   {:script
+    "(expect-equals \"50%\" (rt.po.form-builder-config/get-horizontal-resize ))"}
+   {:script "(rt.po.form-builder-config/set-vertical-resize \"50%\")"}
+   {:script
+    "(expect-equals \"50%\" (rt.po.form-builder-config/get-vertical-resize ))"}
+   {:script "(rt.po.form-builder-config/click-ok )"}
+   {:script "(expect-equals true (rt.po.form-builder/has-fields?))"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150601-153814",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/formbuilder/SetFieldProperties-Image,
+  :teardown
+  [{:script
+    "(rt.po.app-toolbox/delete-object \"SetField Object107\")"}],
+  :modified-by "not-implemented"}]

@@ -1,0 +1,15 @@
+[{:tags [:desktop],
+  :name "Creating a section as fixture",
+  :steps [],
+  :type :testfixture,
+  :source "../RnTests/test-db",
+  :modified "20150601-153828",
+  :setup
+  [{:script
+    "(identity {:section (make-test-name \"RT-Section\") :report (make-test-name \"RT-Report\")})"}
+   {:script "(rt.po.app/navigate-via-tiles \"Foster University\")"}
+   {:script "(rt.po.app/enable-config-mode )"}
+   {:script "(rt.po.app/add-sections [{:name (:section *tc*)}])"}],
+  :id :rn/section/createsection,
+  :teardown [],
+  :modified-by "not-implemented"}]

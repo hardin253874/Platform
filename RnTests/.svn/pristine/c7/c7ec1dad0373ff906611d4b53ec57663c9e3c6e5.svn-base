@@ -1,0 +1,5 @@
+[{:id :common/fixture/wait-ng,
+  :type :testfixture,
+  :name "wait for angular to settle before and after each step",
+  :before-step ["(rn.common/safe-wait-for-angular)"],
+  :after-step ["(rn.common/safe-wait-for-angular)"]}]

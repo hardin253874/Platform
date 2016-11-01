@@ -1,0 +1,70 @@
+[{:tags
+  [:user/shaofen :prod :nomodify :regression :desktop :area/security],
+  :tests [],
+  :name
+  "Ensure new object appears in object drop down list of new access rule dialog",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.report-view/open-new-menu)"}
+   {:script
+    "(expect-equals true (rt.po.access-rules-new/new-dialog-visible?))"}
+   {:script
+    "(expect-equals false (rt.po.access-rules-new/object-option-exists? \"Security Object\"))"}
+   {:script "(rt.po.access-rules-new/click-cancel)"}
+   {:script
+    "(comment \"By this point, we have checked the new object about to be created is not listed up in object drop-down in New Acccess Rule dialog\")"}
+   {:script "(rt.po.app/enable-app-toolbox)"}
+   {:script
+    "(rt.po.app-toolbox/set-application-filter \"Foster University\")"}
+   {:script
+    "(rt.po.app-toolbox/create-object {:description \"Security Test Object Description\", :name \"Security Object\"})"}
+   {:script "(rt.po.form-builder/add-container-to-form)"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Text\" 0)"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}
+   {:script
+    "(comment \"By this point, new object has been created.\")"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.report-view/open-new-menu)"}
+   {:script
+    "(expect-equals true (rt.po.access-rules-new/new-dialog-visible?))"}
+   {:script
+    "(expect-equals true (rt.po.access-rules-new/object-option-exists? \"Security Object\"))"}
+   {:script "(rt.po.access-rules-new/set-object \"Security Object\")"}
+   {:script "(rt.po.access-rules-new/click-cancel)"}
+   {:script
+    "(comment \"By this point, we have checked that new object appears on object drop-down list in New Access Rule dialog \")"}
+   {:script "(comment \"Below steps is to restore the env. back\")"}
+   {:script
+    "(rn.app/open-report \"Objects\" {:app-name \"ReadiNow Console\" :folder-name \"Resources\"})"}
+   {:script "(rt.po.report-view/set-search-text \"Security Object\")"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Security Object\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"Delete 'Security Object'\"))"}
+   {:script
+    "(rt.po.app/choose-context-menu \"Delete 'Security Object'\")"}
+   {:script "(rt.po.common/click-ok)"}
+   {:script "(expect-equals 0 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.report-view/open-new-menu)"}
+   {:script
+    "(expect-equals true (rt.po.access-rules-new/new-dialog-visible?))"}
+   {:script
+    "(expect-equals false (rt.po.access-rules-new/object-option-exists? \"Security Object\"))"}
+   {:script "(rt.po.access-rules-new/click-cancel)"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20150930-140941",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds],
+  :id :rn/security/ensure-new-object-appears-in-ar-dialog,
+  :teardown [],
+  :doc "",
+  :modified-by "not-implemented"}]

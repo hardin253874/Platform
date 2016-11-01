@@ -1,0 +1,94 @@
+[{:tags [:desktop :prod],
+  :tests [],
+  :name "Screen Loading",
+  :steps
+  [{:script "(rt.po.app/navigate-via-tiles \"Performance Test\")",
+        :target-msec 5000}
+   {:script "(rt.po.app/select-app-tab \"Reports\")",
+    :metric-id "Load report with 5 Columns (50 Rows) - 1st Time",
+        :target-msec 5000}
+   {:script
+    "(rt.po.app/select-navigator-item \"5 Column (500 Rows).\")",
+    :metric-id "Load report with 5 Columns (500 Rows) - 1st Time",
+        :target-msec 5000}
+   {:script
+    "(rt.po.app/select-navigator-item \"5 Column (5000 Rows).\")",
+    :metric-id "Load report with 5 Columns (5000 Rows) - 1st Time",
+        :target-msec 5000}
+   {:script
+    "(rt.po.app/select-navigator-item \"10 Column (50 Rows).\")",
+    :metric-id "Load report with 10 Columns (50 Rows) - 1st Time",
+        :target-msec 5000}
+   {:script
+    "(rt.po.app/select-navigator-item \"10 Column (500 Rows).\")",
+    :metric-id "Load report with 10 Columns (500 Rows) - 1st Time",
+        :target-msec 5000}
+   {:script
+    "(rt.po.app/select-navigator-item \"10 Column (5000 Rows).\")",
+    :metric-id "Load report with 10 Columns (5000 Rows) - 1st Time",
+        :target-msec 5000}
+   {:script
+    "(rt.po.app/select-navigator-item \"20 Column (50 Rows).\")",
+    :metric-id "Load report with 20 Columns (50 Rows) - 1st Time",
+        :target-msec 5000}
+   {:script
+    "(rt.po.app/select-navigator-item \"20 Column (500 Rows).\")",
+    :metric-id "Load report with 20 Columns (500 Rows) - 1st Time",
+        :target-msec 5000}
+   {:script
+    "(rt.po.app/select-navigator-item \"20 Column (5000 Rows).\")",
+    :metric-id "Load report with 20 Columns (5000 Rows) - 1st Time",
+        :target-msec 5000}
+   {:script
+    "(rt.po.app/select-navigator-item \"5 Column (500 Rows). Date Calc\")",
+    :metric-id "Load Report with Date Calculation - 1st Time",
+        :target-msec 5000}
+   {:script
+    "(rt.po.app/select-navigator-item \"5 Column (50 Rows).\")",
+    :metric-id "Load report with 5 Columns (50 Rows) - 2nd Time",
+        :target-msec 5000}
+   {:script
+    "(rt.po.app/select-navigator-item \"5 Column (500 Rows).\")",
+    :metric-id "Load report with 5 Columns (500 Rows) - 2nd Time",
+        :target-msec 5000}
+   {:script
+    "(rt.po.app/select-navigator-item \"5 Column (5000 Rows).\")",
+    :metric-id "Load report with 5 Columns (5000 Rows) - 2nd Time",
+        :target-msec 5000}
+   {:script
+    "(rt.po.app/select-navigator-item \"10 Column (50 Rows).\")",
+    :metric-id "Load report with 10 Columns (50 Rows) - 2nd Time",
+        :target-msec 5000}
+   {:script
+    "(rt.po.app/select-navigator-item \"10 Column (500 Rows).\")",
+    :metric-id "Load report with 10 Columns (5000 Rows) - 2nd Time",
+        :target-msec 5000}
+   {:script
+    "(rt.po.app/select-navigator-item \"10 Column (5000 Rows).\")",
+    :metric-id "Load report with 10 Columns (500 Rows) - 2nd Time",
+        :target-msec 5000}
+   {:script
+    "(rt.po.app/select-navigator-item \"20 Column (50 Rows).\")",
+    :metric-id "Load report with 20 Columns (50 Rows) - 2nd Time",
+        :target-msec 5000}
+   {:script
+    "(rt.po.app/select-navigator-item \"20 Column (500 Rows).\")",
+    :metric-id "Load report with 20 Columns (500 Rows) - 2nd Time",
+        :target-msec 5000}
+   {:script
+    "(rt.po.app/select-navigator-item \"20 Column (5000 Rows).\")",
+    :metric-id "Load report with 20 Columns (5000 Rows) - 2nd Time",
+        :target-msec 5000}
+   {:script
+    "(rt.po.app/select-navigator-item \"5 Column (500 Rows). Date Calc\")",
+    :metric-id "Load Report with Date Calculation - 2nd Time",
+        :target-msec 5000}],
+  :type :test,
+  :checks [],
+  :source "../RnTests/test-db",
+  :modified "20150602-071352",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :perf/tests/t3,
+  :teardown [],
+  :modified-by "not-implemented"}]

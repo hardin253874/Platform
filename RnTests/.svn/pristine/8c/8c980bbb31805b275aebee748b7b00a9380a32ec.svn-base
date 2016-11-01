@@ -1,0 +1,66 @@
+[{:tags
+  [:area/report-builder
+   :nomodify
+   :prod
+   :regression
+   :desktop
+   :user/abida],
+  :tests [],
+  :name "Doing a groupby and cancel groupby using number field",
+  :steps
+  [{:script "(rt.po.app/add-report (:section *tc*))"}
+   {:script "(rt.po.report-new/set-name \"GroupByNumber\")"}
+   {:script "(rt.po.report-new/set-report-base-on \"Rooms\")"}
+   {:script "(rt.po.report-new/click-ok)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Capacity\" true)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Capacity\" \"Group By\")"}
+   {:script
+    "(expect-equals true (rt.po.report-builder/check-group-by-row-exists? \"4\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-builder/check-group-by-row-exists? \"6\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-builder/check-group-by-row-exists? \"8\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(comment (rt.po.report-builder/view-report \"Foster University\" \"Reports/GroupByNumber\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-builder/check-group-by-row-exists? \"4\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-builder/check-group-by-row-exists? \"6\"))"}
+   {:script "(rt.lib.wd-rn/report-grid-scroll-down)"}
+   {:script "(comment (rn.common/sleep 1000))"}
+   {:script
+    "(expect-equals true (rt.po.report-builder/check-group-by-row-exists? \"8\"))"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script
+    "(rt.po.report-builder/choose-group-by-row-menu-item \"4\" \"Cancel Group By\")"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-sort-a-z \"Capacity\")"}
+   {:script
+    "(expect (rt.po.report-builder/check-group-by-row-not-exists? \"4\"))"}
+   {:script
+    "(expect (rt.po.report-builder/check-group-by-row-not-exists? \"6\"))"}
+   {:script
+    "(expect (rt.po.report-builder/check-group-by-row-not-exists? \"8\"))"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script "(rt.po.report-builder/click-sort-a-z \"Capacity\")"}
+   {:script
+    "(expect (rt.po.report-builder/check-group-by-row-not-exists? \"4\"))"}
+   {:script
+    "(expect (rt.po.report-builder/check-group-by-row-not-exists? \"6\"))"}
+   {:script
+    "(expect (rt.po.report-builder/check-group-by-row-not-exists? \"8\"))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160919-175039",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :common/fixture/login
+   :rn/section/createsection],
+  :id :rn/reportbuilder/groupby-number,
+  :teardown [{:script "(rt.po.app/delete-nav-item (:section *tc*))"}],
+  :modified-by "not-implemented"}]

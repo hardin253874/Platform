@@ -1,0 +1,135 @@
+[{:tags
+  [:nomodify
+   :prod
+   :daily
+   :regression
+   :user/shaofen
+   :desktop
+   :area/calculation],
+  :tests [],
+  :name
+  "Calculated fields behaves on report - ensure showTotals behaves fine - cal-currency used",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(comment \"==================================== Adding a new form for Dean with calcualted field for testing showTotal purpose. ==================================\")"}
+   {:script
+    "(rn.app/open-report \"Deans of University report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(rn.common/clear-all-alerts)"}
+   {:script "(rt.po.app/enable-app-toolbox)"}
+   {:script
+    "(rt.po.app-toolbox/set-application-filter \"Foster University\")"}
+   {:script
+    "(rt.po.app-toolbox/choose-object-menu \"Dean\" \"Modify\")"}
+   {:script
+    "(expect-equals \"Dean Form\" (rt.po.form-builder/get-form-title))"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Calculation\")"}
+   {:script
+    "(expect-equals \"Calculation\" (rt.po.form-builder-config/get-name))"}
+   {:script "(rt.po.form-builder-config/set-name \"Cal-showTotals\")"}
+   {:script
+    "(expect (rt.po.form-builder-config/calculation-field-type-visible?))"}
+   {:script
+    "(rt.po.form-builder-config/set-calculation-field-type \"Text\")"}
+   {:script
+    "(expect-equals \"Text\" (rt.po.form-builder-config/get-calculation-field-type))"}
+   {:script
+    "(expect-equals \"\" (rt.po.form-builder-config/get-calculation))"}
+   {:script
+    "(rt.po.form-builder-config/set-calculation \"iif([Expenditure limit]/1000-15000>0, ' >0', '<= 0')\")"}
+   {:script
+    "(expect-equals \"iif([Expenditure limit]/1000-15000>0, ' >0', '<= 0')\" (rt.po.form-builder-config/get-calculation))"}
+   {:script "(expect (not (rt.po.form-builder-config/ok-disabled?)))"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Calculation\")"}
+   {:script
+    "(expect-equals \"Calculation\" (rt.po.form-builder-config/get-name))"}
+   {:script "(rt.po.form-builder-config/set-name \"Cal-groupBy\")"}
+   {:script
+    "(expect (rt.po.form-builder-config/calculation-field-type-visible?))"}
+   {:script
+    "(rt.po.form-builder-config/set-calculation-field-type \"Text\")"}
+   {:script
+    "(expect-equals \"Text\" (rt.po.form-builder-config/get-calculation-field-type))"}
+   {:script
+    "(expect-equals \"\" (rt.po.form-builder-config/get-calculation))"}
+   {:script
+    "(rt.po.form-builder-config/set-calculation \"[Expenditure limit]/1000-15000>0\")"}
+   {:script
+    "(expect-equals \"[Expenditure limit]/1000-15000>0\" (rt.po.form-builder-config/get-calculation))"}
+   {:script "(expect (not (rt.po.form-builder-config/ok-disabled?)))"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}
+   {:script "(rt.po.app/disable-app-toolbox)"}
+   {:script
+    "(comment \"==================================== Adding a new report for Dean with caluculated Currency field to test sorting ==================================\")"}
+   {:script
+    "(rn.app/open-report \"Deans of University report\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script "(rt.po.report-builder/click-saveas-report-button)"}
+   {:script
+    "(rt.po.report-builder/set-report-new-name \"Calculation-showTotals - Dean report\")"}
+   {:script "(rt.po.report-builder/click-saveas-ok)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Cal-showTotals\" true)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Cal-groupBy\" true)"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script
+    "(expect-equals 1 (rt.po.report-builder/get-count-matched-columns-name \"Cal-showTotals\"))"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Cal-groupBy\" \"Group By\")"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Cal-showTotals\" \"Show Totals\")"}
+   {:script "(rt.po.report-total/set-show-sub-total true)"}
+   {:script "(rt.po.report-total/set-show-option-label true)"}
+   {:script "(rt.po.report-total/set-count true)"}
+   {:script "(rt.po.report-total/set-count-unique true)"}
+   {:script "(rt.po.report-total/set-count-all true)"}
+   {:script "(rt.po.report-builder/click-ok)"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script
+    "(rn.app/open-report \"Calculation-showTotals - Dean report\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script
+    "(expect-equals \"Yes\" (rt.po.report-builder/get-group-by-row-text \"Yes\"))"}
+   {:script
+    "(expect (rt.po.report-view/compare-sub-total-cell-content-list? \"Yes\" \"Cal-showTotals\" [\"Count: 4\" \"Count unique: 1\" \"Count all: 4\"]))"}
+   {:script
+    "(expect-equals \"No\" (rt.po.report-builder/get-group-by-row-text \"No\"))"}
+   {:script
+    "(expect (rt.po.report-view/compare-sub-total-cell-content-list? \"No\" \"Cal-showTotals\" [\"Count: 6\" \"Count unique: 1\" \"Count all: 6\"]))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160304-143841",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds :rn/fixture/admin-creds],
+  :id :rn/calculation/calculated-field-on-report---showTotals,
+  :teardown
+  [{:script "(rn.app/open-admin \"Reports\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Calculation-showTotals - Dean report\")"}
+   {:script
+    "(if (> (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/right-click-row-by-text \"Calculation-showTotals - Dean report\") (rt.po.app/choose-context-menu \"Delete\") (rt.po.edit-form/click-confirm-delete-ok-button)))"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Calculation-showTotals - Dean report\")"}
+   {:script "(expect-equals 0 (rt.po.report-view/count-report-row))"}
+   {:script "(rt.po.app/enable-app-toolbox)"}
+   {:script
+    "(rt.po.app-toolbox/set-application-filter \"Foster University\")"}
+   {:script
+    "(rt.po.app-toolbox/choose-object-menu \"Dean\" \"Modify Object\")"}
+   {:script
+    "(expect-equals \"Dean Form\" (rt.po.form-builder/get-form-title))"}
+   {:script
+    "(if (rt.po.form-builder/toolbox-field-exist? \"Cal-showTotals\") (do (rt.po.form-builder/delete-field \"Cal-showTotals\") (rt.po.form-builder/save)))"}
+   {:script
+    "(expect-equals false (rt.po.form-builder/toolbox-field-exist? \"Cal-showTotals\"))"}
+   {:script
+    "(if (rt.po.form-builder/toolbox-field-exist? \"Cal-groupBy\") (do (rt.po.form-builder/delete-field \"Cal-groupBy\") (rt.po.form-builder/save)))"}
+   {:script
+    "(expect-equals false (rt.po.form-builder/toolbox-field-exist? \"Cal-groupBy\"))"}],
+  :doc "",
+  :modified-by "not-implemented"}]

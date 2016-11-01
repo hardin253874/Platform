@@ -1,0 +1,44 @@
+[{:tags [:desktop],
+  :tests [],
+  :name "New Form Builder on Chrome",
+  :steps
+  [{:script
+    "(expect-equals \"RT-Test-fb Form\" (rt.po.form-builder/get-form-title))",
+    :target-msec 100}
+   {:script
+    "(expect-equals \"Description\" (rt.po.form-builder/get-form-description))",
+    :target-msec 100}
+   {:script
+    "(expect-equals true (rt.po.form-builder/has-toolbox-section? \"Relationship\"))",
+    :target-msec 100}
+   {:script
+    "(expect-equals true (rt.po.form-builder/has-toolbox-section? \"Fields\"))",
+    :target-msec 100}
+   {:script
+    "(expect-equals true (rt.po.form-builder/has-toolbox-section? \"Display\"))",
+    :target-msec 100}
+   {:script
+    "(expect-equals true (rt.po.form-builder/has-field-group? \"Default\"))",
+    :target-msec 100}
+   {:script
+    "(expect-equals true (rt.po.form-builder/has-field-group? \"New\"))",
+    :target-msec 100}
+   {:script "(expect-equals true (rt.po.form-builder/has-toolbar?))",
+    :target-msec 100}
+   {:script "(expect-equals true (rt.po.form-builder/has-canvas?))",
+    :target-msec 100}
+   {:script "(expect-equals true (rt.po.form-builder/has-fields?))",
+    :target-msec 100}
+   {:script
+    "(expect-equals false (rt.po.form-builder/has-form-controls?))",
+    :target-msec 100}],
+  :type :test,
+  :checks [],
+  :source "../RnTests/test-db",
+  :modified "20150601-153806",
+  :setup [:qa-daily/scripts/form-builder/open-form-builder-new-mode],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :qa-daily/form-builder/test-new-form-builder-rendering,
+  :teardown [],
+  :modified-by "not-implemented",
+  :data {}}]

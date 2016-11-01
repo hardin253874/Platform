@@ -1,0 +1,71 @@
+[{:tags
+  [:nomodify
+   :prod
+   :daily
+   :regression
+   :user/shaofen
+   :desktop
+   :area/security],
+  :tests [],
+  :name "Ensure CRUD operations work fine on user role",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script "(rn.app/open-security \"Record Access\")"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/access-rule-enabled? \"University Administrators (User Role)\" \"Staff\" \"Staff\") )"}
+   {:script
+    "(rn.common/start-app-and-login {:username \"Uma.Crawford\" :password \"Uma.Crawford1\"})"}
+   {:script
+    "(rn.app/open-report \"Staff report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect (> (rt.po.report-view/count-report-row) 40))"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Ina Harmon\")"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"First name\" \"Ina1\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(expect-equals \"Ina1\" (rt.po.view-form/get-field-value \"First name\"))"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"First name\" \"Ina\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.view-form/form-nav-back)"}
+   {:script "(rt.po.report-view/open-new-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"Staff\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Full name\" \"Mary Qian\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"StaffID\" \"68686868\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.view-form/form-nav-back)"}
+   {:script "(rt.po.report-view/set-search-text \"Mary Qian\")"}
+   {:script "(expect-equals 1 (rt.po.view-form/get-report-row-count))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Mary Qian\")"}
+   {:script
+    "(expect-equals \"No\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Tenure\"))"}
+   {:script
+    "(expect-equals \"68686868\" (rt.po.report-view/get-report-cell-text-content \"0\" \"StaffID\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View 'Mary Qian'\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"Edit 'Mary Qian'\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"Delete 'Mary Qian'\"))"}
+   {:script "(rt.po.app/choose-context-menu \"Delete 'Mary Qian'\")"}
+   {:script "(rt.po.edit-form/click-confirm-delete-ok-button)"}
+   {:script "(rt.po.report-view/set-search-text \"Mary Qian\")"}
+   {:script
+    "(expect-equals 0 (rt.po.view-form/get-report-row-count))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160719-094715",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds],
+  :id :rn/security/ensure-CRUD-works-on-role,
+  :teardown [],
+  :modified-by "not-implemented"}]

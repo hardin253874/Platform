@@ -1,0 +1,127 @@
+[{:tags
+  [:nomodify :prod :regression :user/shaofen :desktop :area/security],
+  :tests [],
+  :name
+  "Ensure access summary works when disable/enabling access rule, or change permissions on included role (CBA phase 2)",
+  :steps
+  [{:script
+    "(rn.common/start-app-and-login {:username \"Maite.Walls\" :password \"Maite.Walls1\"})"}
+   {:script
+    "(rn.app/open-report \"Deans of University report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script "(rn.app/open-security \"User Roles\")"}
+   {:script "(rt.po.report-view/double-click-row-by-text \"Staff\")"}
+   {:script "(rt.po.view-form/select-form-tab \"Access Summary\")"}
+   {:script "(rt.po.access-summary/set-search-text \"Staff Common\")"}
+   {:script "(expect-equals 2 (rt.po.view-form/get-report-row-count))"}
+   {:script
+    "(expect (rt.po.access-summary/row-exists? \"Subject Timetables\" \"Read\" \"All records\" \"Staff Common\"))"}
+   {:script
+    "(expect (rt.po.access-summary/row-exists? \"Subjects\" \"Read\" \"All records\" \"Staff Common\"))"}
+   {:script "(rt.po.access-summary/set-search-text \"Foster Common\")"}
+   {:script "(expect-equals 6 (rt.po.view-form/get-report-row-count))"}
+   {:script
+    "(expect (rt.po.access-summary/row-exists? \"Building\" \"Read\" \"All records\" \"Foster Common\"))"}
+   {:script
+    "(expect (rt.po.access-summary/row-exists? \"Campuses\" \"Read\" \"All records\" \"Foster Common\"))"}
+   {:script
+    "(expect (rt.po.access-summary/row-exists? \"Faculties\" \"Read\" \"All records\" \"Foster Common\"))"}
+   {:script
+    "(expect (rt.po.access-summary/row-exists? \"Rooms\" \"Read\" \"All records\" \"Foster Common\"))"}
+   {:script
+    "(expect (rt.po.access-summary/row-exists? \"Textbooks\" \"Read\" \"All records\" \"Foster Common\"))"}
+   {:script
+    "(expect (rt.po.access-summary/row-exists? \"University\" \"Read\" \"All records\" \"Foster Common\"))"}
+   {:script
+    "(comment \"Next is to disable an existing access rule see if it is gone from summary report\")"}
+   {:script "(rn.app/open-security \"User Roles\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Foster Common\")"}
+   {:script "(rt.po.edit-form/select-form-tab \"Record Access\")"}
+   {:script
+    "(expect (rt.po.access-rules/row-enabled? (rt.po.access-rules/get-exact-row \"University\" \"View\" \"University\")))"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/set-row-enabled (rt.po.access-rules/get-exact-row \"University\" \"View\" \"University\") false)"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script
+    "(expect (not (rt.po.access-rules/row-enabled? (rt.po.access-rules/get-exact-row \"University\" \"View\" \"University\"))))"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Staff Common\")"}
+   {:script "(rt.po.edit-form/select-form-tab \"Record Access\")"}
+   {:script
+    "(expect (rt.po.access-rules/row-enabled? (rt.po.access-rules/get-exact-row \"Subject Timetables\" \"View\" \"Subject Timetables\")))"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/set-row-enabled (rt.po.access-rules/get-exact-row \"Subject Timetables\" \"View\" \"Subject Timetables\") false)"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script
+    "(expect (not (rt.po.access-rules/row-enabled? (rt.po.access-rules/get-exact-row \"Subject Timetables\" \"View\" \"Subject Timetables\"))))"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.report-view/double-click-row-by-text \"Staff\")"}
+   {:script "(rt.po.edit-form/select-form-tab \"Access Summary\")"}
+   {:script "(rt.po.access-summary/set-search-text \"Foster Common\")"}
+   {:script "(expect-equals 5 (rt.po.view-form/get-report-row-count))"}
+   {:script
+    "(expect (not (rt.po.access-summary/row-exists? \"University\" \"Read\" \"All records\" \"Foster Common\")))"}
+   {:script "(rt.po.access-summary/set-search-text \"Staff Common\")"}
+   {:script "(expect-equals 1 (rt.po.view-form/get-report-row-count))"}
+   {:script
+    "(expect (not (rt.po.access-summary/row-exists? \"Subject Timetables\" \"Read\" \"All records\" \"Staff Common\")))"}
+   {:script
+    "(comment \"Next is to enable existing access rule and also change its permission and see if it is reflected on summary report\")"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Staff Common\")"}
+   {:script "(rt.po.edit-form/select-form-tab \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/set-row-enabled (rt.po.access-rules/get-exact-row \"Subject Timetables\" \"View\" \"Subject Timetables\") true)"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script
+    "(expect (rt.po.access-rules/row-enabled? (rt.po.access-rules/get-exact-row \"Subject Timetables\" \"View\" \"Subject Timetables\")))"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Foster Common\")"}
+   {:script "(rt.po.edit-form/select-form-tab \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/set-row-enabled (rt.po.access-rules/get-exact-row \"University\" \"View\" \"University\") true)"}
+   {:script
+    "(rt.po.access-rules/set-row-operation (rt.po.access-rules/get-last-exact-row \"University\" \"View\" \"University\") \"Full (Create, View, Edit and Delete)\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script
+    "(expect (rt.po.access-rules/row-enabled? (rt.po.access-rules/get-exact-row \"University\" \"Full (Create, View, Edit and Delete)\" \"University\")))"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.report-view/double-click-row-by-text \"Staff\")"}
+   {:script "(rt.po.edit-form/select-form-tab \"Access Summary\")"}
+   {:script "(rt.po.access-summary/set-search-text \"Foster Common\")"}
+   {:script "(expect-equals 6 (rt.po.view-form/get-report-row-count))"}
+   {:script
+    "(expect (rt.po.access-summary/row-exists? \"University\" \"Create, Read, Modify, Delete\" \"All records\" \"Foster Common\"))"}
+   {:script
+    "(comment \"Next is to add an new access rule with full scope, and see if it is reflected on summary report. It is better not to touch existing filter access rule as we have to ensure the env. is easy to clean up for other test cases.\")"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160905-114012",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds],
+  :id
+  :rn/security/ensure-access-summary-work-fine-in-general---included-role,
+  :teardown
+  [{:script
+    "(comment \"================= Clean up access rules that may have touched. ====================\")\n"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script "(rn.app/open-security \"User Roles\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Foster Common\")"}
+   {:script
+    "(if (rt.po.access-rules/exact-row-exists? \"University\" \"Full (Create, View, Edit and Delete)\" \"University\") (do (rt.po.access-rules/click-edit-button) (rt.po.access-rules/set-row-operation (rt.po.access-rules/get-exact-row \"University\" \"Full (Create, View, Edit and Delete)\" \"University\") \"View\") (rt.po.access-rules/click-save-button) (expect-equals false (rt.po.app/page-has-error-alert?))))"}
+   {:script
+    "(if (not (rt.po.access-rules/row-enabled? (rt.po.access-rules/get-exact-row \"University\" \"View\" \"University\"))) (do (rt.po.access-rules/click-edit-button) (rt.po.access-rules/set-row-enabled (rt.po.access-rules/get-exact-row \"University\" \"View\" \"University\") true) (rt.po.access-rules/click-save-button) (expect-equals false (rt.po.app/page-has-error-alert?))))"}],
+  :modified-by "not-implemented"}]

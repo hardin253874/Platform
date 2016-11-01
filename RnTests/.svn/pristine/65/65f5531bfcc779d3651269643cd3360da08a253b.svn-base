@@ -1,0 +1,35 @@
+[{:tags
+  [:area/report-builder
+   :nomodify
+   :prod
+   :regression
+   :desktop
+   :user/abida],
+  :tests [],
+  :name "Sorting by header for text",
+  :steps
+  [{:script "(rt.po.app/add-report (:section *tc*) )"}
+   {:script "(rt.po.report-new/set-name \"SortHeaderString\")"}
+   {:script "(rt.po.report-new/set-report-base-on \"Subjects\")"}
+   {:script "(rt.po.report-new/click-ok )"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script
+    "(rt.po.report-view/sort-column-by-click-header \"\" \"Subjects\")"}
+   {:script
+    "(rt.po.report-view/sort-column-by-click-header \"\" \"Subjects\")"}
+   {:script
+    "(expect-equals \"Writing Through Genre\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Subjects\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script "(rt.po.report-builder/click-close-button )"}
+   {:script
+    "(rn.app/open-report \"SortHeaderString\" {:app-name \"Foster University\" :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"Writing Through Genre\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Subjects\"))"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150601-153823",
+  :setup [],
+    :fixtures [:common/fixture/test-account-creds :common/fixture/login :rn/section/createsection], ,
+  :id :rn/reportbuilder/sort-header/string,
+  :teardown [{:script "(rt.po.app/delete-nav-item (:section *tc*))"}],
+  :modified-by "not-implemented"}]

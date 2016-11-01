@@ -1,0 +1,85 @@
+[{:tags
+  [:nomodify :prod :regression :user/shaofen :desktop :area/form],
+  :tests [],
+  :name "s447 - ensure inline relationship works in general",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-form-builder \"Textbooks Form\" {:app-name \"Foster University\"})"}
+   {:script "(rt.po.form-builder/save-as (:form-name *tc*))"}
+   {:script
+    "(rt.po.form-builder/open-tab-content-configure-dialog 0 0)"}
+   {:script "(rt.po.form-builder-config/expand-section \"Option\")"}
+   {:script
+    "(expect-equals \"Report\" (rt.po.form-builder-config/get-display-as))"}
+   {:script "(rt.po.form-builder-config/set-display-as \"Inline\")"}
+   {:script
+    "(expect-equals \"Inline\" (rt.po.form-builder-config/get-display-as))"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}
+   {:script
+    "(comment \"==============Up to this point, we have changed tabbed Subjects to inline relationship on Textbooks form.  =================\")"}
+   {:script
+    "(rn.app/open-report \"Textbooks\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script "(rt.po.report-builder/click-saveas-report-button)"}
+   {:script
+    "(rt.po.report-builder/set-report-new-name (:report-name *tc*))"}
+   {:script "(rt.po.report-builder/click-saveas-ok)"}
+   {:script "(rt.po.report-builder/click-property-report-button)"}
+   {:script "(rt.po.report-new/options-expand)"}
+   {:script "(rt.po.report-new/set-report-form (:form-name *tc*))"}
+   {:script "(rt.po.report-new/click-ok)"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(rt.po.report-view/view-record \"Developing Web Services\")"}
+   {:script "(expect (rt.po.edit-form/back-button-exists?))"}
+   {:script "(expect (rt.po.edit-form/edit-button-exists?))"}
+   {:script
+    "(expect (not (rt.po.view-form/multi-lookup-link-expander-button-exists? \"Subjects\")))"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(rt.po.report-view/set-search-text \"The Interdependence of Innovation and Entrepreneurship\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"The Interdependence of Innovation and Entrepreneurship\")"}
+   {:script "(expect (rt.po.edit-form/back-button-exists?))"}
+   {:script "(expect (rt.po.edit-form/edit-button-exists?))"}
+   {:script
+    "(expect (rt.po.view-form/multi-lookup-link-expander-button-exists? \"Subjects\"))"}
+   {:script
+    "(expect (rt.po.view-form/multi-lookup-link-value-exists? \"Subjects\" \"Innovation and Entrepreneurship\"))"}
+   {:script
+    "(rt.po.view-form/click-multi-lookup-link-expander-button \"Subjects\")"}
+   {:script
+    "(expect-equals 1 (rt.po.view-form/get-count-expander-dialog-lookup-link-values))"}
+   {:script
+    "(expect (rt.po.view-form/multi-lookup-expander-dialog-link-value-exists? \"Innovation and Entrepreneurship\"))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160916-160132",
+  :setup
+  [{:script
+    "(identity {:form-name (rt.lib.util/make-test-name \"Textbooks Form\"), :report-name (rt.lib.util/make-test-name \"Textbooks report\")})"}],
+  :fixtures [:common/fixture/test-account-creds],
+  :id :rn/form/ensure-inline-relationship-work-in-general,
+  :teardown
+  [{:script
+    "(comment \"=============================Below is to force the env. back to default so it won't impact other RT cases.========================\")"}
+   {:script
+    "(comment (rn.common/start-app-and-login (:admin-creds *tc*)))"}
+   {:script
+    "(comment (rn.app/open-form-builder \"Textbooks Form\" {:app-name \"Foster University\"}))"}
+   {:script
+    "(comment (rt.po.form-builder/open-tab-content-configure-dialog 0 0))"}
+   {:script
+    "(comment (rt.po.form-builder-config/expand-section \"Option\"))"}
+   {:script
+    "(comment (if (expect-equals \"Inline\" (rt.po.form-builder-config/get-display-as)) (do (rt.po.form-builder-config/set-display-as \"Report\"))))"}
+   {:script
+    "(comment (expect-equals \"Report\" (rt.po.form-builder-config/get-display-as)))"}
+   {:script "(comment (rt.po.form-builder-config/click-ok))"}
+   {:script "(comment (rt.po.form-builder/save))"}],
+  :modified-by "not-implemented"}]

@@ -1,0 +1,78 @@
+[{:tags [:mobile :regression :prod],
+  :tests [],
+  :name "Create new record",
+  :steps
+  [{:script
+    "(comment \"*** need an account record to use in the test ***\")"}
+   {:script
+    "(rt.lib.wd-rn/put-entity {\"accountStatus\" {\"id\" \"active\"}, \"name\" (:new-student *tc*), \"typeId\" \"core:userAccount\"})"}
+   {:script "(rn.mobile.app/navigate-to-app-launcher)"}
+   {:script
+    "(rn.mobile.app/navigate-to-application \"Foster University\")"}
+   {:script "(rn.mobile.app/open-navigator)"}
+   {:script "(rn.mobile.app/navigate-to-item nil \"Student Report\")"}
+   {:script "(rn.mobile.report/click-new)"}
+   {:script "(rn.mobile.form/set-choice-value \"Title\" \"Mrs.\")"}
+   {:script
+    "(rn.mobile.form/set-text-field-value \"Full name\" (:new-student *tc*))"}
+   {:script "; product broken at the moment ... no placeholder"}
+   {:script
+    ";(expect-equals \"M/d/yyyy\" (rn.mobile.form/get-date-field-placeholder \"DOB\"))"}
+   {:script
+    "(rn.mobile.form/set-date-field-value \"DOB\" \"2/23/2002\")"}
+   {:script
+    "(comment \"getting the date in the mobile emulation of a date input returns universal format\")"}
+   {:script
+    "(expect-equals \"2002-02-23\" (rn.mobile.form/get-date-field-value \"DOB\"))"}
+   {:script
+    "(rn.mobile.form/set-lookup \"User Account\" (:new-student *tc*))"}
+   {:script
+    "(rn.mobile.form/set-multi-select-choice-value \"Club\" \"Dance\")"}
+   {:script
+    "(rn.mobile.form/set-multi-select-choice-value \"Club\" \"Drama\")"}
+   {:script
+    "(comment \"*** TODO select Babbage for the image field ***\")"}
+   {:script
+    "(expect-match #\"Dance\" (rn.mobile.form/get-multi-select-choice-value \"Club\"))"}
+   {:script
+    "(expect-match #\"Drama\" (rn.mobile.form/get-multi-select-choice-value \"Club\"))"}
+   {:script "(rn.mobile.form/set-number-field-value \"Balance\" 67.7)"}
+   {:script
+    "(expect-equals 67.7 (rn.mobile.form/get-number-field-value \"Balance\"))"}
+   {:script "(comment \"*** Select Subjects tab ***\")"}
+   {:script "(rn.mobile.form/select-page 2)"}
+   {:script
+    "(expect (not (contains-match #\"Nursing\" (rn.mobile.report/get-loaded-column-values \"Subjects\"))))"}
+   {:script "(rn.mobile.report/click-new)"}
+   {:script
+    "(rn.mobile.form/set-text-field-value \"Subject name\" (:new-subject *tc*))"}
+   {:script "(rn.mobile.form/save)"}
+   {:script "(expect-equals 2 (rn.mobile.form/get-selected-page))"}
+   {:script
+    "(expect-contains-match #\"Nursing\" (rn.mobile.report/get-loaded-column-values \"Subjects\"))"}
+   {:script "(comment \"*** Select Subjects tab ***\")"}
+   {:script "(rn.mobile.form/select-page 2)"}
+   {:script
+    "(expect (not (contains-match #\"Practical\" (rn.mobile.report/get-loaded-column-values \"Subjects\"))))"}
+   {:script "(rn.mobile.report/click-add)"}
+   {:script "(rn.mobile.report/choose-picker-row \"Practical\")"}
+   {:script
+    "(comment the previous row select seems to be closing/submitting the form .. since recent chrome update .... so comment this out (rn.mobile.report/close-picker-ok))"}
+   {:script "(expect-equals 2 (rn.mobile.form/get-selected-page))"}
+   {:script
+    "(expect-contains-match #\"Practical\" (rn.mobile.report/get-loaded-column-values \"Subjects\"))"}
+   {:script "(comment \"*** save it ***\")"}
+   {:script "(rn.mobile.form/save)"}
+   {:script "(comment \"*** delete it ***\")"}
+   {:script "(rn.mobile.form/back)"}
+   {:script "(rn.mobile.report/delete-record (:new-student *tc*))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160719-085953",
+  :setup
+  [{:script
+    "(identity {:new-subject (make-test-name \"Nursing\") :new-student (make-test-name \"Marie John\")})"}],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/mobile/create-new-instance,
+  :teardown [],
+  :modified-by "not-implemented"}]

@@ -1,0 +1,40 @@
+[{:tags
+  [:user/shaofen
+   :nomodify
+   :prod
+   :regression
+   :desktop
+   :area/form-builder],
+  :tests [],
+  :name "Check the Save/SaveAs/Close functionality of a Form builder",
+  :steps
+  [{:script "(rt.po.app/navigate-via-tiles \"Foster University\")"}
+   {:script "(rt.po.app/enable-app-toolbox )"}
+   {:script
+    "(rt.po.app-toolbox/create-object {:name \"New Test Object131\" :description \"New Test Object Description\"})"}
+   {:script
+    "(expect-equals \"New Test Object131 Form\" (rt.po.form-builder/get-form-title))"}
+   {:script "(expect-equals true (rt.po.form-builder/has-canvas?))"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Text\")"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script
+    "(rt.po.form-builder/save-as \"New Test Object131 Form2\")"}
+   {:script
+    "(expect-equals \"New Test Object131 Form2\" (rt.po.form-builder/get-form-title))"}
+   {:script
+    "(expect-equals true (rt.po.form-builder/form-control-exist? \"Text\"))"}
+   {:script "(rt.po.form-builder/close )"}
+   {:script "(rt.po.form-builder/close-cancel ))"}
+   {:script "(rt.po.form-builder/close )"}
+   {:script "(rt.po.form-builder/close-continue )"}
+   {:script "(rt.po.app/enable-app-toolbox )"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150601-153813",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/formbuilder/SaveCloseFormBuilder,
+  :teardown
+  [{:script
+    "(rt.po.app-toolbox/delete-object \"New Test Object131\")"}],
+  :modified-by "not-implemented"}]

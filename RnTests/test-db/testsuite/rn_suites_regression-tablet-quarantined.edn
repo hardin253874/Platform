@@ -1,0 +1,18 @@
+[{:tags [:desktop],
+  :test-filter "(has-tags? [\"prod\" \"tablet\" \"quarantined\"] %)",
+  :tests [],
+  :name "Quarantined tests ",
+  :each-fixtures
+  [:common/fixture/handle-errors
+   :common/fixture/wait-ng
+   :common/fixture/test-account-creds
+   :common/fixture/chrome-iPad],
+  :type :testsuite,
+  :source "../RnTests/test-db",
+  :modified "20150729-221023",
+  :setup [],
+  :id :rn/suites/regression-tablet-quarantined,
+  :teardown [],
+  :doc "",
+  :modified-by "not-implemented",
+  :once-fixtures []}]

@@ -1,0 +1,15 @@
+[{:tags [:user/steve :desktop :samples],
+  :tests [],
+  :name "steves bogus test",
+  :steps
+  [{:script "(rt.scripts.common/sleep 1000)"}
+   {:script "(expect-max-time 200 (rt.scripts.common/sleep 500))"}
+   {:script "(sleep 200)"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150710-190928",
+  :setup [],
+  :fixtures [],
+  :id :rn/steves-test,
+  :teardown [],
+  :modified-by "not-implemented"}]

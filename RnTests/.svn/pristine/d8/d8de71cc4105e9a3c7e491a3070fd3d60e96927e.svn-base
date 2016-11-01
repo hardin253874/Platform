@@ -1,0 +1,36 @@
+[{:tags [:prod :regression :desktop],
+  :tests [],
+  :name "Test for known issue with new choice field",
+  :steps
+  [{:script "(rt.po.app/enable-app-toolbox)"}
+   {:script
+    "(rt.po.common/wait-until (taxi/exists? \".fb-screen-add-button\") 3000)"}
+   {:script
+    "(rt.po.app-toolbox/create-object {:name (:object-name *test-context*)})"}
+   {:script "(rt.po.form-builder/add-container-to-form)"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Choice\")"}
+   {:script
+    "(rt.po.form-builder/run-field-properties-dialog \"Choice\" {:name \"Choice 1\" :choice-values [\"Monday\" \"Tuesday\" \"Wednesday\"]})"}
+   {:script "(rt.po.form-builder/save)",
+    :doc "save the form (if this was removed the test would pass)"}
+   {:script
+    "(rt.po.form-builder/show-field-properties-dialog \"Choice\")"}
+   {:script
+    "(expect-equals #{\"Monday\" \"Tuesday\" \"Wednesday\"} (set (rt.po.form-builder/get-choice-values)))"}
+   {:script
+    "(rt.po.common/click-modal-dialog-button-and-wait \".modal-footer button[ng-click*='cancel']\")"}
+   {:script "(rt.po.form-builder/close)"}
+   {:script "(rt.po.app/disable-app-toolbox)"}
+   {:script "(rt.po.app/disable-config-mode)"}],
+  :type :test,
+  :checks [],
+  :source "../RnTests/test-db",
+  :modified "20150720-125616",
+  :setup
+  [{:script
+    "(identity {:object-name (make-test-name \"RT-Choice-Test-Object\")})"}],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :form-builder/test-choice-field-tfs-22114,
+  :teardown [],
+  :modified-by "not-implemented",
+  :data {}}]

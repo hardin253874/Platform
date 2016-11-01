@@ -1,0 +1,60 @@
+[{:tags [:prod :regression :desktop],
+  :tests [],
+  :name "Create Form Drivers on Chrome",
+  :steps
+  [{:script
+    "(expect-equals false (rt.po.edit-form/back-button-exists? ))"}
+   {:script
+    "(expect-equals false (rt.po.edit-form/edit-button-exists? ))"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/save-button-exists? ))"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/save-plus-button-exists? ))"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/cancel-button-exists? ))"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Name\" \"Dev Test 1\")"}
+   {:script "(rt.po.edit-form/click-cancel-button)"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/page-dirty-check-exists?))"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/page-dirty-cancel-button-exists?))"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/page-dirty-continue-button-exists?))"}
+   {:script "(rt.po.edit-form/click-page-dirty-cancel-button)"}
+   {:script "(rt.po.edit-form/click-save-plus-button)",
+        :target-msec 2000}
+   {:script "(rt.po.edit-form/click-cancel-button)"}
+   {:script "(rt.po.report-view/select-row-by-text \"Dev Test 1\")",
+        :target-msec 2000}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Dev Test 1\")",
+        :target-msec 2000}
+   {:script "(rt.po.app/choose-context-menu \"Delete\")",
+        :target-msec 2000}
+   {:script
+    "(expect-equals true (rt.po.edit-form/confirm-delete-modal-exists?))"}
+   {:script "(rt.po.edit-form/click-confirm-delete-cancel-button)"}
+   {:script "(rt.po.report-view/select-row-by-text \"Dev Test 1\")",
+        :target-msec 2000}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Dev Test 1\")",
+        :target-msec 2000}
+   {:script "(rt.po.app/choose-context-menu \"Delete\")",
+        :target-msec 2000}
+   {:script
+    "(expect-equals true (rt.po.edit-form/confirm-delete-modal-exists?))"}
+   {:script "(rt.po.edit-form/click-confirm-delete-ok-button)"}],
+  :type :test,
+  :checks [],
+  :source "../RnTests/test-db",
+  :modified "20150601-153805",
+  :setup
+  [:qa-daily/scripts/edit-form/open-all-fields-report
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :qa-daily/edit-form/test-new-form-drivers,
+  :teardown [],
+  :modified-by "not-implemented",
+  :data {}}]

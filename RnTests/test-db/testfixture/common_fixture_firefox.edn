@@ -1,0 +1,4 @@
+[{:id :common/fixture/firefox,
+  :type :testfixture,
+  :name "Firefox",
+  :data {:target :firefox}}]

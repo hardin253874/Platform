@@ -1,0 +1,127 @@
+[{:tags
+  [:nomodify :prod :regression :user/shaofen :desktop :area/security],
+  :tests [],
+  :name
+  "Ensure navigation access works --- using Navigation Access tab on user role form (CBA phase 1)",
+  :steps
+  [{:script
+    "(comment \"=====================Firstly check if env. is clean to start the test. =================\")"}
+   {:script "(rn.common/start-app-and-login (:user-creds-dean *tc*))"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Screens\")"}
+   {:script
+    "(expect-equals false (rt.po.app/node-in-nav-tree-exists? \"Subject Board\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/node-in-nav-tree-exists? \"Student Board\"))"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script "(rn.app/open-security \"User Roles\")"}
+   {:script "(rt.po.report-view/double-click-row-by-text \"Deans\")"}
+   {:script
+    "(comment \"=====================Next is to tick on nagivation items on current role using naviation access tab. =================\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script "(rt.po.edit-form/select-form-tab \"Navigation Access\")"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/application-option-exists? \"Foster University\"))"}
+   {:script
+    "(rt.po.access-rules/set-application \"Foster University\")"}
+   {:script
+    "(expect (not (rt.po.access-rules/node-checked? \"Subject Board\")))"}
+   {:script
+    "(rt.po.access-rules/set-node-value \"Subject Board\" true)"}
+   {:script
+    "(expect (rt.po.access-rules/node-checked? \"Subject Board\"))"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(comment \"=====================Next is to tick on nagivation items on included role using naviation access tab. =================\")"}
+   {:script "(rt.po.report-view/double-click-row-by-text \"Staff\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script "(rt.po.edit-form/select-form-tab \"Navigation Access\")"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/application-option-exists? \"Foster University\"))"}
+   {:script
+    "(rt.po.access-rules/set-application \"Foster University\")"}
+   {:script
+    "(expect (not (rt.po.access-rules/node-checked? \"Student Board\")))"}
+   {:script
+    "(rt.po.access-rules/set-node-value \"Student Board\" true)"}
+   {:script
+    "(expect (rt.po.access-rules/node-checked? \"Student Board\"))"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(comment \"=====================Next is to test if dean user has given navigation access. =================\")"}
+   {:script "(rn.common/start-app-and-login (:user-creds-dean *tc*))"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Boards\")"}
+   {:script
+    "(expect (rt.po.app/node-in-nav-tree-exists? \"Subject Board\"))"}
+   {:script
+    "(expect (rt.po.app/node-in-nav-tree-exists? \"Student Board\"))"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script "(rn.app/open-security \"User Roles\")"}
+   {:script
+    "(comment \"=====================Next is to disable navigation access on Deans role.============================\")"}
+   {:script "(rt.po.report-view/double-click-row-by-text \"Deans\")"}
+   {:script "(rt.po.edit-form/select-form-tab \"Navigation Access\")"}
+   {:script
+    "(rt.po.access-rules/set-application \"Foster University\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/set-node-value \"Subject Board\" false)"}
+   {:script
+    "(expect (not (rt.po.access-rules/node-checked? \"Subject Board\")))"}
+   {:script
+    "(rt.po.access-rules/click-save-button)\n(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(comment \"=====================Next is to disable navigation access for included Staff role. ============================\")"}
+   {:script "(rt.po.report-view/double-click-row-by-text \"Staff\")"}
+   {:script "(rt.po.edit-form/select-form-tab \"Navigation Access\")"}
+   {:script
+    "(rt.po.access-rules/set-application \"Foster University\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/set-node-value \"Student Board\" false)"}
+   {:script
+    "(expect (not (rt.po.access-rules/node-checked? \"Student Board\")))"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script
+    "(comment \"=====================Next is to test if dean user has correct navigation access. =================\")"}
+   {:script "(rn.common/start-app-and-login (:user-creds-dean *tc*))"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Boards\")"}
+   {:script
+    "(expect (not (rt.po.app/node-in-nav-tree-exists? \"Subject Board\")))"}
+   {:script
+    "(expect (not (rt.po.app/node-in-nav-tree-exists? \"Student Board\")))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160905-113907",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds-dean],
+  :id
+  :rn/security/ensure-navigation-access-works--using-tabs-on-role-form,
+  :teardown
+  [{:script
+    "(comment \"++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ \")"}
+   {:script
+    "(comment \"++++++++++++++++++++++++++++++ TEARDOWN: forced navigation access reset to default.  +++++++++++++++++ \")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script "(rn.app/open-security \"User Roles\")"}
+   {:script "(rt.po.report-view/double-click-row-by-text \"Deans\")"}
+   {:script "(rt.po.edit-form/select-form-tab \"Navigation Access\")"}
+   {:script
+    "(rt.po.access-rules/set-application \"Foster University\")"}
+   {:script
+    "(if (rt.po.access-rules/node-checked? \"Subject Board\") (do (rt.po.access-rules/click-edit-button) (rt.po.access-rules/set-node-value \"Subject Board\" true) (rt.po.access-rules/click-save-button)))"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.report-view/double-click-row-by-text \"Staff\")"}
+   {:script "(rt.po.edit-form/select-form-tab \"Navigation Access\")"}
+   {:script
+    "(rt.po.access-rules/set-application \"Foster University\")"}
+   {:script
+    "(if (rt.po.access-rules/node-checked? \"Subject Board\") (do (rt.po.access-rules/click-edit-button) (rt.po.access-rules/set-node-value \"Subject Board\" false) (rt.po.access-rules/click-save-button)))"}],
+  :modified-by "not-implemented"}]

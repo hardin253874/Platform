@@ -1,0 +1,131 @@
+[{:tags
+  [:nomodify :prod :regression :user/shaofen :desktop :area/connector],
+  :tests [],
+  :name
+  "Saved configuration works on csv ----- bug #27813, task s1049 #2",
+  :steps
+  [{:script
+    "(comment \"++++++++++++++ 1) create a new import for csv, but don't do import or test run, just save the config. ++++++++++++++\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Integration/Import Spreadsheet\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"Import Configuration\")"}
+   {:script
+    "(rt.po.import-spreadsheet/choose-file-to-import (rt.po.common/get-data-file-path \"ImportSpreadsheet-Student.csv\"))"}
+   {:script "(rt.po.import-spreadsheet/choose-next)"}
+   {:script
+    "(rt.po.import-spreadsheet/choose-target-object \"Student\")"}
+   {:script "(rt.po.import-spreadsheet/choose-next)"}
+   {:script
+    "(expect-equals \"Name\" (rt.po.import-spreadsheet/get-field-mapping \"Name\"))"}
+   {:script
+    "(expect-equals \"First name\" (rt.po.import-spreadsheet/get-field-mapping \"First Name\"))"}
+   {:script
+    "(expect-equals \"Last name\" (rt.po.import-spreadsheet/get-field-mapping \"Last Name\"))"}
+   {:script "(rt.po.import-spreadsheet/choose-next)"}
+   {:script
+    "(rt.po.import-spreadsheet/set-config-name \"Import Student from Csv - config link\")"}
+   {:script
+    "(expect-equals \"Import Student from Csv - config link\" (rt.po.import-spreadsheet/config-name))"}
+   {:script
+    "(expect (not (rt.po.import-spreadsheet/suppress-workflows?)))"}
+   {:script
+    "(rt.po.import-spreadsheet/set-suppress-workflows \"Yes\")"}
+   {:script "(expect (rt.po.import-spreadsheet/suppress-workflows?))"}
+   {:script "(expect (not (rt.po.import-spreadsheet/test-import?)))"}
+   {:script "(rt.po.import-spreadsheet/set-test-import \"Yes\")"}
+   {:script "(expect (rt.po.import-spreadsheet/test-import?))"}
+   {:script "(rt.po.import-spreadsheet/save-without-importing)"}
+   {:script
+    "(comment \"++++++++++++++ the following is to test configuration is saved, no dry run, no data imported. ++++++++++++++\")"}
+   {:script
+    "(rt.po.app/clear-all-alerts)\n(rt.po.app/navigate-to-item \"Administration\" \"Integration/Import Runs\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Import Student from Csv - config link\")"}
+   {:script "(expect-equals 0 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Hello new student\")"}
+   {:script "(expect-equals 0 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(comment \"++++++++++++++ 2) run the import.  ++++++++++++++\")"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Integration/Import Spreadsheet\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Import Student from Csv - config link\")"}
+   {:script
+    "(rt.po.report-view/select-row-by-text \"Import Student from Csv - config link\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(rt.po.app/choose-context-menu \"Edit 'Import Student from Csv - config link'\")"}
+   {:script
+    "(rt.po.import-spreadsheet/choose-file-to-import (rt.po.common/get-data-file-path \"ImportSpreadsheet-Student.csv\"))"}
+   {:script
+    "(expect-equals \"1\" (rt.po.import-spreadsheet/heading-row))"}
+   {:script
+    "(expect-equals \"2\" (rt.po.import-spreadsheet/data-start-row))"}
+   {:script
+    "(expect-equals \"\" (rt.po.import-spreadsheet/data-last-row))"}
+   {:script
+    "(expect-equals \"Comma\" (rt.po.import-spreadsheet/separator))"}
+   {:script "(rt.po.import-spreadsheet/choose-next)"}
+   {:script
+    "(comment \"=========== s1049 #2, to check selected object is expected saved one.\")"}
+   {:script "(rt.po.import-spreadsheet/choose-next)"}
+   {:script
+    "(expect-equals \"Name\" (rt.po.import-spreadsheet/get-field-mapping \"Name\"))"}
+   {:script
+    "(expect-equals \"First name\" (rt.po.import-spreadsheet/get-field-mapping \"First Name\"))"}
+   {:script
+    "(expect-equals \"Last name\" (rt.po.import-spreadsheet/get-field-mapping \"Last Name\"))"}
+   {:script "(rt.po.import-spreadsheet/choose-next)"}
+   {:script "(comment \"=========Bug #27813===========\")"}
+   {:script "(expect (not (rt.po.import-spreadsheet/test-import?)))"}
+   {:script
+    "(expect-equals \"Import Student from Csv - config link\" (rt.po.import-spreadsheet/config-name))"}
+   {:script "(rt.po.import-spreadsheet/choose-next)"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Integration/Import Runs\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Import Student from Csv - config link\")"}
+   {:script
+    "(expect-equals \"Completed\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Status\"))"}
+   {:script
+    "(expect-equals \"1 of 1 records succeeded\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Records imported\"))"}
+   {:script
+    "(comment \"++++++++++++++ 3) check that the data actually got imported.  ++++++++++++++\")"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Hello new student\")"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20160615-131754",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds],
+  :id :rn/connector/import-speadsheet-saved-config-via-link---csv,
+  :teardown
+  [{:script "(comment \"now we need to restore the testing env.\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Integration/Import Spreadsheet\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Import Student from Csv - config link\")"}
+   {:script
+    "(if (> (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/select-row-by-text \"Import Student from Csv - config link\") (rt.po.report-view/open-action-menu) (rt.po.app/choose-context-menu \"Delete 'Import Student from Csv - config link'\") (rt.po.edit-form/click-confirm-delete-ok-button)))"}
+   {:script "(expect-equals 0 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Hello new student\")"}
+   {:script
+    "(while (> (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/select-row-by-text \"Hello new student\") (rt.po.report-view/open-action-menu) (rt.po.app/choose-context-menu \"Delete\") (rt.po.edit-form/click-confirm-delete-ok-button)))"}
+   {:script "(expect-equals 0 (rt.po.report-view/count-report-row))"}],
+  :doc "test points: saved configuration link w/o import; Csv file;",
+  :modified-by "not-implemented"}]

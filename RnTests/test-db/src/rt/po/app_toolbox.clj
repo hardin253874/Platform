@@ -1,0 +1,331 @@
+(ns rt.po.app-toolbox
+  (:require [rt.lib.wd :refer [right-click set-input-value find-element-with-text wait-for-jq]]
+            [rt.lib.wd-ng :refer [wait-for-angular]]
+            [rt.lib.wd-rn :refer [drag-n-drop]]
+            [rt.po.app :as app]
+            [rt.po.chart-new :as cnew]
+            [rt.po.edit-form :as ef]
+            [rt.po.report-view :as rv]
+            [rt.po.report-new :as rnew]
+            [rt.po.common :refer [click-modal-dialog-button-and-wait wait-until exists-present?]]
+            [clj-webdriver.taxi :as taxi :refer [text click elements find-elements-under find-element-under
+                                                 visible? exists? displayed? *driver*
+                                                 select-option selected-options select-by-text]]
+            [clj-webdriver.core :refer [->actions move-to-element]]
+            [clojure.string :as string]))
+
+(defn create-object-dialog-errors []
+  (mapv text (elements ".sp-new-type-dialog .has-error li")))
+
+(defn create-app-dialog-errors []
+  (mapv text (elements ".app-element-dialog .has-error li")))
+
+(defn create-app [{:keys [name, description] :as fields}]
+  ;; expect to be in the home page in config mode app (admin) toolbox and creates app if it doesn't exist
+  (app/enable-config-mode)
+  (if-not (exists? (str ".app-launcher-tile img[alt='" name "']"))
+    (do
+      (click (str "div[ng-click*=addNewApplication]"))
+
+      ;;(click ".fb-screen-add-button")
+      ;;(app/choose-context-menu "Add Object")
+
+      (wait-for-angular)
+
+      (when name (ef/set-string-field-value "Name" name))
+      (when description (ef/set-string-field-value "Description" description))
+
+      (rt.po.common/click-ok)
+      (wait-for-angular)))
+
+  (let [errors (create-app-dialog-errors)]
+    (when-not (empty? errors)
+      (click "button:contains(Cancel)")
+      (throw (Exception. (str "Errors during admin-toolbox/create-app: "
+                              (string/join (interpose \newline errors))))))))
+
+(defn- click-add-menu-button []
+  (let [q ".fb-screen-add-button button"]  
+
+    (if (wait-until #(exists-present? q))      
+      (click q)
+      (throw (Exception. "Failed to find toolbox add button")))
+
+    (wait-until #(exists-present? "ul.contextmenu-view a.menuItem"))
+
+    ;; check the menu opened
+    (when (not (exists? "ul.contextmenu-view a.menuItem"))
+      (throw (Exception. "Failed to open context menu")))))
+
+(defn create-object [{:keys [name, description, extends-from] :as fields}]
+  ;; expect to be in the app (admin) toolbox
+
+  (click-add-menu-button)
+  (app/choose-context-menu "Add Object")
+  (wait-for-angular)
+
+  (wait-until #(ef/field-exists? "Name"))
+
+  (when name (ef/set-string-field-value "Name" name))
+  (when description (ef/set-string-field-value "Description" description))
+  (when extends-from (ef/set-lookup "Extends from" extends-from))
+
+  (rt.po.common/click-ok)
+  (wait-for-angular)
+
+  (let [errors (create-object-dialog-errors)]
+    (when-not (empty? errors)
+      (click "button:contains(Cancel)")
+      (throw (Exception. (str "Errors during admin-toolbox/create-object: "
+                              (string/join (interpose \newline errors))))))))
+
+;; refactor this ... there is similar in form-builder
+(defn set-report-object [type-name]
+  {:pre [(not (empty? type-name))]}
+  ;; assumes we are already in the form
+
+  ;; open the entity type picker
+  (click ".reportPropertyDialog-view button[ng-click*=spEntityCompositePickerModal]")
+
+  ;; filter to the desired type ... not necessary but doing it anyway
+  (set-input-value ".entityReportPickerDialog .sp-search-control input" type-name)
+
+  (when-not (= type-name (taxi/attribute ".entityReportPickerDialog .sp-search-control input" "value"))
+    (throw (Exception. "Failed to set picker search text")))
+
+  ;; seem to need to sleep a little... waiting on angular isn't enough
+  ;; ...to be investigated
+  (Thread/sleep 1000)
+
+  ;; choose the type
+  (rv/select-row-by-text type-name ".entityReportPickerDialog .dataGrid-view")
+
+  ;; ok the typepicker
+  (click-modal-dialog-button-and-wait ".inlineRelationPickerDialog .modal-footer button[ng-click*=ok]"))
+
+(defn set-report-properties [{:keys [name description]}]
+  (set-input-value ".reportPropertyDialog-view [ng-model*=reportName]" name)
+  (when description (set-input-value ".reportPropertyDialog-view [ng-model*=reportDesc]" description)))
+
+(defn create-report
+  "Create report via the add report menu.
+  Expect to be in the app (admin) toolbox."
+  {:rt-action true}
+  [{:keys [object-type] :as props}]
+
+  ;; open via the menu
+  (click ".fb-screen-add-button")
+  (app/choose-context-menu "Add Report")
+
+  (wait-for-angular)
+  (set-report-properties props)
+  (when object-type (set-report-object object-type))
+  (rt.po.common/click-ok))
+
+
+(defn find-tree-button [e button-name]
+  (first (find-elements-under e {:css (str "button[ng-click*=" button-name "]")})))
+
+(defn find-expand-button [e object-type]
+  (first (find-elements-under e {:css "button[ng-click*='type.expanded']"})))
+
+(defn expand-tree-node [object-type]
+  (let [e (find-element-with-text "[ng-repeat*='type in model.types']" object-type)
+        expand-button (find-expand-button e object-type)
+        button (find-tree-button e "newReport")]
+    (when-not (exists? button)
+      (click expand-button))))
+
+(defn press-tree-button [object-type button-name]
+  (let [e (find-element-with-text "[ng-repeat*='type in model.types']" object-type)
+        expand-button (first (find-elements-under e {:css "button[ng-click*='type.expanded']"}))
+        button (find-tree-button e button-name)]
+    (when-not (exists? button)
+      (click expand-button))
+    (click (find-tree-button e button-name))))
+
+(defn create-report-via-toolbox-object
+  "Create report via an object's add report buttton.
+  Expect to be in the app (admin) toolbox."
+  [{:keys [object-type] :as props}]
+  {:pre [(not (nil? object-type))]}
+
+  ;; open via the object's +report button
+  (press-tree-button object-type "newReport")
+  (wait-for-angular)
+  (set-report-properties props)
+  (rt.po.common/click-ok))
+
+(defn create-chart-via-toolbox-object
+  "Create chart via a object's add chart buttton.
+  Expect to be in the app (admin) toolbox."
+  [{:keys [object-type] :as props}]
+
+  ;; open via the object's +chart button
+  (press-tree-button object-type "newChart")
+  (wait-for-angular)
+  (cnew/set-chart-properties props)
+  (rt.po.common/click-ok))
+
+(defn open-report-via-toolbox-object
+  "Create report via an object's add report buttton.
+  Expect to be in the app (admin) toolbox.
+
+  Example: (open-report-via-toolbox-object {:object-type \"AA_Employee\" :report-name \"My Employee Report\"})"
+  [{:keys [object-type report-name] :as props}]
+
+  (press-tree-button object-type "newReport")
+  (wait-for-angular)
+  (set-report-properties props)
+  (rt.po.common/click-ok))
+
+
+
+(defn create-form-via-toolbox-object [object-type]
+  "Create form via an object's add form buttton.
+  Expect to be in the app (admin) toolbox."
+
+  ;; open via the object's +Forms button
+  (press-tree-button object-type "newForm"))
+  
+
+(defn set-object-filter [text]
+  (wait-for-jq ".fb-toolbox-objectsviewer .sp-search-control-input")
+  (set-input-value ".fb-toolbox-objectsviewer .sp-search-control-input" text))
+
+(defn get-object-names
+  "Get the object names that are loaded in the admin toolbox."
+  ([] (get-object-names ".*"))
+  ([re] (->> (elements "[ng-repeat*='type in model.types']")
+             ;; you'd think you could combine the following, but I think there
+             ;; was a reason... something about the first cleaning up the resulting
+             ;; strings... not sure. but don't change without testing
+             (map #(re-find #".*" (text %)))
+             (filter #(re-find (re-pattern re) %))
+             (filter (comp not empty?)))))
+
+(defn get-screen-elements
+  "Get the reports, forms and charts for the given object as seen in the toolbox.
+  Returns a collection of maps with :name, :type, :el.
+  Optional first argument of the type of element from :report, :chart, :form or :all"
+  ([object-name] (get-screen-elements :all object-name))
+  ([type object-name]
+   (let [object-element (find-element-with-text "[ng-repeat*='type in model.types']" object-name)]
+
+     (expand-tree-node object-name)
+
+     (let [type-selectors {:report {:css "[ng-repeat*='report in getReportsForType']"}
+                           :chart  {:css "[ng-repeat*='chart in getChartsForType']"}
+                           :form   {:css "[ng-repeat*='form in getFormsForType']"}}
+           get-elems (fn [type]
+                       (->> (find-elements-under object-element (type type-selectors))
+                            (filter :webelement)
+                            (map #(hash-map :name (text %) :type type :el %))))]
+       (if (= type :all)
+         (mapcat get-elems (keys type-selectors))
+         (get-elems type))))))
+
+(defn get-screen-element-names [type object-name]
+  (->> (get-screen-elements type object-name)
+       (map :name)))
+
+;; todo - make the get-object-names and the following consistent
+;; - the former can take a regex to filter
+
+(def get-report-names (partial get-screen-element-names :report))
+(def get-chart-names (partial get-screen-element-names :chart))
+(def get-form-names (partial get-screen-element-names :form))
+
+(defn choose-object-menu
+  "Choose the menu item for the given Object in the admin toolbox."
+  {:rt-action true :rt-completed "2014-08-01" :rt-tags ["Admin Toolbox"]}
+  [object-name menu-item]
+
+  (wait-until #(exists-present? (find-element-with-text "[ng-repeat*='type in model.types']" object-name)) 10000)
+
+  (let [object-element (find-element-with-text "[ng-repeat*='type in model.types']" object-name)
+        config-button (and object-element (find-element-under object-element {:css "img[src*='icon_configure']"}))]
+
+    (when-not (and object-element (exists? object-element))
+      (throw (Exception. (str "Object \"" object-name "\" not found"))))
+
+    (->actions *driver* (move-to-element object-element))    
+    (click config-button)
+    (app/choose-context-menu menu-item)
+    (wait-for-angular)))
+
+(defn delete-object [object-name]
+  (choose-object-menu object-name "Delete")
+  (app/choose-modal-ok))
+
+;;todo - retire this in preference to the general "screen element" version
+(defn choose-report-menu
+  "Choose the menu item for the given Object's report
+  in the admin toolbox."
+  [object-name report-name menu-item]
+
+  (let [object-element (find-element-with-text "[ng-repeat*='type in model.types']" object-name)]
+
+    (press-tree-button object-name "newReport")
+
+    (let [report-elems (find-elements-under object-element {:css "[ng-repeat*='report in getReportsForType']"})
+          report-elem (first (filter #(re-find (re-pattern report-name) (text %)) report-elems))
+          config-button (and report-elem (find-element-under report-elem {:css "img[src*='icon_configure']"}))]
+
+      (when-not (exists? report-elem)
+        (throw (Exception. (str "Report \"" report-name "\" not found for Object \"" object-name "\""))))
+
+      (->actions *driver* (move-to-element report-elem))
+      (click config-button)
+      (app/choose-context-menu menu-item))))
+
+(defn choose-screen-element-menu
+  "Choose the menu item for the given Object's screen element in the admin toolbox."
+  [object-name se-type se-name menu-item]
+
+  (let [elems (get-screen-elements se-type object-name)
+        elem (first (filter #(re-find (re-pattern se-name) (:name %)) elems))]
+
+    (if-let [el (:el elem)]
+      (do
+        (->actions *driver* (move-to-element el))
+        (click (find-element-under el {:css "img[src*='icon_configure']"}))
+        (app/choose-context-menu menu-item))
+      (throw (Exception. (str "Screen element \"" se-name "\" not found for Object \"" object-name "\""))))))
+
+(defn delete-screen-element [object-name type name]
+  (choose-screen-element-menu object-name type name "Delete")
+  (app/choose-modal-ok))
+
+(defn open-report-builder
+  "Open the report for the given Object via the admin toolbox."
+  [object-name report-name]
+  (choose-report-menu object-name report-name "Modify"))
+
+(defn wait-until-toolbox-ready []
+  (wait-until #(not (exists? ".fb-loading:visible")) 5000))
+
+(defn set-application-filter
+  "Set the application filter to the item with the given text."
+  [name]
+  (wait-for-angular)
+  (select-option ".fb-toolbox-objectsviewer select.sp-combo-picker"
+                 {:text (if (empty? name) "[Select]" name)})
+  (wait-for-angular)
+  (wait-until-toolbox-ready))
+
+(defn get-application-filter []
+  (text (first (selected-options "[ng-model=selectedApp]"))))
+
+(defn open-quick-link
+  "Open the quick link with the given text."
+  [text]
+  (click (str ".quicklinkArea a:contains(\"" text "\")")))
+
+;;; delete these after Jun 20, 2015
+
+;; @deprecated
+(def select-application-filter set-application-filter)
+;; @deprecated
+(def set-app-combo select-application-filter)
+

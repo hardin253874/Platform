@@ -1,0 +1,75 @@
+[{:tags [:prod :regression :desktop],
+  :tests [],
+  :name "Test login behavior Driver on Chrome",
+  :steps
+  [{:script "(rt.po.app/navigate-to \"Foster University\")"}
+   {:script "(rt.lib.wd-ng/wait-for-angular)"}
+   {:script
+    "(expect-equals true (rt.po.report-view/report-visible? \"Student report\"))"}
+   {:script "(rt.po.app/logout)"}
+   {:script "(comment \"===== test navigate to last used app ====\")"}
+   {:script
+    "(rt.po.app/login-direct \"Administrator\" \"tacoT0wn\" true)"}
+   {:script
+    "(expect-equals true (rt.po.report-view/report-visible? \"Student report\"))"}
+   {:script
+    "(comment \"===== setup to test navigate to a single available app apart from Home and Administration apps. ====\")"}
+   {:script "(rn.app/open-security \"User Roles\")"}
+   {:script "(comment \"===== create new testLoginRole role ====\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Name\" \"testLoginRole\")"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"testLoginRole\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script "(rt.po.edit-form/select-form-tab \"Navigation Access\")"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/application-option-exists? \"Foster University\"))"}
+   {:script
+    "(rt.po.access-rules/set-application \"Foster University\")"}
+   {:script
+    "(expect (not (rt.po.access-rules/node-checked? \"Student report\")))"}
+   {:script
+    "(rt.po.access-rules/set-node-value \"Student report\" true)"}
+   {:script
+    "(expect (rt.po.access-rules/node-checked? \"Student report\"))"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(expect (not (rt.po.app/page-has-error-alert?)))"}
+   {:script "(rn.app/open-security \"User Accounts\")"}
+   {:script "(rt.po.report-view/set-search-text \"Yoshi.Joseph\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Yoshi.Joseph\")"}
+   {:script "(rt.po.view-form/remove-selected-report-item)"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Security roles\" \"Link to Existing\")"}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog \"testLoginRole\")"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script "(rt.po.app/navigate-to \"Foster University\")"}
+   {:script "(rt.po.app/logout)"}
+   {:script "(rt.po.app/login \"Yoshi.Joseph\" \"Yoshi.Joseph1\")"}
+   {:script
+    "(expect-equals true (rt.po.report-view/report-visible? \"Student report\"))"}
+   {:script "(rt.po.app/logout)"}
+   {:script "(rt.po.app/login \"Administrator\" \"tacoT0wn\")"}
+   {:script "(rn.app/open-security \"User Roles\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"testLoginRole\")"}
+   {:script "(rt.po.app/choose-context-menu \"Delete\")"}
+   {:script "(rt.po.edit-form/click-confirm-delete-ok-button)"}
+   {:script "(expect (not (rt.po.app/page-has-error-alert?)))"}],
+  :type :test,
+  :checks [],
+  :source "./test-db",
+  :modified "20161031-112529",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds :common/fixture/login2],
+  :id :qa-daily/test-login-behavior,
+  :teardown [],
+  :modified-by "not-implemented",
+  :data {}}]

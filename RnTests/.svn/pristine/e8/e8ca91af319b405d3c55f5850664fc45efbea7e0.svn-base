@@ -1,0 +1,94 @@
+[{:tags [:desktop],
+  :tests [],
+  :name "Relationship config properties drivers on Chrome",
+  :steps
+  [{:script
+    "(rt.po.form-builder/add-from-field-menu-to-field-group \"Lookup\" \"New\")",
+        :target-msec 500}
+   {:script "(rt.po.form-builder-config/set-name \"Lookup Test1\")",
+        :target-msec 500}
+   {:script
+    "(expect-equals \"Lookup Test1\" (rt.po.form-builder-config/get-name))",
+        :target-msec 500}
+   {:script "(rt.po.form-builder-config/set-object \"AA_Drink\")",
+        :target-msec 500}
+   {:script
+    "(expect-equals \"AA_Drink\" (rt.po.form-builder-config/get-object))",
+        :target-msec 500}
+   {:script
+    "(rt.po.form-builder-config/expand-section \"Relationship\")",
+        :target-msec 500}
+   {:script
+    "(expect-equals true (rt.po.form-builder-config/section-expanded? \"Relationship\"))",
+        :target-msec 500}
+   {:script
+    "(rt.po.form-builder-config/set-relationship-type \"oneToOne\")",
+        :target-msec 500}
+   {:script
+    "(expect-equals \"oneToOne\" (rt.po.form-builder-config/get-relationship-type))",
+        :target-msec 500}
+   {:script
+    "(rt.po.form-builder-config/collapse-section \"Relationship\")",
+        :target-msec 500}
+   {:script
+    "(expect-equals false (rt.po.form-builder-config/section-expanded? \"Relationship\"))",
+        :target-msec 500}
+   {:script "(rt.po.form-builder-config/expand-section \"Ownership\")",
+        :target-msec 500}
+   {:script
+    "(expect-equals true (rt.po.form-builder-config/section-expanded? \"Ownership\"))",
+        :target-msec 500}
+   {:script "(rt.po.form-builder-config/set-ownership \"full\")",
+        :target-msec 500}
+   {:script
+    "(expect-equals \"full\" (rt.po.form-builder-config/get-ownership))",
+        :target-msec 500}
+   {:script
+    "(rt.po.form-builder-config/collapse-section \"Ownership\")",
+        :target-msec 500}
+   {:script
+    "(expect-equals false (rt.po.form-builder-config/section-expanded? \"Ownership\"))",
+        :target-msec 500}
+   {:script "(rt.po.form-builder-config/expand-section \"Option\")",
+        :target-msec 500}
+   {:script
+    "(expect-equals true (rt.po.form-builder-config/section-expanded? \"Option\"))",
+        :target-msec 500}
+   {:script
+    "(rt.po.form-builder-config/set-relationship-default-value \"Coke\")",
+        :target-msec 500}
+   {:script
+    "(expect-equals \"Coke\" (rt.po.form-builder-config/get-relationship-default-value))",
+        :target-msec 500}
+   {:script
+    "(rt.po.form-builder-config/clear-relationship-default-value)",
+        :target-msec 500}
+   {:script
+    "(rt.po.form-builder-config/set-relationship-name \"Drinks\")",
+        :target-msec 500}
+   {:script
+    "(expect-equals \"Drinks\" (rt.po.form-builder-config/get-relationship-name))",
+        :target-msec 500}
+   {:script
+    "(rt.po.form-builder-config/set-reverse-name \"Drink by\")",
+        :target-msec 500}
+   {:script
+    "(expect-equals \"Drink by\" (rt.po.form-builder-config/get-reverse-name))",
+        :target-msec 500}
+   {:script "(rt.po.form-builder-config/set-hide-in-reverse true)",
+        :target-msec 500}
+   {:script
+    "(expect-equals true (rt.po.form-builder-config/get-hide-in-reverse))",
+        :target-msec 500}
+   {:script "(rt.po.form-builder-config/click-ok)",
+        :target-msec 500}],
+  :type :test,
+  :checks [],
+  :source "../RnTests/test-db",
+  :modified "20150601-153806",
+  :setup [:qa-daily/scripts/form-builder/open-form-builder-new-mode],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :qa-daily/form-builder/test-relationship-field-config-properties,
+  :teardown [],
+  :modified-by "not-implemented",
+  :data {}}]

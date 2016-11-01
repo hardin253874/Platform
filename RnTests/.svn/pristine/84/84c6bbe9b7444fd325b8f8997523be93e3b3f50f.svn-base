@@ -1,0 +1,73 @@
+[{:tags [:area/workflow :prod :regression :desktop :quarantined],
+  :tests [],
+  :name "Workflow to send email",
+  :steps
+  [{:script "(comment \"Setup email settings for approval inbox  - THIS ONE CANT WORK UNTIL THE APPROVAL EMAIL ISSUE IS SORTED\")"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Settings/Email Settings\")"}
+   {:script "(rt.po.view-form/click-lookup-link \"Approvals Inbox\")"}
+   {:script "(rt.po.view-form/click-lookup-link \"Uses provider\")"}
+   {:script "(rt.po.view-form/click-edit)"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Post email in directory\" false)"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Server\" \"syd1msx02.entdata.local\")"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Use integrated\" false)"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(comment \"Create the workflow\")"}
+   {:script "(rt.po.app/navigate-to-item \"Administration\" \"Workflows\")"}
+   {:script "(rt.po.app/select-non-toggle-navigator-item \"Workflows\" 1)"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script "(rt.po.workflow/set-component-name (:wf-name *tc*))"}
+   {:script "(rt.po.workflow/save)"}
+   {:script "(rt.po.workflow/click-toolbox-item \"Send Email\")"}
+   {:script "(rt.po.workflow/select-element \"Send Email\")"}
+   {:script
+    "(rt.po.workflow/open-menu-for-expression-control \"From Inbox\" \"Record\")"}
+   {:script "(rt.po.workflow/choose-expression-record \"Approvals\")"}
+   {:script
+    "(rt.po.workflow/set-parameter-expression-string \"Recipient Address\" \"'sgibbon@enterprisedata.com.au'\")"}
+   {:script
+    "(rt.po.workflow/set-parameter-expression-string \"Subject\" \"'This is a test'\")"}
+   {:script
+    "(rt.po.workflow/set-parameter-expression-string \"Body\" \"'The date and time is now ' + getdatetime()\")"}
+   {:script "(rt.po.workflow/save)"}
+   {:script "(rt.po.workflow/open-run-page)"}
+   {:script "(rt.po.workflow/set-run-option \"Enable trace\" true)"}
+   {:script
+    "(rt.po.workflow/set-run-option \"Open follow-up tasks\" false)"}
+   {:script "(rt.po.workflow/run)"}
+   {:script
+    "(rt.po.workflow/wait-for-workflow-run-status (:wf-name *tc*) \"Completed\")"}
+   {:script "(rt.po.workflow/close)"}
+   {:script "(comment \"Set up the trigger\")"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Workflows/Triggers\")"}
+   {:script "(rt.po.screen/open-report-action-menu-on-screen \"Trigger on Schedule\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Name\" (str (:wf-name *tc*) \"-trigger\"))"}
+   {:script
+    "(rt.po.edit-form/set-lookup-value \"Workflow to run\" (:wf-name *tc*))"}
+   {:script
+    "(rt.po.view-form/open-tab-new-menu \"Schedule\" \"Schedule Cron\")"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Name\" (str (:wf-name *tc*) \"-schedule\"))"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Cron definition\" \"0 0 * * * ?\")"}
+   {:script "(rt.po.edit-form/save) ;; save the schedule"}
+   {:script "(rt.po.edit-form/save) ;; save the trigger"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150601-153828",
+  :setup
+  [{:script
+    "(identity {:wf-name (make-test-name \"RT - Send Email\")})"}],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/workflow/send-email,
+  :teardown [],
+  :doc
+  "Test case includes setting some email settings and setting up a schedule based trigger",
+  :modified-by "not-implemented"}]

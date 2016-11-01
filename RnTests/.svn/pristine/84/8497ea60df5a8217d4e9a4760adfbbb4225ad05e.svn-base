@@ -1,0 +1,99 @@
+[{:tags
+  [:nomodify :prod :regression :user/shaofen :desktop :area/security],
+  :tests [],
+  :name
+  "Ensure access summary works when 1. enabling/disabling access rule 2. changing permission on current role 3. adding new access rule on current role (CBA phase 2)",
+  :steps
+  [{:script
+    "(rn.common/start-app-and-login {:username \"Maite.Walls\" :password \"Maite.Walls1\"})"}
+   {:script
+    "(rn.app/open-report \"Deans of University report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script "(rn.app/open-security \"User Roles\")"}
+   {:script "(rt.po.report-view/double-click-row-by-text \"Staff\")"}
+   {:script "(rt.po.view-form/select-form-tab \"Access Summary\")"}
+   {:script "(rt.po.access-summary/set-search-text \"Subjects\")"}
+   {:script "(expect-equals 2 (rt.po.view-form/get-report-row-count))"}
+   {:script
+    "(expect (rt.po.access-summary/row-exists? \"Subjects\" \"Read, Modify\" \"All records\" \"Staff\"))"}
+   {:script
+    "(expect (rt.po.access-summary/row-exists? \"Subjects\" \"Read\" \"All records\" \"Staff Common\"))"}
+   {:script "(rt.po.edit-form/select-form-tab \"Record Access\")"}
+   {:script
+    "(expect (rt.po.access-rules/row-enabled? (rt.po.access-rules/get-exact-row \"Subjects\" \"View and Edit\" \"Subjects in my faculty\")))"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/set-row-operation (rt.po.access-rules/get-last-exact-row \"Subjects\" \"View and Edit\" \"Subjects in my faculty\") \"Full (Create, View, Edit and Delete)\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script "(rt.po.edit-form/select-form-tab \"Access Summary\")"}
+   {:script
+    "(expect (rt.po.access-summary/row-exists? \"Subjects\" \"Create, Read, Modify, Delete\" \"All records\" \"Staff\"))"}
+   {:script
+    "(comment \"================ Checked that if changing permission on existing role, it works fine.=================\")"}
+   {:script
+    "(comment \"=================Next is to check disabled access rule disappear from summary report==================\")"}
+   {:script "(rt.po.edit-form/select-form-tab \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/set-row-enabled (rt.po.access-rules/get-exact-row \"Subjects\" \"Full (Create, View, Edit and Delete)\" \"Subjects in my faculty\") false)"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script
+    "(expect (not (rt.po.access-rules/row-enabled? (rt.po.access-rules/get-exact-row \"Subjects\" \"Full (Create, View, Edit and Delete)\" \"Subjects in my faculty\"))))"}
+   {:script "(rt.po.edit-form/select-form-tab \"Access Summary\")"}
+   {:script "(rt.po.access-summary/set-search-text \"Subjects\")"}
+   {:script "(expect-equals 1 (rt.po.view-form/get-report-row-count))"}
+   {:script
+    "(expect (not (rt.po.access-summary/row-exists? \"Subjects\" \"Create, Read, Modify, Delete\" \"All records\" \"Staff\")))"}
+   {:script
+    "(comment \"Next is to add an new access rule with full scope, and see if it is reflected on summary report. It is better not to touch existing filter access rule as we have to ensure the env. is easy to clean up for other test cases.\")"}
+   {:script "(rt.po.edit-form/select-form-tab \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script "(rt.po.access-rules/add-new-access-rule)"}
+   {:script
+    "(expect-equals true (rt.po.access-rules-new/new-dialog-visible?))"}
+   {:script "(rt.po.access-rules-new/set-object \"Subjects\")"}
+   {:script "(rt.po.access-rules-new/click-ok)"}
+   {:script
+    "(expect (rt.po.access-rules/row-exists? \"Subjects\" \"View\" \"Subjects\"))"}
+   {:script
+    "(expect (not (rt.po.access-rules/row-enabled? (rt.po.access-rules/get-exact-row \"Subjects\" \"View\" \"Subjects\"))))"}
+   {:script
+    "(rt.po.access-rules/set-row-enabled (rt.po.access-rules/get-exact-row \"Subjects\" \"View\" \"Subjects\") true)"}
+   {:script
+    "(expect (rt.po.access-rules/row-enabled? (rt.po.access-rules/get-exact-row \"Subjects\" \"View\" \"Subjects\")))"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script "(rt.po.edit-form/select-form-tab \"Access Summary\")"}
+   {:script "(rt.po.access-summary/set-search-text \"Subjects\")"}
+   {:script "(expect-equals 2 (rt.po.view-form/get-report-row-count))"}
+   {:script
+    "(expect (rt.po.access-summary/row-exists? \"Subjects\" \"Read\" \"All records\" \"Staff\"))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160905-113955",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds],
+  :id :rn/security/ensure-access-summary-work-fine-in-general,
+  :teardown
+  [{:script
+    "(comment \"================= Clean up access rules that may have touched. ====================\")\n"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script "(rn.app/open-security \"User Roles\")"}
+   {:script "(rt.po.report-view/double-click-row-by-text \"Staff\")"}
+   {:script
+    "(if (rt.po.access-rules/exact-row-exists? \"Subjects\" \"Full (Create, View, Edit and Delete)\" \"Subjects in my faculty\") (do (rt.po.access-rules/click-edit-button) (rt.po.access-rules/set-row-operation (rt.po.access-rules/get-exact-row \"Subjects\" \"Full (Create, View, Edit and Delete)\" \"Subjects in my faculty\") \"View and Edit\") (rt.po.access-rules/click-save-button) (expect-equals false (rt.po.app/page-has-error-alert?))))"}
+   {:script
+    "(if (not (rt.po.access-rules/row-enabled? (rt.po.access-rules/get-exact-row \"Subjects\" \"View and Edit\" \"Subjects in my faculty\"))) (do (rt.po.access-rules/click-edit-button) (rt.po.access-rules/set-row-enabled (rt.po.access-rules/get-exact-row \"Subjects\" \"View and Edit\" \"Subjects in my faculty\") true) (rt.po.access-rules/click-save-button) (expect-equals false (rt.po.app/page-has-error-alert?))))"}
+   {:script
+    "(if (rt.po.access-rules/row-enabled? (rt.po.access-rules/get-exact-row \"Subjects\" \"View\" \"Subjects\")) (do (rt.po.access-rules/right-click-row (rt.po.access-rules/get-last-exact-row \"Subjects\" \"View\" \"Subjects\")) (rt.po.app/choose-context-menu \"Delete\") (rt.po.edit-form/click-confirm-delete-ok-button) (expect-equals false (rt.po.app/page-has-error-alert?))))"}
+   {:script "(rt.po.view-form/select-form-tab \"Access Summary\")"}
+   {:script "(rt.po.access-summary/set-search-text \"Subjects\")"}
+   {:script "(expect-equals 2 (rt.po.view-form/get-report-row-count))"}
+   {:script
+    "(expect (rt.po.access-summary/row-exists? \"Subjects\" \"Read, Modify\" \"All records\" \"Staff\"))"}
+   {:script
+    "(expect (rt.po.access-summary/row-exists? \"Subjects\" \"Read\" \"All records\" \"Staff Common\"))"}],
+  :modified-by "not-implemented"}]

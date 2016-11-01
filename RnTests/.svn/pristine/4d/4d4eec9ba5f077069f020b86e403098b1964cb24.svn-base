@@ -1,0 +1,55 @@
+[{:tags [:prod :regression :desktop],
+  :tests [],
+  :name "Form Builder toolbar drivers on Chrome",
+  :steps
+  [{:script "(rt.po.form-builder/set-name \"RT form builder test\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"RT form builder test\" (rt.po.form-builder/get-name))",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder/set-description \"RT form builder test description\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"RT form builder test description\" (rt.po.form-builder/get-description))",
+    :target-msec 500}
+   {:script "(rt.po.form-builder/open-form-properties-dialog)",
+    :target-msec 500}
+   {:script "(rt.po.form-properties/select-tab \"Object Properties\")",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-properties/set-object-name \"RT form builder test\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"RT form builder test\" (rt.po.form-properties/get-object-name))",
+    :target-msec 500}
+   {:script "(rt.po.form-properties/click-ok)", :target-msec 500}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-form \"Text\")",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder/set-form-control-name \"Text\" \"RT_String1\")",
+    :target-msec 500}
+   {:script "(rt.po.form-builder/save)", :target-msec 500}
+   {:script "(rt.po.form-builder/save-as \"Save-as test form\")",
+    :target-msec 500}
+   {:script "(rt.po.form-builder/close)", :target-msec 500}
+   {:script
+    "(rt.po.app-toolbox/set-application-filter \"Unassigned\")",
+    :target-msec 1000}
+   {:script
+    "(rt.po.app-toolbox/set-object-filter \"RT form builder test\")"}
+   {:script
+    "(rt.po.app-toolbox/set-application-filter \"Unassigned\")"}
+   {:script
+    "(rt.po.app-toolbox/delete-object \"RT form builder test\")"}],
+  :type :test,
+  :checks [],
+  :source "../RnTests/test-db",
+  :modified "20150601-153805",
+  :setup [:qa-daily/scripts/form-builder/open-form-builder-new-mode],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :qa-daily/form-builder/test-form-builder-toolbar,
+  :teardown [],
+  :modified-by "not-implemented",
+  :data {}}]

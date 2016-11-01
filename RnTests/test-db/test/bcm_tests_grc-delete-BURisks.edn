@@ -1,0 +1,37 @@
+[{:tags [:desktop :user/diana],
+  :steps
+  [{:script "(rn.common/start-app-and-login (:login-creds *tc*))",
+    :target-msec 4000}
+   {:script "(rt.po.app/navigate-to \"Risk Management\")",
+    :target-msec 4000}
+   {:script "(rt.po.app/select-app-tab \"Operational Risk\")",
+    :target-msec 4000}
+   {:script
+    "(rt.po.app/select-navigator-item \"Business Unit Risks\")",
+    :target-msec 4000}
+   {:script
+    "(doseq [n (range 1 200)] (rt.po.screen/open-report-action-menu-on-screen \"Business Unit Risk Report\") (rt.po.app/choose-context-menu \"Delete\") (rt.po.app/choose-modal-ok) (think 1))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20151103-115406",
+  :setup
+  [{:script
+    "(when (empty? (get-test-data :grc-creds :quiet)) (rn.common/start-app-and-login))"}
+   {:script
+    "(setonce-test-data :grc-creds rn.services.security/ensure-test-accounts [\"BCP Manager\" \"Compliance Manager\" \"Risk Manager\"] \"GRC\" 10)"}
+   {:script
+    "(identity {:login-creds (get-random-test-data :grc-creds)})"}
+   {:script "(comment \"TEMP adding to admins\")"}
+   {:script
+    "(when (:elevate-user *tc*) (rn.services.security/ensure-account-in-roles (-> *tc* :login-creds :username) [\"Administrators\"]) {:elevated true})"}
+   {:script "(rn.common/start-app-and-login (:login-creds *tc*))"}
+   {:script
+    "(identity {:owner-name (rn.services.security/get-account-holder-name (-> *tc* :login-creds :username))})"}
+   {:script
+    "(identity {:br-name (make-test-name \"BR\"), :bu-name (make-test-name \"BU\"), :bf-name (make-test-name \"BF\")})"}
+   {:script
+    "(setonce-test-data :risk-impacts rn.common/get-record-names-for-type \"Risk Impact\" {:app-name \"ReadiBCM\"})"}],
+  :fixtures [:common/fixture/wait-ng],
+  :id :bcm/tests/grc-delete-BURisks,
+  :teardown [],
+  :modified-by "not-implemented"}]

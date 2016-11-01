@@ -1,0 +1,110 @@
+[{:tags [:user/conc :area/console :prod :regression :desktop],
+  :tests [],
+  :name "Add icon and create existing report and chart to section",
+  :steps
+  [{:script
+    "(rt.po.app-toolbox/create-app {:name (:app-name *tc*) :description \"\"})"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Settings/Conditional Format Icons\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Name\" (:icon-name *tc*))"}
+   {:script
+    "(def TestIconPath (rt.po.common/get-data-file-path \"TestRegressionIcon.png\"))"}
+   {:script
+    "(rt.po.edit-form/upload-image \"Conditional format image\" TestIconPath)"}
+   {:script
+    "(rt.po.edit-form/set-lookup-value \"Applications\" (:app-name *tc*))"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script "(rt.lib.wd-ng/wait-for-angular)"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Documents\" \"Document Library/Icons\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"TestRegressionIcon.png\")"}
+   {:script
+    "(rt.po.report-view/select-row-by-text \"TestRegressionIcon.png\")"}
+   {:script
+    "(rt.po.report-view/choose-report-row-action \"TestRegressionIcon.png\" \"Edit\")"}
+   {:script
+    "(rt.po.edit-form/set-lookup-value \"Applications\" (:app-name *tc*))"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script "(rt.lib.wd-ng/wait-for-angular)"}
+   {:script "(rt.po.app/navigate-to (:app-name *tc*))"}
+   {:script "(rt.po.app/add-section (:section-name *tc*) \"\")"}
+   {:script
+    "(rt.po.app/add-existing-report (:report-name *tc*) (:section-name *tc*))"}
+   {:script
+    "(rt.po.app/add-existing-chart (:chart-name *tc*) (:section-name *tc*))"}
+   {:script
+    "(rt.po.app/navigate-to-item (:app-name *tc*) (str (:section-name *tc*) \"/\" (:report-name *tc*)))"}
+   {:script
+    "(rt.po.app/navigate-to-item (:app-name *tc*) (str (:section-name *tc*) \"/\" (:chart-name *tc*)))"}
+   {:script
+    "(expect-equals (= (rt.po.common/get-nav-item-icon-colour (:report-name *tc*)) (rt.lib.util/get-image-rgba (rt.lib.util/read-image TestIconPath))) false)"}
+   {:script
+    "(expect-equals (= (rt.po.common/get-nav-item-icon-colour (:chart-name *tc*)) (rt.lib.util/get-image-rgba (rt.lib.util/read-image TestIconPath))) false)"}
+   {:script
+    "(rt.po.app/load-property-of-nav-item (:report-name *tc*))"}
+   {:script "(rt.po.report-new/set-icon \"TestRegressionIcon.png\")"}
+   {:script "(rt.po.report-new/click-ok)"}
+   {:script "(rt.lib.wd-ng/wait-for-angular)"}
+   {:script "(rt.po.app/load-property-of-nav-item (:chart-name *tc*))"}
+   {:script "(rt.po.chart-new/set-icon \"TestRegressionIcon.png\")"}
+   {:script "(rt.po.chart-new/click-ok)"}
+   {:script "(rt.lib.wd-ng/wait-for-angular)"}
+   {:script
+    "(expect-equals (rt.po.common/get-nav-item-icon-colour (:report-name *tc*)) (rt.lib.util/get-image-rgba (rt.lib.util/read-image TestIconPath)))"}
+   {:script
+    "(expect-equals (rt.po.common/get-nav-item-icon-colour (:chart-name *tc*)) (rt.lib.util/get-image-rgba (rt.lib.util/read-image TestIconPath)))"}
+   {:script
+    "(rt.po.app/add-document-folder (:docfolder-name *tc*) \"\")"}
+   {:script "(rt.lib.wd-ng/wait-for-angular)"}
+   {:script
+    "(rt.po.app/add-object (:newobject-name *tc*) (:section-name *tc*))"}
+   {:script "(rt.lib.wd-ng/wait-for-angular)"}
+   {:script "(rt.po.form-builder/add-container-to-form)"}
+   {:script "(rt.po.form-builder/add-container-to-form)"}
+   {:script
+    "(rt.po.form-builder/add-field-from-toolbox-to-container \"Name\" 0)"}
+   {:script
+    "(rt.po.form-builder/add-field-from-toolbox-to-container \"Description\" 0)"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Text\" 1)"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Multiline Text\" 1)"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Number\" 1)"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Date and Time\" 1)"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Yes/No\" 0)"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.lib.wd-ng/wait-for-angular)"}
+   {:script "(rt.po.form-builder/close)"}
+   {:script
+    "(rt.po.app/navigate-to-item (:app-name *tc*) (:docfolder-name *tc*))"}
+   {:script "(rt.lib.wd-ng/wait-for-angular)"}
+   {:script
+    "(expect-equals (rt.po.report-view/get-open-doclibrary-report-name) \"Document Library\")"}
+   {:script
+    "(expect-equals (set (rt.po.report-view/get-report-column-names)) #{\"Type\" \"Modified date\" \"Last modified by\" \"Name\"})"}
+   {:script
+    "(rt.po.app/navigate-to-item (:app-name *tc*) (str (:section-name *tc*) \"/\" (:newobject-name *tc*) \" Report\"))"}
+   {:script "(rt.lib.wd-ng/wait-for-angular)"}
+   {:script
+    "(expect-equals (rt.po.report-view/get-open-report-name) (str (:newobject-name *tc*) \" Report\"))"}
+   {:script
+    "(expect-equals (set (rt.po.report-view/get-report-column-names)) #{(:newobject-name *tc*) \"Description\" \"Yes/No\" \"Text\" \"Multiline Text\" \"Number\" \"Date and Time\"})"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20150714-131849",
+  :setup
+  [{:script
+    "(identity {:app-name (rt.lib.util/make-test-name \"Icon-Test-App\")\n               :icon-name (rt.lib.util/make-test-name \"Test-Icon\")\n               :report-name \"Student Report - Faculties\"\n               :chart-name \"1. Students by faculty (p)\"\n               :section-name (rt.lib.util/make-test-name \"Icon Regression Section\")\n               :docfolder-name (rt.lib.util/make-test-name \"Regression Document Folder\")\n               :newobject-name (rt.lib.util/make-test-name \"Regression Object\")\n               })"}],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id
+  :rn/console/add-icon-and-create-existing-report-and-chart-to-section,
+  :teardown
+  [{:script "(rt.po.app/uninstall-application (:app-name *tc*))"}],
+  :modified-by "not-implemented"}]

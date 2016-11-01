@@ -1,0 +1,32 @@
+[{:tags [:desktop],
+  :tests [],
+  :name "Create metrics Object and import",
+  :steps
+  [{:script
+    "(rt.scripts.perf/generate-metrics-csv \"test-times.csv\")",
+        :target-time 500}
+   {:script "(rt.scripts.perf/remove-previous-metrics)",
+        :target-time 5000}
+   {:script "(rt.scripts.perf/create-metrics-object)",
+        :target-time 2000}
+   {:script "(rt.scripts.perf/create-metrics-report)",
+        :target-time 5000}
+   {:script "(rt.scripts.perf/create-metrics-screen)",
+        :target-time 5000}
+   {:script "(rt.scripts.perf/import-metrics \"test-times.csv\")",
+        :target-time 5000}
+   {:script
+    "(rt.po.app/navigate-to-item \"Home\" \"RT-TestRun-Metrics-Screen\")",
+        :target-time 5000}
+   {:script
+    "(clj-webdriver.taxi/take-screenshot :file \"metrics-screenshot.png\")",
+        :target-time 500}],
+  :type :test,
+  :checks [],
+  :source "../RnTests/test-db",
+  :modified "20150601-153807",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :qa-daily/import-metrics,
+  :teardown [],
+  :modified-by "not-implemented"}]

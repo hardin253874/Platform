@@ -1,0 +1,53 @@
+[{:tags [:desktop],
+  :tests [],
+  :name "Form Builder Toolbox Relationship viewer Drivers on Chrome",
+  :steps
+  [{:script
+    "(rt.po.form-builder/expand-toolbox-section \"Relationship\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals true (rt.po.form-builder/toolbox-section-expanded? \"Relationship\"))",
+    :target-msec 500}
+   {:script "(rt.po.form-builder/open-add-lookup-menu)",
+    :target-msec 500}
+   {:script
+    "(expect-equals true (rt.po.form-builder/lookup-menu-opened?))",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder/check-lookup-from-lookup-menu \"Created by\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals true (rt.po.form-builder/lookup-selected? \"Created by\"))",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder/check-lookup-from-lookup-menu \"Owned by\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals true (rt.po.form-builder/lookup-selected? \"Owned by\"))",
+    :target-msec 500}
+   {:script "(rt.po.form-builder/close-add-lookup-menu)",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder/select-lookup-from-relationship-viewer \"Owned by\")",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder/delete-lookup-from-relationship-viewer \"Created by\")",
+    :target-msec 500}
+   {:script "(rt.po.form-builder/open-add-lookup-menu)",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder/uncheck-lookup-from-lookup-menu \"Owned by\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals false (rt.po.form-builder/lookup-selected? \"Created by\"))",
+    :target-msec 500}],
+  :type :test,
+  :checks [],
+  :source "../RnTests/test-db",
+  :modified "20150601-153807",
+  :setup [:qa-daily/scripts/form-builder/open-form-builder-new-mode],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :qa-daily/form-builder/test-toolbox-relationship-viewer,
+  :teardown [],
+  :modified-by "not-implemented",
+  :data {}}]

@@ -1,0 +1,19 @@
+[{:tags [:desktop],
+  :test-filter "(has-tags? [\"area/report-builder\"] %)",
+  :tests [],
+  :name "All report builder tests",
+  :each-fixtures
+  [:common/fixture/handle-errors
+   :common/fixture/wait-ng
+   :common/fixture/test-account-creds
+   :common/fixture/chrome
+   :common/fixture/login],
+  :type :testsuite,
+  :source "../RnTests/test-db",
+  :modified "20150601-153830",
+  :setup [{:script ""}],
+  :id :rn/suites/report-builder,
+  :teardown [{:script ""}],
+  :doc "",
+  :modified-by "not-implemented",
+  :once-fixtures []}]

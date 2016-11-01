@@ -1,0 +1,98 @@
+[{:tags [:prod :regression :desktop],
+  :tests [],
+  :name "Form properties dialog drivers on Chrome",
+  :steps
+  [{:script "(rt.po.form-builder/open-form-properties-dialog)",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-properties/set-form-name \"RT form properties test\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"RT form properties test\" (rt.po.form-properties/get-form-name))",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-properties/set-form-description \"RT form properties test description\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"RT form properties test description\" (rt.po.form-properties/get-form-description))",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-properties/set-form-applications \"Test Solution\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"Test Solution\" (rt.po.form-properties/get-form-applications))",
+    :target-msec 500}
+   {:script "(rt.po.form-properties/clear-form-applications)",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-properties/set-form-icon \"Green Circle Format Icon\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"Green Circle Format Icon\" (rt.po.form-properties/get-form-icon))",
+    :target-msec 500}
+   {:script "(rt.po.form-properties/clear-form-icon)",
+    :target-msec 500}
+   {:script "(rt.po.form-properties/set-enable-convert true)",
+    :target-msec 500}
+   {:script
+    "(expect-equals true (rt.po.form-properties/get-enable-convert))",
+    :target-msec 500}
+   {:script "(rt.po.form-properties/set-default-form true)",
+    :target-msec 500}
+   {:script
+    "(expect-equals true (rt.po.form-properties/get-default-form))",
+    :target-msec 500}
+   {:script "(rt.po.form-properties/select-tab \"Object Properties\")",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-properties/set-object-name \"RT object properties test\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"RT object properties test\" (rt.po.form-properties/get-object-name))",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-properties/set-object-description \"RT object properties test description\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"RT object properties test description\" (rt.po.form-properties/get-object-description))",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-properties/set-object-applications \"Test Solution\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"Test Solution\" (rt.po.form-properties/get-object-applications))",
+    :target-msec 500}
+   {:script "(rt.po.form-properties/clear-object-applications)",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-properties/set-object-icon \"Green Circle Format Icon\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"Green Circle Format Icon\" (rt.po.form-properties/get-object-icon))",
+    :target-msec 500}
+   {:script "(rt.po.form-properties/clear-object-icon)",
+    :target-msec 500}
+   {:script "(rt.po.form-properties/set-abstract-type true)",
+    :target-msec 500}
+   {:script
+    "(expect-equals true (rt.po.form-properties/get-abstract-type))",
+    :target-msec 500}
+   {:script "(rt.po.form-properties/set-multiple-type true)",
+    :target-msec 500}
+   {:script
+    "(expect-equals true (rt.po.form-properties/get-multiple-type))",
+    :target-msec 500}
+   {:script "(rt.po.form-properties/click-ok)", :target-msec 500}
+   {:script "(rt.po.form-builder/open-form-properties-dialog)",
+    :target-msec 500}
+   {:script "(rt.po.form-properties/click-cancel)", :target-msec 500}],
+  :type :test,
+  :checks [],
+  :source "./test-db",
+  :modified "20160902-141115",
+  :setup [:qa-daily/scripts/form-builder/open-form-builder-new-mode],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :qa-daily/form-builder/test-form-properties,
+  :teardown [],
+  :modified-by "not-implemented",
+  :data {}}]

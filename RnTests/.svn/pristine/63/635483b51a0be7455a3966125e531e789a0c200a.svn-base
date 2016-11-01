@@ -1,0 +1,87 @@
+[{:tags
+  [:user/shaofen
+   :nomodify
+   :prod
+   :regression
+   :desktop
+   :area/form-builder],
+  :tests [],
+  :name "SetFieldProperties-Text",
+  :steps
+  [{:script "(rt.po.app/navigate-via-tiles \"Foster University\")"}
+   {:script "(rt.po.app/enable-app-toolbox )"}
+   {:script
+    "(rt.po.app-toolbox/create-object {:name \"SetField Object1\" :description \"New Test Object Description\"})"}
+   {:script
+    "(expect-equals \"SetField Object1 Form\" (rt.po.form-builder/get-form-title))"}
+   {:script "(rt.po.form-builder/add-container-to-form )"}
+   {:script "(expect-equals true (rt.po.form-builder/has-canvas?))"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Text\")"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"Text\")"}
+   {:script "(rt.po.form-builder-config/set-name \"Text1\")"}
+   {:script
+    "(rt.po.form-builder-config/set-display-name \"Test Text Field\")"}
+   {:script
+    "(rt.po.form-builder-config/set-description \"This is a Text Field.\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Form Detail\")"}
+   {:script "(rt.po.form-builder-config/set-control-mandatory true)"}
+   {:script
+    "(expect-equals true (rt.po.form-builder-config/get-control-mandatory))"}
+   {:script "(rt.po.form-builder-config/set-control-mandatory false)"}
+   {:script
+    "(expect-equals false (rt.po.form-builder-config/get-control-mandatory))"}
+   {:script
+    "(comment \"bug24049\" (rt.po.form-builder-config/set-control-readonly true))"}
+   {:script
+    "(comment \"bug24049\" (expect-equals false (rt.po.form-builder-config/get-control-readonly)))"}
+   {:script
+    "(comment \"bug24049\" (rt.po.form-builder-config/set-control-readonly false))"}
+   {:script
+    "(comment \"bug24049\" (expect-equals false (rt.po.form-builder-config/get-control-readonly)))"}
+   {:script "(rt.po.form-builder-config/select-tab \"Object Detail\")"}
+   {:script "(rt.po.form-builder-config/set-field-mandatory true)"}
+   {:script
+    "(expect-equals true (rt.po.form-builder-config/get-field-mandatory))"}
+   {:script "(rt.po.form-builder-config/set-field-mandatory false)"}
+   {:script
+    "(expect-equals false (rt.po.form-builder-config/get-field-mandatory))"}
+   {:script
+    "(rt.po.form-builder-config/set-field-minimum-value \"3\")"}
+   {:script
+    "(expect-equals \"3\" (rt.po.form-builder-config/get-field-minimum-value ))"}
+   {:script
+    "(rt.po.form-builder-config/set-field-maximum-value \"10\")"}
+   {:script
+    "(expect-equals \"10\" (rt.po.form-builder-config/get-field-maximum-value ))"}
+   {:script
+    "(rt.po.form-builder-config/set-field-default-value \"Text\")"}
+   {:script
+    "(expect-equals \"Text\" (rt.po.form-builder-config/get-field-default-value ))"}
+   {:script
+    "(rt.po.form-builder-config/set-text-pattern \"Person's Name\")"}
+   {:script
+    "(expect-equals \"Person's Name\" (rt.po.form-builder-config/get-text-pattern ))"}
+   {:script "(rt.po.form-builder-config/select-tab \"Format\")"}
+   {:script
+    "(rt.po.form-builder-config/set-background-color \"Silver\")"}
+   {:script
+    "(expect-equals \"Silver\" (rt.po.form-builder-config/get-background-color ))"}
+   {:script
+    "(rt.po.form-builder-config/set-horizontal-resize \"50%\")"}
+   {:script
+    "(expect-equals \"50%\" (rt.po.form-builder-config/get-horizontal-resize ))"}
+   {:script "(rt.po.form-builder-config/click-ok )"}
+   {:script "(expect-equals true (rt.po.form-builder/has-fields?))"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150601-153814",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/formbuilder/SetFieldProperties-Text,
+  :teardown
+  [{:script "(rt.po.app-toolbox/delete-object \"SetField Object1\")"}],
+  :modified-by "not-implemented"}]

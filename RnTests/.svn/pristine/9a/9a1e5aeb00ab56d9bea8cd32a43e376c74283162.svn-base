@@ -1,0 +1,62 @@
+[{:tags [:user/conc :prod :regression :area/report :desktop],
+  :tests [],
+  :name "Use quick search and analyser to filter data",
+  :steps
+  [{:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script
+    "(rt.po.report-builder/set-in-analyzer-checkbox-field-value \"Gender\" true)"}
+   {:script "(rt.po.report-builder/save)"}
+   {:script "(rt.lib.wd-ng/wait-for-angular)"}
+   {:script "(rt.po.report-builder/close)"}
+   {:script "(rt.po.report-view/set-search-text \"\")"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script "(rt.po.report-view/reset-analyzer)"}
+   {:script "(Thread/sleep 500)"}
+   {:script "(rt.lib.wd-ng/wait-for-angular)"}
+   {:script
+    "(def StateValues (rt.po.report-view/get-loaded-grid-values \".spreport-view\" (.indexOf (rt.po.report-view/get-report-column-names) \"State\")))"}
+   {:script
+    "(expect-equals (some #(not= % \"NSW\") StateValues) true)"}
+   {:script
+    "(def GenderValues (rt.po.report-view/get-loaded-grid-values \".spreport-view\" (.indexOf (rt.po.report-view/get-report-column-names) \"Gender\")))"}
+   {:script
+    "(expect-equals (some #(not= % \"Female\") GenderValues) true)"}
+   {:script "(rt.po.report-view/set-search-text \"NSW\")"}
+   {:script
+    "(def StateValues (rt.po.report-view/get-loaded-grid-values \".spreport-view\" (.indexOf (rt.po.report-view/get-report-column-names) \"State\")))"}
+   {:script "(expect-equals (every? #(= % \"NSW\") StateValues) true)"}
+   {:script
+    "(def GenderValues (rt.po.report-view/get-loaded-grid-values \".spreport-view\" (.indexOf (rt.po.report-view/get-report-column-names) \"Gender\")))"}
+   {:script
+    "(expect-equals (some #(not= % \"Female\") GenderValues) true)"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script
+    "(rt.po.report-view/set-analyzer-choice-option \"Gender\" \"Any of\" \"Female\")"}
+   {:script "(rt.lib.wd-ng/wait-for-angular)"}
+   {:script
+    "(def StateValues (rt.po.report-view/get-loaded-grid-values \".spreport-view\" (.indexOf (rt.po.report-view/get-report-column-names) \"State\")))"}
+   {:script "(expect-equals (every? #(= % \"NSW\") StateValues) true)"}
+   {:script
+    "(def GenderValues (rt.po.report-view/get-loaded-grid-values \".spreport-view\" (.indexOf (rt.po.report-view/get-report-column-names) \"Gender\")))"}
+   {:script
+    "(expect-equals (every? #(= % \"Female\") GenderValues) true)"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script
+    "(rt.po.report-builder/set-in-analyzer-checkbox-field-value \"Gender\" false)"}
+   {:script "(rt.po.report-builder/save)"}
+   {:script "(rt.lib.wd-ng/wait-for-angular)"}
+   {:script "(rt.po.report-builder/close)"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150601-153825",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/report/use-quick-search-and-analyser-to-filter-data,
+  :teardown [],
+  :modified-by "not-implemented"}]

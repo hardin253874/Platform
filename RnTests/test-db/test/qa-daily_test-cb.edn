@@ -1,0 +1,30 @@
+[{:tags [:prod :desktop :smoke-test],
+  :tests [],
+  :name "Chart Builder Test on Chrome",
+  :steps
+  [{:script
+    "(rt.po.app-toolbox/create-chart-via-toolbox-object\r\n              {:name \"RT-Chart\" :object-type (:object-name *test-context*) :chart-type \"Column\"})",
+        :target-msec 5000,
+    :doc "create chart"}],
+  :type :test,
+  :checks [],
+  :source "../RnTests/test-db",
+  :modified "20150601-153808",
+  :setup
+  [{:script "(rt.po.app/enable-app-toolbox)",
+        :target-msec 500}
+   {:script
+    "(rt.po.app-toolbox/set-application-filter \"Unassigned\")",
+        :target-msec 1000}
+   {:script "(rt.po.app-toolbox/set-object-filter \"rt-obj\")",
+        :target-msec 1000}
+   {:script
+    "(identity {:object-name (first (rt.po.app-toolbox/get-object-names))})",
+        :target-msec 500}
+   {:script
+    "(expect (not (empty? (rt.po.app-toolbox/get-object-names))) \"Failed to find RT Object... prev test failed???\")"}],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :qa-daily/test-cb,
+  :teardown [],
+  :modified-by "not-implemented",
+  :data {}}]

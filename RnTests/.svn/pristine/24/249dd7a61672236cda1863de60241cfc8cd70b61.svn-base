@@ -1,0 +1,12 @@
+[{:tags [:desktop],
+  :name "staff user creds for security tests",
+  :steps [],
+  :type :testfixture,
+  :source "./test-db",
+  :modified "20151020-143628",
+  :setup
+  [{:script
+    "(identity {:user-creds-staff {:password \"Maite.Walls1\", :username \"Maite.Walls\"}})"}],
+  :id :rn/fixture/user-creds-staff,
+  :teardown [],
+  :modified-by "not-implemented"}]

@@ -1,0 +1,197 @@
+[{:tags [:desktop :app/bcm],
+  :name "Create a new BU",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:login-creds *tc*))"}
+   {:script "(think 5)"}
+   {:script "(rt.po.app/navigate-to \"Business Continuity Planning\")",
+    :target-msec 10000}
+   {:script "(rt.po.app/select-app-tab \"Business Units\")",
+    :target-msec 10000}
+   {:script "(rt.po.app/select-navigator-item \"Business Units\")",
+    :target-msec 10000}
+   {:script "(think 5)"}
+   {:script "(rt.po.report-view/open-action-menu)", :target-msec 2000}
+   {:script "(rt.po.app/choose-context-menu \"New\")",
+    :target-msec 5000}
+   {:script "(think 5)"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:bu-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-multiline \"Description\" (str \"Description for \" (:bu-name *tc*)))"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Owner\" (:owner-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-dropdown-control \"Division\" (:division *tc*))"}
+   {:script
+    "(comment \"---add 5 employees, currently BIA does not have access to save the BU with employees he is trying to link\")"}
+   {:script
+    "(comment (rt.po.edit-form/select-form-tab \"Employees\"))"}
+   {:script
+    "(comment (rt.po.view-form/open-tab-action-menu \"Employees\" \"Link\"))"}
+   {:script "(comment (think 2))"}
+   {:script
+    "(comment (rt.po.edit-form/choose-in-entity-picker-dialog (get-random-test-data :employees-for-bia-user)))"}
+   {:script "(comment (think 2))"}
+   {:script "(think 15)"}
+   {:script "(rt.po.edit-form/select-form-tab \"Business Function\")"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Business Function\" \"New\")"}
+   {:script
+    "(rn.scripts.bcm/fill-bf-form {:op-impacts (get-test-data :op-impacts), :name (str (:bf-name *tc*) \"-a\"), :owner (:owner-name *tc*)})"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(think 30)"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Business Function\" \"New\")"}
+   {:script
+    "(rn.scripts.bcm/fill-bf-form {:op-impacts (get-test-data :op-impacts), :name (str (:bf-name *tc*) \"-b\"), :owner (:owner-name *tc*)})"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(think 30)"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Business Function\" \"New\")"}
+   {:script
+    "(rn.scripts.bcm/fill-bf-form {:op-impacts (get-test-data :op-impacts), :name (str (:bf-name *tc*) \"-c\"), :owner (:owner-name *tc*)})"}
+   {:script "(rt.po.edit-form/save) ;; business function",
+    :target-msec 5000}
+   {:script "(think 35)"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Completed\" true)"}
+   {:script "(think 15)"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Recovery Requirements\" \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Building\" (get-random-test-data :buildings))"}
+   {:script
+    "(comment \"TODO - need to filter buildings that are sites\")"}
+   {:script
+    "(comment (rt.po.edit-form/set-lookup \"Recovery Site\" (get-random-test-data :sites)))"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"People Day 1\" (str (rand-int 10)))"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"People Day 2-5\" (str (rand-int 100)))"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"People Week 1\" (str (rand-int 100)))"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"Positions Day 1\" (str (rand-int 10)))"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"Positions Day 2-5\" (str (rand-int 100)))"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"Positions Week 1\" (str (rand-int 100)))"}
+   {:script "(think 25)", :target-msec 5000}
+   {:script "(rt.po.edit-form/save)", :target-msec 5000}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Completed\" true)"}
+   {:script "(think 10)"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"IT Recovery Requirements\" \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Technology\" (get-random-test-data :tech-pcs))"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Required in 2-5 days\" true)"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Required in 1 week\" true)"}
+   {:script "(rt.po.edit-form/click-save-plus-button)"}
+   {:script "(think 25)"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Technology\" (get-random-test-data :tech-printers))"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Required in 2-5 days\" true)"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Required in 1 week\" true)"}
+   {:script "(rt.po.edit-form/click-save-plus-button)"}
+   {:script "(think 15)"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Technology\" (get-random-test-data :tech-sw))"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Required in 2-5 days\" true)"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Required in 1 week\" true)"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script "(think 15)"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Completed\" true)"}
+   {:script "(think 10)"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Products & Services Dependency\" \"Link\")"}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog (get-random-test-data :products-or-services))"}
+   {:script "(think 15)"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Products & Services Dependency\" \"Link\")"}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog (get-random-test-data :products-or-services))"}
+   {:script "(think 15)"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Completed\" true)"}
+   {:script "(think 10)"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Business Critical Periods\" \"Link\")"}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog (get-random-test-data :critical-periods))"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Completed\" true)"}
+   {:script "(think 15)"}
+   {:script "(rt.po.edit-form/select-form-tab \"Business Unit Plan\")"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Completed\" true)"}
+   {:script "(think 10)"}
+   {:script "(rt.po.edit-form/select-form-tab \"Approval\")"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Approver\" (get-random-test-data :employees-for-bia-user))"}
+   {:script "(think 15)"}
+   {:script "(rt.po.edit-form/save) ; save the business unit",
+    :target-msec 5000}
+   {:script "(think 10)"}
+   {:script "(rt.po.report-view/set-search-text (:bu-name *tc*))"}
+   {:script "(rt.po.app/select-app-tab \"Dashboards\")"}
+   {:script "(think 30)"}
+   {:script "(rt.po.app/select-navigator-item \"Plans Summary\")"}
+   {:script "(think 30)"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20151015-133726",
+  :setup
+  [{:script
+    "(when (empty? (get-test-data :bia-user-creds :quiet)) (rn.common/start-app-and-login))"}
+   {:script
+    "(setonce-test-data :bia-user-creds rn.services.security/ensure-test-accounts [\"BIA User\"] \"BIAUSER\" 50)"}
+   {:script
+    "(identity {:login-creds (get-random-test-data :bia-user-creds)})"}
+   {:script "(rn.common/start-app-and-login (:login-creds *tc*))"}
+   {:script
+    "(identity {:owner-name (rn.services.security/get-account-holder-name (-> *tc* :login-creds :username))})"}
+   {:script
+    "(identity {:br-name (make-test-name \"BR\"), :bu-name (make-test-name \"BU\"), :bf-name (make-test-name \"BF\")})"}
+   {:script
+    "(setonce-test-data :employees-for-bia-user rn.common/get-record-names-for-type-via-report \"Employee\")"}
+   {:script
+    "(setonce-test-data :risk-drivers rn.common/get-choice-values \"Risk Type (Source)\" {:app-name \"ReadiBCM\"})"}
+   {:script
+    "(setonce-test-data :risk-levels rn.common/get-choice-values \"Level of Risk\" {:app-name \"ReadiBCM\"})"}
+   {:script
+    "(setonce-test-data :op-impacts rn.common/get-choice-values \"Function Operational Impact\" {:app-name \"ReadiBCM\"})"}
+   {:script
+    "(setonce-test-data :divisions-for-bia-user rn.common/get-record-names-for-type \"Division\")"}
+   {:script
+    "(setonce-test-data :critical-periods rn.common/get-record-names-for-type \"Business Critical Periods\")"}
+   {:script
+    "(setonce-test-data :products-or-services rn.common/get-record-names-for-type \"Product or Service\")"}
+   {:script
+    "(setonce-test-data :tech-pcs rn.common/get-record-names-for-type \"PC\")"}
+   {:script
+    "(setonce-test-data :tech-sw rn.common/get-record-names-for-type \"Server Application\")"}
+   {:script
+    "(setonce-test-data :tech-printers rn.common/get-record-names-for-type \"Printer\")"}
+   {:script
+    "(setonce-test-data :buildings rn.common/get-record-names-for-type \"Building\" {:app-name \"ReadiBCM\"})"}
+   {:script
+    "(comment \"TODO - sites is actually a subset of buildings .. so temp hardcoding\")"}
+   {:script
+    "(comment (setonce-test-data :sites rn.common/get-record-names-for-type \"Building\" {:app-name \"ReadiBCM\"}))"}
+   {:script
+    "(setonce-test-data :sites [\"Box Hill\" \"Maitland\" \"Ryde\" \"Pookaka\"])"}
+   {:script
+    "(identity {:division (get-random-test-data :divisions-for-bia-user)})"}],
+  :fixtures [:common/fixture/wait-ng],
+  :id :grc/tests/bia-user-1,
+  :teardown [],
+  :modified-by "not-implemented"}]

@@ -1,0 +1,51 @@
+[{:tags
+  [:user/shaofen
+   :nomodify
+   :prod
+   :regression
+   :desktop
+   :area/form-builder],
+  :tests [],
+  :name "SetFieldProperties-Boolean",
+  :steps
+  [{:script "(rt.po.app/navigate-via-tiles \"Foster University\")"}
+   {:script "(rt.po.app/enable-app-toolbox )"}
+   {:script
+    "(rt.po.app-toolbox/create-object {:name \"SetField Object105\" :description \"New Test Object Description\"})"}
+   {:script
+    "(expect-equals \"SetField Object105 Form\" (rt.po.form-builder/get-form-title))"}
+   {:script "(rt.po.form-builder/add-container-to-form )"}
+   {:script "(expect-equals true (rt.po.form-builder/has-canvas?))"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Yes/No\")"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"Yes/No\")"}
+   {:script "(rt.po.form-builder-config/set-name \"Yes/No1\")"}
+   {:script
+    "(rt.po.form-builder-config/set-display-name \"Test Boolean Field\")"}
+   {:script
+    "(rt.po.form-builder-config/set-description \"This is a Boolean Field.\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Object Detail\")"}
+   {:script
+    "(comment \"oh dear god!\" (rt.po.form-builder-config/set-field-default-value \"Yes\")))"}
+   {:script
+    "(comment \" \" (expect-equals \"Yes\" (rt.po.form-builder-config/get-field-default-value )))"}
+   {:script "(rt.po.form-builder-config/select-tab \"Format\")"}
+   {:script
+    "(rt.po.form-builder-config/set-background-color \"Silver\")"}
+   {:script
+    "(expect-equals \"Silver\" (rt.po.form-builder-config/get-background-color ))"}
+   {:script "(rt.po.form-builder-config/click-ok )"}
+   {:script "(expect-equals true (rt.po.form-builder/has-fields?))"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150601-153813",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/formbuilder/SetFieldProperties-Boolean,
+  :teardown
+  [{:script
+    "(rt.po.app-toolbox/delete-object \"SetField Object105\")"}],
+  :modified-by "not-implemented"}]

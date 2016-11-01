@@ -1,0 +1,49 @@
+[{:tags [:user/kun :app-tests/incident :desktop],
+  :tests [],
+  :name "Ensure Incident Managing Issues",
+  :steps
+  [{:script
+    "(rn.common/start-app-and-login (:incident-user-creds-owner *tc*))"}
+   {:script "(think 1)"}
+   {:script "(rt.po.app/navigate-to \"Incident Management\")"}
+   {:script "(think 1)"}
+   {:script
+    "(rt.po.screen/open-report-menu-on-screen-by-name \"My Issues\" \"Action\")",
+    :target-msec 1000}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:issue-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-multiline \"Description\" \"speeding cars make parking dangerous\")"}
+   {:script "(rt.po.edit-form/set-today-date \"Exp Resolution Date\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.view-form/click-button-in-relationship \"Tasks\" \"Action\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Subject\" (:task-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Due date\" (make-local-date 2017 11 11))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Task status\" \"Not started\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.app/select-app-tab \"Incident Management\")"}
+   {:script
+    "(expect-equals true (rt.po.screen/is-hero-text-on-screen \"New Today\"))"}
+   {:script "(rt.po.screen/click-hero-text-on-screen \"New Today\")"}
+   {:script
+    "(expect-equals true (> (rt.po.report-view/count-report-row) 0))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20161024-114540",
+  :setup
+  [{:script
+    "(identity {:task-name (rt.lib.util/make-test-name \"Task\"), \r\n\t\t\t\t:issue-name (rt.lib.util/make-test-name \"Issue\"),\r\n\t\t\t\t:fi-name (rt.lib.util/make-test-name \"FraudIncident\"),\r\n\t\t\t\t:ohs-name (rt.lib.util/make-test-name \"OHSIncident\"),\r\n\t\t\t\t:pss-name (rt.lib.util/make-test-name \"PhySecIncident\"),\r\n\t\t\t\t:note-name (rt.lib.util/make-test-name \"Note\")\r\n\t\t\t\t})"}],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds-incident],
+  :id :incident/tests/managing-issues,
+  :teardown [],
+  :modified-by "not-implemented"}]

@@ -1,0 +1,79 @@
+[{:tags [:user/hemant :app-tests/itrisk :desktop],
+  :name
+  "Managing Shared by creating Org structure, Applications, Devices, Information",
+  :steps
+  [{:script
+    "(rn.common/start-app-and-login (:itrisk-manager-creds *tc*))"}
+   {:script "(rt.po.app/navigate-to \"Shared\")"}
+   {:script
+    "(rt.po.app/select-navigator-item \"Organisation Structure\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:org-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/open-lookup \"Parent organisation level\")"}
+   {:script
+    "(rt.po.view-form/select-structure-view-item-with-ctrl-key-by-text \"Administration\" \"\")"}
+   {:script "(rt.po.common/click-ok)"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.report-view/set-search-text (:org-name *tc*))"}
+   {:script
+    "(expect-equals (:org-name *tc*) (rt.po.report-view/get-report-cell-text-content 0 \"Organisation Structure\"))"}
+   {:script "(rt.po.app/select-navigator-item \"Applications\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:app-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Application Type\" \"PC Application\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Status\" \"Installed\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.report-view/set-search-text (:app-name *tc*))"}
+   {:script
+    "(expect-equals (:app-name *tc*) (rt.po.report-view/get-report-cell-text-content 0 \"Application\"))"}
+   {:script
+    "(expect-equals \"PC Application\" (rt.po.report-view/get-report-cell-text-content 0 \"Application Type\"))"}
+   {:script "(rt.po.app/select-navigator-item \"Devices\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:device-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Device Category\" \"Telephony\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Device Type\" \"IP Phone\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Status\" \"Online\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.report-view/set-search-text (:device-name *tc*))"}
+   {:script
+    "(expect-equals (:device-name *tc*) (rt.po.report-builder/get-grouped-row-content \"Telephony\" 0 \"Device\"))"}
+   {:script "(rt.po.app/select-navigator-item \"Information\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:info-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Status\" \"Active\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.report-view/set-search-text (:info-name *tc*))"}
+   {:script
+    "(expect-equals (:info-name *tc*) (rt.po.report-view/get-report-cell-text-content 0 \"Information\"))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20161017-171029",
+  :setup
+  [{:script
+    "(identity {:info-name (rt.lib.util/make-test-name \"Information\"), :app-name (rt.lib.util/make-test-name \"Application\"), :org-name (rt.lib.util/make-test-name \"OrgSt\"), :device-name (rt.lib.util/make-test-name \"Device\")})"}],
+  :fixtures
+  [:rn/fixture/orm-manager-creds
+   :rn/fixture/itsecurityrisk-manager-creds],
+  :id :itrisk/tests/itrisk-managing-shared,
+  :teardown [],
+  :modified-by "not-implemented"}]

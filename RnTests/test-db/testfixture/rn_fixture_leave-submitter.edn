@@ -1,0 +1,9 @@
+[{:type :testfixture,
+  :id :rn/fixture/leave-submitter,
+  :setup
+  [{:script
+    "(identity {:leave-submitter {:password \"joe1234\", :username \"joe\"}})"}],
+  :teardown [],
+  :modified "20160527-142403",
+  :modified-by "not-implemented",
+  :source "./test-db"}]

@@ -1,0 +1,70 @@
+[{:tags [:area/report-builder :prod :regression :desktop :user/abida],
+  :tests [],
+  :name "Removing fields by context menu",
+  :steps
+  [{:script "(rt.po.app/add-report (:section *tc*) )"}
+   {:script
+    "(rt.po.report-new/set-name \"RemoveFieldsByContextmenu\")"}
+   {:script "(rt.po.report-new/set-report-base-on \"Student\")"}
+   {:script "(rt.po.report-new/click-ok )"}
+   {:script
+    "(rt.po.report-builder/select-fields-in-report \"First name\" \"Postcode\" \"DOB\" \"Title\" \"Balance\" \"Photo\")"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script "(rt.po.report-builder/close )"}
+   {:script "(rt.po.report-builder/access-build-mode )"}
+   {:script
+    "(rt.po.report-builder/show-column-context-menu \"First name\")"}
+   {:script "(rt.po.app/choose-context-menu \"Remove Column\")"}
+   {:script
+    "(rt.po.report-builder/show-column-context-menu \"Postcode\")"}
+   {:script "(rt.po.app/choose-context-menu \"Remove Column\")"}
+   {:script "(rt.po.report-builder/show-column-context-menu \"DOB\")"}
+   {:script "(rt.po.app/choose-context-menu \"Remove Column\")"}
+   {:script
+    "(rt.po.report-builder/show-column-context-menu \"Title\")"}
+   {:script "(rt.po.app/choose-context-menu \"Remove Column\")"}
+   {:script
+    "(rt.po.report-builder/show-column-context-menu \"Balance\")"}
+   {:script "(rt.po.app/choose-context-menu \"Remove Column\")"}
+   {:script
+    "(rt.po.report-builder/show-column-context-menu \"Photo\")"}
+   {:script "(rt.po.app/choose-context-menu \"Remove Column\")"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script
+    "(expect-equals nil (rt.po.report-builder/get-col-header \"First name\"))"}
+   {:script
+    "(expect-equals nil (rt.po.report-builder/get-col-header \"Postcode\"))"}
+   {:script
+    "(expect-equals nil (rt.po.report-builder/get-col-header \"DOB\"))"}
+   {:script
+    "(expect-equals nil (rt.po.report-builder/get-col-header \"Title\"))"}
+   {:script
+    "(expect-equals nil (rt.po.report-builder/get-col-header \"Balance\"))"}
+   {:script
+    "(expect-equals nil (rt.po.report-builder/get-col-header \"Photo\"))"}
+   {:script "(rt.po.report-builder/close )"}
+   {:script
+    "(rn.app/open-report \"RemoveFieldsByContextmenu\" {:app-name \"Foster University\" :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals nil (rt.po.report-builder/get-col-header \"First name\"))"}
+   {:script
+    "(expect-equals nil (rt.po.report-builder/get-col-header \"Postcode\"))"}
+   {:script
+    "(expect-equals nil (rt.po.report-builder/get-col-header \"DOB\"))"}
+   {:script
+    "(expect-equals nil (rt.po.report-builder/get-col-header \"Title\"))"}
+   {:script
+    "(expect-equals nil (rt.po.report-builder/get-col-header \"Balance\"))"}
+   {:script
+    "(expect-equals nil (rt.po.report-builder/get-col-header \"Photo\"))"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150609-173452",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :common/fixture/login
+   :rn/section/createsection],
+  :id :rn/reportbuilder/removefields-via-contextmenu,
+  :teardown [{:script "(rt.po.app/delete-nav-item (:section *tc*))"}],
+  :modified-by "not-implemented"}]

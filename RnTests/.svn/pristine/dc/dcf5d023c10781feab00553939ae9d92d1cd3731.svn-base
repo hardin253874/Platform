@@ -1,0 +1,29 @@
+[{:tags [:regression :desktop :prod],
+  :tests [],
+  :name "More basic workflow builder operations",
+  :steps
+  [{:script "(rt.po.workflow/open-new)"}
+   {:script "(expect (not (rt.po.workflow/isDirty?)))"}
+   {:script
+    "(rt.po.workflow/set-component-name (make-test-name \"Workflow\"))"}
+   {:script "(rt.po.workflow/add-toolbox-item \"Create\" 100 200)"}
+   {:script "(rt.po.workflow/add-toolbox-item \"Update\" 200 200)"}
+   {:script "(rt.po.workflow/add-sequence \"start\" \"\" \"Create\")"}
+   {:script "(rt.po.workflow/add-sequence \"Update\" \"\" \"end\")"}
+   {:script "(rt.po.workflow/add-sequence \"Create\" \"\" \"Update\")"}
+   {:script
+    "(doseq [n (range 10)] (rt.po.workflow/move-element \"Update\" 10 -5))"}
+   {:script
+    "(doseq [n (range 10)] (rt.po.workflow/move-element \"Update\" -10 0))"}
+   {:script
+    "(doseq [n (range 10)] (rt.po.workflow/move-element \"Update\" 5 5))"}
+   {:script "(expect (rt.po.workflow/isDirty?))"}
+   {:script "(rt.po.workflow/save)"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150609-210020",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :workflow/wb-test-2,
+  :teardown [],
+  :modified-by "not-implemented"}]

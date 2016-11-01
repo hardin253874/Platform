@@ -1,0 +1,110 @@
+[{:tags [:desktop],
+  :name "Foster concurrency test",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:login-creds *tc*))"}
+   {:script "(think 4)"}
+   {:script "(rt.po.app/navigate-to \"Foster University\")"}
+   {:script "(rt.po.app/select-navigator-item \"Reports\")"}
+   {:script "(rt.po.app/select-navigator-item \"Staff Report\")"}
+   {:script "(think 5)"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(rt.po.report-view/click-sub-menu-item \"New\" \"Staff\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value \"Title\" (get-random-test-data :title))"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Full name\" (:staff-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"First name\" (:first-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Last name\" (:last-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value \"Gender\" (get-random-test-data :gender))"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"DOB\" (make-local-date 2199 12 31))"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Address line1\" (:address1 *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Address line2\" (:address2 *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value \"Country\" (get-random-test-data :country))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value \"State\" (get-random-test-data :state))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value \"Suburb\" (get-random-test-data :suburb))"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Manager\" (get-random-test-data :staff))"}
+   {:script "(think 20 35)"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.app/select-navigator-item \"Deans of University report\")"}
+   {:script "(rt.po.report-view/open-new-menu)"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"DOB\" (make-local-date 2199 12 31))"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"First name\" (:staff-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value \"Gender\" (get-random-test-data :gender))"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Last name\" (:last-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value \"Title\" (get-random-test-data :title))"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Manager\" (get-random-test-data :staff))"}
+   {:script
+    "(rt.po.edit-form/set-number-field-value \"Expenditure limit\" (rand-int 10000))"}
+   {:script "(think 20 35)"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.app/select-navigator-item \"Faculties Report\")"}
+   {:script "(think 5)"}
+   {:script "(rt.po.app/select-navigator-item \"Textbooks\")"}
+   {:script "(think 5)"}
+   {:script "(rt.po.app/select-navigator-item \"Subjects Report\")"}
+   {:script "(think 5)"}
+   {:script
+    "(let [s (get-random-test-data :subjects)] (rt.po.report-view/set-search-text s) (rt.po.report-view/double-click-row-by-text s))"}
+   {:script "(rt.po.view-form/click-edit)"}
+   {:script
+    "(rt.po.edit-form/set-number-field-value \"Subject Fee\" (rand-int 10000))"}
+   {:script "(rt.po.view-form/select-form-tab \"Pre-requisites\")"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Pre-requisites\" \"Link\")"}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog (get-random-test-data :subjects))"}
+   {:script "(think 10 20)"}
+   {:script "(rt.po.edit-form/save)"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20151020-164243",
+  :setup
+  [{:script
+    "(when (empty? (get-test-data :foster-deans-creds :quiet)) (rn.common/start-app-and-login))"}
+   {:script
+    "(setonce-test-data :foster-deans-creds rn.services.security/ensure-test-accounts [\"Deans\"] \"DEANUSER\" 20)"}
+   {:script
+    "(identity {:login-creds (get-random-test-data :foster-deans-creds)})"}
+   {:script
+    "(when (:elevate-user *tc*) (rn.services.security/ensure-account-in-roles (-> *tc* :login-creds :username) [\"Administrators\"]) {:elevated true})"}
+   {:script "(rn.common/start-app-and-login (:login-creds *tc*))"}
+   {:script
+    "(identity {:owner-name (rn.services.security/get-account-holder-name (-> *tc* :login-creds :username))})"}
+   {:script
+    "(identity {:staff-name (make-test-name \"Staff\"), :first-name (make-test-name \"First\"), :last-name (make-test-name \"Last\"), :address1 (make-test-name \"Add1\"), :address2 (make-test-name \"Add2\"),})"}
+   {:script
+    "(setonce-test-data :gender rn.common/get-choice-values \"Gender\" {:app-name \"Foster University\"})"}
+   {:script
+    "(setonce-test-data :country rn.common/get-choice-values \"Country\" {:app-name \"Foster University\"})"}
+   {:script
+    "(setonce-test-data :state rn.common/get-choice-values \"State\" {:app-name \"Foster University\"})"}
+   {:script
+    "(setonce-test-data :suburb rn.common/get-choice-values \"Suburb\" {:app-name \"Foster University\"})"}
+   {:script
+    "(setonce-test-data :title rn.common/get-choice-values \"Title\" {:app-name \"Foster University\"})"}
+   {:script
+    "(setonce-test-data :staff rn.common/get-record-names-for-type \"staff\" {:app-name \"Foster University\"})"}
+   {:script
+    "(setonce-test-data :subjects rn.common/get-record-names-for-type \"subjects\" {:app-name \"Foster University\"})"}],
+  :fixtures [:common/fixture/wait-ng],
+  :id :foster/tests/dean-1,
+  :teardown [],
+  :modified-by "not-implemented"}]

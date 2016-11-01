@@ -1,0 +1,172 @@
+[{:tags [:nomodify :prod :regression :area/form :user/anurag :desktop],
+  :tests [],
+  :name "Testing all the object properties for currency field",
+  :steps
+  [{:script
+    "(rt.po.app-toolbox/create-app {:description \"\", :name (:app-name *tc*)})"}
+   {:script "(rt.po.app/enable-app-toolbox )"}
+   {:script
+    "(rt.po.app-toolbox/set-application-filter (:app-name *tc*))"}
+   {:script
+    "(comment -- create 'Currency Field Object' and its form --)"}
+   {:script
+    "(rt.po.app-toolbox/create-object {:description \"New Currency Field Object Description\", :name (:obj-name *tc*)})"}
+   {:script "(rt.po.form-builder/add-container-to-form )"}
+   {:script "(comment -- Mandatory On Form --)"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Currency\" 0)"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"Currency\")"}
+   {:script
+    "(rt.po.form-builder-config/set-name \"Mandatory On Form\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Form Detail\")"}
+   {:script "(rt.po.form-builder-config/set-control-mandatory true)"}
+   {:script "(rt.po.form-builder-config/click-ok )"}
+   {:script "(comment -- Readonly Field --)"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Currency\" 0)"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"Currency\")"}
+   {:script "(rt.po.form-builder-config/set-name \"Readonly Field\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Form Detail\")"}
+   {:script "(rt.po.form-builder-config/set-control-readonly true)"}
+   {:script "(rt.po.form-builder-config/click-ok )"}
+   {:script "(comment -- Mandatory On Form --)"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Currency\" 0)"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"Currency\")"}
+   {:script
+    "(rt.po.form-builder-config/set-name \"Mandatory On Object\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Object Detail\")"}
+   {:script "(rt.po.form-builder-config/set-field-mandatory true)"}
+   {:script "(rt.po.form-builder-config/click-ok )"}
+   {:script "(comment -- *Min Value Set field --)"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Currency\" 0)"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"Currency\")"}
+   {:script "(rt.po.form-builder-config/set-name \"Min Value Set\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Object Detail\")"}
+   {:script
+    "(rt.po.form-builder-config/set-field-minimum-value \"5.5\")"}
+   {:script "(rt.po.form-builder-config/click-ok )"}
+   {:script "(comment -- *Max Value Set field --)"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Currency\" 0)"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"Currency\")"}
+   {:script "(rt.po.form-builder-config/set-name \"Max Value Set\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Object Detail\")"}
+   {:script
+    "(rt.po.form-builder-config/set-field-maximum-value \"20.5\")"}
+   {:script "(rt.po.form-builder-config/click-ok )"}
+   {:script "(comment -- *Default Value Set field --)"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Currency\" 0)"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"Currency\")"}
+   {:script
+    "(rt.po.form-builder-config/set-name \"Default Value Set\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Object Detail\")"}
+   {:script
+    "(rt.po.form-builder-config/set-field-default-value \"10.5\")"}
+   {:script "(rt.po.form-builder-config/click-ok )"}
+   {:script "(comment -- *Format Control field --)"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Currency\" 0)"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"Currency\")"}
+   {:script "(rt.po.form-builder-config/set-name \"Format Control\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Format\")"}
+   {:script
+    "(rt.po.form-builder-config/set-background-color \"Light Red\")"}
+   {:script "(rt.po.form-builder-config/click-ok )"}
+   {:script "(comment -- *Save and Close to go back to toolbox --)"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}
+   {:script
+    "(comment -- *add the existing report for 'Currency Field Object' --)"}
+   {:script "(rt.po.app/navigate-to (:app-name *tc*))"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script "(rt.po.app/add-existing-report (:obj-name *tc*))"}
+   {:script
+    "(comment -- \"field validations create new instance\" --)"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script "(comment -- 'Mandatory On Form' field validation --)"}
+   {:script
+    "(comment -- try to save without filling mandatory on form field and check if error msg is displayed --)"}
+   {:script "(rt.po.edit-form/click-save-button )"}
+   {:script "(expect (rt.po.app/page-has-error-alert?))"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/field-mandatory-indicator-visible? \"Mandatory On Form\"))"}
+   {:script
+    "(expect-equals true (rt.po.common/exists-present? (rt.po.edit-form/find-error-marker \"Mandatory On Form\")))"}
+   {:script
+    "(expect-equals \"A value is required.\" (rt.po.edit-form/field-error-message \"Mandatory On Form\"))"}
+   {:script
+    "(rt.po.edit-form/set-number-field-value \"Mandatory On Form\" \"11\")"}
+   {:script
+    "(expect-equals false (rt.po.common/exists-present? (rt.po.edit-form/find-error-marker \"Mandatory On Form\")))"}
+   {:script "(comment -- 'Mandatory On Object' field validation --)"}
+   {:script
+    "(comment -- try to save without filling mandatory on object field and check if error msg is displayed --)"}
+   {:script "(rt.po.edit-form/click-save-button )"}
+   {:script "(expect (rt.po.app/page-has-error-alert?))"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/field-mandatory-indicator-visible? \"Mandatory On Object\"))"}
+   {:script
+    "(expect-equals true (rt.po.common/exists-present? (rt.po.edit-form/find-error-marker \"Mandatory On Object\")))"}
+   {:script
+    "(expect-equals \"A value is required.\" (rt.po.edit-form/field-error-message \"Mandatory On Object\"))"}
+   {:script
+    "(rt.po.edit-form/set-number-field-value \"Mandatory On Object\" \"12\")"}
+   {:script
+    "(expect-equals false (rt.po.common/exists-present? (rt.po.edit-form/find-error-marker \"Mandatory On Object\")))"}
+   {:script "(comment \"-- 'Readonly field' validation --\")"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/numeric-field-read-only? \"Readonly Field\"))"}
+   {:script "(comment \"-- 'Min Value Set' field validation --\")"}
+   {:script
+    "(rt.po.edit-form/set-number-field-value \"Min Value Set\" \"1\")"}
+   {:script
+    "(expect-equals true (rt.po.common/exists-present? (rt.po.edit-form/find-error-marker \"Min Value Set\")))"}
+   {:script
+    "(expect-equals \"The value is less than the minimum value; the minimum value is 5.50\" (rt.po.edit-form/field-error-message \"Min Value Set\"))"}
+   {:script
+    "(rt.po.edit-form/set-number-field-value \"Min Value Set\" \"5.6\")"}
+   {:script
+    "(expect-equals false (rt.po.common/exists-present? (rt.po.edit-form/find-error-marker \"Min Value Set\")))"}
+   {:script "(comment \"-- 'Max Value Set' field validation --\")"}
+   {:script
+    "(rt.po.edit-form/set-number-field-value \"Max Value Set\" \"50\")"}
+   {:script
+    "(expect-equals true (rt.po.common/exists-present? (rt.po.edit-form/find-error-marker \"Max Value Set\")))"}
+   {:script
+    "(expect-equals \"The value is greater than the maximum value; the maximum value is 20.50\" (rt.po.edit-form/field-error-message \"Max Value Set\"))"}
+   {:script
+    "(rt.po.edit-form/set-number-field-value \"Max Value Set\" \"15.5\")"}
+   {:script
+    "(expect-equals false (rt.po.common/exists-present? (rt.po.edit-form/find-error-marker \"Max Value Set\")))"}
+   {:script "(comment \"-- 'Default Value Set' field validation --\")"}
+   {:script
+    "(expect-equals 10.5 (rt.po.edit-form/number-field-value \"Default Value Set\"))"}
+   {:script "(rt.po.edit-form/click-save-button)"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160916-134236",
+  :setup
+  [{:script
+    "(identity {:app-name (rt.lib.util/make-test-name \"FormsReg\"), :obj-name (make-test-name \"CurrencyObj\")})"}],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/form/check-currency-field-object-properties,
+  :teardown [],
+  :modified-by "not-implemented"}]

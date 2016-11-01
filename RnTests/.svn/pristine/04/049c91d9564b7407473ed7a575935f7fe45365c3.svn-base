@@ -1,0 +1,41 @@
+[{:tags [:desktop :prod],
+  :tests [],
+  :name "General User - Opening 'new' forms",
+  :steps
+  [{:script "(rt.po.app/navigate-via-tiles \"Performance Test\")",
+        :target-msec 5000}
+   {:script "(rt.po.app/select-app-tab \"Forms\")",
+        :target-msec 5000}
+   {:script "(rt.po.report-view/open-action-menu)",
+        :target-msec 2000}
+   {:script "(rt.po.app/choose-context-menu \"New\")",
+    :metric-id "New Record - Small Form",
+        :target-msec 2000}
+   {:script "(rt.po.edit-form/save)", :wait-ng true, :target-msec 2000}
+   {:script "(rt.po.app/select-navigator-item \"Medium Form\")",
+        :target-msec 5000}
+   {:script "(rt.po.report-view/open-action-menu)",
+        :target-msec 2000}
+   {:script "(rt.po.app/choose-context-menu \"New\")",
+    :metric-id "New Record - Medium Form",
+        :target-msec 2000}
+   {:script "(rt.po.edit-form/save)", :wait-ng true, :target-msec 2000}
+   {:script "(rt.po.app/select-navigator-item \"Large Form\")",
+        :target-msec 5000}
+   {:script "(rt.po.report-view/open-action-menu)",
+        :target-msec 2000}
+   {:script "(rt.po.app/choose-context-menu \"New\")",
+    :metric-id "New Record - Large Form",
+        :target-msec 2000}
+   {:script "(rt.po.edit-form/save)", :wait-ng true, :target-msec 2000}
+   {:script "(rt.po.app/select-app-tab \"Reports\")",
+        :target-msec 5000}],
+  :type :test,
+  :checks [],
+  :source "../RnTests/test-db",
+  :modified "20150602-071342",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :perf/tests/t5,
+  :teardown [],
+  :modified-by "not-implemented"}]

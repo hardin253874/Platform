@@ -1,0 +1,121 @@
+[{:tags
+  [:user/conc :area/console :nomodify :prod :regression :desktop],
+  :tests [],
+  :name "Create and apply console theme",
+  :steps
+  [{:script
+    "(def NewTabName (rt.lib.util/make-test-name \"Theme-Regression-TabA\"))"}
+   {:script
+    "(def Section1Name (rt.lib.util/make-test-name \"Theme-Regression-SectionA\"))"}
+   {:script
+    "(def Section2Name (rt.lib.util/make-test-name \"Theme-Regression-SectionB\"))"}
+   {:script
+    "(def HeaderImagePath (rt.po.common/get-data-file-path \"HeaderBackgroundImage.png\"))"}
+   {:script
+    "(def LogoImagePath (rt.po.common/get-data-file-path \"LogoImage.png\"))"}
+   {:script
+    "(def TopNavBackgroundImagePath (rt.po.common/get-data-file-path \"TopNavBackgroundImage.png\"))"}
+   {:script
+    "(def LeftNavBackgroundImagePath (rt.po.common/get-data-file-path \"LeftNavBackgroundImage.png\"))"}
+   {:script
+    "(rt.po.app-toolbox/create-app {:name (:app-name *tc*) :description \"\"})"}
+   {:script "(rt.po.app/add-section Section1Name \"\")"}
+   {:script "(rt.po.app/add-section Section2Name \"\")"}
+   {:script "(rt.po.app/add-new-tab NewTabName)"}
+   {:script "(rt.po.app/disable-config-mode)"}
+   {:script "(rt.lib.wd-ng/wait-for-angular)"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Settings/Themes\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Name\" (:theme-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-lookup-value \"Applications\" (:app-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-nth-colour-dropdown-colour \"Background colour\" 0 \"Dark Violet\")"}
+   {:script
+    "(rt.po.edit-form/upload-image-nth-control \"Background image\" 0 HeaderImagePath)"}
+   {:script
+    "(rt.po.edit-form/set-nth-bool-field-value \"Background image repeat\" 0 true)"}
+   {:script
+    "(rt.po.edit-form/set-colour-dropdown-colour \"Text colour\" \"Maroon\")"}
+   {:script
+    "(rt.po.edit-form/upload-image \"Logo image\" LogoImagePath)"}
+   {:script
+    "(rt.po.edit-form/set-nth-colour-dropdown-colour \"Background colour\" 1 \"Steel Blue\")"}
+   {:script
+    "(rt.po.edit-form/upload-image-nth-control \"Background image\" 1 TopNavBackgroundImagePath)"}
+   {:script
+    "(rt.po.edit-form/set-nth-bool-field-value \"Background image repeat\" 1 true)"}
+   {:script
+    "(rt.po.edit-form/set-colour-dropdown-colour \"Selected tab colour\" \"Orange Red\")"}
+   {:script
+    "(rt.po.edit-form/set-colour-dropdown-colour \"Selected tab font colour\" \"Dark Slate Gray\")"}
+   {:script
+    "(rt.po.edit-form/set-colour-dropdown-colour \"Unselected tab colour\" \"Honeydew\")"}
+   {:script
+    "(rt.po.edit-form/set-colour-dropdown-colour \"Unselected tab font colour\" \"Midnight Blue\")"}
+   {:script
+    "(rt.po.edit-form/set-nth-colour-dropdown-colour \"Background colour\" 2 \"Yellow Green\")"}
+   {:script
+    "(rt.po.edit-form/upload-image-nth-control \"Background image\" 2 LeftNavBackgroundImagePath)"}
+   {:script
+    "(rt.po.edit-form/set-nth-bool-field-value \"Background image repeat\" 2 true)"}
+   {:script
+    "(rt.po.edit-form/set-colour-dropdown-colour \"Selected element colour\" \"Dark Goldenrod\")"}
+   {:script
+    "(rt.po.edit-form/set-colour-dropdown-colour \"Selected font colour\" \"Navy\")"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Application/Application Library\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text (:app-name *tc*))"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Theme\" (:theme-name *tc*))"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script "(rt.lib.wd-ng/wait-for-angular)"}
+   {:script "(rt.po.app/logout)"}
+   {:script "(rt.po.app/login)"}
+   {:script "(rt.po.app/navigate-to-item (:app-name *tc*) \"\")"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script
+    "(expect-equals (rt.po.common/get-header-background-colour) (rt.po.common/get-colour-from-name \"Dark Violet\"))"}
+   {:script
+    "(expect-equals (rt.po.common/get-header-menu-text-colour) (rt.po.common/get-colour-from-name \"Maroon\"))"}
+   {:script
+    "(expect-equals (rt.po.common/get-top-navigation-background-colour) (rt.po.common/get-colour-from-name \"Steel Blue\"))"}
+   {:script
+    "(expect-equals (rt.po.common/get-top-navigation-selected-tab-colour) (rt.po.common/get-colour-from-name \"Orange Red\"))"}
+   {:script
+    "(expect-equals (rt.po.common/get-top-navigation-selected-tab-font-colour) (rt.po.common/get-colour-from-name \"Dark Slate Gray\"))"}
+   {:script
+    "(expect-equals (rt.po.common/get-top-navigation-unselected-tab-colour NewTabName) (rt.po.common/get-colour-from-name \"Honeydew\"))"}
+   {:script
+    "(expect-equals (rt.po.common/get-top-navigation-unselected-tab-font-colour NewTabName) (rt.po.common/get-colour-from-name \"Midnight Blue\"))"}
+   {:script
+    "(expect-equals (rt.po.common/get-left-navigation-background-colour) (rt.po.common/get-colour-from-name \"Yellow Green\"))"}
+   {:script
+    "(expect-equals (rt.po.common/get-left-navigation-selected-element-colour Section1Name) (rt.po.common/get-colour-from-name \"Dark Goldenrod\"))"}
+   {:script
+    "(expect-equals (rt.po.common/get-left-navigation-selected-font-colour Section1Name) (rt.po.common/get-colour-from-name \"Navy\"))"}
+   {:script
+    "(expect-equals (rt.po.common/get-logo-image-colour) (rt.lib.util/get-image-rgba (rt.lib.util/read-image LogoImagePath)))"}
+   {:script
+    "(expect-equals (rt.po.common/get-header-background-image-colour) (rt.lib.util/get-image-rgba (rt.lib.util/read-image HeaderImagePath)))"}
+   {:script
+    "(expect-equals (rt.po.common/get-top-navigation-background-image-colour) (rt.lib.util/get-image-rgba (rt.lib.util/read-image TopNavBackgroundImagePath)))"}
+   {:script
+    "(expect-equals (rt.po.common/get-left-navigation-background-image-colour) (rt.lib.util/get-image-rgba (rt.lib.util/read-image LeftNavBackgroundImagePath)))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160916-104149",
+  :setup
+  [{:script
+    "(identity {:theme-name (rt.lib.util/make-test-name \"Theme-Regression-Theme\"), :app-name (rt.lib.util/make-test-name \"Theme-Regression-App\")})"}],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/console/create-and-apply-console-theme,
+  :teardown
+  [{:script "(rt.po.app/uninstall-application (:app-name *tc*))"}],
+  :modified-by "not-implemented"}]

@@ -1,0 +1,63 @@
+[{:tags [:user/conc :nomodify :prod :regression :area/report :desktop],
+  :tests [],
+  :name "Select rows using shift and control keys",
+  :steps
+  [{:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script
+    "(def StartText (rt.po.report-view/get-report-cell-text-content 3 \"Student\"))"}
+   {:script
+    "(def EndText (rt.po.report-view/get-report-cell-text-content 11 \"Student\"))"}
+   {:script
+    "(rt.po.report-view/select-row-range-by-text StartText EndText)"}
+   {:script
+    "(def SelectedStudents (rt.po.report-view/get-selected-row-grid-values \"Student\"))"}
+   {:script
+    "(def SelectedIndexes (rt.po.report-view/get-selected-row-indexes))"}
+   {:script "(expect-equals (count SelectedIndexes) 9)"}
+   {:script
+    "(expect-equals (range (first SelectedIndexes) (inc (last SelectedIndexes))) SelectedIndexes)"}
+   {:script
+    "(expect-equals (count SelectedIndexes) (count SelectedStudents))"}
+   {:script
+    "(expect-equals (map #(rt.po.report-view/get-report-cell-text-content % \"Student\") SelectedIndexes) SelectedStudents)"}
+   {:script "(def RowIndex 2)"}
+   {:script
+    "(rt.po.report-view/select-row-by-text (rt.po.report-view/get-report-cell-text-content RowIndex \"Student\"))"}
+   {:script
+    "(def SelectedStudents (rt.po.report-view/get-selected-row-grid-values \"Student\"))"}
+   {:script
+    "(def SelectedIndexes (rt.po.report-view/get-selected-row-indexes))"}
+   {:script "(expect-equals (count SelectedIndexes) 1)"}
+   {:script
+    "(expect-equals (range RowIndex (inc RowIndex)) SelectedIndexes)"}
+   {:script
+    "(expect-equals (count SelectedIndexes) (count SelectedStudents))"}
+   {:script
+    "(expect-equals (map #(rt.po.report-view/get-report-cell-text-content % \"Student\") SelectedIndexes) SelectedStudents)"}
+   {:script "(def RowIndexes [3 5 9 11])"}
+   {:script
+    "(def StudentNames (mapv #(rt.po.report-view/get-report-cell-text-content % \"Student\") RowIndexes))"}
+   {:script
+    "(rt.po.report-view/select-row-by-text (first StudentNames))"}
+   {:script
+    "(doseq [n (rest StudentNames)] (rt.po.report-view/select-row-with-ctrl-key-by-text n))"}
+   {:script
+    "(def SelectedStudents (rt.po.report-view/get-selected-row-grid-values \"Student\"))"}
+   {:script
+    "(def SelectedIndexes (rt.po.report-view/get-selected-row-indexes))"}
+   {:script
+    "(expect-equals (count SelectedIndexes) (count RowIndexes))"}
+   {:script "(expect-equals RowIndexes SelectedIndexes)"}
+   {:script
+    "(expect-equals (count SelectedIndexes) (count SelectedStudents))"}
+   {:script
+    "(expect-equals (mapv #(rt.po.report-view/get-report-cell-text-content % \"Student\") SelectedIndexes) StudentNames)"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150601-153825",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/report/select-rows-using-shift-and-control-keys,
+  :teardown [],
+  :modified-by "not-implemented"}]

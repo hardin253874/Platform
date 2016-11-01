@@ -1,0 +1,7 @@
+[{:id :common/fixture/chrome-iPhone,
+  :type :testfixture,
+  :name "iPhone emulation with Chrome",
+  :data {:target :chrome
+         :target-device "Apple iPhone 5"
+         :target-width 400
+         :target-height 800}}]

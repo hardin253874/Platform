@@ -1,0 +1,169 @@
+[{:tags
+  [:nomodify :prod :regression :user/shaofen :desktop :area/security],
+  :tests [],
+  :name
+  "Ensure access changes for non-admin user when admin changes the access rule",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(comment \"==============First, we set analyser condition with first name==============\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script "(rt.po.access-rules/add-new-access-rule)"}
+   {:script
+    "(expect-equals true (rt.po.access-rules-new/new-dialog-visible?))"}
+   {:script
+    "(rt.po.access-rules-new/set-role \"Students (User Role)\")"}
+   {:script "(rt.po.access-rules-new/set-object \"Student\")"}
+   {:script "(rt.po.access-rules-new/click-ok)"}
+   {:script
+    "(rt.po.access-rules/edit-access-rule \"Students (User Role)\" \"Student\" \"Student\")"}
+   {:script
+    "(rt.po.report-builder/select-field-checkboxes \"First name\" true true)"}
+   {:script
+    "(rt.po.report-builder/set-name \"Students with name starting with 'Y'\")"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script
+    "(expect-equals true (rt.po.report-view/analyzer-field-exists? \"First name\"))"}
+   {:script
+    "(rt.po.report-view/set-analyzer-field-oper \"First name\" \"Starts with\")"}
+   {:script
+    "(rt.po.report-view/set-analyzer-string \"First name\" \"Y\")"}
+   {:script "(rt.po.report-view/apply-analyzer)"}
+   {:script "(rt.po.report-builder/save)"}
+   {:script "(rt.po.report-builder/close)"}
+   {:script
+    "(rt.po.access-rules/enable-access-rule \"Students (User Role)\" \"Student\" \"Students with name starting with 'Y'\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script
+    "(comment \"=================We now check non-admin user's access works as expected.============\")"}
+   {:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(rt.po.report-view/set-search-text \"A\")"}
+   {:script "(expect-equals 3 (rt.po.report-view/count-report-row))"}
+   {:script "(rt.po.report-view/set-search-text \"Yoshi Joseph\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Yoshi Joseph\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Yoshi Joseph\")"}
+   {:script "(rt.po.report-view/set-search-text \"Nelle Odom\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Nelle Odom\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"Edit\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Nelle Odom\")"}
+   {:script "(rt.po.report-view/set-search-text \"Yoshi Browning\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Yoshi Browning\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Yoshi Browning\")"}
+   {:script
+    "(comment \"===========Next I will change the access rule analyser condition to Last name============\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/edit-access-rule \"Students (User Role)\" \"Student\" \"Students with name starting with 'Y'\")"}
+   {:script
+    "(rt.po.report-builder/select-field-checkboxes \"Last name\" true true)"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script
+    "(expect-equals true (rt.po.report-view/analyzer-field-exists? \"Last name\"))"}
+   {:script
+    "(rt.po.report-view/set-analyzer-field-oper \"Last name\" \"Starts with\")"}
+   {:script
+    "(rt.po.report-view/set-analyzer-field-oper \"First name\" \"[Select]\")"}
+   {:script
+    "(rt.po.report-view/set-analyzer-string \"Last name\" \"Y\")"}
+   {:script "(rt.po.report-view/apply-analyzer)"}
+   {:script "(rt.po.report-builder/save)"}
+   {:script "(rt.po.report-builder/close)"}
+   {:script
+    "(rt.po.access-rules/enable-access-rule \"Students (User Role)\" \"Student\" \"Students with name starting with 'Y'\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(rt.po.report-view/set-search-text \"A\")"}
+   {:script "(expect-equals 2 (rt.po.report-view/count-report-row))"}
+   {:script "(rt.po.report-view/set-search-text \"Madeson Young\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Madeson Young\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View 'Madeson Young'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit 'Madeson Young'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete 'Madeson Young'\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Madeson Young\")"}
+   {:script "(rt.po.report-view/set-search-text \"Nelle Odom\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Nelle Odom\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View 'Nelle Odom'\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"Edit 'Nelle Odom'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete 'Nelle Odom'\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Nelle Odom\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/delete-access-rule \"Students (User Role)\" \"Student\" \"Students with name starting with 'Y'\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160211-073813",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds],
+  :id :rn/security/ensure-access-changes-when-rule-changed,
+  :teardown
+  [{:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"System Administrator (User Account)\")"}
+   {:script
+    "(if (> (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/set-search-text \"Students with name starting with 'Y'\") (if (> (rt.po.report-view/count-report-row) 1) (do (rt.po.access-rules/click-edit-button) (rt.po.access-rules/delete-access-rule \"Students (User Role)\" \"Student\" \"Students with name starting with 'Y'\") (rt.po.access-rules/click-save-button)))))"}
+   {:script
+    "(rt.po.report-view/set-search-text \"System Administrator (User Account)\")"}
+   {:script
+    "(if (= (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/set-search-text \"Students with name starting with 'Y'\") (if (> (rt.po.report-view/count-report-row) 0) (do (rt.po.access-rules/click-edit-button) (rt.po.access-rules/delete-access-rule \"Students (User Role)\" \"Student\" \"Students with name starting with 'Y'\") (rt.po.access-rules/click-save-button)))))"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Students with name starting with 'Y'\")"}],
+  :modified-by "not-implemented"}]

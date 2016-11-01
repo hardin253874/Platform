@@ -1,0 +1,85 @@
+[{:tags [:prod :regression :desktop],
+  :tests [],
+  :name "Chart Builder Targets Drivers on Chrome",
+  :steps
+  [{:script
+    "(expect-equals #{\"Primary\" \"Values\" \"End value\" \"Colour\" \"Text\"} (set (rt.po.chart-builder/get-targets \"\")))",
+    :target-msec 100}
+   {:script
+    "(expect-equals \"Discipline\" (rt.po.chart-builder/get-target-source \"Colour\"))",
+    :target-msec 100}
+   {:script
+    "(expect-equals \"ChoiceField.png\" (rt.po.chart-builder/get-target-icon \"Colour\"))",
+    :target-msec 100}
+   {:script
+    "(expect-equals true (rt.po.chart-builder/target-has-properties? \"Colour\"))",
+    :target-msec 100}
+   {:script
+    "(expect-equals false (rt.po.chart-builder/target-has-properties? \"End value\"))",
+    :target-msec 100}
+   {:script "(rt.po.chart-builder/click-target-properties \"Values\")",
+    :target-msec 100}
+   {:script "(rt.po.common/click-cancel)", :target-msec 100}
+   {:script
+    "(rt.po.chart-builder/drag-source-to-target \"Country\" \"Colour\")",
+    :target-msec 100}
+   {:script
+    "(expect-equals \"Country\" (rt.po.chart-builder/get-target-source \"Colour\"))",
+    :target-msec 100}
+   {:script
+    "(rt.po.chart-builder/drag-target-to-target \"Primary\" \"Colour\")",
+    :target-msec 100}
+   {:script
+    "(expect-equals \"Scientist\" (rt.po.chart-builder/get-target-source \"Colour\"))",
+    :target-msec 100}
+   {:script
+    "(rt.po.chart-builder/drag-target-to-background \"Colour\")",
+    :target-msec 100}
+   {:script
+    "(expect-equals \"\" (rt.po.chart-builder/get-target-source \"Colour\"))",
+    :target-msec 100}
+   {:script
+    "(rt.po.chart-builder/drag-source-to-target \"Count\" \"Colour\")",
+    :target-msec 100}
+   {:script
+    "(expect-equals \"Count\" (rt.po.chart-builder/get-target-source \"Colour\"))",
+    :target-msec 100}
+   {:script
+    "(expect-equals false (rt.po.chart-builder/target-has-dropdown? \"Colour\"))",
+    :target-msec 100}
+   {:script
+    "(expect-equals true (rt.po.chart-builder/target-has-dropdown? \"Values\"))",
+    :target-msec 100}
+   {:script
+    "(expect-equals false (rt.po.chart-builder/target-dropdown-open? \"Values\"))",
+    :target-msec 100}
+   {:script "(rt.po.chart-builder/open-target-dropdown \"Values\")",
+    :target-msec 100}
+   {:script
+    "(expect-equals true (rt.po.chart-builder/target-dropdown-open? \"Values\"))",
+    :target-msec 100}
+   {:script "(rt.po.chart-builder/close-target-dropdown)",
+    :target-msec 100}
+   {:script
+    "(expect-equals #{\"Value\" \"Count (Unique)\" \"Max\" \"Min\"} (set (rt.po.chart-builder/get-target-dropdown-list \"Values\")))",
+    :target-msec 100}
+   {:script
+    "(expect-equals \"Value\" (rt.po.chart-builder/get-target-aggregate \"Values\"))",
+    :target-msec 100}
+   {:script
+    "(rt.po.chart-builder/set-target-aggregate \"Values\" \"Max\")",
+    :target-msec 100}
+   {:script
+    "(expect-equals \"Max\" (rt.po.chart-builder/get-target-aggregate \"Values\"))",
+    :target-msec 100}],
+  :type :test,
+  :checks [],
+  :source "../RnTests/test-db",
+  :modified "20150601-153804",
+  :setup
+  [{:script "(rt.scripts.common/edit-chart (:name *test-context*))"}],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :qa-daily/charts/test-chart-builder-drivers-targets,
+  :teardown [],
+  :modified-by "not-implemented",
+  :data {:name "Gantt - Scientists"}}]

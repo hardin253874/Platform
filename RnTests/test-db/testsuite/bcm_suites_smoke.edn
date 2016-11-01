@@ -1,0 +1,13 @@
+[{:tags [:desktop],
+  :test-filter "(has-tags? [\"app/bcm\"] %)",
+  :tests [],
+  :name "Tests for BCM",
+  :each-fixtures
+  [:common/fixture/handle-errors :common/fixture/chrome],
+  :type :testsuite,
+  :modified "20150716-072525",
+  :setup [],
+  :id :bcm/suites/smoke,
+  :teardown [],
+  :modified-by "not-implemented",
+  :once-fixtures []}]

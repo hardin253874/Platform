@@ -1,0 +1,95 @@
+[{:tags [:desktop],
+  :tests [],
+  :name "Choice field config properties drivers on Chrome",
+  :steps
+  [{:script
+    "(rt.po.form-builder/add-from-field-menu-to-field-group \"Choice\" \"New\")",
+        :target-msec 500}
+   {:script "(rt.po.form-builder-config/set-name \"Choice Test1\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"Choice Test1\" (rt.po.form-builder-config/get-name))",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder-config/set-choice-field-option \"Use Existing\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"Use Existing\" (rt.po.form-builder-config/get-choice-field-option))",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder-config/set-choice-field-lookup \"AA_Status\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"AA_Status\" (rt.po.form-builder-config/get-choice-field-lookup))",
+    :target-msec 500}
+   {:script "(rt.po.form-builder-config/clear-choice-field-lookup)",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder-config/set-choice-field-option \"New\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"New\" (rt.po.form-builder-config/get-choice-field-option))",
+    :target-msec 500}
+   {:script "(rt.po.form-builder-config/add-new-choice-value)",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder-config/set-choice-value \"New Value\" \"Choice1\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"Choice1\" (rt.po.form-builder-config/get-choice-value \"Choice1\"))",
+    :target-msec 500}
+   {:script "(rt.po.form-builder-config/add-new-choice-value)",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder-config/set-choice-value \"New Value\" \"Choice2\")",
+    :target-msec 500}
+   {:script "(rt.po.form-builder-config/add-new-choice-value)",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder-config/set-choice-value \"New Value\" \"Choice3\")",
+    :target-msec 500}
+   {:script "(rt.po.form-builder-config/add-new-choice-value)",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder-config/set-choice-value \"New Value\" \"Choice4\")",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder-config/move-choice-value-up \"Choice4\")",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder-config/move-choice-value-up \"Choice4\")",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder-config/move-choice-value-down \"Choice1\")",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder-config/delete-choice-value \"Choice4\")",
+    :target-msec 500}
+   {:script "(rt.po.form-builder-config/expand-section \"Option\")",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder-config/set-choice-field-type \"Multi select\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"Multi select\" (rt.po.form-builder-config/get-choice-field-type))",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder-config/set-choice-field-default-value \"Choice3\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"Choice3\" (rt.po.form-builder-config/get-choice-field-default-value))",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder-config/clear-choice-field-default-value)",
+    :target-msec 500}
+   {:script "(rt.po.form-builder-config/click-ok)", :target-msec 500}],
+  :type :test,
+  :checks [],
+  :source "../RnTests/test-db",
+  :modified "20150601-153805",
+  :setup [:qa-daily/scripts/form-builder/open-form-builder-new-mode],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :qa-daily/form-builder/test-choice-field-config-properties,
+  :teardown [],
+  :modified-by "not-implemented",
+  :data {}}]

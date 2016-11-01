@@ -1,0 +1,136 @@
+[{:tags [:user/hemant :app-tests/itdr :desktop],
+  :name
+  "Create a IT Event Recovery, create actions and verify it in the IT recovery history",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:itdr-owner-creds *tc*))"}
+   {:script
+    "(rt.po.app/navigate-to \"IT Disaster Recovery Management\")"}
+   {:script "(rt.po.app/select-app-tab \"IT Event Recovery\")"}
+   {:script "(rt.po.app/select-navigator-item \"IT Event Recovery\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"IT Recovery\" (:itrecovery-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"IT Recovery Type\" \"Error\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Severity\" \"High\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"IT Recovery Status\" \"Not Started\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.view-form/click-task-action-v2 \"Activate Plans\")"}
+   {:script "(rn.common/wait-until-settled)"}
+   {:script
+    "(rt.po.edit-form/set-workflow-lookup \"Plans\" \"Application Recovery Plan 1\")"}
+   {:script "(rt.po.edit-form/click-workflow-done)"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"NOTIFICATIONS\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Subject\" (:notif-name *tc*))"}
+   {:script "(rt.po.edit-form/set-bool-field-value \"Email\" true)"}
+   {:script "(rt.po.edit-form/set-bool-field-value \"SMS\" true)"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"RECIPIENTS\")"}
+   {:script "(rt.po.app/choose-context-menu \"Link\")"}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog \"Adam\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.view-form/set-search-text-for-relationship \"Notifications\" (:notif-name *tc*))"}
+   {:script
+    "(expect-equals \"\" (first (rt.po.report-view/get-column-values-in-relationship \"Notifications\" \"Time Sent\")))"}
+   {:script
+    "(rt.po.report-view/click-send-notification-button-in-relationship \"Notifications\")"}
+   {:script "(rn.common/wait-until-settled)"}
+   {:script
+    "(rt.po.report-view/click-refresh-now-in-relationship \"Notifications\")"}
+   {:script "(rn.common/wait-until-settled)"}
+   {:script
+    "(expect (not (= \"\" (first (rt.po.report-view/get-column-values-in-relationship \"Notifications\" \"Time Sent\")))))"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"ADHOC CORRECTIVE ACTIONS\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Subject\" (:task-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Due date\" (make-local-date 2016 11 11))"}
+   {:script "(rt.po.edit-form/set-lookup \"Assigned to\" \"Adam\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Task status\" \"Not started\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(def ActivatedPlanName (first (rt.po.report-view/get-column-values-in-relationship \"Activated IT Recovery Plans\" \"IT Recovery Plan\")))"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text-in-relationship \"Activated IT Recovery Plans\" ActivatedPlanName)"}
+   {:script
+    "(def ImmRecActName (rt.po.report-builder/get-grouped-row-content \"Immediate\" 0 \"IT Recovery Action\"))"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text-in-relationship \"IT Recovery Actions\" ImmRecActName)"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script "(rt.po.edit-form/set-number-value-v2 \"% Complete\" 100)"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Status\" \"Completed\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(def OngoingRecActName (rt.po.report-builder/get-grouped-row-content \"Ongoing\" 0 \"IT Recovery Action\"))"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text-in-relationship \"IT Recovery Actions\" OngoingRecActName)"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script "(rt.po.edit-form/set-number-value-v2 \"% Complete\" 100)"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Status\" \"Completed\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(expect-equals \"100%\" (first (clojure.string/split (rt.po.report-builder/get-grouped-row-content \"Immediate\" 0 \"% Completed\") #\"\\n\")))"}
+   {:script
+    "(expect-equals \"Completed\" (rt.po.report-builder/get-grouped-row-content \"Immediate\" 0 \"IT Recovery Status\"))"}
+   {:script
+    "(expect-equals \"100%\" (first (clojure.string/split (rt.po.report-builder/get-grouped-row-content \"Ongoing\" 0 \"% Completed\") #\"\\n\")))"}
+   {:script
+    "(expect-equals \"Completed\" (rt.po.report-builder/get-grouped-row-content \"Ongoing\" 0 \"IT Recovery Status\"))"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script "(rt.po.edit-form/set-number-value-v2 \"% Complete\" 100)"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Execution Status\" \"Completed\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(expect-equals \"100%\" (first (clojure.string/split (first (rt.po.report-view/get-column-values-in-relationship \"Activated IT Recovery Plans\" \"% Complete\")) #\"\\n\")))"}
+   {:script
+    "(expect-equals \"Completed\" (first (rt.po.report-view/get-column-values-in-relationship \"Activated IT Recovery Plans\" \"Execution Status\")))"}
+   {:script
+    "(rt.po.view-form/set-search-text-for-relationship \"Adhoc Corrective Actions\" (:task-name *tc*))"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text-in-relationship \"Adhoc Corrective Actions\" (:task-name *tc*))"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Task status\" \"Completed\")"}
+   {:script "(rt.po.edit-form/set-number-value-v2 \"% complete\" 100)"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script "(rt.po.edit-form/set-number-value-v2 \"% Complete\" 100)"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"IT Recovery Status\" \"Completed\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.app/open-nav-tree-node \"Reports\")"}
+   {:script "(rt.po.app/select-navigator-item \"IT Event History\")"}
+   {:script "(rt.po.report-view/refresh-now)"}
+   {:script
+    "(rt.po.report-view/set-search-text (:itrecovery-name *tc*))"}
+   {:script
+    "(expect-equals (:itrecovery-name *tc*) (rt.po.report-view/get-report-cell-text-content 0 \"IT Recovery\"))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20161020-171130",
+  :setup
+  [{:script
+    "(identity {:notif-name (rt.lib.util/make-test-name \"ITDR-Notif\"), :itrecovery-name (rt.lib.util/make-test-name \"ITRecovery\"), :task-name (rt.lib.util/make-test-name \"Task\")})"}],
+   :fixtures [:rn/fixture/itdr-owner-creds],
+  :id :itdr/tests/recovery-event-management,
+  :teardown [],
+  :modified-by "not-implemented"}]

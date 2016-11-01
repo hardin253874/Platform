@@ -1,0 +1,47 @@
+[{:tags [:desktop],
+  :tests [],
+  :name "New Report Drivers on Chrome",
+  :steps
+  [{:script
+    "(rt.po.report-builder/set-filter-field-name \"Currency\")",
+        :target-msec 500}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Currency\" true)",
+        :target-msec 500}
+   {:script
+    "(rt.po.report-builder/set-filter-field-name \"DateTime\")",
+        :target-msec 500}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"DateTime\" true)",
+        :target-msec 500}
+   {:script
+    "(rt.po.report-builder/set-in-analyzer-checkbox-field-value \"DateTime\" true)",
+        :target-msec 500}
+   {:script "(rt.po.report-builder/set-filter-field-name \"\")",
+        :target-msec 500}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Autonumber\" true)",
+        :target-msec 500}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Currency\" true)",
+        :target-msec 500}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Number\" true)",
+        :target-msec 500}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Boolean\" true)",
+        :target-msec 500}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"AA_Employee\" true)",
+        :target-msec 500}],
+  :type :test,
+  :checks [],
+  :source "../RnTests/test-db",
+  :modified "20150601-153808",
+  :setup
+  [:qa-daily/scripts/reports/open-AutomationReport-in-build-mode],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :qa-daily/reports/test-report-toolbox-drivers,
+  :teardown [],
+  :modified-by "not-implemented",
+  :data {}}]

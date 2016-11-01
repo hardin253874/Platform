@@ -1,0 +1,10 @@
+[{:modified-by "not-implemented",
+  :modified "20150823-090715",
+  :type :testfixture,
+  :id :crm/fixtures/lists,
+  :setup
+  [{:script
+    "(identity {:creds [{:password \"Read1ssm\", :username \"ssmith\"} {:password \"Read1jfo\", :username \"jford\"} {:password \"Read1tdu\", :username \"tduffy\"} {:password \"Read1otu\", :username \"oturner\"} {:password \"Read1aci\", :username \"aciccu\"}]})"}
+   {:script
+    "(identity {:leads [{:first \"Joe\", :last \"Black\"} {:first \"Mike\", :last \"Hammer\"} {:first \"Billy\", :last \"Dunne\"}]})"}],
+  :teardown []}]

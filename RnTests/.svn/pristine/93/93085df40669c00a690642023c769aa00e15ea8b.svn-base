@@ -1,0 +1,18 @@
+[{:tags [:desktop],
+  :test-filter "(has-tags? #{:user/alex :mobile} %)",
+  :tests [],
+  :name "alex s mobile dev test suite",
+  :each-fixtures
+  [:common/fixture/handle-errors
+   :common/fixture/wait-ng
+   :common/fixture/chrome-iPhone
+   :common/fixture/login
+   :common/fixture/test-account-creds],
+  :type :testsuite,
+  :source "../RnTests/test-db",
+  :modified "20150804-110912",
+  :setup [],
+  :id :rn/suites/alex-mobile,
+  :teardown [],
+  :modified-by "not-implemented",
+  :once-fixtures []}]

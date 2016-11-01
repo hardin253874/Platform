@@ -1,0 +1,19 @@
+[{:tags [:desktop],
+  :test-filter
+  "(and (has-tags? [\"prod\" \"regression\" \"mobile\"] %) (not (has-some-tags? [\"quarantined\"] %)))",
+  :tests [],
+  :name "Regression tests",
+  :each-fixtures
+  [:common/fixture/handle-errors
+   :common/fixture/wait-ng
+   :common/fixture/chrome-iPhone
+   :common/fixture/test-account-creds],
+  :type :testsuite,
+  :source "../RnTests/test-db",
+  :modified "20150728-090444",
+  :setup [],
+  :id :rn/suites/regression-mobile,
+  :teardown [],
+  :doc "",
+  :modified-by "not-implemented",
+  :once-fixtures []}]

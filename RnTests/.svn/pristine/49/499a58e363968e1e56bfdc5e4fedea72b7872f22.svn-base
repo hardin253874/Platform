@@ -1,0 +1,113 @@
+[{:tags [:nomodify :regression :area/form :user/anurag :desktop :prod],
+  :tests [],
+  :name "Testing all the object properties for lookup field",
+  :steps
+  [{:script
+    "(rt.po.app-toolbox/create-app {:name \"Forms Regression\" :description \"\"})"}
+   {:script "(rt.po.app/enable-app-toolbox )"}
+   {:script
+    "(rt.po.app-toolbox/set-application-filter \"Forms Regression\")"}
+   {:script
+    "(comment -- create 'Lookup Field Object' and its form --)"}
+   {:script
+    "(rt.po.app-toolbox/create-object {:name \"Lookup Field Object\" :description \"New Lookup Test Object Description\"})"}
+   {:script "(rt.po.form-builder/add-container-to-form )"}
+   {:script "(comment -- Inline Lookup --)"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Lookup\")"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"AA_Employee\")"}
+   {:script "(rt.po.form-builder-config/set-name \"Inline Lookup\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Form Detail\")"}
+   {:script "(rt.po.form-builder-config/click-ok )"}
+   {:script "(comment -- Dropdown Lookup --)"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Lookup\")"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"AA_Employee\")"}
+   {:script "(rt.po.form-builder-config/set-name \"Dropdown Lookup\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Form Detail\")"}
+   {:script "(rt.po.form-builder-config/set-display-as \"Dropdown\")"}
+   {:script "(rt.po.form-builder-config/click-ok )"}
+   {:script "(comment -- Mandatory On Form --)"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Lookup\")"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"AA_Employee\")"}
+   {:script
+    "(rt.po.form-builder-config/set-name \"Mandatory On Form\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Form Detail\")"}
+   {:script "(rt.po.form-builder-config/set-control-mandatory true)"}
+   {:script "(rt.po.form-builder-config/click-ok )"}
+   {:script "(comment -- Readonly Field --)"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Lookup\")"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"AA_Employee\")"}
+   {:script "(rt.po.form-builder-config/set-name \"Readonly Field\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Form Detail\")"}
+   {:script "(rt.po.form-builder-config/set-control-readonly true)"}
+   {:script "(rt.po.form-builder-config/click-ok )"}
+   {:script "(comment -- *Default Value Set field --)"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Lookup\")"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"AA_Employee\")"}
+   {:script
+    "(rt.po.form-builder-config/set-name \"Default Value Set\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Object Detail\")"}
+   {:script
+    "(rt.po.form-builder-config/set-relationship-default-value \"Abida\")"}
+   {:script "(rt.po.form-builder-config/click-ok )"}
+   {:script "(comment -- *Format Control field --)"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Lookup\")"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"AA_Employee\")"}
+   {:script "(rt.po.form-builder-config/set-name \"Format Control\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Format\")"}
+   {:script
+    "(rt.po.form-builder-config/set-background-color \"Light Red\")"}
+   {:script "(rt.po.form-builder-config/click-ok )"}
+   {:script "(comment -- *Save and Close to go back to toolbox --)"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}
+   {:script
+    "(comment -- *add the existing report for 'Lookup Field Object' --)"}
+   {:script "(rt.po.app/navigate-to \"Forms Regression\")"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script "(rt.po.app/add-existing-report \"Lookup Field Object\")"}
+   {:script
+    "(comment -- \"field validations create new instance\" --)"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script "(comment -- 'Mandatory On Form' field validation --)"}
+   {:script
+    "(comment -- try to save without filling mandatory on form field and check if error msg is displayed --)"}
+   {:script "(rt.po.edit-form/click-save-button )"}
+   {:script "(expect (rt.po.app/page-has-error-alert?))"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/field-mandatory-indicator-visible? \"Mandatory On Form\"))"}
+   {:script
+    "(expect-equals true (rt.po.common/exists-present? (rt.po.edit-form/find-error-marker \"Mandatory On Form\")))"}
+   {:script
+    "(expect-equals \"A value is required.\" (rt.po.edit-form/field-error-message \"Mandatory On Form\"))"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Mandatory On Form\" \"Abida\")"}
+   {:script
+    "(expect-equals false (rt.po.common/exists-present? (rt.po.edit-form/find-error-marker \"Mandatory On Form\")))"}
+   {:script "(comment \"-- 'Readonly field' validation --\")"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/inline-lookup-read-only? \"Readonly Field\"))"}
+   {:script "(comment \"-- 'Default Value Set' field validation --\")"}
+   {:script
+    "(expect-equals \"Abida Begum\" (rt.po.edit-form/get-lookup \"Default Value Set\"))"}
+   {:script "(rt.po.edit-form/click-save-button)"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150619-084954",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/form/check-lookup-field-object-properties,
+  :teardown [],
+  :modified-by "not-implemented"}]

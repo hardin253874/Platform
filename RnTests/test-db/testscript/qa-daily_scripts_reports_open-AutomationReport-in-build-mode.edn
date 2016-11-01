@@ -1,0 +1,16 @@
+[{:tags [:desktop],
+  :modified-by "not-implemented",
+  :modified "20150601-153829",
+  :source "../RnTests/test-db",
+  :id :qa-daily/scripts/reports/open-AutomationReport-in-build-mode,
+  :type :testscript,
+  :steps
+  [{:script "(rt.po.app/navigate-to \"Test Solution\")",
+        :target-msec 2000}
+   {:script
+    "(rt.po.app/navigate-to-item \"Test Solution\" \"Test Solution/AA_Automation/AA_AutomationReport\")",
+        :target-msec 500}
+   {:script "(rt.po.app/enable-config-mode)",
+        :target-msec 1500}
+   {:script "(rt.po.report-builder/access-build-mode)",
+        :target-msec 500}]}]

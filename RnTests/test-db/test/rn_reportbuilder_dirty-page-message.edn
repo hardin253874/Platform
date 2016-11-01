@@ -1,0 +1,32 @@
+[{:tags [:area/report-builder :prod :regression :desktop :user/abida],
+  :tests [],
+  :name
+  " Closing report with unsaved changes gives dirty page message",
+  :steps
+  [{:script "(rt.po.app/navigate-via-tiles \"Foster University\")"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(rt.po.app/enable-config-mode )"}
+   {:script "(rt.po.report-builder/access-build-mode )"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"State\" false)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Country\" false)"}
+   {:script "(rt.po.report-builder/close)"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/page-dirty-check-exists?))"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/page-dirty-cancel-button-exists?))"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/page-dirty-continue-button-exists?))"}
+   {:script "(rt.po.edit-form/click-page-dirty-continue-button )"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20151106-105633",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/reportbuilder/dirty-page-message,
+  :teardown [],
+  :modified-by "not-implemented"}]

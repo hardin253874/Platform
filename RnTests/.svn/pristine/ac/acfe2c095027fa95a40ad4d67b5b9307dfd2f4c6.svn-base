@@ -1,0 +1,139 @@
+[{:tags [:desktop],
+  :tests [],
+  :name "Form Builder Toolbox Drivers on Chrome",
+  :steps
+  [{:script
+    "(rt.po.form-builder/expand-toolbox-section \"Relationship\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals true (rt.po.form-builder/toolbox-section-expanded? \"Relationship\"))",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder/collapse-toolbox-section \"Relationship\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals false (rt.po.form-builder/toolbox-section-expanded? \"Relationship\"))",
+    :target-msec 500}
+   {:script "(rt.po.form-builder/collapse-toolbox-section \"Fields\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals false (rt.po.form-builder/toolbox-section-expanded? \"Fields\"))",
+    :target-msec 500}
+   {:script "(rt.po.form-builder/expand-toolbox-section \"Fields\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals true (rt.po.form-builder/toolbox-section-expanded? \"Fields\"))",
+    :target-msec 500}
+   {:script "(rt.po.form-builder/expand-toolbox-section \"Display\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals true (rt.po.form-builder/toolbox-section-expanded? \"Display\"))",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder/collapse-toolbox-section \"Display\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals false (rt.po.form-builder/toolbox-section-expanded? \"Display\"))",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder/set-field-group-name \"New Field Group\" \"RT_Group1\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"RT_Group1\" (rt.po.form-builder/get-field-group-name \"RT_Group1\"))",
+    :target-msec 500}
+   {:script "(rt.po.form-builder/add-new-field-group)",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder/set-field-group-name \"New Field Group\" \"RT_Group2\")",
+    :target-msec 500}
+   {:script "(rt.po.form-builder/add-new-field-group)",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder/set-field-group-name \"New Field Group\" \"RT_Group3\")",
+    :target-msec 500}
+   {:script "(rt.po.form-builder/delete-field-group \"RT_Group3\")",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-field-group \"Text\" \"RT_Group1\")",
+        :target-msec 500}
+   {:script
+    "(rt.po.form-builder/set-field-name \"Text\" \"RT_String1\")",
+        :target-msec 500}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-field-group \"Text\" \"RT_Group1\")",
+        :target-msec 500}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-field-group \"MultilineText\" \"RT_Group1\")",
+        :target-msec 500}
+   {:script
+    "(rt.po.form-builder/set-field-name \"Multiline Text\" \"RT_Multiline1\")",
+        :target-msec 500}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-field-group \"Number\" \"RT_Group2\")",
+        :target-msec 500}
+   {:script
+    "(rt.po.form-builder/set-field-name \"Number\" \"RT_Number1\")",
+        :target-msec 500}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-field-group \"Decimal\" \"RT_Group2\")",
+        :target-msec 500}
+   {:script
+    "(rt.po.form-builder/set-field-name \"Decimal\" \"RT_Decimal1\")",
+        :target-msec 500}
+   {:script
+    "(expect-equals \"RT_String1\" (rt.po.form-builder/get-field-name \"RT_String1\"))",
+        :target-msec 500}
+   {:script
+    "(expect-equals \"RT_Multiline1\" (rt.po.form-builder/get-field-name \"RT_Multiline1\"))",
+        :target-msec 500}
+   {:script
+    "(expect-equals \"RT_Number1\" (rt.po.form-builder/get-field-name \"RT_Number1\"))",
+        :target-msec 500}
+   {:script
+    "(expect-equals \"RT_Decimal1\" (rt.po.form-builder/get-field-name \"RT_Decimal1\"))",
+        :target-msec 500}
+   {:script "(rt.po.form-builder/collapse-field-group \"Default\")",
+        :target-msec 500}
+   {:script
+    "(expect-equals false (rt.po.form-builder/field-group-expanded? \"Default\"))",
+    :target-msec 500}
+   {:script "(rt.po.form-builder/expand-field-group \"Default\")",
+        :target-msec 500}
+   {:script
+    "(expect-equals true (rt.po.form-builder/field-group-expanded? \"Default\"))",
+    :target-msec 500}
+   {:script "(rt.po.form-builder/collapse-field-group \"RT_Group1\")",
+        :target-msec 500}
+   {:script
+    "(expect-equals false (rt.po.form-builder/field-group-expanded? \"RT_Group1\"))",
+    :target-msec 500}
+   {:script "(rt.po.form-builder/expand-field-group \"RT_Group1\")",
+        :target-msec 500}
+   {:script
+    "(expect-equals true (rt.po.form-builder/field-group-expanded? \"RT_Group1\"))",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder/open-field-configure-dialog \"RT_String1\")",
+        :target-msec 2000}
+   {:script "(rt.po.form-builder-config/click-ok)",
+        :target-msec 500}
+   {:script "(rt.po.form-builder/delete-field \"Text\")",
+        :target-msec 500}
+   {:script "(rt.po.form-builder/set-toolbox-search-text \"RT_\")",
+        :target-msec 500}
+   {:script
+    "(expect-equals \"RT_\" (rt.po.form-builder/get-toolbox-search-text))",
+    :target-msec 500}
+   {:script "(rt.po.form-builder/clear-toolbox-search-text)",
+        :target-msec 500}],
+  :type :test,
+  :checks [],
+  :source "../RnTests/test-db",
+  :modified "20150601-153805",
+  :setup [:qa-daily/scripts/form-builder/open-form-builder-new-mode],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id
+  :qa-daily/form-builder/test-form-builder-toolbox-driver-functions,
+  :teardown [],
+  :modified-by "not-implemented",
+  :data {}}]

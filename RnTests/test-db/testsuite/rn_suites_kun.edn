@@ -1,0 +1,22 @@
+[{:tags [:desktop],
+  :test-filter
+        "(and (has-tags? [\"user/kun\"] %) (not (has-tags? [\"prod\"] %)) )",
+  :tests
+  [:rn/chart/ensure-report-can-be-filtered-by-drilldownconds-on-chart
+   ],
+  :name "Kun's tests",
+  :each-fixtures [:common/fixture/login],
+  :type :testsuite,
+  :source "../RnTests/test-db",
+  :modified "20150618-113830",
+  :setup [{:script ""}],
+  :id :rn/suites/kun,
+  :teardown [{:script ""}],
+  :doc "",
+  :modified-by "not-implemented",
+  :once-fixtures
+  [:common/fixture/chrome
+   :common/fixture/test-account-creds
+   :common/fixture/handle-errors
+   :common/fixture/wait-ng
+   :common/fixture/stop-all]}]

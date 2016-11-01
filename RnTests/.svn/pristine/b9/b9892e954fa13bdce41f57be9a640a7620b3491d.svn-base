@@ -1,0 +1,80 @@
+[{:type :testscript,
+  :id :itdr/scripts/create-it-recovery-plan,
+  :steps
+  [{:script "(rn.common/start-app-and-login (:itdr-owner-creds *tc*))"}
+   {:script
+    "(rt.po.app/navigate-to \"IT Disaster Recovery Management\")"}
+   {:script "(rt.po.app/select-app-tab \"IT Recovery Planning\")"}
+   {:script
+    "(rt.po.app/select-navigator-item \"IT Recovery Planning\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" \"Application Recovery Plan 1\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Plan Type\" \"Application Recovery\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Criticality\" \"Medium\")"}
+   {:script "(rt.po.edit-form/set-lookup \"Approver\" \"Alva\")"}
+   {:script "(rt.po.edit-form/set-lookup \"Devices\" \"Laptop 1\")"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Applications\" \"App_PC_2\")"}
+   {:script "(rt.po.edit-form/open-lookup \"Sites\")"}
+   {:script
+    "(comment (rt.po.view-form/expand-structure-view-item-node \"China\"))"}
+   {:script
+    "(rt.po.view-form/select-structure-view-item-with-ctrl-key-by-text \"Site North\" \"\")"}
+   {:script "(rt.po.common/click-ok)"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Next Review Date\" (make-local-date 2016 11 11))"}
+   {:script "(rt.po.edit-form/set-lookup \"Team Leader\" \"Adam\")"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Deputy Team Leader\" \"Aide\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"IT RECOVERY ACTIONS\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Stage\" \"Immediate\")"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"Sequence Number\" \"1\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Recovery Action\" \"Find replacement Server\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Priority\" \"Normal\")"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"Sequence Number\" \"1\")"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Milestone?\" true)"}
+   {:script
+    "(rt.po.edit-form/set-number-field-value \"Expected_Duration\" \"2.5\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"IT RECOVERY ACTIONS\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Stage\" \"Ongoing\")"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"Sequence Number\" \"1\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Recovery Action\" \"Install Patches\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Priority\" \"High\")"}
+   {:script
+    "(rt.po.edit-form/set-number-field-value \"Expected_Duration\" \"5\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"TEAM MEMBERS\")"}
+   {:script "(rt.po.app/choose-context-menu \"Link\")"}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog \"Carie\")"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"CALL TREE\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script "(rt.po.edit-form/set-lookup \"Caller\" \"Adam\")"}
+   {:script "(rt.po.edit-form/set-lookup \"To Call\" \"Aureen\")"}
+   {:script "(rt.po.edit-form/save)"}],
+  :tags [:desktop],
+  :modified "20161020-171003",
+  :modified-by "not-implemented",
+  :source "./test-db"}]

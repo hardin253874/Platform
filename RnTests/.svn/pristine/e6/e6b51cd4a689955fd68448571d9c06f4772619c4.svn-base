@@ -1,0 +1,20 @@
+[{:tags [:desktop],
+  :test-filter
+  "(and (has-tags? [\"user/anurag\"] %) (not (has-tags? [\"prod\"] %)) )",
+  :tests [:rn/console/create-and-apply-console-theme],
+  :name "Anurag's tests",
+  :each-fixtures [:common/fixture/login],
+  :type :testsuite,
+  :source "../RnTests/test-db",
+  :modified "20150622-190055",
+  :setup [{:script ""}],
+  :id :rn/suites/anurag,
+  :teardown [{:script ""}],
+  :doc "",
+  :modified-by "not-implemented",
+  :once-fixtures
+  [:common/fixture/chrome
+   :common/fixture/test-account-creds
+   :common/fixture/handle-errors
+   :common/fixture/wait-ng
+   :common/fixture/stop-all]}]

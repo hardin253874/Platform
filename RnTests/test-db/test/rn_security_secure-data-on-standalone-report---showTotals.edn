@@ -1,0 +1,150 @@
+[{:tags
+  [:nomodify :prod :regression :user/shaofen :desktop :area/security],
+  :tests [],
+  :name
+  "Ensure multiple access rules works on stand alone report --- Show Totals",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:user-creds-staff *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect (> (rt.po.report-view/count-report-row) 15))"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Reports\")"}
+   {:script
+    "(expect-not (rt.po.app/node-in-nav-tree-exists? \"Security_Subtotals_Currency\"))"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script "(rt.po.report-builder/click-saveas-report-button)"}
+   {:script
+    "(rt.po.report-builder/set-report-new-name \"Security_Subtotals_Currency\")"}
+   {:script "(rt.po.report-builder/click-ok)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"State\" \"Group By\")"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Balance\" \"Show Totals\")"}
+   {:script "(rt.po.report-total/set-show-sub-total true)"}
+   {:script "(rt.po.report-total/set-show-option-label true)"}
+   {:script "(rt.po.report-total/set-count true)"}
+   {:script "(rt.po.report-total/set-count-unique true)"}
+   {:script "(rt.po.report-total/set-count-all true)"}
+   {:script "(rt.po.report-total/set-sum true)"}
+   {:script "(rt.po.report-total/set-avg true)"}
+   {:script "(rt.po.report-total/set-max true)"}
+   {:script "(rt.po.report-total/set-min true)"}
+   {:script "(rt.po.report-builder/click-ok)"}
+   {:script "(rt.po.report-builder/save)"}
+   {:script "(rt.po.report-builder/close)"}
+   {:script "(rn.app/open-security \"Navigation Access\")"}
+   {:script
+    "(expect (rt.po.access-rules/application-option-exists? \"Foster University\"))"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/set-application \"Foster University\")"}
+   {:script
+    "(expect (rt.po.access-rules/user-or-role-option-exists? \"Staff (User Role)\"))"}
+   {:script
+    "(rt.po.access-rules/set-user-or-role \"Staff (User Role)\")"}
+   {:script
+    "(expect (rt.po.access-rules/node-in-nav-tree-exists? \"Security_Subtotals_Currency\"))"}
+   {:script
+    "(expect-equals \"Foster University > Reports > Security_Subtotals_Currency\" (rt.po.access-rules/get-node-path \"Security_Subtotals_Currency\"))"}
+   {:script
+    "(expect-equals false (rt.po.access-rules/node-checked? \"Security_Subtotals_Currency\"))"}
+   {:script
+    "(rt.po.access-rules/set-node-value \"Security_Subtotals_Currency\" true)"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script "(rn.common/start-app-and-login (:user-creds-staff *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect (> (rt.po.report-view/count-report-row) 15))"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Reports/Security_Subtotals_Currency\")"}
+   {:script
+    "(expect-equals \"[None]\" (rt.po.report-builder/get-group-by-row-text \"[None]\"))"}
+   {:script
+    "(expect (rt.po.report-view/compare-sub-total-cell-content-list? \"[None]\" \"Balance\" [\"Count: 4\" \"Count unique: 4\" \"Count all: 4\" \"Sum: $-120.84\" \"Average: $-30.21\" \"Max: $12.50\" \"Min: $-104.17\"]))"}
+   {:script
+    "(expect-equals \"NSW\" (rt.po.report-builder/get-group-by-row-text \"NSW\"))"}
+   {:script
+    "(expect (rt.po.report-view/compare-sub-total-cell-content-list? \"NSW\" \"Balance\" [\"Count: 3\" \"Count unique: 3\" \"Count all: 3\" \"Sum: $66.66\" \"Average: $22.22\" \"Max: $112.50\" \"Min: $-154.17\"]))"}
+   {:script
+    "(expect-equals \"VIC\" (rt.po.report-builder/get-group-by-row-text \"VIC\"))"}
+   {:script
+    "(expect (rt.po.report-view/compare-sub-total-cell-content-list? \"VIC\" \"Balance\" [\"Count: 2\" \"Count unique: 2\" \"Count all: 2\" \"Sum: $-87.50\" \"Average: $-43.75\" \"Max: $4.17\" \"Min: $-91.67\"]))"}
+   {:script
+    "(expect-equals \"SA\" (rt.po.report-builder/get-group-by-row-text \"SA\"))"}
+   {:script
+    "(expect (rt.po.report-view/compare-sub-total-cell-content-list? \"SA\" \"Balance\" [\"Count: 4\" \"Count unique: 4\" \"Count all: 4\" \"Sum: $258.34\" \"Average: $64.58\" \"Max: $154.17\" \"Min: $-58.33\"]))"}
+   {:script
+    "(expect-equals \"WA\" (rt.po.report-builder/get-group-by-row-text \"WA\"))"}
+   {:script
+    "(expect (rt.po.report-view/compare-sub-total-cell-content-list? \"WA\" \"Balance\" [\"Count: 2\" \"Count unique: 2\" \"Count all: 2\" \"Sum: $54.17\" \"Average: $27.09\" \"Max: $141.67\" \"Min: $-87.50\"]))"}
+   {:script
+    "(expect-equals \"QLD\" (rt.po.report-builder/get-group-by-row-text \"QLD\"))"}
+   {:script
+    "(expect (rt.po.report-view/compare-sub-total-cell-content-list? \"QLD\" \"Balance\" [\"Count: 3\" \"Count unique: 3\" \"Count all: 3\" \"Sum: $229.17\" \"Average: $76.39\" \"Max: $250.00\" \"Min: $-100.00\"]))"}
+   {:script
+    "(expect-equals \"TAS\" (rt.po.report-builder/get-group-by-row-text \"TAS\"))"}
+   {:script
+    "(expect (rt.po.report-view/compare-sub-total-cell-content-list? \"TAS\" \"Balance\" [\"Count: 2\" \"Count unique: 2\" \"Count all: 2\" \"Sum: $95.83\" \"Average: $47.92\" \"Max: $208.33\" \"Min: $-112.50\"]))"}
+   {:script
+    "(expect-equals \"ACT\" (rt.po.report-builder/get-group-by-row-text \"ACT\"))"}
+   {:script
+    "(expect (rt.po.report-view/compare-sub-total-cell-content-list? \"ACT\" \"Balance\" [\"Count: 4\" \"Count unique: 4\" \"Count all: 4\" \"Sum: $41.67\" \"Average: $10.42\" \"Max: $75.00\" \"Min: $-70.83\"]))"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script "(rn.app/open-security \"Navigation Access\")"}
+   {:script
+    "(expect (rt.po.access-rules/application-option-exists? \"Foster University\"))"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/set-application \"Foster University\")"}
+   {:script
+    "(expect (rt.po.access-rules/user-or-role-option-exists? \"Staff (User Role)\"))"}
+   {:script
+    "(rt.po.access-rules/set-user-or-role \"Staff (User Role)\")"}
+   {:script
+    "(expect (rt.po.access-rules/node-checked? \"Security_Subtotals_Currency\"))"}
+   {:script
+    "(rt.po.access-rules/set-node-value \"Security_Subtotals_Currency\" false)"}
+   {:script
+    "(expect-equals false (rt.po.access-rules/node-checked? \"Security_Subtotals_Currency\"))"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script
+    "(rn.app/open-admin \"Reports\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Security_Subtotals_Currency\")"}
+   {:script
+    "(rt.po.report-view/select-row-by-text \"Security_Subtotals_Currency\")"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(rt.po.app/choose-context-menu \"Delete 'Security_Subtotals_Currency'\")"}
+   {:script "(rt.po.edit-form/click-confirm-delete-ok-button)"}
+   {:script "(expect-equals 0 (rt.po.report-view/count-report-row))"}
+   {:script "(rn.common/start-app-and-login (:user-creds-staff *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect (> (rt.po.report-view/count-report-row) 15))"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20160211-004726",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds
+   :rn/fixture/user-creds-staff],
+  :id :rn/security/secure-data-on-standalone-report---showTotals,
+  :teardown
+  [{:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-admin \"Reports\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Security_Subtotals_Currency\")"}
+   {:script
+    "(if (> (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/select-row-by-text \"Security_Subtotals_Currency\") (rt.po.report-view/open-action-menu) (rt.po.app/choose-context-menu \"Delete 'Security_Subtotals_Currency'\") (rt.po.edit-form/click-confirm-delete-ok-button)))"}
+   {:script "(expect-equals 0 (rt.po.report-view/count-report-row))"}],
+  :modified-by "not-implemented"}]

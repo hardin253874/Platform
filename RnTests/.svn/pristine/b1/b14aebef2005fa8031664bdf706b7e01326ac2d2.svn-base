@@ -1,0 +1,7 @@
+[{:tests [:rn/tests/ct1],
+  :each-fixtures
+         [:common/fixture/handle-errors
+          :common/fixture/chrome
+          :rn/fixture/ct1],
+  :type  :testsuite,
+  :id    :rn/suites/cts1}]

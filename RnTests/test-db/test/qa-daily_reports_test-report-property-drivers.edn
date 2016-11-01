@@ -1,0 +1,50 @@
+[{:tags [:desktop],
+  :name "New Report Drivers on Chrome",
+  :steps
+  [{:script "(rt.po.report-builder/click-property-report-button)",
+        :target-msec 500}
+   {:script "(rt.po.report-new/set-name \"RT Report 2\")",
+        :target-msec 500}
+   {:script
+    "(expect-equals \"RT Report 2\" (rt.po.report-new/get-name))",
+        :target-msec 500}
+   {:script
+    "(rt.po.report-new/set-description \"Report 2 created by ReadiTest\")",
+        :target-msec 500}
+   {:script
+    "(expect-equals \"Report 2 created by ReadiTest\" (rt.po.report-new/get-description))",
+        :target-msec 500}
+   {:script "(rt.po.report-new/set-report-form \"[Default]\")",
+        :target-msec 500}
+   {:script "(rt.po.report-new/set-icon \"Black Circle Format Icon\")",
+        :target-msec 500}
+   {:script "(rt.po.report-new/set-style \"Default\")",
+        :target-msec 500}
+   {:script "(rt.po.report-new/set-default-display-report true)",
+        :target-msec 500}
+   {:script "(rt.po.report-new/set-default-picker-report true)",
+        :target-msec 500}
+   {:script "(rt.po.report-new/set-hide-action-bar true)",
+        :target-msec 500}
+   {:script "(rt.po.report-new/set-hide-report-header true)",
+        :target-msec 500}
+   {:script "(rt.po.report-new/set-default-display-report false)",
+        :target-msec 500}
+   {:script "(rt.po.report-new/set-default-picker-report false)",
+        :target-msec 500}
+   {:script "(rt.po.report-new/set-hide-action-bar false)",
+        :target-msec 500}
+   {:script "(rt.po.report-new/set-hide-report-header false)",
+        :target-msec 500}
+   {:script "(rt.po.report-new/click-ok)",
+        :target-msec 1000}],
+  :type :test,
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :source "../RnTests/test-db",
+  :modified "20150601-153808",
+  :setup
+  [:qa-daily/scripts/reports/open-AutomationReport-in-build-mode],
+  :id :qa-daily/reports/test-report-property-drivers,
+  :teardown [],
+  :modified-by "not-implemented",
+  :data {}}]

@@ -1,0 +1,48 @@
+[{:tags [:nomodify :area/report_builder :desktop :user/abida :prod],
+  :tests [],
+  :name "Cancel Group By Number  fields  ",
+  :steps
+  [{:script "(rt.po.app/navigate-via-tiles \"Foster University\")"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(rt.po.app/enable-config-mode )"}
+   {:script "(rt.po.report-builder/access-build-mode )"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Postcode\" true)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Postcode\" \"Group By\")"}
+   {:script
+    "(expect-equals \"0632\" (rt.po.report-builder/get-group-by-row-text \"0632\"))"}
+   {:script
+    "(expect-equals \"0800\" (rt.po.report-builder/get-group-by-row-text \"0800\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script "(rt.scripts.common/sleep 3000)"}
+   {:script "(rt.po.report-builder/click-close-button )"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(rt.scripts.common/sleep 3000)"}
+   {:script
+    "(expect-equals \"0632\" (rt.po.report-builder/get-group-by-row-text \"0632\"))"}
+   {:script
+    "(expect-equals \"0800\" (rt.po.report-builder/get-group-by-row-text \"0800\"))"}
+   {:script "(rt.po.report-builder/access-build-mode )"}
+   {:script "(rt.scripts.common/sleep 2000)"}
+   {:script
+    "(rt.po.report-builder/choose-group-by-row-menu-item \"0632\" \"Cancel Group By\")"}
+   {:script "(rt.scripts.common/sleep 3000)"}
+   {:script
+    "(expect-equals false (rt.po.report-builder/check-group-by-row-exists? \"0632\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-builder/check-group-by-row-exists? \"0800\"))"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Postcode\" false)"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script "(rt.po.report-builder/click-close-button )"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150618-105042",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/reportbuilder/cancel-groupby-number,
+  :teardown [],
+  :modified-by "not-implemented"}]

@@ -1,0 +1,12 @@
+[{:tags [:desktop],
+  :name "admin creds for security tests",
+  :steps [],
+  :type :testfixture,
+  :source "../RnTests/test-db",
+  :modified "20150601-153828",
+  :setup
+  [{:script
+    "(identity {:admin-creds {:username \"Administrator\" :password \"tacoT0wn\"}})"}],
+  :id :rn/fixture/admin-creds,
+  :teardown [],
+  :modified-by "not-implemented"}]

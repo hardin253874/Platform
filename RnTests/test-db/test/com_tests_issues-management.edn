@@ -1,0 +1,72 @@
+[{:tags [:desktop :user/kun :desktop :app-tests/com],
+  :tests [],
+  :name "Ensure issues management",
+  :steps
+  [{:script
+    "(rn.common/start-app-and-login (:com-user-creds-owner *tc*))"}
+   {:script "(think 1)"}
+   {:script "(rt.po.app/navigate-to \"Issues Management\")"}
+   {:script "(think 1)"}
+   {:script
+    "(rt.po.screen/open-report-menu-on-screen-by-name \"\" \"Action\")",
+    :target-msec 1000}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:issue-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Response Decision\" \"Accept\")"}
+   {:script
+    "(rt.po.edit-form/set-structure-lookup-value \"Organisational Levels\" \"Org Level East\")"}
+   {:script
+    "(rt.po.edit-form/set-multiline \"Response Action\" \"type response here\")"}
+   {:script
+    "(rt.po.edit-form/set-multiline \"Justification\" \"type justification here\")"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Expected_Resolution_Date\" (make-local-date 2017 11 11))"}
+   {:script
+    "(rt.po.edit-form/set-multiline \"Resolution Summary\" \"summary\")"}
+   {:script
+    "(rt.po.view-form/click-button-in-relationship \"Linked To\" \"Action\")"}
+   {:script "(rt.po.app/choose-context-menu \"Link to Existing\")"}
+   {:script "(rt.po.edit-form/choose-in-entity-picker-dialog \"\")"}
+   {:script
+    "(rt.po.view-form/click-button-in-relationship \"Linked To\" \"Action\")"}
+   {:script "(rt.po.app/choose-context-menu \"Link to Existing\")"}
+   {:script "(rt.po.edit-form/choose-in-entity-picker-dialog \"\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.view-form/click-button-in-relationship \"Task\" \"Action\")",
+    :target-msec 1000}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Subject\" (:task-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Due date\" (make-local-date 2017 11 11))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.app/select-navigator-item \"Tasks\")",
+    :target-msec 1000}
+   {:script
+    "(expect-equals true (rt.po.screen/is-chart-on-screen \"By Status\"))"}
+   {:script
+    "(expect-equals true (rt.po.screen/is-chart-on-screen \"By Priority\"))"}
+   {:script "(rt.po.app/select-navigator-item \"Issues\")",
+    :target-msec 1000}
+   {:script
+    "(expect-equals true (rt.po.screen/is-hero-text-on-screen \"Due Today\"))"}
+   {:script "(rt.po.screen/click-hero-text-on-screen \"Due Today\")"}
+   {:script
+    "(expect-equals true (> (rt.po.report-view/count-report-row) 0))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20161027-150714",
+  :setup
+  [{:script
+    "(identity {:co-name (rt.lib.util/make-test-name \"CO\"), \r\n\t\t\t\t:ob-name (rt.lib.util/make-test-name \"Obligation\"), \r\n\t\t\t\t:cr-name (rt.lib.util/make-test-name \"ComplianceRequirement\"), \r\n\t\t\t\t:control-name (rt.lib.util/make-test-name \"Control\"), \r\n\t\t\t\t:control-name2 (rt.lib.util/make-test-name \"Control\"), \r\n\t\t\t\t:issue-name (rt.lib.util/make-test-name \"Issue\"), \r\n\t\t\t\t:com-issue-name (rt.lib.util/make-test-name \"ComIssue\"), \r\n\t\t\t\t:et-name (rt.lib.util/make-test-name \"ExemptionTitle\"), \r\n\t\t\t\t:task-name (rt.lib.util/make-test-name \"Task\")})"}],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds-com],
+  :id :com/tests/issues-management,
+  :teardown [],
+  :modified-by "not-implemented"}]

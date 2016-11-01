@@ -1,0 +1,344 @@
+[{:tags
+  [:nomodify
+   :prod
+   :daily
+   :regression
+   :user/shaofen
+   :desktop
+   :area/security],
+  :tests [],
+  :name
+  "Access check when access rule report has analyser condition on decimal field and data change in multiple choice field",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script "(rt.po.access-rules/add-new-access-rule)"}
+   {:script
+    "(expect-equals true (rt.po.access-rules-new/new-dialog-visible?))"}
+   {:script
+    "(rt.po.access-rules-new/set-role \"Students (User Role)\")"}
+   {:script "(rt.po.access-rules-new/set-object \"Student\")"}
+   {:script "(rt.po.access-rules-new/click-ok)"}
+   {:script
+    "(rt.po.access-rules/edit-access-rule \"Students (User Role)\" \"Student\" \"Student\")"}
+   {:script "(rt.po.report-builder/select-field-in-report \"State\")"}
+   {:script
+    "(rt.po.report-builder/set-in-analyzer-checkbox-field-value \"State\" true)"}
+   {:script
+    "(rt.po.report-builder/select-field-checkboxes \"State\" true true)"}
+   {:script
+    "(rt.po.report-builder/set-name \"Students with state not defined\")"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script
+    "(expect-equals true (rt.po.report-view/analyzer-field-exists? \"State\"))"}
+   {:script
+    "(rt.po.report-view/set-analyzer-field-oper \"State\" \"Is not defined\")"}
+   {:script "(rt.po.report-view/apply-analyzer)"}
+   {:script "(rt.po.report-builder/save)"}
+   {:script "(rt.po.report-builder/close)"}
+   {:script
+    "(rt.po.access-rules/enable-access-rule \"Students (User Role)\" \"Student\" \"Students with state not defined\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 10 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Nelle Odom\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View 'Nelle Odom'\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"Edit 'Nelle Odom'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete 'Nelle Odom'\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Nelle Odom\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Wayne Avery\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View 'Wayne Avery'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit 'Wayne Avery'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete 'Wayne Avery'\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Wayne Avery\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Kelsey Powers\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View 'Kelsey Powers'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit 'Kelsey Powers'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete 'Kelsey Powers'\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Kelsey Powers\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Anthony Nash\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View 'Anthony Nash'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit 'Anthony Nash'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete 'Anthony Nash'\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Anthony Nash\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Lester Hester\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View 'Lester Hester'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit 'Lester Hester'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete 'Lester Hester'\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Lester Hester\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Tanisha Zamora\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View 'Tanisha Zamora'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit 'Tanisha Zamora'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete 'Tanisha Zamora'\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Tanisha Zamora\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Akeem Pierce\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View 'Akeem Pierce'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit 'Akeem Pierce'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete 'Akeem Pierce'\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Akeem Pierce\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Regan Abbott\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View 'Regan Abbott'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit 'Regan Abbott'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete 'Regan Abbott'\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Regan Abbott\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Tatyana Pearson\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View 'Tatyana Pearson'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit 'Tatyana Pearson'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete 'Tatyana Pearson'\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Tatyana Pearson\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"William Mcdowell\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View 'William Mcdowell'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit 'William Mcdowell'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete 'William Mcdowell'\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"William Mcdowell\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(rt.po.report-view/set-search-text \"Selma Terrell\")"}
+   {:script
+    "(expect-equals \"SA\" (rt.po.report-view/get-value-for-row-and-column \"1145\" \"State\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Selma Terrell\")"}
+   {:script "(rt.po.app/choose-context-menu \"Edit\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"State\" \"[Select]\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.report-view/set-search-text \"Selma Terrell\")"}
+   {:script
+    "(expect-equals \"\" (rt.po.report-view/get-value-for-row-and-column \"1145\" \"State\"))"}
+   {:script ";; todo: please document reason for the long sleep"}
+   {:script "(rn.common/sleep 60000)"}
+   {:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 11 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Selma Terrell\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View 'Selma Terrell'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit 'Selma Terrell'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete 'Selma Terrell'\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Selma Terrell\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Nelle Odom\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View 'Nelle Odom'\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"Edit 'Nelle Odom'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete 'Nelle Odom'\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Nelle Odom\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Wayne Avery\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View 'Wayne Avery'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit 'Wayne Avery'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete 'Wayne Avery'\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Wayne Avery\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Kelsey Powers\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View 'Kelsey Powers'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit 'Kelsey Powers'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete 'Kelsey Powers'\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Kelsey Powers\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Anthony Nash\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View 'Anthony Nash'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit 'Anthony Nash'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete 'Anthony Nash'\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Anthony Nash\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Lester Hester\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View 'Lester Hester'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit 'Lester Hester'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete 'Lester Hester'\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Lester Hester\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Tanisha Zamora\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View 'Tanisha Zamora'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit 'Tanisha Zamora'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete 'Tanisha Zamora'\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Tanisha Zamora\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Akeem Pierce\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View 'Akeem Pierce'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit 'Akeem Pierce'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete 'Akeem Pierce'\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Akeem Pierce\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Regan Abbott\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View 'Regan Abbott'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit 'Regan Abbott'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete 'Regan Abbott'\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Regan Abbott\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Tatyana Pearson\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View 'Tatyana Pearson'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit 'Tatyana Pearson'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete 'Tatyana Pearson'\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Tatyana Pearson\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"William Mcdowell\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View 'William Mcdowell'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit 'William Mcdowell'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete 'William Mcdowell'\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"William Mcdowell\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/delete-access-rule \"Students (User Role)\" \"Student\" \"Students with state not defined\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(rt.po.report-view/set-search-text \"Selma Terrell\")"}
+   {:script
+    "(expect-equals \"\" (rt.po.report-view/get-value-for-row-and-column \"1145\" \"State\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Selma Terrell\")"}
+   {:script "(rt.po.app/choose-context-menu \"Edit\")"}
+   {:script "(rt.po.edit-form/set-choice-value-v2 \"State\" \"SA\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.report-view/set-search-text \"Selma Terrell\")"}
+   {:script
+    "(expect-equals \"SA\" (rt.po.report-view/get-value-for-row-and-column \"1145\" \"State\"))"}
+   {:script "(rn.common/sleep 60000)"}
+   {:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20151117-090654",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds],
+  :id :rn/security/multiAccessRules-and-DataChange---m-choice,
+  :teardown
+  [{:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(rt.po.report-view/set-search-text \"Selma Terrell\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Selma Terrell\")"}
+   {:script "(rt.po.app/choose-context-menu \"Edit\")"}
+   {:script "(rt.po.edit-form/set-choice-value-v2 \"State\" \"SA\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.report-view/set-search-text \"Selma Terrell\")"}
+   {:script
+    "(expect-equals \"SA\" (rt.po.report-view/get-value-for-row-and-column \"1145\" \"State\"))"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"System Administrator (User Account)\")"}
+   {:script
+    "(if (> (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/set-search-text \"Students with state not defined\") (if (> (rt.po.report-view/count-report-row) 1) (do (rt.po.access-rules/click-edit-button) (rt.po.access-rules/delete-access-rule \"Students (User Role)\" \"Student\" \"Students with state not defined\") (rt.po.access-rules/click-save-button)))))"}
+   {:script
+    "(rt.po.report-view/set-search-text \"System Administrator (User Account)\")"}
+   {:script
+    "(if (= (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/set-search-text \"Students with state not defined\") (if (> (rt.po.report-view/count-report-row) 0) (do (rt.po.access-rules/click-edit-button) (rt.po.access-rules/delete-access-rule \"Students (User Role)\" \"Student\" \"Students with state not defined\") (rt.po.access-rules/click-save-button)))))"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Students with state not defined\")"}],
+  :modified-by "not-implemented"}]

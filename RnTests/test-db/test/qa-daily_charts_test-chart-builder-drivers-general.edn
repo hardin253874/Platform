@@ -1,0 +1,50 @@
+[{:tags [:prod :regression :desktop],
+  :tests [],
+  :name "Chart Builder General Drivers on Chrome",
+  :steps
+  [{:script
+    "(expect-equals \"Scientists\" (rt.po.chart-builder/get-chart-report-name))",
+    :target-msec 100}
+   {:script
+    "(expect-equals \"Scientist\" (first (rt.po.chart-builder/get-sources)))",
+    :target-msec 100}
+   {:script
+    "(expect-equals \"Row Number\" (last (rt.po.chart-builder/get-sources)))",
+    :target-msec 100}
+   {:script
+    "(expect-equals \"IntField.png\" (rt.po.chart-builder/get-source-icon \"Row Number\"))",
+    :target-msec 100}
+   {:script "(rt.po.chart-builder/click-chart-report-refresh)",
+    :target-msec 100}
+   {:script "(rt.po.common/set-name \"Gannt - Scientists2\")",
+    :target-msec 100}
+   {:script "(rt.po.common/set-description \"ReadiTest changes\")",
+    :target-msec 100}
+   {:script
+    "(expect-equals \"Gannt - Scientists2\" (rt.po.common/get-name))",
+    :target-msec 100}
+   {:script
+    "(expect-equals \"ReadiTest changes\" (rt.po.common/get-description))",
+    :target-msec 100}
+   {:script "(rt.po.chart-builder/click-chart-toolbar-refresh)",
+    :target-msec 100}
+   {:script "(rt.po.chart-builder/click-chart-toolbar-undo)",
+    :target-msec 100}
+   {:script "(rt.po.chart-builder/click-chart-toolbar-redo)",
+    :target-msec 100}
+   {:script "(rt.po.chart-builder/click-chart-toolbar-properties)",
+    :target-msec 100}
+   {:script "(rt.po.common/click-cancel)", :target-msec 100}
+   {:script "(rt.po.chart-builder/click-chart-toolbar-close)",
+    :target-msec 100}],
+  :type :test,
+  :checks [],
+  :source "../RnTests/test-db",
+  :modified "20150601-153803",
+  :setup
+  [{:script "(rt.scripts.common/edit-chart (:name *test-context*))"}],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :qa-daily/charts/test-chart-builder-drivers-general,
+  :teardown [],
+  :modified-by "not-implemented",
+  :data {:name "Gantt - Scientists"}}]

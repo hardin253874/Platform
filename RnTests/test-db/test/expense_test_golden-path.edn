@@ -1,0 +1,120 @@
+[{:tags [:desktop],
+  :steps
+  [{:script
+    "(rn.common/start-app-and-login {:password \"Readi911\", :username \"dj.submitter\"})"}
+   {:script "(rt.po.app/navigate-via-tiles \"Expense Approval\")"}
+   {:script
+    "(rn.app/open-report \"My Open Expenses\" {:app-name \"Expense Approval\"})"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New 'Expense Claim'\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Claim\" (:claim-name *tc*))"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script "(rt.po.view-form/select-form-tab \"Attachments\")"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Attachments\" \"New 'Document'\")"}
+   {:script
+    "(rt.po.document-library/upload-document (rt.po.common/get-data-file-path \"cash-receipt-form.pdf\"))"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script "(rt.po.view-form/select-form-tab \"Expense Items\")"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Expense Items\" \"New 'Expense Item'\")"}
+   {:script "(rt.scripts/think 2)"}
+   {:script "(rt.po.edit-form/set-today-date \"Expense Date\")"}
+   {:script
+    "(rt.po.edit-form/set-multiline \"Description\" \"Darren is submitting a claim\")"}
+   {:script
+    "(rt.po.edit-form/set-dropdown-control \"Category\" \"Stationery\")"}
+   {:script
+    "(rt.po.edit-form/set-number-field-value \"Amount\" \"$100\")"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script "(rt.scripts/think 2)"}
+   {:script "(expect-equals 2 (rt.po.view-form/get-report-row-count))"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.report-view/set-search-text (:claim-name *tc*))"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text (:claim-name *tc*))"}
+   {:script "(rt.scripts/think 1)"}
+   {:script "(rt.po.view-form/choose-task-action \"Submit Claim\")"}
+   {:script
+    "(rn.common/start-app-and-login {:password \"Readi911\", :username \"ps.processor\"})"}
+   {:script "(rt.po.app/navigate-via-tiles \"Expense Approval\")"}
+   {:script
+    "(rn.app/open-report \"My Open Approvals\" {:app-name \"Expense Approval\"})"}
+   {:script "(rt.po.report-view/set-search-text (:claim-name *tc*))"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text (:claim-name *tc*))"}
+   {:script "(rt.scripts/think 5)"}
+   {:script "(rt.po.view-form/set-task-comment \"Claim approved\")"}
+   {:script "(rt.po.view-form/choose-task-action \"Approve\")"}
+   {:script "(rt.scripts/think 5)"}
+   {:script "(rt.po.report-view/set-search-text \"Claim approved\")"}
+   {:script
+    "(expect-equals \"Claim approved\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Comment\"))"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(rn.app/open-report \"Expenses to be Processed\" {:app-name \"Expense Approval\"})"}
+   {:script "(rt.po.report-view/set-search-text (:claim-name *tc*))"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text (:claim-name *tc*))"}
+   {:script "(rt.scripts/think 2)"}
+   {:script "(rt.po.view-form/set-task-comment \"Payment made\")"}
+   {:script "(rt.po.view-form/choose-task-action \"Complete\")"}
+   {:script "(rt.po.common/form-scroll-to-bottom)"}
+   {:script "(rt.po.report-view/set-search-text \"Payment made\")"}
+   {:script
+    "(expect-equals \"Finance approved\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Expense Update\"))"}
+   {:script
+    "(expect-equals \"Payment made\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Comment\"))"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(rn.app/open-report \"Completed Expense Claims\" {:app-name \"Expense Approval\"})"}
+   {:script "(rt.po.report-view/set-search-text (:claim-name *tc*))"}
+   {:script "(expect-equals 1 (rt.po.view-form/get-report-row-count))"}
+   {:script "(rt.scripts/think 1)"}
+   {:script
+    "(expect-equals \"Complete\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Expense Status\"))"}
+   {:script
+    "(rn.common/start-app-and-login {:password \"tacoT0wn\", :username \"Administrator\"})"}
+   {:script "(rt.po.app/navigate-via-tiles \"Administration\")"}
+   {:script "(rt.po.app/open-nav-tree-node \"Settings\")"}
+   {:script "(rt.po.app/select-navigator-item \"Email Settings\")"}
+   {:script "(rt.po.view-form/click-lookup-link \"Approvals inbox\")"}
+   {:script "(rt.po.view-form/select-form-tab \"Sent Messages\")"}
+   {:script "(rt.scripts/think 2)"}
+   {:script
+    "(rt.po.report-view/sort-column-by-click-header \"Sent Messages\" \"Sent\")"}
+   {:script "(rt.po.report-view/click-report-header \"Sent\")"}
+   {:script
+    "(expect-equals (rt.po.common/get-today-local-date-string-us-format) (rt.po.common/get-date-string-from-date-time-string (first (rt.po.report-view/get-active-tab-column-values \"Sent\"))))"}
+   {:script
+    "(expect-equals (rt.po.common/get-today-local-date-string-us-format) (rt.po.common/get-date-string-from-date-time-string (second (rt.po.report-view/get-active-tab-column-values \"Sent\"))))"}
+   {:script "(rt.po.app/open-nav-tree-node \"Workflows\")"}
+   {:script "(rt.po.app/select-navigator-item \"Workflow Runs\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Expense Approval Workflow\")"}
+   {:script "(rt.scripts/think 2)"}
+   {:script
+    "(expect-equals \"Expense Approval Workflow\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Workflow\"))"}
+   {:script
+    "(expect-equals \"Completed\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Status\"))"}
+   {:script
+    "(expect-equals (rt.po.common/get-today-local-date-string-us-format) (rt.po.common/get-date-string-from-date-time-string (rt.po.report-view/get-report-cell-text-content \"0\" \"Modified date\")))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20161013-145016",
+  :setup
+  [{:script
+    "(identity {:claim-name (rt.lib.util/make-test-name \"TestClaim\")})"}],
+  :fixtures [],
+  :id :expense/test/golden-path,
+  :teardown
+  [{:script "(comment (rt.po.app/navigate-to \"Expense Approval\"))"}
+   {:script
+    "(comment (rn.app/open-report \"My Closed Expenses\" {:app-name \"Expense Approval\"}))"}
+   {:script
+    "(comment (rt.po.report-view/set-search-text (:claim-name *tc*)))"}
+   {:script
+    "(comment (if (> (rt.po.view-form/get-report-row-count) 0) (do (rt.po.report-view/select-row-by-text \"This is test claim\") (rt.po.report-view/delete-record \"This is test claim\"))))"}],
+  :modified-by "not-implemented"}]

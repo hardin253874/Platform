@@ -1,0 +1,12 @@
+[{:tags [:desktop],
+  :name "dean user creds for security tests",
+  :steps [],
+  :type :testfixture,
+  :source "./test-db",
+  :modified "20151014-163522",
+  :setup
+  [{:script
+    "(identity {:user-creds-dean {:password \"Erica.Mcknight1\", :username \"Erica.Mcknight\"}})"}],
+  :id :rn/fixture/user-creds-dean,
+  :teardown [],
+  :modified-by "not-implemented"}]

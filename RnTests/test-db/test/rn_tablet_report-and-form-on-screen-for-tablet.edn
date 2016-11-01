@@ -1,0 +1,44 @@
+[{:tags [:tablet :nomodify :user/alex :prod :regression],
+  :tests [],
+  :name "Report and Form on Screen for Tablet",
+  :steps
+  [{:script "(rn.tablet.app/navigate-to-app-launcher)"}
+   {:script
+    "(rn.tablet.app/navigate-to-application \"Foster University\")"}
+   {:script "(rn.tablet.app/open-navigator)"}
+   {:script
+    "(rn.tablet.app/navigate-to-item nil \"Student screen - form and report\")"}
+   {:script
+    "(rt.test.expects/expect-equals true (rn.tablet.screen/is-report-on-screen \"Student report\"))"}
+   {:script
+    "(rt.test.expects/expect-equals true (rn.tablet.screen/is-form-on-screen \"Student\"))"}
+   {:script
+    "(rn.tablet.screen/expect-report-row-count-in-screen 12 \"Student report\")"}
+   {:script
+    "(rn.tablet.screen/expect-report-column-count-in-screen 8 \"Student report\")"}
+   {:script "(rn.tablet.report/sort-column-descending \"Student\")"}
+   {:script "(rn.tablet.report/scroll-to-last-record)"}
+   {:script
+    "(rn.tablet.report/expect-row-by-text \"Abraham Mcdonald\")"}
+   {:script
+    "(rn.tablet.report/double-click-row-by-text \"Abraham Mcdonald\")"}
+   {:script
+    "(rt.test.expects/expect-equals (rn.tablet.form/get-field-value \"StudentID\") \"1136\")"}
+   {:script
+    "(rt.test.expects/expect-equals (rn.tablet.form/get-field-value \"Title\") \"Mr.\")"}
+   {:script
+    "(rt.test.expects/expect-equals (rn.tablet.form/get-field-value \"Full name\") \"Abraham Mcdonald\")"}
+   {:script "(rn.tablet.form/form-nav-back)"}
+   {:script "(rn.tablet.app/navigate-to-app-launcher)"}
+   {:script "(rn.tablet.app/logout)"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150804-115233",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :common/fixture/login
+   :common/fixture/chrome-iPad],
+  :id :rn/tablet/report-and-form-on-screen-for-tablet,
+  :teardown [],
+  :modified-by "not-implemented"}]

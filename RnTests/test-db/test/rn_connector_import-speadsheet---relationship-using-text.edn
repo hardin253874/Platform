@@ -1,0 +1,171 @@
+[{:tags
+  [:nomodify :prod :regression :user/shaofen :desktop :area/connector],
+  :tests [],
+  :name
+  "Ensure relationship can be imported using text other than name field",
+  :steps
+  [{:script
+    "(comment \"++++++++++++++ 1) import new qualifications for new students to refer to. ++++++++++++++\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Integration/Import Spreadsheet\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"Import Configuration\")"}
+   {:script
+    "(rt.po.import-spreadsheet/choose-file-to-import (rt.po.common/get-data-file-path \"ImportSpreadsheet-Qualification.xlsx\"))"}
+   {:script "(rt.po.import-spreadsheet/choose-next)"}
+   {:script
+    "(rt.po.import-spreadsheet/choose-target-object \"Qualifications\")"}
+   {:script "(rt.po.import-spreadsheet/choose-next)"}
+   {:script
+    "(expect-equals \"Name\" (rt.po.import-spreadsheet/get-field-mapping \"Name\"))"}
+   {:script
+    "(expect-equals \"Qualification Code\" (rt.po.import-spreadsheet/get-field-mapping \"Qualification Code\"))"}
+   {:script "(rt.po.import-spreadsheet/choose-next)"}
+   {:script
+    "(rt.po.import-spreadsheet/set-config-name \"Import Qualifications from Excel - relationship using text other than name\")"}
+   {:script
+    "(expect-equals \"Import Qualifications from Excel - relationship using text other than name\" (rt.po.import-spreadsheet/config-name))"}
+   {:script
+    "(rt.po.import-spreadsheet/set-suppress-workflows \"Yes\")"}
+   {:script "(expect (rt.po.import-spreadsheet/suppress-workflows?))"}
+   {:script "(expect (not (rt.po.import-spreadsheet/test-import?)))"}
+   {:script "(rt.po.import-spreadsheet/choose-next)"}
+   {:script "(rt.scripts.common/sleep 2000)"}
+   {:script
+    "(comment \"++++++++++++++ the following is to test new qualifications are in system to use. ++++++++++++++\")"}
+   {:script "(rt.po.app/clear-all-alerts)"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Integration/Import Runs\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Import Qualifications from Excel - relationship using text other than name\")"}
+   {:script
+    "(expect-equals \"Completed\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Status\"))"}
+   {:script
+    "(expect-equals \"5 of 5 records succeeded\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Records imported\"))"}
+   {:script
+    "(rn.app/open-report \"Qualification Report\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Qualification of Something\")"}
+   {:script "(expect-equals 5 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(comment \"++++++++++++++ 2) import new students which refers to new qualifications that are identified using a text field.  ++++++++++++++\")"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Integration/Import Spreadsheet\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"Import Configuration\")"}
+   {:script
+    "(rt.po.import-spreadsheet/choose-file-to-import (rt.po.common/get-data-file-path \"ImportSpreadsheet-student4.xlsx\"))"}
+   {:script "(rt.po.import-spreadsheet/choose-next)"}
+   {:script
+    "(rt.po.import-spreadsheet/choose-target-object \"Student\")"}
+   {:script "(rt.po.import-spreadsheet/choose-next)"}
+   {:script
+    "(expect-equals \"Name\" (rt.po.import-spreadsheet/get-field-mapping \"Name\"))"}
+   {:script
+    "(rt.po.import-spreadsheet/set-field-mapping \"Qualification\" \"Qualifications\")"}
+   {:script
+    "(expect-equals \"Qualifications\" (rt.po.import-spreadsheet/get-field-mapping \"Qualification\"))"}
+   {:script
+    "(rt.po.import-spreadsheet/field-options-visible? \"Qualification\")"}
+   {:script
+    "(rt.po.import-spreadsheet/click-field-options \"Qualification\")"}
+   {:script
+    "(rt.po.import-spreadsheet/set-find-using \"Qualification Code\")"}
+   {:script "(rt.po.common/click-ok)"}
+   {:script "(rt.po.import-spreadsheet/choose-next)"}
+   {:script
+    "(rt.po.import-spreadsheet/set-config-name \"Import Student from Excel - relationship using text other than name\")"}
+   {:script
+    "(expect-equals \"Import Student from Excel - relationship using text other than name\" (rt.po.import-spreadsheet/config-name))"}
+   {:script
+    "(rt.po.import-spreadsheet/set-suppress-workflows \"Yes\")"}
+   {:script "(expect (rt.po.import-spreadsheet/suppress-workflows?))"}
+   {:script "(expect (not (rt.po.import-spreadsheet/test-import?)))"}
+   {:script "(rt.po.import-spreadsheet/choose-next)"}
+   {:script "(rt.scripts.common/sleep 2000)"}
+   {:script
+    "(comment \"++++++++++++++ the following is to test new students are linked to new qualifications by using text identifier other than name field. ++++++++++++++\")"}
+   {:script "(rt.po.app/clear-all-alerts)"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Integration/Import Runs\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Import Student from Excel - relationship using text other than name\")"}
+   {:script
+    "(expect-equals \"Completed\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Status\"))"}
+   {:script
+    "(expect-equals \"5 of 5 records succeeded\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Records imported\"))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script "(rt.po.report-view/set-search-text \"QA20\")"}
+   {:script "(rt.po.report-view/double-click-row-by-text \"QA201\")"}
+   {:script "(rt.po.edit-form/select-form-tab \"Qualifications\")"}
+   {:script "(expect-equals 1 (rt.po.view-form/get-report-row-count))"}
+   {:script
+    "(expect-equals \"Qualification of Something 001\" (nth (rt.po.report-view/get-active-tab-column-values \"Qualifications\") 0))"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.report-view/double-click-row-by-text \"QA202\")"}
+   {:script "(rt.po.edit-form/select-form-tab \"Qualifications\")"}
+   {:script "(expect-equals 1 (rt.po.view-form/get-report-row-count))"}
+   {:script
+    "(expect-equals \"Qualification of Something 002\" (nth (rt.po.report-view/get-active-tab-column-values \"Qualifications\") 0))"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.report-view/double-click-row-by-text \"QA203\")"}
+   {:script "(rt.po.edit-form/select-form-tab \"Qualifications\")"}
+   {:script "(expect-equals 1 (rt.po.view-form/get-report-row-count))"}
+   {:script
+    "(expect-equals \"Qualification of Something 003\" (nth (rt.po.report-view/get-active-tab-column-values \"Qualifications\") 0))"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.report-view/double-click-row-by-text \"QA204\")"}
+   {:script "(rt.po.edit-form/select-form-tab \"Qualifications\")"}
+   {:script "(expect-equals 1 (rt.po.view-form/get-report-row-count))"}
+   {:script
+    "(expect-equals \"Qualification of Something 004\" (nth (rt.po.report-view/get-active-tab-column-values \"Qualifications\") 0))"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.report-view/double-click-row-by-text \"QA205\")"}
+   {:script "(rt.po.edit-form/select-form-tab \"Qualifications\")"}
+   {:script "(expect-equals 1 (rt.po.view-form/get-report-row-count))"}
+   {:script
+    "(expect-equals \"Qualification of Something 005\" (nth (rt.po.report-view/get-active-tab-column-values \"Qualifications\") 0))"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20160615-131541",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds],
+  :id :rn/connector/import-speadsheet---relationship-using-text,
+  :teardown
+  [{:script
+    "(comment \"++++++++++++++ The following are teardown steps. ++++++++++++++\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Integration/Import Spreadsheet\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Import Qualifications from Excel - relationship using text other than name\")"}
+   {:script
+    "(while (> (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/select-row-by-text \"Import Qualifications from Excel - relationship using text other than name\") (rt.po.report-view/open-action-menu) (rt.po.app/choose-context-menu \"Delete 'Import Qualifications from Excel - relationship using text other than name'\") (rt.po.edit-form/click-confirm-delete-ok-button)))"}
+   {:script "(expect-equals 0 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Import Student from Excel - relationship using text other than name\")"}
+   {:script
+    "(while (> (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/select-row-by-text \"Import Student from Excel - relationship using text other than name\") (rt.po.report-view/open-action-menu) (rt.po.app/choose-context-menu \"Delete 'Import Student from Excel - relationship using text other than name'\") (rt.po.edit-form/click-confirm-delete-ok-button)))"}
+   {:script "(expect-equals 0 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rn.app/open-report \"Qualification Report\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Qualification of Something\")"}
+   {:script
+    "(while (> (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/select-row-by-text \"Qualification of Something\") (rt.po.report-view/open-action-menu) (rt.po.app/choose-context-menu \"Delete\") (rt.po.edit-form/click-confirm-delete-ok-button)))"}
+   {:script "(expect-equals 0 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script "(rt.po.report-view/set-search-text \"QA20\")"}
+   {:script
+    "(while (> (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/select-row-by-text \"QA20\") (rt.po.report-view/open-action-menu) (rt.po.app/choose-context-menu \"Delete\") (rt.po.edit-form/click-confirm-delete-ok-button)))"}
+   {:script "(expect-equals 0 (rt.po.report-view/count-report-row))"}],
+  :doc
+  "1) Import Qualification from Excel; 2) import new students with qualification which using text other than name field as identifier; 3) tear down to clear whatever data added in.",
+  :modified-by "not-implemented"}]

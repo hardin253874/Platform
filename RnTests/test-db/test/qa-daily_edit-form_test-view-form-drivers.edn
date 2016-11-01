@@ -1,0 +1,23 @@
+[{:tags [:prod :regression :desktop],
+  :tests [],
+  :name "View Form Drivers on Chrome",
+  :steps
+  [{:script
+    "(expect-equals true (rt.po.edit-form/edit-button-exists? ))"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/back-button-exists? ))"}
+   {:script
+    "(expect-equals \"Test 01\" (rt.po.edit-form/get-form-title))"}
+   {:script "(rt.po.edit-form/click-back-button )"}],
+  :type :test,
+  :checks [],
+  :source "../RnTests/test-db",
+  :modified "20150601-153805",
+  :setup
+  [:qa-daily/scripts/edit-form/open-all-fields-report
+   :qa-daily/scripts/edit-form/open-form-in-view-mode],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :qa-daily/edit-form/test-view-form-drivers,
+  :teardown [],
+  :modified-by "not-implemented",
+  :data {}}]

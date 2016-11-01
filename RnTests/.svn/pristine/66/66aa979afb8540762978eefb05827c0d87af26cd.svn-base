@@ -1,0 +1,5 @@
+[{:id :common/fixture/login2,
+  :type :testfixture,
+  :name "Start the ReadiNow console and login using credentials from the test context. This does not guarantee that you would land on home landing page",
+  :setup [{:script "(rn.common/start-app-and-login2)"}],
+  :teardown [{:script "(rn.common/clear-all-alerts)"}]}]

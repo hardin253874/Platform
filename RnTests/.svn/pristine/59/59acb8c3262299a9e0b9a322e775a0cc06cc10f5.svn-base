@@ -1,0 +1,66 @@
+[{:tags
+  [:area/report-builder
+   :nomodify
+   :prod
+   :regression
+   :desktop
+   :user/abida],
+  :tests [],
+  :name "Check progress bar for date  field",
+  :steps
+  [{:script "(rt.po.app/add-report (:section *tc*))"}
+   {:script "(rt.po.report-new/set-name \"ProgressBarDate\")"}
+   {:script "(rt.po.report-new/set-report-base-on \"Student\")"}
+   {:script "(rt.po.report-new/click-ok)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"DOB\" true)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"DOB\" \"Format Column\")"}
+   {:script "(rt.po.report-format/set-format-type \"Progress Bar\")"}
+   {:script "(rt.po.report-format/set-format-scheme \"Light Red\")"}
+   {:script
+    "(rt.po.report-format/set-progress-bar-minimum \"01/01/1977\")"}
+   {:script
+    "(rt.po.report-format/set-progress-bar-maximum \"10/10/1980\")"}
+   {:script "(rt.po.common/click-ok )"}
+   {:script "(rt.scripts.common/sleep 3000)"}
+   {:script
+    "(rt.po.report-builder/click-sort-a-z \"DOB\")"}
+   {:script
+    "(expect-equals \"12/15/1976\" (rt.po.report-view/get-report-cell-text-content \"4\" \"DOB\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/show-report-format-progress-bar 4 \"DOB\"))"}
+   {:script
+    "(expect-equals \"1/20/1977\" (rt.po.report-view/get-report-cell-progress-bar-text-content \"5\" \"DOB\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/show-report-format-progress-bar 5 \"DOB\"))"}
+   {:script
+    "(expect-equals \"Light Red\" (rt.po.report-view/get-report-format-progress-bar-color \"5\" \"DOB\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script "(rt.scripts.common/sleep 2000)"}
+   {:script
+    "(rn.app/open-report \"ProgressBarDate\" {:app-name \"Foster University\" :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"12/15/1976\" (rt.po.report-view/get-report-cell-text-content \"4\" \"DOB\"))"}
+   {:script
+    "(expect-equals false (rt.po.report-view/show-report-format-progress-bar 4 \"DOB\"))"}
+   {:script
+    "(expect-equals \"1/20/1977\" (rt.po.report-view/get-report-cell-progress-bar-text-content \"5\" \"DOB\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/show-report-format-progress-bar 5 \"DOB\"))"}
+   {:script
+    "(expect-equals \"Light Red\" (rt.po.report-view/get-report-format-progress-bar-color \"5\" \"DOB\"))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20151026-115332",
+  :setup [],
+  :fixtures
+  [:common/fixture/chrome
+   :common/fixture/handle-errors
+   :common/fixture/test-account-creds
+   :common/fixture/login
+   :rn/section/createsection],
+  :id :rn/reportbuilder/progress-bar-date,
+  :teardown [{:script "(rt.po.app/delete-nav-item (:section *tc*))"}],
+  :modified-by "not-implemented"}]

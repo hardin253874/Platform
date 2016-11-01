@@ -1,0 +1,138 @@
+[{:tags [:area/workflow :prod :regression :desktop],
+  :name "Actions & Inputs Workflow Scenario",
+  :steps
+  [{:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Workflows\")"}
+   {:script
+    "(rt.po.app/select-non-toggle-navigator-item \"Workflows\" 1)"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Actions & Inputs\")"}
+   {:script "(rt.po.app/choose-context-menu \"Start\")"}
+   {:script "(rt.po.workflow/set-run-option \"Enable trace\" true)"}
+   {:script
+    "(rt.po.workflow/set-run-option \"Open follow-up tasks\" true)"}
+   {:script
+    "(rt.po.workflow/set-run-input-select \"InputRecord\" \"Australian Cattle Dog\")"}
+   {:script "(rt.po.workflow/run)"}
+   {:script "(rt.lib.wd/wait-for-jq \".sp-task-button\" 10000)"}
+   {:script
+    "(expect-equals (rt.po.view-form/form-record-name) \"Australian Cattle Dog\")"}
+   {:script
+    "(expect-equals (quote (\"Approve\" \"Reject\")) (rt.po.view-form/get-task-actions))"}
+   {:script "(expect-not (rt.po.app/page-has-error-alert?))"}
+   {:script "(rt.po.view-form/choose-task-action \"Approve\")"}
+   {:script
+    "(rt.po.workflow-user-input/wait-for-message \"Prompt 1\")"}
+   {:script
+    "(rt.po.workflow-user-input/set-workflow-input-checked \"InputBool\" true)"}
+   {:script
+    "(rt.po.workflow-user-input/set-workflow-input-text \"InputCurrency\" \"1.23\")"}
+   {:script
+    "(rt.po.workflow-user-input/set-workflow-input-date \"InputDate\" \"5/10/1980\")"}
+   {:script
+    "(rt.po.workflow-user-input/set-workflow-input-date \"InputDateTime\" \"2/19/2001\")"}
+   {:script
+    "(rt.po.workflow-user-input/set-workflow-input-time \"InputDateTime\" \"4\" \"32\" \"PM\")"}
+   {:script
+    "(rt.po.workflow-user-input/set-workflow-input-text \"InputDecimal\" \"5.67\")"}
+   {:script
+    "(rt.po.workflow-user-input/set-workflow-input-text \"InputGuid\" \"13A2F478-4006-41F8-B4E3-2AA4C284D68A\")"}
+   {:script
+    "(rt.po.workflow-user-input/set-workflow-input-text \"InputNumber\" \"80\")"}
+   {:script
+    "(rt.po.workflow-user-input/set-workflow-input-record \"InputRecord\" \"German Shepherd\")"}
+   {:script
+    "(rt.po.workflow-user-input/set-workflow-input-record \"InputRecordList\" \"Butterfinger\")"}
+   {:script
+    "(rt.po.workflow-user-input/set-workflow-input-text \"InputString\" \"where\")"}
+   {:script
+    "(rt.po.workflow-user-input/set-workflow-input-time \"InputTime\" \"12\" \"02\" \"AM\")"}
+   {:script
+    "; -- set the \"variables\" that we presently cannot set defaults for --"}
+   {:script
+    "(rt.po.workflow-user-input/set-workflow-input-checked \"VarBool\" false)"}
+   {:script
+    "(rt.po.workflow-user-input/set-workflow-input-text \"VarGuid\" \"9DF6E372-C368-42F4-A313-F33CB3508EA8\")"}
+   {:script
+    "(rt.po.workflow-user-input/set-workflow-input-record \"VarRecord\" \"Sarsaparilla\")"}
+   {:script
+    "(rt.po.workflow-user-input/set-workflow-input-record \"VarRecordList\" \"Rosemary\")"}
+   {:script
+    "(rt.po.workflow-user-input/set-workflow-input-date \"VarDate\" \"1/1/1800\")"}
+   {:script
+    "(rt.po.workflow-user-input/set-workflow-input-date \"VarDateTime\" \"12/12/2080\")"}
+   {:script
+    "(rt.po.workflow-user-input/set-workflow-input-time \"VarDateTime\" \"7\" \"0\" \"PM\")"}
+   {:script "(rt.po.workflow-user-input/done)"}
+   {:script "(rt.lib.wd/wait-for-jq \".form-title\")"}
+   {:script "(rt.lib.wd/wait-for-jq \".sp-task-button\" 10000)"}
+   {:script
+    "(expect-equals (rt.po.view-form/form-record-name) \"Sarsaparilla\")"}
+   {:script
+    "(expect-equals (quote (\"Approve\" \"Reject\")) (rt.po.view-form/get-task-actions))"}
+   {:script "(expect-equals false (rt.po.app/page-has-error-alert?))"}
+   {:script "(rt.po.view-form/choose-task-action \"Approve\")"}
+   {:script
+    "(rt.po.workflow-user-input/wait-for-message \"Prompt 2\")"}
+   {:script
+    "(expect (rt.po.workflow-user-input/get-workflow-input-checked? \"InputBool\"))"}
+   {:script
+    "(expect-equals (rt.po.workflow-user-input/get-workflow-input-text \"InputCurrency\") \"1.23\")"}
+   {:script
+    "(expect-equals (rt.po.workflow-user-input/get-workflow-input-text \"InputDate\") \"1980-05-09\")"}
+   {:script
+    "(expect-equals (rt.po.workflow-user-input/get-workflow-input-text \"InputDateTime\") \"2/19/2001\")"}
+   {:script
+    "(expect-equals (rt.po.workflow-user-input/get-workflow-input-time \"InputDateTime\") \"4:32 PM\")"}
+   {:script
+    "(expect-equals (rt.po.workflow-user-input/get-workflow-input-text \"InputDecimal\") \"5.67\")"}
+   {:script
+    "(expect-equals (rt.po.workflow-user-input/get-workflow-input-text \"InputGuid\") \"13a2f478-4006-41f8-b4e3-2aa4c284d68a\")"}
+   {:script
+    "(expect-equals (rt.po.workflow-user-input/get-workflow-input-text \"InputNumber\") \"80\")"}
+   {:script
+    "(expect-equals (rt.po.workflow-user-input/get-workflow-input-text \"InputRecord\") \"German Shepherd Dog\")"}
+   {:script
+    "(expect-equals (rt.po.workflow-user-input/get-workflow-input-text \"InputRecordList\") \"Butterfinger\")"}
+   {:script
+    "(expect-equals (rt.po.workflow-user-input/get-workflow-input-text \"InputString\") \"where\")"}
+   {:script
+    "(expect-equals (rt.po.workflow-user-input/get-workflow-input-time \"InputTime\") \"12:02 AM\")"}
+   {:script
+    "(expect-not (rt.po.workflow-user-input/get-workflow-input-checked? \"VarBool\"))"}
+   {:script
+    "(expect-equals (rt.po.workflow-user-input/get-workflow-input-text \"VarCurrency\") \"8.8888\")"}
+   {:script
+    "; -- something odd happening to the date value. presumably because timezones are not yet correct --"}
+   {:script
+    ";REM (expect-equals (rt.po.workflow-user-input/get-workflow-input-text \"VarDate\") \"1800-01-01\")"}
+   {:script
+    "(expect-equals (rt.po.workflow-user-input/get-workflow-input-text \"VarDateTime\") \"12/12/2080\")"}
+   {:script
+    "(expect-equals (rt.po.workflow-user-input/get-workflow-input-time \"VarDateTime\") \"7:00 PM\")"}
+   {:script
+    "(expect-equals (rt.po.workflow-user-input/get-workflow-input-text \"VarDecimal\") \"9.999999\")"}
+   {:script
+    "(expect-equals (rt.po.workflow-user-input/get-workflow-input-text \"VarGuid\") \"9df6e372-c368-42f4-a313-f33cb3508ea8\")"}
+   {:script
+    "(expect-equals (rt.po.workflow-user-input/get-workflow-input-text \"VarNumber\") \"7\")"}
+   {:script
+    "(expect-equals (rt.po.workflow-user-input/get-workflow-input-text \"VarRecord\") \"Sarsaparilla\")"}
+   {:script
+    "(expect-equals (rt.po.workflow-user-input/get-workflow-input-text \"VarRecordList\") \"Rosemary\")"}
+   {:script
+    "(expect-equals (rt.po.workflow-user-input/get-workflow-input-text \"VarString\") \"what\")"}
+   {:script
+    "(expect-equals (rt.po.workflow-user-input/get-workflow-input-time \"VarTime\") \"12:00 AM\")"}
+   {:script "(rt.po.workflow-user-input/done)"}
+   {:script "(expect-not (rt.po.app/page-has-error-alert?))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160830-094358",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/workflow/actions-and-inputs-workflow,
+  :teardown [],
+  :doc
+  "Workflow scenario involving successive user action and input forms",
+  :modified-by "not-implemented"}]

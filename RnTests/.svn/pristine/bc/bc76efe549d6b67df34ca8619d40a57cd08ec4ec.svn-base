@@ -1,0 +1,14 @@
+[{:tags [:desktop],
+  :modified-by "not-implemented",
+  :modified "20150601-153828",
+  :source "../RnTests/test-db",
+  :id :qa-daily/scripts/form-builder/open-form-builder-new-mode,
+  :type :testscript,
+  :steps
+  [{:script "(rt.po.app/enable-config-mode)",
+        :target-msec 500}
+   {:script "(rt.po.app/enable-app-toolbox)",
+        :target-msec 500}
+   {:script
+    "(rt.po.app-toolbox/create-object {:name \"RT-Test-fb\" :description \"Testing Driver Functions For Form Builder\"})",
+        :target-msec 1000}]}]

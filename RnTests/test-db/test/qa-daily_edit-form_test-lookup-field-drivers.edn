@@ -1,0 +1,53 @@
+[{:tags [:prod :regression :desktop],
+  :tests [],
+  :name "Lookup Field Drivers on Chrome",
+  :steps
+  [{:script
+    "(expect-equals true (rt.po.view-form/lookup-link-exists? \"AA_Drinks\"))"}
+   {:script
+    "(expect-equals \"Coke\" (rt.po.view-form/get-lookup-link \"AA_Drinks\"))"}
+   {:script "(rt.po.view-form/click-lookup-link \"AA_Drinks\")"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/back-button-exists? ))"}
+   {:script "(rt.po.edit-form/click-back-button )"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/edit-button-exists? ))"}
+   {:script "(rt.po.edit-form/click-edit-button )"}
+   {:script
+    "(expect-equals \"Coke\" (rt.po.edit-form/get-lookup \"AA_Drinks\"))"}
+   {:script "(rt.po.edit-form/clear-lookup \"AA_Drinks\")"}
+   {:script
+    "(expect-equals \"\" (rt.po.edit-form/get-lookup \"AA_Drinks\"))"}
+   {:script "(rt.po.edit-form/open-lookup \"AA_Drinks\")"}
+   {:script "(expect-equals true (rt.po.edit-form/check-can-create?))"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/entity-report-picker-modal-exists? ))"}
+   {:script "(rt.po.common/click-cancel)"}
+   {:script "(rt.po.edit-form/set-lookup \"AA_Drinks\" \"Coke\")"}
+   {:script
+    "(expect-equals \"Coke\" (rt.po.edit-form/get-lookup \"AA_Drinks\"))"}
+   {:script "(rt.po.edit-form/open-lookup \"AA_Employee\")"}
+   {:script "(rt.lib.wd/wait-for-jq \".entityReportPickerDialog\")"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/check-can-create-derived-types? ))"}
+   {:script "(rt.po.edit-form/click-new-button)"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/create-option-visible? \"AA_Employee\" ))"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/create-option-visible? \"AA_Manager\" ))"}
+   {:script "(rt.po.edit-form/click-create-option \"AA_Manager\" )"}
+   {:script
+    "(expect-equals \"AA_Manager\" (rt.po.edit-form/get-form-title))"}
+   {:script "(rt.po.edit-form/click-back-button )"}],
+  :type :test,
+  :checks [],
+  :source "../RnTests/test-db",
+  :modified "20151023-012652",
+  :setup
+  [:qa-daily/scripts/edit-form/open-all-fields-report
+   :qa-daily/scripts/edit-form/open-form-in-view-mode],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :qa-daily/edit-form/test-lookup-field-drivers,
+  :teardown [],
+  :modified-by "not-implemented",
+  :data {}}]

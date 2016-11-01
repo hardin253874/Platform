@@ -1,0 +1,12 @@
+[{:tags [:prod :regression :desktop],
+  :tests [],
+  :name "more edit form tests",
+  :steps [{:script "(rt.scripts.edit-form/test-cancelling-an-edit)"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150601-153802",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :edit-form/test-cancelling-an-edit,
+  :teardown [],
+  :modified-by "not-implemented"}]

@@ -1,0 +1,159 @@
+[{:tags
+  [:nomodify
+   :prod
+   :daily
+   :regression
+   :user/shaofen
+   :desktop
+   :area/security],
+  :tests [],
+  :name
+  "Ensure multiple access rules works --- default access rule + analyser condition on single choice field",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(comment \"==========================Access works as default. Above is to check env is clean.============================\")"}
+   {:script
+    "(comment \"==========================Below we will add a new access rule and check if non-admin user has expectd access. ===========================\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script "(rt.po.access-rules/add-new-access-rule)"}
+   {:script
+    "(expect-equals true (rt.po.access-rules-new/new-dialog-visible?))"}
+   {:script
+    "(rt.po.access-rules-new/set-role \"Students (User Role)\")"}
+   {:script "(rt.po.access-rules-new/set-object \"Student\")"}
+   {:script "(rt.po.access-rules-new/click-ok)"}
+   {:script
+    "(rt.po.access-rules/edit-access-rule \"Students (User Role)\" \"Student\" \"Student\")"}
+   {:script
+    "(rt.po.report-builder/select-field-checkboxes \"Suburb\" true true)"}
+   {:script
+    "(rt.po.report-builder/set-name \"Students in Suburb Baulkham hills\")"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script
+    "(expect-equals true (rt.po.report-view/analyzer-field-exists? \"Suburb\"))"}
+   {:script
+    "(rt.po.report-view/set-analyzer-field-oper \"Suburb\" \"Any of\")"}
+   {:script
+    "(rt.po.report-view/set-analyzer-choice-option \"Suburb\" \"Any of\" \"Baulkham hills\")"}
+   {:script "(rt.po.report-builder/save)"}
+   {:script "(rt.po.report-builder/close)"}
+   {:script
+    "(rt.po.access-rules/enable-access-rule \"Students (User Role)\" \"Student\" \"Students in Suburb Baulkham hills\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script
+    "(comment \"===============================By this point, we have added new access rule. Below is to check if non-admin user has expected access.=============================\")"}
+   {:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 5 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Meredith Alvarez\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Meredith Alvarez\")"}
+   {:script
+    "(comment \"=========================Done checking on No.1 instance=========================\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Gray Byrd\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Gray Byrd\")"}
+   {:script
+    "(comment \"=========================Done checking on No.2 instance=========================\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Nelle Odom\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"Edit\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Nelle Odom\")"}
+   {:script
+    "(comment \"=========================Done checking on No.4 instance=========================\")"}
+   {:script "(rt.po.report-view/set-search-text \"Whoopi Singleton\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Whoopi Singleton\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Whoopi Singleton\")"}
+   {:script
+    "(comment \"=========================Done checking on No.3 instance=========================\")"}
+   {:script "(rt.po.report-view/set-search-text \"Vivian Rhodes\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Vivian Rhodes\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Vivian Rhodes\")"}
+   {:script
+    "(comment \"=========================Done checking on No.5 instance=========================\")"}
+   {:script
+    "(comment \"================================We have basically done the testing and below is to reset the env. back by deleting added access rule.===========================\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/delete-access-rule \"Students (User Role)\" \"Student\" \"Students in Suburb Baulkham hills\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(comment \"====================================Env. reset is done.=============================\")"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20151103-142723",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds],
+  :id
+  :rn/security/multiple-access-rules---analyser-condition-on-s-choice,
+  :teardown
+  [{:script
+    "(comment \"++++++++++++++++++++++++++++++++++  Below is to force the env. back to default even though test case might fail in the middle. ++++++++++++++++++++++++++++++\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"System Administrator (User Account)\")"}
+   {:script
+    "(when (> (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/set-search-text \"Students in Suburb Baulkham hills\") (if (> (rt.po.report-view/count-report-row) 1) (do (rt.po.access-rules/click-edit-button) (rt.po.access-rules/delete-access-rule \"Students (User Role)\" \"Student\" \"Students in Suburb Baulkham hills\") (rt.po.access-rules/click-save-button)))))"}
+   {:script
+    "(rt.po.report-view/set-search-text \"System Administrator (User Account)\")"}
+   {:script
+    "(when (= (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/set-search-text \"Students in Suburb Baulkham hills\") (if (> (rt.po.report-view/count-report-row) 0) (do (rt.po.access-rules/click-edit-button) (rt.po.access-rules/delete-access-rule \"Students (User Role)\" \"Student\" \"Students in Suburb Baulkham hills\") (rt.po.access-rules/click-save-button)))))"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Students in Suburb Baulkham hills\")"}],
+  :modified-by "not-implemented"}]

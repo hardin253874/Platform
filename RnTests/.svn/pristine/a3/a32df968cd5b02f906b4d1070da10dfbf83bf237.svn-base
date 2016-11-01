@@ -1,0 +1,44 @@
+[{:tags
+  [:nomodify :prod :regression :user/shaofen :desktop :area/form],
+  :tests [],
+  :name
+  "This test (designed for bug #27603) is to ensure clearing decimal work on edit form ",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script "(expect (> (rt.po.report-view/count-report-row) 0))"}
+   {:script "(rt.po.report-view/set-search-text \"Susan Jacobs\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Susan Jacobs\")"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script
+    "(rt.po.edit-form/set-number-field-value \"Balance\" \"\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(expect-equals \"$\" (rt.po.view-form/get-field-value \"Balance\"))"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script
+    "(rt.po.edit-form/set-number-field-value \"Balance\" \"-33.33\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(expect-equals \"$ -33.33\" (rt.po.view-form/get-field-value \"Balance\"))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160621-092023",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds],
+  :id :rn/form/ensure-clearing-decimal-work-on-edit-form,
+  :teardown
+  [{:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Susan Jacobs\")"}
+   {:script
+    "(if (not (= (rt.po.view-form/get-field-value \"Balance\") \"$ -33.33\")) (do (rt.po.edit-form/click-edit-button) (rt.po.edit-form/set-number-field-value \"Balance\" \"\") (rt.po.edit-form/save)))"}
+   {:script
+    "(expect-equals \"$ -33.33\" (rt.po.view-form/get-field-value \"Balance\"))"}],
+  :modified-by "not-implemented"}]

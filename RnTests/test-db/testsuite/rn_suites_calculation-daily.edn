@@ -1,0 +1,20 @@
+[{:tags [:desktop],
+  :test-filter
+  "(and (has-tags? [\"area/calculation\" \"daily\"] %) (and (has-tags? [\"prod\"] %)) )",
+  :tests [],
+  :name "Calculation tests",
+  :each-fixtures [:common/fixture/login],
+  :type :testsuite,
+  :source "./test-db",
+  :modified "20160229-144520",
+  :setup [],
+  :id :rn/suites/calculation-daily,
+  :teardown [],
+  :doc "",
+  :modified-by "not-implemented",
+  :once-fixtures
+  [:common/fixture/chrome
+   :common/fixture/test-account-creds
+   :common/fixture/handle-errors
+   :common/fixture/wait-ng
+   :common/fixture/stop-all]}]

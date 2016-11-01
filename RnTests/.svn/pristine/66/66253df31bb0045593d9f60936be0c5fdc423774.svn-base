@@ -1,0 +1,150 @@
+[{:tags
+  [:user/kun :app-tests/com :desktop],
+  :tests [],
+  :name
+  "Ensure corporate obligations",
+  :steps
+  [{:script
+    "(rn.common/start-app-and-login (:com-user-creds-owner *tc*))"}
+   {:script "(think 1)"}
+   {:script "(rt.po.app/navigate-to \"Corporate Obligation Management\")"}
+   {:script "(think 1)"}      
+   {:script
+    "(expect-equals true (rt.po.screen/is-report-on-screen \"My Tasks\"))"}
+   {:script
+    "(rt.po.screen/open-report-menu-on-screen-by-name \"My Tasks\" \"Action\")",
+    :target-msec 1000}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Subject\" (:task-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Due date\" (make-local-date 2017 11 11))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Task status\" \"Not started\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(expect-equals true (rt.po.screen/is-report-on-screen \"My Issues\"))"}
+   	{:script
+    "(rt.po.screen/open-report-menu-on-screen-by-name \"My Issue\" \"Action\")",
+    :target-msec 1000}
+	{:script
+	"(rt.po.report-view/click-sub-menu-item \"New\" \"Issue\")"}
+	{:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:issue-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-today-date \"Exp Resolution Date\")"}	
+	{:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.app/select-app-tab \"Corporate Obligations\")"}
+   {:script
+    "(rt.po.screen/open-report-menu-on-screen-by-name \"\" \"Action\")",
+    :target-msec 1000}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Obligation\" (:ob-name *tc*))"}
+	{:script
+    "(rt.po.edit-form/set-text-field-value \"Section\" \"Section\")"}
+	{:script
+    "(rt.po.edit-form/set-text-field-value \"Sub-Section\" \"Sub-Section\")"}
+	{:script
+    "(rt.po.edit-form/set-date-field-value \"Next Review Date\" (make-local-date 2017 11 11))"}
+	{:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Obligation Type\" \"Bill or Act\")"}
+	{:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Obligation Category\" \"Latin American Guidance\")"}
+		{:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Distribution\" \"External\")"}
+	{:script "(rt.po.edit-form/save)"}
+	{:script "(rt.po.view-form/click-button-in-relationship \"Compliance Requirements\" \"Action\")",
+    :target-msec 1000}	
+	{:script "(rt.po.app/choose-context-menu \"New\")"}
+	{:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:cr-name *tc*))"}
+	{:script "(rt.po.edit-form/save)"}
+	{:script "(rt.po.view-form/click-button-in-relationship \"Exemption Requests\" \"Action\")",
+    :target-msec 1000}	
+	{:script "(rt.po.app/choose-context-menu \"New\")"}
+	{:script
+    "(rt.po.edit-form/set-text-field-value \"Exemption Title\" (:et-name *tc*))"}
+	{:script
+    "(rt.po.edit-form/set-date-field-value \"Expiry Date\" (make-local-date 2017 11 11))"}
+	{:script "(rt.po.edit-form/save)"}
+	{:script "(rt.po.view-form/click-button-in-relationship \"Issues\" \"Action\")",
+    :target-msec 1000}	
+	{:script "(rt.po.app/choose-context-menu \"New\")"}
+	{:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:com-issue-name *tc*))"}
+    {:script
+    "(rt.po.edit-form/set-date-field-value \"Expected_Resolution_Date\" (make-local-date 2017 11 11))"}	
+	{:script "(rt.po.edit-form/save)"}
+	
+	{:script "(rt.po.app/select-app-tab \"Controls Management\")"}
+   {:script
+    "(rt.po.screen/open-report-menu-on-screen-by-name \"\" \"Action\")",
+    :target-msec 1000}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:control-name *tc*))"}
+	{:script
+    "(rt.po.edit-form/set-date-field-value \"Next Review Date\" (make-local-date 2017 11 11))"}
+	{:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Control Type\" \"Process\")"}
+	{:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Control Sub Type\" \"Behaviour\")"}
+	{:script
+    "(rt.po.edit-form/set-number-field-value \"Control Cost\" 1000)"}
+	{:script "(rt.po.edit-form/save)"}
+	{:script "(rt.po.view-form/click-button-in-relationship \"Compliance Requirements\" \"Action\")",
+    :target-msec 1000}	
+	{:script "(rt.po.app/choose-context-menu \"New\")"}
+	{:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:cr-name *tc*))"}
+	{:script "(rt.po.edit-form/save)"}
+	{:script
+    "(rt.po.view-form/click-button-in-relationship \"Compliance Requirements\" \"Action\")"}
+	{:script "(rt.po.app/choose-context-menu \"Link to Existing\")"}
+	{:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog (:cr-name *tc*))"}	
+	{:script "(rt.po.edit-form/click-back-button)"}	
+	{:script
+    "(rt.po.screen/open-report-menu-on-screen-by-name \"\" \"Action\")",
+    :target-msec 1000}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:control-name2 *tc*))"}
+	{:script
+    "(rt.po.edit-form/set-date-field-value \"Next Review Date\" (make-local-date 2017 11 11))"}
+	{:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Control Effectiveness\" \"Partially Effective\")"}	
+	{:script
+    "(rt.po.view-form/click-button-in-relationship \"Compliance Requirements\" \"Action\")"}
+	{:script "(rt.po.app/choose-context-menu \"Link to Existing\")"}
+	{:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog (:cr-name *tc*))"}
+	{:script "(rt.po.edit-form/save)"}
+	{:script "(rt.po.app/select-app-tab \"Corporate Obligations\")"}
+	{:script "(rt.po.app/select-navigator-item \"Corporate Requirements\")",
+	:target-msec 1000}			
+   ],
+  :type :test,
+  :source "./test-db",
+  :modified "20161012-100101",
+  :setup [{:script
+    "(identity {:co-name (rt.lib.util/make-test-name \"CO\"), 
+				:ob-name (rt.lib.util/make-test-name \"Obligation\"), 
+				:cr-name (rt.lib.util/make-test-name \"ComplianceRequirement\"), 
+				:control-name (rt.lib.util/make-test-name \"Control\"), 
+				:control-name2 (rt.lib.util/make-test-name \"Control\"), 
+				:issue-name (rt.lib.util/make-test-name \"Issue\"), 
+				:com-issue-name (rt.lib.util/make-test-name \"ComIssue\"), 
+				:et-name (rt.lib.util/make-test-name \"ExemptionTitle\"), 
+				:task-name (rt.lib.util/make-test-name \"Task\")
+				})"}],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds   
+   :rn/fixture/user-creds-com],
+  :id :com/tests/corporate-obligations,
+  :teardown [],
+  :modified-by "not-implemented"}]

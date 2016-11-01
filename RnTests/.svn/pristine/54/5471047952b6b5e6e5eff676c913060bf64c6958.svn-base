@@ -1,0 +1,84 @@
+[{:tags
+  [:nomodify :prod :regression :user/shaofen :desktop :area/security],
+  :tests [],
+  :name
+  "Ensure multiple access rules works - using Record Access tab on user role form (CBA phase 1)",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script "(rn.app/open-security \"User Roles\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Students\")"}
+   {:script
+    "(comment \"adding new access rule using new access rule tab\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script "(rt.po.access-rules/add-new-access-rule)"}
+   {:script
+    "(expect-equals true (rt.po.access-rules-new/new-dialog-visible?))"}
+   {:script "(rt.po.access-rules-new/set-object \"Student\")"}
+   {:script "(rt.po.access-rules-new/click-ok)"}
+   {:script
+    "(expect (rt.po.access-rules/row-exists? \"Student\" \"View\" \"Student\"))"}
+   {:script
+    "(expect (not (rt.po.access-rules/row-enabled? (rt.po.access-rules/get-exact-row \"Student\" \"View\" \"Student\"))))"}
+   {:script
+    "(comment \"enabling new access rule using new access rule tab\")"}
+   {:script
+    "(rt.po.access-rules/set-row-enabled (rt.po.access-rules/get-exact-row \"Student\" \"View\" \"Student\") true)"}
+   {:script
+    "(expect (rt.po.access-rules/row-enabled? (rt.po.access-rules/get-exact-row \"Student\" \"View\" \"Student\")))"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect (> (rt.po.report-view/count-report-row) 15))"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script "(rn.app/open-security \"User Roles\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Students\")"}
+   {:script
+    "(comment \"disabling new access rule using new access rule tab\")"}
+   {:script
+    "(expect (rt.po.access-rules/row-enabled? (rt.po.access-rules/get-exact-row \"Student\" \"View\" \"Student\")))"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/set-row-enabled (rt.po.access-rules/get-exact-row \"Student\" \"View\" \"Student\") false)"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script
+    "(expect (not (rt.po.access-rules/row-enabled? (rt.po.access-rules/get-exact-row \"Student\" \"View\" \"Student\"))))"}
+   {:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script "(expect (= (rt.po.report-view/count-report-row) 1))"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script "(rn.app/open-security \"User Roles\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Students\")"}
+   {:script
+    "(comment \"deleting new access rule using new access rule tab\")"}
+   {:script
+    "(rt.po.access-rules/right-click-row (rt.po.access-rules/get-last-exact-row \"Student\" \"View\" \"Student\"))"}
+   {:script "(rt.po.app/choose-context-menu \"Delete\")"}
+   {:script "(rt.po.edit-form/click-confirm-delete-ok-button)"}
+   {:script "(expect-equals false (rt.po.app/page-has-error-alert?))"}
+   {:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160905-113920",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds],
+  :id
+  :rn/security/ensure-multiple-access-rules-works---using-tabs-on-role-form,
+  :teardown
+  [{:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script "(rn.app/open-security \"User Roles\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Students\")"}
+   {:script
+    "(if (rt.po.access-rules/row-exists? \"Student\" \"View\" \"Student\") (do (rt.po.access-rules/right-click-row (rt.po.access-rules/get-last-exact-row \"Student\" \"View\" \"Student\")) (rt.po.app/choose-context-menu \"Delete\") (rt.po.edit-form/click-confirm-delete-ok-button) (expect-equals false (rt.po.app/page-has-error-alert?))))"}],
+  :modified-by "not-implemented"}]

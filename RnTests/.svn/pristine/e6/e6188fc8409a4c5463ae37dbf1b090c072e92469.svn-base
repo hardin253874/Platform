@@ -1,0 +1,66 @@
+[{:tags
+  [:nomodify :prod :regression :user/shaofen :desktop :area/security],
+  :tests [],
+  :name
+  "Ensure multiple access rules works on stand alone report --- Export to excel, CSV, Word",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Staff report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 3 (rt.po.report-view/count-report-row))"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(rt.po.report-view/click-sub-menu-item \"Export to...\" \"Excel\")"}
+   {:script "(expect-downloaded-file \"Staff Report.xlsx\")"}
+   {:script
+    "(rt.po.common/delete-file-in-download-folder \"Staff Report.xlsx\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(rt.po.report-view/click-sub-menu-item \"Export to...\" \"CSV\")"}
+   {:script "(expect-downloaded-file \"Staff Report.csv\")"}
+   {:script
+    "(rt.po.common/delete-file-in-download-folder \"Staff Report.csv\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(rt.po.report-view/click-sub-menu-item \"Export to...\" \"Word\")"}
+   {:script "(expect-downloaded-file \"Staff Report.docx\")"}
+   {:script
+    "(rt.po.common/delete-file-in-download-folder \"Staff Report.docx\")"}
+   {:script "(rn.common/start-app-and-login (:user-creds-staff *tc*))"}
+   {:script
+    "(rn.app/open-report \"Staff report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 4 (rt.po.report-view/count-report-row))"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(rt.po.report-view/click-sub-menu-item \"Export to...\" \"Excel\")"}
+   {:script "(expect-downloaded-file \"Staff Report.xlsx\")"}
+   {:script
+    "(rt.po.common/delete-file-in-download-folder \"Staff Report.xlsx\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(rt.po.report-view/click-sub-menu-item \"Export to...\" \"CSV\")"}
+   {:script "(expect-downloaded-file \"Staff Report.csv\")"}
+   {:script
+    "(rt.po.common/delete-file-in-download-folder \"Staff Report.csv\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(rt.po.report-view/click-sub-menu-item \"Export to...\" \"Word\")"}
+   {:script "(expect-downloaded-file \"Staff Report.docx\")"}
+   {:script
+    "(rt.po.common/delete-file-in-download-folder \"Staff Report.docx\")"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20160514-215938",
+  :setup
+  [{:script
+    "(defn expect-file [fname]\n  (rn.common/wait-until #(rt.po.common/file-exist? fname) 30000 500)\n  (expect (rt.po.common/file-exist? fname)))"}
+   {:script
+    "(defn expect-downloaded-file [fname] (expect-file (rt.po.common/get-download-file-path fname)))"}],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds
+   :rn/fixture/user-creds-staff],
+  :id :rn/security/secure-data-on-standalone-report---export,
+  :teardown [],
+  :modified-by "not-implemented"}]

@@ -1,0 +1,29 @@
+[{:tags [:desktop],
+  :name "New Report Drivers on Chrome",
+  :steps
+  [{:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"DateTime\" true)",
+        :target-msec 500}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"DateTime\" \"Sort Options\")",
+        :target-msec 1500}
+   {:script "(rt.po.report-sort-option/click-add-sorting)",
+        :target-msec 500}
+   {:script "(rt.po.report-sort-option/click-add-sorting)",
+        :target-msec 500}
+   {:script
+    "(rt.po.report-sort-option/set-sortings [{:colname \"AA_All Fields\"  :dir \"Ascending\"} {:colname \"DateTime\" :dir \"Descending\"}])",
+        :target-msec 500}
+   {:script "(rt.po.report-sort-option/click-ok)",
+        :target-msec 500}],
+  :type :test,
+  :checks [],
+  :source "../RnTests/test-db",
+  :modified "20150601-153808",
+  :setup
+  [:qa-daily/scripts/reports/open-AutomationReport-in-build-mode],
+  :id :qa-daily/reports/test-report-sorting-option-drivers,
+  :teardown [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :modified-by "not-implemented",
+  :data {}}]

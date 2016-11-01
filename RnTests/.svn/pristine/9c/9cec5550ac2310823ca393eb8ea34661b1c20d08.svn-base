@@ -1,0 +1,76 @@
+[{:tags [:desktop],
+  :name "Foster concurrency test",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:login-creds *tc*))"}
+   {:script "(think 5)"}
+   {:script "(rt.po.app/navigate-to \"Foster University\")"}
+   {:script "(rt.po.app/select-navigator-item \"Reports\")"}
+   {:script "(rt.po.app/select-navigator-item \"Staff Report\")"}
+   {:script "(think 5)"}
+   {:script "(rt.po.app/select-navigator-item \"Subjects Report\")"}
+   {:script "(think 8)"}
+   {:script
+    "(let [s (get-random-test-data :subjects)] (rt.po.report-view/set-search-text s) (rt.po.report-view/double-click-row-by-text s))"}
+   {:script "(think 3)"}
+   {:script "(rt.po.view-form/click-edit)"}
+   {:script
+    "(rt.po.edit-form/set-number-field-value \"Subject Fee\" (rand-int 10000))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value \"Subject Mode\" (get-random-test-data :mode))"}
+   {:script
+    "(rt.po.edit-form/set-number-field-value \"Credit Points\" (rand-int 10))"}
+   {:script "(think 8 12)"}
+   {:script "(rt.po.view-form/select-form-tab \"Pre-requisites\")"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Pre-requisites\" \"Link\")"}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog (get-random-test-data :subjects))"}
+   {:script "(think 3 8)"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.app/select-navigator-item \"Faculties Report\")"}
+   {:script "(think 3 8)"}
+   {:script
+    "(let [f (get-random-test-data :faculties)] (rt.po.report-view/set-search-text f) (rt.po.report-view/double-click-row-by-text f))"}
+   {:script "(think 5)"}
+   {:script "(rt.po.app/select-navigator-item \"Textbooks\")"}
+   {:script "(think 3 8)"}
+   {:script
+    "(let [t (get-random-test-data :textbooks)] (rt.po.report-view/set-search-text t) (rt.po.report-view/double-click-row-by-text t))"}
+   {:script "(think 5)"}
+   {:script "(rt.po.app/select-navigator-item \"Campuses\")"}
+   {:script "(think 8)"}
+   {:script "(rt.po.app/select-navigator-item \"Stock Report\")"}
+   {:script "(think 8)"}
+   {:script "(rt.po.app/select-navigator-item \"Student Report\")"}
+   {:script "(think 8)"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20151020-161704",
+  :setup
+  [{:script
+    "(when (empty? (get-test-data :foster-deans-creds :quiet)) (rn.common/start-app-and-login))"}
+   {:script
+    "(setonce-test-data :foster-deans-creds rn.services.security/ensure-test-accounts [\"Deans\"] \"DEANUSER\" 20)"}
+   {:script
+    "(identity {:login-creds (get-random-test-data :foster-deans-creds)})"}
+   {:script
+    "(when (:elevate-user *tc*) (rn.services.security/ensure-account-in-roles (-> *tc* :login-creds :username) [\"Administrators\"]) {:elevated true})"}
+   {:script "(rn.common/start-app-and-login (:login-creds *tc*))"}
+   {:script
+    "(identity {:owner-name (rn.services.security/get-account-holder-name (-> *tc* :login-creds :username))})"}
+   {:script
+    "(identity {:staff-name (make-test-name \"Staff\"), :first-name (make-test-name \"First\"), :last-name (make-test-name \"Last\"), :address1 (make-test-name \"Add1\"), :address2 (make-test-name \"Add2\"),})"}
+   {:script
+    "(setonce-test-data :subjects rn.common/get-record-names-for-type \"subjects\" {:app-name \"Foster University\"})"}
+   {:script
+    "(setonce-test-data :textbooks rn.common/get-record-names-for-type \"textbooks\" {:app-name \"Foster University\"})"}
+   {:script
+    "(setonce-test-data :mode rn.common/get-choice-values \"Mode\" {:app-name \"Foster University\"})"}
+   {:script
+    "(setonce-test-data :faculties rn.common/get-record-names-for-type \"Faculties\" {:app-name \"Foster University\"})"}
+   {:script
+    "(setonce-test-data :campuses rn.common/get-record-names-for-type \"Campuses\" {:app-name \"Foster University\"})"}],
+  :fixtures [:common/fixture/wait-ng],
+  :id :foster/tests/staff-1,
+  :teardown [],
+  :modified-by "not-implemented"}]

@@ -1,0 +1,23 @@
+[{:tags [:desktop],
+  :name "Concurrency test",
+  :steps
+  [{:script "(think {:timeout 30})"}
+   {:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script "(think {:timeout 10})"}
+   {:script "(rt.po.app/navigate-to \"Foster University\")"}
+   {:script "(think {:timeout 5})"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Reports/Textbooks\")"}
+   {:script "(think {:timeout 5})"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Screens/Staff screen\")"}
+   {:script "(think {:timeout 5})"}
+   {:script "(println \"All done. BYE!\")"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150822-143726",
+  :setup [],
+  :fixtures [],
+  :id :rn/tests/ct1,
+  :teardown [],
+  :modified-by "not-implemented"}]

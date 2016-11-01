@@ -1,0 +1,20 @@
+[{:tags [:desktop],
+  :test-filter
+  "(and (has-tags? [\"prod\" \"regression\" \"desktop\"] %) (not (has-some-tags? [\"quarantined\" \"daily\"] %)) (has-index-in-range? 60 119 %))",
+  :tests [],
+  :name "Regression tests ",
+  :each-fixtures
+  [:common/fixture/handle-errors
+   :common/fixture/chrome
+   :common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds],
+  :type :testsuite,
+  :source "./test-db",
+  :modified "20151103-142118",
+  :setup [],
+  :id :rn/suites/regression-chrome-2,
+  :teardown [],
+  :doc "",
+  :modified-by "not-implemented",
+  :once-fixtures []}]

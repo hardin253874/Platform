@@ -1,0 +1,13 @@
+[{:tags [:desktop],
+  :tests [:expense/test/golden-path],
+  :name "Expenses Application",
+  :each-fixtures
+  [:common/fixture/chrome :common/fixture/handle-errors],
+  :type :testsuite,
+  :source "../RnTests/test-db",
+  :modified "20150601-153829",
+  :setup [{:script ""}],
+  :id :expenses-app/suite,
+  :teardown [{:script ""}],
+  :modified-by "not-implemented",
+  :once-fixtures []}]

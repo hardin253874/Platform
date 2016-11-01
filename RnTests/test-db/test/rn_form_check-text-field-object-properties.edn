@@ -1,0 +1,195 @@
+[{:tags [:nomodify :prod :regression :area/form :user/anurag :desktop],
+  :tests [],
+  :name "Testing all the object properties for text field",
+  :steps
+  [{:script
+    "(rt.po.app-toolbox/create-app {:description \"\", :name (:app-name *tc*)})"}
+   {:script "(rt.po.app/enable-app-toolbox )"}
+   {:script
+    "(rt.po.app-toolbox/set-application-filter (:app-name *tc*))"}
+   {:script "(comment -- create 'Text Field Object' and its form --)"}
+   {:script
+    "(rt.po.app-toolbox/create-object {:description \"New Test Object Description\", :name (:obj-name *tc*)})"}
+   {:script "(rt.po.form-builder/add-container-to-form )"}
+   {:script "(comment -- Mandatory on Form --)"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Text\" 0)"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"Text\")"}
+   {:script
+    "(rt.po.form-builder-config/set-name \"Mandatory On Form\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Form Detail\")"}
+   {:script "(rt.po.form-builder-config/set-control-mandatory true)"}
+   {:script "(rt.po.form-builder-config/click-ok )"}
+   {:script "(comment -- Readonly Field --)"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Text\" 0)"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"Text\")"}
+   {:script "(rt.po.form-builder-config/set-name \"Readonly Field\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Form Detail\")"}
+   {:script "(rt.po.form-builder-config/set-control-readonly true)"}
+   {:script "(rt.po.form-builder-config/click-ok )"}
+   {:script "(comment -- Mandatory on Object --)"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Text\" 0)"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"Text\")"}
+   {:script
+    "(rt.po.form-builder-config/set-name \"Mandatory On Object\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Object Detail\")"}
+   {:script "(rt.po.form-builder-config/set-field-mandatory true)"}
+   {:script "(rt.po.form-builder-config/click-ok )"}
+   {:script "(comment -- *Min Character Set field --)"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Text\" 0)"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"Text\")"}
+   {:script
+    "(rt.po.form-builder-config/set-name \"Min Character Set\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Object Detail\")"}
+   {:script
+    "(rt.po.form-builder-config/set-field-minimum-value \"5\")"}
+   {:script "(rt.po.form-builder-config/click-ok )"}
+   {:script "(comment -- *Max Character Set field --)"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Text\" 0)"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"Text\")"}
+   {:script
+    "(rt.po.form-builder-config/set-name \"Max Character Set\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Object Detail\")"}
+   {:script
+    "(rt.po.form-builder-config/set-field-maximum-value \"10\")"}
+   {:script "(rt.po.form-builder-config/click-ok )"}
+   {:script "(comment -- *Default Value Set field --)"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Text\" 0)"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"Text\")"}
+   {:script
+    "(rt.po.form-builder-config/set-name \"Default Value Set\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Object Detail\")"}
+   {:script
+    "(rt.po.form-builder-config/set-field-default-value \"This is a Text Field\")"}
+   {:script "(rt.po.form-builder-config/click-ok )"}
+   {:script "(comment -- *Format Control field --)"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Text\" 0)"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"Text\")"}
+   {:script "(rt.po.form-builder-config/set-name \"Format Control\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Format\")"}
+   {:script
+    "(rt.po.form-builder-config/set-background-color \"Light Red\")"}
+   {:script "(rt.po.form-builder-config/click-ok )"}
+   {:script "(comment -- *Email Pattern Field --)"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Text\" 0)"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"Text\")"}
+   {:script "(rt.po.form-builder-config/set-name \"Pattern Field\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Object Detail\")"}
+   {:script
+    "(rt.po.form-builder-config/set-text-pattern \"Email Address\")"}
+   {:script "(rt.po.form-builder-config/click-ok )"}
+   {:script "(comment -- *Save and Close to go back to toolbox --)"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}
+   {:script
+    "(comment -- *add the existing report for 'Text Field Object' --)"}
+   {:script "(rt.po.app/navigate-to (:app-name *tc*))"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script "(rt.po.app/add-existing-report (:obj-name *tc*))"}
+   {:script
+    "(comment -- \"field validations create new instance\" --)"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script "(comment -- 'Mandatory on Form' field validation --)"}
+   {:script
+    "(comment -- try to save without filling mandatory on form field and check if error msg is displayed --)"}
+   {:script "(rt.po.edit-form/click-save-button )"}
+   {:script "(expect (rt.po.app/page-has-error-alert?))"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/field-mandatory-indicator-visible? \"Mandatory On Form\"))"}
+   {:script
+    "(expect-equals true (rt.po.common/exists-present? (rt.po.edit-form/find-error-marker \"Mandatory On Form\")))"}
+   {:script
+    "(expect-equals \"A value is required.\" (rt.po.edit-form/field-error-message \"Mandatory On Form\"))"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Mandatory On Form\" \"Mandatory on form field value\")"}
+   {:script
+    "(expect-equals false (rt.po.common/exists-present? (rt.po.edit-form/find-error-marker \"Mandatory On Form\")))"}
+   {:script
+    "(comment -- try to save without filling mandatory on object field and check if error msg is displayed --)"}
+   {:script "(rt.po.edit-form/click-save-button )"}
+   {:script "(expect (rt.po.app/page-has-error-alert?))"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/field-mandatory-indicator-visible? \"Mandatory On Object\"))"}
+   {:script
+    "(expect-equals true (rt.po.common/exists-present? (rt.po.edit-form/find-error-marker \"Mandatory On Object\")))"}
+   {:script
+    "(expect-equals \"A value is required.\" (rt.po.edit-form/field-error-message \"Mandatory On Object\"))"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Mandatory On Object\" \"Mandatory on object field value\")"}
+   {:script
+    "(expect-equals false (rt.po.common/exists-present? (rt.po.edit-form/find-error-marker \"Mandatory On Object\")))"}
+   {:script "(comment \"-- 'Readonly field' validation --\")"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/field-read-only? \"Readonly Field\"))"}
+   {:script "(comment \"-- 'Min Character Set' field validation --\")"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Min Character Set\" \"Text\")"}
+   {:script
+    "(expect-equals true (rt.po.common/exists-present? (rt.po.edit-form/find-error-marker \"Min Character Set\")))"}
+   {:script
+    "(expect-equals \"The value is too short; the minimum length is 5 characters.\" (rt.po.edit-form/field-error-message \"Min Character Set\"))"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Min Character Set\" \"Text1\")"}
+   {:script
+    "(expect-equals false (rt.po.common/exists-present? (rt.po.edit-form/find-error-marker \"Min Character Set\")))"}
+   {:script "(comment \"-- 'Max Character Set' field validation --\")"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Max Character Set\" \"Hello World\")"}
+   {:script
+    "(expect-equals true (rt.po.common/exists-present? (rt.po.edit-form/find-error-marker \"Max Character Set\")))"}
+   {:script
+    "(expect-equals \"The value is too long; the maximum length is 10 characters.\" (rt.po.edit-form/field-error-message \"Max Character Set\"))"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Max Character Set\" \"Hello Worl\")"}
+   {:script
+    "(expect-equals false (rt.po.common/exists-present? (rt.po.edit-form/find-error-marker \"Max Character Set\")))"}
+   {:script "(comment \"-- 'Default Value Set' field validation --\")"}
+   {:script
+    "(expect-equals \"This is a Text Field\" (rt.po.edit-form/string-field-value \"Default Value Set\"))"}
+   {:script "(comment \"-- 'Pattern Field' validation --\")"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Pattern Field\" \"Hello World\")"}
+   {:script
+    "(expect-equals true (rt.po.common/exists-present? (rt.po.edit-form/find-error-marker \"Pattern Field\")))"}
+   {:script "(rt.po.edit-form/field-error-message \"Pattern Field\")"}
+   {:script
+    "(expect-equals \"Invalid format. The value must be in the form of an email address.\" (rt.po.edit-form/field-error-message \"Pattern Field\"))"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Pattern Field\" \"someone@readinow.com\")"}
+   {:script
+    "(expect-equals false (rt.po.common/exists-present? (rt.po.edit-form/find-error-marker \"Pattern Field\")))"}
+   {:script "(rt.po.edit-form/click-save-button)"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160916-101828",
+  :setup
+  [{:script
+    "(identity {:app-name (rt.lib.util/make-test-name \"FormsReg\"), :obj-name (rt.lib.util/make-test-name \"TextObj\")})"}],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/form/check-text-field-object-properties,
+  :teardown [],
+  :modified-by "not-implemented"}]

@@ -1,0 +1,321 @@
+[{:tags [:area/report-builder :regression :prod :desktop :user/abida],
+  :tests [],
+  :name "Checking highlight conditional formatting for number field",
+  :steps
+  [{:script "(rt.po.app/add-report (:section *tc*))"}
+   {:script "(rt.po.report-new/set-name (:report-name *tc*))"}
+   {:script "(rt.po.report-new/set-report-base-on \"Rooms\")"}
+   {:script "(rt.po.report-new/click-ok)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Capacity\" true)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Capacity\" \"Format Column\")"}
+   {:script "(rt.po.report-format/set-format-type \"Highlight\")"}
+   {:script
+    "(rt.po.report-format/set-format-scheme \"3 step - Red, Yellow, Green\")"}
+   {:script
+    "(rt.po.report-format/set-highlight-conditions [{:value \"68\", :oper \"=\", :colour \"Black on Red\"} {:value \"28\", :oper \"<>\", :colour \"Black on Yellow\"} {:value \"\", :oper \"\", :colour \"Black on Green\"}])"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script
+    "(expect-equals \"68\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Vivid Red\" (rt.po.report-view/get-report-format-highlight-background-color 0 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 0 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"28\" (rt.po.report-view/get-report-cell-text-content \"1\" \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Vivid Green\" (rt.po.report-view/get-report-format-highlight-background-color 1 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 1 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"20\" (rt.po.report-view/get-report-cell-text-content \"2\" \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Vivid Yellow\" (rt.po.report-view/get-report-format-highlight-background-color 2 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 2 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"28\" (rt.po.report-view/get-report-cell-text-content \"16\" \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Vivid Green\" (rt.po.report-view/get-report-format-highlight-background-color 16 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 16 \"Capacity\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button )"}
+   {:script
+    "(rn.app/open-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"68\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Vivid Red\" (rt.po.report-view/get-report-format-highlight-background-color 0 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 0 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"28\" (rt.po.report-view/get-report-cell-text-content \"1\" \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Vivid Green\" (rt.po.report-view/get-report-format-highlight-background-color 1 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 1 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"20\" (rt.po.report-view/get-report-cell-text-content \"2\" \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Vivid Yellow\" (rt.po.report-view/get-report-format-highlight-background-color 2 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 2 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"28\" (rt.po.report-view/get-report-cell-text-content \"16\" \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Vivid Green\" (rt.po.report-view/get-report-format-highlight-background-color 16 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 16 \"Capacity\"))"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Capacity\" \"Format Column\")"}
+   {:script
+    "(rt.po.report-format/set-format-scheme \"2 step - Red, Green\")"}
+   {:script
+    "(rt.po.report-format/set-highlight-conditions [{:value \"14\", :oper \">\", :colour \"Black on Red\"} {:value \"\", :oper \"\", :colour \"Black on Green\"}])"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script "(rt.po.report-builder/click-sort-a-z \"Capacity\")"}
+   {:script
+    "(expect-equals \"14\" (rt.po.report-view/get-report-cell-text-content \"17\" \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Vivid Green\" (rt.po.report-view/get-report-format-highlight-background-color 17 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 17 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"16\" (rt.po.report-view/get-report-cell-text-content \"18\" \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Vivid Red\" (rt.po.report-view/get-report-format-highlight-background-color 18 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 18 \"Capacity\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(rn.app/open-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"14\" (rt.po.report-view/get-report-cell-text-content \"17\" \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Vivid Green\" (rt.po.report-view/get-report-format-highlight-background-color 17 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 17 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"16\" (rt.po.report-view/get-report-cell-text-content \"18\" \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Vivid Red\" (rt.po.report-view/get-report-format-highlight-background-color 18 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 18 \"Capacity\"))"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Capacity\" \"Format Column\")"}
+   {:script
+    "(rt.po.report-format/set-format-scheme \"2 step - Red, Green\")"}
+   {:script
+    "(rt.po.report-format/set-highlight-conditions [{:value \"14\", :oper \">=\", :colour \"Black on Red\"} {:value \"\", :oper \"\", :colour \"Black on Green\"}])"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script
+    "(expect-equals \"8\" (rt.po.report-view/get-report-cell-text-content \"14\" \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Vivid Green\" (rt.po.report-view/get-report-format-highlight-background-color 14 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 14 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"14\" (rt.po.report-view/get-report-cell-text-content \"15\" \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Vivid Red\" (rt.po.report-view/get-report-format-highlight-background-color 15 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 15 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"16\" (rt.po.report-view/get-report-cell-text-content \"18\" \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Vivid Red\" (rt.po.report-view/get-report-format-highlight-background-color 18 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 18 \"Capacity\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(rn.app/open-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"8\" (rt.po.report-view/get-report-cell-text-content \"14\" \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Vivid Green\" (rt.po.report-view/get-report-format-highlight-background-color 14 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 14 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"14\" (rt.po.report-view/get-report-cell-text-content \"15\" \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Vivid Red\" (rt.po.report-view/get-report-format-highlight-background-color 15 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 15 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"16\" (rt.po.report-view/get-report-cell-text-content \"18\" \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Vivid Red\" (rt.po.report-view/get-report-format-highlight-background-color 18 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 18 \"Capacity\"))"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Capacity\" \"Format Column\")"}
+   {:script
+    "(rt.po.report-format/set-format-scheme \"2 step - Red, Green\")"}
+   {:script
+    "(rt.po.report-format/set-highlight-conditions [{:value \"14\", :oper \"<\", :colour \"Black on Red\"} {:value \"\", :oper \"\", :colour \"Black on Green\"}])"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script
+    "(expect-equals \"8\" (rt.po.report-view/get-report-cell-text-content \"14\" \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Vivid Red\" (rt.po.report-view/get-report-format-highlight-background-color 14 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 14 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"14\" (rt.po.report-view/get-report-cell-text-content \"15\" \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Vivid Green\" (rt.po.report-view/get-report-format-highlight-background-color 15 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 15 \"Capacity\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(rn.app/open-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"8\" (rt.po.report-view/get-report-cell-text-content \"14\" \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Vivid Red\" (rt.po.report-view/get-report-format-highlight-background-color 14 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 14 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"14\" (rt.po.report-view/get-report-cell-text-content \"15\" \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Vivid Green\" (rt.po.report-view/get-report-format-highlight-background-color 15 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 15 \"Capacity\"))"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Capacity\" \"Format Column\")"}
+   {:script
+    "(rt.po.report-format/set-format-scheme \"2 step - Red, Green\")"}
+   {:script
+    "(rt.po.report-format/set-highlight-conditions [{:value \"14\", :oper \"<=\", :colour \"Black on Red\"} {:value \"\", :oper \"\", :colour \"Black on Green\"}])"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script
+    "(expect-equals \"8\" (rt.po.report-view/get-report-cell-text-content \"14\" \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Vivid Red\" (rt.po.report-view/get-report-format-highlight-background-color 14 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 14 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"14\" (rt.po.report-view/get-report-cell-text-content \"17\" \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Vivid Red\" (rt.po.report-view/get-report-format-highlight-background-color 17 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 17 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"16\" (rt.po.report-view/get-report-cell-text-content \"18\" \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Vivid Green\" (rt.po.report-view/get-report-format-highlight-background-color 18 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 18 \"Capacity\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(rn.app/open-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"8\" (rt.po.report-view/get-report-cell-text-content \"14\" \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Vivid Red\" (rt.po.report-view/get-report-format-highlight-background-color 14 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 14 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"14\" (rt.po.report-view/get-report-cell-text-content \"17\" \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Vivid Red\" (rt.po.report-view/get-report-format-highlight-background-color 17 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 17 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"16\" (rt.po.report-view/get-report-cell-text-content \"18\" \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Vivid Green\" (rt.po.report-view/get-report-format-highlight-background-color 18 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 18 \"Capacity\"))"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Room Name\" \"Einstein\")"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script "(rt.po.view-form/form-nav-back)"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Capacity\" \"Format Column\")"}
+   {:script
+    "(rt.po.report-format/set-format-scheme \"2 step - Red, Green\")"}
+   {:script
+    "(rt.po.report-format/set-highlight-conditions [{:value \"\", :oper \"Is defined\", :colour \"Black on Red\"} {:value \"\", :oper \"\", :colour \"Black on Green\"}])"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script "(rt.po.report-builder/click-sort-a-z \"Capacity\")"}
+   {:script
+    "(expect-equals \"\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Vivid Green\" (rt.po.report-view/get-report-format-highlight-background-color 0 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"4\" (rt.po.report-view/get-report-cell-text-content \"1\" \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Vivid Red\" (rt.po.report-view/get-report-format-highlight-background-color 1 \"Capacity\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(rn.app/open-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Vivid Green\" (rt.po.report-view/get-report-format-highlight-background-color 0 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"4\" (rt.po.report-view/get-report-cell-text-content \"1\" \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Vivid Red\" (rt.po.report-view/get-report-format-highlight-background-color 1 \"Capacity\"))"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Capacity\" \"Format Column\")"}
+   {:script
+    "(rt.po.report-format/set-format-scheme \"2 step - Red, Green\")"}
+   {:script
+    "(rt.po.report-format/set-highlight-conditions [{:value \"\", :oper \"Is not defined\", :colour \"Black on Red\"} {:value \"\", :oper \"\", :colour \"Black on Green\"}])"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script
+    "(expect-equals \"\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Vivid Red\" (rt.po.report-view/get-report-format-highlight-background-color 0 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"4\" (rt.po.report-view/get-report-cell-text-content \"1\" \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Vivid Green\" (rt.po.report-view/get-report-format-highlight-background-color 1 \"Capacity\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(rn.app/open-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Vivid Red\" (rt.po.report-view/get-report-format-highlight-background-color 0 \"Capacity\"))"}
+   {:script
+    "(expect-equals \"4\" (rt.po.report-view/get-report-cell-text-content \"1\" \"Capacity\"))"}
+   {:script
+    "(expect-equals \"Vivid Green\" (rt.po.report-view/get-report-format-highlight-background-color 1 \"Capacity\"))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160920-153723",
+  :setup
+  [{:script
+    "(identity {:report-name (rt.lib.util/make-test-name \"HighlightFormattingNumber\")})"}],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :common/fixture/login
+   :rn/section/createsection],
+  :id :rn/reportbuilder/highlight-formatting-number,
+  :teardown
+  [{:script
+    "(comment (do (rt.po.app/delete-nav-item (:section *tc*))))"}
+   {:script "(rt.po.report-view/set-search-text \"Einstein\")"}
+   {:script
+    "(if (> (rt.po.view-form/get-report-row-count) 0) (do (rt.po.report-view/select-row-by-text \"Einstein\") (rt.po.report-view/delete-record \"Einstein\")))"}
+   {:script "(rt.po.app/delete-nav-item (:section *tc*))"}],
+  :modified-by "not-implemented"}]

@@ -1,0 +1,251 @@
+[{:tags [:area/icon :regression :prod :desktop :user/abida],
+  :name
+  "Check icon on existing application , object, reports, charts, boards and forms",
+  :steps
+  [{:script "(rn.app/open-report \"Icons\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Green Circle Format Icon\")"}
+   {:script
+    "(rt.po.common/select-row-by-text \"Green Circle Format Icon\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Green Circle Format Icon\")"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script
+    "(rt.po.edit-form/set-colour-dropdown-colour \"Image background color\" \"Aqua\")"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Red Circle Format Icon\")"}
+   {:script
+    "(rt.po.common/select-row-by-text \"Red Circle Format Icon\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Red Circle Format Icon\")"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script
+    "(rt.po.edit-form/set-colour-dropdown-colour \"Image background color\" \"Yellow\")"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Yellow Circle Format Icon\")"}
+   {:script
+    "(rt.po.common/select-row-by-text \"Yellow Circle Format Icon\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Yellow Circle Format Icon\")"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script
+    "(rt.po.edit-form/set-colour-dropdown-colour \"Image background color\" \"Red\")"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Black Circle Format Icon\")"}
+   {:script
+    "(rt.po.common/select-row-by-text \"Black Circle Format Icon\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Black Circle Format Icon\")"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script
+    "(rt.po.edit-form/set-colour-dropdown-colour \"Image background color\" \"Orange Red\")"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Green Triangle Format Icon\")"}
+   {:script
+    "(rt.po.common/select-row-by-text \"Green Triangle Format Icon\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Green Triangle Format Icon\")"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script
+    "(rt.po.edit-form/set-colour-dropdown-colour \"Image background color\" \"Medium Violet Red\")"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(rn.app/open-form-builder \"Students Form\" {:app-name \"Foster University\"})"}
+   {:script "(rt.po.form-builder/open-form-properties-dialog)"}
+   {:script
+    "(rt.po.form-properties/set-form-icon \"Green Circle Format Icon\")"}
+   {:script "(rt.po.common/click-tab-heading \"Object Properties\")"}
+   {:script
+    "(rt.po.form-properties/set-object-icon \"Red Circle Format Icon\")"}
+   {:script "(rt.po.form-properties/click-ok)"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.app/logout)"}
+   {:script "(rn.common/start-app-and-login)"}
+   {:script "(rt.po.app/navigate-to \"Foster University\")"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Reports/Student report\")"}
+   {:script
+    "(rt.po.report-view/wait-until-report-visible \"Student report\")"}
+   {:script
+    "(expect-equals {:r 255, :g 255, :b 0, :a 255} (rt.po.app/get-node-icon-background-colour \"Student report\"))"}
+   {:script
+    "(expect-equals {:r 255, :g 255, :b 0, :a 255} (rt.po.report-view/get-report-header-icon-background-colour))"}
+   {:script "(rt.po.common/select-row-by-text \"Selma Terrell\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Selma Terrell\")"}
+   {:script
+    "(expect-equals {:r 0, :g 255, :b 255, :a 255} (rt.po.edit-form/get-form-header-icon-background-colour))"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script "(rt.po.app/load-property-of-nav-item \"Student report\")"}
+   {:script "(rt.po.report-new/options-expand)"}
+   {:script "(rt.po.report-new/click-format-tab)"}
+   {:script
+    "(rt.po.common/set-lookup \"Icon\" \"Green Triangle Format Icon\")"}
+   {:script "(rt.po.report-new/click-ok)"}
+   {:script "(rt.po.app/logout)"}
+   {:script "(rn.common/start-app-and-login)"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Reports/Student report\")"}
+   {:script
+    "(rt.po.report-view/wait-until-report-visible \"Student report\")"}
+   {:script
+    "(expect-equals {:r 199, :g 21, :b 133, :a 255} (rt.po.app/get-node-icon-background-colour \"Student report\"))"}
+   {:script
+    "(expect-equals {:r 199, :g 21, :b 133, :a 255} (rt.po.report-view/get-report-header-icon-background-colour))"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script "(rt.po.app/load-property-of-nav-item \"Student report\")"}
+   {:script "(rt.po.report-new/options-expand)"}
+   {:script "(rt.po.report-new/click-format-tab)"}
+   {:script "(rt.po.common/clear-lookup \"Icon\")"}
+   {:script "(rt.po.report-new/click-ok)"}
+   {:script
+    "(rt.po.report-view/wait-until-report-visible \"Student report\")"}
+   {:script
+    "(expect-equals {:r 255, :g 255, :b 0, :a 255} (rt.po.app/get-node-icon-background-colour \"Student report\"))"}
+   {:script
+    "(expect-equals {:r 255, :g 255, :b 0, :a 255} (rt.po.report-view/get-report-header-icon-background-colour))"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Charts/1. Students by faculty (p)\")"}
+   {:script
+    "(rt.po.chart-view/wait-for-chart \"Students by faculty\")"}
+   {:script
+    "(expect-equals {:r 255, :g 255, :b 0, :a 255} (rt.po.app/get-node-icon-background-colour \"1. Students by faculty (p)\"))"}
+   {:script
+    "(rt.po.app/load-property-of-nav-item \"1. Students by faculty (p)\")"}
+   {:script "(rt.po.chart-new/set-icon \"Black Circle Format Icon\")"}
+   {:script "(rt.po.chart-new/click-ok)"}
+   {:script "(rt.po.app/logout)"}
+   {:script "(rn.common/start-app-and-login)"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Charts/1. Students by faculty (p)\")"}
+   {:script
+    "(rt.po.chart-view/wait-for-chart \"Students by faculty\")"}
+   {:script
+    "(expect-equals {:r 255, :g 69, :b 0, :a 255} (rt.po.app/get-node-icon-background-colour \"1. Students by faculty (p)\"))"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script
+    "(rt.po.app/load-property-of-nav-item \"1. Students by faculty (p)\")"}
+   {:script "(rt.po.report-new/options-expand)"}
+   {:script "(rt.po.report-new/click-format-tab)"}
+   {:script "(rt.po.common/clear-lookup \"Icon\")"}
+   {:script "(rt.po.chart-new/click-ok)"}
+   {:script
+    "(rt.po.chart-view/wait-for-chart \"Students by faculty\")"}
+   {:script
+    "(expect-equals {:r 255, :g 255, :b 0, :a 255} (rt.po.app/get-node-icon-background-colour \"1. Students by faculty (p)\"))"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Boards/Student Board\")"}
+   {:script
+    "(expect-equals {:r 255, :g 255, :b 0, :a 255} (rt.po.app/get-node-icon-background-colour \"Student Board\"))"}
+   {:script
+    "(expect-equals {:r 255, :g 255, :b 0, :a 255} (rt.po.board/get-board-header-icon-background-colour))"}
+   {:script "(rt.po.app/load-property-of-nav-item \"Student Board\")"}
+   {:script "(rt.po.report-new/options-expand)"}
+   {:script "(rt.po.report-new/click-format-tab)"}
+   {:script
+    "(rt.po.common/set-lookup \"Icon\" \"Yellow Circle Format Icon\")"}
+   {:script "(rt.po.report-new/click-ok)"}
+   {:script "(rt.po.app/logout)"}
+   {:script "(rn.common/start-app-and-login)"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Boards/Student Board\")"}
+   {:script
+    "(expect-equals {:r 255, :g 0, :b 0, :a 255} (rt.po.app/get-node-icon-background-colour \"Student Board\"))"}
+   {:script
+    "(expect-equals {:r 255, :g 0, :b 0, :a 255} (rt.po.board/get-board-header-icon-background-colour))"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script "(rt.po.app/load-property-of-nav-item \"Student Board\")"}
+   {:script "(rt.po.report-new/options-expand)"}
+   {:script "(rt.po.report-new/click-format-tab)"}
+   {:script "(rt.po.common/clear-lookup \"Icon\")"}
+   {:script "(rt.po.report-new/click-ok)"}
+   {:script
+    "(expect-equals {:r 255, :g 255, :b 0, :a 255} (rt.po.app/get-node-icon-background-colour \"Student Board\"))"}
+   {:script
+    "(expect-equals {:r 255, :g 255, :b 0, :a 255} (rt.po.board/get-board-header-icon-background-colour))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160902-170530",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/icons/verify-icon-on-existing-elements,
+  :teardown
+  [{:script
+    "(rn.app/open-form-builder \"Students Form\" {:app-name \"Foster University\"})"}
+   {:script "(rt.po.form-builder/open-form-properties-dialog)"}
+   {:script "(rt.po.common/clear-lookup \"Icon\")"}
+   {:script "(rt.po.common/click-tab-heading \"Object Properties\")"}
+   {:script "(rt.po.common/clear-lookup \"Icon\")"}
+   {:script "(rt.po.form-properties/click-ok)"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.app/navigate-to \"Documents\")"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Documents\" \"Document Library/Icons\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Green Circle Format Icon\")"}
+   {:script
+    "(rt.po.common/select-row-by-text \"Green Circle Format Icon\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Green Circle Format Icon\")"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script
+    "(rt.po.edit-form/set-colour-dropdown-colour \"Image background color\" \"None\")"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Red Circle Format Icon\")"}
+   {:script
+    "(rt.po.common/select-row-by-text \"Red Circle Format Icon\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Red Circle Format Icon\")"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script
+    "(rt.po.edit-form/set-colour-dropdown-colour \"Image background color\" \"None\")"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Yellow Circle Format Icon\")"}
+   {:script
+    "(rt.po.common/select-row-by-text \"Yellow Circle Format Icon\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Yellow Circle Format Icon\")"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script
+    "(rt.po.edit-form/set-colour-dropdown-colour \"Image background color\" \"None\")"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Black Circle Format Icon\")"}
+   {:script
+    "(rt.po.common/select-row-by-text \"Black Circle Format Icon\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Black Circle Format Icon\")"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script
+    "(rt.po.edit-form/set-colour-dropdown-colour \"Image background color\" \"None\")"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Green Triangle Format Icon\")"}
+   {:script
+    "(rt.po.common/select-row-by-text \"Green Triangle Format Icon\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Green Triangle Format Icon\")"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script
+    "(rt.po.edit-form/set-colour-dropdown-colour \"Image background color\" \"None\")"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Reports/Student report\")"}],
+  :modified-by "not-implemented"}]

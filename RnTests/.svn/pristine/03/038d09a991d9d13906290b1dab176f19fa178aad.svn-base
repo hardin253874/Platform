@@ -1,0 +1,13 @@
+[{:tags [:desktop],
+  :test-filter "(has-tags? [\"app-tests/itrisk\"] %)",
+  :tests [],
+  :name "RT for IT Risk and Security App",
+  :each-fixtures [],
+  :type :testsuite,
+  :source "./test-db",
+  :modified "20161017-172514",
+  :setup [],
+  :id :app-tests/suites/grcprofV2-itrisk,
+  :teardown [],
+  :modified-by "not-implemented",
+  :once-fixtures []}]

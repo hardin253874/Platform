@@ -1,0 +1,20 @@
+[{:tags [:desktop],
+  :test-filter
+  "(and (has-tags? [\"area/security\"] %) (and (has-tags? [\"prod\"] %)) )",
+  :tests [],
+  :name "Security tests",
+  :each-fixtures [:common/fixture/login],
+  :type :testsuite,
+  :source "./test-db",
+  :modified "20150930-161950",
+  :setup [],
+  :id :rn/suites/security,
+  :teardown [],
+  :doc "",
+  :modified-by "not-implemented",
+  :once-fixtures
+  [:common/fixture/chrome
+   :common/fixture/test-account-creds
+   :common/fixture/handle-errors
+   :common/fixture/wait-ng
+   :common/fixture/stop-all]}]

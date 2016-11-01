@@ -1,0 +1,58 @@
+[{:tags [:desktop],
+  :tests [],
+  :name "New Report Drivers on Chrome",
+  :steps
+  [{:script "(rt.po.report-builder/click-add-relationship-button)",
+        :target-msec 500}
+   {:script
+    "(rt.po.report-add-relationship/add-relationship \"AA_Herb\")",
+        :target-msec 500}
+   {:script
+    "(rt.po.report-add-relationship/add-relationship \"AA_Truck\")",
+        :target-msec 500}
+   {:script "(rt.po.report-add-relationship/click-ok)",
+        :target-msec 500}
+   {:script "(rt.po.report-builder/select-treenode \"AA_Herb\")",
+        :target-msec 500}
+   {:script "(rt.po.report-builder/remove-relationship \"AA_Herb\")",
+        :target-msec 500}
+   {:script "(rt.po.report-builder/select-treenode \"AA_Truck\")",
+        :target-msec 500}
+   {:script "(rt.po.report-builder/click-advanced-button)",
+        :target-msec 500}
+   {:script
+    "(rt.po.report-advanced/set-join-type \"Record must exist\")",
+        :target-msec 500}
+   {:script "(rt.po.report-advanced/set-follow-recursion true)",
+        :target-msec 500}
+   {:script "(rt.po.report-advanced/set-recursion \"Include Self\")",
+        :target-msec 500}
+   {:script "(rt.po.report-advanced/click-ok)",
+        :target-msec 500}
+   {:script "(rt.po.report-builder/click-advanced-button)",
+        :target-msec 500}
+   {:script "(rt.po.report-advanced/set-join-type \"Automatic\")",
+        :target-msec 500}
+   {:script "(rt.po.report-advanced/set-follow-recursion false)",
+        :target-msec 500}
+   {:script "(rt.po.report-advanced/click-ok)",
+        :target-msec 500}
+   {:script "(rt.po.report-builder/select-treenode \"AA_All Fields\")",
+        :target-msec 500}
+   {:script "(rt.po.report-builder/click-advanced-button)",
+        :target-msec 500}
+   {:script "(rt.po.report-advanced/set-exact-type true)",
+        :target-msec 500}
+   {:script "(rt.po.report-advanced/click-ok)",
+        :target-msec 500}],
+  :type :test,
+  :checks [],
+  :source "../RnTests/test-db",
+  :modified "20150601-153807",
+  :setup
+  [:qa-daily/scripts/reports/open-AutomationReport-in-build-mode],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :qa-daily/reports/test-report-advanced-drivers,
+  :teardown [],
+  :modified-by "not-implemented",
+  :data {}}]

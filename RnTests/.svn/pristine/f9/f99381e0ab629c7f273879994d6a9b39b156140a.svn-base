@@ -1,0 +1,154 @@
+[{:tags [:user/hemant :app-tests/bcm :desktop],
+  :name "Create a rehearsal management event and complete it",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:bcm-owner-creds *tc*))"}
+   {:script
+    "(rt.po.app/navigate-to \"Business Continuity Management\")"}
+   {:script "(rt.po.app/select-app-tab \"Rehearsal Management\")"}
+   {:script
+    "(rt.po.app/select-navigator-item \"Rehearsal Management\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Rehearsal\" (:rehearsal-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Rehearsal Type\" \"Full Rehearsal\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Rehearsal Priority\" \"Medium\")"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Owner\" \"Business Continuity Owner\")"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Start_Date_Time\" (make-local-date 2016 10 10))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Rehearsal Status\" \"Not Started\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"REHEARSAL NOTIFICATIONS\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Subject\" (:notif-name *tc*))"}
+   {:script "(rt.po.edit-form/set-bool-field-value \"Email\" true)"}
+   {:script "(rt.po.edit-form/set-bool-field-value \"SMS\" true)"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"RECIPIENTS\")"}
+   {:script "(rt.po.app/choose-context-menu \"Link\")"}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog \"Adam\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.view-form/set-search-text-for-relationship \"Rehearsal Notifications\" (:notif-name *tc*))"}
+   {:script
+    "(expect-equals \"\" (first (rt.po.report-view/get-column-values-in-relationship \"Rehearsal Notifications\" \"Time Sent\")))"}
+   {:script
+    "(rt.po.report-view/click-send-notification-button-in-relationship \"Rehearsal Notifications\")"}
+   {:script "(rn.common/wait-until-settled)"}
+   {:script
+    "(rt.po.report-view/click-refresh-now-in-relationship \"Rehearsal Notifications\")"}
+   {:script
+    "(comment (rt.po.report-view/double-click-row-by-text-in-relationship \"Rehearsal Notifications\" (:notif-name *tc*)))"}
+   {:script
+    "(expect (not (= \"\" (first (rt.po.report-view/get-column-values-in-relationship \"Rehearsal Notifications\" \"Time Sent\")))))"}
+   {:script
+    "(rt.po.view-form/click-task-action-v2 \"Activate Plans\")"}
+   {:script "(rn.common/wait-until-settled)"}
+   {:script
+    "(rt.po.edit-form/set-workflow-lookup \"Select Plans\" \"BC Recovery Plan 1\")"}
+   {:script "(rt.po.edit-form/click-workflow-done)"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"REHEARSAL FOLLOW UP ACTIONS\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Subject\" (:task-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Due date\" (make-local-date 2016 11 11))"}
+   {:script "(rt.po.edit-form/set-lookup \"Assigned to\" \"Adam\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Task status\" \"Not started\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(def ActivatedPlanName (first (rt.po.report-view/get-column-values-in-relationship \"Plans Being Tested\" \"Recovery Plan\")))"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text-in-relationship \"Plans Being Tested\" ActivatedPlanName)"}
+   {:script
+    "(def ImmRecActName (rt.po.report-builder/get-grouped-row-content \"Immediate\" 0 \"Recovery Action\"))"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text-in-relationship \"Recovery Actions\" ImmRecActName)"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script "(rt.po.edit-form/set-number-value-v2 \"% Complete\" 100)"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Status\" \"Completed\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(def OngoingRecActName (rt.po.report-builder/get-grouped-row-content \"Ongoing\" 0 \"Recovery Action\"))"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text-in-relationship \"Recovery Actions\" OngoingRecActName)"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script "(rt.po.edit-form/set-number-value-v2 \"% Complete\" 100)"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Status\" \"Completed\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(expect-equals \"100%\" (first (clojure.string/split (rt.po.report-builder/get-grouped-row-content \"Immediate\" 0 \"% Complete\") #\"\\n\")))"}
+   {:script
+    "(expect-equals \"Completed\" (rt.po.report-builder/get-grouped-row-content \"Immediate\" 0 \"Status\"))"}
+   {:script
+    "(expect-equals \"100%\" (first (clojure.string/split (rt.po.report-builder/get-grouped-row-content \"Ongoing\" 0 \"% Complete\") #\"\\n\")))"}
+   {:script
+    "(expect-equals \"Completed\" (rt.po.report-builder/get-grouped-row-content \"Ongoing\" 0 \"Status\"))"}
+   {:script
+    "(rt.po.view-form/set-search-text-for-relationship \"Call Tree\" \"Not Called\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text-in-relationship \"Call Tree\" \"Not Called\")"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Status\" \"Contacted\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script "(rt.po.edit-form/set-number-value-v2 \"% Complete\" 100)"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Execution Status\" \"Completed\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(expect-equals \"100%\" (first (clojure.string/split (first (rt.po.report-view/get-column-values-in-relationship \"Plans Being Tested\" \"% Complete\")) #\"\\n\")))"}
+   {:script
+    "(expect-equals \"Completed\" (first (rt.po.report-view/get-column-values-in-relationship \"Plans Being Tested\" \"Execution Status\")))"}
+   {:script
+    "(rt.po.view-form/set-search-text-for-relationship \"Follow Up Actions\" (:task-name *tc*))"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text-in-relationship \"Follow Up Actions\" (:task-name *tc*))"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Task status\" \"Completed\")"}
+   {:script "(rt.po.edit-form/set-number-value-v2 \"% complete\" 100)"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script "(rt.po.edit-form/set-number-value-v2 \"% Complete\" 100)"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Rehearsal Status\" \"Complete\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Rehearsal Outcome\" \"Pass\")"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"End_Date_Time\" (make-local-date 2016 11 11))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.app/open-nav-tree-node \"Reports\")"}
+   {:script "(rt.po.app/select-navigator-item \"Rehearsal History\")"}
+   {:script "(rt.po.report-view/refresh-now)"}
+   {:script
+    "(rt.po.report-view/set-search-text (:rehearsal-name *tc*))"}
+   {:script
+    "(expect-equals \"Pass\" (rt.po.report-view/get-report-cell-text-content 0 \"Rehearsal Outcome\"))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20161020-173530",
+  :setup
+  [{:script
+    "(identity {:notif-name (rt.lib.util/make-test-name \"RehearsalNotif\"), :task-name (rt.lib.util/make-test-name \"Task\"), :rehearsal-name (rt.lib.util/make-test-name \"Rehearsal\")})"}],
+  :fixtures [:rn/fixture/bcm-owner-creds],
+  :id :bcm/tests/rehearsal-management,
+  :teardown [],
+  :modified-by "not-implemented"}]

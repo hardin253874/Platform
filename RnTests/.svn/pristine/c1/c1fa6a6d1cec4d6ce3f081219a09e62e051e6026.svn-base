@@ -1,0 +1,58 @@
+[{:tags
+  [:nomodify
+   :prod
+   :regression
+   :user/karen
+   :desktop
+   :area/chart-builder],
+  :tests [],
+  :name "Basic test of chart builder sources",
+  :steps
+  [{:script "(rt.po.app/add-chart (:section *tc*))"}
+   {:script "(rt.po.common/set-string \"Name\" \"Chart Sources\")"}
+   {:script "(rt.po.common/set-lookup \"Report\" \"Student report\")"}
+   {:script "(rt.po.chart-new/set-chart-type \"Line\")"}
+   {:script "(rt.po.common/click-ok)"}
+   {:script
+    "(expect-equals \"Student report\" (rt.po.chart-builder/get-chart-report-name))"}
+   {:script "(rt.po.chart-builder/click-chart-report-name )"}
+   {:script
+    " (expect-equals \"Student report\" (rt.po.report-view/get-open-report-name ))"}
+   {:script "(rt.scripts.common/sleep 1500)"}
+   {:script "(taxi/back)"}
+   {:script "(rt.scripts.common/sleep 1500)"}
+   {:script "(rt.po.chart-builder/click-chart-report-refresh)"}
+   {:script
+    "(expect-equals [\"StudentID\" \"Student\" \"Address line1\" \"State\" \"Email address\" \"Country\" \"Balance\" \"Gender\" \"Count\" \"Row Number\"] (vec (rt.po.chart-builder/get-sources)))"}
+   {:script
+    "(comment \"not needed\" (expect (clojure.set/subset? #{“Count”} (set (rt.po.chart-builder/get-sources)))))"}
+   {:script
+    "(comment \"not needed\" (expect-equals \"Row Number\" (last (rt.po.chart-builder/get-sources))))"}
+   {:script
+    "(expect-equals \"IntField.png\" (rt.po.chart-builder/get-source-icon \"StudentID\"))"}
+   {:script
+    "(expect-equals \"StringField.png\" (rt.po.chart-builder/get-source-icon \"Student\"))"}
+   {:script
+    "(expect-equals \"StringField.png\" (rt.po.chart-builder/get-source-icon \"Address line1\"))"}
+   {:script
+    "(expect-equals \"ChoiceField.png\" (rt.po.chart-builder/get-source-icon \"State\"))"}
+   {:script
+    "(expect-equals \"StringField.png\" (rt.po.chart-builder/get-source-icon \"Email address\"))"}
+   {:script
+    "(expect-equals \"ChoiceField.png\" (rt.po.chart-builder/get-source-icon \"Country\"))"}
+   {:script
+    "(expect-equals \"CurrencyField.png\" (rt.po.chart-builder/get-source-icon \"Balance\"))"}
+   {:script
+    "(expect-equals \"ChoiceField.png\" (rt.po.chart-builder/get-source-icon \"Gender\"))"}
+   {:script
+    "(expect-equals \"IntField.png\" (rt.po.chart-builder/get-source-icon \"Count\"))"}
+   {:script
+    "(expect-equals \"IntField.png\" (rt.po.chart-builder/get-source-icon \"Row Number\"))"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150601-153808",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login :rn/section/createsection-charts],
+  :id :rn/chartbuilder/chart-sources-general,
+  :teardown [],
+  :modified-by "not-implemented"}]

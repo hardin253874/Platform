@@ -1,0 +1,77 @@
+[{:tags
+  [:area/report-builder
+   :nomodify
+   :prod
+   :regression
+   :desktop
+   :user/abida],
+  :tests [],
+  :name "Summarise functions for string",
+  :steps
+  [{:script "(rt.po.app/add-report (:section *tc*) )"}
+   {:script "(rt.po.report-new/set-name (:report-name *tc*))"}
+   {:script "(rt.po.report-new/set-report-base-on \"Student\")"}
+   {:script "(rt.po.report-new/click-ok )"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"First name\" true)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Name\" false)"}
+   {:script "(rt.po.report-builder/click-summarise-button)"}
+   {:script
+    "(rt.po.report-summarise/set-summarise-option \"First name\" \"Count\" true)"}
+   {:script "(rt.po.report-summarise/click-ok)"}
+   {:script
+    "(expect-equals \"100\" (rt.po.report-view/get-report-cell-text-content 0 \"Count: First name\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(rn.app/open-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"100\" (rt.po.report-view/get-report-cell-text-content 0 \"Count: First name\"))"}
+   {:script "(rt.po.report-builder/access-build-mode )"}
+   {:script "(rt.po.report-builder/click-summarise-button)"}
+   {:script "(rt.po.report-summarise/click-remove-summarise)"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-summarise-button)"}
+   {:script
+    "(rt.po.report-summarise/set-summarise-option \"First name\" \"Count unique\" true)"}
+   {:script "(rt.po.report-summarise/click-ok)"}
+   {:script
+    "(expect-equals \"98\" (rt.po.report-view/get-report-cell-text-content 0 \"Count unique: First name\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(rn.app/open-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"98\" (rt.po.report-view/get-report-cell-text-content 0 \"Count unique: First name\"))"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script "(rt.po.report-builder/click-summarise-button)"}
+   {:script "(rt.po.report-summarise/click-remove-summarise)"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-summarise-button)"}
+   {:script
+    "(rt.po.report-summarise/set-summarise-option \"First name\" \"Count all\" true)"}
+   {:script "(rt.po.report-summarise/click-ok)"}
+   {:script
+    "(expect-equals \"100\" (rt.po.report-view/get-report-cell-text-content 0 \"Count all: First name\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(rn.app/open-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"100\" (rt.po.report-view/get-report-cell-text-content 0 \"Count all: First name\"))"}
+   {:script
+    "(comment \"List function does not make sense in string field. It make sense only with multi select choice field and with the name field of the related resource\")"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160920-110727",
+  :setup
+  [{:script
+    "(identity {:report-name (rt.lib.util/make-test-name \"SummariseString\")})"}],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :common/fixture/login
+   :rn/section/createsection],
+  :id :rn/reportbuilder/summarise-functions-string,
+  :teardown [{:script "(rt.po.app/delete-nav-item (:section *tc*))"}],
+  :modified-by "not-implemented"}]

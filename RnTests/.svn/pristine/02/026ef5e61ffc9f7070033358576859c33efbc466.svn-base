@@ -1,0 +1,44 @@
+[{:tags [:prod :regression :desktop],
+  :tests [],
+  :name "String Field Drivers on Chrome",
+  :steps
+  [{:script
+    "(expect-equals true (rt.po.edit-form/field-visible? \"Single Line\" ))"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/field-visible? \"Name\" ))"}
+   {:script
+    "(expect-equals \"Name; The 'name' field of every resource.\" (rt.po.edit-form/field-tooltip \"Name\" ))"}
+   {:script
+    "(expect-equals false (rt.po.edit-form/field-multiline? \"Name\" ))"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/field-multiline? \"Description\" ))"}
+   {:script
+    "(expect-equals \"Description of Test 1\" (rt.po.edit-form/get-multiline \"Description\" ))"}
+   {:script
+    "(rt.po.edit-form/set-multiline \"Description\" \"hello world\" )"}
+   {:script
+    "(expect-equals \"hello world\" (rt.po.edit-form/get-multiline \"Description\" ))"}
+   {:script
+    "(rt.po.edit-form/set-multiline \"Description\" \"Description of Test 1\" )"}
+   {:script
+    "(expect-equals \"Description of Test 1\" (rt.po.edit-form/get-multiline \"Description\" ))"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/multiline-expander-visible? \"Multiline\" ))"}
+   {:script "(rt.po.edit-form/click-multiline-expander \"Multiline\")"}
+   {:script
+    "(expect-equals \"multi \ntext \nfor \nTest 01\" (rt.po.edit-form/get-modal-multiline ))",
+        :target-msec 2000}
+   {:script "(rt.po.app/choose-modal-ok)"}],
+  :type :test,
+  :checks [],
+  :source "../RnTests/test-db",
+  :modified "20150601-153805",
+  :setup
+  [:qa-daily/scripts/edit-form/open-all-fields-report
+   :qa-daily/scripts/edit-form/open-form-in-view-mode
+   {:script "(rt.po.edit-form/click-edit-button)"}],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :qa-daily/edit-form/test-string-field-drivers,
+  :teardown [],
+  :modified-by "not-implemented",
+  :data {}}]

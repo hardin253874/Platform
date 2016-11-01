@@ -1,0 +1,80 @@
+[{:tags [:user/kun :app-tests/incident :desktop],
+  :tests [],
+  :name "Ensure Incident Managing shared",
+  :steps
+  [{:script
+    "(rn.common/start-app-and-login (:incident-user-creds-manager *tc*))"}
+   {:script "(think 1)"}
+   {:script "(rt.po.app/navigate-to \"Shared\")"}
+   {:script "(think 1)"}
+   {:script "(rt.po.app/select-navigator-item \"Sites\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:site-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-structure-lookup-value \"Parent Site\" \"Site East\")"}
+   {:script "(rt.po.edit-form/set-bool-field-value \"BAU Site\" true)"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Address Line 1\" \"12 Rue Road\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"City\" \"Surry Hills\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"State\" \"Kent\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Postcode\" \"NHEJ34\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Country\" \"UK\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.report-view/set-search-text (:site-name *tc*))"}
+   {:script
+    "(expect-equals true (rt.po.common/report-row-contains-text? (:site-name *tc*)))"}
+   {:script "(rt.po.app/select-navigator-item \"People\")"}
+   {:script "(think 1)"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(rt.po.report-view/click-sub-menu-item \"New\" \"Person\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Type\" \"Employee\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Salutation\" \"Dr.\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"First name\" (:fn-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Last name\" (:ln-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value-v2 \"Email Contact Detail\" \"Business\" (str (:fn-name *tc*) \"@example.com\"))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.report-view/set-search-text \"FirstName\")"}
+   {:script
+    "(expect-equals true (rt.po.common/report-row-contains-text? (:fn-name *tc*)))"}  
+   {:script "(rt.po.app/select-navigator-item \"Issues\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(rt.po.report-view/click-sub-menu-item \"New\" \"Issue\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:issue-name *tc*))"}
+   {:script "(rt.po.edit-form/set-today-date \"Exp Resolution Date\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(rt.po.app/select-navigator-item \"Organisation Structure\")"}
+   {:script "(rt.po.app/select-navigator-item \"Issues\")"}
+   {:script "(rt.po.report-view/set-search-text (:issue-name *tc*))"}
+   {:script
+    "(expect-equals true (rt.po.common/report-row-contains-text? (:issue-name *tc*)))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20161024-120457",
+  :setup
+  [{:script
+    "(identity {:os-name (rt.lib.util/make-test-name \"OrganisationStructure\"), \r\n\t\t\t\t:fn-name (rt.lib.util/make-test-name \"FirstName\"), \r\n\t\t\t\t:ln-name (rt.lib.util/make-test-name \"LastName\"), \r\n\t\t\t\t:issue-name (rt.lib.util/make-test-name \"Issue\"),\r\n\t\t\t\t:task-name (rt.lib.util/make-test-name \"Task\"),\r\n\t\t\t\t:site-name (rt.lib.util/make-test-name \"Site\")\r\n\t\t\t\t})"}],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds-incident],
+  :id :incident/tests/managing-shared,
+  :teardown [],
+  :modified-by "not-implemented"}]

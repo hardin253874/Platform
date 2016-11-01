@@ -1,0 +1,4 @@
+[{:id :common/fixture/ie,
+  :type :testfixture,
+  :name "Internet Explorer",
+  :data {:target :ie}}]

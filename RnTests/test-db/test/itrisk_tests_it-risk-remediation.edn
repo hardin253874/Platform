@@ -1,0 +1,232 @@
+[{:tags [:user/hemant :app-tests/itrisk :desktop],
+  :name
+  "Create a new IT risk, assess, create a new control, device, application, infomation",
+  :steps
+  [{:script
+    "(rn.common/start-app-and-login (:itrisk-manager-creds *tc*))"}
+   {:script "(rt.po.app/navigate-to \"IT Risk Management\")"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-report \"My Tasks\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Subject\" (:task-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Due date\" (make-local-date 2016 12 12))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Task status\" \"Not started\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-report \"My Issues\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Name\" (:issue-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Expected_Resolution_Date\" (make-local-date 2016 11 11))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.app/select-app-tab \"Technology Risk\")"}
+   {:script
+    "(rt.po.app/select-navigator-item \"Technology Risk Management\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Name\" (:it-tech-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Description\" (str \"Description for \" (:it-tech-name *tc*)))"}
+   {:script
+    "(rt.po.edit-form/select-multi-select-choice-value \"Areas of Risk\" \"Customer\")"}
+   {:script
+    "(rt.po.edit-form/select-multi-select-choice-value \"Areas of Risk\" \"Financial\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Risk Driver\" \"Internal\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Risk Source\" \"Investigation\")"}
+   {:script
+    "(comment (rt.po.edit-form/select-multi-select-choice-value \"Stakeholders\" \"Employees\"))"}
+   {:script
+    "(comment (rt.po.edit-form/set-number-value-v2 \"Potential Loss\" \"10000\"))"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Next Review Date\" (make-local-date 2016 12 11))"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Owner\" \"IT Risk Manager\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script "(rt.po.edit-form/set-lookup \"Devices\" \"Fax Machine\")"}
+   {:script "(rt.po.edit-form/open-lookup \"Applications\")"}
+   {:script "(rt.po.edit-form/click-new-button)"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Name\" (:app-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Application Type\" \"PC Application\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/open-lookup \"Information\")"}
+   {:script "(rt.po.edit-form/click-new-button)"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Name\" (:info-name *tc*))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/open-lookup \"Sites\")"}
+   {:script
+    "(rt.po.view-form/select-structure-view-item-with-ctrl-key-by-text \"Site South\" \"\")"}
+   {:script "(rt.po.common/click-ok)"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Inherent Impact\" \"Insignificant\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Inherent Likelihood\" \"Unlikely\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Risk Response\" \"Avoid\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Residual Impact\" \"Minor\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Residual Likelihood\" \"Possible\")"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"Financial Impact\" \"10000\")"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"CONTROLS\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Name\" (:control-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Control Category\" \"Preventative\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Control Type\" \"Technical\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Control Sub Type\" \"Configuration\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Control Effectiveness\" \"Partially Effective\")"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Next Review Date\" (make-local-date 2016 12 12))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.report-view/set-search-text (:it-tech-name *tc*))"}
+   {:script
+    "(expect-equals (:it-tech-name *tc*) (rt.po.report-view/get-report-cell-text-content 0 \"Technology Risk\"))"}
+   {:script "(rt.po.app/select-app-tab \"Control Management\")"}
+   {:script "(rt.po.app/select-navigator-item \"Control Management\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Name\" (:new-control-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Next Review Date\" (make-local-date 2016 12 12))"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"RISKS\")"}
+   {:script "(rt.po.app/choose-context-menu \"Link\")"}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog (:it-tech-name *tc*))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"ISSUES\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Name\" (:new-issue-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Expected_Resolution_Date\" (make-local-date 2016 11 11))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"ATTACHMENTS\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.document-library/upload-document (rt.po.common/get-data-file-path \"Test 1.txt\"))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(rt.po.report-view/set-search-text (:new-control-name *tc*))"}
+   {:script
+    "(expect-equals (:new-control-name *tc*) (rt.po.report-view/get-report-cell-text-content 0 \"Control\"))"}
+   {:script "(rt.po.app/select-app-tab \"Technology Assets\")"}
+   {:script
+    "(rt.po.app/select-navigator-item \"Device Risk Register\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Name\" (:device-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Device Category\" \"Telephony\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Device Type\" \"IP Phone\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"TECHNOLOGY RISKS\")"}
+   {:script "(rt.po.app/choose-context-menu \"Link\")"}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog (:it-tech-name *tc*))"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"APPLICATIONS (IF APPLICABLE)\")"}
+   {:script "(rt.po.app/choose-context-menu \"Link\")"}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog (:app-name *tc*))"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"INFORMATION\")"}
+   {:script "(rt.po.app/choose-context-menu \"Link\")"}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog (:info-name *tc*))"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.report-view/set-search-text (:device-name *tc*))"}
+   {:script
+    "(comment (expect-equals (:device-name *tc*) (rt.po.report-view/get-report-cell-text-content 0 \"Device\")))"}
+   {:script
+    "(expect-equals (:device-name *tc*) (rt.po.report-builder/get-grouped-row-content \"Telephony\" 0 \"Device\"))"}
+   {:script
+    "(rt.po.app/select-navigator-item \"Application Risk Register\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Name\" (:new-app-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Application Type\" \"PC Application\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Status\" \"Installed\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"TECHNOLOGY RISKS\")"}
+   {:script "(rt.po.app/choose-context-menu \"Link\")"}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog (:it-tech-name *tc*))"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"DEVICES\")"}
+   {:script "(rt.po.app/choose-context-menu \"Link\")"}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog (:device-name *tc*))"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.report-view/set-search-text (:new-app-name *tc*))"}
+   {:script
+    "(expect-equals (:new-app-name *tc*) (rt.po.report-view/get-report-cell-text-content 0 \"Application\"))"}
+   {:script
+    "(rt.po.app/select-navigator-item \"Information Risk Register\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Name\" (:new-info-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Status\" \"Active\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"TECHNOLOGY RISKS\")"}
+   {:script "(rt.po.app/choose-context-menu \"Link\")"}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog (:it-tech-name *tc*))"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"DEVICES\")"}
+   {:script "(rt.po.app/choose-context-menu \"Link\")"}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog (:device-name *tc*))"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(rt.po.report-view/set-search-text (:new-info-name *tc*))"}
+   {:script
+    "(expect-equals (:new-info-name *tc*) (rt.po.report-view/get-report-cell-text-content 0 \"Information\"))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20161020-144158",
+  :setup
+  [{:script
+    "(identity {:control-name (rt.lib.util/make-test-name \"Control\"), :new-control-name (rt.lib.util/make-test-name \"NewControl\"), :issue-name (rt.lib.util/make-test-name \"Issue\"), :info-name (rt.lib.util/make-test-name \"Information\")})"}
+   {:script
+    "(identity {:app-name (rt.lib.util/make-test-name \"App\"), :task-name (rt.lib.util/make-test-name \"Task\"), :new-issue-name (rt.lib.util/make-test-name \"NewIssue\"), :it-tech-name (rt.lib.util/make-test-name \"IT-Tech-Risk\")})"}
+   {:script
+    "(identity {:new-app-name (rt.lib.util/make-test-name \"NewApp\"), :device-name (rt.lib.util/make-test-name \"DeviceRisk\"), :new-info-name (rt.lib.util/make-test-name \"NewInfo\")})"}],
+  :fixtures [:rn/fixture/itsecurityrisk-manager-creds],
+  :id :itrisk/tests/it-risk-remediation,
+  :teardown [],
+  :modified-by "not-implemented"}]

@@ -1,0 +1,19 @@
+[{:tags [:desktop],
+  :test-filter "(has-tags? [\"prod\" \"desktop\" \"quarantined\"] %)",
+  :tests [],
+  :name "Quarantined tests ",
+  :each-fixtures
+  [:common/fixture/handle-errors
+   :common/fixture/chrome
+   :common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds],
+  :type :testsuite,
+  :source "../RnTests/test-db",
+  :modified "20150615-162327",
+  :setup [{:script ""}],
+  :id :rn/suites/regression-chrome-quarantined,
+  :teardown [{:script ""}],
+  :doc "",
+  :modified-by "not-implemented",
+  :once-fixtures []}]

@@ -1,0 +1,20 @@
+[{:tags [:desktop],
+  :test-filter
+  "(and (has-tags? [\"desktop\"] %) (not (has-some-tags? [\"prod\" \"samples\"] %)))",
+  :tests [],
+  :name "Non-prod desktop tests ",
+  :each-fixtures
+  [:common/fixture/handle-errors
+   :common/fixture/chrome
+   :common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds],
+  :type :testsuite,
+  :source "../RnTests/test-db",
+  :modified "20150615-162333",
+  :setup [{:script ""}],
+  :id :rn/suites/development-chrome,
+  :teardown [{:script ""}],
+  :doc "",
+  :modified-by "not-implemented",
+  :once-fixtures []}]

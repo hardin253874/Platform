@@ -1,0 +1,144 @@
+[{:tags
+  [:nomodify :prod :regression :user/shaofen :desktop :area/connector],
+  :tests [],
+  :name
+  "Ensure changed configuration got saved with tab separated csv ----- bug #27813, task s1049 #2",
+  :steps
+  [{:script
+    "(comment \"++++++++++++++ 1) create a new import for csv with tab separator, do actual import. ++++++++++++++\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Integration/Import Spreadsheet\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"Import Configuration\")"}
+   {:script
+    "(rt.po.import-spreadsheet/choose-file-to-import (rt.po.common/get-data-file-path \"ImportSpreadsheet-Student2.csv\"))"}
+   {:script
+    "(expect-equals \"Comma\" (rt.po.import-spreadsheet/separator))"}
+   {:script "(rt.po.import-spreadsheet/set-separator \"Tab\")"}
+   {:script
+    "(expect-equals \"Tab\" (rt.po.import-spreadsheet/separator))"}
+   {:script
+    "(expect-equals \"1\" (rt.po.import-spreadsheet/heading-row))"}
+   {:script
+    "(expect-equals \"2\" (rt.po.import-spreadsheet/data-start-row))"}
+   {:script
+    "(expect-equals \"\" (rt.po.import-spreadsheet/data-last-row))"}
+   {:script "(rt.po.import-spreadsheet/set-data-last-row \"4\")"}
+   {:script
+    "(expect-equals \"4\" (rt.po.import-spreadsheet/data-last-row))"}
+   {:script
+    "(expect-equals \"Tab\" (rt.po.import-spreadsheet/separator))"}
+   {:script "(rt.po.import-spreadsheet/choose-next)"}
+   {:script
+    "(rt.po.import-spreadsheet/choose-target-object \"Student\")"}
+   {:script "(rt.po.import-spreadsheet/choose-next)"}
+   {:script
+    "(expect-equals \"Name\" (rt.po.import-spreadsheet/get-field-mapping \"Name\"))"}
+   {:script
+    "(expect-equals \"First name\" (rt.po.import-spreadsheet/get-field-mapping \"First Name\"))"}
+   {:script
+    "(expect-equals \"Last name\" (rt.po.import-spreadsheet/get-field-mapping \"Last Name\"))"}
+   {:script "(rt.po.import-spreadsheet/choose-next)"}
+   {:script
+    "(expect-equals \"Import Student from Tab\" (rt.po.import-spreadsheet/config-name))"}
+   {:script
+    "(rt.po.import-spreadsheet/set-config-name \"Import Student from Csv - tab separator\")"}
+   {:script
+    "(expect-equals \"Import Student from Csv - tab separator\" (rt.po.import-spreadsheet/config-name))"}
+   {:script "(rt.po.import-spreadsheet/choose-next)"}
+   {:script "(rt.po.app/clear-all-alerts)"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Integration/Import Runs\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Import Student from Csv - tab separator\")"}
+   {:script
+    "(expect-equals \"Completed\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Status\"))"}
+   {:script
+    "(expect-equals \"3 of 3 records succeeded\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Records imported\"))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script "(rt.po.report-view/set-search-text \"New student1111\")"}
+   {:script "(expect-equals 3 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(comment \"++++++++++++++ 2) changed on saved configuration, then see if it takes effect by doing another import. ++++++++++++++\")"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Integration/Import Spreadsheet\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Import Student from Csv - tab separator\")"}
+   {:script
+    "(rt.po.report-view/select-row-by-text \"Import Student from Csv - tab separator\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(rt.po.app/choose-context-menu \"Edit 'Import Student from Csv - tab separator'\")"}
+   {:script
+    "(rt.po.import-spreadsheet/choose-file-to-import (rt.po.common/get-data-file-path \"ImportSpreadsheet-Student2.csv\"))"}
+   {:script
+    "(expect-equals \"1\" (rt.po.import-spreadsheet/heading-row))"}
+   {:script
+    "(expect-equals \"2\" (rt.po.import-spreadsheet/data-start-row))"}
+   {:script
+    "(expect-equals \"4\" (rt.po.import-spreadsheet/data-last-row))"}
+   {:script
+    "(expect-equals \"Tab\" (rt.po.import-spreadsheet/separator))"}
+   {:script "(rt.po.import-spreadsheet/set-data-start-row \"5\")"}
+   {:script "(rt.po.import-spreadsheet/set-data-last-row \"5\")"}
+   {:script
+    "(expect-equals \"5\" (rt.po.import-spreadsheet/data-last-row))"}
+   {:script
+    "(expect-equals \"5\" (rt.po.import-spreadsheet/data-start-row))"}
+   {:script
+    "(expect-equals \"Tab\" (rt.po.import-spreadsheet/separator))"}
+   {:script "(rt.po.import-spreadsheet/choose-next)"}
+   {:script "(rt.po.import-spreadsheet/choose-next)"}
+   {:script
+    "(expect-equals \"Name\" (rt.po.import-spreadsheet/get-field-mapping \"Name\"))"}
+   {:script
+    "(expect-equals \"First name\" (rt.po.import-spreadsheet/get-field-mapping \"First Name\"))"}
+   {:script
+    "(expect-equals \"Last name\" (rt.po.import-spreadsheet/get-field-mapping \"Last Name\"))"}
+   {:script "(rt.po.import-spreadsheet/choose-next)"}
+   {:script
+    "(expect-equals \"Import Student from Csv - tab separator\" (rt.po.import-spreadsheet/config-name))"}
+   {:script "(rt.po.import-spreadsheet/choose-next)"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Integration/Import Runs\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Import Student from Csv - tab separator\")"}
+   {:script
+    "(expect-equals \"Completed\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Status\"))"}
+   {:script
+    "(expect-equals \"1 of 1 records succeeded\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Records imported\"))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script "(rt.po.report-view/set-search-text \"New student1111\")"}
+   {:script "(expect-equals 4 (rt.po.report-view/count-report-row))"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20160615-131624",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds],
+  :id
+  :rn/connector/import-speadsheet-changed-configuration-can-be-saved---tab,
+  :teardown
+  [{:script "(comment \"now we need to restore the testing env.\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Integration/Import Spreadsheet\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Import Student from Csv - tab separator\")"}
+   {:script
+    "(while (> (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/select-row-by-text \"Import Student from Csv - tab separator\") (rt.po.report-view/open-action-menu) (rt.po.app/choose-context-menu \"Delete 'Import Student from Csv - tab separator'\") (rt.po.edit-form/click-confirm-delete-ok-button)))"}
+   {:script "(expect-equals 0 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script "(rt.po.report-view/set-search-text \"New student1111\")"}
+   {:script
+    "(while (> (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/select-row-by-text \"New student1111\") (rt.po.report-view/open-action-menu) (rt.po.app/choose-context-menu \"Delete\") (rt.po.edit-form/click-confirm-delete-ok-button)))"}
+   {:script "(expect-equals 0 (rt.po.report-view/count-report-row))"}],
+  :doc
+  "test points: saved configuration link w/o import; csv tab file;",
+  :modified-by "not-implemented"}]

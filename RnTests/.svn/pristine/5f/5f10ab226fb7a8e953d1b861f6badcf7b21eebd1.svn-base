@@ -1,0 +1,84 @@
+[{:tags [:app-tests/audit :desktop :user/kun :desktop],
+  :tests [],
+  :name "Ensure audit shared",
+  :steps
+  [{:script
+    "(rn.common/start-app-and-login (:audit-user-creds-manager *tc*))"}
+   {:script "(think 1)"}
+   {:script "(rt.po.app/navigate-to \"Shared\")"}
+   {:script "(think 1)"}
+   {:script
+    "(rt.po.app/select-navigator-item \"Organisation Structure\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Org Level East\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"Org Level East\")"}
+   {:script
+    "(rt.po.view-form/click-button-in-relationship-v2 \"Child Organisation Levels\" \"Action\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:os-name *tc*))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(expect-equals true (rt.po.common/report-row-contains-text? (:os-name *tc*)))"}
+   {:script "(rt.po.app/select-navigator-item \"People\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(rt.po.report-view/click-sub-menu-item \"New\" \"Person\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Type\" \"Employee\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"First name\" (:fn-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Last name\" (:ln-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value-v2 \"Email Contact Detail\" \"Business\" (str (:fn-name *tc*) \"@example.com\"))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(rt.po.app/select-navigator-item \"Organisation Structure\")"}
+   {:script "(rt.po.app/select-navigator-item \"People\")"}
+   {:script "(rt.po.report-view/set-search-text (:fn-name *tc*))"}
+   {:script
+    "(expect-equals true (rt.po.common/report-row-contains-text? (:fn-name *tc*)))"}
+   {:script "(rt.po.app/select-navigator-item \"Issues\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(rt.po.report-view/click-sub-menu-item \"New\" \"Issue\")"}
+	 {:script "(rt.po.edit-form/set-today-date \"Exp\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:issue-name *tc*))"}
+  
+   
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.report-view/set-search-text (:issue-name *tc*))"}
+   {:script
+    "(expect-equals true (rt.po.common/report-row-contains-text? (:issue-name *tc*)))"}
+   {:script "(rt.po.app/select-navigator-item \"Tasks\")"}
+   {:script "(rt.po.report-view/open-menu-by-name \"Task\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Subject\" (:task-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-number-field-value \"__completed\" 25)"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Due date\" (make-local-date 2017 11 11))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.report-view/set-search-text (:task-name *tc*))"}
+   {:script
+    "(expect-equals true (rt.po.common/report-row-contains-text? (:task-name *tc*)))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20161020-114850",
+  :setup
+  [{:script
+    "(identity {:people-name (rt.lib.util/make-test-name \"People\"), \r\n\t\t\t\t:os-name (rt.lib.util/make-test-name \"OrganisationStructure\"), \r\n\t\t\t\t:fn-name (rt.lib.util/make-test-name \"FirstName\"), \r\n\t\t\t\t:ln-name (rt.lib.util/make-test-name \"LastName\"), \r\n\t\t\t\t:issue-name (rt.lib.util/make-test-name \"Issue\"),\r\n\t\t\t\t:task-name (rt.lib.util/make-test-name \"Task\")\r\n\t\t\t\t})"}],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds-audits],
+  :id :audit/tests/shared,
+  :teardown [],
+  :modified-by "not-implemented"}]

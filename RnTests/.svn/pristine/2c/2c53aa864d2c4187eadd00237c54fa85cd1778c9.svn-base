@@ -1,0 +1,11 @@
+[{:tags [:Desktop],
+  :name "User creds for IT Security Risk manager (non-admin user)",
+  :type :testfixture,
+  :source "./test-db",
+  :modified "20161014-115951",
+  :setup
+  [{:script
+    "(identity {:itrisk-manager-creds {:password \"Readi911\", :username \"itrisk_manager\"}})"}],
+  :id :rn/fixture/itsecurityrisk-manager-creds,
+  :teardown [],
+  :modified-by "not-implemented"}]

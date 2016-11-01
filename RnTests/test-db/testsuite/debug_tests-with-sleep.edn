@@ -1,0 +1,13 @@
+[{:tags [:desktop],
+  :test-filter
+  "(and (has-tags? [\"prod\" \"regression\" \"desktop\"] %) (not (has-some-tags? [\"quarantined\" \"daily\"] %)) (> (matching-step-count \"sleep\" %) 0)) ",
+  :tests [],
+  :each-fixtures [],
+  :type :testsuite,
+  :source "../RnTests/test-db",
+  :modified "20160211-094338",
+  :setup [],
+  :id :debug/tests-with-sleep,
+  :teardown [],
+  :modified-by "not-implemented",
+  :once-fixtures []}]

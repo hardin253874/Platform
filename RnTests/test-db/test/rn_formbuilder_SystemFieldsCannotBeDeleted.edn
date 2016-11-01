@@ -1,0 +1,50 @@
+[{:tags
+  [:user/shaofen
+   :nomodify
+   :prod
+   :regression
+   :desktop
+   :area/form-builder],
+  :tests [],
+  :name "SystemFieldsCannotBeDeleted",
+  :steps
+  [{:script "(rt.po.app/navigate-via-tiles \"Foster University\")"}
+   {:script "(rt.po.app/enable-app-toolbox )"}
+   {:script
+    "(rt.po.app-toolbox/create-object {:name \"New Test Object18\" :description \"New Test Object Description\"})"}
+   {:script
+    "(expect-equals \"New Test Object18 Form\" (rt.po.form-builder/get-form-title))"}
+   {:script
+    "(expect-equals true (rt.po.form-builder/system-field? \"Created by\"))"}
+   {:script
+    "(expect-equals true (rt.po.form-builder/system-field? \"Created date\"))"}
+   {:script
+    "(expect-equals true (rt.po.form-builder/system-field? \"Last modified by\"))"}
+   {:script
+    "(expect-equals true (rt.po.form-builder/system-field? \"Modified date\"))"}
+   {:script
+    "(expect-equals true (rt.po.form-builder/system-field? \"Owned by\"))"}
+   {:script "(rt.po.form-builder/add-new-field-group)"}
+   {:script
+    "(rt.po.form-builder/set-field-group-name \"New Field Group\" \"Field Group 1\")"}
+   {:script
+    "(expect-equals true (rt.po.form-builder/has-field-group? \"Field Group 1\"))"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-field-group \"Text\" \"Field Group 1\")"}
+   {:script
+    "(expect-equals true (rt.po.form-builder/toolbox-field-exist? \"Text\"))"}
+   {:script
+    "(expect-equals false (rt.po.form-builder/system-field? \"Text\"))"}
+   {:script "(rt.po.form-builder/delete-field \"Text\")"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150601-153815",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/formbuilder/SystemFieldsCannotBeDeleted,
+  :teardown
+  [{:script
+    "(rt.po.app-toolbox/delete-object \"New Test Object18\")"}],
+  :modified-by "not-implemented"}]

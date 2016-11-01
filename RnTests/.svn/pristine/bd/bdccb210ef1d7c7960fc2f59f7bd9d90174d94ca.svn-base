@@ -1,0 +1,92 @@
+[{:tags [:desktop :app/bcm],
+  :name "Create a new BU Plan",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:login-creds *tc*))"}
+   {:script "(think 5)"}
+   {:script "(rt.po.app/navigate-to \"Business Continuity Planning\")"}
+   {:script "(rt.po.app/select-app-tab \"Business Units\")"}
+   {:script "(rt.po.app/select-navigator-item \"Plans\")"}
+   {:script "(think 5)"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script "(think 5)"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:bup-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-multiline \"Description\" (str \"Description for \" (:bup-name *tc*)))"}
+   {:script
+    "(rt.po.edit-form/set-multiline \"Objective\" (str \"Objective for \" (:bup-name *tc*)))"}
+   {:script
+    "(comment \"#knownissue - need to set the owner to the current user\")"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Owner\" (:owner-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Team Leader\" (get-random-test-data :employees-for-bia-user))"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Deputy Team Leader\" (get-random-test-data :employees-for-bia-user))"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Action Items\" \"New\")"}
+   {:script
+    "(doseq [n (range 1 10)] (rn.scripts.bcm/fill-plan-form n \"Immediate\") (rt.po.edit-form/click-save-plus-button) (think 5))"}
+   {:script
+    "(doseq [n (range 1 10)] (rn.scripts.bcm/fill-plan-form n \"Ongoing\") (rt.po.edit-form/click-save-plus-button) (think 5))"}
+   {:script "(rt.po.edit-form/click-cancel-button)"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Completed\" true)"}
+   {:script "(think 5)"}
+   {:script
+    "(comment \"Until we get decent multi-select in pickers...\")"}
+   {:script
+    "(doseq [e (repeatedly 5 #(get-random-test-data :employees-for-bia-user))]\n    (rt.po.view-form/open-tab-action-menu \"Team Members\" \"Link\")\n    (rt.po.edit-form/choose-in-entity-picker-dialog e))"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Completed\" true)"}
+   {:script "(think 5)"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Call Tree\" \"New\")"}
+   {:script
+    "(doseq [e (repeatedly 5 #(get-random-test-data :employees-for-bia-user))]\n    (rt.po.edit-form/set-lookup \"Caller\" (:owner-name *tc*))\n    (rt.po.edit-form/set-lookup \"To call\" e)\n    (rt.po.edit-form/set-multiline \"Purpose\" \"Have a chat, shoot the breeze\")\n    (rt.po.edit-form/click-save-plus-button)\n    (think 5))"}
+   {:script "(rt.po.edit-form/click-cancel-button)"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Completed\" true)"}
+   {:script "(think 5)"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Recovery Sites\" \"Link\")"}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog (get-random-test-data :sites))"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Completed\" true)"}
+   {:script "(think 5)"}
+   {:script "(rt.po.edit-form/select-form-tab \"Approval\")"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Approver\" (get-random-test-data :employees-for-bia-user))"}
+   {:script "(think 5)"}
+   {:script "(rt.po.edit-form/save) ; save the business unit"}
+   {:script "(think 5)"}
+   {:script "(rt.po.report-view/set-search-text (:bup-name *tc*))"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20151008-112406",
+  :setup
+  [{:script
+    "(when (empty? (get-test-data :bia-user-creds :quiet)) (rn.common/start-app-and-login))"}
+   {:script
+    "(setonce-test-data :bia-user-creds rn.services.security/ensure-test-accounts [\"BIA User\"] \"BIAUSER\" 50)"}
+   {:script
+    "(rt.test.core/merge-tc {:login-creds (get-random-test-data :bia-user-creds)})"}
+   {:script "(rn.common/start-app-and-login (:login-creds *tc*))"}
+   {:script
+    "(rt.test.core/merge-tc {:owner-name (rn.services.security/get-account-holder-name (-> *tc* :login-creds :username))})"}
+   {:script
+    "(rt.test.core/merge-tc {:bup-name (make-test-name \"BUP\")})"}
+   {:script
+    "(setonce-test-data :employees-for-bia-user rn.common/get-record-names-for-type-via-report \"Employee\")"}
+   {:script
+    "(comment \"TODO - sites is actually a subset of buildings .. so temp hardcoding\")"}
+   {:script
+    "(comment (setonce-test-data :sites rn.common/get-record-names-for-type \"Building\" {:app-name \"ReadiBCM\"}))"}
+   {:script
+    "(setonce-test-data :sites [\"Box Hill\" \"Maitland\" \"Ryde\" \"Pookaka\"])"}],
+  :fixtures [:common/fixture/wait-ng],
+  :id :grc/tests/bia-user-2,
+  :teardown [],
+  :modified-by "not-implemented"}]

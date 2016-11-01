@@ -1,0 +1,15 @@
+[{:tags [:desktop],
+  :tests [:perf/tests/import-perf-stats],
+  :name "import the perf stats",
+  :each-fixtures [],
+  :type :testsuite,
+  :source "../RnTests/test-db",
+  :modified "20150601-153829",
+  :setup [{:script ""}],
+  :id :perf/suites/import-stats,
+  :teardown [{:script ""}],
+  :doc
+  "assumes the csv is in the current working folder where ReadiTest is run",
+  :modified-by "not-implemented",
+  :once-fixtures
+  [:common/fixture/chrome :common/fixture/handle-errors]}]

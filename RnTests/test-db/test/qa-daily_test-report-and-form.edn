@@ -1,0 +1,66 @@
+[{:tags [:prod :desktop :smoke-test],
+  :tests [],
+  :name "Report and Form Test on Chrome",
+  :steps
+  [{:script "(rt.po.app/navigate-via-tiles \"Test Solution\")",
+        :target-msec 2000}
+   {:script "(rt.po.app/select-navigator-item \"Test Solution\")",
+        :target-msec 5000}
+   {:script "(rt.po.app/select-navigator-item \"RPT_AA_All_Fields\")",
+        :target-msec 5000}
+   {:script "(rt.po.app/select-navigator-item \"AF_All Fields\")",
+        :target-msec 5000}
+   {:script
+    "(expect-equals \"AF_All Fields\" (rt.po.report-view/get-open-report-name))"}
+   {:script "(rt.po.report-view/select-row-by-text \"Test 01\")",
+        :target-msec 500}
+   {:script "(rt.po.report-view/select-row-by-text \"Test 02\")",
+        :target-msec 500}
+   {:script "(rt.po.report-view/view-record-by-text \"Test 01\")",
+        :target-msec 2000}
+   {:script
+    "(expect-equals \"Test 01\" (rt.po.view-form/form-record-name))"}
+   {:script "(rt.po.view-form/open-form-lookup \"Tina Adlakha\")",
+        :target-msec 2000}
+   {:script
+    "(expect-equals \"Tina Adlakha\" (rt.po.view-form/form-record-name))"}
+   {:script "(rt.po.view-form/form-nav-back)",
+        :target-msec 2000}
+   {:script "(rt.po.view-form/select-form-tab \"AA_Truck\")",
+        :target-msec 2000}
+   {:script
+    "(expect-equals \"AA_Truck\" (rt.po.view-form/form-selected-tab-name))"}
+   {:script
+    "(rt.po.report-view/select-row-by-text \"Shock\" (rt.po.view-form/form-tab-grid-query))",
+        :target-msec 2000}
+   {:script
+    "(rt.po.report-view/view-record-by-text \"Shock\" (rt.po.view-form/form-tab-grid-query))",
+        :target-msec 2000}
+   {:script
+    "(expect-equals \"After Shock\" (rt.po.view-form/form-record-name))"}
+   {:script "(rt.po.view-form/form-nav-back)",
+        :target-msec 2000}
+   {:script "(comment -- testing nested edit --)"}
+   {:script "(rt.po.view-form/click-edit)"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Name\" \"RT-xxxx-renamed\")"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"AA_Herb\" \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Name\" \"RT-Herb\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(expect-equals \"RT-xxxx-renamed\" (rt.po.view-form/form-record-name) \"Parent record edits still there?\")"}
+   {:script
+    "(when (rt.po.app/are-changes-pending?) (rt.po.app/choose-to-continue-navigation))"}
+   {:script "(rt.po.edit-form/cancel)"}],
+  :type :test,
+  :checks [],
+  :source "../RnTests/test-db",
+  :modified "20150614-171123",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :qa-daily/test-report-and-form,
+  :teardown [],
+  :modified-by "not-implemented",
+  :data {}}]

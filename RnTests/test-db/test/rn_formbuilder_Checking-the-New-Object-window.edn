@@ -1,0 +1,37 @@
+[{:tags
+  [:user/shaofen
+   :nomodify
+   :prod
+   :regression
+   :desktop
+   :area/form-builder],
+  :tests [],
+  :name "Checking the New Object window",
+  :steps
+  [{:script "(rt.po.app/navigate-via-tiles \"Foster University\")"}
+   {:script "(rt.po.app/enable-app-toolbox )"}
+   {:script
+    "(rt.po.app-toolbox/create-object {:name \"New Test Object1\" :description \"New Test Object Description\"})"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Text\")"}
+   {:script
+    "(expect-equals \"New Test Object1 Form\" (rt.po.form-builder/get-form-title))"}
+   {:script
+    "(expect-equals true (rt.po.form-builder/has-toolbox-section? \"Fields\"))"}
+   {:script
+    "(expect-equals true (rt.po.form-builder/has-toolbox-section? \"Display\"))"}
+   {:script
+    "(expect-equals true (rt.po.form-builder/has-field-group? \"Default\"))"}
+   {:script "(expect-equals true (rt.po.form-builder/has-toolbar?))"}
+   {:script "(expect-equals true (rt.po.form-builder/has-canvas?))"}
+   {:script "(expect-equals true (rt.po.form-builder/has-fields?))"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150601-153812",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/formbuilder/Checking-the-New-Object-window,
+  :teardown
+  [{:script "(rt.po.app-toolbox/delete-object \"New Test Object1\")"}],
+  :modified-by "not-implemented"}]

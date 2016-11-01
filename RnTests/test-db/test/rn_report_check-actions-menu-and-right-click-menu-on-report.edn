@@ -1,0 +1,169 @@
+[{:tags [:user/conc :prod :regression :area/report :desktop],
+  :tests [],
+  :name "Check actions menu and right click menu on report",
+  :steps
+  [{:script
+    "(def JohnRambo {\n                      :firstName \"John\"\n                      :lastName (rt.lib.util/make-test-name \"Rambo\")\n                      :email \"john.rambo@greenberet.com\"\n                      :phone \"85283788\"\n                      :address \"671 Smith Street\"})"}
+   {:script
+    "(def JohnRambo (merge JohnRambo {:name (str(:firstName JohnRambo) \" \" (:lastName JohnRambo))}))"}
+   {:script
+    "(def JohnRamboContMenu {\n                              :firstName \"JohnCM\"\n                              :lastName (rt.lib.util/make-test-name \"Rambo\")\n                              :email \"john.rambocm@greenberet.com\"\n                              :phone \"3834484\"\n                              :address \"500 Bloggs Street\"})"}
+   {:script
+    "(def JohnRamboContMenu (merge JohnRamboContMenu {:name (str(:firstName JohnRamboContMenu) \" \" (:lastName JohnRamboContMenu))}))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Name\" (:name JohnRambo))"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"First name\" (:firstName JohnRambo))"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Last name\" (:lastName JohnRambo))"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Email address\" (:email JohnRambo))"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Phone number\" (:phone JohnRambo))"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Address line1\" (:address JohnRambo))"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script "(rt.lib.wd-ng/wait-for-angular)"}
+   {:script "(rt.po.view-form/form-nav-back)"}
+   {:script "(rt.po.report-view/set-search-text (:name JohnRambo))"}
+   {:script "(expect-equals (rt.po.report-view/count-report-row) 1)"}
+   {:script
+    "(def StudentId (rt.po.report-view/get-report-cell-text-content 0 \"StudentID\"))"}
+   {:script "(rt.po.report-view/select-row-by-text StudentId)"}
+   {:script
+    "(expect-equals (rt.po.report-view/get-value-for-row-and-column StudentId \"Student\") (:name JohnRambo))"}
+   {:script
+    "(expect-equals (rt.po.report-view/get-value-for-row-and-column StudentId \"Address line1\") (:address JohnRambo))"}
+   {:script
+    "(expect-equals (rt.po.report-view/get-value-for-row-and-column StudentId \"Email address\") (:email JohnRambo))"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"View\")"}
+   {:script
+    "(expect-equals (rt.po.view-form/get-field-value \"StudentID\") StudentId)"}
+   {:script
+    "(expect-equals (rt.po.view-form/get-field-value \"Full name\") (:name JohnRambo))"}
+   {:script
+    "(expect-equals (rt.po.view-form/get-field-value \"First name\") (:firstName JohnRambo))"}
+   {:script
+    "(expect-equals (rt.po.view-form/get-field-value \"Last name\") (:lastName JohnRambo))"}
+   {:script
+    "(expect-equals (rt.po.view-form/get-field-value \"Phone number\") (:phone JohnRambo))"}
+   {:script
+    "(expect-equals (rt.po.view-form/get-field-value \"Address line1\") (:address JohnRambo))"}
+   {:script
+    "(expect-equals (rt.po.view-form/get-field-value \"Email address\") (:email JohnRambo))"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.report-view/set-search-text (:name JohnRambo))"}
+   {:script "(rt.po.report-view/select-row-by-text StudentId)"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"Edit\")"}
+   {:script
+    "(expect-equals (rt.po.view-form/get-field-value \"StudentID\") StudentId)"}
+   {:script
+    "(expect-equals (rt.po.edit-form/string-field-value \"Name\") (:name JohnRambo))"}
+   {:script
+    "(expect-equals (rt.po.edit-form/string-field-value \"First name\") (:firstName JohnRambo))"}
+   {:script
+    "(expect-equals (rt.po.edit-form/string-field-value \"Last name\") (:lastName JohnRambo))"}
+   {:script
+    "(expect-equals (rt.po.edit-form/string-field-value \"Phone number\") (:phone JohnRambo))"}
+   {:script
+    "(expect-equals (rt.po.edit-form/string-field-value \"Address line1\") (:address JohnRambo))"}
+   {:script
+    "(expect-equals (rt.po.edit-form/string-field-value \"Email address\") (:email JohnRambo))"}
+   {:script "(rt.po.edit-form/click-cancel-button)"}
+   {:script "(rt.po.report-view/set-search-text (:name JohnRambo))"}
+   {:script "(rt.po.report-view/select-row-by-text StudentId)"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"Delete\")"}
+   {:script "(rt.po.app/choose-modal-ok)"}
+   {:script "(rt.po.report-view/set-search-text (:name JohnRambo))"}
+   {:script "(expect-equals (rt.po.report-view/count-report-row) 0)"}
+   {:script "(rt.po.report-view/open-new-menu)"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Name\" (:name JohnRamboContMenu))"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"First name\" (:firstName JohnRamboContMenu))"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Last name\" (:lastName JohnRamboContMenu))"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Email address\" (:email JohnRamboContMenu))"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Phone number\" (:phone JohnRamboContMenu))"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Address line1\" (:address JohnRamboContMenu))"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script "(rt.po.view-form/form-nav-back)"}
+   {:script
+    "(rt.po.report-view/set-search-text (:name JohnRamboContMenu))"}
+   {:script "(expect-equals (rt.po.report-view/count-report-row) 1)"}
+   {:script
+    "(def StudentIdContMenu (rt.po.report-view/get-report-cell-text-content 0 \"StudentID\"))"}
+   {:script "(rt.po.report-view/select-row-by-text StudentIdContMenu)"}
+   {:script
+    "(expect-equals (rt.po.report-view/get-value-for-row-and-column StudentIdContMenu \"Student\") (:name JohnRamboContMenu))"}
+   {:script
+    "(expect-equals (rt.po.report-view/get-value-for-row-and-column StudentIdContMenu \"Address line1\") (:address JohnRamboContMenu))"}
+   {:script
+    "(expect-equals (rt.po.report-view/get-value-for-row-and-column StudentIdContMenu \"Email address\") (:email JohnRamboContMenu))"}
+   {:script
+    "(rt.po.report-view/set-search-text (:name JohnRamboContMenu))"}
+   {:script "(rt.po.report-view/select-row-by-text StudentIdContMenu)"}
+   {:script
+    "(rt.po.report-view/choose-report-row-action StudentIdContMenu \"View\")"}
+   {:script
+    "(expect-equals (rt.po.view-form/get-field-value \"StudentID\") StudentIdContMenu)"}
+   {:script
+    "(expect-equals (rt.po.view-form/get-field-value \"Full name\") (:name JohnRamboContMenu))"}
+   {:script
+    "(expect-equals (rt.po.view-form/get-field-value \"First name\") (:firstName JohnRamboContMenu))"}
+   {:script
+    "(expect-equals (rt.po.view-form/get-field-value \"Last name\") (:lastName JohnRamboContMenu))"}
+   {:script
+    "(expect-equals (rt.po.view-form/get-field-value \"Phone number\") (:phone JohnRamboContMenu))"}
+   {:script
+    "(expect-equals (rt.po.view-form/get-field-value \"Address line1\") (:address JohnRamboContMenu))"}
+   {:script
+    "(expect-equals (rt.po.view-form/get-field-value \"Email address\") (:email JohnRamboContMenu))"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(rt.po.report-view/set-search-text (:name JohnRamboContMenu))"}
+   {:script "(rt.po.report-view/select-row-by-text StudentIdContMenu)"}
+   {:script
+    "(rt.po.report-view/choose-report-row-action StudentIdContMenu \"Edit\")"}
+   {:script
+    "(expect-equals (rt.po.view-form/get-field-value \"StudentID\") StudentIdContMenu)"}
+   {:script
+    "(expect-equals (rt.po.edit-form/string-field-value \"Name\") (:name JohnRamboContMenu))"}
+   {:script
+    "(expect-equals (rt.po.edit-form/string-field-value \"First name\") (:firstName JohnRamboContMenu))"}
+   {:script
+    "(expect-equals (rt.po.edit-form/string-field-value \"Last name\") (:lastName JohnRamboContMenu))"}
+   {:script
+    "(expect-equals (rt.po.edit-form/string-field-value \"Phone number\") (:phone JohnRamboContMenu))"}
+   {:script
+    "(expect-equals (rt.po.edit-form/string-field-value \"Address line1\") (:address JohnRamboContMenu))"}
+   {:script
+    "(expect-equals (rt.po.edit-form/string-field-value \"Email address\") (:email JohnRamboContMenu))"}
+   {:script "(rt.po.edit-form/click-cancel-button)"}
+   {:script
+    "(rt.po.report-view/set-search-text (:name JohnRamboContMenu))"}
+   {:script "(rt.po.report-view/select-row-by-text StudentIdContMenu)"}
+   {:script
+    "(rt.po.report-view/choose-report-row-action StudentIdContMenu \"Delete\")"}
+   {:script "(rt.po.app/choose-modal-ok)"}
+   {:script
+    "(rt.po.report-view/set-search-text (:name JohnRamboContMenu))"}
+   {:script "(expect-equals (rt.po.report-view/count-report-row) 0)"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160718-154813",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/report/check-actions-menu-and-right-click-menu-on-report,
+  :teardown [],
+  :modified-by "not-implemented"}]

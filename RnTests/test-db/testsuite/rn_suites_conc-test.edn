@@ -1,0 +1,102 @@
+[{:tags [:desktop],
+  :test-filter "",
+  :tests
+  [:qa-daily/perf-test-1
+   :qa-daily/perf-test-2
+   :rn/chartbuilder/chart-header-area
+   :rn/chartbuilder/chart-managing-series
+   :rn/chartbuilder/chart-sources-general
+   :rn/chartbuilder/check-targets-for-area-chart
+   :rn/chartbuilder/check-targets-for-bar-chart
+   :rn/chartbuilder/check-targets-for-bubble-chart
+   :rn/chartbuilder/check-targets-for-column-chart
+   :rn/chartbuilder/check-targets-for-donut-chart
+   :rn/chartbuilder/check-targets-for-force-graph-chart
+   :rn/chartbuilder/check-targets-for-funnel-chart
+   :rn/chartbuilder/check-targets-for-gauge-chart
+   :rn/chartbuilder/check-targets-for-horizontal-tree-chart
+   :rn/chartbuilder/check-targets-for-line-chart
+   :rn/chartbuilder/check-targets-for-matrix-chart
+   :rn/chartbuilder/check-targets-for-pie-chart
+   :rn/chartbuilder/check-targets-for-radial-tree-chart
+   :rn/chartbuilder/check-targets-for-scatter-chart
+   :rn/chartbuilder/check-targets-for-sunburst-chart
+   :rn/chartbuilder/check-targets-for-tree-map-chart
+   :rn/chartbuilder/create-new-bubble-chart
+   :rn/chartbuilder/create-new-column-chart
+   :rn/chartbuilder/create-new-line-chart
+   :rn/chartbuilder/create-new-matrix-chart
+   :rn/chartbuilder/create-new-pie-chart
+   :rn/chartbuilder/create-new-pivot-bar-chart
+   :rn/chartbuilder/create-new-treemap-chart
+   :rn/console/create-and-apply-console-theme
+   :rn/formbuilder/AddFieldsfromLHStoForm-All-fields
+   :rn/formbuilder/AddFieldstoContainer-All-fields
+   :rn/formbuilder/AddFieldstoContainer-SystemFields
+   :rn/formbuilder/AddFieldstoForm-All-fields
+   :rn/formbuilder/AddFieldstoForm-SystemFields
+   :rn/formbuilder/AddFieldstoLHS-All-fields
+   :rn/formbuilder/AddFieldstoTabContainer-All-fields
+   :rn/formbuilder/AddFieldstoTabContainer-SystemFields
+   :rn/formbuilder/Checking-the-New-Object-window
+   :rn/formbuilder/Creating-a-new-form-for-a-new-object
+   :rn/formbuilder/Creating-a-new-form-for-an-existing-object
+   :rn/formbuilder/DeletingFieldfromLHSCouldDeleteFieldForObject
+   :rn/formbuilder/SetFieldProperties-Boolean
+   :rn/formbuilder/SetFieldProperties-Currency
+   :rn/formbuilder/SetFieldProperties-DateTime
+   :rn/formbuilder/SetFieldProperties-Image
+   :rn/formbuilder/SetFieldProperties-Multiline
+   :rn/formbuilder/SetFieldProperties-Text
+   :rn/formbuilder/SystemFieldsCannotBeDeleted
+   :rn/formbuilder/relationship-properties-dialog-set-secures-flags
+   :rn/report/check-actions-menu-and-right-click-menu-on-report
+   :rn/report/configure-report-actions-menu
+   :rn/report/ensure-report-instance-can-be-viewed-and-modified
+   :rn/report/select-rows-using-shift-and-control-keys
+   :rn/reportbuilder/add-calculated-col-to-report-and-analyser
+   :rn/reportbuilder/add-field-for-two-level
+   :rn/reportbuilder/add-field-to-analyser
+   :rn/reportbuilder/add-relationship-field-to-report
+   :rn/reportbuilder/addfields-via-checkboxes
+   :rn/reportbuilder/apply-and-remove-summarise
+   :rn/reportbuilder/apply-filter-in-analyser-in-report-viewer
+   :rn/reportbuilder/cancel-sort
+   :rn/reportbuilder/checking-renamed-column-in-analyser
+   :rn/reportbuilder/expand-collapse-grouped-report
+   :rn/reportbuilder/filterby-defined-and-undefined
+   :rn/reportbuilder/grandtotals-currency
+   :rn/reportbuilder/groupby-number
+   :rn/reportbuilder/groupby-singleselect-choice
+   :rn/reportbuilder/highlight-formatting-single-select-choice
+   :rn/reportbuilder/icon-formatting-single-select-choice
+   :rn/reportbuilder/progress-bar-number
+   :rn/reportbuilder/reload-a-report
+   :rn/reportbuilder/rename-column-string
+   :rn/reportbuilder/show-label-count-and-sorting-for-groupby-report
+   :rn/reportbuilder/sort-contextmenu/string/a-z
+   :rn/reportbuilder/sort-header/string
+   :rn/screenbuilder/screen-builder-basic-tests
+   :rn/security/ensure-access-rules-work-for-data-change-relationship
+   :rn/security/ensure-access-rules-works-for-user
+   :rn/security/ensure-existing-access-rules-work-for-students-role
+   :rn/security/ensure-multiple-access-rules-works
+   :rn/security/ensure-security-flag-works
+   :rn/security/ensure-university-administrator-access-rule-works
+   :rn/security/ensure-user-access-changes-as-add-or-remove-from-user-role],
+  :name "Con's test suite",
+  :each-fixtures
+  [:common/fixture/handle-errors
+   :common/fixture/wait-ng
+   :common/fixture/test-account-creds
+   :common/fixture/chrome
+   :common/fixture/login],
+  :type :testsuite,
+  :source "../RnTests/test-db",
+  :modified "20150601-153829",
+  :setup [{:script ""}],
+  :id :rn/suites/conc-test,
+  :teardown [{:script ""}],
+  :doc "",
+  :modified-by "not-implemented",
+  :once-fixtures []}]

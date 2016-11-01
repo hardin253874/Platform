@@ -1,0 +1,73 @@
+[{:tags [:nomodify :prod :regression :area/form :user/anurag :desktop],
+  :tests [],
+  :name "Testing all the object properties for yes/no field",
+  :steps
+  [{:script
+    "(rt.po.app-toolbox/create-app {:description \"\", :name (:app-name *tc*)})"}
+   {:script "(rt.po.app/enable-app-toolbox )"}
+   {:script
+    "(rt.po.app-toolbox/set-application-filter (:app-name *tc*))"}
+   {:script "(comment -- create 'Text Field Object' and its form --)"}
+   {:script
+    "(rt.po.app-toolbox/create-object {:description \"New Yes/No Test Object Description\", :name (:obj-name *tc*)})"}
+   {:script "(rt.po.form-builder/add-container-to-form )"}
+   {:script "(comment -- Readonly Field --)"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Yes/No\")"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"Yes/No\")"}
+   {:script "(rt.po.form-builder-config/set-name \"Readonly Field\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Form Detail\")"}
+   {:script "(rt.po.form-builder-config/set-control-readonly true)"}
+   {:script "(rt.po.form-builder-config/click-ok )"}
+   {:script "(comment -- *Default Value Set field --)"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Yes/No\")"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"Yes/No\")"}
+   {:script
+    "(rt.po.form-builder-config/set-name \"Default Value Set\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Object Detail\")"}
+   {:script
+    "(rt.po.form-builder-config/set-bool-field-default-value true)"}
+   {:script "(rt.po.form-builder-config/click-ok )"}
+   {:script "(comment -- *Format Control field --)"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Text\" 0)"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"Text\")"}
+   {:script "(rt.po.form-builder-config/set-name \"Format Control\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Format\")"}
+   {:script
+    "(rt.po.form-builder-config/set-background-color \"Light Red\")"}
+   {:script "(rt.po.form-builder-config/click-ok )"}
+   {:script "(comment -- *Save and Close to go back to toolbox --)"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}
+   {:script
+    "(comment -- *add the existing report for 'Yes/No Field Object' --)"}
+   {:script "(rt.po.app/navigate-to (:app-name *tc*))"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script "(rt.po.app/add-existing-report (:obj-name *tc*))"}
+   {:script
+    "(comment -- \"field validations create new instance\" --)"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script "(comment \"-- 'Readonly field' validation --\")"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/bool-field-read-only? \"Readonly Field\"))"}
+   {:script "(comment \"-- 'Default Value Set' field validation --\")"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/bool-field-value \"Default Value Set\"))"}
+   {:script "(rt.po.edit-form/click-save-button)"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160914-120954",
+  :setup
+  [{:script
+    "(identity {:app-name (rt.lib.util/make-test-name \"App\"), :obj-name (rt.lib.util/make-test-name \"Yes/No Obj\")})"}],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/form/check-yes/no-field-object-properties,
+  :teardown [],
+  :modified-by "not-implemented"}]

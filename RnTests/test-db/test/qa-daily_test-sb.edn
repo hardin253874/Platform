@@ -1,0 +1,40 @@
+[{:tags [:prod :desktop :smoke-test],
+  :tests [],
+  :name "Screen Builder Smoke Test on Chrome",
+  :steps
+  [{:script "(rt.po.app/navigate-to \"Home\")", :target-msec 2000}
+   {:script "(expect-equals \"Home\" (rt.po.app/top-menu-name))"}
+   {:script "(rt.po.app/enable-config-mode)", :target-msec 500}
+   {:script
+    "(rt.po.app/add-screen (:screen-name *test-context*) \"\")",
+    :target-msec 1000}
+   {:script
+    "(rt.po.app-toolbox/set-application-filter \"Test Solution\")",
+    :target-msec 2000}
+   {:script "(rt.po.screen-builder/toggle-toolbox-type \"AA_Actor\")",
+    :target-msec 2000}
+   {:script
+    "(rt.po.screen-builder/toggle-toolbox-type \"AA_Employee\")",
+    :target-msec 2000}
+   {:script
+    "(rt.po.screen-builder/add-screen-toolbox-items [\"AA_Actor Form\" \"Force - AA_Employee\"])",
+    :target-msec 2000}
+   {:script "(rt.po.screen-builder/save-screen)", :target-msec 1000}
+   {:script
+    "(rt.scripts.qa-daily/verify-screen-builder-smoke-test (:screen-name *test-context*))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160802-155454",
+  :setup
+  [{:script
+    "(identity {:screen-name (rt.lib.util/make-test-name \"RT-Screen\")})"}],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :qa-daily/test-sb,
+  :teardown
+  [{:script "(rn.common/clear-all-alerts)"}
+   {:script "(rt.po.app/navigate-to \"Home\")", :target-msec 2000}
+   {:script "(rt.po.app/enable-config-mode)", :target-msec 500}
+   {:script "(rt.po.app/delete-nav-items-matching #\"RT-Screen.*\")",
+    :target-msec 1000}],
+  :modified-by "not-implemented",
+  :data {}}]

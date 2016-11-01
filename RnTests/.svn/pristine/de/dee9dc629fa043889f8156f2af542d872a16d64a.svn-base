@@ -1,0 +1,162 @@
+[{:tags [:prod :regression :desktop],
+  :tests [],
+  :name "Form control config properties drivers on Chrome",
+  :steps
+  [{:script "(rt.po.form-builder/expand-toolbox-section \"Display\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals true (rt.po.form-builder/toolbox-section-expanded? \"Display\"))",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder/add-display-option-from-toolbox-to-form \"Container\")",
+        :target-msec 500}
+   {:script "(rt.po.form-builder/open-container-configure-dialog 0)"}
+   {:script "(rt.po.form-builder-config/set-name \"Test Container\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"Test Container\" (rt.po.form-builder-config/get-name))",
+    :target-msec 500}
+   {:script "(rt.po.form-builder-config/set-hide-label true)",
+    :target-msec 500}
+   {:script
+    "(expect-equals true (rt.po.form-builder-config/get-hide-label))",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder-config/set-background-color \"Dark Goldenrod\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"Dark Goldenrod\" (rt.po.form-builder-config/get-background-color))",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder-config/set-horizontal-resize \"33%\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"33%\" (rt.po.form-builder-config/get-horizontal-resize))",
+    :target-msec 500}
+   {:script "(rt.po.form-builder-config/set-vertical-resize \"33%\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"33%\" (rt.po.form-builder-config/get-vertical-resize))",
+    :target-msec 500}
+   {:script "(rt.po.form-builder-config/click-ok)", :target-msec 500}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Image\" 0)",
+        :target-msec 500}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"Image\")",
+        :target-msec 500}
+   {:script
+    "(rt.po.form-builder-config/set-display-name \"Test Image Control\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"Test Image Control\" (rt.po.form-builder-config/get-display-name))",
+    :target-msec 500}
+   {:script "(rt.po.form-builder-config/expand-section \"Option\")",
+    :target-msec 500}
+   {:script "(rt.scripts.common/sleep 500)"}
+   {:script "(rt.po.form-builder-config/set-control-mandatory true)",
+    :target-msec 500}
+   {:script
+    "(expect-equals true (rt.po.form-builder-config/get-control-mandatory))",
+    :target-msec 500}
+   {:script "(rt.po.form-builder-config/set-control-mandatory false)",
+    :target-msec 500}
+   {:script "(rt.po.form-builder-config/set-control-readonly true)",
+    :target-msec 500}
+   {:script
+    "(expect-equals true (rt.po.form-builder-config/get-control-readonly))",
+    :target-msec 500}
+   {:script "(rt.po.form-builder-config/set-thumbnail-size \"Large\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"Large\" (rt.po.form-builder-config/get-thumbnail-size))",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder-config/set-thumbnail-scaling \"Crop\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"Crop\" (rt.po.form-builder-config/get-thumbnail-scaling))",
+    :target-msec 500}
+   {:script "(rt.po.form-builder-config/click-ok)", :target-msec 500}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-form \"Lookup\")",
+        :target-msec 500}
+   {:script "(rt.po.form-builder-config/set-name \"Lookup1\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"Lookup1\" (rt.po.form-builder-config/get-name))",
+    :target-msec 500}
+   {:script "(rt.po.form-builder-config/set-object \"AA_Drink\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"AA_Drink\" (rt.po.form-builder-config/get-object))",
+    :target-msec 500}
+   {:script "(rt.po.form-builder-config/expand-section \"Option\")",
+    :target-msec 500}
+   {:script "(rt.po.form-builder-config/set-display-as \"Dropdown\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"Dropdown\" (rt.po.form-builder-config/get-display-as))",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder-config/set-picker-report \"AA_Drinks\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"AA_Drinks\" (rt.po.form-builder-config/get-picker-report))",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder-config/set-display-form \"AA_Drink Form\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"AA_Drink Form\" (rt.po.form-builder-config/get-display-form))",
+    :target-msec 500}
+   {:script "(rt.po.form-builder-config/set-enable-new \"No\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"No\" (rt.po.form-builder-config/get-enable-new))",
+    :target-msec 500}
+   {:script "(rt.po.form-builder-config/click-ok)", :target-msec 500}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-form \"Relationship\")",
+        :target-msec 500}
+   {:script "(rt.po.form-builder-config/set-name \"Relationship1\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"Relationship1\" (rt.po.form-builder-config/get-name))",
+    :target-msec 500}
+   {:script "(rt.po.form-builder-config/set-object \"AA_Drink\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"AA_Drink\" (rt.po.form-builder-config/get-object))",
+    :target-msec 500}
+   {:script "(rt.po.form-builder-config/expand-section \"Option\")",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder-config/set-display-report \"AA_Drinks\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"AA_Drinks\" (rt.po.form-builder-config/get-display-report))",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder-config/set-picker-report \"AA_Drinks\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"AA_Drinks\" (rt.po.form-builder-config/get-picker-report))",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder-config/set-display-form \"AA_Drink Form\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"AA_Drink Form\" (rt.po.form-builder-config/get-display-form))",
+    :target-msec 500}
+   {:script "(rt.po.form-builder-config/click-ok)", :target-msec 500}],
+  :type :test,
+  :checks [],
+  :source "../RnTests/test-db",
+  :modified "20150601-153806",
+  :setup [:qa-daily/scripts/form-builder/open-form-builder-new-mode],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :qa-daily/form-builder/test-form-control-config-properties,
+  :teardown [],
+  :modified-by "not-implemented",
+  :data {}}]

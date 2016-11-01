@@ -1,0 +1,123 @@
+[{:tags [:desktop :app/bcm],
+  :steps
+  [{:script "(rn.common/start-app-and-login (:login-creds *tc*))",
+    :target-msec 4000}
+   {:script "(think 5)"}
+   {:script "(rt.po.app/navigate-to \"Business Continuity Planning\")",
+    :target-msec 4000}
+   {:script "(rt.po.app/select-app-tab \"Business Units\")",
+    :target-msec 3500}
+   {:script "(rt.po.app/select-navigator-item \"Business Units\")",
+    :target-msec 3500}
+   {:script "(think 5)"}
+   {:script "(rt.po.report-view/open-action-menu)", :target-msec 1000}
+   {:script "(rt.po.app/choose-context-menu \"New\")",
+    :target-msec 3000}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:bu-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-multiline \"Description\" (str \"Description for \" (:bu-name *tc*)))"}
+   {:script
+    "(comment \"#knownissue - need to set the owner to the current user\")"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Owner\" (:owner-name *tc*))"}
+   {:script "(think 5 20)"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Business Function\" \"New\")",
+    :target-msec 3000}
+   {:script
+    "(rn.scripts.bcm/fill-bf-form {:op-impacts (get-test-data :op-impacts), :name (:bf-name *tc*), :owner (:owner-name *tc*)})"}
+   {:script "(think 15 30)"}
+   {:script "(rt.po.edit-form/save) ;; save business function",
+    :target-msec 4000}
+   {:script "(think 5)"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Completed\" true)"}
+   {:script "(rt.po.edit-form/save) ;; business unit",
+    :target-msec 4000}
+   {:script "(think 5)"}
+   {:script "(rt.po.report-view/set-search-text (:bu-name *tc*))",
+    :target-msec 2000}
+   {:script "(comment \"TODO - check % complete is 14%\")"}
+   {:script "(think 5)"}
+   {:script "(rt.po.app/navigate-to \"Risk Management\")",
+    :target-msec 4000}
+   {:script "(rt.po.app/select-app-tab \"Operational Risk\")",
+    :target-msec 4000}
+   {:script
+    "(rt.po.app/select-navigator-item \"Business Unit Risks\")",
+    :target-msec 3000}
+   {:script "(think 5)"}
+   {:script
+    "(rt.po.screen/open-report-action-menu-on-screen \"Business Unit Risk Report\")",
+    :target-msec 1000}
+   {:script "(rt.po.app/choose-context-menu \"New\")",
+    :target-msec 3000}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:br-name *tc*))"}
+   {:script "(think 10 40)"}
+   {:script "(comment \"will depend how much data the user enters\")"}
+   {:script
+    "(rn.scripts.bcm/fill-bu-risk-form {:impacts (get-test-data :risk-impacts), :likelihoods (get-test-data :likelihoods), :drivers (get-test-data :risk-drivers), :levels (get-test-data :risk-levels)})"}
+   {:script "(think 20 40)"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Owner\" (:owner-name *tc*))",
+    :target-msec 5000}
+   {:script "(think 2)", :target-msec 5000}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Business Unit\" (:bu-name *tc*))",
+    :target-msec 5000}
+   {:script "(think 2)", :target-msec 5000}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Mitigating Control\" \"Link\")",
+    :target-msec 2000}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog (get-random-test-data :grc-mitigating-controls))",
+    :target-msec 1000}
+   {:script "(think 10)"}
+   {:script "(rt.po.edit-form/save) ;; risk", :target-msec 4000}
+   {:script "(think 5)"}
+   {:script "(rt.po.app/select-app-tab \"Mitigating Controls\")",
+    :target-msec 4000}
+   {:script "(think 5)"}
+   {:script
+    "(rt.po.app/select-navigator-item \"Mitigating Controls\")",
+    :target-msec 4000}
+   {:script
+    "(let [mc (get-random-test-data :grc-mitigating-controls)] (rt.po.report-view/set-search-text mc) (rt.po.report-view/double-click-row-by-text mc))",
+    :target-msec 3000}
+   {:script "(think 5)"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20151008-111912",
+  :setup
+  [{:script
+    "(when (empty? (get-test-data :grc-creds :quiet)) (rn.common/start-app-and-login))"}
+   {:script
+    "(setonce-test-data :grc-creds rn.services.security/ensure-test-accounts [\"BCP Manager\" \"Compliance Manager\" \"Risk Manager\"] \"GRC\" 20)"}
+   {:script
+    "(identity {:login-creds (get-random-test-data :grc-creds)})"}
+   {:script "(comment \"TEMP adding to admins\")"}
+   {:script
+    "(when (:elevate-user *tc*) (rn.services.security/ensure-account-in-roles (-> *tc* :login-creds :username) [\"Administrators\"]) {:elevated true})"}
+   {:script "(rn.common/start-app-and-login (:login-creds *tc*))"}
+   {:script
+    "(identity {:owner-name (rn.services.security/get-account-holder-name (-> *tc* :login-creds :username))})"}
+   {:script
+    "(identity {:br-name (make-test-name \"BR\"), :bu-name (make-test-name \"BU\"), :bf-name (make-test-name \"BF\")})"}
+   {:script
+    "(setonce-test-data :risk-impacts rn.common/get-record-names-for-type \"Risk Impact\" {:app-name \"ReadiBCM\"})"}
+   {:script
+    "(setonce-test-data :likelihoods rn.common/get-record-names-for-type \"Risk Likelihood Rating\" {:app-name \"ReadiBCM\"})"}
+   {:script
+    "(setonce-test-data :risk-drivers rn.common/get-choice-values \"Risk Type (Source)\" {:app-name \"ReadiBCM\"})"}
+   {:script
+    "(setonce-test-data :risk-levels rn.common/get-choice-values \"Level of Risk\" {:app-name \"ReadiBCM\"})"}
+   {:script
+    "(setonce-test-data :op-impacts rn.common/get-choice-values \"Function Operational Impact\" {:app-name \"ReadiBCM\"})"}
+   {:script
+    "(setonce-test-data :grc-mitigating-controls rn.common/get-record-names-for-type-via-report \"Mitigating Control\")"}],
+  :fixtures [:common/fixture/wait-ng],
+  :id :bcm/tests/grc-script,
+  :teardown [],
+  :modified-by "not-implemented"}]

@@ -1,0 +1,50 @@
+[{:tags [:nomodify :regression :user/sri :desktop :area/security],
+  :tests [],
+  :name "Ensure user access changes as add or remove from user role.",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"User Accounts\")"}
+   {:script "(rt.po.report-view/set-search-text \"Nelle.Odom\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Nelle.Odom\")"}
+   {:script "(rt.po.app/choose-context-menu \"Edit\")"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Security roles\" \"Link to Existing\")"}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog \"Chancellors\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect (> (rt.po.report-view/count-report-row) 10))"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"User Accounts\")"}
+   {:script "(rt.po.report-view/set-search-text \"Nelle.Odom\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Nelle.Odom\")"}
+   {:script "(rt.po.app/choose-context-menu \"Edit\")"}
+   {:script "(rt.po.report-view/set-search-text \"Chancellors\")"}
+   {:script "(rt.po.view-form/remove-selected-report-item)"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20150722-105321",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds],
+  :id
+  :rn/security/ensure-user-access-changes-as-add-or-remove-from-user-role,
+  :teardown [],
+  :modified-by "not-implemented"}]

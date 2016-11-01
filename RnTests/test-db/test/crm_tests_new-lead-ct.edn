@@ -1,0 +1,53 @@
+[{:tags [:app/crm :desktop],
+  :name "Create a new lead involving new relationship",
+  :steps
+  [{:script "(reset-rendezvous)"}
+   {:script "(rendezvous {:timeout 20})"}
+   {:script
+    "(rn.common/start-app-and-login (get-random-tc-item :creds))" :metric-id "crm1-1"}
+   {:script "(rendezvous)"}
+   {:script "(rt.po.app/navigate-to \"CRM\")"}
+   {:script "(rendezvous)"}
+   {:script "(rt.po.app/select-app-tab \"Leads\")" :metric-id "crm1-2"}
+   {:script "(rendezvous)"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")" :metric-id "crm1-3"}
+   {:script "(rendezvous)"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Lead title\" (:lead-title *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"First name\" (-> *tc* :lead-details :first))"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Last name\" (-> *tc* :lead-details :last))"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Company\" (-> *tc* :company))"}
+   {:script "(rendezvous)"}
+   {:script "(rt.po.edit-form/save)" :metric-id "crm1-4"}
+   {:script "(rendezvous)"}
+   {:script
+    "(rt.po.report-view/set-search-text (-> *tc* :lead-title))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text (-> *tc* :lead-title))"}
+   {:script "(rendezvous)"}
+   {:script "(rt.po.app/choose-context-menu \"Convert Lead\")" :metric-id "crm1-5"}
+   {:script
+    "(expect (taxi/wait-until #(subset? #{\"Convert\"} (set (rt.po.view-form/get-task-actions))) 60000))\n\n"
+    :metric-id "crm1-6"}
+   {:script "(rendezvous)"}
+   {:script "(rt.po.view-form/choose-task-action \"Convert\")" :metric-id "crm1-7"}
+   {:script
+    "(expect (taxi/wait-until #(subset? #{\"OK\"} (set (rt.po.view-form/get-task-actions))) 60000))" :metric-id "crm1-8"}
+   {:script "(rendezvous)"}
+   {:script "(rt.po.view-form/choose-task-action \"OK\")" :metric-id "crm1-9"}
+   {:script "(rendezvous {:timeout 10})"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150826-093939",
+  :setup
+  [{:script
+    "(identity {:lead-title (make-test-name \"Lead\"), :lead-details (get-random-tc-item :leads), :company (make-test-name \"Company\")})"}],
+  :fixtures [:crm/fixtures/lists :common/fixture/wait-ng],
+  :id :crm/tests/new-lead-ct,
+  :teardown [],
+  :doc "",
+  :modified-by "not-implemented"}]

@@ -1,0 +1,116 @@
+[{:tags
+  [:nomodify :prod :regression :user/shaofen :desktop :area/security],
+  :tests [],
+  :name
+  "Ensure multiple access rules works --- default access rule + analyser condition on single choice field of current type and text field of related type",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script "(rt.po.access-rules/add-new-access-rule)"}
+   {:script
+    "(expect-equals true (rt.po.access-rules-new/new-dialog-visible?))"}
+   {:script
+    "(rt.po.access-rules-new/set-role \"Students (User Role)\")"}
+   {:script "(rt.po.access-rules-new/set-object \"Student\")"}
+   {:script "(rt.po.access-rules-new/click-ok)"}
+   {:script
+    "(rt.po.access-rules/edit-access-rule \"Students (User Role)\" \"Student\" \"Student\")"}
+   {:script
+    "(rt.po.report-builder/select-field-checkboxes \"Suburb\" true true)"}
+   {:script "(comment \"TODO: add relationship to Qualification\")"}
+   {:script "(rt.po.report-builder/click-add-relationship-button)"}
+   {:script
+    "(rt.po.report-add-relationship/add-relationship \"Qualifications\")"}
+   {:script "(rt.po.report-add-relationship/click-ok)"}
+   {:script
+    "(rt.po.report-builder/select-treenode \"Qualifications\")"}
+   {:script
+    "(rt.po.report-builder/select-field-checkboxes \"Abbrev\" false true)"}
+   {:script
+    "(rt.po.report-builder/set-name \"Students in any suburb of BH and Qu-abbr contains BH\")"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script
+    "(expect-equals true (rt.po.report-view/analyzer-field-exists? \"Qualifications Abbrev\"))"}
+   {:script
+    "(expect-equals true (rt.po.report-view/analyzer-field-exists? \"Suburb\"))"}
+   {:script
+    "(rt.po.report-view/set-analyzer-field-oper \"Qualifications Abbrev\" \"Contains\")"}
+   {:script
+    "(rt.po.report-view/set-analyzer-string \"Qualifications Abbrev\" \"BH\")"}
+   {:script
+    "(expect-equals true (rt.po.report-view/analyzer-field-exists? \"Suburb\"))"}
+   {:script
+    "(rt.po.report-view/set-analyzer-field-oper \"Suburb\" \"Any of\")"}
+   {:script
+    "(rt.po.report-view/set-analyzer-choice-option \"Suburb\" \"Any of\" \"Baulkham hills\")"}
+   {:script "(rt.po.report-builder/save)"}
+   {:script "(rt.po.report-builder/close)"}
+   {:script
+    "(rt.po.access-rules/enable-access-rule \"Students (User Role)\" \"Student\" \"Students in any suburb of BH and Qu-abbr contains BH\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 2 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Vivian Rhodes\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View 'Vivian Rhodes'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit 'Vivian Rhodes'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete 'Vivian Rhodes'\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Vivian Rhodes\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Nelle Odom\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View 'Nelle Odom'\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"Edit 'Nelle Odom'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete 'Nelle Odom'\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Nelle Odom\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/delete-access-rule \"Students (User Role)\" \"Student\" \"Students in any suburb of BH and Qu-abbr contains BH\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20151110-130024",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds],
+  :id
+  :rn/security/multiARs--analyser-condition-on-two-types--s-choice-text,
+  :teardown
+  [{:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Record Access\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"System Administrator (User Account)\")"}
+   {:script
+    "(when (> (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/set-search-text \"Students in any suburb of BH and Qu-abbr contains BH\") (if (> (rt.po.report-view/count-report-row) 1) (do (rt.po.access-rules/click-edit-button) (rt.po.access-rules/delete-access-rule \"Students (User Role)\" \"Student\" \"Students in any suburb of BH and Qu-abbr contains BH\") (rt.po.access-rules/click-save-button)))))"}
+   {:script
+    "(rt.po.report-view/set-search-text \"System Administrator (User Account)\")"}
+   {:script
+    "(when (= (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/set-search-text \"Students in any suburb of BH and Qu-abbr contains BH\") (if (> (rt.po.report-view/count-report-row) 0) (do (rt.po.access-rules/click-edit-button) (rt.po.access-rules/delete-access-rule \"Students (User Role)\" \"Student\" \"Students in any suburb of BH and Qu-abbr contains BH\") (rt.po.access-rules/click-save-button)))))"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Students in any suburb of BH and Qu-abbr contains BH\")"}],
+  :modified-by "not-implemented"}]

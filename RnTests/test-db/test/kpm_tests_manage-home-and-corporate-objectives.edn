@@ -1,0 +1,62 @@
+[{:tags [:user/hemant :app-tests/kpm :desktop],
+  :name
+  "Create a new issue, task on home screen. Create a corporate objective and link an issue",
+  :steps
+  [{:script
+    "(rn.common/start-app-and-login (:kpm-manager-creds *tc*))"}
+   {:script "(rt.po.app/navigate-to \"Key Performance Management\")"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-report \"My Tasks\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Subject\" (:task-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Due date\" (make-local-date 2016 12 12))"}
+   {:script "(rt.po.edit-form/set-lookup \"Assigned to\" \"Adam\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Task status\" \"Not started\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-report \"My Issues\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Name\" (:issue-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Expected_Resolution_Date\" (make-local-date 2016 12 12))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.app/select-app-tab \"Corporate Objectives\")"}
+   {:script
+    "(rt.po.app/select-navigator-item \"Corporate Objectives\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Objective\" (:corp-obj-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Category\" \"Strategic\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Approval status\" \"Not Started\")"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Next Review Date\" (make-local-date 2016 12 12))"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"ISSUES\")"}
+   {:script "(rt.po.app/choose-context-menu \"Link\")"}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog (:issue-name *tc*))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(rt.po.report-view/set-search-text (:corp-obj-name *tc*))"}
+   {:script
+    "(expect-equals (:corp-obj-name *tc*) (rt.po.report-view/get-report-cell-text-content 0 \"Corporate Objectives\"))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20161021-143103",
+  :setup
+  [{:script
+    "(identity {:corp-obj-name (rt.lib.util/make-test-name \"Corp-Obj\"), :issue-name (rt.lib.util/make-test-name \"Issue\"), :task-name (rt.lib.util/make-test-name \"Task\")})"}],
+  :fixtures [:rn/fixture/kpm-manager-and-owner-creds],
+  :id :kpm/tests/manage-home-and-corporate-objectives,
+  :teardown [],
+  :modified-by "not-implemented"}]

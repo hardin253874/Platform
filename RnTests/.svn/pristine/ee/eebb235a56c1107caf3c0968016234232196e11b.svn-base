@@ -1,0 +1,161 @@
+[{:tags
+  [:nomodify :prod :regression :user/shaofen :desktop :area/connector],
+  :tests [],
+  :name
+  "Ensure lookup can be imported using number instead of name field",
+  :steps
+  [{:script
+    "(comment \"++++++++++++++ 1) import new library cards for new students to lookup. ++++++++++++++\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Integration/Import Spreadsheet\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"Import Configuration\")"}
+   {:script
+    "(rt.po.import-spreadsheet/choose-file-to-import (rt.po.common/get-data-file-path \"ImportSpreadsheet-Librarycard2.xlsx\"))"}
+   {:script "(rt.po.import-spreadsheet/choose-next)"}
+   {:script
+    "(rt.po.import-spreadsheet/choose-target-object \"Library card\")"}
+   {:script "(rt.po.import-spreadsheet/choose-next)"}
+   {:script
+    "(expect-equals \"Name\" (rt.po.import-spreadsheet/get-field-mapping \"Name\"))"}
+   {:script
+    "(expect-equals \"Status\" (rt.po.import-spreadsheet/get-field-mapping \"Status\"))"}
+   {:script
+    "(expect-equals \"Borrow limit\" (rt.po.import-spreadsheet/get-field-mapping \"Borrow limit\"))"}
+   {:script "(rt.po.import-spreadsheet/choose-next)"}
+   {:script
+    "(rt.po.import-spreadsheet/set-config-name \"Import Library card from Excel - lookup using number\")"}
+   {:script
+    "(expect-equals \"Import Library card from Excel - lookup using number\" (rt.po.import-spreadsheet/config-name))"}
+   {:script
+    "(rt.po.import-spreadsheet/set-suppress-workflows \"Yes\")"}
+   {:script "(expect (rt.po.import-spreadsheet/suppress-workflows?))"}
+   {:script "(expect (not (rt.po.import-spreadsheet/test-import?)))"}
+   {:script "(rt.po.import-spreadsheet/choose-next)"}
+   {:script "(rt.scripts.common/sleep 2000)"}
+   {:script
+    "(comment \"++++++++++++++ the following is to test new library cards are in system to use. ++++++++++++++\")"}
+   {:script "(rt.po.app/clear-all-alerts)"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Integration/Import Runs\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Import Library card from Excel - lookup using number\")"}
+   {:script
+    "(expect-equals \"Completed\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Status\"))"}
+   {:script
+    "(expect-equals \"5 of 5 records succeeded\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Records imported\"))"}
+   {:script
+    "(rn.app/open-report \"Library cards\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script "(rt.po.report-view/set-search-text \"30000\")"}
+   {:script "(expect-equals 5 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(comment \"++++++++++++++ 2) import new students to lookup library cards using number.  ++++++++++++++\")"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Integration/Import Spreadsheet\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"Import Configuration\")"}
+   {:script
+    "(rt.po.import-spreadsheet/choose-file-to-import (rt.po.common/get-data-file-path \"ImportSpreadsheet-student3.xlsx\"))"}
+   {:script "(rt.po.import-spreadsheet/choose-next)"}
+   {:script
+    "(rt.po.import-spreadsheet/choose-target-object \"Student\")"}
+   {:script "(rt.po.import-spreadsheet/choose-next)"}
+   {:script
+    "(expect-equals \"Name\" (rt.po.import-spreadsheet/get-field-mapping \"Name\"))"}
+   {:script
+    "(rt.po.import-spreadsheet/set-field-mapping \"Library card\" \"Library card #\")"}
+   {:script
+    "(expect-equals \"Library card #\" (rt.po.import-spreadsheet/get-field-mapping \"Library card\"))"}
+   {:script
+    "(rt.po.import-spreadsheet/field-options-visible? \"Library card\")"}
+   {:script
+    "(rt.po.import-spreadsheet/click-field-options \"Library card\")"}
+   {:script
+    "(rt.po.import-spreadsheet/set-find-using \"Borrow limit\")"}
+   {:script "(rt.po.common/click-ok)"}
+   {:script "(rt.po.import-spreadsheet/choose-next)"}
+   {:script
+    "(rt.po.import-spreadsheet/set-config-name \"Import student from Excel - lookup using number\")"}
+   {:script
+    "(expect-equals \"Import student from Excel - lookup using number\" (rt.po.import-spreadsheet/config-name))"}
+   {:script
+    "(rt.po.import-spreadsheet/set-suppress-workflows \"Yes\")"}
+   {:script "(expect (rt.po.import-spreadsheet/suppress-workflows?))"}
+   {:script "(expect (not (rt.po.import-spreadsheet/test-import?)))"}
+   {:script "(rt.po.import-spreadsheet/choose-next)"}
+   {:script "(rt.scripts.common/sleep 2000)"}
+   {:script
+    "(comment \"++++++++++++++ the following is to test new students are linked to new library cards by using number identifier. ++++++++++++++\")"}
+   {:script "(rt.po.app/clear-all-alerts)"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Integration/Import Runs\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Import Student from Excel - lookup using number\")"}
+   {:script
+    "(expect-equals \"Completed\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Status\"))"}
+   {:script
+    "(expect-equals \"5 of 5 records succeeded\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Records imported\"))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script "(rt.po.report-view/set-search-text \"QA10\")"}
+   {:script "(expect-equals 5 (rt.po.report-view/count-report-row))"}
+   {:script "(rt.po.report-view/double-click-row-by-text \"QA101\")"}
+   {:script
+    "(expect-equals \"300001\" (rt.po.view-form/get-lookup-link \"Library card #\"))"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.report-view/double-click-row-by-text \"QA102\")"}
+   {:script
+    "(expect-equals \"300002\" (rt.po.view-form/get-lookup-link \"Library card #\"))"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.report-view/double-click-row-by-text \"QA103\")"}
+   {:script
+    "(expect-equals \"300003\" (rt.po.view-form/get-lookup-link \"Library card #\"))"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.report-view/double-click-row-by-text \"QA104\")"}
+   {:script
+    "(expect-equals \"300004\" (rt.po.view-form/get-lookup-link \"Library card #\"))"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.report-view/double-click-row-by-text \"QA105\")"}
+   {:script
+    "(expect-equals \"300005\" (rt.po.view-form/get-lookup-link \"Library card #\"))"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20160615-131518",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds],
+  :id :rn/connector/import-speadsheet---lookup-using-number,
+  :teardown
+  [{:script
+    "(comment \"++++++++++++++ The following are teardown steps. ++++++++++++++\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Integration/Import Spreadsheet\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Import Library card from Excel - lookup using number\")"}
+   {:script
+    "(while (> (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/select-row-by-text \"Import Library card from Excel - lookup using number\") (rt.po.report-view/open-action-menu) (rt.po.app/choose-context-menu \"Delete 'Import Library card from Excel - lookup using number'\") (rt.po.edit-form/click-confirm-delete-ok-button)))"}
+   {:script "(expect-equals 0 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Import student from Excel - lookup using number\")"}
+   {:script
+    "(while (> (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/select-row-by-text \"Import student from Excel - lookup using number\") (rt.po.report-view/open-action-menu) (rt.po.app/choose-context-menu \"Delete 'Import student from Excel - lookup using number'\") (rt.po.edit-form/click-confirm-delete-ok-button)))"}
+   {:script "(expect-equals 0 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rn.app/open-report \"Library cards\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script "(rt.po.report-view/set-search-text \"30000\")"}
+   {:script
+    "(while (> (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/select-row-by-text \"30000\") (rt.po.report-view/open-action-menu) (rt.po.app/choose-context-menu \"Delete\") (rt.po.edit-form/click-confirm-delete-ok-button)))"}
+   {:script "(expect-equals 0 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script "(rt.po.report-view/set-search-text \"QA10\")"}
+   {:script
+    "(while (> (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/select-row-by-text \"QA10\") (rt.po.report-view/open-action-menu) (rt.po.app/choose-context-menu \"Delete\") (rt.po.edit-form/click-confirm-delete-ok-button)))"}
+   {:script "(expect-equals 0 (rt.po.report-view/count-report-row))"}],
+  :doc
+  "1) Import Library card from Excel - lookup using number; 2) import new students to lookup library cards using number; 3) tear down to clear whatever data added in.",
+  :modified-by "not-implemented"}]

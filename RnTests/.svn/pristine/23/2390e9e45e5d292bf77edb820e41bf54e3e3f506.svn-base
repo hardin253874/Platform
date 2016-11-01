@@ -1,0 +1,322 @@
+[{:tags [:area/report-builder :regression :prod :desktop :user/abida],
+  :tests [],
+  :name "Checking highlight conditional formatting for currency field",
+  :steps
+  [{:script
+    "(comment (rt.po.app/navigate-via-tiles \"Foster University\"))"}
+   {:script "(rt.po.app/navigate-to \"Foster University\")"}
+   {:script "(rt.po.app/add-report (:section *tc*))"}
+   {:script "(rt.po.report-new/set-name (:report-name *tc*))"}
+   {:script "(rt.po.report-new/set-report-base-on \"Student\")"}
+   {:script "(rt.po.report-new/click-ok)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Balance\" true)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Balance\" \"Format Column\")"}
+   {:script "(rt.po.report-format/set-format-type \"Highlight\")"}
+   {:script
+    "(rt.po.report-format/set-format-scheme \"3 step - Red, Yellow, Green\")"}
+   {:script
+    "(rt.po.report-format/set-highlight-conditions [{:value \"-79.17\", :oper \"=\", :colour \"Black on Red\"} {:value \"237.50\", :oper \"<>\", :colour \"Black on Yellow\"} {:value \"\", :oper \"\", :colour \"Black on Green\"}])"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script
+    "(expect-equals \"$-79.17\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Balance\"))"}
+   {:script
+    "(expect-equals \"Vivid Red\" (rt.po.report-view/get-report-format-highlight-background-color 0 \"Balance\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 0 \"Balance\"))"}
+   {:script
+    "(expect-equals \"$237.50\" (rt.po.report-view/get-report-cell-text-content \"1\" \"Balance\"))"}
+   {:script
+    "(expect-equals \"Vivid Green\" (rt.po.report-view/get-report-format-highlight-background-color 1 \"Balance\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 1 \"Balance\"))"}
+   {:script
+    "(expect-equals \"$-62.50\" (rt.po.report-view/get-report-cell-text-content \"2\" \"Balance\"))"}
+   {:script
+    "(expect-equals \"Vivid Yellow\" (rt.po.report-view/get-report-format-highlight-background-color 2 \"Balance\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 2 \"Balance\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button )"}
+   {:script
+    "(rn.app/open-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"$-79.17\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Balance\"))"}
+   {:script
+    "(expect-equals \"Vivid Red\" (rt.po.report-view/get-report-format-highlight-background-color 0 \"Balance\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 0 \"Balance\"))"}
+   {:script
+    "(expect-equals \"$237.50\" (rt.po.report-view/get-report-cell-text-content \"1\" \"Balance\"))"}
+   {:script
+    "(expect-equals \"Vivid Green\" (rt.po.report-view/get-report-format-highlight-background-color 1 \"Balance\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 1 \"Balance\"))"}
+   {:script
+    "(expect-equals \"$-62.50\" (rt.po.report-view/get-report-cell-text-content \"2\" \"Balance\"))"}
+   {:script
+    "(expect-equals \"Vivid Yellow\" (rt.po.report-view/get-report-format-highlight-background-color 2 \"Balance\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 2 \"Balance\"))"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Balance\" \"Format Column\")"}
+   {:script
+    "(rt.po.report-format/set-format-scheme \"2 step - Red, Green\")"}
+   {:script
+    "(rt.po.report-format/set-highlight-conditions [{:value \"-79.17\", :oper \">\", :colour \"Black on Red\"} {:value \"\", :oper \"\", :colour \"Black on Green\"}])"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script "(rt.po.report-builder/click-sort-a-z \"Balance\")"}
+   {:script
+    "(expect-equals \"$-79.17\" (rt.po.report-view/get-report-cell-text-content \"19\" \"Balance\"))"}
+   {:script
+    "(expect-equals \"Vivid Green\" (rt.po.report-view/get-report-format-highlight-background-color 19 \"Balance\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 19 \"Balance\"))"}
+   {:script
+    "(expect-equals \"$-75.00\" (rt.po.report-view/get-report-cell-text-content \"20\" \"Balance\"))"}
+   {:script
+    "(expect-equals \"Vivid Red\" (rt.po.report-view/get-report-format-highlight-background-color 20 \"Balance\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 20 \"Balance\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(rn.app/open-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"$-79.17\" (rt.po.report-view/get-report-cell-text-content \"19\" \"Balance\"))"}
+   {:script
+    "(expect-equals \"Vivid Green\" (rt.po.report-view/get-report-format-highlight-background-color 19 \"Balance\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 19 \"Balance\"))"}
+   {:script "(rt.lib.wd-rn/report-grid-scroll-down)"}
+   {:script "(rn.common/sleep 2000)"}
+   {:script
+    "(expect-equals \"$-75.00\" (rt.po.report-view/get-report-cell-text-content \"20\" \"Balance\"))"}
+   {:script
+    "(expect-equals \"Vivid Red\" (rt.po.report-view/get-report-format-highlight-background-color 20 \"Balance\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 20 \"Balance\"))"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Balance\" \"Format Column\")"}
+   {:script
+    "(rt.po.report-format/set-format-scheme \"2 step - Red, Green\")"}
+   {:script
+    "(rt.po.report-format/set-highlight-conditions [{:value \"-79.17\", :oper \">=\", :colour \"Black on Red\"} {:value \"\", :oper \"\", :colour \"Black on Green\"}])"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script
+    "(expect-equals \"$-83.33\" (rt.po.report-view/get-report-cell-text-content \"18\" \"Balance\"))"}
+   {:script
+    "(expect-equals \"Vivid Green\" (rt.po.report-view/get-report-format-highlight-background-color 18 \"Balance\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 18 \"Balance\"))"}
+   {:script
+    "(expect-equals \"$-79.17\" (rt.po.report-view/get-report-cell-text-content \"19\" \"Balance\"))"}
+   {:script
+    "(expect-equals \"Vivid Red\" (rt.po.report-view/get-report-format-highlight-background-color 19 \"Balance\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 19 \"Balance\"))"}
+   {:script
+    "(expect-equals \"$-75.00\" (rt.po.report-view/get-report-cell-text-content \"20\" \"Balance\"))"}
+   {:script
+    "(expect-equals \"Vivid Red\" (rt.po.report-view/get-report-format-highlight-background-color 20 \"Balance\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 20 \"Balance\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(rn.app/open-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"$-83.33\" (rt.po.report-view/get-report-cell-text-content \"18\" \"Balance\"))"}
+   {:script
+    "(expect-equals \"Vivid Green\" (rt.po.report-view/get-report-format-highlight-background-color 18 \"Balance\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 18 \"Balance\"))"}
+   {:script
+    "(expect-equals \"$-79.17\" (rt.po.report-view/get-report-cell-text-content \"19\" \"Balance\"))"}
+   {:script
+    "(expect-equals \"Vivid Red\" (rt.po.report-view/get-report-format-highlight-background-color 19 \"Balance\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 19 \"Balance\"))"}
+   {:script "(rt.lib.wd-rn/report-grid-scroll-down)"}
+   {:script "(rn.common/sleep 2000)"}
+   {:script
+    "(expect-equals \"$-75.00\" (rt.po.report-view/get-report-cell-text-content \"20\" \"Balance\"))"}
+   {:script
+    "(expect-equals \"Vivid Red\" (rt.po.report-view/get-report-format-highlight-background-color 20 \"Balance\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 20 \"Balance\"))"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Balance\" \"Format Column\")"}
+   {:script
+    "(rt.po.report-format/set-format-scheme \"2 step - Red, Green\")"}
+   {:script
+    "(rt.po.report-format/set-highlight-conditions [{:value \"-79.17\", :oper \"<\", :colour \"Black on Red\"} {:value \"\", :oper \"\", :colour \"Black on Green\"}])"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script
+    "(expect-equals \"$-83.33\" (rt.po.report-view/get-report-cell-text-content \"18\" \"Balance\"))"}
+   {:script
+    "(expect-equals \"Vivid Red\" (rt.po.report-view/get-report-format-highlight-background-color 18 \"Balance\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 18 \"Balance\"))"}
+   {:script
+    "(expect-equals \"$-79.17\" (rt.po.report-view/get-report-cell-text-content \"19\" \"Balance\"))"}
+   {:script
+    "(expect-equals \"Vivid Green\" (rt.po.report-view/get-report-format-highlight-background-color 19 \"Balance\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 19 \"Balance\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(rn.app/open-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"$-83.33\" (rt.po.report-view/get-report-cell-text-content \"18\" \"Balance\"))"}
+   {:script
+    "(expect-equals \"Vivid Red\" (rt.po.report-view/get-report-format-highlight-background-color 18 \"Balance\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 18 \"Balance\"))"}
+   {:script
+    "(expect-equals \"$-79.17\" (rt.po.report-view/get-report-cell-text-content \"19\" \"Balance\"))"}
+   {:script
+    "(expect-equals \"Vivid Green\" (rt.po.report-view/get-report-format-highlight-background-color 19 \"Balance\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 19 \"Balance\"))"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Balance\" \"Format Column\")"}
+   {:script
+    "(rt.po.report-format/set-format-scheme \"2 step - Red, Green\")"}
+   {:script
+    "(rt.po.report-format/set-highlight-conditions [{:value \"-79.17\", :oper \"<=\", :colour \"Black on Red\"} {:value \"\", :oper \"\", :colour \"Black on Green\"}])"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script
+    "(expect-equals \"$-83.33\" (rt.po.report-view/get-report-cell-text-content \"18\" \"Balance\"))"}
+   {:script
+    "(expect-equals \"Vivid Red\" (rt.po.report-view/get-report-format-highlight-background-color 18 \"Balance\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 18 \"Balance\"))"}
+   {:script
+    "(expect-equals \"$-79.17\" (rt.po.report-view/get-report-cell-text-content \"19\" \"Balance\"))"}
+   {:script
+    "(expect-equals \"Vivid Red\" (rt.po.report-view/get-report-format-highlight-background-color 19 \"Balance\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 19 \"Balance\"))"}
+   {:script
+    "(expect-equals \"$-75.00\" (rt.po.report-view/get-report-cell-text-content \"20\" \"Balance\"))"}
+   {:script
+    "(expect-equals \"Vivid Green\" (rt.po.report-view/get-report-format-highlight-background-color 20 \"Balance\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 20 \"Balance\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(rn.app/open-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"$-83.33\" (rt.po.report-view/get-report-cell-text-content \"18\" \"Balance\"))"}
+   {:script
+    "(expect-equals \"Vivid Red\" (rt.po.report-view/get-report-format-highlight-background-color 18 \"Balance\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 18 \"Balance\"))"}
+   {:script
+    "(expect-equals \"$-79.17\" (rt.po.report-view/get-report-cell-text-content \"19\" \"Balance\"))"}
+   {:script
+    "(expect-equals \"Vivid Red\" (rt.po.report-view/get-report-format-highlight-background-color 19 \"Balance\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 19 \"Balance\"))"}
+   {:script "(rt.lib.wd-rn/report-grid-scroll-down)"}
+   {:script "(rn.common/sleep 2000)"}
+   {:script
+    "(expect-equals \"$-75.00\" (rt.po.report-view/get-report-cell-text-content \"20\" \"Balance\"))"}
+   {:script
+    "(expect-equals \"Vivid Green\" (rt.po.report-view/get-report-format-highlight-background-color 20 \"Balance\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 20 \"Balance\"))"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"name\" \"AStudent2\")"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script "(rt.po.view-form/form-nav-back)"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Balance\" \"Format Column\")"}
+   {:script
+    "(rt.po.report-format/set-format-scheme \"2 step - Red, Green\")"}
+   {:script
+    "(rt.po.report-format/set-highlight-conditions [{:value \"\", :oper \"Is defined\", :colour \"Black on Red\"} {:value \"\", :oper \"\", :colour \"Black on Green\"}])"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script "(rt.po.report-builder/click-sort-a-z \"Student\")"}
+   {:script
+    "(expect-equals \"$-116.67\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Balance\"))"}
+   {:script
+    "(expect-equals \"Vivid Red\" (rt.po.report-view/get-report-format-highlight-background-color 0 \"Balance\"))"}
+   {:script
+    "(expect-equals \"\" (rt.po.report-view/get-report-cell-text-content \"11\" \"Balance\"))"}
+   {:script
+    "(expect-equals \"Vivid Green\" (rt.po.report-view/get-report-format-highlight-background-color 11 \"Balance\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(rn.app/open-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"\" (rt.po.report-view/get-report-cell-text-content \"11\" \"Balance\"))"}
+   {:script
+    "(expect-equals \"Vivid Green\" (rt.po.report-view/get-report-format-highlight-background-color 11 \"Balance\"))"}
+   {:script
+    "(expect-equals \"$-116.67\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Balance\"))"}
+   {:script
+    "(expect-equals \"Vivid Red\" (rt.po.report-view/get-report-format-highlight-background-color 0 \"Balance\"))"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Balance\" \"Format Column\")"}
+   {:script
+    "(rt.po.report-format/set-format-scheme \"2 step - Red, Green\")"}
+   {:script
+    "(rt.po.report-format/set-highlight-conditions [{:value \"\", :oper \"Is not defined\", :colour \"Black on Red\"} {:value \"\", :oper \"\", :colour \"Black on Green\"}])"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script
+    "(expect-equals \"\" (rt.po.report-view/get-report-cell-text-content \"11\" \"Balance\"))"}
+   {:script
+    "(expect-equals \"Vivid Red\" (rt.po.report-view/get-report-format-highlight-background-color 11 \"Balance\"))"}
+   {:script
+    "(expect-equals \"$-116.67\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Balance\"))"}
+   {:script
+    "(expect-equals \"Vivid Green\" (rt.po.report-view/get-report-format-highlight-background-color 0 \"Balance\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(rn.app/open-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"\" (rt.po.report-view/get-report-cell-text-content \"11\" \"Balance\"))"}
+   {:script
+    "(expect-equals \"Vivid Red\" (rt.po.report-view/get-report-format-highlight-background-color 11 \"Balance\"))"}
+   {:script
+    "(expect-equals \"$-116.67\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Balance\"))"}
+   {:script
+    "(expect-equals \"Vivid Green\" (rt.po.report-view/get-report-format-highlight-background-color 0 \"Balance\"))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160920-133222",
+  :setup
+  [{:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Settings/General Settings\")"}
+   {:script
+    "(when (not= \"$\" (rt.po.view-form/get-field-value \"Currency symbol\")) (rt.po.edit-form/click-edit-button) (rt.po.edit-form/set-string-field-value \"Currency symbol\" \"$\") (rt.po.edit-form/click-save-button) (rn.common/start-app-and-login))"}
+   {:script
+    "(identity {:report-name (rt.lib.util/make-test-name \"HighlightFormattingCurrency\")})"}],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :common/fixture/login
+   :rn/section/createsection],
+  :id :rn/reportbuilder/highlight-formatting-currency,
+  :teardown
+  [{:script
+    "(comment (do (rt.po.app/delete-nav-item (:section *tc*))))"}
+   {:script "(rt.po.report-view/set-search-text \"AStudent2\")"}
+   {:script
+    "(if (> (rt.po.view-form/get-report-row-count) 0) (do (rt.po.report-view/select-row-by-text \"AStudent2\") (rt.po.report-view/delete-record \"AStudent2\")))"}
+   {:script "(rt.po.app/delete-nav-item (:section *tc*))"}],
+  :modified-by "not-implemented"}]

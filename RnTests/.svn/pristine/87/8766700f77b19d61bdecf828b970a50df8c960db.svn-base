@@ -1,0 +1,14 @@
+[{:tags [:user/kun app-tests/incident,desktop],
+  :name "2 user creds for incident management tests",
+  :steps [],
+  :type :testfixture,
+  :source "./test-db",
+  :modified "20161019-141045",
+  :setup
+  [{:script
+    "(identity {:incident-user-creds-owner {:username \"inc_owner\" :password \"Readi911\"}})"}
+   {:script
+    "(identity {:incident-user-creds-manager {:username \"inc_manager\", :password \"Readi911\"}})"}],
+  :id :rn/fixture/user-creds-incident,
+  :teardown [],
+  :modified-by "not-implemented"}]

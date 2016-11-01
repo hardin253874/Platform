@@ -1,0 +1,34 @@
+[{:tags [:user/abida :desktop],
+  :name "",
+  :steps
+  [{:script
+    "(rn.common/start-app-and-login {:password \"Readi911\", :username \"tweet.user\"})"}
+   {:script "(rt.po.app/navigate-via-tiles \"Activity Tweet\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New 'Activity Tweet'\")"}
+   {:script
+    "(comment (rt.po.edit-form/set-date-field-value \"Date\" (make-local-date 2016 5 31)))"}
+   {:script
+    "(rt.po.edit-form/set-multiline \"Activity\" \"Completed task 1\")"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.report-view/set-search-text \"Completed task 1\")"}
+   {:script "(rt.scripts/think 2)"}
+   {:script
+    "(expect-equals \"Completed task 1\" (rt.po.report-builder/get-grouped-row-content \"Tweet User\" 0 \"Activity\"))"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.scripts/think 4)"}
+   {:script "(rt.po.app/select-app-tab \"Dashboard\")"}
+   {:script
+    "(comment (rt.po.app/select-navigator-item \"Dashboard\"))"}
+   {:script "(expect (rt.po.chart-view/chart-loaded-ok? nil))"}
+   {:script
+    "(expect-equals \"Tweet User\" (rt.po.chart-view/get-data-point-value nil (rt.po.common/get-today-local-date-string \"EEEE, MMMM dd, yyyy\")))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20161012-171333",
+  :setup [],
+  :fixtures [],
+  :id :tweet/test/entering-activity,
+  :teardown [],
+  :modified-by "not-implemented"}]

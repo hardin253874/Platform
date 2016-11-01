@@ -1,0 +1,46 @@
+[{:tags [:app/crm :desktop],
+  :name "Create a new lead involving new relationship",
+  :steps
+  [{:script "(rt.po.app/navigate-to \"CRM\")"}
+   {:script "(rt.po.app/select-app-tab \"Leads\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script "(rt.po.edit-form/set-lookup \"Lead Owner\" \"Ciccu\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Lead title\" (-> *tc* :lead-title))"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"First name\" \"Joe\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Last name\" \"Black\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Company\" (make-test-name \"Elephant!\"))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(comment -- should be back at the Leads screen --)"}
+   {:script
+    "(comment -- missing driver functions to check current screen name --)"}
+   {:script
+    "(rt.po.report-view/set-search-text (-> *tc* :lead-title))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text (-> *tc* :lead-title))"}
+   {:script "(rt.po.app/choose-context-menu \"Convert Lead\")"}
+   {:script
+    "(expect-equals 2 (count (rt.po.view-form/get-task-actions)))"}
+   {:script
+    "(expect-equals 1 (count (rt.po.view-form/get-task-names)))"}
+   {:script
+    "(expect-match #\"Convert\" (rt.po.view-form/get-task-name))"}
+   {:script
+    "(expect-equals (quote (\"Convert\" \"Cancel\")) (rt.po.view-form/get-task-actions))"}
+   {:script "(rt.po.view-form/choose-task-action \"Convert\")"}
+   {:script
+    "(expect (taxi/wait-until #(= '(\"OK\") (rt.po.view-form/get-task-actions)) 20000))"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150824-124155",
+  :setup
+  [{:script "(identity {:lead-title (make-test-name \"Hot lead\")})"}],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :crm/tests/new-lead-01,
+  :teardown [],
+  :doc "",
+  :modified-by "not-implemented"}]

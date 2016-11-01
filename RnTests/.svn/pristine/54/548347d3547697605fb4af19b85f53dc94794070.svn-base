@@ -1,0 +1,42 @@
+[{:tags [:desktop],
+  :tests [],
+  :name "New Report Drivers on Chrome",
+  :steps
+  [{:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Boolean\" true)",
+        :target-msec 500}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Currency\" true)",
+        :target-msec 500}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Boolean\" \"Group By\")",
+        :target-msec 1500}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Currency\" \"Show Totals\")",
+        :target-msec 1500}
+   {:script "(rt.po.report-total/set-show-grand-total true)",
+        :target-msec 1000}
+   {:script "(rt.po.report-total/set-show-sub-total true)",
+        :target-msec 1000}
+   {:script
+    "(rt.po.report-total/set-summarise-option-value \"Count\" true)",
+        :target-msec 500}
+   {:script
+    "(rt.po.report-total/set-summarise-option-value \"Max\" true)",
+        :target-msec 500}
+   {:script
+    "(rt.po.report-total/set-summarise-option-value \"Min\" true)",
+        :target-msec 500}
+   {:script "(rt.po.report-total/click-ok)",
+        :target-msec 500}],
+  :type :test,
+  :checks [],
+  :source "../RnTests/test-db",
+  :modified "20150601-153808",
+  :setup
+  [:qa-daily/scripts/reports/open-AutomationReport-in-build-mode],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :qa-daily/reports/test-report-groupby-showtotal-drivers,
+  :teardown [],
+  :modified-by "not-implemented",
+  :data {}}]

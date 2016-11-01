@@ -1,0 +1,103 @@
+[{:tags [:prod :regression :desktop],
+  :name
+  "Drivers specific to the Record and Navigation Access tabs available on the Security Role form on Chrome.",
+  :steps
+  [{:script "(rn.app/open-security \"User Roles\")"}
+   {:script "(rt.po.report-view/set-search-text \"Foster Common\")"}
+   {:script
+    "(rt.po.report-view/choose-report-row-action \"Foster Common\" \"View\")"}
+   {:script "(rt.po.view-form/select-form-tab \"Record Access\")"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/row-exists? \"University\" \"View\" \"University\"))"}
+   {:script
+    "(expect-equals \"University\" (:query (rt.po.access-rules/get-row \"University\" \"View\" \"Uni\")))"}
+   {:script
+    "(expect-equals false (rt.po.access-rules/exact-row-exists? \"University\" \"View\" \"Uni\"))"}
+   {:script "(rt.po.access-rules/add-new-access-rule)"}
+   {:script "(rt.po.access-rules-new/set-object \"University\")"}
+   {:script "(rt.po.access-rules-new/click-ok)"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/double-click-row (rt.po.access-rules/get-last-row \"University\" \"View\" \"University\"))"}
+   {:script "(rt.po.report-builder/rename \"Uni\")"}
+   {:script "(rt.po.report-builder/save)"}
+   {:script "(rt.po.report-builder/close)"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/exact-row-exists? \"University\" \"View\" \"University\"))"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/exact-row-exists? \"University\" \"View\" \"Uni\"))"}
+   {:script
+    "(expect-equals false (rt.po.access-rules/row-enabled? (rt.po.access-rules/get-last-exact-row \"University\" \"View\" \"Uni\")))"}
+   {:script
+    "(rt.po.access-rules/set-row-enabled (rt.po.access-rules/get-last-exact-row \"University\" \"View\" \"Uni\") true)"}
+   {:script
+    "(rt.po.access-rules/set-row-operation (rt.po.access-rules/get-last-exact-row \"University\" \"View\" \"Uni\") \"Full (Create, View, Edit and Delete)\")"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script "(expect-equals false (rt.po.app/page-has-error-alert?))"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/row-exists? \"University\" \"\" \"University\"))"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/exact-row-exists? \"University\" \"Full (Create, View, Edit and Delete)\" \"Uni\"))"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/row-enabled? (rt.po.access-rules/get-exact-row \"University\" \"Full (Create, View, Edit and Delete)\" \"Uni\")))"}
+   {:script
+    "(expect-equals \"Full (Create, View, Edit and Delete)\" (:permissions (rt.po.access-rules/get-last-row \"University\" \"\" \"Uni\")))"}
+   {:script
+    "(rt.po.access-rules/right-click-row (rt.po.access-rules/get-last-exact-row \"University\" \"Full (Create, View, Edit and Delete)\" \"Uni\"))"}
+   {:script "(rt.po.app/choose-context-menu \"Delete\")"}
+   {:script "(rt.po.edit-form/click-confirm-delete-ok-button)"}
+   {:script "(expect-equals false (rt.po.app/page-has-error-alert?))"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/exact-row-exists? \"University\" \"View\" \"University\"))"}
+   {:script
+    "(expect-equals false (rt.po.access-rules/exact-row-exists? \"University\" \"Full (Create, View, Edit and Delete)\" \"Uni\"))"}
+   {:script "(rt.po.view-form/select-form-tab \"Navigation Access\")"}
+   {:script
+    "(rt.po.access-rules/set-application \"Foster University\")"}
+   {:script
+    "(expect-equals false (rt.po.access-rules/node-checked? \"Staff screen - all three\"))"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/set-node-value \"Staff screen - all three\" true)"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/node-checked? \"Staff screen - all three\"))"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/set-node-value \"Staff screen - all three\" false)"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script
+    "(expect-equals false (rt.po.access-rules/node-checked? \"Staff screen - all three\"))"}
+   {:script "(expect-equals false (rt.po.app/page-has-error-alert?))"}
+   {:script "(rt.po.view-form/form-nav-back)"}
+   {:script "(rt.po.report-view/set-search-text \"Student\")"}
+   {:script
+    "(rt.po.report-view/choose-report-row-action \"Student\" \"View\")"}
+   {:script "(rt.po.view-form/select-form-tab \"Record Access\")"}
+   {:script
+    "(expect-equals false (rt.po.access-rules/exact-row-exists? \"Library Card\" \"View\" \"Library Card\"))"}
+   {:script "(rt.po.access-rules/add-new-access-rule)"}
+   {:script "(rt.po.access-rules-new/set-object \"Library card\")"}
+   {:script "(rt.po.access-rules-new/click-ok)"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/exact-row-exists? \"Library card\" \"View\" \"Library card\"))"}
+   {:script
+    "(rt.po.access-rules/right-click-row (rt.po.access-rules/get-last-exact-row \"Library card\" \"View\" \"Library card\"))"}
+   {:script "(rt.po.app/choose-context-menu \"Delete\")"}
+   {:script "(rt.po.edit-form/click-confirm-delete-ok-button)"}
+   {:script "(expect-equals false (rt.po.app/page-has-error-alert?))"}
+   {:script
+    "(expect-equals false (rt.po.access-rules/exact-row-exists? \"Library card\" \"View\" \"Library card\"))"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script "(expect-equals false (rt.po.app/page-has-error-alert?))"}
+   {:script
+    "(expect-equals false (rt.po.access-rules/exact-row-exists? \"Library card\" \"View\" \"Library card\"))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160901-101544",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :qa-daily/security/test-new-security-tab-drivers,
+  :teardown [],
+  :modified-by "not-implemented"}]

@@ -1,0 +1,18 @@
+[{:tags [:desktop],
+  :test-filter "(has-tags? #{:user/steve} %)",
+  :tests
+  [:rn/reportbuilder/removefields-via-checkboxes
+   :rn/reportbuilder/removefields-via-contextmenu],
+  :name "steves dev suite",
+  :each-fixtures
+  [:common/fixture/handle-errors
+   :common/fixture/chrome
+   :common/fixture/wait-ng],
+  :type :testsuite,
+  :source "../RnTests/test-db",
+  :modified "20150730-085326",
+  :setup [],
+  :id :rn/suites/steve,
+  :teardown [],
+  :modified-by "not-implemented",
+  :once-fixtures []}]

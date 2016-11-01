@@ -1,0 +1,14 @@
+[{:tags [:desktop],
+  :name "2 student user creds for security tests",
+  :steps [],
+  :type :testfixture,
+  :source "./test-db",
+  :modified "20151023-144545",
+  :setup
+  [{:script
+    "(identity {:user-creds-student1 {:username \"Nelle.Odom\" :password \"Nelle.Odom1\"}})"}
+   {:script
+    "(identity {:user-creds-student2 {:password \"Plato.Parks1\", :username \"Plato.Parks\"}})"}],
+  :id :rn/fixture/user-creds-students,
+  :teardown [],
+  :modified-by "not-implemented"}]

@@ -1,0 +1,312 @@
+[{:tags [:area/report-builder :prod :regression :desktop :user/abida],
+  :name "Conditional formatting for structure view",
+  :steps
+  [{:script "(rt.po.app/add-report (:section *tc*))"}
+   {:script
+    "(rt.po.report-new/set-name \"Conditional_Formatting_Structureview\")"}
+   {:script "(rt.po.report-new/set-report-base-on \"Faculties\")"}
+   {:script "(rt.po.report-new/click-ok)"}
+   {:script "(rt.po.report-builder/add-relationship \"Staff\")"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Staff\" \"Format Column\")"}
+   {:script "(rt.po.report-format/click-value-formatting)"}
+   {:script
+    "(rt.po.report-format/set-hierarchy-report \"Staff Hierarchy\")"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script
+    "(expect-equals \"Erica Mcknight > Barry Sanders\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Staff\"))"}
+   {:script "(rt.po.report-builder/click-sort-a-z \"Staff\")"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Staff\" \"Format Column\")"}
+   {:script "(rt.po.report-format/set-format-type \"Icon\")"}
+   {:script
+    "(rt.po.report-format/set-format-scheme \"2 step - Arrow\")"}
+   {:script
+    "(rt.po.report-format/set-icon-conditions [{:value \"Adam Foster\", :oper \"Any below\", :icon \"Green Down Arrow Format Icon\"} {:value \"\", :oper \"\", :icon \"Red Down Arrow Format Icon\"}])"}
+   {:script "(rt.po.report-format/click-ok)"}   
+   {:script
+    "(expect-equals \"Erica Mcknight > Barry Sanders\" (rt.po.report-view/get-report-cell-text-content \"13\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Red Down Arrow Format Icon\" (rt.po.report-view/get-report-format-icon \"13\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Adam Foster > Sophia Grimes\" (rt.po.report-view/get-report-cell-text-content \"4\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Green Down Arrow Format Icon\" (rt.po.report-view/get-report-format-icon \"4\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Adam Foster > Axel Barker\" (rt.po.report-view/get-report-cell-text-content \"1\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Green Down Arrow Format Icon\" (rt.po.report-view/get-report-format-icon \"1\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Adam Foster > Sharon Valdez\" (rt.po.report-view/get-report-cell-text-content \"3\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Green Down Arrow Format Icon\" (rt.po.report-view/get-report-format-icon \"3\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Adam Foster > Octavius Baldwin\" (rt.po.report-view/get-report-cell-text-content \"2\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Green Down Arrow Format Icon\" (rt.po.report-view/get-report-format-icon \"2\" \"Staff\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script
+    "(rn.app/open-report \"Conditional_Formatting_Structureview\" {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"Erica Mcknight > Barry Sanders\" (rt.po.report-view/get-report-cell-text-content \"13\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Red Down Arrow Format Icon\" (rt.po.report-view/get-report-format-icon \"13\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Adam Foster > Sophia Grimes\" (rt.po.report-view/get-report-cell-text-content \"4\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Green Down Arrow Format Icon\" (rt.po.report-view/get-report-format-icon \"4\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Adam Foster > Axel Barker\" (rt.po.report-view/get-report-cell-text-content \"1\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Green Down Arrow Format Icon\" (rt.po.report-view/get-report-format-icon \"1\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Adam Foster > Sharon Valdez\" (rt.po.report-view/get-report-cell-text-content \"3\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Green Down Arrow Format Icon\" (rt.po.report-view/get-report-format-icon \"3\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Adam Foster > Octavius Baldwin\" (rt.po.report-view/get-report-cell-text-content \"2\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Green Down Arrow Format Icon\" (rt.po.report-view/get-report-format-icon \"2\" \"Staff\"))"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Staff\" \"Format Column\")"}
+   {:script
+    "(rt.po.report-format/set-icon-conditions [{:value \"Adam Foster\", :oper \"Any at or below\", :icon \"Green Down Arrow Format Icon\"} {:value \"\", :oper \"\", :icon \"Red Down Arrow Format Icon\"}])"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script
+    "(expect-equals \"Cooper Griffith > Erica Mcknight\" (rt.po.report-view/get-report-cell-text-content \"12\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Red Down Arrow Format Icon\" (rt.po.report-view/get-report-format-icon \"12\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Adam Foster > Sophia Grimes\" (rt.po.report-view/get-report-cell-text-content \"4\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Green Down Arrow Format Icon\" (rt.po.report-view/get-report-format-icon \"4\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Adam Foster > Axel Barker\" (rt.po.report-view/get-report-cell-text-content \"1\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Green Down Arrow Format Icon\" (rt.po.report-view/get-report-format-icon \"1\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Cooper Griffith > Adam Foster\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Green Down Arrow Format Icon\" (rt.po.report-view/get-report-format-icon \"0\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Adam Foster > Sharon Valdez\" (rt.po.report-view/get-report-cell-text-content \"3\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Green Down Arrow Format Icon\" (rt.po.report-view/get-report-format-icon \"3\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Adam Foster > Octavius Baldwin\" (rt.po.report-view/get-report-cell-text-content \"2\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Green Down Arrow Format Icon\" (rt.po.report-view/get-report-format-icon \"2\" \"Staff\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script
+    "(rn.app/open-report \"Conditional_Formatting_Structureview\" {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"Cooper Griffith > Erica Mcknight\" (rt.po.report-view/get-report-cell-text-content \"12\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Red Down Arrow Format Icon\" (rt.po.report-view/get-report-format-icon \"12\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Adam Foster > Sophia Grimes\" (rt.po.report-view/get-report-cell-text-content \"4\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Green Down Arrow Format Icon\" (rt.po.report-view/get-report-format-icon \"4\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Adam Foster > Axel Barker\" (rt.po.report-view/get-report-cell-text-content \"1\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Green Down Arrow Format Icon\" (rt.po.report-view/get-report-format-icon \"1\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Cooper Griffith > Adam Foster\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Green Down Arrow Format Icon\" (rt.po.report-view/get-report-format-icon \"0\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Adam Foster > Sharon Valdez\" (rt.po.report-view/get-report-cell-text-content \"3\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Green Down Arrow Format Icon\" (rt.po.report-view/get-report-format-icon \"3\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Adam Foster > Octavius Baldwin\" (rt.po.report-view/get-report-cell-text-content \"2\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Green Down Arrow Format Icon\" (rt.po.report-view/get-report-format-icon \"2\" \"Staff\"))"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Staff\" \"Format Column\")"}
+   {:script
+    "(rt.po.report-format/set-icon-conditions [{:value \"Axel Barker\", :oper \"Any above\", :icon \"Green Up Arrow Format Icon\"} {:value \"\", :oper \"\", :icon \"Red Down Arrow Format Icon\"}])"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script
+    "(expect-equals \"Adam Foster > Axel Barker\" (rt.po.report-view/get-report-cell-text-content \"1\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Red Down Arrow Format Icon\" (rt.po.report-view/get-report-format-icon \"1\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Cooper Griffith > Adam Foster\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Green Up Arrow Format Icon\" (rt.po.report-view/get-report-format-icon \"0\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Adam Foster > Sharon Valdez\" (rt.po.report-view/get-report-cell-text-content \"3\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Red Down Arrow Format Icon\" (rt.po.report-view/get-report-format-icon \"3\" \"Staff\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script
+    "(rn.app/open-report \"Conditional_Formatting_Structureview\" {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"Adam Foster > Axel Barker\" (rt.po.report-view/get-report-cell-text-content \"1\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Red Down Arrow Format Icon\" (rt.po.report-view/get-report-format-icon \"1\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Cooper Griffith > Adam Foster\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Green Up Arrow Format Icon\" (rt.po.report-view/get-report-format-icon \"0\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Adam Foster > Sharon Valdez\" (rt.po.report-view/get-report-cell-text-content \"3\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Red Down Arrow Format Icon\" (rt.po.report-view/get-report-format-icon \"3\" \"Staff\"))"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Staff\" \"Format Column\")"}
+   {:script
+    "(rt.po.report-format/set-icon-conditions [{:value \"Axel Barker\", :oper \"Any at or above\", :icon \"Green Up Arrow Format Icon\"} {:value \"\", :oper \"\", :icon \"Red Down Arrow Format Icon\"}])"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script
+    "(expect-equals \"Adam Foster > Sophia Grimes\" (rt.po.report-view/get-report-cell-text-content \"4\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Red Down Arrow Format Icon\" (rt.po.report-view/get-report-format-icon \"4\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Adam Foster > Axel Barker\" (rt.po.report-view/get-report-cell-text-content \"1\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Green Up Arrow Format Icon\" (rt.po.report-view/get-report-format-icon \"1\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Cooper Griffith > Adam Foster\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Green Up Arrow Format Icon\" (rt.po.report-view/get-report-format-icon \"0\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Adam Foster > Sharon Valdez\" (rt.po.report-view/get-report-cell-text-content \"3\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Red Down Arrow Format Icon\" (rt.po.report-view/get-report-format-icon \"3\" \"Staff\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script
+    "(rn.app/open-report \"Conditional_Formatting_Structureview\" {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"Adam Foster > Sophia Grimes\" (rt.po.report-view/get-report-cell-text-content \"4\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Red Down Arrow Format Icon\" (rt.po.report-view/get-report-format-icon \"4\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Adam Foster > Axel Barker\" (rt.po.report-view/get-report-cell-text-content \"1\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Green Up Arrow Format Icon\" (rt.po.report-view/get-report-format-icon \"1\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Cooper Griffith > Adam Foster\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Green Up Arrow Format Icon\" (rt.po.report-view/get-report-format-icon \"0\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Adam Foster > Sharon Valdez\" (rt.po.report-view/get-report-cell-text-content \"3\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Red Down Arrow Format Icon\" (rt.po.report-view/get-report-format-icon \"3\" \"Staff\"))"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Staff\" \"Format Column\")"}
+   {:script
+    "(rt.po.report-format/set-icon-conditions [{:value \"night\", :oper \"Contains\", :icon \"Green Up Arrow Format Icon\"} {:value \"\", :oper \"\", :icon \"Red Down Arrow Format Icon\"}])"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script
+    "(expect-equals \"Erica Mcknight > Barry Sanders\" (rt.po.report-view/get-report-cell-text-content \"13\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Green Up Arrow Format Icon\" (rt.po.report-view/get-report-format-icon \"13\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Erica Mcknight > Buckminster Alexander\" (rt.po.report-view/get-report-cell-text-content \"14\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Green Up Arrow Format Icon\" (rt.po.report-view/get-report-format-icon \"14\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Cooper Griffith > Erica Mcknight\" (rt.po.report-view/get-report-cell-text-content \"12\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Green Up Arrow Format Icon\" (rt.po.report-view/get-report-format-icon \"12\" \"Staff\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script
+    "(rn.app/open-report \"Conditional_Formatting_Structureview\" {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"Erica Mcknight > Barry Sanders\" (rt.po.report-view/get-report-cell-text-content \"13\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Green Up Arrow Format Icon\" (rt.po.report-view/get-report-format-icon \"13\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Erica Mcknight > Buckminster Alexander\" (rt.po.report-view/get-report-cell-text-content \"14\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Green Up Arrow Format Icon\" (rt.po.report-view/get-report-format-icon \"14\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Cooper Griffith > Erica Mcknight\" (rt.po.report-view/get-report-cell-text-content \"12\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Green Up Arrow Format Icon\" (rt.po.report-view/get-report-format-icon \"12\" \"Staff\"))"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Staff\" \"Format Column\")"}
+   {:script
+    "(rt.po.report-format/set-icon-conditions [{:value \"\", :oper \"Is defined\", :icon \"Green Up Arrow Format Icon\"} {:value \"\", :oper \"\", :icon \"Red Down Arrow Format Icon\"}])"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script
+    "(expect-equals \"Erica Mcknight > Barry Sanders\" (rt.po.report-view/get-report-cell-text-content \"13\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Green Up Arrow Format Icon\" (rt.po.report-view/get-report-format-icon \"13\" \"Staff\"))"}
+   {:script
+    "(comment (Add a step to see if red down arrow format icon does not exists in the report))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script
+    "(rn.app/open-report \"Conditional_Formatting_Structureview\" {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"Erica Mcknight > Barry Sanders\" (rt.po.report-view/get-report-cell-text-content \"13\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Green Up Arrow Format Icon\" (rt.po.report-view/get-report-format-icon \"13\" \"Staff\"))"}
+   {:script
+    "(comment (Add a step to see if red down arrow format icon does not exists in the report))"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New 'Faculties'\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Faculty name\" \"Test Faculty\")"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script "(rt.po.view-form/form-nav-back)"}
+   {:script "(rt.po.report-view/set-search-text \"Test\")"}
+   {:script
+    "(expect-equals \"\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Red Down Arrow Format Icon\" (rt.po.report-view/get-report-format-icon \"0\" \"Staff\"))"}
+   {:script "(rt.po.report-view/set-search-text \"\")"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Staff\" \"Format Column\")"}
+   {:script
+    "(rt.po.report-format/set-icon-conditions [{:value \"\", :oper \"Is not defined\", :icon \"Green Up Arrow Format Icon\"} {:value \"\", :oper \"\", :icon \"Red Down Arrow Format Icon\"}])"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script
+    "(expect-equals \"\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Green Up Arrow Format Icon\" (rt.po.report-view/get-report-format-icon \"0\" \"Staff\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script
+    "(rn.app/open-report \"Conditional_Formatting_Structureview\" {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script "(rt.lib.wd-rn/report-grid-scroll-up)"}
+   {:script "(rt.lib.wd-rn/report-grid-scroll-up)"}
+   {:script "(rt.lib.wd-rn/report-grid-scroll-up)"}
+   {:script
+    "(expect-equals \"\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Green Up Arrow Format Icon\" (rt.po.report-view/get-report-format-icon \"0\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Cooper Griffith > Adam Foster\" (rt.po.report-view/get-report-cell-text-content \"1\" \"Staff\"))"}
+   {:script
+    "(expect-equals \"Red Down Arrow Format Icon\" (rt.po.report-view/get-report-format-icon \"1\" \"Staff\"))"}
+   {:script "(rt.po.report-view/set-search-text \"Test\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Test Faculty\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(rt.po.app/choose-context-menu \"Delete 'Test Faculty'\")"}
+   {:script "(rt.po.edit-form/click-confirm-delete-ok-button)"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160914-132248",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :common/fixture/login
+   :rn/section/createsection],
+  :id :rn/structureview/conditional-formatting,
+  :teardown
+  [{:script "(rt.po.report-view/set-search-text \"Test\")"}
+   {:script
+    "(when (= (rt.po.view-form/get-report-row-count) 1) (rt.po.report-view/select-row-by-text \"Test Faculty\") (rt.po.report-view/open-action-menu) (rt.po.app/choose-context-menu \"Delete 'Test Faculty'\") (rt.po.edit-form/click-confirm-delete-ok-button))"}
+   {:script "(rt.po.app/delete-nav-item (:section *tc*))"}],
+  :modified-by "not-implemented"}]

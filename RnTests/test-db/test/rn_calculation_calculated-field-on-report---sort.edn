@@ -1,0 +1,111 @@
+[{:tags
+  [:nomodify
+   :prod
+   :daily
+   :regression
+   :user/shaofen
+   :desktop
+   :area/calculation],
+  :tests [],
+  :name
+  "Calculated fields behaves on report - ensure sorting behaves fine - cal-currency used",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(comment \"==================================== Adding a new form for Dean with calcualted field (Yes/No used for group by)for test purpose. ==================================\")"}
+   {:script
+    "(rn.app/open-report \"Deans of University report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(rn.common/clear-all-alerts)"}
+   {:script "(rt.po.app/enable-app-toolbox)"}
+   {:script
+    "(rt.po.app-toolbox/set-application-filter \"Foster University\")"}
+   {:script
+    "(rt.po.app-toolbox/choose-object-menu \"Dean\" \"Modify\")"}
+   {:script
+    "(expect-equals \"Dean Form\" (rt.po.form-builder/get-form-title))"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Calculation\")"}
+   {:script
+    "(expect-equals \"Calculation\" (rt.po.form-builder-config/get-name))"}
+   {:script "(rt.po.form-builder-config/set-name \"Cal-sort\")"}
+   {:script
+    "(expect (rt.po.form-builder-config/calculation-field-type-visible?))"}
+   {:script
+    "(rt.po.form-builder-config/set-calculation-field-type \"Currency\")"}
+   {:script
+    "(expect-equals \"Currency\" (rt.po.form-builder-config/get-calculation-field-type))"}
+   {:script
+    "(expect-equals \"\" (rt.po.form-builder-config/get-calculation))"}
+   {:script
+    "(rt.po.form-builder-config/set-calculation \"[Expenditure limit]/1000\")"}
+   {:script
+    "(expect-equals \"[Expenditure limit]/1000\" (rt.po.form-builder-config/get-calculation))"}
+   {:script "(expect (not (rt.po.form-builder-config/ok-disabled?)))"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}
+   {:script "(rt.po.app/disable-app-toolbox)"}
+   {:script
+    "(comment \"==================================== Adding a new report for Dean with caluculated Currency field to test sorting ==================================\")"}
+   {:script
+    "(rn.app/open-report \"Deans of University report\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script "(rt.po.report-builder/click-saveas-report-button)"}
+   {:script
+    "(rt.po.report-builder/set-report-new-name \"Calculation4 - Dean report\")"}
+   {:script "(rt.po.report-builder/click-saveas-ok)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Cal-sort\" true)"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script
+    "(expect-equals 1 (rt.po.report-builder/get-count-matched-columns-name \"Cal-sort\"))"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Cal-sort\" \"Sort Options\")"}
+   {:script "(rt.po.report-sort-option/click-add-sorting)"}
+   {:script
+    "(rt.po.report-sort-option/set-sortings [{:dir \"Ascending\", :colname \"Cal-sort\"}])"}
+   {:script "(rt.po.report-sort-option/click-ok)"}
+   {:script
+    "(expect-equals \"$3,500.000\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Cal-sort\"))"}
+   {:script
+    "(expect-equals \"$6,780.000\" (rt.po.report-view/get-report-cell-text-content \"1\" \"Cal-sort\"))"}
+   {:script
+    "(expect-equals \"$8,000.000\" (rt.po.report-view/get-report-cell-text-content \"2\" \"Cal-sort\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script
+    "(rn.app/open-report \"Calculation4 - Dean report\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script
+    "(expect-equals \"$3,500.000\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Cal-sort\"))"}
+   {:script
+    "(expect-equals \"$6,780.000\" (rt.po.report-view/get-report-cell-text-content \"1\" \"Cal-sort\"))"}
+   {:script
+    "(expect-equals \"$8,000.000\" (rt.po.report-view/get-report-cell-text-content \"2\" \"Cal-sort\"))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160302-091519",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds :rn/fixture/admin-creds],
+  :id :rn/calculation/calculated-field-on-report---sort,
+  :teardown
+  [{:script "(rn.app/open-admin \"Reports\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Calculation4 - Dean report\")"}
+   {:script
+    "(if (> (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/right-click-row-by-text \"Calculation4 - Dean report\") (rt.po.app/choose-context-menu \"Delete\") (rt.po.edit-form/click-confirm-delete-ok-button)))"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Calculation4 - Dean report\")"}
+   {:script "(expect-equals 0 (rt.po.report-view/count-report-row))"}
+   {:script "(rt.po.app/enable-app-toolbox)"}
+   {:script
+    "(rt.po.app-toolbox/set-application-filter \"Foster University\")"}
+   {:script
+    "(rt.po.app-toolbox/choose-object-menu \"Dean\" \"Modify Object\")"}
+   {:script
+    "(expect-equals \"Dean Form\" (rt.po.form-builder/get-form-title))"}
+   {:script
+    "(if (rt.po.form-builder/toolbox-field-exist? \"Cal-sort\") (do (rt.po.form-builder/delete-field \"Cal-sort\") (rt.po.form-builder/save)))"}
+   {:script
+    "(expect-equals false (rt.po.form-builder/toolbox-field-exist? \"Cal-sort\"))"}],
+  :doc "",
+  :modified-by "not-implemented"}]

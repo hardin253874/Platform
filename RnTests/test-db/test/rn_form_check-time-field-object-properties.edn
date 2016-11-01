@@ -1,0 +1,186 @@
+[{:tags [:nomodify :prod :regression :area/form :user/anurag :desktop],
+  :tests [],
+  :name "Testing all the object properties for time field",
+  :steps
+  [{:script
+    "(rt.po.app-toolbox/create-app {:name (:app-name *tc*) :description \"\"})"}
+   {:script "(rt.po.app/enable-app-toolbox )"}
+   {:script
+    "(rt.po.app-toolbox/set-application-filter (:app-name *tc*))"}
+   {:script "(comment -- create 'Time Field Object' and its form --)"}
+   {:script
+    "(rt.po.app-toolbox/create-object {:description \"New Time only Test Object Description\", :name (:obj-name *tc*)})"}
+   {:script "(rt.po.form-builder/add-container-to-form )"}
+   {:script "(comment -- Mandatory on Form --)"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Time\" 0)"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"Time\")"}
+   {:script
+    "(rt.po.form-builder-config/set-name \"Mandatory On Form\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Form Detail\")"}
+   {:script "(rt.po.form-builder-config/set-control-mandatory true)"}
+   {:script "(rt.po.form-builder-config/click-ok )"}
+   {:script "(comment -- Readonly Field --)"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Time\" 0)"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"Time\")"}
+   {:script "(rt.po.form-builder-config/set-name \"Readonly Field\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Form Detail\")"}
+   {:script "(rt.po.form-builder-config/set-control-readonly true)"}
+   {:script "(rt.po.form-builder-config/click-ok )"}
+   {:script "(comment -- Mandatory on Object --)"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Time\" 0)"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"Time\")"}
+   {:script
+    "(rt.po.form-builder-config/set-name \"Mandatory On Object\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Object Detail\")"}
+   {:script "(rt.po.form-builder-config/set-field-mandatory true)"}
+   {:script "(rt.po.form-builder-config/click-ok )"}
+   {:script "(comment -- *Min Value Set field --)"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Time\" 0)"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"Time\")"}
+   {:script "(rt.po.form-builder-config/set-name \"Min Value Set\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Object Detail\")"}
+   {:script
+    "(rt.po.form-builder-config/set-field-minimum-value \"03:00 AM\")"}
+   {:script "(rt.po.form-builder-config/click-ok )"}
+   {:script "(comment -- *Max Value Set field --)"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Time\" 0)"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"Time\")"}
+   {:script "(rt.po.form-builder-config/set-name \"Max Value Set\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Object Detail\")"}
+   {:script
+    "(rt.po.form-builder-config/set-field-maximum-value \"10:00 AM\")"}
+   {:script "(rt.po.form-builder-config/click-ok )"}
+   {:script "(comment -- *Default Value Set field --)"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Time\" 0)"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"Time\")"}
+   {:script
+    "(rt.po.form-builder-config/set-name \"Default Value Set\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Object Detail\")"}
+   {:script
+    "(rt.po.form-builder-config/set-field-default-value \"08:00 AM\")"}
+   {:script "(rt.po.form-builder-config/click-ok )"}
+   {:script "(comment -- *Format Control field --)"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Time\" 0)"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"Time\")"}
+   {:script "(rt.po.form-builder-config/set-name \"Format Control\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Format\")"}
+   {:script
+    "(rt.po.form-builder-config/set-background-color \"Light Red\")"}
+   {:script "(rt.po.form-builder-config/click-ok )"}
+   {:script "(comment -- *Save and Close to go back to toolbox --)"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(expect-not (rt.po.app/page-has-error-alert?))"}
+   {:script "(rt.po.form-builder/close)"}
+   {:script
+    "(comment -- *add the existing report for 'Time Field Object' --)"}
+   {:script "(rt.po.app/navigate-to (:app-name *tc*))"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script "(rt.po.app/add-existing-report (:obj-name *tc*))"}
+   {:script
+    "(comment -- \"field validations create new instance\" --)"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script "(comment -- 'Mandatory on Form' field validation --)"}
+   {:script
+    "(comment -- try to save without filling mandatory on form field and check if error msg is displayed --)"}
+   {:script "(rt.po.edit-form/click-save-button )"}
+   {:script "(expect (rt.po.app/page-has-error-alert?))"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/field-mandatory-indicator-visible? \"Mandatory On Form\"))"}
+   {:script
+    "(expect-equals true (rt.po.common/exists-present? (rt.po.edit-form/find-error-marker \"Mandatory On Form\")))"}
+   {:script
+    "(expect-equals \"A value is required.\" (rt.po.edit-form/field-error-message \"Mandatory On Form\"))"}
+   {:script
+    "(rt.po.common/set-string \"Mandatory On Form\" \"05:00 AM\")"}
+   {:script
+    "(comment -- try to save without filling mandatory on object field and check if error msg is displayed --)"}
+   {:script "(rt.po.edit-form/click-save-button )"}
+   {:script "(rt.po.app/page-has-error-alert? )"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/field-mandatory-indicator-visible? \"Mandatory On Object\"))"}
+   {:script
+    "(expect-equals true (rt.po.common/exists-present? (rt.po.edit-form/find-error-marker \"Mandatory On Object\")))"}
+   {:script
+    "(expect-equals \"A value is required.\" (rt.po.edit-form/field-error-message \"Mandatory On Object\"))"}
+   {:script
+    "(rt.po.common/set-string \"Mandatory On Object\" \"06:00 AM\")"}
+   {:script
+    "(comment -- hack before checking for mandatory fields error msgs, set value of format control to take focus away from mandatory fields --)"}
+   {:script
+    "(rt.po.common/set-string \"Format Control\" \"01:00 AM\")"}
+   {:script
+    "(expect-equals false (rt.po.common/exists-present? (rt.po.edit-form/find-error-marker \"Mandatory On Form\")))"}
+   {:script
+    "(expect-equals false (rt.po.common/exists-present? (rt.po.edit-form/find-error-marker \"Mandatory On Object\")))"}
+   {:script "(comment \"-- 'Readonly field' validation --\")"}
+   {:script
+    "(expect-equals true (rt.po.edit-form/date-field-read-only? \"Readonly Field\"))"}
+   {:script "(comment \"-- 'Min Value Set' field validation --\")"}
+   {:script "(rt.po.common/set-string \"Min Value Set\" \"01:00 AM\")"}
+   {:script
+    "(comment -- hack set value of format control to take focus away from this field --)"}
+   {:script
+    "(rt.po.common/set-string \"Format Control\" \"02:00 AM\")"}
+   {:script
+    "(expect-equals true (rt.po.common/exists-present? (rt.po.edit-form/find-error-marker \"Min Value Set\")))"}
+   {:script
+    "(expect-equals \"The value less than the minimum value; the minimum value is 3:00 AM\" (rt.po.edit-form/field-error-message \"Min Value Set\"))"}
+   {:script "(rt.po.common/set-string \"Min Value Set\" \"04:00 AM\")"}
+   {:script
+    "(comment -- hack set value of format control to take focus away from this field --)"}
+   {:script
+    "(rt.po.common/set-string \"Format Control\" \"01:00 AM\")"}
+   {:script
+    "(expect-equals false (rt.po.common/exists-present? (rt.po.edit-form/find-error-marker \"Min Value Set\")))"}
+   {:script "(comment \"-- 'Max Value Set' field validation --\")"}
+   {:script "(rt.po.common/set-string \"Max Value Set\" \"11:00 AM\")"}
+   {:script
+    "(comment -- hack set value of format control to take focus away from this field --)"}
+   {:script
+    "(rt.po.common/set-string \"Format Control\" \"02:00 AM\")"}
+   {:script
+    "(expect-equals true (rt.po.common/exists-present? (rt.po.edit-form/find-error-marker \"Max Value Set\")))"}
+   {:script
+    "(expect-equals \"The value is out of range; the maximum value is 10:00 AM\" (rt.po.edit-form/field-error-message \"Max Value Set\"))"}
+   {:script "(rt.po.common/set-string \"Max Value Set\" \"09:00 AM\")"}
+   {:script
+    "(comment -- hack set value of format control to take focus away from this field --)"}
+   {:script
+    "(rt.po.common/set-string \"Format Control\" \"01:00 AM\")"}
+   {:script
+    "(expect-equals false (rt.po.common/exists-present? (rt.po.edit-form/find-error-marker \"Max Value Set\")))"}
+   {:script
+    "(comment \"-- ToDo:'Default Value Set' field validation --\")"}
+   {:script "(rt.po.edit-form/click-save-button)"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160914-114849",
+  :setup
+  [{:script
+    "(identity {:app-name (make-test-name \"Forms\"), :obj-name (make-test-name \"Obj\")})"}],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/form/check-time-field-object-properties,
+  :teardown [],
+  :modified-by "not-implemented"}]

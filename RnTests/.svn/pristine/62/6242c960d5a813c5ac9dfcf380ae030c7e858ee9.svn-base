@@ -1,0 +1,177 @@
+[{:tags [:desktop :app/bcm],
+  :name "Update BU and approve",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:login-creds *tc*))"}
+   {:script "(think 5)"}
+   {:script "(rt.po.app/navigate-to \"Business Continuity Planning\")",
+    :target-msec 10000}
+   {:script
+    "(comment \"test again when drill down chart driver is working\")",
+    :target-msec 10000}
+   {:script
+    "(comment (rt.po.app/select-navigator-item \"Plans Summary\"))",
+    :target-msec 10000}
+   {:script
+    "(comment (rt.po.chart-view/select-pie-slice \"Plans by Status\" \"In Review\"))",
+    :target-msec 10000}
+   {:script "(comment (think 5))"}
+   {:script "(rt.po.report-view/set-search-text (:bu-name *tc*))"}
+   {:script "(rt.po.report-view/select-row-by-text (:bu-name *tc*))"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text (:bu-name *tc*))"}
+   {:script "(think 25)"}
+   {:script
+    "(rt.po.edit-form/select-form-tab \"Recovery Requirements\")"}
+   {:script "(think 25)"}
+   {:script
+    "(rt.po.edit-form/select-form-tab \"IT Recovery Requirements\")"}
+   {:script "(think 2)"}
+   {:script
+    "(rt.po.edit-form/select-form-tab \"Products & Services Dependency\")"}
+   {:script "(think 15)"}
+   {:script "(rt.po.edit-form/select-form-tab \"Risk Assessment\")"}
+   {:script "(think 2)"}
+   {:script
+    "(rt.po.edit-form/select-form-tab \"Business Critical Periods\")"}
+   {:script "(think 25)"}
+   {:script "(rt.po.edit-form/select-form-tab \"Business Unit Plan\")"}
+   {:script "(think 5)"}
+   {:script "(rt.po.edit-form/select-form-tab \"Approval\")"}
+   {:script "(think 2)"}
+   {:script "(rt.po.edit-form/select-form-tab \"Employees\")"}
+   {:script "(think 15)"}
+   {:script
+    "(rt.po.report-view/sort-column-by-click-header \"\" \"Employee\")"}
+   {:script "(think 25)"}
+   {:script "(rt.po.view-form/form-nav-back)"}
+   {:script "(rt.po.app/select-navigator-item \"Plans Summary\")",
+    :target-msec 10000}
+   {:script "(think 10)"}
+   {:script "(rt.po.report-view/open-analyzer)", :target-msec 10000}
+   {:script
+    "(rt.po.report-view/set-analyzer-field-oper \"% Completed\" \"=\")",
+    :target-msec 10000}
+   {:script
+    "(rt.po.report-view/set-analyzer-string \"% Completed\" (str (rand-int 100)))",
+    :target-msec 10000}
+   {:script "(rt.po.report-view/open-analyzer)", :target-msec 10000}
+   {:script
+    "(rt.po.report-view/set-analyzer-choice-option \"Approval status\" \"Any of\" \"In Draft\")",
+    :target-msec 10000}
+   {:script
+    "(rt.po.report-view/set-analyzer-choice-option \"Approval status\" \"Any of\" \"In Review\")",
+    :target-msec 10000}
+   {:script "(rt.po.report-view/open-analyzer)", :target-msec 10000}
+   {:script "(rt.po.report-view/apply-analyzer)", :target-msec 10000}
+   {:script "(rt.po.report-view/open-analyzer)", :target-msec 10000}
+   {:script "(rt.po.report-view/reset-analyzer)", :target-msec 10000}
+   {:script "(think 25)", :target-msec 10000}
+   {:script "(rt.po.app/select-navigator-item \"Action Board\")",
+    :target-msec 10000}
+   {:script "(think 30)"}
+   {:script
+    "(rt.po.report-view/sort-column-by-click-header \"BIA Review\" \"Summary\")"}
+   {:script "(think 20)"}
+   {:script "(rt.po.app/select-navigator-item \"Status Board\")",
+    :target-msec 10000}
+   {:script "(think 30)"}
+   {:script "(rt.po.app/select-app-tab \"Business Units\")",
+    :target-msec 10000}
+   {:script "(rt.po.app/select-navigator-item \"Business Units\")",
+    :target-msec 10000}
+   {:script "(think 5)"}
+   {:script "(rn.scripts.bcm/edit-bu (:bu-name *tc*))",
+    :target-msec 5000}
+   {:script "(think 5)"}
+   {:script "(rt.po.edit-form/select-form-tab \"Business Function\")"}
+   {:script
+    "(doseq [item (doall (rt.po.report-view/get-loaded-grid-values))] (rt.po.report-view/double-click-row-by-text item) (rt.po.view-form/click-edit) (rn.scripts.bcm/fill-bf-form {:op-impacts (get-test-data :op-impacts), :name item}) (rt.po.edit-form/save) (think 10) (rt.po.view-form/form-nav-back))"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Completed\" true)"}
+   {:script
+    "(rt.po.edit-form/select-form-tab \"Recovery Requirements\")"}
+   {:script
+    "(doseq [item (doall (rt.po.report-view/get-loaded-grid-values))] (rt.po.report-view/double-click-row-by-text item) (rt.po.view-form/click-edit) (rn.scripts.bcm/fill-recovery-requirement-form {:name item}) (rt.po.edit-form/save) (think 10) (rt.po.view-form/form-nav-back))"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Completed\" true)"}
+   {:script "(think 5)"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"IT Recovery Requirements\" \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Technology\" (get-random-test-data :tech-pcs))"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Required in 2-5 days\" true)"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Required in 1 week\" true)"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script "(think 10)"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Completed\" true)"}
+   {:script
+    "(rt.po.edit-form/select-form-tab \"Products & Services Dependency\")"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Completed\" true)"}
+   {:script "(think 5)"}
+   {:script "(rt.po.edit-form/select-form-tab \"Risk Assessment\")"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Completed\" true)"}
+   {:script "(think 5)"}
+   {:script
+    "(rt.po.edit-form/select-form-tab \"Business Critical Periods\")"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Completed\" true)"}
+   {:script "(think 5)"}
+   {:script "(rt.po.edit-form/select-form-tab \"Business Unit Plan\")"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Completed\" true)"}
+   {:script "(think 5)"}
+   {:script "(rt.po.edit-form/select-form-tab \"Approval\")"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Approver\" (:owner-name *tc*))"}
+   {:script "(think 10)"}
+   {:script "(rt.po.edit-form/save)", :target-msec 5000}
+   {:script "(think 5)"}
+   {:script "(rt.po.report-view/set-search-text (:bu-name *tc*))"}
+   {:script "(think 5)"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text (:bu-name *tc*))"}
+   {:script "(rt.po.app/choose-context-menu \"Request Approval\")"}
+   {:script "(think 5)"}
+   {:script
+    "(expect (taxi/wait-until #(subset? #{\"Approve\"} (set (rt.po.view-form/get-task-actions))) 240000))\n"}
+   {:script "(rt.po.view-form/set-task-comment \"approval done\")"}
+   {:script "(rt.po.view-form/choose-task-action \"Approve\")"}
+   {:script "(think 10)"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20151013-164754",
+  :setup
+  [{:script
+    "(when (empty? (get-test-data :bcp-manager-creds :quiet)) (rn.common/start-app-and-login))"}
+   {:script
+    "(setonce-test-data :bcp-manager-creds rn.services.security/ensure-test-accounts [\"BCP Manager\"] \"BCP\" 50)"}
+   {:script
+    "(rt.test.core/merge-tc {:login-creds (get-random-test-data :bcp-manager-creds)})"}
+   {:script "(rn.common/start-app-and-login (:login-creds *tc*))"}
+   {:script
+    "(rt.test.core/merge-tc {:owner-name (rn.services.security/get-account-holder-name (-> *tc* :login-creds :username))})"}
+   {:script
+    "(setonce-test-data :business-units rn.common/get-record-names-for-type-via-report \"Business Unit\")"}
+   {:script
+    "(setonce-test-data :op-impacts rn.common/get-choice-values \"Function Operational Impact\" {:app-name \"ReadiBCM\"})"}
+   {:script
+    "(setonce-test-data :buildings rn.common/get-record-names-for-type \"Building\" {:app-name \"ReadiBCM\"})"}
+   {:script
+    "(comment \"TODO - sites is actually a subset of buildings .. so temp hardcoding\")"}
+   {:script
+    "(comment (setonce-test-data :sites rn.common/get-record-names-for-type \"Building\" {:app-name \"ReadiBCM\"}))"}
+   {:script
+    "(setonce-test-data :sites [\"Box Hill\" \"Maitland\" \"Ryde\" \"Pookaka\"])"}
+   {:script
+    "(setonce-test-data :tech-pcs rn.common/get-record-names-for-type \"PC\")"}
+   {:script
+    "(rt.test.core/merge-tc {:bu-name (get-random-test-data :business-units)})"}],
+  :fixtures [:common/fixture/wait-ng],
+  :id :grc/tests/bcp-manager-1,
+  :teardown [],
+  :modified-by "not-implemented"}]

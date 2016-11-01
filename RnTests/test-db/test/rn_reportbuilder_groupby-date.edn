@@ -1,0 +1,70 @@
+[{:tags
+  [:area/report-builder
+   :nomodify
+   :prod
+   :regression
+   :desktop
+   :user/abida],
+  :tests [],
+  :name "Doing a groupby and cancel groupby using date field",
+  :steps
+  [{:script "(rt.po.app/add-report (:section *tc*))"}
+   {:script "(rt.po.report-new/set-name (:report-name *tc*))"}
+   {:script "(rt.po.report-new/set-report-base-on \"Student\")"}
+   {:script "(rt.po.report-new/click-ok)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"DOB\" true)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"DOB\" \"Group By\")"}
+   {:script
+    "(expect (rt.po.report-builder/check-group-by-row-exists? \"8/11/1975\"))"}
+   {:script
+    "(expect-equals \"Alma Osborne\" (rt.po.report-builder/get-grouped-row-content \"8/11/1975\" 0 \"Student\"))"}
+   {:script
+    "(expect (rt.po.report-builder/check-group-by-row-exists? \"9/25/1975\"))"}
+   {:script
+    "(expect-equals \"Rina Savage\" (rt.po.report-builder/get-grouped-row-content \"9/25/1975\" 0 \"Student\"))"}
+   {:script
+    "(expect (rt.po.report-builder/check-group-by-row-exists? \"10/18/1975\"))"}
+   {:script
+    "(expect-equals \"Ezekiel Cooley\" (rt.po.report-builder/get-grouped-row-content \"10/18/1975\" 0 \"Student\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(expect (rt.po.report-builder/check-group-by-row-exists? \"8/11/1975\"))"}
+   {:script
+    "(expect-equals \"Alma Osborne\" (rt.po.report-builder/get-grouped-row-content \"8/11/1975\" 0 \"Student\"))"}
+   {:script
+    "(expect (rt.po.report-builder/check-group-by-row-exists? \"9/25/1975\"))"}
+   {:script
+    "(expect-equals \"Rina Savage\" (rt.po.report-builder/get-grouped-row-content \"9/25/1975\" 0 \"Student\"))"}
+   {:script
+    "(expect (rt.po.report-builder/check-group-by-row-exists? \"10/18/1975\"))"}
+   {:script
+    "(expect-equals \"Ezekiel Cooley\" (rt.po.report-builder/get-grouped-row-content \"10/18/1975\" 0 \"Student\"))"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script
+    "(rt.po.report-builder/choose-group-by-row-menu-item \"8/11/1975\" \"Cancel Group By\")"}
+   {:script
+    "(expect (rt.po.report-builder/check-group-by-row-not-exists? \"9/25/1975\"))"}
+   {:script
+    "(expect (rt.po.report-builder/check-group-by-row-not-exists? \"10/18/1975\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(expect (rt.po.report-builder/check-group-by-row-not-exists? \"9/25/1975\"))"}
+   {:script
+    "(expect (rt.po.report-builder/check-group-by-row-not-exists? \"10/18/1975\"))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160919-161159",
+  :setup
+  [{:script
+    "(identity {:report-name (rt.lib.util/make-test-name \"GroupByDate\")})"}],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :common/fixture/login
+   :rn/section/createsection],
+  :id :rn/reportbuilder/groupby-date,
+  :teardown [{:script "(rt.po.app/delete-nav-item (:section *tc*))"}],
+  :modified-by "not-implemented"}]

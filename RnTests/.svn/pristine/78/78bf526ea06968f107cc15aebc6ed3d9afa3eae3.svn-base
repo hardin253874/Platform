@@ -1,0 +1,94 @@
+[{:tags [:area/report-builder :regression :desktop :prod :user/abida],
+  :tests [],
+  :name "Checking highlight conditional formatting for boolean field",
+  :steps
+  [{:script "(rt.po.app/add-report (:section *tc*))"}
+   {:script
+    "(rt.po.report-new/set-name \"HighlightFormattingBoolean\")"}
+   {:script "(rt.po.report-new/set-report-base-on \"Staff\")"}
+   {:script "(rt.po.report-new/click-ok)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Tenure\" true)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Tenure\" \"Format Column\")"}
+   {:script "(rt.po.report-format/set-format-type \"Highlight\")"}
+   {:script
+    "(rt.po.report-format/set-format-scheme \"2 step - Red, Green\")"}
+   {:script
+    "(rt.po.report-format/set-highlight-conditions [{:value \"\", :oper \"Yes\", :colour \"Black on Red\"} {:value \"\", :oper \"\", :colour \"Black on Green\"}])"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script
+    "(expect-equals \"Yes\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Tenure\"))"}
+   {:script
+    "(expect-equals \"Vivid Red\" (rt.po.report-view/get-report-format-highlight-background-color 0 \"Tenure\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 0 \"Tenure\"))"}
+   {:script
+    "(expect-equals \"No\" (rt.po.report-view/get-report-cell-text-content \"12\" \"Tenure\"))"}
+   {:script
+    "(expect-equals \"Vivid Green\" (rt.po.report-view/get-report-format-highlight-background-color 12 \"Tenure\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 12 \"Tenure\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button )"}
+   {:script
+    "(rn.app/open-report \"HighlightFormattingBoolean\" {:app-name \"Foster University\" :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"Yes\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Tenure\"))"}
+   {:script
+    "(expect-equals \"Vivid Red\" (rt.po.report-view/get-report-format-highlight-background-color 0 \"Tenure\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 0 \"Tenure\"))"}
+   {:script
+    "(expect-equals \"No\" (rt.po.report-view/get-report-cell-text-content \"12\" \"Tenure\"))"}
+   {:script
+    "(expect-equals \"Vivid Green\" (rt.po.report-view/get-report-format-highlight-background-color 12 \"Tenure\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 12 \"Tenure\"))"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Tenure\" \"Format Column\")"}
+   {:script
+    "(rt.po.report-format/set-format-scheme \"2 step - Red, Green\")"}
+   {:script
+    "(rt.po.report-format/set-highlight-conditions [{:value \"\", :oper \"No\", :colour \"Black on Red\"} {:value \"\", :oper \"\", :colour \"Black on Green\"}])"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script
+    "(expect-equals \"Yes\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Tenure\"))"}
+   {:script
+    "(expect-equals \"Vivid Green\" (rt.po.report-view/get-report-format-highlight-background-color 0 \"Tenure\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 0 \"Tenure\"))"}
+   {:script
+    "(expect-equals \"No\" (rt.po.report-view/get-report-cell-text-content \"12\" \"Tenure\"))"}
+   {:script
+    "(expect-equals \"Vivid Red\" (rt.po.report-view/get-report-format-highlight-background-color 12 \"Tenure\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 12 \"Tenure\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(rn.app/open-report \"HighlightFormattingBoolean\" {:app-name \"Foster University\" :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"Yes\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Tenure\"))"}
+   {:script
+    "(expect-equals \"Vivid Green\" (rt.po.report-view/get-report-format-highlight-background-color 0 \"Tenure\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 0 \"Tenure\"))"}
+   {:script
+    "(expect-equals \"No\" (rt.po.report-view/get-report-cell-text-content \"12\" \"Tenure\"))"}
+   {:script
+    "(expect-equals \"Vivid Red\" (rt.po.report-view/get-report-format-highlight-background-color 12 \"Tenure\"))"}
+   {:script
+    "(expect-equals \"Black\" (rt.po.report-view/get-report-format-highlight-font-color 12 \"Tenure\"))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20151009-170653",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :common/fixture/login
+   :rn/section/createsection],
+  :id :rn/reportbuilder/highlight-formatting-boolean,
+  :teardown [{:script "(rt.po.app/delete-nav-item (:section *tc*))"}],
+  :modified-by "not-implemented"}]

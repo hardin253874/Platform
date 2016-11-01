@@ -1,0 +1,91 @@
+[{:tags [:desktop :app/bcm],
+  :name "Create a new risk",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:login-creds *tc*))",
+    :target-msec 4000}
+   {:script "(rt.po.app/navigate-to \"Risk Management\")",
+    :target-msec 4000}
+   {:script "(rt.po.app/select-navigator-item \"Strategic Risk\")",
+    :target-msec 3000}
+   {:script
+    "(rt.po.screen/open-report-action-menu-on-screen \"Strategic Risk Report\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:risk-name *tc*))"}
+   {:script
+    "(rn.scripts.bcm/fill-bu-risk-form {:timeframe (get-test-data :risk-timeframe):drivers (get-test-data :risk-drivers), :impacts (get-test-data :risk-impacts), :likelihoods (get-test-data :likelihoods), :levels (get-test-data :risk-levels)})"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Risk Category\" (get-random-test-data :risk-category))"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Corporate Objective\" (get-random-test-data :corporate-objective))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value \"Risk Timeframe\" (get-random-test-data :risk-timeframe))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value \"Risk Mitigation\" (get-random-test-data :risk-mitigation))"}
+   {:script
+    "(rt.po.edit-form/set-number-field-value \"Risk Exposure\" (rand-int 10000))"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Mitigating Control\" \"Link\")",
+    :target-msec 2000}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog (get-random-test-data :grc-mitigating-controls))",
+    :target-msec 1000}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Mitigating Control\" \"Link\")"}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog (get-random-test-data :grc-mitigating-controls))"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Mitigating Control\" \"Link\")"}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog (get-random-test-data :grc-mitigating-controls))"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Mitigating Control\" \"Link\")"}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog (get-random-test-data :grc-mitigating-controls))"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Mitigating Control\" \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:control-name *tc*))"}
+   {:script "(think 30)"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20151015-130520",
+  :setup
+  [{:script
+    "(when (empty? (get-test-data :grc-creds :quiet)) (rn.common/start-app-and-login))"}
+   {:script
+    "(setonce-test-data :grc-creds rn.services.security/ensure-test-accounts [\"BCP Manager\" \"Compliance Manager\" \"Risk Manager\"] \"GRC\" 20)"}
+   {:script
+    "(identity {:login-creds (get-random-test-data :grc-creds)})"}
+   {:script "(comment \"TEMP adding to admins\")"}
+   {:script
+    "(when (:elevate-user *tc*) (rn.services.security/ensure-account-in-roles (-> *tc* :login-creds :username) [\"Administrators\"]) {:elevated true})"}
+   {:script "(rn.common/start-app-and-login (:login-creds *tc*))"}
+   {:script
+    "(identity {:owner-name (rn.services.security/get-account-holder-name (-> *tc* :login-creds :username))})"}
+   {:script
+    "(identity {:bu-name (make-test-name \"BU\"), :bf-name (make-test-name \"BF\"), :risk-name (make-test-name \"Risk\")})"}
+   {:script
+    "(setonce-test-data :risk-impacts rn.common/get-record-names-for-type \"Risk Impact\" {:app-name \"ReadiBCM\"})"}
+   {:script
+    "(setonce-test-data :likelihoods rn.common/get-record-names-for-type \"Risk Likelihood Rating\" {:app-name \"ReadiBCM\"})"}
+   {:script
+    "(setonce-test-data :risk-drivers rn.common/get-choice-values \"Risk Type (Source)\" {:app-name \"ReadiBCM\"})"}
+   {:script
+    "(setonce-test-data :risk-levels rn.common/get-choice-values \"Level of Risk\" {:app-name \"ReadiBCM\"})"}
+   {:script
+    "(setonce-test-data :op-impacts rn.common/get-choice-values \"Function Operational Impact\" {:app-name \"ReadiBCM\"})"}
+   {:script
+    "(setonce-test-data :grc-mitigating-controls rn.common/get-record-names-for-type-via-report \"Mitigating Control\")"}
+   {:script
+    "(setonce-test-data :risk-category rn.common/get-record-names-for-type \"Risk Category - Strategic\" {:app-name \"ReadiBCM\"})"}
+   {:script
+    "(setonce-test-data :corporate-objective rn.common/get-record-names-for-type \"Corporate Objective\" {:app-name \"ReadiBCM\"})"}
+   {:script
+    "(setonce-test-data :risk-timeframe rn.common/get-choice-values \"Risk Timeframe\" {:app-name \"ReadiBCM\"})"}
+   {:script
+    "(setonce-test-data :risk-mitigation rn.common/get-choice-values \"Risk Mitigation\" {:app-name \"ReadiBCM\"})"}],
+  :fixtures [:common/fixture/wait-ng],
+  :id :grc/tests/risk-manager-1,
+  :teardown [],
+  :modified-by "not-implemented"}]

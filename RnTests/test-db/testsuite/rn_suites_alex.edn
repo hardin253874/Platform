@@ -1,0 +1,20 @@
+[{:tags [:desktop],
+  :test-filter
+  "(and (has-tags? #{:user/alex} %) (not (has-some-tags? [\"mobile\" \"tablet\"] %)))",
+  :tests
+  [:rn/workflow/actions-and-inputs-workflow :rn/survey/edit-survey],
+  :name "alex s dev test suite",
+  :each-fixtures
+  [:common/fixture/handle-errors
+   :common/fixture/wait-ng
+   :common/fixture/chrome
+   :common/fixture/test-account-creds
+   :common/fixture/login],
+  :type :testsuite,
+  :source "./test-db",
+  :modified "20160628-164509",
+  :setup [],
+  :id :rn/suites/alex,
+  :teardown [],
+  :modified-by "not-implemented",
+  :once-fixtures []}]

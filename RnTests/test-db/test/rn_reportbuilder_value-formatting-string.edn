@@ -1,0 +1,89 @@
+[{:tags
+  [:area/report-builder
+   :nomodify
+   :regression
+   :desktop
+   :prod
+   :user/tina],
+  :tests [],
+  :name "check value format options for text field",
+  :steps
+  [{:script "(rt.po.app/add-report (:section *tc*) )"}
+   {:script "(rt.po.report-new/set-name (:report-name *tc*))"}
+   {:script "(rt.po.report-new/set-report-base-on \"Student\")"}
+   {:script "(rt.po.report-new/click-ok )"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"First name\" true)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"First name\" \"Format Column\")"}
+   {:script "(rt.po.report-format/click-value-formatting)"}
+   {:script "(rt.po.report-format/set-alignment \"Right\")"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script "(rt.scripts.common/sleep 2000)"}
+   {:script
+    "(expect-equals (.contains (rt.po.report-view/get-report-column-header-style \"\" \"First name\") \"text-align: right\") true)"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script "(rt.po.report-builder/click-close-button )"}
+   {:script
+    "(rn.app/open-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals (.contains (rt.po.report-view/get-report-column-header-style \"\" \"First name\") \"text-align: right\") true)"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"First name\" \"Format Column\")"}
+   {:script "(rt.po.report-format/click-value-formatting )"}
+   {:script "(rt.po.report-format/set-alignment \"Left\")"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script "(rt.scripts.common/sleep 2000)"}
+   {:script
+    "(expect-equals (.contains (rt.po.report-view/get-report-column-header-style \"\" \"First name\") \"text-align: left\") true)"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script "(rt.po.report-builder/click-close-button )"}
+   {:script
+    "(rn.app/open-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals (.contains (rt.po.report-view/get-report-column-header-style \"\" \"First name\") \"text-align: left\") true)"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"First name\" \"Format Column\")"}
+   {:script "(rt.po.report-format/click-value-formatting)"}
+   {:script "(rt.po.report-format/set-alignment \"Centre\")"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script "(rt.scripts.common/sleep 2000)"}
+   {:script
+    "(expect-equals (.contains (rt.po.report-view/get-report-column-header-style \"\" \"First name\") \"text-align: center\") true)"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(rn.app/open-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals (.contains (rt.po.report-view/get-report-column-header-style \"\" \"First name\") \"text-align: center\") true)"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"First name\" \"Format Column\")"}
+   {:script "(rt.po.report-format/click-value-formatting)"}
+   {:script "(rt.po.report-format/set-alignment \"Default\")"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script "(rt.scripts.common/sleep 2000)"}
+   {:script
+    "(expect-equals (.contains (rt.po.report-view/get-report-column-header-style \"\" \"First name\") \"text-align:\") false)"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(rn.app/open-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals (.contains (rt.po.report-view/get-report-column-header-style \"\" \"First name\") \"text-align:\") false)"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160920-105439",
+  :setup
+  [{:script
+    "(identity {:report-name (rt.lib.util/make-test-name \"ValueFormattingText\")})"}],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :common/fixture/login
+   :rn/section/createsection],
+  :id :rn/reportbuilder/value-formatting-string,
+  :teardown [{:script "(rt.po.app/delete-nav-item (:section *tc*))"}],
+  :modified-by "not-implemented"}]

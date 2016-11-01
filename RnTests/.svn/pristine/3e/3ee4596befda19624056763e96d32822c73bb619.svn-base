@@ -1,0 +1,85 @@
+[{:tags [:user/abida :area/board :nomodify :regression :desktop :prod],
+  :steps
+  [{:script
+    "(comment (rn.common/start-app-and-login {:tenant \"xyz\", :password \"tacoT0wn\", :username \"Administrator\"}))"}
+   {:script
+    "(comment (rt.po.app/navigate-via-tiles \"Foster University\"))"}
+   {:script "(rn.app/open-board \"Student Board\")"}
+   {:script "(rt.po.board/click-settings)"}
+   {:script
+    "(expect-equals \"Name & description\" (rt.po.board/get-card-template))"}
+   {:script
+    "(expect-equals \"State\" (rt.po.board/get-column-source))"}
+   {:script
+    "(expect-equals \"Country\" (rt.po.board/get-color-source))"}
+   {:script "(rt.po.board/click-settings-dialog-close)"}
+   {:script "(expect-equals 9 (rt.po.board/get-column-count))"}
+   {:script
+    "(expect-equals 9 (rt.po.board/get-column-item-count \"Undefined\"))"}
+   {:script
+    "(expect-equals 14 (rt.po.board/get-column-item-count \"NSW\"))"}
+   {:script
+    "(expect-equals 7 (rt.po.board/get-column-item-count \"VIC\"))"}
+   {:script
+    "(expect-equals 16 (rt.po.board/get-column-item-count \"SA\"))"}
+   {:script
+    "(expect-equals 11 (rt.po.board/get-column-item-count \"WA\"))"}
+   {:script
+    "(expect-equals 12 (rt.po.board/get-column-item-count \"QLD\"))"}
+   {:script
+    "(expect-equals 8 (rt.po.board/get-column-item-count \"TAS\"))"}
+   {:script
+    "(expect-equals 6 (rt.po.board/get-column-item-count \"NT\"))"}
+   {:script "(rt.po.board/scroll-right)"}
+   {:script
+    "(expect-equals 17 (rt.po.board/get-column-item-count \"ACT\"))"}
+   {:script
+    "(expect-equals 91 (rt.po.board/get-legend-item-count \"Australia\"))"}
+   {:script
+    "(expect-equals 9 (rt.po.board/get-legend-item-count \"New Zealand\"))"}
+   {:script "(rt.po.board/scroll-left)"}
+   {:script
+    "(rt.po.board/click-card-link \"Undefined\" \"Wayne Avery\")"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script "(rt.po.edit-form/set-choice-value \"State\" \"NSW\")"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(expect-equals 15 (rt.po.board/get-column-item-count \"NSW\"))"}
+   {:script
+    "(expect-equals true (rt.po.board/card-exists? \"NSW\" \"Wayne Avery\"))"}
+   {:script
+    "(rt.po.board/drag-card-to-dimension \"Wayne Avery\" \"NSW\" \"Undefined\")"}
+   {:script
+    "(expect-equals 9 (rt.po.board/get-column-item-count \"Undefined\"))"}
+   {:script
+    "(expect-equals 14 (rt.po.board/get-column-item-count \"NSW\"))"}
+   {:script
+    "(rt.po.board/drag-card-to-legend \"Undefined\" \"Wayne Avery\" \"Australia\")"}
+   {:script
+    "(expect-equals 92 (rt.po.board/get-legend-item-count \"Australia\"))"}
+   {:script
+    "(expect-equals 8 (rt.po.board/get-legend-item-count \"New Zealand\"))"}
+   {:script
+    "(rt.po.board/drag-legend-to-card \"New Zealand\" \"Undefined\" \"Wayne Avery\")"}
+   {:script
+    "(expect-equals 91 (rt.po.board/get-legend-item-count \"Australia\"))"}
+   {:script
+    "(expect-equals 9 (rt.po.board/get-legend-item-count \"New Zealand\"))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20161012-112529",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/boards/test-board-drag-and-drop,
+  :teardown
+  [{:script
+    "(comment (rt.po.board/click-card-link \"NSW\" \"Wayne Avery\"))"}
+   {:script "(comment (rt.po.edit-form/click-edit-button))"}
+   {:script
+    "(comment (rt.po.edit-form/set-choice-value \"State\" \"[Select]\"))"}
+   {:script
+    "(comment (rt.po.edit-form/set-choice-value \"Country\" \"Australia\"))"}
+   {:script "(comment (rt.po.edit-form/click-save-button))"}
+   {:script "(comment (rt.po.edit-form/click-back-button))"}],
+  :modified-by "not-implemented"}]

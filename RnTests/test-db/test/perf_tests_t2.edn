@@ -1,0 +1,32 @@
+[{:tags [:desktop :prod],
+  :tests [],
+  :name "Screen Loading",
+  :steps
+  [{:script "(rt.po.app/navigate-via-tiles \"Performance Test\")",
+        :target-msec 5000}
+   {:script "(rt.po.app/select-app-tab \"Screens\")",
+    :metric-id "Load Small Size Screen - 1st time",
+        :target-msec 5000}
+   {:script "(rt.po.app/select-navigator-item \"Medium Size Screen\")",
+    :metric-id "Load Medium Size Screen - 1st time",
+        :target-msec 5000}
+   {:script "(rt.po.app/select-navigator-item \"Large Size Screen\")",
+    :metric-id "Load Large Size Screen - 1st time",
+        :target-msec 5000}
+   {:script "(rt.po.app/select-navigator-item \"Small Size Screen\")",
+    :metric-id "Load Small Size Screen - 2nd",
+        :target-msec 5000}
+   {:script "(rt.po.app/select-navigator-item \"Medium Size Screen\")",
+    :metric-id "Load Medium Size Screen - 2nd",
+        :target-msec 5000}
+   {:script "(rt.po.app/select-navigator-item \"Large Size Screen\")",
+    :metric-id "Load Large Size Screen - 2nd",
+        :target-msec 5000}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150602-071305",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :perf/tests/t2,
+  :teardown [],
+  :modified-by "not-implemented"}]

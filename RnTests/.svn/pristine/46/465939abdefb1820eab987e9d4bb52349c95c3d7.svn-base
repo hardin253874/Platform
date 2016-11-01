@@ -1,0 +1,84 @@
+[{:tags
+  [:area/report-builder
+   :nomodify
+   :prod
+   :regression
+   :desktop
+   :user/abida],
+  :tests [],
+  :name "Doing a groupby and cancel groupby using boolean field",
+  :steps
+  [{:script
+    "(rn.app/open-report \"Staff Report\" {:app-name \"Foster University\"})"}
+   {:script "(expect-equals 44 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Reports\")"}
+   {:script "(rt.po.app/add-report (:section *tc*))"}
+   {:script "(rt.po.report-new/set-name (:report-name *tc*))"}
+   {:script "(rt.po.report-new/set-report-base-on \"Staff\")"}
+   {:script "(rt.po.report-new/click-ok)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"StaffID\" true)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Tenure\" true)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Tenure\" \"Group By\")"}
+   {:script
+    "(expect (rt.po.report-builder/check-group-by-row-exists? \"No\"))"}
+   {:script
+    "(expect-equals 7 (rt.po.report-builder/get-rows-number-under-group-by-row \"No\"))"}
+   {:script
+    "(expect-equals \"Ross Macias\" (rt.po.report-builder/get-grouped-row-content \"No\" 0 \"Staff\"))"}
+   {:script
+    "(expect-equals \"1461\" (rt.po.report-builder/get-grouped-row-content \"No\" 0 \"StaffID\"))"}
+   {:script
+    "(expect (rt.po.report-builder/check-group-by-row-exists? \"Yes\"))"}
+   {:script
+    "(expect-equals \"Ina Harmon\" (rt.po.report-builder/get-grouped-row-content \"Yes\" 0 \"Staff\"))"}
+   {:script
+    "(expect-equals \"8464\" (rt.po.report-builder/get-grouped-row-content \"Yes\" 0 \"StaffID\"))"}
+   {:script
+    "(expect-equals 37 (rt.po.report-builder/get-rows-number-under-group-by-row \"Yes\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script "(comment (rn.common/sleep 2000))"}
+   {:script
+    "(expect-equals 7 (rt.po.report-builder/get-rows-number-under-group-by-row \"No\"))"}
+   {:script
+    "(expect-equals \"Ross Macias\" (rt.po.report-builder/get-grouped-row-content \"No\" 0 \"Staff\"))"}
+   {:script
+    "(expect-equals \"1461\" (rt.po.report-builder/get-grouped-row-content \"No\" 0 \"StaffID\"))"}
+   {:script
+    "(expect (rt.po.report-builder/check-group-by-row-exists? \"Yes\"))"}
+   {:script
+    "(expect-equals \"Ina Harmon\" (rt.po.report-builder/get-grouped-row-content \"Yes\" 0 \"Staff\"))"}
+   {:script
+    "(expect-equals \"8464\" (rt.po.report-builder/get-grouped-row-content \"Yes\" 0 \"StaffID\"))"}
+   {:script
+    "(expect-equals 37 (rt.po.report-builder/get-rows-number-under-group-by-row \"Yes\"))"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script
+    "(rt.po.report-builder/choose-group-by-row-menu-item \"No\" \"Cancel Group By\")"}
+   {:script
+    "(expect (rt.po.report-builder/check-group-by-row-not-exists? \"No\"))"}
+   {:script
+    "(expect (rt.po.report-builder/check-group-by-row-not-exists? \"Yes\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(expect (rt.po.report-builder/check-group-by-row-not-exists? \"No\"))"}
+   {:script
+    "(expect (rt.po.report-builder/check-group-by-row-not-exists? \"Yes\"))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160919-180637",
+  :setup
+  [{:script
+    "(identity {:report-name (rt.lib.util/make-test-name \"BooleanGroupBy\")})"}],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :common/fixture/login
+   :rn/section/createsection],
+  :id :rn/reportbuilder/groupby-boolean,
+  :teardown [{:script "(rt.po.app/delete-nav-item (:section *tc*))"}],
+  :modified-by "not-implemented"}]

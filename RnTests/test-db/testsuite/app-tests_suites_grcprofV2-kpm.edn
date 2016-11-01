@@ -1,0 +1,13 @@
+[{:tags [:desktop],
+  :test-filter "(has-tags? [\"app-tests/kpm\"] %)",
+  :tests [],
+  :name "RT for Key Performance Management App",
+  :each-fixtures [],
+  :type :testsuite,
+  :source "./test-db",
+  :modified "20161018-212700",
+  :setup [],
+  :id :app-tests/suites/grcprofV2-kpm,
+  :teardown [],
+  :modified-by "not-implemented",
+  :once-fixtures []}]

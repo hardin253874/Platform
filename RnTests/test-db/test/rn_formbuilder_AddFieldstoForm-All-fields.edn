@@ -1,0 +1,46 @@
+[{:tags
+  [:user/shaofen
+   :nomodify
+   :prod
+   :regression
+   :desktop
+   :area/form-builder],
+  :tests [],
+  :name "AddFieldstoForm-AllFields",
+  :steps
+  [{:script "(rt.po.app/navigate-via-tiles \"Foster University\")"}
+   {:script "(rt.po.app/enable-app-toolbox )"}
+   {:script
+    "(rt.po.app-toolbox/create-object {:description \"New Test Object Description\", :name (:obj-name *tc*)})"}
+   {:script
+    "(expect-equals (clojure.string/join [(:obj-name *tc*) \" Form\"]) (rt.po.form-builder/get-form-title))"}
+   {:script "(expect-equals true (rt.po.form-builder/has-canvas?))"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Text\")"}
+   {:script
+    "(rt.po.form-builder/add-field-to-form \"Multiline Text\")"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Number\")"}
+   {:script "(rt.po.form-builder/add-field-to-form \"AutoNumber\")"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Decimal\")"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Currency\")"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Date\")"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Time\")"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Date and Time\")"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Yes/No\")"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Image\")"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Choice\")"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Lookup\")"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Relationship\")"}
+   {:script "(expect-equals true (rt.po.form-builder/has-fields?))"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160916-135603",
+  :setup
+  [{:script
+    "(identity {:obj-name (rt.lib.util/make-test-name \"NewObj\")})"}],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/formbuilder/AddFieldstoForm-All-fields,
+  :teardown
+  [{:script "(rt.po.app-toolbox/delete-object (:obj-name *tc*))"}],
+  :modified-by "not-implemented"}]

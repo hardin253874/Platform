@@ -1,0 +1,72 @@
+[{:tags
+  [:nomodify
+   :prod
+   :regression
+   :user/shaofen
+   :desktop
+   :area/calculation],
+  :tests [],
+  :name "Calculation editor behaves on report",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(comment \"==================================== Adding a new report for student using calculation editor to add a new column. ==================================\")"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script "(rt.po.report-builder/click-saveas-report-button)"}
+   {:script
+    "(rt.po.report-builder/set-report-new-name \"Calculation2 - Student report\")"}
+   {:script "(rt.po.report-builder/click-saveas-ok)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Email address\" false)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Address line1\" false)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Gender\" false)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Balance\" false)"}
+   {:script "(rt.po.report-builder/click-calculation-button)"}
+   {:script "(expect (rt.po.report-calculated/ok-button-disabled?))"}
+   {:script "(rt.po.report-calculated/set-column-name \"CalR-Num1\")"}
+   {:script "(expect (rt.po.report-calculated/ok-button-disabled?))"}
+   {:script
+    "(rt.po.report-calculated/set-calculation-script \"[studentID]-1000\")"}
+   {:script
+    "(expect (not (rt.po.report-calculated/ok-button-disabled?)))"}
+   {:script "(rt.po.report-calculated/click-ok)"}
+   {:script
+    "(expect-equals 1 (rt.po.report-builder/get-count-matched-columns-name \"CalR-Num1\"))"}
+   {:script
+    "(expect-equals \"145\" (rt.po.report-view/get-value-for-row-and-column \"1145\" \"CalR-Num1\"))"}
+   {:script
+    "(expect-equals \"221\" (rt.po.report-view/get-value-for-row-and-column \"1221\" \"CalR-Num1\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(rn.app/open-report \"Calculation2 - Student report\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script
+    "(expect-equals \"145\" (rt.po.report-view/get-value-for-row-and-column \"1145\" \"CalR-Num1\"))"}
+   {:script
+    "(expect-equals \"221\" (rt.po.report-view/get-value-for-row-and-column \"1221\" \"CalR-Num1\"))"}
+   {:script
+    "(comment \"==================================== Forced env. reset. ==================================\")"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160302-163715",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds :rn/fixture/admin-creds],
+  :id :rn/calculation/calculation-editor-on-report,
+  :teardown
+  [{:script "(rn.app/open-admin \"Reports\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Calculation2 - Student report\")"}
+   {:script
+    "(if (> (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/right-click-row-by-text \"Calculation2 - Student report\") (rt.po.app/choose-context-menu \"Delete\") (rt.po.edit-form/click-confirm-delete-ok-button)))"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Calculation2 - Student report\")"}
+   {:script "(expect-equals 0 (rt.po.report-view/count-report-row))"}],
+  :doc "",
+  :modified-by "not-implemented"}]

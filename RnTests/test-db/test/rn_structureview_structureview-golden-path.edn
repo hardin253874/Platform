@@ -1,0 +1,173 @@
+[{:tags
+  [:user/abida
+   :area/structure-view
+   :nomodify
+   :regression
+   :desktop
+   :prod],
+  :name "Covering the general flow of structure view",
+  :steps
+  [{:script "(rt.po.app/enable-app-toolbox)"}
+   {:script
+    "(rt.po.app-toolbox/set-application-filter \"Foster University\")"}
+   {:script
+    "(rt.po.app-toolbox/choose-object-menu \"Faculties\" \"Modify\")"}
+   {:script
+    "(rt.po.form-builder/open-tab-content-configure-dialog 0 0)"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script
+    "(rt.po.form-builder-config/set-picker-report \"Staff Hierarchy\")"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}
+   {:script "(rt.po.app/disable-app-toolbox)"}
+   {:script "(rt.po.app/navigate-to-item \"Foster University\" \"\")"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script "(rt.po.app/add-report (:section *tc*))"}
+   {:script "(rt.po.report-new/set-name \"Report For Structureview\")"}
+   {:script "(rt.po.report-new/set-report-base-on \"Faculties\")"}
+   {:script "(rt.po.report-new/click-ok)"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script
+    "(rn.app/open-report \"Report For Structureview\" {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script "(rt.po.report-view/open-new-menu)"}
+   {:script
+    "(rt.po.edit-form/set-field-value rt.po.edit-form/string-field \"Name\" \"Faculty of Mathematics\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"Link to Existing\")"}
+   {:script
+    "(rt.po.view-form/expand-structure-view-item-node \"Adam Foster\")"}
+   {:script
+    "(expect (rt.po.view-form/is-structure-view-item-opened? \"Adam Foster\"))"}
+   {:script
+    "(rt.po.view-form/collapse-structure-view-item-node \"Adam Foster\")"}
+   {:script
+    "(expect (rt.po.view-form/is-structure-view-item-collapsed? \"Adam Foster\"))"}
+   {:script
+    "(rt.po.view-form/expand-structure-view-item-node \"Adam Foster\")"}
+   {:script
+    "(rt.po.view-form/select-structure-view-item-with-ctrl-key-by-text \"Heidi Shaffer\" \"\")"}
+   {:script
+    "(rt.po.view-form/select-structure-view-item-with-ctrl-key-by-text \"Quin Morgan\" \"\")"}
+   {:script "(rt.po.common/click-ok)"}
+   {:script "(expect-equals 2 (rt.po.view-form/get-report-row-count))"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script "(rt.po.view-form/form-nav-back)"}
+   {:script
+    "(rt.po.report-view/select-row-by-text \"Faculty of Mathematics\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(rt.po.app/choose-context-menu \"View 'Faculty of Mathematics'\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script
+    "(rt.po.report-view/click-sub-menu-item \"New\" \"Staff\")"}
+   {:script
+    "(rt.po.edit-form/set-field-value rt.po.edit-form/string-field \"Name\" \"Kelvin Smith\")"}
+   {:script "(rt.po.edit-form/click-save-button)"}
+   {:script "(expect-equals 3 (rt.po.view-form/get-report-row-count))"}
+   {:script "(rt.po.report-view/set-search-text \"Kelvin Smith\")"}
+   {:script "(expect-equals 1 (rt.po.view-form/get-report-row-count))"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"Link to Existing\")"}
+   {:script "(rt.po.view-form/set-structure-view-search \"Kelvin\")"}
+   {:script
+    "(expect (rt.po.view-form/structure-view-item-exists? \"Kelvin Smith\"))"}
+   {:script
+    "(expect-equals 1 (rt.po.view-form/get-count-all-structure-view-items))"}
+   {:script "(rt.po.view-form/set-structure-view-search \"gan\")"}
+   {:script
+    "(expect (rt.po.view-form/structure-view-item-exists? \"Cooper Griffith\"))"}
+   {:script
+    "(expect (rt.po.view-form/structure-view-item-exists? \"Adam Foster\"))"}
+   {:script
+    "(expect (rt.po.view-form/structure-view-item-exists? \"Quin Morgan\"))"}
+   {:script
+    "(expect (rt.po.view-form/structure-view-item-exists? \"Rebekah Erickson\"))"}
+   {:script
+    "(expect (rt.po.view-form/structure-view-item-exists? \"Leroy Logan\"))"}
+   {:script
+    "(expect-equals 5 (rt.po.view-form/get-count-all-structure-view-items))"}
+   {:script
+    "(expect-equals 2 (rt.po.view-form/get-count-all-search-matched-structure-view-items))"}
+   {:script "(rt.po.view-form/set-structure-view-search \"\")"}
+   {:script
+    "(expect (rt.po.view-form/structure-view-item-exists? \"Aladdin Farrell\"))"}
+   {:script
+    "(expect (rt.po.view-form/structure-view-item-exists? \"Alec Summers\"))"}
+   {:script
+    "(expect (rt.po.view-form/structure-view-item-exists? \"Erica Mcknight\"))"}
+   {:script
+    "(expect (rt.po.view-form/structure-view-item-exists? \"Heidi Shaffer\"))"}
+   {:script "(rt.po.common/click-ok)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script "(rt.po.report-builder/add-relationship \"Staff\")"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Staff\" \"Format Column\")"}
+   {:script "(rt.po.report-format/click-value-formatting)"}
+   {:script
+    "(rt.po.report-format/set-hierarchy-report \"Staff Hierarchy\")"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script
+    "(expect-equals \"Erica Mcknight > Barry Sanders\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Staff\"))"}
+   {:script "(rt.po.report-builder/select-treenode \"Staff\")"}
+   {:script
+    "(rt.po.report-builder/set-in-analyzer-checkbox-field-value \"Name\" true)"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script
+    "(rt.po.report-view/open-analyser-field-configure-dialog \"Staff\")"}
+   {:script
+    "(rt.po.report-view/set-analyser-field-picker-report \"Staff Hierarchy\")"}
+   {:script "(rt.po.common/click-ok)"}
+   {:script
+    "(rt.po.report-view/click-analyser-field-picker-report \"Staff\")"}
+   {:script
+    "(expect (rt.po.view-form/structure-view-item-exists? \"Adam Foster\"))"}
+   {:script "(rt.po.common/click-ok)"}
+   {:script "(rt.po.report-view/close-analyzer)"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script
+    "(rn.app/open-report \"Report For Structureview\" {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"Erica Mcknight > Barry Sanders\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Staff\"))"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script
+    "(rt.po.report-view/click-analyser-field-picker-report \"Staff\")"}
+   {:script
+    "(expect (rt.po.view-form/structure-view-item-exists? \"Adam Foster\"))"}
+   {:script "(rt.po.common/click-ok)"}
+   {:script "(rt.po.report-view/close-analyzer)"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160718-163808",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :common/fixture/login
+   :rn/section/createsection],
+  :id :rn/structureview/structureview-golden-path,
+  :teardown
+  [{:script "(rt.po.report-view/set-search-text \"Kelvin Smith\")"}
+   {:script
+    "(when (= (rt.po.view-form/get-report-row-count) 1) (rt.po.report-view/select-row-by-text \"Faculty of Mathematics\") (rt.po.report-view/open-action-menu) (rt.po.app/choose-context-menu \"View 'Faculty of Mathematics'\") (rt.po.report-view/select-row-by-text \"Kelvin Smith\") (rt.po.report-view/open-action-menu) (rt.po.app/choose-context-menu \"Delete 'Kelvin Smith'\") (rt.po.edit-form/click-confirm-delete-ok-button) (rt.po.edit-form/click-back-button))"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Faculty of Mathematics\")"}
+   {:script
+    "(when (> (rt.po.view-form/get-report-row-count) 1) (rt.po.report-view/select-row-by-text \"Faculty of Mathematics\") (rt.po.report-view/open-action-menu) (rt.po.app/choose-context-menu \"Delete 'Faculty of Mathematics'\") (rt.po.edit-form/click-confirm-delete-ok-button))"}
+   {:script "(rt.po.app/delete-nav-item (:section *tc*))"}
+   {:script "(rt.po.app/enable-app-toolbox)"}
+   {:script
+    "(rt.po.app-toolbox/set-application-filter \"Foster University\")"}
+   {:script
+    "(rt.po.app-toolbox/choose-object-menu \"Faculties\" \"Modify\")"}
+   {:script
+    "(rt.po.form-builder/open-tab-content-configure-dialog 0 0)"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script
+    "(rt.po.form-builder-config/set-picker-report \"[Default]\")"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}
+   {:script "(rt.po.app/disable-app-toolbox)"}],
+  :modified-by "not-implemented"}]

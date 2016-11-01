@@ -1,0 +1,139 @@
+[{:tags
+  [:area/report-builder
+   :nomodify
+   :prod
+   :regression
+   :desktop
+   :user/abida],
+  :tests [],
+  :name "Summarise functions for currency",
+  :steps
+  [{:script "(rt.po.app/add-report (:section *tc*) )"}
+   {:script "(rt.po.report-new/set-name (:report-name *tc*))"}
+   {:script "(rt.po.report-new/set-report-base-on \"Student\")"}
+   {:script "(rt.po.report-new/click-ok )"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Balance\" true)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Name\" false)"}
+   {:script "(rt.po.report-builder/click-summarise-button)"}
+   {:script
+    "(rt.po.report-summarise/set-summarise-option \"Balance\" \"Count\" true)"}
+   {:script "(rt.po.report-summarise/click-ok)"}
+   {:script
+    "(expect-equals \"100\" (rt.po.report-view/get-report-cell-text-content 0 \"Count: Balance\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(rn.app/open-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"100\" (rt.po.report-view/get-report-cell-text-content 0 \"Count: Balance\"))"}
+   {:script "(rt.po.report-builder/access-build-mode )"}
+   {:script "(rt.po.report-builder/click-summarise-button)"}
+   {:script "(rt.po.report-summarise/click-remove-summarise)"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-summarise-button)"}
+   {:script
+    "(rt.po.report-summarise/set-summarise-option \"Balance\" \"Count unique\" true)"}
+   {:script "(rt.po.report-summarise/click-ok)"}
+   {:script
+    "(expect-equals \"100\" (rt.po.report-view/get-report-cell-text-content 0 \"Count unique: Balance\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(rn.app/open-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"100\" (rt.po.report-view/get-report-cell-text-content 0 \"Count unique: Balance\"))"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script "(rt.po.report-builder/click-summarise-button)"}
+   {:script "(rt.po.report-summarise/click-remove-summarise)"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-summarise-button)"}
+   {:script
+    "(rt.po.report-summarise/set-summarise-option \"Balance\" \"Count all\" true)"}
+   {:script "(rt.po.report-summarise/click-ok)"}
+   {:script
+    "(expect-equals \"100\" (rt.po.report-view/get-report-cell-text-content 0 \"Count all: Balance\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(rn.app/open-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"100\" (rt.po.report-view/get-report-cell-text-content 0 \"Count all: Balance\"))"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script "(rt.po.report-builder/click-summarise-button)"}
+   {:script "(rt.po.report-summarise/click-remove-summarise)"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-summarise-button)"}
+   {:script
+    "(rt.po.report-summarise/set-summarise-option \"Balance\" \"Sum\" true)"}
+   {:script "(rt.po.report-summarise/click-ok)"}
+   {:script
+    "(expect-equals \"$4,791.67\" (rt.po.report-view/get-report-cell-text-content 0 \"Sum: Balance\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(rn.app/open-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"$4,791.67\" (rt.po.report-view/get-report-cell-text-content 0 \"Sum: Balance\"))"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script "(rt.po.report-builder/click-summarise-button)"}
+   {:script "(rt.po.report-summarise/click-remove-summarise)"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-summarise-button)"}
+   {:script
+    "(rt.po.report-summarise/set-summarise-option \"Balance\" \"Average\" true)"}
+   {:script "(rt.po.report-summarise/click-ok)"}
+   {:script
+    "(expect-equals \"$47.92\" (rt.po.report-view/get-report-cell-text-content 0 \"Average: Balance\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(rn.app/open-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"$47.92\" (rt.po.report-view/get-report-cell-text-content 0 \"Average: Balance\"))"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script "(rt.po.report-builder/click-summarise-button)"}
+   {:script "(rt.po.report-summarise/click-remove-summarise)"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-summarise-button)"}
+   {:script
+    "(rt.po.report-summarise/set-summarise-option \"Balance\" \"Max\" true)"}
+   {:script "(rt.po.report-summarise/click-ok)"}
+   {:script
+    "(expect-equals \"$254.17\" (rt.po.report-view/get-report-cell-text-content 0 \"Max: Balance\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(rn.app/open-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"$254.17\" (rt.po.report-view/get-report-cell-text-content 0 \"Max: Balance\"))"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script "(rt.po.report-builder/click-summarise-button)"}
+   {:script "(rt.po.report-summarise/click-remove-summarise)"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-summarise-button)"}
+   {:script
+    "(rt.po.report-summarise/set-summarise-option \"Balance\" \"Min\" true)"}
+   {:script "(rt.po.report-summarise/click-ok)"}
+   {:script
+    "(expect-equals \"$-158.33\" (rt.po.report-view/get-report-cell-text-content 0 \"Min: Balance\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(rn.app/open-report (:report-name *tc*) {:app-name \"Foster University\", :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"$-158.33\" (rt.po.report-view/get-report-cell-text-content 0 \"Min: Balance\"))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160916-170406",
+  :setup
+  [{:script
+    "(identity {:report-name (rt.lib.util/make-test-name \"SummariseCurrency\")})"}],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :common/fixture/login
+   :rn/section/createsection],
+  :id :rn/reportbuilder/summarise-functions-currency,
+  :teardown [{:script "(rt.po.app/delete-nav-item (:section *tc*))"}],
+  :modified-by "not-implemented"}]

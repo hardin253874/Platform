@@ -1,0 +1,57 @@
+[{:tags [:prod :regression :desktop],
+  :tests [],
+  :name "Chart Builder Axis Properties Drivers on Chrome",
+  :steps
+  [{:script "(rt.po.chart-builder/click-target-properties \"Values\")",
+    :target-msec 500}
+   {:script "(rn.common/sleep 500)"}
+   {:script
+    "(expect-equals true (rt.po.chart-builder/minimum-visible?))",
+    :target-msec 100}
+   {:script
+    "(expect-equals true (rt.po.chart-builder/maximum-visible?))",
+    :target-msec 100}
+   {:script
+    "(expect-equals \"Auto\" (rt.po.chart-builder/get-minimum))",
+    :target-msec 100}
+   {:script "(rt.po.chart-builder/set-minimum \"123\")",
+    :target-msec 100}
+   {:script
+    "(expect-equals \"123\" (rt.po.chart-builder/get-minimum))",
+    :target-msec 100}
+   {:script "(rt.po.chart-builder/set-minimum \"Auto\")",
+    :target-msec 100}
+   {:script
+    "(expect-equals \"Auto\" (rt.po.chart-builder/get-minimum))",
+    :target-msec 100}
+   {:script "(rt.po.chart-builder/set-maximum \"123\")",
+    :target-msec 100}
+   {:script
+    "(expect-equals \"123\" (rt.po.chart-builder/get-maximum))",
+    :target-msec 100}
+   {:script "(rt.po.chart-builder/set-show-grid true)",
+    :target-msec 100}
+   {:script "(expect-equals true (rt.po.chart-builder/get-show-grid))",
+    :target-msec 100}
+   {:script
+    "(expect-equals false (rt.po.chart-builder/show-all-values-visible?))",
+    :target-msec 100}
+   {:script "(expect-equals true (rt.po.chart-builder/get-show-grid))",
+    :target-msec 100}
+   {:script "(rt.po.chart-builder/set-show-labels \"Inside\")",
+    :target-msec 100}
+   {:script
+    "(expect-equals \"Inside\" (rt.po.chart-builder/get-show-labels))",
+    :target-msec 100}
+   {:script "(rt.po.chart-builder/click-cancel)", :target-msec 100}],
+  :type :test,
+  :checks [],
+  :source "../RnTests/test-db",
+  :modified "20150601-153803",
+  :setup
+  [{:script "(rt.scripts.common/edit-chart (:name *test-context*))"}],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :qa-daily/charts/test-chart-builder-drivers-axis-properties,
+  :teardown [],
+  :modified-by "not-implemented",
+  :data {:name "Gantt - Scientists"}}]

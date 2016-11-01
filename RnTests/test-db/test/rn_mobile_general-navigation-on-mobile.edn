@@ -1,0 +1,34 @@
+[{:tags [:mobile :nomodify :user/alex :prod :regression],
+  :tests [],
+  :name "General Navigation on Mobile",
+  :steps
+  [{:script "(rn.mobile.app/navigate-to-app-launcher)"}
+   {:script
+    "(rn.mobile.app/navigate-to-application \"Foster University\")"}
+   {:script "(rn.mobile.app/navigate-to-item nil \"Staff Report\")"}
+   {:script "(rn.mobile.app/navigate-to-item nil \"Student Report\")"}
+   {:script "(rn.mobile.app/navigate-to-app-launcher)"}
+   {:script
+    "(rn.mobile.app/navigate-to-application \"Test Solution\")"}
+   {:script
+    "(rn.mobile.app/navigate-to-item nil \"Area - NSW Population\")"}
+   {:script
+    "(rn.mobile.app/navigate-to-item nil \"Bar - Internet Access\")"}
+   {:script
+    "(rn.mobile.app/navigate-to-item nil \"1. Scientists Screen\")"}
+   {:script "(rn.mobile.app/navigate-to-item nil \"2. Dog Breeds\")"}
+   {:script "(rn.mobile.app/navigate-to-app-launcher)"}
+   {:script "(rn.mobile.app/navigate-to-application \"Shared\")"}
+   {:script "(rn.mobile.app/navigate-to-item nil \"Contacts\")"}
+   {:script "(rn.mobile.app/navigate-to-item nil \"Appointments\")"}
+   {:script "(rn.mobile.app/navigate-to-item nil \"Employees\")"}
+   {:script "(rn.mobile.app/navigate-to-item nil \"Tasks\")"}
+   {:script "(rn.mobile.app/navigate-to-app-launcher)"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160809-154348",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/mobile/general-navigation-on-mobile,
+  :teardown [],
+  :modified-by "not-implemented"}]

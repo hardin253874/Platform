@@ -1,0 +1,68 @@
+[{:type :testscript,
+  :id :bcm/scripts/create-bcm-recovery-plan,
+  :steps
+  [{:script "(rn.common/start-app-and-login (:bcm-owner-creds *tc*))"}
+   {:script
+    "(rt.po.app/navigate-to \"Business Continuity Management\")"}
+   {:script "(rt.po.app/select-app-tab \"Recovery Planning\")"}
+   {:script "(rt.po.app/select-navigator-item \"Recovery Planning\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Name\" \"BIA for Process 1\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Criticality\" \"Medium\")"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Associated Processes\" \"Process 1\")"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"% Complete\" \"50\")"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Next Review Date\" (make-local-date 2016 12 11))"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Team Leader\" \"Business Continuity Owner\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"RECOVERY ACTIONS\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(expect-equals \"Recovery Action\" (rt.po.edit-form/get-form-title))"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"Sequence Number\" \"1\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Stage\" \"Immediate\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Recovery Action\" \"Make Action 1\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Priority\" \"Normal\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"RECOVERY ACTIONS\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(expect-equals \"Recovery Action\" (rt.po.edit-form/get-form-title))"}
+   {:script
+    "(rt.po.edit-form/set-number-value-v2 \"Sequence Number\" \"2\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Stage\" \"Ongoing\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Recovery Action\" \"Make Ongoing Action 2\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Priority\" \"High\")"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Milestone?\" true)"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"TEAM MEMBERS\")"}
+   {:script "(rt.po.app/choose-context-menu \"Link\")"}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog \"Adam\")"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"CALL TREE\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script "(rt.po.edit-form/set-lookup \"Caller\" \"Adam\")"}
+   {:script "(rt.po.edit-form/set-lookup \"To Call\" \"Aureen\")"}
+   {:script "(rt.po.edit-form/save)"}],
+  :tags [:desktop],
+  :modified "20161020-170652",
+  :modified-by "not-implemented",
+  :source "./test-db"}]

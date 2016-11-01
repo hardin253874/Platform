@@ -1,0 +1,42 @@
+[{:tags
+  [:user/shaofen
+   :nomodify
+   :regression
+   :desktop
+   :area/form-builder
+   :prod],
+  :tests [],
+  :name
+  "Check Deleting Field form the Form doesn't delete the fields from the Object",
+  :steps
+  [{:script "(rt.po.app/navigate-via-tiles \"Foster University\")"}
+   {:script "(rt.po.app/enable-app-toolbox )"}
+   {:script
+    "(rt.po.app-toolbox/create-object {:name \"New Test Object17\" :description \"New Test Object Description\"})"}
+   {:script
+    "(expect-equals \"New Test Object17 Form\" (rt.po.form-builder/get-form-title))"}
+   {:script "(expect-equals true (rt.po.form-builder/has-canvas?))"}
+   {:script "(rt.po.form-builder/add-new-field-group)"}
+   {:script
+    "(rt.po.form-builder/set-field-group-name \"New Field Group\" \"Field Group 1\")"}
+   {:script
+    "(expect-equals true (rt.po.form-builder/has-field-group? \"Field Group 1\"))"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-field-group \"Text\" \"Field Group 1\")"}
+   {:script
+    "(rt.po.form-builder/add-field-from-toolbox-to-form \"Text\")"}
+   {:script "(rt.po.form-builder/delete-form-control \"Text\")"}
+   {:script
+    "(expect-equals true (rt.po.form-builder/toolbox-field-exist? \"Text\"))"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150609-210038",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/formbuilder/DeletingFieldfromFormNotDelete4Object,
+  :teardown
+  [{:script
+    "(rt.po.app-toolbox/delete-object \"New Test Object17\")"}],
+  :modified-by "not-implemented"}]

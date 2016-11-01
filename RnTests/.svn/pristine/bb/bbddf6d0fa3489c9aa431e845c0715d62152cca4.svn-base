@@ -1,0 +1,218 @@
+[{:tags
+  [:nomodify
+   :prod
+   :regression
+   :daily
+   :user/shaofen
+   :desktop
+   :area/security],
+  :tests [],
+  :name
+  "Access check when access rule report has analyser condition on currency field and data change in date field",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script "(rt.po.access-rules/add-new-access-rule)"}
+   {:script
+    "(expect-equals true (rt.po.access-rules-new/new-dialog-visible?))"}
+   {:script
+    "(rt.po.access-rules-new/set-role \"Students (User Role)\")"}
+   {:script "(rt.po.access-rules-new/set-object \"Student\")"}
+   {:script "(rt.po.access-rules-new/click-ok)"}
+   {:script
+    "(rt.po.access-rules/edit-access-rule \"Students (User Role)\" \"Student\" \"Student\")"}
+   {:script
+    "(rt.po.report-builder/select-field-checkboxes \"DOB\" true true)"}
+   {:script
+    "(rt.po.report-builder/set-name \"Students with DoB greater than or = 01.01.1999 - 09112015\")"}
+   {:script "(rt.po.report-view/open-analyzer)"}
+   {:script
+    "(expect-equals true (rt.po.report-view/analyzer-field-exists? \"DOB\"))"}
+   {:script
+    "(rt.po.report-view/set-analyzer-field-oper \"DOB\" \">=\")"}
+   {:script
+    "(rt.po.report-view/set-analyzer-string \"DOB\" \"1/1/1999\")"}
+   {:script "(rt.po.report-view/apply-analyzer)"}
+   {:script "(rt.po.report-builder/save)"}
+   {:script "(rt.po.report-builder/close)"}
+   {:script
+    "(rt.po.access-rules/enable-access-rule \"Students (User Role)\" \"Student\" \"Students with DoB greater than or = 01.01.1999 - 09112015\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 5 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Nelle Odom\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"Edit\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Nelle Odom\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Irene Roman\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View 'Irene Roman'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit 'Irene Roman'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete 'Irene Roman'\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Irene Roman\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Ina Maddox\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View 'Ina Maddox'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit 'Ina Maddox'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete 'Ina Maddox'\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Ina Maddox\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Hyacinth Foley\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View 'Hyacinth Foley'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit 'Hyacinth Foley'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete 'Hyacinth Foley'\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Hyacinth Foley\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Laith Leonard\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View 'Laith Leonard'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit 'Laith Leonard'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete 'Laith Leonard'\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Laith Leonard\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(rt.po.report-view/set-search-text \"Laith Leonard\")"}
+   {:script
+    "(comment \"TODO: the following a few steps are to modify currency value in form.\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Laith Leonard\")"}
+   {:script "(rt.po.app/choose-context-menu \"Edit\")"}
+   {:script
+    "(expect-equals \"3/11/1999\" (rt.po.edit-form/date-field-value \"DOB\"))"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"DOB\" (make-local-date 1998 3 11))"}
+   {:script
+    "(expect-equals \"3/11/1998\" (rt.po.edit-form/date-field-value \"DOB\"))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script ";; please doc reason for the long sleep"}
+   {:script "(rn.common/sleep 60000)"}
+   {:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 4 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Nelle Odom\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View\"))"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"Edit\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Nelle Odom\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Irene Roman\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View 'Irene Roman'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit 'Irene Roman'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete 'Irene Roman'\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Irene Roman\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Ina Maddox\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View 'Ina Maddox'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit 'Ina Maddox'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete 'Ina Maddox'\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Ina Maddox\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Hyacinth Foley\")"}
+   {:script
+    "(expect-equals true (rt.po.app/context-menu-exists? \"View 'Hyacinth Foley'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Edit 'Hyacinth Foley'\"))"}
+   {:script
+    "(expect-equals false (rt.po.app/context-menu-exists? \"Delete 'Hyacinth Foley'\"))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Hyacinth Foley\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(rt.po.report-view/set-search-text \"Laith Leonard\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Laith Leonard\")"}
+   {:script "(rt.po.app/choose-context-menu \"Edit\")"}
+   {:script
+    "(expect-equals \"3/11/1998\" (rt.po.edit-form/date-field-value \"DOB\"))"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"DOB\" (make-local-date 1999 3 11))"}
+   {:script
+    "(expect-equals \"3/11/1999\" (rt.po.edit-form/date-field-value \"DOB\"))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/delete-access-rule \"Students (User Role)\" \"Student\" \"Students with DoB greater than or = 01.01.1999 - 09112015\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script "(rn.common/start-app-and-login (:user-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160222-135928",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds],
+  :id :rn/security/multiAccessRules-and-DataChange---date,
+  :teardown
+  [{:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(rt.po.report-view/set-search-text \"Laith Leonard\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Laith Leonard\")"}
+   {:script "(rt.po.app/choose-context-menu \"Edit\")"}
+   {:script
+    "(if (not (= (rt.po.edit-form/date-field-value \"DOB\") \"3/11/1999\")) (do (rt.po.edit-form/set-date-field-value \"DOB\" (make-local-date 1999 3 11))))"}
+   {:script
+    "(expect-equals \"3/11/1999\" (rt.po.edit-form/date-field-value \"DOB\"))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rn.app/open-security \"Record Access\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"System Administrator (User Account)\")"}
+   {:script
+    "(if (> (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/set-search-text \"Students with DoB greater than or = 01.01.1999 - 09112015\") (if (> (rt.po.report-view/count-report-row) 1) (do (rt.po.access-rules/click-edit-button) (rt.po.access-rules/delete-access-rule \"Students (User Role)\" \"Student\" \"Students with DoB greater than or = 01.01.1999 - 09112015\") (rt.po.access-rules/click-save-button)))))"}
+   {:script
+    "(rt.po.report-view/set-search-text \"System Administrator (User Account)\")"}
+   {:script
+    "(if (= (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/set-search-text \"Students with DoB greater than or = 01.01.1999 - 09112015\") (if (> (rt.po.report-view/count-report-row) 0) (do (rt.po.access-rules/click-edit-button) (rt.po.access-rules/delete-access-rule \"Students (User Role)\" \"Student\" \"Students with DoB greater than or = 01.01.1999 - 09112015\") (rt.po.access-rules/click-save-button)))))"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Students with DoB greater than or = 01.01.1999 - 09112015\")"}],
+  :modified-by "not-implemented"}]

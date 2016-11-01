@@ -1,0 +1,46 @@
+[{:tags [:nomodify :prod :regression :area/form :user/sri :desktop],
+  :tests [],
+  :name
+  "Ensure minimum and maximum for a field can be removed once set on any field",
+  :steps
+  [{:script "(rt.po.app/navigate-to-item \"Test Solution\" \"\")"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script "(rt.po.app/enable-app-toolbox)"}
+   {:script
+    "(rt.po.app-toolbox/set-application-filter \"Test Solution\")"}
+   {:script
+    "(rt.po.app-toolbox/choose-screen-element-menu \"AA_All Fields\" :form \"AA_All Fields Form\" \"Modify\")"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"Number\")"}
+   {:script
+    "(expect-equals true (rt.po.form-builder-config/config-dialog-visible?))"}
+   {:script "(rt.po.form-builder-config/expand-section \"Option\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Object Detail\")"}
+   {:script
+    "(rt.po.form-builder-config/set-field-minimum-value \"10\")"}
+   {:script
+    "(rt.po.form-builder-config/set-field-maximum-value \"50\")"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"Number\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Option\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Object Detail\")"}
+   {:script
+    "(expect-equals \"10\"  (rt.po.form-builder-config/get-field-minimum-value))"}
+   {:script
+    "(expect-equals \"50\"  (rt.po.form-builder-config/get-field-maximum-value))"}
+   {:script "(rt.po.form-builder-config/set-field-minimum-value \"\")"}
+   {:script "(rt.po.form-builder-config/set-field-maximum-value \"\")"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150610-161315",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id
+  :rn/form/ensure-minimum-and-maximum-for-field-can-be-removed-from-any-field,
+  :teardown [],
+  :doc "This test is added against the bug no: 24339",
+  :modified-by "not-implemented"}]

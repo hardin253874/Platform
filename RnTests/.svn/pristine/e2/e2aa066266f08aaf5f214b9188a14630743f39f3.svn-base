@@ -1,0 +1,216 @@
+[{:tags
+  [:area/report-builder
+   :nomodify
+   :regression
+   :desktop
+   :user/abida
+   :prod],
+  :tests [],
+  :name "check date format options for Date field",
+  :steps
+  [{:script "(rt.po.app/add-report (:section *tc*) )"}
+   {:script "(rt.po.report-new/set-name (:report-name *tc*))"}
+   {:script "(rt.po.report-new/set-report-base-on \"Student\")"}
+   {:script "(rt.po.report-new/click-ok )"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"DOB\" true)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"DOB\" \"Format Column\")"}
+   {:script "(rt.po.report-format/click-value-formatting)"}
+   {:script "(rt.po.report-format/set-datetime-format \"Day Month\")"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script
+    "(expect-equals \"January 09\" (rt.po.report-view/get-report-cell-text-content \"0\" \"DOB\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script "(rt.po.report-builder/click-close-button )"}
+   {:script
+    "(comment (rt.po.report-builder/view-report-direct \"Foster University\" (str (:section *tc*) \"/ValueFormattingDate\")))"}
+   {:script
+    "(expect-equals \"January 09\" (rt.po.report-view/get-report-cell-text-content \"0\" \"DOB\"))"}
+   {:script "(rt.po.report-builder/access-build-mode )"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"DOB\" \"Format Column\")"}
+   {:script "(rt.po.report-format/click-value-formatting )"}
+   {:script "(rt.po.report-format/set-datetime-format \"Long\")"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script
+    "(expect-equals \"Saturday, January 09, 1988\" (rt.po.report-view/get-report-cell-text-content \"0\" \"DOB\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script "(rt.po.report-builder/click-close-button )"}
+   {:script
+    "(comment (rt.po.report-builder/view-report-direct \"Foster University\" (str (:section *tc*) \"/ValueFormattingDate\")))"}
+   {:script
+    "(expect-equals \"Saturday, January 09, 1988\" (rt.po.report-view/get-report-cell-text-content \"0\" \"DOB\"))"}
+   {:script "(rt.po.report-builder/access-build-mode )"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"DOB\" \"Format Column\")"}
+   {:script "(rt.po.report-format/click-value-formatting )"}
+   {:script "(rt.po.report-format/set-datetime-format \"Month\")"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script
+    "(expect-equals \"Jan\" (rt.po.report-view/get-report-cell-text-content \"0\" \"DOB\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script "(rt.po.report-builder/click-close-button )"}
+   {:script
+    "(comment (rt.po.report-builder/view-report-direct \"Foster University\" (str (:section *tc*) \"/ValueFormattingDate\")))"}
+   {:script
+    "(expect-equals \"Jan\" (rt.po.report-view/get-report-cell-text-content \"0\" \"DOB\"))"}
+   {:script "(rt.po.report-builder/access-build-mode )"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"DOB\" \"Format Column\")"}
+   {:script "(rt.po.report-format/click-value-formatting )"}
+   {:script "(rt.po.report-format/set-datetime-format \"Month Year\")"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script "(rt.scripts.common/sleep 2000)"}
+   {:script
+    "(expect-equals \"1988 January\" (rt.po.report-view/get-report-cell-text-content \"0\" \"DOB\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script "(rt.po.report-builder/click-close-button )"}
+   {:script
+    "(comment (rt.po.report-builder/view-report-direct \"Foster University\" (str (:section *tc*) \"/ValueFormattingDate\")))"}
+   {:script
+    "(expect-equals \"1988 January\" (rt.po.report-view/get-report-cell-text-content \"0\" \"DOB\"))"}
+   {:script "(rt.po.report-builder/access-build-mode )"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"DOB\" \"Format Column\")"}
+   {:script "(rt.po.report-format/click-value-formatting )"}
+   {:script "(rt.po.report-format/set-datetime-format \"Quarter\")"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script
+    "(expect-equals \"Q1\" (rt.po.report-view/get-report-cell-text-content \"0\" \"DOB\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script "(rt.po.report-builder/click-close-button )"}
+   {:script
+    "(comment (rt.po.report-builder/view-report-direct \"Foster University\" (str (:section *tc*) \"/ValueFormattingDate\")))"}
+   {:script
+    "(expect-equals \"Q1\" (rt.po.report-view/get-report-cell-text-content \"0\" \"DOB\"))"}
+   {:script "(rt.po.report-builder/access-build-mode )"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"DOB\" \"Format Column\")"}
+   {:script "(rt.po.report-format/click-value-formatting )"}
+   {:script
+    "(rt.po.report-format/set-datetime-format \"Quarter Year\")"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script "(rt.scripts.common/sleep 2000)"}
+   {:script
+    "(expect-equals \"Q1, 1988\" (rt.po.report-view/get-report-cell-text-content \"0\" \"DOB\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script "(rt.po.report-builder/click-close-button )"}
+   {:script
+    "(comment (rt.po.report-builder/view-report-direct \"Foster University\" (str (:section *tc*) \"/ValueFormattingDate\")))"}
+   {:script
+    "(expect-equals \"Q1, 1988\" (rt.po.report-view/get-report-cell-text-content \"0\" \"DOB\"))"}
+   {:script "(rt.po.report-builder/access-build-mode )"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"DOB\" \"Format Column\")"}
+   {:script "(rt.po.report-format/click-value-formatting )"}
+   {:script "(rt.po.report-format/set-datetime-format \"Year\")"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script
+    "(expect-equals \"1988\" (rt.po.report-view/get-report-cell-text-content \"0\" \"DOB\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script "(rt.po.report-builder/click-close-button )"}
+   {:script
+    "(expect-equals \"1988\" (rt.po.report-view/get-report-cell-text-content \"0\" \"DOB\"))"}
+   {:script "(rt.po.report-builder/access-build-mode )"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"DOB\" \"Format Column\")"}
+   {:script "(rt.po.report-format/click-value-formatting )"}
+   {:script "(rt.po.report-format/set-datetime-format \"Weekday\")"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script
+    "(expect-equals \"Saturday\" (rt.po.report-view/get-report-cell-text-content \"0\" \"DOB\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script "(rt.po.report-builder/click-close-button )"}
+   {:script
+    "(comment (rt.po.report-builder/view-report-direct \"Foster University\" (str (:section *tc*) \"/ValueFormattingDate\")))"}
+   {:script
+    "(expect-equals \"Saturday\" (rt.po.report-view/get-report-cell-text-content \"0\" \"DOB\"))"}
+   {:script "(rt.po.report-builder/access-build-mode )"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"DOB\" \"Format Column\")"}
+   {:script "(rt.po.report-format/click-value-formatting )"}
+   {:script "(rt.po.report-format/set-datetime-format \"Default\")"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script
+    "(expect-equals \"1/9/1988\" (rt.po.report-view/get-report-cell-text-content \"0\" \"DOB\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button )"}
+   {:script "(rt.po.report-builder/click-close-button )"}
+   {:script
+    "(comment (rt.po.report-builder/view-report-direct \"Foster University\" (str (:section *tc*) \"/ValueFormattingDate\")))"}
+   {:script
+    "(expect-equals \"1/9/1988\" (rt.po.report-view/get-report-cell-text-content \"0\" \"DOB\"))"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"DOB\" \"Format Column\")"}
+   {:script "(rt.po.report-format/click-value-formatting)"}
+   {:script "(rt.po.report-format/set-alignment \"Left\")"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script "(rt.scripts.common/sleep 2000)"}
+   {:script
+    "(expect-equals (.contains (rt.po.report-view/get-report-column-header-style \"\" \"DOB\") \"text-align: left\") true)"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(comment (rt.po.report-builder/view-report-direct \"Foster University\" (str (:section *tc*) \"/ValueFormattingDate\")))"}
+   {:script
+    "(expect-equals (.contains (rt.po.report-view/get-report-column-header-style \"\" \"DOB\") \"text-align: left\") true)"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"DOB\" \"Format Column\")"}
+   {:script "(rt.po.report-format/click-value-formatting)"}
+   {:script "(rt.po.report-format/set-alignment \"Right\")"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script "(rt.scripts.common/sleep 2000)"}
+   {:script
+    "(expect-equals (.contains (rt.po.report-view/get-report-column-header-style \"\" \"DOB\") \"text-align: right\") true)"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(comment (rt.po.report-builder/view-report-direct \"Foster University\" (str (:section *tc*) \"/ValueFormattingDate\")))"}
+   {:script
+    "(expect-equals (.contains (rt.po.report-view/get-report-column-header-style \"\" \"DOB\") \"text-align: right\") true)"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"DOB\" \"Format Column\")"}
+   {:script "(rt.po.report-format/click-value-formatting)"}
+   {:script "(rt.po.report-format/set-alignment \"Centre\")"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script "(rt.scripts.common/sleep 2000)"}
+   {:script
+    "(expect-equals (.contains (rt.po.report-view/get-report-column-header-style \"\" \"DOB\") \"text-align: center\") true)"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(comment (rt.po.report-builder/view-report-direct \"Foster University\" (str (:section *tc*) \"/ValueFormattingDate\")))"}
+   {:script
+    "(expect-equals (.contains (rt.po.report-view/get-report-column-header-style \"\" \"DOB\") \"text-align: center\") true)"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"DOB\" \"Format Column\")"}
+   {:script "(rt.po.report-format/click-value-formatting)"}
+   {:script "(rt.po.report-format/set-alignment \"Default\")"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script "(rt.scripts.common/sleep 2000)"}
+   {:script
+    "(expect-equals (.contains (rt.po.report-view/get-report-column-header-style \"\" \"DOB\") \"text-align:\") false)"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(comment (rt.po.report-builder/view-report-direct \"Foster University\" (str (:section *tc*) \"/ValueFormattingDate\")))"}
+   {:script
+    "(expect-equals (.contains (rt.po.report-view/get-report-column-header-style \"\" \"DOB\") \"text-align:\") false)"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160916-162019",
+  :setup
+  [{:script
+    "(identity {:report-name (rt.lib.util/make-test-name \"NewReport\")})"}],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :common/fixture/login
+   :rn/section/createsection],
+  :id :rn/reportbuilder/value-formatting-date,
+  :teardown [{:script "(rt.po.app/delete-nav-item (:section *tc*))"}],
+  :modified-by "not-implemented"}]

@@ -1,0 +1,117 @@
+[{:tags
+  [:nomodify :prod :regression :user/shaofen :desktop :area/connector],
+  :tests [],
+  :name
+  "1) create a new object with choice field defined; 2) import choice field values; 3) verified choice field values are imported fine; 4) teardown to clean all data added into system.",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(comment \"++++++++++++++ 1) create a new object with choice field defined. ++++++++++++++\")"}
+   {:script "(rt.po.app/enable-app-toolbox)"}
+   {:script
+    "(rt.po.app-toolbox/set-application-filter \"Foster University\")"}
+   {:script
+    "(rt.po.app-toolbox/create-object {:description \"Connector Test Object Description\", :name \"ConnectorObj1\"})"}
+   {:script "(rt.po.form-builder/add-field-to-form \"Choice\")"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Resources/Choice Fields\")"}
+   {:script "(rt.po.report-view/set-search-text \"New Choice field\")"}
+   {:script
+    "(if (> (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/select-row-by-text \"New Choice field\") (rt.po.report-view/open-action-menu) (rt.po.app/choose-context-menu \"Edit\") (expect-equals \"New Choice field\" (rt.po.edit-form/get-text-field-value \"Name\")) (rt.po.edit-form/set-text-field-value \"Name\" \"suburb-sn\") (expect-equals \"suburb-sn\" (rt.po.edit-form/get-text-field-value \"Name\")) (rt.po.edit-form/save)))"}
+   {:script "(rt.po.report-view/set-search-text \"suburb-sn\")"}
+   {:script "(expect-equals 1 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(comment \"++++++++++++++ 2) import choice field values; ++++++++++++++\")"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Integration/Import Spreadsheet\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"Import Configuration\")"}
+   {:script
+    "(rt.po.import-spreadsheet/choose-file-to-import (rt.po.common/get-data-file-path \"ImportSpreadsheet-Suburb.xlsx\"))"}
+   {:script "(rt.po.import-spreadsheet/choose-next)"}
+   {:script
+    "(expect-equals \"Objects\" (rt.po.import-spreadsheet/import-type))"}
+   {:script
+    "(rt.po.import-spreadsheet/set-import-type \"Choice field values\")"}
+   {:script
+    "(expect-equals \"Choice field values\" (rt.po.import-spreadsheet/import-type))"}
+   {:script
+    "(rt.po.import-spreadsheet/choose-target-object \"suburb-sn\")"}
+   {:script "(rt.po.import-spreadsheet/choose-next)"}
+   {:script
+    "(expect-equals \"Name\" (rt.po.import-spreadsheet/get-field-mapping \"Name\"))"}
+   {:script
+    "(expect-equals \"Order\" (rt.po.import-spreadsheet/get-field-mapping \"Order\"))"}
+   {:script "(rt.po.import-spreadsheet/choose-next)"}
+   {:script
+    "(rt.po.import-spreadsheet/set-config-name \"Import Choice field values from Excel\")"}
+   {:script
+    "(expect-equals \"Import Choice field values from Excel\" (rt.po.import-spreadsheet/config-name))"}
+   {:script
+    "(rt.po.import-spreadsheet/set-suppress-workflows \"Yes\")"}
+   {:script "(expect (rt.po.import-spreadsheet/suppress-workflows?))"}
+   {:script "(rt.po.import-spreadsheet/choose-next)"}
+   {:script "(rt.scripts.common/sleep 2000)"}
+   {:script
+    "(comment \"++++++++++++++ 3) verify choice field values are imported fine. ++++++++++++++\")"}
+   {:script "(rt.po.app/clear-all-alerts)"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Integration/Import Runs\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Import Choice field values from Excel\")"}
+   {:script
+    "(expect-equals \"Completed\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Status\"))"}
+   {:script
+    "(expect-equals \"43 of 43 records succeeded\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Records imported\"))"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Resources/Choice Fields\")"}
+   {:script "(rt.po.report-view/set-search-text \"suburb-sn\")"}
+   {:script "(expect-equals 1 (rt.po.view-form/get-report-row-count))"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text \"suburb-sn\")"}
+   {:script "(rt.po.edit-form/select-form-tab \"Choice Values\")"}
+   {:script "(expect (> (rt.po.view-form/get-report-row-count)) 5)"}
+   {:script
+    "(expect-equals \"Option 1\" (nth (rt.po.report-view/get-active-tab-column-values \"Name\") 0))"}
+   {:script
+    "(expect-equals \"Adelaide\" (nth (rt.po.report-view/get-active-tab-column-values \"Name\") 1))"}
+   {:script
+    "(expect-equals \"Ballarat\" (nth (rt.po.report-view/get-active-tab-column-values \"Name\") 5))"}
+   {:script
+    "(expect-equals \"Beverley\" (nth (rt.po.report-view/get-active-tab-column-values \"Name\") 11))"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20160615-131452",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds],
+  :id :rn/connector/import-speadsheet---import-choice-field-options,
+  :teardown
+  [{:script
+    "(comment \"++++++++++++++ 4) teardown to clean all data added into system. ++++++++++++++\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))\n"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Integration/Import Spreadsheet\")"}
+   {:script
+    "(rt.po.report-view/set-search-text \"Import Choice field values from Excel\")"}
+   {:script
+    "(while (> (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/select-row-by-text \"Import Choice field values from Excel\") (rt.po.report-view/open-action-menu) (rt.po.app/choose-context-menu \"Delete 'Import Choice field values from Excel'\") (rt.po.edit-form/click-confirm-delete-ok-button)))"}
+   {:script "(expect-equals 0 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Resources/Choice Fields\")"}
+   {:script "(rt.po.report-view/set-search-text \"suburb-sn\")"}
+   {:script
+    "(while (> (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/select-row-by-text \"suburb\") (rt.po.report-view/open-action-menu) (rt.po.app/choose-context-menu \"Delete\") (rt.po.edit-form/click-confirm-delete-ok-button)))"}
+   {:script "(expect-equals 0 (rt.po.report-view/count-report-row))"}
+   {:script
+    "(rn.app/open-report \"Objects\" {:app-name \"ReadiNow Console\", :folder-name \"Resources\"})"}
+   {:script "(rt.po.report-view/set-search-text \"ConnectorObj1\")"}
+   {:script
+    "(while (> (rt.po.report-view/count-report-row) 0) (do (rt.po.report-view/select-row-by-text \"ConnectorObj1\") (rt.po.report-view/open-action-menu) (rt.po.app/choose-context-menu \"Delete 'ConnectorObj1'\") (rt.po.edit-form/click-confirm-delete-ok-button)))"}
+   {:script "(expect-equals 0 (rt.po.report-view/count-report-row))"}],
+  :doc "",
+  :modified-by "not-implemented"}]

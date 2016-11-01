@@ -1,0 +1,60 @@
+[{:tags [:desktop],
+  :name "Script to set up test data for grc/bcm tests",
+  :steps
+  [{:script "(rn.common/start-app-and-login) ; as admin"}
+   {:script
+    "(set-test-data :grc-creds rn.services.security/ensure-test-accounts [\"BCP Manager\" \"Compliance Manager\" \"Risk Manager\"] \"GRC\" 50)"}
+   {:script
+    "(set-test-data :bcp-manager-creds rn.services.security/ensure-test-accounts [\"BCP Manager\"] \"BCP\" 50)"}
+   {:script
+    "(set-test-data :bia-user-creds rn.services.security/ensure-test-accounts [\"BIA User\"] \"BIAUSER\" 50)"}
+   {:script
+    "(rn.common/start-app-and-login (first (get-test-data :bcp-manager-creds)))"}
+   {:script
+    "(set-test-data :business-units rn.common/get-record-names-for-type-via-report \"Business Unit\")"}
+   {:script
+    "(set-test-data :risk-impacts rn.common/get-record-names-for-type \"Risk Impact\" {:app-name \"ReadiBCM\"})"}
+   {:script
+    "(set-test-data :likelihoods rn.common/get-record-names-for-type \"Risk Likelihood Rating\" {:app-name \"ReadiBCM\"})"}
+   {:script
+    "(rn.common/start-app-and-login (first (get-test-data :bia-user-creds)))"}
+   {:script
+    "(set-test-data :employees-for-bia-user rn.common/get-record-names-for-type-via-report \"Employee\")"}
+   {:script
+    "(set-test-data :divisions-for-bia-user rn.common/get-record-names-for-type \"Division\")"}
+   {:script
+    "(comment \"Assuming security for the following are the same for all GRC roles\")"}
+   {:script
+    "(set-test-data :buildings rn.common/get-record-names-for-type \"Building\" {:app-name \"ReadiBCM\"})"}
+   {:script
+    "(comment \"TODO - sites is actually a subset of buildings .. so temp hardcoding\")"}
+   {:script
+    "(comment (set-test-data :sites rn.common/get-record-names-for-type \"Building\" {:app-name \"ReadiBCM\"}))"}
+   {:script
+    "(set-test-data :sites [\"Box Hill\" \"Maitland\" \"Ryde\" \"Pookaka\"])"}
+   {:script
+    "(set-test-data :op-impacts rn.common/get-choice-values \"Function Operational Impact\" {:app-name \"ReadiBCM\"})"}
+   {:script
+    "(set-test-data :risk-drivers rn.common/get-choice-values \"Risk Type (Source)\" {:app-name \"ReadiBCM\"})"}
+   {:script
+    "(set-test-data :risk-levels rn.common/get-choice-values \"Level of Risk\" {:app-name \"ReadiBCM\"})"}
+   {:script
+    "(set-test-data :critical-periods rn.common/get-record-names-for-type \"Business Critical Periods\")"}
+   {:script
+    "(set-test-data :products-or-services rn.common/get-record-names-for-type \"Product or Service\")"}
+   {:script
+    "(set-test-data :tech-pcs rn.common/get-record-names-for-type \"PC\")"}
+   {:script
+    "(set-test-data :tech-sw rn.common/get-record-names-for-type \"Server Application\")"}
+   {:script
+    "(set-test-data :tech-printers rn.common/get-record-names-for-type \"Printer\")"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150928-205551",
+  :setup [],
+  :fixtures [],
+  :id :grc/tests/set-test-data,
+  :teardown [],
+  :doc
+  "Not really a test, but a script to query and save test data for actual test scripts",
+  :modified-by "not-implemented"}]

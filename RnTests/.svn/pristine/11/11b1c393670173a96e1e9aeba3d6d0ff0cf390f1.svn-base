@@ -1,0 +1,133 @@
+[{:tags [:user/hemant :app-tests/bcm :desktop],
+  :name "Create a crisis management event and complete it",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:bcm-owner-creds *tc*))"}
+   {:script
+    "(rt.po.app/navigate-to \"Business Continuity Management\")"}
+   {:script "(rt.po.app/select-app-tab \"Crisis Management\")"}
+   {:script "(rt.po.app/select-navigator-item \"Crisis Management\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Crisis\" (:crisis-event *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Crisis Type\" \"Natural Crisis\")"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Start_Date_Time\" (make-local-date 2016 10 10))"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Discovered By\" \"Business Continuity Owner\")"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Reported By\" \"Business Continuity Owner\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Severity\" \"Critical\")"}
+   {:script "(rt.po.edit-form/open-lookup \"Impacted Sites\")"}
+   {:script
+    "(rt.po.view-form/select-structure-view-item-with-ctrl-key-by-text \"China\" \"\")"}
+   {:script "(rt.po.common/click-ok)"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"End_Date_Time\" (make-local-date 2016 11 11))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"CRISIS NOTIFICATIONS\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Subject\" (:notif-name *tc*))"}
+   {:script "(rt.po.edit-form/set-bool-field-value \"Email\" true)"}
+   {:script "(rt.po.edit-form/set-bool-field-value \"SMS\" true)"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"RECIPIENTS\")"}
+   {:script "(rt.po.app/choose-context-menu \"Link\")"}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog \"Adam\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.view-form/set-search-text-for-relationship \"Crisis Notifications\" (:notif-name *tc*))"}
+   {:script
+    "(expect-equals \"\" (first (rt.po.report-view/get-column-values-in-relationship \"Crisis Notifications\" \"Time Last Sent\")))"}
+   {:script
+    "(rt.po.report-view/click-send-notification-button-in-relationship \"Crisis Notifications\")"}
+   {:script "(rn.common/wait-until-settled)"}
+   {:script
+    "(rt.po.report-view/click-refresh-now-in-relationship \"Crisis Notifications\")"}
+   {:script
+    "(expect (not (= \"\" (first (rt.po.report-view/get-column-values-in-relationship \"Crisis Notifications\" \"Time Last Sent\")))))"}
+   {:script
+    "(rt.po.view-form/click-task-action-v2 \"Activate Plans\")"}
+   {:script "(rn.common/wait-until-settled)"}
+   {:script
+    "(rt.po.edit-form/set-workflow-lookup \"Select Plans to Activate\" \"BC Recovery Plan 1\")"}
+   {:script "(rt.po.edit-form/click-workflow-done)"}
+   {:script
+    "(def ActivatedPlanName (rt.po.report-builder/get-grouped-row-content \"Business Continuity Plan\" 0 \"Recovery Plan\"))"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text-in-relationship \"Activated Plans\" ActivatedPlanName)"}
+   {:script
+    "(def ImmRecActName (rt.po.report-builder/get-grouped-row-content \"Immediate\" 0 \"Recovery Action\"))"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text-in-relationship \"Recovery Actions\" ImmRecActName)"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script "(rt.po.edit-form/set-number-value-v2 \"% Complete\" 100)"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Status\" \"Completed\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(def OngoingRecActName (rt.po.report-builder/get-grouped-row-content \"Ongoing\" 0 \"Recovery Action\"))"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text-in-relationship \"Recovery Actions\" OngoingRecActName)"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script "(rt.po.edit-form/set-number-value-v2 \"% Complete\" 100)"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Status\" \"Completed\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)\n"}
+   {:script
+    "(expect-equals \"100%\" (first (clojure.string/split (rt.po.report-builder/get-grouped-row-content \"Immediate\" 0 \"% Complete\") #\"\\n\")))"}
+   {:script
+    "(expect-equals \"Completed\" (rt.po.report-builder/get-grouped-row-content \"Immediate\" 0 \"Status\"))"}
+   {:script
+    "(expect-equals \"100%\" (first (clojure.string/split (rt.po.report-builder/get-grouped-row-content \"Ongoing\" 0 \"% Complete\") #\"\\n\")))"}
+   {:script
+    "(expect-equals \"Completed\" (rt.po.report-builder/get-grouped-row-content \"Ongoing\" 0 \"Status\"))"}
+   {:script
+    "(rt.po.view-form/set-search-text-for-relationship \"Call Tree\" \"Not Called\")"}
+   {:script
+    "(rt.po.report-view/double-click-row-by-text-in-relationship \"Call Tree\" \"Not Called\")"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Status\" \"Contacted\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script "(rt.po.edit-form/set-number-value-v2 \"% Complete\" 100)"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Execution Status\" \"Completed\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(expect-equals \"100%\" (first (clojure.string/split (rt.po.report-builder/get-grouped-row-content \"Business Continuity Plan\" 0 \"% Complete\") #\"\\n\")))"}
+   {:script
+    "(expect-equals \"Completed\" (rt.po.report-builder/get-grouped-row-content \"Business Continuity Plan\" 0 \"Execution Status\"))"}
+   {:script "(rt.po.edit-form/click-edit-button)"}
+   {:script "(rt.po.edit-form/set-number-value-v2 \"% Complete\" 100)"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Status\" \"Complete\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.app/open-nav-tree-node \"Reports\")"}
+   {:script "(rt.po.app/select-navigator-item \"Crisis History\")"}
+   {:script "(rt.po.report-view/refresh-now)"}
+   {:script "(rt.po.report-view/set-search-text (:crisis-event *tc*))"}
+   {:script
+    "(expect-equals \"100%\" (first (clojure.string/split (rt.po.report-view/get-report-cell-text-content 0 \"% Completed\") #\"\\n\")))"}
+   {:script
+    "(expect-equals \"Complete\" (rt.po.report-view/get-report-cell-text-content 0 \"Status\"))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20161020-172552",
+  :setup
+  [{:script
+    "(identity {:notif-name (rt.lib.util/make-test-name \"TestNotif\"), :issue-name (rt.lib.util/make-test-name \"Issue\"), :process-name (rt.lib.util/make-test-name \"BIA-process\"), :crisis-event (rt.lib.util/make-test-name \"CrisisEvent\")})"}],
+  :fixtures [:rn/fixture/bcm-owner-creds],
+  :id :bcm/tests/crisis-management,
+  :teardown [],
+  :modified-by "not-implemented"}]

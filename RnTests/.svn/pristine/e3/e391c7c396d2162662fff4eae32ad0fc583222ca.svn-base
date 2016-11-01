@@ -1,0 +1,35 @@
+[{:tags
+  [:area/report-builder
+   :nomodify
+   :prod
+   :regression
+   :desktop
+   :user/abida],
+  :tests [],
+  :name "Opening Report Properties",
+  :steps
+  [{:script "(rt.po.app/navigate-via-tiles \"Foster University\")"}
+   {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\" :folder-name \"Reports\"})"}
+   {:script "(rt.po.app/enable-config-mode )"}
+   {:script "(rt.po.report-builder/access-build-mode )"}
+   {:script "(rt.po.report-builder/click-property-report-button )"}
+   {:script
+    "(expect-equals \"Student report\" (rt.po.report-new/get-name))"}
+   {:script "(rt.po.report-builder/click-ok )"}
+   {:script "(rt.po.report-builder/click-close-button )"}
+   {:script "(rt.po.edit-form/click-page-dirty-continue-button )"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Reports/Student report\")"}
+   {:script "(rt.po.app/load-property-of-nav-item \"Student report\")"}
+   {:script
+    "(expect-equals \"Student report\" (rt.po.report-new/get-name))"}
+   {:script "(rt.po.report-builder/click-ok )"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20160211-091404",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/reportbuilder/open-report-properties,
+  :teardown [],
+  :modified-by "not-implemented"}]

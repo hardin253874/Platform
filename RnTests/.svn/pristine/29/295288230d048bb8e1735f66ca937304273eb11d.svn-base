@@ -1,0 +1,19 @@
+[{:tags [:desktop],
+  :test-filter "(has-tags? [\"known-issues\" \"prod\"] %)",
+  :tests [],
+  :name "Tests for known issues",
+  :each-fixtures
+  [:common/fixture/handle-errors
+   :common/fixture/wait-ng
+   :common/fixture/test-account-creds
+   :common/fixture/chrome
+   :common/fixture/login],
+  :type :testsuite,
+  :source "../RnTests/test-db",
+  :modified "20150602-072511",
+  :setup [{:script ""}],
+  :id :rn/suites/known-issues,
+  :teardown [{:script ""}],
+  :doc "",
+  :modified-by "not-implemented",
+  :once-fixtures []}]

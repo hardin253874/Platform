@@ -1,0 +1,50 @@
+[{:tags [:user/hemant :app-tests/orm :desktop],
+  :name
+  "Create a new issue, link it to operational risk and control, create a task and use dashboard to manage it ",
+  :steps
+  [{:script
+    "(rn.common/start-app-and-login (:orm-manager-creds *tc*))"}
+   {:script "(rt.po.app/navigate-to \"Issues Management\")"}
+   {:script "(rt.po.app/select-navigator-item \"Issues\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:issue-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Expected_Resolution_Date\" (make-local-date 2016 12 12))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"LINKED TO\")"}
+   {:script "(rt.po.app/choose-context-menu \"Link\")"}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog \"Operational Risk\")"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"LINKED TO\")"}
+   {:script "(rt.po.app/choose-context-menu \"Link\")"}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog \"Control\")"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"TASKS\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Subject\" (:task-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Due date\" (make-local-date 2016 12 12))"}
+   {:script "(rt.po.edit-form/set-lookup \"Assigned to\" \"Adam\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Task status\" \"Not started\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.report-view/set-search-text (:issue-name *tc*))"}
+   {:script
+    "(expect-equals (:issue-name *tc*) (rt.po.report-view/get-report-cell-text-content 0 \"Issue\"))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20161013-151114",
+  :setup
+  [{:script
+    "(identity {:orm-name (rt.lib.util/make-test-name \"Op-Risk\"), :issue-name (rt.lib.util/make-test-name \"Issue\"), :prod-service-name (rt.lib.util/make-test-name \"ProdServ\"), :task-name (rt.lib.util/make-test-name \"Task\")})"}],
+  :fixtures [:rn/fixture/orm-manager-creds],
+  :id :orm/tests/create-issue-link-to-operational-risk-and-control,
+  :teardown [],
+  :modified-by "not-implemented"}]

@@ -1,0 +1,95 @@
+[{:tags [:user/hemant :app-tests/itdr :desktop],
+  :name
+  "Managing Shared by creating Sites, Information, Devices, Application, Org Structure",
+  :steps
+  [{:script
+    "(rn.common/start-app-and-login (:itdr-manager-creds *tc*))"}
+   {:script "(rt.po.app/navigate-to \"Shared\")"}
+   {:script
+    "(rt.po.app/select-navigator-item \"Organisation Structure\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:org-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/open-lookup \"Parent organisation level\")"}
+   {:script
+    "(rt.po.view-form/select-structure-view-item-with-ctrl-key-by-text \"Administration\" \"\")"}
+   {:script "(rt.po.common/click-ok)"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.report-view/set-search-text (:org-name *tc*))"}
+   {:script
+    "(expect-equals (:org-name *tc*) (rt.po.report-view/get-report-cell-text-content 0 \"Organisation Structure\"))"}
+   {:script "(rt.po.app/select-navigator-item \"Sites\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:site-name *tc*))"}
+   {:script "(rt.po.edit-form/open-lookup \"Parent Site\")"}
+   {:script
+    "(rt.po.view-form/select-structure-view-item-with-ctrl-key-by-text \"China\" \"\")"}
+   {:script "(rt.po.common/click-ok)"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.report-view/set-search-text (:site-name *tc*))"}
+   {:script
+    "(expect-equals (:site-name *tc*) (rt.po.report-view/get-report-cell-text-content 0 \"Sites\"))"}
+   {:script "(rt.po.app/select-navigator-item \"Applications\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:app-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Application Type\" \"PC Application\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.report-view/set-search-text (:app-name *tc*))"}
+   {:script
+    "(expect-equals (:app-name *tc*) (rt.po.report-view/get-report-cell-text-content 0 \"Application\"))"}
+   {:script "(rt.po.app/select-navigator-item \"Devices\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:device-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Device Category\" \"Network\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Device Type\" \"Network Service\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.report-view/set-search-text (:device-name *tc*))"}
+   {:script
+    "(expect-equals (:device-name *tc*) (rt.po.report-builder/get-grouped-row-content \"Network\" 0 \"Device\"))"}
+   {:script "(rt.po.app/select-navigator-item \"Information\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:info-name *tc*))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.report-view/set-search-text (:info-name *tc*))"}
+   {:script
+    "(expect-equals (:info-name *tc*) (rt.po.report-view/get-report-cell-text-content 0 \"Information\"))"}
+   {:script "(rt.po.app/select-navigator-item \"Issues\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:issue-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Expected_Resolution_Date\" (make-local-date 2016 11 11))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.report-view/set-search-text (:issue-name *tc*))"}
+   {:script
+    "(expect-equals (:issue-name *tc*) (rt.po.report-view/get-report-cell-text-content 0 \"Issue\"))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20161011-142545",
+  :setup
+  [{:script
+    "(identity {:issue-name (rt.lib.util/make-test-name \"Issue\"), :person-lastname (rt.lib.util/make-test-name \"PerLast\"), :info-name (rt.lib.util/make-test-name \"Info\"), :app-name (rt.lib.util/make-test-name \"Apps\"), :person-firstname (rt.lib.util/make-test-name \"PerFirst\"), :task-name (rt.lib.util/make-test-name \"Task\"), :org-name (rt.lib.util/make-test-name \"OrgStr\"), :site-name (rt.lib.util/make-test-name \"Site\"), :device-name (rt.lib.util/make-test-name \"Device\")})"}],
+  :fixtures [:rn/fixture/itdr-manager-creds],
+  :id :itdr/tests/managing-shared,
+  :teardown [],
+  :modified-by "not-implemented"}]

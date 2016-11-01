@@ -1,0 +1,154 @@
+[{:tags [:area/survey :prod :regression :desktop],
+  :name "Edit Survey",
+  :steps
+  [{:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Surveys\")"}
+   {:script
+    "(rt.po.app/select-non-toggle-navigator-item \"Surveys\" 1)"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Application survey\")"}
+   {:script "(rt.po.app/choose-context-menu \"View\")"}
+   {:script "(rt.po.view-form/select-form-tab \"Survey Layout\")"}
+   {:script "(def section-count (count (rt.po.survey/get-sections)))"}
+   {:script "(rt.po.survey/new-section (:name *tc*))"}
+   {:script "(rt.po.survey/expect-section (:name *tc*))"}
+   {:script
+    "(rt.po.survey/rename-section (:name *tc*) (:rename *tc*))"}
+   {:script "(rt.po.survey/expect-section (:rename *tc*))"}
+   {:script "(rt.po.survey/new-text-question)"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Question\" \"What is the meaning of life?\")"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Allow attachments\" true)"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Allow notes\" true)"}
+   {:script "(rt.po.survey/click-question-dialog-ok)"}
+   {:script "(rt.po.survey/expect-questions (:rename *tc*) 1)"}
+   {:script
+    "(rt.po.survey/expect-question (:rename *tc*) \"What is the meaning of life?\")"}
+   {:script
+    "(rt.test.expects/expect (rt.po.survey/question-allows-notes? (:rename *tc*) \"What is the meaning of life?\"))"}
+   {:script
+    "(rt.test.expects/expect (rt.po.survey/question-allows-attachments? (:rename *tc*) \"What is the meaning of life?\"))"}
+   {:script
+    "(rt.po.survey/click-question-properties (:rename *tc*) \"What is the meaning of life?\")"}
+   {:script
+    "(rt.test.expects/expect-equals \"What is the meaning of life?\" (rt.po.edit-form/get-text-field-value \"Question\"))"}
+   {:script "(rt.po.survey/click-question-dialog-cancel)"}
+   {:script
+    "(rt.po.survey/delete-question (:rename *tc*) \"What is the meaning of life?\")"}
+   {:script "(rt.po.survey/expect-questions (:rename *tc*) 0)"}
+   {:script ";; edit-mode"}
+   {:script "(rt.po.view-form/click-edit)"}
+   {:script "(rt.po.survey/new-numeric-question)"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Question\" \"How old are you?\")"}
+   {:script "(rt.po.survey/click-question-dialog-ok)"}
+   {:script "(rt.po.survey/expect-questions (:rename *tc*) 1)"}
+   {:script
+    "(rt.po.survey/expect-question (:rename *tc*) \"How old are you?\")"}
+   {:script
+    "(rt.test.expects/expect-not (rt.po.survey/question-allows-notes? (:rename *tc*) \"How old are you?\"))"}
+   {:script
+    "(rt.test.expects/expect-not (rt.po.survey/question-allows-attachments? (:rename *tc*) \"How old are you?\"))"}
+   {:script
+    "(rt.po.survey/click-question-properties (:rename *tc*) \"How old are you?\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Question\" \"How young are you?\")"}
+   {:script "(rt.po.survey/click-question-dialog-ok)"}
+   {:script
+    "(rt.po.survey/expect-question (:rename *tc*) \"How young are you?\")"}
+   {:script "(rt.po.edit-form/cancel)"}
+   {:script
+    "(rt.test.expects/expect (rt.po.app/are-changes-pending?))"}
+   {:script "(rt.po.app/choose-to-continue-navigation)"}
+   {:script "(rt.po.survey/expect-questions (:rename *tc*) 0)"}
+   {:script ";; choice question"}
+   {:script "(rt.po.view-form/click-edit)"}
+   {:script "(rt.po.survey/new-choice-question)"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Question\" \"What is your alignment?\")"}
+   {:script "(rt.po.edit-form/select-form-tab \"Choices\")"}
+   {:script "(rt.test.expects/expect (rt.po.survey/choice-set-new?))"}
+   {:script
+    "(rt.test.expects/expect-equals \"New Set\" (rt.po.survey/get-new-choice-set-name))"}
+   {:script "(rt.po.survey/set-new-choice-set-name (:choiceset *tc*))"}
+   {:script
+    "(rt.test.expects/expect-equals 0 (count (rt.po.survey/get-choice-option-names)))"}
+   {:script "(rt.po.survey/new-choice-option)"}
+   {:script
+    "(rt.po.survey/edit-choice-option-name \"New Option\" \"Lawful\")"}
+   {:script
+    "(rt.po.survey/edit-choice-option-description \"Lawful\" \"The belief that everything should follow an order, and that obeying rules is the natural way of life.\")"}
+   {:script "(rt.po.survey/edit-choice-option-value \"Lawful\" \"3\")"}
+   {:script "(rt.po.survey/new-choice-option)"}
+   {:script
+    "(rt.po.survey/edit-choice-option-name \"New Option\" \"Chaotic\")"}
+   {:script
+    "(rt.po.survey/edit-choice-option-description \"Chaotic\" \"The belief that life is random, and that chance and luck rule the world.\")"}
+   {:script
+    "(rt.po.survey/edit-choice-option-value \"Chaotic\" \"2\")"}
+   {:script "(rt.po.survey/new-choice-option)"}
+   {:script
+    "(rt.po.survey/edit-choice-option-name \"New Option\" \"Neutral\")"}
+   {:script
+    "(rt.po.survey/edit-choice-option-description \"Neutral\" \"You are Switzerland.\")"}
+   {:script
+    "(rt.po.survey/edit-choice-option-value \"Neutral\" \"1\")"}
+   {:script "(rt.po.survey/new-choice-option)"}
+   {:script
+    "(rt.po.survey/edit-choice-option-name \"New Option\" \"Chicken\")"}
+   {:script
+    "(rt.po.survey/edit-choice-option-description \"Chicken\" \"Mmmm. Chicken.\")"}
+   {:script "(rt.po.survey/select-choice-option-row \"Neutral\")"}
+   {:script "(rt.po.survey/move-selected-choice-option-up)"}
+   {:script
+    "(rt.test.expects/expect-equals 4 (count (rt.po.survey/get-choice-option-names)))"}
+   {:script
+    "(rt.test.expects/expect-equals [\"Lawful\" \"Neutral\" \"Chaotic\" \"Chicken\"] (rt.po.survey/get-choice-option-names))"}
+   {:script "(rt.po.survey/click-question-dialog-ok)"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.survey/expect-questions (:rename *tc*) 1)"}
+   {:script
+    "(rt.po.survey/expect-question (:rename *tc*) \"What is your alignment?\")"}
+   {:script ";; re-use of choice sets"}
+   {:script "(rt.po.view-form/click-edit)"}
+   {:script "(rt.po.survey/new-choice-question)"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Question\" \"What is your alignment...REALLY?\")"}
+   {:script "(rt.po.edit-form/select-form-tab \"Choices\")"}
+   {:script "(rt.test.expects/expect (rt.po.survey/choice-set-new?))"}
+   {:script "(rt.po.survey/use-existing-choice-set)"}
+   {:script "(rt.po.survey/set-existing-choice-set (:choiceset *tc*))"}
+   {:script
+    "(rt.test.expects/expect-equals 4 (count (rt.po.survey/get-choice-option-names)))"}
+   {:script
+    "(rt.test.expects/expect-equals [\"Lawful\" \"Neutral\" \"Chaotic\" \"Chicken\"] (rt.po.survey/get-choice-option-names))"}
+   {:script ";(rt.po.survey/select-choice-option-row \"Chicken\")"}
+   {:script ";(rt.po.survey/remove-selected-choice-option)"}
+   {:script "(rt.po.survey/click-question-dialog-ok)"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.survey/expect-questions (:rename *tc*) 2)"}
+   {:script
+    "(rt.po.survey/expect-question (:rename *tc*) \"What is your alignment...REALLY?\")"}
+   {:script
+    "(rt.po.survey/click-question-properties (:rename *tc*) \"What is your alignment?\")"}
+   {:script
+    "(rt.test.expects/expect (rt.po.survey/choice-set-use-existing?))"}
+   {:script
+    "(rt.test.expects/expect-equals (rt.po.survey/get-existing-choice-set-name) (:choiceset *tc*))"}
+   {:script "(rt.po.survey/click-question-dialog-ok)"}
+   {:script "(rt.po.survey/delete-section (:rename *tc*))"}
+   {:script "(rt.po.survey/expect-sections section-count)"}
+   {:script "(expect-not (rt.po.app/page-has-error-alert?))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20161026-153334",
+  :setup
+  [{:script
+    "(identity {:name (make-test-name \"Test Section\"), :rename (make-test-name \"Foo\"), :choiceset (make-test-name \"Alignment\")})"}],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/survey/edit-survey,
+  :teardown [],
+  :doc "Survey sections editing (custom control)",
+  :modified-by "not-implemented"}]

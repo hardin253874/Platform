@@ -1,0 +1,24 @@
+[{:tags [:mobile :nomodify :user/steve :prod :regression],
+  :tests [],
+  :name "a nav related test for mobile",
+  :steps
+  [{:script "(rn.mobile.app/navigate-to-app-launcher)"}
+   {:script
+    "(rn.mobile.app/navigate-to-application \"Foster University\")"}
+   {:script "(rn.mobile.app/open-navigator)"}
+   {:script "(rn.mobile.app/navigate-to-item nil \"Student Report\")"}
+   {:script "(rn.mobile.report/select-row-by-text \"Cooley\")"}
+   {:script ";(rn.mobile.report/double-click-row-by-text \"Cooley\")"}
+   {:script "(rn.mobile.form/select-page 2)"}
+   {:script "(expect-equals 2 (rn.mobile.form/get-selected-page))"}
+   {:script "(rn.mobile.report/double-click-row-by-text \"27753\")"}
+   {:script "(rn.mobile.form/back)"}
+   {:script "(expect-equals 2 (rn.mobile.form/get-selected-page))"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150804-135652",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/mobile/nav-01,
+  :teardown [],
+  :modified-by "not-implemented"}]

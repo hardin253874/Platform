@@ -1,0 +1,14 @@
+[{:tags [:user/kun app-tests/com,desktop],
+  :name "2 user creds for com tests",
+  :steps [],
+  :type :testfixture,
+  :source "./test-db",
+  :modified "20161012-101045",
+  :setup
+  [{:script
+    "(identity {:com-user-creds-owner {:username \"com_owner\" :password \"Readi911\"}})"}
+   {:script
+    "(identity {:com-user-creds-manager {:username \"com_manager\", :password \"Readi911\"}})"}],
+  :id :rn/fixture/user-creds-com,
+  :teardown [],
+  :modified-by "not-implemented"}]

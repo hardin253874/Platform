@@ -1,0 +1,157 @@
+[{:tags [:area/workflow :prod :regression :desktop],
+  :tests [],
+  :name "workflow doing create and update activities",
+  :steps
+  [{:script "(comment \"Adding a new lookup to an existing object\")"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script "(rt.po.app/enable-app-toolbox)"}
+   {:script
+    "(rt.po.app-toolbox/set-application-filter \"Test Solution\")"}
+   {:script "(rt.po.app-toolbox/set-object-filter \"pizza\")"}
+   {:script
+    "(rt.po.app-toolbox/choose-object-menu \"Pizza\" \"Modify\")"}
+   {:script
+    "(rt.po.form-builder/add-field-to-container \"Lookup\" \"\") ;; this defaults to adding a AA_Employee"}
+   {:script
+    "(rt.po.form-builder/run-lookup-properties-dialog \"AA_Employee\" {:name (:rel-name *tc*) :display-name \"Drink\" :lookup-type \"AA_Drink\"})"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}
+   {:script "(comment \"Creating a report to use in our test later\")"}
+   {:script "(rt.po.app/navigate-to-item \"Home\" \"\")"}
+   {:script "(rt.po.app/add-section (:section-name *tc*) \"\")"}
+   {:script "(rt.po.app/add-report (:section-name *tc*))"}
+   {:script "(rt.po.report-new/set-name (:report-name *tc*))"}
+   {:script "(rt.po.report-new/set-report-base-on \"Pizza\")"}
+   {:script "(rt.po.report-new/click-ok)"}
+   {:script
+    "(rt.po.report-builder/select-field-checkboxes \"Description\" true true)"}
+   {:script
+    "(rt.po.report-builder/select-field-checkboxes \"Kilojoules\" true true)"}
+   {:script
+    "(rt.po.report-builder/select-field-checkboxes (:rel-name *tc*) true true)"}
+   {:script
+    "(rt.po.report-builder/select-field-checkboxes \"Pizza Image\" true true)"}
+   {:script
+    "(rt.po.report-builder/select-field-checkboxes \"Created date\" true true)"}
+   {:script "(rt.po.report-builder/click-sort-z-a \"Created date\")"}
+   {:script "(comment allows the test to be run twice without error)"}
+   {:script "(rt.po.report-builder/save)"}
+   {:script "(rt.po.report-builder/close)"}
+   {:script "(comment \"Create the workflow\")"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Workflows\")"}
+   {:script
+    "(rt.po.app/select-non-toggle-navigator-item \"Workflows\" 1)"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script "(rt.po.workflow/set-component-name (:wf-name *tc*))"}
+   {:script "(rt.po.workflow/save)"}
+   {:script "(rt.po.workflow/add-input-argument \"Pizza\")"}
+   {:script
+    "(rt.po.workflow/set-input-argument-type \"Pizza\" \"Record Argument\")"}
+   {:script
+    "(rt.po.workflow/set-input-argument-entity-type \"Pizza\" \"Pizza\")"}
+   {:script "(rt.po.workflow/select-element \"start\")"}
+   {:script "(rt.po.workflow/click-toolbox-item \"Gateway\")"}
+   {:script "(rt.po.workflow/select-element \"Gateway\")"}
+   {:script
+    "(rt.po.workflow/set-exit-expression \"exit\" (str \"[Pizza].[\" (:rel-name *tc*) \"] is not null\"))"}
+   {:script "(rt.po.workflow/select-element \"Gateway\")"}
+   {:script "(rt.po.workflow/click-toolbox-item \"Create\")"}
+   {:script "(rt.po.workflow/select-element \"Create\")"}
+   {:script
+    "(rt.po.workflow/open-menu-for-expression-control \"Object\" \"Object\")"}
+   {:script "(rt.po.workflow/choose-expression-record \"AA_Drink\")"}
+   {:script
+    "(rt.po.workflow/open-menu-for-expression-control \"1_value\" \"Calculation\")"}
+   {:script
+    "(rt.po.workflow/set-expression-editor-view-value \"[Pizza] + ' Drink'\")"}
+   {:script "(rt.po.workflow/select-element \"Create\")"}
+   {:script "(rt.po.workflow/click-toolbox-item \"Update\")"}
+   {:script "(rt.po.workflow/select-element \"Update\")"}
+   {:script
+    "(rt.po.workflow/set-parameter-expression-string \"Record\" \"[Pizza]\")"}
+   {:script
+    "(rt.po.workflow/add-update-activity-relationship-argument (:rel-name *tc*))"}
+   {:script
+    "(rt.po.workflow/open-menu-for-expression-control \"1_value_1\" \"Parameter\")"}
+   {:script
+    "(rt.po.workflow/choose-expression-record \"Create.Record\")"}
+   {:script "(rt.po.workflow/save)"}
+   {:script "(rt.po.workflow/close)"}
+   {:script "(comment \"Set up a trigger for the workflow\")"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Workflows/Triggers\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Name\" (str (:wf-name *tc*) \"-trigger\"))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value \"Triggered on\" \"Create Or Update\")"}
+   {:script
+    "(rt.po.edit-form/set-lookup-value \"Object to trigger on\" \"Pizza\")"}
+   {:script
+    "(rt.po.edit-form/set-lookup-value \"Workflow to run\" (:wf-name *tc*))"}
+   {:script
+    "(rt.po.view-form/open-tab-action-menu \"Fields to Trigger on\" \"Link to Existing\")"}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog \"Kilojoules\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(comment \"Dro some edits and creates and verify the workflow ran.\")"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Home\" (str (:section-name *tc*) \"/\" (:report-name *tc*)))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Muffuletta\")"}
+   {:script "(rt.po.app/choose-context-menu \"Edit\")"}
+   {:script
+    "(rt.po.edit-form/set-number-field-value \"Kilojoules\" ((fnil inc 1000) (rt.po.edit-form/number-field-value \"Kilojoules\")))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.test.expects/expect-equals \"Completed\" (rt.po.workflow/wait-for-workflow-run-status (:wf-name *tc*) \"Completed\"))"}
+   {:script
+    "(rt.test.expects/expect-equals 1 (count (rt.po.workflow/get-workflow-run-status-records (:wf-name *tc*))))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"BBQ Chicken\")"}
+   {:script "(rt.po.app/choose-context-menu \"Edit\")"}
+   {:script
+    "(rt.po.edit-form/set-number-field-value \"Kilojoules\" ((fnil inc 1000) (rt.po.edit-form/number-field-value \"Kilojoules\")))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.test.expects/expect-equals \"Completed\" (rt.po.workflow/wait-for-workflow-run-status (:wf-name *tc*) \"Completed\"))"}
+   {:script
+    "(rt.test.expects/expect-equals 2 (count (rt.po.workflow/get-workflow-run-status-records (:wf-name *tc*))))"}
+   {:script "(rt.po.report-view/refresh-now)"}
+   {:script
+    "(rt.test.expects/expect-equals \"Muffuletta Pizza Drink\" (rt.po.report-view/get-value-for-row-and-column \"Muffuletta Pizza\" (:rel-name *tc*)))"}
+   {:script
+    "(rt.test.expects/expect-equals \"BBQ Chicken Pizza Drink\" (rt.po.report-view/get-value-for-row-and-column \"BBQ Chicken Pizza\" (:rel-name *tc*)))"}
+   {:script
+    "(rt.test.expects/expect (empty? (rt.po.report-view/get-value-for-row-and-column \"Bacon Pizza\" \"AA_Drink\")))"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Name\" \"Bacon Banana Pizza\")"}
+   {:script
+    "(rt.po.edit-form/set-number-field-value \"Kilojoules\" ((fnil inc 1000) (rt.po.edit-form/number-field-value \"Kilojoules\")))"}
+   {:script
+    "(rt.po.edit-form/upload-image \"Picture\" (rt.po.common/get-data-file-path \"PizzaBaconBanana.png\"))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.view-form/form-nav-back)\n(rt.test.expects/expect-equals \"Completed\" (rt.po.workflow/wait-for-workflow-run-status (:wf-name *tc*) \"Completed\"))"}
+   {:script
+    "(rt.test.expects/expect-equals 3 (count (rt.po.workflow/get-workflow-run-status-records (:wf-name *tc*))))"}
+   {:script "(rt.po.report-view/refresh-now)"}
+   {:script
+    "(rt.test.expects/expect-equals \"Bacon Banana Pizza Drink\" (rt.po.report-view/get-value-for-row-and-column \"Bacon Banana Pizza\" (:rel-name *tc*)))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160718-212252",
+  :setup
+  [{:script
+    "(identity {:wf-name (rt.lib.util/make-test-name \"RT-Workflow-Create-etal\"), :rel-name (rt.lib.util/make-test-name \"RT-Relationship\"), :report-name (rt.lib.util/make-test-name \"RT-Report\"), :section-name (rt.lib.util/make-test-name \"RT-Section\")})"}],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :priority 5,
+  :id :rn/workflow/create-update-scenario,
+  :teardown [],
+  :modified-by "not-implemented"}]

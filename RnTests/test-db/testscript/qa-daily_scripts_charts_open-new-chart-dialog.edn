@@ -1,0 +1,14 @@
+[{:tags [:desktop],
+  :modified-by "not-implemented",
+  :modified "20150601-153828",
+  :source "../RnTests/test-db",
+  :id :qa-daily/scripts/charts/open-new-chart-dialog,
+  :type :testscript,
+  :steps
+  [{:script "(rt.po.app/navigate-to \"Home\")",
+        :target-msec 2000}
+   {:script "(expect-equals \"Home\" (rt.po.app/top-menu-name))"}
+   {:script "(rt.po.app/enable-config-mode)",
+        :target-msec 500}
+   {:script "(rt.po.app/add-chart \"\")",
+        :target-msec 500}]}]

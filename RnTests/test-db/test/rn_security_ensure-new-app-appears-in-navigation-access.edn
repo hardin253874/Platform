@@ -1,0 +1,50 @@
+[{:tags
+  [:user/shaofen :prod :nomodify :regression :desktop :area/security],
+  :tests [],
+  :name "Ensure new app appears in dropdown list in navigation access",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rn.app/open-security \"Navigation Access\")"}
+   {:script
+    "(expect-equals false (rt.po.access-rules/application-option-exists? \"App2 for Security\"))"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script "(comment \"Next is to create a new app\")"}
+   {:script
+    "(rt.po.app-toolbox/create-app {:description \"Hello World\", :name \"App2 for Security\"})"}
+   {:script "(rt.po.app/enable-app-toolbox)"}
+   {:script
+    "(rt.po.app-toolbox/set-application-filter \"App2 for Security\")"}
+   {:script
+    "(rt.po.app-toolbox/create-object {:description \"Security testing - Object 2\", :name \"SecurityObj2\"})"}
+   {:script "(rt.po.form-builder/add-container-to-form)"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Text\" 0)"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}
+   {:script "(rt.po.app/navigate-to \"App2 for Security\")"}
+   {:script
+    "(rt.po.app/add-sections [{:name \"Security Section 1\"}])"}
+   {:script
+    "(rn.app/open-security \"Navigation Access\")"}
+   {:script
+    "(rt.po.access-rules/set-application \"App2 for Security\")"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/application-option-exists? \"App2 for Security\"))"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script "(rt.po.access-rules/set-application \"Home\")"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/application-option-exists? \"App2 for Security\"))"}
+   {:script
+    "(rt.po.access-rules/set-application \"App2 for Security\")"}
+   {:script "(rt.po.access-rules/click-close-button)"}
+   {:script "(rt.po.app/delete-app \"App2 for Security\")"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20151015-125002",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds],
+  :id :rn/security/ensure-new-app-appears-in-navigation-access,
+  :teardown [],
+  :doc "",
+  :modified-by "not-implemented"}]

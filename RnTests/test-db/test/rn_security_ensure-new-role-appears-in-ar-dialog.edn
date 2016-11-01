@@ -1,0 +1,54 @@
+[{:tags
+  [:user/shaofen :prod :nomodify :regression :desktop :area/security],
+  :tests [],
+  :name "Ensure new user role appears in new access rule dialog",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.report-view/open-new-menu)"}
+   {:script
+    "(rt.po.common/wait-until (rt.po.access-rules-new/new-dialog-visible?) 10000)"}
+   {:script
+    "(expect-equals false (rt.po.access-rules-new/user-or-role-option-exists? \"QAs (User Role)\"))"}
+   {:script "(rt.po.access-rules-new/click-cancel)"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Security/User Roles\")"}
+   {:script "(rt.po.report-view/set-search-text \"QAs\")"}
+   {:script "(expect-equals 0 (rt.po.report-view/count-report-row))"}
+   {:script "(rt.po.report-view/open-new-menu)"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Name\" \"QAs\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.report-view/open-new-menu)"}
+   {:script
+    "(rt.po.common/wait-until (rt.po.access-rules-new/new-dialog-visible?) 10000)"}
+   {:script
+    "(taxi/wait-until (rt.po.access-rules-new/new-dialog-visible?) 10000)"}
+   {:script
+    "(expect-equals true (rt.po.access-rules-new/user-or-role-option-exists? \"QAs (User Role)\"))"}
+   {:script
+    "(rt.po.access-rules-new/set-user-or-role \"QAs (User Role)\")"}
+   {:script "(rt.po.access-rules-new/click-cancel)"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Security/User Roles\")"}
+   {:script "(rt.po.report-view/set-search-text \"QAs\")"}
+   {:script "(rt.po.report-view/delete-record \"QAs\")"}
+   {:script "(rt.po.report-view/set-search-text \"QAs\")"}
+   {:script "(expect-equals 0 (rt.po.report-view/count-report-row))"}
+   {:script "(rn.app/open-security \"Record Access\")"}
+   {:script "(rt.po.report-view/open-new-menu)"}
+   {:script
+    "(rt.po.common/wait-until (rt.po.access-rules-new/new-dialog-visible?) 10000)"}
+   {:script
+    "(expect-equals false (rt.po.access-rules-new/user-or-role-option-exists? \"QAs (User Role)\"))"}
+   {:script "(rt.po.access-rules-new/click-cancel)"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160902-123047",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds],
+  :id :rn/security/ensure-new-role-appears-in-ar-dialog,
+  :teardown [],
+  :doc "",
+  :modified-by "not-implemented"}]

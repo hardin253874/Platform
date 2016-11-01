@@ -1,0 +1,77 @@
+[{:tags [:area/report-builder :regression :desktop :prod :user/abida],
+  :tests [],
+  :name "Checking icon conditional formatting for boolean field",
+  :steps
+  [{:script "(rt.po.app/add-report (:section *tc*))"}
+   {:script "(rt.po.report-new/set-name \"IconFormattingBoolean\")"}
+   {:script "(rt.po.report-new/set-report-base-on \"Staff\")"}
+   {:script "(rt.po.report-new/click-ok)"}
+   {:script
+    "(rt.po.report-builder/set-in-report-checkbox-field-value \"Tenure\" true)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Tenure\" \"Format Column\")"}
+   {:script "(rt.po.report-format/set-format-type \"Icon\")"}
+   {:script
+    "(rt.po.report-format/set-format-scheme \"2 step - Other\")"}
+   {:script
+    "(rt.po.report-format/set-icon-conditions [{:value \"\", :oper \"Yes\", :icon \"Green Tick Format Icon\"} {:value \"\", :oper \"\", :icon \"Red Cross Format Icon\"}])"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script
+    "(expect-equals \"Yes\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Tenure\"))"}
+   {:script
+    "(expect-equals \"Green Tick Format Icon\" (rt.po.report-view/get-report-format-icon \"0\" \"Tenure\"))"}
+   {:script
+    "(expect-equals \"No\" (rt.po.report-view/get-report-cell-text-content \"12\" \"Tenure\"))"}
+   {:script
+    "(expect-equals \"Red Cross Format Icon\" (rt.po.report-view/get-report-format-icon \"12\" \"Tenure\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button )"}
+   {:script
+    "(rn.app/open-report \"IconFormattingBoolean\" {:app-name \"Foster University\" :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"Yes\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Tenure\"))"}
+   {:script
+    "(expect-equals \"Green Tick Format Icon\" (rt.po.report-view/get-report-format-icon \"0\" \"Tenure\"))"}
+   {:script
+    "(expect-equals \"No\" (rt.po.report-view/get-report-cell-text-content \"12\" \"Tenure\"))"}
+   {:script
+    "(expect-equals \"Red Cross Format Icon\" (rt.po.report-view/get-report-format-icon \"12\" \"Tenure\"))"}
+   {:script "(rt.po.report-builder/access-build-mode)"}
+   {:script
+    "(rt.po.report-builder/choose-column-menu-item \"Tenure\" \"Format Column\")"}
+   {:script
+    "(rt.po.report-format/set-format-scheme \"2 step - Other\")"}
+   {:script
+    "(rt.po.report-format/set-icon-conditions [{:value \"\", :oper \"No\", :icon \"Green Tick Format Icon\"} {:value \"\", :oper \"\", :icon \"Red Cross Format Icon\"}])"}
+   {:script "(rt.po.report-format/click-ok)"}
+   {:script
+    "(expect-equals \"Yes\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Tenure\"))"}
+   {:script
+    "(expect-equals \"Red Cross Format Icon\" (rt.po.report-view/get-report-format-icon \"0\" \"Tenure\"))"}
+   {:script
+    "(expect-equals \"No\" (rt.po.report-view/get-report-cell-text-content \"12\" \"Tenure\"))"}
+   {:script
+    "(expect-equals \"Green Tick Format Icon\" (rt.po.report-view/get-report-format-icon \"12\" \"Tenure\"))"}
+   {:script "(rt.po.report-builder/click-save-report-button)"}
+   {:script "(rt.po.report-builder/click-close-button)"}
+   {:script
+    "(rn.app/open-report \"IconFormattingBoolean\" {:app-name \"Foster University\" :folder-name (:section *tc*)})"}
+   {:script
+    "(expect-equals \"Yes\" (rt.po.report-view/get-report-cell-text-content \"0\" \"Tenure\"))"}
+   {:script
+    "(expect-equals \"Red Cross Format Icon\" (rt.po.report-view/get-report-format-icon \"0\" \"Tenure\"))"}
+   {:script
+    "(expect-equals \"No\" (rt.po.report-view/get-report-cell-text-content \"12\" \"Tenure\"))"}
+   {:script
+    "(expect-equals \"Green Tick Format Icon\" (rt.po.report-view/get-report-format-icon \"12\" \"Tenure\"))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20151016-165740",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :common/fixture/login
+   :rn/section/createsection],
+  :id :rn/reportbuilder/icon-formatting-boolean,
+  :teardown [{:script "(rt.po.app/delete-nav-item (:section *tc*))"}],
+  :modified-by "not-implemented"}]

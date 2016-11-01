@@ -1,0 +1,40 @@
+[{:tags [:mobile :nomodify :user/alex :prod :regression],
+  :tests [],
+  :name "Report and Form on Screen for Mobile",
+  :steps
+  [{:script "(rn.mobile.app/navigate-to-app-launcher)"}
+   {:script
+    "(rn.mobile.app/navigate-to-application \"Foster University\")"}
+   {:script "(rn.mobile.app/open-navigator)"}
+   {:script
+    "(rn.mobile.app/navigate-to-item nil \"Student screen - form and report\")"}
+   {:script
+    "(rt.test.expects/expect-equals true (rn.mobile.screen/is-report-on-screen \"Student report\"))"}
+   {:script
+    "(rt.test.expects/expect-equals false (rn.mobile.screen/is-form-on-screen \"Student\"))"}
+   {:script
+    "(rn.mobile.screen/expect-report-row-count-in-screen 6 \"Student report\")"}
+   {:script
+    "(rn.mobile.screen/expect-report-column-count-in-screen 3 \"Student report\")"}
+   {:script "(rn.mobile.screen/view-full-report)"}
+   {:script "(rn.mobile.report/expect-report-row-count 20)"}
+   {:script "(rn.mobile.report/expect-report-column-count 3)"}
+   {:script "(rn.mobile.report/sort-column-descending \"Student\")"}
+   {:script "(rn.mobile.report/scroll-to-last-record)"}
+   {:script
+    "(rn.mobile.report/expect-row-by-text \"Abraham Mcdonald\")"}
+   {:script
+    "(rn.mobile.report/double-click-row-by-text \"Abraham Mcdonald\")"}
+   {:script "(rn.mobile.form/expect-form-title \"Abraham Mcdonald\")"}
+   {:script "(rn.mobile.form/back)"}
+   {:script "(rn.mobile.report/expect-report-column-count 3)"}
+   {:script "(rn.mobile.report/back)"}
+   {:script "(rn.mobile.app/navigate-to-app-launcher)"}],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20150730-145954",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/mobile/report-and-form-on-screen-for-mobile,
+  :teardown [],
+  :modified-by "not-implemented"}]

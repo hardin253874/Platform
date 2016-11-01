@@ -1,0 +1,177 @@
+[{:tags
+  [:nomodify :prod :regression :user/shaofen :desktop :area/security],
+  :tests [],
+  :name
+  "Ensure two users in same rule set have reasonable navigation access",
+  :steps
+  [{:script
+    "(comment \"====================checking if env is clean=====================\")"}
+   {:script
+    "(rn.common/start-app-and-login (:user-creds-student1 *tc*))"}
+   {:script
+    "(expect-equals true (rt.po.app/app-tile-exists? \"Foster University\"))"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Charts\")"}
+   {:script
+    "(expect-not (rt.po.app/node-in-nav-tree-exists? \"Area chart (p)\"))"}
+   {:script
+    "(expect-not (rt.po.app/node-in-nav-tree-exists? \"Area chart (np)\"))"}
+   {:script
+    "(rn.common/start-app-and-login (:user-creds-student2 *tc*))"}
+   {:script
+    "(expect-equals true (rt.po.app/app-tile-exists? \"Foster University\"))"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Charts\")"}
+   {:script
+    "(expect-not (rt.po.app/node-in-nav-tree-exists? \"Area chart (p)\"))"}
+   {:script
+    "(expect-not (rt.po.app/node-in-nav-tree-exists? \"Area chart (np)\"))"}
+   {:script
+    "(comment \"====================granting navigation access to students role then check if two student user have correct navigation access=====================\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script "(rn.app/open-security \"Navigation Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/application-option-exists? \"Foster University\"))"}
+   {:script
+    "(rt.po.access-rules/set-application \"Foster University\")"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/user-or-role-option-exists? \"Students (User Role)\"))"}
+   {:script
+    "(rt.po.access-rules/set-user-or-role \"Students (User Role)\")"}
+   {:script
+    "(expect-not (rt.po.access-rules/node-checked? \"Area chart (p)\"))"}
+   {:script
+    "(rt.po.access-rules/set-node-value \"Area chart (p)\" true)"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/node-checked? \"Area chart (p)\"))"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script
+    "(rn.common/start-app-and-login (:user-creds-student1 *tc*))"}
+   {:script
+    "(expect-equals true (rt.po.app/app-tile-exists? \"Foster University\"))"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Charts\")"}
+   {:script
+    "(expect (rt.po.app/node-in-nav-tree-exists? \"Area chart (p)\"))"}
+   {:script
+    "(expect-not (rt.po.app/node-in-nav-tree-exists? \"Area chart (np)\"))"}
+   {:script
+    "(rn.common/start-app-and-login (:user-creds-student2 *tc*))"}
+   {:script
+    "(expect-equals true (rt.po.app/app-tile-exists? \"Foster University\"))"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Charts\")"}
+   {:script
+    "(expect (rt.po.app/node-in-nav-tree-exists? \"Area chart (p)\"))"}
+   {:script
+    "(expect-not (rt.po.app/node-in-nav-tree-exists? \"Area chart (np)\"))"}
+   {:script
+    "(comment \"====================again granting more navigation access to one of the two student users and see if each has correct access=====================\")"}
+   {:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script "(rn.app/open-security \"Navigation Access\")"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/application-option-exists? \"Foster University\"))"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/set-application \"Foster University\")"}
+   {:script "(rt.po.access-rules/set-include-users-value true)"}
+   {:script "(expect (rt.po.access-rules/get-include-users-value))"}
+   {:script
+    "(expect (rt.po.access-rules/user-or-role-option-exists? \"Nelle.Odom (User Account)\"))"}
+   {:script
+    "(rt.po.access-rules/set-user-or-role \"Nelle.Odom (User Account)\")"}
+   {:script
+    "(expect (rt.po.access-rules/node-in-nav-tree-exists? \"Area chart (np)\"))"}
+   {:script
+    "(expect-not (rt.po.access-rules/node-checked? \"Area chart (np)\"))"}
+   {:script
+    "(rt.po.access-rules/set-node-value \"Area chart (np)\" true)"}
+   {:script
+    "(expect (rt.po.access-rules/node-checked? \"Area chart (np)\"))"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script
+    "(rn.common/start-app-and-login (:user-creds-student1 *tc*))"}
+   {:script
+    "(expect (rt.po.app/app-tile-exists? \"Foster University\"))"}
+   {:script
+    "(rn.common/start-app-and-login (:user-creds-student1 *tc*))"}
+   {:script
+    "(expect (rt.po.app/app-tile-exists? \"Foster University\"))"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Charts\")"}
+   {:script
+    "(expect (rt.po.app/node-in-nav-tree-exists? \"Area chart (p)\"))"}
+   {:script
+    "(expect (rt.po.app/node-in-nav-tree-exists? \"Area chart (np)\"))"}
+   {:script
+    "(rn.common/start-app-and-login (:user-creds-student2 *tc*))"}
+   {:script
+    "(expect (rt.po.app/app-tile-exists? \"Foster University\"))"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Charts\")"}
+   {:script
+    "(expect (rt.po.app/node-in-nav-tree-exists? \"Area chart (p)\"))"}
+   {:script
+    "(expect-not (rt.po.app/node-in-nav-tree-exists? \"Area chart (np)\"))"}
+   {:script
+    "(comment \"====================below is to clear out the changes to env.=====================\")"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160229-102920",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds
+   :rn/fixture/user-creds-students],
+  :id :rn/security/usersInSameRuleSet--navigation-access,
+  :teardown
+  [{:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script "(rn.app/open-security \"Navigation Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/set-application \"Foster University\")"}
+   {:script
+    "(rt.po.access-rules/set-user-or-role \"Students (User Role)\")"}
+   {:script
+    "(if (rt.po.access-rules/node-checked? \"Area chart (p)\") (do (rt.po.access-rules/set-node-value \"Area chart (p)\" false)))"}
+   {:script
+    "(expect-not (rt.po.access-rules/node-checked? \"Area chart (p)\"))"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/set-application \"Foster University\")"}
+   {:script
+    "(expect-not (rt.po.access-rules/get-include-users-value))"}
+   {:script "(rt.po.access-rules/set-include-users-value true)"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/get-include-users-value))"}
+   {:script
+    "(rt.po.access-rules/set-user-or-role \"Nelle.Odom (User Account)\")"}
+   {:script
+    "(if (rt.po.access-rules/node-checked? \"Area chart (np)\") (do (rt.po.access-rules/set-node-value \"Area chart (np)\" false)))"}
+   {:script
+    "(expect-not (rt.po.access-rules/node-checked? \"Area chart (p)\"))"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script
+    "(rn.common/start-app-and-login (:user-creds-student1 *tc*))"}
+   {:script
+    "(expect-equals true (rt.po.app/app-tile-exists? \"Foster University\"))"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Charts\")"}
+   {:script
+    "(expect-not (rt.po.app/node-in-nav-tree-exists? \"Area chart (p)\"))"}
+   {:script
+    "(expect-not (rt.po.app/node-in-nav-tree-exists? \"Area chart (np)\"))"}
+   {:script
+    "(rn.common/start-app-and-login (:user-creds-student2 *tc*))"}
+   {:script
+    "(expect-equals true (rt.po.app/app-tile-exists? \"Foster University\"))"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Foster University\" \"Charts\")"}
+   {:script
+    "(expect-not (rt.po.app/node-in-nav-tree-exists? \"Area chart (p)\"))"}
+   {:script
+    "(expect-not (rt.po.app/node-in-nav-tree-exists? \"Area chart (np)\"))"}],
+  :modified-by "not-implemented"}]

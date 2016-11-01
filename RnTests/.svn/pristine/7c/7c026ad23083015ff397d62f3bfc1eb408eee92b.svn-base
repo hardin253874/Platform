@@ -1,0 +1,77 @@
+[{:tags
+  [:nomodify
+   :prod
+   :daily
+   :regression
+   :user/shaofen
+   :desktop
+   :area/security],
+  :tests [],
+  :name
+  "Ensure navigation access has correct tree view for the applications",
+  :steps
+  [{:script
+    "(rn.common/start-app-and-login {:password \"tacoT0wn\", :username \"Administrator\"})"}
+   {:script
+    "(rt.po.app-toolbox/create-app {:description \"\", :name \"App for Security\"})"}
+   {:script "(rt.po.app/enable-app-toolbox)"}
+   {:script
+    "(rt.po.app-toolbox/set-application-filter \"App for Security\")"}
+   {:script
+    "(rt.po.app-toolbox/create-object {:description \"Security testing - Object 1\", :name \"SecurityObj1\"})"}
+   {:script "(rt.po.form-builder/add-container-to-form)"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Text\" 0)"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}
+   {:script "(rt.po.app/navigate-to \"App for Security\")"}
+   {:script
+    "(comment (identity {:section (make-test-name \"RT-Section\")}))\n"}
+   {:script "(rt.po.app/add-sections [{:name \"Security Section\"}])"}
+   {:script "(rt.po.app/add-existing-report \"SecurityObj1 Report\")"}
+   {:script
+    "(rt.po.app/add-existing-report \"Student Report - Faculties\" \"Security Section\")"}
+   {:script
+    "(expect-equals false (rt.po.form-builder-config/section-expanded? \"Security Section\"))"}
+   {:script
+    "(rt.po.app/add-existing-chart \"Students by faculty (p)\" \"Security Section\")"}
+   {:script
+    "(rt.po.app/add-document-folder \"Security doc folder\" \"Security Section\")"}
+   {:script "(rt.po.app/add-new-tab \"Shaofen's tab\")"}
+   {:script "(comment \"TODO: add screen\")"}
+   {:script
+    "(rn.app/open-security \"Navigation Access\")"}
+   {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/application-option-exists? \"App for Security\"))"}
+   {:script
+    "(rt.po.access-rules/set-application \"App for Security\")"}
+   {:script
+    "(expect-equals true (rt.po.access-rules/node-in-nav-tree-exists? \"Security Section\"))"}
+   {:script
+    "(expect-equals \"App for Security > Security Section\" (rt.po.access-rules/get-node-path \"Security Section\"))"}
+   {:script
+    "(expect-equals false (rt.po.access-rules/node-checked? \"Security Section\"))"}
+   {:script
+    "(expect-equals \"App for Security > SecurityObj1 Report\" (rt.po.access-rules/get-node-path \"SecurityObj1 Report\"))"}
+   {:script
+    "(expect-equals \"Shaofen's tab\" (rt.po.access-rules/get-node-path \"Shaofen's tab\"))"}
+   {:script "(rt.po.app/navigate-to \"App for Security\")"}
+   {:script
+    "(rt.po.app/delete-nav-items-matching #\"Security Section\")"}
+   {:script
+    "(rn.app/open-report \"Objects\" {:app-name \"ReadiNow Console\" :folder-name \"Resources\"})"}
+   {:script "(rt.po.report-view/set-search-text \"SecurityObj1\")"}
+   {:script "(rt.po.report-view/delete-record \"SecurityObj1\")"}
+   {:script "(rt.po.report-view/set-search-text \"SecurityObj1\")"}
+   {:script "(expect-equals 0 (rt.po.report-view/count-report-row))"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script "(rt.po.app/delete-app \"App for Security\")"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20151103-143926",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds],
+  :id :rn/security/ensure-navigation-access-has-correct-app-items,
+  :teardown [],
+  :modified-by "not-implemented"}]

@@ -1,0 +1,118 @@
+[{:tags [:prod :regression :desktop],
+  :name "Board Drivers on Chrome",
+  :steps
+  [{:script "(rt.po.app/navigate-to-item \"Test Solution\" \"\")"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script "(rt.po.app/add-board \"\")"}
+   {:script
+    "(expect-equals \"New Board\" (rt.po.common/get-string \"Name\"))"}
+   {:script "(rt.po.common/set-string \"Name\" \"Science!\")"}
+   {:script
+    "(rt.po.common/set-multiline \"Description\" \"ReadiTest generated board... of Science!\")"}
+   {:script "(rt.po.common/set-lookup \"Report\" \"Scientists\")"}
+   {:script
+    "(expect-equals true (rt.po.common/get-bool \"Show quick add\"))"}
+   {:script "(expect-equals false (rt.po.common/options-expanded?))"}
+   {:script "(rt.po.common/options-expand)"}
+   {:script
+    "(expect-equals \"Test Solution\" (rt.po.common/get-lookup \"Applications\"))"}
+   {:script "(rt.po.common/click-tab-heading \"Deploy\")"}
+   {:script "(expect-equals true (rt.po.common/enabled-on-desktop?))"}
+   {:script "(expect-equals false (rt.po.common/enabled-on-tablet?))"}
+   {:script "(expect-equals false (rt.po.common/enabled-on-mobile?))"}
+   {:script "(rt.po.common/click-tablet)"}
+   {:script "(rt.po.common/click-mobile)"}
+   {:script "(rt.po.common/click-ok)"}
+   {:script
+    "(expect-equals \"Science!\" (rt.po.board/get-board-header-text))"}
+   {:script "(expect-equals \"\" (rt.po.board/get-quick-add))"}
+   {:script "(rt.po.app/disable-config-mode)"}
+   {:script "(rt.po.board/set-quick-add \"Blaise Pascal\")"}
+   {:script "(rt.po.board/click-quick-add)"}
+   {:script "(rt.po.board/set-search \"Pascal\")"}
+   {:script "(rt.po.board/clear-search)"}
+   {:script
+    "(expect-equals true (rt.po.board/card-exists? \"Mathematics\" \"Blaise Pascal\"))"}
+   {:script "(expect-equals false (rt.po.board/settings-open?))"}
+   {:script "(rt.po.board/click-settings)"}
+   {:script "(expect-equals true (rt.po.board/settings-open?))"}
+   {:script "(rt.po.board/click-settings-dialog-close)"}
+   {:script "(rt.po.board/click-settings)"}
+   {:script
+    "(expect-equals \"Name & description\" (rt.po.board/get-card-template))"}
+   {:script "(rt.po.board/set-card-template \"All values & labels\")"}
+   {:script
+    "(expect-equals \"Discipline\" (rt.po.board/get-column-source))"}
+   {:script
+    "(expect-equals false (rt.po.board/column-source-value-checked? \"Undefined\"))"}
+   {:script
+    "(expect-equals true (rt.po.board/column-source-value-checked? \"Physics\"))"}
+   {:script
+    "(expect-equals true (rt.po.board/column-source-value-checked? \"Psychology\"))"}
+   {:script "(rt.po.board/set-column-source-value \"Biology\" false)"}
+   {:script "(expect-equals \"\" (rt.po.board/get-row-source))"}
+   {:script "(expect-equals \"\" (rt.po.board/get-color-source))"}
+   {:script "(rt.po.board/set-color-source \"Discipline\")"}
+   {:script
+    "(expect-equals false (rt.po.board/color-source-value-checked? \"Undefined\"))"}
+   {:script
+    "(expect-equals true (rt.po.board/color-source-value-checked? \"Physics\"))"}
+   {:script
+    "(expect-equals false (rt.po.board/color-source-value-checked? \"Biology\"))"}
+   {:script
+    "(rt.po.board/set-color-source-value \"Psychology\" false)"}
+   {:script
+    "(expect-equals false (rt.po.board/column-source-value-checked? \"Psychology\"))"}
+   {:script "(rt.po.board/click-settings-dialog-save)"}
+   {:script "(rt.po.board/click-refresh)"}
+   {:script "(expect-equals 10 (count (rt.po.board/get-legend)))"}
+   {:script
+    "(expect-equals true (rt.po.board/legend-contains? \"Astronomy\"))"}
+   {:script
+    "(expect-equals 3 (rt.po.board/get-legend-item-count \"Inventor\"))"}
+   {:script "(expect-equals 10 (rt.po.board/get-column-count))"}
+   {:script
+    "(expect-equals true (rt.po.board/column-exists? \"Climatology\"))"}
+   {:script "(expect-equals 1 (count (rt.po.board/get-rows)))"}
+   {:script "(rt.po.board/scroll-reset)"}
+   {:script
+    "(expect-equals 7 (rt.po.board/get-column-item-count \"Physics\"))"}
+   {:script
+    "(expect-equals 7 (count (rt.po.board/get-card-elements \"Physics\")))"}
+   {:script
+    "(rt.po.board/right-click-card \"Mathematics\" \"Mary Somerville\")"}
+   {:script "(rt.po.app/choose-context-menu \"Edit\")"}
+   {:script "(rt.po.edit-form/cancel)"}
+   {:script
+    "(rt.po.board/click-card-link \"Mathematics\" \"Blaise Pascal\")"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(rt.po.board/drag-card-to-dimension \"Blaise Pascal\" \"Mathematics\" \"Astronomy\")"}
+   {:script
+    "(expect-equals 2 (count (rt.po.board/get-card-elements \"Astronomy\")))"}
+   {:script
+    "(rt.po.board/drag-card-to-legend \"Astronomy\" \"Blaise Pascal\" \"Inventor\")"}
+   {:script
+    "(expect-equals 1 (count (rt.po.board/get-card-elements \"Astronomy\")))"}
+   {:script
+    "(expect-equals 4 (count (rt.po.board/get-card-elements \"Inventor\")))"}
+   {:script
+    "(rt.po.board/drag-legend-to-card \"Botany\" \"Inventor\" \"Blaise Pascal\")"}
+   {:script
+    "(expect-equals 3 (count (rt.po.board/get-card-elements \"Inventor\")))"}
+   {:script
+    "(expect-equals 2 (count (rt.po.board/get-card-elements \"Botany\")))"}
+   {:script
+    "(rt.po.board/right-click-card \"Botany\" \"Blaise Pascal\")"}
+   {:script "(rt.po.app/choose-context-menu \"Delete\")"}
+   {:script "(rt.po.edit-form/click-confirm-delete-ok-button)"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script "(rt.po.app/delete-nav-item \"Science!\")"}
+   {:script "(rt.po.app/disable-config-mode)"}],
+  :type :test,
+  :modified "20160825-120236",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :qa-daily/boards/test-board-drivers,
+  :teardown [],
+  :modified-by "not-implemented"}]

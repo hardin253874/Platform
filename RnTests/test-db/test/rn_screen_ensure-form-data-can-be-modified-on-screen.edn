@@ -1,0 +1,53 @@
+[{:tags [:nomodify :prod :regression :user/sri :desktop :area/screen],
+  :tests [],
+  :name "Ensure a form data can be modified on screen.",
+  :steps
+  [{:script "(rt.po.app/navigate-to-item \"Home\" \"\")"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script "(rt.po.app/add-new-nav-item \"New Screen\" \"\")"}
+   {:script "(rt.po.common/set-string \"Name\" \"_screen_testing\")"}
+   {:script "(rt.po.common/click-ok)"}
+   {:script
+    "(rt.po.app-toolbox/set-application-filter \"Test Solution\")"}
+   {:script
+    "(rt.po.screen-builder/toggle-toolbox-type \"AA_All Fields\")"}
+   {:script
+    "(rt.po.screen-builder/add-report-from-toolbox \"AA_All Fields\" \"AF_Choice\")"}
+   {:script
+    "(rt.po.screen-builder/add-form-from-toolbox \"AA_All Fields\" \"Screen Layout - All Relationships Form\")"}
+   {:script
+    "(rt.po.screen-builder/show-form-config-menu \"Screen Layout - All Relationships Form\")"}
+   {:script "(rt.po.app/choose-context-menu \"Assign Parent\")"}
+   {:script
+    "(rt.po.common/set-combo \"Parent Element\" \"AF_Choice (AA_All Fields Report)\")"}
+   {:script "(rt.po.common/click-ok)"}
+   {:script "(rt.po.screen-builder/save-screen)"}
+   {:script "(rt.po.screen-builder/close)"}
+   {:script
+    "(expect-equals true (rt.po.screen/is-report-on-screen \"AF_Choice\"))"}
+   {:script
+    "(expect-equals true (rt.po.screen/is-form-on-screen \"Screen Layout - All Relationships Form\"))"}
+   {:script "(rt.po.report-view/select-row-by-text \"Friday\")"}
+   {:script
+    "(rt.po.screen/click-form-edit-button \"Screen Layout - All Relationships Form\")"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Name\" \"testing friday edit\")"}
+   {:script
+    "(rt.po.screen/click-form-save-button \"Screen Layout - All Relationships Form\")"}
+   {:script
+    "(expect-equals \"testing friday edit\" (rt.po.view-form/get-field-value \"Name\"))"}
+   {:script "(rt.po.report-view/select-row-by-text \"Tuesday\")"}
+   {:script "(rt.po.report-view/select-row-by-text \"Friday\")"}
+   {:script
+    "(expect-equals \"testing friday edit\" (rt.po.view-form/get-field-value \"Name\"))"}
+   {:script "(rt.po.app/delete-nav-item\"_screen_testing\")"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20160802-171838",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/screen/ensure-form-data-can-be-modified-on-screen,
+  :teardown [],
+  :doc
+  "This test is written against the bug no:24934 to verify whether form data can be modified on screen.",
+  :modified-by "not-implemented"}]

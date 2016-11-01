@@ -1,0 +1,4 @@
+[{:type :testfixture,
+  :setup [{:script "(identity {:user-creds {:username \"Nelle.Odom\" :password \"Nelle.Odom1\"}})"}
+          {:script "(identity {:subject-name (make-test-name \"Subject\")})"}]
+  :id :rn/fixture/ct1}]

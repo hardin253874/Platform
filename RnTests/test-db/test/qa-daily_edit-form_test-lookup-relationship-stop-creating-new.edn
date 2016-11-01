@@ -1,0 +1,291 @@
+[{:tags [:prod :regression :desktop],
+  :tests [],
+  :name "Lookup Field Stop Creating New Drivers on Chrome",
+  :steps
+  [{:script
+    "(rt.po.app-toolbox/create-app {:name \"Forms Regression\" :description \"\"})"}
+   {:script "(rt.po.app/enable-app-toolbox )"}
+   {:script
+    "(rt.po.app-toolbox/set-application-filter \"Forms Regression\")"}
+   {:script
+    "(comment -- *** Setup *** - create Car and Engine objects and add their reports to navigation tree --)"}
+   {:script "(comment -- create 'Car Test Object' and its form --)"}
+   {:script
+    "(rt.po.app-toolbox/create-object {:name \"Car Test Object\" :description \"New Car  Test Object Description\"})"}
+   {:script "(rt.po.form-builder/open-form-properties-dialog)"}
+   {:script
+    "(rt.po.form-properties/set-form-applications \"Forms Regression\")",
+    :target-msec 500}
+   {:script "(rt.po.form-properties/select-tab \"Object Properties\")",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-properties/set-object-applications \"Forms Regression\")",
+    :target-msec 500}
+   {:script "(rt.po.form-properties/click-ok)", :target-msec 500}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}
+   {:script "(comment -- create 'Engine Test Object' and its form --)"}
+   {:script
+    "(rt.po.app-toolbox/create-object {:name \"Engine Test Object\" :description \"New Engine  Test Object Description\"})"}
+   {:script "(rt.po.form-builder/open-form-properties-dialog)"}
+   {:script
+    "(rt.po.form-properties/set-form-applications \"Forms Regression\")",
+    :target-msec 500}
+   {:script "(rt.po.form-properties/select-tab \"Object Properties\")",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-properties/set-object-applications \"Forms Regression\")",
+    :target-msec 500}
+   {:script "(rt.po.form-properties/click-ok)", :target-msec 500}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-form \"Lookup\")"}
+   {:script
+    "(rt.po.form-builder-config/set-object \"Car Test Object\")"}
+   {:script "(rt.po.form-builder-config/set-name \"Car 1:1\")"}
+   {:script
+    "(rt.po.form-builder-config/expand-section \"Relationship\")"}
+   {:script
+    "(rt.po.form-builder-config/set-relationship-type \"oneToOne\")"}
+   {:script
+    "(rt.po.form-builder-config/collapse-section \"Relationship\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Option\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Object Detail\")"}
+   {:script
+    "(rt.po.form-builder-config/set-reverse-name \"Engine 1:1\")"}
+   {:script "(rt.po.form-builder-config/collapse-section \"Option\")"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}
+   {:script "(comment -- add lookup to Engine on Car form --)"}
+   {:script
+    "(rt.po.app-toolbox/choose-object-menu \"Car Test Object\" \"Modify\")"}
+   {:script
+    "(rt.po.form-builder/add-field-from-toolbox-to-form \"Engine 1:1\")"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}
+   {:script
+    "(comment -- add Car and Engine object reports to navigation tree --)"}
+   {:script "(rt.po.app/navigate-to \"Forms Regression\")"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script "(rt.po.app/add-existing-report \"Car Test Object\")"}
+   {:script "(rt.po.app/navigate-to \"Home\")"}
+   {:script "(rt.po.app/navigate-to \"Forms Regression\")"}
+   {:script "(rt.po.app/add-existing-report \"Engine Test Object\")"}
+   {:script
+    "(comment -- *** test *** - an Engine can be created from car form when there is no ownership in one to one relationship --)"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Forms Regression\" \"Car Test Object Report\")"}
+   {:script "(comment -- create new car --)"}
+   {:script "(rt.po.report-view/open-new-menu)"}
+   {:script "(rt.po.edit-form/open-lookup \"Engine 1:1\")"}
+   {:script "(rt.po.edit-form/click-new-button)"}
+   {:script
+    "(expect-equals \"Engine Test Object\" (rt.po.edit-form/get-form-title ))"}
+   {:script "(rt.po.edit-form/click-cancel-button)"}
+   {:script "(rt.po.edit-form/click-cancel-button)"}
+   {:script
+    "(comment -- *** test *** - an Engine cannot be created from car form when Car ownes Engine in one to one relationship --)"}
+   {:script "(comment -- set ownership so Car ownes Engine --)"}
+   {:script "(rt.po.app/enable-app-toolbox )"}
+   {:script
+    "(rt.po.app-toolbox/choose-object-menu \"Engine Test Object\" \"Modify\")"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"Car 1:1\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Ownership\")"}
+   {:script "(rt.po.form-builder-config/set-ownership \"full\")"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}
+   {:script "(comment -- create new car --)"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Forms Regression\" \"Car Test Object Report\")"}
+   {:script "(rt.po.report-view/open-new-menu)"}
+   {:script "(rt.po.edit-form/open-lookup \"Engine 1:1\")"}
+   {:script "(rt.po.edit-form/click-new-button)"}
+   {:script "(expect (rt.po.app/page-has-error-alert?))"}
+   {:script "(rt.po.app/clear-alerts)"}
+   {:script " (rt.po.common/click-ok)"}
+   {:script "(rt.po.edit-form/click-cancel-button)"}
+   {:script
+    "(comment -- *** test *** - an Engine cannot be created from car form on (many end) even when there is no ownership in many to one relationship --)"}
+   {:script
+    "(comment -- create a many to one lookup on Engine form--)"}
+   {:script "(rt.po.app/enable-app-toolbox )"}
+   {:script
+    "(rt.po.app-toolbox/choose-object-menu \"Engine Test Object\" \"Modify\")"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-form \"Lookup\")"}
+   {:script
+    "(rt.po.form-builder-config/set-object \"Car Test Object\")"}
+   {:script "(rt.po.form-builder-config/set-name \"Car M:1\")"}
+   {:script
+    "(rt.po.form-builder-config/expand-section \"Relationship\")"}
+   {:script
+    "(rt.po.form-builder-config/set-relationship-type \"manyToOne\")"}
+   {:script
+    "(rt.po.form-builder-config/collapse-section \"Relationship\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Option\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Object Detail\")"}
+   {:script
+    "(rt.po.form-builder-config/set-reverse-name \"Engine M:1\")"}
+   {:script "(rt.po.form-builder-config/collapse-section \"Option\")"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}
+   {:script
+    "(comment -- add this new many to one lookup to Car form --)"}
+   {:script
+    "(rt.po.app-toolbox/choose-object-menu \"Car Test Object\" \"Modify\")"}
+   {:script "(rt.po.form-builder/add-tabbed-container-to-form)"}
+   {:script
+    "(rt.po.form-builder/add-field-from-toolbox-to-container \"Engine M:1\" 0)"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}
+   {:script "(comment -- create new car --)"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Forms Regression\" \"Car Test Object Report\")"}
+   {:script "(rt.po.report-view/open-new-menu)"}
+   {:script
+    "(expect-equals \"Car Test Object\" (rt.po.edit-form/get-form-title ))"}
+   {:script "(rt.po.report-view/open-new-menu)"}
+   {:script "(expect (rt.po.app/page-has-error-alert?))"}
+   {:script "(rt.po.app/clear-alerts)"}
+   {:script "(rt.po.edit-form/click-cancel-button)"}
+   {:script
+    "(comment -- *** test *** - an Engine cannot be created from car form when Car partially ownes Engine in many to one relationship --)"}
+   {:script "(comment -- set ownership so Car ownes Engine --)"}
+   {:script "(rt.po.app/enable-app-toolbox )"}
+   {:script
+    "(rt.po.app-toolbox/choose-object-menu \"Engine Test Object\" \"Modify\")"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"Car M:1\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Ownership\")"}
+   {:script "(rt.po.form-builder-config/set-ownership \"part\")"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}
+   {:script "(comment -- create new car --)"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Forms Regression\" \"Car Test Object Report\")"}
+   {:script "(rt.po.report-view/open-new-menu)"}
+   {:script
+    "(expect-equals \"Car Test Object\" (rt.po.edit-form/get-form-title ))"}
+   {:script "(rt.po.report-view/open-new-menu)"}
+   {:script "(expect (rt.po.app/page-has-error-alert?))"}
+   {:script "(rt.po.app/clear-alerts)"}
+   {:script "(rt.po.edit-form/click-cancel-button)"}
+   {:script
+    "(comment -- *** test *** - an Engine cannot be created from car form when Car fully ownes Engine in many to one relationship --)"}
+   {:script "(comment -- set ownership so Car ownes Engine --)"}
+   {:script "(rt.po.app/enable-app-toolbox )"}
+   {:script
+    "(rt.po.app-toolbox/choose-object-menu \"Engine Test Object\" \"Modify\")"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"Car M:1\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Ownership\")"}
+   {:script "(rt.po.form-builder-config/set-ownership \"full\")"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}
+   {:script "(comment -- create new car --)"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Forms Regression\" \"Car Test Object Report\")"}
+   {:script "(rt.po.report-view/open-new-menu)"}
+   {:script
+    "(expect-equals \"Car Test Object\" (rt.po.edit-form/get-form-title ))"}
+   {:script "(rt.po.report-view/open-new-menu)"}
+   {:script "(expect (rt.po.app/page-has-error-alert?))"}
+   {:script "(rt.po.app/clear-alerts)"}
+   {:script "(rt.po.edit-form/click-cancel-button)"}
+   {:script
+    "(comment -- *** test *** - an Engine cannot be created from car form (many end)even when there is no ownership in one to many relationship --)"}
+   {:script
+    "(comment -- create a one to many relationship on Car form--)"}
+   {:script "(rt.po.app/enable-app-toolbox )"}
+   {:script
+    "(rt.po.app-toolbox/choose-object-menu \"Car Test Object\" \"Modify\")"}
+   {:script "(rt.po.form-builder/delete-tab-in-tab-container 0 0)"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-form \"Relationship\")"}
+   {:script
+    "(rt.po.form-builder-config/set-object \"Engine Test Object\")"}
+   {:script "(rt.po.form-builder-config/set-name \"Engine 1:M\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Option\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Object Detail\")"}
+   {:script "(rt.po.form-builder-config/set-reverse-name \"Car 1:M\")"}
+   {:script "(rt.po.form-builder-config/collapse-section \"Option\")"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}
+   {:script "(comment -- create new car --)"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Forms Regression\" \"Car Test Object Report\")"}
+   {:script "(rt.po.report-view/open-new-menu)"}
+   {:script
+    "(expect-equals \"Car Test Object\" (rt.po.edit-form/get-form-title ))"}
+   {:script "(rt.po.report-view/open-new-menu)"}
+   {:script "(expect (rt.po.app/page-has-error-alert?))"}
+   {:script "(rt.po.app/clear-alerts)"}
+   {:script "(rt.po.edit-form/click-cancel-button)"}
+   {:script
+    "(comment -- *** test *** - an Engine cannot be created from car form when Car partially ownes Engine in one to many relationship --)"}
+   {:script "(comment -- set ownership so Car ownes Engine --)"}
+   {:script "(rt.po.app/enable-app-toolbox )"}
+   {:script
+    "(rt.po.app-toolbox/choose-object-menu \"Car Test Object\" \"Modify\")"}
+   {:script
+    "(rt.po.form-builder/open-tab-content-configure-dialog 0 0)"}
+   {:script "(rt.po.form-builder-config/expand-section \"Ownership\")"}
+   {:script "(rt.po.form-builder-config/set-ownership \"part\")"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}
+   {:script "(comment -- create new car --)"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Forms Regression\" \"Car Test Object Report\")"}
+   {:script "(rt.po.report-view/open-new-menu)"}
+   {:script
+    "(expect-equals \"Car Test Object\" (rt.po.edit-form/get-form-title ))"}
+   {:script "(rt.po.report-view/open-new-menu)"}
+   {:script "(expect (rt.po.app/page-has-error-alert?))"}
+   {:script "(rt.po.app/clear-alerts)"}
+   {:script "(rt.po.edit-form/click-cancel-button)"}
+   {:script
+    "(comment -- *** test *** - an Engine cannot be created from car form when Car fully ownes Engine in one to many relationship --)"}
+   {:script "(comment -- set ownership so Car ownes Engine --)"}
+   {:script "(rt.po.app/enable-app-toolbox )"}
+   {:script
+    "(rt.po.app-toolbox/choose-object-menu \"Car Test Object\" \"Modify\")"}
+   {:script
+    "(rt.po.form-builder/open-tab-content-configure-dialog 0 0)"}
+   {:script "(rt.po.form-builder-config/expand-section \"Ownership\")"}
+   {:script "(rt.po.form-builder-config/set-ownership \"full\")"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}
+   {:script "(comment -- create new car --)"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Forms Regression\" \"Car Test Object Report\")"}
+   {:script "(rt.po.report-view/open-new-menu)"}
+   {:script
+    "(expect-equals \"Car Test Object\" (rt.po.edit-form/get-form-title ))"}
+   {:script "(rt.po.report-view/open-new-menu)"}
+   {:script "(expect (rt.po.app/page-has-error-alert?))"}
+   {:script "(rt.po.app/clear-alerts)"}
+   {:script "(rt.po.edit-form/click-cancel-button)"}
+   {:script
+    "(comment -- *** delete *** Car and Engine test objects --)"}
+   {:script "(rt.po.app/enable-app-toolbox )"}
+   {:script "(rt.po.app-toolbox/delete-object \"Car Test Object\")"}
+   {:script "(rt.po.app-toolbox/delete-object \"Engine Test Object\")"}
+   {:script "(expect (not (rt.po.app/page-has-error-alert?)))"}],
+  :type :test,
+  :checks [],
+  :source "./test-db",
+  :modified "20160802-210427",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :qa-daily/edit-form/test-lookup-field-stop-creating-new,
+  :teardown [],
+  :modified-by "not-implemented",
+  :data {}}]

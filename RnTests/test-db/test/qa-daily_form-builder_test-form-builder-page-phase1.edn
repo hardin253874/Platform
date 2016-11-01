@@ -1,0 +1,88 @@
+[{:tags [:prod :regression :desktop],
+  :tests [],
+  :name "Form Builder page drivers on Chrome",
+  :steps
+  [{:script "(rt.po.form-builder/expand-toolbox-section \"Display\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals true (rt.po.form-builder/toolbox-section-expanded? \"Display\"))",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder/add-display-option-from-toolbox-to-form \"Container\")",
+        :target-msec 500}
+   {:script
+    "(rt.po.form-builder/add-display-option-from-toolbox-to-form \"Container\")",
+        :target-msec 500}
+   {:script
+    "(rt.po.form-builder/add-display-option-from-toolbox-to-form \"Container\")",
+        :target-msec 500}
+   {:script "(rt.po.form-builder/set-container-name 0 \"CONTAINER1\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"CONTAINER1\" (rt.po.form-builder/get-container-name 0))",
+    :target-msec 500}
+   {:script "(rt.po.form-builder/set-container-name 1 \"CONTAINER2\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"CONTAINER2\" (rt.po.form-builder/get-container-name 1))",
+    :target-msec 500}
+   {:script "(rt.po.form-builder/set-container-name 2 \"CONTAINER3\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"CONTAINER3\" (rt.po.form-builder/get-container-name 2))",
+    :target-msec 500}
+   {:script "(rt.po.form-builder/open-container-configure-dialog 0)",
+    :target-msec 500}
+   {:script "(rt.po.form-builder-config/click-cancel)",
+    :target-msec 500}
+   {:script "(rt.po.form-builder/delete-container 2)",
+    :target-msec 500}
+   {:script
+    "(rt.po.form-builder/add-display-option-from-toolbox-to-form \"Tabbed Container\")",
+        :target-msec 500}
+   {:script "(rt.po.form-builder/add-tab-in-tab-container 0)",
+    :target-msec 500}
+   {:script "(rt.po.form-builder/add-tab-in-tab-container 0)",
+    :target-msec 500}
+   {:script "(rt.po.form-builder/add-tab-in-tab-container 0)",
+    :target-msec 500}
+   {:script "(rt.po.form-builder/open-tab-configure-dialog 0 0)",
+    :target-msec 500}
+   {:script "(rt.po.form-builder-config/set-name \"Tab1\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"Tab1\" (rt.po.form-builder-config/get-name))",
+    :target-msec 500}
+   {:script "(rt.po.form-builder-config/click-ok)", :target-msec 500}
+   {:script "(rt.po.form-builder/open-tab-configure-dialog 0 1)",
+    :target-msec 500}
+   {:script "(rt.po.form-builder-config/set-name \"Tab2\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"Tab2\" (rt.po.form-builder-config/get-name))",
+    :target-msec 500}
+   {:script "(rt.po.form-builder-config/click-ok)", :target-msec 500}
+   {:script "(rt.po.form-builder/open-tab-configure-dialog 0 2)",
+    :target-msec 500}
+   {:script "(rt.po.form-builder-config/set-name \"Tab3\")",
+    :target-msec 500}
+   {:script
+    "(expect-equals \"Tab3\" (rt.po.form-builder-config/get-name))",
+    :target-msec 500}
+   {:script "(rt.po.form-builder-config/click-ok)", :target-msec 500}
+   {:script "(rt.po.form-builder/select-tab-in-tab-container 0 1)",
+    :target-msec 500}
+   {:script "(rt.po.form-builder/delete-tab-in-tab-container 0 2)",
+    :target-msec 500}
+   {:script "(rt.po.form-builder/delete-container 0)",
+    :target-msec 500}],
+  :type :test,
+  :checks [],
+  :source "../RnTests/test-db",
+  :modified "20150601-153805",
+  :setup [:qa-daily/scripts/form-builder/open-form-builder-new-mode],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :qa-daily/form-builder/test-form-builder-page-phase1,
+  :teardown [],
+  :modified-by "not-implemented",
+  :data {}}]

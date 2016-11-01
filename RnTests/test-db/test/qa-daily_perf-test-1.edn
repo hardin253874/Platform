@@ -1,0 +1,24 @@
+[{:tags [:nomodify :prod :regression :desktop],
+  :tests [],
+  :name "Looking at large form performance",
+  :steps
+  [{:script "(rt.scripts.perf/open-employee-form)",
+        :target-time 2000}
+   {:script "(rt.scripts.perf/open-form-builder)",
+    :doc "Open form builder on the employee form",
+        :target-time 2000}
+   {:script "(rt.scripts.perf/open-field-properties-modal)"}],
+  :type :test,
+  :checks [],
+  :source "../RnTests/test-db",
+  :modified "20150601-153807",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :qa-daily/perf-test-1,
+  :teardown [],
+  :modified-by "not-implemented",
+  :data
+  {:app-name "Test Solution",
+   :nav-path "Test Solution/AA_Reports/AA_All Fields",
+   :row-text "Test 01",
+   :control-name "Number"}}]

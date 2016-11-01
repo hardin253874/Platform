@@ -1,0 +1,4 @@
+[{:id :common/fixture/stop-all,
+  :type :testfixture,
+  :name "App stop",
+  :teardown [{:script "(rn.common/stop-all)"}]}]
