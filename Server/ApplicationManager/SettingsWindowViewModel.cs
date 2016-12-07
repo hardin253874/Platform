@@ -1,4 +1,5 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
+
 using System;
 using System.Windows.Input;
 using ApplicationManager.Core;
@@ -64,8 +65,7 @@ namespace ApplicationManager
 			{
 				if ( _closeWindow != value )
 				{
-					_closeWindow = value;
-					RaisePropertyChanged( "CloseWindow" );
+					SetProperty( ref _closeWindow, value );
 				}
 			}
 		}
@@ -86,8 +86,7 @@ namespace ApplicationManager
 			{
 				if ( _databaseName != value )
 				{
-					_databaseName = value;
-					RaisePropertyChanged( "DatabaseName" );
+					SetProperty( ref _databaseName, value );
 				}
 			}
 		}
@@ -120,8 +119,7 @@ namespace ApplicationManager
 			{
 				if ( _serverName != value )
 				{
-					_serverName = value;
-					RaisePropertyChanged( "ServerName" );
+					SetProperty( ref _serverName, value );
 				}
 			}
 		}
@@ -132,13 +130,7 @@ namespace ApplicationManager
 		/// <value>
 		///     The title.
 		/// </value>
-		public string Title
-		{
-			get
-			{
-				return "Settings";
-			}
-		}
+		public string Title => "Settings";
 
 		/// <summary>
 		///     Loads this instance.

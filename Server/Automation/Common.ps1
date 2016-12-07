@@ -1019,6 +1019,7 @@ function Install-Database($settings)
 			#$ctx = Impersonate-Identity $settings.database.domain $settings.database.user $settings.database.password
 
 			$options = New-Object Microsoft.SqlServer.Dac.DacDeployOptions
+			$options.CommandTimeout = 300
 			$options.BlockOnPossibleDataLoss = $False
 			$options.AdditionalDeploymentContributors = "ReadiNowDeploymentPlanContributors.DatabaseCreationLocationModifier"
 			$options.AdditionalDeploymentContributorArguments = "DatabaseCreationLocationModifier.MdfFilePath=$mdfPath;DatabaseCreationLocationModifier.LdfFilePath=$ldfPath"
@@ -1089,6 +1090,8 @@ function Repair-System-Applications($settings)
 
 	Log-Message "Verifying/repairing system applications in tenants..."
 	& sqlcmd -E -S $server -d $catalog -b -Q "EXEC dbo.spRepairApplicationReferences"
+	Log-Message "Updating statistics"
+	& sqlcmd -E -S $server -d $catalog -b -Q "EXEC sp_updatestats"	
 }
 
 # Ensure the class names for EDC assemblies are not strong named

@@ -95,15 +95,26 @@ namespace EDC.SoftwarePlatform.Migration.Targets
 		{
 			get;
 			set;
-		}
+        }
 
-		/// <summary>
-		///     The tenant to merge data into.
-		/// </summary>
-		/// <value>
-		///     The tenant id.
-		/// </value>
-		public long TenantId
+        /// <summary>
+        ///     If the merge logic marks an entity for deletion, then by default it will not be deleted 
+        ///     if some other application has an 'inSolution' reference to it.
+        ///     Setting this value to true overrides this behavior, so the entity will be deleted regardless.
+        /// </summary>
+        public bool IgnoreExternalReferences
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        ///     The tenant to merge data into.
+        /// </summary>
+        /// <value>
+        ///     The tenant id.
+        /// </value>
+        public long TenantId
 		{
 			get;
 			set;
@@ -577,10 +588,11 @@ namespace EDC.SoftwarePlatform.Migration.Targets
 			};
 
 			Action<IDbCommand> setupCommandAction = command =>
-			{
+			{                
 				command.AddParameterWithValue( "@tenant", TenantId );
 				command.AddParameterWithValue( "@applicationId", ApplicationId );
-			};
+                command.AddParameterWithValue( "@ignoreExternalRefs", IgnoreExternalReferences ? 1 : 0 );
+            };
 
 			Func<IDbCommand, int> customCommandExecuteAction = command =>
 			{

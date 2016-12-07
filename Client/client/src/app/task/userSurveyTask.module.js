@@ -6,7 +6,7 @@
     angular.module('mod.app.userSurveyTask', [
         'mod.common.spEntityService', 'sp.navService', 'mod.common.alerts',
         'app.controls.inputFilters.spIntegerInput', 'app.controls.inputFilters.spFloatingPointInput',
-        'sp.common.directives', 'mod.common.ui.spDialogService', 'sp.common.fileUpload', 'mod.common.spXsrf',
+        'sp.common.directives', 'mod.common.ui.spDialogService', 'sp.common.fileUpload', 'mod.common.spXsrf', 'mod.common.spWebService',
         'mod.common.ui.spEntityRadioPicker', 'app.editForm.spInlineRelationshipPicker', 'mod.common.ui.spEntityCheckBoxPicker']);
 
     angular.module('mod.app.userSurveyTask')

@@ -1,29 +1,13 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
 /*global _, console, angular, spWorkflowConfiguration, spWorkflow, sp, spEntity */
 
-//TODO - simplify that results data structure - is a left over from the old report interface
-
 (function () {
     'use strict';
 
     angular.module('sp.workflow.parameterViewControllers')
         .controller('workflowParameterEditViewController', workflowParameterEditViewController);
 
-    function workflowParameterEditViewController($scope, $state, $q, spWorkflowService, spWorkflowChooserDataService, spViewRegionService, spAlertsService) {
-        var currentView = null;
-
-        var chooserRefreshFunctions = {
-            'resourceChooser': refreshResources,
-            'typeChooser': refreshTypes,
-            'fieldChooser': refreshFields,
-            'relChooser': refreshRels,
-            'propertyChooser': refreshProps,
-            'parameterChooser': refreshParameters,
-            'functionChooser': refreshExprFunctions,
-            'reportChooser': refreshReports
-        };
-
-        var throttledRefresh = _.throttle(refresh, 1000);
+    function workflowParameterEditViewController($scope, $state, $timeout, $q, spWorkflowService, spWorkflowEditorViewService, spViewRegionService, spAppSettings, spAlertsService) {
 
         console.log('workflowParameterEditViewController ctor');
 
@@ -35,222 +19,180 @@
         console.assert($scope.view);
         console.assert($scope.view.apply);
 
+        function safeApply(scope, fn) {
+            if (!scope.$root.$$phase) {
+                scope.$apply(fn);
+            } else {
+                fn();
+            }
+        }
+
         function setBusy() {
             $scope.busyIndicator.isBusy = true;
         }
 
         function clearBusy() {
             $scope.busyIndicator.isBusy = false;
-        }
-
-        // return a filtered list of items ordered with better matches first
-        function sortedFilter(data, filterText) {
-
-            return data;
-
-        }
-
-        function notifyLayoutChange() {
-            $scope.$emit('app.layout');
-        }
-
-        function updateFilteredData() {
-            $scope.filteredData = [];
-            if ($scope.pickerReport) {
-                $scope.filteredData = _.map(sortedFilter($scope.pickerReport.results.data, $scope.options.filterText), function (datum) {
-                    return _.extend(datum, {
-                        isCurrentSelection: !!sp.findByKey($scope.view.currentSelections, 'id', datum.id),
-                        isCandidateSelection: !!sp.findByKey($scope.view.candidateSelections, 'id', datum.id)
-                    });
-                });
-            }
-            notifyLayoutChange();
-        }
-
-        function select(datum) {
-            //todo - handle multi-select
-            $scope.view.candidateSelections = [datum];
-            updateFilteredData();
-        }
-
-        function selectNext() {
-            //todo - scrolling into view
-            //todo - handle multi-select
-
-            var data = $scope.filteredData;
-            var index = _.findIndex(data, 'isCandidateSelection');
-            if (index < 0 && data.length > 0) {
-                select(data[0]);
-            } else if (index >= 0 && index < data.length - 1) {
-                select(data[index + 1]);
-            }
-        }
-
-        function selectPrev() {
-            //todo - scrolling into view
-            //todo - handle multi-select
-
-            var data = $scope.filteredData;
-            var index = _.findIndex(data, 'isCandidateSelection');
-            if (data.length > 0) {
-                if (index < 0) {
-                    select(data[data.length - 1]);
-                } else if (index > 0) {
-                    select(data[index - 1]);
-                }
-            }
-        }
-
-
-        function refreshResources() {
-            return spWorkflowChooserDataService.getResources($scope.view.resourceType, $scope.options.filterText);
-        }
-
-        function refreshTypes() {
-            return spWorkflowChooserDataService.getTypes($scope.options.filterText);
-        }
-
-        function refreshFields() {
-            return spWorkflowChooserDataService.getFields($scope.view.resourceType, $scope.options.filterText);
-        }
-
-        function refreshRels() {
-            return spWorkflowChooserDataService.getRelationships($scope.view.resourceType, $scope.options.filterText);
-        }
-
-        function refreshProps() {
-            return spWorkflowChooserDataService.getEntityProperties($scope.view.resourceType, $scope.options.filterText);
-        }
-
-        function refreshParameters() {
-            return spWorkflowChooserDataService.getParameters($scope.view, $scope.options.filterText);
-        }
-
-        function refreshExprFunctions() {
-            return spWorkflowChooserDataService.getFunctions($scope.options.filterText);
-        }
-
-        function refreshReports() {
-            return spWorkflowChooserDataService.getReports($scope.view.resourceType, $scope.options.filterText);
+            $timeout(function () { $scope.gridLoaded = true; });
         }
 
         function refresh() {
-
-            if (!currentView) {
-                console.error("No view set");
-                return;
+            if ($scope.view && $scope.view.load) {
+                setBusy();
+                $scope.view.load().then(function(data) {
+                    $scope.view.rows = data;
+                }).catch(handleRequestError).finally(clearBusy);
             }
-
-            var refreshFn = chooserRefreshFunctions[currentView];
-
-            if (!currentView) {
-                console.error("Can't find function for view");
-                return;
-            }
-
-            setBusy();
-
-            refreshFn()
-                .then(function (report) {
-                    if (report) {
-                        $scope.pickerReport = report;
-                        updateFilteredData();
-                    }
-                })
-                .catch(handleRequestError)
-                .finally(clearBusy);
         }
+
+        function refreshTypeData(typeEntity) {
+            if (!typeEntity || !typeEntity.idP) {
+                $scope.view.reportOptions.entityTypeId = null;
+                $scope.view.reportOptions.reportId = null;
+                return;
+            }
+            spWorkflowService.getTemplateReport().then(function (templateReport) {
+                $scope.view.reportOptions.entityTypeId = typeEntity.idP;
+
+                var reportId = sp.result(typeEntity, 'defaultPickerReport.idP') || templateReport.idP;
+                $scope.view.reportOptions.reportId = $scope.options.useDefaultPicker ? reportId : templateReport.idP;
+            });
+        }
+
+        function refreshGrid() {
+            safeApply($scope, function () {
+                var grid = sp.result($scope.view, 'gridOptions.ngGrid');
+                var gridScope = sp.result($scope.view, 'gridOptions.$gridScope');
+                if (grid && gridScope) {
+                    var gridDomService = sp.result($scope.view, 'gridOptions.$gridServices.DomUtilityService');
+                    if (gridDomService && gridDomService.RebuildGrid) {
+                        gridDomService.RebuildGrid(gridScope, grid);
+                    }
+                }
+            });
+        }
+
+        var refreshGridDebounced = _.debounce(refreshGrid, 100);
 
         $scope.showTypeChooser = function () {
 
-            //todo - this should be in a service
+            var openApply = function (selected) {
+                if (selected) {
+                    $scope.view.resourceType = selected.id;
+                    $scope.view.resourceTypeName = selected.name;
 
-            var resourceType = $scope.view.resourceType;
-            var currentSelections = resourceType ? [
-                {id: resourceType}
-            ] : [];
-
-            var openView = {
-                templateUrl: 'workflow/workflowParameterView/chooserView.tpl.html',
-                viewName: 'typeChooser',
-                currentSelections: currentSelections,
-                resourceType: 'resource',
-                apply: function () {
-                    var selected = _.first(this.candidateSelections);
-                    if (selected) {
-                        $scope.view.resourceType = selected.id;
-                        $scope.view.resourceTypeName = selected.name;
-                        refresh();
-                    }
-                },
-                cancel: function () {
-                    this.currentSelections = currentSelections;
-                },
-                onPopped: function () {
+                    refreshTypeData(selected.entity);
                 }
             };
 
-            spViewRegionService.pushView($scope.region, openView);
+            var selected = $scope.view.resourceType;
+            var resourceType = 'core:type';
+
+            spWorkflowService.getTemplateReport().then(function (templateReport) {
+                spWorkflowService.getCacheableType(resourceType).then(function (typeEntity) {
+                    spWorkflowService.getCacheableType(selected).then(function (selectedEntity) {
+
+                        var report = sp.result(typeEntity, 'defaultPickerReport') || templateReport;
+                        var selection = _.castArray(selectedEntity || []);
+                        var openView = spWorkflowEditorViewService.getReportChooserView('typeChooser', typeEntity, report, selection, openApply);
+                        spViewRegionService.pushView($scope.region, openView);
+
+                    });
+                });
+            });
+        };
+
+        // Show dev options 
+        $scope.showAdvancedOption = function () {
+            return spAppSettings.initialSettings.devMode && $scope.view.viewName === 'typeChooser';
         };
 
         $scope.$watch('view.viewName', function (viewName) {
             console.log('watched view', viewName, $scope.$id);
 
             if (viewName) {
-                currentView = viewName;
                 refresh();
             }
         });
 
-        $scope.$watch('pickerReport', function (report) {
-            console.log('workflowParameterEditViewController.watch(picker report): ', report && report.name);
-
-            if (!report || !report.results) {
-                return;
+        $scope.$watch('view.rows', function (newValue, oldValue) {
+            if (newValue !== oldValue) {
+                $scope.view.quickSearch.onSearchValueChanged();
             }
         });
 
         $scope.$watch('view.resourceType', function (id) {
-
             if (!id) return;
 
             id = sp.coerseToNumberOrLeaveAlone(id);
 
-            spWorkflowService.getCacheableEntity('entity:' + id, id, 'name,description,isOfType.name')
-                .then(function (e) {
-                    if (id === sp.coerseToNumberOrLeaveAlone($scope.view.resourceType)) {
-                        $scope.view.resourceTypeName = e.name;
-                    }
-                });
+            spWorkflowService.getCacheableEntity('entity:' + id, id, 'name, description, isOfType.name').then(function (e) {
+                if (id === sp.coerseToNumberOrLeaveAlone($scope.view.resourceType)) {
+                    $scope.view.resourceTypeName = e.name;
+                }
+            });
         });
 
-        $scope.$watch('options.filterText', updateFromFilter);
-
-
-        function updateFromFilter(updated, original) {
-            if (updated != original) {
-                throttledRefresh();
+        $scope.$watch('options.useDefaultPicker', function (newValue, oldValue) {
+            if (newValue !== oldValue) {
+                spWorkflowService.getTemplateReport().then(function(templateReport) {
+                    if (newValue && $scope.view.reportOptions.reportId) {
+                        if ($scope.options.showAll) {
+                            // turn off show dev and let it update the report
+                            $scope.options.showAll = false;
+                        } else {
+                            spWorkflowService.getCacheableType($scope.view.resourceType).then(function (typeEntity) {
+                                if (!typeEntity || !typeEntity.idP) {
+                                    $scope.view.reportOptions.reportId = null;
+                                    return;
+                                }
+                                $scope.view.reportOptions.reportId = sp.result(typeEntity, 'defaultPickerReport.idP') || templateReport.idP;
+                            });
+                        }
+                    } else {
+                        $scope.view.reportOptions.reportId = templateReport.idP;
+                    }
+                });
             }
-        }
+        });
 
-
-        $scope.onClicked = function (datum) {
-            select(datum);
+        $scope.$watch('options.showAll', function (newValue, oldValue) {
+            if (newValue !== oldValue) {
+                var type = $scope.view.resourceType;
+                if ($scope.view.viewName === 'typeChooser') {
+                    type = newValue ? 'core:type' : 'core:managedType';
+                }
+                spWorkflowService.getCacheableType(type).then(function (typeEntity) {
+                    refreshTypeData(typeEntity);
+                });
+            }
+        });
+        
+        $scope.onGridDoubleClicked = function() {
+            event.stopPropagation();
+            $scope.view.apply();
+            $scope.close();
         };
 
-        $scope.onKeyup = function (e) {
-            if (e.which === 40) {
-                selectNext();
-            } else if (e.which === 38) {
-                selectPrev();
-            }
-        };
+        $scope.$on('spReportEventGridDoubleClicked', function (event) {
+            event.stopPropagation();
+            $scope.view.apply();
+            $scope.close();
+        });
 
-        $scope.view.candidateSelections = ($scope.view.currentSelections || []).slice(0);
-        $scope.busyIndicator = {placement: 'element', isBusy: true};
+        $scope.$on('spReportEventModelReady', function (event, model) {
+            if ($scope.view.customDataProvider) {
+                model.customDataProvider = $scope.view.customDataProvider;
+            }
+        });
+
+        $scope.$on('sp.app.ui-refresh', refreshGridDebounced);
+
+        $scope.busyIndicator = { placement: 'element', isBusy: true };
+        $scope.gridLoaded = false;
         $scope.options = {
-            filterText: '',
-            showSystemTypes: false
+            useDefaultPicker: true,
+            showAll: false
         };
 
         function handleRequestError(error) {

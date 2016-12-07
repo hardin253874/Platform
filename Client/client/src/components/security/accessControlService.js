@@ -279,12 +279,23 @@
                     if (options.subject) {
                         subs = [options.subject];
                     }
-                    return spNewSecurityQueryDialogFactory.showDialog(subs, result.types, "core:everyoneRole", "core:person");
+
+                    var ids = {
+                        templateReportId: result.ids[0],
+                        solutionId: result.ids[1],
+                        applicationPickerReportId: result.ids[2]
+                    };
+                    return spNewSecurityQueryDialogFactory.showDialog(subs, result.types, "core:everyoneRole", "core:person", ids );
                 }).then(function (results) {
                     showWait();
 
+                    var selectedApplicationId = null;
+
+                    if (results.selectedApplication) {
+                        selectedApplicationId = results.selectedApplication.idP;
+                    }
                     if (results.selectedSubject.dataState !== spEntity.DataStateEnum.Create) {
-                        return spAccessControlRepository.createAccessRule(results.selectedSubject.idP, results.selectedSecurableEntity.idP, _.filter(exports.permissions, { nsAlias: "core:read" }));
+                        return spAccessControlRepository.createAccessRule(results.selectedSubject.idP, results.selectedSecurableEntity.idP, _.filter(exports.permissions, { nsAlias: "core:read" }), selectedApplicationId);
                     }
 
                     var accessRule = createAccessRule(results.selectedSubject, results.selectedSecurableEntity);

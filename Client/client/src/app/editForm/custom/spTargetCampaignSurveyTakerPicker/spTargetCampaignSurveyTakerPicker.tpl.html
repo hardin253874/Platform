@@ -3,15 +3,13 @@
         <div class="edit-form-title">
             <sp-title-plus-markers is-read-only="isReadOnly" is-required="isMandatory" messages="customValidationMessages" title-model="titleModel"></sp-title-plus-markers>
         </div>
-        <div class="edit-form-value">
-            <a ng-if="isReadOnly && !isInDesign" style="cursor: pointer;" class="fieldValue" ng-href="" ng-click="handleLinkClick();">{{model.selectedOption.name}}</a>
-            <div ng-if="!isReadOnly || isInDesign" style="height: 100%;">
-                <span class="fieldControl">
-                    <select class="dropDownRelPicker-select" ng-model="model.selectedOption" ng-options="e as e.name for e in model.options track by e.id" ng-disabled="isInDesign">
-                        <option value="">[Select]</option>
-                    </select>
-                </span>
-            </div>
-        </div>
+        <rn-relationship-picker class="edit-form-value"
+                                relationship="model.relEntity"
+                                start-type="model.targetTypeEntity"
+                                end-type="'core:person'"
+                                is-read-only="isReadOnly"
+                                is-in-design="isInDesign"
+                                on-select="handleSelect(selected)"
+                                on-click="handleLinkClick()"></rn-relationship-picker>
     </div>
 </span>

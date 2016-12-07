@@ -234,33 +234,47 @@
                        }
 
                        function load() {
-                           var qr = getSurveyTakerQuery();
-                           var qf = 'name, campaignTargetTargets.{name, description, isOfType.alias' + qr + '}';
+                           var preq = $q.when;
+                           
+                           // direction may not be loaded if in view mode
+                           if (!scope.model.surveyTakerDirection) {
+                               preq = _.partial(spEntityService.getEntity, scope.formData.idP, 'name, campaignTargetRelationshipDirection.alias');
+                           }
 
-                           scope.canRemove = false;
-                           scope.model.busy.isBusy = true;
-                           scope.model.rows = [];
+                           return preq().then(function (d) {
+                               if (d) {
+                                   scope.model.surveyTakerDirection = d.campaignTargetRelationshipDirection;
+                               }
 
-                           return spEntityService.getEntity(scope.formData.idP, qf).then(function (t) {
-                               var incoming = _.filter(t.campaignTargetTargets, function(target) {
-                                   if (!scope.model.targetType) {
-                                       return false;
-                                   }
-                                   return _.includes(_.map(target.isOfType, 'idP'), scope.model.targetType.idP);
+                               var qr = getSurveyTakerQuery();
+                               var qf = 'name, campaignTargetTargets.{name, description, isOfType.alias' + qr + '}';
+
+                               scope.canRemove = false;
+                               scope.model.busy.isBusy = true;
+                               scope.model.rows = [];
+
+                               return spEntityService.getEntity(scope.formData.idP, qf).then(function (t) {
+
+                                   var incoming = _.filter(t.campaignTargetTargets, function (target) {
+                                       if (!scope.model.targetType) {
+                                           return false;
+                                       }
+                                       return _.includes(_.map(target.isOfType, 'idP'), scope.model.targetType.idP);
+                                   });
+
+                                   // attach to the correct graph on these entities for history and change management
+                                   _.each(incoming, function (target) {
+                                       target._setGraph(scope.formData._graph);
+                                   });
+
+                                   setRelationship([]);
+                                   setRelationship(incoming);
+
+                                   scope.model.rows = getRelationship();
+                               }).finally(function () {
+                                   scope.model.busy.isBusy = false;
+                                   loadGrid();
                                });
-
-                               // attach to the correct graph on these entities for history and change management
-                               _.each(incoming, function (target) {
-                                   target._setGraph(scope.formData._graph);
-                               });
-
-                               setRelationship([]);
-                               setRelationship(incoming);
-
-                               scope.model.rows = getRelationship();
-                           }).finally(function () {
-                               scope.model.busy.isBusy = false;
-                               loadGrid();
                            });
                        }
 
@@ -359,6 +373,7 @@
 
                            var targetPickerOptions = {
                                reportId: reportId,
+                               entityTypeId: sp.result(scope.model, 'targetType.idP'),
                                multiSelect: true,
                                isEditMode: false,
                                newButtonInfo: {},
@@ -418,9 +433,13 @@
                                var rel = { id: scope.model.surveyTaker.eid(), isReverse: isReverse };
                                var e = target.getRelationship(rel);
                                if (e) {
-                                   var taker = _.first(e) || null;
-                                   if (taker) {
-                                       name = taker.name;
+                                   if (e.length > 1) {
+                                       name = _.compact(_.map(e, 'name')).join(', ');
+                                   } else {
+                                       var taker = _.first(e) || null;
+                                       if (taker) {
+                                           name = taker.name;
+                                       }
                                    }
                                }
                            }

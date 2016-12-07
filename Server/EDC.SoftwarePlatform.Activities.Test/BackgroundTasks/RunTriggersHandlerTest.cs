@@ -13,7 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using ProtoBuf;
+using FluentAssertions;
 
 
 namespace EDC.SoftwarePlatform.Activities.Test.BackgroundTasks
@@ -47,8 +47,7 @@ namespace EDC.SoftwarePlatform.Activities.Test.BackgroundTasks
             var trigger = new WfTriggerUserUpdatesResource { WorkflowToRun = wf };
             trigger.Save();
 
-            var entry = new TriggerEntry { TriggerId = trigger.Id, EntityId = EntityType.EntityType_Type.Id };
-            var taskData = new RunTriggersParams { TriggerList = new List<TriggerEntry> { entry } };
+            var taskData = new RunTriggersParams { TriggerId = trigger.Id, EntityId = EntityType.EntityType_Type.Id };
 
             RunAndTestLog(taskData, (eventLogMonitor) =>
             {
@@ -61,8 +60,7 @@ namespace EDC.SoftwarePlatform.Activities.Test.BackgroundTasks
         [Test]
         public void MissingTrigger()
         {
-            var entry = new TriggerEntry { TriggerId = 9999999, EntityId = EntityType.EntityType_Type.Id };
-            var taskData = new RunTriggersParams { TriggerList = new List<TriggerEntry> { entry } };
+            var taskData = new RunTriggersParams { TriggerId = 9999999, EntityId = EntityType.EntityType_Type.Id };
 
             RunAndTestLog(taskData, (eventLogMonitor) =>
             {
@@ -75,8 +73,7 @@ namespace EDC.SoftwarePlatform.Activities.Test.BackgroundTasks
         {
             var trigger = new WfTriggerUserUpdatesResource();
 
-            var entry = new TriggerEntry { TriggerId = trigger.Id, EntityId = 9999999 };
-            var taskData = new RunTriggersParams { TriggerList = new List<TriggerEntry> { entry } };
+            var taskData = new RunTriggersParams { TriggerId = trigger.Id, EntityId = 9999999 };
 
             RunAndTestLog(taskData, (eventLogMonitor) =>
             {
@@ -98,6 +95,35 @@ namespace EDC.SoftwarePlatform.Activities.Test.BackgroundTasks
             }
         }
 
+
+        [Test]
+        [RunAsDefaultTenant]
+        [RunWithTransaction]
+        public void SuspendResume()
+        {
+            var handler = new RunTriggersHandler();
+
+            var trigger = new WfTriggerUserUpdatesResource();
+            trigger.Save();
+
+            var resource = new Resource();
+            resource.Save();
+
+            var task = RunTriggersHandler.CreateBackgroundTask(trigger.Id, resource.Id, 5);
+
+            var taskEntity = handler.CreateSuspendedTask(task);
+            taskEntity.Save();
+
+            var tasks = handler.RestoreSuspendedTasks();
+
+            tasks.Should().HaveCount(1);
+
+            var runParam = tasks.First().GetData<RunTriggersParams>();
+
+            runParam.TriggerDepth.ShouldBeEquivalentTo(5);
+            runParam.TriggerId.ShouldBeEquivalentTo(trigger.Id);
+            runParam.EntityId.ShouldBeEquivalentTo(resource.Id);
+        }
 
     }
 }

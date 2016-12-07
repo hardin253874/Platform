@@ -445,6 +445,39 @@ namespace ReadiNow.Reporting
         }
 
         /// <summary>
+        /// Tries to get the rule based on the default condition rules for the choice field column.
+        /// </summary>
+        /// <param name="conditionalFormat">The conditional column format.</param>
+        /// <param name="data">The data.</param>
+        /// <param name="ruleIndex">Index of the rule.</param>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <exception cref="System.InvalidOperationException">Predicate has not been set of condition.</exception>
+        public bool TryGetDefaultRule(ReportColumnConditionalFormat conditionalFormat,  object data, out long ruleIndex)
+        {
+            if (conditionalFormat != null && conditionalFormat.Rules != null && conditionalFormat.Rules.Count > 0)
+            {
+                for (int i = 0; i < conditionalFormat.Rules.Count; i++)
+                {
+                    ReportConditionalFormatRule rule = conditionalFormat.Rules[i];
+
+                    if (rule.Values == null ||  rule.Predicate == null)
+                    {
+                        continue;
+                    }
+
+                    if (rule.Predicate(data))
+                    {
+                        ruleIndex = i;
+                        return true;
+                    }
+                }
+            }
+
+            ruleIndex = -1;
+            return false;
+        }
+
+        /// <summary>
         /// CReate the colour values for column data element.
         /// </summary>
         /// <param name="queryColumnId">The query column unique identifier.</param>
@@ -563,6 +596,7 @@ namespace ReadiNow.Reporting
             }
 		}
 
+      
         /// <summary>
         ///     Builds a predicate that examines the raw data (as its native .Net type) to determine if
         ///     it passes the specified filter.

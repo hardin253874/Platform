@@ -50,6 +50,16 @@
             }
         };
 
+
+        $scope.$on("enterEditModeFromDblclick", function (event) {
+            event.stopPropagation();
+            spUtils.safeApply($scope, function() {
+                if (!isEditMode()) {
+                    onEditClick();
+                }
+            });
+        });
+
         $scope.$watch("formControl", formControlChanged);
 
         $scope.$watch('formData', formDataChanged);

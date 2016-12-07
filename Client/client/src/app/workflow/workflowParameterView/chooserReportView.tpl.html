@@ -1,0 +1,26 @@
+﻿<div class="workflow-chooser-view" ng-controller="workflowParameterEditViewController">
+    <div class="header clearfix" title="parameter edit view {{view.viewName}} on {{view.argAliasOrId}}">
+        <button class="icon-zoom pull-right" ng-click="toggleZoom()">
+            <img ng-show="isZoomed" src="assets/images/toolbar_close.png" />
+            <img ng-hide="isZoomed" src="assets/images/btn_expand_textbox.png" />
+        </button>
+
+        <sp-search-control sp-model="view.quickSearch"></sp-search-control>
+
+        <label ng-show="view.viewName === 'resourceChooser'">
+            Records for <button ng-click="showTypeChooser()">{{view.resourceTypeName || view.resourceType || 'choose object definition'}}</button>
+        </label>
+    </div>
+
+    <div class="body" sp-auto-height>
+        <sp-entity-report-picker ng-if="view.reportOptions" options="view.reportOptions"></sp-entity-report-picker>
+        <div ng-if="view.gridOptions" class="reportDataGridStyle dataGridHeight" ng-grid="view.gridOptions" ng-dblclick="onGridDoubleClicked()"></div>
+    </div>
+
+    <div class="footer clearfix">
+        <button ng-click="view.apply(); close();">ok</button>
+        <button ng-click="view.cancel(); close();">cancel</button>
+        <span style="padding: 0 3px;" ng-if="view.allowPickerSwitch"><input type="checkbox" ng-model="options.useDefaultPicker"> <label>Default picker</label></span>
+        <span style="padding: 0 3px;" ng-if="showAdvancedOption()"><input type="checkbox" ng-model="options.showAll"> <label>Show all (dev only)</label></span>
+    </div>
+</div>

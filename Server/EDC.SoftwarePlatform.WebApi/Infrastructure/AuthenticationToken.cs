@@ -10,7 +10,7 @@ namespace EDC.SoftwarePlatform.WebApi.Infrastructure
     /// The encrypted portion of the forms authentication ticket.
     /// </summary>
     [DataContract]
-    [DebuggerDisplay("TenantId: {TenantId} IdentityProviderId: {IdentityProviderId} IdentityProviderUserName: {IdentityProviderUserName} UserAccountId: {UserAccountId} XsrfToken: {XsrfToken} Persist: {Persist}")]
+    [DebuggerDisplay("TenantId: {TenantId} IdentityProviderId: {IdentityProviderId} IdentityProviderUserName: {IdentityProviderUserName} UserAccountId: {UserAccountId} XsrfToken: {XsrfToken} Persist: {Persist} HostIp: {HostIp} UserAgent: {UserAgent}")]
     public class AuthenticationToken
     {       
         [DataMember(Name = "xsrfToken", IsRequired = true, EmitDefaultValue = true)]
@@ -36,5 +36,13 @@ namespace EDC.SoftwarePlatform.WebApi.Infrastructure
         [DataMember(Name = "userId", IsRequired = false, EmitDefaultValue = true)]
         [DefaultValue(0)]
         public long UserAccountId { get; set; }
-    }
+
+		[DataMember( Name = "hostIp", IsRequired = true, EmitDefaultValue = true )]
+		[DefaultValue( "" )]
+		public string HostIp { get; set; }
+
+		[DataMember( Name = "userAgent", IsRequired = true, EmitDefaultValue = true )]
+		[DefaultValue( "" )]
+		public string UserAgent { get; set; }
+	}
 }

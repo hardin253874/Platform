@@ -1,0 +1,71 @@
+[{:tags
+  [:user/kun
+   :nomodify
+   :prod
+   :regression
+   :desktop
+   :area/form-builder],
+  :tests [],
+  :name "SetFieldProperties-ShowHelpText",
+  :steps
+  [{:script "(rt.po.app/navigate-via-tiles \"Foster University\")"}
+   {:script "(rt.po.app/enable-app-toolbox )"}
+   {:script
+    "(rt.po.app-toolbox/create-object {:name \"ShowHelpText Object1\" :description \"Show help text object description\"})"}
+   {:script
+    "(expect-equals \"ShowHelpText Object1 Form\" (rt.po.form-builder/get-form-title))"}
+   {:script "(rt.po.form-builder/open-form-properties-dialog)"}
+   {:script
+    "(expect-equals false (rt.po.form-properties/get-show-help))"}
+   {:script "(rt.po.form-properties/set-show-help true)"}
+   {:script
+    "(expect-equals true (rt.po.form-properties/get-show-help))"}
+   {:script "(rt.po.form-properties/click-ok)"}	
+   {:script "(rt.po.form-builder/add-container-to-form )"}  
+   {:script "(expect-equals true (rt.po.form-builder/has-canvas?))"}
+   {:script
+    ";;(rt.po.form-builder/open-container-config 0)"}
+   {:script
+    ";;(expect-equals false (rt.po.form-builder-config/get-field-showhelp))"}
+   {:script ";;(rt.po.form-builder-config/set-field-showhelp true)"}
+   {:script
+    ";;(expect-equals true (rt.po.form-builder-config/get-field-showhelp))"}
+   {:script ";;(rt.po.form-builder-config/click-ok)"}			
+   {:script "(rt.po.form-builder/add-field-to-form \"Text\")"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"Text\")"}
+   {:script "(rt.po.form-builder-config/set-name \"Text1\")"}
+   {:script
+    "(rt.po.form-builder-config/set-display-name \"Test Text\")"}
+   {:script
+    "(rt.po.form-builder-config/set-description \"This is a Text Field.\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script
+    "(expect-equals false (rt.po.form-builder-config/get-field-showhelp))"}
+   {:script "(rt.po.form-builder-config/set-field-showhelp true)"}
+   {:script
+    "(expect-equals true (rt.po.form-builder-config/get-field-showhelp))"}
+   {:script "(rt.po.form-builder-config/click-ok)"} 
+   {:script
+    "(rt.po.form-builder/add-display-option-from-toolbox-to-form \"Tabbed Container\")"}
+   {:script "(rt.po.form-builder/add-tab-in-tab-container 0)"}
+   {:script "(rt.po.form-builder/open-tab-configure-dialog 0 0)"}
+   {:script
+    "(expect-equals false (rt.po.form-builder-config/get-field-showhelp))"}
+   {:script "(rt.po.form-builder-config/set-field-showhelp true)"}
+   {:script
+    "(expect-equals true (rt.po.form-builder-config/get-field-showhelp))"}
+   {:script "(rt.po.form-builder-config/click-ok)"}			   
+   {:script
+    "(rt.po.form-builder/save)"}  
+   {:script "(rt.po.form-builder/close)"}	
+  ],
+  :type :test,
+  :source "../RnTests/test-db",
+  :modified "20161121-101814",
+  :setup [],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/formbuilder/SetFieldProperties-ShowHelpText,
+  :teardown
+  [{:script "(rt.po.app-toolbox/delete-object \"ShowHelpText Object1\")"}],
+  :modified-by "not-implemented"}]

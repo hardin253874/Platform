@@ -4,6 +4,8 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Security.Cryptography;
+using EDC.ReadiNow.IO;
+using EDC.ReadiNow.Test;
 using EDC.SoftwarePlatform.Services.FileManager;
 using EDC.SoftwarePlatform.WebApi.Test.Common;
 using NUnit.Framework;
@@ -138,9 +140,40 @@ namespace EDC.SoftwarePlatform.WebApi.Test.FileManager
 				// This means that the file is now on the server but not in the database
 				FileManagerUploadChunk( fileId, chunk, bytesRead, ourChecksum );
 			}
-		}
+        }
 
-		[Test]
+        [TestCase( "image", ".jpg", true )]
+        [TestCase( "image", ".jpeg", true )]
+        [TestCase( "image", ".png", true )]
+        [TestCase( "image", ".docx", false )]
+        [TestCase( "image", ".txt", false )]
+        [TestCase( "image", ".exe", false )]
+        [TestCase( "import", ".csv", true )]
+        [TestCase( "import", ".xlsx", true )]
+        [TestCase( "import", ".txt", true )]
+        [TestCase( "import", ".jpg", false )]
+        [TestCase( "import", ".docx", false )]
+        [TestCase( "import", ".exe", false )]
+        [TestCase( "xml", ".xml", true )]
+        [TestCase( "xml", ".csv", false )]
+        [TestCase( "xml", ".xlsx", false )]
+        [TestCase( "xml", ".txt", false )]
+        [TestCase( "xml", ".jpg", false )]
+        [TestCase( "xml", ".docx", false )]
+        [TestCase( "xml", ".exe", false )]
+        [TestCase( null, ".docx", true )]
+        [TestCase( null, ".jpg", true )]
+        [TestCase( null, ".xlsx", true )]
+        [TestCase( null, ".xml", false )]
+        [TestCase( null, ".exe", false )]
+        [RunAsDefaultTenant]
+        public void Test15FileWhitelist( string type, string extension, bool allowed )
+        {
+            bool actual = FileRepositoryHelper.CheckFileExtensionIsValid( "blah" + extension, type );
+            Assert.That( actual, Is.EqualTo( allowed ) );
+        }
+
+        [Test]
 		public void Test20BigFileUpload( )
 		{
 			// Upload the file in chunks. Everything inside the using block is what the client actually does (except for the service helper stuff...)

@@ -1,0 +1,64 @@
+rn-horizontal-stack-container-control {
+  //display: block;
+  //padding: 5px;
+}
+
+.rnHorizontalStackContainerControl {
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.rnHorizontalStackContainerControl__title {
+
+}
+
+.rnHorizontalStackContainerControl__content {
+  flex: 1 1 100%;
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.rnHorizontalStackContainerControl__control {
+  flex: 0 0 auto;
+
+  &.rn-resizeTwentyFive {
+    flex-basis: 25%;
+  }
+  &.rn-resizeThirtyThree {
+    flex-basis: 33.333%;
+  }
+  &.rn-resizeFifty {
+    flex-basis: 50%;
+  }
+  &.rn-resizeSixtySix {
+    flex-basis: 66.666%;
+  }
+  &.rn-resizeSeventyFive {
+    flex-basis: 75%;
+  }
+  &.rn-resizeHundred {
+    flex: 1 1 auto;
+    flex-basis: 0;
+  }
+  &.rn-resizeSpring {
+    flex: 1 1 auto;
+    flex-basis: 100%;
+  }
+  &.rn-resizeAutomatic {
+    flex: 1 1 auto;
+    flex-basis: auto;
+  }
+
+  &.rn-control-state-removed {
+    display: none;
+  }
+
+  &.rn-control-dragging {
+    //opacity: 0.3;
+  }
+
+}

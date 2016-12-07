@@ -1,0 +1,53 @@
+<rn-standard-form-control control="$ctrl.control" inline="$ctrl.formOptions.inline"
+                          validation-messages="$ctrl.customValidationMessages">
+
+    <div class="fieldControl" ng-class="$ctrl.fieldDisplayType">
+
+        <div ng-if="!$ctrl.isReadOnly">
+            <div ng-if="$ctrl.fieldDisplayType !== 'color'" ng-class="$ctrl.fieldDisplayValue">
+                <input type="{{$ctrl.fieldInputType}}"
+                       name="fieldValue"
+                       class="value"
+                       spellcheck="true"
+                       sp-custom-validator="$ctrl.customValidator"
+                       ng-model="$ctrl.model.fieldValue"
+                       ng-required="$ctrl.fieldToRender.isRequired"
+                       ng-trim='false'
+                       ng-change="$ctrl.cleanFieldValue()"
+                       ng-disabled="$ctrl.options.designing || $ctrl.formOptions.designing"
+                       ng-attr-placeholder="{{$ctrl.watermark}}"/>
+            </div>
+            <div ng-if="$ctrl.fieldDisplayType === 'color'" ng-class="$ctrl.fieldDisplayValue">
+                <sp-color-render-control colorstring="$ctrl.model.fieldValue"></sp-color-render-control>
+            </div>
+        </div>
+
+        <div ng-if="$ctrl.isReadOnly">
+
+            <div ng-switch="$ctrl.fieldDisplayType">
+                <a ng-switch-when="url"
+                   href="{{$ctrl.httperizeUrl($ctrl.model.fieldValue)}}" target="_blank">{{$ctrl.model.fieldValue}}</a>
+
+                <a ng-switch-when="email"
+                   href="mailto:{{$ctrl.model.fieldValue}}">{{$ctrl.model.fieldValue}}</a>
+
+                <a ng-switch-when="phoneNumber"
+                   href="tel:{{$ctrl.model.fieldValue}}">{{$ctrl.model.fieldValue}}</a>
+
+                <div ng-switch-when="color"
+                     ng-style="$ctrl.getCssColorFromColorString($ctrl.model.displayString)"></div>
+
+                <input ng-switch-when="password"
+                       type="password" ng-model="$ctrl.model.fieldValue" ng-readonly="true">
+
+                <div ng-switch-default
+                     ng-class="$ctrl.fieldDisplayValue" class="fieldValue"
+                     uib-tooltip="{{$ctrl.model.displayString}}" tooltip-trigger tooltip-placement="top">
+                    {{$ctrl.model.displayString}}
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</rn-standard-form-control>

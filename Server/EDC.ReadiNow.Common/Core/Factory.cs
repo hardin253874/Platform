@@ -466,6 +466,15 @@ namespace EDC.ReadiNow.Core
             get { return Current.Resolve<IBackgroundTaskManager>(); }
         }
 
+        /// <summary>
+        /// Preferred background task runner
+        /// </summary>
+        public static IBackgroundTaskController BackgroundTaskController
+        {
+            get { return Current.Resolve<IBackgroundTaskController>(); }
+        }
+
+
 
         /// <summary>
         /// Static constructor

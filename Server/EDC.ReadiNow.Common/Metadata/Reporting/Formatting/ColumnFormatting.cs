@@ -61,7 +61,13 @@ namespace EDC.ReadiNow.Metadata.Reporting.Formatting
         [DataMember]
         public bool ShowText { get; set; }
 
-
+        /// <summary>
+        /// True if the choice field use default formatting
+        /// a not column formatting, false otherwise.
+        /// </summary>
+        // field: cseDefaultFormat
+        [DataMember]
+        public bool DisableDefaultFormat { get; set; }
         /// <summary>
         /// Gets or sets the format string.
         /// </summary>
@@ -146,7 +152,8 @@ namespace EDC.ReadiNow.Metadata.Reporting.Formatting
         public TimeColFmtEnum TimeFormat { get; set; }
         [XmlIgnore]
         public DateTimeColFmtEnum DateTimeFormat { get; set; }
-
+        [XmlIgnore]
+        public EntityListColFmtEnum EntityListColumnFormat { get; set; }
     }
 
     /// <summary>

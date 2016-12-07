@@ -30,16 +30,6 @@ namespace EDC.ReadiNow.Services.Console
 		}
 
 		/// <summary>
-		///     Keeps track of the menu object. May be null for dynamic entries.
-		/// </summary>
-		[IgnoreDataMember]
-		public ActionMenuItem ActionMenuItem
-		{
-			get;
-			set;
-		}
-
-		/// <summary>
 		///     Additional data that can be passed back, and accessible by the Class.
 		/// </summary>
 		[DataMember( Name = "data", EmitDefaultValue = false )]
@@ -309,6 +299,26 @@ namespace EDC.ReadiNow.Services.Console
 			set;
 		}
 
+        /// <summary>
+        ///     An expression that may affect the <see cref="IsEnabled"/> state of this item.
+        /// </summary>
+	    [DataMember(Name = "expression")]
+	    public string Expression
+	    {
+	        get;
+            set;
+	    }
+        
+        /// <summary>
+        ///     A list of name / id pairs expected to be used in the expression.
+        /// </summary>
+        [DataMember(Name = "expressionEntities")]
+	    public Dictionary<string, ActionEntityReference> ExpressionEntities
+	    {
+	        get;
+            set;
+	    }
+
         #region Non Contract
 
         /// <summary>
@@ -316,6 +326,12 @@ namespace EDC.ReadiNow.Services.Console
 	    /// </summary>
         [IgnoreDataMember]
         public List<Permission> RequiresPermissions { get; set; }
+
+        /// <summary>
+        /// Security information specific to the parent context of this action.
+        /// </summary>
+        [IgnoreDataMember]
+        public List<Permission> RequiresParentPermissions { get; set; }
 
         /// <summary>
         ///  Specifies an alternate target to the action then that inherited from the behavior.
@@ -407,19 +423,22 @@ namespace EDC.ReadiNow.Services.Console
 		public static ActionMenuItemInfo ToInfo( this ActionMenuItem item, ActionRequestExtended request, Func<ActionRequestExtended, ActionMenuItem, ActionTargetInfo> targetGetter, Func<ActionRequestExtended, ActionMenuItem, ActionTargetInfo> defaultTargetGetter )
 		{
 			if ( item == null )
-				throw new ArgumentNullException( "item" );
+				throw new ArgumentNullException( nameof(item) );
+
 			if ( request == null )
-				throw new ArgumentNullException( "request" );
+				throw new ArgumentNullException( nameof(request) );
 
 			var label = item.Name;
-			if ( request.IsMultipleSelection &&
+
+            if ( request.IsMultipleSelection &&
 			     item.AppliesToMultiSelection == true &&
 			     !string.IsNullOrEmpty( item.MultiSelectName ) )
 			{
 				// show the "multi selection" label when appropriate
 				label = item.MultiSelectName;
 			}
-			if ( request.ActionDisplayContext != ActionContext.ContextMenu &&
+
+            if ( request.ActionDisplayContext != ActionContext.ContextMenu &&
 			     request.ActionDisplayContext != ActionContext.All &&
 			     !string.IsNullOrEmpty( item.EmptySelectName ) &&
 			     ( ( !request.IsMultipleSelection && request.LastSelectedResource == null ) ||
@@ -428,11 +447,14 @@ namespace EDC.ReadiNow.Services.Console
 				// show the "empty selection" label in appropriate contexts.
 				label = item.EmptySelectName;
 			}
-			var targetInfo = targetGetter == null ? defaultTargetGetter( request, item ) : targetGetter( request, item );
-			var additionalData = new Dictionary<string, object>( request.AdditionalData );
+
+            var targetInfo = targetGetter == null ? defaultTargetGetter( request, item ) : targetGetter( request, item );
+            var additionalData = request.AdditionalData == null ? new Dictionary<string, object>() : 
+                new Dictionary<string, object>( request.AdditionalData );
 			var displayName = GetDisplayName( label, targetInfo, additionalData );
-			var wfActionMenuItem = item.As<WorkflowActionMenuItem>( );
-			if ( wfActionMenuItem != null && wfActionMenuItem.ActionMenuItemToWorkflow != null )
+
+            var wfActionMenuItem = item.As<WorkflowActionMenuItem>( );
+            if ( wfActionMenuItem?.ActionMenuItemToWorkflow != null )
 			{
 				// align the workflow name
 				var wf = wfActionMenuItem.ActionMenuItemToWorkflow;
@@ -442,19 +464,51 @@ namespace EDC.ReadiNow.Services.Console
 				if ( wf.InputArgumentForRelatedResource != null )
 					additionalData.Add( ActionMenuItemInfo.AdditionalDataRelatedResourceArgKey, wf.InputArgumentForRelatedResource.Name );
 			}
+
 			var gd = item.As<GenerateDocumentActionMenuItem>( );
-			if ( gd != null && gd.ActionMenuItemToReportTemplate != null )
+			if ( gd?.ActionMenuItemToReportTemplate != null )
 			{
 				// align the report template name
 				displayName = gd.ActionMenuItemToReportTemplate.Name;
 			}
 
-			return new ActionMenuItemInfo
+            string expression = null;
+            Dictionary<string, ActionEntityReference> expressionEntities = null;
+
+            if ( item.ActionRequiresExpression != null )
+		    {
+                // disable by expression; should be evaluated on server but here for cache
+		        expression = item.ActionRequiresExpression.ActionExpressionString;
+
+		        if ( item.ActionRequiresExpression.ActionExpressionEntities != null )
+		        {
+                    expressionEntities = new Dictionary<string, ActionEntityReference>();
+
+		            var refs = item.ActionRequiresExpression.ActionExpressionEntities
+                        .Select(e => new {e.Name, e.ReferencedEntity})
+		                .GroupBy(e => e.Name)
+		                .Select(g => g.First()).ToList();
+
+                    refs.ForEach(r => expressionEntities.Add(r.Name, new ActionEntityReference { Id = r.ReferencedEntity.Id, TypeId = r.ReferencedEntity.IsOfType.First().Id }));
+		        }
+		    }
+
+		    List<Permission> permissions = null;
+		    List<Permission> parentPermissions = null;
+		    if (item.ActionRequiresPermission.Any())
+		    {
+		        permissions = item.ActionRequiresPermission.ToList();
+		    }
+		    if (item.ActionRequiresParentPermission.Any())
+		    {
+		        parentPermissions = item.ActionRequiresParentPermission.ToList();
+		    }
+            
+            return new ActionMenuItemInfo
 			{
-                ActionMenuItem = item,
 				Id = item.Id,
                 Alias = item.Alias,
-				EntityId = targetInfo == null || targetInfo.Entity == null ? 0 : targetInfo.Entity.Id,
+				EntityId = targetInfo?.Entity?.Id ?? 0,
 				Order = item.MenuOrder ?? 0,
 				Name = displayName,
 				Description = item.Description,
@@ -471,8 +525,11 @@ namespace EDC.ReadiNow.Services.Console
 				HtmlActionMethod = item.HtmlActionMethod,
 				HtmlActionState = item.HtmlActionState,
                 HtmlActionTarget = item.HtmlActionTarget,
-                RequiresPermissions = item.ActionRequiresPermission.ToList(),
-				AdditionalData = additionalData
+                RequiresPermissions = permissions,
+                RequiresParentPermissions = parentPermissions,
+				AdditionalData = additionalData,
+                Expression = expression,
+                ExpressionEntities = expressionEntities
 			};
 		}
 	}

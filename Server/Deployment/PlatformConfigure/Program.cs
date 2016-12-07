@@ -951,6 +951,12 @@ namespace PlatformConfigure
             if ( RunAction( "convertApplicationPackage", "cap", ConvertApplicationPackage ) )
 				return;
 
+            /////
+            // Increase a package version and create a new package GUID
+            /////
+            if ( RunAction( "increaseVersion", "iv", IncreasePackageVersion ) )
+                return;
+
             // Grant can modify application
             if (RunAction("grantModifyApp", "gma", GrantModifyApp))
                 return;
@@ -1026,10 +1032,16 @@ namespace PlatformConfigure
 			if ( RunAction( "disableChangeTracking", "dct", DisableChangeTracking ) )
 				return;
 
-			/////
-			// Help or no parameters
-			/////
-			if ( _parser.Count == 0 || _parser.ContainsArgument( @"help" ) || _parser.ContainsArgument( @"?" ) || _parser.ContainsArgument( @"-help" ) || _parser.ContainsArgument( "help" ) )
+            /////
+            // Documentation settings
+            /////
+            if (RunAction("setDocoSettings", "sds", SetDocumentationSettings))
+                return;
+
+            /////
+            // Help or no parameters
+            /////
+            if ( _parser.Count == 0 || _parser.ContainsArgument( @"help" ) || _parser.ContainsArgument( @"?" ) || _parser.ContainsArgument( @"-help" ) || _parser.ContainsArgument( "help" ) )
 			{
 				PrintHelp(full: _parser.Count != 0);
 				return;
@@ -1043,7 +1055,7 @@ namespace PlatformConfigure
 		/// <summary>
 		/// Disables the change tracking.
 		/// </summary>
-		[Function( "disableChangeTracking", "Disable datbase change tracking.", "ect" )]
+		[Function( "disableChangeTracking", "Disable datbase change tracking.", "dct" )]
 		[FunctionArgument( "databaseServer", "is the name of the database server." )]
 		[FunctionArgument( "databaseCatalog", "is the name of the database catalog." )]
 		private void DisableChangeTracking( )
@@ -1226,16 +1238,35 @@ namespace PlatformConfigure
 			{
 				AppManager.ConvertApplicationPackage( source, target, fileFormat, overwrite );
 			}
-		}
+        }
 
-		/// <summary>
-		///     Exports an application from a tenant to a package (SqLite)
-		/// </summary>
-		/// <remarks>
-		///     Command line parameters
-		///     -exportTenantApp -tenant tnt -app app -package pkg [-server svr] [-database db]
-		/// </remarks>
-		[Function( "exportTenantApp", "Exports the specified application for the specified tenant to the specified location on disk.", "eta" )]
+        /// <summary>
+        ///     Converts an application package from one format to another
+        /// </summary>
+        /// <remarks>
+        ///     Command line parameters
+        ///     -convertApplicationPackage -source src -target trg -format fmt
+        /// </remarks>
+        [Function( "increaseVersion", "Rewrites a package with a new package ID and increased version number.", "iv" )]
+        [FunctionArgument( "package", "is the location on disk of the source package to be updated." )]
+        private void IncreasePackageVersion( )
+        {
+            var package = GetArgument<string>( "package" );
+
+            using ( DatabaseContextInfo.SetContextInfo( $"Increase package version '{package}'" ) )
+            {
+                AppManager.IncreasePackageVersion( package );
+            }
+        }
+
+        /// <summary>
+        ///     Exports an application from a tenant to a package (SqLite)
+        /// </summary>
+        /// <remarks>
+        ///     Command line parameters
+        ///     -exportTenantApp -tenant tnt -app app -package pkg [-server svr] [-database db]
+        /// </remarks>
+        [Function( "exportTenantApp", "Exports the specified application for the specified tenant to the specified location on disk.", "eta" )]
 		[FunctionArgument( "tenant", "refers to the tenant name that owns the package to export." )]
 		[FunctionArgument( "app", "is the name|guid of the application that is to be exported." )]
 		[FunctionArgument( "package", "is the location on disk the package is to be written to." )]
@@ -1272,7 +1303,7 @@ namespace PlatformConfigure
 		///     -exportApp -app app -package pkg [-server svr] [-database db]
 		/// </remarks>
 		[Function( "exportApp", "Exports the specified application for the application library to the specified location on disk.", "ea" )]
-		[FunctionArgument( "app", "is the guid of the application that is to be exported." )]
+		[FunctionArgument( "app", "is the guid of the app package that is to be exported." )]
 		[FunctionArgument( "package", "is the location on disk the package is to be written to." )]
 		[FunctionArgument( "format", "is the format of the resulting file.", "xml", FunctionArgumentOptions.Optional )]
 		[FunctionArgument( "server", "refers to the server on which the package will be imported.", "localhost", FunctionArgumentOptions.Optional )]
@@ -1663,7 +1694,8 @@ namespace PlatformConfigure
 		{
             FrontEndArgumentParser argumentParser = new FrontEndArgumentParser( _parser, _attributeArgParser );
 
-            using ( FrontEnd frontEnd = new FrontEnd( argumentParser ) )
+			FrontEnd frontEnd = new FrontEnd( argumentParser );
+
             using ( DatabaseContextInfo.SetContextInfo( "Install bootstrap" ) )
             {
                 frontEnd.InstallBootstrap( );
@@ -1680,7 +1712,8 @@ namespace PlatformConfigure
 		{
             FrontEndArgumentParser argumentParser = new FrontEndArgumentParser( _parser, _attributeArgParser );
 
-            using ( FrontEnd frontEnd = new FrontEnd( argumentParser ) )
+			FrontEnd frontEnd = new FrontEnd( argumentParser );
+
             using ( DatabaseContextInfo.SetContextInfo( "Upgrade bootstrap" ) )
             {
                 frontEnd.UpgradeBootstrap( );
@@ -2129,29 +2162,74 @@ namespace PlatformConfigure
         [FunctionArgument("database", "refers to the name of the database where the tenant will be imported.", "SoftwarePlatform", FunctionArgumentOptions.Optional)]
         [FunctionArgument("dbUser", "the username used to connect to the sql server.", null, FunctionArgumentOptions.Optional)]
         [FunctionArgument("dbPassword", "the password used to connect to the database.", null, FunctionArgumentOptions.Optional)]
+        [FunctionArgument("start", "Start background task processing, restoring any suspended jobs.", null, FunctionArgumentOptions.Optional)]
+        [FunctionArgument("stop", "Stop background task processing, suspending jobs where able.", null, FunctionArgumentOptions.Optional)]
         private void BackgroundTasks()
         {
             var server = GetArgument<string>("server");
             var database = GetArgument<string>("database");
             var dbUser = GetArgument<string>("dbUser");
             var dbPassword = GetArgument<string>("dbPassword");
+            var startS = GetArgument<string>("start");
+            var stopS = GetArgument<string>("stop");
 
-            using (DatabaseInfo.Override(server, database, dbUser, dbPassword))
+            var start = startS == string.Empty;  // if it is missing the value will be null, otherwise an empty string
+            var stop = stopS == string.Empty;    // if it is missing the value will be null, otherwise an empty string
+
+            if (stop)
             {
-                var queueLengths = Factory.BackgroundTaskManager.QueueLengths();
+                Console.Write("Stopping background tasks ... ");
+                var stopped = Factory.BackgroundTaskController.StopAll();
 
-
-                ConsoleLogger.WriteLine($@"Queues: ");
-                ConsoleLogger.WriteLine($@"Tenant       Id   Length  Name");
-
-                foreach (var entry in queueLengths)
+                if (stopped)
                 {
-                    ConsoleLogger.WriteLine($@"{entry.TenantName,-9} {entry.TenantId, 5} {entry.Length, 8}  ""{entry.QueueName}""");
+                    Console.Write("suspending tasks to DB ... ");
+
+                    // suspend to DB
+                    Factory.BackgroundTaskController.SuspendToDb();
+
+                    Console.Write("done.");
                 }
+                else
+                {
+                    Console.WriteLine("not all stopped, aborting.");
+                    return;
+                }
+
             }
 
+            if (start)
+            {
+                Console.Write("Starting background tasks ... ");
+                Factory.BackgroundTaskController.StartAll();
+                Console.WriteLine("restoring tasks from DB ... ");
+                Factory.BackgroundTaskController.RestoreFromDb();
+                Console.WriteLine("done.");
+            }
 
+            if (!(start || stop))
+            {
+                using (DatabaseInfo.Override(server, database, dbUser, dbPassword))
+                {
+                    var queueLengths = Factory.BackgroundTaskManager.QueueLengths();
+
+
+                    ConsoleLogger.WriteLine("Queues: ");
+                    ConsoleLogger.WriteLine("Tenant       Id   Length  Name");
+
+                    foreach (var entry in queueLengths)
+                    {
+                        ConsoleLogger.WriteLine($@"{entry.TenantName,-9} {entry.TenantId,5} {entry.Length,8}  ""{entry.QueueName}""");
+                    }
+
+                    ConsoleLogger.WriteLine();
+                    ConsoleLogger.WriteLine("Managers: ");
+                    ConsoleLogger.WriteLine(Factory.BackgroundTaskController.GetReport());
+
+                }
+            }
         }
+
 
         /// <summary>
 		///		Prints the help.
@@ -2929,10 +3007,76 @@ namespace PlatformConfigure
 			}
 		}
 
-		/// <summary>
-		/// Runs the REPL.
-		/// </summary>
-		private void RunRepl( )
+        [Function("setDocoSettings", "Sets documentation settings.", "sds")]        
+        [FunctionArgument("server", "refers to the server on which the documentation settings will be set.", "localhost", FunctionArgumentOptions.Optional)]
+        [FunctionArgument("database", "refers to the name of the database on which the documentation settings will be set.", "SoftwarePlatform", FunctionArgumentOptions.Optional)]
+        [FunctionArgument("dbUser", "the username used to connect to the sql server.", null, FunctionArgumentOptions.Optional)]
+        [FunctionArgument("dbPassword", "the password used to connect to the database.", null, FunctionArgumentOptions.Optional)]
+        [FunctionArgument("navHeaderDocoUrl", "the url of the nav header documentation link.", null, FunctionArgumentOptions.Optional)]
+        [FunctionArgument("docoUrl", "the url of the documentation.", null, FunctionArgumentOptions.Optional)]
+        [FunctionArgument("releaseNotesUrl", "the url of the release notes.", null, FunctionArgumentOptions.Optional)]
+        [FunctionArgument("contactSupportUrl", "the url of the contact support doc.", null, FunctionArgumentOptions.Optional)]
+        [FunctionArgument("docoUserName", "the user name to use when accessing the documentation.", null, FunctionArgumentOptions.Optional)]
+        [FunctionArgument("docoUserPassword", "the password to use when accessing the documentation.", null, FunctionArgumentOptions.Optional)]
+        private void SetDocumentationSettings()
+	    {                                    
+            var server = GetArgument<string>("server");
+            var database = GetArgument<string>("database");
+            var dbUser = GetArgument<string>("dbUser");
+            var dbPassword = GetArgument<string>("dbPassword");
+
+            ValidateDocumentationUrlArg("navHeaderDocoUrl");
+            ValidateDocumentationUrlArg("docoUrl");
+            ValidateDocumentationUrlArg("releaseNotesUrl");
+            ValidateDocumentationUrlArg("contactSupportUrl");
+
+            var docoSettings = new Dictionary<string, string>
+	        {
+	            ["core:navHeaderDocumentationUrl"] = GetArgument<string>("navHeaderDocoUrl"),
+	            ["core:documentationUrl"] = GetArgument<string>("docoUrl"),
+	            ["core:releaseNotesUrl"] = GetArgument<string>("releaseNotesUrl"),
+	            ["core:contactSupportUrl"] = GetArgument<string>("contactSupportUrl"),
+	            ["core:documentationUserName"] = GetArgument<string>("docoUserName"),
+	            ["core:documentationUserPassword"] = GetArgument<string>("docoUserPassword")
+	        };
+            
+	        using (DatabaseInfo.Override(server, database, dbUser, dbPassword))
+            using (DatabaseContextInfo.SetContextInfo("Setting documentation settings"))
+            {
+                ConsoleLogger.WriteLine(SystemHelper.SetDocumentationSettings(docoSettings) ? @"Setting documentation settings succeeded." : @"Setting documentation settings failed.");
+            }
+        }
+
+        /// <summary>
+        /// Validates the specified documentation url arg.
+        /// </summary>
+        /// <param name="argName"></param>
+	    private void ValidateDocumentationUrlArg(string argName)
+	    {
+	        string url = GetArgument<string>(argName);
+	        if (string.IsNullOrWhiteSpace(url))
+	        {
+	            return;
+	        }
+
+            if (!Uri.IsWellFormedUriString(url, UriKind.Absolute))
+	        {
+                throw new CommandLineArgException(
+                    $@"Invalid url for argument name:{argName}, value:{url}. The url is not well formed.");
+            }
+
+            var uri = new Uri(url, UriKind.Absolute);
+	        if (uri.Scheme.ToLower() != "https")
+	        {
+	            // Log a warning if the doco is not https
+                ConsoleLogger.WriteLine($@"The url for argument name:{argName}, value:{url} is insecure. Insecure urls should not be used in production.", ConsoleColor.Blue);
+	        }
+        }
+
+        /// <summary>
+        /// Runs the REPL.
+        /// </summary>
+        private void RunRepl( )
 		{
 			while ( true )
 			{

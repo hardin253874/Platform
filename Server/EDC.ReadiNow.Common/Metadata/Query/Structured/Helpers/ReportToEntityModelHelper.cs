@@ -475,6 +475,10 @@ namespace EDC.ReadiNow.Metadata.Query.Structured
             {
                 result = ConvertRelatedResourceNode((RelatedResource)node, context);
             }
+            else if (node is CustomJoinNode)
+            {
+                result = ConvertCustomJoinNode( (CustomJoinNode)node, context);
+            }
             else if (node is ResourceEntity)
             {
                 result = ConvertResourceNode((ResourceEntity) node, context);
@@ -551,6 +555,23 @@ namespace EDC.ReadiNow.Metadata.Query.Structured
             return result.As<ReportNode>();
         }
 
+        /// <summary>
+        /// Convert a custom join node to an entity.
+        /// </summary>
+        private static Model.ReportNode ConvertCustomJoinNode( Structured.CustomJoinNode node, ToEntityContext context )
+        {
+            var result = new Model.CustomJoinReportNode( );
+
+            result.TargetMustExist = node.ResourceMustExist;
+            result.TargetNeedNotExist = node.ResourceNeedNotExist;
+            result.ParentNeedNotExist = node.ParentNeedNotExist;
+            result.ExactType = node.ExactType;
+            result.JoinPredicateCalculation = node.JoinPredicateScript;
+            result.ResourceReportNodeType = ConvertEntityRef<EntityType>( node.EntityTypeId );
+
+            // Caller will save
+            return result.As<ReportNode>( );
+        }
 
         /// <summary>
         /// Convert a related-resource node to an entity.
@@ -561,6 +582,7 @@ namespace EDC.ReadiNow.Metadata.Query.Structured
 
             result.TargetMustExist = node.ResourceMustExist;
             result.TargetNeedNotExist = node.ResourceNeedNotExist;
+            result.ParentNeedNotExist = node.ParentNeedNotExist;
             result.ExactType = node.ExactType;
             result.ResourceReportNodeType = ConvertEntityRef<EntityType>(node.EntityTypeId);
             result.FollowInReverse = node.RelationshipDirection == RelationshipDirection.Reverse;
@@ -1043,6 +1065,7 @@ namespace EDC.ReadiNow.Metadata.Query.Structured
         {
             var displayFormat = new DisplayFormat();
             displayFormat.ColumnShowText = colFormat.ShowText;
+            displayFormat.DisableDefaultFormat = colFormat.DisableDefaultFormat;
             displayFormat.MaxLineCount = colFormat.Lines;
             displayFormat.FormatPrefix = colFormat.Prefix;
             displayFormat.FormatSuffix = colFormat.Suffix;
@@ -1091,6 +1114,12 @@ namespace EDC.ReadiNow.Metadata.Query.Structured
                     displayFormat.DateTimeColumnFormat = dtcfe;
                 }
             }
+
+            if (colFormat.EntityListColumnFormat != null)
+            {
+                displayFormat.EntityListColumnFormat = colFormat.EntityListColumnFormat;
+            }
+
             displayFormat.Save();
             return displayFormat;
         }

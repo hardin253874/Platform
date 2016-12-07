@@ -2172,6 +2172,17 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Public static accessor to the inherited  forward relationship.
 		/// </summary>
+		public static IEntity EnumFormattingRule_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.EnumValue.EnumFormattingRule_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
 		public static IEntity EnumOwner_Field
 		{
 			get
@@ -2330,7 +2341,7 @@ namespace EDC.ReadiNow.Model
 		{
 			get
 			{
-				return new IEntity [ ] { CardinalityEnum.Alias_Field, CardinalityEnum.CanDelete_Field, CardinalityEnum.CanModify_Field, CardinalityEnum.CanModifyProtectedResource_Field, CardinalityEnum.CreatedDate_Field, CardinalityEnum.Description_Field, CardinalityEnum.EnumOrder_Field, CardinalityEnum.ModifiedDate_Field, CardinalityEnum.Name_Field, CardinalityEnum.CreatedBy_Field, CardinalityEnum.EnumOwner_Field, CardinalityEnum.Flags_Field, CardinalityEnum.IndirectInSolution_Field, CardinalityEnum.InSolution_Field, CardinalityEnum.InStructureLevel_Field, CardinalityEnum.IsOfType_Field, CardinalityEnum.IsRootForStructureView_Field, CardinalityEnum.LastModifiedBy_Field, CardinalityEnum.ResourceConsoleBehavior_Field, CardinalityEnum.ResourceHasResourceKeyDataHashes_Field, CardinalityEnum.ResourceInFolder_Field, CardinalityEnum.SecurityOwner_Field, CardinalityEnum.SelectionBehavior_Field, CardinalityEnum.ShortcutInFolder_Field };
+				return new IEntity [ ] { CardinalityEnum.Alias_Field, CardinalityEnum.CanDelete_Field, CardinalityEnum.CanModify_Field, CardinalityEnum.CanModifyProtectedResource_Field, CardinalityEnum.CreatedDate_Field, CardinalityEnum.Description_Field, CardinalityEnum.EnumOrder_Field, CardinalityEnum.ModifiedDate_Field, CardinalityEnum.Name_Field, CardinalityEnum.CreatedBy_Field, CardinalityEnum.EnumFormattingRule_Field, CardinalityEnum.EnumOwner_Field, CardinalityEnum.Flags_Field, CardinalityEnum.IndirectInSolution_Field, CardinalityEnum.InSolution_Field, CardinalityEnum.InStructureLevel_Field, CardinalityEnum.IsOfType_Field, CardinalityEnum.IsRootForStructureView_Field, CardinalityEnum.LastModifiedBy_Field, CardinalityEnum.ResourceConsoleBehavior_Field, CardinalityEnum.ResourceHasResourceKeyDataHashes_Field, CardinalityEnum.ResourceInFolder_Field, CardinalityEnum.SecurityOwner_Field, CardinalityEnum.SelectionBehavior_Field, CardinalityEnum.ShortcutInFolder_Field };
 			}
 		}
 
@@ -2477,6 +2488,20 @@ namespace EDC.ReadiNow.Model
 			set
 			{
 				this.SetLookup<UserAccount>( "core:createdBy", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public FormattingRule EnumFormattingRule
+		{
+			get
+			{
+				return this.GetLookup<FormattingRule>( "core:enumFormattingRule", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<FormattingRule>( "core:enumFormattingRule", value, Direction.Forward );
 			}
 		}
 		/// <summary>
@@ -17713,6 +17738,17 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Public static accessor to the inherited  forward relationship.
 		/// </summary>
+		public static IEntity EnumFormattingRule_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.EnumValue.EnumFormattingRule_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
 		public static IEntity EnumOwner_Field
 		{
 			get
@@ -17871,7 +17907,7 @@ namespace EDC.ReadiNow.Model
 		{
 			get
 			{
-				return new IEntity [ ] { CloneActionEnum.Alias_Field, CloneActionEnum.CanDelete_Field, CloneActionEnum.CanModify_Field, CloneActionEnum.CanModifyProtectedResource_Field, CloneActionEnum.CreatedDate_Field, CloneActionEnum.Description_Field, CloneActionEnum.EnumOrder_Field, CloneActionEnum.ModifiedDate_Field, CloneActionEnum.Name_Field, CloneActionEnum.CreatedBy_Field, CloneActionEnum.EnumOwner_Field, CloneActionEnum.Flags_Field, CloneActionEnum.IndirectInSolution_Field, CloneActionEnum.InSolution_Field, CloneActionEnum.InStructureLevel_Field, CloneActionEnum.IsOfType_Field, CloneActionEnum.IsRootForStructureView_Field, CloneActionEnum.LastModifiedBy_Field, CloneActionEnum.ResourceConsoleBehavior_Field, CloneActionEnum.ResourceHasResourceKeyDataHashes_Field, CloneActionEnum.ResourceInFolder_Field, CloneActionEnum.SecurityOwner_Field, CloneActionEnum.SelectionBehavior_Field, CloneActionEnum.ShortcutInFolder_Field };
+				return new IEntity [ ] { CloneActionEnum.Alias_Field, CloneActionEnum.CanDelete_Field, CloneActionEnum.CanModify_Field, CloneActionEnum.CanModifyProtectedResource_Field, CloneActionEnum.CreatedDate_Field, CloneActionEnum.Description_Field, CloneActionEnum.EnumOrder_Field, CloneActionEnum.ModifiedDate_Field, CloneActionEnum.Name_Field, CloneActionEnum.CreatedBy_Field, CloneActionEnum.EnumFormattingRule_Field, CloneActionEnum.EnumOwner_Field, CloneActionEnum.Flags_Field, CloneActionEnum.IndirectInSolution_Field, CloneActionEnum.InSolution_Field, CloneActionEnum.InStructureLevel_Field, CloneActionEnum.IsOfType_Field, CloneActionEnum.IsRootForStructureView_Field, CloneActionEnum.LastModifiedBy_Field, CloneActionEnum.ResourceConsoleBehavior_Field, CloneActionEnum.ResourceHasResourceKeyDataHashes_Field, CloneActionEnum.ResourceInFolder_Field, CloneActionEnum.SecurityOwner_Field, CloneActionEnum.SelectionBehavior_Field, CloneActionEnum.ShortcutInFolder_Field };
 			}
 		}
 
@@ -18018,6 +18054,20 @@ namespace EDC.ReadiNow.Model
 			set
 			{
 				this.SetLookup<UserAccount>( "core:createdBy", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public FormattingRule EnumFormattingRule
+		{
+			get
+			{
+				return this.GetLookup<FormattingRule>( "core:enumFormattingRule", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<FormattingRule>( "core:enumFormattingRule", value, Direction.Forward );
 			}
 		}
 		/// <summary>
@@ -38341,6 +38391,899 @@ namespace EDC.ReadiNow.Model
 			get
 			{
 				return EDC.ReadiNow.Model.Entity.Get<EntityType>("console:customEditFormControl");
+			}
+		}
+		
+		#endregion Additional Static Content
+
+	}
+
+	/// <summary>
+	/// A node in the report tree that performs a calculated-based join.
+	/// </summary>
+	[Serializable]
+	[DebuggerStepThrough]
+	[ModelClass("core:customJoinReportNode")]
+	public class CustomJoinReportNode : StrongEntity
+	{
+		/// <summary>
+		/// Public constructor.
+		/// </summary>
+		public CustomJoinReportNode( )
+			: base( typeof( CustomJoinReportNode ))
+		{
+
+		}
+
+		/// <summary>
+		/// Internal constructor.
+		/// </summary>
+		internal CustomJoinReportNode( IActivationData activationData )
+			: base( activationData )
+		{
+
+		}
+
+		#region CustomJoinReportNode Public Fields
+
+		/// <summary>
+		/// Public static accessor to the field.
+		/// </summary>
+		public static StringField JoinPredicateCalculation_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Entity.GetFieldEntity<StringField>( "core:joinPredicateCalculation" );
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static AliasField Alias_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.Alias_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static BoolField CanDelete_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.CanDelete_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static BoolField CanModify_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.CanModify_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static DateTimeField CreatedDate_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.CreatedDate_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static StringField Description_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.Description_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static BoolField ExactType_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.ResourceReportNode.ExactType_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static DateTimeField ModifiedDate_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.ModifiedDate_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static StringField Name_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.Name_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static BoolField ParentNeedNotExist_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.ResourceReportNode.ParentNeedNotExist_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static BoolField TargetMustExist_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.ResourceReportNode.TargetMustExist_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static BoolField TargetNeedNotExist_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.ResourceReportNode.TargetNeedNotExist_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity CreatedBy_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.CreatedBy_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity Flags_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.Flags_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity IndirectInSolution_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.IndirectInSolution_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity InSolution_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.InSolution_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity InStructureLevel_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.InStructureLevel_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity IsOfType_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.IsOfType_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity IsRootForStructureView_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.IsRootForStructureView_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity LastModifiedBy_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.LastModifiedBy_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  reverse relationship.
+		/// </summary>
+		public static IEntity NodeUsedByExpression_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.ReportNode.NodeUsedByExpression_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  reverse relationship.
+		/// </summary>
+		public static IEntity NodeUsedByStructureViewExpression_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.ReportNode.NodeUsedByStructureViewExpression_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  reverse relationship.
+		/// </summary>
+		public static IEntity ParentAggregatedNode_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.ReportNode.ParentAggregatedNode_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  reverse relationship.
+		/// </summary>
+		public static IEntity ParentReportNode_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.ReportNode.ParentReportNode_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity RelatedReportNodes_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.ReportNode.RelatedReportNodes_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity ResourceConsoleBehavior_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.ResourceConsoleBehavior_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity ResourceHasResourceKeyDataHashes_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.ResourceHasResourceKeyDataHashes_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity ResourceInFolder_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.ResourceInFolder_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity ResourceReportNodeType_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.ResourceReportNode.ResourceReportNodeType_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity SecurityOwner_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.SecurityOwner_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity SelectionBehavior_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.SelectionBehavior_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity ShortcutInFolder_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.ShortcutInFolder_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the array of all fields registered against this type.
+		/// </summary>
+		public static IEntity [ ] AllFields
+		{
+			get
+			{
+				return new IEntity [ ] { CustomJoinReportNode.JoinPredicateCalculation_Field, CustomJoinReportNode.Alias_Field, CustomJoinReportNode.CanDelete_Field, CustomJoinReportNode.CanModify_Field, CustomJoinReportNode.CreatedDate_Field, CustomJoinReportNode.Description_Field, CustomJoinReportNode.ExactType_Field, CustomJoinReportNode.ModifiedDate_Field, CustomJoinReportNode.Name_Field, CustomJoinReportNode.ParentNeedNotExist_Field, CustomJoinReportNode.TargetMustExist_Field, CustomJoinReportNode.TargetNeedNotExist_Field, CustomJoinReportNode.CreatedBy_Field, CustomJoinReportNode.Flags_Field, CustomJoinReportNode.IndirectInSolution_Field, CustomJoinReportNode.InSolution_Field, CustomJoinReportNode.InStructureLevel_Field, CustomJoinReportNode.IsOfType_Field, CustomJoinReportNode.IsRootForStructureView_Field, CustomJoinReportNode.LastModifiedBy_Field, CustomJoinReportNode.NodeUsedByExpression_Field, CustomJoinReportNode.NodeUsedByStructureViewExpression_Field, CustomJoinReportNode.ParentAggregatedNode_Field, CustomJoinReportNode.ParentReportNode_Field, CustomJoinReportNode.RelatedReportNodes_Field, CustomJoinReportNode.ResourceConsoleBehavior_Field, CustomJoinReportNode.ResourceHasResourceKeyDataHashes_Field, CustomJoinReportNode.ResourceInFolder_Field, CustomJoinReportNode.ResourceReportNodeType_Field, CustomJoinReportNode.SecurityOwner_Field, CustomJoinReportNode.SelectionBehavior_Field, CustomJoinReportNode.ShortcutInFolder_Field };
+			}
+		}
+
+		#endregion CustomJoinReportNode Public Fields
+
+		#region CustomJoinReportNode Public Properties
+
+		/// <summary>
+		/// Public accessor for the field.
+		/// </summary>
+		public string JoinPredicateCalculation
+		{
+			get
+			{
+				return ( string ) this.GetField( "core:joinPredicateCalculation" );
+			}
+			set
+			{
+				this.SetField( "core:joinPredicateCalculation", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public string Alias
+		{
+			get
+			{
+				return ( string ) this.GetField( "core:alias" );
+			}
+			set
+			{
+				this.SetField( "core:alias", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public bool? CanDelete
+		{
+			get
+			{
+				return ( bool? ) this.GetField( "core:canDelete" );
+			}
+			set
+			{
+				this.SetField( "core:canDelete", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public bool? CanModify
+		{
+			get
+			{
+				return ( bool? ) this.GetField( "core:canModify" );
+			}
+			set
+			{
+				this.SetField( "core:canModify", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public DateTime? CreatedDate
+		{
+			get
+			{
+				return ( DateTime? ) this.GetField( "core:createdDate" );
+			}
+			set
+			{
+				this.SetField( "core:createdDate", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public string Description
+		{
+			get
+			{
+				return ( string ) this.GetField( "core:description" );
+			}
+			set
+			{
+				this.SetField( "core:description", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public bool? ExactType
+		{
+			get
+			{
+				return ( bool? ) this.GetField( "core:exactType" );
+			}
+			set
+			{
+				this.SetField( "core:exactType", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public DateTime? ModifiedDate
+		{
+			get
+			{
+				return ( DateTime? ) this.GetField( "core:modifiedDate" );
+			}
+			set
+			{
+				this.SetField( "core:modifiedDate", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public string Name
+		{
+			get
+			{
+				return ( string ) this.GetField( "core:name" );
+			}
+			set
+			{
+				this.SetField( "core:name", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public bool? ParentNeedNotExist
+		{
+			get
+			{
+				return ( bool? ) this.GetField( "core:parentNeedNotExist" );
+			}
+			set
+			{
+				this.SetField( "core:parentNeedNotExist", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public bool? TargetMustExist
+		{
+			get
+			{
+				return ( bool? ) this.GetField( "core:targetMustExist" );
+			}
+			set
+			{
+				this.SetField( "core:targetMustExist", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public bool? TargetNeedNotExist
+		{
+			get
+			{
+				return ( bool? ) this.GetField( "core:targetNeedNotExist" );
+			}
+			set
+			{
+				this.SetField( "core:targetNeedNotExist", value);
+			}
+		}
+
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public UserAccount CreatedBy
+		{
+			get
+			{
+				return this.GetLookup<UserAccount>( "core:createdBy", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<UserAccount>( "core:createdBy", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public IEntityCollection<ResourceFlagsEnum> Flags
+		{
+			get
+			{
+				return this.GetRelationships<ResourceFlagsEnum>( "core:flags", Direction.Forward ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<ResourceFlagsEnum>( "core:flags", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the enumeration value.
+		/// </summary>
+		public ResourceFlagsEnum_Enumeration? Flags_Enum
+		{
+			get
+			{
+				return GetMultiEnum<ResourceFlagsEnum, ResourceFlagsEnum_Enumeration>( "core:flags", Direction.Forward, ResourceFlagsEnum.ConvertAliasToEnum, (enum1, enum2) => enum1 | enum2 );
+			}
+			set
+			{
+				if ( value == null )
+				{
+					this.SetRelationships( "core:flags", null, Direction.Forward );
+					return;
+				}
+				var relationships = new List<ResourceFlagsEnum>( );
+
+				foreach ( ResourceFlagsEnum_Enumeration enumValue in ResourceFlagsEnum.GetEnumValues( value.Value ) )
+				{
+				    relationships.Add( EDC.ReadiNow.Model.Entity.Get<ResourceFlagsEnum>( EntityRefHelper.ConvertAliasWithNamespace( ResourceFlagsEnum.ConvertEnumToAlias( enumValue ) ) ) );
+				}
+
+				this.SetRelationships( "core:flags", new EntityRelationshipCollection<ResourceFlagsEnum>( relationships ), Direction.Forward );
+			}
+		}		
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public Solution IndirectInSolution
+		{
+			get
+			{
+				return this.GetLookup<Solution>( "core:indirectInSolution", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<Solution>( "core:indirectInSolution", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public Solution InSolution
+		{
+			get
+			{
+				return this.GetLookup<Solution>( "core:inSolution", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<Solution>( "core:inSolution", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public IEntityCollection<StructureLevel> InStructureLevel
+		{
+			get
+			{
+				return this.GetRelationships<StructureLevel>( "core:inStructureLevel", Direction.Forward ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<StructureLevel>( "core:inStructureLevel", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public IEntityCollection<EntityType> IsOfType
+		{
+			get
+			{
+				return this.GetRelationships<EntityType>( "core:isOfType", Direction.Forward ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<EntityType>( "core:isOfType", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public IEntityCollection<StructureView> IsRootForStructureView
+		{
+			get
+			{
+				return this.GetRelationships<StructureView>( "core:isRootForStructureView", Direction.Forward ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<StructureView>( "core:isRootForStructureView", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public UserAccount LastModifiedBy
+		{
+			get
+			{
+				return this.GetLookup<UserAccount>( "core:lastModifiedBy", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<UserAccount>( "core:lastModifiedBy", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited reverse relationship.
+		/// </summary>
+		public IEntityCollection<NodeExpression> NodeUsedByExpression
+		{
+			get
+			{
+				return this.GetRelationships<NodeExpression>( "core:nodeUsedByExpression", Direction.Reverse ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<NodeExpression>( "core:nodeUsedByExpression", value, Direction.Reverse );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited reverse relationship.
+		/// </summary>
+		public IEntityCollection<StructureViewExpression> NodeUsedByStructureViewExpression
+		{
+			get
+			{
+				return this.GetRelationships<StructureViewExpression>( "core:nodeUsedByStructureViewExpression", Direction.Reverse ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<StructureViewExpression>( "core:nodeUsedByStructureViewExpression", value, Direction.Reverse );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited reverse relationship.
+		/// </summary>
+		public AggregateReportNode ParentAggregatedNode
+		{
+			get
+			{
+				return this.GetLookup<AggregateReportNode>( "core:parentAggregatedNode", Direction.Reverse );
+			}
+			set
+			{
+				this.SetLookup<AggregateReportNode>( "core:parentAggregatedNode", value, Direction.Reverse );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited reverse relationship.
+		/// </summary>
+		public ReportNode ParentReportNode
+		{
+			get
+			{
+				return this.GetLookup<ReportNode>( "core:parentReportNode", Direction.Reverse );
+			}
+			set
+			{
+				this.SetLookup<ReportNode>( "core:parentReportNode", value, Direction.Reverse );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public IEntityCollection<ReportNode> RelatedReportNodes
+		{
+			get
+			{
+				return this.GetRelationships<ReportNode>( "core:relatedReportNodes", Direction.Forward ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<ReportNode>( "core:relatedReportNodes", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public ConsoleBehavior ResourceConsoleBehavior
+		{
+			get
+			{
+				return this.GetLookup<ConsoleBehavior>( "console:resourceConsoleBehavior", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<ConsoleBehavior>( "console:resourceConsoleBehavior", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public IEntityCollection<ResourceKeyDataHash> ResourceHasResourceKeyDataHashes
+		{
+			get
+			{
+				return this.GetRelationships<ResourceKeyDataHash>( "core:resourceHasResourceKeyDataHashes", Direction.Forward ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<ResourceKeyDataHash>( "core:resourceHasResourceKeyDataHashes", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public IEntityCollection<NavContainer> ResourceInFolder
+		{
+			get
+			{
+				return this.GetRelationships<NavContainer>( "console:resourceInFolder", Direction.Forward ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<NavContainer>( "console:resourceInFolder", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public EntityType ResourceReportNodeType
+		{
+			get
+			{
+				return this.GetLookup<EntityType>( "core:resourceReportNodeType", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<EntityType>( "core:resourceReportNodeType", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public UserAccount SecurityOwner
+		{
+			get
+			{
+				return this.GetLookup<UserAccount>( "core:securityOwner", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<UserAccount>( "core:securityOwner", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public ConsoleBehavior SelectionBehavior
+		{
+			get
+			{
+				return this.GetLookup<ConsoleBehavior>( "console:selectionBehavior", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<ConsoleBehavior>( "console:selectionBehavior", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public IEntityCollection<NavContainer> ShortcutInFolder
+		{
+			get
+			{
+				return this.GetRelationships<NavContainer>( "console:shortcutInFolder", Direction.Forward ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<NavContainer>( "console:shortcutInFolder", value, Direction.Forward );
+			}
+		}
+
+
+
+		#endregion CustomJoinReportNode Public Properties
+
+		#region Additional Static Content
+
+		/// <summary>
+        /// Returns all instances of the CustomJoinReportNode type
+        /// </summary>
+        /// <returns>An enumeration of instances of this type.</returns>
+        public static EntityType CustomJoinReportNode_Type
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Entity.Get<EntityType>("core:customJoinReportNode");
 			}
 		}
 		

@@ -2291,7 +2291,7 @@ namespace ReadiNow.QueryEngine.Builder
 			    if ( literalExpression.Value.Type is BoolType )
 			    {
 				    bool isTrue = ( bool? ) literalExpression.Value.Value == true;
-				    string sql = isTrue ? "try_convert(bit, 1)" : "try_convert(bit, 0)";
+				    string sql = isTrue ? "convert(bit, 1)" : "convert(bit, 0)";
 				    string order = isTrue ? "1" : "2";
 				    result = new SqlExpression( sql )
 				    {
@@ -2453,7 +2453,8 @@ namespace ReadiNow.QueryEngine.Builder
 				    {
 					    if ( !first || logicalExpression.Operator == LogicalOperator.Not )
 					    {
-						    sb.Append( logicalExpression.Operator );
+                            sb.Append( " " );
+                            sb.Append( logicalExpression.Operator.ToString().ToLowerInvariant() );
 						    sb.Append( " " );
 					    }
 

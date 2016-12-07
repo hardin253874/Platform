@@ -92,18 +92,19 @@
 
             function normaliseParams(params) {
                 // normalise the params for the purpose of caching (we value test)
-                return _.map(params, function (p) { return _.pick(p, 'name', 'typeName', 'entityTypeId'); });
+                return _.map(params, function (p) { return _.pick(p, 'name', 'typeName', 'isList', 'entityTypeId'); });
             }
 
             function normaliseType(type) {
                 if (!type) return '';
                 return type.dataType + '|' + type.isList + '|' + type.entityTypeId;
             }
-
+            
             function findInCache(expression, options) {
                 var params = normaliseParams(options.params);
                 var expected = normaliseType(options.expectedResultType);
-                var item = _.find(compileCache, function (o) { return o.expression === expression && o.expected === expected && _.isEqual(o.params, params); });
+                var context = options.context || '';
+                var item = _.find(compileCache, function (o) { return o.expression === expression && o.context === context && o.expected === expected && _.isEqual(o.params, params); });
                 if (item) {
                     item.touchedTime = new Date().getTime();
                 }
@@ -113,7 +114,8 @@
             function addToCache(expression, options, result) {
                 var params = normaliseParams(options.params);
                 var expected = normaliseType(options.expectedResultType);
-                compileCache.push({ expression: expression, params: params, expected: expected, result: result, touchedTime: new Date().getTime() });
+                var context = options.context || '';
+                compileCache.push({ expression: expression, params: params, expected: expected, context: context, result: result, touchedTime: new Date().getTime() });
                 debouncedExpireCache();
             }
 
@@ -343,7 +345,7 @@
                         context: context ? context + '' : context,      // eg. 12345   (typeID of context for resolving field names)
                         host: host,                                     // optional. eg. 'Report','Evaluate','Any'  (support rules for this calc engine)
                         params: params,                                 // optional. See ExpressionParameter data contract
-                        expectedResultType: expectedResultType          // optional. eg. {'dataType':'String','isList':false,'entityTypeId':1234} See ExpressionType data contract
+                        expectedResultType: expectedResultType          // optional. eg. {'dataType':'String','isList':'false','entityTypeId':1234} See ExpressionType data contract
                     },
                     headers: spWebService.getHeaders()
                 });

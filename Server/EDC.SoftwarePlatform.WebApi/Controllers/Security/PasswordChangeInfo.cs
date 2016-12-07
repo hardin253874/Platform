@@ -10,10 +10,19 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.Security
     [DataContract]
     public class PasswordChangeInfo
     {
-        /// <summary>
-        /// The new password.
-        /// </summary>
-        [DataMember(Name = "password", IsRequired = true)]
+		/// <summary>
+		/// Gets or sets the current password.
+		/// </summary>
+		/// <value>
+		/// The current password.
+		/// </value>
+		[DataMember( Name = "currentPassword", IsRequired = true )]
+		public string CurrentPassword { get; set; }
+
+		/// <summary>
+		/// The new password.
+		/// </summary>
+		[DataMember(Name = "password", IsRequired = true)]
         public string Password { get; set; }
     }
 }

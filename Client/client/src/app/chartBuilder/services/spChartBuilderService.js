@@ -568,7 +568,7 @@ exports.getAvailableColumnSources = spVisDataBuilderService.getAvailableColumnSo
                     series: series,
                     model: model,
                     onAllowDrop: function (dragData, dropData) {
-                        return dragData.isSeries && dragData.series != dropData.series;
+                        return dragData.isSeries && dragData.series !== dropData.series;
                     },
                     onDrop: function (model, dragData, dropData) {
                         if (!dragData.isSeries)

@@ -33,9 +33,14 @@
 
         $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
             if (toState.name === 'landinghome') {
-                spLocalStorage.setItem(spNavService.getLastUsedAppKey(), null);
+                if (spLoginService.accountId) {
+                    spLocalStorage.setObject(spNavService.getLastUsedAppMenuKey(), { userAccountId: spLoginService.accountId, lastUsedAppMenuId: null });
+                }
             } else {
-                spLocalStorage.setItem(spNavService.getLastUsedAppKey(), spNavService.getCurrentApplicationId());
+                var currentAppMenuEntityId = sp.result(spNavService.getCurrentApplicationMenuEntity(), 'idP');
+                if (spLoginService.accountId) {
+                    spLocalStorage.setObject(spNavService.getLastUsedAppMenuKey(), { userAccountId: spLoginService.accountId, lastUsedAppMenuId: currentAppMenuEntityId });
+                }
             }
         });
 

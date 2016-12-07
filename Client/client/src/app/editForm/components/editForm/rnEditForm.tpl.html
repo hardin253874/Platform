@@ -1,0 +1,11 @@
+<div class="rnEditForm" ng-class="{'rnEditForm--mobile': $ctrl.formOptions.mobile}">
+    <div class="rnEditForm__container">
+        <div ng-if="!$ctrl.noTitle" class="rnEditForm__title">{{$ctrl.resource.name}}</div>
+        <rn-vertical-stack-container-control
+                sp-droppable="$ctrl.dropOptions" sp-droppable-data="$ctrl.form"
+                class="rnEditForm__content rn-resizeSpring"
+                control="$ctrl.form" resource="$ctrl.resource" form="$ctrl.form"
+                options="$ctrl.childControlOptions" form-options="$ctrl.formOptions">
+        </rn-vertical-stack-container-control>
+    </div>
+</div>

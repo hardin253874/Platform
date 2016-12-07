@@ -41,11 +41,11 @@ namespace ReadiNow.Expressions.Test.Runner
         }
 
        
-        [TestCase("script: resource(AA_Drink,Tab)                    ;host:Evaluate; expect: AA_Drink:Tab")]         // not this version can not have a space in the name
-        [TestCase("script: resource(AA_Employee, 'Peter Aylett')       ;host:Evaluate; expect: AA_Employee:Peter Aylett")]
+        [TestCase("script: resource(AA_Drink,Tab)                      ;expect: AA_Drink:Tab")]         // not this version can not have a space in the name
+        [TestCase("script: resource(AA_Employee, 'Peter Aylett')       ;expect: AA_Employee:Peter Aylett")]
         [TestCase("script: resource(AA_Employee, 'Peter' + ' Aylett')  ;host:Evaluate; expect: AA_Employee:Peter Aylett")]
-        [TestCase("script: resource(AA_Employee, 'doesntexist')  ;host:Evaluate; error:Could not find a 'AA_Employee' called 'doesntexist'. (pos 23)")]
-        [TestCase("script: resource(AA_Employee, 'doesnt' + 'exist')  ;host:Evaluate; expect: AA_Employee:null")]
+        [TestCase("script: resource(AA_Employee, 'doesntexist')        ;error:Could not find a 'AA_Employee' called 'doesntexist'. (pos 23)")]
+        [TestCase("script: resource(AA_Employee, 'doesnt' + 'exist')   ;host:Evaluate; expect: AA_Employee:null")]
         [RunAsDefaultTenant]
         public void Calculations_TheResourceFunction(string test)
         {
@@ -54,6 +54,8 @@ namespace ReadiNow.Expressions.Test.Runner
 
         [TestCase("script: id(Manager) > 0;      context:AA_Employee:David Quint   ;hostapi:true ;expect: bool:true")]
         [TestCase("script: id(context()) > 0;    context:AA_Employee:David Quint   ;hostapi:true ;expect: bool:true")]
+        [TestCase( "script: (all(AA_Drink) where Name like 'S%').Name;    context:AA_Employee:David Quint   ;expect: string list:Sunkist Orange,Sarsaparilla,Soda Water,Solo Lemon Lime,Solo,Sprite Lemonade" )]
+        [TestCase( "script: count(all(AA_Drink));    context:AA_Employee:David Quint   ;expect: int:30" )]
         [RunAsDefaultTenant]
         public void Calculations_ResourceFunctions(string test)
         {

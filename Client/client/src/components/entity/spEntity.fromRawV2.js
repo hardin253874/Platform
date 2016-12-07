@@ -62,7 +62,7 @@ var EdcEntity;  // legacy
 
         // Return an array of arrays. An array of results, with each result containing the array of entities.
         var results = _.map(entityData.results, function (result) {
-            if (result.code != 200) {
+            if (result.code !== 200) {
                 return null;
             }
             var entities = _.map(result.ids, function (id) {

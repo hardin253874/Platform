@@ -22,16 +22,30 @@
         </span>
     </div>
 
-    <div class="sp-Form-Builder-Action">
-
-        <div ng-if="model.actionButtons.length > 0" class="sp-Form-Builder-actions">
-            <button type="button" ng-click="ab.execute()" ng-repeat="ab in model.actionButtons" ng-disabled="ab.disabled || model.isInDesign || model.disableActions" title="{{ab.name || ab.displayname}}">
-                <img ng-src="{{ab.icon}}" width="16" height="16" /><span ng-show="ab.action.state === 'createForm' || ab.action.method === 'run' || ab.action.method === 'generate'">{{ab.nameshort}}</span>
+    <div ng-if="showActionButton()" ng-class="getActionsClass()">
+        <div ng-repeat="ab in model.actionButtons">
+            <button type="button"
+                    ng-disabled="true"
+                    title="{{ab.name || ab.displayname}}">
+                <img ng-src="{{ab.icon}}" width="16" height="16"/><span>{{ab.nameshort}}</span>
             </button>
+            <div class="configure-Builder-Action">
+                <span class="ui-icon ui-icon-white ui-icon-wrench ui-icon-hover-darkgray fb-toolbox-adornment fb-toolbox-adornment-light"
+                      style="display: inline-block; float: none"
+                      ng-click="configureActions(ab)"></span>
+                <span class="ui-icon ui-icon-white ui-icon-close ui-icon-hover-darkgray fb-toolbox-adornment fb-toolbox-adornment-light"
+                      style="display: inline-block; float: none"
+                      ng-click="removeActionButton(ab)"></span>
+            </div>
         </div>
-
-        <button ng-if="showActionButton()" type="button" ng-click="showActionsDialog()" title="Action">
-            <img src="assets/images/16x16/add.svg" /><span>Actions</span>
+        <button type="button"
+                ng-click="configureActions()"
+                sp-context-menu-trigger="none"
+                sp-context-menu-placement="alignright"
+                sp-context-menu="model.actionContextMenu"
+                sp-context-menu-is-open="model.showActionContextMenu"
+                title="Action">
+            <img ng-src="{{getAddActionsImage()}}"/><span>Actions</span>
         </button>
     </div>
 

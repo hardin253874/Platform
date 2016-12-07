@@ -74,7 +74,9 @@
         var firstTime = !(navItem.data && (navItem.data.id || navItem.data.formId));
         var areCreating = $state.current.name === 'createForm';
         var navigationBuilderProvider = spNavigationBuilderProvider($scope);
-        var taskPage = {template: 'editForm/applicableTasksMobile.tpl.html', scope: $scope};
+        var taskPage = { template: 'editForm/applicableTasksMobile.tpl.html', scope: $scope };
+
+        var getFormActionQuickMenuDebounce = _.debounce(getFormActionQuickMenu, 100);
 
         ///////////////////////////////////////////////////////////////////////
         // Bindings
@@ -105,7 +107,23 @@
 
         $scope.allowFlexForm = rnFeatureSwitch.isFeatureOn('flexEditForm');
         $scope.fsShowHideControls = spFormControlVisibilityService.isShowHideFeatureOn();
-        $scope.useFlexForm = false;//$scope.allowFlexForm;
+        $scope.useFlexForm = false; //$scope.allowFlexForm;
+        $scope.flexEditFormOptions = {};
+        function setFlexEditFormOptions(options) {
+            $scope.flexEditFormOptions = _.assign({}, $scope.flexEditFormOptions, options);
+        }
+        $scope.$watch('model.formMode', mode => {
+            setFlexEditFormOptions({editing: mode === 'edit'});
+        });
+        $scope.$watch('designMode', designing => {
+            setFlexEditFormOptions({designing});
+        });
+        $scope.toggleFlexInline = function () {
+            setFlexEditFormOptions({inline: !$scope.flexEditFormOptions.inline});
+        };
+        $scope.toggleFlexMobile = function () {
+            setFlexEditFormOptions({mobile: !$scope.flexEditFormOptions.mobile});
+        };
         $scope.toggleFlexForm = function () {
             if (!$scope.allowFlexForm) return;
             $scope.useFlexForm = !$scope.useFlexForm;
@@ -117,6 +135,19 @@
             $scope.showStructureEditor = !$scope.showStructureEditor;
             doLayout();
         };
+        $scope.undoFormStructureEdit = function () {
+            if (!$scope.allowFlexForm) return;
+            if ($scope.model.formControl) {
+                $scope.model.formControl.graph.history.undoBookmark();
+                doLayout();
+            }
+        };
+        $scope.toggleDesignMode = function () {
+            if (!$scope.allowFlexForm) return;
+            $scope.designMode = !$scope.designMode;
+        };
+
+        $scope.showActionButtons = showActionButtons;
 
         ///////////////////////////////////////////////////////////////////////
         // Watches and event listeners
@@ -129,7 +160,7 @@
         });
 
         $scope.$watch('model.formTitle', function (value) {
-            $scope.item.actionPanelOptions.title = value;
+            $scope.item.actionPanelOptions.formTitle = value;
         });
 
         $scope.$watch('model.formData', formDataChanged);
@@ -172,6 +203,15 @@
             $scope.model.onReturnFromChildUpdateActions.push(onReturnFunction);
         });
 
+        $scope.$on("enterEditModeFromDblclick", function (event) {
+            event.stopPropagation();
+
+            spUtils.safeApply($scope, function() {
+                if (isViewMode()) {
+                    toEditMode();
+                }
+            });
+        });
 
         // A filter source control has changed it's data. Notify any filtered
         // controls to update themselves.
@@ -232,7 +272,6 @@
                 inWizard: sp.stringToBoolean($stateParams.inWizard),                // are we part of a wizard?
                 haveFetchedTasks: false,                                            // have we already fetched the tasks
                 actionButtons: [],
-                haveFetchedFormActions: false,
                 areCreating: areCreating,
                 controlVisibilityModel: {
                     controlsVisibility: {},
@@ -313,7 +352,6 @@
                     showAlert('An error occurred getting the form: ' + sp.result(error, 'data.Message'));
                     hideSpinner();
                 })
-                .then(fetchFormActions)
                 .then(updateTheme)
                 .then(setHeaderIconAndStyle);
         }
@@ -418,8 +456,17 @@
             showSpinner();
 
             if ($scope.fsShowHideControls) {
-                return spEditForm.getFormDataAdvanced(entityId, $scope.requestStrings, $scope.model.formControl.id()).then(function(response) {
+                return spEditForm.getFormDataAdvanced(entityId, $scope.requestStrings, $scope.model.formControl.id()).then(function (response) {
+                    // Initialise all controls with calcs as initially visible
                     $scope.model.controlVisibilityModel.controlsVisibility = {};
+                    var controlsWithCalcs = spFormControlVisibilityService.getControlsWithVisibilityCalculations($scope.model.formControl);
+                    _.forEach(controlsWithCalcs, function (c) {
+                        if (c) {
+                            $scope.model.controlVisibilityModel.controlsVisibility[c.id()] = true;   
+                        }                        
+                    });
+                    
+                    // Update visibility for initially hidden controls
                     _.forEach(response.initiallyHiddenControls, function(controlId) {
                         $scope.model.controlVisibilityModel.controlsVisibility[controlId] = false;
                     });
@@ -527,6 +574,7 @@
                     onUpdateControlVisibility);
 
                 updateToolbarAccessControlFieldValues();
+                getFormActionQuickMenuDebounce();
             }
         }
 
@@ -540,7 +588,7 @@
             // has the form id been changed in stateParams?
             if ($scope.model.formId && $stateParams.formId) {
                 newFormId = parseInt($stateParams.formId, 10) || $stateParams.formId;
-                if ($scope.model.formId != newFormId) {
+                if ($scope.model.formId !== newFormId) {
                     $scope.model.formId = newFormId;
                     stateChange = true;
                 }
@@ -549,7 +597,7 @@
             // check on the tasks and task id also
             if ($scope.model.taskInfo && $scope.model.taskInfo.taskId && $stateParams.taskId) {
                 newTaskId = parseInt($stateParams.taskId, 10) || $stateParams.taskId;
-                if ($scope.model.taskInfo.taskId != newTaskId) {
+                if ($scope.model.taskInfo.taskId !== newTaskId) {
                     $scope.model.taskInfo.taskId = newTaskId;
                     stateChange = true;
                 }
@@ -558,7 +606,7 @@
             // update the inWizard flag too
             if ($scope.model.inWizard && $stateParams.inWizard) {
                 newInWizard = sp.stringToBoolean($stateParams.inWizard);
-                if ($scope.model.inWizard != newInWizard) {
+                if ($scope.model.inWizard !== newInWizard) {
                     $scope.model.inWizard = newInWizard;
                     stateChange = true;
                 }
@@ -639,7 +687,7 @@
                 save: save,
                 savePlus: savePlus,
                 formMode: $scope.model.formMode,
-                title: $scope.model.formTitle,
+                formTitle: $scope.model.formTitle,
                 actions: function () {
                 } // do nothing for the moment
             };
@@ -733,7 +781,7 @@
 
         //
         // Set up the taskInfo and add an additional page for it)
-
+        //
         function fetchTasks() {
             $scope.model.haveFetchedTasks = true;
 
@@ -745,115 +793,115 @@
                 });
         }
 
-        function getActionRelatedEntityId(actionEntity) {
-            var eid;
+        //
+        // Actions available on this form
+        //
+        function getFormActionQuickMenu() {
 
-            if (actionEntity) {
-                var actionMenuTypeAlias = sp.result(actionEntity, 'isOfType[0].nsAlias');
-
-                if (actionMenuTypeAlias === 'console:workflowActionMenuItem') {
-                    eid = actionEntity.actionMenuItemToWorkflow.idP;
-                } else if (actionMenuTypeAlias === 'console:generateDocumentActionMenuItem') {
-                    eid = actionEntity.actionMenuItemToReportTemplate.idP;
-                }
+            var formControl = $scope.model.formControl;
+            if (!formControl) {
+                return;
             }
-            return eid;
+
+            var formId = formControl.idP;
+            var entityTypeId = sp.result(formControl, 'typeToEditWithForm.idP');
+            var hostIds = [formControl.idP];
+            var hostTypeIds = _.map(formControl.typesP, 'idP');
+
+            var entityId = -1;
+            var entityIds = [];
+            if (!areCreating) {
+                entityId = sp.result($scope.model, 'formData.idP');
+                entityIds.push(entityId);
+            }
+
+            $scope.model.actionButtons.length = 0;
+
+            var actionRequest = {
+                ids: entityIds,
+                lastId: entityId || -1,
+                cellId: -1,
+                reportId: -1,
+                formDataEntityId: -1,
+                hostIds: hostIds,
+                hostTypeIds: hostTypeIds,
+                entityTypeId: entityTypeId,
+                data: {},
+                display: 'quickmenu',
+                formId: formId
+            };
+
+            spActionsService.getConsoleActions(actionRequest).then(function (response) {
+                if (response && response.actions) {
+                    _.each(response.actions, createActionButton);
+                }
+
+                if ($scope.isMobile) {
+                    setupTaskAndActionsPage();
+                }
+            }, function (error) {
+                console.error('editForm.getFormActionQuickMenu error:', error);
+            });
         }
 
-        function getActionButtonData(actionEntity) {
-            var data = {};
+        function createActionButton(action) {
 
-            if (actionEntity) {
-                var actionMenuTypeAlias = sp.result(actionEntity, 'isOfType[0].nsAlias');
+            if (action.isbutton) {
+                $scope.model.actionButtons.push({
+                    name: action.name,
+                    description: action.description,
+                    nameshort: spActionsService.getShortName(action.name),
+                    multiname: action.multiname,
+                    emptyname: action.emptyname,
+                    displayname: action.displayname || action.name,
+                    displaynameshort: spActionsService.getShortName(action.displayname || action.name),
+                    icon: action.icon,
+                    order: action.order,
+                    action: action,
+                    disabled: !action.isenabled,
+                    select: action.isselect,
+                    multiselect: action.ismultiselect,
+                    execute: function () {
+                        var a = this.action;
+                        var promise = $q.when;
 
-                if (actionMenuTypeAlias === 'console:workflowActionMenuItem') {
-                    data.workflow = actionEntity.actionMenuItemToWorkflow.idP;
-                } else if (actionMenuTypeAlias === 'console:generateDocumentActionMenuItem') {
-                    data.ReportTemplateId = actionEntity.actionMenuItemToReportTemplate.idP;
-                }
+                        // in create mode, if user has not touched any control then item is not marked as dirty
+                        if (isEditFormDirty() || ($scope.model.areCreating)) {
+                            promise = doSave;
+                        }
+
+                        promise().then(function() {
+                            var id = sp.result($scope.model, 'formData.idP');
+                            var ids = [id];
+                            var ctx = getActionExecutionContext(a, ids);
+                            spActionsService.executeAction(a, ctx);
+                        }).catch(exceptionAlert);
+                    }
+                });
             }
-            return data;
         }
 
-        function defaultGetActionExecutionContext(action, ids) {
-            var formDataId = $scope.model.formData.idP;
+        function showActionButtons() {
+            return !$scope.isMobile;
+        }
+
+        function refreshFormData() {
+            var entityId = sp.result($scope.model, 'formData.idP');
+            requestFormData(entityId)
+                .then(setInitialBookmark)
+                .then(function() {
+                    $scope.$broadcast('refreshFormData');
+                });
+        }
+
+        function getActionExecutionContext(action, ids) {
             return {
                 scope: $scope,
                 state: action.state,
                 selectionEntityIds: ids,
-
-                refreshDataCallback: function () {
-                    // OPTIMISATION POTENTIAL: Refresh the form data - NOTE this may not be necessary for all actions.
-                    requestFormData(formDataId)
-                      .then(setInitialBookmark)
-                      .then(function () { $scope.$broadcast('refreshFormData'); });
-                }
+                isEditMode: false, // board has no edit mode
+                refreshDataCallback: refreshFormData
             };
-        }
-
-        function runAction(action, ids) {
-            var ctx = defaultGetActionExecutionContext($scope.model.currentAction, ids);
-            spActionsService.executeAction(action, ctx);
-        }
-
-        function fetchFormActions() {
-            $scope.model.havefetchedformactions = true;
-
-            if (!$scope.model.formControl) {
-                return;
-            }
-            spActionsService.getFormActionButtons($scope.model.formControl.idP).then(function (actionButtons) {
-                if (actionButtons) {
-                    var actionBtns = [];
-                    var actions = sp.result(actionButtons, 'resourceConsoleBehavior.behaviorActionMenu.includeActionsAsButtons');
-                    if (actions) {
-                        _.forEach(actions, function (actionEntity) {
-                            actionBtns.push({
-                                action: {
-                                    name: actionEntity.name,
-                                    description: actionEntity.description,
-                                    nameshort: spActionsService.getShortName(actionEntity.name),
-                                    multiname: actionEntity.multiname,
-                                    emptyname: actionEntity.emptyname,
-                                    displayname: actionEntity.displayname || actionEntity.name,
-                                    displaynameshort: spActionsService.getShortName(actionEntity.displayname || actionEntity.name),
-                                    icon: actionEntity.menuIconUrl,
-                                    order: actionEntity.menuOrder,
-                                    //disabled: !actionEntity.isenabled,
-                                    isselect: actionEntity.appliesToSelection,        // used in workflow action execution
-                                    eid: getActionRelatedEntityId(actionEntity),      // used in workflow action execution  
-                                    select: actionEntity.appliesToSelection,
-                                    multiselect: actionEntity.ismultiselect,
-                                    method: actionEntity.htmlActionMethod,
-                                    state: actionEntity.htmlActionState,
-                                    data: getActionButtonData(actionEntity)
-                                },
-                                execute: function () {
-                                    var isDirty = isEditFormDirty() || ($scope.model.areCreating);  // in create mode, if user has not touched any control then item is not marked as dirty
-                                    $scope.model.currentAction = this.action;
-
-                                    if (isDirty) {
-                                        doSave().then(function () {
-                                            runAction($scope.model.currentAction, [$scope.model.formData.idP]);
-                                        }).catch(exceptionAlert);
-                                    } else {
-                                        runAction($scope.model.currentAction, [$scope.model.formData.idP]);
-                                    }
-                                }
-                            });
-                        });
-                    }
-
-                    // redress the actions buttons
-                    $scope.model.actionButtons.length = 0;
-
-                    $scope.model.actionButtons = _.sortBy(actionBtns, ['order', 'displayname']);
-
-                    if ($scope.isMobile) {
-                        setupTaskAndActionsPage();
-                    }
-                }
-            });
         }
 
         function setupTaskAndActionsPage() {
@@ -883,7 +931,7 @@
         //
         // Flip to edit mode
         //
-        function toEditMode() {
+        function toEditMode() {            
             $scope.model.formMode = spEditForm.formModes.edit;
             updateActionPanel();
             setFocus();
@@ -897,15 +945,50 @@
         // Flip to view mode
         //
         function toViewMode() {
+            // ** todo: fix it properly. and check bugs #28634, #28693 ** //
+            // we do not transition to view mode. Initially change started in r49842 in sept 14 as part of performance changes 
             // we do not transition to view mode. if we came in as 'new' then update the href of current item.
             navItem.state.name = 'viewForm';
-            navItem.href = navItem.href.replace("createForm", "viewForm");
-
+            navItem.href = getViewModeHref();
+            navItem.state.params.eid = $scope.model.formData.idP;
             $scope.model.formMode = spEditForm.formModes.view;
+            // ************************************ //
+
             updateActionPanel();
 
             if (!$scope.model.haveFetchedTasks)
                 fetchTasks();
+        }
+
+        function getViewModeHref() {
+            var tenant = sp.result(navItem, 'state.params.tenant');
+
+            if (!tenant) {
+                console.error('toViewMode: invalid tenant info.');
+                return navItem.href;
+            }
+            var actualHref = navItem.href;
+
+            // assuming the href looks like this: '#/EDC/11111/createForm?path=.....'
+            // in createForm state, the id in url is considered definition id. we need to replace the definition id with the id of the instance when it is saved and repalce state from createForm to viewForm
+            var prefix = '#/' + tenant + "/";
+
+            // check if prefix is valid
+            var prefixIndex = actualHref.indexOf(prefix);
+            if (prefixIndex !== 0) {
+                console.error('toViewMode: invalid href.');
+                return navItem.href;
+            }
+
+            var tempHref = actualHref.replace(prefix, ''); // '11111/createForm?path=.....';
+            var index = tempHref.indexOf('/');
+
+            var suffix = tempHref.substring(index); // 'createForm?path=.....';
+
+            var changedHref = prefix + $scope.model.formData.idP + suffix;
+            changedHref = changedHref.replace("createForm", "viewForm");
+
+            return changedHref;
         }
 
         function returnToParent() {
@@ -1045,8 +1128,8 @@
             spFormControlVisibilityService.updateControlsVisibility($scope, $scope.model.controlVisibilityModel.controlsVisibility);
 
             if (!$scope.useFlexForm) {
-                $timeout(function () {
-                    spMeasureArrangeService.performLayout($scope.measureArrangeOptions.id);
+                $timeout(function () {                    
+                    spMeasureArrangeService.performLayout($scope.measureArrangeOptions.id);                    
                 });
             }
         }
@@ -1108,7 +1191,7 @@
         function cancel() {
             // if we came in as a create or an edit, return back to the parent.
             if ($state.current.name === 'createForm' || $state.current.name === 'editForm' && !$scope.model.inWizard) {
-                returnToParent();
+                _.delay(() => $scope.$apply(returnToParent));
             } else {
                 spNavService.navigateInternal().then(function() {
                     clearPageAlerts();
@@ -1177,7 +1260,6 @@
 
     /* @ngInject */
     function EditFormActionPanelController($scope, spNavService) {
-
         // we need to use a watch function to access the spNavService via a closure.
         $scope.watchFunction = function () {
             return sp.result(spNavService.getCurrentItem(), 'actionPanelOptions');
@@ -1185,6 +1267,5 @@
         $scope.$watch('watchFunction()', function (options) {
             $scope.actionPanelOptions = options;
         });
-
     }
 }());

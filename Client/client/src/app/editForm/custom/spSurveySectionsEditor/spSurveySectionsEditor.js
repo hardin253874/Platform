@@ -1056,7 +1056,7 @@
                                }
 
                                evt.stopPropagation();
-                               return false;
+                               return false; // eslint-disable-line no-unsafe-finally
                            }
                        }
 

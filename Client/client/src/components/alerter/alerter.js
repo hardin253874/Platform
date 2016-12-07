@@ -47,11 +47,14 @@
              * @returns the alert object
              */
             exports.addAlert = function (message, options) {
-                var alert;
                 if (_.isString(options)) {
                     options = { severity: options };
                 }
-                alert = _.extend({ message: message, severity: 'info', expires: 0, canClose: true }, options);
+                var alert = _.extend({ message: message, severity: 'info', expires: 0, canClose: true }, options);
+                if (!message) {
+                    console.error("Alert added with no content");
+                    return alert;
+                }
 
                 // replace a duplicate alert based on message and severity.
                 exports.removeAlertsWhere({ message: alert.message, severity: alert.severity });

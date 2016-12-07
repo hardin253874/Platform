@@ -8,7 +8,8 @@ namespace ReadiNow.Reporting.Definitions
     {
         public bool HideDisplayValue { get; set; }
 
-         /// <summary>
+        public bool DisableDefaultFormat { get; set; }
+        /// <summary>
         /// Gets or sets the value text alignment.
         /// </summary>
         /// <value>the value text alignment.</value>
@@ -36,7 +37,7 @@ namespace ReadiNow.Reporting.Definitions
         /// Gets or sets the date time format.
         /// </summary>
         /// <value>The date time format.</value>
-        public string DateTimeFormat { get; set; }
+        public string DateTimeFormat { get; set; }       
 
         /// <summary>
         /// Gets or sets the number of lines.
@@ -68,5 +69,13 @@ namespace ReadiNow.Reporting.Definitions
         /// </summary>
         /// <value>The width of the image in pixels.</value>
         public long? ImageWidth { get; set; }
+
+        /// <summary>
+        /// Gets or sets the entity list format.
+        /// </summary>
+        /// <value>
+        /// The entity list format.
+        /// </value>
+        public string EntityListColumnFormat { get; set; }
     }
 }

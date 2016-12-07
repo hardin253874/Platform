@@ -13,6 +13,8 @@ using EDC.ReadiNow.IO;
 using ReadiNow.DocGen;
 using EDC.SoftwarePlatform.Services.ExportData;
 using ReadiNow.Reporting.Request;
+using ReadiNow.ExportData;
+using Autofac;
 
 namespace EDC.SoftwarePlatform.Activities
 {
@@ -66,20 +68,19 @@ namespace EDC.SoftwarePlatform.Activities
         /// <param name="exportFormat">The format for exporting</param>
         public static Document ExportTo(Report report, string newName, string newDescription, string timezoneName, ExportFormat exportFormat)
         {
-            var settings = new ReportSettings
+            var settings = new ExportSettings
             {
-                RequireBasicMetadata = true,
-                Timezone = TimeZoneHelper.GetTimeZoneInfo(timezoneName),
-                CpuLimitSeconds = EDC.ReadiNow.Configuration.EntityWebApiSettings.Current.ReportCpuLimitSeconds
+                TimeZone = timezoneName,
+                Format = exportFormat
             };
 
-            var exportInterface = new ExportDataInterface();
+            var exportInterface = Factory.Current.Resolve<IExportDataInterface>();
 
             ExportInfo exportInfo = null;
 
             try
             {
-                exportInfo = exportInterface.ExportData(report.Id, settings, exportFormat);
+                exportInfo = exportInterface.ExportData(report.Id, settings);
             }
             catch (Exception ex)
             {

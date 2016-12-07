@@ -1,0 +1,47 @@
+[{:tags
+  [:user/conc
+   :nomodify
+   :prod
+   :regression
+   :desktop
+   :area/screenbuilder],
+  :tests [],
+  :name "Screen builder herotext tests",
+  :steps
+  [{:script "(rt.po.app/navigate-via-tiles \"Foster University\")"}
+   {:script "(rt.po.app/add-screen (:screen-name *tc*) \"\")"}
+   {:script "(rt.po.screen-builder/add-hero-text-from-toolbox)"}
+   {:script
+    "(rt.po.screen-builder/show-herotext-config-menu \"Title\")"}
+   {:script "(rt.po.app/choose-context-menu \"Hero Text Properties\")"}
+   {:script "(rt.po.screen-builder/set-herotext-label \"Staff\")"}
+   {:script "(rt.po.screen-builder/set-herotext-report \"Staff\")"}
+   {:script "(rt.po.screen-builder/click-herotext-config-ok)"}
+    {:script "(rt.po.screen-builder/toggle-toolbox-type \"Staff\")"}
+   	{:script
+    "(rt.po.screen-builder/add-chart-from-toolbox \"Staff\" \"Pie chart (p)\")"}
+	{:script
+    "(rt.po.screen-builder/show-herotext-config-menu \"Staff\")"}
+	{:script "(rt.po.app/choose-context-menu \"Assign Parent\")"}
+	{:script "(rt.po.common/click-ok)"}
+   {:script "(rt.po.screen-builder/save)"}
+   {:script "(rt.po.screen-builder/close)"}
+   {:script "(rt.po.app/select-navigator-item (:screen-name *tc*))"}
+   {:script
+    "(expect-equals true (rt.po.screen/is-hero-text-on-screen \"Staff\"))"}
+   {:script "(rt.po.screen/click-hero-text-on-screen \"Staff\")"}
+   {:script
+    "(expect-equals true (> (rt.po.report-view/count-report-row) 0))"}
+
+	],
+  :type :test,
+  :source "./test-db",
+  :modified "20161122-191343",
+  :setup
+  [{:script
+    "(identity {:screen-name (rt.lib.util/make-test-name \"New Screen\")})"}],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/screenbuilder/herotext-tests,
+  :teardown
+  [{:script "(rt.po.app/delete-nav-item (:screen-name *tc*))"}],
+  :modified-by "not-implemented"}]

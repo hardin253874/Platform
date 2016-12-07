@@ -25,33 +25,35 @@ namespace EDC.ReadiNow.Test.Services.Console
 
         [Test]
         [RunAsDefaultTenant]
-        [TestCase("console:viewResourceAction", new string[0])]
-        [TestCase("console:editResourceAction", new[] { "core:modify" })]
-        [TestCase("console:deleteResourceAction", new[] { "core:delete" })]
-        [TestCase("console:viewInstancesOfTypeAction", new string[0])]
-        [TestCase("console:openFolderAction", new string[0])]
-        [TestCase("console:openScreenAction", new string[0])]
-        [TestCase("console:openReportAction", new string[0])]
-        [TestCase("console:exportExcelAction", new string[0])]
-        [TestCase("console:exportCsvAction", new string[0])]
-        [TestCase("console:exportWordAction", new string[0])]
-        [TestCase("console:addRelationshipAction", new string[0])]
-        [TestCase("console:removeRelationshipAction", new string[0])]
-        [TestCase("console:createWorkflowInDesignerAction", new[] { "core:create" })]
-        [TestCase("console:editWorkflowInDesignerAction", new[] { "core:modify" })]
-        [TestCase("console:runWorkflowAction", new string[0])]
-        [TestCase("console:viewUserTaskAction", new string[0])]
-        [TestCase("console:exportSolutionAction", new string[0])]
-        [TestCase("console:publishSolutionAction", new string[0])]
-        [TestCase("console:installSolutionAction", new string[0])]
-        [TestCase("console:upgradeSolutionAction", new string[0])]
-        [TestCase("console:repairSolutionAction", new string[0])]
-        [TestCase("console:uninstallSolutionAction", new string[0])]
-        public void Test_ActionRequiresPermission_Exists(string actionItemAlias, string[] expectedRequiredPermissionAliases)
+        [TestCase("console:viewResourceAction", new string[0], new string[0])]
+        [TestCase("console:editResourceAction", new[] { "core:modify" }, new string[0])]
+        [TestCase("console:deleteResourceAction", new[] { "core:delete" }, new[] { "core:modify" })]
+        [TestCase("console:viewInstancesOfTypeAction", new string[0], new string[0])]
+        [TestCase("console:openFolderAction", new string[0], new string[0])]
+        [TestCase("console:openScreenAction", new string[0], new string[0])]
+        [TestCase("console:openReportAction", new string[0], new string[0])]
+        [TestCase("console:exportExcelAction", new string[0], new string[0])]
+        [TestCase("console:exportCsvAction", new string[0], new string[0])]
+        [TestCase("console:exportWordAction", new string[0], new string[0])]
+        [TestCase("console:addRelationshipAction", new string[0], new[] { "core:modify" })]
+        [TestCase("console:removeRelationshipAction", new string[0], new[] { "core:modify" })]
+        [TestCase("console:createWorkflowInDesignerAction", new[] { "core:create" }, new string[0])]
+        [TestCase("console:editWorkflowInDesignerAction", new[] { "core:modify" }, new string[0])]
+        [TestCase("console:runWorkflowAction", new string[0], new string[0])]
+        [TestCase("console:viewUserTaskAction", new string[0], new string[0])]
+        [TestCase("console:exportSolutionAction", new string[0], new string[0])]
+        [TestCase("console:publishSolutionAction", new string[0], new string[0])]
+        [TestCase("console:installSolutionAction", new string[0], new string[0])]
+        [TestCase("console:upgradeSolutionAction", new string[0], new string[0])]
+        [TestCase("console:repairSolutionAction", new string[0], new string[0])]
+        [TestCase("console:uninstallSolutionAction", new string[0], new string[0])]
+        public void Test_ActionRequiresPermission_Exists(string actionItemAlias, string[] expectedRequiredPermissionAliases, string[] expectedRequiredParentPermissionAliases)
         {
             Assert.That(Entity.Get<ActionMenuItem>(actionItemAlias), Is.Not.Null);
             Assert.That(Entity.Get<ActionMenuItem>(actionItemAlias).ActionRequiresPermission.Select(a => a.Alias),
                 Is.EquivalentTo(expectedRequiredPermissionAliases));
+            Assert.That(Entity.Get<ActionMenuItem>(actionItemAlias).ActionRequiresParentPermission.Select(a => a.Alias),
+                Is.EquivalentTo(expectedRequiredParentPermissionAliases));
         }
     }
 }

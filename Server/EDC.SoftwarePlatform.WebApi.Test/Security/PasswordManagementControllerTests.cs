@@ -65,7 +65,8 @@ namespace EDC.SoftwarePlatform.WebApi.Test.Security
                 {
                     request.PopulateBody(new PasswordChangeInfo
                     {
-                        Password = newPassword
+						CurrentPassword = initialPassword,
+						Password = newPassword
                     });
 
                     response = request.GetResponse();
@@ -171,6 +172,7 @@ namespace EDC.SoftwarePlatform.WebApi.Test.Security
                 {
                     request.PopulateBody(new PasswordChangeInfo
                     {
+						CurrentPassword = initialPassword,
                         Password = string.Empty
                     });
 
@@ -221,6 +223,7 @@ namespace EDC.SoftwarePlatform.WebApi.Test.Security
                     // default minimum password complexity requirements change.
                     request.PopulateBody(new PasswordChangeInfo
                     {
+						CurrentPassword = initialPassword,
                         Password = "a"
                     });
 

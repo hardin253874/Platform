@@ -149,12 +149,13 @@ var spResource;
                 if (candidateOverrides.length > 0 && this._typeEntity) {
                     // Check the types in order, to only get the overrides that apply to this type (roughly in order of inheritance)
                     var types = this._typeEntity.getAllEntities();
+                    var type, vals;
                     var fnGetFieldOverrideForType = function(co) {
                         return co.getLookup('fieldOverrideForType') === type;
                     };
                     for (var i = 0; i < types.length; i++) {
-                        var type = types[i];
-                        var vals = _.filter(candidateOverrides, fnGetFieldOverrideForType);
+                        type = types[i];
+                        vals = _.filter(candidateOverrides, fnGetFieldOverrideForType);
                         this._fieldOverrides = this._fieldOverrides.concat(vals);
                     }
                 }

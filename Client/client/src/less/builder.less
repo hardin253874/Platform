@@ -115,23 +115,6 @@
     overflow: hidden;
     z-index: 2;
 
-    &:before {
-        content: "Drag and Drop items from left menu to page";
-        float: left;
-        font-size: 0.9em;
-        font-weight: normal;
-        color: #777;
-        padding: 8px 35px 0 30px;
-        height: 30px;
-        display: inline-block;
-        background: url('../assets/images/dragdrop.png') no-repeat right;
-
-
-        .applicationToolbox & {
-            display: none;
-        }
-    }
-
     button {
         background-color: transparent;
         height: 30px;
@@ -239,18 +222,13 @@
 
 .builder-Toggle {
     display: inline-block;
-    width: 13px;
-    height: 19px;
     background: transparent;
     border: none;
     outline: none;
-    padding: 5px 2px 0;
-    vertical-align: top;
+    padding: 3px;
+    vertical-align: middle;
     opacity: .5;
-
-    img {
-        vertical-align: top;
-    }
+    border-radius: 2px;
 
     &:hover, &:active {
         opacity: 1;
@@ -259,6 +237,7 @@
 
 .builder-Group {
     color: #aaa;
+    font-size: 13px;
 
     .toggleButton {
         .builder-Toggle;
@@ -266,14 +245,44 @@
     }
 
     .groupname {
-        display: inline-block;
-        font-size: 11px;
-        color: #aaa;
-        height: 18px;
+        color: #ccc;
+        font-size: 13px;
         display: table-cell;
         width: 100%;
         padding-left: 3px;
         word-break: break-all;
+        vertical-align: middle;
+
+        &.chart-reportby {
+            display: table;
+            width: 100%;
+            margin-bottom: 5px;
+            padding: 0;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(0,0,0,.15);
+
+            & > span {
+                display: table-cell;
+
+                &:first-child {
+                    width: 45px;
+                    font-size: x-small;
+                }
+
+                &:last-child {
+                    width: 20px;
+                }
+            }
+        }
+    }
+
+    .toggleGroup {
+        .groupname;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
     }
 
     .readonlygroupname {
@@ -421,7 +430,7 @@
 
 .draggable-item-raw {
     background-color: @fielditemBg;
-    padding: 3px;
+    padding: 4px;
     cursor: move;
 
     &:hover {

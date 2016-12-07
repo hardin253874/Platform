@@ -30,8 +30,6 @@
                        // Control setup.
                        /////
                        scope.model = {
-                           options: [],
-                           selectedOption: null,
                            targetTypeEntity: null
                        };
                        scope.isMandatory = true;
@@ -47,68 +45,6 @@
                        scope.relSurveyTaker = { id: -1, isReverse: false };
                        
                        var relSurveyTakerDirection = { id: -1, isReverse: false };
-                       var personTypeIds = [];
-                       var relationshipList = [];
-
-                       function getPersonTypesPromise() {
-                           var promise = $q.when(personTypeIds);
-
-                           if (!personTypeIds || personTypeIds.length === 0) {
-                               promise = spEntityService.getEntity('core:person', 'name, derivedTypes*.{name}').then(function (personType) {
-                                   var types = spUtils.walkGraph(function (t) { return t.derivedTypes; }, personType);
-                                   personTypeIds = _.map(types, 'idP');
-                                   return personTypeIds;
-                               });
-                           }
-
-                           return promise;
-                       }
-
-                       function getOptionsPromise(entities, pids) {
-                           var promises = [];
-
-                           if (!pids) {
-                               promises.push(getPersonTypesPromise().then(function(result) {
-                                   pids = result;
-                               }));
-                           }
-
-                           var extra = {};
-
-                           _.each(entities, function (e) {
-                               if (e && !sp.result(e, 'toType.idP')) {
-                                   promises.push(spEntityService.getEntity(e.idP, 'fromName, fromType.{name}, toName, toType.{name}').then(function (rel) {
-                                       if (rel) {
-                                           _.set(extra, e.idP, {
-                                               fromName: rel.fromName,
-                                               toName: rel.toName,
-                                               from: sp.result(rel, 'fromType.idP'),
-                                               to: sp.result(rel, 'toType.idP')
-                                           });
-                                       }
-                                   }));
-                               }
-                           });
-
-                           if (!promises.length) {
-                               promises.push($q.when());
-                           }
-
-                           return $q.all(promises).then(function () {
-                               return _.map(entities, function (e) {
-                                   var to = sp.result(e, 'toType.idP') || _.get(extra, e.idP + '.to');
-                                   var forward = _.includes(pids, to);
-                                   var displayName = (forward ? (e.toName || _.get(extra, e.idP + '.toName')) : (e.fromName || _.get(extra, e.idP + '.fromName'))) || e.name;
-                                   return {
-                                       id: e.idP,
-                                       name: displayName,
-                                       from: sp.result(e, 'fromType.idP') || _.get(extra, e.idP + '.from'),
-                                       to: to,
-                                       forward: forward
-                                   };
-                               });
-                           });
-                       }
 
                        scope.$watch("formControl", function () {
 
@@ -168,79 +104,11 @@
                                // Watch form data for changes to the campaign survey taker relationship.
                                /////
                                scope.$watch('formData && relSurveyTaker && (formData.getRelationshipContainer(relSurveyTaker).changeId + "|" + formData.id())', function () {
+                                   var selectedEntities = [];
                                    if (scope.formData && scope.relSurveyTaker && scope.relSurveyTaker.id > 0) {
-                                       getOptionsPromise(scope.formData.getRelationship(scope.relSurveyTaker)).then(function (selectedOptions) {
-                                           scope.model.selectedOption = _.first(selectedOptions) || null;
-                                       });
+                                       selectedEntities = scope.formData.getRelationship(scope.relSurveyTaker);
                                    }
-                               });
-
-                               /////
-                               // When the related target type value changes, then update the contents of the available relationships.
-                               /////
-                               scope.$watch('model.targetTypeEntity', function () {
-                                   scope.model.options.length = 0;
-
-                                   if (scope.model.targetTypeEntity) {
-
-                                       /////
-                                       // Store and pass on the 'person' type's id.
-                                       /////
-                                       getPersonTypesPromise().then(function(pids) {
-                                           spEntityService.getEntity(scope.model.targetTypeEntity.idP, 'name, inherits*.{name}').then(function(targetType) {
-                                               var types = spUtils.walkGraph(function(t) { return t.inherits; }, targetType);
-                                               var tids = _.map(types, 'idP');
-
-                                               var contextExpression = '';
-                                               _.forEach(tids, function (tid) {
-                                                   _.forEach(pids, function (pid) {
-                                                       contextExpression += '(id([From type])=' + tid + ' and id([To type])=' + pid + ') or (id([To type])=' + tid + ' and id([From type])=' + pid + ') or ';
-                                                   });
-                                               });
-
-                                               contextExpression = _.trimEnd(contextExpression, ' or ');
-                                               if (!contextExpression || !contextExpression.length) {
-                                                   contextExpression = 'false';
-                                               }
-                                               
-                                               spEntityService.getEntitiesOfType('core:relationship', 'name,fromType.{name},toType.{name},cardinality.{name,alias},toName,toScriptName,fromName,fromScriptName', { filter: contextExpression })
-                                                   .then(function (results) {
-                                                       relationshipList = results;
-                                                       return getOptionsPromise(results, pids).then(function(options) {
-                                                           scope.model.options = options;
-                                                       });
-                                                   });
-                                           });
-                                       });
-                                   }
-                               });
-
-                               /////
-                               // When a relationship is selected, update the form with the id and the direction.
-                               /////
-                               scope.$watch('model.selectedOption', function (value) {
-                                   if (scope.formData && scope.relSurveyTaker && scope.relSurveyTaker.id > 0) {
-                                       
-                                       // set the accompanying direction on the selected relationship
-                                       if (value) {
-                                           
-                                           var existingValue = scope.formData.getLookup(scope.relSurveyTaker);
-                                           if (!existingValue || (existingValue.idP !== value.id)) {
-
-                                               if (scope.model.targetTypeEntity && relSurveyTakerDirection && relSurveyTakerDirection.id > 0) {
-                                                   scope.formData.setLookup(relSurveyTakerDirection, value.forward ? 'core:forward' : 'core:reverse');
-                                               }
-
-                                               scope.formData.setLookup(scope.relSurveyTaker, _.find(relationshipList, { 'idP': value.id }));
-                                           }
-
-                                       } else {
-                                           scope.formData.setLookup(relSurveyTakerDirection, null);
-                                           scope.formData.setLookup(scope.relSurveyTaker, null);
-                                       }
-
-                                       validate();
-                                   }
+                                   scope.model.relEntity = _.first(selectedEntities) || null;
                                });
                            }
                        });
@@ -272,7 +140,7 @@
                        // Navigation.
                        /////
                        scope.handleLinkClick = function () {
-                           if (scope.model.selectedOption && scope.model.selectedOption.id > 0) {
+                           if (scope.model.relEntity) {
                                var params = {};
                                var formId = spEditForm.getControlConsoleFormId(scope.formControl);
                                if (formId && _.isNumber(formId)) {
@@ -283,7 +151,37 @@
                                    spEditForm.updateLookupNameOnReturnFromChildUpdate(spNavService.getCurrentItem(), scope.relationshipToRender, false, formData);
                                });
 
-                               spNavService.navigateToChildState('viewForm', scope.model.selectedOption.id, params);
+                               spNavService.navigateToChildState('viewForm', scope.model.relEntity.idP, params);
+                           }
+                       };
+
+                       /////
+                       // Selection.
+                       /////
+                       scope.handleSelect = function(rel) {
+                           if (scope.formData && scope.relSurveyTaker && scope.relSurveyTaker.id > 0) {
+
+                               // set the accompanying direction on the selected relationship
+                               if (rel) {
+                                   var relEntity = rel.getEntity();
+
+                                   if (relEntity) {
+                                       var existingValue = scope.formData.getLookup(scope.relSurveyTaker);
+                                       if (!existingValue || (existingValue.idP !== relEntity.idP)) {
+
+                                           if (scope.model.targetTypeEntity && relSurveyTakerDirection && relSurveyTakerDirection.id > 0) {
+                                               scope.formData.setLookup(relSurveyTakerDirection, !rel.isReverse() ? 'core:forward' : 'core:reverse');
+                                           }
+
+                                           scope.formData.setLookup(scope.relSurveyTaker, relEntity);
+                                       }
+                                   }
+                               } else {
+                                   scope.formData.setLookup(relSurveyTakerDirection, null);
+                                   scope.formData.setLookup(scope.relSurveyTaker, null);
+                               }
+
+                               validate();
                            }
                        };
 

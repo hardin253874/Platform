@@ -116,7 +116,7 @@ var sp = spUtils; // jshint ignore:line
     spUtils.findByKey = function (arr, key, value) {
         /// findByKey returns the value of the given property, whether that property is a field, getter or function
         return _.find(arr, function (item) {
-            return _.result(item, key) == value;
+            return _.result(item, key) === value;
         });
     };
 
@@ -172,7 +172,7 @@ var sp = spUtils; // jshint ignore:line
 
             exactMatches = items.filter(function (item) {
                 return _.find(item, function (p) {
-                    return p && (_.isString(p) && p.toLowerCase() === filterText || p == filterText);
+                    return p && (_.isString(p) && p.toLowerCase() === filterText || p === filterText);
                 });
             });
             startsWithMatches = items.filter(function (item) {
@@ -251,7 +251,7 @@ var sp = spUtils; // jshint ignore:line
      * @param {Function} fn The function to call.
      */
     spUtils.doWhile = function (fn) {
-        while (true) {
+        while (true) { // eslint-disable-line no-constant-condition
             var res = fn();
             if (!res)
                 return;
@@ -403,7 +403,6 @@ var sp = spUtils; // jshint ignore:line
                     result = value === '' ? null : parseFloat(value);
                     break;
                 case 'Number':
-
                 case 'Int32':
                     result = value === '' ? null : parseInt(value, 10);
                     break;
@@ -713,7 +712,7 @@ var sp = spUtils; // jshint ignore:line
      */
     spUtils.newGuid = function () {
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8); //eslint-disable-line
             return v.toString(16);
         });
     };
@@ -1291,7 +1290,7 @@ var sp = spUtils; // jshint ignore:line
                 msg += ' \u0394' + Math.round(now - spUtils.lastLog) + 'ms';
 
             console.log(msg);
-            if (showAlert) window.alert(msg);
+            if (showAlert) window.alert(msg); //eslint-disable-line no-alert
             spUtils.lastLog = now;
         }
     };
@@ -1383,6 +1382,14 @@ var sp = spUtils; // jshint ignore:line
 
             return left - right;
         }, 0);
+    };
+
+    spUtils.safeApply = function (scope, fn) {
+        if (!scope.$root.$$phase) {
+            scope.$apply(fn);
+        } else {
+            fn();
+        }
     };
 
 })(spUtils);

@@ -177,21 +177,21 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.ApplicationManager
 		/// </summary>
 		/// <param name="vid">The vid.</param>
 		/// <returns></returns>
-		[Route( "getPackageDependencies/{vid}" )]
+		[Route( "getMissingPackageDependencies/{vid}" )]
 		[HttpGet]
-		public HttpResponseMessage GetPackageDependencies( long vid )
+		public HttpResponseMessage GetMissingPackageDependencies( long vid )
 		{
 			long tenantId = ReadiNow.IO.RequestContext.TenantId;
 
 			using ( new GlobalAdministratorContext( ) )
 			{
-				List<DependentAppData> results = new List<DependentAppData>( );
+				List<MissingDependencyData> results = new List<MissingDependencyData>( );
 
 				HashSet<Guid> discoveredPackageIds = new HashSet<Guid>( );
 
 				GetPackageDependenciesRecursive( vid, tenantId, results, discoveredPackageIds );
-				
-				var response = new HttpResponseMessage<IList<DependentAppData>>( results, HttpStatusCode.OK );
+
+				var response = new HttpResponseMessage<IList<MissingDependencyData>>( results, HttpStatusCode.OK );
 
 				return response;
 			}
@@ -206,7 +206,7 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.ApplicationManager
 		/// <param name="discoveredPackageIds">The discovered package ids.</param>
 		/// <exception cref="ApplicationDependencyException">
 		/// </exception>
-		private void GetPackageDependenciesRecursive( long packageId, long tenantId, List<DependentAppData> results, ISet<Guid> discoveredPackageIds )
+		private void GetPackageDependenciesRecursive( long packageId, long tenantId, List<MissingDependencyData> results, ISet<Guid> discoveredPackageIds )
 		{
 			IList<DependencyFailure> applicationDependencies = SolutionHelper.GetMissingPackageDependencies( packageId, tenantId );
 
@@ -214,49 +214,35 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.ApplicationManager
 			{
 				foreach ( DependencyFailure dependency in applicationDependencies )
 				{
-					if ( dependency.Reason == DependencyFailureReason.NotInstalled )
-					{
-						throw new ApplicationDependencyException( $"The required dependency application '{dependency.DependencyName}' could not be found in the application library." );
-					}
-
 					if ( dependency.Reason == DependencyFailureReason.BelowMinVersion )
 					{
 						SolutionHelper.EnsureUpgradePath( tenantId, dependency );
-
-						if ( dependency.Reason == DependencyFailureReason.NoUpgradePathAvailable )
-						{
-							throw new ApplicationDependencyException( $"The required version of dependency application '{dependency.DependencyName}' could not be found in the application library." );
-						}
-
-						if ( dependency.Reason == DependencyFailureReason.IncompatibleUpgradePath )
-						{
-							if ( !string.IsNullOrEmpty( dependency.DependentName ) )
-							{
-								throw new ApplicationDependencyException( $"Upgrading the selected application requires the application '{dependency.DependencyName}' to also be upgraded however the installed version of '{dependency.DependentName}' is incompatible with that version of '{dependency.DependencyName}'." );
-							}
-
-							throw new ApplicationDependencyException( $"Upgrading the selected application requires the application '{dependency.DependencyName}' to also be upgraded however this will cause compatibility issues with other installed applications." );
-						}
 					}
 
-					long dependencyPackageId = SystemHelper.GetPackageIdByGuid( dependency.ApplicationId, dependency.MinVersion, dependency.MaxVersion );
+					string dependencyPackageAppVersionString = null;
 
-					AppPackage dependencyPackage = ReadiNow.Model.Entity.Get<AppPackage>( dependencyPackageId );
+					var dependencyPackageId = SystemHelper.GetPackageIdByGuid( dependency.ApplicationId, dependency.MinVersion, dependency.MaxVersion );
 
-					string currentVersion = null;
-
-					if ( dependency.CurrentVersion != null )
+					if ( dependencyPackageId >= 0 )
 					{
-						currentVersion = dependency.CurrentVersion.ToString( 4 );
+						AppPackage dependencyPackage = ReadiNow.Model.Entity.Get<AppPackage>( dependencyPackageId );
+
+						if ( dependencyPackage != null )
+						{
+							dependencyPackageAppVersionString = dependencyPackage.AppVersionString;
+						}
 					}
 
 					if ( !discoveredPackageIds.Contains( dependency.ApplicationId ) )
 					{
 						discoveredPackageIds.Add( dependency.ApplicationId );
 
-						GetPackageDependenciesRecursive( dependencyPackageId, tenantId, results, discoveredPackageIds );
+						if ( dependencyPackageId >= 0 )
+						{
+							GetPackageDependenciesRecursive( dependencyPackageId, tenantId, results, discoveredPackageIds );
+						}
 
-						results.Add( new DependentAppData( dependencyPackageId, dependency.DependencyName, dependencyPackage.AppVersionString, dependency.Reason == DependencyFailureReason.BelowMinVersion, currentVersion ) );
+						results.Add( new MissingDependencyData( dependency, dependencyPackageId, dependencyPackageAppVersionString ) );
 					}
 				}
 			}

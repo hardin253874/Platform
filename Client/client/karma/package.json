@@ -7,6 +7,8 @@
     "test": "karma start ./karma-unit.conf.js",
     "test:intg": "karma start ./karma-intg.conf.js",
     "pretest:intg": "npm run setServer",
+    "intg": "karma start ./karma-intg.conf.js",
+    "preintg": "npm run setServer",
     "setServer": "node setServer.js"
   },
   "dependencies": {

@@ -199,7 +199,7 @@
                 'console:renderingVerticalResizeMode': jsonLookup('console:resizeAutomatic'),
                 'console:hideLabel': jsonBool(false),
                 'console:showControlHelpText': jsonBool(false),
-                'console:visibilityCalculation': jsonString(''),
+                'console:visibilityCalculation': jsonString('')
             };
             
             //

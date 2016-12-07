@@ -964,6 +964,1592 @@ namespace EDC.ReadiNow.Model
 	}
 
 	/// <summary>
+	/// Create and launch a person-based survey campaign.
+	/// </summary>
+	[Serializable]
+	[DebuggerStepThrough]
+	[ModelClass("core:launchPersonCampaignActivity")]
+	public class LaunchPersonCampaignActivity : StrongEntity
+	{
+		/// <summary>
+		/// Public constructor.
+		/// </summary>
+		public LaunchPersonCampaignActivity( )
+			: base( typeof( LaunchPersonCampaignActivity ))
+		{
+
+		}
+
+		/// <summary>
+		/// Internal constructor.
+		/// </summary>
+		internal LaunchPersonCampaignActivity( IActivationData activationData )
+			: base( activationData )
+		{
+
+		}
+
+		#region LaunchPersonCampaignActivity Public Fields
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static AliasField Alias_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.Alias_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static BoolField CanDelete_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.CanDelete_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static BoolField CanModify_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.CanModify_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static BoolField CanModifyProtectedResource_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.ProtectableType.CanModifyProtectedResource_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static DateTimeField CreatedDate_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.CreatedDate_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static StringField Description_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.Description_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static StringField DesignerData_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.WfActivity.DesignerData_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static DateTimeField ModifiedDate_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.ModifiedDate_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static StringField Name_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.Name_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  reverse relationship.
+		/// </summary>
+		public static IEntity ArgumentInstanceFromActivity_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.WfActivity.ArgumentInstanceFromActivity_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  reverse relationship.
+		/// </summary>
+		public static IEntity ContainingWorkflow_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.WfActivity.ContainingWorkflow_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity CreatedBy_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.CreatedBy_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity ExpressionMap_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.WfActivity.ExpressionMap_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity Flags_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.Flags_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  reverse relationship.
+		/// </summary>
+		public static IEntity ForwardTransitions_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.WfActivity.ForwardTransitions_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity IndirectInSolution_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.IndirectInSolution_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity InSolution_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.InSolution_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity InStructureLevel_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.InStructureLevel_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity IsOfType_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.IsOfType_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity IsRootForStructureView_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.IsRootForStructureView_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity LastModifiedBy_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.LastModifiedBy_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity ResourceConsoleBehavior_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.ResourceConsoleBehavior_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity ResourceHasResourceKeyDataHashes_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.ResourceHasResourceKeyDataHashes_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity ResourceInFolder_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.ResourceInFolder_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity SecurityOwner_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.SecurityOwner_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity SelectionBehavior_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.SelectionBehavior_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity ShortcutInFolder_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.ShortcutInFolder_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  reverse relationship.
+		/// </summary>
+		public static IEntity TransitionsForActivity_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.WfActivity.TransitionsForActivity_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the array of all fields registered against this type.
+		/// </summary>
+		public static IEntity [ ] AllFields
+		{
+			get
+			{
+				return new IEntity [ ] { LaunchPersonCampaignActivity.Alias_Field, LaunchPersonCampaignActivity.CanDelete_Field, LaunchPersonCampaignActivity.CanModify_Field, LaunchPersonCampaignActivity.CanModifyProtectedResource_Field, LaunchPersonCampaignActivity.CreatedDate_Field, LaunchPersonCampaignActivity.Description_Field, LaunchPersonCampaignActivity.DesignerData_Field, LaunchPersonCampaignActivity.ModifiedDate_Field, LaunchPersonCampaignActivity.Name_Field, LaunchPersonCampaignActivity.ArgumentInstanceFromActivity_Field, LaunchPersonCampaignActivity.ContainingWorkflow_Field, LaunchPersonCampaignActivity.CreatedBy_Field, LaunchPersonCampaignActivity.ExpressionMap_Field, LaunchPersonCampaignActivity.Flags_Field, LaunchPersonCampaignActivity.ForwardTransitions_Field, LaunchPersonCampaignActivity.IndirectInSolution_Field, LaunchPersonCampaignActivity.InSolution_Field, LaunchPersonCampaignActivity.InStructureLevel_Field, LaunchPersonCampaignActivity.IsOfType_Field, LaunchPersonCampaignActivity.IsRootForStructureView_Field, LaunchPersonCampaignActivity.LastModifiedBy_Field, LaunchPersonCampaignActivity.ResourceConsoleBehavior_Field, LaunchPersonCampaignActivity.ResourceHasResourceKeyDataHashes_Field, LaunchPersonCampaignActivity.ResourceInFolder_Field, LaunchPersonCampaignActivity.SecurityOwner_Field, LaunchPersonCampaignActivity.SelectionBehavior_Field, LaunchPersonCampaignActivity.ShortcutInFolder_Field, LaunchPersonCampaignActivity.TransitionsForActivity_Field };
+			}
+		}
+
+		#endregion LaunchPersonCampaignActivity Public Fields
+
+		#region LaunchPersonCampaignActivity Public Properties
+
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public string Alias
+		{
+			get
+			{
+				return ( string ) this.GetField( "core:alias" );
+			}
+			set
+			{
+				this.SetField( "core:alias", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public bool? CanDelete
+		{
+			get
+			{
+				return ( bool? ) this.GetField( "core:canDelete" );
+			}
+			set
+			{
+				this.SetField( "core:canDelete", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public bool? CanModify
+		{
+			get
+			{
+				return ( bool? ) this.GetField( "core:canModify" );
+			}
+			set
+			{
+				this.SetField( "core:canModify", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public bool? CanModifyProtectedResource
+		{
+			get
+			{
+				return ( bool? ) this.GetField( "core:canModifyProtectedResource" );
+			}
+			set
+			{
+				this.SetField( "core:canModifyProtectedResource", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public DateTime? CreatedDate
+		{
+			get
+			{
+				return ( DateTime? ) this.GetField( "core:createdDate" );
+			}
+			set
+			{
+				this.SetField( "core:createdDate", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public string Description
+		{
+			get
+			{
+				return ( string ) this.GetField( "core:description" );
+			}
+			set
+			{
+				this.SetField( "core:description", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public string DesignerData
+		{
+			get
+			{
+				return ( string ) this.GetField( "core:designerData" );
+			}
+			set
+			{
+				this.SetField( "core:designerData", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public DateTime? ModifiedDate
+		{
+			get
+			{
+				return ( DateTime? ) this.GetField( "core:modifiedDate" );
+			}
+			set
+			{
+				this.SetField( "core:modifiedDate", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public string Name
+		{
+			get
+			{
+				return ( string ) this.GetField( "core:name" );
+			}
+			set
+			{
+				this.SetField( "core:name", value);
+			}
+		}
+
+		/// <summary>
+		/// Public accessor for the inherited reverse relationship.
+		/// </summary>
+		public IEntityCollection<WfArgumentInstance> ArgumentInstanceFromActivity
+		{
+			get
+			{
+				return this.GetRelationships<WfArgumentInstance>( "core:argumentInstanceFromActivity", Direction.Reverse ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<WfArgumentInstance>( "core:argumentInstanceFromActivity", value, Direction.Reverse );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited reverse relationship.
+		/// </summary>
+		public Workflow ContainingWorkflow
+		{
+			get
+			{
+				return this.GetLookup<Workflow>( "core:containingWorkflow", Direction.Reverse );
+			}
+			set
+			{
+				this.SetLookup<Workflow>( "core:containingWorkflow", value, Direction.Reverse );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public UserAccount CreatedBy
+		{
+			get
+			{
+				return this.GetLookup<UserAccount>( "core:createdBy", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<UserAccount>( "core:createdBy", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public IEntityCollection<WfExpression> ExpressionMap
+		{
+			get
+			{
+				return this.GetRelationships<WfExpression>( "core:expressionMap", Direction.Forward ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<WfExpression>( "core:expressionMap", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public IEntityCollection<ResourceFlagsEnum> Flags
+		{
+			get
+			{
+				return this.GetRelationships<ResourceFlagsEnum>( "core:flags", Direction.Forward ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<ResourceFlagsEnum>( "core:flags", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the enumeration value.
+		/// </summary>
+		public ResourceFlagsEnum_Enumeration? Flags_Enum
+		{
+			get
+			{
+				return GetMultiEnum<ResourceFlagsEnum, ResourceFlagsEnum_Enumeration>( "core:flags", Direction.Forward, ResourceFlagsEnum.ConvertAliasToEnum, (enum1, enum2) => enum1 | enum2 );
+			}
+			set
+			{
+				if ( value == null )
+				{
+					this.SetRelationships( "core:flags", null, Direction.Forward );
+					return;
+				}
+				var relationships = new List<ResourceFlagsEnum>( );
+
+				foreach ( ResourceFlagsEnum_Enumeration enumValue in ResourceFlagsEnum.GetEnumValues( value.Value ) )
+				{
+				    relationships.Add( EDC.ReadiNow.Model.Entity.Get<ResourceFlagsEnum>( EntityRefHelper.ConvertAliasWithNamespace( ResourceFlagsEnum.ConvertEnumToAlias( enumValue ) ) ) );
+				}
+
+				this.SetRelationships( "core:flags", new EntityRelationshipCollection<ResourceFlagsEnum>( relationships ), Direction.Forward );
+			}
+		}		
+		/// <summary>
+		/// Public accessor for the inherited reverse relationship.
+		/// </summary>
+		public IEntityCollection<TransitionStart> ForwardTransitions
+		{
+			get
+			{
+				return this.GetRelationships<TransitionStart>( "core:forwardTransitions", Direction.Reverse ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<TransitionStart>( "core:forwardTransitions", value, Direction.Reverse );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public Solution IndirectInSolution
+		{
+			get
+			{
+				return this.GetLookup<Solution>( "core:indirectInSolution", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<Solution>( "core:indirectInSolution", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public Solution InSolution
+		{
+			get
+			{
+				return this.GetLookup<Solution>( "core:inSolution", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<Solution>( "core:inSolution", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public IEntityCollection<StructureLevel> InStructureLevel
+		{
+			get
+			{
+				return this.GetRelationships<StructureLevel>( "core:inStructureLevel", Direction.Forward ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<StructureLevel>( "core:inStructureLevel", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public IEntityCollection<EntityType> IsOfType
+		{
+			get
+			{
+				return this.GetRelationships<EntityType>( "core:isOfType", Direction.Forward ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<EntityType>( "core:isOfType", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public IEntityCollection<StructureView> IsRootForStructureView
+		{
+			get
+			{
+				return this.GetRelationships<StructureView>( "core:isRootForStructureView", Direction.Forward ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<StructureView>( "core:isRootForStructureView", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public UserAccount LastModifiedBy
+		{
+			get
+			{
+				return this.GetLookup<UserAccount>( "core:lastModifiedBy", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<UserAccount>( "core:lastModifiedBy", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public ConsoleBehavior ResourceConsoleBehavior
+		{
+			get
+			{
+				return this.GetLookup<ConsoleBehavior>( "console:resourceConsoleBehavior", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<ConsoleBehavior>( "console:resourceConsoleBehavior", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public IEntityCollection<ResourceKeyDataHash> ResourceHasResourceKeyDataHashes
+		{
+			get
+			{
+				return this.GetRelationships<ResourceKeyDataHash>( "core:resourceHasResourceKeyDataHashes", Direction.Forward ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<ResourceKeyDataHash>( "core:resourceHasResourceKeyDataHashes", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public IEntityCollection<NavContainer> ResourceInFolder
+		{
+			get
+			{
+				return this.GetRelationships<NavContainer>( "console:resourceInFolder", Direction.Forward ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<NavContainer>( "console:resourceInFolder", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public UserAccount SecurityOwner
+		{
+			get
+			{
+				return this.GetLookup<UserAccount>( "core:securityOwner", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<UserAccount>( "core:securityOwner", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public ConsoleBehavior SelectionBehavior
+		{
+			get
+			{
+				return this.GetLookup<ConsoleBehavior>( "console:selectionBehavior", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<ConsoleBehavior>( "console:selectionBehavior", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public IEntityCollection<NavContainer> ShortcutInFolder
+		{
+			get
+			{
+				return this.GetRelationships<NavContainer>( "console:shortcutInFolder", Direction.Forward ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<NavContainer>( "console:shortcutInFolder", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited reverse relationship.
+		/// </summary>
+		public IEntityCollection<Transition> TransitionsForActivity
+		{
+			get
+			{
+				return this.GetRelationships<Transition>( "core:transitionsForActivity", Direction.Reverse ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<Transition>( "core:transitionsForActivity", value, Direction.Reverse );
+			}
+		}
+
+
+
+		#endregion LaunchPersonCampaignActivity Public Properties
+
+		#region Additional Static Content
+
+		/// <summary>
+        /// Returns all instances of the LaunchPersonCampaignActivity type
+        /// </summary>
+        /// <returns>An enumeration of instances of this type.</returns>
+        public static EntityType LaunchPersonCampaignActivity_Type
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Entity.Get<EntityType>("core:launchPersonCampaignActivity");
+			}
+		}
+		
+		#endregion Additional Static Content
+
+	}
+
+	/// <summary>
+	/// Create and launch a target-based survey campaign.
+	/// </summary>
+	[Serializable]
+	[DebuggerStepThrough]
+	[ModelClass("core:launchTargetCampaignActivity")]
+	public class LaunchTargetCampaignActivity : StrongEntity
+	{
+		/// <summary>
+		/// Public constructor.
+		/// </summary>
+		public LaunchTargetCampaignActivity( )
+			: base( typeof( LaunchTargetCampaignActivity ))
+		{
+
+		}
+
+		/// <summary>
+		/// Internal constructor.
+		/// </summary>
+		internal LaunchTargetCampaignActivity( IActivationData activationData )
+			: base( activationData )
+		{
+
+		}
+
+		#region LaunchTargetCampaignActivity Public Fields
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static AliasField Alias_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.Alias_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static BoolField CanDelete_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.CanDelete_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static BoolField CanModify_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.CanModify_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static BoolField CanModifyProtectedResource_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.ProtectableType.CanModifyProtectedResource_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static DateTimeField CreatedDate_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.CreatedDate_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static StringField Description_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.Description_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static StringField DesignerData_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.WfActivity.DesignerData_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static DateTimeField ModifiedDate_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.ModifiedDate_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static StringField Name_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.Name_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  reverse relationship.
+		/// </summary>
+		public static IEntity ArgumentInstanceFromActivity_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.WfActivity.ArgumentInstanceFromActivity_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  reverse relationship.
+		/// </summary>
+		public static IEntity ContainingWorkflow_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.WfActivity.ContainingWorkflow_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity CreatedBy_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.CreatedBy_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity ExpressionMap_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.WfActivity.ExpressionMap_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity Flags_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.Flags_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  reverse relationship.
+		/// </summary>
+		public static IEntity ForwardTransitions_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.WfActivity.ForwardTransitions_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity IndirectInSolution_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.IndirectInSolution_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity InSolution_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.InSolution_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity InStructureLevel_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.InStructureLevel_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity IsOfType_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.IsOfType_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity IsRootForStructureView_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.IsRootForStructureView_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity LastModifiedBy_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.LastModifiedBy_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity ResourceConsoleBehavior_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.ResourceConsoleBehavior_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity ResourceHasResourceKeyDataHashes_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.ResourceHasResourceKeyDataHashes_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity ResourceInFolder_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.ResourceInFolder_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity SecurityOwner_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.SecurityOwner_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity SelectionBehavior_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.SelectionBehavior_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity ShortcutInFolder_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.ShortcutInFolder_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  reverse relationship.
+		/// </summary>
+		public static IEntity TransitionsForActivity_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.WfActivity.TransitionsForActivity_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the array of all fields registered against this type.
+		/// </summary>
+		public static IEntity [ ] AllFields
+		{
+			get
+			{
+				return new IEntity [ ] { LaunchTargetCampaignActivity.Alias_Field, LaunchTargetCampaignActivity.CanDelete_Field, LaunchTargetCampaignActivity.CanModify_Field, LaunchTargetCampaignActivity.CanModifyProtectedResource_Field, LaunchTargetCampaignActivity.CreatedDate_Field, LaunchTargetCampaignActivity.Description_Field, LaunchTargetCampaignActivity.DesignerData_Field, LaunchTargetCampaignActivity.ModifiedDate_Field, LaunchTargetCampaignActivity.Name_Field, LaunchTargetCampaignActivity.ArgumentInstanceFromActivity_Field, LaunchTargetCampaignActivity.ContainingWorkflow_Field, LaunchTargetCampaignActivity.CreatedBy_Field, LaunchTargetCampaignActivity.ExpressionMap_Field, LaunchTargetCampaignActivity.Flags_Field, LaunchTargetCampaignActivity.ForwardTransitions_Field, LaunchTargetCampaignActivity.IndirectInSolution_Field, LaunchTargetCampaignActivity.InSolution_Field, LaunchTargetCampaignActivity.InStructureLevel_Field, LaunchTargetCampaignActivity.IsOfType_Field, LaunchTargetCampaignActivity.IsRootForStructureView_Field, LaunchTargetCampaignActivity.LastModifiedBy_Field, LaunchTargetCampaignActivity.ResourceConsoleBehavior_Field, LaunchTargetCampaignActivity.ResourceHasResourceKeyDataHashes_Field, LaunchTargetCampaignActivity.ResourceInFolder_Field, LaunchTargetCampaignActivity.SecurityOwner_Field, LaunchTargetCampaignActivity.SelectionBehavior_Field, LaunchTargetCampaignActivity.ShortcutInFolder_Field, LaunchTargetCampaignActivity.TransitionsForActivity_Field };
+			}
+		}
+
+		#endregion LaunchTargetCampaignActivity Public Fields
+
+		#region LaunchTargetCampaignActivity Public Properties
+
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public string Alias
+		{
+			get
+			{
+				return ( string ) this.GetField( "core:alias" );
+			}
+			set
+			{
+				this.SetField( "core:alias", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public bool? CanDelete
+		{
+			get
+			{
+				return ( bool? ) this.GetField( "core:canDelete" );
+			}
+			set
+			{
+				this.SetField( "core:canDelete", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public bool? CanModify
+		{
+			get
+			{
+				return ( bool? ) this.GetField( "core:canModify" );
+			}
+			set
+			{
+				this.SetField( "core:canModify", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public bool? CanModifyProtectedResource
+		{
+			get
+			{
+				return ( bool? ) this.GetField( "core:canModifyProtectedResource" );
+			}
+			set
+			{
+				this.SetField( "core:canModifyProtectedResource", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public DateTime? CreatedDate
+		{
+			get
+			{
+				return ( DateTime? ) this.GetField( "core:createdDate" );
+			}
+			set
+			{
+				this.SetField( "core:createdDate", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public string Description
+		{
+			get
+			{
+				return ( string ) this.GetField( "core:description" );
+			}
+			set
+			{
+				this.SetField( "core:description", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public string DesignerData
+		{
+			get
+			{
+				return ( string ) this.GetField( "core:designerData" );
+			}
+			set
+			{
+				this.SetField( "core:designerData", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public DateTime? ModifiedDate
+		{
+			get
+			{
+				return ( DateTime? ) this.GetField( "core:modifiedDate" );
+			}
+			set
+			{
+				this.SetField( "core:modifiedDate", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public string Name
+		{
+			get
+			{
+				return ( string ) this.GetField( "core:name" );
+			}
+			set
+			{
+				this.SetField( "core:name", value);
+			}
+		}
+
+		/// <summary>
+		/// Public accessor for the inherited reverse relationship.
+		/// </summary>
+		public IEntityCollection<WfArgumentInstance> ArgumentInstanceFromActivity
+		{
+			get
+			{
+				return this.GetRelationships<WfArgumentInstance>( "core:argumentInstanceFromActivity", Direction.Reverse ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<WfArgumentInstance>( "core:argumentInstanceFromActivity", value, Direction.Reverse );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited reverse relationship.
+		/// </summary>
+		public Workflow ContainingWorkflow
+		{
+			get
+			{
+				return this.GetLookup<Workflow>( "core:containingWorkflow", Direction.Reverse );
+			}
+			set
+			{
+				this.SetLookup<Workflow>( "core:containingWorkflow", value, Direction.Reverse );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public UserAccount CreatedBy
+		{
+			get
+			{
+				return this.GetLookup<UserAccount>( "core:createdBy", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<UserAccount>( "core:createdBy", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public IEntityCollection<WfExpression> ExpressionMap
+		{
+			get
+			{
+				return this.GetRelationships<WfExpression>( "core:expressionMap", Direction.Forward ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<WfExpression>( "core:expressionMap", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public IEntityCollection<ResourceFlagsEnum> Flags
+		{
+			get
+			{
+				return this.GetRelationships<ResourceFlagsEnum>( "core:flags", Direction.Forward ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<ResourceFlagsEnum>( "core:flags", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the enumeration value.
+		/// </summary>
+		public ResourceFlagsEnum_Enumeration? Flags_Enum
+		{
+			get
+			{
+				return GetMultiEnum<ResourceFlagsEnum, ResourceFlagsEnum_Enumeration>( "core:flags", Direction.Forward, ResourceFlagsEnum.ConvertAliasToEnum, (enum1, enum2) => enum1 | enum2 );
+			}
+			set
+			{
+				if ( value == null )
+				{
+					this.SetRelationships( "core:flags", null, Direction.Forward );
+					return;
+				}
+				var relationships = new List<ResourceFlagsEnum>( );
+
+				foreach ( ResourceFlagsEnum_Enumeration enumValue in ResourceFlagsEnum.GetEnumValues( value.Value ) )
+				{
+				    relationships.Add( EDC.ReadiNow.Model.Entity.Get<ResourceFlagsEnum>( EntityRefHelper.ConvertAliasWithNamespace( ResourceFlagsEnum.ConvertEnumToAlias( enumValue ) ) ) );
+				}
+
+				this.SetRelationships( "core:flags", new EntityRelationshipCollection<ResourceFlagsEnum>( relationships ), Direction.Forward );
+			}
+		}		
+		/// <summary>
+		/// Public accessor for the inherited reverse relationship.
+		/// </summary>
+		public IEntityCollection<TransitionStart> ForwardTransitions
+		{
+			get
+			{
+				return this.GetRelationships<TransitionStart>( "core:forwardTransitions", Direction.Reverse ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<TransitionStart>( "core:forwardTransitions", value, Direction.Reverse );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public Solution IndirectInSolution
+		{
+			get
+			{
+				return this.GetLookup<Solution>( "core:indirectInSolution", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<Solution>( "core:indirectInSolution", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public Solution InSolution
+		{
+			get
+			{
+				return this.GetLookup<Solution>( "core:inSolution", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<Solution>( "core:inSolution", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public IEntityCollection<StructureLevel> InStructureLevel
+		{
+			get
+			{
+				return this.GetRelationships<StructureLevel>( "core:inStructureLevel", Direction.Forward ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<StructureLevel>( "core:inStructureLevel", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public IEntityCollection<EntityType> IsOfType
+		{
+			get
+			{
+				return this.GetRelationships<EntityType>( "core:isOfType", Direction.Forward ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<EntityType>( "core:isOfType", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public IEntityCollection<StructureView> IsRootForStructureView
+		{
+			get
+			{
+				return this.GetRelationships<StructureView>( "core:isRootForStructureView", Direction.Forward ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<StructureView>( "core:isRootForStructureView", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public UserAccount LastModifiedBy
+		{
+			get
+			{
+				return this.GetLookup<UserAccount>( "core:lastModifiedBy", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<UserAccount>( "core:lastModifiedBy", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public ConsoleBehavior ResourceConsoleBehavior
+		{
+			get
+			{
+				return this.GetLookup<ConsoleBehavior>( "console:resourceConsoleBehavior", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<ConsoleBehavior>( "console:resourceConsoleBehavior", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public IEntityCollection<ResourceKeyDataHash> ResourceHasResourceKeyDataHashes
+		{
+			get
+			{
+				return this.GetRelationships<ResourceKeyDataHash>( "core:resourceHasResourceKeyDataHashes", Direction.Forward ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<ResourceKeyDataHash>( "core:resourceHasResourceKeyDataHashes", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public IEntityCollection<NavContainer> ResourceInFolder
+		{
+			get
+			{
+				return this.GetRelationships<NavContainer>( "console:resourceInFolder", Direction.Forward ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<NavContainer>( "console:resourceInFolder", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public UserAccount SecurityOwner
+		{
+			get
+			{
+				return this.GetLookup<UserAccount>( "core:securityOwner", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<UserAccount>( "core:securityOwner", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public ConsoleBehavior SelectionBehavior
+		{
+			get
+			{
+				return this.GetLookup<ConsoleBehavior>( "console:selectionBehavior", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<ConsoleBehavior>( "console:selectionBehavior", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public IEntityCollection<NavContainer> ShortcutInFolder
+		{
+			get
+			{
+				return this.GetRelationships<NavContainer>( "console:shortcutInFolder", Direction.Forward ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<NavContainer>( "console:shortcutInFolder", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited reverse relationship.
+		/// </summary>
+		public IEntityCollection<Transition> TransitionsForActivity
+		{
+			get
+			{
+				return this.GetRelationships<Transition>( "core:transitionsForActivity", Direction.Reverse ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<Transition>( "core:transitionsForActivity", value, Direction.Reverse );
+			}
+		}
+
+
+
+		#endregion LaunchTargetCampaignActivity Public Properties
+
+		#region Additional Static Content
+
+		/// <summary>
+        /// Returns all instances of the LaunchTargetCampaignActivity type
+        /// </summary>
+        /// <returns>An enumeration of instances of this type.</returns>
+        public static EntityType LaunchTargetCampaignActivity_Type
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Entity.Get<EntityType>("core:launchTargetCampaignActivity");
+			}
+		}
+		
+		#endregion Additional Static Content
+
+	}
+
+	/// <summary>
 	/// Lock user account audit log entry
 	/// </summary>
 	[Serializable]
@@ -5907,6 +7493,17 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Public static accessor to the inherited  forward relationship.
 		/// </summary>
+		public static IEntity EnumFormattingRule_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.EnumValue.EnumFormattingRule_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
 		public static IEntity EnumOwner_Field
 		{
 			get
@@ -6065,7 +7662,7 @@ namespace EDC.ReadiNow.Model
 		{
 			get
 			{
-				return new IEntity [ ] { LogSeverityEnum.Alias_Field, LogSeverityEnum.CanDelete_Field, LogSeverityEnum.CanModify_Field, LogSeverityEnum.CanModifyProtectedResource_Field, LogSeverityEnum.CreatedDate_Field, LogSeverityEnum.Description_Field, LogSeverityEnum.EnumOrder_Field, LogSeverityEnum.ModifiedDate_Field, LogSeverityEnum.Name_Field, LogSeverityEnum.CreatedBy_Field, LogSeverityEnum.EnumOwner_Field, LogSeverityEnum.Flags_Field, LogSeverityEnum.IndirectInSolution_Field, LogSeverityEnum.InSolution_Field, LogSeverityEnum.InStructureLevel_Field, LogSeverityEnum.IsOfType_Field, LogSeverityEnum.IsRootForStructureView_Field, LogSeverityEnum.LastModifiedBy_Field, LogSeverityEnum.ResourceConsoleBehavior_Field, LogSeverityEnum.ResourceHasResourceKeyDataHashes_Field, LogSeverityEnum.ResourceInFolder_Field, LogSeverityEnum.SecurityOwner_Field, LogSeverityEnum.SelectionBehavior_Field, LogSeverityEnum.ShortcutInFolder_Field };
+				return new IEntity [ ] { LogSeverityEnum.Alias_Field, LogSeverityEnum.CanDelete_Field, LogSeverityEnum.CanModify_Field, LogSeverityEnum.CanModifyProtectedResource_Field, LogSeverityEnum.CreatedDate_Field, LogSeverityEnum.Description_Field, LogSeverityEnum.EnumOrder_Field, LogSeverityEnum.ModifiedDate_Field, LogSeverityEnum.Name_Field, LogSeverityEnum.CreatedBy_Field, LogSeverityEnum.EnumFormattingRule_Field, LogSeverityEnum.EnumOwner_Field, LogSeverityEnum.Flags_Field, LogSeverityEnum.IndirectInSolution_Field, LogSeverityEnum.InSolution_Field, LogSeverityEnum.InStructureLevel_Field, LogSeverityEnum.IsOfType_Field, LogSeverityEnum.IsRootForStructureView_Field, LogSeverityEnum.LastModifiedBy_Field, LogSeverityEnum.ResourceConsoleBehavior_Field, LogSeverityEnum.ResourceHasResourceKeyDataHashes_Field, LogSeverityEnum.ResourceInFolder_Field, LogSeverityEnum.SecurityOwner_Field, LogSeverityEnum.SelectionBehavior_Field, LogSeverityEnum.ShortcutInFolder_Field };
 			}
 		}
 
@@ -6212,6 +7809,20 @@ namespace EDC.ReadiNow.Model
 			set
 			{
 				this.SetLookup<UserAccount>( "core:createdBy", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public FormattingRule EnumFormattingRule
+		{
+			get
+			{
+				return this.GetLookup<FormattingRule>( "core:enumFormattingRule", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<FormattingRule>( "core:enumFormattingRule", value, Direction.Forward );
 			}
 		}
 		/// <summary>

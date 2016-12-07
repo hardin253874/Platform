@@ -16,5 +16,6 @@
             'mod.common.spMobile',
             'mod.common.spNgUtils',
             'mod.featureSwitch',
+            'mod.app.spDocumentationService'
         ]);
 })();

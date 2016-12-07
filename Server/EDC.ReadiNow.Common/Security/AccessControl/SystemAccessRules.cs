@@ -67,6 +67,7 @@ namespace EDC.ReadiNow.Security.AccessControl
             "core:reportRowGroup",
             "core:reportTemplate",
             "core:schedule",
+            "core:scheduledExportConfig",
             "core:scheduledImportConfig",
             "core:solution",
             "core:structureLevel",

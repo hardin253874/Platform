@@ -567,8 +567,8 @@
                         
                         $scope.kmsiHidden = !haveLocalStorage;
 
-                        var tryCookie = haveLocalStorage && spLocalStorage.getItem(TryAuthCookieKey) == 'true';
-                        var trySessionCookie = $cookies.get(TryAuthCookieKey) == 'true';
+                        var tryCookie = haveLocalStorage && spLocalStorage.getItem(TryAuthCookieKey) === 'true';
+                        var trySessionCookie = $cookies.get(TryAuthCookieKey) === 'true';
 
 
                         if (trySessionCookie || tryCookie) {                                      

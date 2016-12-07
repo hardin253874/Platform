@@ -20,20 +20,43 @@
     <h6>{{model.title}}</h6>
 </div>
 <div class="modal-body sp-delete-service">
-    <p style="font-weight: bold">{{model.message}}</p>
-    <div ng-if="model.dependencies && model.dependencies.length">
-        <p style="margin: 0">{{model.dependentMessage}}</p>
+    <p ng-if="model.message" style="font-weight: bold">{{model.message}}</p>
+    <div ng-if="model.uninstallItems && model.uninstallItems.length">
+        <p style="margin: 0">The following dependent applications will also be uninstalled:</p>
         <ul>
-            <li style="list-style: inherit" ng-repeat="dependency in model.dependencies">{{dependency.name}} - {{dependency.version}}</li>
+            <li style="list-style: inherit" ng-repeat="uninstallItem in model.uninstallItems">{{uninstallItem}}</li>
         </ul>
     </div>
-    <div ng-if="model.upgrades && model.upgrades.length">
-        <p style="margin: 0">{{model.upgradeMessage}}</p>
+    <div ng-if="model.notInstalledItems && model.notInstalledItems.length">
+        <p style="margin: 0">The following applications could not be found in the application library:</p>
         <ul>
-            <li style="list-style: inherit" ng-repeat="upgrade in model.upgrades">{{upgrade.name}} - {{upgrade.currentVersion}} to {{upgrade.version}}</li>
+            <li style="list-style: inherit" ng-repeat="notInstalledItem in model.notInstalledItems">{{notInstalledItem}}</li>
         </ul>
     </div>
-    
+    <div ng-if="model.noUpgradePathAvailableItems && model.noUpgradePathAvailableItems.length">
+        <p style="margin: 0">The following applications have no upgrade path available:</p>
+        <ul>
+            <li style="list-style: inherit" ng-repeat="noUpgradePathAvailableItem in model.noUpgradePathAvailableItems">{{noUpgradePathAvailableItem}}</li>
+        </ul>
+    </div>
+    <div ng-if="model.incompatibleUpgradePathItems && model.incompatibleUpgradePathItems.length">
+        <p style="margin: 0">The following applications have an incompatible upgrade path:</p>
+        <ul>
+            <li style="list-style: inherit" ng-repeat="incompatibleUpgradePathItem in model.incompatibleUpgradePathItems">{{incompatibleUpgradePathItem}}</li>
+        </ul>
+    </div>
+    <div ng-if="model.missingItems && model.missingItems.length">
+        <p style="margin: 0">The following applications will also be installed:</p>
+        <ul>
+            <li style="list-style: inherit" ng-repeat="missingItem in model.missingItems">{{missingItem}}</li>
+        </ul>
+    </div>
+    <div ng-if="model.belowMinVersionItems && model.belowMinVersionItems.length">
+        <p style="margin: 0">The following applications will be upgraded:</p>
+        <ul>
+            <li style="list-style: inherit" ng-repeat="belowMinVersionItem in model.belowMinVersionItems">{{belowMinVersionItem}}</li>
+        </ul>
+    </div>
 </div>
 <div class="modal-footer">
     <button class="btn btn-primary" ng-hide="model.okDisabled"

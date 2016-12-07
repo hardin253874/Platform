@@ -81,10 +81,9 @@ namespace ReadiNow.Expressions.Test.Runner
 
         [TestCase("script: any([Direct Reports])                            ;context:AA_Manager:Peter Aylett   ;host:Report	;error:'any' is unavailable in reports. (pos 1)")]
         [TestCase("script: every([Direct Reports].Name <> 'blah')           ;context:AA_Manager:Peter Aylett   ;host:Report	;error:'every' is unavailable in reports. (pos 1)")]
-        [TestCase("script: all(AA_Employee)                    ;host:Report    ;error:The 'all' function is not available in reports. (pos 1)")]
         [TestCase("script: [Direct Reports] order by Name   ;host:Report    ;context:AA_Manager:Peter Aylett   ;error:'order by' is not available in reports. (pos 18)")]
-        [TestCase("script: resource(AA_Employee,[Peter Aylett]).[First Name]       ;host:Report                  ;error:The 'resource' function is not available in reports. (pos 1)")]
-        [TestCase("script: resource(AA_Employee,[Peter Aylett])                    ;host:Report                  ;error:The 'resource' function is not available in reports. (pos 1)")]
+        [TestCase("script: resource(AA_Employee,'Peter' + ' Aylett').[First Name]       ;host:Report                  ;error:The 'resource' function cannot have dynamic parameters in reports. (pos 1)" )]
+        [TestCase("script: resource(AA_Employee,'Peter' + ' Aylett')                    ;host:Report                  ;error:The 'resource' function cannot have dynamic parameters in reports. (pos 1)" )]
         [TestCase("script: id(Manager) > 0;      context:AA_Employee:David Quint   ;hostapi:false                ;error:The 'id' function is internal. (pos 1)")]
         [RunAsDefaultTenant]
         public void Calculations_HostSpecificErrors(string test)

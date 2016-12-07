@@ -1,4 +1,5 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
+using System;
 using EDC.ReadiNow.Metadata.Query.Structured;
 using System.Collections.Generic;
 
@@ -58,6 +59,9 @@ namespace ReadiNow.Reporting.Definitions
         /// The percentage bounds
         /// </summary>
         public ReportPercentageBounds PercentageBounds { get; set; }
+
+
+        public Predicate<object> Predicate { get; set; }
 
     }
 }

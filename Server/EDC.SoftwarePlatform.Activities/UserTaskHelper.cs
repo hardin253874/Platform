@@ -30,6 +30,7 @@ namespace EDC.SoftwarePlatform.Activities
         {
             throw new NotImplementedException("This code needs to be refactored once a decision is made about the structure of email addresses has been made.");
 
+			/*
             if (task.AssignedToUser != null)
             {
                 string emailAddress = string.Empty;
@@ -76,6 +77,7 @@ namespace EDC.SoftwarePlatform.Activities
                     }
                 }
             }
+			*/
         }
 
         static string CreateActionLink(DisplayFormUserTask task)

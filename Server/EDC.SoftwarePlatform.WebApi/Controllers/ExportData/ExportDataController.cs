@@ -12,6 +12,7 @@ using ReportParameters = EDC.SoftwarePlatform.WebApi.Controllers.Report.ReportPa
 using EDC.SoftwarePlatform.WebApi.Controllers.Report;
 using EDC.Exceptions;
 using EDC.ReadiNow.IO;
+using ReadiNow.ExportData;
 
 namespace EDC.SoftwarePlatform.WebApi.Controllers.ExportData
 {

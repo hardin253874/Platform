@@ -2,6 +2,28 @@
 (function() {
     'use strict';
 
+    function getArrayValuesAsStackedList(valuesArr, lines) {
+        if (!valuesArr || !valuesArr.length) {
+            return "";
+        }
+
+        if (!lines || lines < 0) {
+            lines = 1;
+        }
+
+        let countMore = 0;
+        if (valuesArr.length > lines) {
+            countMore = valuesArr.length - lines;
+            valuesArr = _.take(valuesArr, lines);
+        }
+        let result = valuesArr.join("\n");
+        if (countMore) {
+            result = `${result} + ${countMore} more`;
+        }
+
+        return result;
+    }
+
     /**
     * Module containing report filters.
     * It contains the following filters:
@@ -13,20 +35,19 @@
     */
     angular.module('mod.ui.spReportFilters', [])
         .filter('relatedResource', function() {
-            return function(relatedResources) {
-                var valuesArr = _.filter(_.values(relatedResources), function(v) {
-                    return !_.isEmpty(v);
-                });
-                if (valuesArr) {
-                    valuesArr.sort();
-                    return valuesArr.join(', ');
-                } else {
-                    return '';
+            return function(relatedResources, { isStacked, lines } = {}) {
+                let valuesArr = _.reject(_.values(relatedResources), v => _.isEmpty(v));                
+                if (!valuesArr) {
+                    return "";
                 }
+                
+                valuesArr.sort();
+
+                return isStacked ? getArrayValuesAsStackedList(valuesArr, lines) : valuesArr.join(", ");
             };
-        })
+        })        
         .filter('structureLevels', function () {
-            function structureLevelsPathFromString(data) {
+            function structureLevelsPathFromString(data, {isStacked, lines} = {}) {
                 var paths, distinctPaths = [], resultPaths = {};
 
                 if (!data || !_.isString(data)) {
@@ -73,12 +94,14 @@
                     if (!_.has(resultPaths, levelPath)) {
                         resultPaths[levelPath] = true;                    
                     }
-                });                
+                });
 
-                return _.keys(resultPaths).sort().join(', ');
+                const valuesArr = _.keys(resultPaths).sort();
+
+                return isStacked ? getArrayValuesAsStackedList(valuesArr, lines) : valuesArr.join(", ");                
             }
 
-            function structureLevelsPathFromDict(dict) {
+            function structureLevelsPathFromDict(dict, {isStacked, lines} = {}) {
                 // Format each value of the object
                 var valuesArr = _.map(_.filter(_.values(dict), function(v) {
                     return !_.isEmpty(v);
@@ -86,24 +109,24 @@
                     return structureLevelsPathFromString(value);
                 });
 
-                // Combine the values
-                if (valuesArr) {                    
-                    return valuesArr.join(', ');
+                // Combine the values                
+                if (valuesArr) {
+                    return isStacked ? getArrayValuesAsStackedList(valuesArr, lines) : valuesArr.join(", ");                    
                 } else {
                     return '';
                 }
             }
 
-            return function (data) {                
+            return function (data, {isStacked, lines} = {}) {                
                 if (!data) {
                     return '';
                 }
 
                 // Handle strings and dictionaries of strings
                 if (_.isString(data)) {
-                    return structureLevelsPathFromString(data);
+                    return structureLevelsPathFromString(data, {isStacked, lines});
                 } else if (_.isObject(data)) {
-                    return structureLevelsPathFromDict(data);
+                    return structureLevelsPathFromDict(data, {isStacked, lines});
                 } else {
                     return '';
                 }                

@@ -58,7 +58,7 @@
                     selectedEntityId: null,
                     selectedEntity: null,
                     selectedEntities: null,
-                    pickerReportId: 'console:reportsReport',
+                    pickerReportId: 'console:reportsPickerReport',
                     entityTypeId: 'core:report',
                     multiSelect: false,
                     isDisabled: false,
@@ -70,7 +70,7 @@
                     selectedEntities: null,
                     pickerReportId: 'core:applicationsPickerReport',
                     entityTypeId: 'core:solution',
-                    multiSelect: true,
+                    multiSelect: false,
                     isDisabled: false
                 },
                 iconPickerOptions: {
@@ -203,7 +203,7 @@
 
                         //Set Applications
                         var applications = sp.result($scope, 'model.applicationPickerOptions.selectedEntities');
-                        if (applications != null && applications.length > 0) {
+                        if (applications && applications.length > 0) {
                             $scope.model.chartModel.chart.setLookup('core:inSolution', applications[0]);
                         } else {
                             $scope.model.chartModel.chart.setLookup('core:inSolution', null);

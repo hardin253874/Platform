@@ -56,6 +56,7 @@
             display: inline-block;
             border: 1px solid #aaa;
             text-transform: uppercase;
+            margin-left: 3px;
             color: #444;
             background-color: transparent;
             border-radius: 13px;
@@ -65,10 +66,12 @@
             font-size: 11px;
             font-weight: bold;
             transition: all ease .2s;
+            
             span{
                 vertical-align: middle;
                 display: inline-block;
             }
+
             img {
                 vertical-align: middle;
                 display: inline-block;
@@ -76,25 +79,104 @@
                 margin-bottom: -1px;
                 width:16px;
                 height:16px;
-                }
+            }
 
             &:hover {
                 background-color: rgba(0,0,0,0.1);
                 border-color: #c0c0c0;
                 color: #000;
             }
-            &:focus { outline:none;}
-            &:disabled{
+
+            &:focus { 
+                outline:none;
+            }
+
+            &:disabled {
                 pointer-events:none;
             }
         }
 
-        & > div {display:inline-block;}
+        & > div {
+            display: inline-block;
+        }
 
-        .sp-Form-Builder-actions {
-                button {margin-left:3px;}
+        .configure-Builder-Action {
+            display: none;
+        }
+    }
+    
+    .sp-Screen-Builder-Action {
+        position: absolute;
+        display: inline-block;
+        top: 60px;
+        right: 30px;
+        z-index: 3;
+
+        button {
+            display: inline-block;            
+            border: 1px solid #aaa;
+            margin-left: 3px;
+            color: white;
+            background-color: #31a89f;
+            border-radius: 13px;
+            cursor: pointer;
+            padding: 4px 15px 4px 7px;
+            line-height: 1em;
+            font-size: 11px;
+            transition: all ease .2s;
+
+            span {
+                vertical-align: middle;
+                display: inline-block;
             }
 
+            img {
+                vertical-align: middle;
+                display: inline-block;
+                margin-right: 3px;
+                margin-bottom: -1px;
+                width: 16px;
+                height: 16px;
+            }
+
+            &:hover {
+                background-color: darken(#31a89f, 15%);
+                border-color: white;
+            }
+
+            &:focus {
+                outline: none;
+            }
+
+            &:disabled {
+                pointer-events: none;
+                opacity: 0.6;
+            }
+        }
+
+        & > div {
+            display: inline-block;
+            position: relative;
+
+            &:hover {
+                .configure-Builder-Action {
+                    opacity: 1;
+                }
+            }
+        }
+
+        .configure-Builder-Action {
+            font-size: 0;
+            position: absolute;
+            right: 0;
+            top: 7px;
+            opacity: 0;
+            z-index: 90;
+            transition: opacity 0.2s ease-in-out;
+            background-color: #1dd000;
+            border-radius: 2px;
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+        }
     }
 
     .sp-Form-Builder-Canvas {

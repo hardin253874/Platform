@@ -15,7 +15,7 @@
     /* @ngInject */
     function spWorkflowService($timeout, $http, $q, spEntityService, activityTypesRequest, spWebService,
                                workflowEntityRequest, activityTypeConfig, spReportService, spPromiseService,
-                               spCalcEngineService, spFieldValidator,
+                               spCalcEngineService, spFieldValidator, spAppSettings,
                                spWorkflowActivityService, spWorkflowCacheService, rnFeatureSwitch, spEntitySaveAsDialog) {
 
         var aliases = spWorkflowConfiguration.aliases;
@@ -44,6 +44,15 @@
             'core:guidArgument': 'Guid'
         };
 
+        // Cache helpers
+        var getTemplateReport = _.partial(spWorkflowCacheService.getCacheableEntity, 'templateReport', 'core:templateReport', 'name');
+        var getCacheableType = function(type) {
+            if (!type) {
+                return $q.when();
+            }
+            return spWorkflowCacheService.getCacheableEntity('type:' + type, type, 'name, description, isOfType.name, defaultPickerReport.name');
+        };
+        
         ///////////////////////////////////////////////////////////////////////
         // The interface
         //
@@ -83,12 +92,14 @@
             applyUpdate: applyUpdate,
             getPausedRuns: getPausedRuns,
 
+            getTemplateReport: getTemplateReport,
+            getCacheableType: getCacheableType,
             getCacheableEntity: spWorkflowCacheService.getCacheableEntity,
             resetCache: spWorkflowCacheService.resetCache
         };
 
         return exports;
-
+        
         ///////////////////////////////////////////////////////////////////////
         // The implementation
         //
@@ -357,6 +368,13 @@
                 throw new Error('Cannot save undefined workflow');
             }
 
+            // Set a bookmark so we can update the version and revert after
+            let entity = workflow.entity;
+            let history = entity.graph.history;
+            let preCloneBookmark = history.addBookmark('PreCloneEntity');
+
+            entity.workflowVersion = 1;
+
             //todo - remove this once the process to always keep these up to date is in place
             spWorkflow.updateExpressionParameters(workflow);
             spWorkflow.removeUnusedExpressionKnownEntities(workflow);
@@ -369,7 +387,8 @@
                 typeName: 'Workflow'
             };
 
-            return spEntitySaveAsDialog.showModalDialog(options);
+            return spEntitySaveAsDialog.showModalDialog(options).finally( () => history.undoBookmark(preCloneBookmark ));
+            
         }
 
         function workflowUpdateService(workflow) {
@@ -1332,18 +1351,20 @@
                 var alias = e.alias();
                 console.log("110:", alias);
 
-                // filter based upon hidden category
+                // filter based upon hidden category, when not in dev mode
                 var category = e.wfActivityCategory;
 
-                if (category && category.alias() == 'core:activityCategoryEnum_Hidden')
+                if (category &&
+                    category.alias() === 'core:activityCategoryEnum_Hidden' &&
+                    !spAppSettings.initialSettings.devMode) {
                     return false;
+                }
 
                 return true;
             }
 
             var addMenuItems = _(workflow.activityTypes)
                 .filter(visibleInTree)
-
                 .map(function (e) {
                     var config = getActivityTypeConfig(e.eid().getNsAlias());
                     var category = e.getLookup('core:wfActivityCategory') || {};

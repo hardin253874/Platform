@@ -15,7 +15,7 @@
 
                     <div class="navbar-right navbar-right-area" ng-style="isHomePageHeader()">
                         <div class="navbar-right btn-fullscreen" ng-click="$root.$broadcast('toggle-fullscreen')"></div>
-                        <a class="btn-link btn-small btn-help"><img src="assets/images/help.png" /></a>
+                        <!--<a class="btn-link btn-small btn-help" ng-click="docoService.navigateToDocumentation('navHeaderDocumentationUrl')"><img src="assets/images/help.png" /></a>-->
 
                         <!--The sign in control/menu -->
                         <div class="dropdown navbar-right" uib-dropdown>
@@ -24,7 +24,7 @@
                                 <span ng-if="!appData.authenticated">login</span>
                             </a>
                             <ul class="dropdown-menu signout" uib-dropdown-menu style="margin-left:-100px;">
-                                <li class="user-account">{{appData.tenant}}\\{{appData.username}}</li>
+                                <li class="user-account"><pre>{{appData.tenant}}\\{{appData.username}}</pre></li>
                                 <li><a ng-click="showChangePasswordDialog()">Change password</a></li>
                                 <li><a ng-click="loginService.logout()">Sign out</a></li>
                             </ul>
@@ -39,7 +39,7 @@
                                 <span ng-if="!getSelectedMenuItem()">Choose Application</span>
                                 <span ng-if="getSelectedMenuItem().name" class="appMenuItem"
                                       style="display: inline-block"><img ng-src="{{getSelectedMenuItemIconUrl()}}" alt="" />&nbsp;{{getSelectedMenuItem().name}}</span>
-                                <span><img title="Expend" src="assets/images/leftNav_collapse_white.png" /></span>
+                                <span><img title="Expand" src="assets/images/leftNav_collapse_white.png" /></span>
                             </a>
                             <ul class="dropdown-menu appMenuDropDown" uib-dropdown-menu>
                                 <li ng-repeat="i in getMenuNodes(true)" ng-if="!i.item.hiddenByConfig"

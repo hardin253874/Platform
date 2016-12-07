@@ -377,13 +377,12 @@ namespace EDC.SoftwarePlatform.Activities.Test
         /// </summary>
         public static Workflow AddStartSurvey(
             this Workflow wf, 
-            string name,  string campaignExpression, 
-            string pauseExpression = null, 
-            string targetExpression = null, string dueDaysExpression = null, 
-            string taskNameExpression = null,
-            string fromNamed = null, string fromExit = null)
+            string name,
+            string campaignExpression,
+            string fromNamed = null,
+            string fromExit = null)
         {
-            var act = new StartSurveyActivity()
+            var act = new StartSurveyActivity
             {
                 Name = name
             };
@@ -391,18 +390,6 @@ namespace EDC.SoftwarePlatform.Activities.Test
 
             if (campaignExpression != null)
                 AddExpressionToActivityArgument(wf, actAs, "Campaign", campaignExpression);
-
-            if (pauseExpression != null)
-                AddExpressionToActivityArgument(wf, actAs, "Pause Until Completed", pauseExpression);
-
-            if (pauseExpression != null)
-                AddExpressionToActivityArgument(wf, actAs, "Target object", targetExpression);
-
-            if (dueDaysExpression != null)
-                AddExpressionToActivityArgument(wf, actAs, "Due in (Days)", dueDaysExpression);
-
-            if (dueDaysExpression != null)
-                AddExpressionToActivityArgument(wf, actAs, "Task name", taskNameExpression);
 
             wf.AddActivity(actAs, fromNamed, fromExit);
             AddMissingExpressionParametersToWorkflow(wf);

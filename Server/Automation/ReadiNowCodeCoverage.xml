@@ -23,19 +23,19 @@
 	  <testAssembly path="..\ReadiNow.Integration.Test\bin\Debug\ReadiNow.Integration.Test.dll" />
     </testAssemblies>
     <assembliesUnderTest>
-      <assemblyUnderTest path="..\EDC.Common\bin\Debug\EDC.Common.Dll" publishPath="GAC" />
-      <assemblyUnderTest path="..\EDC.Interop\bin\Debug\EDC.Interop.Dll" publishPath="GAC" />
-      <assemblyUnderTest path="..\EDC.ReadiNow.Common\bin\Debug\EDC.ReadiNow.Common.Dll" publishPath="GAC" />
-      <assemblyUnderTest path="..\Deployment\EDC.SoftwarePlatform.Install.Common\Bin\Debug\EDC.SoftwarePlatform.Install.Common.dll" publishPath="GAC" />
-      <assemblyUnderTest path="..\EDC.ReadiNow.Common.ConfigParser\bin\Debug\EDC.ReadiNow.Common.ConfigParser.dll" publishPath="GAC" />
-      <assemblyUnderTest path="..\EDC.SoftwarePlatform.Interfaces\bin\Debug\EDC.SoftwarePlatform.Interfaces.dll" publishPath="GAC" />
-      <assemblyUnderTest path="..\EDC.SoftwarePlatform.Services\bin\Debug\EDC.SoftwarePlatform.Services.dll" publishPath="GAC" />
-      <assemblyUnderTest path="..\EDC.SoftwarePlatform.Activities\bin\Debug\EDC.SoftwarePlatform.Activities.dll" publishPath="GAC" />
-      <assemblyUnderTest path="..\EDC.SoftwarePlatform.Migration\bin\Debug\EDC.SoftwarePlatform.Migration.dll" publishPath="GAC" />
-      <assemblyUnderTest path="..\ReadiNow.DocGen\bin\Debug\ReadiNow.DocGen.dll" publishPath="GAC" />
-      <assemblyUnderTest path="..\EDC.SoftwarePlatform.WebApi\bin\EDC.SoftwarePlatform.WebApi.dll" />
-      <assemblyUnderTest path="..\ReadiNow.QueryEngine\bin\Debug\ReadiNow.QueryEngine.dll" publishPath="GAC" />
-	  <assemblyUnderTest path="..\ReadiNow.Integration\bin\Debug\ReadiNow.Integration.dll" publishPath="GAC" />	  
+      <assemblyUnderTest path="..\EDC.Common\bin\Debug\EDC.Common.Dll" publishPath="..\EDC.Common\bin\Debug\EDC.Common.Dll" />
+      <assemblyUnderTest path="..\EDC.Interop\bin\Debug\EDC.Interop.Dll" publishPath="..\EDC.Interop\bin\Debug\EDC.Interop.Dll" />
+      <assemblyUnderTest path="..\EDC.ReadiNow.Common\bin\Debug\EDC.ReadiNow.Common.Dll" publishPath="..\EDC.ReadiNow.Common\bin\Debug\EDC.ReadiNow.Common.Dll" />
+      <assemblyUnderTest path="..\Deployment\EDC.SoftwarePlatform.Install.Common\Bin\Debug\EDC.SoftwarePlatform.Install.Common.dll" publishPath="..\Deployment\EDC.SoftwarePlatform.Install.Common\Bin\Debug\EDC.SoftwarePlatform.Install.Common.dll" />
+      <assemblyUnderTest path="..\EDC.ReadiNow.Common.ConfigParser\bin\Debug\EDC.ReadiNow.Common.ConfigParser.dll" publishPath="..\EDC.ReadiNow.Common.ConfigParser\bin\Debug\EDC.ReadiNow.Common.ConfigParser.dll" />
+      <assemblyUnderTest path="..\EDC.SoftwarePlatform.Interfaces\bin\Debug\EDC.SoftwarePlatform.Interfaces.dll" publishPath="..\EDC.SoftwarePlatform.Interfaces\bin\Debug\EDC.SoftwarePlatform.Interfaces.dll" />
+      <assemblyUnderTest path="..\EDC.SoftwarePlatform.Services\bin\Debug\EDC.SoftwarePlatform.Services.dll" publishPath="..\EDC.SoftwarePlatform.Services\bin\Debug\EDC.SoftwarePlatform.Services.dll" />
+      <assemblyUnderTest path="..\EDC.SoftwarePlatform.Activities\bin\Debug\EDC.SoftwarePlatform.Activities.dll" publishPath="..\EDC.SoftwarePlatform.Activities\bin\Debug\EDC.SoftwarePlatform.Activities.dll" />
+      <assemblyUnderTest path="..\EDC.SoftwarePlatform.Migration\bin\Debug\EDC.SoftwarePlatform.Migration.dll" publishPath="..\EDC.SoftwarePlatform.Migration\bin\Debug\EDC.SoftwarePlatform.Migration.dll" />
+      <assemblyUnderTest path="..\ReadiNow.DocGen\bin\Debug\ReadiNow.DocGen.dll" publishPath="..\ReadiNow.DocGen\bin\Debug\ReadiNow.DocGen.dll" />
+      <assemblyUnderTest path="..\EDC.SoftwarePlatform.WebApi\bin\Debug\EDC.SoftwarePlatform.WebApi.dll" />
+      <assemblyUnderTest path="..\ReadiNow.QueryEngine\bin\Debug\ReadiNow.QueryEngine.dll" publishPath="..\ReadiNow.QueryEngine\bin\Debug\ReadiNow.QueryEngine.dll" />
+	  <assemblyUnderTest path="..\ReadiNow.Integration\bin\Debug\ReadiNow.Integration.dll" publishPath="..\ReadiNow.Integration\bin\Debug\ReadiNow.Integration.dll" />
     </assembliesUnderTest>
     <!-- <referencedAssemblies>
 		<referencedAssemby path='' publishPath=''/>

@@ -58,7 +58,9 @@
                                 scope.model.maximumValue = fieldToRender.getMaxDate();
                             }
 
-                            spFieldControlProvider(scope, scope.model, scope.formControl);
+                            // $scope is passed twice here, once as a context and once as the scope to $watch etc
+                            // It is done like this in preparation for moving to "components"
+                            spFieldControlProvider(scope, scope);
 
                             // set custom parser and validator
                             // hack: hardcoded to use dateField custom parser and validator (even though the provided field type is 'stringField')

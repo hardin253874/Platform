@@ -50,11 +50,21 @@ namespace EDC.ReadiNow.Model
         ///     The modified relationships state key.
         /// </summary>
         public static readonly string ModifiedRelationshipsStateKey = "ResourceKeyHelper_ModifiedRelationships";
-       
-        /// <summary>
-        ///     Value used for null fields and relationships.
-        /// </summary>
-        private const string NullValue = "[NULL]";
+
+		/// <summary>
+		///		The merge mapping state key.
+		/// </summary>
+		public static readonly string MergeMappingStateKey = "ResourceKeyHelper_MergeMapping";
+
+		/// <summary>
+		///		The merge entity lookup state key.
+		/// </summary>
+	    public static readonly string MergeEntityLookupStateKey = "ResourceKeyHelper_MergeEntityLookup";
+
+		/// <summary>
+		///     Value used for null fields and relationships.
+		/// </summary>
+		private const string NullValue = "[NULL]";
 
         #endregion Constants
 
@@ -85,7 +95,9 @@ namespace EDC.ReadiNow.Model
 				state [ DataHashEntitiesToDeleteStateKey ] = new Dictionary<long, ResourceKeyDataHash>( );
 			}
 
-            foreach (IEntity entity in entities)
+	        var entityList = entities as IList<IEntity> ?? entities.ToList( );
+
+	        foreach (IEntity entity in entityList)
             {
                 if (entity == null)
                 {
@@ -103,8 +115,121 @@ namespace EDC.ReadiNow.Model
                         break;
                 }
             }
+
+	        ResolveMergeReferences( state, entityList );
         }
 
+		/// <summary>
+		///		Resolve any merge issues related to referencing other merged entities.
+		/// </summary>
+		/// <param name="state"></param>
+		/// <param name="entities"></param>
+		private static void ResolveMergeReferences( IDictionary<string, object> state, IEnumerable<IEntity> entities )
+		{
+			object mergeObject;
+			if ( state.TryGetValue( MergeMappingStateKey, out mergeObject ) )
+			{
+				IDictionary<long, long> mergeMapping = mergeObject as IDictionary<long, long>;
+
+				if ( mergeMapping != null && mergeMapping.Count > 0 )
+				{
+					if ( state.TryGetValue( MergeEntityLookupStateKey, out mergeObject ) )
+					{
+						IDictionary<long, IEntity> entityLookup = mergeObject as IDictionary<long, IEntity>;
+
+						if ( entityLookup != null )
+						{
+							foreach ( IEntity entity in entities )
+							{
+								IEntityInternal entityInternal = entity as IEntityInternal;
+
+								if ( entityInternal != null )
+								{
+									IEntityFieldValues fields;
+									IDictionary<long, IChangeTracker<IMutableIdKey>> forwardRelationships;
+									IDictionary<long, IChangeTracker<IMutableIdKey>> reverseRelationships;
+
+									Entity.GetChanges( entityInternal.ModificationToken, out fields, out forwardRelationships, out reverseRelationships );
+
+									ResolveMergeRelationships( mergeMapping, entityLookup, forwardRelationships );
+
+									ResolveMergeRelationships( mergeMapping, entityLookup, reverseRelationships );
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		///		Resolve any merge relationship references to other entities that have been merged also.
+		/// </summary>
+		/// <param name="mergeMapping"></param>
+		/// <param name="entityLookup"></param>
+		/// <param name="relationships"></param>
+		private static void ResolveMergeRelationships( IDictionary<long, long> mergeMapping, IDictionary<long, IEntity> entityLookup, IDictionary<long, IChangeTracker<IMutableIdKey>> relationships )
+		{
+			if ( mergeMapping == null || entityLookup == null || relationships == null )
+			{
+				return;
+			}
+
+			List<KeyValuePair<long, IChangeTracker<IMutableIdKey>>> changedRelationships = new List<KeyValuePair<long, IChangeTracker<IMutableIdKey>>>( );
+
+			foreach ( KeyValuePair<long, IChangeTracker<IMutableIdKey>> forwardRelationship in relationships )
+			{
+				if ( mergeMapping.ContainsKey( forwardRelationship.Key ) )
+				{
+					changedRelationships.Add( forwardRelationship );
+				}
+
+				List<IMutableIdKey> removedValues = new List<IMutableIdKey>( );
+				List<IMutableIdKey> addedValues = new List<IMutableIdKey>( );
+
+				foreach ( IMutableIdKey key in forwardRelationship.Value.Added )
+				{
+					long newValue;
+					if ( mergeMapping.TryGetValue( key.Key, out newValue ) )
+					{
+						IEntity newEntity;
+
+						if ( entityLookup.TryGetValue( newValue, out newEntity ) )
+						{
+							removedValues.Add( key );
+
+							IEntityInternal internalEntity = newEntity as IEntityInternal;
+
+							if ( internalEntity != null )
+							{
+								addedValues.Add( internalEntity.MutableId );
+							}
+						}
+					}
+				}
+
+				foreach ( IMutableIdKey key in removedValues )
+				{
+					forwardRelationship.Value.Remove( key );
+				}
+
+				foreach ( IMutableIdKey key in addedValues )
+				{
+					forwardRelationship.Value.Add( key );
+				}
+			}
+
+			foreach ( KeyValuePair<long, IChangeTracker<IMutableIdKey>> pair in changedRelationships )
+			{
+				relationships.Remove( pair.Key );
+
+				long newKey;
+				if ( mergeMapping.TryGetValue( pair.Key, out newKey ) )
+				{
+					relationships [ newKey ] = pair.Value;
+				}
+			}
+		}
 
         /// <summary>
         /// Saves the resource key data hashes when entities at the other
@@ -1274,6 +1399,11 @@ WHERE
 
                         SaveGraph saveGraph = EventTargetStateHelper.GetSaveGraph(state);
                         saveGraph.Entities[duplicateResource.Id] = duplicateResource;
+
+	                    /////
+	                    // Maintain a mapping so we can resolve issues relating to relationships targeting merged entities.
+	                    /////
+	                    AddMergeMapping( state, duplicateResource, resource );
                     }
                     else
                     {
@@ -1296,6 +1426,63 @@ WHERE
                 CreateUpdateResourceKeyDataHashes(resource, resourceKey, dataHashes, state);
             }
         }
+
+		/// <summary>
+		///		Add a mapping from source entity to target entity.
+		/// </summary>
+		/// <param name="state"></param>
+		/// <param name="source"></param>
+		/// <param name="target"></param>
+		private static void AddMergeMapping( IDictionary<string, object> state, IEntity source, IEntity target )
+		{
+			object mergeMappingObject;
+
+			IDictionary<long, long> mergeMapping;
+			if ( !state.TryGetValue( MergeMappingStateKey, out mergeMappingObject ) )
+			{
+				mergeMapping = new Dictionary<long, long>( );
+				state [ MergeMappingStateKey ] = mergeMapping;
+			}
+			else
+			{
+				mergeMapping = mergeMappingObject as IDictionary<long, long>;
+			}
+
+			if ( mergeMapping != null )
+			{
+				mergeMapping [ source.Id ] = target.Id;
+			}
+
+			AddEntityLookup( state, source, target );
+		}
+
+		/// <summary>
+		///		Add a mapping from entity id to entity.
+		/// </summary>
+		/// <param name="state"></param>
+		/// <param name="source"></param>
+		/// <param name="target"></param>
+		private static void AddEntityLookup( IDictionary<string, object> state, IEntity source, IEntity target )
+		{
+			object entityLookupObject;
+
+			IDictionary<long, IEntity> entityLookup;
+			if ( !state.TryGetValue( MergeEntityLookupStateKey, out entityLookupObject ) )
+			{
+				entityLookup = new Dictionary<long, IEntity>( );
+				state [ MergeEntityLookupStateKey ] = entityLookup;
+			}
+			else
+			{
+				entityLookup = entityLookupObject as IDictionary<long, IEntity>;
+			}
+
+			if ( entityLookup != null )
+			{
+				entityLookup [ source.Id ] = source;
+				entityLookup [ target.Id ] = target;
+			}
+		}
 
         /// <summary>
         /// Saves the resource key data hashes for resource key.

@@ -165,79 +165,81 @@ namespace EDC.ReadiNow.Security.AccessControl
             return AddAllowByQuery(subject, securableEntity, Permissions.Delete.ToEnumerable(), query);
         }
 
-        /// <summary>
-        /// Given the <paramref name="subject"/> the specified access to <paramref name="securableEntity"/> governed by
-        /// the query <paramref name="report"/>.
-        /// </summary>
-        /// <param name="subject">
-        /// The subject (user or role). This cannot be null.
-        /// </param>
-        /// <param name="securableEntity">
-        /// The secured entity (type). This cannot be null.
-        /// </param>
-        /// <param name="permissions">
-        /// The permission(s) to add. This cannot be null or contain null.
-        /// </param>
-        /// <param name="report">
-        /// The query (as a <see cref="Report"/>) to add. This should be a new report, not used for any security.
-        /// This cannot be null.
-        /// </param>
-        /// <param name="enabled">
-        /// True if the access rule should be enabled on creation, false if disabled.
-        /// </param>
-        /// <returns>
-        /// The <see cref="AccessRule"/> object representing the new query.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// No argument can be null.
-        /// </exception>
-        /// <exception cref="ArgumentException">
-        /// <paramref name="permissions"/> cannot contain null.
-        /// </exception>
-        public AccessRule AddAllowByQuery(Subject subject, SecurableEntity securableEntity, IEnumerable<EntityRef> permissions,
-            Report report, bool enabled = true)
-        {
-            if (subject == null)
-            {
-                throw new ArgumentNullException("subject");
-            }
-            if (securableEntity == null)
-            {
-                throw new ArgumentNullException("securableEntity");
-            }
-            if (permissions == null)
-            {
-                throw new ArgumentNullException("permissions");
-            }
-            if (permissions.Contains(null))
-            {
-                throw new ArgumentException("Cannot contain null", "permissions");
-            }
-            if (report == null)
-            {
-                throw new ArgumentNullException("report");
-            }
+		/// <summary>
+		/// Given the <paramref name="subject" /> the specified access to <paramref name="securableEntity" /> governed by
+		/// the query <paramref name="report" />.
+		/// </summary>
+		/// <param name="subject">The subject (user or role). This cannot be null.</param>
+		/// <param name="securableEntity">The secured entity (type). This cannot be null.</param>
+		/// <param name="permissions">The permission(s) to add. This cannot be null or contain null.</param>
+		/// <param name="report">The query (as a <see cref="Report" />) to add. This should be a new report, not used for any security.
+		/// This cannot be null.</param>
+		/// <param name="enabled">True if the access rule should be enabled on creation, false if disabled.</param>
+		/// <param name="solution">The solution.</param>
+		/// <returns>
+		/// The <see cref="AccessRule" /> object representing the new query.
+		/// </returns>
+		/// <exception cref="System.ArgumentNullException">subject
+		/// or
+		/// securableEntity
+		/// or
+		/// permissions
+		/// or
+		/// report</exception>
+		/// <exception cref="System.ArgumentException">Cannot contain null - permissions</exception>
+		/// <exception cref="ArgumentNullException">No argument can be null.</exception>
+		/// <exception cref="ArgumentException">
+		///   <paramref name="permissions" /> cannot contain null.</exception>
+		public AccessRule AddAllowByQuery( Subject subject, SecurableEntity securableEntity, IEnumerable<EntityRef> permissions,
+			Report report, bool enabled = true, Solution solution = null )
+		{
+			if ( subject == null )
+			{
+				throw new ArgumentNullException( "subject" );
+			}
+			if ( securableEntity == null )
+			{
+				throw new ArgumentNullException( "securableEntity" );
+			}
+			if ( permissions == null )
+			{
+				throw new ArgumentNullException( "permissions" );
+			}
+			if ( permissions.Contains( null ) )
+			{
+				throw new ArgumentException( "Cannot contain null", "permissions" );
+			}
+			if ( report == null )
+			{
+				throw new ArgumentNullException( "report" );
+			}
 
-            AccessRule accessRule;
+			AccessRule accessRule;
 
-            // Give a name to avoid warnings about unnamed reports
-            if (string.IsNullOrWhiteSpace(report.Name))
-            {
-                report.Name = "Security report";
-            }
+			// Give a name to avoid warnings about unnamed reports
+			if ( string.IsNullOrWhiteSpace( report.Name ) )
+			{
+				report.Name = "Security report";
+			}
 
-            accessRule = Entity.Create<AccessRule>();
-            accessRule.Name = string.Format("'{0}' accessing '{1}'", subject.Name ?? string.Empty, securableEntity.Name ?? string.Empty);
-            accessRule.AccessRuleEnabled = enabled;
-            accessRule.PermissionAccess.AddRange(permissions.Select(x => x.Entity.As<Permission>()));
-            accessRule.ControlAccess = securableEntity;
-            accessRule.AccessRuleReport = report;
-            accessRule.AllowAccessBy = subject;
-            accessRule.Save();
+			accessRule = Entity.Create<AccessRule>( );
+			accessRule.Name = string.Format( "'{0}' accessing '{1}'", subject.Name ?? string.Empty, securableEntity.Name ?? string.Empty );
+			accessRule.AccessRuleEnabled = enabled;
+			accessRule.PermissionAccess.AddRange( permissions.Select( x => x.Entity.As<Permission>( ) ) );
+			accessRule.ControlAccess = securableEntity;
+			accessRule.AccessRuleReport = report;
+			accessRule.AllowAccessBy = subject;
 
-            subject.Save();
+			if ( solution != null )
+			{
+				accessRule.InSolution = solution;
+			}
 
-            return accessRule;
-        }
-    }
+			accessRule.Save( );
+
+			subject.Save( );
+
+			return accessRule;
+		}
+	}
 }

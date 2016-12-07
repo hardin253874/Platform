@@ -21,7 +21,7 @@
         // Create a new empty model that will contain everything being tracked
         function createModel() {
 
-            var uploadSession = spUploadManager.createUploadSession();
+            var uploadSession = spUploadManager.createUploadSession('xml');
             var model = {
                 result: '',
                 uploadSession: uploadSession,
@@ -101,9 +101,9 @@
                 handleError(model, 'Failed to get result details.');
                 return;
             }
-            var msg = entity.typeName + ' imported: ' + entity.name;
             model.result = 'success';
-            model.message = msg;
+            model.message = '';
+            model.importedEntities = data.entities;
             //spAlertsService.addAlert(msg, { expires: 3, severity: spAlertsService.sev.Success });
             spNavService.refreshTree(false);
             return data;
@@ -113,7 +113,8 @@
             var msg = 'A problem occurred: ' + errorMessage;
             model.result = 'error';
             model.message = msg;
-            model.showIgnoreDeps = errorMessage.includes('dependencies');
+            model.importedEntities = [];
+            model.showIgnoreDeps = errorMessage.indexOf('dependencies') >= 0;
             //spAlertsService.addAlert(msg, { expires: false, severity: spAlertsService.sev.Error });
             return errorMessage;
         }

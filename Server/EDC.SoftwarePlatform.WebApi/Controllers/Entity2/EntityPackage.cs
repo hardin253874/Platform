@@ -25,7 +25,9 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.Entity2
 	{
 		private readonly HashSet<long> _entitiesVisited;
 		private readonly JsonQueryResult _result;
+#pragma warning disable 618
 		private readonly EntityInfoService _svc;
+#pragma warning restore 618
 
 		/// <summary>
 		///     Initializes a new instance of the <see cref="EntityPackage" /> class.
@@ -33,7 +35,9 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.Entity2
 		public EntityPackage( )
 		{
 			_entitiesVisited = new HashSet<long>( );
+#pragma warning disable 618
 			_svc = new EntityInfoService( );
+#pragma warning restore 618
 			_result = new JsonQueryResult( );
 		}
 
@@ -98,7 +102,9 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.Entity2
 			JsonQueryResult result = _result;
 
 
+#pragma warning disable 618
 			EntityInfoService svc = _svc;
+#pragma warning restore 618
 
 			var memberRequests = new EntityMemberRequest[batch.Queries.Length];
 

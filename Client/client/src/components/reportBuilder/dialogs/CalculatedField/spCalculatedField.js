@@ -41,7 +41,7 @@
             var tracker = {};
             $scope.currentTracker = tracker;
             $scope.validateCode(code, tracker, function (data) {
-                if (data.error != null) {
+                if (data.error) {
                     spAlertsService.addAlert('Script contains errors.', spAlertsService.sev.Error);
                 } else {
                     //if the resultType is entity, need get following information to detect it is choicefield or inlinerelationship
@@ -99,7 +99,7 @@
             spCalcEngineService.compileExpression(script, $scope.model.context, $scope.model.host, params)
                 .success(function (data) {
                     if (tracker === $scope.currentTracker) {
-                        if (data.error != null) {
+                        if (data.error) {
                             $scope.message = data.error;
                         }
                         else {

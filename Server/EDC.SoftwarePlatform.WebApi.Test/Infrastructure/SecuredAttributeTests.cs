@@ -93,7 +93,9 @@ namespace EDC.SoftwarePlatform.WebApi.Test.Infrastructure
                 true,                                                   // Persistent
                 null,                                                   // Create new XSRF token,
                 DateTime.Now.AddMinutes(-10),                           // Issue date
-                DateTime.Now.AddMinutes(-1),                            // Expiry
+                DateTime.Now.AddMinutes(-1),                            // Expiry,
+				null,
+				null,
                 out authCookie,
                 out xsrfCookie);
 
@@ -131,7 +133,9 @@ namespace EDC.SoftwarePlatform.WebApi.Test.Infrastructure
                 null,                                                   // Create new XSRF token,
                 DateTime.Now,                                           // Issue date
                 DateTime.Now.AddMinutes(10),                            // Expiry
-                out authCookie,
+				null,
+				null,
+				out authCookie,
                 out xsrfCookie);
 
             httpActionContext = BuildHttpActionContext();
@@ -189,8 +193,10 @@ namespace EDC.SoftwarePlatform.WebApi.Test.Infrastructure
                 true,                                                   // Persistent
                 null,                                                   // Create new XSRF token,
                 issueDate,
-                expiryDate,                                            
-                out authCookie,
+                expiryDate,
+				null,
+				null,
+				out authCookie,
                 out xsrfCookie);
 
             httpActionContext = BuildHttpActionContext();

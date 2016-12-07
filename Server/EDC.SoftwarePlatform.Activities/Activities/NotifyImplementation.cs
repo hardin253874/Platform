@@ -80,6 +80,9 @@ namespace EDC.SoftwarePlatform.Activities
 
         public override bool OnResume(IRunState context, IWorkflowEvent resumeEvent)
         {
+            if (resumeEvent is NotifyResumeFailedEvent)
+                throw new WorkflowRunException("Workflow failed with an internal error.");
+
             var notification = context.GetArgValue<IEntity>(ActivityInstance, GetArgumentKey("core:outNotificationRecord"));
 
             if (notification == null)
@@ -136,35 +139,54 @@ namespace EDC.SoftwarePlatform.Activities
                 var runId = context.WorkflowRunId;
 
                 WorkflowRunContext.Current.QueueAction(() =>
+                SecurityBypassContext.Elevate(() =>
                 {
-                    var notification = Entity.Get<Notification>(notificationId);
-                    var users = Entity.Get(userIds);
+                    var workflowRunner = Factory.Current.Resolve<IWorkflowRunner>();
+                    WorkflowRun run = Entity.Get<WorkflowRun>(runId); ;
 
-                    Factory.Current.Resolve<INotifier>().Send(notification, users, true);
-                    var sends = notification.SendRecords;
-                    var sentWithoutError = sends.Where(r => r.SrErrorMessage == null);
-
-                    // update the notification 
-                    WorkflowRun run = Entity.Get<WorkflowRun>(runId);
-
-                    bool resume = true;
-                    if (waitForReplies)
+                    try
                     {
-                        notification = notification.AsWritable<Notification>();
-                        notification.NPendingRun = run;
-                        notification.Save();
+                        var notification = Entity.Get<Notification>(notificationId);
+                        var users = Entity.Get(userIds);
 
-                        resume = notification.Complete(); // Just in case all the replies were completed while we were sending.
+                        Factory.Current.Resolve<INotifier>().Send(notification, users, true);
+                        var sends = notification.SendRecords;
+                        var sentWithoutError = sends.Where(r => r.SrErrorMessage == null);
+
+                        // update the notification 
+
+                        bool resume = true;
+                        if (waitForReplies)
+                        {
+                            notification = notification.AsWritable<Notification>();
+                            notification.NPendingRun = run;
+                            notification.Save();
+
+                            resume = notification.Complete(); // Just in case all the replies were completed while we were sending.
+                        }
+
+                        if (resume && run != null)
+                            workflowRunner.ResumeWorkflow(run, new NotifyResumeEvent());
                     }
+                    catch
+                    {
+                        if (run != null)
+                        {
+                            workflowRunner.ResumeWorkflow(run, new NotifyResumeFailedEvent());
+                        }
 
-                    if (resume && run != null)
-                        Factory.Current.Resolve<IWorkflowRunner>().ResumeWorkflow(run, new NotifyResumeEvent());
-                });
+                        throw;
+                    }
+                }));
             });
         }
     }
 
-    public class NotifyResumeEvent: IWorkflowEvent
+    public class NotifyResumeEvent : IWorkflowEvent
+    {
+    }
+
+    public class NotifyResumeFailedEvent : IWorkflowEvent
     {
     }
 }

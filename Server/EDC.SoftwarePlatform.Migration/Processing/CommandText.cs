@@ -68,6 +68,8 @@ WHERE
 	)
 	AND
 		r.TenantId = @tenant
+    AND
+        @ignoreExternalRefs = 0
 	AND (
 		@solutionId IS NULL
 		OR

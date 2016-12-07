@@ -40,15 +40,23 @@
         <label>Choice Values</label>
         <div class="choicetable">
             <div>
-                <button ng-click="addChoiceFieldValue()" ng-disabled="isNewButtonDisabled()"><img src="assets/images/icon_new.png" /></button>
-                <!--  <button ng-click="editChoiceFieldValue()"  ng-disabled="isButtonDisabled()"><img src="assets/images/icon_edit.png"/></button>-->
-                <button ng-click="moveUpChoiceFieldValue()" ng-disabled="isUpButtonDisabled()"><img src="assets/images/arrow_up.png" /></button>
-                <button ng-click="moveDownChoiceFieldValue()" ng-disabled="isDownButtonDisabled()"><img src="assets/images/arrow_down.png" /></button>
-                <button ng-click="deleteChoiceFieldValue()" ng-disabled="isDeleteButtonDisabled()"><img src="assets/images/icon_remove.png" /></button>
-            </div>
+                <div class="button-container">
+                    <button ng-click="addChoiceFieldValue()" ng-disabled="isNewButtonDisabled()"><img src="assets/images/icon_new.png" /></button>
+                    <!--  <button ng-click="editChoiceFieldValue()"  ng-disabled="isButtonDisabled()"><img src="assets/images/icon_edit.png"/></button>-->
+                    <button ng-click="moveUpChoiceFieldValue()" ng-disabled="isUpButtonDisabled()"><img src="assets/images/arrow_up.png" /></button>
+                    <button ng-click="moveDownChoiceFieldValue()" ng-disabled="isDownButtonDisabled()"><img src="assets/images/arrow_down.png" /></button>
+                    <button ng-click="deleteChoiceFieldValue()" ng-disabled="isDeleteButtonDisabled()"><img src="assets/images/icon_remove.png" /></button>
+                </div>
+                <div class="formatType-container" ng-show="defaultChoiceFieldFormatEnabled">
+                    <span>Format:</span>
+                    <sp-entity-combo-picker options="model.formattingTypeOptions"></sp-entity-combo-picker>
+                </div>
+              
+            </div>  
             <div class="choiceValuesGrid dataGridHeight" ng-grid="model.choiceValuesGridOptions">
             </div>
             <div class="note">Order from minimum to maximum.</div>
+            <div class="note">Applying a format will only apply to reports.</div>
         </div>
     </div>
 </div>

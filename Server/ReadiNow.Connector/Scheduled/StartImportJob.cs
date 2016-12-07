@@ -8,6 +8,8 @@ using ReadiNow.Connector.ImportSpreadsheet;
 using Autofac;
 using Quartz;
 using EDC.ReadiNow.IO.RemoteFileFetcher;
+using EDC.ReadiNow.Security;
+using EDC.ReadiNow.IO;
 
 namespace ReadiNow.Connector.Scheduled
 {
@@ -20,30 +22,29 @@ namespace ReadiNow.Connector.Scheduled
         {
             var scheduledImportConfig = Entity.Get<ScheduledImportConfig>(scheduledItemRef);
 
-            var importConfig = scheduledImportConfig.SicImportConfig;
-            
-            if (importConfig == null)
-            {
-                throw GenerateException("Failed to import, no import configuration provided.", scheduledImportConfig);
-            }
-
-            var url = scheduledImportConfig.SicUrl;
-
-            if (String.IsNullOrEmpty(url))
-            {
-                throw GenerateException("Failed to import, no FTP address provided.", scheduledImportConfig);
-            }
-
-            // username and password are optional. they may be embedded in the URL
-            
             try
             {
-                var fileToken = FetchToTemporaryFile(scheduledImportConfig);
+                var importConfig = scheduledImportConfig.SicImportConfig;
+                
+                if (importConfig == null)
+                {
+                    throw GenerateJobException("Failed to import, no import configuration provided.", scheduledImportConfig);
+                }
+
+                var url = scheduledImportConfig.SicUrl;
+
+                if (String.IsNullOrEmpty(url))
+                {
+                    throw GenerateJobException("Failed to import, no FTP address provided.", scheduledImportConfig);
+                }
+
+                var fileToken = GetToTemporaryFile(scheduledImportConfig);
 
                 if (fileToken != null)
                 {
                     var settings = new ImportSettings
                     {
+                        FileName = url,
                         FileToken = fileToken,
                         ImportConfigId = importConfig.Id,
                         SuppressSecurityCheckOnImportConfig = false,
@@ -54,45 +55,50 @@ namespace ReadiNow.Connector.Scheduled
 
                     importer.StartImport(settings);
                 }
+               
+            }
+
+            catch (PlatformSecurityException ex)
+            {
+                EventLog.Application.WriteInformation($"StartImportJob.Execute: Platform security exception: {ex}");
+                throw GenerateJobException(ex.Message, scheduledImportConfig);
             }
             catch (Exception ex)
             {
                 EventLog.Application.WriteError("StartImportJob.Execute: Unexpected exception thrown: {0}", ex);
-                throw GenerateException("Unexpected exception when performing scheduled import.", scheduledImportConfig);
+                throw GenerateJobException("Unexpected exception when performing scheduled import.", scheduledImportConfig);
             }
         }
 
 
-        private string FetchToTemporaryFile(ScheduledImportConfig config)
+        private string GetToTemporaryFile(ScheduledImportConfig config)
         {
             var secureId = config.SicPasswordSecureId;
             var password = secureId != null ? Factory.SecuredData.Read((Guid) secureId) : string.Empty;
             try
             { 
-                return Factory.RemoteFileFetcher.FetchToTemporaryFile(config.SicUrl, config.SicUsername, password);
+                return Factory.RemoteFileFetcher.GetToTemporaryFile(config.SicUrl, config.SicUsername, password);
             }
             catch (ConnectionException ex)
             {
                 var message = $"Scheduled Import '{config.Name}' failed.\nDetails:\n   File: {config.SicUrl} \n   Message: {ex.Message}";
                 EventLog.Application.WriteInformation(message);
 
-                CreateFailedImportRunEntity(config.SicImportConfig, message);
+                SecurityBypassContext.Elevate(() =>
+                {
+                    CreateFailedImportRunEntity(config, message);
+                });
 
                 return null;
             }
             catch (Exception ex)
             {
-                throw GenerateException(ex.Message, config);
+                throw GenerateJobException(ex.Message, config);
             }
         }
      
 
-        private JobExecutionException GenerateException(string message, ScheduledImportConfig entity)
-        {
-            string name = entity.Name ?? "[Unnamed]";
-            return new JobExecutionException($"'{name}'({entity.Id}) failed. {message}");
 
-        }
 
 
         /// <summary>
@@ -101,10 +107,13 @@ namespace ReadiNow.Connector.Scheduled
         /// <param name="importConfig">The import configuration.</param>
         /// <param name="importSettings">Settings passed in for the current run.</param>
         /// <returns>Returns the ID of the import run.</returns>
-        private void CreateFailedImportRunEntity(ImportConfig importConfig, string message)
+        private void CreateFailedImportRunEntity(ScheduledImportConfig config, string message)
         {
+            var importConfig = config.SicImportConfig;
+
             // Create a new import run
             ImportRun importRun = Entity.Create<ImportRun>();
+            importRun.ImportFileName = config.SicUrl ?? string.Empty;
             importRun.ImportRunStatus_Enum = WorkflowRunState_Enumeration.WorkflowRunFailed;
             importRun.ImportConfigUsed = importConfig;
             importRun.ImportMessages = message;

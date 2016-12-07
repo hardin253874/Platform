@@ -888,6 +888,22 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Explicit cast from the specified type to the current type.
 		/// </summary>
+		public static explicit operator WfActivity( LaunchPersonCampaignActivity entity )
+		{
+			return entity.Cast<WfActivity>( );
+		}
+
+		/// <summary>
+		/// Explicit cast from the specified type to the current type.
+		/// </summary>
+		public static explicit operator WfActivity( LaunchTargetCampaignActivity entity )
+		{
+			return entity.Cast<WfActivity>( );
+		}
+
+		/// <summary>
+		/// Explicit cast from the specified type to the current type.
+		/// </summary>
 		public static explicit operator WfActivity( LogActivity entity )
 		{
 			return entity.Cast<WfActivity>( );
@@ -6309,6 +6325,17 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Public static accessor to the inherited  forward relationship.
 		/// </summary>
+		public static IEntity ActionRequiresParentPermission_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.ActionMenuItem.ActionRequiresParentPermission_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
 		public static IEntity ActionRequiresPermission_Field
 		{
 			get
@@ -6500,7 +6527,7 @@ namespace EDC.ReadiNow.Model
 		{
 			get
 			{
-				return new IEntity [ ] { WorkflowActionMenuItem.Alias_Field, WorkflowActionMenuItem.AppliesToMultiSelection_Field, WorkflowActionMenuItem.AppliesToSelection_Field, WorkflowActionMenuItem.CanDelete_Field, WorkflowActionMenuItem.CanModify_Field, WorkflowActionMenuItem.ControlAction_Field, WorkflowActionMenuItem.ControlActionData_Field, WorkflowActionMenuItem.CreatedDate_Field, WorkflowActionMenuItem.Description_Field, WorkflowActionMenuItem.EmptySelectName_Field, WorkflowActionMenuItem.HtmlActionMethod_Field, WorkflowActionMenuItem.HtmlActionState_Field, WorkflowActionMenuItem.HtmlActionTarget_Field, WorkflowActionMenuItem.IsActionButton_Field, WorkflowActionMenuItem.IsActionItem_Field, WorkflowActionMenuItem.IsContextMenu_Field, WorkflowActionMenuItem.IsDoubleClickAction_Field, WorkflowActionMenuItem.IsMenuSeparator_Field, WorkflowActionMenuItem.IsStackedLandingPage_Field, WorkflowActionMenuItem.IsSystem_Field, WorkflowActionMenuItem.MenuIconUrl_Field, WorkflowActionMenuItem.MenuOrder_Field, WorkflowActionMenuItem.ModifiedDate_Field, WorkflowActionMenuItem.MultiSelectName_Field, WorkflowActionMenuItem.Name_Field, WorkflowActionMenuItem.ActionAppliesToMenu_Field, WorkflowActionMenuItem.ActionAppliesToRelationshipControlBehavior_Field, WorkflowActionMenuItem.ActionIncludedAsButton_Field, WorkflowActionMenuItem.ActionMenuItemToWorkflow_Field, WorkflowActionMenuItem.ActionRequiresExpression_Field, WorkflowActionMenuItem.ActionRequiresPermission_Field, WorkflowActionMenuItem.ActionRequiresRole_Field, WorkflowActionMenuItem.ActionSuppressedOnMenu_Field, WorkflowActionMenuItem.CreatedBy_Field, WorkflowActionMenuItem.Flags_Field, WorkflowActionMenuItem.IndirectInSolution_Field, WorkflowActionMenuItem.InSolution_Field, WorkflowActionMenuItem.InStructureLevel_Field, WorkflowActionMenuItem.IsOfType_Field, WorkflowActionMenuItem.IsRootForStructureView_Field, WorkflowActionMenuItem.LastModifiedBy_Field, WorkflowActionMenuItem.ResourceConsoleBehavior_Field, WorkflowActionMenuItem.ResourceHasResourceKeyDataHashes_Field, WorkflowActionMenuItem.ResourceInFolder_Field, WorkflowActionMenuItem.SecurityOwner_Field, WorkflowActionMenuItem.SelectionBehavior_Field, WorkflowActionMenuItem.ShortcutInFolder_Field };
+				return new IEntity [ ] { WorkflowActionMenuItem.Alias_Field, WorkflowActionMenuItem.AppliesToMultiSelection_Field, WorkflowActionMenuItem.AppliesToSelection_Field, WorkflowActionMenuItem.CanDelete_Field, WorkflowActionMenuItem.CanModify_Field, WorkflowActionMenuItem.ControlAction_Field, WorkflowActionMenuItem.ControlActionData_Field, WorkflowActionMenuItem.CreatedDate_Field, WorkflowActionMenuItem.Description_Field, WorkflowActionMenuItem.EmptySelectName_Field, WorkflowActionMenuItem.HtmlActionMethod_Field, WorkflowActionMenuItem.HtmlActionState_Field, WorkflowActionMenuItem.HtmlActionTarget_Field, WorkflowActionMenuItem.IsActionButton_Field, WorkflowActionMenuItem.IsActionItem_Field, WorkflowActionMenuItem.IsContextMenu_Field, WorkflowActionMenuItem.IsDoubleClickAction_Field, WorkflowActionMenuItem.IsMenuSeparator_Field, WorkflowActionMenuItem.IsStackedLandingPage_Field, WorkflowActionMenuItem.IsSystem_Field, WorkflowActionMenuItem.MenuIconUrl_Field, WorkflowActionMenuItem.MenuOrder_Field, WorkflowActionMenuItem.ModifiedDate_Field, WorkflowActionMenuItem.MultiSelectName_Field, WorkflowActionMenuItem.Name_Field, WorkflowActionMenuItem.ActionAppliesToMenu_Field, WorkflowActionMenuItem.ActionAppliesToRelationshipControlBehavior_Field, WorkflowActionMenuItem.ActionIncludedAsButton_Field, WorkflowActionMenuItem.ActionMenuItemToWorkflow_Field, WorkflowActionMenuItem.ActionRequiresExpression_Field, WorkflowActionMenuItem.ActionRequiresParentPermission_Field, WorkflowActionMenuItem.ActionRequiresPermission_Field, WorkflowActionMenuItem.ActionRequiresRole_Field, WorkflowActionMenuItem.ActionSuppressedOnMenu_Field, WorkflowActionMenuItem.CreatedBy_Field, WorkflowActionMenuItem.Flags_Field, WorkflowActionMenuItem.IndirectInSolution_Field, WorkflowActionMenuItem.InSolution_Field, WorkflowActionMenuItem.InStructureLevel_Field, WorkflowActionMenuItem.IsOfType_Field, WorkflowActionMenuItem.IsRootForStructureView_Field, WorkflowActionMenuItem.LastModifiedBy_Field, WorkflowActionMenuItem.ResourceConsoleBehavior_Field, WorkflowActionMenuItem.ResourceHasResourceKeyDataHashes_Field, WorkflowActionMenuItem.ResourceInFolder_Field, WorkflowActionMenuItem.SecurityOwner_Field, WorkflowActionMenuItem.SelectionBehavior_Field, WorkflowActionMenuItem.ShortcutInFolder_Field };
 			}
 		}
 
@@ -6927,6 +6954,20 @@ namespace EDC.ReadiNow.Model
 			set
 			{
 				this.SetLookup<ActionExpression>( "console:actionRequiresExpression", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public IEntityCollection<Permission> ActionRequiresParentPermission
+		{
+			get
+			{
+				return this.GetRelationships<Permission>( "console:actionRequiresParentPermission", Direction.Forward ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<Permission>( "console:actionRequiresParentPermission", value, Direction.Forward );
 			}
 		}
 		/// <summary>
@@ -8375,6 +8416,17 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Public static accessor to the inherited  forward relationship.
 		/// </summary>
+		public static IEntity EnumFormattingRule_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.EnumValue.EnumFormattingRule_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
 		public static IEntity EnumOwner_Field
 		{
 			get
@@ -8544,7 +8596,7 @@ namespace EDC.ReadiNow.Model
 		{
 			get
 			{
-				return new IEntity [ ] { WorkflowEventEnum.Alias_Field, WorkflowEventEnum.CanDelete_Field, WorkflowEventEnum.CanModify_Field, WorkflowEventEnum.CanModifyProtectedResource_Field, WorkflowEventEnum.CreatedDate_Field, WorkflowEventEnum.Description_Field, WorkflowEventEnum.EnumOrder_Field, WorkflowEventEnum.ModifiedDate_Field, WorkflowEventEnum.Name_Field, WorkflowEventEnum.CreatedBy_Field, WorkflowEventEnum.EnumOwner_Field, WorkflowEventEnum.EventBackingClass_Field, WorkflowEventEnum.Flags_Field, WorkflowEventEnum.IndirectInSolution_Field, WorkflowEventEnum.InSolution_Field, WorkflowEventEnum.InStructureLevel_Field, WorkflowEventEnum.IsOfType_Field, WorkflowEventEnum.IsRootForStructureView_Field, WorkflowEventEnum.LastModifiedBy_Field, WorkflowEventEnum.ResourceConsoleBehavior_Field, WorkflowEventEnum.ResourceHasResourceKeyDataHashes_Field, WorkflowEventEnum.ResourceInFolder_Field, WorkflowEventEnum.SecurityOwner_Field, WorkflowEventEnum.SelectionBehavior_Field, WorkflowEventEnum.ShortcutInFolder_Field };
+				return new IEntity [ ] { WorkflowEventEnum.Alias_Field, WorkflowEventEnum.CanDelete_Field, WorkflowEventEnum.CanModify_Field, WorkflowEventEnum.CanModifyProtectedResource_Field, WorkflowEventEnum.CreatedDate_Field, WorkflowEventEnum.Description_Field, WorkflowEventEnum.EnumOrder_Field, WorkflowEventEnum.ModifiedDate_Field, WorkflowEventEnum.Name_Field, WorkflowEventEnum.CreatedBy_Field, WorkflowEventEnum.EnumFormattingRule_Field, WorkflowEventEnum.EnumOwner_Field, WorkflowEventEnum.EventBackingClass_Field, WorkflowEventEnum.Flags_Field, WorkflowEventEnum.IndirectInSolution_Field, WorkflowEventEnum.InSolution_Field, WorkflowEventEnum.InStructureLevel_Field, WorkflowEventEnum.IsOfType_Field, WorkflowEventEnum.IsRootForStructureView_Field, WorkflowEventEnum.LastModifiedBy_Field, WorkflowEventEnum.ResourceConsoleBehavior_Field, WorkflowEventEnum.ResourceHasResourceKeyDataHashes_Field, WorkflowEventEnum.ResourceInFolder_Field, WorkflowEventEnum.SecurityOwner_Field, WorkflowEventEnum.SelectionBehavior_Field, WorkflowEventEnum.ShortcutInFolder_Field };
 			}
 		}
 
@@ -8691,6 +8743,20 @@ namespace EDC.ReadiNow.Model
 			set
 			{
 				this.SetLookup<UserAccount>( "core:createdBy", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public FormattingRule EnumFormattingRule
+		{
+			get
+			{
+				return this.GetLookup<FormattingRule>( "core:enumFormattingRule", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<FormattingRule>( "core:enumFormattingRule", value, Direction.Forward );
 			}
 		}
 		/// <summary>
@@ -12839,6 +12905,17 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Public static accessor to the inherited  forward relationship.
 		/// </summary>
+		public static IEntity EnumFormattingRule_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.EnumValue.EnumFormattingRule_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
 		public static IEntity EnumOwner_Field
 		{
 			get
@@ -12997,7 +13074,7 @@ namespace EDC.ReadiNow.Model
 		{
 			get
 			{
-				return new IEntity [ ] { WorkflowRunState.Alias_Field, WorkflowRunState.CanDelete_Field, WorkflowRunState.CanModify_Field, WorkflowRunState.CanModifyProtectedResource_Field, WorkflowRunState.CreatedDate_Field, WorkflowRunState.Description_Field, WorkflowRunState.EnumOrder_Field, WorkflowRunState.ModifiedDate_Field, WorkflowRunState.Name_Field, WorkflowRunState.CreatedBy_Field, WorkflowRunState.EnumOwner_Field, WorkflowRunState.Flags_Field, WorkflowRunState.IndirectInSolution_Field, WorkflowRunState.InSolution_Field, WorkflowRunState.InStructureLevel_Field, WorkflowRunState.IsOfType_Field, WorkflowRunState.IsRootForStructureView_Field, WorkflowRunState.LastModifiedBy_Field, WorkflowRunState.ResourceConsoleBehavior_Field, WorkflowRunState.ResourceHasResourceKeyDataHashes_Field, WorkflowRunState.ResourceInFolder_Field, WorkflowRunState.SecurityOwner_Field, WorkflowRunState.SelectionBehavior_Field, WorkflowRunState.ShortcutInFolder_Field };
+				return new IEntity [ ] { WorkflowRunState.Alias_Field, WorkflowRunState.CanDelete_Field, WorkflowRunState.CanModify_Field, WorkflowRunState.CanModifyProtectedResource_Field, WorkflowRunState.CreatedDate_Field, WorkflowRunState.Description_Field, WorkflowRunState.EnumOrder_Field, WorkflowRunState.ModifiedDate_Field, WorkflowRunState.Name_Field, WorkflowRunState.CreatedBy_Field, WorkflowRunState.EnumFormattingRule_Field, WorkflowRunState.EnumOwner_Field, WorkflowRunState.Flags_Field, WorkflowRunState.IndirectInSolution_Field, WorkflowRunState.InSolution_Field, WorkflowRunState.InStructureLevel_Field, WorkflowRunState.IsOfType_Field, WorkflowRunState.IsRootForStructureView_Field, WorkflowRunState.LastModifiedBy_Field, WorkflowRunState.ResourceConsoleBehavior_Field, WorkflowRunState.ResourceHasResourceKeyDataHashes_Field, WorkflowRunState.ResourceInFolder_Field, WorkflowRunState.SecurityOwner_Field, WorkflowRunState.SelectionBehavior_Field, WorkflowRunState.ShortcutInFolder_Field };
 			}
 		}
 
@@ -13144,6 +13221,20 @@ namespace EDC.ReadiNow.Model
 			set
 			{
 				this.SetLookup<UserAccount>( "core:createdBy", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public FormattingRule EnumFormattingRule
+		{
+			get
+			{
+				return this.GetLookup<FormattingRule>( "core:enumFormattingRule", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<FormattingRule>( "core:enumFormattingRule", value, Direction.Forward );
 			}
 		}
 		/// <summary>
@@ -13402,6 +13493,7 @@ namespace EDC.ReadiNow.Model
 				case "core:workflowRunPaused": return WorkflowRunState_Enumeration.WorkflowRunPaused;
 				case "core:workflowRunCompleted": return WorkflowRunState_Enumeration.WorkflowRunCompleted;
 				case "core:workflowRunFailed": return WorkflowRunState_Enumeration.WorkflowRunFailed;
+				case "core:workflowRunSuspended": return WorkflowRunState_Enumeration.WorkflowRunSuspended;
 				case "core:workflowRunCancelled": return WorkflowRunState_Enumeration.WorkflowRunCancelled;
 				default: return null;
 			}
@@ -13419,6 +13511,7 @@ namespace EDC.ReadiNow.Model
 				case WorkflowRunState_Enumeration.WorkflowRunPaused: return "core:workflowRunPaused";
 				case WorkflowRunState_Enumeration.WorkflowRunCompleted: return "core:workflowRunCompleted";
 				case WorkflowRunState_Enumeration.WorkflowRunFailed: return "core:workflowRunFailed";
+				case WorkflowRunState_Enumeration.WorkflowRunSuspended: return "core:workflowRunSuspended";
 				case WorkflowRunState_Enumeration.WorkflowRunCancelled: return "core:workflowRunCancelled";
 				default: return null;
 			}
@@ -13474,7 +13567,12 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// 
 		/// </summary>
-		WorkflowRunCancelled = 32,
+		WorkflowRunSuspended = 32,
+
+		/// <summary>
+		/// 
+		/// </summary>
+		WorkflowRunCancelled = 64,
 
 	}
 

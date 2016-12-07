@@ -339,5 +339,86 @@
     <scheduleForTrigger>scheduleProcessInbox</scheduleForTrigger>
     <k:resourceInFolder>environmentSection</k:resourceInFolder>
   </processInboxesAction>
+
+  <!-- System Documentation Settings -->
+  <type>
+    <alias>systemDocumentationSettings</alias>
+    <name>System Documentation Settings</name>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Documentation Settings</name>
+        <alias>documentationSettingsGroup</alias>
+        <description>Contains all documentation settings.</description>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>navHeaderDocumentationUrl</alias>
+        <name>Navigation header documentation url</name>
+        <description>The url for the documentation link in the navigation header.</description>
+        <fieldInGroup>documentationSettingsGroup</fieldInGroup>
+        <pattern>webAddressPattern</pattern>
+      </stringField>
+      <stringField>
+        <alias>documentationUrl</alias>
+        <name>Documentation url</name>
+        <description>The url for the documentation.</description>
+        <fieldInGroup>documentationSettingsGroup</fieldInGroup>
+        <pattern>webAddressPattern</pattern>
+      </stringField>
+      <stringField>
+        <alias>releaseNotesUrl</alias>
+        <name>Release notes url</name>
+        <description>The url for the release notes.</description>
+        <fieldInGroup>documentationSettingsGroup</fieldInGroup>
+        <pattern>webAddressPattern</pattern>
+      </stringField>
+      <stringField>
+        <alias>contactSupportUrl</alias>
+        <name>Contact support url</name>
+        <description>The url for contacting support.</description>
+        <fieldInGroup>documentationSettingsGroup</fieldInGroup>
+        <pattern>webAddressPattern</pattern>
+      </stringField>
+      <stringField>
+        <alias>documentationUserName</alias>
+        <name>Documentation user name</name>
+        <description>The user name to use when accessing documentation.</description>
+        <fieldInGroup>documentationSettingsGroup</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>documentationUserPassword</alias>
+        <name>Documentation user password</name>
+        <description>The user password to use when accessing documentation.</description>
+        <fieldInGroup>documentationSettingsGroup</fieldInGroup>
+        <fieldRepresents>fieldRepresentsPassword</fieldRepresents>
+        <maxLength>100</maxLength>
+        <isFieldWriteOnly>true</isFieldWriteOnly>
+      </stringField>
+      <guidField>
+        <alias>documentationUserPasswordSecureId</alias>
+        <name>Documentation user password secure Id</name>
+        <description>Reference to the documentationUserPassword field.</description>
+        <isFieldWriteOnly>true</isFieldWriteOnly>
+        <hideField>true</hideField>
+        <fieldInGroup>documentationSettingsGroup</fieldInGroup>
+      </guidField>
+    </fields>
+    <onBeforeSave>systemDocumentationSettingsTarget</onBeforeSave>
+  </type>
+
+  <target>
+    <alias>systemDocumentationSettingsTarget</alias>
+    <typeName>EDC.ReadiNow.Model.EventClasses.SystemDocumentationSettingsTarget</typeName>
+    <assemblyName>EDC.ReadiNow.Common, Version=1.0.0.0, Culture=neutral</assemblyName>
+    <ordinal>0</ordinal>
+  </target>
+
+  <!-- System Documentation settings instance -->
+  <systemDocumentationSettings>
+    <alias>systemDocumentationSettingsInstance</alias>
+    <name>Documentation Settings</name>
+  </systemDocumentationSettings>
   
 </resources>

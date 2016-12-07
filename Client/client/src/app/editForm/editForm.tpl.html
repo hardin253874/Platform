@@ -2,8 +2,15 @@
       ng-controller="editFormController" test-id="{{model.formData.id()}}"
       sp-mobile-allow-default-drag sp-measure-arrange="measureArrangeOptions">
 
-    <button class="pull-right btn-link" ng-click="toggleFlexForm()" ng-if="allowFlexForm">toggle flex</button>
-    <button class="pull-right btn-link" ng-click="toggleFormStructureEditor()" ng-if="allowFlexForm">toggle adv</button>
+    <div ng-if="allowFlexForm" class="pull-right">
+        <span>TEMP actions for testing purposes</span>
+        <button class="btn-link" ng-click="toggleFlexForm()">toggle flex</button>
+        <button class="btn-link" ng-click="toggleDesignMode()">design</button>
+        <button class="btn-link" ng-click="undoFormStructureEdit()">undo</button>
+        <button class="btn-link" ng-click="toggleFlexInline()">toggle inline</button>
+        <button class="btn-link" ng-click="toggleFlexMobile()">toggle mobile</button>
+        <button class="btn-link" ng-click="toggleFormStructureEditor()">toggle adv</button>
+    </div>
 
     <div class="editForm-config-panel" ng-if="nav.isFullEditMode && model.formMode === 'view'">
         <!--<span class="ui-icon ui-icon-lightgray ui-icon-wrench editForm-config-panel-button -->
@@ -20,21 +27,25 @@
                          return-on-completion="true"
                          before-transition="saveIfEditing()"></sp-applicable-tasks>
 
-    <div class="form-title" ng-if="!(isMobile || isTablet)" ng-style="model.titleStyle">
-        <div ng-if="model.headerIconUrl" class="headertype" ng-style="model.headerIconStyle" >
-            <img  ng-src="{{model.headerIconUrl}}" ng-style="model.headerIconStyle" />
+    <div class="editForm-heading">
+        <div class="form-title" ng-if="!(isMobile || isTablet)" ng-style="model.titleStyle">
+            <div ng-if="model.headerIconUrl" class="headertype" ng-style="model.headerIconStyle">
+                <img ng-src="{{model.headerIconUrl}}" ng-style="model.headerIconStyle" />
+            </div>
+            <span title="{{model.formTitle}}">{{model.formTitle}}</span>
+            <rn-info-button ng-if="model.formControl.showFormHelpText && model.formControl.description"
+                            heading="{{::model.formTitle}}" text="{{::model.formControl.description}}"></rn-info-button>
         </div>
-        {{model.formTitle}}
-        <rn-info-button ng-if="model.formControl.showFormHelpText && model.formControl.description" heading="{{::model.formTitle}}" text="{{::model.formControl.description}}"></rn-info-button>
-    </div>
 
-    <div class="editForm-Action">
-        <button type="button" ng-if="!isMobile" ng-click="ab.execute()" ng-repeat="ab in model.actionButtons"
-                ng-disabled="ab.action.disabled || model.isInDesign || model.disableActions"
-                title="{{ab.action.name || ab.action.displayname}}">
-            <img ng-src="{{ab.action.icon}}" width="16" height="16"/><span
-                ng-show="ab.action.state === 'createForm' || ab.action.method === 'run' || ab.action.method === 'generate'">{{ab.action.nameshort}}</span>
-        </button>
+        <div class="editForm-Action">
+            <button type="button" ng-repeat="ab in model.actionButtons"
+                    ng-if="showActionButtons()"
+                    ng-disabled="ab.disabled"
+                    ng-click="ab.execute()"
+                    title="{{ab.name || ab.displayname}}">
+                <img ng-src="{{ab.icon}}" width="16" height="16" /><span ng-show="ab.action.state === 'createForm' || ab.action.method === 'run' || ab.action.method === 'generate'">{{ab.nameshort}}</span>
+            </button>
+        </div>
     </div>
 
     <rn-form-structure-editor ng-if="showStructureEditor" form-entity="model.formControl"></rn-form-structure-editor>
@@ -45,11 +56,9 @@
                          is-in-test-mode="isInTestMode" pager-options="pagerOptions">
     </sp-custom-edit-form>
 
-    <sp-flex-edit-form ng-if="useFlexForm"
-                       form-data="model.formData" form-control="model.formControl"
-                       form-theme="model.consoleTheme" form-mode="model.formMode"
-                       is-in-test-mode="isInTestMode" pager-options="pagerOptions">
-    </sp-flex-edit-form>
+    <rn-edit-form ng-if="useFlexForm && model.formControl"
+                  form="model.formControl" resource="model.formData" form-options="flexEditFormOptions">
+    </rn-edit-form>
 
 </form>
 

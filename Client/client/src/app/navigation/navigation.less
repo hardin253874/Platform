@@ -152,7 +152,7 @@
                     img {
                         display: none;
 
-                        &[title="expend"] {
+                        &[title="Expand"] {
                             display: inline-block;
                             margin-left: 5px;
                             margin-right: -5px;
@@ -238,14 +238,26 @@
 
                     li.user-account {
                         background-color: rgba(0, 0, 0, 0.14);
-                        color: rgba(255, 255, 255, 0.56);
                         display: block;
                         width: 100%;
                         border-bottom: 1px solid rgba(123, 123, 123, 0.32) !important;
-                        padding: 16px 8px;
+                        padding: 5px 8px;
                         font-size: 13px;
                         border-top-left-radius: 2px;
                         border-top-right-radius: 2px;
+                        
+                        /* #28616: IE and edge overlap text if there are certain special chars in text string like a '\' a space etc. */
+                        pre {
+                            margin: 0;
+                            padding: 0;
+                            line-height: normal;
+                            color: rgba(255, 255, 255, 0.56);
+                            display: block;
+                            white-space: nowrap;
+                            background-color:transparent;
+                            border:none;
+                            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+                        }
                     }
                 }
 
@@ -951,7 +963,7 @@
                 height: 29px;
 
                 &:hover {
-                    background-color: @pointcolour_sp;
+                    background-color: #31a89f;
                 }
             }
 

@@ -78,7 +78,7 @@ angular.module('mod.app.exportServices').factory('spExportService', function ($h
             params: params,
             headers: spWebService.getHeaders()
         }).then(function (response) {
-            return response.status == 200 ? response.data : null;
+            return response.status === 200 ? response.data : null;
         });
     }
     exports.exportReportData = exportReportData;
@@ -94,8 +94,8 @@ angular.module('mod.app.exportServices').factory('spExportService', function ($h
         if (!fileToken) {
             $q.reject('File token is not provided.');
         }
-        var url = '/spapi/data/v2/report/export/download/' + fileToken + '/' + encodeURIComponent(spNgUtils.sanitizeUriComponent(fileName)) + '/' + fileFormat;        
-        spFileDownloadService.downloadFile(spXsrf.addXsrfTokenAsQueryString(spWebService.getWebApiRoot() + url));
+        var url = webApiRoot() + '/spapi/data/v2/report/export/download/' + fileToken + '/' + encodeURIComponent(spNgUtils.sanitizeUriComponent(fileName)) + '/' + fileFormat;
+        spFileDownloadService.downloadFile(spXsrf.addXsrfTokenAsQueryString(url));
     };
     return exports;
 });

@@ -33,7 +33,7 @@
         <relType>relCustom</relType>
         <cardinality>manyToOne</cardinality>
         <generateCode>true</generateCode>
-        <cloneAction>cloneReferences</cloneAction>
+        <cloneAction>cloneEntities</cloneAction>
         <reverseCloneAction>drop</reverseCloneAction>
         <cascadeDelete>false</cascadeDelete>
         <cascadeDeleteTo>false</cascadeDeleteTo>

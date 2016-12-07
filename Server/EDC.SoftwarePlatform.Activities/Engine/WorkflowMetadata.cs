@@ -396,14 +396,16 @@ namespace EDC.SoftwarePlatform.Activities
             {
                 // User/application error with the substance of the calculation expression
                 // e.g. The calculation «[Hello» has a problem: Mal-formed string literal - cannot find termination symbol. (pos 1)
-                string message = $"The calculation «{expressionString}» has a problem: {ex.Message}";
+                var activityName = (wfExpr?.ExpressionInActivity?.Name) ?? "Unknown";
+                string message = $"The calculation «{expressionString}» in «{activityName}» has a problem: {ex.Message}";
                 EventLog.Application.WriteWarning( message );
                 AddValidationError( message );
             }
             catch ( Exception ex )
             {
                 // Internal error
-                string message = $"Internal error while compiling expression: {expressionString}";
+                var activityName = (wfExpr?.ExpressionInActivity?.Name) ?? "Unknown";
+                string message = $"Internal error while compiling expression «{expressionString}» in «{activityName}»";
                 EventLog.Application.WriteError( ex.ToString( ) );
                 AddValidationError( message );
             }

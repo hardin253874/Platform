@@ -1,4 +1,5 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
+
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -286,23 +287,20 @@ WHERE
 
 					using ( IDataReader reader = command.ExecuteReader( ) )
 					{
-						if ( reader != null )
+						while ( reader.Read( ) )
 						{
-							while ( reader.Read( ) )
+							var app = new Application
 							{
-								var app = new Application
-									{
-										SolutionEntityId = reader.GetInt64( 0 ),
-										Name = reader.GetString( 1 ),
-										Description = reader.GetString( 2, null ),
-										Publisher = reader.GetString( 3, null ),
-										PublisherUrl = reader.GetString( 4, null ),
-										ReleaseDate = reader.GetDateTime( 5, DateTime.MinValue ),
-										ApplicationId = reader.GetGuid( 6 )
-									};
+								SolutionEntityId = reader.GetInt64( 0 ),
+								Name = reader.GetString( 1 ),
+								Description = reader.GetString( 2, null ),
+								Publisher = reader.GetString( 3, null ),
+								PublisherUrl = reader.GetString( 4, null ),
+								ReleaseDate = reader.GetDateTime( 5, DateTime.MinValue ),
+								ApplicationId = reader.GetGuid( 6 )
+							};
 
-								applications.Add( app );
-							}
+							applications.Add( app );
 						}
 					}
 				}
@@ -362,46 +360,46 @@ WHERE
 		/// <param name="actionString">The action string.</param>
 		private void HandleAction( string actionString )
 		{
-			var action = ( ApplicationAction ) Enum.Parse( typeof ( ApplicationAction ), actionString );
+			var action = ( ApplicationAction ) Enum.Parse( typeof( ApplicationAction ), actionString );
 
 			switch ( action )
 			{
 				case ApplicationAction.Delete:
-					{
-						var delete = new DeleteApplication( this );
-						delete.ShowDialog( );
+				{
+					var delete = new DeleteApplication( this );
+					delete.ShowDialog( );
 
-						if ( delete.ViewModel.PackagesDeleted )
-						{
-							RefreshAll( );
-						}
+					if ( delete.ViewModel.PackagesDeleted )
+					{
+						RefreshAll( );
 					}
+				}
 					break;
 
 				case ApplicationAction.Deploy:
-					{
-						var deploy = new DeployApplication( this );
-						deploy.ShowDialog( );
-					}
+				{
+					var deploy = new DeployApplication( this );
+					deploy.ShowDialog( );
+				}
 					break;
 
 				case ApplicationAction.Export:
-					{
-						var export = new ExportApplication( this );
-						export.ShowDialog( );
-					}
+				{
+					var export = new ExportApplication( this );
+					export.ShowDialog( );
+				}
 					break;
 
 				case ApplicationAction.Repair:
-					{
-						var repair = new RepairApplication( this );
-						repair.ShowDialog( );
-					}
+				{
+					var repair = new RepairApplication( this );
+					repair.ShowDialog( );
+				}
 					break;
 
 				default:
-					{
-					}
+				{
+				}
 					break;
 			}
 		}

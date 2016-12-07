@@ -18,7 +18,7 @@ namespace EDC.ReadiNow.Model.EventClasses.ResourceTriggerFilter.EventHandlers
         const string UnnamedText = "[Unnamed]";
 
         const int DefaultMaxRelationshipsNamesReported = 10;
-        const int DefaultMaxRenderedFieldLength = 50;
+        const int DefaultMaxRenderedFieldLength = 200;
         const int DefaultMaxDescriptionLength = 2000;
 
         List<ChangeRecord> _changes = new List<ChangeRecord>();

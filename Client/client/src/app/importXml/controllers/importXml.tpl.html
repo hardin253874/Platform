@@ -31,6 +31,9 @@
         <p><strong>Import Successful</strong>
         </p>
         <p>{{model.message}}</p>
+        <ul>
+            <li ng-repeat="ie in model.importedEntities">{{ie.typeName}} imported: {{ie.name}}</li>
+        </ul>
     </div>
 
     <div class="bg-danger" ng-show="model.result === 'error'">

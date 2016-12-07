@@ -27,6 +27,11 @@ namespace EDC.ReadiNow.Expressions
         /// If true, then convert bool results to strings.
         /// </summary>
         public bool ConvertBoolsToString { get; set; }
+
+        /// <summary>
+        /// Set by the host to allow the resolution of named parameter nodes.
+        /// </summary>
+        public Func<string, ResourceEntity> ParameterNodeResolver { get; set; }
     }
 
 }

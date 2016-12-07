@@ -9,6 +9,8 @@ namespace EDC.ReadiNow.Model.Interfaces
 {
     public interface IWorkflowRunner
     {
+        long SuspendTimeoutMs { get; set; }
+
         WorkflowRun ResumeWorkflow(WorkflowRun run, IWorkflowEvent resumeEvent);
         string ResumeWorkflowAsync(WorkflowRun workflowRun, IWorkflowEvent resumeEvent);
         WorkflowRun RunWorkflow(WorkflowStartEvent startEvent);

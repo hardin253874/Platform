@@ -570,7 +570,7 @@ var spCharts;
         Chart.prototype.convertLegendToPopup = function convertLegendToPopup(svg) {
             var chart = this;
             var pad = 4;
-            if (this.legend && !this.legend.isPopup) {
+            if (this.legend && !this.legend.isPopup && this.legendBox && this.legendBox.width && this.legendBox.height) {
                 this.legend.isPopup = true;
                 this.margin.right = this.margin.noLegend;
 
@@ -787,6 +787,10 @@ var spCharts;
 
         // Generates an SVG pattern that can render an image
         Chart.prototype.appendImagePattern = function appendImagePattern(g, accessor) {
+
+            var chart = this;
+            var webRoot = chart.spWebService.getWebApiRoot();
+
             // pretty much everything here is to preserve aspect ratio.
             g.filter(function (d) {
                 return d && accessor(d);
@@ -803,7 +807,9 @@ var spCharts;
                 .attr("height", "1")
              .append("image")
                 .attr("preserveAspectRatio", "xMidYMid slice")
-                .attr("xlink:href", _.flowRight(this.spXsrf.addXsrfTokenAsQueryString, this.getImageUri, accessor))
+                .attr("xlink:href", _.flowRight(this.spXsrf.addXsrfTokenAsQueryString, function(id) {
+                    return chart.getImageUri(id, webRoot);
+                }, accessor))
                 .attr("x", "0")
                 .attr("y", "0")
                 .attr("width", "1")
@@ -812,8 +818,8 @@ var spCharts;
 
 
         // Returns the URI for the image of the given resource ID.
-        Chart.prototype.getImageUri = function getImageUri(id) {
-            return "/spapi/data/v1/image/download/" + id;
+        Chart.prototype.getImageUri = function getImageUri(id, webRoot) {
+            return webRoot + '/spapi/data/v1/image/download/' + id;
         };
 
 
@@ -995,7 +1001,7 @@ var spCharts;
         // Background click
         Chart.prototype.onBackgroundClick = function () {
             if (sp.result(this, 'reportMetadata.isPivot')) {
-                var conds = [];
+                var conds = this.spVisDataService.getEmptyConds();
                 if (this.filterSelectedCallback)
                     this.filterSelectedCallback(conds, null);
             }

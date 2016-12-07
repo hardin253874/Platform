@@ -13,7 +13,7 @@
         .factory('spNavService', spNavService);
 
     /* @ngInject */
-    function spNavService($rootScope, $state, $stateParams, $q, $window, $location, spAppError, spLoginService, spNavDataService, spEntityService, spTenantSettings, spWebService, spAppSettings, navDirtyMessage, spThemeService, spMobileContext, spNgUtils) {
+    function spNavService($rootScope, $state, $stateParams, $q, $window, $location, spAppError, spLoginService, spNavDataService, spEntityService, spTenantSettings, spWebService, spAppSettings, navDirtyMessage, spThemeService, spMobileContext, spNgUtils, spDocumentationService) {
 
         /**
          * spNavService handles a few things.
@@ -81,7 +81,7 @@
             continueNavigation: continueNavigation,
             cancelNavigation: cancelNavigation,
             getNavTree: getNavTree,
-            getLastUsedAppKey: getLastUsedAppKey,
+            getLastUsedAppMenuKey: getLastUsedAppMenuKey,
             getCurrentApplicationId: getCurrentApplicationId,
             getCurrentApplicationMenuEntity: getCurrentApplicationMenuEntity,
             getThemes: getThemes,
@@ -108,6 +108,7 @@
             isParentNavItem: isParentNavItem,
             flattenTree: flattenTree,
             findInTree: findInTree,
+            findInTreeByNodeIdAndParentNodeId: findInTreeByNodeIdAndParentNodeId,
             findInTreeById: findInTreeById,
             forEachItemInTree: forEachItemInTree,
             mergeTreeChild: mergeTreeChild,
@@ -189,6 +190,8 @@
         $rootScope.$on('signedin', function () {
             initialise();
             initThemeService();
+
+            spDocumentationService.initializeDocoSettings();
         });
 
         $rootScope.$on('sp.cancelNavigation', function () {
@@ -363,10 +366,10 @@
         }
 
         /**
-         * Returns LastUsedApp string key
+         * Returns LastUsedAppMenu string key
          */
-        function getLastUsedAppKey() {
-            return 'lastUsedAppKey';
+        function getLastUsedAppMenuKey() {
+            return 'lastUsedAppMenuKey';
         }
 
         /**
@@ -1499,6 +1502,62 @@
 
                 if (result && pathInReverse) {
                     pathInReverse.push(tree);
+                }
+            }
+
+            return result;
+        }
+
+        /**
+         * Search the tree for a node representing the given item where the
+         * item parameter is either the item itself or a predicate.
+         *
+         * Assumes the tree nodes are { item, children } where children are an array of nodes.
+         *
+         * Optionally capture the path from the found item to the root. If an item is found then the
+         * path (of nodes) is added to the given path array, if one is provided. The path or any existing
+         * values in the path array are not touched.
+         *
+         * @param tree
+         * @param itemOrFn
+         * @param pathInReverse
+         * @returns tree node referencing the item, or null if not found
+         *
+         * @name module:navigation#findInTree
+         */
+        function findInTreeByNodeIdAndParentNodeId(treeNode, itemOrFn, pathInReverse) {
+            var result = null;
+
+            function match(item) {
+                return _.isFunction(itemOrFn) ? itemOrFn(item) : item === itemOrFn;
+            }
+
+            if (!treeNode) {
+                return null;
+            }
+
+            if (match(treeNode)) {
+                return treeNode;
+            }
+
+            if (treeNode.children) {
+
+                _.some(treeNode.children, function (child) {
+                    if (match(child)) {
+                        result = child;
+                    }
+                    return !!result;
+                });
+
+                if (!result) {
+                    _.some(treeNode.children, function (child) {
+                        result = findInTreeByNodeIdAndParentNodeId(child, itemOrFn, pathInReverse);
+                        return !!result;
+                    });
+                }
+
+                if (result && pathInReverse) {
+                    pathInReverse.push(treeNode);
                 }
             }
 

@@ -43,7 +43,7 @@
                     selectedEntities: null,
                     pickerReportId: 'core:applicationsPickerReport',
                     entityTypeId: 'core:solution',
-                    multiSelect: true,
+                    multiSelect: false,
                     isDisabled: false,
                 },
                 iconPickerOptions: {
@@ -168,7 +168,7 @@
                     //Set Applications
                     var applications = sp.result($scope, 'model.applicationPickerOptions.selectedEntities');
 
-                    if (applications != null && applications.length > 0) {
+                    if (applications && applications.length > 0) {
                         $scope.model.entity.setLookup('core:inSolution', applications[0]);
                     } else {
                         $scope.model.entity.setLookup('core:inSolution', null);

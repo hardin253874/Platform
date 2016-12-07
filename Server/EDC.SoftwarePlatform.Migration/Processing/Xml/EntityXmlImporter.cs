@@ -120,7 +120,8 @@ namespace EDC.SoftwarePlatform.Migration.Processing.Xml
             using ( IDataSource baseline = GetBaselineSourceForImport( tenantId, rootGuids ) )
             using ( TenantMergeTarget target = new TenantMergeTarget
             {
-                TenantId = tenantId
+                TenantId = tenantId,
+                IgnoreExternalReferences = true
             } )
             {
                 /////
@@ -135,7 +136,7 @@ namespace EDC.SoftwarePlatform.Migration.Processing.Xml
                 {
                     processor.MergeData( );
 
-                    CheckForMissingDependencies( context );
+                    //CheckForMissingDependencies( context );
 
                     target.Commit( );
                 }

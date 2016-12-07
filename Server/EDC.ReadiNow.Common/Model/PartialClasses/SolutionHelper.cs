@@ -577,7 +577,7 @@ WHERE
 						GetDependenciesRecursive( application, false, applicationWalk, dependencyWalk, ordering, discoveredDependencies, results );
 					}
 
-					if ( ordering == Ordering.Postfix )
+					if ( ordering == Ordering.Postfix || immediateOnly )
 					{
 						results.Add( applicationDependency );
 					}

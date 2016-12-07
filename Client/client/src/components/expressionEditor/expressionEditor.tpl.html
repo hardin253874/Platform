@@ -16,9 +16,9 @@
 
     <div ng-show="!options.hideHintsButtons && options.useHintLinks" style="margin-top:5px;">
         <button ng-click="showParameters()" title="expression-parameter">parameter</button>
-        <button ng-click="showFunctions()"  title="expression-function">function</button>
-        <button ng-click="showProperties()" title="expression-property">property</button>
-        <button ng-click="showResources()"  title="expression-record">record</button>
+        <button ng-click="showFunctions()" title="expression-function">function</button>
+        <button ng-click="showProperties()" ng-disabled="!canShowProperties()" title="expression-property">property</button>
+        <button ng-click="showResources()" ng-disabled="!canShowResources()" title="expression-record">record</button>
     </div>
 
     <div class="backdrop" ng-if="visualState.showFunctionsList || visualState.showParametersList"></div>

@@ -7,6 +7,7 @@ using System.Data.SqlTypes;
 using System.Text;
 using EDC.Database;
 using EDC.ReadiNow.IO;
+using EDC.ReadiNow.Metadata.Tenants;
 using EDC.ReadiNow.Security.AuditLog;
 
 namespace EDC.ReadiNow.Database
@@ -37,7 +38,7 @@ namespace EDC.ReadiNow.Database
 		}
 
 		/// <summary>
-		/// Creates the restore point.
+		///     Creates the restore point.
 		/// </summary>
 		/// <param name="message">The message.</param>
 		/// <param name="tenantId">The tenant identifier.</param>
@@ -75,7 +76,7 @@ namespace EDC.ReadiNow.Database
 					ctx.AddParameter( command, "@context", DbType.AnsiString, message );
 					ctx.AddParameter( command, "@userDefined", DbType.Boolean, userDefined );
 					ctx.AddParameter( command, "@systemUpgrade", DbType.Boolean, systemUpgrade );
-					ctx.AddParameter( command, "@revertTo", DbType.Int64, (object) revertTo ?? DBNull.Value );
+					ctx.AddParameter( command, "@revertTo", DbType.Int64, ( object ) revertTo ?? DBNull.Value );
 					var tranIdParameter = ctx.AddParameter( command, "@tranId", DbType.Int64 );
 					tranIdParameter.Direction = ParameterDirection.Output;
 
@@ -124,7 +125,7 @@ namespace EDC.ReadiNow.Database
 		}
 
 		/// <summary>
-		/// Gets the transaction identifier.
+		///     Gets the transaction identifier.
 		/// </summary>
 		/// <param name="date">The date.</param>
 		/// <param name="tenantId">The tenant identifier.</param>
@@ -139,7 +140,7 @@ namespace EDC.ReadiNow.Database
 
 			using ( DatabaseContext ctx = DatabaseContext.GetContext( ) )
 			{
-				string commandText = $"SELECT TOP 1 TransactionId FROM Hist_Transaction WHERE [Timestamp] >= @date {(tenantId >= 0 ? "AND TenantId = @tenantId" : string.Empty)} ORDER BY [Timestamp]";
+				string commandText = $"SELECT TOP 1 TransactionId FROM Hist_Transaction WHERE [Timestamp] >= @date {( tenantId >= 0 ? "AND TenantId = @tenantId" : string.Empty )} ORDER BY [Timestamp]";
 
 				using ( IDbCommand command = ctx.CreateCommand( commandText ) )
 				{
@@ -165,7 +166,37 @@ namespace EDC.ReadiNow.Database
 		}
 
 		/// <summary>
-		/// Gets the tenant rollback data.
+		///     Gets the user activity.
+		/// </summary>
+		/// <param name="date">The date.</param>
+		/// <param name="tenantId">The tenant identifier.</param>
+		/// <returns></returns>
+		public static IEnumerable<string> GetUserActivity( DateTime date, long tenantId )
+		{
+			ISet<string> userNames = new HashSet<string>( );
+
+			using ( DatabaseContext ctx = DatabaseContext.GetContext( ) )
+			{
+				using ( IDbCommand command = ctx.CreateCommand( "spGetTenantRollbackUserActivity", CommandType.StoredProcedure ) )
+				{
+					ctx.AddParameter( command, "@date", DbType.DateTime, date.ToUniversalTime( ) );
+					ctx.AddParameter( command, "@tenantId", DbType.Int64, tenantId );
+
+					using ( IDataReader reader = command.ExecuteReader( ) )
+					{
+						while ( reader.Read( ) )
+						{
+							userNames.Add( reader.GetString( 0, "Unknown" ) );
+						}
+					}
+				}
+			}
+
+			return userNames;
+		}
+
+		/// <summary>
+		///     Gets the tenant rollback data.
 		/// </summary>
 		/// <param name="days">The days.</param>
 		/// <returns></returns>
@@ -227,18 +258,28 @@ namespace EDC.ReadiNow.Database
 		/// <param name="tenantId">The tenant identifier.</param>
 		public static void Revert( long transactionId, long tenantId = -1 )
 		{
-			using ( DatabaseContext ctx = DatabaseContext.GetContext( ) )
+			try
 			{
-				using ( IDbCommand command = ctx.CreateCommand( "spRevert", CommandType.StoredProcedure ) )
+				using ( DatabaseContext ctx = DatabaseContext.GetContext( ) )
 				{
-					ctx.AddParameter( command, "@transactionId", DbType.Int64, transactionId );
-
-					if ( tenantId >= 0 )
+					using ( IDbCommand command = ctx.CreateCommand( "spRevert", CommandType.StoredProcedure ) )
 					{
-						ctx.AddParameter( command, "@tenantId", DbType.Int64, tenantId );
-					}
+						ctx.AddParameter( command, "@transactionId", DbType.Int64, transactionId );
 
-					command.ExecuteNonQuery( );
+						if ( tenantId >= 0 )
+						{
+							ctx.AddParameter( command, "@tenantId", DbType.Int64, tenantId );
+						}
+
+						command.ExecuteNonQuery( );
+					}
+				}
+			}
+			finally
+			{
+				if ( tenantId >= 0 )
+				{
+					TenantHelper.Invalidate( tenantId );
 				}
 			}
 		}
@@ -251,19 +292,29 @@ namespace EDC.ReadiNow.Database
 		/// <param name="tenantId">The tenant identifier.</param>
 		public static void RevertRange( long fromTransactionId, long toTransactionId, long tenantId = -1 )
 		{
-			using ( DatabaseContext ctx = DatabaseContext.GetContext( ) )
+			try
 			{
-				using ( IDbCommand command = ctx.CreateCommand( "spRevertRange", CommandType.StoredProcedure ) )
+				using ( DatabaseContext ctx = DatabaseContext.GetContext( ) )
 				{
-					ctx.AddParameter( command, "@fromTransactionId", DbType.Int64, fromTransactionId );
-					ctx.AddParameter( command, "@toTransactionId", DbType.Int64, toTransactionId );
-
-					if ( tenantId >= 0 )
+					using ( IDbCommand command = ctx.CreateCommand( "spRevertRange", CommandType.StoredProcedure ) )
 					{
-						ctx.AddParameter( command, "@tenantId", DbType.Int64, tenantId );
-					}
+						ctx.AddParameter( command, "@fromTransactionId", DbType.Int64, fromTransactionId );
+						ctx.AddParameter( command, "@toTransactionId", DbType.Int64, toTransactionId );
 
-					command.ExecuteNonQuery( );
+						if ( tenantId >= 0 )
+						{
+							ctx.AddParameter( command, "@tenantId", DbType.Int64, tenantId );
+						}
+
+						command.ExecuteNonQuery( );
+					}
+				}
+			}
+			finally
+			{
+				if ( tenantId >= 0 )
+				{
+					TenantHelper.Invalidate( tenantId );
 				}
 			}
 		}
@@ -285,23 +336,31 @@ namespace EDC.ReadiNow.Database
 			long userId;
 			RequestContext.TryGetUserId( out userId );
 
-			using ( DatabaseContextInfo info = new DatabaseContextInfo( message ) )
-			using ( DatabaseContext ctx = DatabaseContext.GetContext( ) )
+			try
 			{
-				using ( IDbCommand command = ctx.CreateCommand( "spRevertTo", CommandType.StoredProcedure ) )
+				using ( DatabaseContextInfo info = new DatabaseContextInfo( message ) )
+				using ( DatabaseContext ctx = DatabaseContext.GetContext( ) )
 				{
-					ctx.AddParameter( command, "@transactionId", DbType.Int64, transactionId );
-
-					if ( tenantId != null )
+					using ( IDbCommand command = ctx.CreateCommand( "spRevertTo", CommandType.StoredProcedure ) )
 					{
-						ctx.AddParameter( command, "@tenantId", DbType.Int64, tenantId );
+						ctx.AddParameter( command, "@transactionId", DbType.Int64, transactionId );
+
+						if ( tenantId != null )
+						{
+							ctx.AddParameter( command, "@tenantId", DbType.Int64, tenantId );
+						}
+
+						ctx.AddParameter( command, "@context", DbType.AnsiString, DatabaseContextInfo.GetMessageChain( userId ) );
+
+						command.ExecuteNonQuery( );
 					}
-
-
-
-					ctx.AddParameter( command, "@context", DbType.AnsiString, DatabaseContextInfo.GetMessageChain( userId ) );
-
-					command.ExecuteNonQuery( );
+				}
+			}
+			finally
+			{
+				if ( tenantId >= 0 )
+				{
+					TenantHelper.Invalidate( tenantId );
 				}
 			}
 

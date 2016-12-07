@@ -44,7 +44,7 @@
             var maxNumberFieldValue = 1000000000;
             var minNumberFieldValue = -1000000000;
             var maxSingleLineStringFieldSize = 1000;
-            var maxMultilineStringFieldSize = 100000;
+            var maxMultilineStringFieldSize = 10000;
 
             //
             // Regexs for determining valid field text
@@ -330,7 +330,7 @@
                             } else {
                                 var datetime = new Date((tempDt.getMonth() + 1) + '/' + tempDt.getDate() + '/' + tempDt.getFullYear() + ' ' + timePart);
 
-                                if (datetime.toString() == 'Invalid Date') {
+                                if (datetime.toString() === 'Invalid Date') {
                                     result.push('Invalid time value.');
                                     return result;
                                 } else {
@@ -485,11 +485,11 @@
                 var displayRange = _.isNumber(minField) && _.isNumber(maxField);
 
                 var min = minNumberFieldValue;
-                if (angular.isDefined(minField) && minField != null) {
+                if (angular.isDefined(minField) && minField != null) { // eslint-disable-line eqeqeq
                     min = minField;
                 }
                 var max = maxNumberFieldValue;
-                if (angular.isDefined(maxField) && maxField != null) {
+                if (angular.isDefined(maxField) && maxField != null) { // eslint-disable-line eqeqeq
                     max = maxField;
                 }
 
@@ -515,11 +515,11 @@
                 var displayRange = _.isNumber(minField) && _.isNumber(maxField);
 
                 var min = minNumberFieldValue;
-                if (angular.isDefined(minField) && minField != null) {
+                if (angular.isDefined(minField) && minField != null) { // eslint-disable-line eqeqeq
                     min = minField;
                 }
                 var max = maxNumberFieldValue;
-                if (angular.isDefined(maxField) && maxField != null) {
+                if (angular.isDefined(maxField) && maxField != null) { // eslint-disable-line eqeqeq
                     max = maxField;
                 }
 
@@ -581,7 +581,7 @@
                         value = text;
                     } else {
 
-                        if (text != null && text.trim().length !== 0) {
+                        if (text && text.trim().length !== 0) {
                             if (!numberRegex.test(text)) {
                                 result.push('The value is not a valid number.');
                             } else {
@@ -590,7 +590,7 @@
                         }
                     }
 
-                    if (angular.isDefined(value) && value != null) {
+                    if (angular.isDefined(value) && value != null) { // eslint-disable-line eqeqeq
                         if (decimalPlaceValidator) {
                             formattedMin = Globalize.format(min, 'n' + decimalPlaces);
                             formattedMax = Globalize.format(max, 'n' + decimalPlaces);

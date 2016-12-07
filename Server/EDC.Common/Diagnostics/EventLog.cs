@@ -17,6 +17,11 @@ namespace EDC.Diagnostics
     public class EventLog : IEventLog
     {
         /// <summary>
+        /// The maximum message size.
+        /// </summary>
+        private const int MaximumMessageSize = 10000;
+
+        /// <summary>
         ///     True if any of the writers have errors enabled, false otherwise.
         /// </summary>
         private readonly bool _errorEnabled;
@@ -304,6 +309,12 @@ namespace EDC.Diagnostics
                 userName = context.UserName;
                 tenantId = context.TenantId;
                 tenantName = context.TenantName;
+            }
+
+            // Truncate messages longer than 10000 chars
+            if (message != null && message.Length > MaximumMessageSize)
+            {
+                message = message.Substring(0, MaximumMessageSize);
             }
 
             // Create an event log entry and pass it the writers.                

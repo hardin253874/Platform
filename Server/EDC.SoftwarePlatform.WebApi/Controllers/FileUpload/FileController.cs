@@ -14,6 +14,7 @@ using EDC.SoftwarePlatform.WebApi.Infrastructure;
 using ERM = EDC.ReadiNow.Model;
 using System.Text.RegularExpressions;
 using EDC.ReadiNow.IO;
+using EDC.ReadiNow.Security;
 
 namespace EDC.SoftwarePlatform.WebApi.Controllers.FileUpload
 {
@@ -64,13 +65,18 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.FileUpload
 			var idMap = new FileList( );
 
 			try
-			{                									
+			{
+			    string expectedType = Request.RequestUri.ParseQueryString( )[ "type" ];
+
 				foreach ( var entry in provider.RemoteToLocalFileNameMap )
 				{
 					string remoteFileName = entry.Key;
 					string localFileName = entry.Value;						
 
 					string token;
+
+				    if ( !FileRepositoryHelper.CheckFileExtensionIsValid( remoteFileName, expectedType ) )
+				        throw new PlatformSecurityException( "Disallowed file type." );
 
 					using ( var source = new FileStream( localFileName, FileMode.Open, FileAccess.Read, FileShare.Read ) )
 					{

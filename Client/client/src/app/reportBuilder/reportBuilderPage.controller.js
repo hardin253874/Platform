@@ -202,20 +202,11 @@
 
             if (reportNode && reportNode.getType()) {
 
-                var children = [];
                 var node = null;
-                var nodeType = reportNode.getTypeAlias();
+                var nodeType = reportNode.getEntity().type.nsAlias;
+                var getChildren = true;
                 switch (nodeType) {
                     case 'core:resourceReportNode':
-                    case 'resourceReportNode':
-
-                        children = [];
-                        _.each(reportNode.getRelatedReportNodes(), function (relReportNode) {
-                            var resourceReportNodeChildNode = $scope.getTreeNode(relReportNode, reportNode, null);
-                            if (resourceReportNodeChildNode)
-                                children.push(resourceReportNodeChildNode);
-                        });
-                        children = sp.naturalSort(children, 'name'); // _.sortBy(children, function (child) { return child.name; });
                         node = {
                             name: reportNode.getResourceReportNodeType().name,
                             nid: reportNode.id(),
@@ -229,28 +220,18 @@
                             qe: reportNode,
                             pe: parentReportNode,
                             pae: parentAggregateReportNode,
-                            children: children,
                             cols: [],
                             followInReverse: false
                         };
                         break;
 
                     case 'core:aggregateReportNode':
-                    case 'aggregateReportNode':
                         node = $scope.getTreeNode(reportNode.getGroupedNode(), parentReportNode, reportNode);
+                        getChildren = false;
                         break;
 
                     case 'core:relationshipReportNode':
-                    case 'relationshipReportNode':
                         if (reportNode.getFollowRelationship()) {
-                            children = [];
-                            _.each(reportNode.getRelatedReportNodes(), function (relReportNode) {
-                                var relReportNodeChildNode = $scope.getTreeNode(relReportNode, reportNode, null);
-                                if (relReportNodeChildNode)
-                                    children.push(relReportNodeChildNode);
-                            });
-                            children = sp.naturalSort(children, 'name'); // _.sortBy(children, function (child) { return child.name; });
-
                             var relationshipType = '';
                             if (reportNode.getFollowRelationship().isChoiceField() || reportNode.getFollowRelationship().isLookup()) {
                                 relationshipType = 'lookups';
@@ -259,7 +240,7 @@
                             }
 
                             node = {
-                                name: reportNode.getFollowRelationship().getName(), //reportNode.getResourceReportNodeType().name,
+                                name: reportNode.getFollowRelationship().getName(),
                                 nid: reportNode.id(),
                                 etid: reportNode.getResourceReportNodeType() ? reportNode.getResourceReportNodeType().id() : 0,
                                 pnid: parentReportNode.id(),
@@ -271,7 +252,6 @@
                                 qe: reportNode,
                                 pe: parentReportNode,
                                 pae: parentAggregateReportNode,
-                                children: children,
                                 cols: [],
                                 followInReverse: reportNode.getFollowRelationship().isReverse()
                             };
@@ -280,17 +260,7 @@
                         }
                         break;
 
-
                     case 'core:derivedTypeReportNode':
-                    case 'derivedTypeReportNode':
-                        children = [];
-                        _.each(reportNode.getRelatedReportNodes(), function (relReportNode) {
-                            var derivedReportNodeChildNode = $scope.getTreeNode(relReportNode, reportNode, null);
-                            if (derivedReportNodeChildNode)
-                                children.push(derivedReportNodeChildNode);
-
-                        });
-                        children = sp.naturalSort(children, 'name'); // _.sortBy(children, function (child) { return child.name; });
                         node = {
                             name: reportNode.getResourceReportNodeType().name,
                             nid: reportNode.id(),
@@ -304,23 +274,12 @@
                             qe: reportNode,
                             pe: parentReportNode,
                             pae: parentAggregateReportNode,
-                            children: children,
                             cols: [],
                             followInReverse: false
                         };
                         break;
 
-
-                    case 'core:relationshipInstanceReportNode':
-                    case 'relationshipInstanceReportNode':
-
-                        children = [];
-                        _.each(reportNode.getRelatedReportNodes(), function (relReportNode) {
-                            var relInstanceReportNodeChildNode = $scope.getTreeNode(relReportNode, reportNode, null);
-                            if (relInstanceReportNodeChildNode)
-                                children.push(relInstanceReportNodeChildNode);
-                        });
-                        children = sp.naturalSort(children, 'name'); // _.sortBy(children, function (child) { return child.name; });
+                    case 'core:customJoinReportNode':
                         node = {
                             name: reportNode.getResourceReportNodeType().name,
                             nid: reportNode.id(),
@@ -328,13 +287,12 @@
                             pnid: parentReportNode.id(),
                             relid: 0,
                             nodetype: nodeType.replace('core:', ''),
-                            reltype: 'relationshipInstance',
+                            reltype: 'customJoin',
                             ftid: 0,
                             ttid: 0,
                             qe: reportNode,
                             pe: parentReportNode,
                             pae: parentAggregateReportNode,
-                            children: children,
                             cols: [],
                             followInReverse: false
                         };
@@ -347,9 +305,17 @@
 
                 }
 
+                if (getChildren) {
+                    var children = [];
+                    _.each(reportNode.getRelatedReportNodes(), function (relReportNode) {
+                        var childNode = $scope.getTreeNode(relReportNode, reportNode, null);
+                        if (childNode)
+                            children.push(childNode);
+                    });
+                    node.children = sp.naturalSort(children, 'name');
+                }
 
                 return node;
-
 
             } else {
                 return null;
@@ -521,10 +487,8 @@
 
             if (e.shiftKey) {
                 switch (e.which) {
-                    case 188:
-                    // <
-                    case 190:
-                        // >
+                    case 188: // <
+                    case 190: // >
                         e.stopPropagation();
                         e.preventDefault();
                         return false;

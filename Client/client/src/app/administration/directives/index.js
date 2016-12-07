@@ -7,6 +7,7 @@
     */
     angular.module('mod.app.administration.directives',
         [
-            'mod.app.administration.directives.spAdministration'
+            'mod.app.administration.directives.spAdministration',
+            'mod.app.spDocumentationService'
         ]);
 }());

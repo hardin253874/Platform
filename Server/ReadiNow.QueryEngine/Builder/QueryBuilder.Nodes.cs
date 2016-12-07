@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using EDC.ReadiNow.Core;
 using EDC.ReadiNow.Diagnostics;
 using EDC.ReadiNow.Model;
 using EDC.ReadiNow.Metadata;
@@ -10,6 +11,7 @@ using Model = EDC.ReadiNow.Model;
 using ReadiNow.QueryEngine.Builder.SqlObjects;
 using ReadiNow.QueryEngine.Runner;
 using EDC.ReadiNow.Core.Cache;
+using EDC.ReadiNow.Expressions;
 
 namespace ReadiNow.QueryEngine.Builder
 {
@@ -132,7 +134,7 @@ namespace ReadiNow.QueryEngine.Builder
 				}
 
 				// Optimization: Collapse root table if possible
-				if ( entity.GetType( ) == typeof ( ResourceEntity ) && _collapseRootEntity && entityTables.EntityTable.Children.Count == 1 && !entityTables.EntityTable.Children[ 0 ].ApplyTableFunction )
+				if ( entity.GetType( ) == typeof ( ResourceEntity ) && _collapseRootEntity && entityTables.EntityTable.Children.Count == 1 )
 				{
 					SqlTable entityTable = entityTables.EntityTable;
 					SqlTable childTable = entityTables.EntityTable.Children[ 0 ];
@@ -356,6 +358,13 @@ namespace ReadiNow.QueryEngine.Builder
             if (joinToSelf != null)
             {
                 table = RegisterJoinToSelfEntity(joinToSelf, parentTable, sqlQuery);
+                return table;
+            }
+
+            var customJoin = entity as CustomJoinNode;
+            if ( customJoin != null )
+            {
+                table = RegisterCustomJoinNode( customJoin, parentTable, sqlQuery );
                 return table;
             }
 
@@ -659,7 +668,60 @@ namespace ReadiNow.QueryEngine.Builder
 					EntityTable = entityTable,
 					HeadTable = parentTable
 				};
-		}
+        }
+
+
+        /// <summary>
+        ///     Handles a custom join.
+        /// </summary>
+        /// <param name="customJoinNode"></param>
+        /// <param name="parentTable">The parent table.</param>
+        /// <param name="sqlQuery">The SQL query that the table will be created in.</param>
+        /// <returns>The table to use for upward joins.</returns>
+        private EntityTables RegisterCustomJoinNode( CustomJoinNode customJoinNode, SqlTable parentTable, SqlQuery sqlQuery )
+        {
+            string predicateScript = customJoinNode.JoinPredicateScript;
+            if ( predicateScript == null )
+                throw new Exception( "No script was specified." );
+            if ( customJoinNode.EntityTypeId == null )
+                throw new Exception( "No type was specified." );
+
+            SqlTable childTable = ConstrainDefinitionType( null, customJoinNode.EntityTypeId, customJoinNode.ExactType, sqlQuery );
+
+            if ( childTable == null )
+            {
+                // Ensure primary table
+                // primary may still be null in scenario where joined is 'all resource types', or if root type check is suppressed
+                childTable = sqlQuery.CreateTable( "dbo.Entity", "e" );
+                childTable.FilterByTenant = true;
+                childTable.IdColumn = "Id";
+            }
+
+            childTable.Parent = parentTable;
+            parentTable.Children.Add( childTable );
+            childTable.DependsOnOtherJoins = true;
+
+            // Join condition gets stitched up later in ApplyScriptCustomJoinPredicates
+
+            // Join hints
+            JoinHint joinHint;
+            if ( customJoinNode.ResourceMustExist )
+            {
+                joinHint = JoinHint.Required;
+            }
+            else if ( customJoinNode.ResourceNeedNotExist )
+            {
+                joinHint = JoinHint.DontConstrainParent;
+            }
+            else
+            {
+                joinHint = JoinHint.Unspecified;
+            }
+            childTable.JoinHint = joinHint;
+            childTable.JoinNotConstrainedByParent = customJoinNode.ParentNeedNotExist;
+
+            return new EntityTables( childTable );
+        }
 
 
         /// <summary>
@@ -725,10 +787,37 @@ namespace ReadiNow.QueryEngine.Builder
 				string fromTypeIdParamName = RegisterSharedParameter( System.Data.DbType.Int64, relEnt.FromType.Id.ToString( CultureInfo.InvariantCulture ) );
 				string toTypeIdParamName = RegisterSharedParameter( System.Data.DbType.Int64, relEnt.ToType.Id.ToString( CultureInfo.InvariantCulture ) );
 
-                relationshipTableName = string.Format("dbo.fnGetRelationshipRecAndSelf({0}, @tenant, {1}, {2}, {3})",
-					FormatEntity( relationship.RelationshipTypeId, relationshipTypeIdParamName ), relationship.Recursive == RecursionMode.Recursive ? 0 : 1,
-					FormatEntity( relEnt.FromType, fromTypeIdParamName ), FormatEntity( relEnt.ToType, toTypeIdParamName ) );
-			    nameContainsSql = true;			    
+				relationshipTableName = sqlQuery.AliasManager.CreateAlias( "#rec" );
+
+				string formattedRelEntityId = FormatEntity( relationship.RelationshipTypeId, true, relationshipTypeIdParamName );
+				string formattedFromEntityId = FormatEntity( relEnt.FromType, true, fromTypeIdParamName );
+				string formattedToEntityId = FormatEntity( relEnt.ToType, true, toTypeIdParamName );
+
+				relationshipTableName += $"_{formattedRelEntityId}_{formattedFromEntityId}_{formattedToEntityId}";
+
+				string create = $"\nCREATE TABLE {relationshipTableName} ( FromId BIGINT, ToId BIGINT, Depth INT, TypeId BIGINT, TenantId BIGINT )\nINSERT INTO {relationshipTableName} SELECT * FROM dbo.fnGetRelationshipRecAndSelf({FormatEntity( relationship.RelationshipTypeId, relationshipTypeIdParamName )}, @tenant, {( relationship.Recursive == RecursionMode.Recursive ? 0 : 1 )}, {FormatEntity( relEnt.FromType, fromTypeIdParamName )}, {FormatEntity( relEnt.ToType, toTypeIdParamName )})";
+				string drop = $"\nDROP TABLE {relationshipTableName}";
+
+				if ( _querySettings.UseSharedSql )
+				{
+					// Return the sql used to create/drop the tables.
+					// Do not emit it as part of the sql for the query.
+					_sharedSqlPreamble.Add( create );
+					_sharedSqlPostamble.Add( drop );
+				}
+				else
+				{
+					// Check if the shared sql exists.
+					// This is an optimization.
+					bool isSharedSqlAvailable = IsSharedSqlPreambleAvailable( create );
+
+					if ( !isSharedSqlAvailable )
+					{
+						// Emit the sql as part of the query                            
+						_sqlBatch.SqlPreamble = string.Concat( Environment.NewLine, create, _sqlBatch.SqlPreamble );
+						_sqlBatch.SqlPostamble = string.Concat( _sqlBatch.SqlPostamble, Environment.NewLine, drop );
+					}
+				}
 			}
 			else
 			{
@@ -747,17 +836,17 @@ namespace ReadiNow.QueryEngine.Builder
 			}
 			else if ( relationship.ResourceMustExist )
 			{
-				joinHint = JoinHint.Required;
+                joinHint = JoinHint.Required;
             }
             else if (relationship.ResourceNeedNotExist)
             {
                 joinHint = JoinHint.DontConstrainParent;
             }
-			else if ( relationship.ConstrainParent )
+            else if ( relationship.ConstrainParent )
 			{
 				joinHint = JoinHint.Constrain;
-			}
-			else
+            }
+            else
 			{
 				joinHint = JoinHint.Unspecified;
 			}
@@ -766,22 +855,22 @@ namespace ReadiNow.QueryEngine.Builder
 			SqlTable relationshipTable =
 				sqlQuery.CreateJoinedTable( relationshipTableName, "rel", parentTable, joinHint, forward ? fromColumnName : toColumnName, parentTable.IdColumn );
 
-		    relationshipTable.NameContainsSql = nameContainsSql;            
+		    relationshipTable.NameContainsSql = nameContainsSql;
+		    relationshipTable.JoinNotConstrainedByParent = relationship.ParentNeedNotExist;
 
-			// Column that child tables should join to
-			//if (isRecursive)
-			//{
-			//    relationshipTable.IdColumn = "Id";
-			//}
-			//else
-			//{
-			relationshipTable.IdColumn = forward ? toColumnName : fromColumnName;
+            // Column that child tables should join to
+            //if (isRecursive)
+            //{
+            //    relationshipTable.IdColumn = "Id";
+            //}
+            //else
+            //{
+            relationshipTable.IdColumn = forward ? toColumnName : fromColumnName;
 			//}
 
 
 			if ( isRecursive )
 			{
-				//relationshipTable.ApplyTableFunction = true;
 				//relationshipTable.NameContainsSql = true;
 
 				// Specify depth constraint
@@ -789,17 +878,19 @@ namespace ReadiNow.QueryEngine.Builder
 				{
 					relationshipTable.Conditions.Add( "$.Depth > 0" );
 				}
-			}
-			if ( isNormal || isRecursive )
-			{
-				string relationshipTypeIdParamName = RegisterSharedParameter( System.Data.DbType.Int64, relationship.RelationshipTypeId.Id.ToString( CultureInfo.InvariantCulture ) );
+            }
+            if ( isNormal )
+            {
+                // Filter tenant
+                relationshipTable.FilterByTenant = true;
+            }
+            if ( isNormal || isRecursive )
+		    {
+		        string relationshipTypeIdParamName = RegisterSharedParameter( System.Data.DbType.Int64, relationship.RelationshipTypeId.Id.ToString( CultureInfo.InvariantCulture ) );
 
-				// Specify relationship type
-				relationshipTable.Conditions.Add( "$.TypeId = " + FormatEntity( relationship.RelationshipTypeId, relationshipTypeIdParamName ) );
-
-				// Filter tenant
-				relationshipTable.FilterByTenant = true;
-			}
+		        // Specify relationship type
+		        relationshipTable.Conditions.Add( "$.TypeId = " + FormatEntity( relationship.RelationshipTypeId, relationshipTypeIdParamName ) );
+		    }
 
 			if ( isRecursive || isNormal )
 			{
@@ -809,7 +900,11 @@ namespace ReadiNow.QueryEngine.Builder
 
             if (relationshipTable.SecureResources)
             {
-                relationshipTable.IsImplicitlySecured = DoesRelationshipImplicitlySecureResources(relEnt, relationship.RelationshipDirection);
+                // Note: A relationship cannot implicitly secure a full join because
+                // target entities will be viewed even in the absence of a securing relationship
+                bool implicitlySecured = !relationshipTable.JoinNotConstrainedByParent
+                    && DoesRelationshipImplicitlySecureResources( relEnt, relationship.RelationshipDirection );
+                relationshipTable.IsImplicitlySecured = implicitlySecured;
             }
 
 			// Explicitly manufacture relationships (edge case)

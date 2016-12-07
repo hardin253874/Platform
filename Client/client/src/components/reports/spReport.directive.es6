@@ -83,7 +83,7 @@
                               spContextMenuService, spActionsService, condFormattingConstants, spReportActionsDialog,
                               spTenantSettings, $timeout, $parse, $q, reportBuilderService, spAggregateOptionsDialog,
                               spAlertsService, spTypeOperatorService, spNavService, spMobileContext, spAppSettings,
-                              spInlineEditService, spEntityService, rnFeatureSwitch, spState) {
+                              spInlineEditService, spEntityService, rnFeatureSwitch, spState, $window) {
 
         var reportModelManager = spReportModelManager(null);
         var selectLastSelectedItems;
@@ -216,6 +216,10 @@
         $scope.$watch('options.isInPicker', function () {
             model.isInPicker = $scope.options.isInPicker;
             gridOptions.hideGridContextMenu = $scope.options.isInPicker;   // reports in picker shouldn't show grid context menu. #22127
+
+            if (model.isInPicker && gridOptions.multiSelect) {
+                gridOptions.showSelectionCheckbox = true;
+            }
         });
 
         $scope.$watch('options.formControlEntity', function () {
@@ -254,6 +258,10 @@
 
         $scope.$watch('options.multiSelect', function () {
             gridOptions.multiSelect = $scope.options.multiSelect;
+
+            if (model.isInPicker && gridOptions.multiSelect) {
+                gridOptions.showSelectionCheckbox = true;
+            }
         });
 
         $scope.$watch('options.reportId', reportIdChanged);
@@ -450,6 +458,8 @@
             updateActionButtonsEnabledDebounce(selected);
         });
 
+        $scope.$on("spDataGridEventGridCellLinkClicked", onDataGridCellLinkClicked);
+
         //////////////////////////////////////////////////////////////////////
         // We are ready to go....
 
@@ -553,7 +563,7 @@
 
                         options.selectedItems = options.selectedItems || [];
 
-                        if (gridOptions.dataGrid && gridOptions.dataGrid.getFirstSelectableRowDataItem) {
+                        if (gridOptions.dataGrid && gridOptions.dataGrid.getFirstSelectableRowDataItem && !gridOptions.showSelectionCheckbox) {
 
                             const firstRow = gridOptions.dataGrid.getFirstSelectableRowDataItem();
                             if (firstRow) {
@@ -574,7 +584,8 @@
                         options.selectedItems = options.selectedItems || [];
 
                         if (!isMobile && gridOptions.dataGrid &&
-                            gridOptions.dataGrid.getFirstSelectableRowDataItem) {
+                            gridOptions.dataGrid.getFirstSelectableRowDataItem &&
+                            !gridOptions.showSelectionCheckbox) {
                             // on desktop we want the first row to be selected by default
                             const firstRow = gridOptions.dataGrid.getFirstSelectableRowDataItem();
                             if (firstRow) {
@@ -1090,12 +1101,8 @@
                             if (actionRequest.hostIds && actionRequest.hostIds.length > 0) {
                                 menuKey += actionRequest.hostIds.join('');
                             }
-                            // filter out actions related to modify access if modify access is denied
-                            var filteredActionsItems = model.modifyAccessDenied ?
-                                filteroutItemsThatNeedModifyAccess(response.actions)
-                                : response.actions;
 
-                            var items = spContextMenuService.getItemsFromActions(filteredActionsItems, menuKey);
+                            var items = spContextMenuService.getItemsFromActions(response.actions, menuKey);
 
                             // Cache the action items for the current request
                             model.actionMenuItemsForSelection.actionItems = items;
@@ -1131,7 +1138,7 @@
                 hostIds = [formControl.idP];
             }
             var menuKey = 'quickmenu';
-            if (hostIds && hostIds.length > 0) {
+            if (hostIds.length > 0) {
                 menuKey += hostIds.join('');
             }
             spReportActionsDialog.showModalDialog(reportActionsOptions).then(function (result) {
@@ -1414,10 +1421,6 @@
                     .then(function (response) {
                         if (response && response.actions) {
 
-                            var filteredActionsItems = model.modifyAccessDenied ?
-                                filteroutItemsThatNeedModifyAccess(response.actions)
-                                : response.actions;
-
                             var menuKey = '';
                             if (actionRequest.display) {
                                 menuKey += actionRequest.display;
@@ -1426,7 +1429,7 @@
                                 menuKey += actionRequest.hostIds.join('');
                             }
 
-                            var menuItems = spContextMenuService.getItemsFromActions(filteredActionsItems, menuKey);
+                            var menuItems = spContextMenuService.getItemsFromActions(response.actions, menuKey);
 
                             if (response.showNewMenu || $scope.options.isMobile) {
                                 var newMenuItems = _.filter(menuItems, function (menuItem) {
@@ -1449,7 +1452,7 @@
 
                             // On mobile we want to have the add button. On desktop only the ones marked as a button
                             var filter = isMobile ? {'alias': 'console:addRelationshipAction'} : {'isbutton': true};
-                            var filteredActions = _.filter(filteredActionsItems, filter);
+                            var filteredActions = _.filter(response.actions, filter);
 
                             _.forEach(filteredActions, createActionButton);
                         }
@@ -1461,13 +1464,6 @@
                         //spAlertsService.addAlert('Failed to load the toolbar.', 'error');
                     });
             }
-        }
-
-        function filteroutItemsThatNeedModifyAccess(actions) {
-            // remove 'console:addRelationshipAction' and 'console:removeRelationshipAction' actions
-            return _.filter(actions, function (action) {
-                return action.alias !== 'console:addRelationshipAction' && action.alias !== 'console:removeRelationshipAction';
-            });
         }
 
         function getDefaultContextMenuAction(selectedItems) {
@@ -1706,10 +1702,12 @@
                 name: columnDefinition.displayName,
                 type: columnDefinition.type,
                 isEntityNameColumn: rcol.fid === nameFieldId,
+                isAggCol: rcol.aggcol,
                 formats: model.reportMetadata.typefmtstyle[columnDefinition.type],
                 operators: filteredOprType,
                 condFormatting: {
                     displayText: valRule ? !valRule.hideval : true,
+                    disableDefaultFormat: valRule ? valRule.disabledefft : false,
                     format: cfRules ? cfRules.style : condFormattingConstants.formatTypeEnum.None
                 },
                 valueFormatting: {},
@@ -1869,7 +1867,7 @@
 
                 if (!_.isUndefined(valRule.align) && !_.isNull(valRule.align)) {
                     options.valueFormatting.alignment = valRule.align;
-                }
+                }                
 
                 switch (rcol.type) {
                     case spEntity.DataType.String:
@@ -1878,6 +1876,9 @@
                     case 'UserInlineRelationship':
                         if (valRule.lines && valRule.lines > 0) {
                             options.valueFormatting.lines = valRule.lines;
+                        }
+                        if (!sp.isNullOrUndefined(valRule.entitylistcolfmt)) {
+                            options.valueFormatting.entityListFormatId = valRule.entitylistcolfmt;
                         }
                         break;
                     case spEntity.DataType.Int32:
@@ -1904,6 +1905,9 @@
                         options.valueFormatting.structureViewId = reportBuilderService.getStructureViewIdForColumn(columnId);
                         if (valRule.lines && valRule.lines > 0) {
                             options.valueFormatting.lines = valRule.lines;
+                        }
+                        if (!sp.isNullOrUndefined(valRule.entitylistcolfmt)) {
+                            options.valueFormatting.entityListFormatId = valRule.entitylistcolfmt;
                         }
                         break;
                 }
@@ -2177,7 +2181,7 @@
             }
 
             resetInlineEditSession();
-            setIsInlineEditing(true);
+            setIsInlineEditing(true, $scope.model.isInPicker);
 
             let rowIndex = getSelectedRowIndex();
             if (rowIndex < 0) {
@@ -2193,7 +2197,7 @@
             cancelInlineEditsPending = false;                                                
             spInlineEditService.endSession(model.inlineEditState.session);
             model.inlineEditState.session = null;
-            setIsInlineEditing(false);            
+            setIsInlineEditing(false, $scope.model.isInPicker);            
 
             if (okSaves.length < attempts.length) {
                 // Have ok and failed saves. We need to refresh the report so that succeeded saves
@@ -2205,7 +2209,7 @@
         function saveInlineEdits() {
 
             if (!spInlineEditService.anyChanged(model.inlineEditState.session)) {
-                setIsInlineEditing(false);
+                setIsInlineEditing(false, $scope.model.isInPicker);
                 return;
             }
 
@@ -2251,7 +2255,7 @@
             if (!model.inlineEditState.session) {
                 resetInlineEditSession();
             }
-            setIsInlineEditing(!!model.inlineEditState.isInlineEditing);
+            setIsInlineEditing(!!model.inlineEditState.isInlineEditing, $scope.model.isInPicker);
 
             if ($scope.inlineEditingFeatureIsOn && !getInlineEditAppState().isDirty) {
                 getInlineEditAppState().isDirty = () => anyInlineEditingChanges();
@@ -2361,13 +2365,13 @@
             }
         }
 
-        function setIsInlineEditing(value) {
+        function setIsInlineEditing(value, isInPicker) {
             model.inlineEditState.isInlineEditing = value;
 
             // sync derived values to control other elements and for fast and convenient access
             model.isInlineEditing = value;
             gridOptions.isInlineEditing = value;
-            gridOptions.hideGridContextMenu = value;
+            gridOptions.hideGridContextMenu = value || isInPicker;
             model.refreshButtonOptions.disabled = value;
         }
 
@@ -2460,6 +2464,69 @@
 
         function getMetadata() {
             return model.reportMetadata;
+        }
+
+        function onDataGridCellLinkClicked(event, args) {
+            if (!event || !args) {
+                return;
+            }
+
+            event.stopPropagation();
+
+            if (model.isEditMode || model.isInDesign || model.isInlineEditing || model.isInPicker) {
+                return;
+            }            
+            
+            const columnIndex = args.columnIndex;
+
+            const rowData = getRow(args.rowIndex);
+            const col = getCol(columnIndex);
+
+            if (!col || !rowData) {
+                return;
+            }
+
+            let entityId = -1;
+            let params = {};
+
+            if (col.entityname) {
+                entityId = rowData.eid;
+
+                if (model.reportMetadata) {
+                    // Get the resource viewer for the report
+                    const formId = model.reportMetadata.rvfid || model.reportMetadata.dfid;
+                    if (formId) {
+                        params.formId = formId;
+                    }
+                }
+            } else {
+                if (!rowData.cells || columnIndex >= rowData.cells.length) {
+                    return;
+                }
+
+                const value = sp.result(rowData.cells[columnIndex], "value");
+                if (!value) {
+                    return;
+                }
+
+                const keys = _.keys(value);
+                if (!keys || keys.length > 1) {
+                    return;
+                }
+
+                entityId = _.first(keys);                
+            }            
+
+            if (entityId <= 0 || !_.isFinite(_.parseInt(entityId))) {
+                return;
+            }            
+
+            if (args.openInNewTab) {             
+                const win = $window.open(spNavService.getChildHref("viewForm", entityId, params), "_blank");
+                win.focus();
+            } else {
+                spNavService.navigateToChildState("viewForm", entityId, params);
+            }            
         }
     }
 

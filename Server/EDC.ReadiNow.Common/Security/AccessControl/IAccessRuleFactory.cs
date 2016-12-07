@@ -117,35 +117,38 @@ namespace EDC.ReadiNow.Security.AccessControl
         /// </exception>
         AccessRule AddAllowDeleteQuery(Subject subject, SecurableEntity securableEntity, Report query);
 
-        /// <summary>
-        /// Given the <paramref name="subject"/> the specified access to <paramref name="securableEntity"/> governed by
-        /// the query <paramref name="report"/>.
-        /// </summary>
-        /// <param name="subject">
-        /// The subject (user or role). This cannot be null.
-        /// </param>
-        /// <param name="securableEntity">
-        /// The secured entity (type). This cannot be null.
-        /// </param>
-        /// <param name="permissions">
-        /// The permission(s) to add. This cannot be null or contain null.
-        /// </param>
-        /// <param name="report">
-        /// The query (as a <see cref="Report"/>) to add. This should be a new report, not used for any security.
-        /// This cannot be null.
-        /// </param>
-        /// <param name="enabled">
-        /// True if the access rule should be enabled on creation, false if disabled.
-        /// </param>
-        /// <returns>
-        /// The <see cref="AccessRule"/> object representing the new query.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// No argument can be null.
-        /// </exception>
-        /// <exception cref="ArgumentException">
-        /// <paramref name="permissions"/> cannot contain null.
-        /// </exception>
-        AccessRule AddAllowByQuery(Subject subject, SecurableEntity securableEntity, IEnumerable<EntityRef> permissions, Report report, bool enabled = true);
+		/// <summary>
+		/// Given the <paramref name="subject"/> the specified access to <paramref name="securableEntity"/> governed by
+		/// the query <paramref name="report"/>.
+		/// </summary>
+		/// <param name="subject">
+		/// The subject (user or role). This cannot be null.
+		/// </param>
+		/// <param name="securableEntity">
+		/// The secured entity (type). This cannot be null.
+		/// </param>
+		/// <param name="permissions">
+		/// The permission(s) to add. This cannot be null or contain null.
+		/// </param>
+		/// <param name="report">
+		/// The query (as a <see cref="Report"/>) to add. This should be a new report, not used for any security.
+		/// This cannot be null.
+		/// </param>
+		/// <param name="enabled">
+		/// True if the access rule should be enabled on creation, false if disabled.
+		/// </param>
+		/// <param name="solution">
+		/// The solution.
+		/// </param>
+		/// <returns>
+		/// The <see cref="AccessRule"/> object representing the new query.
+		/// </returns>
+		/// <exception cref="ArgumentNullException">
+		/// No argument can be null.
+		/// </exception>
+		/// <exception cref="ArgumentException">
+		/// <paramref name="permissions"/> cannot contain null.
+		/// </exception>
+		AccessRule AddAllowByQuery(Subject subject, SecurableEntity securableEntity, IEnumerable<EntityRef> permissions, Report report, bool enabled = true, Solution solution = null);
     }
 }

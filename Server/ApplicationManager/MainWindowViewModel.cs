@@ -1,8 +1,8 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
+
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reflection;
-using System.Windows.Data;
 using System.Windows.Input;
 using ApplicationManager.Core;
 using ApplicationManager.Properties;
@@ -16,6 +16,11 @@ namespace ApplicationManager
 	public class MainWindowViewModel : ViewModelBase
 	{
 		/// <summary>
+		///     The applications
+		/// </summary>
+		private List<Application> _applications;
+
+		/// <summary>
 		///     Dialog result.
 		/// </summary>
 		private bool? _closeWindow;
@@ -25,16 +30,12 @@ namespace ApplicationManager
 		/// </summary>
 		public MainWindowViewModel( )
 		{
-			SearchCommand = new DelegateCommand< string >( Search );
+			SearchCommand = new DelegateCommand<string>( Search );
 			CloseCommand = new DelegateCommand( ( ) => CloseWindow = true );
 			ImportCommand = new DelegateCommand( Import );
 			SettingsCommand = new DelegateCommand( ShowSettings );
 
-			Applications = new CollectionViewSource( );
-			ApplicationCollection = new ObservableCollection< Application >( );
-			Applications.Source = ApplicationCollection;
-			Applications.SortDescriptions.Add( new System.ComponentModel.SortDescription( "Name", System.ComponentModel.ListSortDirection.Ascending ) );
-			ApplicationCache = new List< Application >( );
+			ApplicationCache = new List<Application>( );
 
 			LoadApplications( );
 		}
@@ -45,7 +46,7 @@ namespace ApplicationManager
 		/// <value>
 		///     The application collection.
 		/// </value>
-		public ObservableCollection< Application > ApplicationCollection
+		public ObservableCollection<Application> ApplicationCollection
 		{
 			get;
 			set;
@@ -57,10 +58,16 @@ namespace ApplicationManager
 		/// <value>
 		///     The applications.
 		/// </value>
-		public CollectionViewSource Applications
+		public List<Application> Applications
 		{
-			get;
-			private set;
+			get
+			{
+				return _applications;
+			}
+			private set
+			{
+				SetProperty( ref _applications, value );
+			}
 		}
 
 		/// <summary>
@@ -91,8 +98,7 @@ namespace ApplicationManager
 			{
 				if ( _closeWindow != value )
 				{
-					_closeWindow = value;
-					RaisePropertyChanged( "CloseWindow" );
+					SetProperty( ref _closeWindow, value );
 				}
 			}
 		}
@@ -133,13 +139,7 @@ namespace ApplicationManager
 		/// <value>
 		///     The title.
 		/// </value>
-		public string Title
-		{
-			get
-			{
-				return string.Format( Resources.MainWindowTitle, Assembly.GetExecutingAssembly( ).GetName( ).Version.ToString( 2 ) );
-			}
-		}
+		public string Title => string.Format( Resources.MainWindowTitle, Assembly.GetExecutingAssembly( ).GetName( ).Version.ToString( 2 ) );
 
 		/// <summary>
 		///     Gets or sets the application cache.
@@ -147,10 +147,9 @@ namespace ApplicationManager
 		/// <value>
 		///     The application cache.
 		/// </value>
-		private List< Application > ApplicationCache
+		private List<Application> ApplicationCache
 		{
 			get;
-			set;
 		}
 
 		/// <summary>
@@ -169,16 +168,18 @@ namespace ApplicationManager
 		/// </summary>
 		private void LoadApplications( )
 		{
-			ApplicationCollection.Clear( );
+			List<Application> apps = new List<Application>( );
 			ApplicationCache.Clear( );
 
 			foreach ( Application app in Application.GetApplications( ) )
 			{
 				app.RefreshAll = LoadApplications;
 
-				ApplicationCollection.Add( app );
+				apps.Add( app );
 				ApplicationCache.Add( app );
 			}
+
+			Applications = apps;
 		}
 
 		/// <summary>
@@ -187,7 +188,7 @@ namespace ApplicationManager
 		/// <param name="searchText">The search text.</param>
 		private void Search( string searchText )
 		{
-			ApplicationCollection.Clear( );
+			List<Application> apps = new List<Application>( );
 
 			bool cleared = string.IsNullOrEmpty( searchText );
 
@@ -195,16 +196,18 @@ namespace ApplicationManager
 			{
 				if ( cleared )
 				{
-					ApplicationCollection.Add( app );
+					apps.Add( app );
 				}
 				else
 				{
 					if ( app.Name.Contains( searchText ) )
 					{
-						ApplicationCollection.Add( app );
+						apps.Add( app );
 					}
 				}
 			}
+
+			Applications = apps;
 		}
 
 		/// <summary>

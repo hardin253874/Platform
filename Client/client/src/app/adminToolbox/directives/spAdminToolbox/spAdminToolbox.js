@@ -17,7 +17,7 @@
     */
     angular.module('mod.app.adminToolbox.directives.spAdminToolbox', [
     ])
-        .directive('spAdminToolbox', function (spNavService) {
+        .directive('spAdminToolbox', function (spNavService, spDocumentationService) {
             return {
                 restrict: 'AE',
                 replace: false,
@@ -25,6 +25,7 @@
                 scope: {},
                 templateUrl: 'adminToolbox/directives/spAdminToolbox/spAdminToolbox.tpl.html',
                 link: function (scope) {
+                    scope.docoService = spDocumentationService;
 
                     ///
                     // Cancel button has been clicked.

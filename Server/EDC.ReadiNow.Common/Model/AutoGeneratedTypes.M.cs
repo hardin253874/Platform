@@ -3689,6 +3689,17 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Public static accessor to the inherited  forward relationship.
 		/// </summary>
+		public static IEntity EnumFormattingRule_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.EnumValue.EnumFormattingRule_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
 		public static IEntity EnumOwner_Field
 		{
 			get
@@ -3847,7 +3858,7 @@ namespace EDC.ReadiNow.Model
 		{
 			get
 			{
-				return new IEntity [ ] { MarkerShapeEnum.Alias_Field, MarkerShapeEnum.CanDelete_Field, MarkerShapeEnum.CanModify_Field, MarkerShapeEnum.CanModifyProtectedResource_Field, MarkerShapeEnum.CreatedDate_Field, MarkerShapeEnum.Description_Field, MarkerShapeEnum.EnumOrder_Field, MarkerShapeEnum.ModifiedDate_Field, MarkerShapeEnum.Name_Field, MarkerShapeEnum.CreatedBy_Field, MarkerShapeEnum.EnumOwner_Field, MarkerShapeEnum.Flags_Field, MarkerShapeEnum.IndirectInSolution_Field, MarkerShapeEnum.InSolution_Field, MarkerShapeEnum.InStructureLevel_Field, MarkerShapeEnum.IsOfType_Field, MarkerShapeEnum.IsRootForStructureView_Field, MarkerShapeEnum.LastModifiedBy_Field, MarkerShapeEnum.ResourceConsoleBehavior_Field, MarkerShapeEnum.ResourceHasResourceKeyDataHashes_Field, MarkerShapeEnum.ResourceInFolder_Field, MarkerShapeEnum.SecurityOwner_Field, MarkerShapeEnum.SelectionBehavior_Field, MarkerShapeEnum.ShortcutInFolder_Field };
+				return new IEntity [ ] { MarkerShapeEnum.Alias_Field, MarkerShapeEnum.CanDelete_Field, MarkerShapeEnum.CanModify_Field, MarkerShapeEnum.CanModifyProtectedResource_Field, MarkerShapeEnum.CreatedDate_Field, MarkerShapeEnum.Description_Field, MarkerShapeEnum.EnumOrder_Field, MarkerShapeEnum.ModifiedDate_Field, MarkerShapeEnum.Name_Field, MarkerShapeEnum.CreatedBy_Field, MarkerShapeEnum.EnumFormattingRule_Field, MarkerShapeEnum.EnumOwner_Field, MarkerShapeEnum.Flags_Field, MarkerShapeEnum.IndirectInSolution_Field, MarkerShapeEnum.InSolution_Field, MarkerShapeEnum.InStructureLevel_Field, MarkerShapeEnum.IsOfType_Field, MarkerShapeEnum.IsRootForStructureView_Field, MarkerShapeEnum.LastModifiedBy_Field, MarkerShapeEnum.ResourceConsoleBehavior_Field, MarkerShapeEnum.ResourceHasResourceKeyDataHashes_Field, MarkerShapeEnum.ResourceInFolder_Field, MarkerShapeEnum.SecurityOwner_Field, MarkerShapeEnum.SelectionBehavior_Field, MarkerShapeEnum.ShortcutInFolder_Field };
 			}
 		}
 
@@ -3994,6 +4005,20 @@ namespace EDC.ReadiNow.Model
 			set
 			{
 				this.SetLookup<UserAccount>( "core:createdBy", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public FormattingRule EnumFormattingRule
+		{
+			get
+			{
+				return this.GetLookup<FormattingRule>( "core:enumFormattingRule", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<FormattingRule>( "core:enumFormattingRule", value, Direction.Forward );
 			}
 		}
 		/// <summary>
@@ -5286,6 +5311,17 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Public static accessor to the inherited  forward relationship.
 		/// </summary>
+		public static IEntity EnumFormattingRule_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.EnumValue.EnumFormattingRule_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
 		public static IEntity EnumOwner_Field
 		{
 			get
@@ -5444,7 +5480,7 @@ namespace EDC.ReadiNow.Model
 		{
 			get
 			{
-				return new IEntity [ ] { MonthOfYearEnum.Alias_Field, MonthOfYearEnum.CanDelete_Field, MonthOfYearEnum.CanModify_Field, MonthOfYearEnum.CanModifyProtectedResource_Field, MonthOfYearEnum.CreatedDate_Field, MonthOfYearEnum.Description_Field, MonthOfYearEnum.EnumOrder_Field, MonthOfYearEnum.ModifiedDate_Field, MonthOfYearEnum.Name_Field, MonthOfYearEnum.CreatedBy_Field, MonthOfYearEnum.EnumOwner_Field, MonthOfYearEnum.Flags_Field, MonthOfYearEnum.IndirectInSolution_Field, MonthOfYearEnum.InSolution_Field, MonthOfYearEnum.InStructureLevel_Field, MonthOfYearEnum.IsOfType_Field, MonthOfYearEnum.IsRootForStructureView_Field, MonthOfYearEnum.LastModifiedBy_Field, MonthOfYearEnum.ResourceConsoleBehavior_Field, MonthOfYearEnum.ResourceHasResourceKeyDataHashes_Field, MonthOfYearEnum.ResourceInFolder_Field, MonthOfYearEnum.SecurityOwner_Field, MonthOfYearEnum.SelectionBehavior_Field, MonthOfYearEnum.ShortcutInFolder_Field };
+				return new IEntity [ ] { MonthOfYearEnum.Alias_Field, MonthOfYearEnum.CanDelete_Field, MonthOfYearEnum.CanModify_Field, MonthOfYearEnum.CanModifyProtectedResource_Field, MonthOfYearEnum.CreatedDate_Field, MonthOfYearEnum.Description_Field, MonthOfYearEnum.EnumOrder_Field, MonthOfYearEnum.ModifiedDate_Field, MonthOfYearEnum.Name_Field, MonthOfYearEnum.CreatedBy_Field, MonthOfYearEnum.EnumFormattingRule_Field, MonthOfYearEnum.EnumOwner_Field, MonthOfYearEnum.Flags_Field, MonthOfYearEnum.IndirectInSolution_Field, MonthOfYearEnum.InSolution_Field, MonthOfYearEnum.InStructureLevel_Field, MonthOfYearEnum.IsOfType_Field, MonthOfYearEnum.IsRootForStructureView_Field, MonthOfYearEnum.LastModifiedBy_Field, MonthOfYearEnum.ResourceConsoleBehavior_Field, MonthOfYearEnum.ResourceHasResourceKeyDataHashes_Field, MonthOfYearEnum.ResourceInFolder_Field, MonthOfYearEnum.SecurityOwner_Field, MonthOfYearEnum.SelectionBehavior_Field, MonthOfYearEnum.ShortcutInFolder_Field };
 			}
 		}
 
@@ -5591,6 +5627,20 @@ namespace EDC.ReadiNow.Model
 			set
 			{
 				this.SetLookup<UserAccount>( "core:createdBy", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public FormattingRule EnumFormattingRule
+		{
+			get
+			{
+				return this.GetLookup<FormattingRule>( "core:enumFormattingRule", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<FormattingRule>( "core:enumFormattingRule", value, Direction.Forward );
 			}
 		}
 		/// <summary>

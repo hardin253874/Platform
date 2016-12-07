@@ -15,6 +15,7 @@
         'mod.app.editFormServices',
         'mod.app.editForm.designerDirectives',
         'mod.app.editForm.designerDirectives',
+        'mod.common.ui.spActionsService',
         'mod.common.editForm.editFormDirectives',
         'sp.navService',
         'sp.common.filters',
@@ -49,13 +50,14 @@
     }
 
     /* @ngInject */
-    function ScreenController($scope, $element, $stateParams, titleService, $timeout, spEditForm, spNavService,
+    function ScreenController($scope, $element, $stateParams, titleService, $timeout, $q, spEditForm, spNavService,
                               spAlertsService, spNavigationBuilderProvider, spMeasureArrangeService, spThemeService,
-                              spMobileContext, rnFeatureSwitch, consoleIconService) {
+                              spActionsService, spMobileContext, rnFeatureSwitch, consoleIconService) {
 
         var navigationBuilderProvider = spNavigationBuilderProvider($scope);
 
         $scope.allowFlexForm = rnFeatureSwitch.isFeatureOn('flexEditForm');
+        $scope.flexEditFormOptions = {};
         $scope.useFlexForm = false;
         $scope.toggleFlexForm = function () {
             if (!$scope.allowFlexForm) return;
@@ -67,6 +69,18 @@
             if (!$scope.allowFlexForm) return;
             $scope.showStructureEditor = !$scope.showStructureEditor;
             doLayout();
+        };
+        $scope.undoFormStructureEdit = function () {
+            if (!$scope.allowFlexForm) return;
+            if ($scope.model.formControl){
+                $scope.model.formControl.graph.history.undoBookmark();
+                doLayout();
+            }
+        };
+        $scope.toggleDesignMode = function () {
+            if (!$scope.allowFlexForm) return;
+            $scope.designMode = !$scope.designMode;
+            $scope.flexEditFormOptions = _.assign({}, $scope.flexEditFormOptions, {designing: $scope.designMode});
         };
 
         $scope.$on('doLayout', function (event) {
@@ -97,13 +111,18 @@
             $scope.item.data = {};
         }
 
+        var getScreenActionQuickMenuDebounce = _.debounce(getScreenActionQuickMenu, 100);
+        $scope.showActions = function() {
+            return !$scope.isMobile && rnFeatureSwitch.isFeatureOn('screenActions');
+        };
+
         $scope.navService = spNavService;
 
         $scope.model = {
             formId: $stateParams.eid ? $stateParams.eid : 0,
-            areEditingChildForms: false,
             isInTestMode: $stateParams.test,
-            configContextMenu: {}
+            configContextMenu: {},
+            actionButtons: []
         };
 
         $scope.item.data = _.extend($scope.item.data, $scope.model);
@@ -124,8 +143,7 @@
             $scope.item.data = null; // clear the form and data so it will be refreshed on the return
             spNavService.navigateToChildState('screenBuilder', $scope.model.formControl.id());
         };
-
-
+        
         // Configure the screen's properties
         $scope.configMenuUpdateEntityProperties = function () {
             if (!spNavService.isSelfServeEditMode) {
@@ -134,8 +152,7 @@
 
             navigationBuilderProvider.configureNavItem($scope.model.formControl);
         };
-
-
+        
         // Delete the screen
         $scope.configMenuDeleteEntity = function () {
             if (!spNavService.isSelfServeEditMode) {
@@ -143,6 +160,18 @@
             }
 
             navigationBuilderProvider.removeNavItem($scope.model.formControl);
+        };
+
+        // Disable screen actions? if action is disabled or if a child report is inline editing
+        $scope.isDisabledAction = function (action) {
+            var inlineEditing = false;
+            var components = sp.result($scope.item, 'componentData');
+            if (components) {
+                inlineEditing = _.some(components, function(component) {
+                    return component.isInlineEditing || false;
+                });
+            }
+            return inlineEditing || action.disabled;
         };
 
         //
@@ -180,7 +209,7 @@
                 }
             }
         });
-
+        
         activate();
 
         function activate() {
@@ -207,6 +236,7 @@
 
                     doLayout();
                     setHeaderIconAndStyle();
+                    getScreenActionQuickMenuDebounce();
                 },
                 function (error) {
                     spAlertsService.addAlert('An error occurred getting the screen: ' + sp.result(error, 'data.Message'), spAlertsService.sev.Error);
@@ -231,6 +261,80 @@
                     }
                 }
             }
+        }
+
+        //
+        // Actions available on this screen
+        //
+        function getScreenActionQuickMenu() {
+            $scope.model.actionButtons.length = 0;
+
+            var screenControl = $scope.model.formControl;
+            if (!screenControl || screenControl.idP <= 0) {
+                return $q.when();
+            }
+
+            return spActionsService.getActionsOnResource(screenControl.idP).then(function (screen) {
+                var menu = sp.result(screen, 'resourceConsoleBehavior.behaviorActionMenu');
+                if (menu) {
+                    var incoming = [];
+                    
+                    _.forEach(menu.includeActionsAsButtons, function (actionEntity) {
+                        var actionEntityType = sp.result(actionEntity, 'isOfType[0].nsAlias');
+                        var action = {
+                            name: actionEntity.name,
+                            nameshort: spActionsService.getShortName(actionEntity.name),
+                            multiname: actionEntity.multiSelectName,
+                            emptyname: actionEntity.emptySelectName,
+                            icon: actionEntity.menuIconUrl,
+                            order: actionEntity.menuOrder,
+                            action: actionEntity,
+                            disabled: false,
+                            method: actionEntity.htmlActionMethod,
+                            state: actionEntity.htmlActionState,
+                            data: {},
+                            execute: function() {
+                                var ctx = getActionExecutionContext(this, []);
+                                spActionsService.executeAction(this, ctx);
+                            }
+                        };
+                        switch (actionEntityType) {
+                            case 'console:workflowActionMenuItem':
+                                action.eid = sp.result(actionEntity, 'actionMenuItemToWorkflow.idP');
+                                break;
+                            case 'console:navigateToCreateFormActionMenuItem':
+                                action.eid = sp.result(actionEntity, 'navigateToCreateFormActionDefinition.idP');
+
+                                var formId = sp.result(actionEntity, 'navigateToCreateFormActionForm.idP');
+                                if (formId) {
+                                    _.set(action, 'data.CustomFormEditsTypeId', action.eid);
+                                    _.set(action, 'data.CustomForm', formId);
+                                }
+                                break;
+                        }
+
+                        incoming.push(action);
+                    });
+
+                    $scope.model.actionButtons = _.sortBy(incoming, ['order', 'displayname']);
+                }
+            }, function (error) {
+                console.error('screen.getScreenActionQuickMenu error:', error);
+            });
+        }
+
+        function getActionExecutionContext(action) {
+            return {
+                scope: $scope,
+                state: action.state,
+                selectionEntityIds: [],
+                isEditMode: false,
+                refreshDataCallback: refreshScreenContent
+            };
+        }
+
+        function refreshScreenContent() {
+            // ???
         }
 
         function doLayout() {

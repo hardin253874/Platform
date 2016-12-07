@@ -4,8 +4,10 @@
 (function () {
     'use strict';
 
-    angular.module('mod.feedback', ['sp.common.loginService', 'mod.common.spWebService', 'mod.common.spEntityService',
-        'mod.common.alerts']);
+    angular.module('mod.feedback', [
+        'sp.common.loginService', 'mod.common.spWebService', 'mod.common.spEntityService',
+        'mod.common.alerts', 'mod.featureSwitch'
+    ]);
 
     angular.module('mod.feedback')
         .directive('spFeedback', spFeedbackDirective)
@@ -15,7 +17,8 @@
 
     /* @ngInject */
     function spFeedbackService($document, $http, $rootScope, $q, $location, $timeout,
-                               spLoginService, spWebService, spAlertsService, spEntityService) {
+                               spLoginService, spWebService, spAlertsService, spEntityService,
+                               rnFeatureSwitch) {
 
         var consoleListenersAdded = false;
 
@@ -41,7 +44,9 @@
             console.addListener('error', error);
 
             // turn on log capture too ready for when we post an issue/do feedback/submit a bug/whatever
-            enableLogCapture();
+            if (rnFeatureSwitch.isFeatureOn('submitABug')) {
+                enableLogCapture();
+            }
         }
 
         function log() {

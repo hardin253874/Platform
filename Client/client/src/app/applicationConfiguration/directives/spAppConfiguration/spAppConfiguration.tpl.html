@@ -117,7 +117,7 @@
                         <th style="width: 15%">Is Required</th>
                         <th style="width: 1%"></th>
                     </tr>
-                    <tr ng-repeat="dependsOn in model.dependsOn" ng-class="{'direct' : dependsOn.isDirect, 'indirect' : !dependsOn.isDirect}">
+                    <tr ng-repeat="dependsOn in model.dependsOn | orderBy:['-isDirect','name']" ng-class="{'direct' : dependsOn.isDirect, 'indirect' : !dependsOn.isDirect}">
                         <td style="padding-right: 15px">
                             <img ng-if="!dependsOn.isEditing && dependsOn.isDirect" src="assets/images/icon_edit.png" title="Edit dependency" style="cursor: pointer" ng-click="editDependency(dependsOn)" />
                             <img ng-if="dependsOn.isEditing && dependsOn.isDirect" src="assets/images/toolbar_save.png" ng-attr-title="{{canSaveDependency(dependsOn) ? 'Save dependency' : ''}}" ng-class="canSaveDependency(dependsOn) ? 'canSave' : 'cannotSave'" ng-click="saveDependency(dependsOn, true)" />
@@ -208,7 +208,7 @@
                         <th style="width: 15%">Is Required</th>
                         <th style="width: 1%"></th>
                     </tr>
-                    <tr ng-repeat="requiredBy in model.requiredBy" ng-class="{'direct' : requiredBy.isDirect, 'indirect' : !requiredBy.isDirect}">
+                    <tr ng-repeat="requiredBy in model.requiredBy | orderBy:['-isDirect','name']" ng-class="{'direct' : requiredBy.isDirect, 'indirect' : !requiredBy.isDirect}">
                         <td style="cursor: pointer; padding-right: 15px">
                             <img ng-if="!requiredBy.isEditing && requiredBy.isDirect" src="assets/images/icon_edit.png" title="Edit dependency" style="cursor: pointer" ng-click="editDependency(requiredBy)" />
                             <img ng-if="requiredBy.isEditing && requiredBy.isDirect" src="assets/images/toolbar_save.png" ng-attr-title="{{canSaveDependency(requiredBy) ? 'Save dependency' : ''}}" ng-class="canSaveDependency(requiredBy) ? 'canSave' : 'cannotSave'" ng-click="saveDependency(requiredBy, false)" />

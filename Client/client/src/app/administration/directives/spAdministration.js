@@ -17,7 +17,7 @@
     */
     angular.module('mod.app.administration.directives.spAdministration', [
     ])
-        .directive('spAdministration', function (spNavService) {
+        .directive('spAdministration', function (spNavService, spDocumentationService) {
             return {
                 restrict: 'AE',
                 replace: false,
@@ -25,6 +25,7 @@
                 scope: {},
                 templateUrl: 'administration/directives/spAdministration.tpl.html',
                 link: function (scope) {
+                    scope.docoService = spDocumentationService;                    
 
                     ///
                     // Cancel button has been clicked.

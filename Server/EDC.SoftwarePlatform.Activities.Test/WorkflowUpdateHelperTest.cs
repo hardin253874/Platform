@@ -267,6 +267,35 @@ namespace EDC.SoftwarePlatform.Activities.Test
         }
 
         [Test]
+        public void CheckPromptTaskAfterUpgrade()
+        {
+            var workflow = CreateWorkflowWithUserPrompt();
+
+            workflow.Save();
+
+            var input = new Dictionary<string, object> { { "input", "my input" } };
+
+            var run = RunWorkflow(workflow, input);
+
+            run.TaskWithinWorkflowRun.Should().NotBeNull().And.NotBeEmpty().And.HaveCount(1);
+
+            var task = run.TaskWithinWorkflowRun.First().As<PromptUserTask>();
+            task.Should().NotBeNull();
+            task.PromptForTaskArguments.Should().NotBeNull().And.NotBeEmpty().And.HaveCount(1);
+
+            Assert.AreEqual(WorkflowRunState_Enumeration.WorkflowRunPaused, run.WorkflowRunStatus_Enum, "The workflow is paused");
+
+            WorkflowUpdateHelper.Update(workflow.Id, () => { });
+
+            var run2 = RunWorkflow(workflow, input);
+            run2.TaskWithinWorkflowRun.Should().NotBeNull().And.NotBeEmpty().And.HaveCount(1);
+
+            var task1 = Entity.Get<PromptUserTask>(task.Id);
+            task1.Should().NotBeNull();
+            task1.PromptForTaskArguments.Should().NotBeNull().And.NotBeEmpty().And.HaveCount(1);
+        }
+
+        [Test]
         public void Bug25996_OldVersioOnReport()
         {
             var workflow = CreateWorkflow();
@@ -322,6 +351,20 @@ namespace EDC.SoftwarePlatform.Activities.Test
                 .AddDisplayForm("Display Form", new string[] { "Exit1" }, null, null)
                 .AddLog("Log", "'Input: {{input}}");
 
+
+            return workflow;
+        }
+
+        Workflow CreateWorkflowWithUserPrompt()
+        {
+            var solution = new Solution();
+            var workflow = new Workflow { Name = "WorkflowUpdateHelperTestPrompt" };
+            workflow.InSolution = solution;
+            workflow
+                .AddDefaultExitPoint()
+                .AddInput<StringArgument>("input")
+                .AddPromptUser("Prompt user")
+                .AddLog("Log", "'Input: {{input}}");
 
             return workflow;
         }

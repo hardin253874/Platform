@@ -203,7 +203,7 @@
     function DataGridController($scope, $element, $attrs, $templateCache, $q,
                                 spDataGridPlugins, spDataGridUtils, spXsrf, spContextMenuService, spActionsService,
                                 $parse, reportBuilderService, $document, $timeout, spImageViewerDialog, spNavService,
-                                spThemeService, spMobileContext, $compile, $window) {
+                                spThemeService, spMobileContext, $compile, $window, spWebService) {
         
         $scope.debug = true;
 
@@ -211,7 +211,7 @@
         var DEFAULT_ROWHEIGHT = isTouchDevice() ? 46 : 28;
         var DEFAULT_LINEHEIGHT = 20;
         var AGGREGATE_ROW_LINEHEIGHT = 20;
-        var IMAGE_BASE_URL = '/spapi/data/v1/image/thumbnail/';
+        var IMAGE_BASE_URL = spWebService.getWebApiRoot() + '/spapi/data/v1/image/thumbnail/';
         // ReSharper restore InconsistentNaming
 
         var body = $document.find('body');
@@ -312,6 +312,7 @@
             // Note: the data and columnDefs are arrays not strings.
             // This is so that we can control when the updates happen to improve grid performance.
             ngGridOptions: {
+                showSelectionCheckbox: (!isTouchDevice() && $scope.dataGridOptions.showSelectionCheckbox) || false,
                 data: [],
                 columnDefs: [],
                 rowHeight: DEFAULT_ROWHEIGHT,
@@ -332,6 +333,8 @@
                 preventAutoSortOnGroup: true,
                 footerTemplate: $templateCache.get('dataGrid/footerTemplate.tpl.html'),
                 menuTemplate: $templateCache.get('dataGrid/menuTemplate.tpl.html'),
+                checkboxHeaderTemplate: $templateCache.get('dataGrid/checkboxHeaderTemplate.tpl.html'),
+                checkboxCellTemplate: $templateCache.get('dataGrid/checkboxCellTemplate.tpl.html'),
                 suppressRebuildOnColumnUpdate: true,
                 suppressAlternatingRowStyles: true,
                 headerColor: 'transparent',
@@ -774,7 +777,8 @@
         };
         
         $scope.getInlineEditingTemplate = function (row, col) {
-            return $scope.dataGridOptions.getInlineEditingTemplate(row.entity.rowIndex, col.colDef.index);
+            const columnIndex = sp.result(col, "colDef.spColumnDefinition.cellIndex");
+            return $scope.dataGridOptions.getInlineEditingTemplate(row.entity.rowIndex, columnIndex);
         };
 
         $scope.getDefaultCellStyle = function (row, col) {
@@ -1647,7 +1651,7 @@
                 return;
             }
 
-            options.imageUrl = '/spapi/data/v1/image/' +
+            options.imageUrl = spWebService.getWebApiRoot() + '/spapi/data/v1/image/' +
                 (_.isString(formattingData.imageId) ? formattingData.imageId.replace(':', '-') : formattingData.imageId);
             options.backgroundColor = formattingData.backgroundColor;
             spImageViewerDialog.showModalDialog(options);
@@ -1795,6 +1799,12 @@
             }
         });
 
+        $scope.$watch('dataGridOptions.showSelectionCheckbox', function () {
+            if (updateGridShowSelectionCheckbox()) {
+                $scope.gridLayoutPlugin.rebuildGrid();
+            }
+        });
+
         $scope.$watch('dataGridOptions.columnDefinitions', function () {
             if (!$scope.gridLayoutPlugin || !$scope.gridHelperPlugin || !$scope.model.ngGridOptions || !$scope.gridSortingPlugin) {
                 return;
@@ -1900,10 +1910,11 @@
                 $scope.model.ngGridOptions.plugins = [];
                 $scope.model.ngGridOptions = null;
             }
+            destroyInsertIndicator();
 
             $scope.dataGridOptions.dataGrid = null;
 
-            body.removeClass('dataGridUnselectable');
+            body.removeClass('dataGridUnselectable');            
         });
 
         $scope.$on('measureArrangeComplete', function (event) {
@@ -1956,6 +1967,34 @@
 
         $scope.dataGridCellClick = function (col) {            
             selectedColumnCssClass = col ? col.colIndex() : null;            
+        };
+
+        $scope.onCellLinkClick = function (event, row, col) {
+            const rowIndex = sp.result(row, "entity.rowIndex");
+            if (sp.isNullOrUndefined(rowIndex)) {
+                return;
+            }
+
+            const columnIndex = sp.result(col, "colDef.spColumnDefinition.cellIndex");            
+            if (sp.isNullOrUndefined(columnIndex)) {
+                return;
+            }
+
+            $scope.$emit("spDataGridEventGridCellLinkClicked", {
+                rowIndex:  rowIndex,
+                columnIndex: columnIndex,
+                openInNewTab: event && event.ctrlKey
+            });
+        };
+
+        $scope.onRowCheckboxChange = function(row) {
+            if (!row) {
+                return;
+            }
+            
+            const rowIndex = row.entity ? row.entity.rowIndex : row.rowIndex;
+                
+            $scope.dataGridOptions.dataGrid.selectRow(rowIndex, row.selected, true);            
         };
 
         initialiseForTouch();
@@ -2586,6 +2625,26 @@
             return result;
         }
 
+        function updateGridShowSelectionCheckbox() {
+            let result = false;
+
+            if (!$scope.gridLayoutPlugin || !$scope.model.ngGridOptions) {
+                return false;
+            }
+
+            const showSelectionCheckboxNew = (!isTouchDevice() && $scope.dataGridOptions.showSelectionCheckbox) || false,
+                  showSelectionCheckboxOld = $scope.model.ngGridOptions.showSelectionCheckbox || false;
+
+            if (showSelectionCheckboxNew !== showSelectionCheckboxOld) {
+                result = $scope.gridLayoutPlugin.updateGridShowSelectionCheckbox(showSelectionCheckboxNew);
+                if (result) {
+                    $scope.model.ngGridOptions.showSelectionCheckbox = showSelectionCheckboxNew;
+                }
+            }
+
+            return result;
+        }
+
         function updateUseExternalSorting() {
             if (!$scope.gridSortingPlugin || !$scope.model.ngGridOptions) {
                 return;
@@ -2792,13 +2851,13 @@
                 // Load the appropriate cell template
                 if (c.cellFormatting && !_.isEmpty(c.cellFormatting)) {
                     if (c.imageWidth > 0 && c.imageHeight > 0 && c.imageSizeId && c.imageScaleId) {
-                        cellTemplate = $templateCache.get('dataGrid/formattedCellImageTemplate.tpl.html');
+                        cellTemplate = $templateCache.get(c.showCellTextAsHyperlinks ? 'dataGrid/formattedCellImageHyperLinkTemplate.tpl.html' : 'dataGrid/formattedCellImageTemplate.tpl.html');
                     } else if (c.cellFormatting[0] && c.cellFormatting[0].bounds) {
                         cellTemplate = $templateCache.get('dataGrid/progressBarCellTemplate.tpl.html');
                     }
 
                     else {
-                        cellTemplate = $templateCache.get('dataGrid/formattedCellTemplate.tpl.html');                        
+                        cellTemplate = $templateCache.get(c.showCellTextAsHyperlinks ? 'dataGrid/formattedCellHyperLinkTemplate.tpl.html' : 'dataGrid/formattedCellTemplate.tpl.html');                        
                     }
                 }
 
@@ -2808,7 +2867,7 @@
                 }
 
                 if (cellTemplate === null) {
-                    cellTemplate = $templateCache.get('dataGrid/defaultCellTemplate.tpl.html');                    
+                    cellTemplate = $templateCache.get(c.showCellTextAsHyperlinks ? 'dataGrid/defaultCellHyperLinkTemplate.tpl.html' : 'dataGrid/defaultCellTemplate.tpl.html');                    
                 }                
 
                 return {

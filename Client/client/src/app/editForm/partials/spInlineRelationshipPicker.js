@@ -12,12 +12,12 @@
      Using the spInlineRelationshipPicker:
 
      */
-    angular.module('app.editForm.spInlineRelationshipPicker', ['ui.bootstrap', 'ui.bootstrap.position', 'mod.app.editForm'])
-        .directive('spInlineRelationshipPicker', function () {
+    angular.module('app.editForm.spInlineRelationshipPicker', ['ui.bootstrap', 'ui.bootstrap.position', 'mod.app.editForm', 'mod.common.spMobile'])
+        .directive('spInlineRelationshipPicker', function (spMobileContext) {
             return {
                 restrict: 'E',
                 replace: true,
-                templateUrl: 'editForm/partials/spInlineRelationshipPicker.tpl.html',
+                templateUrl: spMobileContext.isMobile ? 'editForm/partials/spInlineRelationshipPickerMobile.tpl.html' : 'editForm/partials/spInlineRelationshipPicker.tpl.html',
                 controller: 'spInlineRelationshipPickerController',
                 scope: {
                     options: '='

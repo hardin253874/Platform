@@ -11506,6 +11506,17 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Public static accessor to the inherited field.
 		/// </summary>
+		public static BoolField ParentNeedNotExist_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.ResourceReportNode.ParentNeedNotExist_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
 		public static BoolField TargetMustExist_Field
 		{
 			get
@@ -11763,7 +11774,7 @@ namespace EDC.ReadiNow.Model
 		{
 			get
 			{
-				return new IEntity [ ] { RelationshipReportNode.CheckExistenceOnly_Field, RelationshipReportNode.ConstrainParent_Field, RelationshipReportNode.FollowInReverse_Field, RelationshipReportNode.FollowRecursive_Field, RelationshipReportNode.IncludeSelfInRecursive_Field, RelationshipReportNode.Alias_Field, RelationshipReportNode.CanDelete_Field, RelationshipReportNode.CanModify_Field, RelationshipReportNode.CreatedDate_Field, RelationshipReportNode.Description_Field, RelationshipReportNode.ExactType_Field, RelationshipReportNode.ModifiedDate_Field, RelationshipReportNode.Name_Field, RelationshipReportNode.TargetMustExist_Field, RelationshipReportNode.TargetNeedNotExist_Field, RelationshipReportNode.CreatedBy_Field, RelationshipReportNode.Flags_Field, RelationshipReportNode.FollowRelationship_Field, RelationshipReportNode.IndirectInSolution_Field, RelationshipReportNode.InSolution_Field, RelationshipReportNode.InStructureLevel_Field, RelationshipReportNode.IsOfType_Field, RelationshipReportNode.IsRootForStructureView_Field, RelationshipReportNode.LastModifiedBy_Field, RelationshipReportNode.NodeUsedByExpression_Field, RelationshipReportNode.NodeUsedByStructureViewExpression_Field, RelationshipReportNode.ParentAggregatedNode_Field, RelationshipReportNode.ParentReportNode_Field, RelationshipReportNode.RelatedReportNodes_Field, RelationshipReportNode.ResourceConsoleBehavior_Field, RelationshipReportNode.ResourceHasResourceKeyDataHashes_Field, RelationshipReportNode.ResourceInFolder_Field, RelationshipReportNode.ResourceReportNodeType_Field, RelationshipReportNode.SecurityOwner_Field, RelationshipReportNode.SelectionBehavior_Field, RelationshipReportNode.ShortcutInFolder_Field };
+				return new IEntity [ ] { RelationshipReportNode.CheckExistenceOnly_Field, RelationshipReportNode.ConstrainParent_Field, RelationshipReportNode.FollowInReverse_Field, RelationshipReportNode.FollowRecursive_Field, RelationshipReportNode.IncludeSelfInRecursive_Field, RelationshipReportNode.Alias_Field, RelationshipReportNode.CanDelete_Field, RelationshipReportNode.CanModify_Field, RelationshipReportNode.CreatedDate_Field, RelationshipReportNode.Description_Field, RelationshipReportNode.ExactType_Field, RelationshipReportNode.ModifiedDate_Field, RelationshipReportNode.Name_Field, RelationshipReportNode.ParentNeedNotExist_Field, RelationshipReportNode.TargetMustExist_Field, RelationshipReportNode.TargetNeedNotExist_Field, RelationshipReportNode.CreatedBy_Field, RelationshipReportNode.Flags_Field, RelationshipReportNode.FollowRelationship_Field, RelationshipReportNode.IndirectInSolution_Field, RelationshipReportNode.InSolution_Field, RelationshipReportNode.InStructureLevel_Field, RelationshipReportNode.IsOfType_Field, RelationshipReportNode.IsRootForStructureView_Field, RelationshipReportNode.LastModifiedBy_Field, RelationshipReportNode.NodeUsedByExpression_Field, RelationshipReportNode.NodeUsedByStructureViewExpression_Field, RelationshipReportNode.ParentAggregatedNode_Field, RelationshipReportNode.ParentReportNode_Field, RelationshipReportNode.RelatedReportNodes_Field, RelationshipReportNode.ResourceConsoleBehavior_Field, RelationshipReportNode.ResourceHasResourceKeyDataHashes_Field, RelationshipReportNode.ResourceInFolder_Field, RelationshipReportNode.ResourceReportNodeType_Field, RelationshipReportNode.SecurityOwner_Field, RelationshipReportNode.SelectionBehavior_Field, RelationshipReportNode.ShortcutInFolder_Field };
 			}
 		}
 
@@ -11951,6 +11962,20 @@ namespace EDC.ReadiNow.Model
 			set
 			{
 				this.SetField( "core:name", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public bool? ParentNeedNotExist
+		{
+			get
+			{
+				return ( bool? ) this.GetField( "core:parentNeedNotExist" );
+			}
+			set
+			{
+				this.SetField( "core:parentNeedNotExist", value);
 			}
 		}
 		/// <summary>
@@ -12466,6 +12491,17 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Public static accessor to the inherited  forward relationship.
 		/// </summary>
+		public static IEntity EnumFormattingRule_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.EnumValue.EnumFormattingRule_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
 		public static IEntity EnumOwner_Field
 		{
 			get
@@ -12624,7 +12660,7 @@ namespace EDC.ReadiNow.Model
 		{
 			get
 			{
-				return new IEntity [ ] { RelTypeEnum.Alias_Field, RelTypeEnum.CanDelete_Field, RelTypeEnum.CanModify_Field, RelTypeEnum.CanModifyProtectedResource_Field, RelTypeEnum.CreatedDate_Field, RelTypeEnum.Description_Field, RelTypeEnum.EnumOrder_Field, RelTypeEnum.ModifiedDate_Field, RelTypeEnum.Name_Field, RelTypeEnum.CreatedBy_Field, RelTypeEnum.EnumOwner_Field, RelTypeEnum.Flags_Field, RelTypeEnum.IndirectInSolution_Field, RelTypeEnum.InSolution_Field, RelTypeEnum.InStructureLevel_Field, RelTypeEnum.IsOfType_Field, RelTypeEnum.IsRootForStructureView_Field, RelTypeEnum.LastModifiedBy_Field, RelTypeEnum.ResourceConsoleBehavior_Field, RelTypeEnum.ResourceHasResourceKeyDataHashes_Field, RelTypeEnum.ResourceInFolder_Field, RelTypeEnum.SecurityOwner_Field, RelTypeEnum.SelectionBehavior_Field, RelTypeEnum.ShortcutInFolder_Field };
+				return new IEntity [ ] { RelTypeEnum.Alias_Field, RelTypeEnum.CanDelete_Field, RelTypeEnum.CanModify_Field, RelTypeEnum.CanModifyProtectedResource_Field, RelTypeEnum.CreatedDate_Field, RelTypeEnum.Description_Field, RelTypeEnum.EnumOrder_Field, RelTypeEnum.ModifiedDate_Field, RelTypeEnum.Name_Field, RelTypeEnum.CreatedBy_Field, RelTypeEnum.EnumFormattingRule_Field, RelTypeEnum.EnumOwner_Field, RelTypeEnum.Flags_Field, RelTypeEnum.IndirectInSolution_Field, RelTypeEnum.InSolution_Field, RelTypeEnum.InStructureLevel_Field, RelTypeEnum.IsOfType_Field, RelTypeEnum.IsRootForStructureView_Field, RelTypeEnum.LastModifiedBy_Field, RelTypeEnum.ResourceConsoleBehavior_Field, RelTypeEnum.ResourceHasResourceKeyDataHashes_Field, RelTypeEnum.ResourceInFolder_Field, RelTypeEnum.SecurityOwner_Field, RelTypeEnum.SelectionBehavior_Field, RelTypeEnum.ShortcutInFolder_Field };
 			}
 		}
 
@@ -12771,6 +12807,20 @@ namespace EDC.ReadiNow.Model
 			set
 			{
 				this.SetLookup<UserAccount>( "core:createdBy", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public FormattingRule EnumFormattingRule
+		{
+			get
+			{
+				return this.GetLookup<FormattingRule>( "core:enumFormattingRule", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<FormattingRule>( "core:enumFormattingRule", value, Direction.Forward );
 			}
 		}
 		/// <summary>
@@ -21663,6 +21713,14 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Explicit cast from the specified type to the current type.
 		/// </summary>
+		public static explicit operator ReportComponent( CustomJoinReportNode entity )
+		{
+			return entity.Cast<ReportComponent>( );
+		}
+
+		/// <summary>
+		/// Explicit cast from the specified type to the current type.
+		/// </summary>
 		public static explicit operator ReportComponent( DerivedTypeReportNode entity )
 		{
 			return entity.Cast<ReportComponent>( );
@@ -25085,6 +25143,14 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Explicit cast from the specified type to the current type.
 		/// </summary>
+		public static explicit operator ReportNode( CustomJoinReportNode entity )
+		{
+			return entity.Cast<ReportNode>( );
+		}
+
+		/// <summary>
+		/// Explicit cast from the specified type to the current type.
+		/// </summary>
 		public static explicit operator ReportNode( DerivedTypeReportNode entity )
 		{
 			return entity.Cast<ReportNode>( );
@@ -27384,6 +27450,17 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Public static accessor to the inherited  forward relationship.
 		/// </summary>
+		public static IEntity EnumFormattingRule_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.EnumValue.EnumFormattingRule_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
 		public static IEntity EnumOwner_Field
 		{
 			get
@@ -27542,7 +27619,7 @@ namespace EDC.ReadiNow.Model
 		{
 			get
 			{
-				return new IEntity [ ] { ReportStyleEnum.Alias_Field, ReportStyleEnum.CanDelete_Field, ReportStyleEnum.CanModify_Field, ReportStyleEnum.CanModifyProtectedResource_Field, ReportStyleEnum.CreatedDate_Field, ReportStyleEnum.Description_Field, ReportStyleEnum.EnumOrder_Field, ReportStyleEnum.ModifiedDate_Field, ReportStyleEnum.Name_Field, ReportStyleEnum.CreatedBy_Field, ReportStyleEnum.EnumOwner_Field, ReportStyleEnum.Flags_Field, ReportStyleEnum.IndirectInSolution_Field, ReportStyleEnum.InSolution_Field, ReportStyleEnum.InStructureLevel_Field, ReportStyleEnum.IsOfType_Field, ReportStyleEnum.IsRootForStructureView_Field, ReportStyleEnum.LastModifiedBy_Field, ReportStyleEnum.ResourceConsoleBehavior_Field, ReportStyleEnum.ResourceHasResourceKeyDataHashes_Field, ReportStyleEnum.ResourceInFolder_Field, ReportStyleEnum.SecurityOwner_Field, ReportStyleEnum.SelectionBehavior_Field, ReportStyleEnum.ShortcutInFolder_Field };
+				return new IEntity [ ] { ReportStyleEnum.Alias_Field, ReportStyleEnum.CanDelete_Field, ReportStyleEnum.CanModify_Field, ReportStyleEnum.CanModifyProtectedResource_Field, ReportStyleEnum.CreatedDate_Field, ReportStyleEnum.Description_Field, ReportStyleEnum.EnumOrder_Field, ReportStyleEnum.ModifiedDate_Field, ReportStyleEnum.Name_Field, ReportStyleEnum.CreatedBy_Field, ReportStyleEnum.EnumFormattingRule_Field, ReportStyleEnum.EnumOwner_Field, ReportStyleEnum.Flags_Field, ReportStyleEnum.IndirectInSolution_Field, ReportStyleEnum.InSolution_Field, ReportStyleEnum.InStructureLevel_Field, ReportStyleEnum.IsOfType_Field, ReportStyleEnum.IsRootForStructureView_Field, ReportStyleEnum.LastModifiedBy_Field, ReportStyleEnum.ResourceConsoleBehavior_Field, ReportStyleEnum.ResourceHasResourceKeyDataHashes_Field, ReportStyleEnum.ResourceInFolder_Field, ReportStyleEnum.SecurityOwner_Field, ReportStyleEnum.SelectionBehavior_Field, ReportStyleEnum.ShortcutInFolder_Field };
 			}
 		}
 
@@ -27689,6 +27766,20 @@ namespace EDC.ReadiNow.Model
 			set
 			{
 				this.SetLookup<UserAccount>( "core:createdBy", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public FormattingRule EnumFormattingRule
+		{
+			get
+			{
+				return this.GetLookup<FormattingRule>( "core:enumFormattingRule", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<FormattingRule>( "core:enumFormattingRule", value, Direction.Forward );
 			}
 		}
 		/// <summary>
@@ -30036,6 +30127,14 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Explicit cast from the specified type to the current type.
 		/// </summary>
+		public static explicit operator Resource( CustomJoinReportNode entity )
+		{
+			return entity.Cast<Resource>( );
+		}
+
+		/// <summary>
+		/// Explicit cast from the specified type to the current type.
+		/// </summary>
 		public static explicit operator Resource( CustomRenderControlType entity )
 		{
 			return entity.Cast<Resource>( );
@@ -30388,6 +30487,14 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Explicit cast from the specified type to the current type.
 		/// </summary>
+		public static explicit operator Resource( EntityListColFmtEnum entity )
+		{
+			return entity.Cast<Resource>( );
+		}
+
+		/// <summary>
+		/// Explicit cast from the specified type to the current type.
+		/// </summary>
 		public static explicit operator Resource( EntityType entity )
 		{
 			return entity.Cast<Resource>( );
@@ -30397,6 +30504,14 @@ namespace EDC.ReadiNow.Model
 		/// Explicit cast from the specified type to the current type.
 		/// </summary>
 		public static explicit operator Resource( EntityWithArgsAndExits entity )
+		{
+			return entity.Cast<Resource>( );
+		}
+
+		/// <summary>
+		/// Explicit cast from the specified type to the current type.
+		/// </summary>
+		public static explicit operator Resource( EnumFormattingType entity )
 		{
 			return entity.Cast<Resource>( );
 		}
@@ -30877,6 +30992,22 @@ namespace EDC.ReadiNow.Model
 		/// Explicit cast from the specified type to the current type.
 		/// </summary>
 		public static explicit operator Resource( LargeTextBoxKFieldRenderControl entity )
+		{
+			return entity.Cast<Resource>( );
+		}
+
+		/// <summary>
+		/// Explicit cast from the specified type to the current type.
+		/// </summary>
+		public static explicit operator Resource( LaunchPersonCampaignActivity entity )
+		{
+			return entity.Cast<Resource>( );
+		}
+
+		/// <summary>
+		/// Explicit cast from the specified type to the current type.
+		/// </summary>
+		public static explicit operator Resource( LaunchTargetCampaignActivity entity )
 		{
 			return entity.Cast<Resource>( );
 		}
@@ -31644,6 +31775,22 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Explicit cast from the specified type to the current type.
 		/// </summary>
+		public static explicit operator Resource( ScheduledExportConfig entity )
+		{
+			return entity.Cast<Resource>( );
+		}
+
+		/// <summary>
+		/// Explicit cast from the specified type to the current type.
+		/// </summary>
+		public static explicit operator Resource( ScheduledFtpConfig entity )
+		{
+			return entity.Cast<Resource>( );
+		}
+
+		/// <summary>
+		/// Explicit cast from the specified type to the current type.
+		/// </summary>
 		public static explicit operator Resource( ScheduledImportConfig entity )
 		{
 			return entity.Cast<Resource>( );
@@ -32004,6 +32151,30 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Explicit cast from the specified type to the current type.
 		/// </summary>
+		public static explicit operator Resource( SuspendedRun entity )
+		{
+			return entity.Cast<Resource>( );
+		}
+
+		/// <summary>
+		/// Explicit cast from the specified type to the current type.
+		/// </summary>
+		public static explicit operator Resource( SuspendedTask entity )
+		{
+			return entity.Cast<Resource>( );
+		}
+
+		/// <summary>
+		/// Explicit cast from the specified type to the current type.
+		/// </summary>
+		public static explicit operator Resource( SuspendedTrigger entity )
+		{
+			return entity.Cast<Resource>( );
+		}
+
+		/// <summary>
+		/// Explicit cast from the specified type to the current type.
+		/// </summary>
 		public static explicit operator Resource( SwitchActivity entity )
 		{
 			return entity.Cast<Resource>( );
@@ -32013,6 +32184,14 @@ namespace EDC.ReadiNow.Model
 		/// Explicit cast from the specified type to the current type.
 		/// </summary>
 		public static explicit operator Resource( SwitchKFieldRenderControl entity )
+		{
+			return entity.Cast<Resource>( );
+		}
+
+		/// <summary>
+		/// Explicit cast from the specified type to the current type.
+		/// </summary>
+		public static explicit operator Resource( SystemDocumentationSettings entity )
 		{
 			return entity.Cast<Resource>( );
 		}
@@ -34236,6 +34415,17 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Public static accessor to the inherited  forward relationship.
 		/// </summary>
+		public static IEntity EnumFormattingRule_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.EnumValue.EnumFormattingRule_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
 		public static IEntity EnumOwner_Field
 		{
 			get
@@ -34416,7 +34606,7 @@ namespace EDC.ReadiNow.Model
 		{
 			get
 			{
-				return new IEntity [ ] { ResourceFlagsEnum.Alias_Field, ResourceFlagsEnum.CanDelete_Field, ResourceFlagsEnum.CanModify_Field, ResourceFlagsEnum.CanModifyProtectedResource_Field, ResourceFlagsEnum.CreatedDate_Field, ResourceFlagsEnum.Description_Field, ResourceFlagsEnum.EnumOrder_Field, ResourceFlagsEnum.ModifiedDate_Field, ResourceFlagsEnum.Name_Field, ResourceFlagsEnum.CreatedBy_Field, ResourceFlagsEnum.EnumOwner_Field, ResourceFlagsEnum.Flags_Field, ResourceFlagsEnum.FlagUsedBy_Field, ResourceFlagsEnum.FlagUsedByInstance_Field, ResourceFlagsEnum.IndirectInSolution_Field, ResourceFlagsEnum.InSolution_Field, ResourceFlagsEnum.InStructureLevel_Field, ResourceFlagsEnum.IsOfType_Field, ResourceFlagsEnum.IsRootForStructureView_Field, ResourceFlagsEnum.LastModifiedBy_Field, ResourceFlagsEnum.ResourceConsoleBehavior_Field, ResourceFlagsEnum.ResourceHasResourceKeyDataHashes_Field, ResourceFlagsEnum.ResourceInFolder_Field, ResourceFlagsEnum.SecurityOwner_Field, ResourceFlagsEnum.SelectionBehavior_Field, ResourceFlagsEnum.ShortcutInFolder_Field };
+				return new IEntity [ ] { ResourceFlagsEnum.Alias_Field, ResourceFlagsEnum.CanDelete_Field, ResourceFlagsEnum.CanModify_Field, ResourceFlagsEnum.CanModifyProtectedResource_Field, ResourceFlagsEnum.CreatedDate_Field, ResourceFlagsEnum.Description_Field, ResourceFlagsEnum.EnumOrder_Field, ResourceFlagsEnum.ModifiedDate_Field, ResourceFlagsEnum.Name_Field, ResourceFlagsEnum.CreatedBy_Field, ResourceFlagsEnum.EnumFormattingRule_Field, ResourceFlagsEnum.EnumOwner_Field, ResourceFlagsEnum.Flags_Field, ResourceFlagsEnum.FlagUsedBy_Field, ResourceFlagsEnum.FlagUsedByInstance_Field, ResourceFlagsEnum.IndirectInSolution_Field, ResourceFlagsEnum.InSolution_Field, ResourceFlagsEnum.InStructureLevel_Field, ResourceFlagsEnum.IsOfType_Field, ResourceFlagsEnum.IsRootForStructureView_Field, ResourceFlagsEnum.LastModifiedBy_Field, ResourceFlagsEnum.ResourceConsoleBehavior_Field, ResourceFlagsEnum.ResourceHasResourceKeyDataHashes_Field, ResourceFlagsEnum.ResourceInFolder_Field, ResourceFlagsEnum.SecurityOwner_Field, ResourceFlagsEnum.SelectionBehavior_Field, ResourceFlagsEnum.ShortcutInFolder_Field };
 			}
 		}
 
@@ -34563,6 +34753,20 @@ namespace EDC.ReadiNow.Model
 			set
 			{
 				this.SetLookup<UserAccount>( "core:createdBy", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public FormattingRule EnumFormattingRule
+		{
+			get
+			{
+				return this.GetLookup<FormattingRule>( "core:enumFormattingRule", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<FormattingRule>( "core:enumFormattingRule", value, Direction.Forward );
 			}
 		}
 		/// <summary>
@@ -38775,6 +38979,17 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Public static accessor to the field.
 		/// </summary>
+		public static BoolField ParentNeedNotExist_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Entity.GetFieldEntity<BoolField>( "core:parentNeedNotExist" );
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the field.
+		/// </summary>
 		public static BoolField TargetMustExist_Field
 		{
 			get
@@ -39098,7 +39313,7 @@ namespace EDC.ReadiNow.Model
 		{
 			get
 			{
-				return new IEntity [ ] { ResourceReportNode.ExactType_Field, ResourceReportNode.TargetMustExist_Field, ResourceReportNode.TargetNeedNotExist_Field, ResourceReportNode.Alias_Field, ResourceReportNode.CanDelete_Field, ResourceReportNode.CanModify_Field, ResourceReportNode.CreatedDate_Field, ResourceReportNode.Description_Field, ResourceReportNode.ModifiedDate_Field, ResourceReportNode.Name_Field, ResourceReportNode.CreatedBy_Field, ResourceReportNode.Flags_Field, ResourceReportNode.IndirectInSolution_Field, ResourceReportNode.InSolution_Field, ResourceReportNode.InStructureLevel_Field, ResourceReportNode.IsOfType_Field, ResourceReportNode.IsRootForStructureView_Field, ResourceReportNode.LastModifiedBy_Field, ResourceReportNode.NodeUsedByExpression_Field, ResourceReportNode.NodeUsedByStructureViewExpression_Field, ResourceReportNode.ParentAggregatedNode_Field, ResourceReportNode.ParentReportNode_Field, ResourceReportNode.RelatedReportNodes_Field, ResourceReportNode.ResourceConsoleBehavior_Field, ResourceReportNode.ResourceHasResourceKeyDataHashes_Field, ResourceReportNode.ResourceInFolder_Field, ResourceReportNode.ResourceReportNodeType_Field, ResourceReportNode.SecurityOwner_Field, ResourceReportNode.SelectionBehavior_Field, ResourceReportNode.ShortcutInFolder_Field };
+				return new IEntity [ ] { ResourceReportNode.ExactType_Field, ResourceReportNode.ParentNeedNotExist_Field, ResourceReportNode.TargetMustExist_Field, ResourceReportNode.TargetNeedNotExist_Field, ResourceReportNode.Alias_Field, ResourceReportNode.CanDelete_Field, ResourceReportNode.CanModify_Field, ResourceReportNode.CreatedDate_Field, ResourceReportNode.Description_Field, ResourceReportNode.ModifiedDate_Field, ResourceReportNode.Name_Field, ResourceReportNode.CreatedBy_Field, ResourceReportNode.Flags_Field, ResourceReportNode.IndirectInSolution_Field, ResourceReportNode.InSolution_Field, ResourceReportNode.InStructureLevel_Field, ResourceReportNode.IsOfType_Field, ResourceReportNode.IsRootForStructureView_Field, ResourceReportNode.LastModifiedBy_Field, ResourceReportNode.NodeUsedByExpression_Field, ResourceReportNode.NodeUsedByStructureViewExpression_Field, ResourceReportNode.ParentAggregatedNode_Field, ResourceReportNode.ParentReportNode_Field, ResourceReportNode.RelatedReportNodes_Field, ResourceReportNode.ResourceConsoleBehavior_Field, ResourceReportNode.ResourceHasResourceKeyDataHashes_Field, ResourceReportNode.ResourceInFolder_Field, ResourceReportNode.ResourceReportNodeType_Field, ResourceReportNode.SecurityOwner_Field, ResourceReportNode.SelectionBehavior_Field, ResourceReportNode.ShortcutInFolder_Field };
 			}
 		}
 
@@ -39118,6 +39333,20 @@ namespace EDC.ReadiNow.Model
 			set
 			{
 				this.SetField( "core:exactType", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the field.
+		/// </summary>
+		public bool? ParentNeedNotExist
+		{
+			get
+			{
+				return ( bool? ) this.GetField( "core:parentNeedNotExist" );
+			}
+			set
+			{
+				this.SetField( "core:parentNeedNotExist", value);
 			}
 		}
 		/// <summary>
@@ -39559,6 +39788,14 @@ namespace EDC.ReadiNow.Model
 		#endregion ResourceReportNode Public Properties
 
 		#region Type casting
+
+		/// <summary>
+		/// Explicit cast from the specified type to the current type.
+		/// </summary>
+		public static explicit operator ResourceReportNode( CustomJoinReportNode entity )
+		{
+			return entity.Cast<ResourceReportNode>( );
+		}
 
 		/// <summary>
 		/// Explicit cast from the specified type to the current type.

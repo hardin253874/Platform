@@ -69,44 +69,7 @@ namespace ReadiNow.QueryEngine.Builder
         /// Is security disabled
         /// </summary>
         private static Lazy<bool> _securityDisabled = new Lazy<bool>(
-            ( ) => EDC.ReadiNow.Configuration.ConfigurationSettings.GetServerConfigurationSection( ).Security.Disabled );
-       
-		/// <summary>
-		///     Create and register a new CTE.
-		///     Caller must ensure that PopCte() also gets called after the CTE contents are generated.
-		/// </summary>
-		/// <param name="alias">The alias.</param>
-		/// <param name="statement">The statement.</param>
-		/// <returns></returns>
-		private SqlCte CreateCte( string alias, SqlSelectStatement statement )
-		{
-			// Create CTE
-			var cte = new SqlCte
-				{
-					Union = new SqlUnion( ),
-					Name = statement.AliasManager.CreateAlias( alias )
-				};
-
-			// Register CTE
-			_currentStatement.WithClause.Items.Add( cte );
-
-			// If currently in CTE, ensure this CTE depends on the new one
-			if ( _currentStatement.CurrentCte.Count > 0 )
-			{
-				_currentStatement.CurrentCte.Peek( ).DependsOn.Add( cte );
-			}
-			_currentStatement.CurrentCte.Push( cte );
-
-			return cte;
-		}
-
-		/// <summary>
-		///     Call after a CreateCte
-		/// </summary>
-		private void PopCte( )
-		{
-			_currentStatement.CurrentCte.Pop( );
-	    }        
+            ( ) => EDC.ReadiNow.Configuration.ConfigurationSettings.GetServerConfigurationSection( ).Security.Disabled );        
         
 
         /// <summary>
@@ -213,6 +176,44 @@ namespace ReadiNow.QueryEngine.Builder
                 msg.Append( ( ) => "End Security CTE" );
                 msg.Append( ( ) => new string( '-', 50 ) );
             }
+        }
+
+
+        /// <summary>
+        ///     Create and register a new CTE.
+        ///     Caller must ensure that PopCte() also gets called after the CTE contents are generated.
+        /// </summary>
+        /// <param name="alias">The alias.</param>
+        /// <param name="statement">The statement.</param>
+        /// <returns></returns>
+        private SqlCte CreateCte( string alias, SqlSelectStatement statement )
+        {
+            // Create CTE
+            var cte = new SqlCte
+            {
+                Union = new SqlUnion( ),
+                Name = statement.AliasManager.CreateAlias( alias )
+            };
+
+            // Register CTE
+            _currentStatement.WithClause.Items.Add( cte );
+
+            // If currently in CTE, ensure this CTE depends on the new one
+            if ( _currentStatement.CurrentCte.Count > 0 )
+            {
+                _currentStatement.CurrentCte.Peek( ).DependsOn.Add( cte );
+            }
+            _currentStatement.CurrentCte.Push( cte );
+
+            return cte;
+        }
+
+        /// <summary>
+        ///     Call after a CreateCte
+        /// </summary>
+        private void PopCte( )
+        {
+            _currentStatement.CurrentCte.Pop( );
         }
 
 
@@ -413,12 +414,16 @@ namespace ReadiNow.QueryEngine.Builder
 
                     bool isForward = relatedResource.RelationshipDirection == RelationshipDirection.Forward;
 
-                    // Even though the current node is an implicitly secured node, we arrived along the line of the relationship so we don't need to calculate security for the child.
-                    bool implicitlySecuredByParent =
-                        (isForward && (relationship.SecuresTo == true))
-                        || ((!isForward) && (relationship.SecuresFrom == true));
-                    if ( implicitlySecuredByParent )
-                        return;
+                    if ( !relatedResource.ParentNeedNotExist )
+                    {
+                        // Even though the current node is an implicitly secured node, we arrived along the line of the relationship so we don't need to calculate security for the child.
+                        // (However, short circuiting is possible if all target values are being shown, because the securing relationship may not be present)
+                        bool implicitlySecuredByParent =
+                            ( isForward && ( relationship.SecuresTo == true ) )
+                            || ( ( !isForward ) && ( relationship.SecuresFrom == true ) );
+                        if ( implicitlySecuredByParent )
+                            return;
+                    }
 
                     // Get target type
                     if ( relatedResource.EntityTypeId != null )

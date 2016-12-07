@@ -23,15 +23,23 @@ namespace EDC.SoftwarePlatform.Activities
     public abstract class RunStateBase : IRunState
     {
         const int MaxParamPrintLength = 50;
+        const int MaxTraceSteps = 500;              // the maximum number of trace steps that will be recorded
+
 
         /// <summary>
         /// This is set when the context is created or recreated
         /// </summary>
         public long WorkflowRunId { get { return WorkflowRun.Id; } }
+
+        public string RunTaskId { get { return WorkflowRun.TaskId; } }
+
         public long WorkflowId { get { return WorkflowRun.WorkflowBeingRun.Id; } }
 
         public int StepsTakenInSession { get; set; }
-        public int TimeTakenInSession { get; set; }
+
+
+        public System.Diagnostics.Stopwatch TimeTakenInSession { get; }
+
         public RequestContextData EffectiveSecurityContext { get; private set; }
         public WorkflowMetadata Metadata { get; private set; }
         public WorkflowRun WorkflowRun { get; private set; }
@@ -57,6 +65,7 @@ namespace EDC.SoftwarePlatform.Activities
         private RunStateBase(WorkflowMetadata metadata)
         {
             Metadata = metadata;
+            TimeTakenInSession = new System.Diagnostics.Stopwatch();
         }
 
         public RunStateBase(WorkflowMetadata metaData, WorkflowRun _workflowRun, RequestContextData effectiveSecurityContext)
@@ -66,7 +75,6 @@ namespace EDC.SoftwarePlatform.Activities
             WorkflowRun = _workflowRun;
 
             StepsTakenInSession = 0;
-            TimeTakenInSession = 0;
             EffectiveSecurityContext = effectiveSecurityContext;
             ExitPointId = _workflowRun.WorkflowRunExitPoint;
             HasTimeout = _workflowRun.HasTimeout ?? false;
@@ -89,14 +97,12 @@ namespace EDC.SoftwarePlatform.Activities
                 writableRun.RunStepCounter = writableRun.RunStepCounter.HasValue
                     ? writableRun.RunStepCounter.Value + StepsTakenInSession
                     : StepsTakenInSession;
-                writableRun.TotalTimeMs = writableRun.TotalTimeMs.HasValue
-                    ? writableRun.TotalTimeMs.Value + TimeTakenInSession
-                    : TimeTakenInSession;
+                writableRun.TotalTimeMs = (writableRun.TotalTimeMs.HasValue ? writableRun.TotalTimeMs.Value : 0) + (int)TimeTakenInSession.ElapsedMilliseconds;
                 writableRun.WorkflowRunStatus_Enum = RunStatus;
                 writableRun.RunCompletedAt = CompletedAt;
 
                 StepsTakenInSession = 0;
-                TimeTakenInSession = 0;
+                TimeTakenInSession.Reset();
 
                 var stateInfo = writableRun.StateInfo;
                 var deleteList = stateInfo.Select(e => e.Id).ToList();
@@ -298,7 +304,7 @@ namespace EDC.SoftwarePlatform.Activities
         {
             using (Profiler.Measure("RunStateBase.RecordTrace"))
             {
-                if (WorkflowRun.RunTrace ?? false)
+                if ((WorkflowRun.RunTrace ?? false) && (StepsTakenInSession + (WorkflowRun.RunStepCounter ?? 0)) < MaxTraceSteps)
                 {
                     var steps = StepsTakenInSession;
                     if (WorkflowRun != null && WorkflowRun.RunStepCounter.HasValue)

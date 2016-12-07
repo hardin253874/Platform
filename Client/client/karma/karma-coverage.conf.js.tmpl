@@ -25,7 +25,7 @@ module.exports = function (config) {
             for (var i = 0, len = jsFiles.length; i < len; i++) {
                 print("			'../../"+ jsFiles[i] + "',\n");
             }
-            jsFiles = grunt.file.expand([grunt.config('poj.js'), '+(src|build)/**/*.module.js', '+(src|build)/**/*.js', '!+(src|build)/**/*.+(spec|intg).js']);
+            jsFiles = grunt.file.expand([grunt.config('poj.js'), 'build/**/*.module.js', 'build/**/*.js', '!build/**/*.+(spec|intg).js']);
             for (var i = 0, len = jsFiles.length; i < len; i++) {
                 print("			'../../"+ jsFiles[i] + "',\n");
             }
@@ -57,9 +57,9 @@ module.exports = function (config) {
         ],
 
         preprocessors: {
-            '../../+(src|build)/components/!(tmpl)/**/*.js': 'coverage',
-            '../../+(src|build)/app/!(devViews|tmpl)/**/*.js': 'coverage',
-            '../../+(src|build)/builders/!(tmpl)/**/*.js': 'coverage'
+            '../../build/components/!(tmpl)/**/*.js': 'coverage',
+            '../../build/app/!(devViews|tmpl)/**/*.js': 'coverage',
+            '../../build/builders/!(tmpl)/**/*.js': 'coverage'
         },
 
         coverageReporter: {

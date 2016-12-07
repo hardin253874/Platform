@@ -47,7 +47,7 @@
     /* @ngInject */
     function spVerticalStackContainerControl(spEditForm, editCoordinator, spFormBuilderService,
                                              spVerticalStackContainerService, spThemeService, spMobileContext,
-                                             spCachingCompile, spAlertsService, spDialogService) {
+                                             spCachingCompile, spAlertsService, rnFeatureSwitch, spDialogService) {
 
         /////
         // Directive structure.
@@ -84,6 +84,15 @@
             scope.isMobileDevice = spMobileContext.isMobile;
             scope.structureDepth = !scope.structureDepth ? 1 : scope.structureDepth + 1;
             scope.titleClass = 'title' + scope.structureDepth;
+
+            var isDefaultLoginFeatureOn = rnFeatureSwitch.isFeatureOn('defaultLoginLanding');
+            if (!isDefaultLoginFeatureOn) {
+                scope.$watch('formControl', function () {
+                    if (scope.formControl && scope.formControl.nsAlias === 'console:structureControlOnFormDefaultLoginLocation') {
+                        scope.hideControl = true;
+                    }
+                });
+            }
 
             /////
             // Sorting of child controls.
@@ -241,7 +250,7 @@
             scope.showHelp = function (formControl) {
                 var typeAlias = spUtils.result(formControl, 'type.nsAlias');
 
-                if (_.find(controlsNotToShowHelpOn, function (t) { return t == typeAlias; }))
+                if (_.find(controlsNotToShowHelpOn, function (t) { return t === typeAlias; }))
                     return false;
 
                 if (formControl && formControl.showControlHelpText && formControl.description) {

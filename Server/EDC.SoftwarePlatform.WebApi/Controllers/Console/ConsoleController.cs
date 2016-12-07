@@ -351,5 +351,37 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.Console
 
             return value;
         }
+
+        /// <summary>
+        /// Gets the documentation settings.
+        /// </summary>
+        [Route("getDocoSettings")]
+        [HttpGet]
+        public IHttpActionResult GetDocoSettings()
+        {            
+            using (new GlobalAdministratorContext())
+            {
+                var docoSettingEntity = EntityModel.Get<SystemDocumentationSettings>("core:systemDocumentationSettingsInstance");
+
+                if (docoSettingEntity == null)
+                {
+                    return Ok();
+                }
+
+                var passwordSecureId = docoSettingEntity.DocumentationUserPasswordSecureId;
+
+                var docoSettings = new DocoSettingsResult()
+                {
+                    DocumentationUserName = docoSettingEntity.DocumentationUserName,
+                    DocumentationUserPassword = passwordSecureId != null ? Factory.SecuredData.Read(passwordSecureId.Value) : null,
+                    DocumentationUrl = docoSettingEntity.DocumentationUrl,
+                    ContactSupportUrl = docoSettingEntity.ContactSupportUrl,
+                    ReleaseNotesUrl = docoSettingEntity.ReleaseNotesUrl,
+                    NavHeaderDocumentationUrl = docoSettingEntity.NavHeaderDocumentationUrl
+                };
+
+                return Ok(docoSettings);
+            }
+        }
     }
 }

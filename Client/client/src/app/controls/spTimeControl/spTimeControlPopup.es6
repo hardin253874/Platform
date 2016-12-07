@@ -100,6 +100,13 @@
                 model.popupOptions.isOpen = false;
             };
 
+            scope.onNowClick = function() {
+                // Set the current time and close the popup
+                model.value = new Date();
+                model.popupOptions.model.value = model.value;
+                model.popupOptions.isOpen = false;
+            };
+
             scope.getPopupStyle = function () {
                 return {
                     'z-index': model.popupZIndex

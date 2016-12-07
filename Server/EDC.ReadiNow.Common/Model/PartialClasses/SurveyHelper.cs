@@ -21,20 +21,6 @@ namespace EDC.ReadiNow.Model.PartialClasses
         /// <returns>The tasks for each recipient of the survey.</returns>
         public static IEnumerable<UserSurveyTask> Launch(this SurveyCampaign campaign, DateTime? taskDueOn = null, UserResource targetObject = null, string taskName = null)
         {
-            if (campaign == null)
-                throw new ArgumentNullException("campaign");
-
-            // relaunch is not permitted.
-            if (campaign.CampaignIsLaunched == true)
-            {
-                throw new Exception("Campaign has already been launched.");
-            }
-
-            campaign = campaign.AsWritable<SurveyCampaign>();
-            campaign.CampaignIsLaunched = true;
-            campaign.CampaignLaunchedOn = DateTime.UtcNow;
-            campaign.Save();
-            
             return LaunchCampaign(campaign, taskDueOn, targetObject, taskName);
         }
 
@@ -96,7 +82,7 @@ namespace EDC.ReadiNow.Model.PartialClasses
             var tasks = new List<UserSurveyTask>();
 
             if (campaign == null)
-                throw new ArgumentNullException("campaign");
+                throw new ArgumentNullException(nameof(campaign));
 
             var survey = campaign.SurveyForCampaign;
 
@@ -106,7 +92,15 @@ namespace EDC.ReadiNow.Model.PartialClasses
             if (!campaign.CampaignPersonRecipients.Any())
                 throw new InvalidCampaignException("Survey person campaign does not have any recipients.");
 
+            // relaunch is not permitted.
+            if (campaign.CampaignIsLaunched == true)
+            {
+                throw new Exception("Campaign has already been launched.");
+            }
+
             campaign = campaign.AsWritable<SurveyPersonCampaign>();
+            campaign.CampaignIsLaunched = true;
+            campaign.CampaignLaunchedOn = DateTime.UtcNow;
 
             foreach (var person in campaign.CampaignPersonRecipients)
             {
@@ -126,6 +120,8 @@ namespace EDC.ReadiNow.Model.PartialClasses
                 tasks.Add(userSurveyTask);
             }
 
+            campaign.Save();
+
             return tasks;
         }
 
@@ -134,7 +130,7 @@ namespace EDC.ReadiNow.Model.PartialClasses
             var tasks = new List<UserSurveyTask>();
 
             if (campaign == null)
-                throw new ArgumentNullException("campaign");
+                throw new ArgumentNullException(nameof(campaign));
 
             var survey = campaign.SurveyForCampaign;
 
@@ -147,15 +143,22 @@ namespace EDC.ReadiNow.Model.PartialClasses
             if (campaign.CampaignTargetRelationship == null)
                 throw new InvalidCampaignException("Survey target campaign does not provide a relationship to survey taker.");
 
+            // relaunch is not permitted.
+            if (campaign.CampaignIsLaunched == true)
+            {
+                throw new Exception("Campaign has already been launched.");
+            }
+
             campaign = campaign.AsWritable<SurveyTargetCampaign>();
+            campaign.CampaignIsLaunched = true;
+            campaign.CampaignLaunchedOn = DateTime.UtcNow;
 
             foreach (var target in campaign.CampaignTargetTargets)
             {
                 var direction = campaign.CampaignTargetRelationshipDirection_Enum == DirectionEnum_Enumeration.Reverse ? Direction.Reverse : Direction.Forward;
 
-                var recipient = target.GetRelationships<Person>(new EntityRef(campaign.CampaignTargetRelationship), direction).FirstOrDefault();
-
-                if (recipient != null)
+                var recipients = target.GetRelationships<Person>(new EntityRef(campaign.CampaignTargetRelationship), direction).ToList();
+                foreach(var recipient in recipients)
                 {
                     var result = campaign.CreateSurveyResponse(recipient, target);
                     campaign.SurveyResponses.Add(result);
@@ -173,6 +176,8 @@ namespace EDC.ReadiNow.Model.PartialClasses
                     tasks.Add(userSurveyTask);
                 }
             }
+
+            campaign.Save();
 
             return tasks;
         }

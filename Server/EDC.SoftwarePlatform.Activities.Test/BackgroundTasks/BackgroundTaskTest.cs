@@ -55,6 +55,12 @@ namespace EDC.SoftwarePlatform.Activities.Test.BackgroundTasks
             Serialize<ResumeWorkflowParams>();
         }
 
+        [Test]
+        public void Serialize_WorkflowRestoreEvent()
+        {
+            Serialize<WorkflowRestoreEvent>();
+        }
+
 
         public void Serialize<T>() where T: IWorkflowQueuedEvent, new()
         {
@@ -71,7 +77,8 @@ namespace EDC.SoftwarePlatform.Activities.Test.BackgroundTasks
                 "PromptUserTaskCompletedEvent",
                 "TimeoutEvent",
                 "UserCompletesTaskEvent",
-                "ResumeWorkflowParams"
+                "ResumeWorkflowParams",
+                "WorkflowRestoreEvent"
             };
 
             var found = AllQueueParams().Select(t => t.Name).Where(n => !n.Contains("Dummy")).ToSet();

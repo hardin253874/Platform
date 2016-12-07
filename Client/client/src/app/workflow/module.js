@@ -13,6 +13,5 @@ angular.module('mod.app.workflow', [
 
     // activity type specific
     'sp.workflow.activities.workflow',
-    'sp.workflow.activities',
-
+    'sp.workflow.activities'
 ]);

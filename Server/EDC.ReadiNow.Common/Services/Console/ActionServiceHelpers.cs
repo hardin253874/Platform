@@ -10,10 +10,7 @@ namespace EDC.ReadiNow.Services.Console
     /// </summary>
     static class ActionServiceHelpers
     {
-        /// <summary>
-        /// Defines preload content for loading console behaviors.
-        /// </summary>
-        private const string BehaviorRequest = @"
+        internal const string MenuItemRequest = @"
             let @EXPRESSION = {
                 isOfType.id,
                 k:actionExpressionString,
@@ -42,10 +39,17 @@ namespace EDC.ReadiNow.Services.Console
 	            k:isMenuSeparator, k:isActionButton, k:isActionItem, k:isContextMenu, k:isSystem,
 	            k:appliesToSelection, k:appliesToMultiSelection,
 	            k:actionRequiresPermission.isOfType.id,
+                k:actionRequiresParentPermission.isOfType.id,
                 k:actionRequiresExpression.@EXPRESSION,
                 k:actionMenuItemToWorkflow.@WORKFLOW,
                 k:actionMenuItemToReportTemplate.@REPORTTEMPLATE
             }
+            ";
+
+        /// <summary>
+        /// Defines preload content for loading console behaviors.
+        /// </summary>
+        private const string BehaviorRequest = MenuItemRequest + @"
             let @MENU = {
 	            isOfType.id,
 	            k:showNewActionsButton,
@@ -66,7 +70,7 @@ namespace EDC.ReadiNow.Services.Console
         /// <summary>
         /// Defines preload content for loading the report actions menu.
         /// </summary>
-        internal const string TypeInfoRequest = @"
+        private const string TypeInfoRequest = @"
             let @TYPEINFO = {
 	            isOfType.id,
                 alias,
@@ -83,7 +87,7 @@ namespace EDC.ReadiNow.Services.Console
             let @DERIVED = {
 	            isOfType.id,
 	            derivedTypes.@TYPEINFO,
-	            derivedTypes.@DERIVED		
+	            derivedTypes.@DERIVED
             }
             ";
 
@@ -98,7 +102,7 @@ namespace EDC.ReadiNow.Services.Console
 	            resourceReportNodeType.@DERIVED,
 	            groupedNode.@NODE
             }
-            let @FORM = {
+            let @FORMTOEDIT = {
 	            isOfType.id,
 	            k:typeToEditWithForm.isOfType.id
             }
@@ -106,7 +110,7 @@ namespace EDC.ReadiNow.Services.Console
 	            isOfType.name,
 	            name,
 	            { k:selectionBehavior, k:resourceConsoleBehavior }.@BEHAVIOR,
-	            resourceViewerConsoleForm.@FORM,	
+	            resourceViewerConsoleForm.@FORMTOEDIT,	
 	            rootNode.@NODE
             }
             @REPORT";
@@ -116,10 +120,12 @@ namespace EDC.ReadiNow.Services.Console
         /// </summary>
         internal const string FormRequest = BehaviorRequest + TypeInfoRequest + @"            
             let @FORM = {
-	            name,
                 isOfType.name,
-                k:typeToEditWithForm.name,
-	            { k:selectionBehavior, k:resourceConsoleBehavior }.@BEHAVIOR
+	            name,
+                { k:selectionBehavior, k:resourceConsoleBehavior }.@BEHAVIOR,
+                k:typeToEditWithForm.@TYPEINFO,
+	            k:typeToEditWithForm.@ANCESTORS,
+	            k:typeToEditWithForm.@DERIVED	            
             }
             @FORM";
 
@@ -131,6 +137,21 @@ namespace EDC.ReadiNow.Services.Console
             alias,
             isAbstract,
             k:defaultEditForm.id,
+            reportTemplatesApplyToType.{ name, isOfType.id },
+            { k:typeConsoleBehavior, k:selectionBehavior, k:resourceConsoleBehavior }.@BEHAVIOR,
+            isOfType.name,
+            inherits.@ANCESTORS,
+            inherits.@TYPEINFO,
+            derivedTypes.@DERIVED,
+            derivedTypes.@TYPEINFO";
+
+        /// <summary>
+        /// Defines preload content for loading the actions menu for a type to edit with the form
+        /// </summary>
+        internal const string FormToEditTypeRequest = BehaviorRequest + TypeInfoRequest + @"
+            name,
+            alias,
+            isAbstract,
             reportTemplatesApplyToType.{ name, isOfType.id },
             { k:typeConsoleBehavior, k:selectionBehavior, k:resourceConsoleBehavior }.@BEHAVIOR,
             isOfType.name,
@@ -164,7 +185,7 @@ namespace EDC.ReadiNow.Services.Console
             let @WORKFLOWRQ = {
                 isOfType.id,
                 name,
-                inputArgumentForAction.{ name, isOfType.id, conformsToType.id },
+                inputArgumentForAction.{ name, isOfType.{name, alias}, conformsToType.id },
                 wfNewerVersion.{ name, isOfType.id }
             }
             isOfType.id,

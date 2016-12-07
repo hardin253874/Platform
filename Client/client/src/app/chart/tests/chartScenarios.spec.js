@@ -6,6 +6,7 @@ describe('Charts|spec|spChartService|scenarios', function () {
 
     beforeEach(module('mod.common.spVisDataService'));
     beforeEach(module('mod.common.ui.spChartService'));
+    beforeEach(module('mod.common.spWebService'));
     beforeEach(module('mod.app.chartBuilder.services.spChartBuilderService'));
     beforeEach(module('mockedEntityService'));
     beforeEach(module('mockedReportService'));
@@ -63,7 +64,7 @@ describe('Charts|spec|spChartService|scenarios', function () {
     }
 
     function testScenario(scenario, svgCallback) {
-        inject(function (spVisDataService, spChartService, spReportService, spXsrf) {
+        inject(function (spVisDataService, spChartService, spReportService, spXsrf, spWebService) {
 
             // Mock target
             var containerDiv = document.createElement('div');
@@ -78,6 +79,7 @@ describe('Charts|spec|spChartService|scenarios', function () {
             chart.setServices({
                 spVisDataService: spVisDataService,
                 spChartService: spChartService,
+                spWebService: spWebService,
                 spXsrf: spXsrf
             });
 

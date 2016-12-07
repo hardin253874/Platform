@@ -31,6 +31,7 @@
             // Setup the dialog model
             $scope.model = {
                 accountId: options ? options.accountId : -1,
+                currentPassword: null,
                 password: null,
                 confirmPassword: null,
                 changePasswordAtNextLogon: options && options.changePasswordAtNextLogon,
@@ -74,6 +75,11 @@
                 var url;
                 var data;
 
+                if (!$scope.model.currentPassword) {
+                    addError("A value for the current password must be specified.");
+                    return;
+                }
+
                 if (!$scope.model.password &&
                     !$scope.model.confirmPassword) {
                     addError("A value for the password must be specified.");
@@ -85,8 +91,14 @@
                     return;
                 }
 
+                if ($scope.model.password === $scope.model.currentPassword) {
+                    addError("The current password and new password must be different.");
+                    return;
+                }
+
                 url = spWebService.getWebApiRoot() + '/spapi/data/v1/password';
                 data = {
+                    currentPassword: $scope.model.currentPassword,
                     password: $scope.model.password
                 };
 

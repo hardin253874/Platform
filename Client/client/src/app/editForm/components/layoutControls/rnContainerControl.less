@@ -1,0 +1,89 @@
+.rnContainerControl {
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  min-width: 10rem;
+}
+
+.rnContainerControl__title {
+  margin: .5em;
+  height: 30px;
+  overflow: hidden;
+  color: @pointcolour_sp;
+  border-bottom: 1px @pointcolour_sp solid;
+  word-break: break-all;
+  text-transform: uppercase;
+  text-overflow: ellipsis;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.rnContainerControl__content {
+  flex: 1 1 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  margin: .5em;
+}
+
+.rnContainerControl__control {
+  flex: 0 0 auto;
+
+  &.rn-resizeTwentyFive {
+    flex-basis: 25%;
+  }
+  &.rn-resizeThirtyThree {
+    flex-basis: 33.333%;
+  }
+  &.rn-resizeFifty {
+    flex-basis: 50%;
+  }
+  &.rn-resizeSixtySix {
+    flex-basis: 66.666%;
+  }
+  &.rn-resizeSeventyFive {
+    flex-basis: 75%;
+  }
+  &.rn-resizeHundred {
+    flex: 1 1 auto;
+    flex-basis: 0;
+  }
+  &.rn-resizeSpring {
+    flex: 1 1 auto;
+    flex-basis: 100%;
+  }
+  &.rn-resizeAutomatic {
+    flex: 0 0 auto;
+    flex-basis: auto;
+  }
+
+  &.rn-control-state-removed {
+    display: none;
+    //opacity: 0.3;
+  }
+
+  &.rn-control-dragging {
+    //opacity: 0.3;
+  }
+}
+
+.rnNotebookContainerControl {
+  display: flex
+}
+
+.rnNotebookContainerControl__tabs {
+  flex: 0 0 auto;
+  min-width: 5rem;
+  max-width: 10rem;
+  margin: 0;
+  padding: 0;
+}
+
+.rnNotebookContainerControl__pages {
+  flex: 1;
+  margin: 0;
+  padding: 0;
+}

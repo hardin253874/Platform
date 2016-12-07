@@ -124,7 +124,7 @@ namespace EDC.ReadiNow.Test.Core.Cache.Providers
 
 			StochasticCache<int, int>.IsTestMode = false;
 
-			const int cacheSize = 10;
+			const int cacheSize = 100;
 			const int hits = 1000;
 			var cache = CreateStochasticCache<int, int>( "stoc test", cacheSize );
 

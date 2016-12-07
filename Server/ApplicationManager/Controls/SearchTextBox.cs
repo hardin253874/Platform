@@ -1,4 +1,5 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
+
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,7 +22,7 @@ namespace ApplicationManager.Controls
 		/// <summary>
 		///     Manual search.
 		/// </summary>
-		Delayed,
+		Delayed
 	}
 
 	/// <summary>
@@ -35,8 +36,8 @@ namespace ApplicationManager.Controls
 		public static readonly DependencyProperty SearchCommandProperty =
 			DependencyProperty.Register(
 				"SearchCommand",
-				typeof ( ICommand ),
-				typeof ( SearchTextBox ),
+				typeof( ICommand ),
+				typeof( SearchTextBox ),
 				new PropertyMetadata( null ) );
 
 		/// <summary>
@@ -45,8 +46,8 @@ namespace ApplicationManager.Controls
 		public static DependencyPropertyKey HasTextPropertyKey =
 			DependencyProperty.RegisterReadOnly(
 				"HasText",
-				typeof ( bool ),
-				typeof ( SearchTextBox ),
+				typeof( bool ),
+				typeof( SearchTextBox ),
 				new PropertyMetadata( ) );
 
 		/// <summary>
@@ -60,8 +61,8 @@ namespace ApplicationManager.Controls
 		public static DependencyPropertyKey IsMouseLeftButtonDownPropertyKey =
 			DependencyProperty.RegisterReadOnly(
 				"IsMouseLeftButtonDown",
-				typeof ( bool ),
-				typeof ( SearchTextBox ),
+				typeof( bool ),
+				typeof( SearchTextBox ),
 				new PropertyMetadata( ) );
 
 		/// <summary>
@@ -75,8 +76,8 @@ namespace ApplicationManager.Controls
 		public static DependencyProperty LabelTextColorProperty =
 			DependencyProperty.Register(
 				"LabelTextColor",
-				typeof ( Brush ),
-				typeof ( SearchTextBox ) );
+				typeof( Brush ),
+				typeof( SearchTextBox ) );
 
 		/// <summary>
 		///     LabelTextProperty.
@@ -84,8 +85,8 @@ namespace ApplicationManager.Controls
 		public static DependencyProperty LabelTextProperty =
 			DependencyProperty.Register(
 				"LabelText",
-				typeof ( string ),
-				typeof ( SearchTextBox ) );
+				typeof( string ),
+				typeof( SearchTextBox ) );
 
 		/// <summary>
 		///     SearchEventTimeDelayProperty.
@@ -93,8 +94,8 @@ namespace ApplicationManager.Controls
 		public static DependencyProperty SearchEventTimeDelayProperty =
 			DependencyProperty.Register(
 				"SearchEventTimeDelay",
-				typeof ( Duration ),
-				typeof ( SearchTextBox ),
+				typeof( Duration ),
+				typeof( SearchTextBox ),
 				new FrameworkPropertyMetadata(
 					new Duration( new TimeSpan( 0, 0, 0, 0, 500 ) ),
 					OnSearchEventTimeDelayChanged ) );
@@ -105,8 +106,8 @@ namespace ApplicationManager.Controls
 		public static DependencyProperty SearchModeProperty =
 			DependencyProperty.Register(
 				"SearchMode",
-				typeof ( SearchMode ),
-				typeof ( SearchTextBox ),
+				typeof( SearchMode ),
+				typeof( SearchTextBox ),
 				new PropertyMetadata( SearchMode.Instant ) );
 
 		/// <summary>
@@ -120,8 +121,8 @@ namespace ApplicationManager.Controls
 		static SearchTextBox( )
 		{
 			DefaultStyleKeyProperty.OverrideMetadata(
-				typeof ( SearchTextBox ),
-				new FrameworkPropertyMetadata( typeof ( SearchTextBox ) ) );
+				typeof( SearchTextBox ),
+				new FrameworkPropertyMetadata( typeof( SearchTextBox ) ) );
 		}
 
 		/// <summary>
@@ -130,9 +131,9 @@ namespace ApplicationManager.Controls
 		public SearchTextBox( )
 		{
 			_searchEventDelayTimer = new DispatcherTimer
-				{
-					Interval = SearchEventTimeDelay.TimeSpan
-				};
+			{
+				Interval = SearchEventTimeDelay.TimeSpan
+			};
 
 			_searchEventDelayTimer.Tick += OnSearchEventDelayTimerTick;
 		}
@@ -280,7 +281,8 @@ namespace ApplicationManager.Controls
 		}
 
 		/// <summary>
-		///     Invoked whenever an unhandled <see cref="System.Windows.Input.Keyboard" /> attached routed event reaches an element derived from this class in its route. Implement this method to add class handling for this event.
+		///     Invoked whenever an unhandled <see cref="System.Windows.Input.Keyboard" /> attached routed event reaches an element
+		///     derived from this class in its route. Implement this method to add class handling for this event.
 		/// </summary>
 		/// <param name="e">Provides data about the event.</param>
 		protected override void OnKeyDown( KeyEventArgs e )
@@ -308,7 +310,8 @@ namespace ApplicationManager.Controls
 		///     Is called when content in this editing control changes.
 		/// </summary>
 		/// <param name="e">
-		///     The arguments that are associated with the <see cref="E:System.Windows.Controls.Primitives.TextBoxBase.TextChanged" /> event.
+		///     The arguments that are associated with the
+		///     <see cref="E:System.Windows.Controls.Primitives.TextBoxBase.TextChanged" /> event.
 		/// </param>
 		protected override void OnTextChanged( TextChangedEventArgs e )
 		{
@@ -320,6 +323,24 @@ namespace ApplicationManager.Controls
 			{
 				_searchEventDelayTimer.Stop( );
 				_searchEventDelayTimer.Start( );
+			}
+		}
+
+		/// <summary>
+		///     Called when [search event time delay changed].
+		/// </summary>
+		/// <param name="o">The o.</param>
+		/// <param name="e">
+		///     The <see cref="DependencyPropertyChangedEventArgs" /> instance containing the event data.
+		/// </param>
+		private static void OnSearchEventTimeDelayChanged(
+			DependencyObject o, DependencyPropertyChangedEventArgs e )
+		{
+			var stb = o as SearchTextBox;
+			if ( stb != null )
+			{
+				stb._searchEventDelayTimer.Interval = ( ( Duration ) e.NewValue ).TimeSpan;
+				stb._searchEventDelayTimer.Stop( );
 			}
 		}
 
@@ -385,24 +406,6 @@ namespace ApplicationManager.Controls
 		{
 			_searchEventDelayTimer.Stop( );
 			RaiseSearchEvent( );
-		}
-
-		/// <summary>
-		///     Called when [search event time delay changed].
-		/// </summary>
-		/// <param name="o">The o.</param>
-		/// <param name="e">
-		///     The <see cref="DependencyPropertyChangedEventArgs" /> instance containing the event data.
-		/// </param>
-		private static void OnSearchEventTimeDelayChanged(
-			DependencyObject o, DependencyPropertyChangedEventArgs e )
-		{
-			var stb = o as SearchTextBox;
-			if ( stb != null )
-			{
-				stb._searchEventDelayTimer.Interval = ( ( Duration ) e.NewValue ).TimeSpan;
-				stb._searchEventDelayTimer.Stop( );
-			}
 		}
 
 		/// <summary>

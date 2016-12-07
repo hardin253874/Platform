@@ -266,6 +266,35 @@ namespace EDC.SoftwarePlatform.Activities
         }
 
         /// <summary>
+        /// Get a list of entities.
+        /// </summary>
+        /// <typeparam name="T">The entity type.</typeparam>
+        /// <param name="inputs">The input arguments.</param>
+        /// <param name="paramAlias">The parameter alias.</param>
+        /// <returns>The list of entities.</returns>
+        protected IEnumerable<T> GetArgumentEntityList<T>(ActivityInputs inputs, string paramAlias) where T : class, IEntity
+        {
+            var obj = GetArgumentValue_imp(inputs, paramAlias);
+
+            if (obj == null)
+                return Enumerable.Empty<T>();
+
+            var list = obj as IEnumerable<T>;
+            if (list != null)
+            {
+                return list;
+            }
+
+            var list2 = obj as IEnumerable<IEntity>;
+            if (list2 != null)
+            {
+                return list2.Select(m => m.Cast<T>());
+            }
+
+            return GetArgumentEntity<T>(inputs, paramAlias).ToEnumerable();
+        }
+
+        /// <summary>
         /// Give the argument alias, return the input, throw an exception if the input is undefined
         /// </summary>
         protected T GetArgumentValueStruct<T>(ActivityInputs input, string paramAlias) where T : struct

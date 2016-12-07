@@ -1,0 +1,77 @@
+rn-vertical-stack-container-control {
+  //display: block;
+  //padding: 5px;
+
+}
+
+.rnVerticalStackContainerControl {
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  min-width: 10rem;
+}
+
+.rnVerticalStackContainerControl__title {
+  margin: .5em;
+  height: 30px;
+  overflow: hidden;
+  color: @pointcolour_sp;
+  border-bottom: 1px @pointcolour_sp solid;
+  word-break: break-all;
+  text-transform: uppercase;
+  text-overflow: ellipsis;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.rnVerticalStackContainerControl__content {
+  flex: 1 1 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  margin: .5em;
+}
+
+.rnVerticalStackContainerControl__control {
+  flex: 0 0 auto;
+
+  &.rn-resizeTwentyFive {
+    flex-basis: 25%;
+  }
+  &.rn-resizeThirtyThree {
+    flex-basis: 33.333%;
+  }
+  &.rn-resizeFifty {
+    flex-basis: 50%;
+  }
+  &.rn-resizeSixtySix {
+    flex-basis: 66.666%;
+  }
+  &.rn-resizeSeventyFive {
+    flex-basis: 75%;
+  }
+  &.rn-resizeHundred {
+    flex: 1 1 auto;
+    flex-basis: 0;
+  }
+  &.rn-resizeSpring {
+    flex: 1 1 auto;
+    flex-basis: 100%;
+  }
+  &.rn-resizeAutomatic {
+    flex: 0 0 auto;
+    flex-basis: auto;
+  }
+
+  &.rn-control-state-removed {
+    display: none;
+    //opacity: 0.3;
+  }
+
+  &.rn-control-dragging {
+    //opacity: 0.3;
+  }
+}

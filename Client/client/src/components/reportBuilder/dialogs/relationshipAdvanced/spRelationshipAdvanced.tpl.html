@@ -11,11 +11,15 @@
                 Show records that are only of object '{{model.resourceName}}'
             </li>
             <li ng-show="!model.isResourceReportNode">
-                Join type <select ng-model="model.selectedNodeExistMode" ng-disabled="model.isJoinTypeEnabled">
+                Join type: <select ng-model="model.selectedNodeExistMode" ng-disabled="model.isJoinTypeEnabled">
                     <option value="automatic">Automatic</option>
                     <option value="recordMustExist">Record must exist</option>
                     <option value="recordMayNotExist">Record may not exist</option>
                 </select>
+            </li>
+            <li ng-show="!model.isParentNeedNotExistEnabled">
+                <input type="checkbox" ng-model="model.selectedNodeParentNeedNotExist" ng-readonly="model.isParentNeedNotExistEnabled" ng-disabled="model.isParentNeedNotExistEnabled" />
+                Parent record may not exist
             </li>
             <!-- <li>
                  <input type="checkbox" ng-model="selectedNodeResourceMustExist" ng-readonly="isResourceMustExistEnabled" ng-disabled="isResourceMustExistEnabled" />
@@ -35,6 +39,10 @@
                     </select>
                 </li>
             </ul>
+            <div ng-show="model.isCustomJoinNode">Join script:</div>
+            <div ng-show="model.isCustomJoinNode">
+                <sp-custom-join-expression script="model.customJoinScript" options="model.customJoinScriptOptions" />
+            </div>
         </ul>
     </div>
     <div class="modal-footer">

@@ -20,24 +20,100 @@
         'mod.app.editForm', 'sp.common.fieldValidator', 'mod.common.spMobile']);
 
     angular.module('mod.app.editForm.spFieldControlProvider')
+        .factory('spFieldControlService', spFieldControlService)
         .factory('spFieldControlProvider', spFieldControlProvider);
+
+    function spFieldControlService(spFieldValidator, spMobileContext) {
+        'ngInject';
+
+        return {
+            getFieldControlProps,
+            getFieldInputModel,
+            getFormControlValidators
+        };
+
+        function getFieldControlProps(control, {editing}) {
+            console.assert(control && control.fieldToRender);
+
+            const fieldToRender = control.fieldToRender;
+
+            const isReadOnly = !editing || control.readOnlyControl || fieldToRender.isFieldReadOnly;
+            const isRequired = control.mandatoryControl || fieldToRender.isRequired;
+            const customValidationMessages = [];
+            const customTypeParser = spFieldValidator.getCustomParser(fieldToRender, customValidationMessages);
+            const customValidator = spFieldValidator.getCustomValidator(fieldToRender, isRequired, customValidationMessages);
+            const isMobile = spMobileContext.isMobile;
+            const isTablet = spMobileContext.isTablet;
+
+            return {
+                customValidationMessages, customTypeParser, customValidator,
+                isReadOnly, isRequired, isMobile, isTablet
+            };
+        }
+
+        function getFieldInputModel(control, ctrl) {
+            console.assert(control && control.fieldToRender);
+
+            const fieldToRender = control.fieldToRender;
+
+            const isMandatory = control.mandatoryControl;
+            const isReadOnly = ctrl.isReadOnly;
+            const isRequired = ctrl.isRequired;
+            const watermark = fieldToRender.fieldWatermark;
+            const customTypeParser = ctrl.customTypeParser;
+            const customValidator = ctrl.customValidator;
+
+            return {isMandatory, isRequired, isReadOnly, watermark, customTypeParser, customValidator};
+        }
+
+        function getFormControlValidators(control, ctrl) {
+
+            //At the moment the caller will add these methods to the form control's entity object
+            //TODO - review this. don't like adding things to the form control's entity object
+
+            return {spValidateControl, validateOnSchemaChange};
+
+            // provide a function to validate the model is correct. Used when saving
+            function spValidateControl(entity) {
+                if (ctrl.customValidationMessages.length === 0) {
+                    performValidation(entity);
+                }
+                return ctrl.customValidationMessages.length === 0;
+            }
+
+            // provide a function to validate the model is correct. Used when schema changes.
+            function validateOnSchemaChange(entity) {
+                ctrl.customValidator = spFieldValidator.getCustomValidator(control.fieldToRender, ctrl.isRequired, ctrl.customValidationMessages);
+                performValidation(entity);
+            }
+
+            function performValidation(entity) {
+                const value = entity.getField(ctrl.control.fieldToRender.idP);
+                const convertedVal = getConvertedValue(ctrl.control, value);
+                ctrl.customValidator(convertedVal);
+            }
+        }
+    }
 
     function spFieldControlProvider(spEditForm, spFieldValidator, spMobileContext) {
         'ngInject';
 
-        return function ($scope) {
+        return function (ctrl, scope) {
 
-            var model = $scope.model;
-            var formControl = $scope.formControl;
+            // note - in our new components we are using "control" rather than "formControl"
+            // so for now look for either
+            const getFormControl = () => ctrl.formControl || ctrl.control;
 
-            var fieldToRender = formControl.fieldToRender;
-            var customValidationMessages = [];
+            const formControl = getFormControl();
+            const model = ctrl.model;
+            const fieldToRender = formControl.fieldToRender;
+            const customValidationMessages = [];
 
-            $scope.isMobile = spMobileContext.isMobile;
-            $scope.isTablet = spMobileContext.isTablet;
-            $scope.customValidationMessages = customValidationMessages;
-            $scope.titleModel = spEditForm.createTitleModel(formControl, model.isInDesign);
-            $scope.testId = spEditForm.cleanTestId(_.result(fieldToRender, 'getName'));
+            ctrl.isMobile = spMobileContext.isMobile;
+            ctrl.isTablet = spMobileContext.isTablet;
+            ctrl.customValidationMessages = customValidationMessages;
+            ctrl.titleModel = spEditForm.createTitleModel(formControl, model.isInDesign);
+            ctrl.testId = spEditForm.cleanTestId(_.result(fieldToRender, 'getName'));
 
             spEditForm.commonFieldControlInit(fieldToRender);        // we should move this code into here
 
@@ -55,8 +131,8 @@
                     return false;
                 }
 
-                var value = entity.getField(fieldToRender.id());
-                var convertedVal = getConvertedValue(formControl, value);
+                const value = entity.getField(fieldToRender.id());
+                const convertedVal = getConvertedValue(formControl, value);
                 model.customValidator(convertedVal);
 
                 return customValidationMessages.length === 0;
@@ -64,68 +140,77 @@
 
             // provide a function to validate the model is correct. Used when schema changes.
             formControl.validateOnSchemaChange = function (entity) {
-                //  $scope.customValidationMessages = [];
-                //  fieldToRender = formControl.getFieldToRender();
-                // why is this re-creating the validator??
                 model.customValidator = spFieldValidator.getCustomValidator(fieldToRender, model.isRequired, customValidationMessages);
-                var value = entity.getField(fieldToRender.id());
-                var convertedVal = getConvertedValue(formControl, value);
+                const value = entity.getField(fieldToRender.id());
+                const convertedVal = getConvertedValue(formControl, value);
                 model.customValidator(convertedVal);
             };
 
-            $scope.$watch("isReadOnly", function (value) {
-                updateReadonly();
-            });
+            if (scope) {
+                // HERE for compatibility
+                scope.$watch("isReadOnly", onIsReadOnlyChanged);
+                scope.$on('formControlUpdated', onFormControlChanged);
+                // end compat... to remove this once all callers do it themselves
+                // end then we can remove dependency on scope
+            }
 
-            $scope.$on('formControlUpdated', function () {
-                updateMandatory();
-                $scope.titleModel = spEditForm.createTitleModel(formControl, model.isInDesign);
-            });
+            // The caller should establish the $watch and $on listener, if they want
+            ctrl.onIsReadOnlyChanged = onIsReadOnlyChanged;
+            ctrl.onFormControlChanged = onFormControlChanged;
 
-            function updateReadonly() {
-                var isReadOnly = $scope.isReadOnly || formControl.readOnlyControl || fieldToRender.isFieldReadOnly;
+            function onIsReadOnlyChanged() {
+                const formControl = getFormControl();
+                const fieldToRender = formControl.fieldToRender;
+                const isReadOnly = ctrl.isReadOnly || formControl.readOnlyControl || fieldToRender.isFieldReadOnly;
 
-                if (isReadOnly && $scope.customValidationMessages.length) {
+                if (isReadOnly && ctrl.customValidationMessages.length) {
                     // when we flip to readonly clear the validation messages
-                    $scope.customValidationMessages.length = 0;
+                    ctrl.customValidationMessages.length = 0;
                 }
 
-                model.isReadOnly = isReadOnly;
+                ctrl.model.isReadOnly = isReadOnly;
+            }
+
+            function onFormControlChanged() {
+                const formControl = getFormControl();
+                updateMandatory();
+                ctrl.titleModel = spEditForm.createTitleModel(formControl, ctrl.model.isInDesign);
             }
 
             function updateMandatory() {
-                model.isRequired = formControl.mandatoryControl ||
+                const formControl = getFormControl();
+                ctrl.model.isRequired = formControl.mandatoryControl ||
                     (formControl.fieldToRender && formControl.fieldToRender.isRequired);
             }
-
-            ///
-            //  this function converts the value that form data hold to the local values.
-            //  this is required because a common validator is used by the render control(which expects values in local)
-            // and the validate function called by 'save' against 'formData' (which is in server storage value)
-            ///
-            function getConvertedValue(formCtrl, value) {
-                var controlAlias = formCtrl.firstTypeId().getAlias();
-                var retVal = value;
-                if (value) {
-                    switch (controlAlias) {
-                        case 'timeKFieldRenderControl':
-                            retVal = sp.translateFromServerStorageDateTime(value);
-                            break;
-                        case 'dateKFieldRenderControl':
-                            retVal = sp.translateToLocal(value);
-                            break;
-                        case 'dateConfigControl':
-                        case 'dateAndTimeConfigControl': {
-                            retVal = new Date(value);
-                        }
-                            break;
-                        default:
-                            break;
-                    }
-                }
-                return retVal;
-            }
         };
+    }
+
+    //
+    // this function converts the value that form data hold to the local values.
+    // this is required because a common validator is used by the render control(which expects values in local)
+    // and the validate function called by 'save' against 'formData' (which is in server storage value)
+    //
+    function getConvertedValue(formControl, value) {
+        const controlAlias = formControl.firstTypeId().getAlias();
+        let retVal = value;
+        if (value) {
+            switch (controlAlias) {
+                case 'timeKFieldRenderControl':
+                    retVal = sp.translateFromServerStorageDateTime(value);
+                    break;
+                case 'dateKFieldRenderControl':
+                    retVal = sp.translateToLocal(value);
+                    break;
+                case 'dateConfigControl':
+                case 'dateAndTimeConfigControl': {
+                    retVal = new Date(value);
+                }
+                    break;
+                default:
+                    break;
+            }
+        }
+        return retVal;
     }
 
 }());

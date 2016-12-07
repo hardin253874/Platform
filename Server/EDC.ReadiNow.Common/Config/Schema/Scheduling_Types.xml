@@ -79,6 +79,7 @@
         <relationshipInToTypeGroup>scheduleDetails</relationshipInToTypeGroup>
       </relationship>
     </relationships>
+    <onBeforeSave>scheduledItemSyncTarget</onBeforeSave>
     <onAfterSave>scheduledItemSyncTarget</onAfterSave>
     <onAfterDelete>scheduledItemSyncTarget</onAfterDelete>
   </type>

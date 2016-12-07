@@ -179,9 +179,9 @@
     <k:minWidth>370</k:minWidth>
     <k:minWidthTablet>370</k:minWidthTablet>
     <k:minWidthMobile>300</k:minWidthMobile>
-    <k:minHeight>50</k:minHeight>
-    <k:minHeightTablet>50</k:minHeightTablet>
-    <k:minHeightMobile>50</k:minHeightMobile>
+    <k:minHeight>150</k:minHeight>
+    <k:minHeightTablet>150</k:minHeightTablet>
+    <k:minHeightMobile>150</k:minHeightMobile>
     <k:pagerSupportMobile>true</k:pagerSupportMobile>
   </k:relationshipRenderControlType>
   <k:relationshipRenderControlType>

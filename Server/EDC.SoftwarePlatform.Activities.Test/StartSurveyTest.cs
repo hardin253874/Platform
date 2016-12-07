@@ -118,6 +118,7 @@ namespace EDC.SoftwarePlatform.Activities.Test
         }
 
 
+        [Ignore("Start Survey activity now only takes Campaign as input.")]
         [Test]
         [RunWithTransaction]
         [RunAsDefaultTenant]
@@ -161,6 +162,7 @@ namespace EDC.SoftwarePlatform.Activities.Test
             Assert.That(task.Name, Is.EqualTo("MyTaskName"), "taskName");
         }
 
+        [Ignore("Start Survey activity now only takes Campaign as input.")]
         [Test]
         [RunAsDefaultTenant]
         [RunWithoutTransaction]
@@ -263,12 +265,7 @@ namespace EDC.SoftwarePlatform.Activities.Test
             wf
                 .AddDefaultExitPoint()
                 .AddInput<ResourceArgument>("campaign", SurveyCampaign.SurveyCampaign_Type)
-                .AddInput<ResourceArgument>("recipient", Person.Person_Type)
-                .AddInput<BoolArgument>("pause")
-                .AddInput<DecimalArgument>("dueDays")
-                .AddInput<StringArgument>("taskName")
-                .AddInput<ResourceArgument>("target", Person.Person_Type)
-                .AddStartSurvey("Start Survey", "[campaign]", "[pause]", "[target]", "[dueDays]", "[taskName]");
+                .AddStartSurvey("Start Survey", "[campaign]");
 
             wf.Save();
             return wf;

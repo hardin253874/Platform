@@ -15,7 +15,7 @@ using EDC.ReadiNow.Database;
 namespace EDC.ReadiNow.Test.Scheduling
 {
     [TestFixture]
-	[RunWithTransaction]
+	
     public class ScheduledItemTest
     {
         List<long> toDelete;
@@ -93,31 +93,28 @@ namespace EDC.ReadiNow.Test.Scheduling
 
             var actionInstance = Entity.Create(action).Cast<ScheduledItem>();
             actionInstance.ScheduleForTrigger.Add(schedule);
+            actionInstance.TriggerEnabled = true;
 
-            using (var ctx = DatabaseContext.GetContext(true, preventPostSaveActionsPropagating: true))
-            {
-                actionInstance.Save();
-
-                ctx.CommitTransaction();
-            }
+            actionInstance.Save();
 
             toDelete.Add(actionInstance.Id);
 
             //schedule.TriggersForSchedule.Add(actionInstance.As<ScheduledItem>());
             //schedule.Save();
 
-            using (var mutex = SyncAction.CreateEventHandle((EntityRef)actionInstance))
-            {
-                mutex.Reset();
-                // wait for the scheduler to trigger it
-                mutex.WaitOne();
-            }
+            WaitForFire(actionInstance);
+            //using (var mutex = SyncAction.CreateEventHandle((EntityRef)actionInstance))
+            //{
+            //    mutex.Reset();
+            //    // wait for the scheduler to trigger it
+            //    mutex.WaitOne();
+            //}
         }
 
 
         [Test]
         [RunAsDefaultTenant]
-        [Ignore("Waiting to be fixed")]
+        //[Ignore("Waiting to be fixed")]
         [Timeout(60000)]
         [Description("Tests that two triggers on the one schedule both fire - bug 22274")]
         public void TestTwoTriggersFiringCron_22274()
@@ -127,7 +124,7 @@ namespace EDC.ReadiNow.Test.Scheduling
 
         [Test]
         [RunAsDefaultTenant]
-        [Ignore("Waiting to be fixed")]
+        //[Ignore("Waiting to be fixed")]
         [Timeout(60000)]
         [Description("Tests that two triggers on the one schedule both fire - bug 22274")]
         public void TestTwoTriggersFiringDailyRepeat_22274()
@@ -137,13 +134,14 @@ namespace EDC.ReadiNow.Test.Scheduling
 
         [Test]
         [RunAsDefaultTenant]
-        [Ignore("Waiting to be fixed")]
+        //[Ignore("Waiting to be fixed")]
         [Timeout(60000)]
         [Description("Tests that two triggers on the one schedule both fire - bug 22274")]
         public void TestTwoTriggersFiringOneOff_22274()
         {
             TestTwoTriggerOnSchedule(SaveAndAddDelete(CreateOneOff()));
         }
+
 
         void TestTwoTriggerOnSchedule(Schedule schedule)
         {
@@ -154,29 +152,36 @@ namespace EDC.ReadiNow.Test.Scheduling
             var actionInstance2 = Entity.Create(action).Cast<ScheduledItem>();
 
             actionInstance1.ScheduleForTrigger.Add(schedule);
-            actionInstance1.ScheduleForTrigger.Add(schedule);
+            actionInstance1.TriggerEnabled = true;
+            actionInstance2.ScheduleForTrigger.Add(schedule);
+            actionInstance2.TriggerEnabled = true;
 
-            using (var ctx = DatabaseContext.GetContext(true, preventPostSaveActionsPropagating: true))
+
+            actionInstance1.Save();
+            actionInstance2.Save();
+
+            toDelete.Add(actionInstance1.Id);
+            toDelete.Add(actionInstance2.Id);
+
+            WaitForFire(actionInstance1);
+            WaitForFire(actionInstance2);
+        }
+
+        void WaitForFire(ScheduledItem actionInstance1)
+        {
+            for (int i = 0; i < 30 * 2; i++)
             {
-                actionInstance1.Save();
-                actionInstance1.Save();
-
-                ctx.CommitTransaction();
-            }            
-
-            using (var mutex1 = SyncAction.CreateEventHandle((EntityRef)actionInstance1))
-            {
-                using (var mutex2 = SyncAction.CreateEventHandle((EntityRef)actionInstance2))
+                Thread.Sleep(500);
+                var res = Entity.GetByName<Resource>(actionInstance1.Id.ToString());   // The Id is the name of the created reosurce
+                if (res.Count() > 0)
                 {
-                    mutex1.Reset();
-                    mutex2.Reset();
-
-                    // wait for the schedule to release it
-                    mutex1.WaitOne();
-                    mutex2.WaitOne();
+                    return;
                 }
             }
+
+            Assert.Fail("Didn't run");
         }
+
 
         Schedule SaveAndAddDelete(Schedule schedule)
         {

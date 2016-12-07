@@ -27,7 +27,9 @@
                 require: '^^?spInlineEditForm',
                 link: function (scope, $element, attrs, spInlineEditForm) {
 
-					// Configure the underlying picker
+                    // console.log('spChoiceRelationshipRenderControl: ctor', (scope.formControl || {}).debugString);
+
+                    // Configure the underlying picker
 					// to fetch data using a report rather than the entity info service.
 					// This is needed so that the results can be filtered.
                     scope.useReportToPopulatePicker = true;

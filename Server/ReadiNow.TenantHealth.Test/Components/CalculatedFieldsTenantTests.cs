@@ -1,10 +1,15 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
+
+using System;
 using NUnit.Framework;
 using System.Linq;
 using System.Collections.Generic;
-using EDC.ReadiNow.Model;
+using EDC.ReadiNow.Cache;
 using EDC.ReadiNow.Core;
+using EDC.ReadiNow.IO;
+using EDC.ReadiNow.Metadata.Tenants;
 using ReadiNow.Expressions.CalculatedFields;
+using ReadiNow.TenantHealth.Test.Infrastructure;
 
 namespace ReadiNow.TenantHealth.Test.Components
 {
@@ -19,28 +24,54 @@ namespace ReadiNow.TenantHealth.Test.Components
         /// </summary>
         const string CalculatedFieldsToIgnore = "Calc Missing Field (on AA_Calculations)";
 
+		/// <summary>
+		/// Clears the selected caches.
+		/// </summary>
+		private void ClearSelectedCaches( )
+		{
+			/////
+			// Clear Report caches
+			/////
+			ICacheService cacheService = Factory.QueryRunner as ICacheService;
+			cacheService?.Clear( );
+
+			cacheService = Factory.QueryRepository as ICacheService;
+			cacheService?.Clear( );
+
+			cacheService = Factory.QuerySqlBuilder as ICacheService;
+			cacheService?.Clear( );
+
+			/////
+			// Clear Calculated Field cache
+			/////
+			cacheService = Factory.CalculatedFieldMetadataProvider as ICacheService;
+			cacheService?.Clear( );
+		}
 
         [Test]
         [TestCaseSource( "CompileCalculation_GetTestData" )]
         public void CompileField( TenantInfo tenant, long calcFieldId, string calcFieldName )
         {
-            using ( tenant.GetTenantAdminContext( ) )
-            {
-                CalculatedFieldMetadata staticResult;
-                long [ ] fields = new [ ] { calcFieldId };
+			using ( tenant.GetTenantAdminContext( ) )
+			using ( new MemoryGuard( 2 * TenantHealthHelpers.OneGb, ClearSelectedCaches ) )
+			using ( new MemoryGuard( 3 * TenantHealthHelpers.OneGb, TenantHealthHelpers.ClearAllCaches ) )
+			using ( new MemoryLogger( new KeyValuePair<string, object>( "Tenant", tenant.TenantName ), new KeyValuePair<string, object>( "Calculated Field Id", calcFieldId ) ) )
+			{
+				CalculatedFieldMetadata staticResult;
+				long [ ] fields = new [ ] { calcFieldId };
 
-                // Perform static calculation
-                staticResult = Factory.CalculatedFieldMetadataProvider.GetCalculatedFieldMetadata( fields, CalculatedFieldSettings.Default ).Single();
+				// Perform static calculation
+				staticResult = Factory.CalculatedFieldMetadataProvider.GetCalculatedFieldMetadata( fields, CalculatedFieldSettings.Default ).Single( );
 
-                // We got a result (assert true)
-                Assert.That( staticResult, Is.Not.Null, "CalculatedFieldMetadata is not null" );
+				// We got a result (assert true)
+				Assert.That( staticResult, Is.Not.Null, "CalculatedFieldMetadata is not null" );
 
-                // It has no errors
-                Assert.That( staticResult.Exception, Is.Null, $"{staticResult.Exception}" );
+				// It has no errors
+				Assert.That( staticResult.Exception, Is.Null, $"{staticResult.Exception}" );
 
-                // And we have an expression (assert true, if no error)
-                Assert.That( staticResult.Expression, Is.Not.Null, "CalculatedFieldMetadata.Expression is not null." );
-            }
+				// And we have an expression (assert true, if no error)
+				Assert.That( staticResult.Expression, Is.Not.Null, "CalculatedFieldMetadata.Expression is not null." );
+			}
         }
 
 

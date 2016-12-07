@@ -141,7 +141,18 @@ describe('Console|Navigation|navService|spec:', function () {
         id: { id: 9001, ns: 'core', alias: 'name' }
     });
 
-    beforeEach(module('sp.navService'));
+    beforeEach(function () {
+        // Stub out any services
+        var spDocumentationServiceStub = {
+            initializeDocoSettings: function() {                
+            }
+        };
+        
+        module("sp.navService", function ($provide) {
+            $provide.value("spDocumentationService", spDocumentationServiceStub);            
+        });
+    });
+    
     beforeEach(module('mockedEntityService'));
     beforeEach(module('mockedLoginService'));
 

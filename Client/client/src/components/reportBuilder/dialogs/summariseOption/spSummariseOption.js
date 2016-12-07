@@ -69,7 +69,7 @@
         $scope.$watch('options', function () {
             $scope.spSummariseOptionService.clearSelectedNodeId();
             $scope.model.selectedNode = options.selectedNode;
-            $scope.model.isSummarised = options.selectedNode.pae != null;
+            $scope.model.isSummarised = !!options.selectedNode.pae;
             $scope.model.reportEntity = options.reportEntity;
             $scope.model.treeNode = options.treeNode;
             $scope.model.selectedNodeId = $scope.model.selectedNode.nid;

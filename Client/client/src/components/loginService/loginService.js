@@ -50,6 +50,7 @@
             exports.changePasswordAtNextLogon = null;
             exports.loggedInAccountDisplayText = null;
             exports.identityProviderLogin = identityProviderLogin;
+            exports.defaultUserLandingInfo = null;
 
             $rootScope.$on('event:issueChallenge', challenge);
 
@@ -364,8 +365,12 @@
                         spAppSettings.setSessionInfo(sessionInfo);
                     });
 
-                    spEntityService.getEntity(exports.accountId, 'changePasswordAtNextLogon, accountHolder.name', { hint: 'checklogin', batch: true }).then(function (account) {
+                    spEntityService.getEntity(exports.accountId, 'changePasswordAtNextLogon, accountHolder.name, k:defaultNavSection.name, k:defaultNavElement.{ name, k:resourceInFolder*.{ name, isOfType.alias} }', { hint: 'checklogin', batch: true }).then(function (account) {
                         if (account) {
+                            exports.defaultUserLandingInfo = exports.defaultUserLandingInfo || {};
+                            exports.defaultUserLandingInfo.defaultNavSection = account.defaultNavSection;
+                            exports.defaultUserLandingInfo.defaultNavElement = account.defaultNavElement;
+
                             // Check to see if the user must change the password at login time and caches it locally.
                             exports.changePasswordAtNextLogon = account.changePasswordAtNextLogon;
 
@@ -410,7 +415,7 @@
             function cookiePollTest() {
                 var cookieValue = getLoginCookie();
 
-                if (cookieValue != lastCookieValue) {
+                if (cookieValue !== lastCookieValue) {
                     endCookiePoll();
                     $rootScope.$emit('sp.app.restart', 'The XsrfToken cookie is missing, this indicates the user has logged off in another session.');
                 } 

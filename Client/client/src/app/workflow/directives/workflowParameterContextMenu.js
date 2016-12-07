@@ -111,7 +111,7 @@
 
                     scope.clickPicker = function () {
                         var menuItems = scope.contextMenu.menuItems;
-                        if (menuItems.length == 1) {
+                        if (menuItems.length === 1) {
                             scope.$eval(menuItems[0].click);
                         } else {
                             scope.contextMenuIsOpen = true;

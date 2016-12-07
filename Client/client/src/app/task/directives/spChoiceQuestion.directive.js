@@ -38,12 +38,14 @@
                     if ((scope.choices.length >= 5) && (oldValue !== newValue) && scope.answer) {
                         scope.answer.surveyAnswerSingleChoice = newValue;
                     }
+                    scope.$emit('rnSurveyProgressEvent');
                 });
 
                 scope.$watch('radioPickerOptions.selectedEntityId', function (newValue, oldValue) {
                     if ((scope.choices.length < 5) && (oldValue !== newValue) && scope.answer) {
                         scope.answer.surveyAnswerSingleChoice = _.find(scope.choices, function (c) { return c.idP === newValue; });
                     }
+                    scope.$emit('rnSurveyProgressEvent');
                 });
 
                 function addChoice(value) {

@@ -208,7 +208,7 @@
                                     // or a custom type in which case the custom type must be loaded.
                                     /////
                                     if (typeEntity.alias() === 'core:definition' && typeEntity.id() !== spFormBuilderService.definition.id()) {
-                                        if (spFormBuilderService.definition.inherits && (spFormBuilderService.definition.inherits.length > 1 || spFormBuilderService.definition.inherits[0].alias() != 'core:userResource')) {
+                                        if (spFormBuilderService.definition.inherits && (spFormBuilderService.definition.inherits.length > 1 || spFormBuilderService.definition.inherits[0].alias() !== 'core:userResource')) {
 
                                             var promises = [];
 

@@ -72,7 +72,7 @@ var spCharts;
             var primary = primaryAccessor(row);
 
             // New primary value
-            if ('' + primary != '' + prevPrimary) {
+            if ('' + primary !== '' + prevPrimary) {
                 _.forEach(groups, function (g) { bringToLength(g, length, prevPrimary); });
                 prevPrev = prevPrimary;
                 prevPrimary = primary;
@@ -93,7 +93,7 @@ var spCharts;
             }
 
             // Ensure value is unique before storing
-            if (group.data.length == length - 1) {
+            if (group.data.length === length - 1) {
                 var datum = {
                     row: row,
                     group: group,
@@ -443,7 +443,7 @@ var spCharts;
         var alias = sp.result(series, 'entity.markerShape.nsAlias');
         if (!alias || alias === 'core:markerShapeNone')
             return null;
-        var filled = alias.indexOf('Filled') != -1;
+        var filled = alias.indexOf('Filled') !== -1;
         var shape = alias.slice(filled ? 22 : 16).toLowerCase();
         if (shape === 'triangleup') shape = 'triangle-up';
         return { filled: filled, shape: shape };
@@ -451,8 +451,8 @@ var spCharts;
 
     spCharts.markerSize = function markerSize(series) {
         var alias = sp.result(series, 'entity.markerSize.nsAlias');
-        if (alias == 'core:sizeSmall') return 25;
-        if (alias == 'core:sizeLarge') return 81;
+        if (alias === 'core:sizeSmall') return 25;
+        if (alias === 'core:sizeLarge') return 81;
         return 49; // square pixels
     };
 

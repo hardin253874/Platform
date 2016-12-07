@@ -19,6 +19,9 @@ namespace EDC.ReadiNow.Test.Model.EventClasses.ResourceTriggerFilter
         const string Fourty7Characters = "12345678901234567890123456789012345678901234567";
         const string FiftyCharacters =   "12345678901234567890123456789012345678901234567890";
         const string FiftyOneCharacters = FiftyCharacters + "1";
+        const string TwoHundredCharacters = FiftyCharacters + FiftyCharacters + FiftyCharacters + FiftyCharacters;
+        const string TwoHundredAndOneCharacters = TwoHundredCharacters + "1";
+        const string OneHundredAnd97Characters = FiftyCharacters + FiftyCharacters + FiftyCharacters + Fourty7Characters;
 
         [TestCase("boolField",  null,  true,    "[MyField] changed to 'True'") ]
         [TestCase("boolField",  false,  true,   "[MyField] changed to 'True'") ]
@@ -41,7 +44,8 @@ namespace EDC.ReadiNow.Test.Model.EventClasses.ResourceTriggerFilter
         [TestCase("stringField", "set", "extra", "[MyField] changed from 'set' -> 'extra'")]
         [TestCase("stringField", "extra", null,  "[MyField] cleared from 'extra'")]
         [TestCase("stringField", null, FiftyCharacters, "[MyField] set to '" +  FiftyCharacters + "'")]
-        [TestCase("stringField", null, FiftyOneCharacters, "[MyField] set to '" + Fourty7Characters + "...'")]
+        [TestCase("stringField", null, TwoHundredCharacters, "[MyField] set to '" + TwoHundredCharacters + "'")]
+        [TestCase("stringField", null, TwoHundredAndOneCharacters, "[MyField] set to '" + OneHundredAnd97Characters + "...'")]
         public void FromToTest(string fieldType, object oldValue, object newValue, string expected) 
         {
             var field = Entity.Create(new EntityRef("core", fieldType)).Cast<Field>();

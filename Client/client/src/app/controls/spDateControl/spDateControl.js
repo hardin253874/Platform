@@ -190,7 +190,7 @@
                         var puHeight = popupElement.prop('offsetHeight');
                         // Hack to prevent flicker of popup as it is moved to final position                        
                         // while inner element transclusions make it change size
-                        var opacity = puWidth < 280 ? 0 : 1;
+                        var opacity = puWidth < 250 ? 0 : 1;    // style change might have broken the hack. 
                         
                         previousHeight = puHeight;
 

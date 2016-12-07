@@ -1,0 +1,188 @@
+{
+	_comment: [
+		"Please see http://rnwiki.readinow.net/display/DEV/Json+environment+settings+file+structure for usage options"
+	],
+	installPath: "C:\\Program Files\\ReadiNow\\SoftwarePlatform\\",
+	installLogFile: "install.log",
+	uninstallLogFile: "uninstall.log",
+	upgradeLogFile: "upgrade.log",
+	client: {
+		zipPath: ""
+	},
+	database: {
+		path: "Database",
+		folderSecurity: [
+			{
+				identity: "NT Service\\MSSQLSERVER",
+				access: "FullControl"
+			},
+			{
+				identity: "READINOWINT\\svc-swp-iis",
+				access: "FullControl"
+			}
+		],
+		server: "localhost",
+		catalog: "SoftwarePlatform",
+		domain: "READINOWINT",
+		user: "svc-swp-iis",
+		password: "35Cat456",
+		role: "rn_service"
+	},
+	logFolder: {
+		security: [
+			{
+				identity: "READINOWINT\\Domain Users",
+				access: "FullControl"
+			}
+		]
+	},
+	outgoingEmailFolder: {
+		security: [
+			{
+				identity: "READINOWINT\\Domain Users",
+				access: "FullControl"
+			}
+		]
+	},
+	uploadFolder: {
+		path: "PlatformUploadFiles",
+		security: [
+			{
+				identity: "READINOWINT\\svc-swp-iis",
+				access: "FullControl"
+			}
+		]
+	},
+	errorsFolder: {
+		path: "CustomErrors",
+		security: [
+			{
+				identity: "READINOWINT\\svc-swp-iis",
+				access: "FullControl"
+			}
+		]
+	},
+	repositories: {
+		basePath: "PlatformFileRepos",
+		applicationLibraryDirectory: "Application Library",
+		binaryDirectory: "Binary",
+		documentDirectory: "Document",
+		tempDirectory: "Temp",
+		security: [
+			{
+				identity: "READINOWINT\\svc-swp-iis",
+				access: "FullControl"
+			}
+		]
+	},
+	redis: {
+		server: "localhost",
+		port: 6379,
+		folderSecurity: [
+			{
+				identity: "READINOWINT\\svc-swp-iis",
+				access: "FullControl"
+			}
+		],
+		domain: "READINOWINT",
+		user: "svc-swp-iis",
+		password: "35Cat456",
+		serviceName: "Redis",
+		serviceDisplayName: "ReadiNow Redis Service"
+	},
+	scheduler: {
+		domain: "READINOWINT",
+		user: "svc-swp-iis",
+		password: "35Cat456",
+		serviceName: "SchedulerService",
+		serviceDisplayName: "ReadiNow Scheduler Service"
+	},
+	webServer: {
+		virtualDirectoryPath: "/",
+		appPools : [
+			{
+				name: "SoftwarePlatformAppPool",
+				domain: "READINOWINT",
+				user: "svc-swp-iis",
+				password: "35Cat456"
+			}
+		],
+		applications: [
+			{
+				virtualPath: "/sp",
+				physicalPath: "..\\..\\Client\\client\\dist",
+				relativeTo: "current",
+				preloadEnabled: false,
+				serviceAutoStartEnabled: false
+			},
+			{
+				virtualPath: "/customErrors",
+				physicalPath: "CustomErrors",
+				preloadEnabled: false,
+				serviceAutoStartEnabled: false
+			},
+			{
+				virtualPath: "/SpApi",
+				physicalPath: "..\\Build\\Debug\\SpApi",
+				relativeTo: "current",
+				appPool: "SoftwarePlatformAppPool",
+				preloadEnabled: true,
+				serviceAutoStartEnabled: true,
+				serviceAutoStartProvider: "SpApiPreload"
+			},
+			{
+				virtualPath: "/sp/tests",
+				physicalPath: "..\\..\\Client\\client\\tests",
+				relativeTo: "current",
+				preloadEnabled: false,
+				serviceAutoStartEnabled: false
+			},
+			{
+				virtualPath: "/sp/dist",
+				physicalPath: "..\\..\\Client\\client\\dist",
+				relativeTo: "current",
+				preloadEnabled: false,
+				serviceAutoStartEnabled: false
+			}
+		]
+	},
+	configuration: {
+		site: {
+			serviceRootAddress: "/SoftwarePlatform/Services"
+		},
+		misc: [
+			{
+				name: "Access Control Query Cache Size",
+				xpath: "configuration/cacheSettings/caches/add[@cacheName='Access Control Query']/@maximumSize",
+				value: 30000
+			}
+		]
+	},
+	performanceCounters: {
+		groupName: "Performance Log Users",
+		domain: "READINOWINT",
+		user: "svc-swp-iis"
+	},
+	symbolicLinks: [
+		{
+			source: "..\\Build\\Debug\\Configuration\\SoftwarePlatform.config",
+			target: "C:\\Program Files\\ReadiNow\\SoftwarePlatform\\Configuration\\SoftwarePlatform.config",
+			linkType: "File"
+		},
+		{
+			source: "..\\Build\\Debug\\Log",
+			target: "C:\\Program Files\\ReadiNow\\SoftwarePlatform\\Log",
+			linkType: "Directory"
+		}
+	],
+	platformConfigure: {
+		path: "..\\Build\\Debug\\Tools\\PlatformConfigure.exe"
+	},
+	defaultTenant: {
+		name: "ABC",
+		deployTestAndSampleApps: false,
+		grantCanModifyTestAndSampleApps: false
+	},
+	importTestAndSampleApps: false,
+    featureSwitches: "submitABug,applicationDependency"
+}

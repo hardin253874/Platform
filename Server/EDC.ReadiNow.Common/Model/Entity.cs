@@ -4832,12 +4832,12 @@ SELECT d.EntityId, d.Data FROM dbo.{0} d JOIN @list l ON d.EntityId = l.Id AND d
 		/// <returns></returns>
 		internal static IDictionary<long, IEntity> GetLocalCache( )
 		{
-			var localEntityCache = ( IDictionary<long, IEntity> ) CallContext.LogicalGetData( "LocalEntityCache" );
+			var localEntityCache = ( IDictionary<long, IEntity> ) CallContext.GetData( "LocalEntityCache" );
 
 			if ( localEntityCache == null )
 			{
 				localEntityCache = new ConcurrentDictionary<long, IEntity>( );
-				CallContext.LogicalSetData( "LocalEntityCache", localEntityCache );
+				CallContext.SetData( "LocalEntityCache", localEntityCache );
 			}
 
 			return localEntityCache;

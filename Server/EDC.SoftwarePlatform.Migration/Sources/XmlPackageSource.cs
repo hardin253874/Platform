@@ -207,11 +207,6 @@ namespace EDC.SoftwarePlatform.Migration.Sources
 				return;
             }
 
-            if ( Version == null )
-            {
-                throw new NullReferenceException( "Version has not been set." );
-            }
-
             if ( XmlReader == null )
 			{
 				throw new NullReferenceException( "XmlTextReader has not been set." );

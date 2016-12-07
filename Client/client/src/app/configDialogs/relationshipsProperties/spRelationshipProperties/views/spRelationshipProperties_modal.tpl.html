@@ -50,16 +50,16 @@
                             <span ng-if="controlsLoaded" ng-include="'configDialogs/relationshipsProperties/spRelationshipProperties/views/spRelDefinitionProperties.tpl.html'"></span>
                         </div>
                     </uib-tab>
-                    <uib-tab heading="Format" ng-if="options.isFormControl && !options.showInReverse">
-                        <div class="tab-container">
-                            <span ng-if="controlsLoaded" ng-include="'configDialogs/relationshipsProperties/spRelationshipProperties/views/spRelationshipFormatProperties.tpl.html'"></span>
-                        </div>
-                    </uib-tab>
                     <uib-tab heading="Visibility" ng-if="options.isFormControl && !options.showInReverse && model.visibilityCalculationModel.isShowHideOn" ng-click="visibilityTabClicked()">
                         <div class="tab-container">
                             <span ng-if="controlsLoaded" ng-include="'configDialogs/relationshipsProperties/spRelationshipProperties/views/spRelationshipVisibilityProperties.tpl.html'"></span>
                         </div>
                     </uib-tab>
+                    <uib-tab heading="Format" ng-if="options.isFormControl && !options.showInReverse">
+                        <div class="tab-container">
+                            <span ng-if="controlsLoaded" ng-include="'configDialogs/relationshipsProperties/spRelationshipProperties/views/spRelationshipFormatProperties.tpl.html'"></span>
+                        </div>
+                    </uib-tab>                    
                 </uib-tabset>
             </div>
         </div>

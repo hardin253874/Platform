@@ -30,6 +30,7 @@
             var currencySymbol = '$';
             var templateReportIds = {};
             var invalidReportInfos = [];
+            var nameFieldEntity;
             var aggregateMethodEnumOptions = {
                 aggCountWithValues: {
                     name: 'Count',
@@ -269,6 +270,13 @@
                     case 'ChoiceRelationship':
                     case 'InlineRelationship':
                     case 'UserInlineRelationship':
+                        if (valRule.entitylistcolfmt === "stackedList" && rcol.aggcol) {
+                            return value => {
+                                return $filter('relatedResource')(value, { isStacked: true, lines: valRule.lines });
+                            };
+                        } else {
+                            return $filter('relatedResource');
+                        }
                     case 'Image':
                         return $filter('relatedResource');
                     case spEntity.DataType.Time:
@@ -284,7 +292,13 @@
                             return $filter('spDateTime')(value, valRule.datetimefmt || '');
                         };
                     case 'StructureLevels':
-                        return $filter('structureLevels');
+                        if (valRule.entitylistcolfmt === "stackedList" && rcol.aggcol) {
+                            return value => {
+                                return $filter('structureLevels')(value, { isStacked: true, lines: valRule.lines });
+                            };
+                        } else {
+                            return $filter('structureLevels');
+                        }                        
                 }
 
                 return null;
@@ -361,14 +375,17 @@
             }
 
             // Load the report meta data
-            function loadReportMetadata(metadata, updateMetadataOnly) {
+            function loadReportMetadata(metadata, params) {
+                params = params || {};
+
                 model.aggregateDataManager = spReportAggregateDataManager(metadata);
                 model.reportMetadata = metadata;
 
-                if (!updateMetadataOnly) {
-                    loadColumnDefinitions(metadata);
+                if (!params.updateMetadataOnly) {
+                    loadColumnDefinitions(metadata, params);
                     loadAggregateInfo(metadata);
                     loadSortInfo(metadata);
+                    model.reportMetadata = metadata;
                 }
             }
 
@@ -411,7 +428,8 @@
                     columnDefinition.imageSizeId = valRule.sizeid;
                     columnDefinition.imageWidth = valRule.imgw;
                     columnDefinition.imageHeight = valRule.imgh;
-                    columnDefinition.imageBackgroundColor = valRule.imgbgc;
+                    columnDefinition.imageBackgroundColor = valRule.imgbgc;                    
+
                     //Note: if condition format type is icon and hide the text. the cell alignment will be centre.
                     //this setting will overwrite the valueformat alignment setting.
                     if (cfRule && cfRule.style === 'Icon' && valRule.hideval === true) {
@@ -424,8 +442,29 @@
                 }
             }
 
+            function buildDefaultFormattingRule(rcol, metadata) {
+
+                //if default formatting rule exists
+                if (rcol &&
+                    metadata.choice &&
+                    metadata.choice[rcol.tid] &&
+                    metadata.choice[rcol.tid].length > 0 &&
+                    metadata.choice[rcol.tid][0].fmt)
+                {
+                    var style = metadata.choice[rcol.tid][0].fmt.fgcolor ? 'Highlight' : 'Icon';
+                    var rules = _.map(metadata.choice[rcol.tid], "fmt");
+                    return {
+                        showval: true,
+                        rules: rules,
+                        style: style
+                    };
+
+                } else
+                    return null;
+            }
+
             // Initialize column definitions from metadata
-            function loadColumnDefinitions(metadata) {
+            function loadColumnDefinitions(metadata, params) {
                 var columnDefinitions, groupColumns, orderedColumns;
 
                 if (!metadata) {
@@ -446,6 +485,23 @@
                     if (metadata.valrules) {
                         valRule = metadata.valrules[value.id];
                     }
+                    
+                    //if column is choice field and user default formatting rule is set to true,  use choice field formatting.
+                    if (rcol && rcol.type === "ChoiceRelationship" &&
+                        angular.isDefined(valRule) &&
+                        valRule &&
+                        !valRule.disabledefft) {
+                        var defaultRule = buildDefaultFormattingRule(rcol, metadata);
+                        //reset defaultRue to condition format rule
+                        if (defaultRule) {
+
+                            if (!metadata.defcfrules)
+                                metadata.defcfrules = {};
+
+                            metadata.defcfrules[value.id] = defaultRule;
+                        }
+                    }
+
 
                     if (metadata.rmeta &&
                         metadata.rmeta.aggs) {
@@ -470,6 +526,12 @@
                         });
                     }
 
+                    const showCellTextAsHyperlinks = !model.isInPicker &&
+                        !params.isMobile &&
+                        !rcol.aggcol &&
+                        rcol.type !== "ChoiceRelationship" &&
+                        (nameFieldEntity && rcol.fid === nameFieldEntity.id() || rcol.entityname);                    
+
                     columnDefinition = {
                         // Column definition members
                         columnId: value.id,
@@ -483,7 +545,7 @@
                         oprtype: rcol.oprtype,
                         hideValue: (valRule && angular.isDefined(valRule.hideval)) ? valRule.hideval : false,
                         totals: totals,
-
+                        showCellTextAsHyperlinks: showCellTextAsHyperlinks,
                         // Tag extra members
                         tag: {
                             id: value.id,
@@ -776,51 +838,49 @@
 
             function updateColumnCellFormattingSettings(columnDefinition, metadata, columnId) {
                 var cfRule,
+                    defcfRule,
+                    valRule,
                     rcol,
                     colHideVal = false,
                     condHideVal = false,
                     cellFormattings = {};
 
-                if (!columnDefinition || !metadata || !metadata.cfrules || !columnId) {
+                if (!columnDefinition || !metadata || (!metadata.cfrules && !metadata.defcfrules) || !columnId) {
                     return;
                 }
 
                 rcol = metadata.rcols[columnId];
+                if (metadata.valrules) {
+                    valRule = metadata.valrules[columnId];
+                }
 
-                cfRule = metadata.cfrules[columnId];
-                if (!cfRule) {
+                if (metadata.cfrules) {
+                    cfRule = metadata.cfrules[columnId];
+                }
+
+                if (metadata.defcfrules) {
+                    defcfRule = metadata.defcfrules[columnId];
+                }
+
+
+                if (!cfRule && !defcfRule) {
                     columnDefinition.cellFormatting = {};
                     return;
                 }
 
-                if (cfRule.rules) {
-                    _.forEach(cfRule.rules, function (rule, index) {
-                        var result = {
-                            tag: {columnId: columnId}
-                        };
-
-                        if (rule.fgcolor) {
-                            result.foregroundColor = rule.fgcolor;
-                        }
-
-                        if (rule.bgcolor) {
-                            result.backgroundColor = rule.bgcolor;
-                        }
-
-                        if (rule.bounds) {
-                            result.bounds = rule.bounds;
-                        }
-
-                        if (rule.imgid) {
-                            result.imageId = rule.imgid;
-                        }
-
-                        if (rule.cfid) {
-                            result.cfId = rule.cfid;
-                        }
-
+                const updateCellFormattings = function(rules) {
+                    _.forEach(rules, function (rule, index) {
+                        var result = getCellFormatting(rule, columnId);
                         cellFormattings[index] = result;
                     });
+                };
+                
+
+                if (defcfRule && defcfRule.rules && !valRule.disablecffmt) {
+                    updateCellFormattings(defcfRule.rules);
+
+                } else if (cfRule && cfRule.rules) {
+                    updateCellFormattings(cfRule.rules);
                 }
 
                 columnDefinition.cellFormatting = cellFormattings;
@@ -840,6 +900,34 @@
                 }
 
                 columnDefinition.hideValue = colHideVal || condHideVal;
+            }
+
+            function getCellFormatting(rule, columnId) {
+                var result = {
+                    tag: { columnId: columnId }
+                };
+
+                if (rule.fgcolor) {
+                    result.foregroundColor = rule.fgcolor;
+                }
+
+                if (rule.bgcolor) {
+                    result.backgroundColor = rule.bgcolor;
+                }
+
+                if (rule.bounds) {
+                    result.bounds = rule.bounds;
+                }
+
+                if (rule.imgid) {
+                    result.imageId = rule.imgid;
+                }
+
+                if (rule.cfid) {
+                    result.cfId = rule.cfid;
+                }
+
+                return result;
             }
 
             function setReportRequestOptions(requestOptions) {
@@ -981,6 +1069,10 @@
 
                             _.assign(customData, data);
 
+                            if (!customData.meta) {
+                                _.set(customData, 'meta.sort', requestOptions.sort || []);
+                            }
+
                             return $q.when(model.customDataProvider(customData)).then(function (newData) {
                                 data.gdata = newData;
                                 exports.loadReportData(params, requestOptions, data);
@@ -1046,6 +1138,19 @@
              * @param {object} data report data.
              */
             function loadReportData(params, requestOptions, data) {
+                spTenantSettings.getNameFieldEntity().then(name => {
+                    nameFieldEntity = name;
+                    loadReportDataInternal(params, requestOptions, data);
+                });
+            }
+
+            /**
+             * The common method to load reportdata from reportService getReportData call
+             * @param {object} params Report loading options.
+             * @param {object} requestOptions request Options.
+             * @param {object} data report data.
+             */
+            function loadReportDataInternal(params, requestOptions, data) {
                 // Hack to fix performance issue when updating columns
                 var rowDataBackup;
 
@@ -1056,9 +1161,9 @@
                         model.gridOptions.rowData = [];
                         // Load metadata
                         if (!model.isEditMode) {
-                            loadReportMetadata(data.meta, params.updateMetadataOnly);
+                            loadReportMetadata(data.meta, params);
                         } else {
-                            loadReportMetadata(data.meta);
+                            loadReportMetadata(data.meta, {isMobile: params.isMobile });
                         }
 
                         displayInvalidReportInformation(data.meta, model.isEditMode);

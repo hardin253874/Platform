@@ -14,7 +14,7 @@
      Using the spFormBuilderToolboxObjects:
 
      &lt;sp-form-builder-toolbox-objects&gt;&lt;/sp-form-builder-toolbox-objects&gt
-
+     showTypesVisible
      */
     angular.module('mod.app.formBuilder.directives.spFormBuilderToolboxObjects', [
         'mod.app.formBuilder.services.spFormBuilderService',
@@ -65,6 +65,7 @@
 
             scope.model = {
                 showTypes: false,
+                showAdvanced: false,
                 search: {
                     value: null,
                     id: 'searchObjects'
@@ -82,10 +83,10 @@
 
             if (scope.disableAddNew) {
                 scope.model.disableAddNew = scope.disableAddNew;
-            }
-
+            }            
+            scope.applicationDependencies = null;
             scope.spAppSettings = spAppSettings;
-            scope.spNavService = spNavService;
+            scope.spNavService = spNavService;            
             scope.spFormBuilderService = spFormBuilderService;
             scope.selectedApp = spFormBuilderService.selectedApp ? spFormBuilderService.selectedApp : undefined;
             scope.$watch('spNavService.getCurrentApplicationMenuEntity()', function (newValue) {
@@ -126,6 +127,19 @@
                 });
             };
 
+            /////
+            // Get list of application dependencies.
+            /////
+            scope.getApplicationDependencies = function () {
+                spEntityService.getInstancesOfType('core:applicationDependency', 'name,alias,{dependentApplication,dependencyApplication}.{name,alias}', {
+                    hint: 'applicationDependencies',
+                    batch: true
+                }).then(function (result) {                                        
+                    scope.applicationDependencies = result;                    
+                });
+            };
+
+
             function filterApps(apps) {
                 if (spAppSettings.fullConfig)
                     return apps;
@@ -152,7 +166,19 @@
             /////
             scope.$watch('selectedApp', loadSelectedApp);
 
-            scope.$watch('model.showTypes', function () { loadSelectedApp(scope.selectedApp); });
+            scope.$watch('model.showTypes', function (newVal, oldVal) {
+                if (newVal === true)
+                    scope.model.showAdvanced = false;
+
+                 loadSelectedApp(scope.selectedApp);
+            });
+
+            scope.$watch('model.showAdvanced', function (newVal, oldVal) {
+                if (newVal === true)
+                    scope.model.showTypes = false;
+
+                refreshSelectedApp();                
+            });
 
             /////
             // Get filter string to load definitions.
@@ -161,8 +187,28 @@
                 if (app.id === 0) {
                     return '[Resource in application] is null';
                 } else {
-                    return 'id([Resource in application])=' + app.id;
+                    if (scope.applicationDependencies) {
+                        var relApplicationDependencies = _.filter(scope.applicationDependencies, function (applicationDependency) { return applicationDependency.entity && applicationDependency.entity.dependencyApplication && applicationDependency.entity.dependencyApplication.idP === app.id; });
+                        return buildFilterString(app, relApplicationDependencies);
+                    } else {
+                        return 'id([Resource in application])=' + app.id;
+                    }                    
                 }
+            }
+
+            /////
+            // Builder filter string with application dependency to load definitions.
+            /////
+            function buildFilterString(app, relApplicationDependencies)
+            {
+                var filterString = 'id([Resource in application])=' + app.id;
+                if (relApplicationDependencies && relApplicationDependencies.length > 0) {
+                    _.forEach(relApplicationDependencies, function (applicationDependency) {
+                        if (applicationDependency.entity && applicationDependency.entity.dependentApplication)
+                            filterString += ' or id([Resource in application])=' + applicationDependency.entity.dependentApplication.idP;
+                    });
+                }
+                return filterString;
             }
 
             /////
@@ -240,7 +286,15 @@
                         'definitionUsedByReport.reportForAccessRule.id,' +
                         '{ definitionUsedByReport, definitionUsedByReport.reportCharts, k:formsToEditType, k:defaultEditForm }.@COMPONENT' +
                     '} @TYPE';
-                var type = scope.objectTypeAlias || (scope.model.showTypes ? 'type' : 'managedType');
+                var type = scope.objectTypeAlias || (scope.model.showTypes ? 'type' : 'definition');
+
+               if (scope.model.showTypes)
+                    type = 'type';
+                else if (scope.model.showAdvanced)
+                    type = 'managedType';
+                else
+                    type = 'definition';
+
                 var name = scope.objectTypeName || 'Object';
                 var key = cacheKey(scope.selectedApp.id);
 
@@ -727,6 +781,10 @@
                 return res;
             };
 
+            scope.isDevMode = function () {                
+                return spAppSettings.initialSettings.devMode;
+            };
+
             scope.getComponentFilterText = function getComponentFilterText() {
                 var mode = scope.componentFilterMode;
                 if (mode === 'all')
@@ -753,7 +811,7 @@
             // Initial load.
             /////
             scope.getApplications();
-
+            scope.getApplicationDependencies();
             focus('searchObjects');
 
 

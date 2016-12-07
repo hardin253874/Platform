@@ -68,7 +68,7 @@ angular.module('mod.common.spEntityService').factory('spEntityService', function
         if (!idOrAlias)
             return '';
         var i = idOrAlias.indexOf && idOrAlias.indexOf(':');
-        if (i == -1 || !i)
+        if (i === -1 || !i)
             return idOrAlias;
         return idOrAlias.slice(i + 1);
     }
@@ -443,10 +443,8 @@ angular.module('mod.common.spEntityService').factory('spEntityService', function
      * such as alias, name and description, as well as all field and relationship that instances of
      * the type may have.
      *
-     * Objects of EntityType are created within the spEntityService and may be returned from its exported functions,
-     * such as getTypeMetadata().
+     * Objects of EntityType are created within the spEntityService and may be returned from its exported functions
      *
-     * see here {@link sp_common.service:spEntityService#getTypeMetadata getTypeMetadata}
      */
     var EntityType = function (te, parent) {
         this.id = te.id();
@@ -618,72 +616,6 @@ angular.module('mod.common.spEntityService').factory('spEntityService', function
         //console.log('spEntityService - caching entry: "%s" %o, cache count %s', key, value, _.keys(cache).length);
         cache[key] = { value: value, expires: new Date().getTime() + timeoutMsec };
     }
-
-    /**
-     * Get information about an entity type including the fields and relationships
-     * that its instances must or may have, and also its inherited types so we can
-     * get all fields or relationships, including inherited.
-     *
-     * @param {number|string} typeEid the id or alias of the type to get meta-data for.
-     * @returns {promise} a promise for an {@link sp_common.service:spEntityService#EntityType EntityType}
-     */
-    exports.getTypeMetadata = function (typeEid) {
-
-        var date0 = new Date().getTime(), date1, date2, date3;
-
-        var deferred = $q.defer(),
-            url = getEntityRequestUrl(typeEid),
-            request = 'alias,name,description,{fields,relationships,reverseRelationships}.{alias,name,description,toName,fromName,' +
-                '  {toType,fromType}.{alias,name},cardinality.{alias,name}},' +
-                'inherits*.{alias,name,description,isAbstract,' +
-                '{fields,relationships,reverseRelationships}.{alias,name,description,toName,fromName,' +
-                '  {toType,fromType}.{alias,name},cardinality.{alias,name}}}';
-
-        var cacheKey = 'getTypeMetadata:' + url,
-            cacheValue = getFromCache(cacheKey);
-
-        if (cacheValue) {
-            deferred.resolve(cacheValue);
-            return deferred.promise;
-        }
-
-        $http({
-            method: 'GET',
-            url: url,
-            params: { request: request },
-            headers: spWebService.getHeaders()
-        }).success(function (data, status, headers, config) {
-                //console.log('entity query for getTypeMetadata returned data', data, url, request, config);
-
-                //console.profile();
-
-                console.time('loaded type data... processing');
-                date1 = new Date().getTime();
-
-                var entities = spEntity.entityDataToEntities(data),
-                    types = new EntityTypes();
-
-                date2 = new Date().getTime();
-
-                types.add(entities[0]);
-                date3 = new Date().getTime();
-
-                console.log('getTypeMetadata - loaded %d types (took get %d load %d process %d msecs)', types.types.length, date1 - date0, date2 - date1, date3 - date2);
-                console.timeEnd('getTypeMetadata - loaded type data... processing');
-
-                //console.profileEnd();
-
-                var result = types.types[0];
-                addToCache(cacheKey, result, 60000);
-                deferred.resolve(result);
-
-            }).error(function (error) {
-                deferred.reject(error);
-
-            });
-
-        return deferred.promise;
-    };
 
     var currentBatch = null;
 

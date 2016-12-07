@@ -5,6 +5,7 @@
         xmlns:c="clr-namespace:ApplicationManager.Core"
         xmlns:converters="clr-namespace:ApplicationManager.Converters"
         xmlns:l="clr-namespace:ApplicationManager.Controls"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         Title="{Binding Title}"
         Width="800"
         Height="600"
@@ -102,7 +103,7 @@
 
 		<Grid Grid.Row="1">
 
-			<l:NonSelectableListView ItemsSource="{Binding Applications.View, Mode=OneWay}">
+			<l:NonSelectableListView ItemsSource="{Binding Applications, Mode=OneWay}">
 				<l:NonSelectableListView.View>
 					<GridView>
 						<GridViewColumn Width="630"
@@ -178,26 +179,20 @@
 						<GridViewColumn Width="Auto" Header="Action">
 							<GridViewColumn.CellTemplate>
 								<DataTemplate>
-									<l:SplitButton Width="100"
+									<xctk:SplitButton Width="100"
 									               Margin="10,0,10,0"
 									               Command="{Binding ActionCommand}"
 									               CommandParameter="Export"
 									               Content="Export...">
-										<l:SplitButton.ButtonMenuItemsSource>
-											<MenuItem Command="{Binding ActionCommand}"
-											          CommandParameter="Export"
-											          Header="Export..." />
-											<MenuItem Command="{Binding ActionCommand}"
-											          CommandParameter="Deploy"
-											          Header="Deploy..." />
-											<MenuItem Command="{Binding ActionCommand}"
-											          CommandParameter="Repair"
-											          Header="Repair..." />
-											<MenuItem Command="{Binding ActionCommand}"
-											          CommandParameter="Delete"
-											          Header="Delete..." />
-										</l:SplitButton.ButtonMenuItemsSource>
-									</l:SplitButton>
+										<xctk:SplitButton.DropDownContent>
+											<StackPanel Orientation="Vertical" Width="100">
+												<Button Content="Export..." Background="White" BorderBrush="Transparent" Command="{Binding ActionCommand}" CommandParameter="Export"></Button>
+												<Button Content="Deploy..." Background="White" BorderBrush="Transparent" Command="{Binding ActionCommand}" CommandParameter="Deploy"></Button>
+												<Button Content="Repair..." Background="White" BorderBrush="Transparent" Command="{Binding ActionCommand}" CommandParameter="Repair"></Button>
+												<Button Content="Delete..." Background="White" BorderBrush="Transparent" Command="{Binding ActionCommand}" CommandParameter="Delete"></Button>
+											</StackPanel>
+										</xctk:SplitButton.DropDownContent>
+									</xctk:SplitButton>
 								</DataTemplate>
 							</GridViewColumn.CellTemplate>
 						</GridViewColumn>

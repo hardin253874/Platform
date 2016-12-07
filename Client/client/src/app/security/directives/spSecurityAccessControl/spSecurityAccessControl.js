@@ -217,7 +217,12 @@
                     }
                 }, function (message) {
                     if (message !== "cancel") {
-                        spAlertsService.addAlert("An error occurred creating the new access rule: " + message.data.Message, { expires: false, severity: spAlertsService.sev.Error });
+
+                        if (message && message.data && message.data.Message) {
+                            spAlertsService.addAlert("An error occurred creating the new access rule: " + message.data.Message, { expires: false, severity: spAlertsService.sev.Error });
+                        } else {
+                            spAlertsService.addAlert("An error occurred creating the new access rule", { expires: false, severity: spAlertsService.sev.Error });
+                        }
                     }
                 }).finally(function () {
                     hideBusy();

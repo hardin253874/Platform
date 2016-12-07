@@ -93,6 +93,7 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.Security
 		    ReadiNow.Model.Report accessRuleReport;
 		    AccessRule accessRule;
 		    ISet<long> allowedTypes;
+			Solution solution = null;
 
 			securableEntity = ReadiNow.Model.Entity.Get<SecurableEntity>( accessRuleInfo.SecurableEntityId );
 			if ( securableEntity == null )
@@ -116,6 +117,11 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.Security
                 throw new WebArgumentException(@"SubjectId is not a user or role", "accessRuleInfo");
 			}
 
+			if ( accessRuleInfo.SolutionId > 0 )
+			{
+				solution = ReadiNow.Model.Entity.Get<Solution>( accessRuleInfo.SolutionId );
+			}
+
 			accessRuleReport = ReportFactory.GetDisplayReportForSecurableEntity( securableEntity );
 			if ( accessRuleReport == null )
 			{
@@ -130,7 +136,8 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.Security
 					Permissions.Read
 				},
 				accessRuleReport,
-				false // Disabled by default
+				false, // Disabled by default
+				solution
 				);
 
 			return new HttpResponseMessage<long>( accessRule.Id );

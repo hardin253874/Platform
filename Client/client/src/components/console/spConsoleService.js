@@ -26,6 +26,20 @@
                 });
             };
 
+            /**
+             * Gets the documentation settings
+             * @returns {promise} The doco settings
+             */
+            exports.getDocoSettings = function () {
+                return $http({
+                    method: 'GET',
+                    url: spWebService.getWebApiRoot() + '/spapi/data/v1/console/getDocoSettings',
+                    headers: spWebService.getHeaders()
+                }).then(function (response) {
+                    return response.data;
+                });
+            };
+
             return exports;
         });
 }());

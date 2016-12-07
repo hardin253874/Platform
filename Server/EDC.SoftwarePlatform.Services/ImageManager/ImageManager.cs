@@ -47,7 +47,9 @@ namespace EDC.SoftwarePlatform.Services.ImageManager
 			}
 
 			// Create a new image entity
+#pragma warning disable 618
 			var entityInfoService = new EntityInfoService( );
+#pragma warning restore 618
 			var imageFile = entityInfoService.CreateEntity( imageEntityData ).Entity.AsWritable<ImageFileType>( );
 
 			int width;
@@ -105,7 +107,9 @@ namespace EDC.SoftwarePlatform.Services.ImageManager
 			try
 			{
 				// Create a new image entity
+#pragma warning disable 618
 				var entityInfoService = new EntityInfoService( );
+#pragma warning restore 618
 				imageFile = entityInfoService.CreateEntity( imageEntityData ).Entity.AsWritable<ImageFileType>( );
 
 				var fileManagerService = new FileManagerService( );

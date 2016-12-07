@@ -5,7 +5,32 @@
 * Compiled At: 01/27/2014 16:35
 ***********************************************/
 (function (window, $) {
+
+
     'use strict';
+
+    // pinched from jquery .. an internal that grid used and that is no longer
+    // exposed in latest jquery versions
+    var swap = function( elem, options, callback, args ) {
+        var ret, name,
+            old = {};
+
+        // Remember the old values, and insert the new ones
+        for ( name in options ) {
+            old[ name ] = elem.style[ name ];
+            elem.style[ name ] = options[ name ];
+        }
+
+        ret = callback.apply( elem, args || [] );
+
+        // Revert the old values
+        for ( name in options ) {
+            elem.style[ name ] = old[ name ];
+        }
+
+        return ret;
+    };
+
     // the # of rows we want to add to the top and bottom of the rendered grid rows 
     var EXCESS_ROWS = 6;
     var SCROLL_THRESHOLD = 4;
@@ -291,8 +316,8 @@
         domUtilityService.getRealWidth = function (obj) {
             var width = 0;
             var props = { visibility: "hidden", display: "block" };
-            var hiddenParents = obj.parents().andSelf().not(':visible');
-            $.swap(hiddenParents[0], props, function () {
+            var hiddenParents = obj.parents().addBack().not(':visible');
+            swap(hiddenParents[0], props, function () {
                 width = obj.outerWidth();
             });
             return width;

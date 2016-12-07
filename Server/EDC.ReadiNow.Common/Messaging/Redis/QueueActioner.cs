@@ -18,7 +18,8 @@ namespace EDC.ReadiNow.Messaging.Redis
         const string ActionLoopTheadPrefix = "Actioner Loop";
 
         const int DisposeStopWait = 100;                // How long to wait during a dispose operation for the thread to stop.
-        const int TaskStopWait = 300000;                   // How long to wait during a stop for the tasks to complete.
+        const int TaskStopWait = 300 * 1000;                   // How long to wait during a stop for the tasks to complete.
+        const int TaskReportingTime = 60 * 1000;        // Interval between reporting
 
         private object _syncRoot = new object();        // for locking
         private Action<T> Action { get; }
@@ -45,6 +46,11 @@ namespace EDC.ReadiNow.Messaging.Redis
         /// the maximum amount of concurrency that this actioner supports
         /// </summary>
         public int MaxConcurrency { get; }
+
+        /// <summary>
+        /// The number of running tasks
+        /// </summary>
+        public int RunningTaskCount { get { return RunningTasks.Count(); } }
 
         /// <summary>
         /// Create an actioner for the given queue
@@ -107,24 +113,25 @@ namespace EDC.ReadiNow.Messaging.Redis
         /// <returns>true if thread was or is stopped.</returns>
         public bool Stop(int timeoutMs = -1)
         {
-            if (State == ActionerState.Stopped)
-                return true;
-
-            lock (_syncRoot)
+            if (State != ActionerState.Stopped)
             {
-                if (State == ActionerState.Running || State == ActionerState.WaitingForQueue || State == ActionerState.WaitingForTask)
+
+                lock (_syncRoot)
                 {
-                    State = ActionerState.Stopping;
+                    if (State == ActionerState.Running || State == ActionerState.WaitingForQueue || State == ActionerState.WaitingForTask)
+                    {
+                        State = ActionerState.Stopping;
+                    }
                 }
-            }
 
 
-            // cancel running tasks
-            if (CancelTokenSrc != null)
-            {
-                CancelTokenSrc.Cancel();
-                CancelTokenSrc.Dispose();
-                CancelTokenSrc = null;
+                // cancel running tasks
+                if (CancelTokenSrc != null)
+                {
+                    CancelTokenSrc.Cancel();
+                    CancelTokenSrc.Dispose();
+                    CancelTokenSrc = null;
+                }
             }
 
             // Get rid of the looping thread
@@ -160,7 +167,7 @@ namespace EDC.ReadiNow.Messaging.Redis
 
             while (true)
             {
-                if (DateTime.UtcNow - lastReport > TimeSpan.FromSeconds(30))
+                if (DateTime.UtcNow - lastReport > TimeSpan.FromMilliseconds(TaskReportingTime))
                 {
                     lastReport = DateTime.UtcNow;
                     Report();
@@ -192,12 +199,13 @@ namespace EDC.ReadiNow.Messaging.Redis
                             break;
 
                         case ActionerState.WaitingForQueue:
-                            WaitForQueueEvent.WaitOne();
+                            var timeout = WaitForQueueEvent.WaitOne(TaskReportingTime);
+
                             SetStateIfNotStopping(ActionerState.Running);
                             break;
 
                         case ActionerState.WaitingForTask:
-                            WaitForTaskEvent.WaitOne();
+                            WaitForTaskEvent.WaitOne(TaskReportingTime);
                             SetStateIfNotStopping(ActionerState.Running);
                             break;
 

@@ -20,7 +20,7 @@
             });
 
             $scope.$watch('formTimeoutValue', function (value, oldValue) {
-                if (value != oldValue)
+                if (value !== oldValue)
                     $scope.activityParameters['core:inDisplayFormTimeOut'].expression.expressionString = value.toString();
             });
 

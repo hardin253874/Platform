@@ -3,16 +3,17 @@
   <metadata>
     <type>AppPackage</type>
     <application id="325cb03f-4bd8-4ffa-a07f-0f8ecfcd1db4">
-      <name>CAST Application Package 2.0.4.0</name>
+      <name>CAST Application Package 2.0.4.1</name>
       <appName>CAST</appName>
-      <description>Application Package for version 2.0.4.0 of CAST.</description>
+      <description>Application Package for version 2.0.4.1 of CAST.</description>
     </application>
-    <package id="80cc9885-7f2f-4602-857a-b9fc529fe9b6">
-      <version>2.0.4.0</version>
+    <package id="0b530b16-b9a2-45ab-99ae-164585772ea8">
+      <version>2.0.4.1</version>
       <platformVersion>1.0.0.0</platformVersion>
       <releaseDate>2016-01-03 13:00:00Z</releaseDate>
-      <publishDate>2016-11-01 12:13:10Z</publishDate>
+      <publishDate>2016-11-02 06:20:34Z</publishDate>
     </package>
+    <dependencies />
   </metadata>
   <entities>
     <group typeId="solution">
@@ -24,12 +25,12 @@
         <hideOnDesktop>False</hideOnDesktop>
         <hideOnMobile>True</hideOnMobile>
         <hideOnTablet>True</hideOnTablet>
-        <solutionReleaseDate>2016-07-20 00:00:00Z</solutionReleaseDate>
-        <packageId>80cc9885-7f2f-4602-857a-b9fc529fe9b6</packageId>
-        <solutionVersionString>2.0.4.0</solutionVersionString>
+        <solutionReleaseDate>2016-11-02 00:00:00Z</solutionReleaseDate>
+        <packageId>0b530b16-b9a2-45ab-99ae-164585772ea8</packageId>
+        <solutionVersionString>2.0.4.1</solutionVersionString>
         <solutionPublisherUrl>http://www.readinow.com</solutionPublisherUrl>
         <solutionPublisher>ReadiNow</solutionPublisher>
-        <solutionVersionDetails>Adding more resource keys to reduce duplicate data. Remove the application instances that ship with the product.</solutionVersionDetails>
+        <solutionVersionDetails>Setting the minimum required platform version.</solutionVersionDetails>
         <inSolution>325cb03f-4bd8-4ffa-a07f-0f8ecfcd1db4</inSolution>
         <securityOwner>administratorUserAccount</securityOwner>
         <resourceHasResourceKeyDataHashes>
@@ -40,6 +41,19 @@
             <securityOwner>administratorUserAccount</securityOwner>
           </resourceKeyDataHash>
         </resourceHasResourceKeyDataHashes>
+        <dependentApplicationDetails>
+          <!-- CAST Depends on ReadiNow Core -->
+          <applicationDependency id="49852795-1b13-4cd4-88f8-74df4687ee10">
+            <name>CAST Depends on ReadiNow Core</name>
+            <description>CAST depends on ReadiNow Core being installed.</description>
+            <applicationIsRequired>True</applicationIsRequired>
+            <applicationMaximumVersion>Any</applicationMaximumVersion>
+            <applicationMinimumVersion>2.74.0.0</applicationMinimumVersion>
+            <inSolution>325cb03f-4bd8-4ffa-a07f-0f8ecfcd1db4</inSolution>
+            <securityOwner>administratorUserAccount</securityOwner>
+            <dependencyApplication>coreSolution</dependencyApplication>
+          </applicationDependency>
+        </dependentApplicationDetails>
       </solution>
     </group>
     <group typeId="activityType">
@@ -49839,7 +49853,10 @@
     <allowDisplay id="4a82bfda-d470-4bc4-ba9c-53f47bb2a566" type="rel" />
     <allowEveryoneRead id="f4e4389c-9193-4376-b5c5-0f5f69160604" type="bool" />
     <allowMultiLines id="5c60e465-e152-4164-8e17-9f1380634f0b" type="bool" />
-    <analyzerXml id="2570b013-381e-462d-9a88-c40cf891ceeb" type="xml" />
+    <applicationDependency id="9dcdc967-fd67-4d28-8735-646190e557b8" type="type" />
+    <applicationIsRequired id="1f7dd780-a123-4ec6-9722-5189d107eb8f" type="bool" />
+    <applicationMaximumVersion id="f00f048e-6aab-479e-9981-19a7506c20db" type="text" />
+    <applicationMinimumVersion id="f2c90c9e-92a0-4461-a49c-ee601776f468" type="text" />
     <k:appliesToMultiSelection id="cc19f241-c96d-487b-9bbb-184e05fe730f" type="bool" />
     <k:appliesToSelection id="89883b5f-0f53-441c-85b3-698597ea579e" type="bool" />
     <argumentInstanceActivity id="0ce301ef-cc7d-4b62-9020-412c1dffe859" type="rel" />
@@ -49891,6 +49908,7 @@
     <containedActivities id="a4338f74-5651-4167-bd14-b679ee841391" type="rel" />
     <k:containedControlsOnForm id="5cd4fe93-0b4f-402f-b349-734fcef21f6a" type="rel" />
     <controlAccess id="f3113792-3bc3-4010-bc6c-1f5fe8986311" type="rel" />
+    <coreSolution id="7062aade-2e72-4a71-a7fa-a412d20d6f01" />
     <countSource id="be6a06d9-fd04-4035-870b-c9b0116028ee" />
     <create id="2dee4165-e85e-4706-a149-dfba0dc204da" />
     <createActivityCreatedResource id="03d77e29-ccde-45b4-b78e-c6a97896be64" />
@@ -49918,6 +49936,8 @@
     <definitionUniqueNameKey id="64e10e89-d682-4b44-82cb-c7c869031169" />
     <delete id="ce81b5a7-b115-4e84-b5ae-58bddfaa24d2" />
     <k:deleteResourceAction id="4e274f80-2719-4f9a-90d0-96bf90d3723c" />
+    <dependencyApplication id="d7fe48a6-3ad9-494d-8740-086f432aaaa4" type="rel" />
+    <dependentApplicationDetails id="8f2ed791-a613-4e9c-a6d4-694a8c56dba1" type="revRel" />
     <description id="a6907c5a-19db-48ca-b9be-85d81cd9081f" type="text" />
     <designerData id="41996138-180d-4caf-b94f-27eaa5d63109" type="text" />
     <disabled id="56315850-c865-4e3c-ba2f-c6fb8b8a9923" />

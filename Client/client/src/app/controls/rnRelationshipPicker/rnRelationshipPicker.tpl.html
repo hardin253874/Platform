@@ -1,0 +1,13 @@
+﻿<div class="rn-relationship-picker">
+    <a ng-if="$ctrl.isReadOnly && !$ctrl.isInDesign" style="cursor: pointer;" class="fieldValue" ng-href="" ng-click="$ctrl.click()">{{$ctrl.selectedOption.name}}</a>
+    <div ng-if="!$ctrl.isReadOnly || $ctrl.isInDesign" style="height: 100%;">
+        <span class="fieldControl">
+            <select class="picker-value-edit-option"
+                    ng-model="$ctrl.selectedOption"
+                    ng-options="e as e.name for e in $ctrl.options track by e.id"
+                    ng-disabled="$ctrl.isInDesign">
+                <option value="">{{$ctrl.selectString}}</option>
+            </select>
+        </span>
+    </div>
+</div>

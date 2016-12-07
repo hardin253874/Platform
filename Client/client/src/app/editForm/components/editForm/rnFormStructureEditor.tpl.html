@@ -1,0 +1,63 @@
+<table class="rnFormStructureEditor">
+    <thead>
+    <tr>
+        <th>depth</th>
+        <th>name</th>
+        <th>field or rel</th>
+        <th>type</th>
+        <th>ordinal</th>
+        <th>horz</th>
+        <th>vert</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="item in $ctrl.items">
+        <td>{{item.depth}}</td>
+        <td title="{{item.control.idP}}">{{item.control.name}}</td>
+        <td>{{(item.control.fieldToRender || item.control.relationshipToRender || {}).name}}</td>
+        <td>{{item.control.type.getAlias()}}</td>
+        <td>{{item.control.renderingOrdinal}}</td>
+        <td><button ng-click="$ctrl.toggleHorzResize(item)" class="btn-link">{{item.control.renderingHorizontalResizeMode.aliasOnly}}</button></td>
+        <td><button ng-click="$ctrl.toggleVertResize(item)" class="btn-link">{{item.control.renderingVerticalResizeMode.aliasOnly}}</button></td>
+        <td>
+            <button ng-click="$ctrl.delete(item)" class="btn-link">delete</button>
+            <button ng-click="$ctrl.log(item)" class="btn-link">log</button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div ng-if="$ctrl.getTransform()">
+    <button ng-click="$ctrl.clearTransform()" class="btn-link pull-right">clear</button>
+    <h5>Active transforms:</h5>
+    <div>Dragging control: {{$ctrl.getTransform().control.debugString}}</div>
+    <div>Last target: {{$ctrl.getTransform().target.debugString}} {{$ctrl.getTransform().targetCell}} {{$ctrl.getTransform().targetState}}</div>
+    <table class="rnFormStructureEditor--transform">
+        <thead>
+        <tr>
+            <th>cmd</th>
+            <th>control</th>
+            <th>type</th>
+            <th>ordinal</th>
+            <th>target</th>
+            <th>target type</th>
+            <th>mode</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="cmd in $ctrl.getTransform().cmds">
+            <td>{{cmd.op}}</td>
+            <td title="{{cmd.control.idP}}">{{cmd.control.name}}</td>
+            <td>{{cmd.control.type.getAlias()}}</td>
+            <td>{{cmd.control.renderingOrdinal}}</td>
+            <td title="{{cmd.target.idP}}">{{cmd.target.name}}</td>
+            <td>{{cmd.target.type.getAlias()}}</td>
+            <td>{{cmd.mode}}</td>
+            <td>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+

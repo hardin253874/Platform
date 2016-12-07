@@ -60,37 +60,6 @@ namespace ApplicationManager
 		}
 
 		/// <summary>
-		///     Gets or sets the open dialog.
-		/// </summary>
-		/// <value>
-		///     The open dialog.
-		/// </value>
-		private static OpenFileDialog OpenDialog
-		{
-			get
-			{
-				if ( _dialog == null )
-				{
-					lock ( SyncRoot )
-					{
-						if ( _dialog == null )
-						{
-							_dialog = new OpenFileDialog
-							{
-								InitialDirectory = Config.ApplicationCache,
-								Filter = "Xml Application (*.xml)|*.xml|SqLite Database (*.db)|*.db",
-								Title = "Import Package",
-								Multiselect = true
-							};
-						}
-					}
-				}
-
-				return _dialog;
-			}
-		}
-
-		/// <summary>
 		///     Gets or sets the busy message.
 		/// </summary>
 		/// <value>
@@ -106,8 +75,7 @@ namespace ApplicationManager
 			{
 				if ( _busyMessage != value )
 				{
-					_busyMessage = value;
-					RaisePropertyChanged( "BusyMessage" );
+					SetProperty( ref _busyMessage, value );
 				}
 			}
 		}
@@ -140,8 +108,7 @@ namespace ApplicationManager
 			{
 				if ( _closeWindow != value )
 				{
-					_closeWindow = value;
-					RaisePropertyChanged( "CloseWindow" );
+					SetProperty( ref _closeWindow, value );
 				}
 			}
 		}
@@ -162,8 +129,7 @@ namespace ApplicationManager
 			{
 				if ( _isBusy != value )
 				{
-					_isBusy = value;
-					RaisePropertyChanged( "IsBusy" );
+					SetProperty( ref _isBusy, value );
 				}
 			}
 		}
@@ -212,6 +178,37 @@ namespace ApplicationManager
 		public string Title => "Import Application";
 
 		/// <summary>
+		///     Gets or sets the open dialog.
+		/// </summary>
+		/// <value>
+		///     The open dialog.
+		/// </value>
+		private static OpenFileDialog OpenDialog
+		{
+			get
+			{
+				if ( _dialog == null )
+				{
+					lock ( SyncRoot )
+					{
+						if ( _dialog == null )
+						{
+							_dialog = new OpenFileDialog
+							{
+								InitialDirectory = Config.ApplicationCache,
+								Filter = "Xml Application (*.xml)|*.xml|SqLite Database (*.db)|*.db",
+								Title = "Import Package",
+								Multiselect = true
+							};
+						}
+					}
+				}
+
+				return _dialog;
+			}
+		}
+
+		/// <summary>
 		///     Gets or sets the package cache.
 		/// </summary>
 		/// <value>
@@ -250,7 +247,7 @@ namespace ApplicationManager
 
 				IsBusy = true;
 
-				var workerThread = new Thread( ImportAsync );
+				var workerThread = new Thread( ImportAsynchronous );
 				workerThread.Start( OpenDialog.FileNames );
 			}
 			else
@@ -263,7 +260,7 @@ namespace ApplicationManager
 		///     Runs the import method asynchronously.
 		/// </summary>
 		/// <param name="state">The state.</param>
-		private void ImportAsync( object state )
+		private void ImportAsynchronous( object state )
 		{
 			var context = new RoutedProcessingContext( message => BusyMessage = message, message => BusyMessage = message, message => BusyMessage = message, message => BusyMessage = message );
 

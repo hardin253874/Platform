@@ -7,7 +7,7 @@
   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   <!-- Questions                                                        -->
   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-  <managedType>
+  <importableType>
     <alias>questionLibrary</alias>
     <inherits>userResource</inherits>
     <name>Question Library</name>
@@ -27,8 +27,8 @@
         <securesTo>true</securesTo>
       </relationship>
     </relationships>
-  </managedType>
-  <type>
+  </importableType>
+  <managedType>
     <alias>surveyQuestion</alias>
     <inherits>userResource</inherits>
     <name>Survey Question</name>
@@ -85,22 +85,22 @@
         <relationshipInToTypeGroup>questionFieldGroup</relationshipInToTypeGroup>
       </relationship>
     </relationships>
-  </type>
-  <managedType>
+  </managedType>
+  <importableType>
     <alias>questionCategory</alias>
     <inherits>userResource</inherits>
     <name>Question Category</name>
     <description>A question category is used to tag and group questions.</description>
     <allowEveryoneRead>true</allowEveryoneRead>
-  </managedType>
-  <managedType>
+  </importableType>
+  <importableType>
     <alias>textQuestion</alias>
     <inherits>surveyQuestion</inherits>
     <name>Text Question</name>
     <description>A question that requires the user enter some text.</description>
     <generateCode>true</generateCode>
-  </managedType>
-  <managedType>
+  </importableType>
+  <importableType>
     <alias>numericQuestion</alias>
     <inherits>surveyQuestion</inherits>
     <name>Numeric Question</name>
@@ -114,8 +114,8 @@
         <fieldInGroup>surveyFieldGroup</fieldInGroup>
       </boolField>
     </fields>
-  </managedType>
-  <managedType>
+  </importableType>
+  <importableType>
     <alias>choiceQuestion</alias>
     <inherits>surveyQuestion</inherits>
     <name>Choice Question</name>
@@ -144,8 +144,8 @@
         <securesTo>true</securesTo>
       </relationship>
     </relationships>
-  </managedType>
-  <managedType>
+  </importableType>
+  <importableType>
     <alias>choiceOption</alias>
     <inherits>userResource</inherits>
     <name>Choice Option</name>
@@ -165,8 +165,8 @@
         <fieldInGroup>questionFieldGroup</fieldInGroup>
       </decimalField>
     </fields>
-  </managedType>
-  <managedType>
+  </importableType>
+  <importableType>
     <alias>choiceOptionSet</alias>
     <inherits>userResource</inherits>
     <name>Choice Option Set</name>
@@ -193,11 +193,11 @@
         <securesTo>true</securesTo>
       </relationship>
     </relationships>
-  </managedType>
+  </importableType>
   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   <!-- Survey                                                        -->
   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-  <type>
+  <managedType>
     <alias>userSurvey</alias>
     <inherits>userResource</inherits>
     <name>User Survey</name>
@@ -279,7 +279,7 @@
         <generateCode>true</generateCode>
       </relationship>
     </relationships>
-  </type>
+  </managedType>
   <type>
     <alias>surveySection</alias>
     <inherits>userResource</inherits>
@@ -338,7 +338,6 @@
       </relationship>
     </relationships>
   </type>
-
   <!-- Survey Campaign Event Target -->
   <target>
     <alias>surveyCampaignTarget</alias>
@@ -346,7 +345,6 @@
     <assemblyName>EDC.ReadiNow.Common, Version=1.0.0.0, Culture=neutral</assemblyName>
     <ordinal>0</ordinal>
   </target>
-  
   <type>
     <alias>surveyCampaign</alias>
     <inherits>userResource</inherits>
@@ -488,7 +486,7 @@
   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   <!-- Result                                                           -->
   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-  <type>
+  <managedType>
     <alias>surveyResponse</alias>
     <inherits>userResource</inherits>
     <name>Survey Result</name>
@@ -537,6 +535,8 @@
       <relationship>
         <alias>surveyTarget</alias>
         <name>Survey target</name>
+        <toName>Survey target</toName>
+        <fromName>Survey responses</fromName>
         <description>The target of the survey.</description>
         <toType>userResource</toType>
         <relType>relLookup</relType>
@@ -586,8 +586,7 @@
         <relationshipIsMandatory>true</relationshipIsMandatory>
       </relationship>
     </relationships>
-  </type>
-
+  </managedType>
   <enumType>
     <name>Survey Status</name>
     <alias>surveyStatusEnum</alias>
@@ -597,26 +596,30 @@
       <surveyStatusEnum>
         <name>Not Started</name>
         <alias>sseNotStarted</alias>
+        <enumOrder>1</enumOrder>
       </surveyStatusEnum>
       <surveyStatusEnum>
         <name>In Progress</name>
         <alias>sseInProgress</alias>
+        <enumOrder>2</enumOrder>
       </surveyStatusEnum>
       <surveyStatusEnum>
         <name>Completed</name>
         <alias>sseCompleted</alias>
+        <enumOrder>5</enumOrder>
       </surveyStatusEnum>
       <surveyStatusEnum>
         <name>In Review</name>
         <alias>sseInReview</alias>
+        <enumOrder>3</enumOrder>
       </surveyStatusEnum>
       <surveyStatusEnum>
         <name>Approved</name>
         <alias>sseApproved</alias>
+        <enumOrder>4</enumOrder>
       </surveyStatusEnum>
     </enumValues>
   </enumType>
-
   <type>
     <alias>surveyAnswer</alias>
     <inherits>userResource</inherits>

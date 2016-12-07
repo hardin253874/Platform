@@ -604,6 +604,21 @@
     <relationshipInFromTypeGroup>k:actionMenuItemDetails</relationshipInFromTypeGroup>
     <relationshipInToTypeGroup>permissionDetails</relationshipInToTypeGroup>
   </relationship>
+  <!-- 'Action Menu Item Parent to Permission' relationship -->
+  <relationship>
+    <alias>k:actionRequiresParentPermission</alias>
+    <reverseAlias>k:parentPermissionFromAction</reverseAlias>
+    <name>Action menu item requires parent permission</name>
+    <description>Associates an action menu item to required permission(s) on the hosting parent entity (should there be one)</description>
+    <fromName>Action menu items</fromName>
+    <fromType>k:actionMenuItem</fromType>
+    <toName>Requires parent permission</toName>
+    <toType>permission</toType>
+    <relType>relManyToManyFwd</relType>
+    <generateCode>true</generateCode>
+    <relationshipInFromTypeGroup>k:actionMenuItemDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>permissionDetails</relationshipInToTypeGroup>
+  </relationship>
   <!-- 'Action Menu Item to Expression' relationship -->
   <relationship>
     <alias>k:actionRequiresExpression</alias>
@@ -842,6 +857,53 @@
     <relationshipInFromTypeGroup>k:generateDocumentActionMenuItemDetails</relationshipInFromTypeGroup>
     <relationshipInToTypeGroup>reportTemplateDetails</relationshipInToTypeGroup>
   </relationship>
+  <!-- Navigate to Create Form action menu item type -->
+  <type>
+    <alias>k:navigateToCreateFormActionMenuItem</alias>
+    <name>Navigate to Create Form Action Menu Item</name>
+    <description>An action menu item that opens a form on a new record of a specified object definition.</description>
+    <inherits>k:actionMenuItem</inherits>
+    <generateCode>false</generateCode>
+    <isMetadata>true</isMetadata>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Navigate To Create Form Action Menu Item Details</name>
+        <alias>k:navigateToCreateFormActionMenuItemDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <relationships>
+      <relationship>
+        <alias>k:navigateToCreateFormActionDefinition</alias>
+        <reverseAlias>k:definitionForCreateAction</reverseAlias>
+        <name>Object definition</name>
+        <description>The object definition that we open a create form on.</description>
+        <toName>Definition</toName>
+        <toType>definition</toType>
+        <fromName>Create action</fromName>
+        <relType>relDependantOf</relType>
+        <generateCode>false</generateCode>
+        <hideOnToType>true</hideOnToType>
+        <hideOnToTypeDefaultForm>true</hideOnToTypeDefaultForm>
+        <relationshipInFromTypeGroup>k:navigateToCreateFormActionMenuItemDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>reportTemplateDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <alias>k:navigateToCreateFormActionForm</alias>
+        <reverseAlias>k:formForCreateAction</reverseAlias>
+        <name>Form</name>
+        <description>The form to use with the create action.</description>
+        <toName>Form</toName>
+        <toType>k:customEditForm</toType>
+        <fromName>Create action</fromName>
+        <relType>relLookup</relType>
+        <generateCode>false</generateCode>
+        <hideOnToType>true</hideOnToType>
+        <hideOnToTypeDefaultForm>true</hideOnToTypeDefaultForm>
+        <relationshipInFromTypeGroup>k:navigateToCreateFormActionMenuItemDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>reportTemplateDetails</relationshipInToTypeGroup>
+      </relationship>
+    </relationships>
+  </type>
   <!-- Navigation Element To Icon relationship -->
   <relationship>
     <alias>k:navigationElementIcon</alias>
@@ -862,7 +924,7 @@
     <relationshipInToTypeGroup>iconFileTypeDetails</relationshipInToTypeGroup>
     <securesTo>true</securesTo>
   </relationship>
-
+  
   <relationship>
     <alias>k:applicationIcon</alias>
     <name>Icon</name>
@@ -882,7 +944,6 @@
     <hideOnFromType>true</hideOnFromType>
     <securesTo>true</securesTo>
   </relationship>
-  
   
   <!-- Navigation config button type -->
   <type>

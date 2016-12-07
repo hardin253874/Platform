@@ -66,8 +66,8 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Autofac, Version=4.1.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\packages\Autofac.4.1.1\lib\net45\Autofac.dll</HintPath>
+    <Reference Include="Autofac, Version=4.2.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.2.0\lib\net45\Autofac.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="FluentAssertions, Version=4.2.2.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
@@ -124,10 +124,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Deployment\EDC.SoftwarePlatform.Install.Common\EDC.SoftwarePlatform.Install.Common.csproj">
-      <Project>{99c48b40-8897-4c0c-9ab3-8fbf888a49b3}</Project>
-      <Name>EDC.SoftwarePlatform.Install.Common</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EDC.Common\EDC.Common.csproj">
       <Project>{c7183bef-1a52-4da5-850b-7132b5dca7eb}</Project>
       <Name>EDC.Common</Name>
@@ -145,11 +141,6 @@
     <ProjectReference Include="..\EDC.ReadiNow.Common\EDC.ReadiNow.Common.csproj">
       <Project>{a1c54cf6-e515-4132-a3cb-5cbe32b11d7e}</Project>
       <Name>EDC.ReadiNow.Common</Name>
-      <Private>True</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\EDC.SoftwarePlatform.Activities\EDC.SoftwarePlatform.Activities.csproj">
-      <Project>{98ec024c-6439-44b1-8b1e-29e457b2201f}</Project>
-      <Name>EDC.SoftwarePlatform.Activities</Name>
       <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\EDC.SoftwarePlatform.Interfaces\EDC.SoftwarePlatform.Interfaces.csproj">

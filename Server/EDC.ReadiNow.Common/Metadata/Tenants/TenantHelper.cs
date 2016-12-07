@@ -28,13 +28,9 @@ namespace EDC.ReadiNow.Metadata.Tenants
         // Cache of tenant names to IDs
         // Note* This needs to be distributed so that modifications from other
         // app domains (i.e. PlatformConfigure) get processed in the WebApi app domain.
-        private static readonly ICache<string, long> TenantIdCache
-            = new CacheFactory { Distributed = true, IsolateTenants = false }
-            .Create<string, long>("Tenant ID cache");
+        private static ICache<string, long> TenantIdCache { get { return Factory.Current.ResolveNamed<ICache<string, long>>(TenantHelperModule.TenantIdCacheName); } }
+        private static ICache<long, string> TenantNameCache { get { return Factory.Current.ResolveNamed<ICache<long, string>>(TenantHelperModule.TenantNameCacheName); } }
 
-        private static readonly ICache<long, string> TenantNameCache
-            = new CacheFactory { Distributed = true, IsolateTenants = false }
-            .Create<long, string>("Tenant Name cache");
 
         /// <summary>
         ///     Creates the tenant.

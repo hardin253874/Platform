@@ -15,7 +15,7 @@ namespace EDC.SoftwarePlatform.Activities.Scheduling
     /// </summary>
     public class ScheduledItemSyncTarget : IEntityEventSave, IEntityEventDelete, IEntityEventDeploy, IEntityEventUpgrade
     {
-
+        const string ChangedScheduleKey = "ChangedSchedule";
 
         /// <summary>
         ///     Called after deletion of the specified enumeration of entities has taken place.
@@ -40,19 +40,11 @@ namespace EDC.SoftwarePlatform.Activities.Scheduling
         /// <param name="state">The state passed between the before save and after save callbacks.</param>
         public void OnAfterSave( IEnumerable<IEntity> entities, IDictionary<string, object> state )
         {
-            if (entities == null)
-            {
-                return;
-            }
+            var changedSchedules = (List<ScheduledItem>)state[ChangedScheduleKey];
 
-            foreach (var entity in entities)
+            foreach (var triggerOnSch in changedSchedules)
             {
-                var triggerOnSch = entity.As<ScheduledItem>();
-
-                if (triggerOnSch != null)
-                {
-                    SchedulingSyncHelper.UpdateScheduledJob(triggerOnSch, SchedulingHelper.Instance); 
-                }
+                SchedulingSyncHelper.UpdateScheduledJob(triggerOnSch, SchedulingHelper.Instance); 
             }
         }
 
@@ -79,6 +71,26 @@ namespace EDC.SoftwarePlatform.Activities.Scheduling
         /// </returns>
         public bool OnBeforeSave( IEnumerable<IEntity> entities, IDictionary<string, object> state )
         {
+            var schedulingFields = new List<IEntity> { ScheduledItem.TriggerEnabled_Field, ScheduledItem.ScheduleForTrigger_Field };
+
+            var changedSchedules = entities.Select(e =>
+            {
+                var scheduledItem = e.As<ScheduledItem>();
+
+                if (scheduledItem == null)
+                    return null;
+
+                if (scheduledItem.IsTemporaryId && (scheduledItem.TriggerEnabled ?? false) && scheduledItem.ScheduleForTrigger != null)
+                    return scheduledItem;
+
+                if (!scheduledItem.IsTemporaryId && scheduledItem.HasChanges(schedulingFields))
+                    return scheduledItem;
+
+                return null;
+            }).Where(si => si != null).ToList();
+
+            state.Add(ChangedScheduleKey, changedSchedules);
+
             return false;
         }
 

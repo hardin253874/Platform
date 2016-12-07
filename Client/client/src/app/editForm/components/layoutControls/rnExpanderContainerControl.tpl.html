@@ -1,0 +1,21 @@
+<div class="rnExpanderContainerControl">
+    <div ng-if="!$ctrl.hideContainerLabel" class="rnExpanderContainerControl__containerTitle">
+        {{$ctrl.control.name}}
+    </div>
+
+    <div class="rnExpanderContainerControl__content">
+
+        <div ng-repeat="c in $ctrl.controls">
+            <div ng-click="$ctrl.select(c)" class="rnExpanderContainerControl__childTitle"
+                 ng-class="{'rnExpanderContainerControl__childTitle--selected': $ctrl.isSelected(c)}">
+                {{c.name}}
+            </div>
+            <div ng-show="$ctrl.isSelected(c)" class="rnExpanderContainerControl__childControl {{c.cssClass}}">
+                <rn-form-control ng-if="$ctrl.isRendered(c)"
+                                 control="c.control" resource="$ctrl.resource" form="$ctrl.form"
+                                 options="c.options" form-options="$ctrl.formOptions"></rn-form-control>
+            </div>
+        </div>
+
+    </div>
+</div>

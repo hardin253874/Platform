@@ -2,7 +2,7 @@
 (function () {
     'use strict';
 
-    angular.module('mod.app.editForm.designerDirectives.spImageFileNameUploadControl', ['mod.common.spCachingCompile'])
+    angular.module('mod.app.editForm.designerDirectives.spImageFileNameUploadControl', ['mod.common.spCachingCompile', 'mod.app.editForm.spDblclickToEdit'])
         .directive('spImageFileNameUploadControl', function (spCachingCompile) {
 
             return {
@@ -16,7 +16,8 @@
                     formMode: '=?',
                     isInTestMode: '=?',
                     isReadOnly: '=?',
-                    isInDesign: '=?'
+                    isInDesign: '=?',
+                    hideTitleElement: '=?'
                 },
                 link: function (scope, element) {
                     scope.$on('gather', function (event, callback) {

@@ -47,7 +47,7 @@ namespace EDC.ReadiNow.Test.BackgroundTasks
 
             var handler = new DummyHandler {Action = act};
             var qFactory = new RedisTenantQueueFactory("BackgroundTaskManagerTests " + Guid.NewGuid());
-            var manager = new BackgroundTaskManager(qFactory, handlers: handler.ToEnumerable());
+            var manager = new BackgroundTaskManager(qFactory, handlers: handler.ToEnumerable()) { IsActive = true };
 
             try
             {
@@ -77,8 +77,16 @@ namespace EDC.ReadiNow.Test.BackgroundTasks
             finally
             {
                 manager.Stop();
-                manager.EmptyQueue(edcTenantId);
+                var items = manager.EmptyQueue(edcTenantId);
+                Assert.That(items.Count(), Is.EqualTo(1));
             }
+        }
+
+        [Test]
+        [Ignore]
+        public void SuspendRestore()
+        {
+            Assert.Fail("Not done yet");
         }
 
         public class DummyHandler : TaskHandler<DummyParam>
@@ -89,11 +97,28 @@ namespace EDC.ReadiNow.Test.BackgroundTasks
 
             public Action<DummyParam> Action { get; set; }
 
+            protected override EntityType SuspendedTaskType
+            {
+                get
+                {
+                    throw new NotImplementedException();
+                }
+            }
+
+            protected override void AnnotateSuspendedTask(IEntity suspendedTask, DummyParam backgroundTask)
+            {
+                throw new NotImplementedException();
+            }
 
 
             protected override void HandleTask(DummyParam taskData)
             {
                 Action(taskData);
+            }
+
+            protected override DummyParam RestoreTaskData(IEntity suspendedTask)
+            {
+                throw new NotImplementedException();
             }
         }
 

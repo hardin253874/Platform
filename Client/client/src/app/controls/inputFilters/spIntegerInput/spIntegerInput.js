@@ -16,13 +16,13 @@
 
                     modelCtrl.$parsers.unshift(function (inputValue) {
                         
-                        if (inputValue == null) {
+                        if (!inputValue) {
                             return inputValue;
                         }
                         
                         var transformedInput = inputValue.replace(notNumber, '');
 
-                        if (transformedInput != inputValue) { // replace the text with the filtered one
+                        if (transformedInput !== inputValue) { // replace the text with the filtered one
                             modelCtrl.$setViewValue(transformedInput);
                             modelCtrl.$render();
                         }

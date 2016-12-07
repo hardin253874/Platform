@@ -6,6 +6,6 @@ angular.module('mod.common.ui.spDataGrid', [
     'mod.ui.spDataGridPlugins', 'mod.common.ui.spDataGridUtils', 'mod.common.spXsrf',
     'app.reportBuilder', 'mod.common.ui.spActionsService', 'mod.common.ui.spImageViewerDialog',
     'sp.navService', 'mod.common.spEventDirectives', 'mod.common.spNgUtils', 'sp.themeService',
-    'mod.common.spMobile'
+    'mod.common.spMobile', 'mod.common.spWebService'
 ]);
 

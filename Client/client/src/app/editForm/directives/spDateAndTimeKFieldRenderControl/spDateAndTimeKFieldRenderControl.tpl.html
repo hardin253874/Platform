@@ -4,7 +4,7 @@
         <div class="edit-form-title" ng-if="!model.isInlineEditing">
             <sp-title-plus-markers is-read-only="model.isReadOnly" is-required="model.isRequired" messages="customValidationMessages" title-model="titleModel"></sp-title-plus-markers>
         </div>
-        <div class="edit-form-value">
+        <div class="edit-form-value" sp-dblclick-to-edit>
             <sp-date-and-time-control ng-if="!(isMobile || isTablet)" model="model"></sp-date-and-time-control>
             <sp-date-and-time-mobile-control ng-if="(isMobile || isTablet)" model="model"></sp-date-and-time-mobile-control>
         </div>

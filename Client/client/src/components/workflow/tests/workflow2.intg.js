@@ -65,7 +65,7 @@ describe('Console|Workflow|intg:', function () {
     }
 
     function runWorkflow(spWorkflowRunService, workflow) {
-        return spWorkflowRunService.runWorkflow(workflow.entity.idP, [], true).then(function(tag) {
+        return spWorkflowRunService.runWorkflow(workflow.entity.idP, [], true, { timeoutFn: timeout }).then(function (tag) {
             return spWorkflowRunService.waitForRunToStopWithThrow(tag, { timeoutFn: timeout }).then(function(workflowRunId) {
                 workflow.lastRunId = workflowRunId;
                 return workflow;
@@ -82,7 +82,7 @@ describe('Console|Workflow|intg:', function () {
     }
 
     function runWorkflowWithResourceId(spWorkflowRunService, resourceId, workflow) {
-        return spWorkflowRunService.runWorkflow(workflow.entity.id(), [{ name: 'ResourceId', value: resourceId, typeName: 'core:resourceArgument' }], true).then(function(tag) {
+        return spWorkflowRunService.runWorkflow(workflow.entity.id(), [{ name: 'ResourceId', value: resourceId, typeName: 'core:resourceArgument' }], true, { timeoutFn: timeout }).then(function (tag) {
             return spWorkflowRunService.waitForRunToStopWithThrow(tag, { timeoutFn: timeout }).then(function(workflowRunId) {
                 workflow.lastRunId = workflowRunId;
                 return workflow;

@@ -27,7 +27,8 @@
     </allowAccess>
     <allowDisplay>
       <!-- Home app -->
-      homeMenu, k:homeSection, k:favoritesSection, tasksSection, k:myContentSection
+      homeMenu, k:homeSection, k:favoritesSection, tasksSection, k:myContentSection,
+      resourceReport, templateReport, k:enumValuesReport  <!-- Adding these here, because their absence seems to be killing scalability .. need to consider why, and why allowAccessInternal doesn't do the job -->
     </allowDisplay>
     <allowAccessInternal>
       <!-- Required for reports -->

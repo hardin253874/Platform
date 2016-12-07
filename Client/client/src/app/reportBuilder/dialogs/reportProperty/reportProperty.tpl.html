@@ -16,9 +16,9 @@
             <div class="edit-form-title"><label>Report based on</label></div>
             <div class="edit-form-value"><sp-inline-relationship-picker options="pickerOptions" ng-disabled="isExistReport" ng-readonly="isExistReport" /></div>
         </div>
-        <div class="edit-form-control-container" ng-show="canShowAllTypes">
+        <div class="edit-form-control-container" ng-show="showTypesVisible()">
             <div class="edit-form-title"></div>
-            <div class="edit-form-value"><input type="checkbox" style="margin-left:inherit" ng-model="model.showAll" /> <label>Show all</label></div>
+            <div class="edit-form-value"><input type="checkbox" style="margin-left:inherit" ng-model="model.showAll"/> <label>Show all (dev only)</label></div>
         </div>
         <div class="btn_lighten option" ng-click="isCollapsed = !isCollapsed">
             <a><img ng-src="{{imageUrl}}" /></a>

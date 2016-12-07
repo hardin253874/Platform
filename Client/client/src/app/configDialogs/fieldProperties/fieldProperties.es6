@@ -876,14 +876,12 @@
 
                 var newName = $scope.model.fieldData.getField(nameField.id());
 
-                if (!nameField || !newName) {
-                    return;
-                }
-
-                var result = spFormBuilderService.validateFieldName(newName, fieldId);
-                if (result.hasError) {
-                    $scope.model.addError(result.message);
-                    return;
+                if (nameField && newName) {
+                    const result = spFormBuilderService.validateFieldName(newName, fieldId);
+                    if (result.hasError) {
+                        $scope.model.addError(result.message);
+                        return;
+                    }
                 }
 
                 // validate script name field value
@@ -893,23 +891,33 @@
 
                 var newScriptName = $scope.model.fieldData.getField(scriptField.id());
 
-                if (!scriptField || !newScriptName) {
-                    return;
+                if (scriptField && newScriptName) {
+                    const result = spFormBuilderService.validateFieldScriptName(newScriptName, fieldId);
+                    if (result.hasError) {
+                        $scope.model.addError(result.message);
+                        return;
+                    }
                 }
 
-                result = spFormBuilderService.validateFieldScriptName(newScriptName, fieldId);
-                if (result.hasError) {
-                    $scope.model.addError(result.message);
-                    return;
+                let visibilityCalculation;
+
+                if ($scope.model.isFieldControl) {
+                    visibilityCalculation = $scope.model.visibilityCalculationModel.script;
+                } else {
+                    // Need to find the form control that is being rendered 
+                    // You gotta do what you gotta do. Avert your eyes !
+                    const allControls = spEditForm.getFormControls(spFormBuilderService.form);
+                    const fieldToRenderId = sp.result($scope, "model.fieldToRender.idP");
+                    const fieldControl = _.find(allControls, c => sp.result(c, "fieldToRender.idP") === fieldToRenderId);
+                    visibilityCalculation = sp.result(fieldControl, "visibilityCalculation");
                 }
 
-                if ($scope.model.isFieldControl &&
-                    $scope.model.visibilityCalculationModel.script &&
-                    $scope.model.isFieldRequired && 
+                if (visibilityCalculation &&
+                    $scope.model.isFieldRequired &&
                     spUtils.isNullOrUndefined($scope.model.fieldDefaultData.getField($scope.model.defaultField.id()))) {
                     $scope.model.addError("Visibility calculation cannot be defined as the field is mandatory and no default value is specified.");
                     return;
-                }                
+                }
             }
 
             function loadCalculationInfo() {

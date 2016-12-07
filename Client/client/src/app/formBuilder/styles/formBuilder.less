@@ -26,11 +26,17 @@
         right: 0;
         top: 7px;
         opacity: 0;
+        padding: 2px;
         z-index: 90;
+        background-color: #fff;
+        border: 2px solid #31a89f;
         transition: opacity 0.2s ease-in-out;
-        background-color: #1dd000;
-        border-radius: 2px;
-        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+
+        sp-tab-render-control & {
+            padding: 4px;
+            background-color: #31a89f;
+            border-radius: 3px;
+        }
 
         img {
             cursor: pointer;
@@ -39,6 +45,23 @@
         .sp-form-builder-adornment {
             float: right;
             cursor: pointer;
+            display: inline-block;
+            padding: 1px;
+            background-color: #31a89f;
+            border-radius: 1px;
+
+            &:hover {
+                background-color: overlay(#31a89f, #666);
+            }
+        }
+
+        & > span {
+            display: inline-block;
+            margin-right: 2px;
+
+            &:last-child {
+                margin: 0;
+            }
         }
     }
 
@@ -315,6 +338,10 @@
         .sp-form-builder-container-content {
             overflow: hidden;
         }
+
+        & > .sp-form-builder-toolbar {
+            right: 8px;
+        }
     }
 }
 
@@ -326,6 +353,11 @@
         box-shadow: none;
         padding: 0px;
         display: block !important;
+    }
+
+    .sp-hero-text-control {
+        min-height:100px;
+        min-width:100px;
     }
 }
 

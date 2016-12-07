@@ -8,6 +8,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Net.Security;
 using EDC.ReadiNow.Configuration;
 using System.Security.Authentication;
+using EDC.ReadiNow.Core;
 
 namespace EDC.ReadiNow.IO.RemoteFileFetcher
 {
@@ -16,11 +17,22 @@ namespace EDC.ReadiNow.IO.RemoteFileFetcher
     /// </summary>
     public class FtpFileFetcher : IRemoteFileFetcher
     {
-        public bool BypassSslCheck { get; }
+        IRemoteFileFetcher _sftpFetcher { get; }
+        IRemoteFileFetcher _ftpsFetcher { get; }
 
-        public FtpFileFetcher(bool bypassSslCheck)
+
+        public FtpFileFetcher(bool bypassSslCheck, IRemoteFileFetcher sftpFileFetcher, IRemoteFileFetcher ftpsFileFetcher)
         {
-            BypassSslCheck = bypassSslCheck;
+            if (bypassSslCheck)
+            {
+                _sftpFetcher = new SslBypassFileFetcher(sftpFileFetcher);
+                _ftpsFetcher = new SslBypassFileFetcher(ftpsFileFetcher);
+            }
+            else
+            {
+                _sftpFetcher = sftpFileFetcher;
+                _ftpsFetcher = ftpsFileFetcher;
+            }
         }
 
 
@@ -31,121 +43,42 @@ namespace EDC.ReadiNow.IO.RemoteFileFetcher
         /// <param name="username"></param>
         /// <param name="password"></param>
         /// <returns>A token to the file repository</returns>
-        public string FetchToTemporaryFile(string url, string username, string password)
+        public string GetToTemporaryFile(string url, string username, string password)
         {
-            Action undoBypass = null;
+            if (string.IsNullOrEmpty(url))
+                throw new ArgumentException(nameof(url));
 
-            try
-            {
-                undoBypass = SslCertificateBypass();
+            if (string.IsNullOrEmpty(username))
+                throw new ArgumentException(nameof(username));
 
-
-                var uri = new Uri(url);
-
-                switch (uri.Scheme.ToLower())
-                {
-                    case "ftps": return FtpsFetchToTemporaryFile(uri, username, password);
-                    case "sftp": return SftpFetchToTemporaryFile(uri, username, password);
-                    default: throw new ConnectionException("Only FTPS or SFTP connections are supported", null);
-                }
-            }
-            catch (AuthenticationException ex)
-            {
-                throw new ConnectionException(ex.Message, ex);
-            }
-            finally
-            {
-                undoBypass();
-            }
-
-
+            return GetFetchForUrl(url).GetToTemporaryFile(url, username, password);
         }
-
-        private string FtpsFetchToTemporaryFile(Uri uri, string username, string password)
-        {
-
-            var transformedUri = new Uri(uri.ToString().Replace("ftps://", "ftp://"));    // Ugly hack - the WebRequest does not handle ftps protocol in the URL 
-            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(transformedUri);
-            request.Method = WebRequestMethods.Ftp.DownloadFile;
-            request.EnableSsl = true;                                   // We NEVER want to set this as false. The password will be transmitted plain text.
-
-            if (!String.IsNullOrEmpty(username))
-                request.Credentials = new NetworkCredential(username, password ?? string.Empty);
-
-            try
-            {
-                var response = (FtpWebResponse)request.GetResponse();
-
-                using (var responseStream = response.GetResponseStream())
-                {
-                    return FileRepositoryHelper.AddTemporaryFile(responseStream);
-                }
-
-            }
-            catch (WebException ex)
-            {
-                var errorResponse = ex.Response as FtpWebResponse;
-
-                // This status code is returned is the AUTH command is unavailable so when we see it it indicates the we can't flip into encrypted mode
-                string message = (errorResponse.StatusCode == FtpStatusCode.CommandSyntaxError ? "Unable to connect to server securely: " : "") + ex.Message;
-
-                throw new ConnectionException(message, ex);
-            }
-        }
-
-
-        private string SftpFetchToTemporaryFile(Uri url, string username, string password)
-        {
-            string fileToken = null;
-
-            try
-            {
-                using (SftpClient sftp = new SftpClient(url.Host, username, password))
-                {
-                    sftp.Connect();
-
-                    using (var ms = new MemoryStream())  
-                    {
-                        var filePath = url.AbsolutePath;
-                        sftp.DownloadFile(filePath, ms);
-                        fileToken = FileRepositoryHelper.AddTemporaryFile(ms);
-                    }
-
-                    sftp.Disconnect();
-                }
-
-                return fileToken;
-            }
-            catch(System.Net.Sockets.SocketException ex)
-            {
-                throw new ConnectionException(ex.Message, ex);
-            }
-            catch (SshException ex)
-            {
-                throw new ConnectionException(ex.Message, ex);
-            }
-        }
-
 
         /// <summary>
-        /// Bypass the certificate
+        /// Put a temporary file into a Url
         /// </summary>
-        /// <returns>An action that will undo the bypass.</returns>
-        private Action SslCertificateBypass()
+        /// <param name="fileHash"></param>
+        /// <param name="url"></param>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        public void PutFromTemporaryFile(string fileHash, string url, string username, string password)
         {
-            if (BypassSslCheck)
-            {
-                var original = ServicePointManager.ServerCertificateValidationCallback;
+            if (!Factory.FeatureSwitch.Get("ftpExport"))
+                throw new NotImplementedException("This feature has not been turned on.");
 
-                ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
+            GetFetchForUrl(url).PutFromTemporaryFile(fileHash, url, username, password);
+        }
 
-                return () => ServicePointManager.ServerCertificateValidationCallback = original;
-            }
-            else
+        IRemoteFileFetcher GetFetchForUrl(string url)
+        {
+            var uri = new Uri(url);
+
+            switch (uri.Scheme.ToLower())
             {
-                return () => { };
+                case "ftps": return _ftpsFetcher;
+                case "sftp": return _sftpFetcher;
+                default: throw new ConnectionException("Only FTPS or SFTP connections are supported", null);
             }
-            
         }
     }
 }

@@ -7,6 +7,7 @@
     */
     angular.module('mod.app.adminToolbox.directives',
         [
-            'mod.app.adminToolbox.directives.spAdminToolbox'
+            'mod.app.adminToolbox.directives.spAdminToolbox',
+            'mod.app.spDocumentationService'
         ]);
 }());

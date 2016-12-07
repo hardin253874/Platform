@@ -1,0 +1,33 @@
+<div ng-controller="sp.workflow.activityController">
+    <div ng-controller="launchTargetCampaignActivityController">
+        <form class="form-horizontal">
+            <div class="form-group">
+                <sp-workflow-expression-control parameter="activityParameters['core:inLaunchTargetSurvey']" show-label="true"
+                                                actions="parameterChooser,resourceChooser,exprEditor"></sp-workflow-expression-control>
+            </div>
+            <div class="form-group">
+                <sp-workflow-expression-control parameter="activityParameters['core:inLaunchTargetTargets']" show-label="true"
+                                                actions="parameterChooser,resourceChooser,exprEditor"></sp-workflow-expression-control>
+            </div>
+            <div class="form-group">
+                <sp-workflow-expression-control parameter="activityParameters['core:inLaunchTargetSurveyTaker']" show-label="true"
+                                                actions="parameterChooser,resourceChooser,exprEditor"></sp-workflow-expression-control>
+            </div>
+            <div class="form-group">
+                <sp-workflow-expression-control parameter="activityParameters['core:inLaunchTargetTaskName']" show-label="true"
+                                                actions="exprEditor"></sp-workflow-expression-control>
+            </div>
+            <div class="form-group">
+                <div class="workflow-form-control">
+                    <label class="control-label" title="{{activityParameters['core:inLaunchTargetDueDays'].argument.description}}">
+                        {{activityParameters['core:inLaunchTargetDueDays'].argument.name}}
+                    </label>
+                    <sp-workflow-timespan-input class="sp-workflow-timespan-input" model="formTimeoutValue"></sp-workflow-timespan-input>
+                </div>
+            </div>
+            <div class="form-group">
+                <sp-workflow-parameter-bool-input parameter="'core:inLaunchTargetPause'"></sp-workflow-parameter-bool-input>
+            </div>
+        </form>
+    </div>
+</div>

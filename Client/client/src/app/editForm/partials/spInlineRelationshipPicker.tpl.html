@@ -1,8 +1,13 @@
 <div class="inlineRelPicker">
-    <div>
-        <input ng-model="displayString" ng-blur="validateRelationship();" readonly="readonly" ng-disabled="isDisabled"
-               uib-popover="Edit" popover-trigger="mouseenter" popover-placement="top" style="cursor: pointer;"
-               ng-click="openDetail('entityPickers/entityCompositePicker/spEntityCompositePickerModal.tpl.html')"
+    <div>        
+        <input id="entityNameInput" ng-model="displayStringModel" ng-model-options="displayStringModelOptions" ng-blur="validateRelationship();" ng-disabled="isDisabled"
+               style="cursor: pointer;"
+               uib-typeahead="entity.name for entity in getTypeaheadEntities($viewValue)" typeahead-append-to-body="typeaheadModel.appendToBody"
+               typeahead-focus-first="typeaheadModel.focusOnFirst"
+               typeahead-template-url="controls/templates/spTypeaheadItemTemplate.tpl.html"
+               typeahead-popup-template-url="controls/templates/spTypeaheadPopupTemplate.tpl.html"
+               typeahead-on-select="onTypeaheadSelect($item)"
+               autocomplete="off"
                sp-focus="controlId"/>
     </div>
     <div>
@@ -17,5 +22,5 @@
                 popover-trigger="mouseenter" popover-placement="top">
             <img src="assets/images/icon_remove.png"/>
         </button>
-    </div>
+    </div>    
 </div>

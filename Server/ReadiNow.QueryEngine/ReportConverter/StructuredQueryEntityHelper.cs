@@ -76,7 +76,7 @@ namespace ReadiNow.QueryEngine.ReportConverter
                 // Build up query starting with the root node
                 using (Profiler.Measure("Query Tree"))
                 {
-                    sq.RootEntity = StructuredQueryEntityHelper.BuildRootEntity(report.RootNode, context);
+                    sq.RootEntity = StructuredQueryEntityHelper.BuildReportNode(report.RootNode, context);
                 }
 
                 // then the list of select columns
@@ -110,47 +110,51 @@ namespace ReadiNow.QueryEngine.ReportConverter
         /// <summary>
         /// Builds the root entity.
         /// </summary>
-        /// <param name="rootNode">The root node.</param>
+        /// <param name="node">The root node.</param>
         /// <param name="context">The context.</param>
         /// <returns>Entity.</returns>
         /// <exception cref="System.Exception">Unknown report node type.</exception>
-        internal static Entity BuildRootEntity(ReportNode rootNode, FromEntityContext context)
+        internal static Entity BuildReportNode( ReportNode node, FromEntityContext context)
         {
-            if ( rootNode == null )
-                throw new ArgumentNullException( nameof( rootNode ) );
+            if ( node == null )
+                throw new ArgumentNullException( nameof( node ) );
             if ( context == null )
                 throw new ArgumentNullException( nameof( context ) );
 
             Entity structuredQueryEntity;
-            if (rootNode.Is<AggregateReportNode>())
+            if (node.Is<AggregateReportNode>())
             {
-                structuredQueryEntity = BuildAggregateReportNode(rootNode.As<AggregateReportNode>(), context);
+                structuredQueryEntity = BuildAggregateReportNode(node.As<AggregateReportNode>(), context);
             }
-            else if (rootNode.Is<RelationshipReportNode>())
+            else if (node.Is<RelationshipReportNode>())
             {
-                structuredQueryEntity = BuildRelationshipReportNode(rootNode.As<RelationshipReportNode>(), context);
+                structuredQueryEntity = BuildRelationshipReportNode(node.As<RelationshipReportNode>(), context);
             }
-            else if (rootNode.Is<DerivedTypeReportNode>())
+            else if ( node.Is<CustomJoinReportNode>( ) )
             {
-                structuredQueryEntity = BuildDerivedTypeReportNode(rootNode.As<DerivedTypeReportNode>(), context);
+                structuredQueryEntity = BuildCustomJoinReportNode( node.As<CustomJoinReportNode>( ), context );
             }
-            else if (rootNode.Is<ResourceReportNode>())
+            else if (node.Is<DerivedTypeReportNode>())
             {
-                structuredQueryEntity = BuildResourceReportNode(rootNode.As<ResourceReportNode>(), context);
+                structuredQueryEntity = BuildDerivedTypeReportNode(node.As<DerivedTypeReportNode>(), context);
+            }
+            else if (node.Is<ResourceReportNode>())
+            {
+                structuredQueryEntity = BuildResourceReportNode(node.As<ResourceReportNode>(), context);
             }
             else
             {                
-                throw new Exception("Unknown report node type. " + rootNode.GetType().Name);
+                throw new Exception("Unknown report node type. " + node.GetType().Name);
             }
-			if ( rootNode.RelatedReportNodes != null && rootNode.RelatedReportNodes.Count > 0 )
+			if ( node.RelatedReportNodes != null && node.RelatedReportNodes.Count > 0 )
             {
-                structuredQueryEntity.RelatedEntities = new List<Entity>(rootNode.RelatedReportNodes.Select(relatedReportNode => BuildRootEntity(relatedReportNode, context)).Where(entity => entity != null));
+                structuredQueryEntity.RelatedEntities = new List<Entity>(node.RelatedReportNodes.Select(relatedReportNode => BuildReportNode( relatedReportNode, context)).Where(entity => entity != null));
             }
             if (structuredQueryEntity != null)
             {
                 // Only valid nodes get placed into the ReportNodeToEntityMap
                 // (but ReportNodeMap may contain invalid nodes for historical reasons)
-                context.ReportNodeToEntityMap[rootNode.Id] = structuredQueryEntity;
+                context.ReportNodeToEntityMap[node.Id] = structuredQueryEntity;
             }           
             return structuredQueryEntity;
         }
@@ -327,8 +331,7 @@ namespace ReadiNow.QueryEngine.ReportConverter
                 if (expression == null)
                 {
                     EventLog.Application.WriteWarning("the order expression id: {0} is invalid.", reportOrderBy.OrderByExpression != null ? reportOrderBy.OrderByExpression.Id.ToString() : "null");
-                    if (!settings.SchemaOnly)
-                        continue;
+                    continue;
                 }
 
                 //the orderby expression is ColumnReferenceExpression, the referenced report column must exists
@@ -478,7 +481,7 @@ namespace ReadiNow.QueryEngine.ReportConverter
                 throw new Exception( "Aggregate note has no grouped node." );
 
             // Populate Grouped Node
-            AggregateEntity aggregateEntity = new AggregateEntity {GroupedEntity = BuildRootEntity(reportNode.GroupedNode, context)};
+            AggregateEntity aggregateEntity = new AggregateEntity {GroupedEntity = BuildReportNode( reportNode.GroupedNode, context)};
 
             // Populate Grouped by if present
 			if ( reportNode.GroupedBy != null && reportNode.GroupedBy.Count > 0 )
@@ -515,6 +518,7 @@ namespace ReadiNow.QueryEngine.ReportConverter
                 {
                     ResourceMustExist = reportNode.TargetMustExist ?? false,
                     ResourceNeedNotExist = reportNode.TargetNeedNotExist ?? false,
+                    ParentNeedNotExist = reportNode.ParentNeedNotExist ?? false,
                     ExactType = reportNode.ExactType ?? false
                 };
             if (reportNode.ResourceReportNodeType != null)
@@ -596,6 +600,34 @@ namespace ReadiNow.QueryEngine.ReportConverter
             downCastResource.NodeId = nodeId;
             downCastResource.EntityId = reportNode.Id;
             return downCastResource;
+        }
+
+        /// <summary>
+        /// Builds the custom join report node.
+        /// </summary>
+        /// <param name="reportNode">The report node.</param>
+        /// <param name="context">The context.</param>
+        /// <returns>DownCastResource.</returns>
+        private static CustomJoinNode BuildCustomJoinReportNode( CustomJoinReportNode reportNode, FromEntityContext context )
+        {
+            CustomJoinNode customJoinNode = new CustomJoinNode
+            {
+                JoinPredicateScript = reportNode.JoinPredicateCalculation,
+                EntityTypeId = reportNode.ResourceReportNodeType?.Id,
+                ResourceMustExist = reportNode.TargetMustExist ?? false,
+                ResourceNeedNotExist = reportNode.TargetNeedNotExist ?? false,
+                ParentNeedNotExist = reportNode.ParentNeedNotExist ?? false,
+                ExactType = reportNode.ExactType ?? false
+            };
+            Guid nodeId;
+            if ( !context.ReportNodeMap.TryGetValue( reportNode.Id, out nodeId ) )
+            {
+                nodeId = Guid.NewGuid( );
+                context.ReportNodeMap[ reportNode.Id ] = nodeId;
+            }
+            customJoinNode.NodeId = nodeId;
+            customJoinNode.EntityId = reportNode.Id;
+            return customJoinNode;
         }
 
         /// <summary>
@@ -803,6 +835,7 @@ namespace ReadiNow.QueryEngine.ReportConverter
         /// Builds the field expression.
         /// </summary>
         /// <param name="fieldExpression">The field expression.</param>
+        /// <param name="context"></param>
         /// <returns>ResourceDataColumn.</returns>
         private static ResourceDataColumn BuildFieldExpression(Model.FieldExpression fieldExpression, FromEntityContext context)
         {

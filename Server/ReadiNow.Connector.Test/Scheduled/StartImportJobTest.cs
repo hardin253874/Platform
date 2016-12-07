@@ -32,7 +32,7 @@ namespace ReadiNow.Connector.Test.Scheduled
             var config = CreateConfig(url);
 
             var mockFetcher = new Mock<IRemoteFileFetcher>(MockBehavior.Strict);
-            mockFetcher.Setup(f => f.FetchToTemporaryFile(url, "username", "password")).Throws(new ConnectionException("dummy"));
+            mockFetcher.Setup(f => f.GetToTemporaryFile(url, "username", "password")).Throws(new ConnectionException("dummy"));
 
             using (var scope = Factory.Current.BeginLifetimeScope(builder =>
             {
@@ -65,7 +65,7 @@ namespace ReadiNow.Connector.Test.Scheduled
             var config = CreateConfig(url);
 
             var mockFetcher = new Mock<IRemoteFileFetcher>(MockBehavior.Strict);
-            mockFetcher.Setup(f => f.FetchToTemporaryFile(url, "username", "password")).Returns(() => "123");
+            mockFetcher.Setup(f => f.GetToTemporaryFile(url, "username", "password")).Returns(() => "123");
 
             var mockRunner = new Mock<IAsyncRunner>(MockBehavior.Strict);
             mockRunner.Setup(r => r.Start(It.IsAny<Action>(), It.IsAny<AsyncRunnerSettings>()));
@@ -100,7 +100,7 @@ namespace ReadiNow.Connector.Test.Scheduled
             var config = CreateConfig(url);
 
             var mockFetcher = new Mock<IRemoteFileFetcher>(MockBehavior.Strict);
-            mockFetcher.Setup(f => f.FetchToTemporaryFile(url, "username", "password")).Returns(() =>
+            mockFetcher.Setup(f => f.GetToTemporaryFile(url, "username", "password")).Returns(() =>
             {
                 throw new ConnectionException("Dummy");
             });

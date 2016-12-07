@@ -2,9 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using EDC.Common;
-using EDC.Database;
 using EDC.ReadiNow.Metadata.Query.Structured;
 
 namespace ReadiNow.QueryEngine.Builder.SqlObjects
@@ -54,7 +51,7 @@ namespace ReadiNow.QueryEngine.Builder.SqlObjects
         ///     Any children that are 'require' also won't bubble up beyond this join.
         /// </summary>
         DontConstrainParent
-	}
+    }
 
 
 	/// <summary>
@@ -67,11 +64,21 @@ namespace ReadiNow.QueryEngine.Builder.SqlObjects
 		/// </summary>
 		Inner,
 
-		/// <summary>
-		///     A left join. Note: the current table is on the right hand side, and as such is the one that does not constrain results.
-		/// </summary>
-		Left
-	}
+        /// <summary>
+        ///     A left join. Note: the current table is on the right hand side, and as such is the one that does not constrain results.
+        /// </summary>
+        Left,
+
+        /// <summary>
+        ///     A right join. Note: most joins are left or inner.
+        /// </summary>
+        Right,
+
+        /// <summary>
+        ///     A full join.
+        /// </summary>
+        Full
+    }
 
 
 	/// <summary>
@@ -114,7 +121,8 @@ namespace ReadiNow.QueryEngine.Builder.SqlObjects
 		{
 			Children = new List<SqlTable>( );
 			Conditions = new List<string>( );
-			SubqueryChildren = new List<SqlTable>( );		    
+            FullJoinConditions = new List<string>( );
+            SubqueryChildren = new List<SqlTable>( );		    
 		}
 
 		/// <summary>
@@ -124,7 +132,16 @@ namespace ReadiNow.QueryEngine.Builder.SqlObjects
 		{
 			get;
 			set;
-		}
+        }
+
+        /// <summary>
+        ///     A full table alias containing fields
+        /// </summary>
+        public string FullTableAlias
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// Gets or sets the reference manager.
@@ -139,16 +156,6 @@ namespace ReadiNow.QueryEngine.Builder.SqlObjects
         }
 
 		/// <summary>
-		///     If true, this table is a table function that gets joined with 'APPLY', and will perform its own join.
-		///     Additional conditions will also need to get rendered into the main where-clause as there is no on-clause.
-		/// </summary>
-		public bool ApplyTableFunction
-		{
-			get;
-			set;
-		}
-
-		/// <summary>
 		///     Tables that join to this table (on the right).
 		/// </summary>
 		public List<SqlTable> Children
@@ -158,13 +165,21 @@ namespace ReadiNow.QueryEngine.Builder.SqlObjects
 		}
 
 		/// <summary>
-		///     A SQL Boolean expression to be appended to the join ON clause.
+		///     A SQL Boolean expression to be appended to the join ON clause of a specific node.
 		/// </summary>
 		public List<string> Conditions
 		{
 			get;
-			private set;
-		}
+        }
+
+        /// <summary>
+        ///     Conditions that must be placed in a full/right join.
+        ///     (In those joins, other conditions will tend to get moved closer to the table itself)
+        /// </summary>
+        public List<string> FullJoinConditions
+        {
+            get;
+        }
 
         /// <summary>
         ///     True if any of the conditions were added externally (as we can't predict what they'll do).
@@ -240,12 +255,31 @@ namespace ReadiNow.QueryEngine.Builder.SqlObjects
 		{
 			get;
 			set;
-		}
+        }
 
-		/// <summary>
-		///     Table or view name.
-		/// </summary>
-		public string Name
+        /// <summary>
+        ///     Join hint that can be applied in conjunction with other join hints.
+        ///     Indicates that this table does not get constrained by the parent. I.e. a right join or a full join.
+        /// </summary>
+        public bool JoinNotConstrainedByParent
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        ///     If true, this table should be joined towards the back
+        /// </summary>
+        public bool DependsOnOtherJoins
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        ///     Table or view name.
+        /// </summary>
+        public string Name
 		{
 			get;
 			set;
@@ -348,6 +382,11 @@ namespace ReadiNow.QueryEngine.Builder.SqlObjects
             set;
         }
 
+        /// <summary>
+        /// Have the standard conditions been prepared for this table?
+        /// </summary>
+	    private bool _conditionsPrepared;
+
 		/// <summary>
 		///     Format table for debugging purposes.
 		/// </summary>
@@ -361,15 +400,15 @@ namespace ReadiNow.QueryEngine.Builder.SqlObjects
 		/// </summary>
 		internal void PrepareTableConditions( )
 		{
-			// Add additional conditions
-			if ( FilterByTenant )
+            if ( _conditionsPrepared )
+                return;
+            _conditionsPrepared = true;
+
+            // Add additional conditions
+            if ( FilterByTenant )
 			{
                 // Entity-based tenant filter
-			    const string tenantFilter = "$.TenantId = @tenant";
-                if (!Conditions.Contains(tenantFilter))
-			    {
-                    Conditions.Add(tenantFilter);			            
-			    }                                
+			    Conditions.Add( "$.TenantId = @tenant" );
 			}
 
 		    if ( SecureResources )
@@ -418,16 +457,13 @@ namespace ReadiNow.QueryEngine.Builder.SqlObjects
 		/// <summary>
 		///     Format any sub queries that need to appear in the where/on clause.
 		/// </summary>
-		internal void RenderSubqueryChildren( First first, SqlBuilderContext sb )
+		internal void RenderSubqueryChildren( ConjunctionTracker conjunctions, SqlBuilderContext sb )
 		{
 			foreach ( SqlTable child in SubqueryChildren )
 			{
-				if ( !first )
-				{
-					sb.AppendOnNewLine( "and " );
-				}
+                conjunctions.RenderSql( sb );
 
-				if ( child.JoinHint == JoinHint.NotExists )
+                if ( child.JoinHint == JoinHint.NotExists )
 				{
 					sb.Append( "not " );
 				}
@@ -441,88 +477,53 @@ namespace ReadiNow.QueryEngine.Builder.SqlObjects
 					};
 				fromClause.RenderSql( sb );
 
-				if ( !child.ApplyTableFunction )
-				{
-                    sb.AddJoinCondition( child, this, child.JoinColumn, child.ForeignColumn );
-				}
+				sb.AddJoinCondition( child, this, child.JoinColumn, child.ForeignColumn );
+				
 				child.RenderTableConditions( "where", false, sb );
 				sb.EndIndent( );
 				sb.AppendOnNewLine( ")" );
 			}
 		}
 
-		/// <summary>
-		///     Renders any additional conditions that apply to this specific table.
-		/// </summary>
-		/// <param name="sqlClause">The SQL clause used to render conditions ('on' or 'where').</param>
-		/// <param name="inline"></param>
-		/// <param name="sb">The SQL builder.</param>
-		/// <param name="firstTracker"></param>
-		internal void RenderTableConditions( string sqlClause, bool inline, SqlBuilderContext sb, First firstTracker = null )
-		{
-			if ( Conditions.Count == 0 && SubqueryChildren.Count == 0 )
+	    /// <summary>
+	    ///     Renders any additional conditions that apply to this specific table.
+	    /// </summary>
+	    /// <param name="sqlClause">The SQL clause used to render conditions ('on' or 'where').</param>
+	    /// <param name="inline"></param>
+	    /// <param name="sb">The SQL builder.</param>
+	    internal void RenderTableConditions( string sqlClause, bool inline, SqlBuilderContext sb )
+	    {
+	        var conjunction = new ConjunctionTracker( sqlClause, "and", inline );
+
+	        RenderTableConditions( conjunction, sb );
+
+            // Ensure that there is at least some clause
+	        if ( sqlClause == "on" && !conjunction.AnyRendered )
+	        {
+	            conjunction.RenderSql( sb );
+	            sb.Append( "1=1" );
+	        }
+
+	        conjunction.FinishSql( sb );
+	    }
+
+        /// <summary>
+        ///     Renders any additional conditions that apply to this specific table.
+        /// </summary>
+        /// <param name="conjunctions">Tracks where/on/and keywords. Call MUST ensure FinishSql gets called.</param>
+        /// <param name="sb">The SQL builder.</param>
+        internal void RenderTableConditions( ConjunctionTracker conjunctions, SqlBuilderContext sb )
+        {
+            // Conditions
+			foreach ( string condition in FullJoinConditions.Concat( Conditions ) )
 			{
-				return;
+                conjunctions.RenderSql( sb );
+
+                string conditionSql = condition.Replace( "$", TableAlias );
+                sb.Append( conditionSql );
 			}
 
-			// Conditions
-			First first = firstTracker ?? new First( );
-			bool addedClause = false;
-			foreach ( string condition in Conditions )
-			{
-				string conditionSql = condition.Replace( "$", TableAlias );
-				if ( first )
-				{
-					// Preamble ('on' or 'where')
-					if ( inline )
-					{
-						sb.Append( sqlClause );
-					}
-					else
-					{
-						sb.AppendOnNewLine( sqlClause );
-						sb.Indent( );
-					}
-
-					addedClause = true;
-				}
-				else
-				{
-					conditionSql = "and " + conditionSql;
-				}
-
-				if ( inline )
-				{
-					sb.Append( " " + conditionSql );
-				}
-				else
-				{
-					sb.AppendOnNewLine( conditionSql );
-				}
-			}
-
-			if ( ! addedClause )
-			{
-				// Preamble ('on' or 'where')
-				if ( inline )
-				{
-					sb.Append( sqlClause );
-					sb.Append( " " );
-				}
-				else
-				{
-					sb.AppendOnNewLine( sqlClause );
-					sb.StartNewLine( );
-					sb.Indent( );
-				}
-			}
-
-			RenderSubqueryChildren( first, sb );
-
-			if ( !inline && firstTracker == null )
-			{
-				sb.EndIndent( );
-			}
+			RenderSubqueryChildren( conjunctions, sb );
 		}
 	}
 }

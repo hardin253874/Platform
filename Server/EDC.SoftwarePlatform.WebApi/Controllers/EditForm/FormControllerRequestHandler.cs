@@ -69,7 +69,11 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.EditForm
             {
                 try
                 {
-                    compiledCalculations[kvp.Key] = Factory.ExpressionCompiler.Compile(kvp.Value, builderSettings);
+                    var expression = Factory.ExpressionCompiler.Compile(kvp.Value, builderSettings);
+                    if (expression.ResultType.Type == DataType.Bool)
+                    {
+                        compiledCalculations[kvp.Key] = expression;
+                    }                 
                 }
                 catch (Exception ex)
                 {
@@ -278,19 +282,20 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.EditForm
                 return -1;
 
             return entityTypeRelData.Entities.Select(e => e.Id.Id).FirstOrDefault();
-        }       
+        }
 
         /// <summary>
         ///     Gets the hidden controls.
         /// </summary>
         /// <param name="contextEntity">The context entity.</param>
+        /// <param name="controlsWithVisibilityCalculations"></param>
         /// <param name="compiledExpressions">The compiled expressions.</param>
         /// <returns></returns>
         /// <exception cref="InvalidOperationException">
         ///     TimeZone information must be provided in settings object, or via
         ///     RequestContext.
         /// </exception>
-        private ISet<long> GetHiddenControls(IEntity contextEntity, IDictionary<long, IExpression> compiledExpressions)
+        private ISet<long> GetHiddenControls(IEntity contextEntity, IEnumerable<long> controlsWithVisibilityCalculations, IDictionary<long, IExpression> compiledExpressions)
         {
             var hiddenControls = new HashSet<long>();
 
@@ -304,6 +309,18 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.EditForm
                 throw new InvalidOperationException(
                     "TimeZone information must be provided in settings object, or via RequestContext.");
 
+            // Enumerate through the controls with visibility calcs
+            // and mark any without compiled expressions as hidden.
+            // A control without a compiled expression indicates that something went wrong during the compile.
+            foreach (var controlId in controlsWithVisibilityCalculations)
+            {
+                if (!compiledExpressions.ContainsKey(controlId))
+                {
+                    hiddenControls.Add(controlId);
+                }
+            }
+
+            // Evalute any compiled expressions
             foreach (var kvp in compiledExpressions)
             {
                 long controlId = kvp.Key;
@@ -313,16 +330,19 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.EditForm
                 {
                     // The control is shown if the calculation returns true
                     ExpressionRunResult result = Factory.ExpressionRunner.Run(expression, evaluationSettings);
-                    if ((result.Value != null) && result.Value.Equals(false))
+                    
+                    if (result.Value.Equals(false))
                         hiddenControls.Add(controlId);
                 }
                 catch (Exception ex)
                 {
+                    // Something went wrong. Hide in case of error
+                    hiddenControls.Add(controlId);
                     EventLog.Application.WriteError(
                         "An error occurred trying to evaluate visibility calculation for control {0}. Error {1}.",
                         controlId, ex);
                 }
-            }
+            }            
 
             return hiddenControls;
         }
@@ -349,19 +369,33 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.EditForm
             if (entityData == null)
                 return null;
 
-            // Get the form entity data
-            EntityData formEntityData = GetFormAsEntityData(new EntityRef(request.FormId).Id, false);            
+            var formId = new EntityRef(request.FormId).Id;
+            EntityData formEntityData = null;
+
+            // Get the form entity data for non gen forms        
+            if (!EntityTemporaryIdAllocator.IsAllocatedId(formId))
+            {
+                try
+                {
+                    formEntityData = GetFormAsEntityData(formId, false);
+                }
+                catch (Exception ex)
+                {
+                    EventLog.Application.WriteError("Failed to get form with id {0}. Unable to get initial form control visibility. Error: {1}.", formId, ex);
+                }
+            }
 
             ISet<long> initiallyHiddenControls = null;
 
             if (formEntityData == null) return PackageFormDataResponse(entityData, null);
 
             IDictionary<long, IExpression> compiledExpressions = null;
+            IDictionary<long, string> controlVisibilityCalculations;
 
             using (new SecurityBypassContext())
             {
                 // Have form. Get any visibility calculations
-                IDictionary<long, string> controlVisibilityCalculations = GetControlVisibilityCalculations(formEntityData);
+                controlVisibilityCalculations = GetControlVisibilityCalculations(formEntityData);
 
                 long entityTypeId = GetTypeToEditWithForm(formEntityData);
 
@@ -372,8 +406,8 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.EditForm
                 }                    
             }
 
-            if (compiledExpressions != null && compiledExpressions.Count > 0)
-                initiallyHiddenControls = GetHiddenControls(entityIdRef.Entity, compiledExpressions);
+            if (controlVisibilityCalculations.Count > 0)
+                initiallyHiddenControls = GetHiddenControls(entityIdRef.Entity, controlVisibilityCalculations.Keys, compiledExpressions);
 
             return PackageFormDataResponse(entityData, initiallyHiddenControls);
         }
@@ -393,8 +427,20 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.EditForm
                 throw new ArgumentNullException(nameof(formRef));
             }
 
-            // Get the form entity data
-            EntityData formEntityData = GetFormAsEntityData(formRef.Id, false);
+            EntityData formEntityData = null;
+
+            // Get the form entity data for non gen forms        
+            if (!EntityTemporaryIdAllocator.IsAllocatedId(formRef.Id))
+            {
+                try
+                {
+                    formEntityData = GetFormAsEntityData(formRef.Id, false);
+                }
+                catch (Exception ex)
+                {
+                    EventLog.Application.WriteError("Failed to get form with id {0}. Unable to get form control visibility calculation dependencies. Error: {1}.", formRef.Id, ex);
+                }
+            }            
 
             if (formEntityData == null) return response;
 

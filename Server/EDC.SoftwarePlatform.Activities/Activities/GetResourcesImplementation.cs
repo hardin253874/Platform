@@ -12,7 +12,7 @@ namespace EDC.SoftwarePlatform.Activities
 {
     public sealed class GetResourcesImplementation : ActivityImplementationBase, IRunNowActivity
     {
-        private const int MaxResourcesInList = 1000;
+        private const int MaxResourcesInList = 10000;
 
 
         void IRunNowActivity.OnRunNow(IRunState context, ActivityInputs inputs)

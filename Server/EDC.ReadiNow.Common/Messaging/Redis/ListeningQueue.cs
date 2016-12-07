@@ -51,18 +51,16 @@ namespace EDC.ReadiNow.Messaging.Redis
         public void Enqueue(T[] values, CommandFlags flags = CommandFlags.None)
         {
             InnerQueue.Enqueue(values, flags);
+            NotifyEnqueue();
         }
 
         void NotifyEnqueue()
         {
-            Channel.Publish(new ListeningQueueMessage(), options: PublishOptions.None, publishToOriginator: true, mergeAction: ListeningQueueMessageMerge);
+            Channel.Publish(new ListeningQueueMessage(), PublishMethod.Immediate, options: PublishOptions.FireAndForget, publishToOriginator: true);
         }
 
 
-        void ListeningQueueMessageMerge(ListeningQueueMessage existingMessage, ListeningQueueMessage newMessage)
-        {
-            // do nothing
-        }
+
 
         /// <summary>
         /// Retieve a value from the queue

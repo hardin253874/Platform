@@ -75,7 +75,7 @@ angular.module('spApps.eventHandlerService').factory('eventHandlerService', ['$h
         }).then(function (webResponse) {
             
             console.log('response status: ' + webResponse.status);
-            if (webResponse.status == 201) {
+            if (webResponse.status === 201) {
                 return true;
             } else {
                 return false;

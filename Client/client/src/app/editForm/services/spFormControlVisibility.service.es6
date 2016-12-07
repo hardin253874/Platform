@@ -71,7 +71,7 @@
             // Call web service to perform evaluation
             return spCalcEngineService.evaluateExpressions(formData, calcExpressions).then(function(result) {
                 if (!result || !result.data || !result.data.results) {
-                    return [];
+                    return {};
                 }
 
                 const controlVisibility = {
@@ -84,11 +84,14 @@
                     if (!showControlResult ||
                         showControlResult.resultType !== spEntity.DataType.Bool ||
                         spUtils.isNullOrUndefined(showControlResult.value)) {
+                        $log.error(`Failed to evaluate calculation for control ${controlId}. Setting visibility to false.`);
+                        controlVisibility[controlId] = false;
                         return true;
                     }
 
                     if (showControlResult.error) {
-                        $log.error(`Failed to evaluate calculation for control ${controlId} Error ${showControlResult.error}`);
+                        $log.error(`Failed to evaluate calculation for control ${controlId} Error ${showControlResult.error}. Setting visibility to false.`);
+                        controlVisibility[controlId] = false;
                         return true;
                     }
 
@@ -159,14 +162,18 @@
             }
 
             function updateControlVisibilityHandler(event, data) {
-                if (!formControlId || !data || !data.controlsVisibility) {
+                if (!formControlId) {
                     return;
                 }
 
-                let isControlVisible = data.controlsVisibility[formControlId];
+                let isControlVisible = false;
+
+                if (data && data.controlsVisibility) {
+                    isControlVisible = data.controlsVisibility[formControlId];   
+                }                
 
                 if (spUtils.isNullOrUndefined(isControlVisible)) {
-                    isControlVisible = true;
+                    isControlVisible = false;
                 }
 
                 controlVisibilityHandler(formControlId, isControlVisible);

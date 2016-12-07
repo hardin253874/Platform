@@ -1174,6 +1174,17 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Public static accessor to the inherited  forward relationship.
 		/// </summary>
+		public static IEntity ActionRequiresParentPermission_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.ActionMenuItem.ActionRequiresParentPermission_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
 		public static IEntity ActionRequiresPermission_Field
 		{
 			get
@@ -1365,7 +1376,7 @@ namespace EDC.ReadiNow.Model
 		{
 			get
 			{
-				return new IEntity [ ] { GenerateDocumentActionMenuItem.Alias_Field, GenerateDocumentActionMenuItem.AppliesToMultiSelection_Field, GenerateDocumentActionMenuItem.AppliesToSelection_Field, GenerateDocumentActionMenuItem.CanDelete_Field, GenerateDocumentActionMenuItem.CanModify_Field, GenerateDocumentActionMenuItem.ControlAction_Field, GenerateDocumentActionMenuItem.ControlActionData_Field, GenerateDocumentActionMenuItem.CreatedDate_Field, GenerateDocumentActionMenuItem.Description_Field, GenerateDocumentActionMenuItem.EmptySelectName_Field, GenerateDocumentActionMenuItem.HtmlActionMethod_Field, GenerateDocumentActionMenuItem.HtmlActionState_Field, GenerateDocumentActionMenuItem.HtmlActionTarget_Field, GenerateDocumentActionMenuItem.IsActionButton_Field, GenerateDocumentActionMenuItem.IsActionItem_Field, GenerateDocumentActionMenuItem.IsContextMenu_Field, GenerateDocumentActionMenuItem.IsDoubleClickAction_Field, GenerateDocumentActionMenuItem.IsMenuSeparator_Field, GenerateDocumentActionMenuItem.IsStackedLandingPage_Field, GenerateDocumentActionMenuItem.IsSystem_Field, GenerateDocumentActionMenuItem.MenuIconUrl_Field, GenerateDocumentActionMenuItem.MenuOrder_Field, GenerateDocumentActionMenuItem.ModifiedDate_Field, GenerateDocumentActionMenuItem.MultiSelectName_Field, GenerateDocumentActionMenuItem.Name_Field, GenerateDocumentActionMenuItem.ActionAppliesToMenu_Field, GenerateDocumentActionMenuItem.ActionAppliesToRelationshipControlBehavior_Field, GenerateDocumentActionMenuItem.ActionIncludedAsButton_Field, GenerateDocumentActionMenuItem.ActionMenuItemToReportTemplate_Field, GenerateDocumentActionMenuItem.ActionRequiresExpression_Field, GenerateDocumentActionMenuItem.ActionRequiresPermission_Field, GenerateDocumentActionMenuItem.ActionRequiresRole_Field, GenerateDocumentActionMenuItem.ActionSuppressedOnMenu_Field, GenerateDocumentActionMenuItem.CreatedBy_Field, GenerateDocumentActionMenuItem.Flags_Field, GenerateDocumentActionMenuItem.IndirectInSolution_Field, GenerateDocumentActionMenuItem.InSolution_Field, GenerateDocumentActionMenuItem.InStructureLevel_Field, GenerateDocumentActionMenuItem.IsOfType_Field, GenerateDocumentActionMenuItem.IsRootForStructureView_Field, GenerateDocumentActionMenuItem.LastModifiedBy_Field, GenerateDocumentActionMenuItem.ResourceConsoleBehavior_Field, GenerateDocumentActionMenuItem.ResourceHasResourceKeyDataHashes_Field, GenerateDocumentActionMenuItem.ResourceInFolder_Field, GenerateDocumentActionMenuItem.SecurityOwner_Field, GenerateDocumentActionMenuItem.SelectionBehavior_Field, GenerateDocumentActionMenuItem.ShortcutInFolder_Field };
+				return new IEntity [ ] { GenerateDocumentActionMenuItem.Alias_Field, GenerateDocumentActionMenuItem.AppliesToMultiSelection_Field, GenerateDocumentActionMenuItem.AppliesToSelection_Field, GenerateDocumentActionMenuItem.CanDelete_Field, GenerateDocumentActionMenuItem.CanModify_Field, GenerateDocumentActionMenuItem.ControlAction_Field, GenerateDocumentActionMenuItem.ControlActionData_Field, GenerateDocumentActionMenuItem.CreatedDate_Field, GenerateDocumentActionMenuItem.Description_Field, GenerateDocumentActionMenuItem.EmptySelectName_Field, GenerateDocumentActionMenuItem.HtmlActionMethod_Field, GenerateDocumentActionMenuItem.HtmlActionState_Field, GenerateDocumentActionMenuItem.HtmlActionTarget_Field, GenerateDocumentActionMenuItem.IsActionButton_Field, GenerateDocumentActionMenuItem.IsActionItem_Field, GenerateDocumentActionMenuItem.IsContextMenu_Field, GenerateDocumentActionMenuItem.IsDoubleClickAction_Field, GenerateDocumentActionMenuItem.IsMenuSeparator_Field, GenerateDocumentActionMenuItem.IsStackedLandingPage_Field, GenerateDocumentActionMenuItem.IsSystem_Field, GenerateDocumentActionMenuItem.MenuIconUrl_Field, GenerateDocumentActionMenuItem.MenuOrder_Field, GenerateDocumentActionMenuItem.ModifiedDate_Field, GenerateDocumentActionMenuItem.MultiSelectName_Field, GenerateDocumentActionMenuItem.Name_Field, GenerateDocumentActionMenuItem.ActionAppliesToMenu_Field, GenerateDocumentActionMenuItem.ActionAppliesToRelationshipControlBehavior_Field, GenerateDocumentActionMenuItem.ActionIncludedAsButton_Field, GenerateDocumentActionMenuItem.ActionMenuItemToReportTemplate_Field, GenerateDocumentActionMenuItem.ActionRequiresExpression_Field, GenerateDocumentActionMenuItem.ActionRequiresParentPermission_Field, GenerateDocumentActionMenuItem.ActionRequiresPermission_Field, GenerateDocumentActionMenuItem.ActionRequiresRole_Field, GenerateDocumentActionMenuItem.ActionSuppressedOnMenu_Field, GenerateDocumentActionMenuItem.CreatedBy_Field, GenerateDocumentActionMenuItem.Flags_Field, GenerateDocumentActionMenuItem.IndirectInSolution_Field, GenerateDocumentActionMenuItem.InSolution_Field, GenerateDocumentActionMenuItem.InStructureLevel_Field, GenerateDocumentActionMenuItem.IsOfType_Field, GenerateDocumentActionMenuItem.IsRootForStructureView_Field, GenerateDocumentActionMenuItem.LastModifiedBy_Field, GenerateDocumentActionMenuItem.ResourceConsoleBehavior_Field, GenerateDocumentActionMenuItem.ResourceHasResourceKeyDataHashes_Field, GenerateDocumentActionMenuItem.ResourceInFolder_Field, GenerateDocumentActionMenuItem.SecurityOwner_Field, GenerateDocumentActionMenuItem.SelectionBehavior_Field, GenerateDocumentActionMenuItem.ShortcutInFolder_Field };
 			}
 		}
 
@@ -1792,6 +1803,20 @@ namespace EDC.ReadiNow.Model
 			set
 			{
 				this.SetLookup<ActionExpression>( "console:actionRequiresExpression", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public IEntityCollection<Permission> ActionRequiresParentPermission
+		{
+			get
+			{
+				return this.GetRelationships<Permission>( "console:actionRequiresParentPermission", Direction.Forward ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<Permission>( "console:actionRequiresParentPermission", value, Direction.Forward );
 			}
 		}
 		/// <summary>
@@ -3015,6 +3040,17 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Public static accessor to the inherited  forward relationship.
 		/// </summary>
+		public static IEntity EnumFormattingRule_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.EnumValue.EnumFormattingRule_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
 		public static IEntity EnumOwner_Field
 		{
 			get
@@ -3173,7 +3209,7 @@ namespace EDC.ReadiNow.Model
 		{
 			get
 			{
-				return new IEntity [ ] { GroupingMethodEnum.Alias_Field, GroupingMethodEnum.CanDelete_Field, GroupingMethodEnum.CanModify_Field, GroupingMethodEnum.CanModifyProtectedResource_Field, GroupingMethodEnum.CreatedDate_Field, GroupingMethodEnum.Description_Field, GroupingMethodEnum.EnumOrder_Field, GroupingMethodEnum.ModifiedDate_Field, GroupingMethodEnum.Name_Field, GroupingMethodEnum.CreatedBy_Field, GroupingMethodEnum.EnumOwner_Field, GroupingMethodEnum.Flags_Field, GroupingMethodEnum.IndirectInSolution_Field, GroupingMethodEnum.InSolution_Field, GroupingMethodEnum.InStructureLevel_Field, GroupingMethodEnum.IsOfType_Field, GroupingMethodEnum.IsRootForStructureView_Field, GroupingMethodEnum.LastModifiedBy_Field, GroupingMethodEnum.ResourceConsoleBehavior_Field, GroupingMethodEnum.ResourceHasResourceKeyDataHashes_Field, GroupingMethodEnum.ResourceInFolder_Field, GroupingMethodEnum.SecurityOwner_Field, GroupingMethodEnum.SelectionBehavior_Field, GroupingMethodEnum.ShortcutInFolder_Field };
+				return new IEntity [ ] { GroupingMethodEnum.Alias_Field, GroupingMethodEnum.CanDelete_Field, GroupingMethodEnum.CanModify_Field, GroupingMethodEnum.CanModifyProtectedResource_Field, GroupingMethodEnum.CreatedDate_Field, GroupingMethodEnum.Description_Field, GroupingMethodEnum.EnumOrder_Field, GroupingMethodEnum.ModifiedDate_Field, GroupingMethodEnum.Name_Field, GroupingMethodEnum.CreatedBy_Field, GroupingMethodEnum.EnumFormattingRule_Field, GroupingMethodEnum.EnumOwner_Field, GroupingMethodEnum.Flags_Field, GroupingMethodEnum.IndirectInSolution_Field, GroupingMethodEnum.InSolution_Field, GroupingMethodEnum.InStructureLevel_Field, GroupingMethodEnum.IsOfType_Field, GroupingMethodEnum.IsRootForStructureView_Field, GroupingMethodEnum.LastModifiedBy_Field, GroupingMethodEnum.ResourceConsoleBehavior_Field, GroupingMethodEnum.ResourceHasResourceKeyDataHashes_Field, GroupingMethodEnum.ResourceInFolder_Field, GroupingMethodEnum.SecurityOwner_Field, GroupingMethodEnum.SelectionBehavior_Field, GroupingMethodEnum.ShortcutInFolder_Field };
 			}
 		}
 
@@ -3320,6 +3356,20 @@ namespace EDC.ReadiNow.Model
 			set
 			{
 				this.SetLookup<UserAccount>( "core:createdBy", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public FormattingRule EnumFormattingRule
+		{
+			get
+			{
+				return this.GetLookup<FormattingRule>( "core:enumFormattingRule", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<FormattingRule>( "core:enumFormattingRule", value, Direction.Forward );
 			}
 		}
 		/// <summary>

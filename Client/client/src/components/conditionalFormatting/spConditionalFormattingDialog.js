@@ -86,19 +86,24 @@
         'mod.common.ui.spTypeOperatorService',
         'mod.common.spTenantSettings',
         'sp.common.filters',
+        'mod.featureSwitch',
         'ngGrid'
     ])
-        .controller('spConditionalFormattingDialogController', function ($scope, $templateCache, $uibModalInstance, options, condFormattingConstants, namedFgBgColors, spEntityService, spTypeOperatorService, spTenantSettings, $filter) {
+        .controller('spConditionalFormattingDialogController', function ($scope, $templateCache, $uibModalInstance, options, condFormattingConstants, namedFgBgColors, spEntityService, spTypeOperatorService, spTenantSettings, $filter, rnFeatureSwitch) {
 
             if (!options.type) {
                 options.type = null;
-            }                        
+            }
+
+            //
+            // enable default choice field formatting
+            $scope.defaultChoiceFieldFormatEnabled = rnFeatureSwitch.isFeatureOn('defaultChoiceFieldFormat');
 
             // Setup the dialog model
             $scope.model = {                
                 name: options.name || '',
                 type: options.type,                
-                errors: [],
+                errors: [],                
                 imageFormatting: {
                     hasImageFormatting: false,
                     imageTabActive: false,
@@ -126,7 +131,7 @@
                     isNumeric: false,
                     isDateOrTime: false,
                     showSampleText: false,
-                    isBoolean: false,
+                    isBoolean: false,                    
                     linesModel: {
                         value: 2,
                         minimumValue: 1,
@@ -145,14 +150,16 @@
                     booleanFormats: [],
                     selectedBooleanFormat: null,
                     alignmentOptions: [],
-                    selectedAlignmentOption: null,
+                    selectedAlignmentOption: null,					
                     showStructureView: false,
                     structureViewPicker: {
                         selectedEntityId: 0,
                         selectedEntity: null,
                         showSelectOption: true,
                         entities: []
-                    }
+                    },
+					showEntityListFormat: false,
+                    selectedEntityListFormatOption: null
                 },
                 condFormatting: {
                     hasCondFormatting: false,
@@ -167,6 +174,8 @@
                     selectedScheme: null,
                     formatTypes: [],
                     displayText: true,
+                    disableDefaultFormat: false,
+                    useDefaultFormat: true,
                     progressBarRule: {
                         minimumValue: null,
                         maximumValue: null,
@@ -295,6 +304,10 @@
                 return false;
             };
 
+            // Returns true if current field is choice Field
+            $scope.isChoiceField = function () {
+                return options.type === 'ChoiceRelationship' && $scope.defaultChoiceFieldFormatEnabled;
+            };
 
             // Clear any errors
             $scope.clearErrors = function () {
@@ -425,8 +438,12 @@
                 return (row.entity.operator.argCount > 0);
             };
                                                                                           
-
+            $scope.disabledControl = function () {
+                return $scope.model.condFormatting.useDefaultFormat && options.type === 'ChoiceRelationship' && $scope.defaultChoiceFieldFormatEnabled;
+            };
             // Setup watchers
+
+           
             $scope.$watch('model.condFormatting.highlightRules', function () {
                 $scope.clearErrors();
             }, true);
@@ -578,7 +595,8 @@
             function getCondFormattingDialogSettingsAsResult() {
                 var condFormatting = {
                     format: condFormattingConstants.formatTypeEnum.None,
-                    displayText: $scope.model.condFormatting.displayText
+                    displayText: $scope.model.condFormatting.displayText,
+                    disableDefaultFormat: !$scope.model.condFormatting.useDefaultFormat
                 };
 
                 var structureViewId = sp.result($scope, 'model.valueFormatting.structureViewPicker.selectedEntity.id');
@@ -616,7 +634,7 @@
                 var valueFormatting = {
                 };
 
-                valueFormatting.alignment = $scope.model.valueFormatting.selectedAlignmentOption.id;
+                valueFormatting.alignment = $scope.model.valueFormatting.selectedAlignmentOption.id;                
 
                 switch (options.type) {
                 case spEntity.DataType.String:
@@ -625,6 +643,10 @@
                 case 'UserInlineRelationship':
                 case 'StructureLevels':
                     valueFormatting.lines = $scope.model.valueFormatting.linesModel.value;
+                    if ($scope.model.valueFormatting.showEntityListFormat &&
+                        $scope.model.valueFormatting.selectedEntityListFormatOption) {
+                        valueFormatting.entityListFormatId = $scope.model.valueFormatting.selectedEntityListFormatOption.id;
+                    }
                     break;
                 case spEntity.DataType.Bool:
                     //valueFormatting.boolDisplayAs = $scope.model.valueFormatting.selectedBooleanFormat.id;
@@ -1093,6 +1115,14 @@
                     $scope.model.condFormatting.displayText = options.condFormatting.displayText;
                 }
 
+                if (angular.isDefined(options.condFormatting.disableDefaultFormat)) {
+                    $scope.model.condFormatting.disableDefaultFormat = options.condFormatting.disableDefaultFormat;
+                    $scope.model.condFormatting.useDefaultFormat = !options.condFormatting.disableDefaultFormat;
+                } else {
+                    $scope.model.condFormatting.disableDefaultFormat = false;
+                    $scope.model.condFormatting.useDefaultFormat = true;
+                }
+
                 switch (options.condFormatting.format) {
                 case condFormattingConstants.formatTypeEnum.Highlight:
                     loadHighlightRules();
@@ -1118,6 +1148,7 @@
                 $scope.model.valueFormatting.isDateOrTime = false;
                 $scope.model.valueFormatting.showSampleText = false;
                 $scope.model.valueFormatting.isBoolean = false;
+                $scope.model.valueFormatting.showEntityListFormat = false;
 
                 $scope.model.valueFormatting.alignmentOptions = condFormattingConstants.alignmentOptions;                
                 $scope.model.valueFormatting.selectedAlignmentOption = _.find($scope.model.valueFormatting.alignmentOptions, function (ao) {
@@ -1126,7 +1157,7 @@
 
                 if (!$scope.model.valueFormatting.selectedAlignmentOption) {
                     $scope.model.valueFormatting.selectedAlignmentOption = $scope.model.valueFormatting.alignmentOptions[0];
-                }
+                }                
 
                 switch (options.type) {
                 case spEntity.DataType.String:
@@ -1147,6 +1178,9 @@
                         $scope.model.valueFormatting.linesModel.value = 1;
                     }
                     $scope.model.valueFormatting.hasValueFormatting = true;
+                    if ($scope.model.valueFormatting.isResource && options.isAggCol) {
+                        $scope.model.valueFormatting.showEntityListFormat = true;
+                    }
                     break;
                 case spEntity.DataType.Bool:
                     // Set hasValueFormatting to false for now. As bool display as is unsupported by server
@@ -1183,6 +1217,17 @@
                     $scope.model.valueFormatting.dateOrTimeLabel = 'Date time format';
                     loadDateTimeFormattingOptions(valueFormatting);
                     break;                
+                }
+
+                if ($scope.model.valueFormatting.showEntityListFormat) {
+                    $scope.model.valueFormatting.entityListFormatOptions = condFormattingConstants.entityListFormatOptions;
+                    $scope.model.valueFormatting.selectedEntityListFormatOption = _.find($scope.model.valueFormatting.entityListFormatOptions, o => {
+                        return o.id === valueFormatting.entityListFormatId;
+                    });
+
+                    if (!$scope.model.valueFormatting.selectedEntityListFormatOption) {
+                        $scope.model.valueFormatting.selectedEntityListFormatOption = $scope.model.valueFormatting.entityListFormatOptions[0];
+                    }
                 }
 
                 updateValueFormattingSampleText();

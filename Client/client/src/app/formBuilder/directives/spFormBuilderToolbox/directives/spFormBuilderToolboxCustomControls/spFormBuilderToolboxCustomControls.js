@@ -147,7 +147,7 @@
                                        return getControl(this.customInfo);
                                    };
 
-                                   return fieldContainer;
+                                   return fieldContainer; // eslint-disable-line no-unsafe-finally
                                }
                            });
                        }

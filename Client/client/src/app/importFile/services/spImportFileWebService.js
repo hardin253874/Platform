@@ -114,11 +114,11 @@
             if (testRun)
                 params.testrun = true;
             
-            var url = '/spapi/data/v2/importSpreadsheet/import?' + $.param(params);
+            var url = webApiRoot() + '/spapi/data/v2/importSpreadsheet/import?' + $.param(params);
 
             return $http({
                 method: 'GET',
-                url: webApiRoot() + url,
+                url: url,
                 headers: spWebService.getHeaders()
             }).then(returnData, returnMessage);
         }

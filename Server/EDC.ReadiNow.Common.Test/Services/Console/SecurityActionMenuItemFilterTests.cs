@@ -322,25 +322,21 @@ namespace EDC.ReadiNow.Test.Services.Console
                 TestQueries.EntitiesWithNameB().ToReport());
 
             // actions
+            var dummyRequest = new ActionRequestExtended();
+            Func<ActionRequestExtended, ActionMenuItem, ActionTargetInfo> dummyHandler = (a, i) => new ActionTargetInfo();
             var actions = new List<ActionMenuItemInfo>();
-            foreach (string menuItemAlias in new[] { viewResourceActionAlias, editResourceActionAlias, addRelationshipActionAlias, removeRelationshipActionAlias })
+            foreach (string menuItemAlias in new[]
             {
-                actions.Add(new ActionMenuItemInfo
-                {
-                    Id = Entity.GetId(menuItemAlias),
-                    Alias = menuItemAlias,
-                    AppliesToSelection = true,
-                    AppliesToMultipleSelection = false
-                });
+                viewResourceActionAlias,
+                editResourceActionAlias,
+                addRelationshipActionAlias,
+                removeRelationshipActionAlias,
+                deleteResourceActionAlias,
+            })
+            {
+                actions.Add(Entity.Get<ActionMenuItem>(menuItemAlias).ToInfo(dummyRequest, null, dummyHandler));
             }
 
-            actions.Add(new ActionMenuItemInfo
-            {
-                Id = Entity.GetId(deleteResourceActionAlias),
-                Alias = deleteResourceActionAlias,
-                AppliesToSelection = true,
-                AppliesToMultipleSelection = true
-            });
             actions.Add(new ActionMenuItemInfo
             {
                 EntityId = childEntityType.Id,
@@ -360,7 +356,7 @@ namespace EDC.ReadiNow.Test.Services.Console
             {
                 Assert.That(actions, Has.Exactly(1).Property("Alias").EqualTo(addRelationshipActionAlias), "Missing add relationship resource action");
                 Assert.That(actions, Has.Exactly(1).Property("Alias").EqualTo(removeRelationshipActionAlias), "Missing remove relationship resource action");
-                
+
                 // child create
                 if (splitChildEntityPermissions.Contains("core:create"))
                 {
@@ -401,8 +397,7 @@ namespace EDC.ReadiNow.Test.Services.Console
                     Assert.That(actions, Has.None.Property("Alias").EqualTo(deleteResourceActionAlias), "Delete resource action should not be available");
                 }
             }
-            else if (splitParentEntityPermissions.Contains("core:read") &&
-                     !splitParentEntityPermissions.Contains("core:modify"))
+            else if (splitParentEntityPermissions.Contains("core:read") && !splitParentEntityPermissions.Contains("core:modify"))
             {
                 Assert.That(actions, Has.None.Property("Alias").EqualTo(addRelationshipActionAlias), "Add relationship action should not be available");
                 Assert.That(actions, Has.None.Property("Alias").EqualTo(removeRelationshipActionAlias), "Remove relationship action should not be available");

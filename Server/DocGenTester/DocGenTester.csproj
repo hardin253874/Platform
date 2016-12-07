@@ -74,11 +74,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -122,19 +119,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EDC.Common\EDC.Common.csproj">
-      <Project>{c7183bef-1a52-4da5-850b-7132b5dca7eb}</Project>
-      <Name>EDC.Common</Name>
-      <Private>True</Private>
-    </ProjectReference>
     <ProjectReference Include="..\EDC.ReadiNow.Common\EDC.ReadiNow.Common.csproj">
       <Project>{a1c54cf6-e515-4132-a3cb-5cbe32b11d7e}</Project>
       <Name>EDC.ReadiNow.Common</Name>
-      <Private>True</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\ReadiNow.DocGen\ReadiNow.DocGen.csproj">
-      <Project>{7dbd4dad-b3d8-4937-9155-7f2d056a1b48}</Project>
-      <Name>ReadiNow.DocGen</Name>
       <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\EDC.SoftwarePlatform.Interfaces\EDC.SoftwarePlatform.Interfaces.csproj">

@@ -25,6 +25,7 @@ using EventLog = EDC.ReadiNow.Diagnostics.EventLog;
 using EDC.ReadiNow.Scheduling;
 using EDC.ReadiNow.Messaging;
 using EDC.ReadiNow.Model.PartialClasses;
+using System.Xml;
 
 namespace EDC.SoftwarePlatform.Migration.Processing
 {
@@ -2964,6 +2965,113 @@ SELECT EntityId FROM @output";
 			}
 
 			return state;
-		}
-	}
+        }
+
+        /// <summary>
+        /// Converts the application package.
+        /// </summary>
+        /// <param name="sourcePath">The package path.</param>
+        /// <param name="targetPath">The target path.</param>
+        /// <param name="targetFormat">The target format.</param>
+        /// <param name="overwrite">if set to <c>true</c> [overwrite].</param>
+        /// <param name="context">The context.</param>
+        /// <exception cref="System.InvalidOperationException">Application file format not supported.</exception>
+        /// <exception cref="System.ArgumentNullException"></exception>
+        /// <exception cref="System.IO.FileNotFoundException"></exception>
+        /// <exception cref="System.FormatException">Invalid file format detected
+        /// or
+        /// Invalid file format detected</exception>
+        public static void IncreasePackageVersion( string packagePath, IProcessingContext context = null )
+        {
+            if ( string.IsNullOrEmpty( packagePath ) )
+            {
+                throw new ArgumentNullException( nameof( packagePath ) );
+            }
+
+            context = context ?? new ProcessingContext( );
+
+            Metadata metadata;
+
+            using ( IDataSource source = FileManager.CreateDataSource( packagePath ) )
+            {
+                metadata = source.GetMetadata( context );
+            }
+
+            // Load doc for editing
+            XmlDocument doc = new XmlDocument( );
+            doc.PreserveWhitespace = true;
+            doc.Load( packagePath );
+            XmlNamespaceManager ns = new XmlNamespaceManager( doc.NameTable );
+            ns.AddNamespace( "c", "core" );
+            ns.AddNamespace( "k", "console" );
+
+            // New package ID
+            string oldPackageId = XmlConvert.ToString( metadata.AppVerId );
+            string newPackageId = XmlConvert.ToString( Guid.NewGuid( ) );
+
+            string[] packageIdXPaths = new string[]
+            {
+                "/c:xml/c:metadata/c:package/@id",
+                "/c:xml/c:entities/c:group[@typeId='solution']/c:solution/c:packageId/text()"
+            };
+            foreach ( string xpath in packageIdXPaths )
+            {
+                foreach ( XmlNode text in doc.SelectNodes( xpath, ns ) )
+                {
+                    string newValue = text.Value.Replace( oldPackageId, newPackageId );
+                    text.Value = newValue;
+                }
+            }
+
+            // New version string
+            metadata.AppVerId = new Guid( );
+            string oldVersion = metadata.Version;
+            string[ ] parts = oldVersion.Split( '.' );
+            int nextVersion = int.Parse( parts[ 2 ] ) + 1;
+            string newVersion = $"{parts[ 0 ]}.{parts[ 1 ]}.{nextVersion}.0";
+
+            metadata.Version = newVersion;
+            metadata.AppName = metadata.AppName.Replace( oldVersion, newVersion );
+            metadata.Description = metadata.Description.Replace( oldVersion, newVersion );
+            metadata.Name = metadata.Name.Replace( oldVersion, newVersion );
+            string[ ] versionXPaths = new string[ ]
+            {
+                "/c:xml/c:metadata/c:application/c:name/text()",
+                "/c:xml/c:metadata/c:application/c:description/text()",
+                "/c:xml/c:metadata/c:package/c:version/text()",
+                "/c:xml/c:entities/c:group[@typeId='solution']/c:solution/c:solutionVersionString/text()"
+            };
+            foreach ( string xpath in versionXPaths )
+            {
+                foreach ( XmlText text in doc.SelectNodes( xpath, ns ) )
+                {
+                    string newValue = text.Value.Replace( oldVersion, newVersion );
+                    text.Value = newValue;
+                }
+            }
+            doc.Save( packagePath );
+        }
+
+        /// <summary>
+        ///     Update package ID and version number.
+        /// </summary>
+        /// <param name="metadata">Metadata</param>
+        /// <returns>Metadata</returns>
+	    private static Metadata IncrementMetadataVersion( Metadata metadata )
+	    {
+	        metadata.AppVerId = new Guid( );
+            string oldVersion = metadata.Version;
+            string[ ] parts = oldVersion.Split( '.' );
+	        int nextVersion = int.Parse( parts[ 2 ] ) + 1;
+	        string newVersion = $"{parts[ 0 ]}.{parts[ 1 ]}.{ nextVersion }.0";
+
+            metadata.Version = newVersion;
+	        metadata.AppName = metadata.AppName.Replace( oldVersion, newVersion );
+            metadata.Description = metadata.Description.Replace( oldVersion, newVersion );
+            metadata.Name = metadata.Name.Replace( oldVersion, newVersion );
+
+	        return metadata;
+	    }
+
+    }
 }

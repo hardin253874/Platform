@@ -14,14 +14,15 @@
             'mod.app.resourceScopeService',
             'sp.navService',
             'mod.common.spVisDataActionService',
-            'mod.common.spMobile',
+            'mod.common.spVisDataService',
+            'mod.common.spMobile'
         ]);
 
     angular.module('app.editForm.chartRenderControl')
         .controller('chartRenderControl', chartRenderControl);
 
     /* @ngInject */
-    function chartRenderControl($scope, spResourceScope, spVisDataActionService, spState, spMobileContext) {
+    function chartRenderControl($scope, spResourceScope, spVisDataService, spVisDataActionService, spState, spMobileContext) {
         var chartId;
         var onScopeUpdateUnregisterListener;
         var condsChangedBySender = false;        
@@ -92,7 +93,9 @@
             // note - if on mobile we ignore on-screen linking and do the default drilldown
 
             if (spMobileContext.isMobile || !updateScopeIfApplicable(actionData)) {
-                executeClickAction(actionData, true);
+                if (!spVisDataService.isEmptyConds(newDrilldownConds)) {
+                    executeClickAction(actionData, true);
+                }
             }
         }
 

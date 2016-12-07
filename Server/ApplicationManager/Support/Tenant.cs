@@ -1,4 +1,5 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
+
 using System.Collections.Generic;
 using System.Data;
 using ApplicationManager.Core;
@@ -20,7 +21,7 @@ namespace ApplicationManager.Support
 		/// <summary>
 		///     Cached tenants.
 		/// </summary>
-		private static volatile List< Tenant > _tenants;
+		private static volatile List<Tenant> _tenants;
 
 		/// <summary>
 		///     Gets or sets the entity id.
@@ -50,7 +51,7 @@ namespace ApplicationManager.Support
 		///     Gets the tenants.
 		/// </summary>
 		/// <returns></returns>
-		public static IEnumerable< Tenant > GetTenants( )
+		public static IEnumerable<Tenant> GetTenants( )
 		{
 			if ( _tenants == null )
 			{
@@ -58,7 +59,7 @@ namespace ApplicationManager.Support
 				{
 					if ( _tenants == null )
 					{
-						var tenants = new List< Tenant >( );
+						var tenants = new List<Tenant>( );
 
 						var databaseInfo = new SqlDatabaseInfo( Config.ServerName, Config.DatabaseName, DatabaseAuthentication.Integrated, null, 60, 30, 300 );
 
@@ -91,16 +92,13 @@ WHERE
 
 								using ( IDataReader reader = command.ExecuteReader( ) )
 								{
-									if ( reader != null )
+									while ( reader.Read( ) )
 									{
-										while ( reader.Read( ) )
+										tenants.Add( new Tenant
 										{
-											tenants.Add( new Tenant
-												{
-													EntityId = reader.GetInt64( 0 ),
-													Name = reader.GetString( 1 )
-												} );
-										}
+											EntityId = reader.GetInt64( 0 ),
+											Name = reader.GetString( 1 )
+										} );
 									}
 								}
 							}

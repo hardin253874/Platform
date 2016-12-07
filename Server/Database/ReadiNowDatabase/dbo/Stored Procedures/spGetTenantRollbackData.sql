@@ -28,10 +28,9 @@ BEGIN
 		TenantId = @tenantId
 		AND SystemUpgrade = 1
 	ORDER BY
-		TransactionId DESC
+		TransactionId ASC
 
 	SELECT
-		Username = ISNULL( dbo.fnName(UserId), 'Unknown' ),
 		Year = DATEPART(yy, Timestamp),
 		Month = DATEPART(mm, Timestamp),
 		Day = DATEPART(dd, Timestamp),
@@ -41,11 +40,10 @@ BEGIN
 		Hist_Transaction
 	WHERE
 		TenantId = @tenantId
-		AND TransactionId > @lastSystemUpdate
+		AND ( @lastSystemUpdate IS NULL OR TransactionId > @lastSystemUpdate )
 		AND ( @dateTime IS NULL OR [Timestamp] > @dateTime )
 		AND [UserDefined] = 0
 	GROUP BY
-		UserId,
 		DATEPART(yy, Timestamp),
 		DATEPART(mm, Timestamp),
 		DATEPART(dd, Timestamp),
@@ -60,19 +58,26 @@ BEGIN
 
 	SELECT
 		Timestamp,
-		Username = ISNULL( dbo.fnName(UserId), 'Unknown' ),
 		Context
 	FROM
 		Hist_Transaction
 	WHERE
 		TenantId = @tenantId
-		AND TransactionId > @lastSystemUpdate
+		AND ( @lastSystemUpdate IS NULL OR TransactionId > @lastSystemUpdate )
+		AND ( @dateTime IS NULL OR [Timestamp] > @dateTime )
 		AND UserDefined = 1
 
 	SELECT
 		Date = a.[Timestamp],
 		RollbackDate = b.[Timestamp],
-		Username = ISNULL( dbo.fnName( a.UserId ), 'Unknown' )
+		Username =
+			CASE WHEN
+				a.UserId = 0
+			THEN
+				'System Administrator'
+			ELSE
+				ISNULL( dbo.fnName( a.UserId ), 'Unknown' )
+			END
 	FROM
 		Hist_Transaction a
 	LEFT JOIN

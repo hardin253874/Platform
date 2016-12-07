@@ -66,7 +66,7 @@
                     selectedEntities: solns,
                     pickerReportId: 'core:applicationsPickerReport',
                     entityTypeId: 'core:solution',
-                    multiSelect: true,
+                    multiSelect: false,
                     isDisabled: false
                 },
                 iconPickerOptions: {
@@ -130,7 +130,12 @@
                     if (options.formLoaded) {
                         options.formLoaded(form);
                     }
+                    
                     $scope.model.form = form;
+
+                    // register the relFilters
+                    spEditForm.registerRelationshipControlFilters($scope.model.form);
+
                     $timeout(function () {
                         spMeasureArrangeService.performLayout('editFormDialog');
                     });
@@ -196,6 +201,20 @@
                 }
                 $uibModalInstance.close(false);
             };
+
+            $scope.$on('$destroy', function () {
+                spEditForm.clearRelationshipControlFilters($scope.model.form);
+            });
+
+            $scope.$on('filterSourceControlDataChanged', function (event, data) {
+                $timeout(function () {
+                    var sourceControl = data.sourceControl;
+                    var filteredIds = spEditForm.getFilteredControlIds($scope.model.form, sourceControl);
+                    if (filteredIds && filteredIds.length) {
+                        $scope.$broadcast('updateFilteredControlData', { filteredControlIds: filteredIds });
+                    }
+                });
+            });
 
             $scope.measureArrangeOptions = {
                 id: 'editFormDialog'

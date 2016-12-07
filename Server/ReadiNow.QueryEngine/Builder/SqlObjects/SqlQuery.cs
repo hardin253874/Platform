@@ -20,7 +20,8 @@ namespace ReadiNow.QueryEngine.Builder.SqlObjects
 			FullStatement = selectStatement;
 			SelectClause = new SqlSelectClause( );
 			FromClause = new SqlFromClause( );
-			GroupByClause = new SqlGroupByClause( );
+            WhereClause = new SqlWhereClause( );
+            GroupByClause = new SqlGroupByClause( );
             HavingClause = new SqlHavingClause( );
 			OrderClause = new SqlOrderClause( );
 			References = new ReferenceManager( );
@@ -46,16 +47,22 @@ namespace ReadiNow.QueryEngine.Builder.SqlObjects
 		public SqlFromClause FromClause
 		{
 			get;
-			private set;
-		}
+        }
 
-		/// <summary>
-		///     Reference back to the full query.
-		/// </summary>
-		public SqlSelectStatement FullStatement
+        /// <summary>
+        ///     Manages the 'where' clause.
+        /// </summary>
+        public SqlWhereClause WhereClause
+        {
+            get;
+        }
+
+        /// <summary>
+        ///     Reference back to the full query.
+        /// </summary>
+        public SqlSelectStatement FullStatement
 		{
 			get;
-			private set;
 		}
 
 		/// <summary>
@@ -82,7 +89,6 @@ namespace ReadiNow.QueryEngine.Builder.SqlObjects
 		public SqlOrderClause OrderClause
 		{
 			get;
-			private set;
 		}
 
         /// <summary>
@@ -127,7 +133,6 @@ namespace ReadiNow.QueryEngine.Builder.SqlObjects
 		public SqlSelectClause SelectClause
 		{
 			get;
-			private set;
 		}
 
 		/// <summary>
@@ -136,16 +141,15 @@ namespace ReadiNow.QueryEngine.Builder.SqlObjects
 		public List<SqlQuery> Subqueries
 		{
 			get;
-			private set;
-		}
+        }
 
-		/// <summary>
-		///     Short-cut to add conditions, which actually get held in individual tables.
-		/// </summary>
-		/// <param name="expression">The conditions to add</param>
-		public void AddWhereCondition( SqlExpression expression )
+        /// <summary>
+        ///     Short-cut to add conditions, which actually get held in individual tables.
+        /// </summary>
+        /// <param name="expression">The conditions to add</param>
+        public void AddWhereCondition( SqlExpression expression )
 		{
-			FromClause.RootTable.Conditions.Add( expression.Sql );
+            WhereClause.Conditions.Add( expression );
 		}
 
 		/// <summary>
@@ -223,7 +227,7 @@ namespace ReadiNow.QueryEngine.Builder.SqlObjects
 
 			FromClause.RenderSql( sb );
 
-			RenderWhereClause( sb );
+		    WhereClause.RenderSql( sb, this );
 
 			GroupByClause.RenderSql( sb );
 
@@ -235,42 +239,6 @@ namespace ReadiNow.QueryEngine.Builder.SqlObjects
 		    {
 		        sb.AppendOnNewLine(ForClause);
 		    }
-		}
-
-
-		/// <summary>
-		///     Generates the SQL text for the WHERE clause.
-		/// </summary>
-		/// <param name="sb">The SQL text formatter.</param>
-		private void RenderWhereClause( SqlBuilderContext sb )
-		{
-			// In practice, this is just the conditions that are registered against the root table.
-			// (Any query-level conditions are already registered here)
-
-            if (FromClause.RootTable.SecureResources)
-            {
-                if (FullStatement.DenyAccessToAllResources)
-                {
-                    FromClause.RootTable.Conditions.Add(QueryBuilder.SecurityDenyPredicate);   
-                }                
-            }
-
-			FromClause.RootTable.PrepareTableConditions( );
-		    if (!FromClause.ConstrainInWhereClause.Contains(FromClause.RootTable))
-		    {
-                FromClause.ConstrainInWhereClause.Add(FromClause.RootTable);   
-		    }			
-
-			var first = new First( );
-			foreach ( SqlTable table in FromClause.ConstrainInWhereClause )
-			{
-				table.RenderTableConditions( "where", false, sb, first );
-			}
-			// Close indent if any conditions were found
-			if ( !first.Peek )
-			{
-				sb.EndIndent( );
-			}
 		}
 	}
 }

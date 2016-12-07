@@ -89,18 +89,11 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="C5, Version=1.1.0.0, Culture=neutral, PublicKeyToken=06a1b38866503b69, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dependencies\ThirdParty\C5.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.SqlServer.Dac">
       <HintPath>..\Dependencies\Microsoft\SQL Server\Microsoft.SqlServer.Dac.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.SqlServer.Dac.Extensions">
-      <HintPath>..\Dependencies\Microsoft\SQL Server\Microsoft.SqlServer.Dac.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="protobuf-net, Version=2.0.0.668, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
-      <HintPath>..\packages\protobuf-net.2.0.0.668\lib\net40\protobuf-net.dll</HintPath>
+    <Reference Include="protobuf-net, Version=2.1.0.0, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
+      <HintPath>..\packages\protobuf-net.2.1.0\lib\net451\protobuf-net.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="protobuf-net-data, Version=2.0.7.668, Culture=neutral, PublicKeyToken=3a92fdc8f425ccde, processorArchitecture=MSIL">
@@ -113,12 +106,10 @@
     <Reference Include="System.Messaging" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.ServiceModel" />
     <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -328,15 +319,11 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Monitoring\Performance Counters.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Database\ReadiNowDeploymentPlanContributors\ReadiNowDeploymentPlanContributors.csproj">
-      <Project>{8241741c-2f93-43b6-a085-a61f10f74919}</Project>
-      <Name>ReadiNowDeploymentPlanContributors</Name>
-      <Private>False</Private>
-    </ProjectReference>
     <ProjectReference Include="..\EDC.Interop\EDC.Interop.csproj">
       <Project>{90FA9820-A3EC-40B2-A5C8-F3A3C533F000}</Project>
       <Name>EDC.Interop</Name>

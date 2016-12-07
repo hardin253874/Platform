@@ -78,7 +78,7 @@ namespace EDC.ReadiNow.Model.EventClasses
             IList<EntityRef> relationshipTypes = null;
             IList<long> fieldTypes = null;
 
-            foreach (ICacheInvalidator cacheInvalidator in Invalidators)
+            foreach (ICacheInvalidator cacheInvalidator in Invalidators.ToList( ))
             {
                 modifiedRelatedEntities = null;
                 if (state.TryGetValue(cacheInvalidator.Name, out entry))
@@ -167,7 +167,7 @@ namespace EDC.ReadiNow.Model.EventClasses
             IList<IEntity> entityList;
 
             entityList = entities.ToList();
-            foreach (ICacheInvalidator cacheInvalidator in Invalidators)
+            foreach (ICacheInvalidator cacheInvalidator in Invalidators.ToList( ))
             {
                 newModifiedRelatedEntities = GetEntityChanges(entityList, InvalidationCause.Save);
 				if ( newModifiedRelatedEntities != null && newModifiedRelatedEntities.Count > 0 )
@@ -221,7 +221,7 @@ namespace EDC.ReadiNow.Model.EventClasses
             IList<IEntity> entityList;
 
             entityList = entities.ToList();
-            foreach (ICacheInvalidator cacheInvalidator in Invalidators)
+            foreach (ICacheInvalidator cacheInvalidator in Invalidators.ToList( ))
             {
                 modifiedRelatedEntities = GetEntityChanges(entityList, InvalidationCause.Delete);
 

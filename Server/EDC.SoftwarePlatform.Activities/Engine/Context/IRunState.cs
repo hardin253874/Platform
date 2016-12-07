@@ -5,6 +5,7 @@ using System.Text;
 using EDC.ReadiNow.Expressions;
 using EDC.ReadiNow.Model;
 using EDC.ReadiNow.IO;
+using System.Diagnostics;
 
 namespace EDC.SoftwarePlatform.Activities
 {
@@ -15,10 +16,15 @@ namespace EDC.SoftwarePlatform.Activities
     public interface IRunState
     {
         RequestContextData EffectiveSecurityContext { get; }
+
+        string RunTaskId { get; }
         long WorkflowRunId { get; }
         WorkflowRun WorkflowRun { get; }
         int StepsTakenInSession { get; set; }                    // The current run step. 
-        int TimeTakenInSession { get; set; }                    // The current run step. 
+
+        
+        Stopwatch TimeTakenInSession { get; }
+
         EntityRef ExitPointId { get; set; }
         WorkflowRunState_Enumeration? RunStatus { get; set; }
         DateTime? CompletedAt { get; set; }

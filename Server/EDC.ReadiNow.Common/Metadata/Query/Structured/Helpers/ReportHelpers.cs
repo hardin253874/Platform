@@ -77,6 +77,8 @@ namespace EDC.ReadiNow.Metadata.Query.Structured.Helpers
                 exactType,
                 targetMustExist,
                 targetNeedNotExist,
+                parentNeedNotExist,
+                joinPredicateCalculation,
                 resourceReportNodeType.@ALIASTYPE,
                 followInReverse,
                 followRecursive,
@@ -136,10 +138,12 @@ namespace EDC.ReadiNow.Metadata.Query.Structured.Helpers
                 formatImageSize.@ALIASTYPE,
                 formatAlignment.@ALIASTYPE,
                 columnShowText,
+                disableDefaultFormat,
                 formatDecimalPlaces,
                 formatPrefix,
                 formatSuffix,
-                maxLineCount
+                maxLineCount,
+                entityListColumnFormat.@ALIASTYPE
             }
 
             let @COLUMNGROUP = {

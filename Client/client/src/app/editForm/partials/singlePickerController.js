@@ -10,39 +10,105 @@
     ]);
 
     angular.module('app.editForm.singlePickerController')
-        .controller('singlePickerController', SinglePickerController);
+        .controller('singlePickerController', SinglePickerController)
+        .factory('rnPickerService', rnPickerService);
 
-    function SinglePickerController($state, $scope, spFieldValidator, spEditForm, spDialogService, spNavService) {
+    function rnPickerService($state, spEditForm) {
         'ngInject';
 
-        var form, navItem, isSourceRelationshipFilterControl;
-        $scope.openDetail = openDetail;
+        return {
+            configureReportAsPickerSource,
+            setDefaultPickerOptions,
+            initForRelControl
+        };
 
-        // init
-        spEditForm.commonRelFormControlInit($scope, {
-            validator: validate,
-            areCreating: $state.current.name === 'createForm'
-        });
-        var customValidationMessages = $scope.customValidationMessages;
+        function configureReportAsPickerSource($ctrl, reportId) {
+            $ctrl.useReportToPopulatePicker = true;
+            $ctrl.pickerReportServiceOptions = {
+                reportId: reportId,
+                metadata: 'colbasic',
+                relfilters: {},
+                entityTypeId: 0
+            };
+        }
 
-        navItem = spNavService.getCurrentItem();
-        form = sp.result(navItem, 'data.formControl');
+        function initForRelControl($ctrl) {
+            const resource = $ctrl.resource || $ctrl.formData; // temp handling of old and new way
 
-        isSourceRelationshipFilterControl = spEditForm.isSourceRelationshipFilterControl(form, $scope.formControl);
+            spEditForm.commonRelFormControlInit($ctrl, {
+                validator: () => {
+                    const selectedEntities = resource.getRelationship($ctrl.relTypeId);
+                    spEditForm.validateRelationshipControl($ctrl, selectedEntities);
+                },
+                areCreating: $state.current.name === 'createForm'
+            });
+        }
 
-        function getSelectedEntities(scope) {
-            if (scope.formData && scope.relTypeId) {
-                return scope.formData.getRelationship(scope.relTypeId);
+        function setDefaultPickerOptions($ctrl, formControl, options = {}) {
+
+            const pickerOptions = {
+                formControl: formControl,
+                parentControl: options.parentControl,
+                entityTypeId: options.entityType,
+                selectedEntity: null,
+                selectedEntities: null,
+                multiSelect: getIsAToManyRelationship(formControl.relationshipToRender),
+                isDisabled: options.isDisabled,
+                disabled: options.isInDesign || options.isReadOnly,
+                modifyAccessDenied: options.modifyAccessDenied,
+                createAccessDenied: options.createAccessDenied,
+                useReportToPopulatePicker: options.useReportToPopulatePicker,
+                useEntitiesToPopulatePicker: options.useReportToPopulatePicker,
+                disallowCreateRelatedEntityInNewMode: options.disallowCreateRelatedEntityInNewMode
+            };
+
+            if (!options.isReadOnly && options.useReportToPopulatePicker && options.pickerReportServiceOptions) {
+
+                options.pickerReportServiceOptions.entityTypeId = pickerOptions.entityTypeId;
+                loadPickerFromReport();
+
+                // NOTE any using components or controllers should watch on 'pickerOptions.relationshipFilters' and
+                // refresh using something like:
+                // $scope.$watch('pickerOptions.relationshipFilters', $scope.pickerOptions.onFiltersChanged);
+
+                pickerOptions.onFiltersChanged = filters => {
+
+                    console.log('onFiltersChanged', filters);
+
+                    if (filters && !_.isEqual(filters, options.pickerReportServiceOptions.relfilters)) {
+                        options.pickerReportServiceOptions.relfilters = filters;
+                        loadPickerFromReport();
+                    }
+                };
+            }
+
+            $ctrl.pickerOptions = pickerOptions;
+            return $ctrl;
+
+            function loadPickerFromReport() {
+                // the following will async fill the pickerOptions.entities based on the report run
+                spEditForm.setPickerEntitiesFromReportData(options.pickerReportServiceOptions, pickerOptions);
             }
         }
 
-        function getSelectedEntity(scope) {
-            var entities = getSelectedEntities(scope);
-            return _.first(entities) || null;
+    }
+
+    function SinglePickerController($state, $scope, spEditForm, spDialogService, spNavService, $uibModalStack) {
+        'ngInject';
+
+        initScopeForFormControl();
+
+        var form = sp.result(spNavService, 'getCurrentItem.data.formControl');
+        if (!form) {
+            var modal = $uibModalStack.getTop();
+            if (modal) {
+                form = _.get(modal, 'value.modalScope.model.form');
+            }
         }
 
-        var card = sp.result($scope, 'relationshipToRender.cardinality.eidP.nsAlias');
-        var isToMany = card === 'core:manyToMany' || !$scope.isReversed && card === 'core:oneToMany' || $scope.isReversed && card === 'core:manyToOne';
+        var isSourceRelationshipFilterControl = spEditForm.isSourceRelationshipFilterControl(form, $scope.formControl);
+
+        $scope.openDetail = openDetail;
 
         $scope.pickerOptions = {
             formControl: $scope.formControl,
@@ -50,7 +116,7 @@
             entityTypeId: $scope.entityType,
             selectedEntity: null,
             selectedEntities: null,
-            multiSelect: isToMany,
+            multiSelect: getIsAToManyRelationship($scope.formControl.relationshipToRender),
             isDisabled: $scope.isDisabled,
             disabled: ($scope.isInDesign || $scope.isReadOnly),
             modifyAccessDenied: undefined,
@@ -60,9 +126,8 @@
             disallowCreateRelatedEntityInNewMode: $scope.disallowCreateRelatedEntityInNewMode
         };
 
-        if (!$scope.isReadOnly &&
-            $scope.useReportToPopulatePicker &&
-            $scope.pickerReportServiceOptions) {
+        if (!$scope.isReadOnly && $scope.useReportToPopulatePicker && $scope.pickerReportServiceOptions) {
+
             $scope.pickerReportServiceOptions.entityTypeId = $scope.pickerOptions.entityTypeId;
 
             spEditForm.setPickerEntitiesFromReportData($scope.pickerReportServiceOptions, $scope.pickerOptions);
@@ -77,21 +142,10 @@
             });
         }
 
-        $scope.$on("validateForm", function (event) {
-            validate();
-        });
+        $scope.$on("validateForm", validate);
+        $scope.$on("validateRelationship", validate);
 
-        $scope.$on('formControlUpdated', function () {
-            spEditForm.commonRelFormControlInit($scope, {
-                validator: validate,
-                areCreating: $state.current.name === 'createForm'
-            });
-        });
-
-
-        $scope.$on("validateRelationship", function (event) {
-            validate();
-        });
+        $scope.$on('formControlUpdated', initScopeForFormControl);
 
         $scope.$watch('customValidationMessages.length', function () {
             // Note - should generalise this somewhat, but at present adding in special
@@ -103,11 +157,12 @@
         });
 
         $scope.$watch("formMode", function (value) {
-            if (!value) {
-                return;
-            }
+            if (!value) return;
 
-            // if we came in as createForm (from a report or a screen) and after saving we switched to viewForm without transitioning to viewForm state, then reset the flag
+            // console.log('singlePickerController: formMode', value);
+
+            // if we came in as createForm (from a report or a screen) and after saving we switched to viewForm
+            // without transitioning to viewForm state, then reset the flag
             var navItem = spNavService.getCurrentItem();
             if (navItem && navItem.href && navItem.href.includes('viewForm?') && $state.current.name === 'createForm') {
                 $scope.disallowCreateRelatedEntityInNewMode = false;
@@ -117,16 +172,19 @@
             }
         });
 
-        var dataWatch = 'formData && relTypeId && (formData.getLookup(relTypeId).id() + "|" + formData.id())'; // if the entity changes or the relationship is updated.
+        // if the entity changes or the relationship is updated.
+        var dataWatch = 'formData && relTypeId && (formData.getLookup(relTypeId).id() + "|" + formData.id())';
 
-        $scope.$watch(dataWatch, function () {
-            var selectedEntity, selectedEntities;
+        $scope.$watch(dataWatch, function (value) {
 
-            selectedEntity = getSelectedEntity($scope);
-            selectedEntities = getSelectedEntities($scope);
+            // console.log('singlePickerController: dataWatch', value);
+
+            let selectedEntity = getSelectedEntity($scope);
+            let selectedEntities = getSelectedEntities($scope);
 
             if (selectedEntities) {
-                selectedEntities = selectedEntities.slice(0);    // use a copy of the array so we are not modifying the internals of the entity
+                // use a copy of the array so we are not modifying the internals of the entity
+                selectedEntities = selectedEntities.slice(0);
             }
 
             $scope.displayString = spEditForm.getDisplayName(selectedEntities);
@@ -219,14 +277,20 @@
 
         };
 
+        function initScopeForFormControl() {
+            spEditForm.commonRelFormControlInit($scope, {
+                validator: validate,
+                areCreating: $state.current.name === 'createForm'
+            });
+        }
+
+        function validate() {
+            spEditForm.validateRelationshipControl($scope, getSelectedEntities($scope));
+        }
+
         function setShowExpander() {
             var showExpanderlength = 29;    // currently this is the magic number after which the text overflow is triggered. this may break if the stlye is changed. todo: add test for this
-
-            if ($scope.displayString && $scope.displayString.length > showExpanderlength) {
-                $scope.showExpander = true;
-            } else {
-                $scope.showExpander = false;
-            }
+            $scope.showExpander = $scope.displayString && $scope.displayString.length > showExpanderlength;
         }
 
         function modalInstanceCtrl(scope, $uibModalInstance, modalTitle, displayEntities) {
@@ -275,9 +339,23 @@
                 $scope.pickerOptions.modifyAccessDenied = canModify === false;
             }
         }
+    }
 
-        function validate() {
-            spEditForm.validateRelationshipControl($scope, getSelectedEntities($scope));
+    function getSelectedEntities(scope) {
+        if (scope.formData && scope.relTypeId) {
+            return scope.formData.getRelationship(scope.relTypeId);
         }
+    }
+
+    function getSelectedEntity(scope) {
+        var entities = getSelectedEntities(scope);
+        return _.first(entities) || null;
+    }
+
+    function getIsAToManyRelationship(rel) {
+        const card = sp.result(rel, 'relationshipToRender.cardinality.eidP.nsAlias');
+        return card === 'core:manyToMany' ||
+            !rel.isReversed && card === 'core:oneToMany' ||
+            rel.isReversed && card === 'core:manyToOne';
     }
 })();

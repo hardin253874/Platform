@@ -21,6 +21,7 @@ namespace EDC.ReadiNow.Messaging.Redis
         const string TaskManagerPerfix = "ReadiNowTaskManager";
         const string Started = "TaskStarted";
         const string Completed = "TaskCompleted";
+        const string Cancelled = "TaskCancelled";
 
         IMemoryStore _memoryStore;
         string _taskGroupName;
@@ -54,6 +55,11 @@ namespace EDC.ReadiNow.Messaging.Redis
             Register(taskId, Completed, result);
         }
 
+        public void RegisterCancelled(string taskId)
+        {
+            Register(taskId, Cancelled, null);
+        }
+
 
         void Register(string taskId, string state, string additionalInfo)
         {
@@ -72,7 +78,13 @@ namespace EDC.ReadiNow.Messaging.Redis
         public bool HasCompleted(string taskId)
         {
             var state = GetState(taskId);
-            return state != Started && !string.IsNullOrEmpty(state);
+            return state == Completed || state == Cancelled;
+        }
+
+        public bool HasCancelled(string taskId)
+        {
+            var state = GetState(taskId);
+            return state == Cancelled;
         }
 
         string GetState(string taskId)
@@ -103,6 +115,16 @@ namespace EDC.ReadiNow.Messaging.Redis
         string GetResultKey(string taskId)
         {
             return GetKey(taskId) + ":info";
+        }
+
+        public void SetResult(string taskId, string result)
+        {
+            var state = GetState(taskId);
+
+            if (String.IsNullOrEmpty(state))
+                throw new ArgumentException(nameof(taskId));
+
+            Register(taskId, state, result);
         }
 
         public string GetResult(string taskId)

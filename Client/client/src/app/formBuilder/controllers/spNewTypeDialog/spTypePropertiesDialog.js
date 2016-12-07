@@ -60,7 +60,7 @@
                 selectedEntities: null,
                 pickerReportId: 'core:applicationsPickerReport',
                 entityTypeId: 'core:solution',
-                multiSelect: true,
+                multiSelect: false,
                 isDisabled: false
             },
             iconPickerOptions: {
@@ -81,7 +81,9 @@
                 multiSelect: false,
                 isDisabled: false
             },
-            initialState: {}
+            initialState: {},
+            showAdvanced: spAppSettings.fullConfig, // only full admin can see advanced properties (esp 'in app', and 'custom form')
+            formatTabActiveByDefault: !spAppSettings.fullConfig
         };
 
         // Bookmarks
@@ -236,7 +238,7 @@
                     //Set Applications
                     var applications = sp.result($scope, 'model.applicationPickerOptions.selectedEntities');
 
-                    if (applications != null && applications.length > 0) {
+                    if (applications && applications.length > 0) {
                         model.form.setLookup('core:inSolution', applications[0]);
                     } else {
                         model.form.setLookup('core:inSolution', null);

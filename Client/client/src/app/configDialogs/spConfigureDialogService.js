@@ -207,7 +207,24 @@ angular.module('mod.app.configureDialog.service', ['mod.common.spEntityService']
        **/
         function getChoiceValuesOfType(id) {
             //return spEntityService.getEntitiesOfType(id, 'name,alias,description,enumOrder');
-            return spEntityService.getEntity(id, 'name,alias,description,defaultPickerReport.name,instancesOfType.{name,description,enumOrder,canModify,canDelete},inherits*.{name,alias,description,defaultPickerReport.name}');
+
+            var query = 'name,alias,description,defaultPickerReport.name,' +
+                        'enumValueFormattingType.{name,alias},' +
+                        'instancesOfType.{name,description,enumOrder,canModify,canDelete,' +
+                                            'enumFormattingRule.{' +
+                                                'name,alias,' +
+                                                'isOfType.{ name, alias },' +
+                                                'iconRules.{iconRuleImage.{name, alias}},' +
+                                                'colorRules.{' +
+                                                    'colorRuleForeground,' +
+                                                    'colorRuleBackground' +
+                                                    '}' +
+                                            '}' +
+                                          '},' +
+                        'inherits*.{name,alias,description,defaultPickerReport.name}';
+
+
+            return spEntityService.getEntity(id, query);
         }
         exports.getChoiceValuesOfType = getChoiceValuesOfType;
         

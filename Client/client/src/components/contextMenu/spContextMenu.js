@@ -138,7 +138,7 @@
                             icon: action.icon,
                             disabled: angular.isDefined(action.isenabled) && !action.isenabled,
                             submenu: buildContextMenuFromActions(action.children, id),
-                            type: angular.isDefined(action.url) && action.url != null ? 'href' : 'click',
+                            type: action.url ? 'href' : 'click',
                             action: action,
                             click: 'onItemClick(\'' + id + '\')'
                         });
@@ -346,7 +346,7 @@
 
                                     contextMenu = buildContextMenuElement(items);
 
-                                    if (contextMenu == null) {
+                                    if (!contextMenu) {
                                         return;
                                     }
 

@@ -4,8 +4,9 @@ describe('Form Builder|spec|Hero Text|spHeroTextProperties', function () {
 
     // Load the modules
     beforeEach(module('mod.app.heroText.spHeroTextProperties'));
+    beforeEach(module('controls/templates/spTypeaheadPopupTemplate.tpl.html'));
     beforeEach(module('formBuilder/directives/spFormBuilder/directives/spFormBuilderHeroTextControl/spHeroTextProperties.tpl.html'));
-    beforeEach(module('editForm/partials/spInlineRelationshipPicker.tpl.html'));
+    beforeEach(module('editForm/partials/spInlineRelationshipPicker.tpl.html'));    
     beforeEach(module('editForm/directives/spHeroTextControl/spHeroTextControl.tpl.html'));
     beforeEach(module('mockedEntityService'));
 

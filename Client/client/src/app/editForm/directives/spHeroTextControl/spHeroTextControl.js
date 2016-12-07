@@ -173,7 +173,7 @@
                             model.heroData = '-';
                         } else {
                             var row = rowData[0];
-                            model.heroData = accessor.getText(row);
+                            model.heroData = accessor.getText(row) || '-';
                         }
                     });
                 }

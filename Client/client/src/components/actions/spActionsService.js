@@ -146,6 +146,7 @@
 
         exports.getFormActionButtons = function (formId) {
             var actionBtns = [];
+
             if (formId && _.isNumber(formId) && formId > 0) {
                 return spEntityService.getEntity(formId, formActionQuery).then(function (result) {
                     return result;
@@ -245,6 +246,34 @@
             }
 
             return ids;
+        };
+
+        exports.getActionsOnResource = function (id) {
+            var menuItemQuery = 'alias, name, description, ' +
+            'isOfType.{alias, name}, ' +
+            'htmlActionTarget, htmlActionMethod, htmlActionState, ' +
+            'k:menuOrder, ' +
+            'multiSelectName, emptySelectName, ' +
+            'k:menuIconUrl, ' +
+            'k:isMenuSeparator, k:isActionButton, k:isActionItem, k:isContextMenu, k:isSystem, ' +
+            'k:appliesToSelection, k:appliesToMultiSelection, '+
+            'k:actionRequiresPermission.isOfType.id, ' +
+            'k:actionRequiresParentPermission.isOfType.id, ' +
+            'k:actionMenuItemToWorkflow.{ isOfType.name, name, inputArgumentForRelatedResource.name }, ' +
+            'k:navigateToCreateFormActionDefinition.name, k:navigateToCreateFormActionForm.name';
+            var menuQuery = 'isOfType.id, ' +
+            'k:showNewActionsButton, ' +
+            'k:suppressNewActions, ' +
+            'k:showExportActionsButton, ' +
+            'k:showEditInlineActionsButton, ' +
+            '{ k:menuItems, k:includeActionsAsButtons }.{' + menuItemQuery + '},' +
+            'k:suppressedActions.id, k:suppressedTypesForNewMenu.id, k:includeActionsAsButtons.id, k:includeTypesForNewButtons.name';
+            var behaviourQuery = 'isOfType.id, ' +
+            'k:html5CreateId, ' +
+            'k:suppressActionsForType, ' +
+            'k:behaviorActionMenu.{' + menuQuery + '}';
+            var query = 'alias, name, k:resourceConsoleBehavior.{' + behaviourQuery + '}';
+            return spEntityService.getEntity(id, query);
         };
 
         // pull an action from its location given a path in the structure
@@ -386,6 +415,9 @@
                         break;
                     case 'exportXml':
                         fn = exportXml;
+                        break;
+                    case 'cancelWorkflowRun':
+                        fn = cancelWorkflowRun;
                         break;
                     case 'custom':
                         fn = executeFunction;
@@ -555,7 +587,7 @@
                             spNavService.setCacheMarker();
 
                             if (context && context.refreshDataCallback) {
-                                return $q.when().then(context.refreshDataCallback);
+                                return $q.when().then(function (data) { return context.refreshDataCallback('delete', data); });
                             }
                             return $q.when();
                         }).finally(function () {
@@ -581,7 +613,11 @@
         }
 
         function createArgument(argName, value) {
-            return {name: argName, typeName: 'core:resourceArgument', value: value};
+            return { name: argName, typeName: 'core:resourceArgument', value: value };
+        }
+
+        function createListArgument(argName, values) {
+            return { name: argName, typeName: 'core:resourceListArgument', value: values };
         }
 
         // Runs a given workflow with an optional parameter
@@ -595,7 +631,11 @@
             if (inputParamName) {
                 var ids = context.selectionEntityIds;
                 if (ids && ids.length > 0 && ids[0] && action.isselect) {
-                    workflowArgs.push(createArgument(inputParamName, '' + ids[0]));
+                    if (action.ismultiselect) {
+                        workflowArgs.push(createListArgument(inputParamName, JSON.stringify(ids)));
+                    } else {
+                        workflowArgs.push(createArgument(inputParamName, '' + ids[0]));
+                    }
                 }
             }
 
@@ -631,7 +671,31 @@
             });
         }
 
-
+        // Cancels a workflow run
+        function cancelWorkflowRun(action, context) {
+            var ids = context.selectionEntityIds;
+            return confirmCancelRunDialog(ids).then(function () {
+                return $q.all(_.forEach(ids, function (runId) {
+                    return spWorkflowRunService.cancelRun(runId)
+                        .then(context.refreshDataCallback);
+                })); 
+            });
+        }
+        
+        // prompt, terminate the promise on a no. 
+        function confirmCancelRunDialog(ids) {
+            var message = ids.count > 1 ? "Cancelling " + ids.count + " workflow runs. Are you sure?" : "Cancelling the workflow run. Are you sure?";
+            return spDialogService.showMessageBox("Cancel Runs", message, [
+                        { result: 'yes', label: 'Yes', cssClass: 'btn-primary' },
+                        { result: 'no', label: 'No' }
+            ]).then(function (result) {
+                if (result === 'yes')
+                    return $q.when();
+                else
+                    return $q.reject();
+            });
+        }
+        
         // Download the entity as an xml document
         function exportXml(action, context) {
             return $q.when().then(function () {
@@ -745,7 +809,7 @@
                 spNavService.middleLayoutBusy = false;
             });
         }
-
+        
         // Executes an arbitrary function
         function executeFunction(action, context) {
             var functionName = action.state;

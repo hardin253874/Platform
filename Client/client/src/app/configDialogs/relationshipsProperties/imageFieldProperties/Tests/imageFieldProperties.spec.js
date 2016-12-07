@@ -40,7 +40,10 @@ describe('Console|configDialogs|imageFieldProperties|spec:|imageFieldPropertiesC
                 return deferred.promise;
             }
         };
-        mockSpEditForm= {
+        mockSpEditForm = {
+            getFormControls: function() {
+                return [];
+            },
             getTemplateReport: function () {
                 deferred = q.defer();
                 deferred.resolve({ id: 1234, alias: 'templateReport' });

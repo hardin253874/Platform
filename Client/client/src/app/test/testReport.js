@@ -49,8 +49,8 @@
 
                 var lowerCaseFilterText = filterText.toLowerCase();
                 return _.filter(entities, function(entity) {
-                    return !lowerCaseFilterText || (entity.name ? entity.name.toLowerCase().indexOf(lowerCaseFilterText) != -1 : false) ||
-                        (entity.description ? entity.description.toLowerCase().indexOf(lowerCaseFilterText) != -1 : false);
+                    return !lowerCaseFilterText || (entity.name ? entity.name.toLowerCase().indexOf(lowerCaseFilterText) !== -1 : false) ||
+                        (entity.description ? entity.description.toLowerCase().indexOf(lowerCaseFilterText) !== -1 : false);
                 });
             }
 

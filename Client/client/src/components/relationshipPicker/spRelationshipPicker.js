@@ -27,9 +27,18 @@
     Note: you only need to specify entityTypeId or entities.
     * 
     */
-    angular.module('mod.common.ui.spRelationshipPicker', ['ui.bootstrap', 'mod.common.spEntityService', 'sp.navService', 'mod.common.alerts', 'mod.common.ui.spEntityComboPicker', 'mod.ui.spTreeviewManager', 'sp.app.settings'])       
+    angular.module('mod.common.ui.spRelationshipPicker', [
+        'ui.bootstrap',
+        'mod.common.spEntityService',
+        'sp.navService',
+        'mod.common.alerts',
+        'mod.common.ui.spEntityComboPicker',
+        'mod.ui.spTreeviewManager',
+        'sp.app.settings',
+        'mod.common.ui.spReportBuilder.spCustomJoinExpression',
+        'mod.featureSwitch'])
         .controller("spRelationshipPickerController", function ($scope, $uibModalInstance, options, spAlertsService, spEntityService,
-                                                             spNavService, spTreeviewManager, spAppSettings) {
+                                                             spNavService, spTreeviewManager, spAppSettings, rnFeatureSwitch) {
          $scope.entityTypeId = null;
          $scope.entityTypeName = '';
          $scope.selectedNode = null;
@@ -45,14 +54,12 @@
          $scope.relRelationships = [];
          $scope.retRemoveRelationships = [];
 
-         $scope.instanceRequire = false;
          $scope.showButton = false;
          $scope.hideAdvTab = true;
          $scope.isAdvCollapsed = true;
          $scope.postBack = false;
          $scope.getFields = false;
-        
-
+         $scope.showCustomJoin = rnFeatureSwitch.isFeatureOn('customJoins');
 
          $scope.selectedRelationshipIds = [];
          $scope.retRelationshipIds = [];
@@ -72,6 +79,20 @@
              gridBusyIndicator: {
                  type: 'spinner',
                  placement: 'element'
+             },
+             customTypePickerOptions: {
+                 selectedEntity: null,
+                 selectedEntities: null,
+                 multiSelect: false,
+                 pickerReportId: 'console:userTypesReport',
+                 entityTypeId: 'core:type',
+                 isDisabled: $scope.isExistReport
+             },
+             customJoinScript: '@parent.Name = Name',
+             customTypeScriptOptions: {
+                 childTypeId: 0,
+                 parentTypeId: 0,
+                 disabled: true
              }
          };
 
@@ -94,7 +115,19 @@
                  });
              }
          });
-
+         
+         // Watch custom type picker option
+         $scope.$watch('model.customTypePickerOptions.selectedEntities', function () {
+             var model = $scope.model;
+             var typeId = sp.result(model, 'customTypePickerOptions.selectedEntities.0.idP');
+             if (typeId) {
+                 model.customTypeScriptOptions.childTypeId = typeId;
+                 model.customTypeScriptOptions.disabled = false;
+             }
+         });
+         $scope.$watch('entityTypeId', function () {
+             $scope.model.customTypeScriptOptions.parentTypeId = $scope.entityTypeId;
+         });
 
          $scope.clean = function (event) {
              //only IE contains the clean button which not support angular js ng-model update.
@@ -161,9 +194,6 @@
              {
                  $scope.selectedNode = options.selectedNode;
                  $scope.entityTypeId = $scope.selectedNode.etid;
-                 if ($scope.selectedNode.instancereq && $scope.selectedNode.instancereq !== 'core:forbidden') {
-                     $scope.instanceRequire = true;
-                 }
              } else if
              (options.entityTypeId) {
                  $scope.selectedNode = null;
@@ -396,10 +426,6 @@
                  );
              }
              
-             if ($scope.instanceRequire) {
-                 $scope.derivedResources.push($scope.getInstanceRequireJson());
-             }
-             
              if ($scope.derivedResources.length > 0) {
                  $scope.hideAdvTab = false;
              }
@@ -523,7 +549,7 @@
 
                  //set relationshiptype
                  
-                 var rel = { "id": spUtils.newGuid(), "rid": relationship.getEntity().eid().id(), "relationshipName": relationshipName, "resourceName": resourceName, "typeName": typeName,  "relationshipType": relationshipType, "isSelected": isSelected, "eid": toTypeId, "solutions": relationship.getSolutions(), "instancereq": null, "dir": dir, "cols": [] };
+                 var rel = { "id": spUtils.newGuid(), "rid": relationship.getEntity().eid().id(), "relationshipName": relationshipName, "resourceName": resourceName, "typeName": typeName,  "relationshipType": relationshipType, "isSelected": isSelected, "eid": toTypeId, "solutions": relationship.getSolutions(), "dir": dir, "cols": [] };
                  if (isSelected === true && $scope.selectedNode) {
                      var selectedRelationships = _.filter($scope.selectedNode.children, function(childNode) {
                          return (
@@ -537,7 +563,7 @@
 
                              count++;
                              if (count > 1) {
-                                 var cloneRel = { "id": spUtils.newGuid(), "rid": rel.rid, "relationshipName": rel.relationshipName, "resourceName": rel.resourceName, "relationshipType": rel.relationshipType, "isSelected": rel.isSelected, "eid": rel.eid, "solutions": rel.solutions, "instancereq": rel.instancereq, "dir": rel.dir, "cols": [] };
+                                 var cloneRel = { "id": spUtils.newGuid(), "rid": rel.rid, "relationshipName": rel.relationshipName, "resourceName": rel.resourceName, "relationshipType": rel.relationshipType, "isSelected": rel.isSelected, "eid": rel.eid, "solutions": rel.solutions, "dir": rel.dir, "cols": [] };
                                  $scope.duplicateRelationships.push(cloneRel);
                              }
                          });
@@ -557,18 +583,7 @@
              relationshipType = "derivedResources";
              
              isSelected = $scope.isSelectedDerivedType(derived);
-             return { "id": spUtils.newGuid(), "rid": 0, "relationshipName": relationshipName, "resourceName": resourceName, "relationshipType": relationshipType, "isSelected": isSelected, "eid": toTypeId, "solutions": derived.getInSolution(), "instancereq": null, "dir": 'Forward', "cols": [] };
-         };
-         
-         $scope.getInstanceRequireJson = function () {
-             var relationshipName, resourceName, relationshipType, isSelected, toTypeId;
-             relationshipName = $scope.selectedNode.name + ' Relationship Detail';
-             resourceName = $scope.selectedNode.name;
-             toTypeId = $scope.selectedNode.etid;
-             relationshipType = "relationshipInstance";
-
-             isSelected = $scope.isSelectedRelationshipInstant();
-             return { "id": spUtils.newGuid(), "rid": 0, "relationshipName": relationshipName, "resourceName": resourceName, "relationshipType": relationshipType, "isSelected": isSelected, "eid": toTypeId, "solutions": $scope.currentSolutionId, "instancereq": null, "dir": 'Forward', "cols": [] };
+             return { "id": spUtils.newGuid(), "rid": 0, "relationshipName": relationshipName, "resourceName": resourceName, "relationshipType": relationshipType, "isSelected": isSelected, "eid": toTypeId, "solutions": derived.getInSolution(), "dir": 'Forward', "cols": [] };
          };
 
          //double click row to select replationship to post back
@@ -590,6 +605,25 @@
              //}
          };
 
+         $scope.addCustomRelationship = function () {
+             var typeEntity = sp.result($scope.model, 'customTypePickerOptions.selectedEntities.0');
+             if (!typeEntity)
+                 return;      
+
+             var customJson = {
+                 "id": spUtils.newGuid(),
+                 "rid": 0,
+                 "relationshipName": typeEntity.name,
+                 "resourceName": typeEntity.name,
+                 "relationshipType": "customJoin",
+                 "isSelected": true,
+                 "predicateScript": $scope.model.customJoinScript,
+                 "eid": typeEntity.idP,
+                 "cols": []
+             };
+             $scope.addRelationship(customJson);
+         }
+
          $scope.addRelationship = function (relationship) {
              $scope.showButton = false;
              var wasSelected = relationship.isSelected;
@@ -605,7 +639,7 @@
 
             if (wasSelected) {
                 relationshipUid = spUtils.newGuid();
-                $scope.relRelationships.push({ "id": relationshipUid, "rid": relationship.rid, "relationshipName": relationship.relationshipName, "resourceName": relationship.resourceName,"typeName": relationship.typeName, "relationshipType": relationship.relationshipType, "dir": relationship.dir, "isSelected": true, "eid": relationship.eid, "solutions": relationship.solutions, "cols": null });
+                $scope.relRelationships.push({ "id": relationshipUid, "rid": relationship.rid, "relationshipName": relationship.relationshipName, "resourceName": relationship.resourceName, "typeName": relationship.typeName, "relationshipType": relationship.relationshipType, "dir": relationship.dir, "isSelected": true, "eid": relationship.eid, "solutions": relationship.solutions, "cols": null, "predicateScript": relationship.predicateScript });
             } else {
                 $scope.relRelationships.push(relationship);
             }
@@ -696,32 +730,6 @@
              reloadRelationships();
 
              $scope.buildDiagram();
-         };
-
-         $scope.isSelectedRelationshipInstant = function() {
-             try {
-                 var selected;
-                 if ($scope.selectedNode) {
-                     selected = _.filter($scope.selectedNode.children, function (childNode) {
-                         return (
-                              childNode.qe.type === 'RelationshipInstance'
-                         );
-                     });
-
-                     if (selected && selected.length > 0) {
-                         return true;
-                     } else {
-                         return false;
-                     }
-
-                 } else {
-                     return false;
-                 }
-
-             } catch(e) {
-                 return false;
-             }
-
          };
 
          //check current dericed typed relationship is selected in report or not
@@ -965,52 +973,10 @@
 
              var g = d3.select("#canvasDiagram").select("svg");
 
-             //var allRelationships = [];
-
-
-             //_.forEach($scope.relationships, function(rel) {
-             //    if (rel.isSelected === true) {                     
-             //        allRelationships.push(rel);
-             //    }
-             //});
-
-             //_.forEach($scope.duplicateRelationships, function (rel) {
-             //    allRelationships = _.without(allRelationships, rel);
-             //    allRelationships.push(rel);
-             //});
-
-             //_.forEach($scope.relRelationships, function (rel) {
-             //    allRelationships = _.without(allRelationships, rel);
-             //    allRelationships.push(rel);
-             //});
-
-             //if ($scope.relRelationships) {
-             //    for (var i = 0; i < $scope.relRelationships.length; i++) {
-             //        //var exist = existsRelationship($scope.relRelationships[i], selectedRelationship);
-                     
-             //        //if (exist === undefined || exist === null ||  exist.length === 0) {
-             //            allRelationships.push($scope.relRelationships[i]);
-             //        //}
-             //    }
-             //}
-
-             //selectedRelationship = _.sortBy(selectedRelationship, function(d) { return d.rid; });
-
              $scope.buildRelationshipsRect(allRelationships, g);
          };
 
-      
-         function existsRelationship(relationship, relationships) {
-             var exist = _.filter(relationships, function (rel) {
-                 return (rel.id === relationship.id);
-             });
-
-             return exist;
-         }
-
          $scope.buildRelationshipsRect = function(relationships, container) {
-            
-
 
              var nodes = container.selectAll(".node")
                  .data(relationships, function (d) {
@@ -1042,6 +1008,9 @@
                      case "derivedResources":
                          imgPath = 'assets/images/derivedResourcestype.png';
                          break;
+                     case "customJoin":
+                         imgPath = 'assets/images/customJointype.png';
+                         break;
                      default:
                          imgPath = 'assets/images/relationshipstype.png';
                          break;
@@ -1055,7 +1024,6 @@
                      $scope.$apply();
                  }
              };
-
 
              g.append('polyline').attr('stroke', '#414141').attr("fill", "none").attr("stroke-width", "2").attr("points", "-10,8 -10,38 0,38");
              g.append('rect').attr("x", 0).attr("y", 25).attr("width", 170).attr("height", 22).attr("fill", "#414141");

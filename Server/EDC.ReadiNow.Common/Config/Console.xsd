@@ -1570,6 +1570,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="resourceConsoleBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:enumFormattingRule" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:allowedAccessInternalBy" />
     </xs:all>
   </xs:complexType>
@@ -1605,6 +1606,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="resourceConsoleBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:enumFormattingRule" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:allowedAccessInternalBy" />
     </xs:all>
   </xs:complexType>
@@ -1863,6 +1865,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="isDefaultTabletFormForEntityType" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:consoleFormUsedInResourceViewer" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:tabletFormUsedInResourceViewer" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="formForCreateAction" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:allowedDisplayBy" />
     </xs:all>
   </xs:complexType>
@@ -2240,6 +2243,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="resourceConsoleBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:enumFormattingRule" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:allowedAccessInternalBy" />
     </xs:all>
   </xs:complexType>
@@ -3585,6 +3589,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="resourceConsoleBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:enumFormattingRule" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:allowedAccessInternalBy" />
     </xs:all>
   </xs:complexType>
@@ -4021,6 +4026,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:actionRequiresRole" />
       <xs:element minOccurs="0" maxOccurs="1" ref="actionRequiresPermission" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="actionRequiresParentPermission" />
       <xs:element minOccurs="0" maxOccurs="1" ref="actionRequiresExpression" />
       <xs:element minOccurs="0" maxOccurs="1" ref="actionAppliesToRelationshipControlBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="actionAppliesToMenu" />
@@ -4034,6 +4040,7 @@
       <xs:element ref="actionMenuItem" />
       <xs:element ref="workflowActionMenuItem" />
       <xs:element ref="generateDocumentActionMenuItem" />
+      <xs:element ref="navigateToCreateFormActionMenuItem" />
     </xs:choice>
   </xs:group>
   <xs:element name="multiRelationshipControlBehavior" type="type_multiRelationshipControlBehavior" />
@@ -4155,6 +4162,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:actionRequiresRole" />
       <xs:element minOccurs="0" maxOccurs="1" ref="actionRequiresPermission" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="actionRequiresParentPermission" />
       <xs:element minOccurs="0" maxOccurs="1" ref="actionRequiresExpression" />
       <xs:element minOccurs="0" maxOccurs="1" ref="actionAppliesToRelationshipControlBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="actionAppliesToMenu" />
@@ -4213,6 +4221,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:actionRequiresRole" />
       <xs:element minOccurs="0" maxOccurs="1" ref="actionRequiresPermission" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="actionRequiresParentPermission" />
       <xs:element minOccurs="0" maxOccurs="1" ref="actionRequiresExpression" />
       <xs:element minOccurs="0" maxOccurs="1" ref="actionAppliesToRelationshipControlBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="actionAppliesToMenu" />
@@ -4225,6 +4234,66 @@
   <xs:group name="is_generateDocumentActionMenuItem">
     <xs:choice>
       <xs:element ref="generateDocumentActionMenuItem" />
+    </xs:choice>
+  </xs:group>
+  <xs:element name="navigateToCreateFormActionMenuItem" type="type_navigateToCreateFormActionMenuItem" />
+  <xs:complexType name="type_navigateToCreateFormActionMenuItem">
+    <xs:all>
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:name" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:description" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:createdDate" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:modifiedDate" />
+      <xs:element minOccurs="1" maxOccurs="1" ref="core:alias" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:canModify" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:canDelete" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:multiSelectName" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:emptySelectName" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="menuIconUrl" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="menuOrder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isMenuSeparator" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isActionButton" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isDoubleClickAction" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isStackedLandingPage" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="controlAction" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="controlActionData" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="appliesToSelection" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="appliesToMultiSelection" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isActionItem" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isContextMenu" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isSystem" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:htmlActionMethod" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:htmlActionState" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:htmlActionTarget" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:isOfType" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:resourceHasResourceKeyDataHashes" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:flags" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:securityOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:createdBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:lastModifiedBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:isRootForStructureView" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:inStructureLevel" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:inSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:indirectInSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="resourceInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="shortcutInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="resourceConsoleBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="selectionBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:actionRequiresRole" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="actionRequiresPermission" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="actionRequiresParentPermission" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="actionRequiresExpression" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="actionAppliesToRelationshipControlBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="actionAppliesToMenu" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="actionSuppressedOnMenu" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="actionIncludedAsButton" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="navigateToCreateFormActionDefinition" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="navigateToCreateFormActionForm" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="core:allowedAccessInternalBy" />
+    </xs:all>
+  </xs:complexType>
+  <xs:group name="is_navigateToCreateFormActionMenuItem">
+    <xs:choice>
+      <xs:element ref="navigateToCreateFormActionMenuItem" />
     </xs:choice>
   </xs:group>
   <xs:element name="navigationConfigButton" type="type_navigationConfigButton" />
@@ -6061,6 +6130,50 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="actionRequiresParentPermission.instance" type="ri_actionRequiresParentPermission" />
+  <xs:complexType name="ri_actionRequiresParentPermission">
+    <xs:all>
+      <xs:element minOccurs="1" maxOccurs="1" name="from">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_actionMenuItem" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="to">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="core:is_permission" />
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:element name="actionRequiresParentPermission">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:group minOccurs="0" maxOccurs="unbounded" ref="core:is_permission" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="parentPermissionFromAction.instance" type="ri_parentPermissionFromAction" />
+  <xs:complexType name="ri_parentPermissionFromAction">
+    <xs:all>
+      <xs:element minOccurs="1" maxOccurs="1" name="to">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_actionMenuItem" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="from">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="core:is_permission" />
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:element name="parentPermissionFromAction">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:group minOccurs="0" maxOccurs="unbounded" ref="is_actionMenuItem" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="actionRequiresExpression.instance" type="ri_actionRequiresExpression" />
   <xs:complexType name="ri_actionRequiresExpression">
     <xs:all>
@@ -6498,6 +6611,94 @@
     <xs:complexType mixed="true">
       <xs:sequence>
         <xs:group minOccurs="0" maxOccurs="unbounded" ref="is_generateDocumentActionMenuItem" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="navigateToCreateFormActionDefinition.instance" type="ri_navigateToCreateFormActionDefinition" />
+  <xs:complexType name="ri_navigateToCreateFormActionDefinition">
+    <xs:all>
+      <xs:element minOccurs="1" maxOccurs="1" name="from">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_navigateToCreateFormActionMenuItem" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="to">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="core:is_definition" />
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:element name="navigateToCreateFormActionDefinition">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:group minOccurs="0" maxOccurs="1" ref="core:is_definition" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="definitionForCreateAction.instance" type="ri_definitionForCreateAction" />
+  <xs:complexType name="ri_definitionForCreateAction">
+    <xs:all>
+      <xs:element minOccurs="1" maxOccurs="1" name="to">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_navigateToCreateFormActionMenuItem" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="from">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="core:is_definition" />
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:element name="definitionForCreateAction">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:group minOccurs="0" maxOccurs="unbounded" ref="is_navigateToCreateFormActionMenuItem" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="navigateToCreateFormActionForm.instance" type="ri_navigateToCreateFormActionForm" />
+  <xs:complexType name="ri_navigateToCreateFormActionForm">
+    <xs:all>
+      <xs:element minOccurs="1" maxOccurs="1" name="from">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_navigateToCreateFormActionMenuItem" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="to">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_customEditForm" />
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:element name="navigateToCreateFormActionForm">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:group minOccurs="0" maxOccurs="1" ref="is_customEditForm" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="formForCreateAction.instance" type="ri_formForCreateAction" />
+  <xs:complexType name="ri_formForCreateAction">
+    <xs:all>
+      <xs:element minOccurs="1" maxOccurs="1" name="to">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_navigateToCreateFormActionMenuItem" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="from">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_customEditForm" />
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:element name="formForCreateAction">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:group minOccurs="0" maxOccurs="unbounded" ref="is_navigateToCreateFormActionMenuItem" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

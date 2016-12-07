@@ -245,7 +245,7 @@ describe('Console|Controls|ColorPickers|spColorPicker|spec:|spColorPicker direct
         menuItems = $(dropDownContainer).find('a.dropdownMenuItem');
         colorName = $(menuItems[2]).find('span').text();
         namedColor = _.find(namedColors, function (nc) {
-            return nc.name == colorName;
+            return nc.name === colorName;
         });
         if (!namedColor) {
             namedColor = {

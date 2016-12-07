@@ -190,7 +190,7 @@ namespace ReadiNow.QueryEngine.Test.Builder
 
                 TestCaseData testCase = new TestCaseData( name );
                 if ( flags == "Ignore" )
-                    testCase = testCase.Ignore( );
+                    testCase = testCase.Ignore( "Ignored" );
 
                 yield return testCase;
             }

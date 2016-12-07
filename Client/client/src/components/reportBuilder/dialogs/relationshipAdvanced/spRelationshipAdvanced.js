@@ -18,15 +18,21 @@
            
     * 
     */
-    angular.module('mod.common.ui.spRelationshipAdvanced', ['ui.bootstrap', 'mod.common.alerts', 'mod.common.spEntityService', 'mod.common.ui.spEntityComboPicker'])
+    angular.module('mod.common.ui.spRelationshipAdvanced', [
+        'ui.bootstrap',
+        'mod.common.alerts',
+        'mod.common.spEntityService',
+        'mod.common.ui.spEntityComboPicker',
+        'mod.common.ui.spReportBuilder.spCustomJoinExpression'])
 
     .controller("spRelationshipAdvancedController", function ($scope, $uibModalInstance, options, spEntityService) {
 
         $scope.selectedNode = null;
 
-        $scope.model = {
-            resourceName : '',
+        var model = {
+            resourceName: '',
             isResourceReportNode: false,
+            isCustomJoinNode: false,
             isCheckExistenceOnlyEnabled: true,
             isExactTypeEnabled: true,
             isInstanceMustExistEnabled: true,
@@ -34,158 +40,188 @@
             isRecursionModeEnabled: true,
             isResourceMustExistEnabled: true,
             isJoinTypeEnabled: true,
+            isParentNeedNotExistEnabled: true,
 
             selectedNodeCheckExistenceOnly: false,
             selectedNodeExactType: false,
             selectedNodeInstanceMustExist: false,
-            selectedNodeMustExist: false,            
+            selectedNodeMustExist: false,
             selectedNodeRecursionMode: 'None',
             selectedNodeResourceMustExist: false,
-            selectedNodeExistMode: 'automatic'
-        };
+            selectedNodeExistMode: 'automatic',
+            selectedNodeParentNeedNotExist: false,
 
-        $scope.$watch('options', function() {
+            customJoinScript: null,
+            customJoinScriptOptions: {
+                childTypeId: 0,
+                parentTypeId: 0
+            }
+        };
+        $scope.model = model;
+
+        $scope.$watch('options', function () {
             $scope.selectedNode = options.selectedNode;
 
             var queryEntity = $scope.selectedNode.qe;
+            var parentEntity = $scope.selectedNode.pe;
 
             if (queryEntity && queryEntity.getType()) {
-                initial(queryEntity);
+                initial(queryEntity, parentEntity);
             }
 
             spEntityService.getEntity($scope.selectedNode.etid, 'name').then(function (entityType) {
-                $scope.model.resourceName = entityType.name;
+                model.resourceName = entityType.name;
             });
 
         });
 
-        $scope.$watch('model.selectedNodeCheckExistenceOnly', function() {
-            $scope.model.isRecursionModeEnabled = !$scope.model.selectedNodeCheckExistenceOnly;
-            if ($scope.model.selectedNodeCheckExistenceOnly === true) {
-                if ($scope.model.selectedNodeRecursionMode === 'None') {
-                    $scope.model.selectedNodeRecursionMode = 'Recursive';
+        $scope.$watch('model.selectedNodeCheckExistenceOnly', function () {
+            model.isRecursionModeEnabled = !model.selectedNodeCheckExistenceOnly;
+            if (model.selectedNodeCheckExistenceOnly === true) {
+                if (model.selectedNodeRecursionMode === 'None') {
+                    model.selectedNodeRecursionMode = 'Recursive';
                 }
             }
-        });        
+        });
 
-        function initial(queryEntity) {
-            switch (queryEntity.getTypeAlias()) {
+        function initial(queryEntity, parentEntity) {
+            var typeAlias = queryEntity.getEntity().type.nsAlias;
+
+            // Caution : This logic is backwards!! Mark things as 'enabled' to disable them.  TODO: Fix!!
+
+            switch (typeAlias) {
                 case "core:resourceReportNode":
-                case "resourceReportNode":
-                    $scope.model.selectedNodeExactType = queryEntity.getExactType();
+                    model.selectedNodeExactType = queryEntity.getExactType();
 
-                    $scope.model.isExactTypeEnabled = false;
-                    $scope.model.isResourceReportNode = true;
+                    model.isExactTypeEnabled = false;
+                    model.isResourceReportNode = true;
                     break;
-                case "core:relationshipReportNode":
-                case "relationshipReportNode":
-                    $scope.model.selectedNodeResourceMustExist = queryEntity.getTargetMustExist();
-                    $scope.model.selectedNodeCheckExistenceOnly = queryEntity.getFollowRecursive();
-                    //$scope.model.selectedNodeRecursionMode = queryEntity.getFollowRecursive();
-                    if ($scope.model.selectedNodeCheckExistenceOnly) {
-                        if (queryEntity.getIncludeSelfInRecursive() === true) {
-                            $scope.model.selectedNodeRecursionMode = 'RecursiveWithSelf';
-                        } else {
-                            $scope.model.selectedNodeRecursionMode = 'Recursive';
-                        }
-                    } else {
-                        $scope.model.selectedNodeRecursionMode = 'None';
-                    }                    
-
+                case "core:customJoinReportNode":
+                    var customJoin = queryEntity.getEntity();
+                    model.selectedNodeResourceMustExist = queryEntity.getTargetMustExist();
+                    model.selectedNodeParentNeedNotExist = customJoin.parentNeedNotExist;
                     if (queryEntity.getTargetNeedNotExist() === true) {
-                        $scope.model.selectedNodeExistMode = 'recordMayNotExist';
+                        model.selectedNodeExistMode = 'recordMayNotExist';
                     }
                     else if (queryEntity.getTargetMustExist() === true) {
-                        $scope.model.selectedNodeExistMode = 'recordMustExist';
-                    }  
-                   
-                    $scope.model.isResourceMustExistEnabled = false;
-                    $scope.model.isRecursionModeEnabled = false;
-                    $scope.model.isCheckExistenceOnlyEnabled = false;
-                    $scope.model.isJoinTypeEnabled = false;
-                    $scope.model.isResourceReportNode = false;
-                    break;
-                case "core:relationshipInstanceReportNode":
-                case "relationshipInstanceReportNode":
-                    $scope.model.selectedNodeExactType = queryEntity.getExactType();
-                    $scope.model.selectedNodeResourceMustExist = queryEntity.getTargetMustExist();
+                        model.selectedNodeExistMode = 'recordMustExist';
+                    }
 
-                    $scope.model.isExactTypeEnabled = false;
-                    $scope.model.isResourceMustExistEnabled = false;
-                    $scope.model.isResourceReportNode = false;
-                    break;
-                case "core:derivedTypeReportNode":
-                case "derivedTypeReportNode":
-                    $scope.model.selectedNodeExactType = queryEntity.getExactType();
-                    $scope.model.selectedNodeResourceMustExist = queryEntity.getTargetMustExist();
+                    model.isResourceMustExistEnabled = false;
+                    model.isRecursionModeEnabled = true;
+                    model.isCheckExistenceOnlyEnabled = false;
+                    model.isJoinTypeEnabled = false;
+                    model.isParentNeedNotExistEnabled = false;
+                    model.isResourceReportNode = false;
+                    model.isCustomJoinNode = true;
 
-                    $scope.model.isExactTypeEnabled = false;
-                    $scope.model.isResourceMustExistEnabled = false;
-                    $scope.model.isResourceReportNode = false;
-                    break;
-                default:
-                    $scope.model.isCheckExistenceOnlyEnabled = true;
-                    $scope.model.isExactTypeEnabled = true;
-                    $scope.model.isRecursionModeEnabled = true;
-                    $scope.model.isResourceMustExistEnabled = true;
-                    $scope.model.isJoinTypeEnabled = true;
-                    $scope.model.isResourceReportNode = false;
-                    break;
-            }
-            
-            $scope.isRecursionModeEnabled = !$scope.selectedNodeCheckExistenceOnly;
-        }
-        
-        function updateQueryEntity(queryEntity) {
-            switch (queryEntity.getTypeAlias()) {
-                case "core:resourceReportNode":
-                case "resourceReportNode":
-                    $scope.selectedNode.qe.getEntity().setExactType($scope.model.selectedNodeExactType);
-
+                    var parentTypeId = 0;
+                    if (parentEntity) {
+                        parentTypeId = sp.result(parentEntity.getEntity(), 'resourceReportNodeType.idP');
+                    }
+                    model.customJoinScript = customJoin.joinPredicateCalculation;
+                    model.customJoinScriptOptions = {
+                        childTypeId: customJoin.resourceReportNodeType.idP,
+                        parentTypeId: parentTypeId
+                    };
                     break;
                 case "core:relationshipReportNode":
-                case "relationshipReportNode":
-                    
-                    
-                    if ($scope.model.selectedNodeExistMode === 'recordMayNotExist') {
-                        $scope.selectedNode.qe.getEntity().targetNeedNotExist = true;
-                        $scope.selectedNode.qe.getEntity().targetMustExist = false;
-                        $scope.model.selectedNodeResourceMustExist = false;
-                    } else if ($scope.model.selectedNodeExistMode === 'recordMustExist')
-                    {
-                        $scope.selectedNode.qe.getEntity().targetNeedNotExist = false;
-                        $scope.selectedNode.qe.getEntity().targetMustExist = true;
-                        $scope.model.selectedNodeResourceMustExist = true;
-                    }
-                    else if ($scope.model.selectedNodeExistMode === 'automatic') {
-                        $scope.selectedNode.qe.getEntity().targetNeedNotExist = false;
-                        $scope.selectedNode.qe.getEntity().targetMustExist = false;
-                        $scope.model.selectedNodeResourceMustExist = false;
-                    }
-                    
-                    $scope.selectedNode.qe.getEntity().setFollowRecursive($scope.model.selectedNodeCheckExistenceOnly);
-                    if ($scope.model.selectedNodeRecursionMode === 'RecursiveWithSelf') {
-                        $scope.selectedNode.qe.getEntity().includeSelfInRecursive = true;
+                    model.selectedNodeResourceMustExist = queryEntity.getTargetMustExist();
+                    model.selectedNodeParentNeedNotExist = queryEntity.getEntity().parentNeedNotExist;
+                    model.selectedNodeCheckExistenceOnly = queryEntity.getFollowRecursive();
+                    //model.selectedNodeRecursionMode = queryEntity.getFollowRecursive();
+                    if (model.selectedNodeCheckExistenceOnly) {
+                        if (queryEntity.getIncludeSelfInRecursive() === true) {
+                            model.selectedNodeRecursionMode = 'RecursiveWithSelf';
+                        } else {
+                            model.selectedNodeRecursionMode = 'Recursive';
+                        }
                     } else {
-                        $scope.selectedNode.qe.getEntity().includeSelfInRecursive =false;
+                        model.selectedNodeRecursionMode = 'None';
                     }
-                    break;
-                case "core:relationshipInstanceReportNode":
-                case "relationshipInstanceReportNode":
-                    //queryEntity.match = $scope.selectedNodeExactType;
-                    //queryEntity.insmustexist = $scope.selectedNodeInstanceMustExist;
-                    $scope.selectedNode.qe.getEntity().setExactType($scope.model.selectedNodeExactType);
-                    $scope.selectedNode.qe.getEntity().setTargetMustExist($scope.model.selectedNodeResourceMustExist);
+
+                    if (queryEntity.getTargetNeedNotExist() === true) {
+                        model.selectedNodeExistMode = 'recordMayNotExist';
+                    }
+                    else if (queryEntity.getTargetMustExist() === true) {
+                        model.selectedNodeExistMode = 'recordMustExist';
+                    }
+
+                    model.isResourceMustExistEnabled = false;
+                    model.isRecursionModeEnabled = false;
+                    model.isCheckExistenceOnlyEnabled = false;
+                    model.isJoinTypeEnabled = false;
+                    model.isResourceReportNode = false;
+                    model.isParentNeedNotExistEnabled = true;
                     break;
                 case "core:derivedTypeReportNode":
-                case "derivedTypeReportNode":
-                    //queryEntity.match = $scope.selectedNodeExactType;
-                    //queryEntity.mustexist = $scope.selectedNodeMustExist;
-                    $scope.selectedNode.qe.getEntity().setExactType($scope.model.selectedNodeExactType);
-                    $scope.selectedNode.qe.getEntity().setTargetMustExist($scope.model.selectedNodeResourceMustExist);
+                    model.selectedNodeExactType = queryEntity.getExactType();
+                    model.selectedNodeResourceMustExist = queryEntity.getTargetMustExist();
+
+                    model.isExactTypeEnabled = false;
+                    model.isResourceMustExistEnabled = false;
+                    model.isResourceReportNode = false;
+                    model.isParentNeedNotExistEnabled = true;
                     break;
                 default:
-                    
+                    model.isCheckExistenceOnlyEnabled = true;
+                    model.isExactTypeEnabled = true;
+                    model.isRecursionModeEnabled = true;
+                    model.isResourceMustExistEnabled = true;
+                    model.isJoinTypeEnabled = true;
+                    model.isResourceReportNode = false;
+                    model.isParentNeedNotExistEnabled = true;
+                    break;
+            }
+
+            $scope.isRecursionModeEnabled = !$scope.selectedNodeCheckExistenceOnly;
+        }
+
+        function updateQueryEntity(queryEntity) {
+            var typeAlias = queryEntity.getEntity().type.nsAlias;
+
+            switch (typeAlias) {
+                case "core:resourceReportNode":
+                    $scope.selectedNode.qe.getEntity().setExactType(model.selectedNodeExactType);
+
+                    break;
+                case "core:customJoinReportNode":
+                case "core:relationshipReportNode":
+                    if (model.selectedNodeExistMode === 'recordMayNotExist') {
+                        $scope.selectedNode.qe.getEntity().targetNeedNotExist = true;
+                        $scope.selectedNode.qe.getEntity().targetMustExist = false;
+                        model.selectedNodeResourceMustExist = false;
+                    } else if (model.selectedNodeExistMode === 'recordMustExist') {
+                        $scope.selectedNode.qe.getEntity().targetNeedNotExist = false;
+                        $scope.selectedNode.qe.getEntity().targetMustExist = true;
+                        model.selectedNodeResourceMustExist = true;
+                    }
+                    else if (model.selectedNodeExistMode === 'automatic') {
+                        $scope.selectedNode.qe.getEntity().targetNeedNotExist = false;
+                        $scope.selectedNode.qe.getEntity().targetMustExist = false;
+                        model.selectedNodeResourceMustExist = false;
+                    }
+                    $scope.selectedNode.qe.getEntity().parentNeedNotExist = model.selectedNodeParentNeedNotExist;
+
+                    if (typeAlias === "core:relationshipReportNode") {
+                        $scope.selectedNode.qe.getEntity().setFollowRecursive(model.selectedNodeCheckExistenceOnly);
+                        if (model.selectedNodeRecursionMode === 'RecursiveWithSelf') {
+                            $scope.selectedNode.qe.getEntity().includeSelfInRecursive = true;
+                        } else {
+                            $scope.selectedNode.qe.getEntity().includeSelfInRecursive = false;
+                        }
+                    } else if (typeAlias === "core:customJoinReportNode") {
+                        $scope.selectedNode.qe.getEntity().joinPredicateCalculation = model.customJoinScript;
+                    }
+                    break;
+                case "core:derivedTypeReportNode":
+                    //queryEntity.match = $scope.selectedNodeExactType;
+                    //queryEntity.mustexist = $scope.selectedNodeMustExist;
+                    $scope.selectedNode.qe.getEntity().setExactType(model.selectedNodeExactType);
+                    $scope.selectedNode.qe.getEntity().setTargetMustExist(model.selectedNodeResourceMustExist);
+                    break;
+                default:
+
                     break;
             }
 
@@ -193,9 +229,9 @@
         }
 
         $scope.$watch('model.selectedNodeExactType', function () {
-            if ($scope.model.selectedNodeExactType) {
-                
-                
+            if (model.selectedNodeExactType) {
+
+
             }
         });
 
@@ -216,7 +252,7 @@
     .factory('spRelationshipAdvancedDialog', function (spDialogService) {
         // setup the dialog
         var exports = {
-            
+
             showModalDialog: function (options, defaultOverrides) {
                 var dialogDefaults = {
                     title: 'Select Relationship',
@@ -238,7 +274,7 @@
 
                 return spDialogService.showModalDialog(dialogDefaults);
             }
-           
+
         };
 
         return exports;

@@ -688,6 +688,13 @@
         <description>If true then a constraint applied to the target does not affect the parent (like a left join). If false, then constraints will apply to the overall report.</description>
         <fieldInGroup>resourceReportNodeDetails</fieldInGroup>
       </boolField>
+      <boolField>
+        <alias>parentNeedNotExist</alias>
+        <!-- RelatedResource.ParentNeedNotExist -->
+        <name>Parent need not exist</name>
+        <description>If true then all target values are returned, including unmatched (i.e. a full join).</description>
+        <fieldInGroup>resourceReportNodeDetails</fieldInGroup>
+      </boolField>
     </fields>
     <relationships>
       <relationship>
@@ -769,6 +776,27 @@
         <relationshipInToTypeGroup>relationshipDetails</relationshipInToTypeGroup>
       </relationship>
     </relationships>
+  </type>
+  <!-- customJoinReportNode -->
+  <type>
+    <alias>customJoinReportNode</alias>
+    <name>Custom Join Node</name>
+    <description>A node in the report tree that performs a calculated-based join.</description>
+    <generateCode>true</generateCode>
+    <inherits>resourceReportNode</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Join Node Details</name>
+        <alias>customJoinReportNodeDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>joinPredicateCalculation</alias>
+        <name>Join calculation</name>
+        <fieldInGroup>customJoinReportNodeDetails</fieldInGroup>
+      </stringField>
+    </fields>
   </type>
   <!-- derivedTypeReportNode -->
   <type>
@@ -1154,6 +1182,14 @@
         <description>Indicates if text should be displayed in addition to conditional formatting rules such as icons.</description>
         <fieldInGroup>displayFormatDetails</fieldInGroup>
       </boolField>
+      <boolField>
+        <alias>disableDefaultFormat</alias>
+        <!-- ColumnFormatting.ShowText -->
+        <name>Use default format for choice field</name>
+        <description>Indicates if current type is choice field then use default format or not.</description>
+        <fieldInGroup>displayFormatDetails</fieldInGroup>
+      </boolField>
+      
       <intField>
         <alias>formatDecimalPlaces</alias>
         <!-- ColumnFormatting.DecimalPlaces -->
@@ -1228,6 +1264,16 @@
         <description>Column Formatting used DateTime types</description>
         <relType>relChoiceField</relType>
         <toType>dateTimeColFmtEnum</toType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>displayFormatDetails</relationshipInFromTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <name>EntityListColumnFormat</name>
+        <alias>entityListColumnFormat</alias>
+        <description>Entity list formatting</description>
+        <relType>relChoiceField</relType>
+        <toType>entityListColFmtEnum</toType>
         <generateCode>true</generateCode>
         <relationshipInFromTypeGroup>displayFormatDetails</relationshipInFromTypeGroup>
         <securesTo>true</securesTo>
@@ -1420,6 +1466,25 @@
         <alias>dateTimeHour</alias>
         <enumOrder>15</enumOrder>
       </dateColFmtEnum>
+    </enumValues>
+  </enumType>
+  <!-- entityListColFmtEnum -->
+  <enumType>
+    <alias>entityListColFmtEnum</alias>
+    <name>EntityListColFmtEnum</name>
+    <inherits>enumValue</inherits>
+    <generateCode>true</generateCode>
+    <enumValues>
+      <entityListColFmtEnum>
+        <name>Comma separated</name>
+        <alias>commaSeparatedList</alias>
+        <enumOrder>1</enumOrder>
+      </entityListColFmtEnum>
+      <entityListColFmtEnum>
+        <name>Stacked</name>
+        <alias>stackedList</alias>
+        <enumOrder>2</enumOrder>
+      </entityListColFmtEnum>      
     </enumValues>
   </enumType>
   <!-- formattingRule -->

@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.ServiceProcess;
@@ -11,10 +10,12 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using Common.Logging;
+using EDC.ReadiNow.CAST;
 using EDC.ReadiNow.Scheduling;
 using Quartz;
 using Quartz.Impl;
 using EDC.ReadiNow.Core;
+using EDC.ReadiNow.MessageQueue;
 
 namespace SchedulerService
 {
@@ -49,12 +50,14 @@ namespace SchedulerService
             {
                 logger.Info("Scheduler service: Starting");
 
+                Factory.BackgroundTaskManager.IsActive = true;
                 Factory.BackgroundTaskManager.Start();
 
                 scheduler = SchedulingHelper.Instance;
-
                 scheduler.Start();
-
+                
+                MessageQueueResponseManager.Start();
+                CastComms.Initialize();
 
                 try
                 {
@@ -76,6 +79,9 @@ namespace SchedulerService
         protected override void OnStop()
         {
             logger.Info("Scheduler service: Stopping");
+
+            CastComms.Shutdown();
+            MessageQueueResponseManager.Stop();
 
             scheduler.Shutdown(true);
 

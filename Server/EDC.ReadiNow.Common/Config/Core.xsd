@@ -28,6 +28,8 @@
       <xs:element ref="importFileTypeEnum" />
       <xs:element ref="importRun" />
       <xs:element ref="scheduledImportConfig" />
+      <xs:element ref="scheduledExportConfig" />
+      <xs:element ref="exportFileTypeEnum" />
       <xs:element ref="chartComponent" />
       <xs:element ref="chart" />
       <xs:element ref="chartSeries" />
@@ -63,6 +65,7 @@
       <xs:element ref="operatorEnum" />
       <xs:element ref="resourceReportNode" />
       <xs:element ref="relationshipReportNode" />
+      <xs:element ref="customJoinReportNode" />
       <xs:element ref="derivedTypeReportNode" />
       <xs:element ref="aggregateReportNode" />
       <xs:element ref="idExpression" />
@@ -78,6 +81,7 @@
       <xs:element ref="dateColFmtEnum" />
       <xs:element ref="timeColFmtEnum" />
       <xs:element ref="dateTimeColFmtEnum" />
+      <xs:element ref="entityListColFmtEnum" />
       <xs:element ref="barFormattingRule" />
       <xs:element ref="iconFormattingRule" />
       <xs:element ref="iconRule" />
@@ -159,6 +163,7 @@
       <xs:element ref="cleanupFileRepositoriesAction" />
       <xs:element ref="systemOnlyScheduleAction" />
       <xs:element ref="processInboxesAction" />
+      <xs:element ref="systemDocumentationSettings" />
       <xs:element ref="console:uiContext" />
       <xs:element ref="console:renderControlType" />
       <xs:element ref="console:customRenderControlType" />
@@ -182,6 +187,7 @@
       <xs:element ref="console:topNavigationStyleEnum" />
       <xs:element ref="eventLogSettings" />
       <xs:element ref="enumType" />
+      <xs:element ref="enumFormattingType" />
       <xs:element ref="fieldType" />
       <xs:element ref="aliasField" />
       <xs:element ref="stringField" />
@@ -320,6 +326,9 @@
       <xs:element ref="displayFormUserTask" />
       <xs:element ref="activityPrompt" />
       <xs:element ref="userSurveyTask" />
+      <xs:element ref="suspendedTask" />
+      <xs:element ref="suspendedTrigger" />
+      <xs:element ref="suspendedRun" />
       <xs:element ref="workflowRunLogEntry" />
       <xs:element ref="workflowUserActionLogEntry" />
       <xs:element ref="workflowRunFailedLogEntry" />
@@ -352,13 +361,14 @@
       <xs:element ref="getResourcesActivity" />
       <xs:element ref="createLinkActivity" />
       <xs:element ref="generateDocActivity" />
-      <xs:element ref="exportFileTypeEnum" />
       <xs:element ref="exportToActivity" />
       <xs:element ref="replyMapEntry" />
       <xs:element ref="notifyActivity" />
       <xs:element ref="promptUserActivity" />
-      <xs:element ref="startSurveyActivity" />
+      <xs:element ref="launchPersonCampaignActivity" />
+      <xs:element ref="launchTargetCampaignActivity" />
       <xs:element ref="reviewSurveyActivity" />
+      <xs:element ref="startSurveyActivity" />
       <xs:element ref="scheduleAction" />
       <xs:element ref="enableableItem" />
       <xs:element ref="wfTriggerOnSchedule" />
@@ -382,6 +392,7 @@
       <xs:element ref="console:actionMenu" />
       <xs:element ref="console:workflowActionMenuItem" />
       <xs:element ref="console:generateDocumentActionMenuItem" />
+      <xs:element ref="console:navigateToCreateFormActionMenuItem" />
       <xs:element ref="console:navigationConfigButton" />
       <xs:element ref="inherits.instance" />
       <xs:element ref="derivedTypes.instance" />
@@ -462,6 +473,9 @@
       <xs:element ref="importConfigUsed.instance" />
       <xs:element ref="importRuns.instance" />
       <xs:element ref="sicImportConfig.instance" />
+      <xs:element ref="secReport.instance" />
+      <xs:element ref="secFileType.instance" />
+      <xs:element ref="secRunLog.instance" />
       <xs:element ref="chartReport.instance" />
       <xs:element ref="reportCharts.instance" />
       <xs:element ref="chartHasSeries.instance" />
@@ -548,6 +562,7 @@
       <xs:element ref="dateColumnFormat.instance" />
       <xs:element ref="timeColumnFormat.instance" />
       <xs:element ref="dateTimeColumnFormat.instance" />
+      <xs:element ref="entityListColumnFormat.instance" />
       <xs:element ref="ruleCondition.instance" />
       <xs:element ref="barMinValue.instance" />
       <xs:element ref="barMaxValue.instance" />
@@ -702,6 +717,8 @@
       <xs:element ref="inspectSecurityChecksOnResource.instance" />
       <xs:element ref="enumOwner.instance" />
       <xs:element ref="enumValues.instance" />
+      <xs:element ref="enumValueFormattingType.instance" />
+      <xs:element ref="enumFormattingRule.instance" />
       <xs:element ref="fieldOverrides.instance" />
       <xs:element ref="fieldOverriddenBy.instance" />
       <xs:element ref="fieldOverrideForType.instance" />
@@ -928,6 +945,11 @@
       <xs:element ref="userSurveyTaskSurveyResponse.instance" />
       <xs:element ref="userSurveyTaskForResults.instance" />
       <xs:element ref="userSurveyTaskTargetDefinition.instance" />
+      <xs:element ref="stIdentity.instance" />
+      <xs:element ref="stSecondaryIdentity.instance" />
+      <xs:element ref="stTrigger.instance" />
+      <xs:element ref="stResource.instance" />
+      <xs:element ref="srRun.instance" />
       <xs:element ref="workflowRunBeingLogged.instance" />
       <xs:element ref="runLog.instance" />
       <xs:element ref="userActionBeingLogged.instance" />
@@ -981,6 +1003,8 @@
       <xs:element ref="roleFromAction.instance" />
       <xs:element ref="console:actionRequiresPermission.instance" />
       <xs:element ref="console:permissionFromAction.instance" />
+      <xs:element ref="console:actionRequiresParentPermission.instance" />
+      <xs:element ref="console:parentPermissionFromAction.instance" />
       <xs:element ref="console:actionRequiresExpression.instance" />
       <xs:element ref="console:expressionFromAction.instance" />
       <xs:element ref="console:actionAppliesToRelationshipControlBehavior.instance" />
@@ -1001,6 +1025,10 @@
       <xs:element ref="console:workflowUsedInActionMenuItems.instance" />
       <xs:element ref="console:actionMenuItemToReportTemplate.instance" />
       <xs:element ref="console:reportTemplateUsedInActionMenuItems.instance" />
+      <xs:element ref="console:navigateToCreateFormActionDefinition.instance" />
+      <xs:element ref="console:definitionForCreateAction.instance" />
+      <xs:element ref="console:navigateToCreateFormActionForm.instance" />
+      <xs:element ref="console:formForCreateAction.instance" />
       <xs:element ref="console:navigationElementIcon.instance" />
       <xs:element ref="console:applicationIcon.instance" />
       <xs:element ref="console:typeIcon.instance" />
@@ -1587,6 +1615,11 @@
       <xs:restriction base="xs:boolean" />
     </xs:simpleType>
   </xs:element>
+  <xs:element name="parentNeedNotExist">
+    <xs:simpleType>
+      <xs:restriction base="xs:boolean" />
+    </xs:simpleType>
+  </xs:element>
   <xs:element name="followInReverse">
     <xs:simpleType>
       <xs:restriction base="xs:boolean" />
@@ -1612,12 +1645,22 @@
       <xs:restriction base="xs:boolean" />
     </xs:simpleType>
   </xs:element>
+  <xs:element name="joinPredicateCalculation">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" />
+    </xs:simpleType>
+  </xs:element>
   <xs:element name="reportScript">
     <xs:simpleType>
       <xs:restriction base="xs:string" />
     </xs:simpleType>
   </xs:element>
   <xs:element name="columnShowText">
+    <xs:simpleType>
+      <xs:restriction base="xs:boolean" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="disableDefaultFormat">
     <xs:simpleType>
       <xs:restriction base="xs:boolean" />
     </xs:simpleType>
@@ -2412,6 +2455,51 @@
       <xs:restriction base="xs:dateTime" />
     </xs:simpleType>
   </xs:element>
+  <xs:element name="navHeaderDocumentationUrl">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:pattern value="^(http(s)?://)?([\w-]+\.)+[\w-]+(:\d+)?(/[\w- \+.,/#@:!?%&amp;=]*)?$" />
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="documentationUrl">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:pattern value="^(http(s)?://)?([\w-]+\.)+[\w-]+(:\d+)?(/[\w- \+.,/#@:!?%&amp;=]*)?$" />
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="releaseNotesUrl">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:pattern value="^(http(s)?://)?([\w-]+\.)+[\w-]+(:\d+)?(/[\w- \+.,/#@:!?%&amp;=]*)?$" />
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="contactSupportUrl">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:pattern value="^(http(s)?://)?([\w-]+\.)+[\w-]+(:\d+)?(/[\w- \+.,/#@:!?%&amp;=]*)?$" />
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="documentationUserName">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="documentationUserPassword">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:maxLength value="100" />
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="documentationUserPasswordSecureId">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" />
+    </xs:simpleType>
+  </xs:element>
   <xs:element name="allowSelectMultiTypes">
     <xs:simpleType>
       <xs:restriction base="xs:boolean" />
@@ -2537,6 +2625,7 @@
     <xs:simpleType>
       <xs:restriction base="xs:int">
         <xs:minInclusive value="1" />
+        <xs:maxInclusive value="10000" />
       </xs:restriction>
     </xs:simpleType>
   </xs:element>
@@ -3466,6 +3555,21 @@
       <xs:restriction base="xs:string" />
     </xs:simpleType>
   </xs:element>
+  <xs:element name="stCulture">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="stTimezone">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="stTriggerDepth">
+    <xs:simpleType>
+      <xs:restriction base="xs:int" />
+    </xs:simpleType>
+  </xs:element>
   <xs:element name="wrleWorkflowName">
     <xs:simpleType>
       <xs:restriction base="xs:string" />
@@ -3769,6 +3873,8 @@
       <xs:element ref="importFileTypeEnum" />
       <xs:element ref="importRun" />
       <xs:element ref="scheduledImportConfig" />
+      <xs:element ref="scheduledExportConfig" />
+      <xs:element ref="exportFileTypeEnum" />
       <xs:element ref="chartComponent" />
       <xs:element ref="chart" />
       <xs:element ref="chartSeries" />
@@ -3804,6 +3910,7 @@
       <xs:element ref="operatorEnum" />
       <xs:element ref="resourceReportNode" />
       <xs:element ref="relationshipReportNode" />
+      <xs:element ref="customJoinReportNode" />
       <xs:element ref="derivedTypeReportNode" />
       <xs:element ref="aggregateReportNode" />
       <xs:element ref="idExpression" />
@@ -3819,6 +3926,7 @@
       <xs:element ref="dateColFmtEnum" />
       <xs:element ref="timeColFmtEnum" />
       <xs:element ref="dateTimeColFmtEnum" />
+      <xs:element ref="entityListColFmtEnum" />
       <xs:element ref="barFormattingRule" />
       <xs:element ref="iconFormattingRule" />
       <xs:element ref="iconRule" />
@@ -3900,6 +4008,7 @@
       <xs:element ref="cleanupFileRepositoriesAction" />
       <xs:element ref="systemOnlyScheduleAction" />
       <xs:element ref="processInboxesAction" />
+      <xs:element ref="systemDocumentationSettings" />
       <xs:element ref="console:uiContext" />
       <xs:element ref="console:renderControlType" />
       <xs:element ref="console:customRenderControlType" />
@@ -3923,6 +4032,7 @@
       <xs:element ref="console:topNavigationStyleEnum" />
       <xs:element ref="eventLogSettings" />
       <xs:element ref="enumType" />
+      <xs:element ref="enumFormattingType" />
       <xs:element ref="fieldType" />
       <xs:element ref="aliasField" />
       <xs:element ref="stringField" />
@@ -4061,6 +4171,9 @@
       <xs:element ref="displayFormUserTask" />
       <xs:element ref="activityPrompt" />
       <xs:element ref="userSurveyTask" />
+      <xs:element ref="suspendedTask" />
+      <xs:element ref="suspendedTrigger" />
+      <xs:element ref="suspendedRun" />
       <xs:element ref="workflowRunLogEntry" />
       <xs:element ref="workflowUserActionLogEntry" />
       <xs:element ref="workflowRunFailedLogEntry" />
@@ -4093,13 +4206,14 @@
       <xs:element ref="getResourcesActivity" />
       <xs:element ref="createLinkActivity" />
       <xs:element ref="generateDocActivity" />
-      <xs:element ref="exportFileTypeEnum" />
       <xs:element ref="exportToActivity" />
       <xs:element ref="replyMapEntry" />
       <xs:element ref="notifyActivity" />
       <xs:element ref="promptUserActivity" />
-      <xs:element ref="startSurveyActivity" />
+      <xs:element ref="launchPersonCampaignActivity" />
+      <xs:element ref="launchTargetCampaignActivity" />
       <xs:element ref="reviewSurveyActivity" />
+      <xs:element ref="startSurveyActivity" />
       <xs:element ref="scheduleAction" />
       <xs:element ref="enableableItem" />
       <xs:element ref="wfTriggerOnSchedule" />
@@ -4123,6 +4237,7 @@
       <xs:element ref="console:actionMenu" />
       <xs:element ref="console:workflowActionMenuItem" />
       <xs:element ref="console:generateDocumentActionMenuItem" />
+      <xs:element ref="console:navigateToCreateFormActionMenuItem" />
       <xs:element ref="console:navigationConfigButton" />
     </xs:choice>
   </xs:group>
@@ -4582,6 +4697,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="reverseRelationships" />
       <xs:element minOccurs="0" maxOccurs="1" ref="reportTemplatesApplyToType" />
       <xs:element minOccurs="0" maxOccurs="1" ref="definitionUsedByReport" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:definitionForCreateAction" />
     </xs:all>
   </xs:complexType>
   <xs:group name="is_definition">
@@ -4799,6 +4915,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
     </xs:all>
   </xs:complexType>
@@ -4881,6 +4998,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
     </xs:all>
   </xs:complexType>
@@ -5284,6 +5402,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
     </xs:all>
   </xs:complexType>
@@ -5336,6 +5455,45 @@
       <xs:element ref="importRun" />
     </xs:choice>
   </xs:group>
+  <xs:element name="scheduledFtpConfig" type="type_scheduledFtpConfig" />
+  <xs:complexType name="type_scheduledFtpConfig">
+    <xs:all>
+      <xs:element minOccurs="0" maxOccurs="1" ref="name" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="description" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdDate" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="modifiedDate" />
+      <xs:element minOccurs="1" maxOccurs="1" ref="alias" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canModify" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canDelete" />
+      <xs:element minOccurs="1" maxOccurs="1" ref="sicUrl" />
+      <xs:element minOccurs="1" maxOccurs="1" ref="sicUsername" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="sicPassword" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="sicPasswordSecureId" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="triggerEnabled" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="flags" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="securityOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="lastModifiedBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isRootForStructureView" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inStructureLevel" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="indirectInSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="scheduleForTrigger" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
+    </xs:all>
+  </xs:complexType>
+  <xs:group name="is_scheduledFtpConfig">
+    <xs:choice>
+      <xs:element ref="scheduledImportConfig" />
+      <xs:element ref="scheduledExportConfig" />
+    </xs:choice>
+  </xs:group>
   <xs:element name="scheduledImportConfig" type="type_scheduledImportConfig" />
   <xs:complexType name="type_scheduledImportConfig">
     <xs:all>
@@ -5347,7 +5505,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="canModify" />
       <xs:element minOccurs="0" maxOccurs="1" ref="canDelete" />
       <xs:element minOccurs="1" maxOccurs="1" ref="sicUrl" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="sicUsername" />
+      <xs:element minOccurs="1" maxOccurs="1" ref="sicUsername" />
       <xs:element minOccurs="0" maxOccurs="1" ref="sicPassword" />
       <xs:element minOccurs="0" maxOccurs="1" ref="sicPasswordSecureId" />
       <xs:element minOccurs="0" maxOccurs="1" ref="triggerEnabled" />
@@ -5373,6 +5531,83 @@
   <xs:group name="is_scheduledImportConfig">
     <xs:choice>
       <xs:element ref="scheduledImportConfig" />
+    </xs:choice>
+  </xs:group>
+  <xs:element name="scheduledExportConfig" type="type_scheduledExportConfig" />
+  <xs:complexType name="type_scheduledExportConfig">
+    <xs:all>
+      <xs:element minOccurs="0" maxOccurs="1" ref="name" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="description" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdDate" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="modifiedDate" />
+      <xs:element minOccurs="1" maxOccurs="1" ref="alias" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canModify" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canDelete" />
+      <xs:element minOccurs="1" maxOccurs="1" ref="sicUrl" />
+      <xs:element minOccurs="1" maxOccurs="1" ref="sicUsername" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="sicPassword" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="sicPasswordSecureId" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="triggerEnabled" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="flags" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="securityOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="lastModifiedBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isRootForStructureView" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inStructureLevel" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="indirectInSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="secReport" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="secFileType" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="secRunLog" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="scheduleForTrigger" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
+    </xs:all>
+  </xs:complexType>
+  <xs:group name="is_scheduledExportConfig">
+    <xs:choice>
+      <xs:element ref="scheduledExportConfig" />
+    </xs:choice>
+  </xs:group>
+  <xs:element name="exportFileTypeEnum" type="type_exportFileTypeEnum" />
+  <xs:complexType name="type_exportFileTypeEnum">
+    <xs:all>
+      <xs:element minOccurs="0" maxOccurs="1" ref="name" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="description" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdDate" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="modifiedDate" />
+      <xs:element minOccurs="1" maxOccurs="1" ref="alias" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canModify" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canDelete" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumOrder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canModifyProtectedResource" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="flags" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="securityOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="lastModifiedBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isRootForStructureView" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inStructureLevel" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="indirectInSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
+    </xs:all>
+  </xs:complexType>
+  <xs:group name="is_exportFileTypeEnum">
+    <xs:choice>
+      <xs:element ref="exportFileTypeEnum" />
     </xs:choice>
   </xs:group>
   <xs:element name="chartComponent" type="type_chartComponent" />
@@ -5609,6 +5844,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
     </xs:all>
   </xs:complexType>
@@ -5644,6 +5880,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
     </xs:all>
   </xs:complexType>
@@ -5679,6 +5916,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
     </xs:all>
   </xs:complexType>
@@ -5714,6 +5952,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
     </xs:all>
   </xs:complexType>
@@ -5749,6 +5988,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
     </xs:all>
   </xs:complexType>
@@ -5784,6 +6024,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
     </xs:all>
   </xs:complexType>
@@ -5819,6 +6060,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
     </xs:all>
   </xs:complexType>
@@ -5854,6 +6096,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
     </xs:all>
   </xs:complexType>
@@ -6626,6 +6869,7 @@
       <xs:element ref="reportCondition" />
       <xs:element ref="resourceReportNode" />
       <xs:element ref="relationshipReportNode" />
+      <xs:element ref="customJoinReportNode" />
       <xs:element ref="derivedTypeReportNode" />
       <xs:element ref="aggregateReportNode" />
       <xs:element ref="idExpression" />
@@ -6867,6 +7111,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
     </xs:all>
   </xs:complexType>
@@ -6911,6 +7156,7 @@
     <xs:choice>
       <xs:element ref="resourceReportNode" />
       <xs:element ref="relationshipReportNode" />
+      <xs:element ref="customJoinReportNode" />
       <xs:element ref="derivedTypeReportNode" />
       <xs:element ref="aggregateReportNode" />
     </xs:choice>
@@ -6928,6 +7174,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="exactType" />
       <xs:element minOccurs="0" maxOccurs="1" ref="targetMustExist" />
       <xs:element minOccurs="0" maxOccurs="1" ref="targetNeedNotExist" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="parentNeedNotExist" />
       <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
       <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
       <xs:element minOccurs="0" maxOccurs="1" ref="flags" />
@@ -6955,6 +7202,7 @@
     <xs:choice>
       <xs:element ref="resourceReportNode" />
       <xs:element ref="relationshipReportNode" />
+      <xs:element ref="customJoinReportNode" />
       <xs:element ref="derivedTypeReportNode" />
     </xs:choice>
   </xs:group>
@@ -6971,6 +7219,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="exactType" />
       <xs:element minOccurs="0" maxOccurs="1" ref="targetMustExist" />
       <xs:element minOccurs="0" maxOccurs="1" ref="targetNeedNotExist" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="parentNeedNotExist" />
       <xs:element minOccurs="0" maxOccurs="1" ref="followInReverse" />
       <xs:element minOccurs="0" maxOccurs="1" ref="followRecursive" />
       <xs:element minOccurs="0" maxOccurs="1" ref="includeSelfInRecursive" />
@@ -7005,6 +7254,49 @@
       <xs:element ref="relationshipReportNode" />
     </xs:choice>
   </xs:group>
+  <xs:element name="customJoinReportNode" type="type_customJoinReportNode" />
+  <xs:complexType name="type_customJoinReportNode">
+    <xs:all>
+      <xs:element minOccurs="0" maxOccurs="1" ref="name" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="description" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdDate" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="modifiedDate" />
+      <xs:element minOccurs="1" maxOccurs="1" ref="alias" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canModify" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canDelete" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="exactType" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="targetMustExist" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="targetNeedNotExist" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="parentNeedNotExist" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="joinPredicateCalculation" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="flags" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="securityOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="lastModifiedBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isRootForStructureView" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inStructureLevel" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="indirectInSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="relatedReportNodes" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="resourceReportNodeType" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="parentReportNode" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="parentAggregatedNode" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="nodeUsedByExpression" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="nodeUsedByStructureViewExpression" />
+    </xs:all>
+  </xs:complexType>
+  <xs:group name="is_customJoinReportNode">
+    <xs:choice>
+      <xs:element ref="customJoinReportNode" />
+    </xs:choice>
+  </xs:group>
   <xs:element name="derivedTypeReportNode" type="type_derivedTypeReportNode" />
   <xs:complexType name="type_derivedTypeReportNode">
     <xs:all>
@@ -7018,6 +7310,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="exactType" />
       <xs:element minOccurs="0" maxOccurs="1" ref="targetMustExist" />
       <xs:element minOccurs="0" maxOccurs="1" ref="targetNeedNotExist" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="parentNeedNotExist" />
       <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
       <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
       <xs:element minOccurs="0" maxOccurs="1" ref="flags" />
@@ -7450,6 +7743,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
     </xs:all>
   </xs:complexType>
@@ -7469,6 +7763,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="canModify" />
       <xs:element minOccurs="0" maxOccurs="1" ref="canDelete" />
       <xs:element minOccurs="0" maxOccurs="1" ref="columnShowText" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="disableDefaultFormat" />
       <xs:element minOccurs="0" maxOccurs="1" ref="formatDecimalPlaces" />
       <xs:element minOccurs="0" maxOccurs="1" ref="formatPrefix" />
       <xs:element minOccurs="0" maxOccurs="1" ref="formatSuffix" />
@@ -7492,6 +7787,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="dateColumnFormat" />
       <xs:element minOccurs="0" maxOccurs="1" ref="timeColumnFormat" />
       <xs:element minOccurs="0" maxOccurs="1" ref="dateTimeColumnFormat" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="entityListColumnFormat" />
       <xs:element minOccurs="0" maxOccurs="1" ref="formatImageSize" />
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
     </xs:all>
@@ -7528,6 +7824,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
     </xs:all>
   </xs:complexType>
@@ -7563,6 +7860,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
     </xs:all>
   </xs:complexType>
@@ -7598,6 +7896,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
     </xs:all>
   </xs:complexType>
@@ -7633,12 +7932,49 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
     </xs:all>
   </xs:complexType>
   <xs:group name="is_dateTimeColFmtEnum">
     <xs:choice>
       <xs:element ref="dateTimeColFmtEnum" />
+    </xs:choice>
+  </xs:group>
+  <xs:element name="entityListColFmtEnum" type="type_entityListColFmtEnum" />
+  <xs:complexType name="type_entityListColFmtEnum">
+    <xs:all>
+      <xs:element minOccurs="0" maxOccurs="1" ref="name" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="description" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdDate" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="modifiedDate" />
+      <xs:element minOccurs="1" maxOccurs="1" ref="alias" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canModify" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canDelete" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumOrder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canModifyProtectedResource" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="flags" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="securityOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="lastModifiedBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isRootForStructureView" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inStructureLevel" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="indirectInSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
+    </xs:all>
+  </xs:complexType>
+  <xs:group name="is_entityListColFmtEnum">
+    <xs:choice>
+      <xs:element ref="entityListColFmtEnum" />
     </xs:choice>
   </xs:group>
   <xs:element name="formattingRule" type="type_formattingRule" />
@@ -8014,6 +8350,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
     </xs:all>
   </xs:complexType>
@@ -8049,6 +8386,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
     </xs:all>
   </xs:complexType>
@@ -8084,6 +8422,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
     </xs:all>
   </xs:complexType>
@@ -9956,6 +10295,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
     </xs:all>
   </xs:complexType>
@@ -10814,6 +11154,45 @@
       <xs:element ref="processInboxesAction" />
     </xs:choice>
   </xs:group>
+  <xs:element name="systemDocumentationSettings" type="type_systemDocumentationSettings" />
+  <xs:complexType name="type_systemDocumentationSettings">
+    <xs:all>
+      <xs:element minOccurs="0" maxOccurs="1" ref="name" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="description" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdDate" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="modifiedDate" />
+      <xs:element minOccurs="1" maxOccurs="1" ref="alias" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canModify" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canDelete" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="navHeaderDocumentationUrl" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="documentationUrl" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="releaseNotesUrl" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="contactSupportUrl" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="documentationUserName" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="documentationUserPassword" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="documentationUserPasswordSecureId" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="flags" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="securityOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="lastModifiedBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isRootForStructureView" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inStructureLevel" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="indirectInSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
+    </xs:all>
+  </xs:complexType>
+  <xs:group name="is_systemDocumentationSettings">
+    <xs:choice>
+      <xs:element ref="systemDocumentationSettings" />
+    </xs:choice>
+  </xs:group>
   <xs:element name="eventLogSettings" type="type_eventLogSettings" />
   <xs:complexType name="type_eventLogSettings">
     <xs:all>
@@ -10908,6 +11287,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:typeSuppressedForNewAction" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:typeIncludedForNewButton" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:typeIcon" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumValueFormattingType" />
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
       <xs:element minOccurs="0" maxOccurs="1" ref="controlAccessBy" />
       <xs:element minOccurs="0" maxOccurs="1" ref="derivedTypes" />
@@ -10960,6 +11340,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
     </xs:all>
   </xs:complexType>
@@ -10968,6 +11349,7 @@
       <xs:element ref="directionEnum" />
       <xs:element ref="cloneActionEnum" />
       <xs:element ref="importFileTypeEnum" />
+      <xs:element ref="exportFileTypeEnum" />
       <xs:element ref="chartTypeEnum" />
       <xs:element ref="axisScaleTypeEnum" />
       <xs:element ref="specialChartSourceEnum" />
@@ -10982,6 +11364,7 @@
       <xs:element ref="dateColFmtEnum" />
       <xs:element ref="timeColFmtEnum" />
       <xs:element ref="dateTimeColFmtEnum" />
+      <xs:element ref="entityListColFmtEnum" />
       <xs:element ref="groupingMethodEnum" />
       <xs:element ref="reportStyleEnum" />
       <xs:element ref="auditLogSeverityEnum" />
@@ -10989,6 +11372,7 @@
       <xs:element ref="console:resizeModeEnum" />
       <xs:element ref="console:resizeEnum" />
       <xs:element ref="console:topNavigationStyleEnum" />
+      <xs:element ref="enumFormattingType" />
       <xs:element ref="relTypeEnum" />
       <xs:element ref="cardinalityEnum" />
       <xs:element ref="resourceFlagsEnum" />
@@ -11010,9 +11394,44 @@
       <xs:element ref="workflowRunState" />
       <xs:element ref="workflowEventEnum" />
       <xs:element ref="taskStatusEnum" />
-      <xs:element ref="exportFileTypeEnum" />
       <xs:element ref="dayOfWeekEnum" />
       <xs:element ref="monthOfYearEnum" />
+    </xs:choice>
+  </xs:group>
+  <xs:element name="enumFormattingType" type="type_enumFormattingType" />
+  <xs:complexType name="type_enumFormattingType">
+    <xs:all>
+      <xs:element minOccurs="0" maxOccurs="1" ref="name" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="description" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdDate" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="modifiedDate" />
+      <xs:element minOccurs="1" maxOccurs="1" ref="alias" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canModify" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canDelete" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumOrder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canModifyProtectedResource" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="flags" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="securityOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="lastModifiedBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isRootForStructureView" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inStructureLevel" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="indirectInSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
+    </xs:all>
+  </xs:complexType>
+  <xs:group name="is_enumFormattingType">
+    <xs:choice>
+      <xs:element ref="enumFormattingType" />
     </xs:choice>
   </xs:group>
   <xs:element name="fieldType" type="type_fieldType" />
@@ -12064,6 +12483,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
     </xs:all>
   </xs:complexType>
@@ -12099,6 +12519,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
     </xs:all>
   </xs:complexType>
@@ -12134,6 +12555,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
       <xs:element minOccurs="0" maxOccurs="1" ref="flagUsedBy" />
       <xs:element minOccurs="0" maxOccurs="1" ref="flagUsedByInstance" />
@@ -12249,6 +12671,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
       <xs:element minOccurs="0" maxOccurs="1" ref="representedFields" />
     </xs:all>
@@ -13468,6 +13891,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
     </xs:all>
   </xs:complexType>
@@ -13523,7 +13947,7 @@
       <xs:element minOccurs="1" maxOccurs="1" ref="alias" />
       <xs:element minOccurs="0" maxOccurs="1" ref="canModify" />
       <xs:element minOccurs="0" maxOccurs="1" ref="canDelete" />
-      <xs:element minOccurs="1" maxOccurs="1" ref="password" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="password" />
       <xs:element minOccurs="0" maxOccurs="1" ref="accountExpiration" />
       <xs:element minOccurs="0" maxOccurs="1" ref="passwordNeverExpires" />
       <xs:element minOccurs="0" maxOccurs="1" ref="lastLogon" />
@@ -13853,6 +14277,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
       <xs:element minOccurs="0" maxOccurs="1" ref="permissionAccessBy" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:permissionFromAction" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:parentPermissionFromAction" />
     </xs:all>
   </xs:complexType>
   <xs:group name="is_permission">
@@ -14015,6 +14440,7 @@
       <xs:element ref="reportCondition" />
       <xs:element ref="resourceReportNode" />
       <xs:element ref="relationshipReportNode" />
+      <xs:element ref="customJoinReportNode" />
       <xs:element ref="derivedTypeReportNode" />
       <xs:element ref="aggregateReportNode" />
       <xs:element ref="idExpression" />
@@ -14073,6 +14499,7 @@
       <xs:element ref="directionEnum" />
       <xs:element ref="cloneActionEnum" />
       <xs:element ref="importFileTypeEnum" />
+      <xs:element ref="exportFileTypeEnum" />
       <xs:element ref="chartTypeEnum" />
       <xs:element ref="axisScaleTypeEnum" />
       <xs:element ref="specialChartSourceEnum" />
@@ -14088,6 +14515,7 @@
       <xs:element ref="dateColFmtEnum" />
       <xs:element ref="timeColFmtEnum" />
       <xs:element ref="dateTimeColFmtEnum" />
+      <xs:element ref="entityListColFmtEnum" />
       <xs:element ref="groupingMethodEnum" />
       <xs:element ref="reportStyleEnum" />
       <xs:element ref="auditLogSeverityEnum" />
@@ -14097,6 +14525,7 @@
       <xs:element ref="console:resizeEnum" />
       <xs:element ref="console:topNavigationStyleEnum" />
       <xs:element ref="enumType" />
+      <xs:element ref="enumFormattingType" />
       <xs:element ref="aliasField" />
       <xs:element ref="stringField" />
       <xs:element ref="intField" />
@@ -14151,12 +14580,13 @@
       <xs:element ref="getResourcesActivity" />
       <xs:element ref="createLinkActivity" />
       <xs:element ref="generateDocActivity" />
-      <xs:element ref="exportFileTypeEnum" />
       <xs:element ref="exportToActivity" />
       <xs:element ref="notifyActivity" />
       <xs:element ref="promptUserActivity" />
-      <xs:element ref="startSurveyActivity" />
+      <xs:element ref="launchPersonCampaignActivity" />
+      <xs:element ref="launchTargetCampaignActivity" />
       <xs:element ref="reviewSurveyActivity" />
+      <xs:element ref="startSurveyActivity" />
       <xs:element ref="dayOfWeekEnum" />
       <xs:element ref="monthOfYearEnum" />
     </xs:choice>
@@ -14505,6 +14935,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
     </xs:all>
   </xs:complexType>
@@ -15010,6 +15441,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
     </xs:all>
   </xs:complexType>
@@ -15199,6 +15631,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
     </xs:all>
   </xs:complexType>
@@ -15273,6 +15706,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
     </xs:all>
   </xs:complexType>
@@ -15382,6 +15816,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
     </xs:all>
   </xs:complexType>
@@ -15417,6 +15852,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
     </xs:all>
   </xs:complexType>
@@ -15452,6 +15888,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
     </xs:all>
   </xs:complexType>
@@ -15487,6 +15924,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
     </xs:all>
   </xs:complexType>
@@ -15601,6 +16039,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
     </xs:all>
   </xs:complexType>
@@ -15636,6 +16075,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
     </xs:all>
   </xs:complexType>
@@ -15829,6 +16269,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
     </xs:all>
   </xs:complexType>
@@ -16024,8 +16465,10 @@
       <xs:element ref="exportToActivity" />
       <xs:element ref="notifyActivity" />
       <xs:element ref="promptUserActivity" />
-      <xs:element ref="startSurveyActivity" />
+      <xs:element ref="launchPersonCampaignActivity" />
+      <xs:element ref="launchTargetCampaignActivity" />
       <xs:element ref="reviewSurveyActivity" />
+      <xs:element ref="startSurveyActivity" />
     </xs:choice>
   </xs:group>
   <xs:element name="workflow" type="type_workflow" />
@@ -16430,6 +16873,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
     </xs:all>
   </xs:complexType>
@@ -16590,6 +17034,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
     </xs:all>
   </xs:complexType>
@@ -16878,6 +17323,120 @@
       <xs:element ref="userSurveyTask" />
     </xs:choice>
   </xs:group>
+  <xs:element name="suspendedTask" type="type_suspendedTask" />
+  <xs:complexType name="type_suspendedTask">
+    <xs:all>
+      <xs:element minOccurs="0" maxOccurs="1" ref="name" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="description" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdDate" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="modifiedDate" />
+      <xs:element minOccurs="1" maxOccurs="1" ref="alias" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canModify" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canDelete" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="stCulture" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="stTimezone" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="flags" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="securityOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="lastModifiedBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isRootForStructureView" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inStructureLevel" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="indirectInSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="stIdentity" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="stSecondaryIdentity" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
+    </xs:all>
+  </xs:complexType>
+  <xs:group name="is_suspendedTask">
+    <xs:choice>
+      <xs:element ref="suspendedTask" />
+      <xs:element ref="suspendedTrigger" />
+      <xs:element ref="suspendedRun" />
+    </xs:choice>
+  </xs:group>
+  <xs:element name="suspendedTrigger" type="type_suspendedTrigger" />
+  <xs:complexType name="type_suspendedTrigger">
+    <xs:all>
+      <xs:element minOccurs="0" maxOccurs="1" ref="name" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="description" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdDate" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="modifiedDate" />
+      <xs:element minOccurs="1" maxOccurs="1" ref="alias" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canModify" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canDelete" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="stCulture" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="stTimezone" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="stTriggerDepth" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="flags" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="securityOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="lastModifiedBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isRootForStructureView" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inStructureLevel" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="indirectInSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="stIdentity" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="stSecondaryIdentity" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="stTrigger" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="stResource" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
+    </xs:all>
+  </xs:complexType>
+  <xs:group name="is_suspendedTrigger">
+    <xs:choice>
+      <xs:element ref="suspendedTrigger" />
+    </xs:choice>
+  </xs:group>
+  <xs:element name="suspendedRun" type="type_suspendedRun" />
+  <xs:complexType name="type_suspendedRun">
+    <xs:all>
+      <xs:element minOccurs="0" maxOccurs="1" ref="name" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="description" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdDate" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="modifiedDate" />
+      <xs:element minOccurs="1" maxOccurs="1" ref="alias" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canModify" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canDelete" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="stCulture" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="stTimezone" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="flags" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="securityOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="lastModifiedBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isRootForStructureView" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inStructureLevel" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="indirectInSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="stIdentity" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="stSecondaryIdentity" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="srRun" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
+    </xs:all>
+  </xs:complexType>
+  <xs:group name="is_suspendedRun">
+    <xs:choice>
+      <xs:element ref="suspendedRun" />
+    </xs:choice>
+  </xs:group>
   <xs:element name="workflowRunLogEntry" type="type_workflowRunLogEntry" />
   <xs:complexType name="type_workflowRunLogEntry">
     <xs:all>
@@ -17151,6 +17710,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
       <xs:element minOccurs="0" maxOccurs="1" ref="eventBackingClass" />
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
     </xs:all>
@@ -17670,6 +18230,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
     </xs:all>
   </xs:complexType>
@@ -18371,41 +18932,6 @@
       <xs:element ref="generateDocActivity" />
     </xs:choice>
   </xs:group>
-  <xs:element name="exportFileTypeEnum" type="type_exportFileTypeEnum" />
-  <xs:complexType name="type_exportFileTypeEnum">
-    <xs:all>
-      <xs:element minOccurs="0" maxOccurs="1" ref="name" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="description" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="createdDate" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="modifiedDate" />
-      <xs:element minOccurs="1" maxOccurs="1" ref="alias" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="canModify" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="canDelete" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="enumOrder" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="canModifyProtectedResource" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="flags" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="securityOwner" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="createdBy" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="lastModifiedBy" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="isRootForStructureView" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="inStructureLevel" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="inSolution" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="indirectInSolution" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
-    </xs:all>
-  </xs:complexType>
-  <xs:group name="is_exportFileTypeEnum">
-    <xs:choice>
-      <xs:element ref="exportFileTypeEnum" />
-    </xs:choice>
-  </xs:group>
   <xs:element name="exportToActivity" type="type_exportToActivity" />
   <xs:complexType name="type_exportToActivity">
     <xs:all>
@@ -18559,8 +19085,8 @@
       <xs:element ref="promptUserActivity" />
     </xs:choice>
   </xs:group>
-  <xs:element name="startSurveyActivity" type="type_startSurveyActivity" />
-  <xs:complexType name="type_startSurveyActivity">
+  <xs:element name="launchPersonCampaignActivity" type="type_launchPersonCampaignActivity" />
+  <xs:complexType name="type_launchPersonCampaignActivity">
     <xs:all>
       <xs:element minOccurs="0" maxOccurs="1" ref="name" />
       <xs:element minOccurs="0" maxOccurs="1" ref="description" />
@@ -18593,9 +19119,48 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="argumentInstanceFromActivity" />
     </xs:all>
   </xs:complexType>
-  <xs:group name="is_startSurveyActivity">
+  <xs:group name="is_launchPersonCampaignActivity">
     <xs:choice>
-      <xs:element ref="startSurveyActivity" />
+      <xs:element ref="launchPersonCampaignActivity" />
+    </xs:choice>
+  </xs:group>
+  <xs:element name="launchTargetCampaignActivity" type="type_launchTargetCampaignActivity" />
+  <xs:complexType name="type_launchTargetCampaignActivity">
+    <xs:all>
+      <xs:element minOccurs="0" maxOccurs="1" ref="name" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="description" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdDate" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="modifiedDate" />
+      <xs:element minOccurs="1" maxOccurs="1" ref="alias" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canModify" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canDelete" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canModifyProtectedResource" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="designerData" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="flags" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="securityOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="lastModifiedBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isRootForStructureView" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inStructureLevel" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="indirectInSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="expressionMap" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="containingWorkflow" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="forwardTransitions" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="transitionsForActivity" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="argumentInstanceFromActivity" />
+    </xs:all>
+  </xs:complexType>
+  <xs:group name="is_launchTargetCampaignActivity">
+    <xs:choice>
+      <xs:element ref="launchTargetCampaignActivity" />
     </xs:choice>
   </xs:group>
   <xs:element name="reviewSurveyActivity" type="type_reviewSurveyActivity" />
@@ -18639,6 +19204,45 @@
   <xs:group name="is_reviewSurveyActivity">
     <xs:choice>
       <xs:element ref="reviewSurveyActivity" />
+    </xs:choice>
+  </xs:group>
+  <xs:element name="startSurveyActivity" type="type_startSurveyActivity" />
+  <xs:complexType name="type_startSurveyActivity">
+    <xs:all>
+      <xs:element minOccurs="0" maxOccurs="1" ref="name" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="description" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdDate" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="modifiedDate" />
+      <xs:element minOccurs="1" maxOccurs="1" ref="alias" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canModify" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canDelete" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canModifyProtectedResource" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="designerData" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="flags" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="securityOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="lastModifiedBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isRootForStructureView" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inStructureLevel" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="indirectInSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="expressionMap" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="containingWorkflow" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="forwardTransitions" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="transitionsForActivity" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="argumentInstanceFromActivity" />
+    </xs:all>
+  </xs:complexType>
+  <xs:group name="is_startSurveyActivity">
+    <xs:choice>
+      <xs:element ref="startSurveyActivity" />
     </xs:choice>
   </xs:group>
   <xs:element name="scheduleAction" type="type_scheduleAction" />
@@ -18757,6 +19361,7 @@
   <xs:group name="is_enableableItem">
     <xs:choice>
       <xs:element ref="scheduledImportConfig" />
+      <xs:element ref="scheduledExportConfig" />
       <xs:element ref="recordChangeAuditPolicy" />
       <xs:element ref="cleanupFileRepositoriesAction" />
       <xs:element ref="processInboxesAction" />
@@ -18798,6 +19403,7 @@
   <xs:group name="is_scheduledItem">
     <xs:choice>
       <xs:element ref="scheduledImportConfig" />
+      <xs:element ref="scheduledExportConfig" />
       <xs:element ref="cleanupFileRepositoriesAction" />
       <xs:element ref="processInboxesAction" />
       <xs:element ref="cleanUpWorkflowRunsAction" />
@@ -19006,6 +19612,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
     </xs:all>
   </xs:complexType>
@@ -19041,6 +19648,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
     </xs:all>
   </xs:complexType>
@@ -20802,6 +21410,7 @@
         <xs:enumeration value="workflowRunPaused" />
         <xs:enumeration value="workflowRunCompleted" />
         <xs:enumeration value="workflowRunFailed" />
+        <xs:enumeration value="workflowRunSuspended" />
         <xs:enumeration value="workflowRunCancelled" />
       </xs:restriction>
     </xs:simpleType>
@@ -20869,6 +21478,74 @@
     <xs:complexType mixed="true">
       <xs:sequence>
         <xs:group minOccurs="0" maxOccurs="1" ref="is_importConfig" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="secReport.instance" type="ri_secReport" />
+  <xs:complexType name="ri_secReport">
+    <xs:all>
+      <xs:element minOccurs="1" maxOccurs="1" name="from">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_scheduledExportConfig" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="to">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_report" />
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:element name="secReport">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:group minOccurs="0" maxOccurs="1" ref="is_report" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="secFileType.instance" type="ri_secFileType" />
+  <xs:complexType name="ri_secFileType">
+    <xs:all>
+      <xs:element minOccurs="1" maxOccurs="1" name="from">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_scheduledExportConfig" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="to">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_exportFileTypeEnum" />
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:element name="secFileType">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="exportFileTypeExcel" />
+        <xs:enumeration value="exportFileTypeCsv" />
+        <xs:enumeration value="exportFileTypeWord" />
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="secRunLog.instance" type="ri_secRunLog" />
+  <xs:complexType name="ri_secRunLog">
+    <xs:all>
+      <xs:element minOccurs="1" maxOccurs="1" name="from">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_scheduledExportConfig" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="to">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_tenantLogEntry" />
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:element name="secRunLog">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:group minOccurs="0" maxOccurs="unbounded" ref="is_tenantLogEntry" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -22890,6 +23567,29 @@
         <xs:enumeration value="dateTimeQuarter" />
         <xs:enumeration value="dateTimeQuarterYear" />
         <xs:enumeration value="dateTimeYear" />
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="entityListColumnFormat.instance" type="ri_entityListColumnFormat" />
+  <xs:complexType name="ri_entityListColumnFormat">
+    <xs:all>
+      <xs:element minOccurs="1" maxOccurs="1" name="from">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_displayFormat" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="to">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_entityListColFmtEnum" />
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:element name="entityListColumnFormat">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="commaSeparatedList" />
+        <xs:enumeration value="stackedList" />
       </xs:restriction>
     </xs:simpleType>
   </xs:element>
@@ -25061,6 +25761,52 @@
     <xs:complexType mixed="true">
       <xs:sequence>
         <xs:group minOccurs="0" maxOccurs="unbounded" ref="is_enumValue" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="enumValueFormattingType.instance" type="ri_enumValueFormattingType" />
+  <xs:complexType name="ri_enumValueFormattingType">
+    <xs:all>
+      <xs:element minOccurs="1" maxOccurs="1" name="from">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_enumType" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="to">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_enumFormattingType" />
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:element name="enumValueFormattingType">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="formattingTypeNone" />
+        <xs:enumeration value="formattingTypeHighlight" />
+        <xs:enumeration value="formattingTypeIcon" />
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="enumFormattingRule.instance" type="ri_enumFormattingRule" />
+  <xs:complexType name="ri_enumFormattingRule">
+    <xs:all>
+      <xs:element minOccurs="1" maxOccurs="1" name="from">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_enumValue" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="to">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_formattingRule" />
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:element name="enumFormattingRule">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:group minOccurs="0" maxOccurs="1" ref="is_formattingRule" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -29360,6 +30106,7 @@
         <xs:enumeration value="workflowRunPaused" />
         <xs:enumeration value="workflowRunCompleted" />
         <xs:enumeration value="workflowRunFailed" />
+        <xs:enumeration value="workflowRunSuspended" />
         <xs:enumeration value="workflowRunCancelled" />
       </xs:restriction>
     </xs:simpleType>
@@ -29939,6 +30686,116 @@
     <xs:complexType mixed="true">
       <xs:sequence>
         <xs:group minOccurs="0" maxOccurs="1" ref="is_definition" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="stIdentity.instance" type="ri_stIdentity" />
+  <xs:complexType name="ri_stIdentity">
+    <xs:all>
+      <xs:element minOccurs="1" maxOccurs="1" name="from">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_suspendedTask" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="to">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_userAccount" />
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:element name="stIdentity">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:group minOccurs="0" maxOccurs="1" ref="is_userAccount" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="stSecondaryIdentity.instance" type="ri_stSecondaryIdentity" />
+  <xs:complexType name="ri_stSecondaryIdentity">
+    <xs:all>
+      <xs:element minOccurs="1" maxOccurs="1" name="from">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_suspendedTask" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="to">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_userAccount" />
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:element name="stSecondaryIdentity">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:group minOccurs="0" maxOccurs="1" ref="is_userAccount" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="stTrigger.instance" type="ri_stTrigger" />
+  <xs:complexType name="ri_stTrigger">
+    <xs:all>
+      <xs:element minOccurs="1" maxOccurs="1" name="from">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_suspendedTrigger" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="to">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_wfTrigger" />
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:element name="stTrigger">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:group minOccurs="0" maxOccurs="1" ref="is_wfTrigger" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="stResource.instance" type="ri_stResource" />
+  <xs:complexType name="ri_stResource">
+    <xs:all>
+      <xs:element minOccurs="1" maxOccurs="1" name="from">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_suspendedTrigger" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="to">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_resource" />
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:element name="stResource">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:group minOccurs="0" maxOccurs="1" ref="is_resource" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="srRun.instance" type="ri_srRun" />
+  <xs:complexType name="ri_srRun">
+    <xs:all>
+      <xs:element minOccurs="1" maxOccurs="1" name="from">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_suspendedRun" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="to">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_workflowRun" />
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:element name="srRun">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:group minOccurs="0" maxOccurs="1" ref="is_workflowRun" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

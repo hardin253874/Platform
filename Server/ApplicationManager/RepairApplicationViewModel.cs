@@ -1,7 +1,7 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
+
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -70,8 +70,7 @@ namespace ApplicationManager
 			{
 				if ( _busyMessage != value )
 				{
-					_busyMessage = value;
-					RaisePropertyChanged( "BusyMessage" );
+					SetProperty( ref _busyMessage, value );
 				}
 			}
 		}
@@ -104,10 +103,52 @@ namespace ApplicationManager
 			{
 				if ( _closeWindow != value )
 				{
-					_closeWindow = value;
-					RaisePropertyChanged( "CloseWindow" );
+					SetProperty( ref _closeWindow, value );
 				}
 			}
+		}
+
+		/// <summary>
+		///     Gets or sets a value indicating whether this instance is busy.
+		/// </summary>
+		/// <value>
+		///     <c>true</c> if this instance is busy; otherwise, <c>false</c>.
+		/// </value>
+		public bool IsBusy
+		{
+			get
+			{
+				return _isBusy;
+			}
+			set
+			{
+				if ( _isBusy != value )
+				{
+					SetProperty( ref _isBusy, value );
+				}
+			}
+		}
+
+		/// <summary>
+		///     Gets or sets the package collection.
+		/// </summary>
+		/// <value>
+		///     The package collection.
+		/// </value>
+		public ObservableCollection<Package> PackageCollection
+		{
+			get;
+		}
+
+		/// <summary>
+		///     Gets the packages.
+		/// </summary>
+		/// <value>
+		///     The packages.
+		/// </value>
+		public CollectionViewSource Packages
+		{
+			get;
 		}
 
 		/// <summary>
@@ -128,59 +169,7 @@ namespace ApplicationManager
 		/// <value>
 		///     <c>true</c> if [button enabled]; otherwise, <c>false</c>.
 		/// </value>
-		public bool RepairEnabled
-		{
-			get
-			{
-				return SelectedPackage != null;
-			}
-		}
-
-		/// <summary>
-		///     Gets or sets a value indicating whether this instance is busy.
-		/// </summary>
-		/// <value>
-		///     <c>true</c> if this instance is busy; otherwise, <c>false</c>.
-		/// </value>
-		public bool IsBusy
-		{
-			get
-			{
-				return _isBusy;
-			}
-			set
-			{
-				if ( _isBusy != value )
-				{
-					_isBusy = value;
-					RaisePropertyChanged( "IsBusy" );
-				}
-			}
-		}
-
-		/// <summary>
-		///     Gets or sets the package collection.
-		/// </summary>
-		/// <value>
-		///     The package collection.
-		/// </value>
-		public ObservableCollection<Package> PackageCollection
-		{
-			get;
-			private set;
-		}
-
-		/// <summary>
-		///     Gets the packages.
-		/// </summary>
-		/// <value>
-		///     The packages.
-		/// </value>
-		public CollectionViewSource Packages
-		{
-			get;
-			private set;
-		}
+		public bool RepairEnabled => SelectedPackage != null;
 
 		/// <summary>
 		///     Gets or sets the search command.
@@ -210,10 +199,10 @@ namespace ApplicationManager
 			{
 				if ( _selectedPackage != value )
 				{
-					_selectedPackage = value;
+					SetProperty( ref _selectedPackage, value );
 
-					RaisePropertyChanged( "SelectedPackage" );
-					RaisePropertyChanged( "RepairEnabled" );
+					// ReSharper disable once ExplicitCallerInfoArgument
+					OnPropertyChanged( "RepairEnabled" );
 				}
 			}
 		}
@@ -224,13 +213,7 @@ namespace ApplicationManager
 		/// <value>
 		///     The title.
 		/// </value>
-		public string Title
-		{
-			get
-			{
-				return string.Format( "Repair '{0}'", Application.Name );
-			}
-		}
+		public string Title => $"Repair '{Application.Name}'";
 
 		/// <summary>
 		///     Gets or sets the application.
@@ -241,7 +224,6 @@ namespace ApplicationManager
 		private Application Application
 		{
 			get;
-			set;
 		}
 
 		/// <summary>
@@ -253,41 +235,6 @@ namespace ApplicationManager
 		private List<Package> PackageCache
 		{
 			get;
-			set;
-		}
-
-		/// <summary>
-		///     Repairs this instance.
-		/// </summary>
-		private void Repair( )
-		{
-			IsBusy = true;
-
-			var workerThread = new Thread( RepairAsync );
-			workerThread.Start( SelectedPackage );
-		}
-
-		/// <summary>
-		///     Deploys the application asynchronously.
-		/// </summary>
-		/// <param name="state">The state.</param>
-		private void RepairAsync( object state )
-		{
-			var package = state as Package;
-
-			var context = new RoutedProcessingContext( message => BusyMessage = message, message => BusyMessage = message, message => BusyMessage = message, message => BusyMessage = message );
-
-			using ( new TenantAdministratorContext( 0 ) )
-			{
-				if ( package != null )
-				{
-					AppManager.RepairApp( package.SelectedTenant.EntityId, package.AppVerId, context );
-				}
-			}
-
-			IsBusy = false;
-
-			System.Windows.Application.Current.Dispatcher.Invoke( LoadPackages );
 		}
 
 		/// <summary>
@@ -308,6 +255,40 @@ namespace ApplicationManager
 			{
 				SelectedPackage = PackageCollection[ 0 ];
 			}
+		}
+
+		/// <summary>
+		///     Repairs this instance.
+		/// </summary>
+		private void Repair( )
+		{
+			IsBusy = true;
+
+			var workerThread = new Thread( RepairAsynchronous );
+			workerThread.Start( SelectedPackage );
+		}
+
+		/// <summary>
+		///     Deploys the application asynchronously.
+		/// </summary>
+		/// <param name="state">The state.</param>
+		private void RepairAsynchronous( object state )
+		{
+			var package = state as Package;
+
+			var context = new RoutedProcessingContext( message => BusyMessage = message, message => BusyMessage = message, message => BusyMessage = message, message => BusyMessage = message );
+
+			using ( new TenantAdministratorContext( 0 ) )
+			{
+				if ( package != null )
+				{
+					AppManager.RepairApp( package.SelectedTenant.EntityId, package.AppVerId, context );
+				}
+			}
+
+			IsBusy = false;
+
+			System.Windows.Application.Current.Dispatcher.Invoke( LoadPackages );
 		}
 
 		/// <summary>

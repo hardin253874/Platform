@@ -47,7 +47,8 @@
         'mod.app.editForm.designerDirectives.spPageContainer',
         'mod.app.editForm.designerDirectives.spEditFormLayout',
         'mod.app.editForm.spFieldControlProvider',
-        'mod.app.editForm.customDirectives'
+        'mod.app.editForm.customDirectives',
+        'mod.app.editForm.designerDirectives.spReportWatermarkControl'
     ]);
 
 }());

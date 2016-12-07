@@ -68,19 +68,19 @@ namespace EDC.ReadiNow.Test.Model
 		[RunAsGlobalTenant]
 		public void TestEntityLoadWithActivationData( )
 		{
-			var data = new ActivationData( 12345, RequestContext.TenantId, true );
+			var data = new ActivationData( 123456789, RequestContext.TenantId, true );
 
 			var entity = new Entity( data );
 
-			Assert.AreEqual( 12345, entity.Id );
+			Assert.AreEqual( 123456789, entity.Id );
 			Assert.AreEqual( true, entity.IsReadOnly );
 
 			IEntityInternal entityInternal = entity;
 
 			Assert.AreEqual( false, entityInternal.IsTemporaryId );
-			Assert.AreEqual( 12345, entityInternal.ModificationToken.EntityId );
+			Assert.AreEqual( 123456789, entityInternal.ModificationToken.EntityId );
 			Assert.IsNull( entityInternal.CloneSource );
-			Assert.AreEqual( 12345, entityInternal.MutableId.Key );
+			Assert.AreEqual( 123456789, entityInternal.MutableId.Key );
 		}
 
 		/// <summary>

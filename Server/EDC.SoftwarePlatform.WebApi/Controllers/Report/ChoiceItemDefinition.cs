@@ -46,11 +46,18 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.Report
 			set;
 		}
 
-		/// <summary>
-		///		Should the display name beserialized.
-		/// </summary>
-		/// <returns></returns>
-		[UsedImplicitly]
+        [DataMember(Name = "fmt", EmitDefaultValue = false, IsRequired = false)]
+        public ReportConditionalFormatRule FormatRule
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        ///		Should the display name beserialized.
+        /// </summary>
+        /// <returns></returns>
+        [UsedImplicitly]
 		private bool ShouldSerializeDisplayName( )
 		{
 			return DisplayName != null;

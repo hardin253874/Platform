@@ -92,7 +92,7 @@ var spChartTypes;
                 });
 
             // Needle
-            if (needleValue != null) {
+            if (needleValue) {
                 svg.append("path")
                     .attr("transform", rotate(needleValue))
                     .attr("class", "needle")

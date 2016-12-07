@@ -113,7 +113,7 @@
                     $scope.removeArgument(argEntity);
                 }
             }
-
+            
             $scope.actionArgumentId = 0;
             $scope.relatedResourceArgumentId = 0;
 
@@ -160,12 +160,12 @@
             };
 
             $scope.showConformsToTypePicker = function (argEntity) {
-                spWorkflowEditorViewService.chooseResource(null, sp.result(argEntity, 'conformsToType.id'), 'typeChooser').then(function (resource) {
-                    argEntity.conformsToType = resource.entity;
+                var selected = sp.result(argEntity, 'conformsToType');
+                spWorkflowEditorViewService.chooseResource('core:managedType', selected, 'typeChooser').then(function (entityType) {
+                    argEntity.conformsToType = entityType.entity;
                     spWorkflowService.workflowUpdated($scope.workflow);
                 });
             };
-
             
             // filter out any of the arguments that are not record arguments
             $scope.filterResourceArgs = function (element) {
@@ -175,7 +175,6 @@
             $scope.filterActionArg = function (element) {
                 return element.idP !== $scope.actionArgumentId;
             };
-
 
             $scope.filterRelatedArg = function (element) {
                 return element.idP !== $scope.relatedResourceArgumentId;

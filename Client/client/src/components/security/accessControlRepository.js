@@ -21,7 +21,7 @@
              * @function
              * @name spAccessControlRepository#createAccessRule
              */
-            exports.createAccessRule = function (subjectId, securableEntityId, permissions) {
+            exports.createAccessRule = function (subjectId, securableEntityId, permissions, solutionId) {
                 if (!angular.isNumber(subjectId) || subjectId <= 0) {
                     throw new Error("subject must be a positive integer");
                 }
@@ -40,6 +40,10 @@
                     securableEntityId: securableEntityId,
                     subjectId: subjectId
                 };
+
+                if (solutionId) {
+                    data.solutionId = solutionId;
+                }
 
                 return $http({
                     method: 'POST',
@@ -95,7 +99,7 @@
                 var typesPromiseBatch = new spEntityService.BatchRequest();
                 var typesPromise = $q.all({
                     definitions: spEntityService.getEntitiesOfType("core:definition", request, { batch: typesPromiseBatch }),
-                    others: spEntityService.getEntities(["console:customEditForm", "core:workflow", "core:reportTemplate", "core:fileType", "core:documentType", "core:imageFileType"], request, { batch: typesPromiseBatch }),
+                    others: spEntityService.getEntities(["console:customEditForm", "core:workflow", "core:reportTemplate", "core:fileType", "core:documentType", "core:imageFileType"], request, { batch: typesPromiseBatch })
                     // Add request(s) for new type or types here. Remember to change the code in AccessRulesController, too.
                 }).then(function (promises) {
                     return _.flatten(_.values(promises));
@@ -104,9 +108,11 @@
 
                 var batch = new spEntityService.BatchRequest();
                 var subjectsPromise = spEntityService.getEntitiesOfType("core:subject", "name, alias, isOfType.{name, alias}", { batch: batch, filter: 'true' });
+                var idsPromise = spEntityService.getEntities(['core:templateReport', 'core:solution', 'core:applicationsPickerReport'], 'id', { batch: batch });
                 var promise = $q.all({
                     subjects: subjectsPromise,
                     types: typesPromise,
+                    ids: idsPromise
                 });
                 batch.runBatch();
 

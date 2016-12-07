@@ -7,5 +7,9 @@
 (function () {
     'use strict';
 
-    angular.module('sp.workflow.parameterViewServices', ['mod.services.workflowService', 'mod.common.viewRegion']);
+    angular.module('sp.workflow.parameterViewServices', [
+        'mod.services.workflowService',
+        'mod.common.viewRegion',
+        'sp.common.ui.expressionEditor'
+    ]);
 }());

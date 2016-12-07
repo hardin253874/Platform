@@ -1625,7 +1625,7 @@
                             }
                         });
 
-                        $scope.typeForms = forms;
+                        $scope.typeForms = _.sortBy(forms, 'name');
 
                         if ($scope.model.isControl) {
                             setSelectedDisplayForm();
@@ -1650,15 +1650,15 @@
                         var filteredResourcePickers = _.filter(typeResourcePickers, function (r) {
                             return r.getRelationship('reportForAccessRule').length === 0;
                         });
-                        $scope.typeResourcePickers = filteredResourcePickers;
+                        $scope.typeResourcePickers = _.sortBy(filteredResourcePickers, 'name');
 
                         var reports = [];
-                        _.forEach(typeResourcePickers, function (resourcePicker) {
+                        _.forEach(filteredResourcePickers, function (resourcePicker) {
                             if (resourcePicker.type.alias() === 'core:report') {  // filter the reports only
                                 reports.push(resourcePicker);
                             }
                         });
-                        $scope.typeReports = reports;
+                        $scope.typeReports = _.sortBy(reports, 'name');
 
                         if ($scope.model.isControl) {
 

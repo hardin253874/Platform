@@ -218,7 +218,7 @@ namespace EDC.ReadiNow.Model.EventClasses.ResourceTriggerFilter
         }
 
 
-        /// <summary>
+		/// <summary>
         /// Remove the given policy from the cache.
         /// </summary>
         /// <param name="policyId"></param>
@@ -226,9 +226,9 @@ namespace EDC.ReadiNow.Model.EventClasses.ResourceTriggerFilter
         {
             using (Profiler.Measure("ResourceTriggerFilterPolicyCache RemovePolicy"))
             {
-                foreach (var kvp in _typePolicyMap)
+                foreach (var kvp in _typePolicyMap.ToList())
                 {
-                    kvp.Value.RemoveAll(p => p.Id == policyId);
+                    kvp.Value.RemoveAll(p => p?.Id == policyId);
                     // Note that we are not removing the entry. This is because it is most common for a policy to be replaced rather than actually removed.
                 }
 

@@ -223,8 +223,9 @@ namespace EDC.SoftwarePlatform.WebApi.Test.EditForm
 
             var response = handler.GetFormData(request);
 
-            Assert.AreEqual(1, response.InitiallyHiddenControls.Count);
+            Assert.AreEqual(2, response.InitiallyHiddenControls.Count);
             Assert.IsTrue(response.InitiallyHiddenControls.Contains(testState.NameControl.Id));
+            Assert.IsTrue(response.InitiallyHiddenControls.Contains(testState.DescriptionControl.Id));
             Assert.IsTrue(response.FormDataEntity.Entities.ContainsKey(testState.Instance.Id));
         }
 
@@ -244,7 +245,8 @@ namespace EDC.SoftwarePlatform.WebApi.Test.EditForm
 
             var response = handler.GetFormData(request);
 
-            Assert.IsNull(response.InitiallyHiddenControls);
+            Assert.AreEqual(1, response.InitiallyHiddenControls.Count);
+            Assert.IsTrue(response.InitiallyHiddenControls.Contains(testState.NameControl.Id));
             Assert.IsTrue(response.FormDataEntity.Entities.ContainsKey(testState.Instance.Id));
         }
 

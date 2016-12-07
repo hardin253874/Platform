@@ -76,7 +76,7 @@
         <alias>password</alias>
         <description>A secret word or phrase used to authenticate a user account.</description>
         <fieldInGroup>userAccountDetails</fieldInGroup>
-        <isRequired>true</isRequired>
+        <isRequired>false</isRequired>
         <fieldRepresents>fieldRepresentsPassword</fieldRepresents>
         <maxLength>100</maxLength>
         <isFieldWriteOnly>true</isFieldWriteOnly>

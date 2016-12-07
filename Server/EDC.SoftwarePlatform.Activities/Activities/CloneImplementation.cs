@@ -55,6 +55,10 @@ namespace EDC.SoftwarePlatform.Activities
                         }
                     };
                 }
+                catch (DuplicateKeyException ex)
+                {
+                    throw new WorkflowRunException("The Clone item failed during saving: " + ex.Message, ex);
+                }
                 catch (ValidationException ex)
                 {
                     throw new WorkflowRunException("The Cloned item failed validation during saving: " + ex.Message, ex);
@@ -63,6 +67,8 @@ namespace EDC.SoftwarePlatform.Activities
                 context.SetArgValue(ActivityInstance, clonedKey, clone);
             }
         }
+
+
 
         internal static IEntity CreateClone(Resource resource, EntityType cloneType, Action<IEntity> updateAction)
         {

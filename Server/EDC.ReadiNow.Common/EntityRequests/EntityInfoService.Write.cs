@@ -271,6 +271,14 @@ namespace EDC.ReadiNow.EntityRequests
                         bool hasId = entityDataNode.Id != null && entityDataNode.Id.HasId;
                         long id = hasId ? entityDataNode.Id.Id : -1;
 
+                        if (!persistChanges && !hasId && !string.IsNullOrWhiteSpace(entityDataNode.Id?.Alias))
+                        {
+                            // entity ref has no id but has an alias
+                            // resolve alias to id rather than creating a temp
+                            id = entityDataNode.Id.ResolveId();
+                            hasId = true;
+                        }
+
                         if (entityDataNode.TypeIds == null || entityDataNode.TypeIds.Count <= 0)
                             throw new ArgumentException("entityData.TypeIds must be set when creating new instances.");
 

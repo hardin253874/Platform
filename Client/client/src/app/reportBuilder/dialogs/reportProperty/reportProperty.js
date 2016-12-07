@@ -42,11 +42,12 @@
         $scope.disableOkButton = true;
         $scope.nameFieldId = 0;
         $scope.templateReportId = 0;
+        $scope.userTypesReportId = 0;
         $scope.definitionId = 0;
         $scope.typeId = 0;
         $scope.iconFileTypeId = 0;
         $scope.applicationTypeId = 0;
-		$scope.applicationPickerReportId = 0;
+        $scope.applicationPickerReportId = 0;
         $scope.options = options || {};
         $scope.formMap = {};
         $scope.isCollapsed = true;
@@ -126,7 +127,7 @@
             selectedEntityId: $scope.model.applicationId,
             selectedEntity: $scope.model.application,
             selectedEntities: $scope.model.applications,
-            multiSelect: true,
+            multiSelect: false,
             pickerReportId: $scope.applicationPickerReportId > 0 ? $scope.applicationPickerReportId : 'core:applicationsPickerReport',
             entityTypeId: $scope.applicationTypeId > 0 ? $scope.applicationTypeId : 'core:solution'
         };
@@ -174,7 +175,7 @@
                         $scope.applicationPickerOptions = {
                             selectedEntityId: $scope.model.applicationId,
                             selectedEntities: $scope.model.applications,
-                            multiSelect: true,
+                            multiSelect: false,
                             pickerReportId: $scope.applicationPickerReportId,
                             entityTypeId: $scope.applicationTypeId
                         };
@@ -190,7 +191,7 @@
             if ($scope.nameFieldId === 0 || $scope.templateReportId === 0) {
 
 
-                var ids = ['core:name', 'core:templateReport', 'core:definition', 'core:type', 'core:iconFileType', 'core:solution', 'core:applicationsPickerReport'];
+                var ids = ['core:name', 'core:templateReport', 'core:definition', 'core:type', 'core:iconFileType', 'core:solution', 'core:applicationsPickerReport', 'console:userTypesReport'];
 
                 spEntityService.getEntities(ids, 'name').then(function(entities) {
                     if (entities) {
@@ -200,14 +201,14 @@
                         $scope.typeId = entities[3].id();
                         $scope.iconFileTypeId = entities[4].id();
                         $scope.applicationTypeId = entities[5].id();
-						$scope.applicationPickerReportId = entities[6] ? entities[6].id() : $scope.templateReportId;
-
+                        $scope.applicationPickerReportId = entities[6] ? entities[6].id() : $scope.templateReportId;
+                        $scope.userTypesReportId = entities[7] ? entities[7].id() : $scope.templateReportId;
                         $scope.pickerOptions = {                           
                             selectedEntityId: $scope.model.selectedEntityId,
                             selectedEntity: $scope.model.selectedEntity,
                             selectedEntities: $scope.model.selectedEntities,
                             multiSelect: false,
-                            pickerReportId: null,
+                            pickerReportId: $scope.userTypesReportId,
                             entityTypeId: $scope.definitionId,
                             isDisabled: $scope.isExistReport
                         };
@@ -224,7 +225,7 @@
                         $scope.applicationPickerOptions = {
                             selectedEntityId: $scope.model.applicationId,                            
                             selectedEntities: $scope.model.applications,
-                            multiSelect: true,
+                            multiSelect: false,
                             pickerReportId: $scope.applicationPickerReportId,
                             entityTypeId: $scope.applicationTypeId
                         };
@@ -262,7 +263,7 @@
                     selectedEntity: $scope.model.selectedEntity,
                     selectedEntities: $scope.model.selectedEntities,
                     multiSelect: false,
-                    pickerReportId: $scope.templateReportId,
+                    pickerReportId: $scope.userTypesReportId,
                     entityTypeId: $scope.definitionId > 0 ? $scope.definitionId : 'core:definition',
                     isDisabled: $scope.isExistReport
                 };
@@ -291,6 +292,14 @@
             }
         });
         
+        /////
+        // Show option to display types
+        /////
+        $scope.showTypesVisible = function () {
+            var devMode = spAppSettings.initialSettings.devMode; //only can view all types in devMode
+            var fullConfig = spAppSettings.fullConfig; // only full admin can see advanced properties            
+            return devMode && fullConfig;
+        };
 
         $scope.$watch('model.reportName', function () {
             $scope.DisableOkButton();
@@ -424,7 +433,7 @@
                 //Set Applications
                 var applications = sp.result($scope, 'applicationPickerOptions.selectedEntities');
 
-                if (applications != null && applications.length > 0) {
+                if (applications && applications.length > 0) {
                     $scope.model.reportEntity.getEntity().inSolution = applications[0];
                 } else {
                     $scope.model.reportEntity.getEntity().inSolution = null;

@@ -1245,9 +1245,9 @@
                 
                 relatedQueryEntity = spReportEntityQueryManager.createDerivedTypeEntity(relationship.eid);
             }
-            else if (relationshipType === "relationshipInstance") {
+            else if (relationshipType === "customJoin") {
               
-                relatedQueryEntity = spReportEntityQueryManager.createRelationshipInstance();
+                relatedQueryEntity = spReportEntityQueryManager.createCustomJoinReportNode(relationship.eid, relationship.predicateScript);
             }
 
             return relatedQueryEntity;

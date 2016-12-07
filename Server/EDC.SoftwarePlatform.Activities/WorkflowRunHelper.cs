@@ -5,6 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 
 using EDC.ReadiNow.Model;
+using EDC.ReadiNow.Core;
+using EDC.ReadiNow.Diagnostics.Response;
+using System.Diagnostics;
+using EDC.SoftwarePlatform.Activities.BackgroundTasks;
 
 namespace EDC.SoftwarePlatform.Activities
 {
@@ -130,8 +134,88 @@ namespace EDC.SoftwarePlatform.Activities
                     displayFormTask.UserResponse = Entity.Get<TransitionStart>(clonedIds[displayFormTask.UserResponse.Id]);
 
                 displayFormTask.Save();
+                return;
+            }
+
+            var promptUserTask = task.AsWritable<PromptUserTask>();
+
+            // The arguments that the old task pointed to will have been cloned. Reposition them.
+            if (promptUserTask != null)
+            {
+                var oldArguments = promptUserTask.PromptForTaskArguments.Where(a => clonedIds.ContainsKey(a.Id));
+                promptUserTask.PromptForTaskArguments.RemoveRange(oldArguments);
+                promptUserTask.Save();
             }
         }
 
+        /// <summary>
+        /// Cancel a running workflow
+        /// </summary>
+        /// <param name="runId"></param>
+        public static void CancelRun(long runId)
+        {
+            var run = Entity.Get<WorkflowRun>(runId, true, WorkflowRun.TaskId_Field, WorkflowRun.WorkflowRunStatus_Field);
+
+            if (run == null)
+                throw new MissingRunException();
+
+            if (run.WorkflowRunStatus_Enum == WorkflowRunState_Enumeration.WorkflowRunCancelled ||
+                run.WorkflowRunStatus_Enum == WorkflowRunState_Enumeration.WorkflowRunCompleted ||
+                run.WorkflowRunStatus_Enum == WorkflowRunState_Enumeration.WorkflowRunFailed)
+                return;
+
+            // Cancel the run
+            run.WorkflowRunStatus_Enum = WorkflowRunState_Enumeration.WorkflowRunCancelled;
+            run.RunCompletedAt = DateTime.UtcNow;
+            run.Save();
+
+            // mark it as complete
+            Factory.WorkflowRunTaskManager.RegisterCancelled(run.TaskId);
+
+            // Update the diagnostics info
+            var response = new WorkflowResponse
+            {
+                Id = run.Id,
+                TaskId = run.TaskId,
+                WorkflowName = run?.WorkflowBeingRun?.Name,
+                WorkflowRunName = run?.Name,
+                Status = WorkflowRunState_Enumeration.WorkflowRunCancelled.ToString(),
+                Date = DateTime.Now,
+                TriggeredBy = run.TriggeringUser != null ? run.TriggeringUser.Name : "Unknown",
+                Server = Environment.MachineName,
+                Process = Process.GetCurrentProcess().MainModule.ModuleName,
+            };
+
+            ReadiNow.Diagnostics.DiagnosticChannel.Publish(response);
+        }
+
+
+        /// <summary>
+        /// Resume any suspended runs, putting them back on the queue.
+        /// Note that this does not deal with the queue already containing suspended runs.
+        /// </summary>
+        public static void ResumeSuspendedRuns()
+        {
+            var suspendedIds = Entity.GetCalculationMatchesAsIds("Status='Long running'", WorkflowRun.WorkflowRun_Type, false);
+
+            if (suspendedIds.Any())
+            {
+                var runs = Entity.Get<WorkflowRun>(suspendedIds);
+
+                foreach (var run in runs)
+                {
+                    var restoreTask = ResumeWorkflowHandler.CreateBackgroundTask(run, new WorkflowRestoreEvent());
+                    Factory.BackgroundTaskManager.EnqueueTask(restoreTask);
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Thrown when a run could not be found
+        /// </summary>
+        public class MissingRunException: ArgumentException
+        {
+        }
     }
 }

@@ -85,7 +85,7 @@
                         typeId: 'core:activityPrompt',
                         activityPromptOrdinal: e.order,
                         activityPromptArgument: spEntity.fromId(e.id),
-                        activityPromptArgumentPickerReport: e.report ? spEntity.fromId(e.report.id) : jsonLookup('core:report')
+                        activityPromptArgumentPickerReport: e.report ? spEntity.fromId(e.report.id) : jsonLookup()
                     }));
 
                     // remove
@@ -114,7 +114,8 @@
                     $scope.entity.promptForArguments.add(spEntity.fromJSON({
                         typeId: 'core:activityPrompt',
                         activityPromptOrdinal: order,
-                        activityPromptArgument: spEntity.fromId(v.id)
+                        activityPromptArgument: spEntity.fromId(v.id),
+                        activityPromptArgumentPickerReport: jsonLookup()
                     }));
                     updateNoMoreVariables();
                 }
@@ -154,7 +155,7 @@
 
                 return show;
             };
-
+            
             function updateNoMoreVariables() {
                 $scope.noMoreVariables = allAvailable.length === $scope.variables.length;
             }
@@ -170,12 +171,12 @@
                 var a = _.find(allAvailable, function (p) { return parameter === ('' + p.id); });
                 var v = _.find($scope.variables, function (p) { return parameter === ('' + p.id); });
                 if (a && v) {
-                    spWorkflowEditorViewService.chooseReport(a.resourceType.idP, null).then(function (resource) {
+                    spWorkflowEditorViewService.chooseReport(a.resourceType.idP, v.report).then(function (resource) {
                         var arg = _.find($scope.entity.promptForArguments, function (p) { return p.activityPromptArgument.idP === v.id; });
                         if (resource && resource.id > 0) {
                             v.report = { id: resource.id, name: resource.name };
                             if (arg) {
-                                arg.activityPromptArgumentPickerReport = spEntity.fromJSON({ id: resource.id, name: resource.name });
+                                arg.activityPromptArgumentPickerReport = resource.entity;
                             }
                         } else {
                             v.report = null;

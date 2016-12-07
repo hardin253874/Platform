@@ -4,6 +4,7 @@
   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   <!--    WORKFLOW Activities                                           -->
   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  
   <!-- Log -->
   <activityType>
     <inherits>wfActivity</inherits>
@@ -44,6 +45,7 @@
       </exitPoint>
     </exitPoints>
   </activityType>
+  
   <!-- Create -->
   <activityType>
     <inherits>wfActivity, entityWithArgsAndExits</inherits>
@@ -83,6 +85,7 @@
       </exitPoint>
     </exitPoints>
   </activityType>
+  
   <!-- Delete -->
   <activityType>
     <inherits>wfActivity</inherits>
@@ -114,6 +117,7 @@
       </exitPoint>
     </exitPoints>
   </activityType>
+  
   <!-- Update -->
   <activityType>
     <inherits>wfActivity, entityWithArgsAndExits</inherits>
@@ -146,6 +150,7 @@
       </exitPoint>
     </exitPoints>
   </activityType>
+  
   <!-- Set Choice field -->
   <activityType>
     <inherits>wfActivity</inherits>
@@ -195,6 +200,7 @@
       </exitPoint>
     </exitPoints>
   </activityType>
+  
   <!-- Set Relationship field -->
   <activityType>
     <inherits>wfActivity</inherits>
@@ -248,6 +254,7 @@
       </exitPoint>
     </exitPoints>
   </activityType>
+  
   <!-- Decision DEPRECATED -->
   <activityType>
     <alias>decisionActivity</alias>
@@ -286,6 +293,7 @@
       </exitPoint>
     </exitPoints>
   </activityType>
+  
   <!-- Assign to variable -->
   <activityType>
     <alias>assignToVariable</alias>
@@ -336,6 +344,7 @@
       </exitPoint>
     </exitPoints>
   </activityType>
+  
   <!-- Send email -->
   <!-- TODO: Add mulitple recipients -->
   <activityType>
@@ -410,6 +419,7 @@
       </exitPoint>
     </exitPoints>
   </activityType>
+  
   <!-- Display Form (aka User Action)-->
   <activityType>
     <alias>displayFormActivity</alias>
@@ -513,6 +523,7 @@
       </exitPoint>
     </exitPoints>
   </activityType>
+  
   <!-- For Each -->
   <activityType>
     <inherits>wfActivity</inherits>
@@ -571,6 +582,8 @@
       </exitPoint>
     </exitPoints>
   </activityType>
+  
+  <!-- Switch -->
   <activityType>
     <alias>switchActivity</alias>
     <name>Gateway</name>
@@ -593,10 +606,10 @@
         <description>The value of this argument is used to determine which path is followed. The value must match the name of the exit point.</description>
       </stringArgument>
     </inputArguments>
-    <exitPoints>t
-
+    <exitPoints>
       <exitPoint><alias>switchActivityOtherwiseExitPoint</alias><name>Otherwise</name><description>This path is taken if none of the other exits match.</description><isDefaultExitPoint>true</isDefaultExitPoint><exitPointOrdinal>99</exitPointOrdinal></exitPoint></exitPoints>
   </activityType>
+  
   <!-- Run Workflow -->
   <activityType>
     <alias>workflowProxy</alias>
@@ -631,6 +644,7 @@
       </relationship>
     </relationships>
   </activityType>
+  
   <!-- Clone  -->
   <activityType>
     <alias>cloneActivity</alias>
@@ -676,6 +690,7 @@
       </exitPoint>
     </exitPoints>
   </activityType>
+  
   <!-- Get Resources -->
   <activityType>
     <inherits>wfActivity</inherits>
@@ -730,6 +745,7 @@
       </exitPoint>
     </exitPoints>
   </activityType>
+  
   <!-- Create Link -->
   <activityType>
     <inherits>wfActivity</inherits>
@@ -774,6 +790,7 @@
       </exitPoint>
     </exitPoints>
   </activityType>
+  
   <!-- Generate document -->
   <activityType>
     <inherits>wfActivity</inherits>
@@ -866,31 +883,7 @@
         <name>Format</name>
         <description>The format of file to generate.</description>
         <argumentIsMandatory>true</argumentIsMandatory>
-        <conformsToType>
-          <enumType>
-            <alias>exportFileTypeEnum</alias>
-            <name>Export File Type</name>
-            <inherits>enumValue</inherits>
-            <generateCode>true</generateCode>
-            <enumValues>
-              <exportFileTypeEnum>
-                <name>Excel</name>
-                <alias>exportFileTypeExcel</alias>
-                <enumOrder>1</enumOrder>
-              </exportFileTypeEnum>
-              <exportFileTypeEnum>
-                <name>CSV</name>
-                <alias>exportFileTypeCsv</alias>
-                <enumOrder>2</enumOrder>
-              </exportFileTypeEnum>
-              <exportFileTypeEnum>
-                <name>Word</name>
-                <alias>exportFileTypeWord</alias>
-                <enumOrder>3</enumOrder>
-              </exportFileTypeEnum>
-            </enumValues>
-          </enumType>
-        </conformsToType>
+        <conformsToType>exportFileTypeEnum</conformsToType>
       </resourceArgument>
 
     </inputArguments>
@@ -1093,57 +1086,63 @@
     </exitPoints>
   </activityType>
 
-  <!-- Start survey -->
+  <!-- Launch Person Campaign -->
   <activityType>
     <inherits>wfActivity</inherits>
-    <alias>startSurveyActivity</alias>
-    <name>Start Survey</name>
-    <description>Start a survey.</description>
+    <alias>launchPersonCampaignActivity</alias>
+    <name>Launch Person Campaign</name>
+    <description>Create and launch a person-based survey campaign.</description>
     <wfActivityCategory>activityCategoryEnum_User</wfActivityCategory>
     <activityTypeOrder>30</activityTypeOrder>
     <activityExecutionClass>
       <class>
-        <alias>startSurveyActivityClass</alias>
-        <typeName>EDC.SoftwarePlatform.Activities.StartSurveyImplementation</typeName>
+        <alias>launchPersonCampaignActivityClass</alias>
+        <typeName>EDC.SoftwarePlatform.Activities.LaunchPersonCampaignImplementation</typeName>
         <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
       </class>
     </activityExecutionClass>
     <generateCode>true</generateCode>
     <inputArguments>
-      <boolArgument>
-        <alias>inStartSurveyPause</alias>
-        <name>Pause Until Completed</name>
-        <description>Plause the activity until the user has completed the survey.</description>
-        <argumentIsMandatory>false</argumentIsMandatory>
-        <defaultExpression>true</defaultExpression>
-      </boolArgument>
       <resourceArgument>
-        <alias>inStartSurveyCampaign</alias>
-        <name>Campaign</name>
-        <description>The campaign to launch for the relevant survey.</description>
-        <argumentIsMandatory>true</argumentIsMandatory>
-        <conformsToType>surveyCampaign</conformsToType>
-      </resourceArgument>
-      <resourceArgument>
-        <alias>inStartSurveyTarget</alias>
-        <name>Target object</name>
+        <alias>inLaunchPersonSurvey</alias>
+        <name>Survey</name>
         <description>The survey to be completed.</description>
+        <conformsToType>userSurvey</conformsToType>
+        <argumentIsMandatory>true</argumentIsMandatory>
+      </resourceArgument>
+      <resourceListArgument>
+        <alias>inLaunchPersonRecipients</alias>
+        <name>Recipients</name>
+        <description>The people who are to complete the survey.</description>
+        <conformsToType>person</conformsToType>
+        <argumentIsMandatory>true</argumentIsMandatory>
+      </resourceListArgument>
+      <resourceArgument>
+        <alias>inLaunchPersonTarget</alias>
+        <name>Target object</name>
+        <description>The type of object that the survey could apply to.</description>
         <conformsToType>userResource</conformsToType>
       </resourceArgument>
+      <boolArgument>
+        <alias>inLaunchPersonPause</alias>
+        <name>Pause Until Completed</name>
+        <description>Pause the activity until the user has completed the survey.</description>
+        <defaultExpression>true</defaultExpression>
+      </boolArgument>
       <decimalArgument>
-        <alias>inStartSurveyDueDays</alias>
+        <alias>inLaunchPersonDueDays</alias>
         <name>Due in (Days)</name>
         <description>The amount of time in days before the survey must be completed.</description>
       </decimalArgument>
       <stringArgument>
-        <alias>inStartSurveyTaskName</alias>
+        <alias>inLaunchPersonTaskName</alias>
         <name>Task name</name>
         <description>The name to give the task.</description>
       </stringArgument>
     </inputArguments>
     <outputArguments>
       <resourceListArgument>
-        <alias>outStartSurveyResponses</alias>
+        <alias>outLaunchPersonResponses</alias>
         <name>Responses</name>
         <description>The survey results.</description>
         <conformsToType>surveyResponse</conformsToType>
@@ -1151,12 +1150,12 @@
     </outputArguments>
     <exitPoints>
       <exitPoint>
-        <alias>exitSs1</alias>
+        <alias>exitLpc1</alias>
         <name>Exit</name>
         <isDefaultExitPoint>true</isDefaultExitPoint>
       </exitPoint>
       <exitPoint>
-        <alias>startSurveyTimeout</alias>
+        <alias>launchPersonTimeout</alias>
         <name>Time out</name>
         <description>The exit to be used if a timeout threshold has been set and exceeded. If this exit has not been wired up the due date will be ignored.</description>
         <isTimeoutExitPoint>true</isTimeoutExitPoint>
@@ -1164,7 +1163,86 @@
       </exitPoint>
     </exitPoints>
   </activityType>
-
+  
+  <!-- Launch Target Campaign -->
+  <activityType>
+    <inherits>wfActivity</inherits>
+    <alias>launchTargetCampaignActivity</alias>
+    <name>Launch Target Campaign</name>
+    <description>Create and launch a target-based survey campaign.</description>
+    <wfActivityCategory>activityCategoryEnum_User</wfActivityCategory>
+    <activityTypeOrder>31</activityTypeOrder>
+    <activityExecutionClass>
+      <class>
+        <alias>launchTargetCampaignActivityClass</alias>
+        <typeName>EDC.SoftwarePlatform.Activities.LaunchTargetCampaignImplementation</typeName>
+        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+      </class>
+    </activityExecutionClass>
+    <generateCode>true</generateCode>
+    <inputArguments>
+      <resourceArgument>
+        <alias>inLaunchTargetSurvey</alias>
+        <name>Survey</name>
+        <description>The survey to be completed.</description>
+        <conformsToType>userSurvey</conformsToType>
+        <argumentIsMandatory>true</argumentIsMandatory>
+      </resourceArgument>
+      <resourceListArgument>
+        <alias>inLaunchTargetTargets</alias>
+        <name>Targets</name>
+        <description>The objects that the surveys will be sent out for.</description>
+        <conformsToType>userResource</conformsToType>
+        <argumentIsMandatory>true</argumentIsMandatory>
+      </resourceListArgument>
+      <resourceArgument>
+        <alias>inLaunchTargetSurveyTaker</alias>
+        <name>Survey Taker</name>
+        <description>The relationship between the target objects and the Person receiving the survey.</description>
+        <conformsToType>relationship</conformsToType>
+        <argumentIsMandatory>true</argumentIsMandatory>
+      </resourceArgument>
+      <boolArgument>
+        <alias>inLaunchTargetPause</alias>
+        <name>Pause Until Completed</name>
+        <description>Pause the activity until the user has completed the survey.</description>
+        <defaultExpression>true</defaultExpression>
+      </boolArgument>
+      <decimalArgument>
+        <alias>inLaunchTargetDueDays</alias>
+        <name>Due in (Days)</name>
+        <description>The amount of time in days before the survey must be completed.</description>
+      </decimalArgument>
+      <stringArgument>
+        <alias>inLaunchTargetTaskName</alias>
+        <name>Task name</name>
+        <description>The name to give the task.</description>
+      </stringArgument>
+    </inputArguments>
+    <outputArguments>
+      <resourceListArgument>
+        <alias>outLaunchTargetResponses</alias>
+        <name>Responses</name>
+        <description>The survey results.</description>
+        <conformsToType>surveyResponse</conformsToType>
+      </resourceListArgument>
+    </outputArguments>
+    <exitPoints>
+      <exitPoint>
+        <alias>exitLtc1</alias>
+        <name>Exit</name>
+        <isDefaultExitPoint>true</isDefaultExitPoint>
+      </exitPoint>
+      <exitPoint>
+        <alias>launchTargetTimeout</alias>
+        <name>Time out</name>
+        <description>The exit to be used if a timeout threshold has been set and exceeded. If this exit has not been wired up the due date will be ignored.</description>
+        <isTimeoutExitPoint>true</isTimeoutExitPoint>
+        <exitPointOrdinal>99</exitPointOrdinal>
+      </exitPoint>
+    </exitPoints>
+  </activityType>
+  
   <!-- Review survey -->
   <activityType>
     <alias>reviewSurveyActivity</alias>
@@ -1172,7 +1250,7 @@
     <name>Review Survey</name>
     <description>Assign a survey result to a person for them to review.</description>
     <wfActivityCategory>activityCategoryEnum_User</wfActivityCategory>
-    <activityTypeOrder>31</activityTypeOrder>
+    <activityTypeOrder>32</activityTypeOrder>
     <activityExecutionClass>
       <class>
         <alias>reviewSurveyActivityClass</alias>
@@ -1219,18 +1297,55 @@
         <description>The name to give the task.</description>
       </stringArgument>
     </inputArguments>
-
-    <outputArguments>
-    </outputArguments>
-
+    <outputArguments></outputArguments>
     <exitPoints>
-
       <exitPoint>
         <alias>reviewSurveyTimeout</alias>
         <name>Time out</name>
         <description>The exit to be used if a timeout threshold has been set and exceeded. If this exit has not been wired up the time-out threshold will be ignored.</description>
         <isTimeoutExitPoint>true</isTimeoutExitPoint>
         <exitPointOrdinal>99</exitPointOrdinal>
+      </exitPoint>
+    </exitPoints>
+  </activityType>
+
+  <!-- Start survey (internal) -->
+  <activityType>
+    <inherits>wfActivity</inherits>
+    <alias>startSurveyActivity</alias>
+    <name>Start Survey</name>
+    <description>Start a survey.</description>
+    <wfActivityCategory>activityCategoryEnum_Hidden</wfActivityCategory>
+    <activityExecutionClass>
+      <class>
+        <alias>startSurveyActivityClass</alias>
+        <typeName>EDC.SoftwarePlatform.Activities.StartSurveyImplementation</typeName>
+        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+      </class>
+    </activityExecutionClass>
+    <generateCode>true</generateCode>
+    <inputArguments>
+      <resourceArgument>
+        <alias>inStartSurveyCampaign</alias>
+        <name>Campaign</name>
+        <description>The campaign to launch for the relevant survey.</description>
+        <argumentIsMandatory>true</argumentIsMandatory>
+        <conformsToType>surveyCampaign</conformsToType>
+      </resourceArgument>
+    </inputArguments>
+    <outputArguments>
+      <resourceListArgument>
+        <alias>outStartSurveyResponses</alias>
+        <name>Responses</name>
+        <description>The survey results.</description>
+        <conformsToType>surveyResponse</conformsToType>
+      </resourceListArgument>
+    </outputArguments>
+    <exitPoints>
+      <exitPoint>
+        <alias>exitSs1</alias>
+        <name>Exit</name>
+        <isDefaultExitPoint>true</isDefaultExitPoint>
       </exitPoint>
     </exitPoints>
   </activityType>

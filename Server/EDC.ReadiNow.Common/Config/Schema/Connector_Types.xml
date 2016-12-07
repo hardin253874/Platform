@@ -537,40 +537,41 @@
     </relationships>
   </type>
   
-  <!-- Scheduled Import Configuration -->
- 
-  <scheduleAction>
-    <alias>scheduledImportConfig</alias>
-    <name>Scheduled Import Configuration</name>
-    <description>A configuration for scheduling an import.</description>
+  <!-- Scheduled Import/Export Configuration -->
+  <type>
+    <alias>scheduledFtpConfig</alias>
+    <name>Scheduled Ftp Configuration</name>
+    <description>A configuration for scheduling an Ftp.</description>
     <generateCode>true</generateCode>
     <inherits>scheduledItem</inherits>
+    <isAbstract>true</isAbstract>
     <fieldGroups>
       <fieldGroup>
-        <name>Scheduled Import Config Details</name>
-        <alias>scheduledImportConfigDetails</alias>
+        <name>Scheduled Ftp Config Details</name>
+        <alias>scheduledFtpConfigDetails</alias>
       </fieldGroup>
     </fieldGroups>
     <fields>
       <stringField>
         <alias>sicUrl</alias>
         <name>FTP address</name>
-        <description>The address of the file to be downloaded. The URL must start with either SFTP or FTPS and match the protocol that the FTP server supports. Downloads using the unencrypted FTP protocol are not supported. </description>
+        <description>The address of the file to be transfered. The URL must start with either SFTP or FTPS and match the protocol that the FTP server supports. Transfers using the unencrypted FTP protocol are not supported. </description>
         <pattern>secureFtpAddressPattern</pattern>
         <fieldRepresents>fieldRepresentsUrl</fieldRepresents>
-        <fieldInGroup>scheduledImportConfigDetails</fieldInGroup>
+        <fieldInGroup>scheduledFtpConfigDetails</fieldInGroup>
         <isRequired>true</isRequired>
       </stringField>
-    
+
       <stringField>
         <alias>sicUsername</alias>
         <name>Username</name>
         <description>The username of the account to be used to log-in.</description>
         <allowMultiLines>false</allowMultiLines>
-        <fieldInGroup>scheduledImportConfigDetails</fieldInGroup>
+        <isRequired>true</isRequired>
+        <fieldInGroup>scheduledFtpConfigDetails</fieldInGroup>
 
       </stringField>
-    
+
       <stringField>
         <alias>sicPassword</alias>
         <name>Password</name>
@@ -578,30 +579,43 @@
         <allowMultiLines>false</allowMultiLines>
         <fieldRepresents>fieldRepresentsPassword</fieldRepresents>
         <isFieldWriteOnly>true</isFieldWriteOnly>
-        <fieldInGroup>scheduledImportConfigDetails</fieldInGroup>
+        <fieldInGroup>scheduledFtpConfigDetails</fieldInGroup>
       </stringField>
-      
+
       <guidField>
         <alias>sicPasswordSecureId</alias>
         <name>Password secure Id</name>
         <description>Reference to the SecureId field.</description>
         <isFieldWriteOnly>true</isFieldWriteOnly>
         <hideField>true</hideField>
-        <fieldInGroup>scheduledImportConfigDetails</fieldInGroup>
+        <fieldInGroup>scheduledFtpConfigDetails</fieldInGroup>
       </guidField>
-    
+
     </fields>
+
+    <onBeforeSave>scheduledImportConfigSaveHandler</onBeforeSave>
+
+  </type>
+  
+  <scheduleAction>
+    <alias>scheduledImportConfig</alias>
+    <name>Scheduled Import Configuration</name>
+    <description>A configuration for scheduling an import.</description>
+    <generateCode>true</generateCode>
+    <inherits>scheduledFtpConfig</inherits>
+    
     <relationships>
       
       <relationship>
         <alias>sicImportConfig</alias>
         <name>Import configuration</name>
         <description>The import configuration that will be used.</description>
-        <relType>relSingleLookup</relType>
+        <relType>relLookup</relType>
+        <relationshipIsMandatory>true</relationshipIsMandatory>
         <generateCode>true</generateCode>
-        <relationshipInFromTypeGroup>scheduledImportConfigDetails</relationshipInFromTypeGroup>
+        <relationshipInFromTypeGroup>scheduledFtpConfigDetails</relationshipInFromTypeGroup>
         <toType>importConfig</toType>
-        <relationshipInToTypeGroup>scheduledImportConfigDetails</relationshipInToTypeGroup>
+        <relationshipInToTypeGroup>scheduledFtpConfigDetails</relationshipInToTypeGroup>
       </relationship>
 
     </relationships>
@@ -614,15 +628,106 @@
         <assemblyName>ReadiNow.Connector, Version=1.0.0.0, Culture=neutral</assemblyName>
       </class>
     </onScheduleFire>
-    
-    <onBeforeSave>scheduledImportConfigSaveHandler</onBeforeSave>
 
   </scheduleAction>
 
+  <scheduleAction>
+    <alias>scheduledExportConfig</alias>
+    <name>Scheduled Export Configuration</name>
+    <description>A configuration for scheduling an export.</description>
+    <generateCode>true</generateCode>
+    <inherits>scheduledFtpConfig</inherits>
+      
+    <relationships>
+     
+      <relationship>
+        <alias>secReport</alias>
+        <name>Report</name>
+        <description>The report to run.</description>
+        <relType>relLookup</relType>
+        <relationshipIsMandatory>true</relationshipIsMandatory>
+        <hideOnToType>true</hideOnToType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>scheduledFtpConfigDetails</relationshipInFromTypeGroup>
+        <toType>report</toType>
+      </relationship>
+
+      <relationship>
+        <alias>secFileType</alias> 
+        <name>Generated file type</name>
+        <description>The type of file to be generated.</description>
+        <relType>relChoiceField</relType>
+        <toType>exportFileTypeEnum</toType> <!--THIS IS THE WRONG TYPE, NEEDS TO BE ITS OWN ENUM -->
+        <toName>File type</toName>
+        <hideOnToType>true</hideOnToType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>scheduledFtpConfigDetails</relationshipInFromTypeGroup>
+        <defaultPointTo>exportFileTypeCsv</defaultPointTo>
+      </relationship>
+
+      <relationship>
+        <alias>secRunLog</alias>
+        <name>Run log </name>
+        <description>The log of export runs.</description>
+        <toName>Run log entries</toName>
+        <fromName>Log entries for object</fromName>
+        <toType>tenantLogEntry</toType>
+        <relType>relDependants</relType>
+        <hideOnToTypeDefaultForm>true</hideOnToTypeDefaultForm>
+        <hideOnToType>true</hideOnToType>
+        <relationshipInFromTypeGroup>scheduledFtpConfigDetails</relationshipInFromTypeGroup>
+      </relationship>
+      
+    </relationships>
+
+    <onScheduleFire>
+      <class>
+        <alias>startExportJobClass</alias>
+        <name>StartExportJobClass</name>
+        <typeName>ReadiNow.Connector.Scheduled.StartExportJob</typeName>
+        <assemblyName>ReadiNow.Connector, Version=1.0.0.0, Culture=neutral</assemblyName>
+      </class>
+    </onScheduleFire>
+
+  </scheduleAction>
+
+  <!-- Export File Type -->
+  <enumType>
+    <alias>exportFileTypeEnum</alias>
+    <name>Export File Type</name>
+    <inherits>enumValue</inherits>
+    <generateCode>true</generateCode>
+    <enumValues>
+      <exportFileTypeEnum>
+        <name>Excel</name>
+        <alias>exportFileTypeExcel</alias>
+        <enumOrder>1</enumOrder>
+      </exportFileTypeEnum>
+      <exportFileTypeEnum>
+        <name>CSV</name>
+        <alias>exportFileTypeCsv</alias>
+        <enumOrder>2</enumOrder>
+      </exportFileTypeEnum>
+      <exportFileTypeEnum>
+        <name>Word</name>
+        <alias>exportFileTypeWord</alias>
+        <enumOrder>3</enumOrder>
+      </exportFileTypeEnum>
+    </enumValues>
+  </enumType>
+  
   <target>
     <alias>scheduledImportConfigSaveHandler</alias>
     <name>scheduledImportConfigSaveHandler</name>
     <typeName>ReadiNow.Connector.Scheduled.ScheduledImportConfigSaveHandler</typeName>
     <assemblyName>ReadiNow.Connector, Version=1.0.0.0, Culture=neutral</assemblyName>
   </target>
+
+  <target>
+    <alias>scheduledExportConfigSaveHandler</alias>
+    <name>scheduledExportConfigSaveHandler</name>
+    <typeName>ReadiNow.Connector.Scheduled.ScheduledExportConfigSaveHandler</typeName>
+    <assemblyName>ReadiNow.Connector, Version=1.0.0.0, Culture=neutral</assemblyName>
+  </target>
+  
 </resources>

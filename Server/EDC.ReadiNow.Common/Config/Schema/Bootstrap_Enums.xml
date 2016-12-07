@@ -99,4 +99,55 @@
     <generateCode>true</generateCode>
     <relationshipInToTypeGroup>enumTypeDetails</relationshipInToTypeGroup>
   </relationship>
+
+  <relationship>
+    <alias>enumValueFormattingType</alias>
+    <name>Choice field formatting rule type</name>
+    <relType>relChoiceField</relType>
+    <fromType>enumType</fromType>
+    <fromName>Choice field</fromName>
+    <toType>enumFormattingType</toType>
+    <toName>Choice field formatting type</toName>
+    <toTypeDefaultValue>formattingTypeNone</toTypeDefaultValue>
+    <generateCode>true</generateCode>
+    <relationshipInFromTypeGroup>enumTypeDetails</relationshipInFromTypeGroup>
+  </relationship>
+
+  <relationship>
+    <alias>enumFormattingRule</alias>
+    <name>Choice field formatting rule</name>
+    <relType>relSingleComponent</relType>
+    <fromType>enumValue</fromType>
+    <fromName>Choice field</fromName>
+    <toType>formattingRule</toType>
+    <toName>Choice field formatting rule</toName>
+    <securesTo>true</securesTo>
+    <generateCode>true</generateCode>
+    <relationshipInFromTypeGroup>enumValueDetails</relationshipInFromTypeGroup>
+    <relationshipInToTypeGroup>formattingRuleDetails</relationshipInToTypeGroup>    
+  </relationship>
+
+  <enumType>
+    <alias>enumFormattingType</alias>
+    <name>Formatting Type</name>
+    <generateCode>true</generateCode>
+    <inherits>enumValue</inherits>
+    <enumValues>
+      <enumFormattingType>
+        <name>None</name>
+        <alias>formattingTypeNone</alias>
+        <enumOrder>1</enumOrder>
+      </enumFormattingType>
+      <enumFormattingType>
+        <name>Highlight</name>
+        <alias>formattingTypeHighlight</alias>
+        <enumOrder>2</enumOrder>
+      </enumFormattingType>
+      <enumFormattingType>
+        <name>Icon</name>
+        <alias>formattingTypeIcon</alias>
+        <enumOrder>3</enumOrder>
+      </enumFormattingType>
+    </enumValues>
+  </enumType>
 </resources>

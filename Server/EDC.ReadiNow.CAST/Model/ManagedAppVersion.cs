@@ -87,8 +87,8 @@ namespace EDC.ReadiNow.CAST.Model
         /// </summary>
         public IEntityCollection<ManagedAppVersion> RequiredAppVersions
         {
-            get { return GetRelationships<ManagedAppVersion>(ManagedAppVersionSchema.IsRequiredByAppVersionRelationship, Direction.Forward).Entities; }
-            set { SetRelationships(ManagedAppVersionSchema.IsRequiredByAppVersionRelationship, value, Direction.Forward); }
+            get { return GetRelationships<ManagedAppVersion>(ManagedAppVersionSchema.RequiredAppVersionsRelationship, Direction.Forward).Entities; }
+            set { SetRelationships(ManagedAppVersionSchema.RequiredAppVersionsRelationship, value, Direction.Forward); }
         }
 
         #region Internals
@@ -103,7 +103,7 @@ namespace EDC.ReadiNow.CAST.Model
                         ManagedAppVersionSchema.AppVersionIdField + "," +
                         ManagedAppVersionSchema.ApplicationLookup + ".{" + ManagedApp.ManagedAppPreloadQuery + "}," +
                         ManagedAppVersionSchema.RequiredAppsRelationship + ".{" + ManagedApp.ManagedAppPreloadQuery + "}," +
-                        ManagedAppVersionSchema.IsRequiredByAppVersionRelationship + ".{alias,name,isOfType.{alias,name}," + ManagedAppVersionSchema.AppVersionIdField + "}";
+                        ManagedAppVersionSchema.RequiredAppVersionsRelationship + ".{alias,name,isOfType.{alias,name}," + ManagedAppVersionSchema.AppVersionIdField + "}";
             }
         }
 

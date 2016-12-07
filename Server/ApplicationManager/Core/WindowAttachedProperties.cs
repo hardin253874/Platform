@@ -1,4 +1,5 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
+
 using System.Windows;
 
 namespace ApplicationManager.Core
@@ -13,8 +14,8 @@ namespace ApplicationManager.Core
 		public static readonly DependencyProperty CloseWindowProperty =
 			DependencyProperty.RegisterAttached(
 				"CloseWindow",
-				typeof ( bool? ),
-				typeof ( WindowAttachedProperties ),
+				typeof( bool? ),
+				typeof( WindowAttachedProperties ),
 				new PropertyMetadata( CloseWindowChanged ) );
 
 		/// <summary>

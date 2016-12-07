@@ -1,5 +1,7 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
+
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace ApplicationManager.Core
 {
@@ -14,16 +16,35 @@ namespace ApplicationManager.Core
 		public event PropertyChangedEventHandler PropertyChanged;
 
 		/// <summary>
-		///     Raises the property changed.
+		///     Called when the property changes.
 		/// </summary>
 		/// <param name="propertyName">Name of the property.</param>
-		protected void RaisePropertyChanged( string propertyName )
+		protected void OnPropertyChanged( [CallerMemberName] string propertyName = null )
 		{
-			PropertyChangedEventHandler handler = PropertyChanged;
+			PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( propertyName ) );
+		}
 
-			if ( handler != null )
+		/// <summary>
+		///     Sets the property.
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="storage">The storage.</param>
+		/// <param name="value">The value.</param>
+		/// <param name="propertyName">Name of the property.</param>
+		/// <returns></returns>
+		protected void SetProperty<T>( ref T storage, T value, [CallerMemberName] string propertyName = null )
+		{
+			if ( Equals( storage, value ) )
 			{
-				handler( this, new PropertyChangedEventArgs( propertyName ) );
+				return;
+			}
+
+			storage = value;
+
+			if ( propertyName != null )
+			{
+				// ReSharper disable once ExplicitCallerInfoArgument
+				OnPropertyChanged( propertyName );
 			}
 		}
 	}

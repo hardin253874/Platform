@@ -25,5 +25,15 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.Security
 			get;
 			set;
 		}
+
+		/// <summary>
+		///     The solution the access rule belongs to.
+		/// </summary>
+		[DataMember( Name = "solutionId", IsRequired = false )]
+		public long SolutionId
+		{
+			get;
+			set;
+		}
 	}
 }

@@ -47,15 +47,17 @@
 
                                 var values = scope.model.dateMap[newVal.dateString];
 
-                                values = _.sortBy(values, 'date');
+                                values = _.orderBy(values, 'date', 'desc');
 
                                 scope.model.restorePoints = [];
                                 scope.model.selectedRestorePoint = null;
 
                                 var restorePointSet = {};
 
+                                var restorePoints = [];
+
                                 _.forEach(values,
-                                    function(restorePoint) {
+                                    function (restorePoint) {
                                         var date = new Date(restorePoint.date);
 
                                         var newDate = new Date(date.getYear(),
@@ -63,35 +65,62 @@
                                             date.getDate(),
                                             date.getHours(),
                                             date.getMinutes(),
-                                            0,
+                                            date.getSeconds(),
                                             0);
 
                                         var timeFormat = Globalize.format(newDate, 't');
 
                                         if (restorePoint.userDefined) {
-                                            scope.model.restorePoints.push({
-                                                name: restorePoint.name,
+                                            var medTimeFormat = Globalize.format(newDate, 'T');
+
+                                            if (restorePoint.name) {
+                                                var rollbackRegEx = /Rollback to '(.*)'/i;
+
+                                                var matches = restorePoint.name.match(rollbackRegEx);
+
+                                                if (matches && matches.length > 1) {
+                                                    var rollbackDate = new Date(matches[1]);
+
+                                                    if (spUtils.isValidDate(rollbackDate)) {
+                                                        restorePoint.name = 'Rollback to \'' + Globalize.format(rollbackDate, 'f') + '\'';
+                                                    }
+                                                }
+                                            }
+
+                                            restorePoints.push({
+                                                name: restorePoint.name + ' (' + medTimeFormat + ')',
                                                 date: timeFormat,
                                                 restorePoint: restorePoint
                                             });
-
-                                            if (!scope.model.selectedRestorePoint) {
-                                                scope.model.selectedRestorePoint = scope.model.restorePoints[0];
-                                            }
                                         } else if (!_.has(restorePointSet, timeFormat)) {
                                             restorePointSet[timeFormat] = 1;
 
-                                            scope.model.restorePoints.push({
+                                            restorePoints.push({
                                                 name: timeFormat,
                                                 date: timeFormat,
                                                 restorePoint: restorePoint
                                             });
-
-                                            if (!scope.model.selectedRestorePoint) {
-                                                scope.model.selectedRestorePoint = scope.model.restorePoints[0];
-                                            }
                                         }
                                     });
+
+                                if (restorePoints.length) {
+                                    scope.model.restorePoints = restorePoints;
+                                }
+
+                                if (scope.model.previouslySelectedRestorePoint) {
+                                    var previousSelectedRestorePoint = _.filter(scope.model.restorePoints, function (r) {
+                                        return r.name === scope.model.previouslySelectedRestorePoint;
+                                    });
+
+                                    if (previousSelectedRestorePoint && previousSelectedRestorePoint.length > 0) {
+                                        scope.model.selectedRestorePoint = previousSelectedRestorePoint[0];
+                                    }
+
+                                    scope.model.previouslySelectedRestorePoint = null;
+                                } else if (!scope.model.selectedRestorePoint) {
+                                    scope.model.selectedRestorePoint = scope.model.restorePoints[0];
+                                }
+
                             });
 
                         scope.$watch('model.selectedRestorePoint',
@@ -100,33 +129,20 @@
                                     return;
                                 }
 
-                                var changes = [];
+                                if (newVal.restorePoint.userNames) {
+                                    scope.model.changesBy = newVal.restorePoint.userNames;
+                                } else {
+                                    getUserActivity(newVal.restorePoint.date)
+                                        .then(function (data) {
+                                            var changes = data;
 
-                                scope.model.changesBy = [];
+                                            changes = _.sortBy(_.uniq(changes));
 
-                                var cutoff = new Date(newVal.restorePoint.date);
+                                            newVal.restorePoint.userNames = changes;
 
-                                _.forEach(scope.model.allRestorePoints,
-                                    function(restorePoint) {
-                                        var date = new Date(restorePoint.date);
-
-                                        if (date >= cutoff) {
-                                            changes.push(restorePoint.userName);
-                                        }
-                                    });
-
-                                _.forEach(scope.model.allCustomRestorePoints,
-                                    function (restorePoint) {
-                                        var date = new Date(restorePoint.date);
-
-                                        if (date >= cutoff) {
-                                            changes.push(restorePoint.userName);
-                                        }
-                                    });
-
-                                changes = _.sortBy(_.uniq(changes));
-
-                                scope.model.changesBy = changes;
+                                            scope.model.changesBy = changes;
+                                        });
+                                }
                             });
 
                         scope.createRestorePoint = function() {
@@ -157,7 +173,7 @@
                             return spDialogService.showModalDialog(dialogOptions)
                                 .then(function(result) {
                                     if (result === true) {
-                                        initialize();
+                                        reInitialize();
                                     }
 
                                     return $q.when();
@@ -169,7 +185,7 @@
                                 { result: true, label: 'Start Rollback' },
                                 { result: false, label: 'Cancel' }
                             ];
-                            var message = 'Rollback to ' + scope.model.selectedRestorePoint.name + ' on ' + scope.model.selectedRollbackDate + '.';
+                            var message = 'Rollback to ' + scope.model.selectedRestorePoint.name + ' on ' + scope.model.selectedRollbackDate.dateString + '.';
 
                             var options = {
                                 title: 'Confirm Rollback',
@@ -193,7 +209,7 @@
                             return spDialogService.showModalDialog(dialogOptions)
                                 .then(function (result) {
                                     if (result === true) {
-                                        initialize();
+                                        reInitialize();
                                     }
 
                                     return $q.when();
@@ -218,8 +234,51 @@
                                     });
                         }
 
+                        function getUserActivity(dateString) {
+                            return $http({
+                                method: 'POST',
+                                url: spWebService.getWebApiRoot() + '/spapi/data/v1/tenantRollback/getUserActivity/',
+                                headers: spWebService.getHeaders(),
+                                data: { dateString: dateString }
+                            })
+                                .then(function (response) {
+                                    return response && response.data;
+                                },
+                                    function (error) {
+                                        var errorText = 'Failed to retrieve tenant rollback user activity.';
+
+                                        spAlertsService.addAlert(errorText, 'error');
+
+                                        throw error && error.data;
+                                    });
+                        }
+
+                        function reInitialize() {
+                            var selectedRollbackDate = scope.model.selectedRollbackDate.dateString;
+                            var selectedRestorePoint = scope.model.selectedRestorePoint.name;
+
+                            initialize()
+                                .then(function() {
+
+                                    if (selectedRollbackDate) {
+                                        var previousSelectedRollbackDate = _.filter(scope.model.rollbackDates,
+                                            function(r) {
+                                                return r.dateString === selectedRollbackDate;
+                                            });
+
+                                        if (previousSelectedRollbackDate && previousSelectedRollbackDate.length > 0) {
+                                            scope.model.selectedRollbackDate = previousSelectedRollbackDate[0];
+                                        }
+                                    }
+
+                                    if (selectedRestorePoint) {
+                                        scope.model.previouslySelectedRestorePoint = selectedRestorePoint;
+                                    }
+                                });
+                        }
+
                         function initialize() {
-                            getTenantRollbackData()
+                            return getTenantRollbackData()
                                 .then(function(data) {
 
                                     scope.model.allRestorePoints = [];
@@ -229,6 +288,8 @@
                                     scope.model.rollbackDates = [];
                                     scope.model.selectedRollbackDate = null;
                                     scope.model.selectedRestorePoint = null;
+
+                                    var rollbackDates = [];
 
                                     if (data && data.restorePoints && data.restorePoints.length) {
 
@@ -248,15 +309,11 @@
                                                     values = [
                                                     ];
                                                     scope.model.dateMap[dateString] = values;
-                                                    scope.model.rollbackDates.push(restorePoint);
+                                                    rollbackDates.push(restorePoint);
                                                 }
 
                                                 restorePoint.userDefined = false;
                                                 values.push(restorePoint);
-
-                                                if (!scope.model.selectedRollbackDate) {
-                                                    scope.model.selectedRollbackDate = restorePoint;
-                                                }
                                             });
                                     }
 
@@ -278,33 +335,42 @@
                                                     values = [
                                                     ];
                                                     scope.model.dateMap[dateString] = values;
-                                                    scope.model.rollbackDates.push(customRestorePoint);
+                                                    rollbackDates.push(customRestorePoint);
                                                 }
 
                                                 customRestorePoint.userDefined = true;
                                                 values.push(customRestorePoint);
-
-                                                if (!scope.model.selectedRollbackDate) {
-                                                    scope.model.selectedRollbackDate = dateString;
-                                                }
                                             });
                                     }
 
+                                    if (rollbackDates.length) {
+                                        scope.model.rollbackDates = _.orderBy(rollbackDates, 'date', 'desc');
+                                        scope.model.selectedRollbackDate = scope.model.rollbackDates[0];
+                                    }
+
                                     scope.model.rollbackLogs = [];
+                                    var rollbackLogs = [];
 
                                     if (data && data.rollbackLogs && data.rollbackLogs.length) {
                                         _.forEach(data.rollbackLogs,
                                             function(log) {
 
+                                                var date = new Date(log.date);
+
                                                 var logEntry = {
                                                     userName: log.userName,
-                                                    date: Globalize.format(new Date(log.date), 'f'),
+                                                    dateObj: date,
+                                                    date: Globalize.format(date, 'f'),
                                                     rollbackDate: Globalize.format(new Date(log.rollbackDate), 'f')
                                                 };
 
-                                                scope.model.rollbackLogs.push(logEntry);
+                                                rollbackLogs.push(logEntry);
 
                                             });
+                                    }
+
+                                    if (rollbackLogs.length) {
+                                        scope.model.rollbackLogs = _.orderBy(rollbackLogs, 'dateObj', 'desc');
                                     }
 
                                 });
@@ -390,6 +456,7 @@
                     okText: options.btns[0].label,
                     cancelText: options.btns[1].label,
                     selectedRestorePoint: options.selectedRestorePoint,
+                    running: false,
                     busyIndicator: {
                         type: 'spinner',
                         text: 'Loading...',
@@ -407,19 +474,25 @@
                 $scope.model.close = function(result) {
 
                     if (result) {
+                        $scope.model.running = true;
+
                         return $http({
                                 method: 'POST',
                                 url: spWebService.getWebApiRoot() + '/spapi/data/v1/tenantRollback/rollback',
                                 headers: spWebService.getHeaders(),
                                 data: { date: $scope.model.selectedRestorePoint.restorePoint.date, name: $scope.model.selectedRestorePoint.name }
                             })
-                            .then(function() {
+                            .then(function () {
+                                    spAlertsService.addAlert('Tenant rollback complete', { severity: spAlertsService.sev.Success, expires: true });
+
                                     $uibModalInstance.close(result);
                                 },
                                 function(error) {
-                                    var errorText = 'Failed to create restore point.';
+                                    var errorText = 'Unable to rollback at the current time. Please try again later.';
 
                                     spAlertsService.addAlert(errorText, 'error');
+
+                                    $scope.model.running = false;
 
                                     throw error && error.data;
                                 });

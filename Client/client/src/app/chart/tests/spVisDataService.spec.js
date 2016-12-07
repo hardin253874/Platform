@@ -575,6 +575,14 @@ describe('Charts|spec|spVisDataService', function () {
 
     describe('convertPivotRowToConds', function () {
 
+        var conds;
+        var test = function (index, expid, oper, type, value) {
+            expect(conds[index].expid).toBe(expid);
+            expect(conds[index].oper).toBe(oper);
+            expect(conds[index].type).toBe(type);
+            expect(conds[index].value).toBe(value);
+        };
+
         var mockSeries = function (sources) {
             var series = {};
             _.forEach(sources, function (col) {
@@ -599,9 +607,11 @@ describe('Charts|spec|spVisDataService', function () {
             var sources = [];
             var row = meta.rdata[0];
 
-            var conds = spVisDataService.convertPivotRowToConds(row, sources, meta);
+            conds = spVisDataService.convertPivotRowToConds(row, sources, meta);
 
-            expect(conds).toBeArray(0);
+            expect(conds).toBeArray(1);
+
+            test(0, '_id', 'IsNotNull', undefined, undefined);
         }));
 
         it('handles scalar data grouping', inject(function (spVisDataService) {
@@ -637,16 +647,9 @@ describe('Charts|spec|spVisDataService', function () {
             var row = meta.rdata[0];
 
             var sources = spCharts.getBoundSources(series, sourceKeys);
-            var conds = spVisDataService.convertPivotRowToConds(row, sources, meta);
+            conds = spVisDataService.convertPivotRowToConds(row, sources, meta);
 
-            var test = function (index, expid, oper, type, value) {
-                expect(conds[index].expid).toBe(expid);
-                expect(conds[index].oper).toBe(oper);
-                expect(conds[index].type).toBe(type);
-                expect(conds[index].value).toBe(value);
-            };
-
-            expect(conds).toBeArray(8);
+            expect(conds).toBeArray(9);
             test(0, '1', 'Equal', 'String', 'ABC');
             test(1, '2', 'Equal', 'Int32', '200');
             test(2, '3', 'Equal', 'Decimal', '123.123');
@@ -655,6 +658,7 @@ describe('Charts|spec|spVisDataService', function () {
             test(5, '6', 'Equal', 'Date', '2012-12-31');
             test(6, '7', 'Equal', 'Time', '1753-01-01T12:00:00Z');
             test(7, '8', 'Equal', 'DateTime', '2012-12-31T12:00:00Z');
+            test(8, '_id', 'IsNotNull', undefined, undefined);
         }));
 
         it('handles null scalar data grouping', inject(function (spVisDataService) {
@@ -690,23 +694,18 @@ describe('Charts|spec|spVisDataService', function () {
             var row = meta.rdata[0];
 
             var sources = spCharts.getBoundSources(series, sourceKeys);
-            var conds = spVisDataService.convertPivotRowToConds(row, sources, meta);
+            conds = spVisDataService.convertPivotRowToConds(row, sources, meta);
 
-            var test = function (index, expid, oper, type) {
-                expect(conds[index].expid).toBe(expid);
-                expect(conds[index].oper).toBe(oper);
-                expect(conds[index].type).toBe(type);
-            };
-
-            expect(conds).toBeArray(8);
+            expect(conds).toBeArray(9);
             test(0, '1', 'IsNull', 'String');
             test(1, '2', 'IsNull', 'Int32');
             test(2, '3', 'IsNull', 'Decimal');
             test(3, '4', 'IsNull', 'Currency');
-            test(4, '5', 'Equal', 'Bool');
+            test(4, '5', 'Equal', 'Bool', 'False');
             test(5, '6', 'IsNull', 'Date');
             test(6, '7', 'IsNull', 'Time');
             test(7, '8', 'IsNull', 'DateTime');
+            test(8, '_id', 'IsNotNull', undefined, undefined);
         }));
 
         it('handles relationship grouping', inject(function (spVisDataService) {
@@ -730,9 +729,9 @@ describe('Charts|spec|spVisDataService', function () {
             var row = meta.rdata[0];
 
             var sources = spCharts.getBoundSources(series, sourceKeys);
-            var conds = spVisDataService.convertPivotRowToConds(row, sources, meta);
+            conds = spVisDataService.convertPivotRowToConds(row, sources, meta);
 
-            expect(conds).toBeArray(2);
+            expect(conds).toBeArray(3);
 
             expect(conds[0].expid).toBe('11');
             expect(conds[0].oper).toBe('AnyOf');
@@ -745,6 +744,8 @@ describe('Charts|spec|spVisDataService', function () {
             expect(conds[1].type).toBe('InlineRelationship');
             expect(conds[1].values).toBeTruthy();
             expect(conds[1].values['789']).toBeTruthy();
+
+            test(2, '_id', 'IsNotNull', undefined, undefined);
         }));
 
         it('handles null relationship grouping', inject(function (spVisDataService) {
@@ -768,9 +769,9 @@ describe('Charts|spec|spVisDataService', function () {
             var row = meta.rdata[0];
 
             var sources = spCharts.getBoundSources(series, sourceKeys);
-            var conds = spVisDataService.convertPivotRowToConds(row, sources, meta);
+            conds = spVisDataService.convertPivotRowToConds(row, sources, meta);
 
-            expect(conds).toBeArray(2);
+            expect(conds).toBeArray(3);
 
             expect(conds[0].expid).toBe('11');
             expect(conds[0].oper).toBe('IsNull');
@@ -779,6 +780,8 @@ describe('Charts|spec|spVisDataService', function () {
             expect(conds[1].expid).toBe('22');
             expect(conds[1].oper).toBe('IsNull');
             expect(conds[1].type).toBe('InlineRelationship');
+
+            test(2, '_id', 'IsNotNull', undefined, undefined);
         }));
 
     });

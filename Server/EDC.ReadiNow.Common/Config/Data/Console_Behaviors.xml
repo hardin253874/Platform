@@ -243,7 +243,13 @@
     <k:treeIconUrl>Assets/Images/Nav/Workflow.svg</k:treeIconUrl>
     <alias>k:workflowBehavior</alias>
     <k:behaviorForTypes>workflow</k:behaviorForTypes>    
-  </k:consoleBehavior>  
+  </k:consoleBehavior>
+  <!-- workflow run behaviour -->
+  <k:consoleBehavior>
+    <k:treeIconUrl>Assets/Images/Nav/Workflow.svg</k:treeIconUrl>
+    <alias>k:workflowRunBehavior</alias>
+    <k:behaviorForTypes>workflowRun</k:behaviorForTypes>
+  </k:consoleBehavior>
   <!-- Image Settings -->
   <k:consoleBehavior>
     <alias>k:tenantImageSettingsConsoleBehaviour</alias>
@@ -314,6 +320,7 @@
         <k:appliesToMultiSelection>true</k:appliesToMultiSelection>
         <htmlActionMethod>delete</htmlActionMethod>
         <k:actionRequiresPermission>delete</k:actionRequiresPermission>
+        <k:actionRequiresParentPermission>modify</k:actionRequiresParentPermission>
       </k:actionMenuItem>
       <k:actionMenuItem>
         <alias>k:exportXmlAction</alias>
@@ -375,7 +382,7 @@
       <k:actionMenuItem>
         <alias>k:viewInstancesOfTypeAction</alias>
         <name>View Records</name>
-        <k:menuIconUrl>assets/images/16x16/reports.svg</k:menuIconUrl>
+        <k:menuIconUrl>assets/images/16x16/report.svg</k:menuIconUrl>
         <k:menuOrder>1100</k:menuOrder>
         <k:isContextMenu>true</k:isContextMenu>
         <k:isSystem>true</k:isSystem>
@@ -571,6 +578,7 @@
             <k:isSystem>true</k:isSystem>
             <htmlActionMethod>custom</htmlActionMethod>
             <htmlActionState>handleAdd</htmlActionState>
+            <k:actionRequiresParentPermission>modify</k:actionRequiresParentPermission>
             <k:actionIncludedAsButton>k:defaultRelationshipsTabMenu</k:actionIncludedAsButton>
           </k:actionMenuItem>
         </k:menuItems>
@@ -597,6 +605,7 @@
             <k:appliesToMultiSelection>true</k:appliesToMultiSelection>
             <htmlActionMethod>custom</htmlActionMethod>
             <htmlActionState>handleRemove</htmlActionState>
+            <k:actionRequiresParentPermission>modify</k:actionRequiresParentPermission>
             <k:actionIncludedAsButton>k:relationshipsTabSelectMenu</k:actionIncludedAsButton>
           </k:actionMenuItem>
         </k:menuItems>
@@ -648,6 +657,27 @@
         <k:isSystem>true</k:isSystem>
         <k:appliesToSelection>true</k:appliesToSelection>
         <htmlActionMethod>navigate</htmlActionMethod>
+        <htmlActionState>workflowRun</htmlActionState>
+      </k:actionMenuItem>
+    </k:menuItems>
+  </k:actionMenu>
+
+  <!-- Workflow Run -->
+  <k:actionMenu>
+    <alias>k:defaultWorkflowRunActionMenu</alias>
+    <k:menuForBehavior>k:workflowRunBehavior</k:menuForBehavior>
+    <k:menuItems>
+      <k:actionMenuItem>
+        <alias>k:cancelWorkflowAction</alias>
+        <name>Cancel '%Resource%'</name>
+        <k:menuIconUrl>assets/images/16x16/cancel.svg</k:menuIconUrl>
+        <k:menuOrder>100</k:menuOrder>
+        <k:isActionItem>true</k:isActionItem>
+        <k:isContextMenu>true</k:isContextMenu>
+        <k:isSystem>true</k:isSystem>
+        <k:appliesToSelection>true</k:appliesToSelection>
+        <k:appliesToMultiSelection>true</k:appliesToMultiSelection>
+        <htmlActionMethod>cancelWorkflowRun</htmlActionMethod>
         <htmlActionState>workflowRun</htmlActionState>
       </k:actionMenuItem>
     </k:menuItems>

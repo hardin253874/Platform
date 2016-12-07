@@ -21,6 +21,13 @@ describe('Reports|View|spReport|spec:|spReport directive', function () {
 
 
         var tenantSettingsStub = {
+            getNameFieldEntity: function () {
+                return {
+                    then: function (caller) {
+                        caller(null);
+                    }
+                };
+            },
             getCurrencySymbol: function() {
                 return {
                     then: function(caller) {

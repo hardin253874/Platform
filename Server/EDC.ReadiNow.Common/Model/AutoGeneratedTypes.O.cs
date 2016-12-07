@@ -2590,6 +2590,17 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Public static accessor to the inherited  forward relationship.
 		/// </summary>
+		public static IEntity EnumFormattingRule_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.EnumValue.EnumFormattingRule_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
 		public static IEntity EnumOwner_Field
 		{
 			get
@@ -2748,7 +2759,7 @@ namespace EDC.ReadiNow.Model
 		{
 			get
 			{
-				return new IEntity [ ] { OperatorEnum.Alias_Field, OperatorEnum.CanDelete_Field, OperatorEnum.CanModify_Field, OperatorEnum.CanModifyProtectedResource_Field, OperatorEnum.CreatedDate_Field, OperatorEnum.Description_Field, OperatorEnum.EnumOrder_Field, OperatorEnum.ModifiedDate_Field, OperatorEnum.Name_Field, OperatorEnum.CreatedBy_Field, OperatorEnum.EnumOwner_Field, OperatorEnum.Flags_Field, OperatorEnum.IndirectInSolution_Field, OperatorEnum.InSolution_Field, OperatorEnum.InStructureLevel_Field, OperatorEnum.IsOfType_Field, OperatorEnum.IsRootForStructureView_Field, OperatorEnum.LastModifiedBy_Field, OperatorEnum.ResourceConsoleBehavior_Field, OperatorEnum.ResourceHasResourceKeyDataHashes_Field, OperatorEnum.ResourceInFolder_Field, OperatorEnum.SecurityOwner_Field, OperatorEnum.SelectionBehavior_Field, OperatorEnum.ShortcutInFolder_Field };
+				return new IEntity [ ] { OperatorEnum.Alias_Field, OperatorEnum.CanDelete_Field, OperatorEnum.CanModify_Field, OperatorEnum.CanModifyProtectedResource_Field, OperatorEnum.CreatedDate_Field, OperatorEnum.Description_Field, OperatorEnum.EnumOrder_Field, OperatorEnum.ModifiedDate_Field, OperatorEnum.Name_Field, OperatorEnum.CreatedBy_Field, OperatorEnum.EnumFormattingRule_Field, OperatorEnum.EnumOwner_Field, OperatorEnum.Flags_Field, OperatorEnum.IndirectInSolution_Field, OperatorEnum.InSolution_Field, OperatorEnum.InStructureLevel_Field, OperatorEnum.IsOfType_Field, OperatorEnum.IsRootForStructureView_Field, OperatorEnum.LastModifiedBy_Field, OperatorEnum.ResourceConsoleBehavior_Field, OperatorEnum.ResourceHasResourceKeyDataHashes_Field, OperatorEnum.ResourceInFolder_Field, OperatorEnum.SecurityOwner_Field, OperatorEnum.SelectionBehavior_Field, OperatorEnum.ShortcutInFolder_Field };
 			}
 		}
 
@@ -2895,6 +2906,20 @@ namespace EDC.ReadiNow.Model
 			set
 			{
 				this.SetLookup<UserAccount>( "core:createdBy", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public FormattingRule EnumFormattingRule
+		{
+			get
+			{
+				return this.GetLookup<FormattingRule>( "core:enumFormattingRule", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<FormattingRule>( "core:enumFormattingRule", value, Direction.Forward );
 			}
 		}
 		/// <summary>

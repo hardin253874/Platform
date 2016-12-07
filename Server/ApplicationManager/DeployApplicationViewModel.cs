@@ -1,4 +1,5 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
+
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -76,8 +77,7 @@ namespace ApplicationManager
 			{
 				if ( _busyMessage != value )
 				{
-					_busyMessage = value;
-					RaisePropertyChanged( "BusyMessage" );
+					SetProperty( ref _busyMessage, value );
 				}
 			}
 		}
@@ -110,8 +110,7 @@ namespace ApplicationManager
 			{
 				if ( _closeWindow != value )
 				{
-					_closeWindow = value;
-					RaisePropertyChanged( "CloseWindow" );
+					SetProperty( ref _closeWindow, value );
 				}
 			}
 		}
@@ -134,13 +133,7 @@ namespace ApplicationManager
 		/// <value>
 		///     <c>true</c> if [button enabled]; otherwise, <c>false</c>.
 		/// </value>
-		public bool DeployEnabled
-		{
-			get
-			{
-				return SelectedPackage != null;
-			}
-		}
+		public bool DeployEnabled => SelectedPackage != null;
 
 		/// <summary>
 		///     Gets or sets a value indicating whether this instance is busy.
@@ -158,8 +151,7 @@ namespace ApplicationManager
 			{
 				if ( _isBusy != value )
 				{
-					_isBusy = value;
-					RaisePropertyChanged( "IsBusy" );
+					SetProperty( ref _isBusy, value );
 				}
 			}
 		}
@@ -173,7 +165,6 @@ namespace ApplicationManager
 		public ObservableCollection<Package> PackageCollection
 		{
 			get;
-			private set;
 		}
 
 		/// <summary>
@@ -185,7 +176,6 @@ namespace ApplicationManager
 		public CollectionViewSource Packages
 		{
 			get;
-			private set;
 		}
 
 		/// <summary>
@@ -216,10 +206,10 @@ namespace ApplicationManager
 			{
 				if ( _selectedPackage != value )
 				{
-					_selectedPackage = value;
+					SetProperty( ref _selectedPackage, value );
 
-					RaisePropertyChanged( "SelectedPackage" );
-					RaisePropertyChanged( "DeployEnabled" );
+					// ReSharper disable once ExplicitCallerInfoArgument
+					OnPropertyChanged( "DeployEnabled" );
 				}
 			}
 		}
@@ -230,13 +220,7 @@ namespace ApplicationManager
 		/// <value>
 		///     The title.
 		/// </value>
-		public string Title
-		{
-			get
-			{
-				return string.Format( "Deploy '{0}'", Application.Name );
-			}
-		}
+		public string Title => $"Deploy '{Application.Name}'";
 
 		/// <summary>
 		///     Gets or sets the application.
@@ -247,7 +231,6 @@ namespace ApplicationManager
 		private Application Application
 		{
 			get;
-			set;
 		}
 
 		/// <summary>
@@ -259,7 +242,6 @@ namespace ApplicationManager
 		private List<Package> PackageCache
 		{
 			get;
-			set;
 		}
 
 		/// <summary>
@@ -269,7 +251,7 @@ namespace ApplicationManager
 		{
 			IsBusy = true;
 
-			var workerThread = new Thread( DeployAsync );
+			var workerThread = new Thread( DeployAsynchronous );
 			workerThread.Start( SelectedPackage );
 		}
 
@@ -277,26 +259,26 @@ namespace ApplicationManager
 		///     Deploys the application asynchronously.
 		/// </summary>
 		/// <param name="state">The state.</param>
-		private void DeployAsync( object state )
+		private void DeployAsynchronous( object state )
 		{
 			var package = state as Package;
 
 			var context = new RoutedProcessingContext( message => BusyMessage = message, message => BusyMessage = message, message => BusyMessage = message, message => BusyMessage = message );
 
-		    if (package != null)
-		    {
-		        var tenantId = package.SelectedTenant.EntityId;
+			if ( package != null )
+			{
+				var tenantId = package.SelectedTenant.EntityId;
 
-                using (new TenantAdministratorContext(0))
-                {
-                    AppManager.UpgradeApp(tenantId, package.AppVerId, context);
-                }
+				using ( new TenantAdministratorContext( 0 ) )
+				{
+					AppManager.UpgradeApp( tenantId, package.AppVerId, context );
+				}
 
-		        using (new TenantAdministratorContext(tenantId))
-		        {
-                    TenantHelper.Invalidate(new EntityRef(tenantId));
-		        }
-		    }
+				using ( new TenantAdministratorContext( tenantId ) )
+				{
+					TenantHelper.Invalidate( new EntityRef( tenantId ) );
+				}
+			}
 
 			IsBusy = false;
 
@@ -323,18 +305,15 @@ namespace ApplicationManager
 			{
 				Package p = PackageCollection.FirstOrDefault( pkg => pkg.AppVerId == activation.AppVerId );
 
-				if ( p != null )
-				{
-					Tenant tenant = p.TenantCollection.FirstOrDefault( t => t.EntityId == activation.TenantId );
+				Tenant tenant = p?.TenantCollection.FirstOrDefault( t => t.EntityId == activation.TenantId );
 
-					if ( tenant != null )
-					{
-						p.TenantCollection.Remove( tenant );
-					}
+				if ( tenant != null )
+				{
+					p.TenantCollection.Remove( tenant );
 				}
 			}
 
-            if ( PackageCollection.Count == 1 )
+			if ( PackageCollection.Count == 1 )
 			{
 				SelectedPackage = PackageCollection[ 0 ];
 			}

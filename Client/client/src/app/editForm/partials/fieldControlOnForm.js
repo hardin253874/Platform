@@ -19,7 +19,7 @@ angular.module('app.editForm.fieldControlOnFormController', ['mod.app.editForm',
                 $scope.titleModel = spEditForm.createTitleModel($scope.formControl);
 
                 spEditForm.commonFieldControlInit(fieldToRender);
-                $scope.isReadOnly = $scope.formMode != spEditForm.formModes.edit;
+                $scope.isReadOnly = $scope.formMode !== spEditForm.formModes.edit;
                 $scope.showFieldHelpText = fieldToRender.showFieldHelpText;
                 $scope.helpText = fieldToRender.description;
                 /////

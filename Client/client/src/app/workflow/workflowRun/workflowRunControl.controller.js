@@ -108,12 +108,14 @@
                 $scope.$root.$on('$stateChangeSuccess', function () { options.cancel = true; });
 
                 return spWorkflowRunService.waitForRunToStopWithThrow($scope.workflow.lastRunId, options)
-                    .then(function (result) {
-                        $scope.workflow.lastRunId = result;
+                    .then(
+                        function (result) {
+                            $scope.workflow.lastRunId = result;
 
-                        spWorkflowRunService.getWorkflowRunResults(result, $scope.areTracing).then(function (results) {
-                            $scope.workflow.lastTrace = results;
-                        });
+                            spWorkflowRunService.getWorkflowRunResults(result, $scope.areTracing).then(function (results) {
+                                $scope.workflow.lastTrace = results;
+                            });
+                       
                     });
             }
 
@@ -180,7 +182,10 @@
                     .then(openFollowUpTasks)
                     .catch(function (error) {
                         var msg = error ? (error.message || sp.result(error, 'data.Message') || error) : 'An error occurred.';
-                        spAlertsService.addAlert(msg, { severity: spAlertsService.sev.Error });
+
+                        var severity = msg === spWorkflowRunService.waitForRunTimeoutMsg ? spAlertsService.sev.Success : spAlertsService.sev.Error ;
+                        
+                        spAlertsService.addAlert(msg, { severity: severity, expires: true });
                     })
                     .finally(clearBusy);
             }

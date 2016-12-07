@@ -241,6 +241,8 @@
                         tab.model.formControl.dataState = spEntity.DataStateEnum.Delete;
 
                         configureFormControl();
+
+                        $scope.$emit('tabRemoved');
                     }
 
                     /////

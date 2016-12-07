@@ -7,7 +7,6 @@ angular.module('sp.workflow.directives', [
     'sp.workflow.directives.expressionControl',
     'sp.workflow.directives.parameterExpressionContextMenu',
     'sp.workflow.directives.parameterBoolInput',
-    'sp.workflow.directives.parameterConformsToTypeLookup',
     'sp.workflow.directives.timespanInput',
     'sp.workflow.directives.workflowAdditionalExits'
 ]);

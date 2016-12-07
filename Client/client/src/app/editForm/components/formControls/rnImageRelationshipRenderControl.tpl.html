@@ -1,0 +1,55 @@
+﻿<rn-standard-form-control control="$ctrl.control" inline="false"
+                          validation-messages="$ctrl.customValidationMessages">
+    <div class="rnImageRelationshipRenderControl__value">
+        <!--Use a copy of the existing directive's html and its controller for now...-->
+        <!-- - it is quite rich and will take a while to replace.-->
+        <!-- - do the ng-init thing to get our bound props onto the $scope itself for compat-->
+        <!-- - clean out the styling here and redo in our component specific classes-->
+
+        <div ng-if="$ctrl.control && $ctrl.resource"
+             ng-init="formControl = $ctrl.control; formData = $ctrl.resource; formMode = $ctrl.formMode;">
+            <div ng-controller="imageController">
+                <div sp-dblclick-to-edit>
+                    <img ng-src="{{imageUrl}}" ng-click="openModal()" ng-show="imageAvailable">
+
+                    <div ng-show="isCustomImageForm && !canUploadImage">
+                        <input uib-popover="{{displayString}}" popover-trigger="mouseenter" popover-placement="top"
+                               type="text" ng-model="displayString" readonly="readonly">
+                        <button ng-click="downloadImageFromCustomImageForm()">
+                            <img src="assets/images/16x16/Download.png">Download
+                        </button>
+                    </div>
+
+                    <div ng-show="canUploadImage">
+                        <input name="imageName"
+                               type="text" ng-model="displayString" readonly="readonly"
+                               uib-popover="{{displayString}}" popover-trigger="mouseenter" popover-placement="top">
+                        <button ng-show="selectedEntity && !isCustomImageForm"
+                                ng-click="browse()" ng-disabled="isReadOnlyControl">{{buttonText}}
+                        </button>
+                        <sp-file-upload
+                                ng-show="((!selectedEntity && canCreateType) || (isCustomImageForm && selectedEntity && (selectedEntity.dataState === 'create')))"
+                                upload-session="imageUploadSession"
+                                message="imageUploadMessage"
+                                filter="{{imageUploadFilter}}"
+                                callback="imageUploadOnFileUploadComplete"
+                                busy-indicator-options="imageUploadBusyIndicatorOptions"
+                                instant-upload="imageInstantUpload"
+                                image-preview-src="imageUploadImagePreviewSrc">
+                        </sp-file-upload>
+                        <button ng-disabled="isReadOnlyControl" ng-show="!isCustomImageForm"
+                                sp-context-menu="contextMenu"
+                                sp-context-menu-placement="alignleft"
+                                sp-context-menu-trigger="leftclick"
+                                sp-context-menu-is-open="isMenu1Open"
+                                sp-context-menu-append-to-body>
+                            <img src="assets/images/16x16/DownArrow.png">
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</rn-standard-form-control>
+

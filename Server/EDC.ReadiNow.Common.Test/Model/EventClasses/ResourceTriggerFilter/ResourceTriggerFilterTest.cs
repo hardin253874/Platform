@@ -546,9 +546,6 @@ namespace EDC.ReadiNow.Test.Model.EventClasses.ResourceTriggerFilter
         [RunAsDefaultTenant]
         public void RegisteredTriggerHandlersFires_NothingForNothing()
         {
-
-            Relationship rel = null;
-            IEntity dummyObj = null;
             IEntity dummyOtherObj1 = null;
 
             var testHandler = new TestHandler

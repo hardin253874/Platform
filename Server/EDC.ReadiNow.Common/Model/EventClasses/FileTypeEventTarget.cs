@@ -47,11 +47,12 @@ namespace EDC.ReadiNow.Model.EventClasses
                     continue;
                 }
                 
-                bool isImage = fileType.Is<ImageFileType>();                
+                bool isImage = fileType.Is<ImageFileType>();
+                bool isDocument = fileType.Is<Document>() || fileType.Is<DocumentRevision>();
 
                 // Check to see if we have a relationship to a document type and if so then perform the migration into the
                 // indexed table otherwise insert the data into the non-indexed table.
-                IFileRepository fileRepository = isImage ? Factory.BinaryFileRepository : Factory.DocumentFileRepository;
+                IFileRepository fileRepository = isDocument ? Factory.DocumentFileRepository : Factory.BinaryFileRepository;
 
                 if (FileRepositoryHelper.DoesFileExist(fileRepository, dataHash))
                 {
@@ -95,13 +96,16 @@ namespace EDC.ReadiNow.Model.EventClasses
                 }
                 else
                 {
-                    Document document = fileType.As<Document>();
-
-                    // Verify that we have the correct çurrent revision', as the current revision should have been 
-                    // given the same temporary dataHash as the document. (This is done in DocumentEventTarget)
-                    if (document?.CurrentDocumentRevision?.FileDataHash == dataHash)
+                    if (isDocument)
                     {
-                        document.CurrentDocumentRevision.FileDataHash = token;
+                        Document document = fileType.As<Document>();
+
+                        // Verify that we have the correct çurrent revision', as the current revision should have been 
+                        // given the same temporary dataHash as the document. (This is done in DocumentEventTarget)
+                        if (document?.CurrentDocumentRevision?.FileDataHash == dataHash)
+                        {
+                            document.CurrentDocumentRevision.FileDataHash = token;
+                        }
                     }
                 }
                 

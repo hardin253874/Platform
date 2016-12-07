@@ -16,20 +16,15 @@ namespace ApplicationManager
 	public partial class MainWindow
 	{
 		/// <summary>
-		///     View model.
-		/// </summary>
-		private readonly MainWindowViewModel _viewModel;
-
-		/// <summary>
 		///     Initializes a new instance of the <see cref="MainWindow" /> class.
 		/// </summary>
 		public MainWindow( )
 		{
 			InitializeComponent( );
 
-			_viewModel = new MainWindowViewModel( );
+			var viewModel = new MainWindowViewModel( );
 
-			DataContext = _viewModel;
+			DataContext = viewModel;
 
 			Activated += MainWindow_Activated;
 			Closing += MainWindow_Closing;
@@ -58,10 +53,7 @@ namespace ApplicationManager
 
 			Window window = windows.FirstOrDefault( p => !p.Equals( this ) && !p.IsActive );
 
-			if ( window != null )
-			{
-				window.Activate( );
-			}
+			window?.Activate( );
 		}
 
 		/// <summary>

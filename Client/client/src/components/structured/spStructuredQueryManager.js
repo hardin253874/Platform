@@ -946,11 +946,12 @@ var spReportEntityQueryManager = spReportEntityQueryManager || new ReportEntityQ
                 });
                 break;
 
-        }
+        }        
 
         return spEntity.fromJSON({
             typeId: 'displayFormat',
             columnShowText: true,
+            disableDefaultFormat: false,
             formatDecimalPlaces: 0,
             formatPrefix: jsonString(),
             formatSuffix: jsonString(),
@@ -960,7 +961,8 @@ var spReportEntityQueryManager = spReportEntityQueryManager || new ReportEntityQ
             timeColumnFormat: jsonLookup(),
             dateTimeColumnFormat: jsonLookup(),
             formatAlignment: jsonLookup(enumAlignment),
-            formatImageSize: jsonLookup()
+            formatImageSize: jsonLookup(),
+            entityListColumnFormat: jsonLookup()
         });
     }
 
@@ -1359,7 +1361,7 @@ var spReportEntityQueryManager = spReportEntityQueryManager || new ReportEntityQ
         var selectedColumn = spReportEntityQueryManager.getExistingReportColumn(reportEntity, column, nodeEntity);
         var structureViewId;
 
-        if (selectedColumn != null) {
+        if (selectedColumn) {
             var existingExpression = selectedColumn.getEntity().getColumnExpression();
             if (existingExpression &&
                 existingExpression.type &&
@@ -1756,7 +1758,7 @@ var spReportEntityQueryManager = spReportEntityQueryManager || new ReportEntityQ
                     break;
                 case 'core:structureViewExpression':
                     structureViewSourceNode = reportExpression.getEntity().structureViewExpressionSourceNode;
-                    areEqual = (structureViewSourceNode != null &&
+                    areEqual = (structureViewSourceNode &&
                         structureViewSourceNode.id() === nodeId &&
                         fieldId === spReportEntityQueryManager.NameFieldId &&
                         column &&
@@ -1842,15 +1844,18 @@ var spReportEntityQueryManager = spReportEntityQueryManager || new ReportEntityQ
         return new spReportEntity.ReportNode(derivedTypeEntity);
     };
 
-    spReportEntityQueryManager.createRelationshipInstance = function () {
-
-        var relationshipInstanceEntity = spEntity.fromJSON({
-            typeId: 'relationshipInstanceReportNode',
+    spReportEntityQueryManager.createCustomJoinReportNode = function (nodeTypeId, predicateScript) {
+        var defaultJoinScript = 'true'; // cross join
+        var customJoinReportNode = spEntity.fromJSON({
+            typeId: 'customJoinReportNode',
             exactType: false,
             targetMustExist: false,
+            targetNeedNotExist: false,
+            joinPredicateCalculation: jsonString(predicateScript || defaultJoinScript),
+            resourceReportNodeType: jsonLookup(nodeTypeId),
             relatedReportNodes: jsonRelationship()
         });
-        return new spReportEntity.ReportNode(relationshipInstanceEntity);
+        return new spReportEntity.ReportNode(customJoinReportNode);
     };
 
     spReportEntityQueryManager.createAggreateEntity = function (reportNode) {
@@ -2306,6 +2311,7 @@ var spReportEntityQueryManager = spReportEntityQueryManager || new ReportEntityQ
         var displayFormat = spEntity.fromJSON({
             typeId: 'displayFormat',
             columnShowText: true,
+            disableDefaultFormat: false,
             formatDecimalPlaces: 0,
             formatPrefix: jsonString(),
             formatSuffix: jsonString(),
@@ -2315,11 +2321,13 @@ var spReportEntityQueryManager = spReportEntityQueryManager || new ReportEntityQ
             timeColumnFormat: jsonLookup(),
             dateTimeColumnFormat: jsonLookup(),
             formatAlignment: jsonLookup(enumAlignment),
-            formatImageSize: jsonLookup()
+            formatImageSize: jsonLookup(),
+            entityListColumnFormat: jsonLookup()
         });
 
         if (conditionFormatting) {
             displayFormat.setColumnShowText(conditionFormatting.displayText);
+            displayFormat.setDisableDefaultFormat(conditionFormatting.disableDefaultFormat);
         }
 
         if (columnDisplayFormat) {
@@ -2336,8 +2344,7 @@ var spReportEntityQueryManager = spReportEntityQueryManager || new ReportEntityQ
                 displayFormat.setMaxLineCount(columnDisplayFormat.lines);
 
             if (columnDisplayFormat.alignment) {
-                switch (columnDisplayFormat.alignment)
-                {
+                switch (columnDisplayFormat.alignment) {
                     case 'Left':
                         enumAlignment = spEntity.fromJSON({
                             typeId: 'alignEnum',
@@ -2414,6 +2421,19 @@ var spReportEntityQueryManager = spReportEntityQueryManager || new ReportEntityQ
 
                     displayFormat.formatImageSize = imageSize;
                 }
+            }
+
+            if ((type === "ChoiceRelationship" ||
+                type === "InlineRelationship" ||
+                type === "UserInlineRelationship" ||
+                type === "StructureLevels") &&
+                columnDisplayFormat.entityListFormatId) {
+                const entityListFormatEnum = spEntity.fromJSON({
+                    typeId: "entityListColFmtEnum",
+                    id: columnDisplayFormat.entityListFormatId
+                });
+
+                displayFormat.setEntityListColumnFormat(entityListFormatEnum);
             }
         }
 

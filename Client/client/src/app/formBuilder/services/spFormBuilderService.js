@@ -795,7 +795,7 @@ angular.module('mod.app.formBuilder.services.spFormBuilderService', [
                 return undefined;
             }
 
-            if (!!localRelationshipsOnly) {
+            if (localRelationshipsOnly) {
                 var type = new spResource.Type(exports.definition);
 
                 return _.map(exports.definition.getRelationship('core:relationships'), function (relationship) {
@@ -818,7 +818,7 @@ angular.module('mod.app.formBuilder.services.spFormBuilderService', [
                 return undefined;
             }
 
-            if (!!localRelationshipsOnly) {
+            if (localRelationshipsOnly) {
                 var type = new spResource.Type(exports.definition);
 
                 return _.map(exports.definition.getRelationship('core:reverseRelationships'), function (relationship) {
@@ -855,7 +855,7 @@ angular.module('mod.app.formBuilder.services.spFormBuilderService', [
                 return undefined;
             }
 
-            if (!!localFieldsOnly) {
+            if (localFieldsOnly) {
                 return exports.definition.getRelationship('core:fields');
             } else {
                 return exports.getDefinitionType().getFields();
@@ -872,7 +872,7 @@ angular.module('mod.app.formBuilder.services.spFormBuilderService', [
                 return undefined;
             }
 
-            if (!!localFieldGroupsOnly) {
+            if (localFieldGroupsOnly) {
                 return exports.definition.getRelationship('core:fieldGroups');
             } else {
                 return exports.getDefinitionType().getFieldGroups();
@@ -1867,7 +1867,11 @@ angular.module('mod.app.formBuilder.services.spFormBuilderService', [
 
             var instance = spEntity.fromJSON(json);
 
-            var appId = spNavService.getCurrentApplicationId();
+            var appId = spUtils.result(exports.definition, 'inSolution.idP');
+
+            if (!appId) {
+                appId = spNavService.getCurrentApplicationId();
+            }
 
             if (appId) {
                 instance.setInSolution(appId);
@@ -1922,7 +1926,11 @@ angular.module('mod.app.formBuilder.services.spFormBuilderService', [
 
             var instance = spEntity.fromJSON(json);
 
-            var appId = spNavService.getCurrentApplicationId();
+            var appId = spUtils.result(exports.definition, 'inSolution.idP');
+
+            if (!appId) {
+                appId = spNavService.getCurrentApplicationId();
+            }
 
             if (appId) {
                 instance.setLookup('core:inSolution', appId);
@@ -2884,13 +2892,17 @@ angular.module('mod.app.formBuilder.services.spFormBuilderService', [
             if (container && container.containedControlsOnForm) {
                 for (var index = 0; index < container.containedControlsOnForm.length; index++) {
 
+                    if (container.containedControlsOnForm[index].getDataState() === spEntity.DataStateEnum.Delete) {
+                        continue;
+                    }
+
                     if (getComparison) {
                         comparison = getComparison(container.containedControlsOnForm[index]);
                         entity = control.getEntity();
 
                         if (comparison && entity && (comparison === entity || comparison.id() === entity.id())) {
                             if (postCompare) {
-                                if (!!postCompare(control, container.containedControlsOnForm[index])) {
+                                if (postCompare(control, container.containedControlsOnForm[index])) {
                                     if (callback) {
                                         callback(container.containedControlsOnForm[index], container);
                                     }

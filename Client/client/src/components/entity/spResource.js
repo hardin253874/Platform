@@ -61,7 +61,7 @@ var spResource;
         if (opts.relationships) {
             rq +=
                 ',{ relationships, reverseRelationships }.{ ' +
-                '    alias, ' + relNames + ', description, relationshipIsMandatory, revRelationshipIsMandatory, cardinality.alias, hideOnFromType, hideOnToType, defaultFromUseCurrent,defaultToUseCurrent, inSolution.{alias,name}, ' +
+                '    alias, ' + relNames + ', description, relationshipIsMandatory, revRelationshipIsMandatory, cardinality.alias, relType.alias, hideOnFromType, hideOnToType, defaultFromUseCurrent,defaultToUseCurrent, inSolution.{alias,name}, ' +
                 '    {fromType, toType}.{name,alias,inherits.alias} ' +
                 '}';
             

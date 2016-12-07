@@ -84,6 +84,15 @@
             height: 20px;
         }
 
+        .sp-search-control {
+            width: 150px;
+            display: inline-block;
+
+            .sp-search-control-clear {
+                top: 0px;
+            }
+        }
+
         button.icon-zoom {
             background-color: transparent;
             width: 40px;
@@ -128,6 +137,44 @@
                     background-color: darken(@workflowpropertyBg, 18%)!important;
                     font-weight: normal;
                 }
+            }
+        }
+
+        .reportHeaderRow {
+            display: none;
+        }
+
+        .reportDataGridStyle {
+            height: 100% !important;            
+
+            .ngViewport {
+                min-height: 0 !important;
+
+                .ngRow {
+                    border: 0;
+
+                    &:nth-child(odd) {
+                        background-color: darken(@workflowpropertyBg, 2.5%);
+                    }
+
+                    &:hover {
+                        background-color: darken(@workflowpropertyBg, 10%);
+                        color: #414141;
+                    }
+
+                    &.selected {
+                        background-color: #414141;
+                        color: #fff;
+
+                        &:hover {
+                            background-color: darken(#414141, 10%);
+                        }
+                    }
+                }
+            }
+
+            .ngVerticalBarVisible {
+                background-color: transparent;
             }
         }
     }

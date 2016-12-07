@@ -143,7 +143,15 @@ namespace EDC.ReadiNow.Metadata.Query.Structured
         [DataMember(Order = 9)]
         [DefaultValue(false)]
         // not sure if we want to include this in entity model
-        public bool ExcludeIfNotReferenced { get; set; }        
+        public bool ExcludeIfNotReferenced { get; set; }
+
+        /// <summary>
+        /// If true then all related items are returned, not just those linked from the parent.
+        /// </summary>
+        // field: parentNeedNotExist
+        [DataMember( Order = 10 )]
+        [DefaultValue( false )]
+        public bool ParentNeedNotExist { get; set; }
 
 
         #region XML Formatters

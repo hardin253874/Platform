@@ -4,12 +4,12 @@
 
     <!-- hide the header on structureDepth 1 -->
     <div class="structure-control-header structure-depth-{{structureDepth}}" ng-class='titleClass'
-         ng-if="structureDepth !== 1 && !formControl.hideLabel" ng-style="getTitleStyle(structureDepth)">
+         ng-if="structureDepth !== 1 && !formControl.hideLabel && !hideControl" ng-style="getTitleStyle(structureDepth)">
         <span ng-style="getTitleStyle(structureDepth)">{{formControl.name}}</span>
         <rn-info-button ng-if="::showHelp(formControl)" heading="{{::formControl.name}}" text="{{::formControl.description}}"></rn-info-button>
     </div>
 
-    <div once-style="getControlStyle(formControl)" style="width: 100%; height: 100%;">
+    <div ng-if="!hideControl"once-style="getControlStyle(formControl)" style="width: 100%; height: 100%;">
         <div class="repeater-wrapper">
             <div class="repeater {{repeaterClass}} vertical-repeater" 
                   ng-repeat="childFormControl in getFormControls() track by childFormControl.idP">

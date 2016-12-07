@@ -240,7 +240,7 @@ namespace EDC.Diagnostics
 		/// <summary>
 		///     Flushes this instance.
 		/// </summary>
-		private void FlushLog( )
+		private void FlushLog( bool disposing )
 		{
 			/////
 			// Any events not flushed after 2 seconds will be lost due to the internal finalizer timeout.
@@ -314,7 +314,10 @@ namespace EDC.Diagnostics
 			}
 			finally
 			{
-                Trace.TraceInformation("Flush complete. " + _eventLogEntryQueue.Count + " entries remain.");
+			    if (disposing)
+			    {
+                    Trace.TraceInformation("Flush complete. " + _eventLogEntryQueue.Count + " entries remain.");
+                }                
 			}
 		}
 
@@ -761,7 +764,7 @@ namespace EDC.Diagnostics
 
                 _disposed = true;
 
-				FlushLog( );
+				FlushLog(disposing);
 
                 if ( _syncMutex != null && _syncMutex.Value != null )
                 {

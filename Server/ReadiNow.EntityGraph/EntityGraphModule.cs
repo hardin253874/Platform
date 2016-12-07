@@ -1,7 +1,6 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
 using System;
 using Autofac;
-using Autofac.Extras.AttributeMetadata;
 using ReadiNow.EntityGraph.GraphModel;
 using EDC.ReadiNow.Model;
 using EDC.ReadiNow.Security.AccessControl;

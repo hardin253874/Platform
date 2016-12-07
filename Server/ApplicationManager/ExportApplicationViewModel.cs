@@ -76,8 +76,7 @@ namespace ApplicationManager
 			{
 				if ( _busyMessage != value )
 				{
-					_busyMessage = value;
-					RaisePropertyChanged( "BusyMessage" );
+					SetProperty( ref _busyMessage, value );
 				}
 			}
 		}
@@ -110,8 +109,7 @@ namespace ApplicationManager
 			{
 				if ( _closeWindow != value )
 				{
-					_closeWindow = value;
-					RaisePropertyChanged( "CloseWindow" );
+					SetProperty( ref _closeWindow, value );
 				}
 			}
 		}
@@ -152,8 +150,7 @@ namespace ApplicationManager
 			{
 				if ( _isBusy != value )
 				{
-					_isBusy = value;
-					RaisePropertyChanged( "IsBusy" );
+					SetProperty( ref _isBusy, value );
 				}
 			}
 		}
@@ -209,10 +206,10 @@ namespace ApplicationManager
 			{
 				if ( _selectedPackage != value )
 				{
-					_selectedPackage = value;
+					SetProperty( ref _selectedPackage, value );
 
-					RaisePropertyChanged( "SelectedPackage" );
-					RaisePropertyChanged( "ExportEnabled" );
+					// ReSharper disable once ExplicitCallerInfoArgument
+					OnPropertyChanged( "ExportEnabled" );
 				}
 			}
 		}
@@ -266,7 +263,7 @@ namespace ApplicationManager
 			{
 				IsBusy = true;
 
-				var workerThread = new Thread( ExportAsync );
+				var workerThread = new Thread( ExportAsynchronous );
 				workerThread.Start( saveDialog.FileName );
 			}
 		}
@@ -275,7 +272,7 @@ namespace ApplicationManager
 		///     Runs the export asynchronously.
 		/// </summary>
 		/// <param name="state">The state.</param>
-		private void ExportAsync( object state )
+		private void ExportAsynchronous( object state )
 		{
 			var context = new RoutedProcessingContext( message => BusyMessage = message, message => BusyMessage = message, message => BusyMessage = message, message => BusyMessage = message );
 

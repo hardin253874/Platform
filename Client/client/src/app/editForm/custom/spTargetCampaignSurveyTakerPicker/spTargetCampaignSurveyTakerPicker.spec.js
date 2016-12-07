@@ -42,10 +42,7 @@ describe('Custom Form Controls|spec:|spTargetCampaignSurveyTakerPicker', functio
 
         var model = innerScope.model;
         expect(model).toBeTruthy();
-        expect(model.options).toEqual([]);
-        expect(model.selectedOption).toBeNull();
         expect(model.targetTypeEntity).toBeNull();
-
         expect(innerScope.isMandatory).toBe(true);
         expect(innerScope.titleModel).toEqual({
             name: 'Survey taker',
@@ -130,7 +127,5 @@ describe('Custom Form Controls|spec:|spTargetCampaignSurveyTakerPicker', functio
         var innerScope = scope.$$childTail;
 
         expect(innerScope.model.targetTypeEntity.idP).toBe(5555555);
-        expect(innerScope.model.selectedOption.id).toBe(6666666);
-        expect(innerScope.model.options).toEqual([{id: 9999999, name: 'foundRelationship', from: undefined, to: 5555555, forward: false}]);
     }));
 });

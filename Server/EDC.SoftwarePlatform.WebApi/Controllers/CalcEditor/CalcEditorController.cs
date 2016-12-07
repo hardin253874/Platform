@@ -144,10 +144,18 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.CalcEditor
 				{
 					foreach ( ExpressionParameter p in request.Parameters )
 					{
+                        if ( p.Name == null )
+                            throw new WebArgumentException( "Param 'name' was not specified" );
+                        if ( p.TypeName == null )
+					        throw new WebArgumentException( "Param 'type' was not specified" );
+
 						var type = ( DataType ) Enum.Parse( typeof ( DataType ), p.TypeName );
 						if ( type == DataType.Entity )
 						{
-							long typeId;
+                            if ( p.EntityTypeId == null )
+                                throw new WebArgumentException( "Param 'entityTypeId' was not specified" );
+
+                            long typeId;
 							paramTypes[ p.Name ] = long.TryParse( p.EntityTypeId, out typeId )
 								? ExprTypeHelper.EntityOfType( new EntityRef( typeId ) )
 								: ExprTypeHelper.EntityOfType( new EntityRef( p.EntityTypeId ) );

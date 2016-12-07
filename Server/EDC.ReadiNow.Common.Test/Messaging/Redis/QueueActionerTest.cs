@@ -252,7 +252,7 @@ namespace EDC.ReadiNow.Test.Messaging.Redis
         {
             using (var q = CreateQueue())
             {
-                Action<string> action = (s) => { throw new Exception("This needs to go somewhere"); };
+                Action<string> action = (s) => { };
 
                 using (var actioner = new QueueActioner<string>(q, action, 1))
                 {

@@ -75,10 +75,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\ThirdParty\Irony.dll</HintPath>
     </Reference>
-    <Reference Include="Irony.Interpreter, Version=1.0.0.0, Culture=neutral, PublicKeyToken=ca48ace7223ead47, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dependencies\ThirdParty\Irony.Interpreter.dll</HintPath>
-    </Reference>
     <Reference Include="Moq, Version=4.2.1507.118, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Moq.4.2.1507.0118\lib\net40\Moq.dll</HintPath>
@@ -90,11 +86,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActivationTests.cs" />
@@ -149,11 +140,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EDC.Common\EDC.Common.csproj">
-      <Project>{C7183BEF-1A52-4DA5-850B-7132B5DCA7EB}</Project>
-      <Name>EDC.Common</Name>
-      <Private>True</Private>
-    </ProjectReference>
     <ProjectReference Include="..\EDC.ReadiNow.Common.Test\EDC.ReadiNow.Common.Test.csproj">
       <Project>{9aededc8-f2e7-47f7-9fcb-6694de936fde}</Project>
       <Name>EDC.ReadiNow.Common.Test</Name>

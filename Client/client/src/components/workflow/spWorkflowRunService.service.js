@@ -25,7 +25,6 @@
         var WaitForWorkflowStop_Pause = 500;        // Initial pause between polls
         var WaitForWorkflowStop_Backoff = 1.2;        // The multiplier to increase backoff after each response.
 
-
         ///////////////////////////////////////////////////////////////////////
         // The interface
         //
@@ -36,6 +35,8 @@
             getWorkflowRunResults: getWorkflowRunResults,
             waitForRunToStop: waitForRunToStop,
             waitForRunToStopWithThrow: waitForRunToStopWithThrow,
+            cancelRun: cancelRun,
+            waitForRunTimeoutMsg: "The workflow is taking longer than expected to complete, it has been marked as long running."
         };
 
         return exports;
@@ -44,30 +45,19 @@
         // The implementation
         //
 
-        function getRunWorkflowUrl(id, trace) {
-            var traceString = trace ? '?trace=true' : '';
-            return spWebService.getWebApiRoot() + '/spapi/data/v1/workflow/run/' + (id || '') + traceString;
-        }
        
         /**
          * Run the workflow with the given id and using the given parameters.
          * @returns {promise} promise for the workflow run id
          */
-        function runWorkflow(id, options, trace) {
+        function runWorkflow(id, options, trace, timeoutOptions) {
             console.log('spWorkflowService: runWorkflow', id, options);
 
-            return $http({
-                method: 'POST',
-                url: getRunWorkflowUrl(id, trace),
-                data: options,
-                headers: spWebService.getHeaders()
-            })
-                .then(function (response) {
-                    var data = response.data;
-                    console.log('spWorkflowService: return type %s data %o', typeof data, data);
-                    return data;
-                });
+            var traceString = trace ? '?trace=true' : '';
+
+            return callWorkflowUrl('run', id + traceString, 'POST', options).then(_.partialRight(pollTillHaveRunId, timeoutOptions));
         }
+
 
 
         /**
@@ -108,17 +98,31 @@
         * @return a promise returning the workflowRun. Throws an error on timeout.
         */
         function waitForRunToStopWithThrow(workflowRun, options) {
-            return waitForRunToStop(workflowRun, options).then(function (result) {
+            return  waitForRunToStop(workflowRun, options).then(function (result) {
                 if (!result)
-                    throw new Error("The workflow is taking longer than expected to complete.");
+                    throw new Error(exports.waitForRunTimeoutMsg);
 
                 return result;
             });
         }
 
+        /*
+        ** poll until the given taskId has been converted into a runId
+        */
+        function pollTillHaveRunId(taskId, options) {
+            return pollTillTruthy(_.partial(getRunidfromTaskid, taskId), options);
+        }
+
+        /*
+        ** Poll until the given run has stopped
+        */
         function pollTillRunStopped(id, options) {
+            return pollTillTruthy(_.partial(hasRunStopped, id), options);
+        }
+
+        function pollTillTruthy(fn, options) {
             var timeoutFn = null || (options && options.timeoutFn);
-            return spPromiseService.poll(_.partial(hasRunStopped, id),
+            return spPromiseService.poll(fn,
                 function (r) {
                     return r || (options && options.cancel);
                 },
@@ -129,18 +133,45 @@
         }
 
         function hasRunStopped(id) {
+            return callWorkflowUrl('hasrunstopped', id, 'GET');
+        }
+
+             
+        /*
+        ** Cancel the given workflow run
+        */
+        function cancelRun(id) {
+            return callWorkflowUrl('cancelRun', id, 'GET');
+
+        }
+
+        /*
+        ** Get the runId from the taskId
+        */
+        function getRunidfromTaskid(taskId) {
+            return callWorkflowUrl('runIdFromTaskId', taskId, 'GET'); 
+        }
+
+        /*
+        ** Call the named workflow service
+        ** data is optional
+        */
+        function callWorkflowUrl(name, id, method, data) {
             return $http({
-                method: 'GET',
-                url: getHasRunStoppedUrl(id),
+                method: method,
+                url: getWorkflowUrl(name, id),
+                data: data,
                 headers: spWebService.getHeaders()
             }).then(function (response) {
                 return response.data;
             });
         }
 
-
-        function getHasRunStoppedUrl(id) {
-            return spWebService.getWebApiRoot() + '/spapi/data/v1/workflow/hasrunstopped/' + id;
+        /*
+        ** Get the url for the workflow service call
+        */
+        function getWorkflowUrl(name, id) {
+            return spWebService.getWebApiRoot() + '/spapi/data/v1/workflow/' + name + '/' + id;
         }
     }
 

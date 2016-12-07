@@ -539,7 +539,7 @@
                             return null;
                         }
 
-                        var groupId = grandTotalGroupingId >>> (groupDepth + 1); // jshint ignore:line
+                        var groupId = grandTotalGroupingId >>> (groupDepth + 1); //eslint-disable-line no-bitwise
                         var aggDataItem = reverseAggregateDataCache;
                         var keys = arrGroupValues ? _.clone(arrGroupValues) : [];
 

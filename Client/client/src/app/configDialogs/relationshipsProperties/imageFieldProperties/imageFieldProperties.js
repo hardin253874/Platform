@@ -23,7 +23,7 @@
     modalInstance is a modalinstance of a dialog to close and return the value to the parent window.
     */
 
-    angular.module('mod.app.configureDialog.imageFieldProperties', ['ui.bootstrap', 'mod.app.editForm', 'mod.app.editForm.designerDirectives', 'mod.common.ui.spDialogService', 'mod.app.configureDialog.spVisibilityCalculationControl', 'mod.app.spFormControlVisibilityService'])
+    angular.module('mod.app.configureDialog.imageFieldProperties', ['ui.bootstrap', 'mod.app.editForm', 'mod.app.editForm.designerDirectives', 'mod.common.ui.spDialogService', 'mod.app.configureDialog.spVisibilityCalculationControl', 'mod.app.spFormControlVisibilityService', 'mod.app.formBuilder.services.spFormBuilderService'])
         .directive('imageProperties', function () {
             return {
                 restrict: 'E',
@@ -37,7 +37,7 @@
                 controller: 'imagePropertiesController'
             };
         })
-        .controller('imagePropertiesController', function ($scope, spEditForm, spFieldValidator, configureDialogService, spFormControlVisibilityService) {
+        .controller('imagePropertiesController', function ($scope, spEditForm, spFieldValidator, configureDialogService, spFormControlVisibilityService, spFormBuilderService) {
 
             $scope.isCollapsed = true;
             var schemaInfoLoaded = false;
@@ -364,7 +364,8 @@
                 'console:renderingHorizontalResizeMode': jsonLookup('console:resizeAutomatic'),
                 'console:renderingVerticalResizeMode': jsonLookup('console:resizeAutomatic'),
                 'console:thumbnailScalingSetting': jsonLookup('core:scaleImageProportionally'),
-                'console:thumbnailSizeSetting': jsonLookup(defaultThumbnailSizeSetting)
+                'console:thumbnailSizeSetting': jsonLookup(defaultThumbnailSizeSetting),
+                'console:visibilityCalculation': jsonString('')
             };
             
             //
@@ -437,9 +438,23 @@
                 var haveDefaultValue = $scope.model.defaultValuePickerOptions.selectedEntities &&
                     $scope.model.defaultValuePickerOptions.selectedEntities.length;
 
-                if ($scope.model.isFormControl &&
-                    $scope.model.formControl.visibilityCalculation &&
-                    $scope.model.formControl.relationshipToRender.relationshipIsMandatory &&
+                var visibilityCalculation;
+
+                if ($scope.model.isFormControl) {
+                    visibilityCalculation = $scope.model.formControl.visibilityCalculation;
+                } else {                    
+                    // Need to find the form control that is being rendered 
+                    // You gotta do what you gotta do. Avert your eyes !
+                    var allControls = spEditForm.getFormControls(spFormBuilderService.form);
+                    var relationshipToRenderId = sp.result($scope, "model.relationshipToRender.idP");                    
+                    var imageControl = _.find(allControls, function(c) {
+                        return sp.result(c, "relationshipToRender.idP") === relationshipToRenderId; 
+                    });
+                    visibilityCalculation = sp.result(imageControl, "visibilityCalculation");                    
+                }
+
+                if (visibilityCalculation &&
+                    $scope.model.relationshipIsMandatory &&
                     !haveDefaultValue) {
                     $scope.model.addError("Visibility calculation cannot be defined as the field is mandatory and no default value is specified.");
                     return false;
@@ -453,13 +468,14 @@
                 if (validateForm() &&
                     $scope.form.$valid &&
                     !$scope.model.visibilityCalculationModel.error) {
+                    $scope.model.isFormValid = true;
                     var relationshipToRender;
                     var control = $scope.options.formControl;
                     if ($scope.options.isFormControl) {
                         relationshipToRender = control.relationshipToRender;
                         //set formControl properties
                         control.setThumbnailSizeSetting($scope.model.thumbnailSizeSetting);
-                        control.setThumbnailScalingSetting($scope.model.thumbnailScalingSetting);                        
+                        control.setThumbnailScalingSetting($scope.model.thumbnailScalingSetting);
                     } else {
                         relationshipToRender = $scope.options.formControl;
                     }
@@ -467,7 +483,7 @@
                     var initialState = $scope.model.initialState;
 
                     //Set all the relationship properties
-                   //set name and description of the relationship.
+                    //set name and description of the relationship.
                     var relName = _.trim($scope.model.formData.getField($scope.fields[0].idP));
                     var originalName = _.trim(initialState.relName);
 
@@ -475,18 +491,18 @@
                         relationshipToRender.setName(relName);
                         relationshipToRender.setToName(relName);
                     }
-                    
+
                     if ($scope.isNewRelationship || $scope.model.formData.getField($scope.fields[1].idP) !== initialState.relDescription) {
-                        relationshipToRender.setDescription($scope.model.formData.getField($scope.fields[1].idP));    
+                        relationshipToRender.setDescription($scope.model.formData.getField($scope.fields[1].idP));
                     }
 
                     if ($scope.isNewRelationship || $scope.model.relationshipIsMandatory !== initialState.relationshipIsMandatory) {
                         relationshipToRender.relationshipIsMandatory = $scope.model.relationshipIsMandatory;
                     }
-                    
+
                     //set defaultValue
                     //var entities = relationship.getRelationship(relationship.id());
-                    var selectedEntityIds = _.sortBy(_.map($scope.model.defaultValuePickerOptions.selectedEntities, function( e ) { return e ? e.id() : null; }));
+                    var selectedEntityIds = _.sortBy(_.map($scope.model.defaultValuePickerOptions.selectedEntities, function(e) { return e ? e.id() : null; }));
 
                     if ($scope.isNewRelationship || !_.isEqual(selectedEntityIds, initialState.defaultValuePickerOptionsSelectedEntityIds)) {
                         var entities = $scope.model.defaultValuePickerOptions.selectedEntities;
@@ -496,7 +512,7 @@
                             relationshipToRender.setToTypeDefaultValue(null);
                         }
                     }
-                    
+
                     //set all the relationship properties.
                     if ($scope.isNewRelationship) {
                         relationshipToRender.setRelType('relLookup');
@@ -509,9 +525,11 @@
                         relationshipToRender.setReverseImplicitInSolution(false);
                         relationshipToRender.setRevRelationshipIsMandatory(false);
                     }
-                    
+
                     //Close the Dialog.
                     $scope.modalInstance.close($scope.options.formControl);
+                } else {
+                    $scope.model.isFormValid = false;
                 }
             };
             

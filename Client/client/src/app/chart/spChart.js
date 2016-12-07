@@ -32,6 +32,7 @@
         'mod.common.spXsrf',
         'mod.common.spMobile',
         'mod.common.alerts',
+        'mod.common.spWebService',
         'mod.common.spCachingCompile',
         'mod.common.spVisDataService'
     ]);
@@ -40,7 +41,7 @@
         .directive('spChart', spChartDirective);
 
     /* @ngInject */
-    function spChartDirective($q, spChartService, spContextMenuService, spXsrf, $timeout, spMobileContext, spAlertsService, spCachingCompile, spVisDataService) {
+    function spChartDirective($q, spChartService, spContextMenuService, spXsrf, $timeout, spMobileContext, spAlertsService, spCachingCompile, spVisDataService, spWebService) {
 
         var magicALittleLessHeight = 4;         // A magic number that keeps a chart from growing by 4 pixels on each redraw.
                                                 // I'm guessing it's padding or a border that is being included by mistake.
@@ -281,13 +282,14 @@
                 cleanupTooltips();
                 d3.select(scope.rootElem).select("svg").remove();
                 scope.options.selectedEntityId = 0;
-                scope.options.drilldownConds = null;
+                scope.options.drilldownConds = spVisDataService.getEmptyConds();
 
                 var chart = new spCharts.Chart();
                 chart.isMobile = spMobileContext.isMobile;
                 chart.setServices({
                     spVisDataService: spVisDataService,
                     spChartService: spChartService,
+                    spWebService: spWebService,
                     spXsrf: spXsrf,
                     appData: sp.result(scope, '$root.appData')
                 });

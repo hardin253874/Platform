@@ -92,12 +92,12 @@
         };
 
         vm.reportPickerOptions = {
-            pickerReportId: 'console:reportsReport',
+            pickerReportId: 'console:reportsPickerReport',
             entityTypeId: 'core:report',
             reportOptions: {}
         };
         vm.childReportPickerOptions = {
-            pickerReportId: 'console:reportsReport',
+            pickerReportId: 'console:reportsPickerReport',
             entityTypeId: 'core:report',
             reportOptions: {}
         };

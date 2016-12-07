@@ -2,11 +2,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Threading.Tasks;
 using System.Web.Http;
 using EDC.Database;
-using EDC.ReadiNow.Common.Workflow;
 using EDC.ReadiNow.Diagnostics;
 using EDC.SoftwarePlatform.Activities;
 using EDC.SoftwarePlatform.WebApi.Infrastructure;
@@ -18,6 +15,7 @@ using EDC.ReadiNow.Security;
 using EDC.ReadiNow.Core;
 using System.Linq;
 using EDC.ReadiNow.Model.Interfaces;
+using System.Net.Http;
 
 namespace EDC.SoftwarePlatform.WebApi.Controllers.Workflow
 {
@@ -82,11 +80,13 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.Workflow
 
                             switch (argType.Alias)
                             {
-                                case "core:resourceListArgument":
-                                    throw new ApplicationException("Resource list arguments not implemented.");
-
                                 case "core:objectArgument":
                                     throw new ApplicationException("Object arguments not implemented.");
+
+                                case "core:resourceListArgument":
+                                    var ids = Jil.JSON.Deserialize<IEnumerable<long>>(kv.Value);
+                                    parameterValues.Add(kv.Name, Factory.EntityRepository.Get<MDL.IEntity>(ids));
+                                    break;
 
                                 case "core:resourceArgument":
                                     parameterValues.Add(kv.Name, GetId(kv.Value).Entity);
@@ -195,11 +195,17 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.Workflow
                 {
                     long runId;
                     if (!long.TryParse(id, out runId))
-                    {
-                        throw new WebArgumentException("Provided Workflow Id must be a taskId string  or a run Id");
-                    }
+                        throw new WebArgumentException("Provided WorkflowRun Id must be a taskId string  or a run Id");
 
-                    id = MDL.Entity.Get<MDL.WorkflowRun>(runId).TaskId;
+                    if (runId == 0)
+                        throw new WebArgumentException("Provided Workflow Run Id cannot be 0");
+
+                    var run = MDL.Entity.Get<MDL.WorkflowRun>(runId);
+
+                    if (run == null)
+                        return new HttpResponseMessage<long>(System.Net.HttpStatusCode.NotFound);
+
+                    id = run.TaskId;
                 }
 
                 var completed = tskMgr.HasCompleted(id);
@@ -209,9 +215,66 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.Workflow
 
                     long.TryParse(result, out runid);
                 }
-                
+
                 return new HttpResponseMessage<long>(runid);
             }
         }
-	}
+
+
+        /// <summary>
+        /// Gets the run id from a task id.
+        /// </summary>
+        /// <param name="id">The task id to lookup.</param>
+        /// <returns>The id of the workflow run. 0 If no run is yet registerd.</returns>
+        [Route("runidfromtaskid/{taskId}")]
+        [HttpGet]
+        public HttpResponseMessage<long> RunIdFromTaskId(string taskId)
+        {
+            using (Profiler.Measure(string.Format("WorkflowController.RunIdFromTaskId [{0}]", taskId)))
+            {
+                var tskMgr = Factory.WorkflowRunTaskManager;
+
+                var result = tskMgr.GetResult(taskId);
+
+                long runId = 0;
+
+                long.TryParse(result, out runId);
+
+                return new HttpResponseMessage<long>(runId);
+            }
+        }
+
+
+        /// <summary>
+        /// Cancel the provided run.
+        /// </summary>
+        /// <param name="id">The run id to cancel.</param>
+        /// <returns>The id of the saved workflow run.</returns>
+        /// <exception cref="System.ApplicationException">
+        ///     Resource list arguments not implemented.
+        ///     or
+        ///     Object arguments not implemented.
+        /// </exception>
+        [Route("cancelrun/{id}")]
+        [HttpGet]
+        public HttpResponseMessage CancelRun(string id)
+        {
+            using (Profiler.Measure(string.Format("WorkflowController.HasRunStopped [{0}]", id)))
+            {
+                long runId;
+                if (!long.TryParse(id, out runId))
+                    return new HttpResponseMessage(System.Net.HttpStatusCode.BadRequest);
+
+                try
+                {
+                    WorkflowRunHelper.CancelRun(runId);
+                    return new HttpResponseMessage(System.Net.HttpStatusCode.OK);
+                }
+                catch (WorkflowRunHelper.MissingRunException)
+                {
+                    return new HttpResponseMessage(System.Net.HttpStatusCode.NotFound);
+                }
+            }
+        }
+    }
 }

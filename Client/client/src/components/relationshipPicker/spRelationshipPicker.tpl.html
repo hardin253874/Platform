@@ -22,17 +22,18 @@
 
             <div sp-busy-indicator-popup="model.gridBusyIndicator" class="tabarea">
                 <uib-tabset>
-                    <uib-tab heading="Relationships" style="margin:0">
+                    <!-- Relationships -->
+                    <uib-tab heading="Relationships" style="margin: 0">
                         <table class="table table-striped table-condensed" ng-show="relationships.length">
                             <thead>
                                 <tr>
-                                    <th style="width: 145px !important;word-break: break-word;">Relationship Name</th>                                  
-                                    <th style="width: 145px !important;word-break: break-word;">Resource Name</th>
+                                    <th style="width: 145px !important; word-break: break-word;">Relationship Name</th>
+                                    <th style="width: 145px !important; word-break: break-word;">Resource Name</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="rel in filteredRelationships | orderBy:'relationshipType':true">                                    
+                                <tr ng-repeat="rel in filteredRelationships | orderBy:'resourceName'">                                    
                                     <td class="selected{{rel.isSelected}}" style="width: 145px !important;word-break: break-word;">{{rel.resourceName}}</td>
                                     <td class="selected{{rel.isSelected}}" style="width: 145px !important;word-break: break-word;">{{rel.typeName}}</td>
                                     <td class="selected{{rel.isSelected}}"><button class="btn_lighten" ng-click="addRelationship(rel)">Add</button></td>
@@ -40,7 +41,8 @@
                             </tbody>
                         </table>
                     </uib-tab>
-                    <uib-tab heading="Derived Types" disabled="hideAdvTab" ng-show="!hideAdvTab" style="margin:0">
+                    <!-- Derived Types -->
+                    <uib-tab heading="Derived Types" disabled="hideAdvTab" ng-show="!hideAdvTab" style="margin: 0">
                         <table class="table table-striped table-condensed" ng-show="filteredDerivedResources.length">
                             <thead>
                                 <tr>
@@ -50,13 +52,23 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="relder in filteredDerivedResources">
+                                <tr ng-repeat="relder in filteredDerivedResources | orderBy:'relationshipName'">
                                     <td class="selected{{relder.isSelected}}">{{relder.relationshipName}}</td>
                                     <td class="selected{{relder.isSelected}}">{{relder.resourceName}}</td>
                                     <td class="selected{{relder.isSelected}}"><button class="btn_lighten" ng-click="addRelationship(relder)" title="{{relder.relationshipName}}">Add</button></td>
                                 </tr>
                             </tbody>
                         </table>
+                    </uib-tab>
+                    <!-- Custom -->
+                    <uib-tab heading="Custom" style="margin: 0" ng-show="showCustomJoin">
+                        <div class="edit-form-control-container">
+                            <div class="edit-form-title" style="display:block"><label>Relate to:</label></div>
+                            <div class="edit-form-value" style="display: block"><sp-inline-relationship-picker options="model.customTypePickerOptions" ng-disabled="isExistReport" ng-readonly="isExistReport"/></div>
+                            <div class="edit-form-title" style="display: block"><label>Join script:</label></div>
+                            <div class="edit-form-value" style="display: block"><sp-custom-join-expression script="model.customJoinScript" options="model.customTypeScriptOptions" ng-disabled="isExistReport || model.customTypeScriptOptions.disabled" ng-readonly="isExistReport || model.customTypeScriptOptions.disabled" /></div>
+                            <div><button class="btn_lighten" ng-click="addCustomRelationship()">Add</button></div>
+                        </div>
                     </uib-tab>
                 </uib-tabset>
             </div>

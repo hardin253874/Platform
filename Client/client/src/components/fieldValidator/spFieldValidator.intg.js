@@ -230,8 +230,8 @@ describe('Entity Model|spFieldValidator|intg:', function() {
     it('Validate multi line stringField max length', function () {
         var validator = spFieldValidator.getValidator(multiLineField);
 
-        var maxString = (new Array(100000 + 1)).join("x");    // join creates n-1 characters ni the string 
-        var overMaxString = (new Array(100001 + 1)).join("x");
+        var maxString = (new Array(10000 + 1)).join("x");    // join creates n-1 characters ni the string 
+        var overMaxString = (new Array(10001 + 1)).join("x");
 
         expect(validator(maxString)).toHaveNoErrors();
         expect(validator(overMaxString)).toHaveErrorContaining('max');

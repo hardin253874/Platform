@@ -1,4 +1,5 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
+
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
@@ -79,8 +80,7 @@ namespace ApplicationManager
 			{
 				if ( _closeWindow != value )
 				{
-					_closeWindow = value;
-					RaisePropertyChanged( "CloseWindow" );
+					SetProperty( ref _closeWindow, value );
 				}
 			}
 		}
@@ -103,13 +103,7 @@ namespace ApplicationManager
 		/// <value>
 		///     <c>true</c> if [delete enabled]; otherwise, <c>false</c>.
 		/// </value>
-		public bool DeleteEnabled
-		{
-			get
-			{
-				return SelectedPackage != null;
-			}
-		}
+		public bool DeleteEnabled => SelectedPackage != null;
 
 		/// <summary>
 		///     Gets or sets a value indicating whether this instance is busy.
@@ -127,8 +121,7 @@ namespace ApplicationManager
 			{
 				if ( _isBusy != value )
 				{
-					_isBusy = value;
-					RaisePropertyChanged( "IsBusy" );
+					SetProperty( ref _isBusy, value );
 				}
 			}
 		}
@@ -154,7 +147,6 @@ namespace ApplicationManager
 		public CollectionViewSource Packages
 		{
 			get;
-			private set;
 		}
 
 		/// <summary>
@@ -197,10 +189,10 @@ namespace ApplicationManager
 			{
 				if ( _selectedPackage != value )
 				{
-					_selectedPackage = value;
+					SetProperty( ref _selectedPackage, value );
 
-					RaisePropertyChanged( "SelectedPackage" );
-					RaisePropertyChanged( "DeleteEnabled" );
+					// ReSharper disable once ExplicitCallerInfoArgument
+					OnPropertyChanged( "DeleteEnabled" );
 				}
 			}
 		}
@@ -211,13 +203,7 @@ namespace ApplicationManager
 		/// <value>
 		///     The title.
 		/// </value>
-		public string Title
-		{
-			get
-			{
-				return string.Format( "Delete '{0}'", Application.Name );
-			}
-		}
+		public string Title => $"Delete '{Application.Name}'";
 
 		/// <summary>
 		///     Gets or sets the application.
@@ -228,7 +214,6 @@ namespace ApplicationManager
 		private Application Application
 		{
 			get;
-			set;
 		}
 
 		/// <summary>
@@ -240,7 +225,6 @@ namespace ApplicationManager
 		private List<Package> PackageCache
 		{
 			get;
-			set;
 		}
 
 		/// <summary>
@@ -255,14 +239,14 @@ namespace ApplicationManager
 
 			IsBusy = true;
 
-			var workerThread = new Thread( DeleteAsync );
+			var workerThread = new Thread( DeleteAsynchronous );
 			workerThread.Start( );
 		}
 
 		/// <summary>
-		///     Deletes the async.
+		///     Deletes asynchronously.
 		/// </summary>
-		private void DeleteAsync( )
+		private void DeleteAsynchronous( )
 		{
 			using ( new TenantAdministratorContext( 0 ) )
 			{

@@ -549,8 +549,8 @@ from
 where
     e.TypeId = @param1
     and e.ToId = @param2
-    and d.Data > try_convert(datetime, '2012-08-01 12:00:00')
-    and e.TenantId = @tenant]]></Expect>
+    and e.TenantId = @tenant
+    and d.Data > try_convert(datetime, '2012-08-01 12:00:00')]]></Expect>
   </Test>
   <Test name="SelectFromRelatedResourceWithFauxRelations">
     <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
@@ -628,8 +628,8 @@ from
     left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param4 and d.TenantId = @tenant
 where
     e.TypeId = @param1
-    and rel.ToId = @param6
     and e.TenantId = @tenant
+    and rel.ToId = @param6
 
 drop table #derived]]></Expect>
   </Test>
@@ -677,8 +677,8 @@ from
     left join [dbo].[Data_NVarChar] d2 on d2.EntityId = e.FromId and d2.FieldId = @param4 and d2.TenantId = @tenant
 where
     e.TypeId = @param1
-    and ( d2.Data_StartsWith = left((@param5 collate Latin1_General_CI_AI), 100) and d2.Data = (@param5 collate Latin1_General_CI_AI) )
     and e.TenantId = @tenant
+    and ( d2.Data_StartsWith = left((@param5 collate Latin1_General_CI_AI), 100) and d2.Data = (@param5 collate Latin1_General_CI_AI) )
 
 drop table #derived]]></Expect>
   </Test>
@@ -725,8 +725,8 @@ from
     left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param3 and d.TenantId = @tenant
 where
     e.TypeId = @param1
-    and d.Data like '%Fred[%]s%'
     and e.TenantId = @tenant
+    and d.Data like '%Fred[%]s%'
 
 drop table #derived]]></Expect>
   </Test>
@@ -768,8 +768,8 @@ from
     left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param3 and d.TenantId = @tenant
 where
     e.TypeId = @param1
-    and isnull(d.Data, '') <> ''
     and e.TenantId = @tenant
+    and isnull(d.Data, '') <> ''
 
 drop table #derived]]></Expect>
   </Test>
@@ -811,8 +811,8 @@ from
     left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param3 and d.TenantId = @tenant
 where
     e.TypeId = @param1
-    and isnull(d.Data, '') = ''
     and e.TenantId = @tenant
+    and isnull(d.Data, '') = ''
 
 drop table #derived]]></Expect>
   </Test>
@@ -851,8 +851,8 @@ from
 where
     e.TypeId = @param1
     and e.ToId = @param2
-    and e.FromId = @user
-    and e.TenantId = @tenant]]></Expect>
+    and e.TenantId = @tenant
+    and e.FromId = @user]]></Expect>
   </Test>
   <Test name="WhereIsCurrentUserForPerson">
     <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
@@ -892,8 +892,8 @@ from
     left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param3 and d.TenantId = @tenant
 where
     e.TypeId = @param1
-    and e.FromId in ( select FromId from dbo.Relationship where ToId = @user and TypeId = @param4 and TenantId = @tenant )
     and e.TenantId = @tenant
+    and e.FromId in ( select FromId from dbo.Relationship where ToId = @user and TypeId = @param4 and TenantId = @tenant )
 
 drop table #derived]]></Expect>
   </Test>
@@ -922,8 +922,7 @@ drop table #derived]]></Expect>
         </Condition>
       </Conditions>
     </Query>
-    <Expect>
-      <![CDATA[--QueryEng (hint: test)
+    <Expect><![CDATA[--QueryEng (hint: test)
 create table #derived ( Id bigint primary key )
 insert into #derived select Id from dbo.fnDerivedTypes(@param2, @tenant)
 
@@ -935,11 +934,10 @@ from
     left join [dbo].[Relationship] rel on rel.FromId = e.FromId and rel.TypeId = @param3 and rel.TenantId = @tenant
 where
     e.TypeId = @param1
-    and rel.ToId = @user
     and e.TenantId = @tenant
+    and rel.ToId = @user
 
-drop table #derived]]>
-    </Expect>
+drop table #derived]]></Expect>
   </Test>
   <Test name="WhereIsCurrentPersonForScript">
     <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
@@ -951,7 +949,8 @@ drop table #derived]]>
         <Column id="c7d78d16-7723-494d-945e-7c79be5a6535">
           <ColumnName>Result</ColumnName>
           <Expression xsi:type="ScriptExpression">
-            <Script>[Created by].[User account]</Script> <!-- [User account] is actually the reverse name back to person. Hmm. -->
+            <Script>[Created by].[User account]</Script>
+            <!-- [User account] is actually the reverse name back to person. Hmm. -->
             <NodeId>c5df347b-5fb6-4752-b49e-aaa4e4cae4f2</NodeId>
           </Expression>
         </Column>
@@ -966,8 +965,7 @@ drop table #derived]]>
         </Condition>
       </Conditions>
     </Query>
-    <Expect>
-      <![CDATA[--QueryEng (hint: test)
+    <Expect><![CDATA[--QueryEng (hint: test)
 select
     ( select rel2.FromId id, Data text from dbo.Data_NVarChar where EntityId = rel2.FromId and FieldId = @param5 and TenantId = @tenant for xml raw('e') ) [Result]
 from
@@ -979,9 +977,8 @@ from
 where
     e.TypeId = @param1
     and e.ToId = @param2
-    and rel2.FromId in ( select FromId from dbo.Relationship where ToId = @user and TypeId = @param4 and TenantId = @tenant )
-    and e.TenantId = @tenant]]>
-    </Expect>
+    and e.TenantId = @tenant
+    and rel2.FromId in ( select FromId from dbo.Relationship where ToId = @user and TypeId = @param4 and TenantId = @tenant )]]></Expect>
   </Test>
   <Test name="WhereWithinStructureLevel">
     <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
@@ -1026,8 +1023,8 @@ from
     left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param3 and d.TenantId = @tenant
 where
     e.TypeId = @param1
-    and exists ( select 1 from dbo.fnGetRelationshipRecAndSelf( @param6, @tenant, @param8, @param10, @param10 ) svTree where svTree.ToId = e.FromId and svTree.FromId in ( @param9 ) )
     and e.TenantId = @tenant
+    and exists ( select 1 from dbo.fnGetRelationshipRecAndSelf( @param6, @tenant, @param8, @param10, @param10 ) svTree where svTree.ToId = e.FromId and svTree.FromId in ( @param9 ) )
 
 drop table #derived]]></Expect>
   </Test>
@@ -1087,8 +1084,8 @@ from
     left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param4 and d.TenantId = @tenant
 where
     e.TypeId = @param1
-    and ( d2.Data_StartsWith = left((@param6 collate Latin1_General_CI_AI), 100) and d2.Data = (@param6 collate Latin1_General_CI_AI) )
     and e.TenantId = @tenant
+    and ( d2.Data_StartsWith = left((@param6 collate Latin1_General_CI_AI), 100) and d2.Data = (@param6 collate Latin1_General_CI_AI) )
 
 drop table #derived]]></Expect>
   </Test>
@@ -1428,8 +1425,8 @@ from
             left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param3 and d.TenantId = @tenant
         where
             e.TypeId = @param1
-            and ( d.Data_StartsWith = left((@param4 collate Latin1_General_CI_AI), 100) and d.Data = (@param4 collate Latin1_General_CI_AI) )
             and e.TenantId = @tenant
+            and ( d.Data_StartsWith = left((@param4 collate Latin1_General_CI_AI), 100) and d.Data = (@param4 collate Latin1_General_CI_AI) )
     ) ag
 
 drop table #derived]]></Expect>
@@ -1955,8 +1952,8 @@ from
 where
     e.TypeId = @param1
     and e.ToId = @param2
-    and ag.aggCol6 is null
-    and e.TenantId = @tenant]]></Expect>
+    and e.TenantId = @tenant
+    and ag.aggCol6 is null]]></Expect>
   </Test>
   <Test name="GroupedRootField">
     <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
@@ -2621,7 +2618,12 @@ where
         </OrderBy>
       </Ordering>
     </Query>
-    <Expect><![CDATA[--QueryEng (hint: test)
+    <Expect>
+      <![CDATA[--QueryEng (hint: test)
+
+CREATE TABLE #rec_@param3_@param2_@param2 ( FromId BIGINT, ToId BIGINT, Depth INT, TypeId BIGINT, TenantId BIGINT )
+INSERT INTO #rec_@param3_@param2_@param2 SELECT * FROM dbo.fnGetRelationshipRecAndSelf(@param3, @tenant, 1, @param2, @param2)
+
 select
     e.FromId [_Id],
     d.Data [Name],
@@ -2643,14 +2645,17 @@ where
     and exists (
         select 1
         from
-            dbo.fnGetRelationshipRecAndSelf(@param3, @tenant, 1, @param2, @param2) rel2
+            [#rec_@param3_@param2_@param2] rel2
         where
             rel2.FromId = e.FromId
             and rel2.TypeId = @param3
             and rel2.ToId = @param7
     )
 order by
-    d.Data]]></Expect>
+    d.Data
+
+
+DROP TABLE #rec_@param3_@param2_@param2]]></Expect>
   </Test>
   <Test name="DownCast">
     <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
@@ -2775,8 +2780,7 @@ select
 from
     [dbo].[Relationship] e
     join #derived dt on dt.Id = e.ToId
-    left join [dbo].[Entity] dc on dc.Id = e.FromId
-    and exists (
+    left join [dbo].[Entity] dc on dc.Id = e.FromId and exists (
         select 1
         from
             [dbo].[Relationship] r
@@ -3327,6 +3331,8 @@ from
         where
             rel.TypeId = @param3
             and rel.TenantId = @tenant
+            and rel.TypeId = @param3
+            and rel.TenantId = @tenant
         group by
             rel.FromId
     ) ag on ag.aggCol = e.FromId
@@ -3722,6 +3728,149 @@ where
     e.TypeId = @param1
     and e.ToId in (@param2, @param3, @param4)
     and e.TenantId = @tenant]]></Expect>
+  </Test>
+  <Test name="CustomJoinNodeMatchFields">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="1f9d6264-d4b1-45d5-8238-50ab2417c962">
+        <RelatedEntities>
+          <Entity xsi:type="CustomJoinNode" id="52e65518-00ff-4571-80b2-e158dcab7aaf">
+            <EntityTypeId entityRef="true">test:drink</EntityTypeId>
+            <JoinPredicateScript>Name=@parent.Name</JoinPredicateScript>
+          </Entity>
+        </RelatedEntities>
+        <EntityTypeId entityRef="true">test:employee</EntityTypeId>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>1f9d6264-d4b1-45d5-8238-50ab2417c962</NodeId>
+            <FieldId entityRef="true">core:name</FieldId>
+          </Expression>
+        </Column>
+        <Column>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>52e65518-00ff-4571-80b2-e158dcab7aaf</NodeId>
+            <FieldId entityRef="true">core:name</FieldId>
+          </Expression>
+        </Column>
+      </Columns>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+create table #derived ( Id bigint primary key )
+insert into #derived select Id from dbo.fnDerivedTypes(@param2, @tenant)
+
+select
+    d2.Data,
+    d.Data
+from
+    [dbo].[Relationship] e
+    join #derived dt on dt.Id = e.ToId
+    left join [dbo].[Data_NVarChar] d2 on d2.EntityId = e.FromId and d2.FieldId = @param4 and d2.TenantId = @tenant
+    left join (
+        [dbo].[Relationship] e2
+        left join [dbo].[Data_NVarChar] d on d.EntityId = e2.FromId and d.FieldId = @param4 and d.TenantId = @tenant
+    ) on ( d.Data_StartsWith = left(d2.Data, 100) and d.Data = d2.Data ) and e2.TypeId = @param1 and e2.ToId = @param3 and e2.TenantId = @tenant
+where
+    e.TypeId = @param1
+    and e.TenantId = @tenant
+
+drop table #derived]]></Expect>
+  </Test>
+  <Test name="CustomJoinNodeMatchIdentity">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="1f9d6264-d4b1-45d5-8238-50ab2417c962">
+        <RelatedEntities>
+          <Entity xsi:type="CustomJoinNode" id="52e65518-00ff-4571-80b2-e158dcab7aaf">
+            <EntityTypeId entityRef="true">test:drink</EntityTypeId>
+            <JoinPredicateScript>context()=@parent</JoinPredicateScript>
+          </Entity>
+        </RelatedEntities>
+        <EntityTypeId entityRef="true">test:employee</EntityTypeId>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>1f9d6264-d4b1-45d5-8238-50ab2417c962</NodeId>
+            <FieldId entityRef="true">core:name</FieldId>
+          </Expression>
+        </Column>
+        <Column>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>52e65518-00ff-4571-80b2-e158dcab7aaf</NodeId>
+            <FieldId entityRef="true">core:name</FieldId>
+          </Expression>
+        </Column>
+      </Columns>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+create table #derived ( Id bigint primary key )
+insert into #derived select Id from dbo.fnDerivedTypes(@param2, @tenant)
+
+select
+    d.Data,
+    d2.Data
+from
+    [dbo].[Relationship] e
+    join #derived dt on dt.Id = e.ToId
+    left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param4 and d.TenantId = @tenant
+    left join (
+        [dbo].[Relationship] e2
+        left join [dbo].[Data_NVarChar] d2 on d2.EntityId = e2.FromId and d2.FieldId = @param4 and d2.TenantId = @tenant
+    ) on e2.FromId = e.FromId and e2.TypeId = @param1 and e2.ToId = @param3 and e2.TenantId = @tenant
+where
+    e.TypeId = @param1
+    and e.TenantId = @tenant
+
+drop table #derived]]></Expect>
+  </Test>
+  <Test name="CustomJoinNodeMatchRelationship">
+    <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">
+      <RootEntity xsi:type="ResourceEntity" id="1f9d6264-d4b1-45d5-8238-50ab2417c962">
+        <RelatedEntities>
+          <Entity xsi:type="CustomJoinNode" id="52e65518-00ff-4571-80b2-e158dcab7aaf">
+            <EntityTypeId entityRef="true">test:drink</EntityTypeId>
+            <JoinPredicateScript>[Resource in application]=@parent.[Resource in application]</JoinPredicateScript>
+          </Entity>
+        </RelatedEntities>
+        <EntityTypeId entityRef="true">test:employee</EntityTypeId>
+      </RootEntity>
+      <Columns>
+        <Column>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>1f9d6264-d4b1-45d5-8238-50ab2417c962</NodeId>
+            <FieldId entityRef="true">core:name</FieldId>
+          </Expression>
+        </Column>
+        <Column>
+          <Expression xsi:type="ResourceDataColumn">
+            <NodeId>52e65518-00ff-4571-80b2-e158dcab7aaf</NodeId>
+            <FieldId entityRef="true">core:name</FieldId>
+          </Expression>
+        </Column>
+      </Columns>
+    </Query>
+    <Expect><![CDATA[--QueryEng (hint: test)
+create table #derived ( Id bigint primary key )
+insert into #derived select Id from dbo.fnDerivedTypes(@param2, @tenant)
+
+select
+    d.Data,
+    d2.Data
+from
+    [dbo].[Relationship] e
+    join #derived dt on dt.Id = e.ToId
+    left join [dbo].[Relationship] rel2 on rel2.FromId = e.FromId and rel2.TypeId = @param4 and rel2.TenantId = @tenant
+    left join [dbo].[Data_NVarChar] d on d.EntityId = e.FromId and d.FieldId = @param5 and d.TenantId = @tenant
+    left join (
+        [dbo].[Relationship] e2
+        left join [dbo].[Relationship] rel on rel.FromId = e2.FromId and rel.TypeId = @param4 and rel.TenantId = @tenant
+        left join [dbo].[Data_NVarChar] d2 on d2.EntityId = e2.FromId and d2.FieldId = @param5 and d2.TenantId = @tenant
+    ) on rel.ToId = rel2.ToId and e2.TypeId = @param1 and e2.ToId = @param3 and e2.TenantId = @tenant
+where
+    e.TypeId = @param1
+    and e.TenantId = @tenant
+
+drop table #derived]]></Expect>
   </Test>
   <!--<Test name="SimpleScriptLookup">
     <Query xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://enterprisedata.com.au/readinow/v2/query/2.0">

@@ -1,8 +1,11 @@
 <div class="sp-applicable-tasks-mobile">
     <div class="tasks-mobile-actions">
         <div ng-repeat="ab in actionButtons">
-            <button type="button" ng-click="ab.execute()" ng-disabled="ab.action.disabled || model.isInDesign || model.disableActions" title="{{ab.action.name || ab.action.displayname}}">
-                <img ng-src="{{ab.action.icon}}" width="16" height="16" /><span ng-show="ab.action.state === 'createForm' || ab.action.method === 'run' || ab.action.method === 'generate'">{{ab.action.nameshort}}</span>
+            <button type="button"
+                    ng-click="ab.execute()"
+                    ng-disabled="ab.action.disabled"
+                    title="{{ab.name || ab.displayname}}">
+                <img ng-src="{{ab.icon}}" width="16" height="16"/><span ng-show="ab.action.state === 'createForm' || ab.action.method === 'run' || ab.action.method === 'generate'">{{ab.nameshort}}</span>
             </button>
         </div>
     </div>
@@ -17,7 +20,5 @@
         <span class="completed-date" ng-show="task.userTaskIsComplete">Completed: {{task.userTaskCompletedOn | spDate:dateShort }}</span>
 
         <sp-task-buttons ng-hide="task.userTaskIsComplete" navigate-as-child="navigateAsChild" return-on-completion="false" task="task" before-save="beforeTransition()"></sp-task-buttons>
-
-
     </div>
 </div>

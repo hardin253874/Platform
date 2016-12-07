@@ -68,6 +68,7 @@ var spUtils = spUtils || {}; // jshint ignore:line
                 command.undo();
             }
             this._redoList.push(command);
+            this._changeCounter++;
         }
     };
     
@@ -85,6 +86,7 @@ var spUtils = spUtils || {}; // jshint ignore:line
                 (command.redo || command.run)();
             }
             this._undoList.push(command);
+            this._changeCounter++;
         }
     };
 

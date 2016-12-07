@@ -33,6 +33,8 @@ namespace EDC.SoftwarePlatform.Activities
 {
     public class WorkflowRunner : IWorkflowRunner
     {
+        const long SuspenedTimeoutMsDefault = 10000;
+
         public static IWorkflowRunner Instance
         {
             get
@@ -43,10 +45,25 @@ namespace EDC.SoftwarePlatform.Activities
 
         private static ISingleInstancePerformanceCounterCategory perfCounters = new SingleInstancePerformanceCounterCategory(WorkflowPerformanceCounters.CategoryName);
 
+
+        /// <summary>
+        /// The workflow metadata factory. (Typically the caching one).
+        /// </summary>
+        internal IWorkflowMetadataFactory MetadataFactory
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// How long to let a workflow run until we suspend it.
+        /// </summary>
+        public long SuspendTimeoutMs { get; set; }
+
         /// <summary>
         /// Initializes the <see cref="WorkflowRunner.Instance"/> class.
         /// </summary>
-        public WorkflowRunner(IWorkflowMetadataFactory metadataFactory)
+        public WorkflowRunner(IWorkflowMetadataFactory metadataFactory, long suspendTimeoutMs = SuspenedTimeoutMsDefault)
         {
             if (metadataFactory == null)
                 throw new ArgumentNullException("metadataFactory");
@@ -57,16 +74,10 @@ namespace EDC.SoftwarePlatform.Activities
 
             DiagnosticsEnabled = WorkflowRequest.IsEnabled;
             DiagnosticsLastUpdated = DateTime.UtcNow;
+
+            SuspendTimeoutMs = suspendTimeoutMs;
         }
 
-        /// <summary>
-        /// The workflow metadata factory. (Typically the caching one).
-        /// </summary>
-        internal IWorkflowMetadataFactory MetadataFactory
-        {
-            get;
-            private set;
-        }
 
 
         /// <summary>
@@ -276,8 +287,10 @@ namespace EDC.SoftwarePlatform.Activities
                 }
                 finally
                 {
-                    run = FinalizeRun(runState);
-
+                    if (!Factory.WorkflowRunTaskManager.HasCancelled(runState.RunTaskId))
+                    {
+                        run = FinalizeRun(runState);
+                    }
                 }
 
                 EndWorkflowTimer(stopWatch);
@@ -321,6 +334,8 @@ namespace EDC.SoftwarePlatform.Activities
                         if (deferredRun != null)
                             deferredRun.Sync();
 
+                       
+
                         runState.SyncToRun(run);
 
                         WorkflowRunContext.Current.DeferSave(run);
@@ -328,19 +343,45 @@ namespace EDC.SoftwarePlatform.Activities
                         // 
                         // Raise a completed child event
                         //
-                        if (run != null && run.ParentRun != null && run.WorkflowRunStatus_Enum != WorkflowRunState_Enumeration.WorkflowRunPaused)
+                        if (run != null && run.ParentRun != null && IsRunCompleted(run))
                         {
                             // This should be hooked into an eventing system. As we don't have one, just run the resume async. 
                             runState.WorkflowInvoker.PostEvent(new ChildWorkflowCompletedEvent(run));
                         }
 
+                        // 
+                        // Add a restore message to the queue if we are suspended
+                        //
+                        if (run != null && run.WorkflowRunStatus_Enum  == WorkflowRunState_Enumeration.WorkflowRunSuspended)
+                        {
+                            WorkflowRunContext.Current.DeferAction(() =>
+                            {
+                                // This should be hooked into an eventing system. As we don't have one, just run the resume async.
+                                var restoreTask = ResumeWorkflowHandler.CreateBackgroundTask(run, new WorkflowRestoreEvent());
+                                Factory.BackgroundTaskManager.EnqueueTask(restoreTask);
+                            });
+                        }
+
+
                         //
                         // Let the world know we have finished
                         WorkflowRunContext.Current.DeferAction(() =>
                         {
-                            Factory.WorkflowRunTaskManager.RegisterComplete(run.TaskId, run.Id.ToString(CultureInfo.InvariantCulture));
+                            if (run.WorkflowRunStatus_Enum == WorkflowRunState_Enumeration.WorkflowRunPaused ||
+                                run.WorkflowRunStatus_Enum == WorkflowRunState_Enumeration.WorkflowRunCompleted ||
+                                run.WorkflowRunStatus_Enum == WorkflowRunState_Enumeration.WorkflowRunFailed)
+                            {
+                                Factory.WorkflowRunTaskManager.RegisterComplete(run.TaskId, run.Id.ToString(CultureInfo.InvariantCulture));
+                            }
+                            else
+                            {
+                                Factory.WorkflowRunTaskManager.SetResult(run.TaskId, run.Id.ToString(CultureInfo.InvariantCulture));
+
+                            }
                             HandleDiagnostics(run, run.WorkflowRunStatus_Enum.ToString());
                         });
+
+
 
                     }
                     catch (Exception ex)
@@ -366,6 +407,15 @@ namespace EDC.SoftwarePlatform.Activities
             }
 
             return run;
+        }
+
+
+        bool IsRunCompleted(WorkflowRun run)
+        {
+           return run.WorkflowRunStatus_Enum != WorkflowRunState_Enumeration.WorkflowRunPaused 
+                && run.WorkflowRunStatus_Enum != WorkflowRunState_Enumeration.WorkflowRunSuspended
+                && run.WorkflowRunStatus_Enum != WorkflowRunState_Enumeration.WorkflowRunStarted
+                && run.WorkflowRunStatus_Enum != WorkflowRunState_Enumeration.WorkflowRunQueued;
         }
 
         /// <summary>
@@ -592,7 +642,8 @@ namespace EDC.SoftwarePlatform.Activities
         {
             using (new SecurityBypassContext())
             {
-                const string msg = "Failed to start because it is misconfigured.";
+                string msg = $"Failed to start because it is misconfigured: \n{string.Join(", \n", runState.Metadata.ValidationMessages)}";
+
                 var logEntry = new WorkflowRunFailedLogEntry
                 {
                     Name = "Workflow misconfigured",

@@ -1030,6 +1030,12 @@ will determine which actual type - which field or relationship - is in effect.
         <description>The workflow run failed with an error.</description>
         <enumOrder>4</enumOrder>
       </workflowRunState>
+       <workflowRunState>
+        <alias>workflowRunSuspended</alias>
+        <name>Long running</name>
+        <description>The workflow run is long running.</description>
+        <enumOrder>5</enumOrder>
+      </workflowRunState>
       <workflowRunState>
         <alias>workflowRunCancelled</alias> <!-- used by Excel import -->
         <name>Cancelled</name>
@@ -1119,7 +1125,7 @@ will determine which actual type - which field or relationship - is in effect.
         <toName>Assigned to</toName>
         <fromName>Assigned tasks</fromName>
         <description>The person who has been assigned to this task</description>
-        <defaultFromUseCurrent>true</defaultFromUseCurrent>
+        <defaultFromUseCurrent>false</defaultFromUseCurrent>
         <defaultToUseCurrent>true</defaultToUseCurrent>
         <toType>person</toType>
         <relType>relLookup</relType>
@@ -1376,6 +1382,7 @@ will determine which actual type - which field or relationship - is in effect.
         <relType>relDependantOf</relType>
         <toType>report</toType>
         <generateCode>true</generateCode>
+        <securesTo>true</securesTo>
         <hideOnToTypeDefaultForm>true</hideOnToTypeDefaultForm>
         <hideOnToType>true</hideOnToType>
         <relationshipInFromTypeGroup>activityPromptDetails</relationshipInFromTypeGroup>
@@ -1477,6 +1484,122 @@ will determine which actual type - which field or relationship - is in effect.
     <assemblyName>EDC.ReadiNow.Common, Version=1.0.0.0, Culture=neutral</assemblyName>
     <ordinal>0</ordinal>
   </target>
+
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- Suspended Tasks                                      -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <type>
+    <alias>suspendedTask</alias>
+    <name>Suspended Task</name>
+    <description>An internal type used to store a suspended task</description>
+    <generateCode>true</generateCode>
+
+    <fields>
+      <stringField>
+        <alias>stCulture</alias>
+        <name>Culture</name>
+        <description>The culture that the task will run under.</description>
+        <fieldInGroup>system</fieldInGroup>
+      </stringField>
+
+      <stringField>
+        <alias>stTimezone</alias>
+        <name>Timezone</name>
+        <description>The timezone that the task will run under.</description>
+        <fieldInGroup>system</fieldInGroup>
+      </stringField>
+    </fields>
+
+    <relationships>
+      
+      <relationship>
+        <alias>stIdentity</alias>
+        <name>Security identity</name>
+        <description>The identity this task will run as.</description>
+        <toType>userAccount</toType>
+        <relType>relLookup</relType>
+        <relationshipInFromTypeGroup>system</relationshipInFromTypeGroup>
+        <hideOnToType>true</hideOnToType>
+        <generateCode>true</generateCode>
+      </relationship>
+
+      <relationship>
+        <alias>stSecondaryIdentity</alias>
+        <name>Security secondary identity</name>
+        <description>The secondary  identity this task will run as.</description>
+        <toType>userAccount</toType>
+        <relType>relLookup</relType>
+        <relationshipInFromTypeGroup>system</relationshipInFromTypeGroup>
+        <hideOnToType>true</hideOnToType>
+        <generateCode>true</generateCode>
+
+      </relationship>
+      
+    </relationships>
+  </type>
+  
+  <type>
+    <alias>suspendedTrigger</alias>
+    <name>Suspended Trigger</name>
+    
+    <inherits>suspendedTask</inherits>
+    <description>An internal type used to store suspended triggers</description>
+    <generateCode>true</generateCode>
+    
+    <fields>
+
+      <intField>
+        <alias>stTriggerDepth</alias>
+        <name>Order</name>
+        <fieldInGroup>system</fieldInGroup>
+      </intField>
+    </fields>
+    
+    <relationships>
+      <relationship>
+        <alias>stTrigger</alias>
+        <name>Trigger</name>
+        <relType>relDependantOf</relType>
+        <toType>wfTrigger</toType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>system</relationshipInFromTypeGroup>
+        <hideOnToType>true</hideOnToType>
+      </relationship>
+
+      <relationship>
+        <alias>stResource</alias>
+        <name>Resource</name>
+        <relType>relDependantOf</relType>
+        <toType>resource</toType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>system</relationshipInFromTypeGroup>
+        <hideOnToType>true</hideOnToType>
+      </relationship>
+    </relationships>
+  </type>
+
+  <type>
+    <alias>suspendedRun</alias>
+    <name>Suspended Workflow Run</name>
+    <inherits>suspendedTask</inherits>
+    <description>A suspended workflow run</description>
+    <generateCode>true</generateCode>
+    
+    <relationships>
+      <relationship>
+        <alias>srRun</alias>
+        <name>Run</name>
+        <relType>relDependantOf</relType>
+        <toType>workflowRun</toType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>system</relationshipInFromTypeGroup>
+        <hideOnToType>true</hideOnToType>
+      </relationship>
+    
+    </relationships>
+  </type>
+  
+    
   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   <!-- Log Entries                                          -->
   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->

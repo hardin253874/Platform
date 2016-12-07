@@ -11,7 +11,6 @@ using EDC.ReadiNow.Core;
 using EDC.ReadiNow.Model;
 using System.Globalization;
 using EDC.ReadiNow.Security;
-using EDC.ReadiNow.Security;
 using EDC.ReadiNow.Security.AccessControl;
 using EDC.ReadiNow.Test.Security.AccessControl;
 

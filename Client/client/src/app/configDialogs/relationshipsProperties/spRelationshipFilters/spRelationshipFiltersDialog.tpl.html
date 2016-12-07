@@ -17,6 +17,7 @@
         <uib-alert ng-repeat="error in model.errors" type="error.type">{{error.msg}}</uib-alert>
     </div>
     <div class="modal-footer">
+        <div ng-if="showAdvancedOption()" style="float: left;"><input ng-model="model.showAllRels" type="checkbox" />Advanced (dev only)</div>
         <button type="button" class="btn" ng-click="ok()">OK</button><button type="button" class="btn" ng-click="cancel()">Cancel</button>
     </div>
 </div>

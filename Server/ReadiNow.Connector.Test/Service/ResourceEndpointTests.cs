@@ -10,6 +10,7 @@ using ReadiNow.Connector.Interfaces;
 using EDC.ReadiNow.Test;
 using EDC.ReadiNow.Expressions;
 using EDC.ReadiNow.Common.Workflow;
+using EDC.ReadiNow.Core;
 
 namespace ReadiNow.Connector.Test.Service
 {
@@ -30,7 +31,18 @@ namespace ReadiNow.Connector.Test.Service
             Mock<IResourceUriGenerator> m3 = new Mock<IResourceUriGenerator>(MockBehavior.Loose);
 
             ApiResourceMapping mapping = new ApiResourceMapping();
-            mapping.MappedType = CodeNameResolver.GetTypeByName("AA_Drink").As<EntityType>();
+
+			long typeId = Factory.ScriptNameResolver.GetTypeByName( "AA_Drink" );
+
+			if ( typeId == 0 )
+			{
+				mapping.MappedType = null;
+			}
+			else
+			{
+				mapping.MappedType = Entity.Get( typeId ).As<EntityType>( );
+			}
+
             mapping.MappingSuppressWorkflows = endpointSuppressWorkflows;
             mapping.Save();
 

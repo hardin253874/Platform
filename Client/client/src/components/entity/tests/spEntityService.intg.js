@@ -37,39 +37,6 @@ describe('Entity Model|spEntityService|intg:', function () {
 
     describe('type reporting service', function () {
 
-        it('should get type info for a known type', function () {
-            var done = false,
-                data;
-
-            TestSupport.setWaitTimeout(20000);
-
-            var getMeta = spEntityService.getTypeMetadata('oldshared:manager')
-                .then(function (results) {
-                    //console.log('then ok', results);
-                    done = true;
-                    data = results;
-                }, function (error) {
-                    console.log('then rejected', error);
-                    done = true;
-                });
-
-            TestSupport.wait(getMeta.then(function () {
-                expect(data).toBeTruthy();
-                console.log('results are ', data);
-
-                expect(data.allFields).toBeTruthy();
-                expect(data.allFields()).toBeTruthy();
-                expect(data.allFields().length).toBeGreaterThan(0);
-
-                data.allFields().forEach(function (item) {
-                    console.log('field %s %o', item.name, item);
-                });
-                data.allRelationships().forEach(function (item) {
-                    console.log('relationship %s %o', item.name, item);
-                });
-            }));
-        });
-
         it('should get entities for a known type', function () {
             
             var result1 = {};

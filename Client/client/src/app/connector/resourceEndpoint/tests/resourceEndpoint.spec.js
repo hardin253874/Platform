@@ -7,6 +7,7 @@ describe('Connector|spec|resourceEndpoint', function () {
     beforeEach(module('mod.app.connector.resourceEndpoint'));
     beforeEach(module('connector/resourceEndpoint/resourceEndpoint.tpl.html'));
     beforeEach(module('editForm/partials/spInlineRelationshipPicker.tpl.html'));
+    beforeEach(module('controls/templates/spTypeaheadPopupTemplate.tpl.html'));    
     beforeEach(module('mockedEntityService'));
     beforeEach(module('mockedReportService'));
 

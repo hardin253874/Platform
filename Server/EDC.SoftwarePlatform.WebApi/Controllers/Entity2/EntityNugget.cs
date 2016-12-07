@@ -51,7 +51,9 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.Entity2
             Factory.EntityAccessControlService.Check(entitiesToCheck, new[] { Permissions.Read });
 
 			// Load as a modified entity structure
+#pragma warning disable 618
 			var svc = new EntityInfoService( );
+#pragma warning restore 618
             IEntity entity = svc.DecodeEntity(entityData, persistChanges);
 			return entity;
 		}

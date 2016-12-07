@@ -8,12 +8,6 @@ namespace EDC.ReadiNow.Configuration
 	/// </summary>
 	public class WorkflowConfiguration : ConfigurationSection
 	{
-		/// <summary>
-		///     Gets or sets a value indicating whether security is enabled.
-		/// </summary>
-		/// <value>
-		///     <c>true</c> if security is enabled; otherwise, <c>false</c>.
-		/// </value>
 		[ConfigurationProperty( "triggers" )]
         public TriggerSettings Triggers
 		{
@@ -28,8 +22,21 @@ namespace EDC.ReadiNow.Configuration
 			}
 		}
 
-      
-	}
+        [ConfigurationProperty("backgroundTasks")]
+        public BackgroundTaskSettings BackgroundTasks
+        {
+            get
+            {
+                return (BackgroundTaskSettings)this["backgroundTasks"];
+            }
+
+            set
+            {
+                this["backgroundTasks"] = value;
+            }
+        }
+
+    }
 
     /// <summary>
     ///     Trigger settigns
@@ -75,7 +82,7 @@ namespace EDC.ReadiNow.Configuration
         /// <summary>
         /// The maximum length of time a workflow can run in seconds before it is killed.
         /// </summary>
-        [ConfigurationProperty("maxRunTimeSeconds", DefaultValue = 120, IsRequired = false)]
+        [ConfigurationProperty("maxRunTimeSeconds", DefaultValue = 600, IsRequired = false)]
         public int MaxRunTimeSeconds
         {
             get
@@ -89,7 +96,63 @@ namespace EDC.ReadiNow.Configuration
             }
         }
 
+        /// <summary>
+        /// The maximum number of steps that a workflow can run before it is killed.
+        /// </summary>
+        [ConfigurationProperty("maxSteps", DefaultValue = 100000, IsRequired = false)]
+        public int MaxSteps
+        {
+            get
+            {
+                return (int)this["maxSteps"];
+            }
 
+            set
+            {
+                this["maxSteps"] = value;
+            }
+        }
+
+    }
+
+    /// <summary>
+    ///     Trigger settigns
+    /// </summary>
+    public class BackgroundTaskSettings : ConfigurationElement
+    {
+        /// <summary>
+        /// The maximum number of background tasks running at once per tenant
+        /// </summary>
+        [ConfigurationProperty("perTenantConcurrency", DefaultValue = 10, IsRequired = false)]
+        public int PerTenantConcurrency
+        {
+            get
+            {
+                return (int)this["perTenantConcurrency"];
+            }
+
+            set
+            {
+                this["perTenantConcurrency"] = value;
+            }
+        }
+
+        /// <summary>
+        /// The amount of time a workflow will run before being suspended and put back on the queue.
+        /// </summary>
+        [ConfigurationProperty("suspendTimeoutSeconds", DefaultValue = 10, IsRequired = false)]
+        public int SuspendTimeoutSeconds
+        {
+            get
+            {
+                return (int)this["suspendTimeoutSeconds"];
+            }
+
+            set
+            {
+                this["suspendTimeoutSeconds"] = value;
+            }
+        }
     }
 
 }

@@ -9,7 +9,7 @@
     // the edit form scope and the isolated render control, mapping the
     // relevant properties from one to the other.
     /////
-    angular.module('mod.app.editForm.designerDirectives.spCurrencyKFieldRenderControl', ['mod.app.editForm', 'mod.app.editForm.spFieldControlProvider', 'mod.common.spCachingCompile', 'mod.common.spMobile'])
+    angular.module('mod.app.editForm.designerDirectives.spCurrencyKFieldRenderControl', ['mod.app.editForm', 'mod.app.editForm.spFieldControlProvider', 'mod.common.spCachingCompile', 'mod.common.spMobile','mod.app.editForm.spDblclickToEdit'])
         .directive('spCurrencyKFieldRenderControl', function (spEditForm, spFieldControlProvider, spCachingCompile, $state, spMobileContext) {
 
             /////
@@ -72,7 +72,9 @@
                                 $scope.model.decimalPlaces = fieldToRender.getDecimalPlaces();
                             }
 
-                            spFieldControlProvider($scope);
+                            // $scope is passed twice here, once as a context and once as the scope to $watch etc
+                            // It is done like this in preparation for moving to "components"
+                            spFieldControlProvider($scope, $scope);
 
                             /////
                             // When the form data changes, update the model.

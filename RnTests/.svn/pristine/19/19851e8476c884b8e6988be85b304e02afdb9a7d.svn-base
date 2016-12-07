@@ -1,0 +1,349 @@
+[{:tags [:nomodify :prod :regression :area/form :user/conc :desktop],
+  :name "Show Hide Controls Test",
+  :steps
+  [{:script
+    "(rt.po.app-toolbox/create-app {:description \"\", :name (:app-name *tc*)})"}
+   {:script "(rt.po.app/enable-app-toolbox)"}
+   {:script
+    "(rt.po.app-toolbox/set-application-filter (:app-name *tc*))"}
+   {:script
+    "(rt.po.app-toolbox/create-object {:description \"Object Description\", :name (:obj-name *tc*)})"}
+   {:script "(rt.po.form-builder/add-container-to-form)"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Text\" 0)"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"Text\")"}
+   {:script "(rt.po.form-builder-config/set-name \"ShowHideSource\")"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/add-container-to-form)"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Text\" 1)"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"Text\")"}
+   {:script
+    "(rt.po.form-builder-config/set-name \"ShowHideTextTarget\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Visibility\")"}
+   {:script
+    "(rt.po.form-builder-config/set-show-when \"[ShowHideSource]='showText'\")"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Choice\" 1)"}
+   {:script
+    "(rt.po.form-builder-config/set-name \"ShowHideChoiceTarget\")"}
+   {:script "(rt.po.form-builder-config/add-new-choice-value)"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Visibility\")"}
+   {:script
+    "(rt.po.form-builder-config/set-show-when \"[ShowHideSource]='showChoice'\")"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Lookup\" 1)"}
+   {:script
+    "(rt.po.form-builder-config/set-name \"ShowHideLookupTarget\")"}
+   {:script "(rt.po.form-builder-config/set-object \"AA_Actor\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Visibility\")"}
+   {:script
+    "(rt.po.form-builder-config/set-show-when \"[ShowHideSource]='showLookup'\")"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Image\" 1)"}
+   {:script
+    "(rt.po.form-builder/open-form-control-configure-dialog \"Image\")"}
+   {:script
+    "(rt.po.form-builder-config/set-name \"ShowHideImageTarget\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Visibility\")"}
+   {:script
+    "(rt.po.form-builder-config/set-show-when \"[ShowHideSource]='showImage'\")"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script "(rt.po.form-builder/add-container-to-form)"}
+   {:script "(rt.po.form-builder/open-container-configure-dialog 2)"}
+   {:script
+    "(rt.po.form-builder-config/set-name \"ShowHideRelationshipContainer\")"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script
+    "(rt.po.form-builder/add-from-field-menu-to-container \"Relationship\" 2)"}
+   {:script
+    "(rt.po.form-builder-config/set-name \"ShowHideRelationshipTarget\")"}
+   {:script "(rt.po.form-builder-config/set-object \"AA_Actor\")"}
+   {:script "(rt.po.form-builder-config/expand-section \"Options\")"}
+   {:script "(rt.po.form-builder-config/select-tab \"Visibility\")"}
+   {:script
+    "(rt.po.form-builder-config/set-show-when \"[ShowHideSource]='showRelationship'\")"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script "(rt.po.form-builder/add-container-to-form)"}
+   {:script "(rt.po.form-builder/open-container-configure-dialog 3)"}
+   {:script
+    "(rt.po.form-builder-config/set-name \"ShowHideContainerTarget\")"}
+   {:script
+    "(rt.po.form-builder-config/set-show-when \"[ShowHideSource]='showContainer'\")"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script
+    "(rt.po.form-builder/add-display-option-from-toolbox-to-form \"Tabbed Container\")"}
+   {:script "(rt.po.form-builder/add-tab-in-tab-container 0)"}
+   {:script "(rt.po.form-builder/open-tab-configure-dialog 0 0)"}
+   {:script
+    "(rt.po.form-builder-config/set-name \"ShowHideTabContainerTabTarget\")"}
+   {:script
+    "(rt.po.form-builder-config/set-show-when \"[ShowHideSource]='showTabContainerTab'\")"}
+   {:script "(rt.po.form-builder-config/click-ok)"}
+   {:script "(rt.po.form-builder/save)"}
+   {:script "(rt.po.form-builder/close)"}
+   {:script "(rt.po.app/navigate-to (:app-name *tc*))"}
+   {:script "(rt.po.app/enable-config-mode)"}
+   {:script "(rt.po.app/add-existing-report (:obj-name *tc*))"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/field-visible? \"ShowHideTextTarget\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/field-visible? \"ShowHideTextTarget\")))"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/field-visible? \"ShowHideChoiceTarget\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/field-visible? \"ShowHideChoiceTarget\")))"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/field-visible? \"ShowHideLookupTarget\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/field-visible? \"ShowHideLookupTarget\")))"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/field-visible? \"ShowHideImageTarget\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/field-visible? \"ShowHideImageTarget\")))"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/exists-present? \"div:contains(ShowHideRelationshipContainer) .tab-relationship-render-control:visible\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/exists-present? \"div:contains(ShowHideRelationshipContainer) .tab-relationship-render-control:visible\")))"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/exists-present? \".structure-control-header span:contains(ShowHideContainerTarget)\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/exists-present? \".structure-control-header span:contains(ShowHideContainerTarget)\")))"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/exists-present? \"sp-tab-container-control uib-tab-heading:contains(ShowHideTabContainerTabTarget)\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/exists-present? \"sp-tab-container-control uib-tab-heading:contains(ShowHideTabContainerTabTarget)\")))"}
+   {:script
+    "(rt.po.common/set-string \"ShowHideSource\" \"showText\")"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/field-visible? \"ShowHideChoiceTarget\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/field-visible? \"ShowHideChoiceTarget\")))"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/field-visible? \"ShowHideLookupTarget\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/field-visible? \"ShowHideLookupTarget\")))"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/field-visible? \"ShowHideImageTarget\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/field-visible? \"ShowHideImageTarget\")))"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/exists-present? \"div:contains(ShowHideRelationshipContainer) .tab-relationship-render-control:visible\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/exists-present? \"div:contains(ShowHideRelationshipContainer) .tab-relationship-render-control:visible\")))"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/exists-present? \".structure-control-header span:contains(ShowHideContainerTarget)\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/exists-present? \".structure-control-header span:contains(ShowHideContainerTarget)\")))"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/exists-present? \"sp-tab-container-control uib-tab-heading:contains(ShowHideTabContainerTabTarget)\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/exists-present? \"sp-tab-container-control uib-tab-heading:contains(ShowHideTabContainerTabTarget)\")))"}
+   {:script
+    "(rt.po.common/wait-until #(rt.po.common/field-visible? \"ShowHideTextTarget\") 5000)"}
+   {:script
+    "(expect (rt.po.common/field-visible? \"ShowHideTextTarget\"))"}
+   {:script
+    "(rt.po.common/set-string \"ShowHideSource\" \"showChoice\")"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/field-visible? \"ShowHideTextTarget\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/field-visible? \"ShowHideTextTarget\")))"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/field-visible? \"ShowHideLookupTarget\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/field-visible? \"ShowHideLookupTarget\")))"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/field-visible? \"ShowHideImageTarget\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/field-visible? \"ShowHideImageTarget\")))"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/exists-present? \"div:contains(ShowHideRelationshipContainer) .tab-relationship-render-control:visible\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/exists-present? \"div:contains(ShowHideRelationshipContainer) .tab-relationship-render-control:visible\")))"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/exists-present? \".structure-control-header span:contains(ShowHideContainerTarget)\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/exists-present? \".structure-control-header span:contains(ShowHideContainerTarget)\")))"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/exists-present? \"sp-tab-container-control uib-tab-heading:contains(ShowHideTabContainerTabTarget)\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/exists-present? \"sp-tab-container-control uib-tab-heading:contains(ShowHideTabContainerTabTarget)\")))"}
+   {:script
+    "(rt.po.common/wait-until #(rt.po.common/field-visible? \"ShowHideChoiceTarget\") 5000)"}
+   {:script
+    "(expect (rt.po.common/field-visible? \"ShowHideChoiceTarget\"))"}
+   {:script
+    "(rt.po.common/set-string \"ShowHideSource\" \"showLookup\")"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/field-visible? \"ShowHideTextTarget\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/field-visible? \"ShowHideTextTarget\")))"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/field-visible? \"ShowHideChoiceTarget\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/field-visible? \"ShowHideChoiceTarget\")))"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/field-visible? \"ShowHideImageTarget\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/field-visible? \"ShowHideImageTarget\")))"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/exists-present? \"div:contains(ShowHideRelationshipContainer) .tab-relationship-render-control:visible\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/exists-present? \"div:contains(ShowHideRelationshipContainer) .tab-relationship-render-control:visible\")))"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/exists-present? \".structure-control-header span:contains(ShowHideContainerTarget)\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/exists-present? \".structure-control-header span:contains(ShowHideContainerTarget)\")))"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/exists-present? \"sp-tab-container-control uib-tab-heading:contains(ShowHideTabContainerTabTarget)\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/exists-present? \"sp-tab-container-control uib-tab-heading:contains(ShowHideTabContainerTabTarget)\")))"}
+   {:script
+    "(rt.po.common/wait-until #(rt.po.common/field-visible? \"ShowHideLookupTarget\") 5000)"}
+   {:script
+    "(expect (rt.po.common/field-visible? \"ShowHideLookupTarget\"))"}
+   {:script
+    "(rt.po.common/set-string \"ShowHideSource\" \"showImage\")"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/field-visible? \"ShowHideTextTarget\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/field-visible? \"ShowHideTextTarget\")))"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/field-visible? \"ShowHideChoiceTarget\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/field-visible? \"ShowHideChoiceTarget\")))"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/field-visible? \"ShowHideLookupTarget\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/field-visible? \"ShowHideLookupTarget\")))"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/exists-present? \"div:contains(ShowHideRelationshipContainer) .tab-relationship-render-control:visible\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/exists-present? \"div:contains(ShowHideRelationshipContainer) .tab-relationship-render-control:visible\")))"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/exists-present? \".structure-control-header span:contains(ShowHideContainerTarget)\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/exists-present? \".structure-control-header span:contains(ShowHideContainerTarget)\")))"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/exists-present? \"sp-tab-container-control uib-tab-heading:contains(ShowHideTabContainerTabTarget)\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/exists-present? \"sp-tab-container-control uib-tab-heading:contains(ShowHideTabContainerTabTarget)\")))"}
+   {:script
+    "(rt.po.common/wait-until #(rt.po.common/field-visible? \"ShowHideImageTarget\") 5000)"}
+   {:script
+    "(expect (rt.po.common/field-visible? \"ShowHideImageTarget\"))"}
+   {:script
+    "(rt.po.common/set-string \"ShowHideSource\" \"showRelationship\")"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/field-visible? \"ShowHideTextTarget\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/field-visible? \"ShowHideTextTarget\")))"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/field-visible? \"ShowHideChoiceTarget\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/field-visible? \"ShowHideChoiceTarget\")))"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/field-visible? \"ShowHideLookupTarget\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/field-visible? \"ShowHideLookupTarget\")))"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/field-visible? \"ShowHideImageTarget\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/field-visible? \"ShowHideImageTarget\")))"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/exists-present? \".structure-control-header span:contains(ShowHideContainerTarget)\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/exists-present? \".structure-control-header span:contains(ShowHideContainerTarget)\")))"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/exists-present? \"sp-tab-container-control uib-tab-heading:contains(ShowHideTabContainerTabTarget)\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/exists-present? \"sp-tab-container-control uib-tab-heading:contains(ShowHideTabContainerTabTarget)\")))"}
+   {:script
+    "(rt.po.common/wait-until #(rt.po.common/exists-present? \"div:contains(ShowHideRelationshipContainer) .tab-relationship-render-control:visible\") 5000)"}
+   {:script
+    "(expect (rt.po.common/exists-present? \"div:contains(ShowHideRelationshipContainer) .tab-relationship-render-control:visible\")))"}
+   {:script
+    "(rt.po.common/set-string \"ShowHideSource\" \"showContainer\")"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/field-visible? \"ShowHideTextTarget\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/field-visible? \"ShowHideTextTarget\")))"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/field-visible? \"ShowHideChoiceTarget\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/field-visible? \"ShowHideChoiceTarget\")))"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/field-visible? \"ShowHideLookupTarget\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/field-visible? \"ShowHideLookupTarget\")))"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/field-visible? \"ShowHideImageTarget\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/field-visible? \"ShowHideImageTarget\")))"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/exists-present? \"div:contains(ShowHideRelationshipContainer) .tab-relationship-render-control:visible\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/exists-present? \"div:contains(ShowHideRelationshipContainer) .tab-relationship-render-control:visible\")))"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/exists-present? \"sp-tab-container-control uib-tab-heading:contains(ShowHideTabContainerTabTarget)\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/exists-present? \"sp-tab-container-control uib-tab-heading:contains(ShowHideTabContainerTabTarget)\")))"}
+   {:script
+    "(rt.po.common/wait-until #(rt.po.common/exists-present? \".structure-control-header span:contains(ShowHideContainerTarget)\") 5000)"}
+   {:script
+    "(expect (rt.po.common/exists-present? \".structure-control-header span:contains(ShowHideContainerTarget)\"))"}
+   {:script
+    "(rt.po.common/set-string \"ShowHideSource\" \"showTabContainerTab\")"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/field-visible? \"ShowHideTextTarget\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/field-visible? \"ShowHideTextTarget\")))"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/field-visible? \"ShowHideChoiceTarget\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/field-visible? \"ShowHideChoiceTarget\")))"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/field-visible? \"ShowHideLookupTarget\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/field-visible? \"ShowHideLookupTarget\")))"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/field-visible? \"ShowHideImageTarget\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/field-visible? \"ShowHideImageTarget\")))"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/exists-present? \"div:contains(ShowHideRelationshipContainer) .tab-relationship-render-control:visible\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/exists-present? \"div:contains(ShowHideRelationshipContainer) .tab-relationship-render-control:visible\")))"}
+   {:script
+    "(rt.po.common/wait-until #(not (rt.po.common/exists-present? \".structure-control-header span:contains(ShowHideContainerTarget)\")) 5000)"}
+   {:script
+    "(expect (not (rt.po.common/exists-present? \".structure-control-header span:contains(ShowHideContainerTarget)\")))"}
+   {:script
+    "(rt.po.common/wait-until #(rt.po.common/exists-present? \"sp-tab-container-control uib-tab-heading:contains(ShowHideTabContainerTabTarget)\") 5000)"}
+   {:script
+    "(expect (rt.po.common/exists-present? \"sp-tab-container-control uib-tab-heading:contains(ShowHideTabContainerTabTarget)\"))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20161102-142353",
+  :setup
+  [{:script
+    "(identity {:app-name (rt.lib.util/make-test-name \"ShowHideApp\"), :obj-name (rt.lib.util/make-test-name \"ShowHideObj\")})"}],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/form/showHideControls,
+  :teardown
+  [{:script
+    "(rn.services.entity/delete-entity-for-name (:app-name *tc*) \"solution\")"}],
+  :modified-by "not-implemented"}]

@@ -11,6 +11,12 @@ namespace EDC.ReadiNow.Model.FieldTypes
 	/// </summary>
     public class StringFieldHelper : IFieldHelper
 	{
+        /// <summary>
+        /// The maximum length that a string field can be 
+        /// irrespective of how it is configured. 
+        /// </summary>
+        public const int RealMaximumStringFieldLength = 10 * 1000; 
+
 		private StringField _field;
 
         /// <summary>
@@ -46,12 +52,17 @@ namespace EDC.ReadiNow.Model.FieldTypes
 
 			if ( sValue != null )
 			{
-				if ( _field.MaxLength > 0 && sValue.Length > _field.MaxLength )
+				if ( sValue.Length > RealMaximumStringFieldLength)
 				{
-					return string.Format( GlobalStrings.MaximumLengthMessageTextFormat, _field.Name, _field.MaxLength );
+					return string.Format( GlobalStrings.MaximumLengthMessageTextFormat, _field.Name, RealMaximumStringFieldLength);
 				}
 
-				if ( sValue.Length < _field.MinLength )
+                if (_field.MaxLength > 0 && sValue.Length > _field.MaxLength)
+                {
+                    return string.Format(GlobalStrings.MaximumLengthMessageTextFormat, _field.Name, _field.MaxLength);
+                }
+
+                if ( sValue.Length < _field.MinLength )
 				{
 					return string.Format( GlobalStrings.MinimumLengthMessageTextFormat, _field.Name, _field.MinLength );
 				}

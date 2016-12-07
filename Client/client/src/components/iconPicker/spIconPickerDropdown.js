@@ -19,8 +19,8 @@
          - iconIds {array of EntityRef}. Array of available icon ids.
          - selectedIconId {EntityRef}. The id of the selected icon.
       */
-    angular.module('mod.common.ui.spIconPickerDropdown', ['mod.common.ui.spPopupProvider', 'mod.common.spXsrf'])
-        .directive('spIconPickerDropdown', function (spPopupProvider, spXsrf) {
+    angular.module('mod.common.ui.spIconPickerDropdown', ['mod.common.ui.spPopupProvider', 'mod.common.spXsrf', 'mod.common.spWebService'])
+        .directive('spIconPickerDropdown', function (spPopupProvider, spXsrf, spWebService) {
             return {
                 restrict: 'E',
                 replace: true,
@@ -29,7 +29,7 @@
                     options: '='                    
                 },
                 link: function (scope, iElement, iAttrs) {
-                    var IMAGE_BASE_URL = '/spapi/data/v1/image/thumbnail/',
+                    var IMAGE_BASE_URL = spWebService.getWebApiRoot() + '/spapi/data/v1/image/thumbnail/',
                         popupProvider;
 
 
@@ -99,13 +99,15 @@
 
                     // Watch for selected icon id changes
                     scope.$watch('options.selectedIconId', function (selectedIconId) {
-                        scope.model.selectedIconId = selectedIconId;
+                        if (scope.model)
+                            scope.model.selectedIconId = selectedIconId;
                     });
 
                     
                     // Push the selected icon id to the output
                     scope.$watch('model.selectedIconId', function (selectedIconId) {
-                        scope.options.selectedIconId = selectedIconId;
+                        if (scope.options)
+                            scope.options.selectedIconId = selectedIconId;
                     });                    
 
 

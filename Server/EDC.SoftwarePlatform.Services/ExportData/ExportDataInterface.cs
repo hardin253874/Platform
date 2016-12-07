@@ -8,11 +8,31 @@ using EDC.ReadiNow.Model;
 using ReadiNow.Reporting;
 using ReadiNow.Reporting.Request;
 using ReadiNow.Reporting.Result;
+using ReadiNow.ExportData;
+using EDC.ReadiNow.Utc;
 
 namespace EDC.SoftwarePlatform.Services.ExportData
 {
-    public class ExportDataInterface
+    public class ExportDataInterface: IExportDataInterface
     {
+        /// <summary>
+        ///     Export Data for given file format - conforms to IExportDataInterface
+        /// </summary>
+        /// <param name="reportId">Report Id.</param>
+        /// <param name="settings">Export settings</param>
+        /// <returns>ExportInfo</returns>
+        public ExportInfo ExportData(long reportId, ExportSettings settings)
+        {
+            var reportSettings = new ReportSettings
+            {
+                RequireBasicMetadata = true,
+                Timezone = TimeZoneHelper.GetTimeZoneInfo(settings.TimeZone),
+                CpuLimitSeconds = EDC.ReadiNow.Configuration.EntityWebApiSettings.Current.ReportCpuLimitSeconds
+            };
+
+            return ExportData(reportId, reportSettings, settings.Format);
+        }
+
         /// <summary>
         ///     Export Data for given file format.
         /// </summary>
@@ -111,42 +131,42 @@ namespace EDC.SoftwarePlatform.Services.ExportData
         }
     }
 
-    /// <summary>
-    ///     Defines the Export Format type.
-    /// </summary>
-    public enum ExportFormat
-    {
-        /// <summary>
-        ///     The Excel format type.
-        /// </summary>
-        Excel,
+    ///// <summary>
+    /////     Defines the Export Format type.
+    ///// </summary>
+    //public enum ExportFormat
+    //{
+    //    /// <summary>
+    //    ///     The Excel format type.
+    //    /// </summary>
+    //    Excel,
 
-        /// <summary>
-        ///     The CSV format type.
-        /// </summary>
-        Csv,
+    //    /// <summary>
+    //    ///     The CSV format type.
+    //    /// </summary>
+    //    Csv,
 
-        /// <summary>
-        ///     The Word format type.
-        /// </summary>
-        Word
-    }
+    //    /// <summary>
+    //    ///     The Word format type.
+    //    /// </summary>
+    //    Word
+    //}
 
-    /// <summary>
-    ///     ExportInfo.
-    /// </summary>
-    public class ExportInfo
-    {
-        public string FileHash
-        {
-            get;
-            set;
-        }
+    ///// <summary>
+    /////     ExportInfo.
+    ///// </summary>
+    //public class ExportInfo
+    //{
+    //    public string FileHash
+    //    {
+    //        get;
+    //        set;
+    //    }
 
-        public string ResponseMessage
-        {
-            get;
-            set;
-        }
-    }
+    //    public string ResponseMessage
+    //    {
+    //        get;
+    //        set;
+    //    }
+    //}
 }

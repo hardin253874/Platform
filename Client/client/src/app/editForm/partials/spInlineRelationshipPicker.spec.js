@@ -9,6 +9,7 @@ describe('Edit Form|spec:|inlineRelationshipPicker directive', function () {
         beforeEach(module('app.editForm.spInlineRelationshipPicker'));
         beforeEach(module('app.editForm.spInlineRelationshipPickerController'));
         beforeEach(module('editForm/partials/spInlineRelationshipPicker.tpl.html'));
+        beforeEach(module('controls/templates/spTypeaheadPopupTemplate.tpl.html'));
         beforeEach(module('mockedEntityService'));
 
         // Set the mocked data

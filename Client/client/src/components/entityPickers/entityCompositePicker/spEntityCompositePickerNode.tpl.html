@@ -2,14 +2,14 @@
     <img ng-if="showOpen(nodeId, parentId)" src="assets/images/hierarchy_collapsed.png" ng-click="toggleOpen(nodeId, parentId)">
     <img ng-if="showClose(nodeId, parentId)" src="assets/images/hierarchy_opened.png" ng-click="toggleOpen(nodeId, parentId)">
     <span ng-if="showSpace(nodeId, parentId)" style="height: 22px; width:22px;background-color: transparent;">&nbsp;</span>
-    <span ng-click="onNodeClicked($event,nodeId)" ng-dblclick="onNodeDoubleClicked(nodeId)" ng-class="{matched: model.nodes[nodeId].isMatch}">
+    <span ng-click="onNodeClicked($event,nodeId)" ng-dblclick="onNodeDoubleClicked(nodeId)" ng-class="{matched: model.nodes[nodeId].isMatch, isContainer: model.nodes[nodeId].isContainer}">
         {{model.nodes[nodeId].name}}
     </span>
 </div>
 
 <ul ng-if="isNodeOpen(nodeId, parentId)" ng-init="parentId = nodeId">
     <li ng-repeat="nodeId in model.nodes[nodeId].children">
-        <div sp-include="'entityPickers/entityCompositePicker/spEntityCompositePickerNode.tpl.html'"></div>
+        <div ng-if="!isSpecialCase ||(isSpecialCase &&  model.nodes[nodeId].isContainer)" sp-include="'entityPickers/entityCompositePicker/spEntityCompositePickerNode.tpl.html'"></div>
     </li>
 </ul>
 

@@ -11,6 +11,8 @@ using EDC.ReadiNow.Monitoring.Workflow;
 using Quartz;
 using System;
 using EDC.ReadiNow.Messaging;
+using EDC.ReadiNow.Security;
+using EDC.ReadiNow.IO;
 
 namespace EDC.ReadiNow.Scheduling
 {
@@ -36,9 +38,29 @@ namespace EDC.ReadiNow.Scheduling
 
             try
             {
-                using (DeferredChannelMessageContext deferredMsgContext = new DeferredChannelMessageContext())
+                using (DeferredChannelMessageContext deferredMsgContext = new DeferredChannelMessageContext())  // needed to keep redis happy
                 {
-                    Execute(jobRef);
+                    // Set the context to the owner of the scheduled item.
+                    var scheduledItem = Entity.Get<ScheduledItem>(jobRef);
+
+                    var owner = scheduledItem.SecurityOwner;
+
+                    if (owner == null)
+                    {
+                        var message = $"Unable to start scheduled job as import configuration has no owner";
+                        Diagnostics.EventLog.Application.WriteError($"StartImportJob.Execute: {message}. {scheduledItem.Id}");
+                        throw GenerateJobException(message, scheduledItem);
+                    }
+
+                    var identityInfo = new IdentityInfo(owner.Id, owner.Name);
+                    var contextData = new RequestContextData(RequestContext.GetContext());
+                    contextData.Identity = identityInfo;
+
+                    using (CustomContext.SetContext(contextData))
+                    {
+
+                        Execute(jobRef);
+                    }
                 }                    
             }
             catch (JobExecutionException ex)
@@ -46,14 +68,25 @@ namespace EDC.ReadiNow.Scheduling
                 EDC.ReadiNow.Diagnostics.EventLog.Application.WriteTrace("Job execution exception. Ex: {0}", ex.ToString());
                 throw;  // The job has already handled the problem and taken action.
             }
+            catch (PlatformSecurityException ex)
+            {
+                Diagnostics.EventLog.Application.WriteError($"Platform security exception thrown to scheduler. This should never occur. Ex: {ex}");
+            }
             catch (Exception ex)
             {
-                EDC.ReadiNow.Diagnostics.EventLog.Application.WriteError("Exception thrown to scheduler. This should never occur and should be handled by the scheduled item. Ex: {0}", ex.ToString());
+                Diagnostics.EventLog.Application.WriteError("Exception thrown to scheduler. This should never occur and should be handled by the scheduled item. Ex: {0}", ex.ToString());
             }
 
             stopWatch.Stop();
             perfCounters.GetPerformanceCounter<AverageTimer32PerformanceCounter>(WorkflowPerformanceCounters.ScheduleJobDurationCounterName).AddTiming(stopWatch);
         }
+
+        protected JobExecutionException GenerateJobException(string message, IEntity entity)
+        {
+            string name = entity.GetField<string>(Resource.Name_Field) ?? "[Unnamed]";
+            return new JobExecutionException($"'{name}'({entity.Id}) failed. {message}");
+        }
+
 
         public abstract void Execute(EntityRef scheduledItemRef);
     }

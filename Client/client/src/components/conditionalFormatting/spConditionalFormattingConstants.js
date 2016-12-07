@@ -419,6 +419,17 @@
                 }
             ];
 
+            exportedConstants.entityListFormatOptions = [
+                {
+                    id: 'commaSeparatedList',
+                    name: 'Comma separated list'
+                },
+                {
+                    id: 'stackedList',
+                    name: 'Vertical list'
+                }
+            ];
+
             return exportedConstants;
         });
 }());

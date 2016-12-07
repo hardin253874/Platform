@@ -10,10 +10,12 @@ using EDC.ReadiNow.Security;
 using EDC.ReadiNow.Diagnostics;
 using EventLog = EDC.ReadiNow.Diagnostics.EventLog;
 using EDC.ReadiNow.Model.Interfaces;
+using EDC.SoftwarePlatform.Activities.BackgroundTasks;
+using EDC.ReadiNow.Core;
 
 namespace EDC.SoftwarePlatform.Activities
 {
-    public class WorkflowImplementation : ActivityImplementationBase, IResumableActivity
+    public class WorkflowImplementation: ActivityImplementationBase, IResumableActivity
     {
         private Workflow _activityInstanceAsWf;
 
@@ -45,10 +47,7 @@ namespace EDC.SoftwarePlatform.Activities
 
         bool IResumableActivity.OnResume(IRunState context, IWorkflowEvent resumeEvent)
         {
-            Debug.Assert(context.RunStatus == WorkflowRunState_Enumeration.WorkflowRunPaused);
-
             bool hasCompleted = true;
-
             context.SyncFromRun();
 
             var currentActivity = context.PendingActivity;
@@ -57,7 +56,21 @@ namespace EDC.SoftwarePlatform.Activities
             if (currentActivity == null)
                 throw new ApplicationException("Current Activity missing from resumed activity. This should never occur.");
 
-            ScheduleResumeStep(context, resumeEvent, currentActivity);
+            if (resumeEvent is WorkflowRestoreEvent)    
+            {
+                if (context.RunStatus == WorkflowRunState_Enumeration.WorkflowRunCancelled)
+                    return true;
+
+                // Unsuspend a workflow
+                Debug.Assert(context.RunStatus == WorkflowRunState_Enumeration.WorkflowRunSuspended);
+                ScheduleNextStep(context, currentActivity);
+            }
+            else    
+            {
+                // Unpause an activity
+                Debug.Assert(context.RunStatus == WorkflowRunState_Enumeration.WorkflowRunPaused);
+                ScheduleResumeStep(context, resumeEvent, currentActivity);
+            }
 
             hasCompleted = context.WorkflowInvoker.RunTillCompletion(context);
 
@@ -77,8 +90,6 @@ namespace EDC.SoftwarePlatform.Activities
             var resolvedExpressions = ResolveExpressions(context, inputExpressions);
 
             var inputs = CreateInputDictionaryForNextStep(context, childActivity, resolvedExpressions);
-
-            // set the input
 
             context.WorkflowInvoker.ScheduleActivity(context, nextWindowsActivity, inputs, NextStepCompletionCallback, NextStepPausedCallback);
         }
@@ -103,9 +114,16 @@ namespace EDC.SoftwarePlatform.Activities
 
             if (transition != null)
             {
-                var nextActivity = transition.ToActivity;
-                context.ExitPointId = null;
-                ScheduleNextStep(context, nextActivity);
+                if (NeedToSuspend(context))
+                {
+                    MarkRunSuspended(context, childActivity);
+                }
+                else
+                {
+                    var nextActivity = transition.ToActivity;
+                    context.ExitPointId = null;
+                    ScheduleNextStep(context, nextActivity);
+                }
             }
             else
             {
@@ -249,7 +267,7 @@ namespace EDC.SoftwarePlatform.Activities
             }
         }
 
-         
+
         public override void Validate(WorkflowMetadata metadata)
         {
             using (Profiler.Measure("WorkflowImplementation.Validate"))
@@ -439,6 +457,7 @@ namespace EDC.SoftwarePlatform.Activities
             }
         }
 
+        
 
 
         void MarkRunCompleted(IRunState runState)
@@ -458,6 +477,29 @@ namespace EDC.SoftwarePlatform.Activities
                 runState.PendingActivity = currentActivity;
                 runState.RunStatus = WorkflowRunState_Enumeration.WorkflowRunPaused;
             }
+        }
+
+        void MarkRunSuspended(IRunState runState, WfActivity currentActivity)
+        {
+            Debug.Assert(currentActivity != null);
+
+            using (new SecurityBypassContext())
+            {
+                runState.PendingActivity = currentActivity;
+                runState.RunStatus = WorkflowRunState_Enumeration.WorkflowRunSuspended;
+            }
+        }
+
+        /// <summary>
+        /// Do we need to suspend the workflow?
+        /// </summary>
+        bool NeedToSuspend(IRunState runState)
+        {
+            if (!Factory.FeatureSwitch.Get("longRunningWorkflow"))
+                return false;
+
+            // TODO: make configurable
+            return (runState.TimeTakenInSession.ElapsedMilliseconds > WorkflowRunner.Instance.SuspendTimeoutMs);
         }
 
         /// <summary>

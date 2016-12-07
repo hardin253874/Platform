@@ -22,15 +22,15 @@
                 scope.units = "1"; // days - this needs to be a string to match up to the options
 
                 scope.$watch('model', function (newModel, oldModel) {
-                    if (newModel != oldModel || scope.value === undefined)
+                    if (newModel !== oldModel || scope.value === undefined)
                         scope.value = newModel * scope.units; // go from days to whatever the current units are
                 });
                 scope.$watch('value', function (newValue, oldValue) {
-                    if (newValue != oldValue)
+                    if (newValue !== oldValue)
                         scope.model = newValue / scope.units;
                 });
                 scope.$watch('units', function (newUnits, oldUnits) {
-                    if (newUnits != oldUnits)
+                    if (newUnits !== oldUnits)
                         scope.value = scope.value / oldUnits * newUnits;
                 });
             };

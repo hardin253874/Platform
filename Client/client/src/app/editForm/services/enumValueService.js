@@ -185,8 +185,8 @@ angular.module('spApps.enumValueService').factory('spEnumValueService', function
         for (i = 0; i < strlen; i++) {
             c = str.charCodeAt(i);
             // jshint ignore:start
-            hash = ((hash << 5) - hash) + c;
-            hash = hash & hash; // force a 32-bit int
+            hash = ((hash << 5) - hash) + c; // eslint-disable-line no-bitwise
+            hash = hash & hash; // eslint-disable-line no-bitwise
             // jshint ignore:end
         }
         return hash;

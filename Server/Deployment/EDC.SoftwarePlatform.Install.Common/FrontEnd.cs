@@ -26,13 +26,8 @@ namespace EDC.SoftwarePlatform.Install.Common
 	/// <summary>
 	///     The front end class.
 	/// </summary>
-	public class FrontEnd : IDisposable
+	public class FrontEnd
 	{
-		/// <summary>
-		///     The file logger
-		/// </summary>
-		private readonly FileLogger _fileLogger;
-
 		/// <summary>
 		///     The front end root path
 		/// </summary>
@@ -191,14 +186,6 @@ namespace EDC.SoftwarePlatform.Install.Common
 
 				return _softwarePlatformConfigPath;
 			}
-		}
-
-		/// <summary>
-		///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-		/// </summary>
-		public void Dispose( )
-		{
-			_fileLogger?.Dispose( );
 		}
 
 		/// <summary>

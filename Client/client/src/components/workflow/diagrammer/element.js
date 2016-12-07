@@ -338,7 +338,7 @@ var Diagrammer;
             id: portId,
             name: port && port.name !== 'Default Exit Point' ? port.name : '',
             shapes: el.boundingShape,
-            isDefault: !el.outPorts.length || el.outPorts[0].id == portId,
+            isDefault: !el.outPorts.length || el.outPorts[0].id == portId, // eslint-disable-line eqeqeq
             posDg: port ? port.posDg : 90,
             pos: port ? port.pos : null,
             dx: portIndex ? portIndex * 8 : 0,
@@ -678,11 +678,11 @@ var Diagrammer;
 
             var droppedOnElem = droppedOn[0].modelElement;
 
-            if (droppedOnElem.template == 'startTemplate') {                        // ignore dropping on start
+            if (droppedOnElem.template === 'startTemplate') {                        // ignore dropping on start
                 return;
             }
 
-            if (port.isStartPort && droppedOnElem.template == 'endTemplate') {      // ignore going from start to end
+            if (port.isStartPort && droppedOnElem.template === 'endTemplate') {      // ignore going from start to end
                 return;
             }
 

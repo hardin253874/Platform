@@ -6,6 +6,8 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Data;
+using EDC.ReadiNow.IO;
+using EDC.ReadiNow.Metadata.Tenants;
 
 namespace ReadiNow.TenantHealth.Test
 {
@@ -16,11 +18,31 @@ namespace ReadiNow.TenantHealth.Test
     {
         static Lazy<IReadOnlyList<TenantInfo>> tenants = new Lazy<IReadOnlyList<TenantInfo>>(GetTenantsImpl);
 
-        /// <summary>
-        /// Get a list of tenants.
-        /// </summary>
-        /// <returns></returns>
-        public static IReadOnlyList<TenantInfo> GetTenants( )
+		/// <summary>
+		/// One kb
+		/// </summary>
+		public const long OneKb = 1024;
+
+		/// <summary>
+		/// One Mb
+		/// </summary>
+		public const long OneMb = OneKb * 1024;
+
+		/// <summary>
+		/// One Gb
+		/// </summary>
+		public const long OneGb = OneMb * 1024;
+
+		/// <summary>
+		/// One Tb
+		/// </summary>
+		public const long OneTb = OneGb * 1024;
+
+		/// <summary>
+		/// Get a list of tenants.
+		/// </summary>
+		/// <returns></returns>
+		public static IReadOnlyList<TenantInfo> GetTenants( )
         {
             return tenants.Value;
         }
@@ -123,7 +145,7 @@ namespace ReadiNow.TenantHealth.Test
                         // Create test data
                         TestCaseData testCaseData = new TestCaseData( tenantInfo, entityId, entityName );
                         if ( ignoreNames.Contains( entityName ) )
-                            testCaseData = testCaseData.Ignore( );
+                            testCaseData = testCaseData.Ignore( "Ignored" );
                         testCaseData = testCaseData.SetCategory( tenantInfo.TenantName );
                         result.Add( testCaseData );
                     }
@@ -175,8 +197,50 @@ namespace ReadiNow.TenantHealth.Test
                 }
             }
         }
-    }
 
-    
+		/// <summary>
+		/// To the size of the pretty.
+		/// </summary>
+		/// <param name="value">The value.</param>
+		/// <param name="decimalPlaces">The decimal places.</param>
+		/// <returns></returns>
+		public static string ToPrettySize( int value, int decimalPlaces = 0 )
+		{
+			return ToPrettySize( ( long ) value, decimalPlaces );
+		}
 
+		/// <summary>
+		/// To the size of the pretty.
+		/// </summary>
+		/// <param name="value">The value.</param>
+		/// <param name="decimalPlaces">The decimal places.</param>
+		/// <returns></returns>
+		public static string ToPrettySize( long value, int decimalPlaces = 0 )
+		{
+			bool isNeg = value < 0;
+
+			if ( isNeg )
+			{
+				value = -value;
+			}
+			var asTb = Math.Round( ( double ) value / OneTb, decimalPlaces );
+			var asGb = Math.Round( ( double ) value / OneGb, decimalPlaces );
+			var asMb = Math.Round( ( double ) value / OneMb, decimalPlaces );
+			var asKb = Math.Round( ( double ) value / OneKb, decimalPlaces );
+			string chosenValue = asTb > 1 ? $"{asTb}Tb" : asGb > 1 ? $"{asGb}Gb" : asMb > 1 ? $"{asMb}Mb" : asKb > 1 ? $"{asKb}Kb" : $"{Math.Round( ( double ) value, decimalPlaces )}B";
+
+			return isNeg ? $"-{chosenValue}" : chosenValue;
+		}
+
+		/// <summary>
+		/// Clears all tenant caches.
+		/// </summary>
+		public static void ClearAllCaches( )
+		{
+			/////
+			// Use reflection so that the EDC.ReadiNow.Common assembly does not have to change. Dropping this assembly in place.
+			/////
+			typeof( TenantHelper ).InvokeMember( "InvalidateLocalProcessImpl", System.Reflection.BindingFlags.InvokeMethod | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static, null, null, new object [ ] { RequestContext.TenantId } );
+		}
+	}
 }

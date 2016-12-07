@@ -253,7 +253,25 @@ namespace ReadiNow.Expressions.Tree.Nodes
 
         public override SQ.Entity OnBuildQueryNode(QueryBuilderContext context, bool allowReuse)
         {
-            return null;
+            if ( context.Settings.ContextEntity == null )
+                return null;
+
+            var contextEntity = context.Settings.ContextEntity;
+            SQ.Entity result;
+
+            if ( allowReuse )
+            {
+                result = contextEntity;
+            }
+            else
+            {
+                var proxy = new SQ.JoinToSelfEntity( );
+                proxy.EntityTypeId = contextEntity.EntityTypeId;   // just in case
+                result = proxy;
+            }
+
+            AddChildNodes( context, result, allowReuse );
+            return result;
         }
     }
 

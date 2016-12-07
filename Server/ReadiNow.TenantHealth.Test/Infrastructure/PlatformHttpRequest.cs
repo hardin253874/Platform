@@ -100,7 +100,9 @@ namespace ReadiNow.TenantHealth.Test
                     null,                                                   // Create new XSRF token,
                     DateTime.Now,                                           // Issue date
                     DateTime.Now.AddMinutes( LoginConstants.Cookie.Timeout ), // Expiry
-                    out authCookie,
+					null,
+					null,
+					out authCookie,
                     out xsrfCookie );
 
                 Cookie authCookie2 = ToCookie( authCookie );

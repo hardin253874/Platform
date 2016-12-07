@@ -465,20 +465,13 @@
 
             switch (baseFileName) {
                 // legacy controls without directives
-                //case 'autoNumberFieldRenderControl':
                 case 'calculatedRenderControl':
                 case 'chartRenderControl':
-                //case 'checkboxKFieldRenderControl':
                 case 'choiceRelationshipRenderControl':
                 case 'currencyKFieldRenderControl2':
-                //case 'currencyKFieldRenderControl':
                 case 'customEditFormControl':
-                //case 'customControlOnForm':
                 case 'dateKFieldRenderControl2':
-                //case 'dateKFieldRenderControl':
                 case 'dateAndTimeKFieldRenderControl2':
-                //case 'dateAndTimeKFieldRenderControl':
-                //case 'decimalKFieldRenderControl':
                 case 'decimalKFieldRenderControl2':
                 case 'dropDownRelationshipRenderControl':
                 case 'fieldControlOnForm':
@@ -495,7 +488,6 @@
                 case 'largeTextBoxKFieldRenderControl':
                 case 'mapControl':
                 case 'multiChoiceRelationshipRenderControl':
-                //case 'numericKFieldRenderControl':
                 case 'numericKFieldRenderControl2':
                 case 'multilineRelationshipRenderControl':
                 case 'relationshipControlOnForm':
@@ -505,10 +497,7 @@
                 case 'structureViewRelationshipControl':
                 case 'switchKFieldRenderControl':
                 case 'tabContainerControl':
-                //case 'tabRelationshipRenderControl':
-                //case 'singleLineTextControl':
                 case 'textBoxKFieldRenderControl':
-                //case 'timeKFieldRenderControl':
                 case 'timeKFieldRenderControl2':
                 case 'verticalStackContainerControl':
                 case 'workflowButtonControl':
@@ -1033,10 +1022,13 @@
          */
         exports.commonRelFormControlInit = function (scope, options) {
 
+            // allow either formControl or control as the control entity
+            const formControl = scope.formControl || scope.control;
+
             scope.customValidationMessages = [];
 
-            scope.relationshipToRender = scope.formControl.getRelationshipToRender();
-            scope.isReversed = (scope.formControl.getIsReversed && scope.formControl.getIsReversed()) ? scope.formControl.getIsReversed() : false;
+            scope.relationshipToRender = formControl.getRelationshipToRender();
+            scope.isReversed = (formControl.getIsReversed && formControl.getIsReversed()) ? formControl.getIsReversed() : false;
             if (scope.relationshipToRender) {
                 scope.relTypeId = {id: scope.relationshipToRender.eidP, isReverse: scope.isReversed};
                 scope.relAlias = exports.getRelIdForRequest(scope.relationshipToRender, scope.isReversed);
@@ -1058,19 +1050,19 @@
                 }
             }
 
-            scope.isMandatory = exports.mandatoryControlAndDefinition(scope.formControl);
-            scope.isReadOnly = scope.isReadOnly || scope.formControl.readOnlyControl;
+            scope.isMandatory = exports.mandatoryControlAndDefinition(formControl);
+            scope.isReadOnly = scope.isReadOnly || formControl.readOnlyControl;
 
-            scope.titleModel = exports.createTitleModel(scope.formControl, scope.isInDesign);
+            scope.titleModel = exports.createTitleModel(formControl, scope.isInDesign);
 
             if (options && options.validator) {
                 // provide a function to validate the model is correct. Used when saving
-                scope.formControl.spValidateControl = function (entity) {
+                formControl.spValidateControl = function (entity) {
                     options.validator();
                     return scope.customValidationMessages.length === 0;
                 };
             } else {
-                scope.formControl.spValidateControl = null;         // make sure that no left over validator will be called.
+                formControl.spValidateControl = null;         // make sure that no left over validator will be called.
             }
         };
 
@@ -1409,17 +1401,19 @@
         };
 
         exports.getTemplateReport = function (onSuccess, onFail) {
-            exports.getTemplateReportP().then(
+            return exports.getTemplateReportP().then(
                 function (report) {
                     if (onSuccess) {
                         onSuccess(report);
                     }
+                    return report;
                 },
                 function (error) {
                     console.error('Error occurred getTemplateReport:', error);
                     if (onFail) {
                         onFail(error);
                     }
+                    return error;
                 });
         };
 
@@ -1677,9 +1671,18 @@
                         id: relationshipToRender.id(),
                         isReverse: isReverse
                     };
-                    relatedEntityIds = _.map(formData.getRelationship(relId), function (e) {
-                        return e.id();
-                    });
+
+                    var alias = relationshipToRender.nsAlias;
+                    var relContainer = formData.getRelationshipContainer(relId);
+                    if (!relContainer) {
+                        relContainer = formData.getRelationshipContainer(alias);
+                    }
+
+                    if (relContainer) {
+                        relatedEntityIds = _.map(relContainer.entities, function (e) {
+                            return e.id();
+                        });
+                    }
                 }
 
                 var result = {
@@ -1816,8 +1819,24 @@
             });
         };
 
+        // Run the report and get the result
+        exports.getReportData = function (reportId, options) {
+            if (!reportId || !options) {
+                return $q.when();
+            }
+
+            return spTenantSettings.getTemplateReportIds().then(ids => {
+                const isTemplateReport = _.has(ids, reportId);
+                const reportOptions = _.clone(options);
+
+                reportOptions.entityTypeId = isTemplateReport ? options.entityTypeId : 0;
+                return spReportService.getReportData(reportId, reportOptions);
+            });
+        };
+
 
         // Run the picker report and get entities from the result
+        // Return the promise if any request is performed.
         exports.setPickerEntitiesFromReportData = function (reportOptions, pickerOptions) {
             if (!reportOptions || !pickerOptions) {
                 return;
@@ -1826,9 +1845,10 @@
             if (!reportOptions.reportId || !reportOptions.entityTypeId) {
                 return;
             }
-            var withFilter = reportOptions.relfilters && reportOptions.relfilters.length > 0 ? true : false;
 
-            exports.getReportDataAsEntities(reportOptions.reportId, reportOptions, withFilter).then(function (entities) {
+            var withFilter = reportOptions.relfilters && reportOptions.relfilters.length > 0;
+
+            return exports.getReportDataAsEntities(reportOptions.reportId, reportOptions, withFilter).then(function (entities) {
                 pickerOptions.entities = entities;
             });
         };

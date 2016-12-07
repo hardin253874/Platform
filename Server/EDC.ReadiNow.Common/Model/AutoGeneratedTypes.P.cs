@@ -2345,6 +2345,17 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Public static accessor to the direct reverse relationship.
 		/// </summary>
+		public static IEntity ParentPermissionFromAction_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Entity.GetFieldEntity<Entity>( "console:actionRequiresParentPermission" );
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the direct reverse relationship.
+		/// </summary>
 		public static IEntity PermissionAccessBy_Field
 		{
 			get
@@ -2437,7 +2448,7 @@ namespace EDC.ReadiNow.Model
 		{
 			get
 			{
-				return new IEntity [ ] { Permission.Alias_Field, Permission.CanDelete_Field, Permission.CanModify_Field, Permission.CreatedDate_Field, Permission.Description_Field, Permission.ModifiedDate_Field, Permission.Name_Field, Permission.CreatedBy_Field, Permission.Flags_Field, Permission.IndirectInSolution_Field, Permission.InSolution_Field, Permission.InStructureLevel_Field, Permission.IsOfType_Field, Permission.IsRootForStructureView_Field, Permission.LastModifiedBy_Field, Permission.PermissionAccessBy_Field, Permission.PermissionFromAction_Field, Permission.ResourceConsoleBehavior_Field, Permission.ResourceHasResourceKeyDataHashes_Field, Permission.ResourceInFolder_Field, Permission.SecurityOwner_Field, Permission.SelectionBehavior_Field, Permission.ShortcutInFolder_Field };
+				return new IEntity [ ] { Permission.Alias_Field, Permission.CanDelete_Field, Permission.CanModify_Field, Permission.CreatedDate_Field, Permission.Description_Field, Permission.ModifiedDate_Field, Permission.Name_Field, Permission.CreatedBy_Field, Permission.Flags_Field, Permission.IndirectInSolution_Field, Permission.InSolution_Field, Permission.InStructureLevel_Field, Permission.IsOfType_Field, Permission.IsRootForStructureView_Field, Permission.LastModifiedBy_Field, Permission.ParentPermissionFromAction_Field, Permission.PermissionAccessBy_Field, Permission.PermissionFromAction_Field, Permission.ResourceConsoleBehavior_Field, Permission.ResourceHasResourceKeyDataHashes_Field, Permission.ResourceInFolder_Field, Permission.SecurityOwner_Field, Permission.SelectionBehavior_Field, Permission.ShortcutInFolder_Field };
 			}
 		}
 
@@ -2680,6 +2691,20 @@ namespace EDC.ReadiNow.Model
 			set
 			{
 				this.SetLookup<UserAccount>( "core:lastModifiedBy", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the directreverse relationship.
+		/// </summary>
+		public IEntityCollection<ActionMenuItem> ParentPermissionFromAction
+		{
+			get
+			{
+				return this.GetRelationships<ActionMenuItem>( "console:parentPermissionFromAction", Direction.Reverse ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<ActionMenuItem>( "console:parentPermissionFromAction", value, Direction.Reverse );
 			}
 		}
 		/// <summary>
@@ -4613,6 +4638,17 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Public static accessor to the inherited  forward relationship.
 		/// </summary>
+		public static IEntity EnumFormattingRule_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.EnumValue.EnumFormattingRule_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
 		public static IEntity EnumOwner_Field
 		{
 			get
@@ -4771,7 +4807,7 @@ namespace EDC.ReadiNow.Model
 		{
 			get
 			{
-				return new IEntity [ ] { PhoneTypeEnum.Alias_Field, PhoneTypeEnum.CanDelete_Field, PhoneTypeEnum.CanModify_Field, PhoneTypeEnum.CanModifyProtectedResource_Field, PhoneTypeEnum.CreatedDate_Field, PhoneTypeEnum.Description_Field, PhoneTypeEnum.EnumOrder_Field, PhoneTypeEnum.ModifiedDate_Field, PhoneTypeEnum.Name_Field, PhoneTypeEnum.CreatedBy_Field, PhoneTypeEnum.EnumOwner_Field, PhoneTypeEnum.Flags_Field, PhoneTypeEnum.IndirectInSolution_Field, PhoneTypeEnum.InSolution_Field, PhoneTypeEnum.InStructureLevel_Field, PhoneTypeEnum.IsOfType_Field, PhoneTypeEnum.IsRootForStructureView_Field, PhoneTypeEnum.LastModifiedBy_Field, PhoneTypeEnum.ResourceConsoleBehavior_Field, PhoneTypeEnum.ResourceHasResourceKeyDataHashes_Field, PhoneTypeEnum.ResourceInFolder_Field, PhoneTypeEnum.SecurityOwner_Field, PhoneTypeEnum.SelectionBehavior_Field, PhoneTypeEnum.ShortcutInFolder_Field };
+				return new IEntity [ ] { PhoneTypeEnum.Alias_Field, PhoneTypeEnum.CanDelete_Field, PhoneTypeEnum.CanModify_Field, PhoneTypeEnum.CanModifyProtectedResource_Field, PhoneTypeEnum.CreatedDate_Field, PhoneTypeEnum.Description_Field, PhoneTypeEnum.EnumOrder_Field, PhoneTypeEnum.ModifiedDate_Field, PhoneTypeEnum.Name_Field, PhoneTypeEnum.CreatedBy_Field, PhoneTypeEnum.EnumFormattingRule_Field, PhoneTypeEnum.EnumOwner_Field, PhoneTypeEnum.Flags_Field, PhoneTypeEnum.IndirectInSolution_Field, PhoneTypeEnum.InSolution_Field, PhoneTypeEnum.InStructureLevel_Field, PhoneTypeEnum.IsOfType_Field, PhoneTypeEnum.IsRootForStructureView_Field, PhoneTypeEnum.LastModifiedBy_Field, PhoneTypeEnum.ResourceConsoleBehavior_Field, PhoneTypeEnum.ResourceHasResourceKeyDataHashes_Field, PhoneTypeEnum.ResourceInFolder_Field, PhoneTypeEnum.SecurityOwner_Field, PhoneTypeEnum.SelectionBehavior_Field, PhoneTypeEnum.ShortcutInFolder_Field };
 			}
 		}
 
@@ -4918,6 +4954,20 @@ namespace EDC.ReadiNow.Model
 			set
 			{
 				this.SetLookup<UserAccount>( "core:createdBy", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public FormattingRule EnumFormattingRule
+		{
+			get
+			{
+				return this.GetLookup<FormattingRule>( "core:enumFormattingRule", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<FormattingRule>( "core:enumFormattingRule", value, Direction.Forward );
 			}
 		}
 		/// <summary>
@@ -11139,7 +11189,23 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Explicit cast from the specified type to the current type.
 		/// </summary>
+		public static explicit operator ProtectableType( EntityListColFmtEnum entity )
+		{
+			return entity.Cast<ProtectableType>( );
+		}
+
+		/// <summary>
+		/// Explicit cast from the specified type to the current type.
+		/// </summary>
 		public static explicit operator ProtectableType( EntityWithArgsAndExits entity )
+		{
+			return entity.Cast<ProtectableType>( );
+		}
+
+		/// <summary>
+		/// Explicit cast from the specified type to the current type.
+		/// </summary>
+		public static explicit operator ProtectableType( EnumFormattingType entity )
 		{
 			return entity.Cast<ProtectableType>( );
 		}
@@ -11284,6 +11350,22 @@ namespace EDC.ReadiNow.Model
 		/// Explicit cast from the specified type to the current type.
 		/// </summary>
 		public static explicit operator ProtectableType( IntField entity )
+		{
+			return entity.Cast<ProtectableType>( );
+		}
+
+		/// <summary>
+		/// Explicit cast from the specified type to the current type.
+		/// </summary>
+		public static explicit operator ProtectableType( LaunchPersonCampaignActivity entity )
+		{
+			return entity.Cast<ProtectableType>( );
+		}
+
+		/// <summary>
+		/// Explicit cast from the specified type to the current type.
+		/// </summary>
+		public static explicit operator ProtectableType( LaunchTargetCampaignActivity entity )
 		{
 			return entity.Cast<ProtectableType>( );
 		}

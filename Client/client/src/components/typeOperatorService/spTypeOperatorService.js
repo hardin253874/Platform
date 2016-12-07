@@ -674,7 +674,7 @@
 
         function addOperator(operators, operator) {
             var existingOperator = _.find(operators, function (r) {
-                return r.oper == operator.oper;
+                return r.oper === operator.oper;
             });
 
             if (!existingOperator) {

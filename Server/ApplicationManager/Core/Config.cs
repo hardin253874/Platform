@@ -1,4 +1,5 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
+
 using System;
 using System.IO;
 using Microsoft.Win32;
@@ -182,12 +183,7 @@ namespace ApplicationManager.Core
 
 				try
 				{
-					subkey = baseKey.OpenSubKey( key, true );
-
-					if ( subkey == null )
-					{
-						subkey = baseKey.CreateSubKey( key );
-					}
+					subkey = baseKey.OpenSubKey( key, true ) ?? baseKey.CreateSubKey( key );
 
 					if ( subkey != null )
 					{
@@ -198,14 +194,10 @@ namespace ApplicationManager.Core
 
 						subkey.SetValue( name, value );
 					}
-
 				}
 				finally
 				{
-					if ( subkey != null )
-					{
-						subkey.Dispose( );
-					}
+					subkey?.Dispose( );
 				}
 			}
 		}

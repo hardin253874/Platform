@@ -1,6 +1,5 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
 using Autofac;
-using Autofac.Extras.AttributeMetadata;
 using System;
 
 using EDC.ReadiNow.Core;

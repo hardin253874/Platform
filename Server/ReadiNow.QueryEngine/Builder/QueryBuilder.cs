@@ -132,13 +132,15 @@ namespace ReadiNow.QueryEngine.Builder
             
             StructuredQuery query = _structuredQuery;
             QuerySqlBuilderSettings settings = _querySettings;
+            if ( settings == null )
+                throw new Exception( "settings was null" );
 
             _queryResult = new QueryBuild
             {
                 FinalStructuredQuery = query
             };
 
-            using ( Profiler.Measure("Report {0} Get SQL", settings != null ? settings.Hint ?? string.Empty : string.Empty))
+            using ( Profiler.Measure("Report {0} Get SQL", settings.Hint ?? string.Empty))
             {
                 var sqlBatch = new SqlBatch();
                 var sqlQuery = new SqlSelectStatement();
@@ -440,6 +442,16 @@ namespace ReadiNow.QueryEngine.Builder
 
                 ApplyScriptExpression(expr, query, settings);
             }
+
+            // Custom joins
+            var allNodes = StructuredQueryHelper.WalkNodes( query.RootEntity );
+            var allCustomJoins = allNodes.OfType<CustomJoinNode>( ).ToList( );
+
+            // Calculated columns
+            foreach ( CustomJoinNode customJoin in allCustomJoins )
+            {
+                ApplyScriptCustomJoin( customJoin, query, settings );
+            }
         }
 
         /// <summary>
@@ -539,6 +551,126 @@ namespace ReadiNow.QueryEngine.Builder
             {                
                 scriptExpression.StaticError = ex.Message;
                 scriptExpression.Calculation = null;                
+            }
+        }
+
+        /// <summary>
+        /// Locate any script expressions and prepare them for building.
+        /// That is, parse them if necessary, and generate calculation expressions.
+        /// This may also result in additional nodes being added to the query tree.
+        /// </summary>
+        /// <param name="customJoinNode">The script custom join.</param>
+        /// <param name="query">The query</param>
+        /// <param name="settings">The settings</param>
+        /// <exception cref="System.ArgumentNullException">scriptExpression</exception>
+        /// <exception cref="System.Exception">No script was specified.</exception>
+        public void ApplyScriptCustomJoin( CustomJoinNode customJoinNode, StructuredQuery query, QuerySqlBuilderSettings settings )
+        {
+            // Validate
+            if ( customJoinNode == null )
+                throw new ArgumentNullException( "customJoinNode" );
+            if ( customJoinNode.EntityTypeId == null )
+                throw new Exception( "No type was specified." );
+            if ( string.IsNullOrEmpty( customJoinNode.JoinPredicateScript ) )
+                throw new Exception( "No script was specified." );
+            if ( customJoinNode.JoinPredicateScript == "true" )
+                return;
+
+            ResourceEntity parentResouceNode = null;
+
+            // Set up context data
+            var builderSettings = new BuilderSettings
+            {
+                ScriptHost = ScriptHostType.Report,
+                TestMode = _querySettings.DebugMode,
+                RootContextType = ExprTypeHelper.EntityOfType( customJoinNode.EntityTypeId ),
+                ExpectedResultType = ExprType.Bool, // it's a predicate .. expect a bool
+                StaticParameterResolver = param =>
+                {
+                    if ( param == "parent" ) //@parent
+                    {
+                        Entity parentNode = StructuredQueryHelper.FindParent( customJoinNode, query.RootEntity );
+                        if ( parentNode == null )
+                            throw new Exception( "Could not find parent node" );
+                        parentResouceNode = parentNode as ResourceEntity;
+                        if ( parentResouceNode == null )
+                            throw new Exception( "Custom join node must appear under a resource node." );
+                        if ( parentResouceNode.EntityTypeId == null )
+                            throw new Exception( "Parent node has no type set." );
+                        return ExprTypeHelper.EntityOfType( parentResouceNode.EntityTypeId );
+                    }
+                    return null;
+                }
+            };
+            var queryBuilderSettings = new QueryBuilderSettings
+            {
+                StructuredQuery = _structuredQuery,
+                ContextEntity = customJoinNode,
+                ParameterNodeResolver = param =>
+                {
+                    if ( param == "parent" ) //@parent
+                        return parentResouceNode;
+                    return null;
+                }
+            };
+
+            try
+            {
+                // Note: leaving the domain of report-preload, so can no longer vouch for cache hits
+                using ( CacheManager.ExpectCacheMisses( ) )
+                {
+                    // Static evaluation
+                    IExpression expression = Factory.ExpressionCompiler.Compile( customJoinNode.JoinPredicateScript, builderSettings );
+
+                    // Apply to query
+                    ScalarExpression queryExpression = Factory.ExpressionCompiler.CreateQueryEngineExpression( expression, queryBuilderSettings );
+
+                    // Store result back within the script expression object.
+                    // Note: Anything stored here also needs to be copied in ApplyScriptExpressions(,) when the cache is referenced.
+                    customJoinNode.ExpressionTree = expression;
+                    customJoinNode.Calculation = queryExpression;
+                }
+            }
+            catch ( ParseException ex )
+            {
+                customJoinNode.StaticError = ex.Message;
+                customJoinNode.Calculation = null;
+            }
+        }
+
+        /// <summary>
+        /// Locate any calculated fields (i.e. calculation is defined within the field schema, rather than just on the report)
+        /// and convert them to script expressions.
+        /// </summary>
+        /// <param name="query">The query</param>
+        /// <param name="sqlQuery">The query</param>
+        private void ApplyScriptCustomJoinPredicates( StructuredQuery query, SqlQuery sqlQuery )
+        {
+            // Custom joins
+            var allNodes = StructuredQueryHelper.WalkNodes( query.RootEntity );
+            var allCustomJoins = allNodes.OfType<CustomJoinNode>( );
+
+            // Calculated columns
+            foreach ( CustomJoinNode customJoin in allCustomJoins )
+            {
+                SqlTable table = sqlQuery.References.FindSqlTable( customJoin, true );
+                if ( table == null )
+                    throw new Exception( "Could not find custom join table." );
+
+                // Can result from no predicate (valid), or error in script
+                if ( customJoin.StaticError != null )
+                {
+                    table.Conditions.Insert( 0, "1=2" );  // Todo: handle errors somehow
+                    continue;
+                }
+
+                if ( customJoin.Calculation == null )
+                    continue;
+
+                SqlExpression expr = ConvertExpression( customJoin.Calculation, table.ParentQuery );
+                string joinSql = expr.BoolSql;
+                table.FullJoinConditions.Add( joinSql );  // place in front of type check simply for nicer SQL
+                table.HasCustomConditions = true;
             }
         }
 
@@ -1190,6 +1322,8 @@ namespace ReadiNow.QueryEngine.Builder
             // Note: script expression must pass through, because the user may connect via a different node.
             if ( !(entityExpr is IdExpression || entityExpr is ScriptExpression ) )
             {
+                if ( entityExpr == null )
+                    throw new Exception( "entityExpr was null" );
                 entityExpr = new IdExpression { NodeId = entityExpr.NodeId };
             }
 
@@ -1315,7 +1449,7 @@ namespace ReadiNow.QueryEngine.Builder
 
         private SqlExpression ConvertCondition(QueryCondition condition, SqlQuery sqlQuery, SqlExpression existingExpression = null)
 		{           
-            //get condtion expression from existing query select clause first.
+            // get condition expression from existing query select clause first.
             SqlExpression leftHand = existingExpression ?? ConvertExpression(condition.Expression, sqlQuery);
 
 
@@ -1373,9 +1507,6 @@ namespace ReadiNow.QueryEngine.Builder
             }
 
             string sql = null;
-            //when create new entity, the rel.FromId condition can be skip
-            //if (leftSql == "rel.FromId" && rightSql == "-1")
-            //    return null;
 
             if (rightSql == null)
             {
@@ -1659,6 +1790,8 @@ namespace ReadiNow.QueryEngine.Builder
             // Handle entity relationships / table join structure
             sqlQuery.FromClause.RootTable =
                 BuildEntityTableJoinTree(structuredQuery, structuredQuery.RootEntity, null, sqlQuery).HeadTable;
+
+            ApplyScriptCustomJoinPredicates( structuredQuery, sqlQuery );
 
             // Add select columns
             foreach (SelectColumn selectColumn in structuredQuery.SelectColumns)

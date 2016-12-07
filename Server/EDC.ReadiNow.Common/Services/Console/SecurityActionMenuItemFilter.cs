@@ -70,7 +70,7 @@ namespace EDC.ReadiNow.Services.Console
                 throw new ArgumentNullException("actions");
             }
 
-            bool hasParentEntity = parentEntityId > 0;
+            bool hasParentEntity = parentEntityId > 0 && !EntityId.IsTemporary(parentEntityId);
             bool remove;
 
             var checkedPermissions = new Dictionary<long, bool>();
@@ -81,9 +81,20 @@ namespace EDC.ReadiNow.Services.Console
             {
                 remove = false;
 
-                if (hasParentEntity && ActionRequiresParentModifyAccess(menuItem))
+                // are there permissions required of the parent entity
+                if (hasParentEntity && (menuItem.IsNew || (menuItem.RequiresParentPermissions != null && menuItem.RequiresParentPermissions.Count > 0)))
                 {
-                    remove = !Service.Check(new EntityRef(parentEntityId), new[] { Permissions.Modify });
+                    IList<EntityRef> parentPermissions = new List<EntityRef>();
+                    if (menuItem.IsNew)
+                    {
+                        parentPermissions.Add(Permissions.Modify);
+                    }
+                    else
+                    {
+                        menuItem.RequiresParentPermissions.ForEach(p => parentPermissions.Add(new EntityRef(p)));
+                    }
+
+                    remove = !Service.Check(new EntityRef(parentEntityId), parentPermissions);
                 }
 
                 if (!remove)
@@ -91,7 +102,7 @@ namespace EDC.ReadiNow.Services.Console
                     if (IsEntityMenuItem(menuItem))
                     {
                         // Firstly, there must be "view" access to any related entity
-                        if (menuItem.EntityId > 0)
+                        if (menuItem.EntityId > 0 && !EntityId.IsTemporary(menuItem.EntityId))
                         {
                             if (checkedForRead.ContainsKey(menuItem.EntityId))
                             {
@@ -131,19 +142,6 @@ namespace EDC.ReadiNow.Services.Console
                     }
                 }                
             }
-        }
-
-        /// <summary>
-        /// Checks if a given action requires modify access for parent entity
-        /// </summary>
-        /// <param name="menuItem"></param>
-        /// <returns></returns>
-        private bool ActionRequiresParentModifyAccess(ActionMenuItemInfo menuItem)
-        {
-            return menuItem.Alias == "console:addRelationshipAction"
-                   || menuItem.Alias == "console:removeRelationshipAction"
-                   || menuItem.Alias == "console:deleteResourceAction"
-                   || menuItem.IsNew;
         }
 
         /// <summary>

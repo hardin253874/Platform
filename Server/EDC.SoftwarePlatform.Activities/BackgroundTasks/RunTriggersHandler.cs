@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using ProtoBuf;
 using EDC.ReadiNow.BackgroundTasks;
 using EDC.ReadiNow.Security;
+using System.Linq;
 
 namespace EDC.SoftwarePlatform.Activities.BackgroundTasks
 {
@@ -20,66 +21,108 @@ namespace EDC.SoftwarePlatform.Activities.BackgroundTasks
         {
         }
 
+        protected override EntityType SuspendedTaskType
+        {
+            get
+            {
+                return SuspendedTrigger.SuspendedTrigger_Type;
+            }
+        }
+
         public static BackgroundTask CreateBackgroundTask(long triggerId, long entityId)
         {
-            var entry = new TriggerEntry { TriggerId = triggerId, EntityId = entityId };
-            var runParams = new RunTriggersParams { TriggerDepth = WorkflowRunContext.Current.TriggerDepth + 1, TriggerList = new List<TriggerEntry> { entry } };
+            return CreateBackgroundTask(triggerId, entityId, WorkflowRunContext.Current.TriggerDepth + 1);
+        }
+
+        public static BackgroundTask CreateBackgroundTask(long triggerId, long entityId, int triggerDepth)
+        {
+            var runParams = new RunTriggersParams
+            {
+                TriggerDepth = triggerDepth,
+                TriggerId = triggerId,
+                EntityId = entityId
+            };
+            
             return BackgroundTask.Create(HandlerKey, runParams);
         }
+
 
         protected override void HandleTask(RunTriggersParams taskData)
         {
             using (new SecurityBypassContext())
             using (new WorkflowRunContext { TriggerDepth = taskData.TriggerDepth, RunTriggersInCurrentThread = true })
             {
-                foreach (var triggerEntry in taskData.TriggerList)
+                try
                 {
-                    try
-                    {
-                        var trigger = Entity.Get<WfTriggerUserUpdatesResource>(triggerEntry.TriggerId);
+                    var trigger = Entity.Get<WfTriggerUserUpdatesResource>(taskData.TriggerId);
 
-                        if (trigger == null)
-                            EventLog.Application.WriteWarning($"RunTriggersHandler.HandleTask: Trigger missing, it may have been deleted. TriggerId: {triggerEntry.TriggerId}");
+                    if (trigger == null)
+                        EventLog.Application.WriteWarning($"RunTriggersHandler.HandleTask: Trigger missing, it may have been deleted. TriggerId: {taskData.TriggerId}");
+                    else
+                    {
+                        var entity = Entity.Get(taskData.EntityId);
+
+                        if (entity == null)
+                        {
+                            EventLog.Application.WriteWarning($"RunTriggersHandler.HandleTask: Entity missing, it may have been deleted. TriggerId: {taskData.EntityId}");
+                        }
                         else
                         {
-                            var entity = Entity.Get(triggerEntry.EntityId);
-
-                            if (entity == null)
-                            {
-                                EventLog.Application.WriteWarning($"RunTriggersHandler.HandleTask: Entity missing, it may have been deleted. TriggerId: {triggerEntry.EntityId}");
-                            }
-                            else
-                            {
-                                WorkflowTriggerHelper.ActionTrigger(trigger, entity);
-                            }
+                            WorkflowTriggerHelper.ActionTrigger(trigger, entity);
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        EventLog.Application.WriteError($"RunTriggersHandler.HandleTask: Unexpected exception thrown running trigger. TriggerId: {triggerEntry.TriggerId}, EntityId: {triggerEntry.EntityId}, Exception: {ex}");
-                        // exception swallowed
-                    }
+                }
+                catch (Exception ex)
+                {
+                    EventLog.Application.WriteError($"RunTriggersHandler.HandleTask: Unexpected exception thrown running trigger. TriggerId: {taskData.TriggerId}, EntityId: {taskData.EntityId}, Exception: {ex}");
+                    // exception swallowed
                 }
             }
         }
+
+        #region Suspend/Restore
+
+
+        protected override void AnnotateSuspendedTask(IEntity suspendedTask, RunTriggersParams taskParam)
+        {
+            var trigger = Entity.Get<WfTrigger>(new EntityRef(taskParam.TriggerId));
+            var resource = Entity.Get<Resource>(new EntityRef(taskParam.EntityId));
+
+            if (trigger == null)
+                throw new SuspendFailedException($"Trigger no longer available. Trigger Id:{taskParam.TriggerId}");
+
+            if (resource == null)
+                throw new SuspendFailedException($"Resource no longer available. Trigger Id:{taskParam.EntityId}");
+
+            suspendedTask.GetRelationships(SuspendedTrigger.StTrigger_Field).Add(trigger);
+            suspendedTask.GetRelationships(SuspendedTrigger.StResource_Field).Add(resource);
+            suspendedTask.SetField(SuspendedTrigger.StTriggerDepth_Field, taskParam.TriggerDepth);
+        }
+
+        protected override RunTriggersParams RestoreTaskData(IEntity suspendedTask)
+        {
+            var resource = suspendedTask.GetRelationships(SuspendedTrigger.StResource_Field).FirstOrDefault();
+            var trigger = suspendedTask.GetRelationships(SuspendedTrigger.StTrigger_Field).FirstOrDefault();
+            var triggerDepth = suspendedTask.GetField<int?>(SuspendedTrigger.StTriggerDepth_Field) ?? 0;
+
+            if (trigger == null)
+                throw new SuspendFailedException($"Trigger no longer available.");
+
+            if (resource == null)
+                throw new SuspendFailedException($"Resource no longer available.");
+
+            return new RunTriggersParams { EntityId = resource.Id, TriggerId = trigger.Id, TriggerDepth = triggerDepth };
+        }
+
+        #endregion
     }
 
     [ProtoContract(ImplicitFields = ImplicitFields.AllFields)]
     public class RunTriggersParams: IWorkflowQueuedEvent
     {
         public int TriggerDepth;
-
-        /// <summary>
-        /// The set of triggers to run
-        /// </summary>
-        public List<TriggerEntry> TriggerList;
-    }
-
-    [ProtoContract(ImplicitFields = ImplicitFields.AllFields)]
-    public class TriggerEntry
-    {
         public long TriggerId;
-
         public long EntityId;
     }
+
 }

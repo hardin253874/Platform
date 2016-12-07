@@ -35,7 +35,8 @@
                     scope.isDesktop = !scope.isMobile && !scope.isTablet;
                     scope.isReport = false;
                     scope.isStructureView = false;
-
+                    scope.isSpecialCase = false;    // special case of picking 'page' for default landing location (after login) per user account 
+                   
                     // functions
                     scope.isSelected = isSelected;
                     scope.getNodeClass = getNodeClass;
@@ -59,6 +60,7 @@
 
                     scope.filterActive = false;
                     var _nodes = {};
+                    
                     var quickSearchChanged;
                     var debouncedQuickSearch = _.debounce(quickSearch, 250);
                     scope.search = {};
@@ -80,7 +82,7 @@
 
                     scope.$watch('options.reportId', function (newVal) {
                         if (newVal) { // handle ns alias
-                            spEntityService.getEntity(newVal, 'name, isOfType.alias, followRelationshipInReverse, reportUsesDefinition.{name}, structureHierarchyRelationship.{name, toName, fromName}').then(function (entity) {
+                            spEntityService.getEntity(newVal, 'name, isOfType.alias, followRelationshipInReverse, reportUsesDefinition.{alias, name}, structureHierarchyRelationship.{alias, name, toName, fromName}').then(function (entity) {
                                 var alias = entity.isOfType[0].nsAlias;
                                 if (alias === 'core:report') {
                                     scope.isReport = true;
@@ -90,6 +92,8 @@
                                     scope.typeEntity = entity.reportUsesDefinition;
                                     var typeId = sp.result(entity, 'reportUsesDefinition.idP');
                                     getTypeName(typeId);
+
+                                    setIsSpecialCase(); // hack: to help with saving default login section and page info in release 2.82. Revisit this after the demo.
 
                                     var relId = sp.result(entity, 'structureHierarchyRelationship.idP');
                                     var followInReverse, fwdRelString, revRelString;
@@ -107,7 +111,7 @@
                                     //var query = 'name, #' + relId + '*.{ name, -#'+ relId + '.name }, -#' + relId + '.name';  // whole tree
                                     //var query = 'name, #' + relId + '.name'; // get only first 2 levels
                                     // get 4 levels in initial load. i.e. root, it's children, grandchildren, great grand children
-                                    var query = 'name,' + fwdRelString + '.{ name, ' + fwdRelString + '.{ name, ' + fwdRelString + '.{ name, ' + revRelString + '.name }, ' + revRelString + '.name }, ' + revRelString + '.name }, ' + revRelString + '.name';
+                                    var query = 'name, isOfType.alias, ' + fwdRelString + '.{ name, isOfType.alias, ' + fwdRelString + '.{ name, isOfType.alias, ' + fwdRelString + '.{ name, isOfType.alias, ' + revRelString + '.{ name, isOfType.alias } }, ' + revRelString + '.{ name, isOfType.alias } }, ' + revRelString + '.{ name, isOfType.alias } }, ' + revRelString + '.{ name, isOfType.alias }';
                                     var filterString = followInReverse ? "[#" + relId + "] is null" : "[#-" + relId + "] is null"; // to get the root entity, use reverse direction (fromName)
                                     // get root level entities (presumably it should also bring a node as root node if user do not have security access to the parent of a node)
                                     spEntityService.getEntitiesOfType(typeId, query, {
@@ -133,9 +137,9 @@
                                             if (toBeFetchedIds.length > 0) {
                                                 // (in down direction) load selected node, its children and grand children. 
                                                 // (going up) load selected node's parent and its children and grand children recursevely
-                                                var chdrnGrandchdrnQuery = fwdRelString + '.{ name, ' + fwdRelString + '.{ name, ' + revRelString + '.name }, ' + revRelString + '.name }';  // children and grand children
-                                                var chdrnGrandchdrnGreatgrandchdrnQuery = fwdRelString + '.{ name, ' + fwdRelString + '.{ name, ' + fwdRelString + '.{ name, ' + revRelString + '.name }, ' + revRelString + '.name }, ' + revRelString + '.name }';  // children, grand children and great grand children
-                                                var revQuery = 'name, ' + chdrnGrandchdrnGreatgrandchdrnQuery + ', ' + revRelString + '*.{ name, ' + chdrnGrandchdrnQuery + ', ' + revRelString + '.{ name, ' + chdrnGrandchdrnQuery + ' } }';
+                                                var chdrnGrandchdrnQuery = fwdRelString + '.{ name, isOfType.alias,' + fwdRelString + '.{ name, isOfType.alias, ' + revRelString + '.name, isOfType.alias }, ' + revRelString + '.name, isOfType.alias }';  // children and grand children
+                                                var chdrnGrandchdrnGreatgrandchdrnQuery = fwdRelString + '.{ name, isOfType.alias,' + fwdRelString + '.{ name, isOfType.alias,' + fwdRelString + '.{ name, isOfType.alias, ' + revRelString + '.name, isOfType.alias }, ' + revRelString + '.name, isOfType.alias }, ' + revRelString + '.name, isOfType.alias }';  // children, grand children and great grand children
+                                                var revQuery = 'name, isOfType.alias, ' + chdrnGrandchdrnGreatgrandchdrnQuery + ', ' + revRelString + '*.{ name, isOfType.alias, ' + chdrnGrandchdrnQuery + ', ' + revRelString + '.{ name, isOfType.alias, ' + chdrnGrandchdrnQuery + ' } }';
 
                                                 spEntityService.getEntities(toBeFetchedIds, revQuery).then(function(result) {
 
@@ -212,6 +216,10 @@
                             return false;
                         }
 
+                        if (scope.isSpecialCase) {
+                            return showOpenInSpecialCase(node, parentId);
+                        }
+
                         // root node
                         if (!parentId) {
                             return (!node.isOpen && node.children.length > 0);
@@ -277,6 +285,15 @@
                             }
 
                             //do something with single click here
+
+                            // check for special case
+                            if (scope.isSpecialCase && !scope.model.nodes[nodeId].isContainer) {
+                                //clean up
+                                scope.cancelClick = false;
+                                scope.clicked = false;
+                                return;
+                            }
+
                             var selected = scope.model.selected;
                             if (scope.ctrlKeyPressed) {
                                 if (selected.indexOf(nodeId) !== -1) {
@@ -305,6 +322,11 @@
                     }
 
                     function onNodeDoubleClicked(nodeId) {
+                        // check for special case
+                        if (scope.isSpecialCase && !scope.model.nodes[nodeId].isContainer) {
+                            return;
+                        }
+
                         var selected = scope.model.selected;
                         if (scope.options.multiSelect && selected.indexOf(nodeId) === -1) {
                             scope.model.selected = selected.concat(nodeId); // add
@@ -458,9 +480,9 @@
                                 //var revQuery = 'name, ' + scope.model.revRelString + '*.{ name, ' + scope.model.fwdRelString + '*.name, ' + scope.model.revRelString + '*.name }';
                                 var fwdRelString = scope.model.fwdRelString;
                                 var revRelString = scope.model.revRelString;
-                                var chdrnGrandchdrnQuery = fwdRelString + '.{ name, ' + fwdRelString + '.{ name, ' + revRelString + '.name }, ' + revRelString + '.name }';  // children and grand children
-                                var chdrnGrandchdrnGreatgrandchdrnQuery = fwdRelString + '.{ name, ' + fwdRelString + '.{ name, ' + fwdRelString + '.{ name, ' + revRelString + '.name }, ' + revRelString + '.name }, ' + revRelString + '.name }';  // children, grand children and great grand children
-                                var revQuery = 'name, ' + chdrnGrandchdrnGreatgrandchdrnQuery + ', ' + revRelString + '*.{ name, ' + chdrnGrandchdrnQuery + ', ' + revRelString + '.{ name, ' + chdrnGrandchdrnQuery + ' } }';
+                                var chdrnGrandchdrnQuery = fwdRelString + '.{ name, isOfType.alias, ' + fwdRelString + '.{ name, isOfType.alias, ' + revRelString + '.name, isOfType.alias }, ' + revRelString + '.name, isOfType.alias }';  // children and grand children
+                                var chdrnGrandchdrnGreatgrandchdrnQuery = fwdRelString + '.{ name, isOfType.alias, ' + fwdRelString + '.{ name, isOfType.alias, ' + fwdRelString + '.{ name, isOfType.alias, ' + revRelString + '.name, isOfType.alias }, ' + revRelString + '.name, isOfType.alias }, ' + revRelString + '.name, isOfType.alias }';  // children, grand children and great grand children
+                                var revQuery = 'name, isOfType.alias, ' + chdrnGrandchdrnGreatgrandchdrnQuery + ', ' + revRelString + '*.{ name, isOfType.alias, ' + chdrnGrandchdrnQuery + ', ' + revRelString + '.{ name, isOfType.alias, ' + chdrnGrandchdrnQuery + ' } }';
 
                                 spEntityService.getEntities(toBeFetchedIds, revQuery).then(function (result) {
 
@@ -584,7 +606,7 @@
                         // get children of granchildren
                         if (grandChildren.length > 0) {
                             var hierarchyRelId = sp.result(scope.hierarchyRelEntity, 'idP');
-                            var query = 'name, ' + scope.model.fwdRelString + '.name, ' + scope.model.revRelString + '.name'; // also load the children of each node
+                            var query = 'name, isOfType.alias, ' + scope.model.fwdRelString + '.name, isOfType.alias, ' + scope.model.revRelString + '.name, isOfType.alias'; // also load the children of each node
 
                             spEntityService.getEntities(grandChildren, query).then(function (entities) {
 
@@ -603,15 +625,19 @@
                                         isOpenForParent[pid] = false;
                                     });
                                     //var parentId = (parents && parents.length > 0) ? parents[0].idP : undefined;
-
                                     var sortedChildren = _.sortBy(entity.getRelationship({ id: hierarchyRelId, isReverse: scope.model.followInReverse }), 'name');
                                     var childrenNodes = _.map(sortedChildren, 'idP');
                                     //newNodes[entity.idP] = { id: entity.idP, name: entity.name, children: childrenNodes, childrenLoaded: true, isOpen: false, parentId: entity.idP };
-                                    newNodes[entity.idP] = { id: entity.idP, name: entity.name, children: childrenNodes, childrenLoaded: true, isOpen: false, parentIds: parentIds, isOpenForParent: isOpenForParent };
+
+                                    // node type
+                                    let isContainerNode = isContainer(sp.result(entity, 'isOfType[0].nsAlias'));
+
+                                    newNodes[entity.idP] = { id: entity.idP, isContainer: isContainerNode, name: entity.name, children: childrenNodes, childrenLoaded: true, isOpen: false, parentIds: parentIds, isOpenForParent: isOpenForParent };
 
                                     _.map(sortedChildren, function (child) {
                                         var eid = entity.idP;
-                                        newNodes[child.idP] = { id: child.idP, name: child.name, children: [], childrenLoaded: false, isOpen: false, parentIds: [eid], isOpenForParent: {eid:false} };
+                                        let isChildContainerNode = isContainer(sp.result(child, 'isOfType[0].nsAlias'));
+                                        newNodes[child.idP] = { id: child.idP, isContainer: isChildContainerNode, name: child.name, children: [], childrenLoaded: false, isOpen: false, parentIds: [eid], isOpenForParent: { eid: false } };
                                     });
                                 });
 
@@ -647,9 +673,9 @@
                             var typeId = scope.typeEntity.idP;
                             var fwdRelString = scope.model.fwdRelString;
                             var revRelString = scope.model.revRelString;
-                            var chdrnGrandchdrnQuery = fwdRelString + '.{ name, ' + fwdRelString + '.{ name, ' + revRelString + '.name }, ' + revRelString + '.name }';  // children and grand children
-                            var chdrnGrandchdrnGreatgrandchdrnQuery = fwdRelString + '.{ name, ' + fwdRelString + '.{ name, ' + fwdRelString + '.{ name, ' + revRelString + '.name }, ' + revRelString + '.name }, ' + revRelString + '.name }';  // children, grand children and great grand children
-                            var revQuery = 'name, ' + chdrnGrandchdrnGreatgrandchdrnQuery + ', ' + revRelString + '*.{ name, ' + chdrnGrandchdrnQuery + ', ' + revRelString + '.{ name, ' + chdrnGrandchdrnQuery + ' } }';
+                            var chdrnGrandchdrnQuery = fwdRelString + '.{ name, isOfType.alias, ' + fwdRelString + '.{ name, isOfType.alias, ' + revRelString + '.name, isOfType.alias }, ' + revRelString + '.name, isOfType.alias }';  // children and grand children
+                            var chdrnGrandchdrnGreatgrandchdrnQuery = fwdRelString + '.{ name, isOfType.alias, ' + fwdRelString + '.{ name, isOfType.alias, ' + fwdRelString + '.{ name, isOfType.alias, ' + revRelString + '.name, isOfType.alias }, ' + revRelString + '.name, isOfType.alias }, ' + revRelString + '.name, isOfType.alias }';  // children, grand children and great grand children
+                            var revQuery = 'name, isOfType.alias, ' + chdrnGrandchdrnGreatgrandchdrnQuery + ', ' + revRelString + '*.{ name, isOfType.alias, ' + chdrnGrandchdrnQuery + ', ' + revRelString + '.{ name, isOfType.alias, ' + chdrnGrandchdrnQuery + ' } }';
 
                             var filterString = "[name] like '%" + searchText + "%'";
                             spEntityService.getEntitiesOfType(typeId, revQuery, {
@@ -731,11 +757,14 @@
                                 isOpenForParent[pid] = true;
                             });
 
+                            // node type
+                            let isContainerNode = isContainer(sp.result(entity, 'isOfType[0].nsAlias'));
+
                             //var parentId = (parents && parents.length > 0) ? parents[0].idP : undefined;
-                            nodes[entity.idP] = { id: entity.idP, name: entity.name, children: [], childrenLoaded: true, isOpen: true, parentIds: parentIds, isOpenForParent: isOpenForParent };
+                            nodes[entity.idP] = { id: entity.idP, isContainer: isContainerNode, name: entity.name, children: [], childrenLoaded: true, isOpen: true, parentIds: parentIds, isOpenForParent: isOpenForParent };
 
                             // make a copy of nodes to loop through
-                            tempNodes[entity.idP] = { id: entity.idP, name: entity.name, children: [], childrenLoaded: true, isOpen: true, parentIds: parentIds, isOpenForParent: isOpenForParent };
+                            tempNodes[entity.idP] = { id: entity.idP, isContainer: isContainerNode, name: entity.name, children: [], childrenLoaded: true, isOpen: true, parentIds: parentIds, isOpenForParent: isOpenForParent };
                         });
 
                         // update master collection and children info of nodes
@@ -843,14 +872,20 @@
                             },
                             structureView);
                     }
-
+                    
                     function buildTree(rootNodes, hierarchyRelId) {
                         var sortedRoots = _.sortBy(rootNodes, 'name');
                         _.map(sortedRoots, function (rootNode) {
                             var rootNodeId = rootNode.idP;
                             var rootNodeGrandChildrenIds = [];
 
-                            scope.model.root.push(rootNodeId);
+                            var isValidRootNode = isValidRootNavItemForPicker(rootNode.name);
+                            //console.log('*** isValidrootnode? : ' + rootNode.name + ' - ' + isValidRootNode);
+                            if (!scope.isSpecialCase) {
+                                scope.model.root.push(rootNodeId);
+                            } else if (isValidRootNode) {
+                                scope.model.root.push(rootNodeId);
+                            }
 
                             // get children
                             var rootNodeChildren = rootNode.getRelationship({ id: hierarchyRelId, isReverse: scope.model.followInReverse });
@@ -871,7 +906,7 @@
                                 childrenNodes = _.map(sortedChildren, 'idP');
 
                                 // children loaded for root node, its children and grand children
-                                childrenLoaded = (entityNode.idP === rootNode.idP) || (rootNodeChildrenIds.indexOf(entityNode.idP) != -1) || (rootNodeGrandChildrenIds.indexOf(entityNode.idP) != -1);
+                                childrenLoaded = (entityNode.idP === rootNode.idP) || (rootNodeChildrenIds.indexOf(entityNode.idP) !== -1) || (rootNodeGrandChildrenIds.indexOf(entityNode.idP) !== -1);
                                 isOpen = (entityNode.idP === rootNode.idP);
 
                                 var parents = entityNode.getRelationship({ id: hierarchyRelId, isReverse: !scope.model.followInReverse });
@@ -881,9 +916,12 @@
                                 _.forEach(parentIds, function (pid) {
                                     isOpenForParent[pid] = isOpen;
                                 });
+
+                                // node type
+                                let isContainerNode = isContainer(sp.result(entityNode, 'isOfType[0].nsAlias'));
                                 
                                 // assuming we are fetching root levels and their children, set childrenLoaded to true (for the root nodes)
-                                _nodes[entityNode.idP] = { id: entityNode.idP, name: entityNode.name, children: childrenNodes, childrenLoaded: childrenLoaded, isOpen: isOpen, parentIds: parentIds, isOpenForParent: isOpenForParent };
+                                _nodes[entityNode.idP] = { id: entityNode.idP, isContainer: isContainerNode, name: entityNode.name, children: childrenNodes, childrenLoaded: childrenLoaded, isOpen: isOpen, parentIds: parentIds, isOpenForParent: isOpenForParent };
                             });
 
                         });
@@ -932,12 +970,14 @@
                                 isOpenForParent[pid] = isOpen;
                             });
 
+                            let isContainerNode = isContainer(sp.result(entity, 'isOfType[0].nsAlias'));
+
                             if (directChainOnly) {
 
                                 childrenNodes = _.intersection(childrenNodes, parentNodeIds);
 
                                 if (parentNodeIds.indexOf(entity.idP) !== -1) {
-                                    nodes[entity.idP] = { id: entity.idP, name: entity.name, children: childrenNodes, childrenLoaded: true, isOpen: true, parentIds: parentIds, isOpenForParent: isOpenForParent };
+                                    nodes[entity.idP] = { id: entity.idP, isContainer: isContainerNode, name: entity.name, children: childrenNodes, childrenLoaded: true, isOpen: true, parentIds: parentIds, isOpenForParent: isOpenForParent };
                                 }
 
                             } else {
@@ -964,8 +1004,7 @@
                                 //_.forEach(parentIds, function (pid) {
                                 //    isOpenForParent[pid] = isOpen;
                                 //});
-
-                                nodes[entity.idP] = { id: entity.idP, name: entity.name, children: childrenNodes, childrenLoaded: entityHasChildrenLoaded, isOpen: isOpen, parentIds: parentIds, isOpenForParent: isOpenForParent };
+                                nodes[entity.idP] = { id: entity.idP, isContainer: isContainerNode, name: entity.name, children: childrenNodes, childrenLoaded: entityHasChildrenLoaded, isOpen: isOpen, parentIds: parentIds, isOpenForParent: isOpenForParent };
                             }
                         });
 
@@ -988,6 +1027,83 @@
 
                             // merge with already loaded tree nodes
                             mergeNodes(_nodes, selectedNodes);
+                        });
+                    }
+
+                    // special case scope and internal functions
+                    // this function is used in special case of picking page for default landing location per user
+                    function isContainer(alias) {
+                        if (alias === 'console:navSection' || alias === 'core:folder' || alias === 'core:documentFolder' || alias === 'console:privateContentSection') {
+                            return true;
+                        }
+                        return false;
+                    }
+
+                    function isContainerNode(nodeId) {
+                        var node = scope.model.nodes[nodeId];
+
+                        if (!node) {
+                            return false;
+                        }
+
+                        if (node.typeAlias === 'console:navSection' || node.typeAlias === 'core:folder' || node.typeAlias === 'core:documentFolder' || node.typeAlias === 'console:privateContentSection') {
+                            return true;
+                        }
+                        return false;
+                    }
+
+                    function isGuid(objGuid) {
+                        var str = (objGuid);
+                        var stringToTest;
+                        if (str.length >= 36) {
+                            stringToTest = str.substring(0, 36);
+                        } else {
+                            return false;
+                        }
+
+                        var reGuid = /^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$/;
+                        var bresults;
+
+                        if (objGuid === "") {
+                            bresults = false;
+                        }
+                        else {
+                            if (reGuid.test(stringToTest)) {
+                                bresults = true;
+                            }
+                            else {
+                                bresults = false;
+                            }
+                        }
+                        return bresults;
+                    }
+
+                    function setIsSpecialCase() {
+                        var hierarchyRelAlias = sp.result(scope, 'hierarchyRelEntity.nsAlias');
+                        var hierarchyObjectAlias = sp.result(scope, 'typeEntity.nsAlias');
+                        if (hierarchyRelAlias === 'console:resourceInFolder' && hierarchyObjectAlias === 'console:navContainer') {
+                            scope.isSpecialCase = true;
+                        }
+                    }
+                    function isValidRootNavItemForPicker(nodeName) {
+                        if (nodeName && !isGuid(nodeName)) {
+                            return true;
+                        }
+                        return false;
+                    }
+
+                    function showOpenInSpecialCase(node, parentId) {
+                        // root node
+                        if (!parentId) {
+                            return (!node.isOpen && node.children.length > 0 && nodeHasContainerChildNode(node));
+                        }
+
+                        return (!node.isOpenForParent[parentId] && node.children.length > 0 && nodeHasContainerChildNode(node));
+                    }
+
+                    function nodeHasContainerChildNode(node) {
+                        return _.some(node.children, function (childId) {
+                            return scope.model.nodes[childId].isContainer;
                         });
                     }
                 }

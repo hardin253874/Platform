@@ -1,6 +1,8 @@
 <div class="screen" ng-controller="screenController" sp-mobile-allow-default-drag
      sp-measure-arrange="measureArrangeOptions">
 
+    <button class="pull-right btn-link" ng-click="undoFormStructureEdit()" ng-if="allowFlexForm">undo</button>
+    <button class="pull-right btn-link" ng-click="toggleDesignMode()" ng-if="allowFlexForm">design</button>
     <button class="pull-right btn-link" ng-click="toggleFlexForm()" ng-if="allowFlexForm">toggle flex</button>
     <button class="pull-right btn-link" ng-click="toggleFormStructureEditor()" ng-if="allowFlexForm">toggle adv</button>
 
@@ -12,7 +14,17 @@
     </div>
 
     <div class="screen-title" ng-if="!(isMobile || isTablet)" ng-style="consoleThemeModel.titleStyle">
-        <span ng-if="model.headerIconUrl" class="headertype" ng-style="model.headerIconStyle" ><img ng-src="{{model.headerIconUrl}}" ng-style="model.headerIconStyle" /></span>{{model.formControl.name}}
+        <span ng-if="model.headerIconUrl" class="headertype" ng-style="model.headerIconStyle"><img
+                ng-src="{{model.headerIconUrl}}" ng-style="model.headerIconStyle"/></span>{{model.formControl.name}}
+    </div>
+
+    <div class="screen-Action" ng-if="showActions()">
+        <button type="button" ng-repeat="ab in model.actionButtons"
+                ng-disabled="isDisabledAction(ab)"
+                ng-click="ab.execute()"
+                title="{{ab.name}}">
+            <img ng-src="{{ab.icon}}" width="16" height="16"/><span>{{ab.nameshort}}</span>
+        </button>
     </div>
 
     <rn-form-structure-editor ng-if="showStructureEditor" form-entity="model.formControl"></rn-form-structure-editor>
@@ -22,10 +34,9 @@
                          is-in-test-mode="model.isInTestMode"
                          pager-options="pagerOptions"></sp-custom-edit-form>
 
-    <sp-flex-edit-form ng-if="useFlexForm"
-                       form-control="model.formControl" parent-control="" form-mode="formMode"
-                       is-in-test-mode="model.isInTestMode"
-                       pager-options="pagerOptions"></sp-flex-edit-form>
+    <rn-edit-form ng-if="useFlexForm && model.formControl"
+                  form="model.formControl" form-options="flexEditFormOptions">
+    </rn-edit-form>
 
     <div once-if="!(isMobile || isTablet)"
          style="position: absolute; width: calc(100% - 30px); height: calc(100% - 90px); pointer-events: none;"

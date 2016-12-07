@@ -10,6 +10,7 @@ using EDC.Exceptions;
 using EDC.ReadiNow.IO;
 using EDC.ReadiNow.Model;
 using EDC.ReadiNow.Security;
+using EDC.Security;
 
 namespace EDC.SoftwarePlatform.WebApi.Controllers.Security
 {
@@ -26,18 +27,24 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.Security
         [HttpPost]
         public HttpResponseMessage Post([FromBody]PasswordChangeInfo passwordChangeInfo)
         {
-            if (passwordChangeInfo == null
-                || passwordChangeInfo.Password == null)
-            {
-                // Return 400 Bad Request
-                throw new WebArgumentNullException("Password omitted");
-            }
+			if ( passwordChangeInfo?.CurrentPassword == null )
+			{
+				// Return 400 Bad Request
+				throw new WebArgumentNullException( "Current password omitted" );
+			}
 
-            UserAccount userAccount;
-            RequestContext requestContext;
+			if ( passwordChangeInfo == null
+				|| passwordChangeInfo.Password == null )
+			{
+				// Return 400 Bad Request
+				throw new WebArgumentNullException( "Password omitted" );
+			}
 
-            requestContext = ReadiNow.IO.RequestContext.GetContext();
-            if (requestContext == null)
+			UserAccount userAccount;
+			RequestContext requestContext;
+
+			requestContext = ReadiNow.IO.RequestContext.GetContext( );
+			if (requestContext == null)
             {
                 // Return 401 Unauthenticated
                 throw new InvalidCredentialException(UserAccountValidator.InvalidUserNameOrPasswordMessage);
@@ -52,7 +59,12 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.Security
 
             try
             {
-                using (new SecurityBypassContext())
+				if ( !CryptoHelper.ValidatePassword( passwordChangeInfo.CurrentPassword, userAccount.Password ) )
+				{
+					throw new InvalidCredentialException( "Invalid password specified." );
+				}
+
+				using (new SecurityBypassContext())
                 {
                     userAccount = userAccount.AsWritable<UserAccount>();
                     userAccount.Password = passwordChangeInfo.Password;

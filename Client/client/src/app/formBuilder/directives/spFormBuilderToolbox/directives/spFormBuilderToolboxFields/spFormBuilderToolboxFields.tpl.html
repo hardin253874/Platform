@@ -10,6 +10,7 @@
     </div>
 
     <div class="text-right" style="margin-top: 5px; margin-bottom: -10px" ng-hide="spFormBuilderService.selectedLookup">
+        <span style="display:inline-block; float:left; color:#999;">Drag and drop to page <img src="assets/images/dragdrop.png"/></span>
         <div uib-popover-template="'formBuilder/directives/spFormBuilderToolbox/directives/spFormBuilderToolboxFields/newFieldPopover.tpl.html'"
              popover-placement="right" popover-trigger="none"
              ng-click="popover.isOpen = !popover.isOpen"
@@ -23,7 +24,7 @@
         <img class="spinner" src="assets/images/refresh_light.png"/>
     </div>
 
-    <div ng-repeat="fieldGroup in model.fieldGroups" style="margin-top: 5px" class="fb-toolbox-group-drop"
+    <div ng-repeat="fieldGroup in model.fieldGroups" class="fb-toolbox-group-drop"
          sp-droppable="dropOptions" sp-droppable-data="this" sp-draggable="dragOptions" sp-draggable-data="fieldGroup"
          ng-show="!spFormBuilderService.definitionFieldsLoading">
         <table style="width: 100%">

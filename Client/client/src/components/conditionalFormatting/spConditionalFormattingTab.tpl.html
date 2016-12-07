@@ -1,32 +1,34 @@
-<div class="leftMargin topMarginSmall">
-	
-    <div class="labelBlock">Format:</div>
-    <div class="displayInlineBlock">
-        <select class="centeredDropDown" ng-model="model.condFormatting.selectedFormatType" ng-options="ft as ft.name for ft in model.condFormatting.formatTypes" ng-change="onFormatTypeChanged()"/>    
-    </div>
-    <div class="displayInlineBlock leftMargin">
-        <input class="verticalAlignMiddle" type="checkbox" ng-change="clearErrors()" ng-model="model.condFormatting.displayText"><div class="centeredInlineBlock leftMargin">Display text</div>
-    </div>            
+<div class="leftMargin topMarginSmall" ng-show="isChoiceField()">
+    <input class="verticalAlignMiddle" type="checkbox" ng-change="clearErrors()" ng-model="model.condFormatting.useDefaultFormat"><div class="centeredInlineBlock leftMargin">Use default format for choice field</div>
 </div>
 <div class="leftMargin topMarginSmall">
-    <div class="labelBlock">Scheme:</div>    
+    <div class="labelBlock">Format:</div>
     <div class="displayInlineBlock">
-        <select class="centeredDropDown" ng-model="model.condFormatting.selectedScheme" ng-options="s as s.name for s in model.condFormatting.selectedFormatType.schemes" ng-change="onSchemeChanged()"/>        
-    </div>        
+        <select class="centeredDropDown" ng-model="model.condFormatting.selectedFormatType" ng-options="ft as ft.name for ft in model.condFormatting.formatTypes" ng-change="onFormatTypeChanged()" ng-disabled="disabledControl()"/>
+    </div>
+    <div class="displayInlineBlock leftMargin">
+        <input class="verticalAlignMiddle" type="checkbox" ng-change="clearErrors()" ng-model="model.condFormatting.displayText" ng-disabled="disabledControl()" ><div class="centeredInlineBlock leftMargin">Display text</div>
+    </div>
+</div>
+<div class="leftMargin topMarginSmall">
+    <div class="labelBlock">Scheme:</div>
+    <div class="displayInlineBlock">
+        <select class="centeredDropDown" ng-model="model.condFormatting.selectedScheme" ng-options="s as s.name for s in model.condFormatting.selectedFormatType.schemes" ng-change="onSchemeChanged()"  ng-disabled="disabledControl()"/>
+    </div>
 </div>
 <div class="rulesContainerHeader">
     <div class="rulesContainerHeaderTable">
         <div class="rulesContainerHeaderCell">
             <span class="leftMargin">Rules</span>
-        </div>        
-        <div class="rulesContainerHeaderCell">            
-            <button class="btn_lighten addRulesButton" type="button" ng-show="canShowAddRulesButton()" ng-click="addRule()">            
+        </div>
+        <div class="rulesContainerHeaderCell" >
+            <button class="btn_lighten addRulesButton" type="button" ng-show="canShowAddRulesButton()" ng-click="addRule()" ng-disabled="disabledControl()">
                 <div class="addRulesButtonIcon"></div>
-            </button>         
-        </div>                
-    </div>    
+            </button>
+        </div>
+    </div>
 </div>
-<div class="rulesContainer" style="position:relative">    
+<div class="rulesContainer" style="position:relative" ng-hide="disabledControl()" >
     <div style="width:100%;height:100%" ng-switch on="model.condFormatting.selectedFormatType.id">
         <div ng-switch-when="Highlight">
             <ng-include src="'conditionalFormatting/spHighlightFormattingRules.tpl.html'"></ng-include>

@@ -1,4 +1,5 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
+
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -41,9 +42,9 @@ namespace ApplicationManager.Support
 		///     Gets the tenant activated packages.
 		/// </summary>
 		/// <returns></returns>
-		public static IEnumerable< TenantActivatedPackage > GetTenantActivatedPackages( )
+		public static IEnumerable<TenantActivatedPackage> GetTenantActivatedPackages( )
 		{
-			var activations = new List< TenantActivatedPackage >( );
+			var activations = new List<TenantActivatedPackage>( );
 
 			var databaseInfo = new SqlDatabaseInfo( Config.ServerName, Config.DatabaseName, DatabaseAuthentication.Integrated, null, 60, 30, 300 );
 
@@ -88,16 +89,13 @@ WHERE
 
 					using ( IDataReader reader = command.ExecuteReader( ) )
 					{
-						if ( reader != null )
+						while ( reader.Read( ) )
 						{
-							while ( reader.Read( ) )
+							activations.Add( new TenantActivatedPackage
 							{
-								activations.Add( new TenantActivatedPackage
-									{
-										AppVerId = reader.GetGuid( 1 ),
-										TenantId = reader.GetInt64( 0 )
-									} );
-							}
+								AppVerId = reader.GetGuid( 1 ),
+								TenantId = reader.GetInt64( 0 )
+							} );
 						}
 					}
 				}

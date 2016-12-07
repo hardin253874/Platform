@@ -80,42 +80,27 @@ namespace EDC.SoftwarePlatform.Activities
             return targetArgInst;
         }
 
-        /// <summary>
-        /// Given an arg inst and a value create and activityArgument ready for storage.
-        /// </summary>
-        /// <param name="activity">
-        /// The <see cref="WfActivity"/> being run. This cannot be null.
-        /// </param>
-        /// <param name="arg">
-        /// The argument for the activity. This cannot be null.
-        /// </param>
-        /// <param name="value">
-        /// The value of the argument. Its type is determined by <paramref name="arg"/>.
-        /// This may be null for certain argument types.
-        /// </param>
-        /// <returns>
-        /// The converted value.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// Niether <paramref name="activity"/> nor <paramref name="arg"/> can be null.
-        /// </exception>
-        /// <exception cref="ArgumentException">
-        /// <paramref name="arg"/> must be of a supported type.
-        /// </exception>
+        /// <summary>Given an arg inst and a value create and activityArgument ready for storage.</summary>
+        /// <param name="activity">The <see cref="WfActivity"/> being run. This cannot be null.</param>
+        /// <param name="arg">The argument for the activity. This cannot be null.</param>
+        /// <param name="value">The value of the argument. Its type is determined by <paramref name="arg"/>. This may be null for certain argument types.</param>
+        /// <returns>The converted value.</returns>
+        /// <exception cref="ArgumentNullException">Neither <paramref name="activity"/> nor <paramref name="arg"/> can be null.</exception>
+        /// <exception cref="ArgumentException"><paramref name="arg"/> must be of a supported type.</exception>
         public static ActivityArgument ConvertArgInstValue(WfActivity activity, ActivityArgument arg, object value)
         {
             if (activity == null)
             {
-                throw new ArgumentNullException("activity");
+                throw new ArgumentNullException(nameof(activity));
             }
             if (arg == null)
             {
-                throw new ArgumentNullException("arg");
+                throw new ArgumentNullException(nameof(arg));
             }
 
-            ActivityArgument result = null;
+            ActivityArgument result;
 
-            string name = string.Format("{0}.{1}", activity.Name ?? "[Unnamed]", arg.Name ?? "[Unnamed]");
+            string name = $"{activity.Name ?? "[Unnamed]"}.{arg.Name ?? "[Unnamed]"}";
 
             if (arg.Is<ResourceListArgument>())
             {
@@ -131,7 +116,7 @@ namespace EDC.SoftwarePlatform.Activities
             else if (arg.Is<ResourceArgument>())
             {
                 var res = (IEntity)value;
-                var created = new ResourceArgument { Name = name, ResourceParameterValue = (res != null ? res.As<Resource>() : null)};
+                var created = new ResourceArgument { Name = name, ResourceParameterValue = res?.As<Resource>()};
                 result = created.As<ActivityArgument>();
             }
             else if (arg.Is<StringArgument>())
@@ -141,52 +126,50 @@ namespace EDC.SoftwarePlatform.Activities
             }
             else if (arg.Is<BoolArgument>())
             {
-                var created = new BoolArgument { Name = name, BoolParameterValue = value == null ? false : (bool)value };
+                var created = new BoolArgument { Name = name, BoolParameterValue = (bool?) value ?? false };
                 result = created.As<ActivityArgument>();
             }
             else if (arg.Is<IntegerArgument>())
             {
-                var created = new IntegerArgument { Name = name, IntParameterValue = value == null ? 0 :  (int) value };
+                var created = new IntegerArgument { Name = name, IntParameterValue = (int?) value ?? 0 };
                 result = created.As<ActivityArgument>();
             }
             else if (arg.Is<DecimalArgument>())
             {
-                var created = new DecimalArgument { Name = name, DecimalParameterValue = value == null ? 0 :(decimal)value };
+                var created = new DecimalArgument { Name = name, DecimalParameterValue = (decimal?) value ?? 0 };
                 result = created.As<ActivityArgument>();
             }
             else if (arg.Is<CurrencyArgument>())
             {
-                var created = new CurrencyArgument { Name = name, DecimalParameterValue = value == null ? 0 :(decimal)value };
+                var created = new CurrencyArgument { Name = name, DecimalParameterValue = (decimal?) value ?? 0 };
                 result = created.As<ActivityArgument>();
             }
             else if (arg.Is<DateTimeArgument>())
             {
-                var created = new DateTimeArgument { Name = name, DateTimeParameterValue = value == null ? SqlDateTime.MinValue.Value : (DateTime)value };
+                var created = new DateTimeArgument { Name = name, DateTimeParameterValue = (DateTime?) value };
                 result = created.As<ActivityArgument>();
             }
             else if (arg.Is<DateArgument>())
             {
-                var created = new DateArgument { Name = name, DateParameterValue = value == null ? SqlDateTime.MinValue.Value : (DateTime)value };
+                var created = new DateArgument { Name = name, DateParameterValue = (DateTime?) value };
                 result = created.As<ActivityArgument>();
             }
             else if (arg.Is<TimeArgument>())
             {
                 // ensure that timeparametervalue only ever holds a datetime
-                var dt = value == null ? DateTime.MinValue : value is TimeSpan ? TimeType.NewTime((TimeSpan)value) : (DateTime)value;
+                var dt = value is TimeSpan ? TimeType.NewTime((TimeSpan)value) : (DateTime?) value;
                 
                 var created = new TimeArgument { Name = name, TimeParameterValue = dt };
                 result = created.As<ActivityArgument>();
             }
             else if (arg.Is<GuidArgument>())
             {
-                var created = new GuidArgument { Name = name, GuidParameterValue = value == null ? Guid.Empty : (Guid)value };
+                var created = new GuidArgument { Name = name, GuidParameterValue = (Guid?) value ?? Guid.Empty };
                 result = created.As<ActivityArgument>();
             }
             else
             {
-                throw new ArgumentException(
-                    string.Format("Unsupported ActivityArgument '{0}' in '{1}'", arg.IsOfType.First().Name, name),
-                    "arg");
+                throw new ArgumentException($"Unsupported ActivityArgument '{arg.IsOfType.First().Name}' in '{name}'", "arg");
             }
 
             return result;

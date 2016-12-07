@@ -1,0 +1,74 @@
+[{:tags
+  [:nomodify :prod :regression :user/hkolli :desktop :area/auditlog],
+  :name
+  "Create a new audit policy, create new records and verify audit log report logs the changes",
+  :steps
+  [{:script
+    "(rn.app/open-report \"Policies\" {:app-name \"ReadiNow Core Data\", :folder-name \"Audit\"})"}
+   {:script "(rt.po.report-view/open-menu-by-name \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:audit-policy *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Object to trigger on\" \"Student\")"}
+   {:script
+    "(comment (rt.po.common/click-tab-heading \"Fields to Audit\"))"}
+   {:script
+    "(comment (rt.po.view-form/open-action-menu-for-relationship \"Fields to Audit\"))"}
+   {:script "(comment (rt.po.app/choose-context-menu \"Link\"))"}
+   {:script
+    "(comment (rt.po.edit-form/choose-in-entity-picker-dialog \"DOB\"))"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"Fields to Audit\")"}
+   {:script "(rt.po.app/choose-context-menu \"Link\")"}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog \"Phone number\")"}
+   {:script
+    "(rt.po.common/click-tab-heading \"Relationships to Audit\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"Link\")"}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog \"Student - Subjects\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rn.app/open-report \"Student Report\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+   {:script "(rt.po.report-view/open-menu-by-name \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Full name\" (:student-name *tc*))"}
+   {:script
+    "(comment (rt.po.edit-form/set-date-field-value \"DOB\" (make-local-date 1990 11 11)))\n"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Phone number\" (rand-int 1000000000))"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"Subjects\")"}
+   {:script "(rt.po.app/choose-context-menu \"Link\")"}
+   {:script
+    "(rt.po.edit-form/choose-in-entity-picker-dialog \"Biocomplexity\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rn.app/open-report \"Audit Log\" {:app-name \"ReadiNow Core Data\", :folder-name \"Audit\"})"}
+   {:script "(rt.po.report-view/set-search-text (:student-name *tc*))"}
+   {:script
+    "(expect-equals (:student-name *tc*) (rt.po.report-view/get-report-cell-text-content \"0\" \"Object\"))"}
+   {:script
+    "(comment (expect-equals true (.contains (rt.po.report-view/get-report-cell-text-content \"0\" \"Description\") \"[DOB] set to\")))"}
+   {:script
+    "(expect-equals true (.contains (rt.po.report-view/get-report-cell-text-content \"0\" \"Description\") \"[Phone number] set to\"))"}
+   {:script
+    "(expect-equals true (.contains (rt.po.report-view/get-report-cell-text-content \"0\" \"Description\") \"[Subjects] added 'Biocomplexity'\"))"}
+   {:script
+    "(rn.app/open-report \"Policies\" {:app-name \"ReadiNow Core Data\", :folder-name \"Audit\"})"}
+   {:script "(rt.po.report-view/set-search-text (:audit-policy *tc*))"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text (:audit-policy *tc*))"}
+   {:script "(rt.po.app/choose-context-menu \"Delete\")"}
+   {:script "(rt.po.report-new/click-ok)"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20161207-111935",
+  :setup
+  [{:script
+    "(identity {:student-name (rt.lib.util/make-test-name \"NewStu \"), :audit-policy (rt.lib.util/make-test-name \"Audit-Policy\"), :task-name (rt.lib.util/make-test-name \"Task\")})"}],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/audit-log/Create-new-audit-policy-and-verify-audit-logs,
+  :teardown [],
+  :modified-by "not-implemented"}]

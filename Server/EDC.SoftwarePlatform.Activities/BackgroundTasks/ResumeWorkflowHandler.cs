@@ -10,6 +10,7 @@ using ProtoBuf;
 using EDC.ReadiNow.BackgroundTasks;
 using EDC.ReadiNow.Security;
 using EDC.ReadiNow.Model.Interfaces;
+using System.Linq;
 
 namespace EDC.SoftwarePlatform.Activities.BackgroundTasks
 {
@@ -21,14 +22,23 @@ namespace EDC.SoftwarePlatform.Activities.BackgroundTasks
         {
         }
 
+        protected override EntityType SuspendedTaskType
+        {
+            get
+            {
+                return SuspendedRun.SuspendedRun_Type;
+            }
+        }
+
         public static BackgroundTask CreateBackgroundTask(WorkflowRun run, IWorkflowQueuedEvent resumeEvent)
         {
             if (resumeEvent == null)
                 throw new ArgumentNullException(nameof(resumeEvent));
 
-            var runParams = new ResumeWorkflowParams { WorkflowRunId = run.Id,  /*EventClass = resumeEvent.GetType().FullName,*/ EventState = resumeEvent };
+            var runParams = new ResumeWorkflowParams { WorkflowRunId = run.Id };
             return BackgroundTask.Create(HandlerKey, runParams);
         }
+
 
         protected override void HandleTask(ResumeWorkflowParams taskData)
         {
@@ -37,15 +47,13 @@ namespace EDC.SoftwarePlatform.Activities.BackgroundTasks
                 if (taskData == null)
                     throw new ArgumentNullException(nameof(taskData));
 
-                IWorkflowEvent resumeEvent = taskData.EventState;
-
                 var run = Entity.Get<WorkflowRun>(taskData.WorkflowRunId);
 
                 try
                 {
                     using (new WorkflowRunContext { TriggerDepth = run.TriggerDepth ?? 0, RunTriggersInCurrentThread = true })
                     {
-                        WorkflowRunner.Instance.ResumeWorkflow(run, resumeEvent);
+                        WorkflowRunner.Instance.ResumeWorkflow(run, new WorkflowRestoreEvent());
                     }
                 }
                 catch (Exception ex)
@@ -55,7 +63,29 @@ namespace EDC.SoftwarePlatform.Activities.BackgroundTasks
                 }
             }
         }
+
+        #region SuspendRestore
+
+        protected override void AnnotateSuspendedTask(IEntity suspendedTask, ResumeWorkflowParams taskParam)
+        {
+            var runId = taskParam.WorkflowRunId;
+            var run = Entity.Get(runId);
+            suspendedTask.GetRelationships(SuspendedRun.SrRun_Field).Add(run);
+        }
+
+        protected override ResumeWorkflowParams RestoreTaskData(IEntity suspendedTask)
+        {
+            var run = suspendedTask.GetRelationships(SuspendedRun.SrRun_Field).FirstOrDefault();
+
+            if (run == null)
+                throw new SuspendFailedException("Run not found.");
+            
+            return new ResumeWorkflowParams { WorkflowRunId = run.Id };
+        }
+
+        #endregion
     }
+
 
     [ProtoContract(ImplicitFields = ImplicitFields.AllFields)]
     public class ResumeWorkflowParams: IWorkflowQueuedEvent
@@ -64,11 +94,6 @@ namespace EDC.SoftwarePlatform.Activities.BackgroundTasks
         /// The workflow run Id
         /// </summary>
         public long WorkflowRunId;
-
-        /// <summary>
-        /// the serialised state of the event
-        /// </summary>
-        public IWorkflowQueuedEvent EventState;
 
     }
 

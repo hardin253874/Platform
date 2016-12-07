@@ -1,5 +1,10 @@
 <div class="tab-relationship-render-control">
-    <div class="structure-control-header" ng-if="!isInTab && !isMobile && !formControl.hideLabel && formControl.name" ng-style="getTitleStyle()"><span ng-style="getTitleStyle()">{{formControl.name}}</span><rn-info-button ng-if="::!isInDesign && formControl.showControlHelpText  && formControl.description" heading="{{::formControl.name}}" text="{{::formControl.description}}"></rn-info-button></div>
+    <div class="structure-control-header" ng-if="!isInTab && !isMobile && !formControl.hideLabel && formControl.name"
+         ng-style="getTitleStyle()"><span ng-style="getTitleStyle()">{{formControl.name}}</span>
+        <rn-info-button ng-if="::!isInDesign && formControl.showControlHelpText  && formControl.description"
+                        heading="{{::formControl.name}}" text="{{::formControl.description}}"></rn-info-button>
+    </div>
     <sp-report options="displayReportOptions"></sp-report>
+    <sp-report-watermark-control ng-if="model.isInDesign"></sp-report-watermark-control>
 </div>
 

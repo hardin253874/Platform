@@ -2,6 +2,7 @@
 
 using Autofac;
 using EDC.ReadiNow.BackgroundTasks.Handlers;
+using EDC.ReadiNow.Configuration;
 using ProtoBuf.Meta;
 using System;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace EDC.ReadiNow.BackgroundTasks
     /// </summary>
     public class BackgroundTasksModule : Module
     {
+        private static Lazy<WorkflowConfiguration> workflowConfig = new Lazy<WorkflowConfiguration>(() => ConfigurationSettings.GetWorkflowConfigurationSection());
 
 
 
@@ -22,9 +24,20 @@ namespace EDC.ReadiNow.BackgroundTasks
         /// <param name="builder">The container builder.</param>
         protected override void Load(ContainerBuilder builder)
         {
+            var settings = workflowConfig.Value.BackgroundTasks;
+
             builder.RegisterType<BackgroundTaskManager>()
+                .WithParameter("perTenantConcurrency", settings.PerTenantConcurrency)
                 .As<IBackgroundTaskManager>()
-                .SingleInstance();
+                .SingleInstance()
+                .AutoActivate();
+
+
+            builder.RegisterType<BackgroundTaskController>()
+                .As<IBackgroundTaskController>()
+                .SingleInstance()
+                .AutoActivate();
+
 
             builder.RegisterType<RedisTenantQueueFactory>()
                 .WithParameter("queuePrefix", "BackgroundTaskManager")

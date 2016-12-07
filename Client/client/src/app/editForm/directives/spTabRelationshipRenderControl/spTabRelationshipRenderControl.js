@@ -547,6 +547,32 @@
                         params = _.extend(params, overrideParams);
                     }
 
+                    if (overrideParams && overrideParams.hint && overrideParams.hint === 'delete') {
+                        var deletedInstances = _.map(scope.displayReportOptions.selectedItems, 'eid');
+
+                        if (deletedInstances && deletedInstances.length) {
+                            var relEntities = scope.getRelationship();
+
+                            if (relEntities) {
+                                var instances = relEntities.getRelationshipContainer().instances;
+
+                                if (instances) {
+                                    _.forEach(deletedInstances, function (deletedInstanceId) {
+                                        _.remove(instances, function (inst) {
+                                            return inst.entity.id() === deletedInstanceId;
+                                        });
+                                    });
+                                }
+                            }
+
+                            var navItem = spNavService.getCurrentItem();
+                            _.forEach(deletedInstances, function (deletedInstanceId) {
+                                spEditForm.removeCreatedChildEntity(navItem, scope.relationshipToRender.idP, deletedInstanceId);
+                            });
+                            
+                        }
+                    }
+
                     return spReportModelManager(scope.displayReportOptions.reportModel).refreshReportData(params);
                 }
                 return $q.when();
@@ -607,8 +633,8 @@
                     isEditMode: false,
                     returnToParent: true,
                     disallowCreateRelatedEntityInNewMode: scope.disallowCreateRelatedEntityInNewMode,
-                    refreshDataCallback: function () {
-                        refreshDisplayReport({isRefresh: true});
+                    refreshDataCallback: function (hint) {
+                        refreshDisplayReport({isRefresh: true, hint: hint});
                     },
                     onBeforeNavigate: function (state, id, params) {
                         // add params to autofill relationship value

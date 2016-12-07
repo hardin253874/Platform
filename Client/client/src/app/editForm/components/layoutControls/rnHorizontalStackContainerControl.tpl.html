@@ -1,0 +1,12 @@
+<div class="rnHorizontalStackContainerControl">
+    <div ng-if="!$ctrl.control.hideLabel" class="rnHorizontalStackContainerControl__title">
+        {{$ctrl.control.name}}
+    </div>
+    <div class="rnHorizontalStackContainerControl__content">
+        <rn-form-control
+                ng-repeat="c in $ctrl.controls" ng-hide="c.state === 'removed'"
+                class="rnHorizontalStackContainerControl__control {{c.cssClass}}"
+                control="c.control" resource="$ctrl.resource" form="$ctrl.form"
+                options="$ctrl.childControlOptions" form-options="$ctrl.formOptions"></rn-form-control>
+    </div>
+</div>

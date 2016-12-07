@@ -642,6 +642,13 @@ namespace ReadiNow.Reporting
             foreach (SelectedColumnCondition columnCondition in selectedColumnConditions)
             {
                 QueryCondition queryCondition = structuredQuery.Conditions.FirstOrDefault(sqc => sqc.EntityId.ToString(CultureInfo.InvariantCulture) == columnCondition.ExpressionId);
+
+                if ( columnCondition.ExpressionId == "_id" )
+                {
+                    queryCondition = new QueryCondition( );
+                    queryCondition.Expression = new IdExpression { NodeId = structuredQuery.RootEntity.NodeId };
+                    structuredQuery.Conditions.Add( queryCondition );
+                }
                 if (queryCondition == null)
                 {
                     // Adhoc condition for column
@@ -680,15 +687,18 @@ namespace ReadiNow.Reporting
                         });
                     }
                 }
-                else
+                else 
                 {
                     queryCondition.Operator = columnCondition.Operator;
-                    if (columnCondition.Type != null)
+                    if ( queryCondition.Argument != null )
                     {
-                        DatabaseType argType = queryCondition.Argument.Type is UnknownType ? columnCondition.Type : queryCondition.Argument.Type;
-                        queryCondition.Argument.Type = ConditionTypeHelper.GetArgumentType(columnCondition.Operator, argType);
+                        if ( columnCondition.Type != null )
+                        {
+                            DatabaseType argType = queryCondition.Argument.Type is UnknownType ? columnCondition.Type : queryCondition.Argument.Type;
+                            queryCondition.Argument.Type = ConditionTypeHelper.GetArgumentType( columnCondition.Operator, argType );
+                        }
+                        queryCondition.Argument.Value = columnCondition.Value;
                     }
-                    queryCondition.Argument.Value = columnCondition.Value;
                 }
             }
         }

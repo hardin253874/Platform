@@ -1,4 +1,5 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
+
 using Autofac;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,6 @@ using EDC.ReadiNow.Model;
 using EDC.ReadiNow.Security;
 using QueryEntity = EDC.ReadiNow.Metadata.Query.Structured.Entity;
 using EDC.ReadiNow.Core;
-using EDC.Cache;
 using EDC.ReadiNow.Expressions;
 using EDC.ReadiNow.Model.CacheInvalidation;
 using EDC.ReadiNow.Utc;
@@ -77,32 +77,29 @@ namespace EDC.ReadiNow.Services.Console
         internal static readonly string NewHolderMenuItemActionState = "newHolder";
 
         #region Target Help
-        private readonly Func<ActionRequestExtended, ActionMenuItem, ActionTargetInfo> _targetActionReport = (request, item) => new ActionTargetInfo { Entity = request.Report, Name = request.Report == null ? null : request.Report.Name };
-        private readonly Func<ActionRequestExtended, ActionMenuItem, ActionTargetInfo> _targetActionReportType = (request, item) => new ActionTargetInfo { Entity = request.ReportBaseType, Name = request.ReportBaseType == null ? null : request.ReportBaseType.Name };
-        private readonly Func<ActionRequestExtended, ActionMenuItem, ActionTargetInfo> _targetActionSelected = (request, item) => new ActionTargetInfo { Entity = request.LastSelectedResource, Name = request.LastSelectedResource == null ? null : request.LastSelectedResource.Name };
+        private readonly Func<ActionRequestExtended, ActionMenuItem, ActionTargetInfo> _targetActionReport = (request, item) => new ActionTargetInfo { Entity = request.Report, Name = request.Report?.Name };
+        private readonly Func<ActionRequestExtended, ActionMenuItem, ActionTargetInfo> _targetActionForm = (request, item) => new ActionTargetInfo { Entity = request.Form, Name = request.Form?.Name };
+        private readonly Func<ActionRequestExtended, ActionMenuItem, ActionTargetInfo> _targetActionReportType = (request, item) => new ActionTargetInfo { Entity = request.ReportBaseType, Name = request.ReportBaseType?.Name };
+        private readonly Func<ActionRequestExtended, ActionMenuItem, ActionTargetInfo> _targetActionFormType = (request, item) => new ActionTargetInfo { Entity = request.TypeToEditWithForm, Name = request.TypeToEditWithForm?.Name };
+        private readonly Func<ActionRequestExtended, ActionMenuItem, ActionTargetInfo> _targetActionSelected = (request, item) => new ActionTargetInfo { Entity = request.LastSelectedResource, Name = request.LastSelectedResource?.Name };
+        private readonly Func<ActionRequestExtended, ActionMenuItem, ActionTargetInfo> _targetFormEntityData = (request, item) => new ActionTargetInfo { Entity = request.FormDataEntity, Name = request.FormDataEntity?.Name };
         private readonly Func<ActionRequestExtended, ActionMenuItem, ActionTargetInfo> _targetActionWorkflow = (request, item) =>
         {
             var wfItem = item.As<WorkflowActionMenuItem>();
-            if (wfItem != null && wfItem.ActionMenuItemToWorkflow != null)
+            var wf = wfItem?.ActionMenuItemToWorkflow;
+            if (wf != null)
             {
-                var wf = wfItem.ActionMenuItemToWorkflow;
-                if (wf != null)
-                {
-                    return new ActionTargetInfo { Entity = wf, Name = wf.Name };
-                }
+                return new ActionTargetInfo { Entity = wf, Name = wf.Name };
             }
             return null;
         };
         private readonly Func<ActionRequest, ActionMenuItem, ActionTargetInfo> _targetActionGenerateDocument = (request, item) =>
         {
             var rtItem = item.As<GenerateDocumentActionMenuItem>();
-            if (rtItem != null && rtItem.ActionMenuItemToReportTemplate != null)
+            var rt = rtItem?.ActionMenuItemToReportTemplate;
+            if (rt != null)
             {
-                var rt = rtItem.ActionMenuItemToReportTemplate;
-                if (rt != null)
-                {
-                    return new ActionTargetInfo { Entity = rt, Name = rt.Name };
-                }
+                return new ActionTargetInfo { Entity = rt, Name = rt.Name };
             }
             return null;
         };
@@ -122,7 +119,7 @@ namespace EDC.ReadiNow.Services.Console
 
             ActionResponse result;
 
-            _getActionsCache.TryGetOrAdd(request.GetRequestHash( ), out result, (key) =>
+            var isFromCache = _getActionsCache.TryGetOrAdd(request.GetRequestHash( ), out result, (key) =>
             {
 	            using ( CacheContext cacheContext = new CacheContext( ) )
 	            {
@@ -137,15 +134,16 @@ namespace EDC.ReadiNow.Services.Console
 		            {
 			            return GetActionsImpl( request );
 		            }
-		            else
-		            {
-			            using ( new SecurityBypassContext( ) )
-			            {
-				            return GetActionsImpl( request );
-			            }
-		            }
+
+			        using ( new SecurityBypassContext( ) )
+			        {
+				        return GetActionsImpl( request );
+			        }
 	            }
             });
+
+            // evaluate action expressions outside of cache
+            DisableActionsByExpression(result.Actions, request, isFromCache);
 
             return result;
         }
@@ -286,6 +284,7 @@ namespace EDC.ReadiNow.Services.Console
                 ShowEditInlineButton = request.ShowEditInlineActionsButton == true,
                 Actions = actions
             };
+
             return response;
         }
 
@@ -299,10 +298,12 @@ namespace EDC.ReadiNow.Services.Console
             {
                 request.Report = EntityRepository.Get<Report>( request.ReportId.Value, ActionServiceHelpers.ReportRequest );
             }
-            if (request.FormId.HasValue && request.FormId > 0 && !EntityId.IsTemporary(request.FormId.Value))
+
+            if ( request.FormId.HasValue && request.FormId > 0 && !EntityId.IsTemporary(request.FormId.Value) )
             {
                 request.Form = EntityRepository.Get<CustomEditForm>(request.FormId.Value, ActionServiceHelpers.FormRequest);
             }
+
             if ( request.HostResourceIds != null && request.HostResourceIds.Length > 0 )
             {
                 // Need to account for "generated" forms which never exist and pass temp ids around
@@ -310,6 +311,7 @@ namespace EDC.ReadiNow.Services.Console
                 if (actualHostResourceIds.Count > 0)
                     request.HostResources = EntityRepository.Get<Resource>(actualHostResourceIds, ActionServiceHelpers.ResourceViewerRequest).ToList();
             }
+
             if ( request.SelectedResourceIds != null && request.SelectedResourceIds.Length > 0 )
             {
                 if ( !request.LastSelectedResourceId.HasValue || request.LastSelectedResourceId <= 0 )
@@ -318,9 +320,15 @@ namespace EDC.ReadiNow.Services.Console
                 }
                 request.SelectedResources = EntityRepository.Get<Resource>( request.SelectedResourceIds, ActionServiceHelpers.ResourceRequest ).ToList( );
             }
+
             if ( request.LastSelectedResourceId.HasValue && request.LastSelectedResourceId > 0 )
             {
                 request.LastSelectedResource = EntityRepository.Get<Resource>( request.LastSelectedResourceId.Value, ActionServiceHelpers.ResourceRequest );
+            }
+
+            if ( request.FormDataEntityId.HasValue && request.FormDataEntityId > 0 && !EntityId.IsTemporary(request.FormDataEntityId.Value))
+            {
+                request.FormDataEntity = EntityRepository.Get<Resource>( request.FormDataEntityId.Value, ActionServiceHelpers.ResourceRequest );
             }
         }
 
@@ -461,13 +469,17 @@ namespace EDC.ReadiNow.Services.Console
                         reportBaseTypeId = baseTypeId.Value;
                     }
                 }
+
                 if ( reportBaseTypeId != 0 )
                 {
                     request.ReportBaseType = EntityRepository.Get<EntityType>( reportBaseTypeId, ActionServiceHelpers.ReportBaseTypeRequest );
                 }
 
                 // temp hack : #25681: New action on 'Choice Values' tab shows a large list of choice fields.
-                if (request.FormDataEntityId > 0 && request.ReportBaseType != null && request.ReportBaseType.Alias == "core:enumValue")
+                if (request.FormDataEntityId.HasValue &&
+                    request.FormDataEntityId > 0 &&
+                    request.ReportBaseType != null &&
+                    request.ReportBaseType.Alias == "core:enumValue")
                 {
                     request.ReportBaseType = EntityRepository.Get<EntityType>(request.FormDataEntityId.Value, ActionServiceHelpers.ReportBaseTypeRequest );
                 }
@@ -477,18 +489,21 @@ namespace EDC.ReadiNow.Services.Console
                     request.ReportTypes = GetInheritedEntityTypes(request.ReportBaseType);
                 }
             }
+
             if (request.HostResources != null && request.HostResources.Count > 0)
             {
                 var typeIds = request.HostResources.SelectMany(r => r.TypeIds).Distinct().ToArray();
                 var types = EntityModelHelper.Get<EntityType>( typeIds );
                 request.HostResourceTypes.AddRange(EntityTypeHelper.GetAllTypes(types));
             }
+
             if (request.HostTypeIds != null && request.HostTypeIds.Count > 0)
             {
                 var existing = request.HostResourceTypes.Select(t => t.Id);
                 var types = EntityModelHelper.Get<EntityType>(request.HostTypeIds.Where(h => !existing.Contains(h)).Distinct()).ToList();
                 request.HostResourceTypes.AddRange(types);
             }
+
             if (request.LastSelectedResource != null)
             {
                 var typeIds = request.LastSelectedResource.TypeIds;
@@ -504,42 +519,29 @@ namespace EDC.ReadiNow.Services.Console
                     request.SelectedResourceTypes = EntityTypeHelper.GetAllTypes( types ).ToList( );
                 }
             }
-            if (request.FormId.HasValue && request.FormId > 0)
+
+            // In the case of form actions...
+            if (request.Report == null && request.Form != null)
             {
-                // TODO: 
-                // The form's "type" should be applied as the root resource type
-                //long reportBaseTypeId = 0;
-                //if (request.EntityTypeId.HasValue && request.EntityTypeId > 0)
-                //{
-                //    // Type is provided manually (as in use of template report as picker)
-                //    reportBaseTypeId = request.EntityTypeId.Value;
-                //}
-                //else
-                //{
-                //    var baseTypeId = GetBaseEntityTypeId(request.Report);
-                //    if (baseTypeId.HasValue)
-                //    {
-                //        reportBaseTypeId = baseTypeId.Value;
-                //    }
-                //}
-
-
+                long typeToEditWithFormId = 0;
 
                 if (request.EntityTypeId.HasValue && request.EntityTypeId > 0)
                 {
-                    request.TypeToEditWithForm = EntityRepository.Get<EntityType>(request.EntityTypeId.Value, ActionServiceHelpers.ReportBaseTypeRequest);
+                    typeToEditWithFormId = request.EntityTypeId.Value;
+                }
+                else
+                {
+                    var formType = request.Form.TypeToEditWithForm;
+                    if (formType != null)
+                    {
+                        typeToEditWithFormId = formType.Id;
+                    }
                 }
 
-                //// temp hack : #25681: New action on 'Choice Values' tab shows a large list of choice fields.
-                //if (request.FormDataEntityId > 0 && request.ReportBaseType != null && request.ReportBaseType.Alias == "core:enumValue")
-                //{
-                //    request.ReportBaseType = EntityRepository.Get<EntityType>(request.FormDataEntityId.Value, ActionServiceHelpers.ReportBaseTypeRequest);
-                //}
-
-                //if (request.ReportBaseType != null)
-                //{
-                //    request.ReportTypes = GetInheritedEntityTypes(request.ReportBaseType);
-                //}
+                if (typeToEditWithFormId != 0)
+                {
+                    request.TypeToEditWithForm = EntityRepository.Get<EntityType>(typeToEditWithFormId, ActionServiceHelpers.FormToEditTypeRequest);
+                }
             }
         }
 
@@ -587,7 +589,7 @@ namespace EDC.ReadiNow.Services.Console
                     IsContextMenu = true,
                     IsSystem = false,
                     AppliesToSelection = true,
-                    AppliesToMultipleSelection = false,
+                    AppliesToMultipleSelection = wf.InputArgumentForAction.IsOfType.Any(t => t.Alias == "core:resourceListArgument"),
                     HtmlActionMethod = "run",
                     HtmlActionState = wf.InputArgumentForAction.Name, // what if argument name or type changes?
                     AdditionalData = new Dictionary<string, object>(additionalData) { { ActionMenuItemInfo.AdditionalDataWorkflowKey, wf.Id } }
@@ -950,11 +952,12 @@ namespace EDC.ReadiNow.Services.Console
             // Actions based on the types that would be selected
             if (!suppressActionsForType)
             {
+                var baseType = request.ReportBaseType ?? request.TypeToEditWithForm;
                 var typesForActions = request.SelectedResourceTypes;
 
-                if ((typesForActions == null || typesForActions.Count == 0) && request.ReportBaseType != null)
+                if ((typesForActions == null || typesForActions.Count == 0) && baseType != null)
                 {
-                    typesForActions.AddRange(GetInheritedEntityTypes(request.ReportBaseType));
+                    typesForActions.AddRange(GetInheritedEntityTypes(baseType));
                 }
 
                 if (typesForActions != null && typesForActions.Any(t => t != null))
@@ -968,28 +971,31 @@ namespace EDC.ReadiNow.Services.Console
                     }
                     else
                     {
-                        request.SuppressedActionItems.AddRange(GetSuppressedActions(request.ReportBaseType));
-                        request.SuppressedNewActionTypes.AddRange(GetSuppressedTypes(request.ReportBaseType));
-                        request.IncludedAsButtonActionItems.AddRange(GetIncludedButtonActions(request.ReportBaseType));
-                        request.IncludedAsButtonNewActionTypes.AddRange(GetIncludedButtonTypes(request.ReportBaseType));
+                        request.SuppressedActionItems.AddRange(GetSuppressedActions(baseType));
+                        request.SuppressedNewActionTypes.AddRange(GetSuppressedTypes(baseType));
+                        request.IncludedAsButtonActionItems.AddRange(GetIncludedButtonActions(baseType));
+                        request.IncludedAsButtonNewActionTypes.AddRange(GetIncludedButtonTypes(baseType));
                     }
 
-                    actions.AddRange(typesForActions.Where(t => t.TypeConsoleBehavior != null &&
-                            t.TypeConsoleBehavior.BehaviorActionMenu != null &&
-                            t.TypeConsoleBehavior.BehaviorActionMenu.MenuItems != null)
-                        .SelectMany(t => t.TypeConsoleBehavior.BehaviorActionMenu.MenuItems.Select(a => a.ToInfo(request, GetTargetActionProvider(a), request.LastSelectedResource == null ? _targetActionReportType : _targetActionSelected)))
+                    var defaultTargetGetter = request.Report == null && request.Form != null
+                        ? _targetActionFormType
+                        : _targetActionReportType;
+
+                    if (request.LastSelectedResource != null)
+                    {
+                        defaultTargetGetter = _targetActionSelected;
+                    }
+
+                    actions.AddRange(typesForActions.Where(t => t.TypeConsoleBehavior?.BehaviorActionMenu?.MenuItems != null)
+                        .SelectMany(t => t.TypeConsoleBehavior.BehaviorActionMenu.MenuItems.Select(a => a.ToInfo(request, GetTargetActionProvider(a), defaultTargetGetter)))
                         .Where(a => a.AppliesToSelection).ToList());
 
-                    actions.AddRange(typesForActions.Where(t => t.ResourceConsoleBehavior != null &&
-                            t.ResourceConsoleBehavior.BehaviorActionMenu != null &&
-                            t.ResourceConsoleBehavior.BehaviorActionMenu.MenuItems != null)
-                        .SelectMany(t => t.ResourceConsoleBehavior.BehaviorActionMenu.MenuItems.Select(a => a.ToInfo(request, GetTargetActionProvider(a), request.LastSelectedResource == null ? _targetActionReportType : _targetActionSelected)))
+                    actions.AddRange(typesForActions.Where(t => t.ResourceConsoleBehavior?.BehaviorActionMenu?.MenuItems != null)
+                        .SelectMany(t => t.ResourceConsoleBehavior.BehaviorActionMenu.MenuItems.Select(a => a.ToInfo(request, GetTargetActionProvider(a), defaultTargetGetter)))
                         .Where(a => a.AppliesToSelection).ToList());
 
-                    actions.AddRange(typesForActions.Where(t => t.SelectionBehavior != null &&
-                            t.SelectionBehavior.BehaviorActionMenu != null &&
-                            t.SelectionBehavior.BehaviorActionMenu.MenuItems != null)
-                        .SelectMany(t => t.SelectionBehavior.BehaviorActionMenu.MenuItems.Select(a => a.ToInfo(request, GetTargetActionProvider(a), request.LastSelectedResource == null ? _targetActionReportType : _targetActionSelected)))
+                    actions.AddRange(typesForActions.Where(t => t.SelectionBehavior?.BehaviorActionMenu?.MenuItems != null)
+                        .SelectMany(t => t.SelectionBehavior.BehaviorActionMenu.MenuItems.Select(a => a.ToInfo(request, GetTargetActionProvider(a), defaultTargetGetter)))
                         .Where(a => a.AppliesToSelection).ToList());
                 }
             }
@@ -1059,62 +1065,86 @@ namespace EDC.ReadiNow.Services.Console
             }
         }
 
-        private void DisableActionsByExpression(IList<ActionMenuItemInfo> actions, EntityType baseType, Resource selected, string timeZone)
+        private void DisableActionsByExpression(IList<ActionMenuItemInfo> actions, ActionRequestExtended request, bool isFromCache)
         {
-            if (baseType != null)
+            if (actions.Any(a => !string.IsNullOrEmpty(a.Expression)))
             {
-                var settings = new BuilderSettings
+                // if this is from cache, will need to load the latest entities for evaluating
+                if (isFromCache)
                 {
-                    RootContextType = ExprTypeHelper.EntityOfType(new EntityRef(baseType.Id)),
-                    ExpectedResultType = ExprType.Bool
-                };
+                    PreLoadEntities(ref request);
+                }
 
-                var evalSettings = new EvaluationSettings
-                {
-                    TimeZoneName = timeZone ?? TimeZoneHelper.SydneyTimeZoneName,
-                    ContextEntity = selected != null ? new EntityRef(selected.Id).Entity : null
-                };
+                var baseType = request.Report == null && request.Form != null ? request.TypeToEditWithForm : request.ReportBaseType;
+                var selected = request.LastSelectedResource;
+                var timeZone = request.TimeZone;
 
-                // Disable any actions, with required expressions, that error or evaluate to anything other than 'true'
-                actions.Where(a => a.ActionMenuItem?.ActionRequiresExpression != null).Select(a => a).ToList().ForEach(a =>
+                if (baseType != null)
                 {
-                    try
+                    var settings = new BuilderSettings
                     {
-                        var knownEntities = a.ActionMenuItem.ActionRequiresExpression.ActionExpressionEntities
-                            .Where(e => e.ReferencedEntity != null && !string.IsNullOrEmpty(e.Name))
-                            .Select(e => new
+                        RootContextType = ExprTypeHelper.EntityOfType(new EntityRef(baseType.Id)),
+                        ExpectedResultType = ExprType.Bool
+                    };
+
+                    var evalSettings = new EvaluationSettings
+                    {
+                        TimeZoneName = timeZone ?? TimeZoneHelper.SydneyTimeZoneName,
+                        ContextEntity = selected != null ? new EntityRef(selected.Id).Entity : null
+                    };
+
+                    // Disable any actions, with required expressions, that error or evaluate to anything other than 'true'
+                    actions.Where(a => !string.IsNullOrEmpty(a.Expression)).Select(a => a).ToList().ForEach(a =>
+                    {
+                        try
+                        {
+                            var knownEntities = a.ExpressionEntities
+                                .Where(e => !string.IsNullOrEmpty(e.Key))
+                                .Select(e => new
+                                {
+                                    e.Key,
+                                    Reference = new EntityRef(e.Value.Id).Entity,
+                                    Type = ExprTypeHelper.EntityOfType(new EntityRef(e.Value.TypeId))
+                                }).ToList();
+
+                            settings.ParameterNames = knownEntities.Select(e => e.Key).Distinct().ToList();
+                            settings.StaticParameterResolver = paramName =>
                             {
-                                e.Name,
-                                Reference = new EntityRef(e.ReferencedEntity.Id).Entity,
-                                Type = ExprTypeHelper.EntityOfType(new EntityRef(e.ReferencedEntity.IsOfType.First().Id))
-                            }).ToList();
+                                return knownEntities.Where(e => e.Key == paramName).Select(e => e.Type).FirstOrDefault();
+                            };
 
-                        settings.ParameterNames = knownEntities.Select(e => e.Name).Distinct().ToList();
-                        settings.StaticParameterResolver = paramName =>
-                        {
-                            return knownEntities.Where(e => e.Name == paramName).Select(e => e.Type).FirstOrDefault();
-                        };
+                            var expression = Factory.ExpressionCompiler.Compile(a.Expression, settings);
 
-                        var expression = Factory.ExpressionCompiler.Compile(a.ActionMenuItem.ActionRequiresExpression.ActionExpressionString, settings);
+                            evalSettings.ParameterResolver = paramName =>
+                            {
+                                return knownEntities.Where(e => e.Key == paramName).Select(e => e.Reference).FirstOrDefault();
+                            };
 
-                        evalSettings.ParameterResolver = paramName =>
-                        {
-                            return knownEntities.Where(e => e.Name == paramName).Select(e => e.Reference).FirstOrDefault();
-                        };
-
-                        var result = Factory.ExpressionRunner.Run(expression, evalSettings).Value as bool?;
-                        if (result.HasValue)
-                        {
-                            a.IsEnabled = a.IsEnabled && result.Value;
+                            var result = Factory.ExpressionRunner.Run(expression, evalSettings).Value as bool?;
+                            if (result.HasValue)
+                            {
+                                a.IsEnabled = a.IsEnabled && result.Value;
+                            }
                         }
-                    }
-                    catch (Exception ex)
-                    {
-                        a.IsEnabled = false;
-                        EventLog.Application.WriteError("Exception evaluating action expression. The action will be disabled. " + ex.Message);
-                    }
-                });
+                        catch (Exception ex)
+                        {
+                            a.IsEnabled = false;
+                            EventLog.Application.WriteError("Exception evaluating action expression. The action will be disabled. " + ex.Message);
+                        }
+                    });
+                }
             }
+        }
+
+        private void DisableActionsBySelection(IList<ActionMenuItemInfo> actions, ActionRequestExtended request)
+        {
+            // Disable any actions that require selection if not met
+            actions.Where(a => a.HtmlActionMethod != "custom" || a.Alias == "console:removeRelationshipAction")
+                .Where(a => (!request.IsSingleSelection && a.AppliesToSelection && !a.AppliesToMultipleSelection) ||
+                            (!request.IsMultipleSelection && a.AppliesToMultipleSelection && !a.AppliesToSelection) ||
+                            (!request.IsSingleSelection && !request.IsMultipleSelection &&
+                            (a.AppliesToSelection || a.AppliesToMultipleSelection)))
+                .Select(a => a).ToList().ForEach(a => a.IsEnabled = false);
         }
 
         /// <summary>
@@ -1144,44 +1174,39 @@ namespace EDC.ReadiNow.Services.Console
 
                 var allInheritedTypes = new List<EntityType>();
                 var allApplicableTypes = new List<EntityType>();
+                var isForm = request.Report == null && request.Form != null;
                 var isReportHost = host != null && request.Report != null && host.Id == request.Report.Id;
                 var isNoHostBehavior = host == null || (host.ResourceConsoleBehavior == null && host.SelectionBehavior == null);
-                var hideAllNewActions = false;
                 var workflowActions = new List<ActionMenuItemInfo>();
                 var templateActions = new List<ActionMenuItemInfo>();
 
                 // System based override for removing ALL new actions (brute force)
-                if (host != null &&
-                    host.ResourceConsoleBehavior != null &&
-                    host.ResourceConsoleBehavior.BehaviorActionMenu != null)
-                {
-                    // Only permit when hosted. Not on type.
-                    hideAllNewActions = host.ResourceConsoleBehavior.BehaviorActionMenu.SuppressNewActions == true;
-                }
+                var hideAllNewActions = GetHideAllNewActions(host);
 
-                // Hold the types applicable to the report
+                // Go get all the types we might need to examine
                 if (request.ReportBaseType != null)
                 {
-                    if (request.ReportBaseType.Alias != "core:resource")
-                    {
-                        allApplicableTypes.AddRange(GetAllDerivedTypes(request.ReportBaseType));
-                        if (request.ReportBaseType.IsAbstract != true &&
-                            allApplicableTypes.All(t => t.Id != request.ReportBaseType.Id))
-                        {
-                            allApplicableTypes.Add(request.ReportBaseType);
-                        }
-                    }
+                    allApplicableTypes.AddRange(GetApplicableEntityTypes(request.ReportBaseType));
+                    allInheritedTypes.AddRange(GetInheritedEntityTypes(request.ReportBaseType));
 
                     var q = from a in allApplicableTypes
-                            where a.DefaultEditForm != null
-                            group a by a.Id
-                                into g
-                                select g.OrderByDescending(t => t.Name).FirstOrDefault();
-                    
-                    var typeDefaultForm = new Dictionary<long, long>(q.ToDictionary(t => t.Id, t => t.DefaultEditForm.Id));
-                    request.AdditionalData["TypeDefaultForm"] = typeDefaultForm;
+                        where a.DefaultEditForm != null
+                        group a by a.Id
+                        into g
+                        select g.OrderByDescending(t => t.Name).FirstOrDefault();
 
-                    allInheritedTypes.AddRange(GetInheritedEntityTypes(request.ReportBaseType));
+                    var typeDefaultForm =
+                        new Dictionary<long, long>(q.ToDictionary(t => t.Id, t => t.DefaultEditForm.Id));
+                    request.AdditionalData["TypeDefaultForm"] = typeDefaultForm;
+                }
+                else
+                {
+                    // Forms
+                    if (request.TypeToEditWithForm != null)
+                    {
+                        allApplicableTypes.AddRange(GetApplicableEntityTypes(request.TypeToEditWithForm));
+                        allInheritedTypes.AddRange(GetInheritedEntityTypes(request.TypeToEditWithForm));
+                    }
                 }
 
                 // Extra custom form that comes via the edit form (not the report)
@@ -1204,11 +1229,13 @@ namespace EDC.ReadiNow.Services.Console
                 }
                 AddWorkflowRunActions(allInheritedTypes, request, workflowActions);
                 AddSingleSelectActions(request, actions, isReportHost, isNoHostBehavior);
-                AddMultiSelectActions(request, actions, isReportHost, isNoHostBehavior);
-                AddReportActions(request, actions, isReportHost, isNoHostBehavior);
+                if (!isForm)
+                {
+                    AddMultiSelectActions(request, actions, isReportHost, isNoHostBehavior);
+                    AddReportActions(request, actions, isReportHost, isNoHostBehavior);
+                }
                 AddHostActions(request, actions, isReportHost, isNoHostBehavior);
-
-                if (ctx != ActionContext.ContextMenu && hideAllNewActions == false)
+                if (ctx != ActionContext.ContextMenu && hideAllNewActions == false && !isForm)
                 {
                     // Add create actions only if not showing in right-click
                     AddCreateNewInstanceActions(allApplicableTypes, actions, request.AdditionalData);
@@ -1223,82 +1250,17 @@ namespace EDC.ReadiNow.Services.Console
                 var suppressByTypeActions = actions.Where(a => a.HtmlActionState == CreateMenuItemActionState && suppressNewTypeIds.Contains(a.EntityId)).ToList();
 
                 // Update the IsButton state to reflect inclusion
-                var included =
-                    actions.Where(
-                        a =>
-                            includedButtonIds.Contains(a.Id) ||
-                            ( a.IsNew && includedButtonNewTypeIds.Contains(a.EntityId)))
-                        .ToList();
-                included.ForEach(a => a.IsButton = true);
-
+                SetIncludedButtonActionItems(actions, includedButtonIds, includedButtonNewTypeIds);
+                
                 if (ctx != ActionContext.All)
                 {
                     // Outside of edit mode / config dialog remove ALL suppressed actions
-                    actions =
-                        actions.Where(a => !suppressItemIds.Contains(a.Id) && !suppressByTypeActions.Contains(a))
-                            .ToList();
+                    actions = actions.Where(a => !suppressItemIds.Contains(a.Id) && !suppressByTypeActions.Contains(a)).ToList();
                 }
 
                 if (ctx == ActionContext.All)
                 {
-                    // When configuring action items show the verbose names
-                    actions.Where(a => a.IsNew).ToList().ForEach(a =>
-                    {
-                        a.DisplayName = GetDisplayName("New '{0}'", a.Name);
-                    });
-
-                    actions.Where(a => a.HtmlActionMethod == "export").ToList().ForEach(a =>
-                    {
-                        a.DisplayName = GetDisplayName("Export to {0}", a.Name);
-                    });
-
-                    // Add actions to represent the "special" menus for new and export menus outside the action menu
-                    actions.Add(new ActionMenuItemInfo
-                    {
-                        Id = -1,
-                        Order = -1,
-                        EntityId = -1,
-                        Name = "New (All)",
-                        DisplayName = "New (All)",
-                        Icon = "assets/images/icon_new.png",
-                        IsEnabled = true,
-                        IsContextMenu = true,
-                        IsSystem = true,
-                        IsButton = request.ShowNewActionsButton == true
-                    });
-
-                    actions.Add(new ActionMenuItemInfo
-                    {
-                        Id = -2,
-                        Order = -1,
-                        EntityId = -1,
-                        Name = "Export (All)",
-                        DisplayName = "Export (All)",
-                        Icon = "assets/images/16x16/export.png",
-                        IsEnabled = true,
-                        IsContextMenu = false,
-                        IsSystem = true,
-                        IsButton = request.ShowExportActionsButton == true
-                    });
-
-                    actions.Add(new ActionMenuItemInfo
-                    {
-                        Id = -3,
-                        Order = -2,
-                        EntityId = -1,
-                        Name = "Edit Inline",
-                        DisplayName = "Edit Inline",
-                        Icon = "assets/images/16x16/edit.svg",
-                        IsEnabled = true,
-                        IsContextMenu = false,
-                        IsSystem = true,
-                        IsButton = request.ShowEditInlineActionsButton == true
-                    });
-
-                    // Update the IsEnabled to reflect suppression
-                    actions.Where(a => suppressItemIds.Contains(a.Id) || suppressByTypeActions.Contains(a))
-                        .ToList()
-                        .ForEach(a => a.IsEnabled = false);
+                    SetActionItemsForConfigurationMenu(actions, request, suppressItemIds, suppressByTypeActions);
 
                     // Include other available workflow actions for selection
                     actions.AddRange(workflowActions.Where(wf => actions.All(a => a.EntityId != wf.EntityId)));
@@ -1326,15 +1288,7 @@ namespace EDC.ReadiNow.Services.Console
 
                 if (ctx == ActionContext.ContextMenu || ctx == ActionContext.ActionsMenu)
                 {
-                    // Disable any actions that require selection
-                    actions.Where(a => a.HtmlActionMethod != "custom" || a.Alias == "console:removeRelationshipAction")
-                        .Where(
-                            a =>
-                                (!request.IsSingleSelection && a.AppliesToSelection && !a.AppliesToMultipleSelection) ||
-                                (!request.IsMultipleSelection && a.AppliesToMultipleSelection && !a.AppliesToSelection) ||
-                                (!request.IsSingleSelection && !request.IsMultipleSelection &&
-                                 (a.AppliesToSelection || a.AppliesToMultipleSelection)))
-                        .Select(a => a).ToList().ForEach(a => a.IsEnabled = false);
+                    DisableActionsBySelection(actions, request);
                 }
                 
                 if (ctx == ActionContext.ActionsMenu)
@@ -1342,10 +1296,9 @@ namespace EDC.ReadiNow.Services.Console
                     // Pull the "new" actions out into their own submenu, if more than one
                     AddNewActionsSubMenu(actions);
 
+                    // Pull the "export" actions into a sub menu
                     AddExportActionsSubMenu(actions);
                 }
-
-                DisableActionsByExpression(actions, request.ReportBaseType, request.LastSelectedResource, request.TimeZone);
             }
 
             // Remove menu items the user cannot see/use
@@ -1354,10 +1307,94 @@ namespace EDC.ReadiNow.Services.Console
                 SecurityFilter.Filter(request.FormDataEntityId ?? 0, request.SelectedResourceIds ?? new long[0], actions);
             });
 
+            FilterForFeatureSwitches(actions);
+
             using (new SecurityBypassContext())
             {
                 return Finalize(actions, ctx);
             }
+        }
+
+        
+        /// <summary>
+        /// Supression actions if certain switches are not tuened on
+        /// </summary>
+        
+        private void FilterForFeatureSwitches(List<ActionMenuItemInfo> actions)
+        {
+            if (!Factory.FeatureSwitch.Get("ftpExport"))
+            {
+                actions.RemoveAll(a => a.DisplayName == "Scheduled Export Configuration");
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="actions"></param>
+        /// <param name="request"></param>
+        /// <param name="suppressItemIds"></param>
+        /// <param name="suppressByTypeActions"></param>
+        private static void SetActionItemsForConfigurationMenu(List<ActionMenuItemInfo> actions, ActionRequestExtended request, ISet<long> suppressItemIds, List<ActionMenuItemInfo> suppressByTypeActions)
+        {
+            // When configuring action items show the verbose names
+            actions.Where(a => a.IsNew).ToList().ForEach(a =>
+            {
+                a.DisplayName = GetDisplayName("New '{0}'", a.Name);
+            });
+
+            actions.Where(a => a.HtmlActionMethod == "export").ToList().ForEach(a =>
+            {
+                a.DisplayName = GetDisplayName("Export to {0}", a.Name);
+            });
+
+            // Add actions to represent the "special" menus for new and export menus outside the action menu
+            actions.Add(new ActionMenuItemInfo
+            {
+                Id = -1,
+                Order = -1,
+                EntityId = -1,
+                Name = "New (All)",
+                DisplayName = "New (All)",
+                Icon = "assets/images/icon_new.png",
+                IsEnabled = true,
+                IsContextMenu = true,
+                IsSystem = true,
+                IsButton = request.ShowNewActionsButton == true
+            });
+
+            actions.Add(new ActionMenuItemInfo
+            {
+                Id = -2,
+                Order = -1,
+                EntityId = -1,
+                Name = "Export (All)",
+                DisplayName = "Export (All)",
+                Icon = "assets/images/16x16/export.png",
+                IsEnabled = true,
+                IsContextMenu = false,
+                IsSystem = true,
+                IsButton = request.ShowExportActionsButton == true
+            });
+
+            actions.Add(new ActionMenuItemInfo
+            {
+                Id = -3,
+                Order = -2,
+                EntityId = -1,
+                Name = "Edit Inline",
+                DisplayName = "Edit Inline",
+                Icon = "assets/images/16x16/edit.svg",
+                IsEnabled = true,
+                IsContextMenu = false,
+                IsSystem = true,
+                IsButton = request.ShowEditInlineActionsButton == true
+            });
+
+            // Update the IsEnabled to reflect suppression
+            actions.Where(a => suppressItemIds.Contains(a.Id) || suppressByTypeActions.Contains(a))
+                .ToList()
+                .ForEach(a => a.IsEnabled = false);
         }
 
         /// <summary>
@@ -1612,8 +1649,17 @@ namespace EDC.ReadiNow.Services.Console
                     case "report":
                         fn = _targetActionReport;
                         break;
+                    case "form":
+                        fn = _targetActionForm;
+                        break;
                     case "reportbasetype":
                         fn = _targetActionReportType;
+                        break;
+                    case "formbasetype":
+                        fn = _targetActionFormType;
+                        break;
+                    case "formentitydata":
+                        fn = _targetFormEntityData;
                         break;
                 }
             }
@@ -1726,6 +1772,28 @@ namespace EDC.ReadiNow.Services.Console
         private static List<EntityType> GetInheritedEntityTypes(EntityType type)
         {
             return type.GetAncestorsAndSelf( ).ToList( );
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        private static List<EntityType> GetApplicableEntityTypes(EntityType type)
+        {
+            var types = new List<EntityType>();
+
+            // skip if the type is base resource. it's too all encompassing.
+            if (type.Alias != "core:resource")
+            {
+                types.AddRange(GetAllDerivedTypes(type));
+                if (type.IsAbstract != true && types.All(t => t.Id != type.Id))
+                {
+                    types.Add(type);
+                }
+            }
+
+            return types;
         }
 
         /// <summary>
@@ -2004,6 +2072,20 @@ namespace EDC.ReadiNow.Services.Console
         }
 
         /// <summary>
+        /// Determines if the host menu has been configured to hide ALL new/creation based actions.
+        /// </summary>
+        /// <param name="host"></param>
+        /// <returns></returns>
+        private static bool GetHideAllNewActions(Resource host)
+        {
+            // Only permit when hosted. Not on type.
+            return ((host != null) &&
+                    (host.ResourceConsoleBehavior != null) &&
+                    (host.ResourceConsoleBehavior.BehaviorActionMenu != null) &&
+                    (host.ResourceConsoleBehavior.BehaviorActionMenu.SuppressNewActions == true));
+        }
+
+        /// <summary>
         /// Checks the behaviors associated with any types to check if the "New" button should be shown on the quick menu.
         /// </summary>
         /// <param name="type">The type to check.</param>
@@ -2046,6 +2128,18 @@ namespace EDC.ReadiNow.Services.Console
             {
                 show = true;
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="actions"></param>
+        /// <param name="includedButtonIds"></param>
+        /// <param name="includedButtonNewTypeIds"></param>
+        private static void SetIncludedButtonActionItems(List<ActionMenuItemInfo> actions, ISet<long> includedButtonIds, ISet<long> includedButtonNewTypeIds)
+        {
+            var included = actions.Where(a => includedButtonIds.Contains(a.Id) || (a.IsNew && includedButtonNewTypeIds.Contains(a.EntityId))).ToList();
+            included.ForEach(a => a.IsButton = true);
         }
 
         /// <summary>

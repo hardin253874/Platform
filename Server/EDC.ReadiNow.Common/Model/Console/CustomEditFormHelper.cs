@@ -94,6 +94,7 @@ hideOnDesktop,hideOnTablet,hideOnMobile,inSolution.name,k:navigationElementIcon.
 k:relationshipToRender.{ 
     reverseAlias, relType.alias,
     _ND_, toName, fromName, 
+    enumValueFormattingType.{_ND_},
     fromType.{name, alias, isAbstract, canCreateType, k:defaultEditForm.name, defaultPickerReport.name, defaultDisplayReport.name, k:formsToEditType.name}, 
     fromType.inherits*.{name, alias, canCreateType, k:defaultEditForm.name},
     toType.{name, alias, isAbstract, canCreateType, k:defaultEditForm.name, defaultPickerReport.name, defaultDisplayReport.name, k:formsToEditType.name}, 

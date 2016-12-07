@@ -21,11 +21,22 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.Report
 			set;
 		}
 
-		/// <summary>
-		///		Should the hide display value be serialized.
+        /// <summary>
+		///     Gets or sets a value indicating whether use default choice field formatting value.
 		/// </summary>
-		/// <returns></returns>
-		[UsedImplicitly]
+		/// <value><c>true</c> if [hide display value]; otherwise, <c>false</c>.</value>
+		[DataMember(Name = "disabledefft", EmitDefaultValue = false, IsRequired = false)]
+        public bool DisableDefaultFormat
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        ///		Should the hide display value be serialized.
+        /// </summary>
+        /// <returns></returns>
+        [UsedImplicitly]
 		private bool ShouldSerializeHideDisplayValue( )
 		{
 			return HideDisplayValue;
@@ -244,5 +255,26 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.Report
 		{
 			return ImageWidth != null;
 		}
-	}
+
+        /// <summary>
+		///     Gets or sets the entity list format.
+		/// </summary>
+		/// <value>The show list as format.</value>
+		[DataMember(Name = "entitylistcolfmt", EmitDefaultValue = false, IsRequired = false)]
+        public string EntityListColumnFormat
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        ///		Should the entity list format be serialized.
+        /// </summary>
+        /// <returns></returns>
+        [UsedImplicitly]
+        private bool ShouldSerializeEntityListColumnFormat()
+        {
+            return EntityListColumnFormat != null;
+        }
+    }
 }

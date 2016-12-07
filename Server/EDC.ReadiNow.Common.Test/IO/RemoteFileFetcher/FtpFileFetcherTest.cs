@@ -21,11 +21,5 @@ namespace EDC.ReadiNow.Test.IO.RemoteFileFetcher
             Assert.That(Factory.RemoteFileFetcher is FtpFileFetcher, Is.True);
         }
 
-        [Test]
-        public void SslBypassOffByDefault()
-        {
-            var fetcher = (FtpFileFetcher) Factory.RemoteFileFetcher;
-            Assert.That(fetcher.BypassSslCheck, Is.False);
-        }
     }
 }

@@ -186,7 +186,7 @@ var EdcEntity;  // legacy
          * @name spEntity.EntityRef#getNsAlias
          */
         EntityRef.prototype.getNsAlias = function () {
-            return this._alias == null ? null : (this._ns + ':' + this._alias);
+            return !this._alias ? null : (this._ns + ':' + this._alias);
         };
 
         Object.defineProperty(EntityRef.prototype, 'nsAlias', {
@@ -205,7 +205,7 @@ var EdcEntity;  // legacy
         EntityRef.prototype.setNsAlias = function (nsAlias) {
             var parts = nsAlias.split(':');
 
-            if (parts.length == 2) {
+            if (parts.length === 2) {
                 this._ns = parts[0];
                 this._alias = parts[1];
             } else {
@@ -230,7 +230,7 @@ var EdcEntity;  // legacy
          * @name spEntity.EntityRef#getNsAliasOrId
          */
         EntityRef.prototype.getNsAliasOrId = function () {
-            return this._alias == null ? this._id : (this._ns + ':' + this._alias);
+            return !this._alias ? this._id : (this._ns + ':' + this._alias);
         };
 
         Object.defineProperty(EntityRef.prototype, 'nsAliasOrId', {

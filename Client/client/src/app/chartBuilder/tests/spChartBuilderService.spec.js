@@ -445,7 +445,7 @@ describe('Charts|Builder|spec|spChartBuilderService', function () {
             var model = spChartBuilderService.createChartModel();
             var refresh1 = model.refresh;
             spChartBuilderService.refreshChart(model);
-            expect(model.refresh != refresh1).toBeTruthy();
+            expect(model.refresh !== refresh1).toBeTruthy();
             expect(model.refresh).toBeTruthy();
         }));
     });

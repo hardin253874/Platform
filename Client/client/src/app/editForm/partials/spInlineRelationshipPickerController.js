@@ -6,7 +6,7 @@
 
     angular.module('app.editForm.spInlineRelationshipPickerController', [
         'mod.app.editForm', 'mod.common.ui.spDialogService', 'mod.common.ui.spPopupStackManager',
-        'mod.common.ui.spFocus', 'mod.common.spMobile', 'mod.app.editFormCache', 'mod.common.alerts']);
+        'mod.common.ui.spFocus', 'mod.common.spMobile', 'mod.app.editFormCache', 'mod.common.alerts', 'ui.bootstrap.position']);
 
     angular.module('app.editForm.spInlineRelationshipPickerController')
         .controller('spInlineRelationshipPickerController', InlineRelationshipPickerController);
@@ -14,11 +14,26 @@
     /* @ngInject */
     function InlineRelationshipPickerController($scope, $element, $q, $uibModalStack, spEditForm, spNavService, spEntityService,
                                                 $state, spDialogService, spPopupStackManager, focus,
-                                                spMobileContext, editFormCache, spAlertsService) {
+                                                spMobileContext, editFormCache, spAlertsService, $uibPosition, $timeout, $document) {
+        const isMobile = spMobileContext.isMobile;        
+
+        $scope.typeaheadModel = {
+            appendToBody: true,
+            focusOnFirst: false,
+            maxTypeaheadItems: 10,
+            cachedPickerReportNameColumnId: null,
+            cachedPickerReportEntityTypeId: -1,
+            inputElement: null,
+            typeaheadPopupScope: null,
+            previousElementPos: null,
+            updatePosTimeoutPromise: null
+        };
+
+        const typeaheadModel = $scope.typeaheadModel;
 
         if (!$scope.options) {
             $scope.options = {};
-        }
+        }                
 
         // init
         spEditForm.getTemplateReport(function (report) {
@@ -54,6 +69,8 @@
         $scope.$watch("options.multiSelect", function () {
             if ($scope.options.multiSelect && $scope.reportOptions) {
                 $scope.reportOptions.multiSelect = $scope.options.multiSelect;
+
+                setMultiSelect($scope.options.formControl);
             }
         });
 
@@ -141,12 +158,14 @@
 
             if ($scope.options.formControl) {
 
+                setMultiSelect($scope.options.formControl);
+
                 if ($scope.reportOptions && $scope.reportOptions.reportId !== 0) {
                     return; // picker report id already provided
                 }
 
                 // set the picker report
-                setPickerReport($scope.options.formControl);
+                setPickerReport($scope.options.formControl);                
             }
         });
 
@@ -458,6 +477,19 @@
             return createFormId;
         }
 
+        function setMultiSelect(formControl) {
+            if (!formControl) {
+                return;
+            }
+
+            const isReversed = sp.result($scope, "options.formControl.isReversed");
+            const cardinality = sp.result($scope, "options.formControl.relationshipToRender.cardinality.alias");
+
+            if (spEditForm.canHaveManyRelatedEntities(cardinality, isReversed)) {
+                $scope.reportOptions.multiSelect = true;
+            }
+        }
+
         $scope.cancelDialog = function () {
 
         };
@@ -546,5 +578,273 @@
             });
 
         };
+
+        // ----- Typeahead popup        
+        const noResultsItem = {
+            name: "No results found",
+            _isNoResultsItem: true,
+            _suppressHighlight: true
+        };
+
+        const moreDataItem = {
+            name: "More...",
+            _isMoreDataItem: true,
+            _suppressHighlight: true
+        };        
+
+        if (!isMobile) {
+            // Register watchers required for typeahead lookup
+
+            // Find the input element
+            typeaheadModel.inputElement = $element.find("input#entityNameInput");
+
+            const body = $document.find("body")[0];
+
+            // Add a click handler to the body
+            // Using add event listener so we can get all events
+            body.addEventListener("click", onDocumentClick, true);
+
+            $scope.onTypeaheadSelect = onTypeaheadSelect;
+            $scope.displayStringModel = displayStringModel;
+            $scope.displayStringModelOptions = {
+                debounce: {
+                    default: 300
+                },
+                getterSetter: true
+            };
+
+            // Get the init message from our popup template which gives us a handle to the popup's scope.            
+            $scope.$on("spTypeaheadPopupMenuInit", onTypeaheadPopupMenuInit);
+
+            // Start a timer if the popup is open and watch for position changes
+            // Used to close the popup other ui changes occur, e.g. scroll parent, moving parent dialog etc
+            $scope.$watch("typeaheadModel.typeaheadPopupScope.isOpen()", onTypeaheadPopupIsOpen);
+
+            $scope.getTypeaheadEntities = getTypeaheadEntities;
+
+            // Called when the scope is destroyed
+            $scope.$on("$destroy", onScopeDestroy);
+        }                
+        
+        function onTypeaheadPopupMenuInit(event) {
+            // Capture typeahead popup scope
+            event.stopPropagation();
+            typeaheadModel.typeaheadPopupScope = event.targetScope;
+        }
+
+        function onTypeaheadPopupIsOpen(isOpen) {
+            cancelUpdatePosTimeout();
+
+            if (sp.isNullOrUndefined(isOpen)) {
+                return;
+            }
+
+            if (isOpen) {
+                // Start watching for position changes
+                typeaheadModel.previousElementPos = $uibPosition.offset(typeaheadModel.inputElement);
+                scheduleUpdatePosTimeout();
+            } else {
+                // The popup is closed. Set the display string to the previously valid.
+                updateDisplayString();
+            }
+        }
+
+        function onScopeDestroy() {
+            // Cleanup
+            const body = $document.find("body")[0];
+
+            body.removeEventListener("click", onDocumentClick, true);
+            typeaheadModel.typeaheadPopupScope = null;            
+        }
+
+        // Returns true if the popup is open, false otherwise
+        function isTypeaheadPopupOpen() {
+            return typeaheadModel.typeaheadPopupScope && typeaheadModel.typeaheadPopupScope.isOpen();
+        }
+
+        // Closes the typeahead popup
+        function closeTypeaheadPopup() {
+            if (!typeaheadModel.inputElement || !typeaheadModel.inputElement.length || !isTypeaheadPopupOpen()) {
+                return;
+            }            
+
+            // Look away now !
+            // Send an escape char which will cause the popup to close            
+            const keydownEvent = jQuery.Event("keydown");            
+            keydownEvent.which = 27; // Escape
+            typeaheadModel.inputElement.trigger(keydownEvent);
+        }
+
+        // On document click handler. Closes the popup if a click occurs off it
+        function onDocumentClick(event) {            
+            if (!event || !event.srcElement) {
+                return;
+            }
+            
+            const srcElement = angular.element(event.srcElement);
+            const isSrcTypeaheadItem = srcElement.hasClass("spTypeaheadItem");
+            let isParentTypeaheadItem = false;
+
+            if (!isSrcTypeaheadItem) {
+                const parentElement = srcElement.parent();
+                isParentTypeaheadItem = parentElement && parentElement.length && parentElement.hasClass("spTypeaheadItem");                
+            }
+
+            if (!isSrcTypeaheadItem && !isParentTypeaheadItem) {
+                closeTypeaheadPopup();    
+            }
+        }
+                     
+        // Start the update position timer           
+        function scheduleUpdatePosTimeout() {
+            typeaheadModel.updatePosTimeoutPromise = $timeout(updatePosTimeoutCallback, 100);
+        }
+
+        // Cancels the last update position timer
+        function cancelUpdatePosTimeout() {
+            if (typeaheadModel.updatePosTimeoutPromise) {
+                $timeout.cancel(typeaheadModel.updatePosTimeoutPromise);
+                typeaheadModel.updatePosTimeoutPromise = null;
+            }
+        }                              
+
+        // Update position timer callback
+        // Used to close the popup when the parent control moves
+        function updatePosTimeoutCallback() {
+            if (!isTypeaheadPopupOpen() || !typeaheadModel.inputElement || !typeaheadModel.inputElement.length) {                
+                return;
+            }
+
+            const currentElementPos = $uibPosition.offset(typeaheadModel.inputElement);
+                        
+            if (currentElementPos.top !== typeaheadModel.previousElementPos.top ||
+                currentElementPos.left !== typeaheadModel.previousElementPos.left) {                
+                closeTypeaheadPopup();
+                typeaheadModel.previousElementPos = currentElementPos;                
+            }
+
+            scheduleUpdatePosTimeout();
+        }
+
+        // Get the picker report name column id
+        function getPickerReportNameColumnId(reportId, reportOptions) {
+            if (typeaheadModel.cachedPickerReportNameColumnId &&
+                typeaheadModel.cachedPickerReportEntityTypeId === reportOptions.entityTypeId) {
+                return $q.when(typeaheadModel.cachedPickerReportNameColumnId);
+            } else {
+                return spEditForm.getReportData(reportId, reportOptions).then(data => {
+                    // Find the name column
+                    typeaheadModel.cachedPickerReportNameColumnId = null;
+
+                    _.forIn(spUtils.result(data, "meta.rcols"), (column, columnId) => {
+                        if (column.entityname) {                            
+                            typeaheadModel.cachedPickerReportNameColumnId = columnId;
+                            return false;
+                        }
+
+                        return true;
+                    });
+
+                    typeaheadModel.cachedPickerReportEntityTypeId = reportOptions.entityTypeId;
+                    return typeaheadModel.cachedPickerReportNameColumnId;
+                });
+            }
+        }
+
+        function getTypeaheadReportOptions(nameColumnId, value) {
+            nameColumnId = nameColumnId || -1;
+            return {
+                metadata: "colbasic",
+                startIndex: 0,
+                entityTypeId: $scope.reportOptions.entityTypeId,
+                pageSize: typeaheadModel.maxTypeaheadItems + 1,
+                relfilters: $scope.reportOptions.relationshipFilters,
+                relationDetail: $scope.reportOptions.relationDetail,
+                filtereids: $scope.reportOptions.filteredEntityIds,
+                conds: [
+                    {
+                        expid: nameColumnId,
+                        oper: "Contains",
+                        type: "String",
+                        value: value
+                    }
+                ],
+                sort: [
+                    {
+                        order: "Ascending",
+                        colid: nameColumnId
+                    }
+                ]
+            };
+        }
+
+        // Get the entities to display in the type ahead popup
+        function getTypeaheadEntities(value) {            
+            const reportSchemaOptions = {
+                metadata: "colbasic",
+                startIndex: 0,
+                pageSize: 0,
+                entityTypeId: $scope.reportOptions.entityTypeId
+            };
+
+            // Get the report name column id first so we can filter on it
+            return getPickerReportNameColumnId($scope.reportOptions.reportId, reportSchemaOptions).then(nameColumnId => {                
+                // Create a report request that filters by the specified column and value
+                const reportOptions = getTypeaheadReportOptions(nameColumnId, value);                
+
+                return spEditForm.getReportDataAsEntities($scope.reportOptions.reportId, reportOptions).then(entities => {                    
+                    if (_.isEmpty(entities)) {
+                        // Have no results, add the no results item
+                        entities = [noResultsItem];
+                        return entities;
+                    }
+
+                    if (entities.length > typeaheadModel.maxTypeaheadItems) {
+                        // Have more results that the max, add the more data item
+                        entities = _.take(entities, typeaheadModel.maxTypeaheadItems);
+                        entities.push(moreDataItem);
+                    }
+
+                    return entities;
+                }, () => {
+                    return [noResultsItem];
+                });
+            });            
+        }
+
+        function updateDisplayString() {            
+            if ($scope.options && $scope.options.selectedEntities) {
+                $scope.displayString = spEditForm.getDisplayName($scope.options.selectedEntities);   
+            }            
+        }
+
+        function onTypeaheadSelect(item) {
+            if (item) {
+                if (item._isMoreDataItem) {
+                    $scope.openDetail('entityPickers/entityCompositePicker/spEntityCompositePickerModal.tpl.html');
+                    return;
+                }
+                if (item._isNoResultsItem) {                    
+                    return;
+                }
+
+                $scope.options.selectedEntities = [item];
+            } else {
+                $scope.options.selectedEntities = [];
+            }
+        }
+
+        function displayStringModel(value) {
+            if (arguments.length) {                
+                $scope.displayString = _.trim(value);
+                if (!$scope.displayString) {
+                    // Setting an empty string clears it
+                    onTypeaheadSelect(null);
+                }
+                return null;
+            } else {
+                return $scope.displayString;
+            }
+        }
     }
 }());

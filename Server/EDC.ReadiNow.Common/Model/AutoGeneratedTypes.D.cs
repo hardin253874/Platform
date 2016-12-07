@@ -161,6 +161,17 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Public static accessor to the inherited  forward relationship.
 		/// </summary>
+		public static IEntity EnumFormattingRule_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.EnumValue.EnumFormattingRule_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
 		public static IEntity EnumOwner_Field
 		{
 			get
@@ -319,7 +330,7 @@ namespace EDC.ReadiNow.Model
 		{
 			get
 			{
-				return new IEntity [ ] { DataLabelPosEnum.Alias_Field, DataLabelPosEnum.CanDelete_Field, DataLabelPosEnum.CanModify_Field, DataLabelPosEnum.CanModifyProtectedResource_Field, DataLabelPosEnum.CreatedDate_Field, DataLabelPosEnum.Description_Field, DataLabelPosEnum.EnumOrder_Field, DataLabelPosEnum.ModifiedDate_Field, DataLabelPosEnum.Name_Field, DataLabelPosEnum.CreatedBy_Field, DataLabelPosEnum.EnumOwner_Field, DataLabelPosEnum.Flags_Field, DataLabelPosEnum.IndirectInSolution_Field, DataLabelPosEnum.InSolution_Field, DataLabelPosEnum.InStructureLevel_Field, DataLabelPosEnum.IsOfType_Field, DataLabelPosEnum.IsRootForStructureView_Field, DataLabelPosEnum.LastModifiedBy_Field, DataLabelPosEnum.ResourceConsoleBehavior_Field, DataLabelPosEnum.ResourceHasResourceKeyDataHashes_Field, DataLabelPosEnum.ResourceInFolder_Field, DataLabelPosEnum.SecurityOwner_Field, DataLabelPosEnum.SelectionBehavior_Field, DataLabelPosEnum.ShortcutInFolder_Field };
+				return new IEntity [ ] { DataLabelPosEnum.Alias_Field, DataLabelPosEnum.CanDelete_Field, DataLabelPosEnum.CanModify_Field, DataLabelPosEnum.CanModifyProtectedResource_Field, DataLabelPosEnum.CreatedDate_Field, DataLabelPosEnum.Description_Field, DataLabelPosEnum.EnumOrder_Field, DataLabelPosEnum.ModifiedDate_Field, DataLabelPosEnum.Name_Field, DataLabelPosEnum.CreatedBy_Field, DataLabelPosEnum.EnumFormattingRule_Field, DataLabelPosEnum.EnumOwner_Field, DataLabelPosEnum.Flags_Field, DataLabelPosEnum.IndirectInSolution_Field, DataLabelPosEnum.InSolution_Field, DataLabelPosEnum.InStructureLevel_Field, DataLabelPosEnum.IsOfType_Field, DataLabelPosEnum.IsRootForStructureView_Field, DataLabelPosEnum.LastModifiedBy_Field, DataLabelPosEnum.ResourceConsoleBehavior_Field, DataLabelPosEnum.ResourceHasResourceKeyDataHashes_Field, DataLabelPosEnum.ResourceInFolder_Field, DataLabelPosEnum.SecurityOwner_Field, DataLabelPosEnum.SelectionBehavior_Field, DataLabelPosEnum.ShortcutInFolder_Field };
 			}
 		}
 
@@ -466,6 +477,20 @@ namespace EDC.ReadiNow.Model
 			set
 			{
 				this.SetLookup<UserAccount>( "core:createdBy", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public FormattingRule EnumFormattingRule
+		{
+			get
+			{
+				return this.GetLookup<FormattingRule>( "core:enumFormattingRule", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<FormattingRule>( "core:enumFormattingRule", value, Direction.Forward );
 			}
 		}
 		/// <summary>
@@ -3642,6 +3667,17 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Public static accessor to the inherited  forward relationship.
 		/// </summary>
+		public static IEntity EnumFormattingRule_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.EnumValue.EnumFormattingRule_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
 		public static IEntity EnumOwner_Field
 		{
 			get
@@ -3800,7 +3836,7 @@ namespace EDC.ReadiNow.Model
 		{
 			get
 			{
-				return new IEntity [ ] { DateColFmtEnum.Alias_Field, DateColFmtEnum.CanDelete_Field, DateColFmtEnum.CanModify_Field, DateColFmtEnum.CanModifyProtectedResource_Field, DateColFmtEnum.CreatedDate_Field, DateColFmtEnum.Description_Field, DateColFmtEnum.EnumOrder_Field, DateColFmtEnum.ModifiedDate_Field, DateColFmtEnum.Name_Field, DateColFmtEnum.CreatedBy_Field, DateColFmtEnum.EnumOwner_Field, DateColFmtEnum.Flags_Field, DateColFmtEnum.IndirectInSolution_Field, DateColFmtEnum.InSolution_Field, DateColFmtEnum.InStructureLevel_Field, DateColFmtEnum.IsOfType_Field, DateColFmtEnum.IsRootForStructureView_Field, DateColFmtEnum.LastModifiedBy_Field, DateColFmtEnum.ResourceConsoleBehavior_Field, DateColFmtEnum.ResourceHasResourceKeyDataHashes_Field, DateColFmtEnum.ResourceInFolder_Field, DateColFmtEnum.SecurityOwner_Field, DateColFmtEnum.SelectionBehavior_Field, DateColFmtEnum.ShortcutInFolder_Field };
+				return new IEntity [ ] { DateColFmtEnum.Alias_Field, DateColFmtEnum.CanDelete_Field, DateColFmtEnum.CanModify_Field, DateColFmtEnum.CanModifyProtectedResource_Field, DateColFmtEnum.CreatedDate_Field, DateColFmtEnum.Description_Field, DateColFmtEnum.EnumOrder_Field, DateColFmtEnum.ModifiedDate_Field, DateColFmtEnum.Name_Field, DateColFmtEnum.CreatedBy_Field, DateColFmtEnum.EnumFormattingRule_Field, DateColFmtEnum.EnumOwner_Field, DateColFmtEnum.Flags_Field, DateColFmtEnum.IndirectInSolution_Field, DateColFmtEnum.InSolution_Field, DateColFmtEnum.InStructureLevel_Field, DateColFmtEnum.IsOfType_Field, DateColFmtEnum.IsRootForStructureView_Field, DateColFmtEnum.LastModifiedBy_Field, DateColFmtEnum.ResourceConsoleBehavior_Field, DateColFmtEnum.ResourceHasResourceKeyDataHashes_Field, DateColFmtEnum.ResourceInFolder_Field, DateColFmtEnum.SecurityOwner_Field, DateColFmtEnum.SelectionBehavior_Field, DateColFmtEnum.ShortcutInFolder_Field };
 			}
 		}
 
@@ -3947,6 +3983,20 @@ namespace EDC.ReadiNow.Model
 			set
 			{
 				this.SetLookup<UserAccount>( "core:createdBy", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public FormattingRule EnumFormattingRule
+		{
+			get
+			{
+				return this.GetLookup<FormattingRule>( "core:enumFormattingRule", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<FormattingRule>( "core:enumFormattingRule", value, Direction.Forward );
 			}
 		}
 		/// <summary>
@@ -8540,6 +8590,17 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Public static accessor to the inherited  forward relationship.
 		/// </summary>
+		public static IEntity EnumFormattingRule_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.EnumValue.EnumFormattingRule_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
 		public static IEntity EnumOwner_Field
 		{
 			get
@@ -8698,7 +8759,7 @@ namespace EDC.ReadiNow.Model
 		{
 			get
 			{
-				return new IEntity [ ] { DateTimeColFmtEnum.Alias_Field, DateTimeColFmtEnum.CanDelete_Field, DateTimeColFmtEnum.CanModify_Field, DateTimeColFmtEnum.CanModifyProtectedResource_Field, DateTimeColFmtEnum.CreatedDate_Field, DateTimeColFmtEnum.Description_Field, DateTimeColFmtEnum.EnumOrder_Field, DateTimeColFmtEnum.ModifiedDate_Field, DateTimeColFmtEnum.Name_Field, DateTimeColFmtEnum.CreatedBy_Field, DateTimeColFmtEnum.EnumOwner_Field, DateTimeColFmtEnum.Flags_Field, DateTimeColFmtEnum.IndirectInSolution_Field, DateTimeColFmtEnum.InSolution_Field, DateTimeColFmtEnum.InStructureLevel_Field, DateTimeColFmtEnum.IsOfType_Field, DateTimeColFmtEnum.IsRootForStructureView_Field, DateTimeColFmtEnum.LastModifiedBy_Field, DateTimeColFmtEnum.ResourceConsoleBehavior_Field, DateTimeColFmtEnum.ResourceHasResourceKeyDataHashes_Field, DateTimeColFmtEnum.ResourceInFolder_Field, DateTimeColFmtEnum.SecurityOwner_Field, DateTimeColFmtEnum.SelectionBehavior_Field, DateTimeColFmtEnum.ShortcutInFolder_Field };
+				return new IEntity [ ] { DateTimeColFmtEnum.Alias_Field, DateTimeColFmtEnum.CanDelete_Field, DateTimeColFmtEnum.CanModify_Field, DateTimeColFmtEnum.CanModifyProtectedResource_Field, DateTimeColFmtEnum.CreatedDate_Field, DateTimeColFmtEnum.Description_Field, DateTimeColFmtEnum.EnumOrder_Field, DateTimeColFmtEnum.ModifiedDate_Field, DateTimeColFmtEnum.Name_Field, DateTimeColFmtEnum.CreatedBy_Field, DateTimeColFmtEnum.EnumFormattingRule_Field, DateTimeColFmtEnum.EnumOwner_Field, DateTimeColFmtEnum.Flags_Field, DateTimeColFmtEnum.IndirectInSolution_Field, DateTimeColFmtEnum.InSolution_Field, DateTimeColFmtEnum.InStructureLevel_Field, DateTimeColFmtEnum.IsOfType_Field, DateTimeColFmtEnum.IsRootForStructureView_Field, DateTimeColFmtEnum.LastModifiedBy_Field, DateTimeColFmtEnum.ResourceConsoleBehavior_Field, DateTimeColFmtEnum.ResourceHasResourceKeyDataHashes_Field, DateTimeColFmtEnum.ResourceInFolder_Field, DateTimeColFmtEnum.SecurityOwner_Field, DateTimeColFmtEnum.SelectionBehavior_Field, DateTimeColFmtEnum.ShortcutInFolder_Field };
 			}
 		}
 
@@ -8845,6 +8906,20 @@ namespace EDC.ReadiNow.Model
 			set
 			{
 				this.SetLookup<UserAccount>( "core:createdBy", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public FormattingRule EnumFormattingRule
+		{
+			get
+			{
+				return this.GetLookup<FormattingRule>( "core:enumFormattingRule", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<FormattingRule>( "core:enumFormattingRule", value, Direction.Forward );
 			}
 		}
 		/// <summary>
@@ -10751,6 +10826,17 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Public static accessor to the inherited  forward relationship.
 		/// </summary>
+		public static IEntity EnumFormattingRule_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.EnumValue.EnumFormattingRule_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
 		public static IEntity EnumOwner_Field
 		{
 			get
@@ -10909,7 +10995,7 @@ namespace EDC.ReadiNow.Model
 		{
 			get
 			{
-				return new IEntity [ ] { DayOfWeekEnum.Alias_Field, DayOfWeekEnum.CanDelete_Field, DayOfWeekEnum.CanModify_Field, DayOfWeekEnum.CanModifyProtectedResource_Field, DayOfWeekEnum.CreatedDate_Field, DayOfWeekEnum.Description_Field, DayOfWeekEnum.EnumOrder_Field, DayOfWeekEnum.ModifiedDate_Field, DayOfWeekEnum.Name_Field, DayOfWeekEnum.CreatedBy_Field, DayOfWeekEnum.EnumOwner_Field, DayOfWeekEnum.Flags_Field, DayOfWeekEnum.IndirectInSolution_Field, DayOfWeekEnum.InSolution_Field, DayOfWeekEnum.InStructureLevel_Field, DayOfWeekEnum.IsOfType_Field, DayOfWeekEnum.IsRootForStructureView_Field, DayOfWeekEnum.LastModifiedBy_Field, DayOfWeekEnum.ResourceConsoleBehavior_Field, DayOfWeekEnum.ResourceHasResourceKeyDataHashes_Field, DayOfWeekEnum.ResourceInFolder_Field, DayOfWeekEnum.SecurityOwner_Field, DayOfWeekEnum.SelectionBehavior_Field, DayOfWeekEnum.ShortcutInFolder_Field };
+				return new IEntity [ ] { DayOfWeekEnum.Alias_Field, DayOfWeekEnum.CanDelete_Field, DayOfWeekEnum.CanModify_Field, DayOfWeekEnum.CanModifyProtectedResource_Field, DayOfWeekEnum.CreatedDate_Field, DayOfWeekEnum.Description_Field, DayOfWeekEnum.EnumOrder_Field, DayOfWeekEnum.ModifiedDate_Field, DayOfWeekEnum.Name_Field, DayOfWeekEnum.CreatedBy_Field, DayOfWeekEnum.EnumFormattingRule_Field, DayOfWeekEnum.EnumOwner_Field, DayOfWeekEnum.Flags_Field, DayOfWeekEnum.IndirectInSolution_Field, DayOfWeekEnum.InSolution_Field, DayOfWeekEnum.InStructureLevel_Field, DayOfWeekEnum.IsOfType_Field, DayOfWeekEnum.IsRootForStructureView_Field, DayOfWeekEnum.LastModifiedBy_Field, DayOfWeekEnum.ResourceConsoleBehavior_Field, DayOfWeekEnum.ResourceHasResourceKeyDataHashes_Field, DayOfWeekEnum.ResourceInFolder_Field, DayOfWeekEnum.SecurityOwner_Field, DayOfWeekEnum.SelectionBehavior_Field, DayOfWeekEnum.ShortcutInFolder_Field };
 			}
 		}
 
@@ -11056,6 +11142,20 @@ namespace EDC.ReadiNow.Model
 			set
 			{
 				this.SetLookup<UserAccount>( "core:createdBy", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public FormattingRule EnumFormattingRule
+		{
+			get
+			{
+				return this.GetLookup<FormattingRule>( "core:enumFormattingRule", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<FormattingRule>( "core:enumFormattingRule", value, Direction.Forward );
 			}
 		}
 		/// <summary>
@@ -24114,6 +24214,17 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Public static accessor to the inherited field.
 		/// </summary>
+		public static BoolField ParentNeedNotExist_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.ResourceReportNode.ParentNeedNotExist_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
 		public static BoolField TargetMustExist_Field
 		{
 			get
@@ -24360,7 +24471,7 @@ namespace EDC.ReadiNow.Model
 		{
 			get
 			{
-				return new IEntity [ ] { DerivedTypeReportNode.Alias_Field, DerivedTypeReportNode.CanDelete_Field, DerivedTypeReportNode.CanModify_Field, DerivedTypeReportNode.CreatedDate_Field, DerivedTypeReportNode.Description_Field, DerivedTypeReportNode.ExactType_Field, DerivedTypeReportNode.ModifiedDate_Field, DerivedTypeReportNode.Name_Field, DerivedTypeReportNode.TargetMustExist_Field, DerivedTypeReportNode.TargetNeedNotExist_Field, DerivedTypeReportNode.CreatedBy_Field, DerivedTypeReportNode.Flags_Field, DerivedTypeReportNode.IndirectInSolution_Field, DerivedTypeReportNode.InSolution_Field, DerivedTypeReportNode.InStructureLevel_Field, DerivedTypeReportNode.IsOfType_Field, DerivedTypeReportNode.IsRootForStructureView_Field, DerivedTypeReportNode.LastModifiedBy_Field, DerivedTypeReportNode.NodeUsedByExpression_Field, DerivedTypeReportNode.NodeUsedByStructureViewExpression_Field, DerivedTypeReportNode.ParentAggregatedNode_Field, DerivedTypeReportNode.ParentReportNode_Field, DerivedTypeReportNode.RelatedReportNodes_Field, DerivedTypeReportNode.ResourceConsoleBehavior_Field, DerivedTypeReportNode.ResourceHasResourceKeyDataHashes_Field, DerivedTypeReportNode.ResourceInFolder_Field, DerivedTypeReportNode.ResourceReportNodeType_Field, DerivedTypeReportNode.SecurityOwner_Field, DerivedTypeReportNode.SelectionBehavior_Field, DerivedTypeReportNode.ShortcutInFolder_Field };
+				return new IEntity [ ] { DerivedTypeReportNode.Alias_Field, DerivedTypeReportNode.CanDelete_Field, DerivedTypeReportNode.CanModify_Field, DerivedTypeReportNode.CreatedDate_Field, DerivedTypeReportNode.Description_Field, DerivedTypeReportNode.ExactType_Field, DerivedTypeReportNode.ModifiedDate_Field, DerivedTypeReportNode.Name_Field, DerivedTypeReportNode.ParentNeedNotExist_Field, DerivedTypeReportNode.TargetMustExist_Field, DerivedTypeReportNode.TargetNeedNotExist_Field, DerivedTypeReportNode.CreatedBy_Field, DerivedTypeReportNode.Flags_Field, DerivedTypeReportNode.IndirectInSolution_Field, DerivedTypeReportNode.InSolution_Field, DerivedTypeReportNode.InStructureLevel_Field, DerivedTypeReportNode.IsOfType_Field, DerivedTypeReportNode.IsRootForStructureView_Field, DerivedTypeReportNode.LastModifiedBy_Field, DerivedTypeReportNode.NodeUsedByExpression_Field, DerivedTypeReportNode.NodeUsedByStructureViewExpression_Field, DerivedTypeReportNode.ParentAggregatedNode_Field, DerivedTypeReportNode.ParentReportNode_Field, DerivedTypeReportNode.RelatedReportNodes_Field, DerivedTypeReportNode.ResourceConsoleBehavior_Field, DerivedTypeReportNode.ResourceHasResourceKeyDataHashes_Field, DerivedTypeReportNode.ResourceInFolder_Field, DerivedTypeReportNode.ResourceReportNodeType_Field, DerivedTypeReportNode.SecurityOwner_Field, DerivedTypeReportNode.SelectionBehavior_Field, DerivedTypeReportNode.ShortcutInFolder_Field };
 			}
 		}
 
@@ -24478,6 +24589,20 @@ namespace EDC.ReadiNow.Model
 			set
 			{
 				this.SetField( "core:name", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public bool? ParentNeedNotExist
+		{
+			get
+			{
+				return ( bool? ) this.GetField( "core:parentNeedNotExist" );
+			}
+			set
+			{
+				this.SetField( "core:parentNeedNotExist", value);
 			}
 		}
 		/// <summary>
@@ -24979,6 +25104,17 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Public static accessor to the inherited  forward relationship.
 		/// </summary>
+		public static IEntity EnumFormattingRule_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.EnumValue.EnumFormattingRule_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
 		public static IEntity EnumOwner_Field
 		{
 			get
@@ -25137,7 +25273,7 @@ namespace EDC.ReadiNow.Model
 		{
 			get
 			{
-				return new IEntity [ ] { DirectionEnum.Alias_Field, DirectionEnum.CanDelete_Field, DirectionEnum.CanModify_Field, DirectionEnum.CanModifyProtectedResource_Field, DirectionEnum.CreatedDate_Field, DirectionEnum.Description_Field, DirectionEnum.EnumOrder_Field, DirectionEnum.ModifiedDate_Field, DirectionEnum.Name_Field, DirectionEnum.CreatedBy_Field, DirectionEnum.EnumOwner_Field, DirectionEnum.Flags_Field, DirectionEnum.IndirectInSolution_Field, DirectionEnum.InSolution_Field, DirectionEnum.InStructureLevel_Field, DirectionEnum.IsOfType_Field, DirectionEnum.IsRootForStructureView_Field, DirectionEnum.LastModifiedBy_Field, DirectionEnum.ResourceConsoleBehavior_Field, DirectionEnum.ResourceHasResourceKeyDataHashes_Field, DirectionEnum.ResourceInFolder_Field, DirectionEnum.SecurityOwner_Field, DirectionEnum.SelectionBehavior_Field, DirectionEnum.ShortcutInFolder_Field };
+				return new IEntity [ ] { DirectionEnum.Alias_Field, DirectionEnum.CanDelete_Field, DirectionEnum.CanModify_Field, DirectionEnum.CanModifyProtectedResource_Field, DirectionEnum.CreatedDate_Field, DirectionEnum.Description_Field, DirectionEnum.EnumOrder_Field, DirectionEnum.ModifiedDate_Field, DirectionEnum.Name_Field, DirectionEnum.CreatedBy_Field, DirectionEnum.EnumFormattingRule_Field, DirectionEnum.EnumOwner_Field, DirectionEnum.Flags_Field, DirectionEnum.IndirectInSolution_Field, DirectionEnum.InSolution_Field, DirectionEnum.InStructureLevel_Field, DirectionEnum.IsOfType_Field, DirectionEnum.IsRootForStructureView_Field, DirectionEnum.LastModifiedBy_Field, DirectionEnum.ResourceConsoleBehavior_Field, DirectionEnum.ResourceHasResourceKeyDataHashes_Field, DirectionEnum.ResourceInFolder_Field, DirectionEnum.SecurityOwner_Field, DirectionEnum.SelectionBehavior_Field, DirectionEnum.ShortcutInFolder_Field };
 			}
 		}
 
@@ -25284,6 +25420,20 @@ namespace EDC.ReadiNow.Model
 			set
 			{
 				this.SetLookup<UserAccount>( "core:createdBy", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public FormattingRule EnumFormattingRule
+		{
+			get
+			{
+				return this.GetLookup<FormattingRule>( "core:enumFormattingRule", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<FormattingRule>( "core:enumFormattingRule", value, Direction.Forward );
 			}
 		}
 		/// <summary>
@@ -26525,6 +26675,17 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Public static accessor to the field.
 		/// </summary>
+		public static BoolField DisableDefaultFormat_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Entity.GetFieldEntity<BoolField>( "core:disableDefaultFormat" );
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the field.
+		/// </summary>
 		public static IntField FormatDecimalPlaces_Field
 		{
 			get
@@ -26673,6 +26834,17 @@ namespace EDC.ReadiNow.Model
 			get
 			{
 				return EDC.ReadiNow.Model.Entity.GetFieldEntity<Entity>( "core:dateTimeColumnFormat" );
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the direct forward relationship.
+		/// </summary>
+		public static IEntity EntityListColumnFormat_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Entity.GetFieldEntity<Entity>( "core:entityListColumnFormat" );
 			}
 		}
 
@@ -26870,7 +27042,7 @@ namespace EDC.ReadiNow.Model
 		{
 			get
 			{
-				return new IEntity [ ] { DisplayFormat.ColumnShowText_Field, DisplayFormat.FormatDecimalPlaces_Field, DisplayFormat.FormatPrefix_Field, DisplayFormat.FormatSuffix_Field, DisplayFormat.MaxLineCount_Field, DisplayFormat.Alias_Field, DisplayFormat.CanDelete_Field, DisplayFormat.CanModify_Field, DisplayFormat.CreatedDate_Field, DisplayFormat.Description_Field, DisplayFormat.ModifiedDate_Field, DisplayFormat.Name_Field, DisplayFormat.CreatedBy_Field, DisplayFormat.DateColumnFormat_Field, DisplayFormat.DateTimeColumnFormat_Field, DisplayFormat.Flags_Field, DisplayFormat.FormatAlignment_Field, DisplayFormat.FormatImageScale_Field, DisplayFormat.FormatImageSize_Field, DisplayFormat.IndirectInSolution_Field, DisplayFormat.InSolution_Field, DisplayFormat.InStructureLevel_Field, DisplayFormat.IsOfType_Field, DisplayFormat.IsRootForStructureView_Field, DisplayFormat.LastModifiedBy_Field, DisplayFormat.ResourceConsoleBehavior_Field, DisplayFormat.ResourceHasResourceKeyDataHashes_Field, DisplayFormat.ResourceInFolder_Field, DisplayFormat.SecurityOwner_Field, DisplayFormat.SelectionBehavior_Field, DisplayFormat.ShortcutInFolder_Field, DisplayFormat.TimeColumnFormat_Field };
+				return new IEntity [ ] { DisplayFormat.ColumnShowText_Field, DisplayFormat.DisableDefaultFormat_Field, DisplayFormat.FormatDecimalPlaces_Field, DisplayFormat.FormatPrefix_Field, DisplayFormat.FormatSuffix_Field, DisplayFormat.MaxLineCount_Field, DisplayFormat.Alias_Field, DisplayFormat.CanDelete_Field, DisplayFormat.CanModify_Field, DisplayFormat.CreatedDate_Field, DisplayFormat.Description_Field, DisplayFormat.ModifiedDate_Field, DisplayFormat.Name_Field, DisplayFormat.CreatedBy_Field, DisplayFormat.DateColumnFormat_Field, DisplayFormat.DateTimeColumnFormat_Field, DisplayFormat.EntityListColumnFormat_Field, DisplayFormat.Flags_Field, DisplayFormat.FormatAlignment_Field, DisplayFormat.FormatImageScale_Field, DisplayFormat.FormatImageSize_Field, DisplayFormat.IndirectInSolution_Field, DisplayFormat.InSolution_Field, DisplayFormat.InStructureLevel_Field, DisplayFormat.IsOfType_Field, DisplayFormat.IsRootForStructureView_Field, DisplayFormat.LastModifiedBy_Field, DisplayFormat.ResourceConsoleBehavior_Field, DisplayFormat.ResourceHasResourceKeyDataHashes_Field, DisplayFormat.ResourceInFolder_Field, DisplayFormat.SecurityOwner_Field, DisplayFormat.SelectionBehavior_Field, DisplayFormat.ShortcutInFolder_Field, DisplayFormat.TimeColumnFormat_Field };
 			}
 		}
 
@@ -26890,6 +27062,20 @@ namespace EDC.ReadiNow.Model
 			set
 			{
 				this.SetField( "core:columnShowText", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the field.
+		/// </summary>
+		public bool? DisableDefaultFormat
+		{
+			get
+			{
+				return ( bool? ) this.GetField( "core:disableDefaultFormat" );
+			}
+			set
+			{
+				this.SetField( "core:disableDefaultFormat", value);
 			}
 		}
 		/// <summary>
@@ -27125,6 +27311,39 @@ namespace EDC.ReadiNow.Model
 					return;
 				}
 				this.SetRelationships( "core:dateTimeColumnFormat", new EntityRelationship<DateTimeColFmtEnum>( EDC.ReadiNow.Model.Entity.Get<DateTimeColFmtEnum>( EntityRefHelper.ConvertAliasWithNamespace( DateTimeColFmtEnum.ConvertEnumToAlias( value.Value ) ) ) ).ToEntityRelationshipCollection( ), Direction.Forward );
+			}
+		}		
+		/// <summary>
+		/// Public accessor for the directforward relationship.
+		/// </summary>
+		public EntityListColFmtEnum EntityListColumnFormat
+		{
+			get
+			{
+				return this.GetLookup<EntityListColFmtEnum>( "core:entityListColumnFormat", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<EntityListColFmtEnum>( "core:entityListColumnFormat", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the enumeration value.
+		/// </summary>
+		public EntityListColFmtEnum_Enumeration? EntityListColumnFormat_Enum
+		{
+			get
+			{
+				return GetEnum<EntityListColFmtEnum, EntityListColFmtEnum_Enumeration>( "core:entityListColumnFormat", Direction.Forward, EntityListColFmtEnum.ConvertAliasToEnum );
+			}
+			set
+			{
+				if ( value == null )
+				{
+					this.SetRelationships( "core:entityListColumnFormat", null, Direction.Forward );
+					return;
+				}
+				this.SetRelationships( "core:entityListColumnFormat", new EntityRelationship<EntityListColFmtEnum>( EDC.ReadiNow.Model.Entity.Get<EntityListColFmtEnum>( EntityRefHelper.ConvertAliasWithNamespace( EntityListColFmtEnum.ConvertEnumToAlias( value.Value ) ) ) ).ToEntityRelationshipCollection( ), Direction.Forward );
 			}
 		}		
 		/// <summary>

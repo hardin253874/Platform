@@ -56,7 +56,8 @@ namespace EDC.ReadiNow.Metadata.Reporting.Helpers
                             EntityId = reportColumn.Id, 
                             ColumnName = reportColumn.Name, 
                             DecimalPlaces = reportColumn.ColumnDisplayFormat.FormatDecimalPlaces ?? 0, 
-                            ShowText = reportColumn.ColumnDisplayFormat.ColumnShowText ?? false, 
+                            ShowText = reportColumn.ColumnDisplayFormat.ColumnShowText ?? false,
+                            DisableDefaultFormat = reportColumn.ColumnDisplayFormat.DisableDefaultFormat ?? false,
                             Prefix = reportColumn.ColumnDisplayFormat.FormatPrefix, 
                             Suffix = reportColumn.ColumnDisplayFormat.FormatSuffix, 
                             Lines = reportColumn.ColumnDisplayFormat.MaxLineCount ?? 0,
@@ -84,6 +85,11 @@ namespace EDC.ReadiNow.Metadata.Reporting.Helpers
                     if (displayFormat.FormatAlignment != null)
                     {
                         columnFormatting.Alignment = displayFormat.FormatAlignment;
+                    }
+
+                    if (displayFormat.EntityListColumnFormat != null)
+                    {
+                        columnFormatting.EntityListColumnFormat = displayFormat.EntityListColumnFormat;
                     }
 
                 }

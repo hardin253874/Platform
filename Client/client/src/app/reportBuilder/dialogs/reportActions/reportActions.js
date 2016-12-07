@@ -87,7 +87,7 @@
 
                     // Report Actions
                     var reportActions = _.filter(actions, function (action) {
-                        return !action.iscontext && action.state != 'createForm';
+                        return !action.iscontext && action.state !== 'createForm';
                     });
 
                     _.forEach(reportActions, function(reportAction) {

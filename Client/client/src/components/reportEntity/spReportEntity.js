@@ -122,6 +122,8 @@ var spReportEntity;
                       'name,' +
                       'isOfType.@NA,' +
                       'exactType,' +
+                      'joinPredicateCalculation,' +
+                      'parentNeedNotExist,' +
                       'targetMustExist,' +
                       'targetNeedNotExist,' +
                       'resourceReportNodeType.@NAMETYPE,' +
@@ -165,13 +167,15 @@ var spReportEntity;
                 columnDisplayFormatRq += ', columnDisplayFormat.{' +
                         'isOfType.@NA,' +
                         'columnShowText, ' +
+                        'disableDefaultFormat, ' +
                         //'columnFormatString,' +
                         '{ formatImageScale,' +
                         '  dateColumnFormat,' +
                         '  timeColumnFormat,' +
                         '  dateTimeColumnFormat,' +
 			            '  formatAlignment,' +
-                        '  formatImageSize' +
+                        '  formatImageSize,' +
+                        '  entityListColumnFormat' +
                         '}.alias,' +
                         'formatAlignment.{name,alias, isOfType.@NA},' +
                         'formatDecimalPlaces,' +
@@ -242,7 +246,7 @@ var spReportEntity;
     };
     
     spReportEntity.cloneTypes = ['report', 'reportColumn', 'reportOrderBy', 'reportCondition',
-          'reportNode', 'resourceReportNode', 'relationshipReportNode', 'derivedTypeReportNode', 'relationshipInstanceReportNode', 'aggregateReportNode', 
+          'reportNode', 'resourceReportNode', 'relationshipReportNode', 'derivedTypeReportNode', 'aggregateReportNode', 
           'reportExpression', 'nodeExpression', 'idExpression', 'fieldExpression', 'resourceExpression', 'scriptExpression', 'columnReferenceExpression', 'aggregateExpression', 'structureViewExpression',
           'displayFormat', 'formattingRule', 'conditionBasedRule', 'barFormattingRule', 'iconFormattingRule', 'iconRule', 'colorFormattingRule', 'colorRule', 'imageFormattingRule',
           'formattingRule', 'formatImageSize', 'stringArgument', 'integerArgument', 'decimalArgument', 'currencyArgument', 'boolArgument', 'dateTimeArgument', 'timeArgument', 'parameter',
@@ -250,7 +254,7 @@ var spReportEntity;
     
     spReportEntity.cloneRelationship = ['rootNode', 'relatedReportNodes', 'reportColumns', 'columnExpression', 'columnDisplayFormat', 'columnFormattingRule', 'followRelationship', 'resourceInFolder', 'resourceViewerConsoleForm', 'inSolution', 'parentAggregatedNode',
            'reportOrderBys', 'hasConditions', 'conditionExpression', 'operator', 'conditionParameter', 'columnForCondition', 'resourceReportNodeType', 'groupedBy', 'groupedNode', 'reportUsesDefinition', 'navigationElementIcon', 'formatAlignment',
-           'ruleImageScale', 'formatImageScale', 'dateColumnFormat', 'timeColumnFormat', 'dateTimeColumnFormat', 'formatAlignment', 'formatImageSize', 'formattingRule', 'barMaxValue', 'iconRules', 'colorRules', 'barMinValue', 'ruleCondition', 'iconRuleImage', 'iconRuleCFIcon',
+           'ruleImageScale', 'formatImageScale', 'dateColumnFormat', 'entityListColumnFormat', 'timeColumnFormat', 'dateTimeColumnFormat', 'formatAlignment', 'formatImageSize', 'formattingRule', 'barMaxValue', 'iconRules', 'colorRules', 'barMinValue', 'ruleCondition', 'iconRuleImage', 'iconRuleCFIcon',
            'aggregateMethod', 'fieldExpressionField', 'sourceNode', 'reportExpressionResultType', 'expressionReferencesColumn', 'aggregatedExpression', 'columnRollup', 'rollupMethod', 'columnGrouping', 'groupingMethod', 'groupingPriority', 'groupingCollapsed', 'paramTypeAndDefault',
            'resourceListParameterValues', 'resourceArgumentValue','orderByExpression', 'cardinality', 'inherits', 'fromType', 'toType', 'conformsToType', 'reportStyle',
            'resourceConsoleBehavior', 'selectionBehavior', 'behaviorActionMenu', 'menuItems', 'suppressedActions', 'includeActionsAsButtons', 'actionMenuItemToWorkflow', 'actionMenuItemToReportTemplate', 'includeTypesForNewButtons', 'suppressedTypesForNewMenu', 'structureViewExpressionSourceNode', 'structureViewExpressionStructureView'];

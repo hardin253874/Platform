@@ -19,6 +19,7 @@
   <entity alias="console:actionMenuItemToReportTemplate" upgradeId="b344b821-2d5d-429f-ae3b-c9be5c138309" />
   <entity alias="console:actionMenuItemToWorkflow" upgradeId="01d41bf0-65b3-4eee-992c-3ee4f0e19090" />
   <entity alias="console:actionRequiresExpression" upgradeId="bb6b6d80-502d-4913-a1c2-4a2125babc13" />
+  <entity alias="console:actionRequiresParentPermission" upgradeId="1b2b3316-e42a-4c41-9214-6e6b13773b16" />
   <entity alias="console:actionRequiresPermission" upgradeId="63bb3329-18b9-449b-aaa5-5bc2e80a7f0e" />
   <entity alias="console:actionSuppressedOnMenu" upgradeId="da754367-9534-4c30-a753-a9209c35b01a" />
   <entity alias="console:addRelationshipAction" upgradeId="9e930aa0-db09-48c2-8861-8c43e6bbf39a" />
@@ -71,6 +72,7 @@
   <entity alias="console:calculatedFieldReport" upgradeId="505E8CE2-37C9-48DE-AAE8-B74A0B79F40E" />
   <entity alias="console:calculatedFieldsAdminBehavior" upgradeId="05C2E4D5-DEC7-4CF7-86EE-F7E0D6C22E3F" />
   <entity alias="console:calculatedRenderControl" upgradeId="38C314E8-2BE7-4E31-8B6B-71356A622319" />
+  <entity alias="console:cancelWorkflowAction" upgradeId="afc491dc-e7a4-4563-a815-5a7da6c647a2" />
   <entity alias="console:canHaveFields" upgradeId="762FF018-77EC-4569-B0BD-A2B79FF23BB7" />
   <entity alias="console:changePasswordAtNextLogonFieldControlOnForm3952gen" upgradeId="5991b471-39e9-4625-b09b-0122ac936e54" />
   <entity alias="console:chartBehavior" upgradeId="ab92a2fc-f7ad-482b-8a25-eb4e1524bffc" />
@@ -197,6 +199,7 @@
   <entity alias="console:defaultTabletForm" upgradeId="01f8915e-6926-44b1-8c59-5abba202fdcb" />
   <entity alias="console:defaultTypeActionMenu" upgradeId="58fca7c8-c608-4154-b040-5769dc539e2d" />
   <entity alias="console:defaultWorkflowActionMenu" upgradeId="2ec72ed2-d969-432d-825b-142af554cbb7" />
+  <entity alias="console:defaultWorkflowRunActionMenu" upgradeId="5c776bd0-f635-4640-97fb-ba73c33931ae" />
   <entity alias="console:definitionsAdminBehavior" upgradeId="e7dc7a05-f2aa-47a5-8208-fe8e53256735" />
   <entity alias="console:deleteResourceAction" upgradeId="4e274f80-2719-4f9a-90d0-96bf90d3723c" />
   <entity alias="console:descriptionFieldControlOnForm3613gen" upgradeId="5fa048a6-5994-4879-a7a9-dbb05130dae3" />
@@ -364,6 +367,10 @@
   <entity alias="console:navContainer" upgradeId="f27351dc-f0d5-4ec7-9801-0c3d77a05280" />
   <entity alias="console:navContainerDetails" upgradeId="136CD367-AE80-4FE4-A97E-DA5B57FF98EE" />
   <entity alias="console:navElementTreeIconBackgroundColor" upgradeId="f2dda6c3-93c6-4ee8-9675-b60f3b7c81e0" />
+  <entity alias="console:navigateToCreateFormActionDefinition" upgradeId="e8b7a5b9-9acd-4502-aaa0-dcedad784cdd" />
+  <entity alias="console:navigateToCreateFormActionForm" upgradeId="b5b4dfd8-44e4-4b9f-9ef7-f5225de9a68b" />
+  <entity alias="console:navigateToCreateFormActionMenuItem" upgradeId="0e12ec87-0940-4d9f-9c66-cff7b0c50220" />
+  <entity alias="console:navigateToCreateFormActionMenuItemDetails" upgradeId="5b5a372e-6618-4f31-b6ee-dc091b390abe" />
   <entity alias="console:navigationConfigButton" upgradeId="E40B5B26-4043-4D1B-B861-0210486D4202" />
   <entity alias="console:navigationElement" upgradeId="35d5d4e2-b299-436d-8870-f8aef6672393" />
   <entity alias="console:navigationElementDescriptionFieldControlOnForm" upgradeId="F38D97D9-F73F-49F7-9AD2-3651AF89471D" />
@@ -611,7 +618,7 @@
   <entity alias="console:viewResourceAction" upgradeId="f898d1f1-f985-49d3-8ef8-078699ef288b" />
   <entity alias="console:viewResourceEndpointAction" upgradeId="284ca191-3bc4-4579-9731-093a00e13185" />
   <entity alias="console:viewWorkflowInDesignerAction" upgradeId="8BEAE181-8444-4F73-A331-BF7A28211DDA" />
-  <entity alias="console:visibilityCalculation" upgradeId="F59E34BC-0FAC-4E16-ACF8-5C45472C4A2C" />  
+  <entity alias="console:visibilityCalculation" upgradeId="F59E34BC-0FAC-4E16-ACF8-5C45472C4A2C" />
   <entity alias="console:wbcDisableControlBasedOnRelationshipControl" upgradeId="D6A59BB9-49FC-4AFC-AF30-DB1129A38437" />
   <entity alias="console:wbcDisableControlBasedOnResources" upgradeId="D11B24B5-5E08-4E95-A719-6CEE05B1E330" />
   <entity alias="console:wbcHideSuccessConfirmation" upgradeId="13F86952-092F-4565-B060-967B6242F754" />
@@ -623,6 +630,7 @@
   <entity alias="console:workflowButtonControl" upgradeId="52ce90bf-623a-46c5-887b-c45ffebddb1c" />
   <entity alias="console:workflowButtonControlDetails" upgradeId="821B0A10-16E9-4748-8E5A-CC800EECA707" />
   <entity alias="console:workflowReport" upgradeId="bc6ff97e-ca08-436d-bad2-2cf411bcb272" />
+  <entity alias="console:workflowRunBehavior" upgradeId="5dd0a952-3904-446f-b331-0831460cb920" />
   <entity alias="console:workflowTriggersOnScheduleReport" upgradeId="a1276974-b697-425c-8cf4-7ed665b54ebc" />
   <entity alias="console:workflowTriggersUurReport" upgradeId="11f76977-4237-41ce-a43e-bd189b4f7286" />
   <entity alias="core:accessRule" upgradeId="d88946de-3039-4614-92f9-d2f14735373f" />
@@ -1025,6 +1033,7 @@
   <entity alias="core:columnReferenceExpression" upgradeId="81b529fc-c78a-4c20-a03d-8dd6141e2815" />
   <entity alias="core:columnReferenceExpressionDetails" upgradeId="0E1F33EF-DEBE-4B41-9DC2-A1888C5132E3" />
   <entity alias="core:columnShowText" upgradeId="4924151d-4c23-4693-86a0-cc5c2d0a8270" />
+  <entity alias="core:commaSeparatedList" upgradeId="44D06EBC-5AAE-44FB-B9A1-554C51E887D7" />
   <entity alias="core:completeUserTaskEmailAction" upgradeId="26acd824-58c5-4b3a-8c7c-044f92ba7791" />
   <entity alias="core:completeUserTaskEmailActionClass" upgradeId="41468539-eeb7-4226-b075-153059d9b987" />
   <entity alias="core:condFormatImage" upgradeId="aedc3abb-6356-4db1-bccc-b9a5b39498d5" />
@@ -1042,6 +1051,7 @@
   <entity alias="core:consoleSolution" upgradeId="34ff4d95-70c6-4ae8-8f6f-38d88546d4c4" />
   <entity alias="core:consoleToCoreDependency" upgradeId="2EF1723E-E331-4ED2-AAA3-C9532FD85776" />
   <entity alias="core:constrainParent" upgradeId="af90d8a5-f7e9-46cc-b68d-6e9d80fdbea4" />
+  <entity alias="core:contactSupportUrl" upgradeId="FBCFA79F-EDE7-443B-9D37-82D3C46AEC85" />
   <entity alias="core:containedActivities" upgradeId="a4338f74-5651-4167-bd14-b679ee841391" />
   <entity alias="core:controlAccess" upgradeId="f3113792-3bc3-4010-bc6c-1f5fe8986311" />
   <entity alias="core:coreSolution" upgradeId="7062aade-2e72-4a71-a7fa-a412d20d6f01" />
@@ -1090,6 +1100,8 @@
   <entity alias="core:currentDocumentRevision" upgradeId="52a5f52d-56e1-40af-b930-2de19faaea15" />
   <entity alias="core:customEditFormUniqueNameKey" upgradeId="22f3ddbf-e7da-4614-a6d6-752883e390c2" />
   <entity alias="core:customFormEventTarget" upgradeId="7E416870-9348-4A12-B7E6-C4EEE72F5371" />
+  <entity alias="core:customJoinReportNode" upgradeId="f39e6db5-de2e-479c-83b6-2a2246412c14" />
+  <entity alias="core:customJoinReportNodeDetails" upgradeId="a020d6c2-dded-4257-9cd3-e964667cb916" />
   <entity alias="core:dataHash" upgradeId="B847F555-BC06-4E3D-A17F-E5334A3995AA" />
   <entity alias="core:dataLabelPos" upgradeId="051d8b10-c432-4383-be1d-a1bf19c9040d" />
   <entity alias="core:dataLabelPosEnum" upgradeId="0face561-6425-44de-aba2-0872d650d354" />
@@ -1209,6 +1221,7 @@
   <entity alias="core:dfutLinkToken" upgradeId="6e9f0983-f7f5-4ad4-bfbe-6d516719930a" />
   <entity alias="core:directionEnum" upgradeId="D56CB0BF-4D0B-45CC-B8D1-4D983A192215" />
   <entity alias="core:disabled" upgradeId="56315850-c865-4e3c-ba2f-c6fb8b8a9923" />
+  <entity alias="core:disableDefaultFormat" upgradeId="8426BC67-56F3-42A6-907C-A5098C1E7A09" />
   <entity alias="core:displayFormActivity" upgradeId="65e72fbb-388f-4f47-9dbf-a5a51567986e" />
   <entity alias="core:displayFormActivityClass" upgradeId="2d6527a5-8d88-4c85-8f0b-335d8b90c641" />
   <entity alias="core:displayFormat" upgradeId="caef760e-07f7-47e6-b59b-97b35ad4b6cf" />
@@ -1219,6 +1232,11 @@
   <entity alias="core:displayFormUserTaskDetails" upgradeId="EB638BBD-3CDC-44B9-83B1-AC6252B23BC8" />
   <entity alias="core:docLibrarySection" upgradeId="2364f7d8-769b-4f79-8c30-7657ca6403ad" />
   <entity alias="core:document" upgradeId="1a691947-5f08-4615-a8fc-07be8cf00d3a" />
+  <entity alias="core:documentationSettingsGroup" upgradeId="BCF479DB-0996-491F-9AD1-D6AD983575A3" />
+  <entity alias="core:documentationUrl" upgradeId="78DC49F7-0E97-49BA-8C3F-BC4B1278311B" />
+  <entity alias="core:documentationUserName" upgradeId="543FC544-6ED7-4189-90ED-70F77EB4A84B" />
+  <entity alias="core:documentationUserPassword" upgradeId="B0FEAB77-A323-40EF-8991-0394DE51D415" />
+  <entity alias="core:documentationUserPasswordSecureId" upgradeId="F9E19FED-FF87-4912-B0BF-9B5C4F151952" />
   <entity alias="core:documentBeforeSaveTarget" upgradeId="e7408669-a6e8-4f6f-90a5-7fae755ce23e" />
   <entity alias="core:documentCreatedBy" upgradeId="0c00a521-cabf-4754-b426-d2769db96b63" />
   <entity alias="core:documentDetails" upgradeId="3fa56038-0770-4267-a6e1-7ca0ae850c4f" />
@@ -1298,8 +1316,12 @@
   <entity alias="core:endValueSource" upgradeId="3e8dc8ba-3200-442e-9445-bac257141904" />
   <entity alias="core:enEmailAddressExpression" upgradeId="a8aea2f0-4185-471b-b76d-031f30173f47" />
   <entity alias="core:enSubject" upgradeId="acb8e2b5-43cd-4f41-9085-cf8e72154bf8" />
+  <entity alias="core:entityListColFmtEnum" upgradeId="6593B470-88C1-499A-9F03-9192D57371E1" />  
+  <entity alias="core:entityListColumnFormat" upgradeId="33FE8366-FBBF-4087-B712-B6E78091C46E" />  
   <entity alias="core:entityWithArgsAndExits" upgradeId="9e9bb6c5-afc1-403c-8282-cf941cb82963" />
   <entity alias="core:entityWithArgsAndExitsDetails" upgradeId="6DC00F97-F5AC-46FD-87DA-DEA98E38320F" />
+  <entity alias="core:enumFormattingRule" upgradeId="91FC7DF2-320A-47EA-9B6F-8F0B53E06CF0" />
+  <entity alias="core:enumFormattingType" upgradeId="75E53FD0-18FE-41E8-BD80-36A521E9DAFD" />
   <entity alias="core:enumOrder" upgradeId="7d303a65-f4f1-4454-b509-5c5b8d08eefa" />
   <entity alias="core:enumOwner" upgradeId="dec9abb2-e2fe-49e0-bc26-0112c139e331" />
   <entity alias="core:enumType" upgradeId="e5ca75bb-3a63-4dfd-9da4-1e5427d13789" />
@@ -1307,6 +1329,7 @@
   <entity alias="core:enumValue" upgradeId="b85deb42-8b71-401d-85f4-eef5d539fbc6" />
   <entity alias="core:enumValueDetails" upgradeId="5C2F51CD-F22B-4BEC-9ED8-670CDB2E5199" />
   <entity alias="core:enumValueEventTarget" upgradeId="472BE564-6C85-458C-9FF5-49CBE35B159F" />
+  <entity alias="core:enumValueFormattingType" upgradeId="BAF1C1EA-BD23-4F4D-BC93-BF3016CCF590" />
   <entity alias="core:environmentSection" upgradeId="7c1dafd8-466f-4f4a-8e7a-e66de8b361b4" />
   <entity alias="core:equivFieldType" upgradeId="f26e089d-1e2e-4eeb-8e99-5825887ec2b5" />
   <entity alias="core:errorLogEntry" upgradeId="8efe3ca3-696a-403f-b5f8-06fe279a0f69" />
@@ -1362,6 +1385,8 @@
   <entity alias="core:exit7" upgradeId="5e7f1ff3-66fc-4735-a295-dd9652df98fb" />
   <entity alias="core:exit8" upgradeId="ddea2010-d688-4dc0-8b6c-43e5419947de" />
   <entity alias="core:exit9" upgradeId="0ae6809b-ba66-400a-859a-d038b9537001" />
+  <entity alias="core:exitLpc1" upgradeId="602d1323-2561-49a2-855f-1650a61bf4ec" />
+  <entity alias="core:exitLtc1" upgradeId="a52dc916-4292-4bc0-8411-6c27d03fb5a9" />
   <entity alias="core:exitPoint" upgradeId="782e823e-0739-491e-8c83-d81d03f56b07" />
   <entity alias="core:exitPointActionSummary" upgradeId="7e61c408-3786-4a10-828f-a4fc6eb78bbe" />
   <entity alias="core:exitPointDetails" upgradeId="398F46AD-02CB-44A2-AB87-F0D0E6B25857" />
@@ -1449,6 +1474,9 @@
   <entity alias="core:formatSuffix" upgradeId="d7ac668a-f13c-45a8-8390-f558202b659a" />
   <entity alias="core:formattingRule" upgradeId="d916c020-fd69-4e82-9c02-1ff740614569" />
   <entity alias="core:formattingRuleDetails" upgradeId="A8BE1BAD-7D8C-4C9B-93F2-357F14B3722B" />
+  <entity alias="core:formattingTypeHighlight" upgradeId="E4AAEFD2-DAE0-4E06-AEC8-741CF6A48BEC" />
+  <entity alias="core:formattingTypeIcon" upgradeId="03D893CF-3C4C-4021-85E7-F4A5E942E8AE" />
+  <entity alias="core:formattingTypeNone" upgradeId="A6EC9DDC-151A-446F-86B8-DD93EBF3552A" />
   <entity alias="core:formToUse" upgradeId="e2dc8116-e1ca-4ef6-bfe1-a3d5ab390310" />
   <entity alias="core:forward" upgradeId="04D49F4E-31AB-402D-8BF5-FD3E3797703B" />
   <entity alias="core:fromActivity" upgradeId="66647b50-eaf1-4eab-8e4a-6ca5c19cfc84" />
@@ -1586,6 +1614,8 @@
   <entity alias="core:imageBackgroundColor" upgradeId="e8c81d76-fc37-49ad-af2b-66b2589bb0b6" />
   <entity alias="core:imageDetails" upgradeId="A4B77B37-3F86-492E-8171-50A68C9FC72B" />
   <entity alias="core:imageDimensions" upgradeId="D5301030-66F1-4136-A342-8356F39FAE59" />
+  <entity alias="core:imageDocumentDocumentType" upgradeId="68d8cf7d-29d3-4104-a304-1863df56d263" />
+  <entity alias="core:imageDocumentImage" upgradeId="06efae45-1d9d-4bac-a629-bd1baff6449a" />
   <entity alias="core:imageFileType" upgradeId="4E061E43-38DD-412E-AD8C-580089A5F8FA" />
   <entity alias="core:imageFormattingRule" upgradeId="2d12fea1-2bed-4c8d-8ccc-fc200ed300a0" />
   <entity alias="core:imageFormattingRuleDetails" upgradeId="18B75E52-D84E-4F80-9F45-F10AB8330DC6" />
@@ -1664,6 +1694,18 @@
   <entity alias="core:inGenerateDocTemplate" upgradeId="71ef9015-15ce-4c30-9461-d03dea7629ab" />
   <entity alias="core:inherits" upgradeId="50fe1b39-bb32-4825-8ab5-807a7df9b5b8" />
   <entity alias="core:inHideComment" upgradeId="a87ffe24-f7aa-4944-9da6-bc3d610ba201" />
+  <entity alias="core:inLaunchPersonDueDays" upgradeId="1d804eaf-47aa-4806-b8bf-69ea1234b011" />
+  <entity alias="core:inLaunchPersonPause" upgradeId="494097fa-f8c5-4c4c-834d-0270f318e937" />
+  <entity alias="core:inLaunchPersonRecipients" upgradeId="26b4d24a-c2d3-4e96-9b38-4c48ccc2c04d" />
+  <entity alias="core:inLaunchPersonSurvey" upgradeId="ac0cafc2-2249-41c9-8678-92d026e7ccfd" />
+  <entity alias="core:inLaunchPersonTarget" upgradeId="1b2f075e-0740-4b71-8f34-a53998a894b3" />
+  <entity alias="core:inLaunchPersonTaskName" upgradeId="0b2c29df-8c91-4ef0-8289-aa02d2a0e037" />
+  <entity alias="core:inLaunchTargetDueDays" upgradeId="5ae9a730-f674-4fe9-ae5f-8c43d8af6275" />
+  <entity alias="core:inLaunchTargetPause" upgradeId="ebe862a3-e46a-4a61-9089-f2d246c25a31" />
+  <entity alias="core:inLaunchTargetSurvey" upgradeId="009d2d54-6996-421d-8f36-e2aecf011fcb" />
+  <entity alias="core:inLaunchTargetSurveyTaker" upgradeId="c8d5436b-73f4-4217-afdc-3ef61d41946b" />
+  <entity alias="core:inLaunchTargetTargets" upgradeId="2298d751-86ff-428f-87fe-04204da1e169" />
+  <entity alias="core:inLaunchTargetTaskName" upgradeId="a42cff0e-f557-4dd3-b5f2-5afd058690a0" />
   <entity alias="core:inLinkToRecord" upgradeId="ab3827c0-85eb-4149-85d8-29fd65e12713" />
   <entity alias="core:inLogActivityMessage" upgradeId="5500d923-80b9-4eb6-8da5-25e195a1a19e" />
   <entity alias="core:inLogActivityObject" upgradeId="acd64c63-8ece-4fa7-9c5d-3768a2657c05" />
@@ -1688,10 +1730,6 @@
   <entity alias="core:instanceFlags" upgradeId="2b76d787-11e0-4417-ad66-cfc0713a2e85" />
   <entity alias="core:instancesInheritByDefault" upgradeId="bbd123ca-7777-43b9-93a1-3e74b9ac680b" />
   <entity alias="core:inStartSurveyCampaign" upgradeId="d7179e46-4820-4ec8-b20f-9e57fe65e0a8" />
-  <entity alias="core:inStartSurveyDueDays" upgradeId="19c1f3f9-3d40-47cd-bfec-273d4b074487" />
-  <entity alias="core:inStartSurveyPause" upgradeId="fc494232-1804-4d58-98e5-a05316b3d5b0" />
-  <entity alias="core:inStartSurveyTarget" upgradeId="c12a4095-ba80-4f38-b603-810823f9bac1" />
-  <entity alias="core:inStartSurveyTaskName" upgradeId="e7e31dc7-92f2-4f4e-a2c1-b354b5879393" />
   <entity alias="core:inStructureLevel" upgradeId="4e3b21a7-aee5-467a-a72e-b32caaf642bd" />
   <entity alias="core:integerArgument" upgradeId="deb82d77-84e9-43e6-8207-e55f5c70318e" />
   <entity alias="core:integerArgumentDetails" upgradeId="285D13C4-BF65-4DB1-BE33-CFFE81D2131A" />
@@ -1720,6 +1758,7 @@
   <entity alias="core:isTemplateString" upgradeId="d6309feb-68ad-4b7d-b85d-4f70225708e6" />
   <entity alias="core:isTenantDisabled" upgradeId="11209a07-9189-4099-b609-80ed1d4f3e56" />
   <entity alias="core:isTimeoutExitPoint" upgradeId="0015b7a5-8cce-4610-8c54-7546acd75bde" />
+  <entity alias="core:joinPredicateCalculation" upgradeId="445fe63d-643e-4232-947c-1a2b6150e215" />
   <entity alias="core:keepAfterCompletion" upgradeId="f57f3d7e-6ec2-47ca-a4b6-308ffd90a748" />
   <entity alias="core:keyAppliesToType" upgradeId="C3EF6FDE-92A2-419A-B5A6-C59229668EA7" />
   <entity alias="core:keyForApis" upgradeId="c7475f14-a2cc-46c7-b057-b38c8e7c8668" />
@@ -1730,6 +1769,12 @@
   <entity alias="core:lastLogon" upgradeId="79dc4b60-0e59-49ee-8995-9d625a8d12e7" />
   <entity alias="core:lastModifiedBy" upgradeId="653ebcf5-66ec-4238-9aba-fac99891f192" />
   <entity alias="core:lastName" upgradeId="0bf7ac3a-d9f7-4953-aab5-23b3b77fad29" />
+  <entity alias="core:launchPersonCampaignActivity" upgradeId="61fe70be-d7ed-4b1f-9c45-fc9d317abb0b" />
+  <entity alias="core:launchPersonCampaignActivityClass" upgradeId="f117e23c-999a-4495-87bd-8289b59c1848" />
+  <entity alias="core:launchPersonTimeout" upgradeId="e905c0ef-6e14-46cd-a60b-0e66e09b3b03" />
+  <entity alias="core:launchTargetCampaignActivity" upgradeId="37b094a3-ec2b-4a2d-9cf3-307b0f795da7" />
+  <entity alias="core:launchTargetCampaignActivityClass" upgradeId="cc9b7bf8-be98-4be9-88ad-5b97abeb4d2a" />
+  <entity alias="core:launchTargetTimeout" upgradeId="aa73853f-fd83-4da1-b2a8-e2aa7b0f24de" />
   <entity alias="core:legacyGuid" upgradeId="88f67720-430d-4dcd-8f7b-717a0becaa64" />
   <entity alias="core:legacyReportDetails" upgradeId="D3FC2F0B-4720-4E59-BB1B-C36B3C259105" />
   <entity alias="core:libraryQuestions" upgradeId="b8f0b58b-df81-41f4-88a2-d91b3ffa30ff" />
@@ -1845,6 +1890,7 @@
   <entity alias="core:namedReference" upgradeId="8054df74-bd32-4367-afeb-75eb60bc3443" />
   <entity alias="core:namePattern" upgradeId="b7364d6f-0816-4d4f-b807-a2a6bf008beb" />
   <entity alias="core:navFeatureSwitch" upgradeId="029aa04d-72e5-4885-9ca2-83a10b8a4325" />
+  <entity alias="core:navHeaderDocumentationUrl" upgradeId="A65D1B25-FD85-4456-B714-F2E80812C19C" />
   <entity alias="core:newAccessRuleEnabled" upgradeId="DD7B1DF4-41B6-4D80-AA92-84D3D7F2E61C" />
   <entity alias="core:newAccountLockoutDuration" upgradeId="630E0CE7-C62B-49DC-814C-ACCD696A279B" />
   <entity alias="core:newAccountLockoutThreshold" upgradeId="45A12530-DCB1-42D0-9E79-3B980EE48FCB" />
@@ -1988,6 +2034,8 @@
   <entity alias="core:outDisplayFormUserTask" upgradeId="d687f6a0-3368-4808-aef8-07bd40bc339f" />
   <entity alias="core:outExportToDoc" upgradeId="0782ce9e-805b-4319-baad-e5aa14483d1d" />
   <entity alias="core:outGenerateDocDoc" upgradeId="51c8ead5-13e1-4483-b52a-b37fc440cb7b" />
+  <entity alias="core:outLaunchPersonResponses" upgradeId="a422d926-2a29-48d4-9da0-515bcb4f0b2b" />
+  <entity alias="core:outLaunchTargetResponses" upgradeId="101976e4-38ce-4d21-81da-b78af220312d" />
   <entity alias="core:outlookDocumentDocumentType" upgradeId="461dbd34-3a9a-4ffc-84ec-524313a0a102" />
   <entity alias="core:outlookDocumentImage" upgradeId="016d6cbf-74de-4d4b-9e85-1885669790fd" />
   <entity alias="core:outNotificationRecord" upgradeId="6ce414a4-403b-407a-914c-c2709100b842" />
@@ -2001,6 +2049,7 @@
   <entity alias="core:parameterDetails" upgradeId="84E87C02-2D9D-4EE7-9C17-7D89C824DEF0" />
   <entity alias="core:parameterValueField" upgradeId="539c646d-6128-4a4f-b5d8-f2ce0001a74f" />
   <entity alias="core:paramTypeAndDefault" upgradeId="b6f12a59-74a5-4545-ab3e-10b8cf585b0b" />
+  <entity alias="core:parentNeedNotExist" upgradeId="8ff02d5c-e192-4ff8-b7f3-78e064c03b69" />
   <entity alias="core:parentStructureLevel" upgradeId="5b70f78d-8285-4d71-a3af-380bfb21c4b7" />
   <entity alias="core:password" upgradeId="2b686d12-d0d2-4b47-91c2-c1f9a783b04a" />
   <entity alias="core:passwordLastChanged" upgradeId="7c1b824f-a267-4d08-b1f6-c426d3c0065f" />
@@ -2164,6 +2213,7 @@
   <entity alias="core:relDependantOf" upgradeId="9f79814e-cd0c-4e73-ab5f-9d922ef3e927" />
   <entity alias="core:relDependants" upgradeId="892da84f-7a54-42e2-a1bf-278b3a847da0" />
   <entity alias="core:releaseDate" upgradeId="3175c598-b1ca-4cbf-b852-6787ab6fdab1" />
+  <entity alias="core:releaseNotesUrl" upgradeId="7FBF259B-38D8-4002-80A1-41E0697200D6" />
   <entity alias="core:relExclusiveCollection" upgradeId="1bb9c06e-8d81-44b7-b9e7-8b2b4dba915f" />
   <entity alias="core:relLookup" upgradeId="022627f5-4409-45b3-87fc-bdeb86c728ea" />
   <entity alias="core:relManyToMany" upgradeId="32f010f4-ea1b-4de3-b0d8-9752e1683818" />
@@ -2311,8 +2361,11 @@
   <entity alias="core:scheduleDailyRepeatDetails" upgradeId="AAE5AAA4-F563-4556-BBA4-F7208012DB4F" />
   <entity alias="core:scheduleDailyRepeatTarget" upgradeId="77889251-36f6-42dc-8bed-3b392685f3a7" />
   <entity alias="core:scheduleDetails" upgradeId="B02933E0-24EA-40D5-B6E0-33E95F0C7D4A" />
+  <entity alias="core:scheduledExportConfig" upgradeId="d085c929-8940-4834-a95a-08bb24c81883" />
+  <entity alias="core:scheduledExportConfigSaveHandler" upgradeId="4f6e2fab-f109-4879-860c-c71296d1e96d" />
+  <entity alias="core:scheduledFtpConfig" upgradeId="3f8f31e1-7f37-4936-873d-cac1e51b3118" />
+  <entity alias="core:scheduledFtpConfigDetails" upgradeId="7f0e2d2f-7cbd-4923-a1d6-83814efa3881" />
   <entity alias="core:scheduledImportConfig" upgradeId="87da257b-bef8-49f1-b2ee-dffdcae6acff" />
-  <entity alias="core:scheduledImportConfigDetails" upgradeId="ec7e0666-93a4-4dbe-a495-c5f5469be327" />
   <entity alias="core:scheduledImportConfigSaveHandler" upgradeId="081a79f7-91c2-4833-81c4-51b8db01acf5" />
   <entity alias="core:scheduledItem" upgradeId="f93535c5-f8f3-4f19-ad84-75835b36a247" />
   <entity alias="core:scheduledItemDetails" upgradeId="9E0057F9-C8EF-44D8-BD7A-01A4633A77DD" />
@@ -2334,6 +2387,9 @@
   <entity alias="core:sdrDayOfWeek" upgradeId="6ee0110a-9cee-429b-ac37-524cf6029606" />
   <entity alias="core:sdrTimeOfDay" upgradeId="2566ceb4-2de4-426f-a17c-075d4d9cbb09" />
   <entity alias="core:sdrTimeZone" upgradeId="941225da-41f3-494e-9790-2f7c34f035bd" />
+  <entity alias="core:secFileType" upgradeId="67f43365-fab7-4b21-a0c1-236245975e80" />
+  <entity alias="core:secReport" upgradeId="41b19dce-dbb7-46d1-8b83-5b8cc3306343" />
+  <entity alias="core:secRunLog" upgradeId="186fed27-0a46-4ac0-b816-882b83a87e46" />
   <entity alias="core:securableEntity" upgradeId="ad33d817-55f1-4532-9332-d59c43ac0757" />
   <entity alias="core:securableEntityDetails" upgradeId="3CBE976F-B58F-45FF-B24D-112A5FDFF78C" />
   <entity alias="core:secureDataUpgradeEventTarget" upgradeId="9d5eebc9-523d-4f42-9bd8-cc35e2989577" />
@@ -2397,7 +2453,7 @@
   <entity alias="core:severitySuccess" upgradeId="6DF597BE-11BD-4CF0-8762-C25BB27D5753" />
   <entity alias="core:shortFileTypeName" upgradeId="7fae7cda-cc5d-4a7c-9946-0e2cb15b2e3f" />
   <entity alias="core:showAllChoiceValues" upgradeId="8c13d042-fe85-4a9a-965d-3816cbe13b22" />
-  <entity alias="core:showGridLines" upgradeId="d626d7cb-1741-4c7c-9995-9ddc62a44808" />
+  <entity alias="core:showGridLines" upgradeId="d626d7cb-1741-4c7c-9995-9ddc62a44808" />    
   <entity alias="core:showRelationshipHelpText" upgradeId="5F41A4B5-4F03-479B-AF39-C9FE3EA97092" />
   <entity alias="core:showSurveyHelpText" upgradeId="d2534638-18b1-4813-9dc3-f61e91096127" />
   <entity alias="core:showTimeAsBusy" upgradeId="5677579C-D454-4FC2-879B-A94BAA72F0E3" />
@@ -2433,6 +2489,7 @@
   <entity alias="core:specialChartSourceEnum" upgradeId="4d8390a4-8326-471f-b13c-c5a4da03f4fc" />
   <entity alias="core:spInboxProvider" upgradeId="a34bc430-3625-4fbb-9e39-6b905e24e741" />
   <entity alias="core:srErrorMessage" upgradeId="4d73efeb-f3b8-4a42-9106-0b41d726a95b" />
+  <entity alias="core:srRun" upgradeId="4fabe059-b673-4ff2-ac74-614151ccc3bd" />
   <entity alias="core:srSendDate" upgradeId="c2c46f5b-810a-4aa9-b98d-a6e21d3d3696" />
   <entity alias="core:srToPerson" upgradeId="2e06266d-644e-4b68-acb3-fa06b3d1395e" />
   <entity alias="core:srToReply" upgradeId="7075a3bb-0cc6-49f9-99a2-d7cc99992761" />
@@ -2445,17 +2502,18 @@
   <entity alias="core:ssrDeliveryStatus" upgradeId="c87e7453-45da-43aa-a953-20f03b81e940" />
   <entity alias="core:ssrFrom" upgradeId="7c82be01-e5eb-4b7a-914d-e0c870d9084e" />
   <entity alias="core:ssrMessageSid" upgradeId="bd052eac-c240-4475-ac18-04f40693cd24" />
-  <entity alias="core:ssrTo" upgradeId="206efc09-886a-4e11-ade4-f640c936a285" />
+  <entity alias="core:ssrTo" upgradeId="206efc09-886a-4e11-ade4-f640c936a285" />  
+  <entity alias="core:stackedList" upgradeId="36146924-CA8D-4809-BDB8-2EF7F5275CC4" />
   <entity alias="core:stackMethod" upgradeId="14c5d1a0-58cf-471a-b1bf-9362e658df48" />
   <entity alias="core:stackMethod100percent" upgradeId="65d558e8-1d65-404b-9f88-85b64d3f7f0e" />
   <entity alias="core:stackMethodCentre" upgradeId="5099040e-ea82-4a05-b928-34c164f98ae6" />
   <entity alias="core:stackMethodEnum" upgradeId="8ad530f9-1b26-4f0a-b4a7-62af8f2117d7" />
   <entity alias="core:stackMethodNotStacked" upgradeId="5877aa9f-816c-443c-a9b9-662cbe8ff74f" />
   <entity alias="core:stackMethodStacked" upgradeId="9b7d0bd3-713a-4e86-b195-1cf8e0dd6bcf" />
+  <entity alias="core:startExportJobClass" upgradeId="008572c1-b3ed-4654-bd8d-314202b4ebb5" />
   <entity alias="core:startImportJobClass" upgradeId="2a63d237-4ee1-43de-bb51-7ec185e6a133" />
   <entity alias="core:startSurveyActivity" upgradeId="552fbdf1-7f8d-4856-a2cf-0aa262dba147" />
   <entity alias="core:startSurveyActivityClass" upgradeId="ad06420d-f288-4efd-928a-5e296213cb06" />
-  <entity alias="core:startSurveyTimeout" upgradeId="3ce4ef97-e666-47e5-97c1-6957bd91d2da" />
   <entity alias="core:startWorkflowJobClass" upgradeId="7a6fac07-94fb-4a87-885c-a3e4aec882c0" />
   <entity alias="core:stateInfo" upgradeId="baa26f5f-1fd1-4056-9d65-d93387181703" />
   <entity alias="core:stateInfoActivity" upgradeId="f6df8cb2-f231-4678-a4ba-ab375495f254" />
@@ -2463,6 +2521,9 @@
   <entity alias="core:stateInfoEntry" upgradeId="525c8096-175e-4c44-a054-e161171f6882" />
   <entity alias="core:stateInfoEntryDetails" upgradeId="5DDA6D84-8395-487C-B26C-5A9801CFF3E1" />
   <entity alias="core:stateInfoValue" upgradeId="56d135a4-5b8d-4cb1-b763-23a95b70c76f" />
+  <entity alias="core:stCulture" upgradeId="3459a5c6-0608-4e85-8e32-c0a7ced2051b" />
+  <entity alias="core:stIdentity" upgradeId="acfb99b5-e366-480a-ab1e-10fd5204f022" />
+  <entity alias="core:stResource" upgradeId="1ddaa0cc-1a14-47ea-9fcd-5eec95c45ee0" />
   <entity alias="core:stringArgument" upgradeId="4f9c5fa8-02f5-47eb-9e25-0090d2049c8d" />
   <entity alias="core:stringArgumentDetails" upgradeId="1E55C74A-7F73-4DE4-B4E4-C16371FB83D5" />
   <entity alias="core:stringArgumentValue" upgradeId="026ce788-cf16-4772-be07-65cf7f5d4989" />
@@ -2485,6 +2546,10 @@
   <entity alias="core:structureViewExpressionSourceNode" upgradeId="70253B6E-99D6-4B45-AFD4-B2C747A839FC" />
   <entity alias="core:structureViewExpressionStructureView" upgradeId="972F5258-0D0D-4D9C-9D78-8D43CBBDA887" />
   <entity alias="core:structureViewUniqueNameKey" upgradeId="e4eb0c23-0c6d-4222-9a93-ed6f67b8ca2d" />
+  <entity alias="core:stSecondaryIdentity" upgradeId="2a5e5ddb-4fd4-4696-a17b-a6a95503175a" />
+  <entity alias="core:stTimezone" upgradeId="91727d1b-14de-40e9-b121-c429a75244f4" />
+  <entity alias="core:stTrigger" upgradeId="4c6698a8-8f41-4cbe-8073-8ccfe667597d" />
+  <entity alias="core:stTriggerDepth" upgradeId="b677a421-e1e3-4252-9392-1bb6daf204c2" />
   <entity alias="core:subject" upgradeId="8e7617ff-bdc6-4308-b5af-d903efe25705" />
   <entity alias="core:subjectDetails" upgradeId="5C1E0A55-3369-407D-8F1E-1C4621118DD1" />
   <entity alias="core:subjectNameChangeAccessRulePerm" upgradeId="EF4A5C16-F772-4FF9-B67B-05BB39398DA8" />
@@ -2540,6 +2605,9 @@
   <entity alias="core:surveyTargetCampaign" upgradeId="3b31cae5-8a8a-4b59-9132-eaf8d18888a6" />
   <entity alias="core:surveyTriggerOnCampaignComplete" upgradeId="08451fb2-c243-486f-a6ec-a3aa80c4ba51" />
   <entity alias="core:surveyTriggerOnSurveyComplete" upgradeId="0f41e557-bb3e-42fa-a9d0-b79bca7df0d6" />
+  <entity alias="core:suspendedRun" upgradeId="dc130e32-a211-47e9-8e6e-339666bdf46e" />
+  <entity alias="core:suspendedTask" upgradeId="d9c8e2b8-5041-4900-85da-33d102fc2866" />
+  <entity alias="core:suspendedTrigger" upgradeId="f91b18d9-92e8-4808-8b4a-8a7da71f2f6b" />
   <entity alias="core:swimlane" upgradeId="7325d602-2b75-42a9-90ff-081d1f19a2a7" />
   <entity alias="core:swimlaneDetails" upgradeId="4207B339-E8B0-4384-8ACB-1ABD0B1820B8" />
   <entity alias="core:swimlanes" upgradeId="c2023f16-ec59-4090-9967-918403db15c7" />
@@ -2550,6 +2618,9 @@
   <entity alias="core:switchKFieldRenderControl" upgradeId="2229a249-a580-4a75-88e6-f066888a6729" />
   <entity alias="core:symbolSource" upgradeId="806a8720-8eb4-4fe1-a00c-0a20ec23cfd5" />
   <entity alias="core:system" upgradeId="f60046ec-90a5-4dfd-a33a-8207afc3a675" />
+  <entity alias="core:systemDocumentationSettings" upgradeId="1481C24C-BF08-423A-8F03-D94E613FB65F" />
+  <entity alias="core:systemDocumentationSettingsInstance" upgradeId="7706DE89-880C-4F64-BA9D-59D808E13E83" />
+  <entity alias="core:systemDocumentationSettingsTarget" upgradeId="709345FB-842D-411D-8398-FA525DE6B70E" />
   <entity alias="core:systemFlag" upgradeId="3d0661a1-29cd-45ae-b3d0-9ce30e84e2f4" />
   <entity alias="core:systemOnlyScheduleAction" upgradeId="e465570d-84b1-4fd5-9547-64be16e6adcd" />
   <entity alias="core:systemSchedule" upgradeId="26fef08e-ad13-4763-8481-c9fc40f08443" />
@@ -2766,6 +2837,7 @@
   <entity alias="core:workflowRunStarted" upgradeId="1f455c20-4da8-4c8f-8331-530a982d36ea" />
   <entity alias="core:workflowRunState" upgradeId="f97d4547-66e3-404d-873c-99b8cae50b59" />
   <entity alias="core:workflowRunStatus" upgradeId="fcd03d31-45c5-4b54-bb88-9be83f451e6f" />
+  <entity alias="core:workflowRunSuspended" upgradeId="2db18ba8-628b-483f-83e4-2933bc0c6dd4" />
   <entity alias="core:workflowRunTraceStep" upgradeId="2b2a4cbe-9bfc-4318-9169-1e40c410cc21" />
   <entity alias="core:workflowSaveHelperClass" upgradeId="d9b38664-7eff-4948-8fcc-48ccdea41d91" />
   <entity alias="core:workflowsSection" upgradeId="1d5f63b2-ea07-4042-9016-64b140075126" />

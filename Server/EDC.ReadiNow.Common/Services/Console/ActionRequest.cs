@@ -209,10 +209,19 @@ namespace EDC.ReadiNow.Services.Console
 			set;
 		}
 
-		/// <summary>
-		/// The entity types applicable to <see cref="Report"/>.
-		/// </summary>
-		public IList<EntityType> ReportTypes
+        /// <summary>
+        /// Gets or sets the entity being edited by the form.
+        /// </summary>
+	    public Resource FormDataEntity
+	    {
+	        get;
+            set;
+        }
+
+        /// <summary>
+        /// The entity types applicable to <see cref="Report"/>.
+        /// </summary>
+        public IList<EntityType> ReportTypes
 		{
 			get;
 			set;

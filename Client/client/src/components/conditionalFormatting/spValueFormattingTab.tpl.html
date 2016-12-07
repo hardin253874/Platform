@@ -5,7 +5,12 @@
         <select class="centeredDropDown valueFormattingDropdown" ng-model="model.valueFormatting.selectedAlignmentOption" ng-options="ao as ao.name for ao in model.valueFormatting.alignmentOptions" ng-change="onValueFormattingOptionsChanged()" />
     </div>
 </div>
-
+<div class="leftMargin topMarginSmall" ng-show="model.valueFormatting.showEntityListFormat">
+    <div class="labelBlockMedium">Show as:</div>
+    <div class="displayInlineBlock">
+        <select class="centeredDropDown valueFormattingDropdown" ng-model="model.valueFormatting.selectedEntityListFormatOption" ng-options="o as o.name for o in model.valueFormatting.entityListFormatOptions" ng-change="onValueFormattingOptionsChanged()" />
+    </div>
+</div>
 <div class="leftMargin topMarginSmall" ng-show="model.valueFormatting.isString || model.valueFormatting.isResource">
     <div class="labelBlockMedium">Lines:</div>
     <div class="displayInlineBlock">

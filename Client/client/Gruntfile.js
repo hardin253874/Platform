@@ -48,9 +48,9 @@ module.exports = function (grunt) {
         builddir: 'build',
 
         /**
-         * Some substitutions for use in globs
+         * Substitutions for use in globs
          */
-        app2dirs: '+(editForm|workflow|pages)',
+        app2dirs: '+(editForm|workflow|page)',
 
         /**
          * An explicit list of files to be included in our build. We typically don't wildcard these
@@ -217,7 +217,7 @@ module.exports = function (grunt) {
                     {
                         expand: true,
                         cwd: 'src',
-                        src: ['**/*.es6', '!**/*.+(spec|intg).es6'],
+                        src: ['**/*.+(es6|js)', '!**/*.+(spec|intg).+(es6|js)'],
                         dest: 'build',
                         ext: '.js',
                         extDot: 'last'
@@ -229,7 +229,7 @@ module.exports = function (grunt) {
                     {
                         expand: true,
                         cwd: 'src',
-                        src: ['components/**/*.es6', '!**/*.+(spec|intg).es6'],
+                        src: ['components/**/*.+(es6|js)', '!**/*.+(spec|intg).+(es6|js)'],
                         dest: 'build',
                         ext: '.js',
                         extDot: 'last'
@@ -241,7 +241,7 @@ module.exports = function (grunt) {
                     {
                         expand: true,
                         cwd: 'src',
-                        src: ['app/**/*.es6', '!**/*.+(spec|intg).es6'],
+                        src: ['app/**/*.+(es6|js)', '!**/*.+(spec|intg).+(es6|js)'],
                         dest: 'build',
                         ext: '.js',
                         extDot: 'last'
@@ -253,7 +253,7 @@ module.exports = function (grunt) {
                     {
                         expand: true,
                         cwd: 'src',
-                        src: ['builders/**/*.es6', '!**/*.+(spec|intg).es6'],
+                        src: ['builders/**/*.+(es6|js)', '!**/*.+(spec|intg).+(es6|js)'],
                         dest: 'build',
                         ext: '.js',
                         extDot: 'last'
@@ -265,25 +265,26 @@ module.exports = function (grunt) {
                     {
                         expand: true,
                         cwd: 'src',
-                        src: ['**/*.+(spec|intg).es6'],
+                        src: ['**/*.+(spec|intg).+(es6|js)'],
                         dest: 'build/es6tests',
                         ext: '.js',
                         extDot: 'last'
                     }
                 ]
-            },
-            testPages: {
-                files: [
-                    {
-                        expand: true,
-                        cwd: '',
-                        src: ['testPages/**/*.js', '!testPages/**/*-converted.js'],
-                        dest: '',
-                        ext: '-converted.js',
-                        extDot: 'last'
-                    }
-                ]
             }
+            // ,
+            // testPages: {
+            //     files: [
+            //         {
+            //             expand: true,
+            //             cwd: '',
+            //             src: ['testPages/**/*.js', '!testPages/**/*-converted.js'],
+            //             dest: '',
+            //             ext: '-converted.js',
+            //             extDot: 'last'
+            //         }
+            //     ]
+            // }
         },
 
         /**
@@ -352,12 +353,6 @@ module.exports = function (grunt) {
             tests: {
                 files: [
                     {
-                        src: ['src/**/*.+(spec|intg).js'],
-                        dest: '<%= testsdir %>',
-                        cwd: '',
-                        expand: true
-                    },
-                    {
                         src: ['**/*.+(spec|intg).js'],
                         dest: '<%= testsdir %>/src',
                         cwd: 'build/es6tests',
@@ -403,28 +398,28 @@ module.exports = function (grunt) {
                 options: {
                     banner: '<%= meta.banner %>'
                 },
-                src: ['+(src|build)/components/**/*.module.js', '+(src|build)/components/**/*.js', '!src/**/*.+(spec|intg).js'],
+                src: ['build/components/**/*.module.js', 'build/components/**/*.js', '!build/**/*.+(spec|intg).js'],
                 dest: '<%= distdir %>/js/<%= pkg.name %>_components.js'
             },
             app: {
                 options: {
                     banner: '<%= meta.banner %>'
                 },
-                src: ['+(src|build)/app/**/*.module.js', '+(src|build)/app/**/*.js', '!+(src|build)/app/**/<%=app2dirs%>/**', '!src/**/*.+(spec|intg).js'],
+                src: ['build/app/**/*.module.js', 'build/app/**/*.js', '!build/app/**/<%=app2dirs%>/**', '!build/**/*.+(spec|intg).js'],
                 dest: '<%= distdir %>/js/<%= pkg.name %>_app.js'
             },
             app2: {
                 options: {
                     banner: '<%= meta.banner %>'
                 },
-                src: ['+(src|build)/app/**/<%=app2dirs%>/**/*.module.js', '+(src|build)/app/**/<%=app2dirs%>/**/*.js', '!src/**/*.+(spec|intg).js'],
+                src: ['build/app/**/<%=app2dirs%>/**/*.module.js', 'build/app/**/<%=app2dirs%>/**/*.js', '!build/**/*.+(spec|intg).js'],
                 dest: '<%= distdir %>/js/<%= pkg.name %>_app2.js'
             },
             builders: {
                 options: {
                     banner: '<%= meta.banner %>'
                 },
-                src: ['+(src|build)/builders/**/*.module.js', '+(src|build)/builders/**/*.js', '!src/**/*.+(spec|intg).js'],
+                src: ['build/builders/**/*.module.js', 'build/builders/**/*.js', '!build/**/*.+(spec|intg).js'],
                 dest: '<%= distdir %>/js/<%= pkg.name %>_builders.js'
             },
             libs: {
@@ -545,45 +540,27 @@ module.exports = function (grunt) {
 
         },
 
-        /**
-         * `jshint` defines the rules of our linter as well as which files we should
-         * check. This file, all java script sources, and all our unit tests are
-         * linted based on the policies listed in `options`. But we can allow
-         * specify exclusionary patterns for external components by prefixing them
-         * with an exclamation point (!).
-         */
-        jshint: {
+        eslint: {
             options: {
-                jshintrc: true,
-                reporter: 'jsHintReporter.js'
+                format: 'visualstudio',
             },
-            components: {
-                src: [
-                    'src/components/**/*.module.+(js|es6)', 'src/components/**/*.+(js|es6)',
-                    '!src/**/*.+(spec|intg).+(js|es6)', '!src/components/placeholders/**/*'
-                ]
-            },
-            app: {
-                src: [
-                    'src/app/**/*.module.+(js|es6)', 'src/app/**/*.+(js|es6)',
-                    '!src/app/**/<%=app2dirs%>/**', '!src/**/*.+(spec|intg).+(js|es6)'
-                ]
-            },
-            app2: {
-                src: [
-                    'src/app/**/<%=app2dirs%>/**/*.module.+(js|es6)', 'src/app/**/<%=app2dirs%>/**/*.+(js|es6)',
-                    '!src/**/*.+(spec|intg).+(js|es6)'
-                ]
-            },
-            builders: {
-                src: [
-                    'src/builders/**/*.module.+(js|es6)', 'src/builders/**/*.+(js|es6)',
-                    '!src/**/*.+(spec|intg).+(js|es6)'
-                ]
-            },
-            test: {
-                src: ['src/**/*.+(spec|intg).+(js|es6)']
-            }
+            components: [
+                'src/components/**/*.module.+(js|es6)', 'src/components/**/*.+(js|es6)',
+                '!src/**/*.+(spec|intg).+(js|es6)', '!src/components/placeholders/**/*'
+            ],
+            app: [
+                'src/app/**/*.module.+(js|es6)', 'src/app/**/*.+(js|es6)',
+                '!src/app/**/<%=app2dirs%>/**', '!src/**/*.+(spec|intg).+(js|es6)'
+            ],
+            app2: [
+                'src/app/**/<%=app2dirs%>/**/*.module.+(js|es6)', 'src/app/**/<%=app2dirs%>/**/*.+(js|es6)',
+                '!src/**/*.+(spec|intg).+(js|es6)'
+            ],
+            builders: [
+                'src/builders/**/*.module.+(js|es6)', 'src/builders/**/*.+(js|es6)',
+                '!src/**/*.+(spec|intg).+(js|es6)'
+            ],
+            test: ['src/**/*.+(spec|intg).+(js|es6)']
         },
 
         /**
@@ -643,17 +620,17 @@ module.exports = function (grunt) {
             //     files: ['src/**/*.js'],
             //     tasks: ['flow:watch'] // Get the status from the server
             // },
-            components: {
-                files: ['src/components/**/*.js', '!src/**/*.+(spec|intg).js'],
-                tasks: [
-                    'notifyGrowl:ReadiNow Client:Building components script file(s)...',
-                    'dev:components', 'ready',
-                    'notifyGrowl:ReadiNow Client:Script file(s) updated!',
-                    'newer:jshint:components'
-                ]
-            },
+            // components: {
+            //     files: ['<%=watchSrcDir%>/components/**/*.js', '!src/**/*.+(spec|intg).js'],
+            //     tasks: [
+            //         'notifyGrowl:ReadiNow Client:Building components script file(s)...',
+            //         'dev:components', 'ready',
+            //         'notifyGrowl:ReadiNow Client:Script file(s) updated!',
+            //         'newer:eslint:components'
+            //     ]
+            // },
             components_es6: {
-                files: ['src/components/**/*.es6', '!src/**/*.+(spec|intg).es6'],
+                files: ['src/components/**/*.+(es6|js)', '!src/**/*.+(spec|intg).+(es6|js)'],
                 tasks: [
                     'notifyGrowl:ReadiNow Client:Building components es6 file(s)...',
                     'newer:babel:components', 'dev:components', 'ready',
@@ -668,17 +645,17 @@ module.exports = function (grunt) {
                     'notifyGrowl:ReadiNow Client:Script file(s) updated!'
                 ]
             },
-            app: {
-                files: ['src/app/**/*.js', '!src/app/**/<%=app2dirs%>/**', '!src/**/*.+(spec|intg).js'],
-                tasks: [
-                    'notifyGrowl:ReadiNow Client:Building app script file(s)...',
-                    'dev:app', 'index:dev', 'ready',
-                    'notifyGrowl:ReadiNow Client:Script file(s) updated!',
-                    'newer:jshint:app'
-                ]
-            },
+            // app: {
+            //     files: ['src/app/**/*.js', '!src/app/**/<%=app2dirs%>/**', '!src/**/*.+(spec|intg).js'],
+            //     tasks: [
+            //         'notifyGrowl:ReadiNow Client:Building app script file(s)...',
+            //         'dev:app', 'index:dev', 'ready',
+            //         'notifyGrowl:ReadiNow Client:Script file(s) updated!',
+            //         'newer:eslint:app'
+            //     ]
+            // },
             app_es6: {
-                files: ['src/app/**/*.es6', '!src/app/**/<%=app2dirs%>/**', '!src/**/*.+(spec|intg).es6'],
+                files: ['src/app/**/*.+(es6|js)', '!src/app/**/<%=app2dirs%>/**', '!src/**/*.+(spec|intg).+(es6|js)'],
                 tasks: [
                     'notifyGrowl:ReadiNow Client:Building app es6 file(s)...',
                     'newer:babel:app', 'dev:app', 'ready',
@@ -693,17 +670,17 @@ module.exports = function (grunt) {
                     'notifyGrowl:ReadiNow Client:Script file(s) updated!'
                 ]
             },
-            app2: {
-                files: ['src/app/**/<%=app2dirs%>/**/*.js', '!src/**/*.+(spec|intg).js'],
-                tasks: [
-                    'notifyGrowl:ReadiNow Client:Building app script file(s)...',
-                    'dev:app2', 'index:dev', 'ready',
-                    'notifyGrowl:ReadiNow Client:Script file(s) updated!',
-                    'newer:jshint:app2'
-                ]
-            },
+            // app2: {
+            //     files: ['src/app/**/<%=app2dirs%>/**/*.js', '!src/**/*.+(spec|intg).js'],
+            //     tasks: [
+            //         'notifyGrowl:ReadiNow Client:Building app script file(s)...',
+            //         'dev:app2', 'index:dev', 'ready',
+            //         'notifyGrowl:ReadiNow Client:Script file(s) updated!',
+            //         'newer:eslint:app2'
+            //     ]
+            // },
             app2_es6: {
-                files: ['src/app/**/<%=app2dirs%>/**/*.es6', '!src/**/*.+(spec|intg).es6'],
+                files: ['src/app/**/<%=app2dirs%>/**/*.+(es6|js)', '!src/**/*.+(spec|intg).+(es6|js)'],
                 tasks: [
                     'notifyGrowl:ReadiNow Client:Building app es6 file(s)...',
                     'newer:babel:app', 'dev:app2', 'ready',
@@ -718,17 +695,17 @@ module.exports = function (grunt) {
                     'notifyGrowl:ReadiNow Client:Script file(s) updated!'
                 ]
             },
-            builders: {
-                files: ['src/builders/**/*.js', '!src/**/*.+(spec|intg).js'],
-                tasks: [
-                    'notifyGrowl:ReadiNow Client:Building builder script file(s)...',
-                    'dev:builders', 'ready',
-                    'notifyGrowl:ReadiNow Client:Script file(s) updated!',
-                    'newer:jshint:builders'
-                ]
-            },
+            // builders: {
+            //     files: ['src/builders/**/*.js', '!src/**/*.+(spec|intg).js'],
+            //     tasks: [
+            //         'notifyGrowl:ReadiNow Client:Building builder script file(s)...',
+            //         'dev:builders', 'ready',
+            //         'notifyGrowl:ReadiNow Client:Script file(s) updated!',
+            //         'newer:eslint:builders'
+            //     ]
+            // },
             builders_es6: {
-                files: ['src/builders/**/*.es6', '!src/**/*.+(spec|intg).es6'],
+                files: ['src/builders/**/*.+(es6|js)', '!src/**/*.+(spec|intg).+(es6|js)'],
                 tasks: [
                     'notifyGrowl:ReadiNow Client:Building builder es6 file(s)...',
                     'newer:babel:builders', 'dev:builders', 'ready',
@@ -744,7 +721,7 @@ module.exports = function (grunt) {
                 ]
             },
             es6tests: {
-                files: ['src/**/*.+(spec|intg).es6'],
+                files: ['src/**/*.+(spec|intg).+(es6|js)'],
                 tasks: [
                     'notifyGrowl:ReadiNow Client:Building es6 test file(s)...',
                     'newer:babel:tests', 'sync:tests', 'testConfig:dev',
@@ -776,38 +753,38 @@ module.exports = function (grunt) {
                     'notifyGrowl:ReadiNow Client:Less file(s) updated!'
                 ]
             },
-            unittest: {
-                files: ['src/**/*.spec.js'],
-                tasks: [
-                    'notifyGrowl:ReadiNow Client:Preparing unit test(s)...',
-                    'prepTests', 'karma:watch:run', 'ready',
-                    'notifyGrowl:ReadiNow Client:Unit test(s) prepared!',
-                    'newer:jshint:tests'
-                ],
-                options: {
-                    livereload: false
-                }
-            },
-            intgtest: {
-                files: ['src/**/*.intg.js'],
-                tasks: [
-                    'notifyGrowl:ReadiNow Client:Preparing integration test(s)...',
-                    'prepTests', 'karma:watch:run', 'ready',
-                    'notifyGrowl:ReadiNow Client:Integration test(s) prepared!',
-                    'newer:jshint:tests'
-                ],
-                options: {
-                    livereload: false
-                }
-            },
-            testPages: {
-                files: ['testPages/**/*.js', '!testPages/**/*-converted.js', 'testPages/**/*.html'],
-                tasks: [
-                    'notifyGrowl:ReadiNow Client:Building testPages es6 file(s)...',
-                    'newer:babel:testPages',
-                    'notifyGrowl:ReadiNow Client:Script file(s) updated!'
-                ]
-            }
+            // unittest: {
+            //     files: ['src/**/*.spec.js'],
+            //     tasks: [
+            //         'notifyGrowl:ReadiNow Client:Preparing unit test(s)...',
+            //         'prepTests', 'karma:watch:run', 'ready',
+            //         'notifyGrowl:ReadiNow Client:Unit test(s) prepared!',
+            //         'newer:eslint:tests'
+            //     ],
+            //     options: {
+            //         livereload: false
+            //     }
+            // },
+            // intgtest: {
+            //     files: ['src/**/*.intg.js'],
+            //     tasks: [
+            //         'notifyGrowl:ReadiNow Client:Preparing integration test(s)...',
+            //         'prepTests', 'karma:watch:run', 'ready',
+            //         'notifyGrowl:ReadiNow Client:Integration test(s) prepared!',
+            //         'newer:eslint:tests'
+            //     ],
+            //     options: {
+            //         livereload: false
+            //     }
+            // },
+            // testPages: {
+            //     files: ['testPages/**/*.js', '!testPages/**/*-converted.js', 'testPages/**/*.html'],
+            //     tasks: [
+            //         'notifyGrowl:ReadiNow Client:Building testPages es6 file(s)...',
+            //         'newer:babel:testPages',
+            //         'notifyGrowl:ReadiNow Client:Script file(s) updated!'
+            //     ]
+            // }
 
         }
     };
@@ -828,12 +805,14 @@ module.exports = function (grunt) {
      * Tasks
      */
 
-    grunt.registerTask('default', ['clean', 'jshint', 'dev']);
+    grunt.registerTask('jshint', ['eslint']);
+
+    grunt.registerTask('default', ['clean', 'eslint', 'dev']);
 
     grunt.registerTask('help', printHelp);
 
     grunt.registerTask('dev', 'dev build - incremental (no clean), no linting or tests', [
-        'html2js', 'newer:babel:src', 'newer:babel:tests', 'concat', 'less', 'postcss',
+        'html2js', 'newer:babel:src', 'concat', 'less', 'postcss',
         'sync:src', 'sync:vendor', 'index:dev', 'prepTests'
     ]);
 
@@ -841,7 +820,7 @@ module.exports = function (grunt) {
         'dev', 'ngAnnotate', 'uglify', 'index:prod'
     ]);
 
-    grunt.registerTask('prepTests', ['babel:tests', 'sync:tests', 'testConfig:dev']);
+    grunt.registerTask('prepTests', ['newer:babel:tests', 'sync:tests', 'testConfig:dev']);
     grunt.registerTask('unitwatch', 'Prepare unit tests to run when a watch fires.\n' +
         'You need to specify a watch after using this, see examples.\n' +
         'Expects a dev or prod build to exist.\n' +
@@ -887,6 +866,8 @@ module.exports = function (grunt) {
         }
         grunt.task.run([param ? 'watch:' + param : 'watch']);
     });
+
+    grunt.registerTask('package', ['compress']);
 
     /**
      * a dummy task only here to separate the targets/tasks above with those 'internal' tasks below
@@ -948,9 +929,9 @@ module.exports = function (grunt) {
         grunt.log.write();
     });
 
-    grunt.registerTask('autoprefixer-debug', 'show information about our autoprefixer configuration', function() {
+    grunt.registerTask('autoprefixer-debug', 'show information about our autoprefixer configuration', function () {
         var autoprefixer = require('autoprefixer');
-        var info = autoprefixer({ browsers: [browserRule] }).info();
+        var info = autoprefixer({browsers: [browserRule]}).info();
         grunt.log.write(info);
 
     });
@@ -971,8 +952,10 @@ module.exports = function (grunt) {
 
     grunt.registerTask('build-release-notests', ['clean', 'jshint', 'prod']);
     grunt.registerTask('build-debug-notests', ['clean', 'jshint', 'dev']);
-    grunt.registerTask('package', ['compress']);
 
+    /**
+     * Helper functions
+     */
 
     function printHelp() {
         var text = 'grunt -h to see a list of tasks' +

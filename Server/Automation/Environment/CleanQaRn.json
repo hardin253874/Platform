@@ -139,6 +139,11 @@
 				name: "Access Control Query Cache Size",
 				xpath: "configuration/cacheSettings/caches/add[@cacheName='Access Control Query']/@maximumSize",
 				value: 30000
+			},
+			{
+				name: "Application Library Access Mode",
+				xpath: "configuration/applicationLibrary/appSecurity/@accessModel",
+				value: "PerTenant"
 			}
 		]
 	},

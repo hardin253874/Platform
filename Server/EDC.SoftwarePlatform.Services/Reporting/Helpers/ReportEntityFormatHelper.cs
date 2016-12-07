@@ -18,6 +18,7 @@ namespace ReadiNow.Reporting.Helpers
 			if ( format.Rules != null && format.Rules.Count > 0 )
             {
                 columnDisplayFormat.ColumnShowText = format.ShowValue;
+                columnDisplayFormat.DisableDefaultFormat = format.DisableDefaultFormat;
                 switch (format.Style)
                 {
                     case ConditionalFormatStyleEnum.ProgressBar:
@@ -191,6 +192,7 @@ namespace ReadiNow.Reporting.Helpers
         {
             DisplayFormat columnDisplayFormat = reportColumn.ColumnDisplayFormat != null ? reportColumn.ColumnDisplayFormat.AsWritable<DisplayFormat>() : new DisplayFormat();
             columnDisplayFormat.ColumnShowText = !format.HideDisplayValue;
+            columnDisplayFormat.DisableDefaultFormat = format.DisableDefaultFormat;
             columnDisplayFormat.FormatPrefix = format.Prefix;
             columnDisplayFormat.FormatSuffix = format.Suffix;
             columnDisplayFormat.FormatDecimalPlaces = format.DecimalPlaces > 0 ? Convert.ToInt32(format.DecimalPlaces) : new int?();
@@ -225,6 +227,11 @@ namespace ReadiNow.Reporting.Helpers
             if (format.Alignment != null)
             {
                 columnDisplayFormat.FormatAlignment = Entity.Get<AlignEnum>(new EntityRef(format.Alignment));
+            }
+
+            if (format.EntityListColumnFormat != null)
+            {
+                columnDisplayFormat.EntityListColumnFormat = Entity.Get<EntityListColFmtEnum>(new EntityRef(format.EntityListColumnFormat));
             }
 
             columnDisplayFormat.Save();

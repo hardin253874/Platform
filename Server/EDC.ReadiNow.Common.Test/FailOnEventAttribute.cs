@@ -125,21 +125,21 @@ namespace EDC.ReadiNow.Test
             _disposed = true;
         }
 
-        /// <summary>
-        /// Called when an event is written to <see cref="EventLog"/>.
-        /// </summary>
-        /// <param name="sender">
-        /// The object that raised the event (ignored).
-        /// </param>
-        /// <param name="args">
-        /// Event details, including the entry written.
-        /// </param>
-        internal void EventLogOnWriteEvent(object sender, EventLogWriteEventArgs args)
-        {
-            if (FailingLevels.Contains(args.Entry.Level))
-            {
-                Assert.Fail("Event log: {0}", args.Entry);
-            }
-        }
+		/// <summary>
+		/// Called when an event is written to <see cref="EventLog"/>.
+		/// </summary>
+		/// <param name="sender">
+		/// The object that raised the event (ignored).
+		/// </param>
+		/// <param name="args">
+		/// Event details, including the entry written.
+		/// </param>
+		internal void EventLogOnWriteEvent( object sender, EventLogWriteEventArgs args )
+		{
+			if ( FailingLevels.Contains( args.Entry.Level ) && args.Entry.Message != null && !args.Entry.Message.StartsWith( "Slow SQL took" ) )
+			{
+				Assert.Fail( "Event log: {0}", args.Entry );
+			}
+		}
     }
 }

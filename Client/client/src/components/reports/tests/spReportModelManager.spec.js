@@ -15,6 +15,13 @@ describe('Reports|View|spReportModelManager|spec:', function () {
         };
 
         var tenantSettingsStub = {
+            getNameFieldEntity: function () {
+                return {
+                    then: function (caller) {
+                        caller(null);
+                    }
+                };
+            },
             getCurrencySymbol: function () {
                 return {
                     then: function (caller) {

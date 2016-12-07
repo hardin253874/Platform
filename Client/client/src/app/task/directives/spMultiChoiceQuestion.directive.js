@@ -55,6 +55,7 @@
                     } else {
                         scope.answer.surveyAnswerMultiChoice.remove(choice.entity);
                     }
+                    scope.$emit('rnSurveyProgressEvent');
                 }
             }
         };

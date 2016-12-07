@@ -92,7 +92,9 @@ namespace EDC.SoftwarePlatform.WebApi.Test.Infrastructure
                         false,                                                  // Not persistent
                         null,                                                   // Create new XSRF token,
                         DateTime.Now,                                           // Issue date
-                        DateTime.Now.AddMinutes( LoginConstants.Cookie.Timeout ), // Expiry
+                        DateTime.Now.AddMinutes( LoginConstants.Cookie.Timeout ), // Expiry,
+						null,
+						null,
                         out authCookie,
                         out xsrfCookie );
 

@@ -130,7 +130,7 @@
                             
                             // valid date value, invalid time value ( set time value to 12 am)
                             if (!scope.timeCtrlModel.isValidValue) {
-                                tempDate = new Date(scope.dateCtrlModel.value.getFullYear(), scope.dateCtrlModel.value.getMonth(), scope.dateCtrlModel.value.getDate(), 0, 0, 0, 0); // combine date and time parts
+                                tempDate = new Date(scope.dateCtrlModel.value.getFullYear(), scope.dateCtrlModel.value.getMonth(), scope.dateCtrlModel.value.getDate(), 9, 0, 0, 0); // combine date and time parts
                             }
                             else {
                                 tempDate = getDateTimeValueOnDateValueChange();
@@ -186,7 +186,7 @@
                         }
                         else if (scope.dateCtrlModel.isValidValue && _.isDate(scope.dateCtrlModel.value)) {
                             // if time value is null but date is not null then set time value to 12 am
-                            tempDate = new Date(scope.dateCtrlModel.value.getFullYear(), scope.dateCtrlModel.value.getMonth(), scope.dateCtrlModel.value.getDate(), 0, 0, 0, 0); // combine date and time parts
+                            tempDate = new Date(scope.dateCtrlModel.value.getFullYear(), scope.dateCtrlModel.value.getMonth(), scope.dateCtrlModel.value.getDate(), 9, 0, 0, 0); // combine date and time parts
                         }
                         
                         // validate
@@ -301,7 +301,7 @@
                             tempDate = new Date(datePart.getFullYear(), datePart.getMonth(), datePart.getDate(), timePart.getHours(), timePart.getMinutes(), 0, 0); // combine date and time parts
                         }
                         else {  // valid date value, valid time value. And time value is null
-                            tempDate = new Date(datePart.getFullYear(), datePart.getMonth(), datePart.getDate(), 0, 0, 0, 0); // set time part to 12am
+                            tempDate = new Date(datePart.getFullYear(), datePart.getMonth(), datePart.getDate(), 9, 0, 0, 0); // set time part to 9am
                         }
                         return tempDate;
                     }
@@ -323,7 +323,7 @@
                         
                         if (_.isDate(scope.internalDateTimeValue)) {
                             scope.internalDateUpdate = true;
-                            scope.dateCtrlModel.value = new Date(scope.internalDateTimeValue.getFullYear(), scope.internalDateTimeValue.getMonth(), scope.internalDateTimeValue.getDate(), 0, 0, 0, 0);
+                            scope.dateCtrlModel.value = new Date(scope.internalDateTimeValue.getFullYear(), scope.internalDateTimeValue.getMonth(), scope.internalDateTimeValue.getDate(), 9, 0, 0, 0);
                             return;
                         }
 

@@ -168,7 +168,7 @@ Object.defineProperty(WatchData.prototype, 'name', {
                         var duration = endTime - startTime;
 
                         if (value !== watcher.last) {
-                            if (!angular.equals(value, watcher.last) && !(typeof value == 'number' && typeof watcher.last == 'number' && isNaN(value) && isNaN(watcher.last))) {
+                            if (!angular.equals(value, watcher.last) && !(typeof value === 'number' && typeof watcher.last === 'number' && isNaN(value) && isNaN(watcher.last))) {
                                 console.log(new ChangedWatch(watcher.origGet, watcher.fn, value, watcher.last, duration));
                             }
                         }

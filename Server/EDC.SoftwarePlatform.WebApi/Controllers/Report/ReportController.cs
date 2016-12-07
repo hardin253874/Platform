@@ -737,10 +737,12 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.Report
 				choiceSelections = new Dictionary<long, List<ChoiceItemDefinition>>( metadata.ChoiceSelections.Count );
 				foreach ( var choiceSelection in metadata.ChoiceSelections )
 				{
-					choiceSelections[ choiceSelection.Key ] = new List<ChoiceItemDefinition>( choiceSelection.Value.Select( csv => new ChoiceItemDefinition
-					{
-						DisplayName = csv.DisplayName, EntityIdentifier = csv.EntityIdentifier
-					} ) );
+                    choiceSelections[choiceSelection.Key] = new List<ChoiceItemDefinition>(choiceSelection.Value.Select(csv => new ChoiceItemDefinition
+                    {
+                        DisplayName = csv.DisplayName,
+                        EntityIdentifier = csv.EntityIdentifier,
+                        FormatRule = PackFormatRule(csv)
+                    } ) );
 				}
 			}
 			// Create the dictionary of analyser columns
@@ -827,7 +829,8 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.Report
 					valueFormatRules[ reportColumnValueFormat.Key ] = new ReportColumnValueFormat
 					{
 						HideDisplayValue = reportColumnValueFormat.Value.HideDisplayValue,
-						Alignment = reportColumnValueFormat.Value.Alignment,
+                        DisableDefaultFormat = reportColumnValueFormat.Value.DisableDefaultFormat,
+                        Alignment = reportColumnValueFormat.Value.Alignment,
 						Prefix = reportColumnValueFormat.Value.Prefix,
 						Suffix = reportColumnValueFormat.Value.Suffix,
 						DecimalPlaces = reportColumnValueFormat.Value.DecimalPlaces,
@@ -836,8 +839,9 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.Report
 						ImageScaleId = reportColumnValueFormat.Value.ImageScaleId,
 						ImageSizeId = reportColumnValueFormat.Value.ImageSizeId,
 						ImageHeight = reportColumnValueFormat.Value.ImageHeight,
-						ImageWidth = reportColumnValueFormat.Value.ImageWidth
-					};
+						ImageWidth = reportColumnValueFormat.Value.ImageWidth,
+                        EntityListColumnFormat = reportColumnValueFormat.Value.EntityListColumnFormat
+                    };
 				}
 			}
 
@@ -1040,14 +1044,61 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.Report
 			};
 		}
 
-		/// <summary>
-		///     Packs the report grid data.
-		/// </summary>
-		/// <param name="gridData">The grid data.</param>
-		/// <returns>
-		///     List{DataRow}.
-		/// </returns>
-		private static List<DataRow> PackReportGridData( List<ServiceResult.DataRow> gridData )
+        private static ReportConditionalFormatRule PackFormatRule(ServiceResult.ChoiceItemDefinition choiceItem)
+        {
+            if (string.IsNullOrEmpty(choiceItem.BackgroundColor) && string.IsNullOrEmpty(choiceItem.ForegroundColor) &&
+                choiceItem.ImageEntityId == null)
+                return null;
+
+            Dictionary<long, string> values = new Dictionary<long, string>();
+            values[choiceItem.EntityIdentifier] = choiceItem.DisplayName;
+
+            return new ReportConditionalFormatRule
+            {
+                Operator = ConditionType.AnyOf.ToString(),                
+                Values = values,
+                BackgroundColor = ColourFromString(choiceItem.BackgroundColor),
+                ForegroundColor = ColourFromString(choiceItem.ForegroundColor),
+                ImageEntityId = choiceItem.ImageEntityId                
+            };
+        }
+
+        private static ReportConditionColor ColourFromString(string colourHexString)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(colourHexString))
+                {
+                    UInt32 barColour = Convert.ToUInt32(colourHexString, 16);
+                    ReportConditionColor colourInfo = new ReportConditionColor
+                    {
+                        Alpha = (byte)((barColour & 0xff000000) >> 24),
+                        Red = (byte)((barColour & 0x00ff0000) >> 16),
+                        Green = (byte)((barColour & 0x0000ff00) >> 8),
+                        Blue = (byte)(barColour & 0x000000ff)
+                    };
+                    return colourInfo;
+                }
+                else
+                    return null;
+
+                
+            }
+            catch (Exception)
+            {
+                // Failed to format, just leave it as null
+                return null;
+            }
+        }
+
+        /// <summary>
+        ///     Packs the report grid data.
+        /// </summary>
+        /// <param name="gridData">The grid data.</param>
+        /// <returns>
+        ///     List{DataRow}.
+        /// </returns>
+        private static List<DataRow> PackReportGridData( List<ServiceResult.DataRow> gridData )
 		{
 			if ( gridData == null || gridData.Count == 0 )
 			{

@@ -6,6 +6,7 @@ using EDC.ReadiNow.Configuration;
 using EDC.ReadiNow.Model;
 using EDC.ReadiNow.Monitoring.Workflow;
 using EDC.ReadiNow.Model.Interfaces;
+using EDC.ReadiNow.Core;
 
 namespace EDC.SoftwarePlatform.Activities
 {
@@ -35,9 +36,27 @@ namespace EDC.SoftwarePlatform.Activities
         {
             get
             {
-                return workflowConfig.Value.Triggers.MaxRunTimeSeconds;
+                if (Factory.FeatureSwitch.Get("longRunningWorkflow"))
+                {
+                    return workflowConfig.Value.Triggers.MaxRunTimeSeconds;
+                }
+                else
+                {
+                    return 120;             // This was the default value before long running workflows were put in
+                }
             }
-        } 
+        }
+
+        /// <summary>
+        /// The maximum number of steps that a workflow will run for.
+        /// </summary>
+        public static int MaxSteps
+        {
+            get
+            {
+                return workflowConfig.Value.Triggers.MaxSteps;
+            }
+        }
 
 
         public static void ActionTrigger(this WfTriggerUserUpdatesResource trigger, IEntity entity)

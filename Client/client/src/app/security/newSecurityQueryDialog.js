@@ -48,6 +48,16 @@
         $scope.options = options;
         $scope.options.subjects = addDisplayName(options.subjects);
         $scope.options.includeUsers = false;
+        $scope.options.applicationPickerOptions = {
+            selectedEntityId: null,
+            selectedEntity: null,
+            selectedEntities: null,
+            pickerReportId: options.ids.applicationPickerReportId ? options.ids.applicationPickerReportId.id() : options.ids.templateReportId.id(),
+            entityTypeId: options.ids.solutionId.id(),
+            multiSelect: false,
+            isDisabled: false
+        };
+
         $scope.subjects = filterSubjects(options.subjects, $scope.options.includeUsers);
 
         $scope.toggleIncludeUsers = function () {
@@ -55,10 +65,16 @@
         };
 
         $scope.ok = function () {
-            $uibModalInstance.close({
+            var result = {
                 selectedSubject: $scope.options.selectedSubject,
-                selectedSecurableEntity: $scope.options.selectedSecurableEntity
-            });
+                selectedSecurableEntity: $scope.options.selectedSecurableEntity,
+            };
+
+            if ($scope.options.applicationPickerOptions.selectedEntities && $scope.options.applicationPickerOptions.selectedEntities.length > 0) {
+                result.selectedApplication = $scope.options.applicationPickerOptions.selectedEntities[0];
+            }
+
+            $uibModalInstance.close(result);
         };
 
         $scope.cancel = function () {
@@ -81,7 +97,7 @@
          *
          * @function showDialog
          */
-        exports.showDialog = function (subjects, types, defaultSubjectAlias, defaultSecurableEntityAlias) {
+        exports.showDialog = function (subjects, types, defaultSubjectAlias, defaultSecurableEntityAlias, ids) {
             if (!angular.isArray(subjects)) {
                 throw new Error("subjects must be an array");
             }
@@ -112,7 +128,8 @@
                             selectedSubject: selectedSubject,
                             securableEntities: _.sortBy(types, "name"),
                             securableEntitiesAnnotated: annotateNames(types),
-                            selectedSecurableEntity: _.find(types, {nsAlias: defaultSecurableEntityAlias})
+                            selectedSecurableEntity: _.find(types, { nsAlias: defaultSecurableEntityAlias }),
+                            ids: ids
                         };
                     }
                 }

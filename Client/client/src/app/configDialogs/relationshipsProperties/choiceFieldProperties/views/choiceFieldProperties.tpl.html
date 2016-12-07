@@ -26,16 +26,16 @@
                             <span ng-include="definitionControlFile"></span>
                         </div>
                     </uib-tab>
-                    <uib-tab heading="Format" ng-show="model.isFormControl">
-                        <div class="tab-container">
-                            <span ng-include="formatControlFile"></span>
-                        </div>
-                    </uib-tab>
                     <uib-tab heading="Visibility" ng-show="model.isFormControl && model.visibilityCalculationModel.isShowHideOn" ng-click="visibilityTabClicked()">
                         <div class="tab-container">
                             <span ng-include="visibilityControlFile"></span>
                         </div>
                     </uib-tab>
+                    <uib-tab heading="Format" ng-show="model.isFormControl">
+                        <div class="tab-container">
+                            <span ng-include="formatControlFile"></span>
+                        </div>
+                    </uib-tab>                    
                 </uib-tabset>
             </div>
         </div>

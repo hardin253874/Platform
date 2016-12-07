@@ -17,7 +17,6 @@ angular.module('mockedEntityService').factory('spEntityService', function($q, $t
     exports.deleteEntity = function () { throw new Error('deleteEntity has not been mocked.'); };
     exports.setWebApiRoot = function () { throw new Error('setWebApiRoot has not been mocked.'); };
     exports.deleteEntities = function () { throw new Error('deleteEntities has not been mocked.'); };
-    exports.getTypeMetadata = function () { throw new Error('getTypeMetadata has not been mocked.'); };
 
     var getInstancesOfTypeData = {};
     var getEntitiesOfTypeMock = {};

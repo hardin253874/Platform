@@ -22,7 +22,7 @@
             }
 
             function urlContainsParam(url, paramName) {
-                if (url.indexOf('?') == -1) return false;
+                if (url.indexOf('?') === -1) return false;
                 var queryStringPairs = url.split("?")[1].split("&");
                 return _.some(queryStringPairs, function(paramNameAndValue){
                     return paramNameAndValue.indexOf(paramName + "=") === 0;
@@ -36,7 +36,7 @@
                 if(!url || !paramName) return url;
                 var param = encodeURIComponent(paramName) + '=' + encodeURIComponent(paramValue);
                 if (urlContainsParam(url, paramName)) return url; //no change when duplicating query param is supplied
-                var delimiter = url.indexOf('?') == -1 ? '?' : '&';
+                var delimiter = url.indexOf('?') === -1 ? '?' : '&';
                 return url + delimiter + param;
             };
 

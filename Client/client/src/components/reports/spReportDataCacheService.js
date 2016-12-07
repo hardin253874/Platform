@@ -96,7 +96,7 @@
                     var data = JSON.parse(json.reportData);
                     if (data) {
                         // check if there is more recent data available (on a refresh)
-                        if (key.noMetaName && (key.name != key.noMetaName)) {
+                        if (key.noMetaName && (key.name !== key.noMetaName)) {
                             var json2 = reportDataCache.get(key.noMetaName);
                             if (json2) {
                                 if (json2.timestamp < expiredTimeStamp)
@@ -206,8 +206,8 @@
             for (i = 0; i < strlen; i++) {
                 c = str.charCodeAt(i);
                 // jshint ignore:start
-                hash = ((hash << 5) - hash) + c;
-                hash = hash & hash; // force a 32-bit int
+                hash = ((hash << 5) - hash) + c; //eslint-disable-line no-bitwise
+                hash = hash & hash; //eslint-disable-line no-bitwise
                 // jshint ignore:end
             }
             return hash;

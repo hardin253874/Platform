@@ -302,7 +302,9 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.Entity
 
 		public static JsonEntityQueryResult GetJsonEntityQueryResult( ICollection<EntityRef> entityRefs, ICollection<string> requests )
 		{
+#pragma warning disable 618
 			var svc = new EntityInfoService( );
+#pragma warning restore 618
 			var entityDataList = new List<EntityData>( );
 
 			for ( int i = 0; i < entityRefs.Count; ++i )
@@ -454,7 +456,9 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.Entity
                 {
                     using (DatabaseContext context = DatabaseContext.GetContext(true))
                     {
+#pragma warning disable 618
                         var svc = new EntityInfoService();
+#pragma warning restore 618
 
                         map = svc.CreateEntityGetMap(newEntityData);
 
@@ -483,7 +487,9 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.Entity
                 {
                     using (DatabaseContext context = DatabaseContext.GetContext(true))
                     {
+#pragma warning disable 618
                         var svc = new EntityInfoService();
+#pragma warning restore 618
                         svc.UpdateEntity(newEntityData);
 
                         context.CommitTransaction();
@@ -542,7 +548,9 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.Entity
             {
                 using (DatabaseContext context = DatabaseContext.GetContext(true))
                 {
+#pragma warning disable 618
                     var svc = new EntityInfoService();
+#pragma warning restore 618
 
                     var clonedIds = svc.CloneAndUpdateEntity(newEntityData);
 
@@ -608,7 +616,9 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.Entity
 
 			EventLog.Application.WriteInformation( string.Format( "webapi- deleting {0} entities", ids.Length ) );
 
+#pragma warning disable 618
             var svc = new EntityInfoService();
+#pragma warning restore 618
             svc.DeleteEntities(refs);
 
             EventLog.Application.WriteInformation(string.Format("webapi- deleting complete"));

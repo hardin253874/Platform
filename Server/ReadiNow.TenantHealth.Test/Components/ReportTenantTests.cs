@@ -12,9 +12,11 @@ using EDC.SoftwarePlatform.WebApi.Controllers.Report;
 using ReportSettings = ReadiNow.Reporting.Request.ReportSettings;
 using System.Net.Http;
 using System.Threading.Tasks;
+using EDC.ReadiNow.Cache;
 using Jil;
 using EDC.SoftwarePlatform.WebApi.Infrastructure;
 using EDC.SoftwarePlatform.WebApi;
+using ReadiNow.TenantHealth.Test.Infrastructure;
 
 namespace ReadiNow.TenantHealth.Test.Components
 {
@@ -24,7 +26,7 @@ namespace ReadiNow.TenantHealth.Test.Components
     [TestFixture]
     public class ReportTenantTests
     {
-        [TestFixtureSetUp]
+		[TestFixtureSetUp]
         public void FigureSetup()
         {
             // Register autofac modules for the web dll.
@@ -36,51 +38,68 @@ namespace ReadiNow.TenantHealth.Test.Components
         /// </summary>
         const string ReportsToIgnore = "H_Country Report,RPT_AF_Relationships,Textbooks";
 
+		/// <summary>
+		/// Clears the selected caches.
+		/// </summary>
+		private void ClearSelectedCaches( )
+		{
+			ICacheService cacheService = Factory.QueryRunner as ICacheService;
+			cacheService?.Clear( );
+
+			cacheService = Factory.QueryRepository as ICacheService;
+			cacheService?.Clear( );
+
+			cacheService = Factory.QuerySqlBuilder as ICacheService;
+			cacheService?.Clear( );
+
+			GC.Collect( );
+		}
+
         [Test]
         [TestCaseSource( "RunReport_GetTestData" )]
         public void RunReport( TenantInfo tenant, long reportId, string reportName )
         {
+			using ( tenant.GetTenantAdminContext( ) )
+			using ( new MemoryGuard( 2 * TenantHealthHelpers.OneGb, ClearSelectedCaches ) )
+			using ( new MemoryGuard( 3 * TenantHealthHelpers.OneGb, TenantHealthHelpers.ClearAllCaches ) )
+			using ( new MemoryLogger( new KeyValuePair<string, object>( "Tenant", tenant.TenantName ), new KeyValuePair<string, object>( "Report Id", reportId ) ) )
+			{
+				ReportController controller = new ReportController( );
 
-            using ( tenant.GetTenantAdminContext( ) )
-            {
-
-                ReportController controller = new ReportController( );
-
-                ReportSettings settings = new ReportSettings
-                {
-                    RequireFullMetadata = true,
-                    InitialRow = 0,
-                    PageSize = 1,
-                    SupportPaging = true
-                };
+				ReportSettings settings = new ReportSettings
+				{
+					RequireFullMetadata = true,
+					InitialRow = 0,
+					PageSize = 1,
+					SupportPaging = true
+				};
 
 
-                HttpResponseMessage result = controller.RunReport( reportId, settings );
+				HttpResponseMessage result = controller.RunReport( reportId, settings );
 
-                if ( result == null )
-                    throw new Exception( "Null HttpResponseMessage" );
-                if (result.StatusCode != HttpStatusCode.OK)
-                    throw new Exception( $"HttpStatusCode was {result.StatusCode}" );
-                if ( result.Content == null )
-                    throw new Exception( "Null HttpResponseMessage.Content" );
+				if ( result == null )
+					throw new Exception( "Null HttpResponseMessage" );
+				if ( result.StatusCode != HttpStatusCode.OK )
+					throw new Exception( $"HttpStatusCode was {result.StatusCode}" );
+				if ( result.Content == null )
+					throw new Exception( "Null HttpResponseMessage.Content" );
 
-                Task<string> asyncTask = result.Content.ReadAsStringAsync( );
-                asyncTask.Wait( );
-                string responseString = asyncTask.Result;
-                    
-                ReportResult reportResult = JSON.Deserialize<ReportResult>( responseString, JilFormatter.GetDefaultOptions( ) );
+				Task<string> asyncTask = result.Content.ReadAsStringAsync( );
+				asyncTask.Wait( );
+				string responseString = asyncTask.Result;
 
-                Assert.That( reportResult, Is.Not.Null, "result" );
-                Assert.That( reportResult.Metadata, Is.Not.Null, "Metadata" );
-                Assert.That( reportResult.Metadata.ReportColumns, Is.Not.Null, "ReportColumns" );
-                Assert.That( reportResult.Metadata.ReportColumns.Count, Is.GreaterThan( 0 ), "ReportColumns.Count" );
-                Assert.That( reportResult.Metadata.InvalidReportInformation, Is.Not.Null, "InvalidReportInformation missing" );
-                Assert.That( reportResult.Metadata.InvalidReportInformation [ "nodes" ], Is.Null, "Report has invalid nodes" );
-                Assert.That( reportResult.Metadata.InvalidReportInformation [ "columns" ], Is.Null, "Report has invalid columns" );
-                Assert.That( reportResult.Metadata.InvalidReportInformation [ "conditions" ], Is.Null, "Report has invalid conditions" );
-                
-            }
-        }
+				ReportResult reportResult = JSON.Deserialize<ReportResult>( responseString, JilFormatter.GetDefaultOptions( ) );
+
+				Assert.That( reportResult, Is.Not.Null, "result" );
+				Assert.That( reportResult.Metadata, Is.Not.Null, "Metadata" );
+				Assert.That( reportResult.Metadata.ReportColumns, Is.Not.Null, "ReportColumns" );
+				Assert.That( reportResult.Metadata.ReportColumns.Count, Is.GreaterThan( 0 ), "ReportColumns.Count" );
+				Assert.That( reportResult.Metadata.InvalidReportInformation, Is.Not.Null, "InvalidReportInformation missing" );
+				Assert.That( reportResult.Metadata.InvalidReportInformation [ "nodes" ], Is.Null, "Report has invalid nodes" );
+				Assert.That( reportResult.Metadata.InvalidReportInformation [ "columns" ], Is.Null, "Report has invalid columns" );
+				Assert.That( reportResult.Metadata.InvalidReportInformation [ "conditions" ], Is.Null, "Report has invalid conditions" );
+			}
+		}
 
         //[Test]
         //[TestCaseSource( "RunReport_GetTestData" )]
@@ -168,5 +187,5 @@ namespace ReadiNow.TenantHealth.Test.Components
         {
             return TenantHealthHelpers.GetInstancesAsTestData( "core:report", ReportsToIgnore );
         }
-    }
+	}
 }

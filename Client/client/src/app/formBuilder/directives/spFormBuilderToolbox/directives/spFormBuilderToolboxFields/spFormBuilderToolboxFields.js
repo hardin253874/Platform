@@ -1940,10 +1940,8 @@
 
                         if (e.shiftKey) {
                             switch (e.which) {
-                                case 188:
-                                // <
-                                case 190:
-                                    // >
+                                case 188: // <
+                                case 190: // >
                                     e.stopPropagation();
                                     e.preventDefault();
                                     return false;

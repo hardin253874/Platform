@@ -4,14 +4,18 @@
 (function () {
     'use strict';
 
-    angular.module('sp.common.fileUpload', ['mod.common.spWebService', 'mod.common.spXsrf', 'mod.common.alerts']);
+    angular.module('sp.common.fileUpload', [
+        'mod.common.spWebService',
+        'mod.common.spXsrf',
+        'mod.common.alerts',
+        'mod.common.spWebService']);
 
     angular.module('sp.common.fileUpload')
         .factory('spUploadManager', uploadManager)
         .directive('spFileUpload', fileUploadDirective);
 
     /* @ngInject */
-    function uploadManager($rootScope, $q, spXsrf, spAlertsService) {
+    function uploadManager($rootScope, $q, spXsrf, spAlertsService, spWebService) {
 
         var exports = {
             createUploadSession: createUploadSession,
@@ -42,6 +46,7 @@
             this.deferredUpload = null;
             this.progress = 0;          // progress in percentage
             this.allowMultipleFiles = allowMultipleFiles;
+            this.suppressErrors = false;
         }
 
         UploadSession.prototype.clear = function () {
@@ -89,7 +94,11 @@
             }
 
             // for information on these settings https://github.com/blueimp/jQuery-File-Upload/wiki/Options
-            var uploadUrl = spXsrf.addXsrfTokenAsQueryString('/spapi/data/v2/file');
+            var uri = spWebService.getWebApiRoot() + '/spapi/data/v2/file';
+            if (that.expectedType) {
+                uri += '?type=' + that.expectedType;
+            }
+            var uploadUrl = spXsrf.addXsrfTokenAsQueryString(uri);
             newUploader.fileupload({
                 dataType: 'json',
                 url: uploadUrl,
@@ -134,7 +143,13 @@
                     console.error("spFileUpload: Upload failed.", data);
                     //about bug 28027 if file upload fails the error message is poor
                     //use alertService to raise error message, otherwise the form error message will be raisedn by empty content.
-                    spAlertsService.addAlert("File upload failed.", { severity: spAlertsService.sev.Error });
+                    var msg = "File upload failed.";
+                    if (sp.result(data, "jqXHR.status") === 403) {
+                        msg = "File type was disallowed. Configure file types in administration.";
+                    }
+                    if (!that.suppressErrors) {                        
+                        spAlertsService.addAlert(msg, { severity: spAlertsService.sev.Error });
+                    }
                     that.progress = 100;
                     that.deferredUpload.reject(data.errorThrown);
                     safeApply();
@@ -162,8 +177,10 @@
             });
         }
 
-        function createUploadSession() {
-            return new UploadSession();
+        function createUploadSession(expectedType) {
+            var session = new UploadSession();
+            session.expectedType = expectedType; // can be undefined
+            return session;
         }
 
         return exports;
@@ -283,7 +300,7 @@
                             }
                         })
                         .finally(function () { // recreate the session so we can send again
-                            scope.uploadSession = spUploadManager.createUploadSession();
+                            scope.uploadSession = spUploadManager.createUploadSession(scope.uploadSession.expectedType);
 
                             // hide progress bar
                             scope.busyIndicatorOptions.isBusy = false;

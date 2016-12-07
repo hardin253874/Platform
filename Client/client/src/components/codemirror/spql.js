@@ -1,4 +1,5 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
+/* eslint-disable */
 /*global CodeMirror */
 
 CodeMirror.defineMode("spql", function (config, parserConfig) {

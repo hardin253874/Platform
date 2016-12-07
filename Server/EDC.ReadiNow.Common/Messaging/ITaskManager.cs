@@ -16,7 +16,6 @@ namespace EDC.ReadiNow.Messaging
         /// Register the start of a task
         /// </summary>
         /// <param name="taskId"></param>
-        /// <returns></returns>
         void RegisterStart(string taskId);
 
         /// <summary>
@@ -24,8 +23,13 @@ namespace EDC.ReadiNow.Messaging
         /// </summary>
         /// <param name="taskId"></param>
         /// <param name="result"></param>
-        /// <returns></returns>
         void RegisterComplete(string taskId, string result = null);
+
+        /// <summary>
+        /// Register the cancellation of a task
+        /// </summary>
+        /// <param name="taskId"></param>
+        void RegisterCancelled(string taskId);
 
         /// <summary>
         /// Has the given task started
@@ -40,6 +44,20 @@ namespace EDC.ReadiNow.Messaging
         /// <param name="taskId"></param>
         /// <returns>true if it has</returns>
         bool HasCompleted(string taskId);
+
+        /// <summary>
+        /// Has the given task been cancelled
+        /// </summary>
+        /// <param name="taskId"></param>
+        /// <returns>true if it has</returns>
+        bool HasCancelled(string taskId);
+
+        /// <summary>
+        /// Update the additional info.
+        /// </summary>
+        /// <param name="taskId"></param>
+        /// <param name="result"></param>
+        void SetResult(string taskId, string result);
 
         /// <summary>
         /// Gets the stored result of the task.

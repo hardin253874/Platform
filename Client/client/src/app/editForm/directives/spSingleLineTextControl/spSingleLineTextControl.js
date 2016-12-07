@@ -1,5 +1,5 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
-/*global console, _, angular, sp, spEntity, Globalize */
+/*global console, _, angular, sp, spEntity, Globalize, rnEditForm */
 
 (function () {
     'use strict';
@@ -9,7 +9,7 @@
     // the edit form scope and the isolated render control, mapping the
     // relevant properties from one to the other.
     /////
-    angular.module('mod.app.editForm.designerDirectives.spSingleLineTextControl', ['mod.common.spInclude', 'mod.app.editForm', 'mod.common.spMobile', 'mod.common.ui.spDialogService', 'mod.common.spCachingCompile'])
+    angular.module('mod.app.editForm.designerDirectives.spSingleLineTextControl', ['mod.common.spInclude', 'mod.app.editForm', 'mod.common.spMobile', 'mod.common.ui.spDialogService', 'mod.common.spCachingCompile', 'mod.app.editForm.spDblclickToEdit'])
         .directive('spSingleLineTextControl', spSingleLineTextControl);
 
     /* @ngInject */
@@ -30,10 +30,14 @@
                 version2: '@'
             },
             link: linkFunc,
+            // controller: ['$scope', scope => {
+            //     console.log(scope);
+            // }],
             require: '^^?spInlineEditForm'
         };
 
         function linkFunc(scope, element, attrs, spInlineEditForm) {
+
             ///////////////////////////////////////
             // Variables and bindables
             var fieldToRender, sanitizer, validator, customValidationMessages = [];
@@ -166,58 +170,8 @@
             ///////////////////////////////////////
             // Implementation
 
-            function getFieldDisplayType(field) {
-                var represents = field.getLookup('core:fieldRepresents');
-
-                switch (represents && represents.alias()) {
-                    case 'core:fieldRepresentsEmail':
-                        return 'email';
-                    case 'core:fieldRepresentsUrl':
-                        return 'url';
-                    case 'core:fieldRepresentsPhoneNumber':
-                        return 'phoneNumber';
-                    case 'core:fieldRepresentsColor':
-                        return 'color';
-                    case 'core:fieldRepresentsPassword':
-                        return 'password';
-                    default:
-                        return 'string';
-                }
-            }
-
-            function getFieldInputType(field) {
-                var represents = field.getLookup('core:fieldRepresents');
-
-                switch (represents && represents.alias()) {
-                    case 'core:fieldRepresentsPassword':
-                        return 'password';
-                    default:
-                        return 'text';
-                }
-            }
-
             function updateDisplayString(value) {
-                switch (scope.fieldDisplayType) {
-                    //TODO: Remove
-                    case 'dateTime':
-                        if (value && _.isDate(value)) {
-                            scope.displayString = Globalize.format(value, 'd') + ' ' + Globalize.format(value, 't');
-                        }
-                        break;
-                    //TODO: Remove
-                    case 'time':
-                        if (value && _.isDate(value)) {
-                            var tempDate = new Date(1973, 0, 1, value.getUTCHours(), value.getUTCMinutes(), 0, 0);
-                            scope.displayString = Globalize.format(tempDate, 't');
-                        }
-                        break;
-                    case 'url':
-                    case 'email':
-                    case 'color':
-                    case 'string':
-                        scope.displayString = value || '';
-                        break;
-                }
+                scope.displayString = rnEditForm.getFieldDisplayString(scope.fieldDisplayType, value);
             }
 
             function processModelUpdate() {
@@ -242,8 +196,8 @@
                         scope.model.fieldValue = scope.formData.getField(fieldToRender.eid());
                     }
 
-                    scope.fieldDisplayType = getFieldDisplayType(fieldToRender);
-                    scope.fieldInputType = getFieldInputType(fieldToRender);
+                    scope.fieldDisplayType = rnEditForm.getFieldDisplayType(fieldToRender);
+                    scope.fieldInputType = rnEditForm.getFieldInputType(fieldToRender);
 
                     if (fieldToRender.getFieldWatermark) {
                         scope.model.watermark = fieldToRender.getFieldWatermark();

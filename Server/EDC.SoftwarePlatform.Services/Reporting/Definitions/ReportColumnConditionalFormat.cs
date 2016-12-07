@@ -21,6 +21,11 @@ namespace ReadiNow.Reporting.Definitions
         public bool ShowValue { get; set; }
 
         /// <summary>
+        /// Should use default choice field format on the formatted cell or not.
+        /// </summary>
+        public bool DisableDefaultFormat { get; set; }
+
+        /// <summary>
         /// Individual formatting rules.
         /// </summary>
         public List<ReportConditionalFormatRule> Rules { get; set; }

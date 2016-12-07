@@ -8,6 +8,8 @@ namespace EDC.SoftwarePlatform.Activities.Test.Mocks
 {
     public class DummyWorkflowRunner : IWorkflowRunner
     {
+        public long SuspendTimeoutMs { get; set; }
+
         public WorkflowRun ResumeWorkflow(WorkflowRun run, IWorkflowEvent resumeEvent)
         {
             throw new NotImplementedException();

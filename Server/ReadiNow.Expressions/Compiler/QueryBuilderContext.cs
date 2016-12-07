@@ -27,7 +27,7 @@ namespace ReadiNow.Expressions.Compiler
         /// <summary>
         /// Local map of expression nodes to query nodes.
         /// </summary>
-        public Dictionary<ExpressionNode, SQ.Entity> NodeCache { get; private set; }
+        public Dictionary<ExpressionNode, SQ.Entity> NodeCache { get; }
 
         public SQ.Entity ParentNode
         {
@@ -41,5 +41,34 @@ namespace ReadiNow.Expressions.Compiler
             EntityNode entityNode = ( ( EntityNode ) expression ).GetQueryNode( );
             return NodeCache [ entityNode ];
         }
+
+        /// <summary>
+        /// Resolves a parameter.
+        /// </summary>
+        /// <param name="parameterName">The name of the parameter.</param>
+        /// <returns></returns>
+        public SQ.ResourceEntity ResolveParameterNode( string parameterName )
+        {
+            if ( _parameterNodes == null )
+                _parameterNodes = new Dictionary<string, SQ.ResourceEntity>( );
+
+            // Cache the parameter result
+            SQ.ResourceEntity result;
+            if ( !_parameterNodes.TryGetValue( parameterName, out result ) )
+            {
+                if ( Settings == null )
+                    throw new InvalidOperationException( "Settings were not set." );
+                if ( Settings.ParameterNodeResolver == null )
+                    throw new InvalidOperationException( "ParameterNodeResolver was not set." );
+
+                result = Settings.ParameterNodeResolver( parameterName );
+
+                _parameterNodes[ parameterName ] = result;
+            }
+
+            return result;
+        }
+
+        private Dictionary<string, SQ.ResourceEntity> _parameterNodes;
     }
 }

@@ -51,7 +51,7 @@
                     .then(runAnyFollowUpTasks)
                     .then(refreshTask)
                     .catch(function (error) {
-                        if (error != returningToParentMarker) {        // it's a little ugly but the best way to stop the promises half way
+                        if (error !== returningToParentMarker) {        // it's a little ugly but the best way to stop the promises half way
                             var msg = error ? (error.message || sp.result(error, 'data.Message') || error) : 'An error occurred.';
                             spAlertsService.addAlert(msg, { severity: spAlertsService.sev.Error });
                         }

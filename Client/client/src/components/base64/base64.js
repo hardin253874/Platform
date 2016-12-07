@@ -1,5 +1,5 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
-/* jshint bitwise:false */
+/* eslint no-bitwise: off, eqeqeq: off */
 
 /**
  *  Library for encoding/decoding base64.

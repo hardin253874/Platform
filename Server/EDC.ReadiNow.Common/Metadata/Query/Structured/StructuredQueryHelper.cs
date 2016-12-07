@@ -808,26 +808,58 @@ namespace EDC.ReadiNow.Metadata.Query.Structured
             descendants = new Entity[0];
             visitor(node, descendants);
 
-	        VisitNodesInternal(node, visitor, descendants);           
+	        VisitNodesInternal(node, visitor, descendants);
         }
 
-	    /// <summary>
+        /// <summary>
+        /// Recursively visit all children, including the node passed in.
+        /// </summary>
+        /// <param name="childNode">
+        /// The node to find the parent for.
+        /// </param>
+        /// <param name="rootNode">
+        /// The node to start at (usually <see cref="StructuredQuery.RootEntity"/>). This
+        /// cannot be null.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// No argument can be null.
+        /// </exception>
+        public static Entity FindParent( Entity childNode, Entity rootNode )
+        {
+            if ( childNode == null )
+            {
+                throw new ArgumentNullException( nameof( childNode ) );
+            }
+            if ( rootNode == null )
+            {
+                throw new ArgumentNullException( nameof( rootNode ) );
+            }
+            Entity result = null;
+            VisitNodes( rootNode, ( curNode, path ) =>
+            {
+                if ( curNode == childNode )
+                    result = path.LastOrDefault( );
+            } );
+            return result;
+        }
+
+        /// <summary>
         /// Used by <see cref="VisitNodes"/> to walk all nodes.
-	    /// </summary>
-	    /// <param name="node">
-	    /// The node to start at (usually <see cref="StructuredQuery.RootEntity"/>). This
-	    /// cannot be null.
-	    /// </param>
-	    /// <param name="visitor">
-	    /// The action to call on each node. This cannot be null.
-	    /// </param>
-	    /// <param name="descendants">
-	    /// The descendants of <see cref="node"/>.
-	    /// </param>
-	    /// <exception cref="ArgumentNullException">
-	    /// No argument can be null.
-	    /// </exception>
-	    private static void VisitNodesInternal(Entity node, Action<Entity, IEnumerable<Entity>> visitor,
+        /// </summary>
+        /// <param name="node">
+        /// The node to start at (usually <see cref="StructuredQuery.RootEntity"/>). This
+        /// cannot be null.
+        /// </param>
+        /// <param name="visitor">
+        /// The action to call on each node. This cannot be null.
+        /// </param>
+        /// <param name="descendants">
+        /// The descendants of <see cref="node"/>.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// No argument can be null.
+        /// </exception>
+        private static void VisitNodesInternal(Entity node, Action<Entity, IEnumerable<Entity>> visitor,
 	        IEnumerable<Entity> descendants)
 	    {
             if (node == null)

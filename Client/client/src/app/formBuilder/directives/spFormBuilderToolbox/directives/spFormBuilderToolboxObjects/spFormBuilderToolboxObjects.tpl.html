@@ -23,20 +23,22 @@
 
     <!-- Show all/public/private -->
     <button class="btn-link component-filter" ng-click="toggleComponentFilter()" ng-show="spAppSettings.selfServeNonAdmin">{{getComponentFilterText()}}</button>
-
+    <div><span style="display:inline-block; color:#999;padding:5px 0;">Drag and drop to page <img src="assets/images/dragdrop.png"></span></div>
     <!-- Show system types -->
     <div style="color:#ccc; padding: 5px 0" ng-show="showTypesVisible()"><input ng-model="model.showTypes" type="checkbox" />Show types (dev only)</div>
-
+    <div style="color:#ccc; padding: 5px 0" ng-show="isDevMode()"><input ng-model="model.showAdvanced" type="checkbox" />Show advanced (dev only)</div>
     <div class="fb-loading" ng-show="spFormBuilderService.screenObjectsLoading">
         <img class="spinner" src="assets/images/refresh_light.png" />
     </div>
+
+    
 
     <!-- Each type/definition/object -->
     <div ng-repeat="type in model.types | filter:filterType" class="fb-toolbox-group" ng-show="!spFormBuilderService.screenObjectsLoading">
 
         <div style="display: table; width: 100%;">
             <button type="button" class="toggleButton" sp-context-menu-trigger="rightclick" sp-context-menu="toggleContextMenu" sp-context-menu-append-to-body ng-click="type.expanded = !type.expanded"><img ng-src="{{'assets/images/' + (type.expanded ? 'fieldgroup_opened.png' : 'fieldgroup_collapsed.png')}}" /></button>
-            <div class="groupname" uib-tooltip="{{type.description}}">{{type.name}}</div>
+            <div class="toggleGroup" ng-click="type.expanded = !type.expanded" uib-tooltip="{{type.description}}">{{type.name}}</div>
             <span class="fb-toolbox-config" sp-context-menu-trigger="leftclick" sp-context-menu="type.contextMenu" sp-context-menu-append-to-body ng-show="spAppSettings.fullConfig">
                 <img src="assets/images/icon_configure_w.png" />
             </span>

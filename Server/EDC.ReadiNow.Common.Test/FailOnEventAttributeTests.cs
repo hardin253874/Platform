@@ -7,7 +7,6 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using EDC.Diagnostics;
-using EDC.ReadiNow.Common.ConfigParser.Logging;
 using Moq;
 using NUnit.Framework;
 

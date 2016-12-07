@@ -84,6 +84,11 @@ var EdcEntity;  // legacy
             enumerable: true
         });
 
+        Object.defineProperty(Entity.prototype, "entityChangeCounter", {
+            get: function () { return this._graph.history.getChangeCounter(); },
+            enumerable: true
+        });
+
         /*
          * Internal: Factory for generating dynamic field accessors.
          */
@@ -558,8 +563,7 @@ var EdcEntity;  // legacy
          * @name spEntity.Entity#hasField
          */
         Entity.prototype.hasField = function (fieldId) {
-            var res = this.getFieldContainer(fieldId) != null;
-            return res;
+            return !!this.getFieldContainer(fieldId);
         };
 
 
@@ -670,8 +674,7 @@ var EdcEntity;  // legacy
          * @name spEntity.Entity#hasRelationship
          */
         Entity.prototype.hasRelationship = function (relTypeId) {
-            var res = this.getRelationshipContainer(relTypeId) != null;
-            return res;
+            return !!this.getRelationshipContainer(relTypeId);
         };
 
 
@@ -785,15 +788,15 @@ var EdcEntity;  // legacy
 
             // we don't want to set the change flag unless there is actually a change.
             var changed;
-            if (existing == null) {
+            if (!existing) {
                 // changed if nulls don't match, or if this relationship is being registered for the 1st time
                 var hasRel = this.hasRelationship(relTypeId2);
                 if (!hasRel) {
                     this.registerLookup(relTypeId2);
                 }
-                changed = (existing != entity) || !hasRel;
+                changed = (existing !== entity) || !hasRel;
             }
-            else if (entity == null) {
+            else if (!entity) {
                 // since there is an existing value
                 changed = true;
             } else if (spEntity.isEntity(entity)) {
@@ -915,7 +918,7 @@ var EdcEntity;  // legacy
             // skip out if this entity is unchanged. Note we've already handled above any related entities that may have themselves changed
             // however must include any entity that is in our ids list (mostly the root entity)
             var thisId = this._id._getIdOrDummyId();
-            if (!dontSkip && this._dataState == spEntity.DataStateEnum.Unchanged && !_.includes(entityData.ids, thisId)) {
+            if (!dontSkip && this._dataState === spEntity.DataStateEnum.Unchanged && !_.includes(entityData.ids, thisId)) {
                 return;
             }
             // add me to entityData.entities, merging with any existing
@@ -932,8 +935,8 @@ var EdcEntity;  // legacy
                 };
                 entityData.entities.push(rawEntity);
             } else {
-                if (rawEntity.dataState != this._dataState) {
-                    if (this._dataState == spEntity.DataStateEnum.Create || rawEntity.dataState == spEntity.DataStateEnum.Unchanged) {
+                if (rawEntity.dataState !== this._dataState) {
+                    if (this._dataState === spEntity.DataStateEnum.Create || rawEntity.dataState === spEntity.DataStateEnum.Unchanged) {
                         rawEntity.dataState = this._dataState;
                     }
                 }
@@ -970,7 +973,7 @@ var EdcEntity;  // legacy
          * (Entities marked as 'create' or 'delete' remain at those states.)
          */
         Entity.prototype.setDirty = function() {
-            if (this._dataState == spEntity.DataStateEnum.Unchanged) {
+            if (this._dataState === spEntity.DataStateEnum.Unchanged) {
                 this._dataState = spEntity.DataStateEnum.Update;
             }
         };
@@ -1009,7 +1012,7 @@ var EdcEntity;  // legacy
         Entity.prototype.hasChangesRecursive = function hasChangesRecursive() {
             var entities = spEntityUtils.walkEntities(this);
             var anyChanges = _.some(entities, function (e) {
-                var hasChange = e.getDataState() != spEntity.DataStateEnum.Unchanged;
+                var hasChange = e.getDataState() !== spEntity.DataStateEnum.Unchanged;
                 return hasChange;
             });
             return anyChanges;

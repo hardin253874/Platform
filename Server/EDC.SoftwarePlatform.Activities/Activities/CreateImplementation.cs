@@ -31,10 +31,10 @@ namespace EDC.SoftwarePlatform.Activities
             IEntity newEntity = null;
 
             var resTypeRef = (IEntity)inputs[ResourceTypeToCreateKey];
-            var resType = resTypeRef != null ? resTypeRef.As<Definition>() : null;
+            var resType = resTypeRef?.As<EntityType>();
             if (resType == null)
             {
-                throw new WorkflowRunException_Internal("Input resource argument must be a Definition", null);
+                throw new WorkflowRunException_Internal("Input resource argument must be a type.", null);
             }
 
             var activityAs = ActivityInstance.Cast<EntityWithArgsAndExits>();
@@ -54,7 +54,7 @@ namespace EDC.SoftwarePlatform.Activities
         /// </summary>
         /// <param name="resType"></param>
         /// <param name="updateAction"></param>
-        public static IEntity PerformCreate(Definition resType, Action<IEntity> updateAction)
+        public static IEntity PerformCreate(EntityType resType, Action<IEntity> updateAction)
         {
             try
             {

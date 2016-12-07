@@ -21,7 +21,7 @@
         });
 
         $scope.$watch('formTimeoutValue', function (value, oldValue) {
-            if (value != oldValue)
+            if (value !== oldValue)
                 $scope.activityParameters['core:inReviewSurveyDueInDays'].expression.expressionString = value.toString();
         });
     }

@@ -1,4 +1,5 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
+
 using System;
 using System.Globalization;
 using System.Windows.Data;
@@ -34,7 +35,7 @@ namespace ApplicationManager.Converters
 				return null;
 			}
 
-			return string.Format( "Released {0}.", dt.ToLongDateString( ) );
+			return $"Released {dt.ToLongDateString( )}.";
 		}
 
 		/// <summary>

@@ -167,7 +167,7 @@ namespace EDC.SoftwarePlatform.Activities.Test
         public void PerformCreate()
         {
             var reportsToRef = Entity.Get<Relationship>(new EntityRef("test:reportsTo"));
-            var personType = Entity.Get<Definition>(new EntityRef("test:employee"));
+            var personType = Entity.Get<EntityType>(new EntityRef("test:employee"));
 
             var mgr = Entity.Create(new EntityRef("test:manager"));
 
@@ -188,7 +188,7 @@ namespace EDC.SoftwarePlatform.Activities.Test
                 Entity.Delete(mgr1.Id);
 
                 var reportsToRef = Entity.Get<Relationship>(new EntityRef("test:reportsTo"));
-                var personType = Entity.Get<Definition>(new EntityRef("test:employee"));
+                var personType = Entity.Get<EntityType>(new EntityRef("test:employee"));
 
                 Action<IEntity> updateAction = (wfr) => wfr.SetRelationships(reportsToRef, new EntityRelationshipCollection<IEntity> { mgr1 });
 
@@ -203,7 +203,7 @@ namespace EDC.SoftwarePlatform.Activities.Test
         public void PerformCreateWithDefault()
         {
             var myField = new StringField { Name = "myStringField", DefaultValue = "bob" }.As<Field>();
-            var myType = new Definition { Name = "MyType", Fields = { myField } };
+            var myType = new EntityType { Name = "MyType", Fields = { myField } };
             myType.Save();
 
 

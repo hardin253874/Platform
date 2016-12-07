@@ -9,7 +9,7 @@
     </application>
     <package id="b6484022-f5ce-40ab-8213-aa0c429e0c96">
       <version>1.0.0.33</version>
-      <platformVersion>1.0.0.0</platformVersion>
+      <platformVersion>2.83.27.0</platformVersion>
       <releaseDate>2015-03-04 14:47:13Z</releaseDate>
       <publishDate>2016-09-27 04:29:18Z</publishDate>
     </package>
@@ -19827,7 +19827,6 @@ There are additional properties on a card:
     <allowDisplay id="4a82bfda-d470-4bc4-ba9c-53f47bb2a566" type="rel" />
     <allowMultiLines id="5c60e465-e152-4164-8e17-9f1380634f0b" type="bool" />
     <allowSelectMultiTypes id="7b6bbf1d-b5db-4404-8afc-8031b337bdb7" type="bool" />
-    <analyzerXml id="2570b013-381e-462d-9a88-c40cf891ceeb" type="xml" />
     <applicationDependency id="9dcdc967-fd67-4d28-8735-646190e557b8" type="type" />
     <applicationIsRequired id="1f7dd780-a123-4ec6-9722-5189d107eb8f" type="bool" />
     <applicationMaximumVersion id="f00f048e-6aab-479e-9981-19a7506c20db" type="text" />
@@ -20107,7 +20106,6 @@ There are additional properties on a card:
     <primaryAxis id="348d2e97-77bb-453d-a03f-b33e7e0c9edf" type="rel" />
     <primarySource id="ff40ab36-f053-489a-96f6-5b1618c2d5e3" type="rel" />
     <publisherDocumentImage id="63bdeddf-123c-45b4-85c4-7026dc750d13" />
-    <queryXml id="11ec1869-4622-465a-9eec-14ca22cec2ca" type="xml" />
     <questionAllowAttachments id="5d70dbae-52c8-4ee4-ab37-94874196a33f" type="bool" />
     <questionAllowNotes id="d4e6605b-f32f-41b4-a4b3-4641ddd586a4" type="bool" />
     <questionLibrary id="2ee42abe-9a3f-4faa-a284-c6e6a9bf6d89" type="type" />

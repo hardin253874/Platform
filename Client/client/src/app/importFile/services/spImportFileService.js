@@ -30,7 +30,7 @@
             var isEdgeBrowser = $window.navigator.userAgent.indexOf('Edge') > -1;
             var fileFilter = isEdgeBrowser ? '' : spUtils.spreadsheetFileTypeFilter;
 
-            var uploadSession = spUploadManager.createUploadSession();
+            var uploadSession = spUploadManager.createUploadSession('import');
             var model = {
                 importConfig: null, // the root importConfig entity
                 importConfigId: 0,
@@ -542,6 +542,31 @@
                     });
                 });
             });
+
+            // Explicity add the password field.
+            // This is necessary because it is marked as hidden in the metadata
+            // and we wish to keep it that way so that it doesn't show up in other places
+            const allFields = type.getFields({ hideNonWritable: true, showHidden: true });
+            const passwordField = _.find(allFields, fi => {
+                const entity = fi.getEntity();
+                return entity && entity.alias && entity.alias() === "core:password";
+            });
+
+            if (passwordField) {
+                const existingTargetMember = _.find(targetMembers, tm => passwordField === tm.memberInfo);
+                if (!existingTargetMember) {
+                    const passwordFieldEntity = passwordField.getEntity();
+                    targetMembers.push({
+                        fieldGroup: passwordFieldEntity.fieldInGroup.getName(),
+                        memberInfo: passwordField,
+                        memberName: formatFieldName(passwordField),
+                        memberTypeDesc: passwordField.memberTypeDesc()
+                    });
+
+                    targetMembers = _.sortBy(targetMembers, ["fieldGroup", "memberName"]);
+                }                
+            }
+
             return targetMembers;
         }
 

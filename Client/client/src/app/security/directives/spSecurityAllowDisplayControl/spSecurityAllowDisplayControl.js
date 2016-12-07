@@ -1,18 +1,18 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
 /*global angular, _, sp, spEntity */
 
-(function() {
+(function () {
     'use strict';
 
     angular.module('app.security.directives.spSecurityAllowDisplayControl', [
-            'sp.navService',
-            'mod.common.ui.spBusyIndicator',
-            'mod.common.spEntityService',
-            'ngGrid',
-            'mod.common.ui.spContextMenu',
-            'mod.common.alerts'
-        ])
-        .directive('spSecurityAllowDisplayControl', function() {
+        'sp.navService',
+        'mod.common.ui.spBusyIndicator',
+        'mod.common.spEntityService',
+        'ngGrid',
+        'mod.common.ui.spContextMenu',
+        'mod.common.alerts'
+    ])
+        .directive('spSecurityAllowDisplayControl', function () {
             return {
                 restrict: 'E',
                 replace: true,
@@ -90,7 +90,7 @@
                     showReportHeader: false,
                     enableRowSelection: false,
                     enableSorting: false,
-                    data: 'model.navNodeData',                    
+                    data: 'model.navNodeData',
                     columnDefs: [
                         {
                             field: 'item.name',
@@ -104,14 +104,14 @@
             if (sp.result($scope, '$root.__spTestMode')) {
                 $scope.model.gridOptions.virtualizationThreshold = 500;
             }
-            
+
             // Filter subjects to show users as well as roles
             function filterSubjects(subjects, includeUsers) {
-                return _.filter(subjects, function(subject) {
+                return _.filter(subjects, function (subject) {
                     return includeUsers ? true : subject.isOfType[0].nsAlias === 'core:role';
                 });
             }
-            
+
             // Expand template parameters
             function processTemplate(template, data) {
                 // run twice to allow one level of template parameters within the data
@@ -122,7 +122,10 @@
             function initialize() {
                 if (!$scope.options.subject) {
                     // Get all the subjects
-                    spEntityService.getEntitiesOfType('core:subject', subjectFields, { isolated: true, filter: 'true' }).then(function (entities) {
+                    spEntityService.getEntitiesOfType('core:subject', subjectFields, {
+                        isolated: true,
+                        filter: 'true'
+                    }).then(function (entities) {
                         $scope.model.availableSubjects = _.sortBy(entities, 'name');
                         // Append the type name to each of the subjects
                         _.forEach($scope.model.availableSubjects, function (s) {
@@ -130,20 +133,23 @@
                         });
                         $scope.model.filteredSubjects = filterSubjects($scope.model.availableSubjects, $scope.model.includeUsers);
                     }, function (error) {
-                        spAlertsService.addAlert('An error occurred getting the roles and users: ' + (error.data.ExceptionMessage || error.data.Message), { expires: false, severity: spAlertsService.sev.Error });
+                        spAlertsService.addAlert('An error occurred getting the roles and users: ' + (error.data.ExceptionMessage || error.data.Message), {
+                            expires: false,
+                            severity: spAlertsService.sev.Error
+                        });
                     });
                 }
 
                 var currentNavItem = spNavService.getCurrentItem();
                 if (currentNavItem) {
-                    
+
                     originalIsDirty = currentNavItem.isDirty;
 
                     // Initialize the dirty handler
                     currentNavItem.isDirty = isDirty;
                 }
             }
-            
+
             // Creates the initial topMenu state.
             // This is used to store the count of
             // enabled items per topMenu per subject.
@@ -154,12 +160,12 @@
 
                 // Enumerate each of the subjects that currently
                 // allow display of the topMenu node
-                _.forEach(topMenuEntity.allowedDisplayBy, function(s) {
+                _.forEach(topMenuEntity.allowedDisplayBy, function (s) {
                     var topMenuSubjState = getTopMenuSubjectState(topMenuEntity.id(), s.id());
                     topMenuSubjState.allowDisplay = true;
                 });
             }
-            
+
             // Gets the state for the specified top menu and subject
             function getTopMenuSubjectState(topMenuId, subjectId) {
                 var topMenuState, topMenuSubjState;
@@ -185,7 +191,7 @@
 
                 return topMenuSubjState;
             }
-            
+
             // Get the navigation items for the current application node
             function getApplicationNavItems(topMenuNode) {
                 if (!topMenuNode || !topMenuNode.item) {
@@ -194,7 +200,11 @@
 
                 $scope.model.busyIndicator.isBusy = true;
 
-                return spEntityService.getEntity(topMenuNode.item.id, navNodesQuery, { hint: 'securityCustomUIItems', batch: true, isolated: true }).then(function(entity) {
+                return spEntityService.getEntity(topMenuNode.item.id, navNodesQuery, {
+                    hint: 'securityCustomUIItems',
+                    batch: true,
+                    isolated: true
+                }).then(function (entity) {
                     var depth = 0,
                         nodeList = [];
 
@@ -217,18 +227,21 @@
                     $scope.model.navNodeDataCache[topMenuNode.item.id] = nodeList;
 
                     $scope.model.navNodeData = nodeList;
-                }, function(error) {
-                    spAlertsService.addAlert('An error occurred getting the items to secure: ' + (error.data.ExceptionMessage || error.data.Message), { expires: false, severity: spAlertsService.sev.Error });
-                }).finally(function() {
+                }, function (error) {
+                    spAlertsService.addAlert('An error occurred getting the items to secure: ' + (error.data.ExceptionMessage || error.data.Message), {
+                        expires: false,
+                        severity: spAlertsService.sev.Error
+                    });
+                }).finally(function () {
                     $scope.model.busyIndicator.isBusy = false;
                 });
             }
-            
+
             // Get the id of the selected subject
             function getSelectedSubjectId() {
                 return $scope.model.selectedSubject ? $scope.model.selectedSubject.id() : 0;
             }
-            
+
             // Return true if the specified node is selected for the specified subject
             // false otherwise
             function getNodeSelected(node, subjectId) {
@@ -243,7 +256,7 @@
                 return state === spEntity.DataStateEnum.Create ||
                     state === spEntity.DataStateEnum.Unchanged;
             }
-            
+
             // Set the selected state for the specified node for the specified subject            
             function setNodeSelected(node, subjectId, isSelected) {
                 var currentValue, topMenuSubjState;
@@ -282,12 +295,12 @@
                     if (topMenuSubjState &&
                         topMenuSubjState.countSelections &&
                         (currentValue === spEntity.DataStateEnum.Create ||
-                            currentValue === spEntity.DataStateEnum.Unchanged)) {
+                        currentValue === spEntity.DataStateEnum.Unchanged)) {
                         topMenuSubjState.countSelections = topMenuSubjState.countSelections - 1;
                     }
                 }
             }
-            
+
             // Set the state for the specified node for the specified subject
             function setNodeState(node, subjectId, stateEnum) {
                 var topMenuSubjState;
@@ -303,7 +316,7 @@
                     topMenuSubjState.countSelections = topMenuSubjState.countSelections + 1;
                 }
             }
-            
+
             // Flatten the entity tree into a list
             function flattenEntityTree(topMenuEntity, entities, nodeList, parentNode, depth) {
                 var navNodes;
@@ -313,11 +326,8 @@
                 }
                 //remove the duplicate entities from node tree.
                 entities = _.filter(entities, function (entity) {
-                    return ((parentNode == null) ||
-                              (entity != null &&
-                              parentNode != null &&
-                              parentNode.item != null &&
-                              entity.id() != parentNode.item.id));
+                    return !parentNode ||
+                        entity && parentNode && parentNode.item && entity.id() !== parentNode.item.id;
                 });
 
                 // Convert the entities to navitems and sort
@@ -339,15 +349,15 @@
                         subjects = navNode.item.entity.allowedDisplayBy;
 
                     // Any existing subjects start off with a state of unchanged
-                    _.forEach(subjects, function(s) {
+                    _.forEach(subjects, function (s) {
                         setNodeState(node, s.id(), spEntity.DataStateEnum.Unchanged);
                     });
 
                     Object.defineProperty(node, 'selected', {
-                        get: function() {
+                        get: function () {
                             return getNodeSelected(this, getSelectedSubjectId());
                         },
-                        set: function(val) {
+                        set: function (val) {
                             setNodeSelected(this, getSelectedSubjectId(), val);
                         },
                         enumerable: true,
@@ -357,11 +367,11 @@
                     nodeList.push(node);
 
                     childEntities = navNode.item.entity.folderContents;
-                    
+
                     flattenEntityTree(topMenuEntity, childEntities, nodeList, node, depth + 1);
                 });
             }
-            
+
             // Returns true if the page is dirty
             function isDirty() {
                 var dirty = false;
@@ -382,25 +392,25 @@
 
                 return dirty;
             }
-            
+
             // Switch to view mode and get data from server.
             function resetToViewMode() {
                 $scope.options.mode = 'view';
 
                 if (isDirty()) {
                     // Reset and get changes from server
-                    $scope.model.navNodeDataCache = {};                    
+                    $scope.model.navNodeDataCache = {};
                     $scope.model.topMenusState = {};
 
                     $scope.onTopMenuNodeChanged();
                 }
-            }            
-            
-            // Cancel any changes
-            function onCancel() {                
-                resetToViewMode();                
             }
-            
+
+            // Cancel any changes
+            function onCancel() {
+                resetToViewMode();
+            }
+
             // Save any changes
             function onSave() {
                 var promises = [], subjectEntities = {};
@@ -436,15 +446,15 @@
 
                     return resource;
                 }
-                
+
                 // Sanity check
                 if ($scope.options.mode !== 'edit') {
                     return;
                 }
 
                 // Add/remove any relationships to topMenus
-                _.forOwn($scope.model.topMenusState, function(topMenuState, topMenuId) {
-                    _.forOwn(topMenuState, function(topMenuSubjState, subjectId) {
+                _.forOwn($scope.model.topMenusState, function (topMenuState, topMenuId) {
+                    _.forOwn(topMenuState, function (topMenuSubjState, subjectId) {
                         var subjectEntity, topMenu;
 
                         if (!topMenuSubjState.countSelections) {
@@ -468,9 +478,9 @@
                 });
 
                 // Add/remove any relationships to resources
-                _.forOwn($scope.model.navNodeDataCache, function(navNodesData) {
-                    _.forEach(navNodesData, function(navNode) {
-                        _.forOwn(navNode.allowedDisplaySubjects, function(state, subjectId) {
+                _.forOwn($scope.model.navNodeDataCache, function (navNodesData) {
+                    _.forEach(navNodesData, function (navNode) {
+                        _.forOwn(navNode.allowedDisplaySubjects, function (state, subjectId) {
                             var subjectEntity, resource;
 
                             if (state === spEntity.DataStateEnum.Unchanged) {
@@ -481,12 +491,12 @@
                             resource = createResource(navNode.item.id);
 
                             switch (state) {
-                            case spEntity.DataStateEnum.Create:
-                                subjectEntity.allowDisplay.add(resource);
-                                break;
-                            case spEntity.DataStateEnum.Delete:
-                                subjectEntity.allowDisplay.remove(resource);
-                                break;
+                                case spEntity.DataStateEnum.Create:
+                                    subjectEntity.allowDisplay.add(resource);
+                                    break;
+                                case spEntity.DataStateEnum.Delete:
+                                    subjectEntity.allowDisplay.remove(resource);
+                                    break;
                             }
 
                             return true;
@@ -505,26 +515,28 @@
 
                 $q.all(promises).then(function () {
                     $scope.model.busyIndicator.isBusy = false;
-                    spAlertsService.addAlert('UI customisations saved.', { expires: true, severity: spAlertsService.sev.Success });
+                    spAlertsService.addAlert('UI customisations saved.', {
+                        expires: true,
+                        severity: spAlertsService.sev.Success
+                    });
                     resetToViewMode();
                 }, function (error) {
                     $scope.model.busyIndicator.isBusy = false;
                     spAlertsService.addAlert('An error occurred saving the UI customisations: ' + (error.data.ExceptionMessage || error.data.Message),
-                    { expires: false, severity: spAlertsService.sev.Error });
+                        {expires: false, severity: spAlertsService.sev.Error});
                 });
             }
-            
+
             // Switch to edit mode
             function onEdit() {
                 $scope.options.mode = 'edit';
             }
-            
+
             // Called when current application is changed
-            $scope.onTopMenuNodeChanged = function() {
+            $scope.onTopMenuNodeChanged = function () {
                 var cachedNavNodeData;
 
-                if (!$scope.model.selectedTopMenuNode ||
-                    !$scope.model.selectedTopMenuNode.item) {
+                if (!$scope.model.selectedTopMenuNode || !$scope.model.selectedTopMenuNode.item) {
                     $scope.model.navNodeData = null;
                     return;
                 }
@@ -540,12 +552,11 @@
 
             // Get the path for the current node
             // Used in a tooltip.
-            $scope.getNodePath = function(node) {
+            $scope.getNodePath = function (node) {
                 var path,
                     parentName;
 
-                if (!node ||
-                    !node.item) {
+                if (!node || !node.item) {
                     return '';
                 }
 
@@ -563,21 +574,21 @@
             };
 
             // Handle any actions
-            $scope.$on('allowDisplayAction', function(event, args) {
+            $scope.$on('allowDisplayAction', function (event, args) {
                 if (!args || !args.action) {
                     return;
                 }
 
                 switch (args.action) {
-                case 'save':
-                    onSave();
-                    break;
-                case 'cancel':
-                    onCancel();
-                    break;
-                case 'edit':
-                    onEdit();
-                    break;
+                    case 'save':
+                        onSave();
+                        break;
+                    case 'cancel':
+                        onCancel();
+                        break;
+                    case 'edit':
+                        onEdit();
+                        break;
                 }
             });
 
@@ -588,14 +599,14 @@
             });
 
             // Returns true if the selections can be changed, false otherwise
-            $scope.canModifySelections = function() {
+            $scope.canModifySelections = function () {
                 return $scope.model.selectedSubject &&
-                       $scope.model.navNodeData &&
-                       $scope.options.mode === 'edit';
+                    $scope.model.navNodeData &&
+                    $scope.options.mode === 'edit';
             };
-            
+
             // Select/deselect all children of the current row
-            $scope.onSelectAll = function(node, val) {
+            $scope.onSelectAll = function (node, val) {
                 var currentIndex, i, child;
 
                 if (!node || !$scope.canModifySelections()) {
@@ -625,32 +636,32 @@
                     child.selected = val;
                 }
             };
-            
+
             // The include users checked box has changed
-            $scope.onIncludeUsersChanged = function() {
+            $scope.onIncludeUsersChanged = function () {
                 $scope.model.filteredSubjects = filterSubjects($scope.model.availableSubjects, $scope.model.includeUsers);
             };
-            
+
             // Get the list of applications, include an index to help with the SELECT option track by
             $scope.getMenuNodes = function () {
                 return _.map(spNavService.getMenuNodes(true), function (node, index) {
-                    return _.merge(node, {index:index});
-                });                
+                    return _.merge(node, {index: index});
+                });
             };
-            
+
             // Called when the selected property of a node has changed
             // due to user interaction.
-            $scope.onNodeSelectedChanged = function(node) {
+            $scope.onNodeSelectedChanged = function (node) {
                 if (!node || !node.selected) {
                     return;
                 }
 
                 // Check all the items up the tree                                
                 // when the curent node is selected
-                while (node && node.parent) {                    
+                while (node && node.parent) {
                     node = node.parent;
                     node.selected = true;
-                }                
+                }
             };
 
             initialize();

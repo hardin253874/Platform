@@ -14,6 +14,7 @@ using System.IO;
 using EDC.ReadiNow.IO;
 using EDC.Security;
 using EDC.SoftwarePlatform.Services.ExportData;
+using ReadiNow.ExportData;
 
 namespace EDC.SoftwarePlatform.Activities.Test
 {

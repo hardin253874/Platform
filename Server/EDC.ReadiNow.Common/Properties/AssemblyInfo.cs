@@ -44,6 +44,7 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("Configure")]
 [assembly: InternalsVisibleTo("Export")]
 [assembly: InternalsVisibleTo("EDC.SoftwarePlatform.WebApp")]
+[assembly: InternalsVisibleTo("EDC.SoftwarePlatform.WebApi")]
 [assembly: InternalsVisibleTo("EDC.SoftwarePlatform.Migration")]
 [assembly: InternalsVisibleTo("EDC.SoftwarePlatform.Services.Test")]
 [assembly: InternalsVisibleTo("EDC.ReadiNow.CAST")]

@@ -8,12 +8,8 @@ using System.Threading.Tasks;
 using EDC.ReadiNow.Model;
 using System.Net;
 using System.IO;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using EDC.ReadiNow.Diagnostics;
 using Twilio;
-using System.Threading;
-using ReadiNow.Integration.Sms;
 
 namespace ReadiNow.Integration.Sms
 {

@@ -177,25 +177,36 @@ namespace EDC.SoftwarePlatform.Activities
         {
             bool hasCompletedEverything = true;
 
-            var stopWatch = new Stopwatch();
+            var stopWatch = runState.TimeTakenInSession;
+            stopWatch.Reset();
             stopWatch.Start();
 
-            while (_pendingActivities.Any())
+            var maxTimeInSessionMs = WorkflowTriggerHelper.MaxRunTimeSeconds * 1000 - runState.WorkflowRun.TotalTimeMs;
+            var maxStepsInSession = WorkflowTriggerHelper.MaxSteps - runState.WorkflowRun.RunStepCounter;
+
+            try
             {
-                var next = _pendingActivities.Dequeue();
-
-                var hasCompleted = next();
-                    
-                if (!hasCompleted)
-                    hasCompletedEverything = false;
-
-                if (stopWatch.ElapsedMilliseconds > WorkflowTriggerHelper.MaxRunTimeSeconds * 1000)
+                while (_pendingActivities.Any())
                 {
-                    throw new WorkflowRunException("The workflow ran for too long. It must pause or complete within {0} seconds", WorkflowTriggerHelper.MaxRunTimeSeconds);
+                    var next = _pendingActivities.Dequeue();
+
+                    var hasCompleted = next();
+
+                    if (!hasCompleted)
+                        hasCompletedEverything = false;
+
+                    if (stopWatch.ElapsedMilliseconds  > maxTimeInSessionMs)
+                        throw new WorkflowRunException("The workflow ran for too long. It must pause or complete within {0} seconds", WorkflowTriggerHelper.MaxRunTimeSeconds);
+
+                    if (runState.StepsTakenInSession > maxStepsInSession)
+                        throw new WorkflowRunException("The workflow ran for too long. It must pause or complete within {0} steps", WorkflowTriggerHelper.MaxSteps);
+
                 }
             }
-
-            runState.TimeTakenInSession += (int) stopWatch.ElapsedMilliseconds; // This give us a max of about 300 hours - I think we are ok.
+            finally
+            {
+                stopWatch.Stop();
+            }
                     
             return hasCompletedEverything;
         }

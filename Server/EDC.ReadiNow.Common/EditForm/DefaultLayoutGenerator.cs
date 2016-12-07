@@ -601,6 +601,7 @@ namespace EDC.ReadiNow.EditForm
             var tabs = new TabContainerControl();
             EntityRelationshipCollection<IEntity> tabsContainedControlsOnForm = new EntityRelationshipCollection<IEntity>();
             tabs.RenderingOrdinal = 20;
+            tabs.SetRelationships("console:renderingVerticalResizeMode", new EntityRelationshipCollection<IEntity> { Entity.Get<IEntity>("console:resizeSpring") }, Direction.Forward);
             tempEntitiesInCache.Add(tabs); // track the temp object
 
 

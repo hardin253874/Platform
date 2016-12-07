@@ -3,6 +3,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Collections.Generic;
 using EDC.IO;
 using EDC.ReadiNow.Core;
 using EDC.ReadiNow.Diagnostics;
@@ -64,8 +65,9 @@ namespace EDC.ReadiNow.IO
             }
 
             var fileType = Entity.Get<FileType>(fileRef);
+            var isDocument = fileType.Is<Document>() || fileType.Is<DocumentRevision>();
 
-			var fileRepository = fileType.Is<Document>( ) ? Factory.DocumentFileRepository : Factory.BinaryFileRepository;
+            var fileRepository = isDocument ? Factory.DocumentFileRepository : Factory.BinaryFileRepository;
 
             return GetFileDataStreamForToken(fileRepository, fileType.FileDataHash);
         }
@@ -175,5 +177,84 @@ namespace EDC.ReadiNow.IO
             dbFileType.ContentType = documentType.MimeType;
             return dbFileType;
         }
+
+
+        /// <summary>
+        ///     Checks that the file extension is in the white-list.
+        /// </summary>
+        /// <param name="fileName">The file name.</param>
+        /// <param name="expectedType">image, xml, or null</param>
+        public static bool CheckFileExtensionIsValid( string fileName, string expectedType )
+        {
+            if ( string.IsNullOrEmpty( fileName ) )
+                throw new ArgumentNullException( nameof( fileName ) );
+
+            string checkExt = Path.GetExtension( fileName );
+            if ( string.IsNullOrEmpty( checkExt ) )
+                return false;
+
+            // Check against blacklist
+            // (Since the whitelist is configurable, back it up with an additional black-list check)
+            checkExt = checkExt.ToLowerInvariant( );
+            if ( BlackListExtensions.Contains( checkExt ) )
+            {
+                EventLog.Application.WriteWarning( $"File upload blocked by system due to file extension: {fileName}" );
+                return false;
+            }
+
+            // Check purpose-specific whitelist
+            if ( expectedType == "image" )
+            {
+                bool allowed = ImageWhiteList.Contains( checkExt );
+                return allowed;
+            }
+            if ( expectedType == "import" )
+            {
+                bool allowed = ImportWhiteList.Contains( checkExt );
+                return allowed;
+            }
+            if ( expectedType == "xml" )
+            {
+                bool allowed = checkExt == ".xml";
+                return allowed;
+            }
+
+            // Check tenant document whitelist
+            IEnumerable<DocumentType> docTypes = Entity.GetInstancesOfType<DocumentType>( false, "extension, isOfType.id" );
+
+            foreach ( DocumentType docType in docTypes )
+            {
+                string extensions = docType.Extension;
+                if ( string.IsNullOrEmpty( extensions ) )
+                    continue;
+
+                string[ ] extList = extensions.Split( ';' );
+                foreach ( string ext in extList )
+                {
+                    string curExt = Path.GetExtension( ext.Trim() );
+
+                    if ( string.Compare( checkExt, curExt, StringComparison.OrdinalIgnoreCase ) == 0 )
+                        return true;
+                }
+            }
+            EventLog.Application.WriteWarning( $"File upload blocked by whitelist due to file extension: {fileName}" );
+            return false;
+        }
+
+        /// <summary>
+        /// BlackList of files that cannot be uploaded. Space delimited.
+        /// Whitelist processing is also performed, but can be configured by tenant so blacklist is also provided for additional protection.
+        /// </summary>
+        private static readonly string[ ] BlackListExtensions = ".application .bat .cmd .com .cpl .exe .gadget .hta .inf .jar .js .jse .lnk .msc .msh .msh1 .msh1xml .msh2 .msh2xml .mshxml .msi .msp .pif .ps1 .ps1xml .ps2 .ps2xml .psc1 .psc2 .reg .scf .scr .vb .vbe .vbs .ws .wsc .wsf .wsh".Split( ' ' );
+
+        /// <summary>
+        /// Whitelist of acceptable image file formats.
+        /// </summary>
+        private static readonly string[] ImageWhiteList = ".png .jpg .jpeg .svg".Split( ' ' );
+
+        /// <summary>
+        /// Whitelist of acceptable image file formats.
+        /// </summary>
+        private static readonly string[] ImportWhiteList = ".xlsx .csv .txt".Split( ' ' );
     }
 }

@@ -18,7 +18,6 @@ angular.module('app.editFormModules', [
     'app.editForm.chartRenderControl',
     'app.editForm.formRenderControl',
     'app.editForm.fileNameUploadController',
-    'app.flexEditForm',
     'app.inlineEditForm',
     'app.editFormComponents'
     ]);

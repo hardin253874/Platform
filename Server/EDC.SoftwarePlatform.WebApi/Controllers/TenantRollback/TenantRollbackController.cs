@@ -1,6 +1,7 @@
 ﻿// Copyright 2011-2016 Global Software Innovation Pty Ltd
 
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Web.Http;
 using EDC.ReadiNow.Core;
@@ -23,6 +24,7 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.TenantRollback
 		/// <exception cref="System.Exception">Failed to get tenant rollback data.</exception>
 		[Route( "create" )]
 		[HttpPost]
+		[AdminOnly]
 		public HttpResponseMessage Create( [FromBody] RestorePointDetails restorePoint )
 		{
 			try
@@ -44,6 +46,7 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.TenantRollback
 		/// <exception cref="System.Exception">Failed to get tenant rollback data.</exception>
 		[Route( "" )]
 		[HttpGet]
+		[AdminOnly]
 		public HttpResponseMessage<TenantRollbackData> GetTenantRollbackData( )
 		{
 			try
@@ -66,6 +69,38 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.TenantRollback
 		}
 
 		/// <summary>
+		///     Gets the user activity.
+		/// </summary>
+		/// <param name="dateString">The date string.</param>
+		/// <returns></returns>
+		/// <exception cref="System.ArgumentException">Invalid date specified</exception>
+		/// <exception cref="System.Exception">Failed to get tenant rollback data.</exception>
+		[Route( "getUserActivity" )]
+		[HttpPost]
+		[AdminOnly]
+		public HttpResponseMessage GetUserActivity( [FromBody] RestorePointDate dateString )
+		{
+			try
+			{
+				long tenantId = ReadiNow.IO.RequestContext.TenantId;
+				DateTime date;
+
+				if ( !DateTime.TryParse( dateString.DateString, out date ) )
+				{
+					throw new ArgumentException( "Invalid date specified" );
+				}
+
+				IEnumerable<string> userNames = DatabaseChangeTracking.GetUserActivity( date, tenantId );
+
+				return new HttpResponseMessage<IEnumerable<string>>( userNames );
+			}
+			catch ( Exception e )
+			{
+				throw new Exception( "Failed to get tenant rollback data.", e );
+			}
+		}
+
+		/// <summary>
 		///     Rollbacks the specified rollback.
 		/// </summary>
 		/// <param name="rollback">The rollback.</param>
@@ -74,13 +109,14 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.TenantRollback
 		/// <exception cref="System.Exception">Failed to get tenant rollback data.</exception>
 		[Route( "rollback" )]
 		[HttpPost]
+		[AdminOnly]
 		public HttpResponseMessage Rollback( [FromBody] RollbackDetails rollback )
 		{
 			try
 			{
 				long tenantId = ReadiNow.IO.RequestContext.TenantId;
 
-				DatabaseChangeTracking.CreateRestorePoint( $"Rollback to '{rollback.Name}'", tenantId, true );
+				DatabaseChangeTracking.CreateRestorePoint( $"Rollback to '{rollback.Date:o}'", tenantId, true );
 
 				long transactionId = DatabaseChangeTracking.GetTransactionId( rollback.Date, tenantId );
 
@@ -95,7 +131,7 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.TenantRollback
 			}
 			catch ( Exception e )
 			{
-				throw new Exception( "Failed to get tenant rollback data.", e );
+				throw new Exception( "Failed to rollback.", e );
 			}
 		}
 	}

@@ -33,6 +33,7 @@
         that.canPageNext = canPageNext;
         that.pageBack = pageBack;
         that.pageNext = pageNext;
+        that.keyUp = keyUp;
 
         var navItem = spNavService.getCurrentItem();
 
@@ -180,10 +181,20 @@
         //
         // Progress
         //
-        function updateProgress() {
-            if (that.answers != null) {
-                that.progress = spUserSurveyTaskService.getTaskProgress(that.task);
+        function safeApply(scope, fn) {
+            if (!scope.$root.$$phase) {
+                scope.$apply(fn);
+            } else {
+                fn();
             }
+        }
+
+        function updateProgress() {
+            safeApply($scope, function() {
+                if (that.answers) {
+                    that.progress = spUserSurveyTaskService.getTaskProgress(that.task);
+                }
+            });
         }
 
         var updateProgressThrottle = _.throttle(updateProgress, 200);
@@ -192,6 +203,15 @@
         function setUpProgressWatch() {
             clearProgressWatch = $scope.$watch(updateProgressThrottle);
         }
+        
+        // #28544 - keep progress updated (should all be callbacks, if move to components)
+        function keyUp(evt) {
+            updateProgressThrottle();
+        }
+
+        $scope.$on('rnSurveyProgressEvent', function(evt) {
+            updateProgressThrottle();
+        });
 
         //
         // Paging

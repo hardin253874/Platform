@@ -29,7 +29,7 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.CalcEditor
 		/// <value>
 		///     The name of the type.
 		/// </value>
-		[DataMember( Name = "type", EmitDefaultValue = true, IsRequired = true )]
+		[DataMember( Name = "type", EmitDefaultValue = true, IsRequired = true )]   // WARNING : this is passed around as 'typeName' on the client
 		public string TypeName
 		{
 			get;

@@ -24,6 +24,14 @@
                         ng-model="options.selectedSecurableEntity"></select>
             </div>
         </div>
+        <div class="edit-form-control-container">
+            <div class="edit-form-title">
+                <label for="application">Application:</label>
+            </div>
+            <div class="edit-form-value">
+                <sp-inline-relationship-picker options="options.applicationPickerOptions" />
+            </div>
+        </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn" ng-click="ok()">OK</button>

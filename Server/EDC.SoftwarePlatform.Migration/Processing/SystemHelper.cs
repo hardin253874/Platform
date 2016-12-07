@@ -809,5 +809,57 @@ WHERE
 
 			return null;
 		}
-	}
+
+        /// <summary>
+	    /// Sets the documentation settings.
+	    /// </summary>
+	    /// <param name="docoSettings">Dictionary of doc settings. Key name is the field alias name.</param>
+	    /// <returns></returns>
+	    /// <exception cref="ArgumentNullException"></exception>
+	    public static bool SetDocumentationSettings(Dictionary<string, string> docoSettings)
+        {
+            if (docoSettings == null)
+            {
+                throw new ArgumentNullException(nameof(docoSettings));
+            }
+
+            using (new GlobalAdministratorContext())
+            {                
+                var docoSettingsEntity = Entity.Get<SystemDocumentationSettings>("core:systemDocumentationSettingsInstance", true);
+                
+                var allowedFields = new HashSet<string>
+                {
+                    "core:navHeaderDocumentationUrl",
+                    "core:documentationUrl",
+                    "core:releaseNotesUrl",
+                    "core:contactSupportUrl",
+                    "core:documentationUserName",
+                    "core:documentationUserPassword"
+                };
+
+                foreach (var kvp in docoSettings)
+                {
+                    var alias = kvp.Key;
+                    var value = kvp.Value;
+
+                    if (alias == null || value == null)
+                    {
+                        continue;
+                    }
+
+                    if (!allowedFields.Contains(alias))
+                    {
+                        throw new ArgumentException(
+                            $@"The field with alias {alias} does not apply to the system documentation settings type.", nameof(docoSettings));
+                    }
+
+                    docoSettingsEntity.SetField(alias, value);
+                }
+
+                docoSettingsEntity.Save();
+            }
+
+            return true;
+        }
+    }
 }

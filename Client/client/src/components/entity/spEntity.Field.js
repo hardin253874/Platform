@@ -257,7 +257,7 @@ var jsonInt, jsonString, jsonDecimal, jsonCurrency, jsonDate, jsonTime, jsonDate
                     case 'Date':
                     case 'Time':
                     case 'DateTime':
-                        if (value && value.substring(value.length - 1, value.length) == 'Z')
+                        if (value && value.substring(value.length - 1, value.length) === 'Z')
                             result = new Date(value);
                         else 
                             result = new Date(value + 'Z'); // This will treat it as a UTC value

@@ -31,13 +31,11 @@ namespace EDC.ReadiNow.Database
 				throw new ArgumentNullException( nameof( reader ) );
 			}
 
-			UserName = reader.GetString( 0, "Unknown" );
-
-			int year = reader.GetInt32( 1 );
-			int month = reader.GetInt32( 2 );
-			int day = reader.GetInt32( 3 );
-			int hour = reader.GetInt32( 4 );
-			int minute = reader.GetInt32( 5 );
+			int year = reader.GetInt32( 0 );
+			int month = reader.GetInt32( 1 );
+			int day = reader.GetInt32( 2 );
+			int hour = reader.GetInt32( 3 );
+			int minute = reader.GetInt32( 4 );
 
 			Date = new DateTime( year, month, day, hour, minute, 0, DateTimeKind.Utc );
 		}
@@ -50,19 +48,6 @@ namespace EDC.ReadiNow.Database
 		/// </value>
 		[DataMember( Name = "date" )]
 		public DateTime Date
-		{
-			get;
-			set;
-		}
-
-		/// <summary>
-		///     Gets or sets the name of the user.
-		/// </summary>
-		/// <value>
-		///     The name of the user.
-		/// </value>
-		[DataMember( Name = "userName" )]
-		public string UserName
 		{
 			get;
 			set;

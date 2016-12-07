@@ -72,7 +72,7 @@ describe('Console|Workflow|intg:', function () {
     }
 
     function runWorkflow(spWorkflowRunService, workflow) {
-        return spWorkflowRunService.runWorkflow(workflow.entity.id(), [], true).then(function (tag) {
+        return spWorkflowRunService.runWorkflow(workflow.entity.id(), true, { timeoutFn: timeout }).then(function (tag) {
             return spWorkflowRunService.waitForRunToStopWithThrow(tag, { timeoutFn: timeout }).then(function(workflowRunId) {
                 workflow.lastRunId = workflowRunId;
                 return workflow;
@@ -81,7 +81,7 @@ describe('Console|Workflow|intg:', function () {
     }
 
     function runWorkflowWithResourceId(spWorkflowRunService, resourceId, workflow) {
-        return spWorkflowRunService.runWorkflow(workflow.entity.id(), [{ name: 'ResourceId', value: resourceId.toString(), typeName: 'core:resourceArgument' }], true).then(function(tag) {
+        return spWorkflowRunService.runWorkflow(workflow.entity.id(), [{ name: 'ResourceId', value: resourceId.toString(), typeName: 'core:resourceArgument' }], true, { timeoutFn: timeout }).then(function (tag) {
             return spWorkflowRunService.waitForRunToStopWithThrow(tag, { timeoutFn: timeout }).then(function(workflowRunId) {
                 workflow.lastRunId = workflowRunId;
                 return workflow;
@@ -163,6 +163,7 @@ describe('Console|Workflow|intg:', function () {
     beforeEach(module('mod.services.workflowService'));
     beforeEach(module('mod.services.workflowRunService'));
     beforeEach(module('mod.featureSwitch'));
+    beforeEach(module('sp.app.settings'));
 
     beforeEach(inject(function ($injector) {
         TestSupport.setupIntgTests(this, $injector);
@@ -221,7 +222,7 @@ describe('Console|Workflow|intg:', function () {
             });
         }));
 
-        it('120: can get activities menu', inject(function ($q, spWorkflowService, rnFeatureSwitch) {
+        it('120: can get activities menu', inject(function ($q, spWorkflowService, rnFeatureSwitch, spAppSettings) {
 
             var resolve = {
                 menu: spWorkflowService.newWorkflow().then(spWorkflowService.getWorkflowMenu)
@@ -234,7 +235,7 @@ describe('Console|Workflow|intg:', function () {
                 console.log('test 120', result);
                 expect(result.value.menu).toBeArray();
                 
-                var expectedCount =  26;  // activities plus headers
+                var expectedCount = spAppSettings.initialSettings.devMode ? 34 : 27;  // activities plus headers
                 
                 expect(result.value.menu.length).toBe(expectedCount); 
             });

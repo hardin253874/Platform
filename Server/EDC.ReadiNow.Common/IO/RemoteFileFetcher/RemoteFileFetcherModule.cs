@@ -17,9 +17,15 @@ namespace EDC.ReadiNow.IO.RemoteFileFetcher
 		protected override void Load( ContainerBuilder builder )
 		{
 			// Register file repositories            
-			builder.Register( c => new FtpFileFetcher( ConfigurationSettings.GetServerConfigurationSection( ).Security.FtpBypassSslCertificateCheck ) )
-				.As<IRemoteFileFetcher>( )
-				.SingleInstance( );
+			builder.Register( c => 
+                new FtpFileFetcher( 
+                    ConfigurationSettings.GetServerConfigurationSection( ).Security.FtpBypassSslCertificateCheck,
+                    new SftpFileFetcher(),
+                    new FtpsFileFetcher()
+                    ) 
+                )
+			    .As<IRemoteFileFetcher>( )
+			    .SingleInstance( );
 		}
 	}
 }

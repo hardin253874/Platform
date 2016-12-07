@@ -1,11 +1,13 @@
 ﻿// Copyright 2011-2016 Global Software Innovation Pty Ltd
 
 using Autofac;
+using EDC.ReadiNow.Core;
 using EDC.ReadiNow.Diagnostics;
 using EDC.ReadiNow.IO;
 using EDC.ReadiNow.Messaging;
 using EDC.ReadiNow.Messaging.Redis;
 using EDC.ReadiNow.Metadata.Tenants;
+using EDC.ReadiNow.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,10 +28,16 @@ namespace EDC.ReadiNow.BackgroundTasks
         readonly int _perTenantConcurrency;
         readonly ITenantQueueFactory _tenantQueueFactory;
 
-        private Dictionary<long, QueueActioner<BackgroundTask>> TenantActioners { get; } 
+        Lazy<Dictionary<long, QueueActioner<BackgroundTask>>> _tenantActioners;
+        private Dictionary<long, QueueActioner<BackgroundTask>> TenantActioners { get { return _tenantActioners.Value; } }
 
-        private Dictionary<string, ITaskHandler> TaskHandlers { get; } 
-             
+        private Dictionary<string, ITaskHandler> TaskHandlers { get; }
+
+        /// <summary>
+        /// Is this task manager active. Will it process queues?
+        /// </summary>
+        public bool IsActive { get; set; }
+
 
         /// <summary>
         /// 
@@ -41,7 +49,6 @@ namespace EDC.ReadiNow.BackgroundTasks
             _tenantQueueFactory = tenantQueueFactory;
             _waitForStopTimeMs = waitForStopTimeMs;
             _perTenantConcurrency = perTenantConcurrency;
-            TenantActioners = new Dictionary<long, QueueActioner<BackgroundTask>>();
 
             if (handlers == null)
             {
@@ -50,23 +57,31 @@ namespace EDC.ReadiNow.BackgroundTasks
 
             TaskHandlers = handlers.ToDictionary(h => h.TaskHandlerKey, h => h);
 
-            SyncQueues();
+            _tenantActioners = new Lazy<Dictionary<long, QueueActioner<BackgroundTask>>>(CreateActioners, false);
         }
-
 
         /// <summary>
         /// Start the task manager
         /// </summary>
         public void Start()
         {
-            SyncQueues();
+            if (!IsActive)
+                throw new ApplicationException("You cannot start an inactive task manager");
 
-            foreach (var actioner in TenantActioners.Values)
+            if (IsActive)
             {
-                actioner.Start();       // actioners are thread safe
-            }
 
-            EventLog.Application.WriteInformation($"BackgroundTaskManager started");
+                foreach (var actioner in TenantActioners.Values)
+                {
+                    actioner.Start();       // actioners are thread safe
+                }
+
+                EventLog.Application.WriteInformation($"BackgroundTaskManager started");
+            }
+            else
+            {
+                EventLog.Application.WriteInformation($"BackgroundTaskManager started");
+            }
         }
 
         /// <summary>
@@ -79,45 +94,48 @@ namespace EDC.ReadiNow.BackgroundTasks
             // Tell them all to stop.
             foreach (var actioner in actioners)
             {
-                actioner.Stop(0);      
+                actioner.Stop(0);
             }
 
             // Wait for them to stop
             foreach (var actioner in actioners)
             {
-                actioner.Stop(); 
+                actioner.Stop();
             }
             EventLog.Application.WriteInformation($"BackgroundTaskManager stopped");
         }
 
 
+
+
         /// <summary>
         /// Make sure a queue exusts for every tenant and have the correct concurrency
         /// </summary>
-        private void SyncQueues()
+        private Dictionary<long, QueueActioner<BackgroundTask>> CreateActioners()
         {
-            lock (_sync)
+            var result = new Dictionary<long, QueueActioner<BackgroundTask>>();
+
+            List<long> tenantIds;
+
+            using (new GlobalAdministratorContext())
             {
-                List<long> tenantIds;
-
-                using (new GlobalAdministratorContext())
-                {
-                    tenantIds = TenantHelper.GetAll().Select(t => t.Id).ToList();
-                }
-
-                var newTenants = tenantIds.Except(TenantActioners.Keys);
-
-                var redisManager = new RedisManager();
-                redisManager.Connect();
-
-                foreach (var tenantId in newTenants)
-                {
-                    var queue = _tenantQueueFactory.Create(tenantId);
-                    TenantActioners.Add(tenantId, new QueueActioner<BackgroundTask>(queue, ProcessTask, _perTenantConcurrency));
-                }
-                
+                tenantIds = TenantHelper.GetAll().Select(t => t.Id).ToList();
             }
+
+            var redisManager = new RedisManager();
+            redisManager.Connect();
+
+            foreach (var tenantId in tenantIds)
+            {
+                var queue = _tenantQueueFactory.Create(tenantId);
+
+                result.Add(tenantId, new QueueActioner<BackgroundTask>(queue, ProcessTask, _perTenantConcurrency));
+            }
+
+            return result;
         }
+
+
 
         /// <summary>
         /// Add a tenant to manage the background tasks of
@@ -125,7 +143,15 @@ namespace EDC.ReadiNow.BackgroundTasks
         /// <param name="tenantId"></param>
         public void AddTenant(long tenantId)
         {
-            SyncQueues();
+            lock (_sync)
+            {
+                if (!TenantActioners.Keys.Contains(tenantId))
+                {
+                    var queue = _tenantQueueFactory.Create(tenantId);
+
+                    TenantActioners.Add(tenantId, new QueueActioner<BackgroundTask>(queue, ProcessTask, _perTenantConcurrency));
+                }
+            }
         }
 
         public void EnqueueTask(BackgroundTask task)
@@ -134,7 +160,7 @@ namespace EDC.ReadiNow.BackgroundTasks
         }
 
         public void EnqueueTask(long tenantId, BackgroundTask task)
-        { 
+        {
             QueueActioner<BackgroundTask> actioner;
 
             if (!TenantActioners.TryGetValue(tenantId, out actioner))
@@ -189,36 +215,26 @@ namespace EDC.ReadiNow.BackgroundTasks
         }
 
 
-
         private void ProcessTask(BackgroundTask task)
         {
-            if (task == null)
+            HandleTask(task, handler =>
             {
-                EventLog.Application.WriteError($"Tried to process a null task. Dropping task.");
-            }
-
-
-            ITaskHandler handler;
-            if (!TaskHandlers.TryGetValue(task.HandlerKey, out handler))
-            {
-                EventLog.Application.WriteError($"Tried to process task without registered handler. Dropping task. Handler: {task.HandlerKey}");
-
-                return;
-            }
-
-            using (EntryPointContext.SetEntryPoint("BackgroundTask"))
-            {
-                ProcessMonitorWriter.Instance.Write("BackgroundTask");
-                using (DeferredChannelMessageContext deferredMsgContext = new DeferredChannelMessageContext())
+                using (EntryPointContext.SetEntryPoint("BackgroundTask"))
                 {
-                    var contextData = task.Context;
-                    using (CustomContext.SetContext(contextData))
+                    ProcessMonitorWriter.Instance.Write("BackgroundTask");
+                    using (DeferredChannelMessageContext deferredMsgContext = new DeferredChannelMessageContext())
                     {
-                        handler.HandleTask(task);
+                        var contextData = task.Context;
+                        using (CustomContext.SetContext(contextData))
+                        {
+                            handler.HandleTask(task);
+                        }
                     }
                 }
-            }
+            });
         }
+
+
 
         /// <summary>
         /// Get the queue name and lengths
@@ -236,6 +252,119 @@ namespace EDC.ReadiNow.BackgroundTasks
                 }
             );
         }
+
+        /// <summary>
+        /// Suspend all queued tasks
+        /// </summary>
+        public void SuspendAllTasks()
+        {
+            foreach (var entry in TenantActioners)
+            {
+                var actioner = entry.Value;
+
+                using (new TenantAdministratorContext(entry.Key))
+                {
+                    if (actioner.State != ActionerState.Stopped)
+                        throw new ApplicationException("Cannot suspend a running actioner");
+
+                    var queue = actioner.Queue;
+
+                    var tasks = new List<BackgroundTask>();
+
+                    while (true)
+                    {
+                        var task = queue.Dequeue();
+
+                        if (task == null)
+                            break;
+
+                        tasks.Add(task);
+                    }
+
+                    var toSave = new List<IEntity>();
+
+                    foreach (var group in tasks.GroupBy(t => t.HandlerKey))
+                    {
+                        if (group.Any())
+                        {
+                            HandleTask(group.Key, (handler) =>
+                            {
+                                toSave.AddRange(group.Select(task => handler.CreateSuspendedTask(task)));
+                            });
+                        }
+                    }
+
+                    EventLog.Application.WriteInformation($"Saving {toSave.Count} suspended tasks.");
+
+
+                    if (toSave.Any())
+                        Entity.Save(toSave);
+                }
+            }
+        }
+
+
+
+        private void HandleTask(BackgroundTask task, Action<ITaskHandler> act)
+        {
+            if (task == null)
+            {
+                EventLog.Application.WriteError($"Tried to process a null task. Dropping task.");
+            }
+
+            HandleTask(task.HandlerKey, act);
+        }
+
+        private void HandleTask(string handlerKey, Action<ITaskHandler> act)
+        {
+            ITaskHandler handler;
+            if (!TaskHandlers.TryGetValue(handlerKey, out handler))
+            {
+                EventLog.Application.WriteError($"Tried to process task without registered handler. Dropping task. Handler: {handlerKey}");
+
+                return;
+            }
+
+            act(handler);
+        }
+
+
+        /// <summary>
+        /// Suspend all queued tasks
+        /// </summary>
+        public void RestoreAllTasks()
+        {
+            int restoredCount = 0;
+            foreach (var tenant in TenantHelper.GetAll())
+            {
+                using (new TenantAdministratorContext(tenant.Id))
+                {
+                    foreach (var handler in TaskHandlers.Values)
+                    {
+
+                        var tasks = handler.RestoreSuspendedTasks();
+
+                        foreach (var task in tasks)
+                        {
+                            EnqueueTask(task);
+                            restoredCount++;
+                        }
+                    }
+                }
+            }
+
+            EventLog.Application.WriteInformation($"Restoring {restoredCount} suspended tasks.");
+
+        }
+
+        public void GenerateReport(StringBuilder reportBuilder)
+        {
+            foreach (var ta in TenantActioners)
+            {
+                reportBuilder.AppendLine($"   Tenant: {TenantHelper.GetTenantName(ta.Key)}, State: {ta.Value.State}, Running {ta.Value.RunningTaskCount}/{ta.Value.MaxConcurrency}");
+            }
+        }
+
 
         public class UnknownTenantException : Exception
         {

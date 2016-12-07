@@ -948,6 +948,8 @@ namespace EDC.Diagnostics.Test
                     Thread.Sleep(1000);
                 }
 
+                Thread.Sleep(10000);
+
                 eventLogDetails.LogWriter.Purge();
 
                 var oldFileList = Directory.GetFiles(eventLogDetails.LogWriter.Folder, string.Format("{0}_*.xml", fileNameOnly));
@@ -958,7 +960,8 @@ namespace EDC.Diagnostics.Test
 
                 // Write one more log that should purge the oldest
                 eventLog.WriteWarning(message);
-                Thread.Sleep(1000);
+
+                Thread.Sleep(10000);
 
                 eventLogDetails.LogWriter.Purge();   // force a purge
 
@@ -1107,6 +1110,13 @@ namespace EDC.Diagnostics.Test
             }
         }
 
+	    private DateTime _lastChangedTime;
+
+
+	    private void OnFileChanged(object source, FileSystemEventArgs e)
+	    {
+	        _lastChangedTime = DateTime.UtcNow;
+	    }
 
         /// <summary>
         /// Test purging stale log files.
@@ -1122,6 +1132,7 @@ namespace EDC.Diagnostics.Test
 
             string filename1 = "first.xml";
             string filename2 = "second.xml";
+            FileSystemWatcher watcher = null;
 
             try
             {
@@ -1130,6 +1141,20 @@ namespace EDC.Diagnostics.Test
                 // Initialize the event log properties                                
                 // Create the event log
                 Directory.CreateDirectory(folder);
+
+                _lastChangedTime = DateTime.UtcNow;
+
+                // Create a new FileSystemWatcher and set its properties.
+                watcher = new FileSystemWatcher
+                {
+                    Path = folder,
+                    NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite | NotifyFilters.FileName,
+                    Filter = "*.xml"
+                };
+
+                watcher.Changed += OnFileChanged;
+                watcher.Created += OnFileChanged;                                
+                watcher.EnableRaisingEvents = true;
 
                 // Create the keeper
                 eventLogDetails1 = CreateEventLog(folder, filename1, new EventLogOptions { WarningEnabled = true });
@@ -1156,8 +1181,22 @@ namespace EDC.Diagnostics.Test
                 {
                     eventLog2.WriteWarning("SecondOne");
                 }
+                
+                Stopwatch stopWatch = Stopwatch.StartNew();
+                bool done = false;
+                                
+                while (!done)
+                {                    
+                    TimeSpan diff = DateTime.UtcNow - _lastChangedTime;
 
-
+                    if (diff.TotalSeconds > 5 ||
+                        stopWatch.Elapsed.TotalSeconds > 30)
+                    {
+                        // 5 seconds have passed since the last file change event 
+                        // or 30 seconds in total then we are done waiting
+                        done = true;
+                    }
+                }
 
                 // Wait for the thread pool to write entries and to do a rotate and purge
                 Thread.Sleep(5000);
@@ -1170,6 +1209,12 @@ namespace EDC.Diagnostics.Test
             }
             finally
             {
+                if (watcher != null)
+                {
+                    watcher.EnableRaisingEvents = false;
+                    watcher.Dispose();
+                }
+
                 if (eventLogDetails1 != null)
                 {
                     DeleteEventLog(eventLogDetails1.LogWriter);

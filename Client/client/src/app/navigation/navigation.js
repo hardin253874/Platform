@@ -12,12 +12,12 @@
         'hmTouchEvents', 'sp.navService', 'mod.app.navigationProviders',
         'mod.app.navigation.directives', 'mod.common.spEntityService', 'mod.common.ui.spUserPasswordDialog',
         'sp.common.loginService', 'sp.app.settings', 'sp.themeService',
-        'mod.featureSwitch', 'sp.consoleIconService', 'mod.common.ui.spFocus'
+        'mod.featureSwitch', 'sp.consoleIconService', 'mod.common.ui.spFocus', 'mod.app.spDocumentationService'        
     ])
         .controller('NavController', function ($scope, $timeout, $location, $q, spNavService, $state, spState,
                                                spNavigationBuilderProvider, $window, newNavItemPopoverEntries, spWebService,
                                                spEntityService, spUserPasswordDialog, spLoginService, spAppSettings,
-                                               spThemeService, rnFeatureSwitch, consoleIconService, focus) {
+                                               spThemeService, rnFeatureSwitch, consoleIconService, focus, spDocumentationService) {
 
             var navigationBuilderProvider;
             var navTreeItemState = {};
@@ -29,6 +29,7 @@
             var fsSelfServeEnabled = rnFeatureSwitch.isFeatureOn('fsSelfServe');
 
             $scope.newNavItemPopoverEntries = newNavItemPopoverEntries;
+            $scope.docoService = spDocumentationService;            
 
             if (!boardFeatureEnabled) {
                 $scope.newNavItemPopoverEntries = _.reject($scope.newNavItemPopoverEntries, function (p) {

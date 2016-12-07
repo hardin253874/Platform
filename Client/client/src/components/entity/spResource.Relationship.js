@@ -350,6 +350,15 @@ var spResource;
                 }
                 return true;
             }
+
+            // hide choice field relationship if viewed in reverse direction in form builder.
+            // #28082:Form builder: getting weird message when checking choice field details in form builder.
+            let relTypeAlias = sp.result(this._relEntity, 'relType.nsAlias');
+            if (this._isReverse &&
+                    (relTypeAlias === 'core:relMultiChoiceField' || relTypeAlias === 'core:relChoiceField')) {
+                return false;
+            }
+
             return !this.isHidden();
         };
 

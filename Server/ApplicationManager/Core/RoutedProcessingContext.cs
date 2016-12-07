@@ -1,4 +1,5 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
+
 using System;
 using EDC.SoftwarePlatform.Migration.Contract;
 using EDC.SoftwarePlatform.Migration.Contract.Statistics;

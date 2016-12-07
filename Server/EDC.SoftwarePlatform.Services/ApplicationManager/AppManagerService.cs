@@ -627,7 +627,7 @@ ORDER BY
                 case AppSecurityModel.Full:
                     return true;
                 case AppSecurityModel.PerTenant:
-                    return availableApp.HasInstallPermission;
+                    return availableApp?.HasInstallPermission == true;
                 default:
                     throw new InvalidOperationException( "Unknown application security setting" );
             }

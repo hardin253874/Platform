@@ -3,8 +3,11 @@
 using EDC.ReadiNow.Database;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using EDC.Collections.Generic;
+using EDC.Database;
+using EDC.ReadiNow.IO;
 
 namespace EDC.ReadiNow.Model.EventClasses
 {
@@ -49,9 +52,33 @@ namespace EDC.ReadiNow.Model.EventClasses
                 Entity.Delete(entitiesToDeleteSet);
             }
 
-            // Save the resource key data hashes for any resources at the reverse end
-            // of any key relationships.            
-            ResourceKeyHelper.SaveResourceKeyDataHashesForReverseRelationships(entities, state);
+	        object movedEntitiesObject;
+			if ( state.TryGetValue( "movedEntities", out movedEntitiesObject ) )
+			{
+				Dictionary<long, ISet<long>> movedEntities = movedEntitiesObject as Dictionary<long, ISet<long>>;
+
+				if ( movedEntities != null )
+				{
+					using ( DatabaseContext context = DatabaseContext.GetContext( ) )
+					{
+						foreach ( KeyValuePair<long, ISet<long>> pair in movedEntities )
+						{
+							using ( IDbCommand command = context.CreateCommand( "spPostEntityMove", CommandType.StoredProcedure ) )
+							{
+								command.AddIdListParameter( "@entityIds", pair.Value );
+								command.AddParameter( "@tenantId", DbType.Int64, RequestContext.TenantId );
+								command.AddParameter( "@solutionId", DbType.Int64, pair.Key );
+
+								command.ExecuteNonQuery( );
+							}
+						}
+					}
+				}
+			}
+
+			// Save the resource key data hashes for any resources at the reverse end
+			// of any key relationships.            
+			ResourceKeyHelper.SaveResourceKeyDataHashesForReverseRelationships(entities, state);
         }
 
         /// <summary>
@@ -64,6 +91,63 @@ namespace EDC.ReadiNow.Model.EventClasses
         /// </returns>
         public bool OnBeforeSave(IEnumerable<IEntity> entities, IDictionary<string, object> state)
         {
+			if ( entities != null )
+			{
+				long inSolutionId = WellKnownAliases.CurrentTenant.InSolution;
+
+				Dictionary<long, ISet<long>> movedEntities = new Dictionary<long, ISet<long>>( );
+
+				foreach ( IEntity entity in entities )
+				{
+					IEntityFieldValues fields;
+					IDictionary<long, IChangeTracker<IMutableIdKey>> forwardRelationships;
+					IDictionary<long, IChangeTracker<IMutableIdKey>> reverseRelationships;
+					entity.GetChanges( out fields, out forwardRelationships, out reverseRelationships );
+
+					IChangeTracker<IMutableIdKey> inSolutionChanges;
+					if ( forwardRelationships != null && forwardRelationships.TryGetValue( inSolutionId, out inSolutionChanges ) )
+					{
+						if ( inSolutionChanges != null && inSolutionChanges.Count > 0 )
+						{
+							var newInSolutionValue = inSolutionChanges.FirstOrDefault( );
+
+							if ( newInSolutionValue != null )
+							{
+								IReadOnlyDictionary<long, ISet<long>> cacheValues;
+								if ( EntityRelationshipCache.Instance.TryGetValue( new EntityRelationshipCacheKey( entity.Id, Direction.Forward ), out cacheValues ) )
+								{
+									ISet<long> inSolutionValues;
+									if ( cacheValues.TryGetValue( inSolutionId, out inSolutionValues ) )
+									{
+										if ( inSolutionValues != null && inSolutionValues.Count > 0 )
+										{
+											long existingInSolutionValue = inSolutionValues.FirstOrDefault( );
+
+											if ( existingInSolutionValue != newInSolutionValue.Key )
+											{
+												ISet<long> set;
+												if ( !movedEntities.TryGetValue( existingInSolutionValue, out set ) )
+												{
+													set = new HashSet<long>( );
+													movedEntities [ existingInSolutionValue ] = set;
+												}
+
+												set.Add( entity.Id );
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+
+				if ( movedEntities.Count > 0 )
+				{
+					state[ "movedEntities" ] = movedEntities;
+				}
+			}
+
             ResourceKeyHelper.SaveResourceKeyDataHashes(entities, ResourceKeyHelper.SaveContext.Resource, state);
 
             return false;            

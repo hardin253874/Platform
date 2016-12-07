@@ -12,8 +12,6 @@
         'mod.common.viewRegion',
         'mod.common.ui.spContextMenu',
         'app.controls.spSearchControl',
-        'sp.common.ui.expressionEditor',
         'mod.common.alerts'
     ]);
-
 }());

@@ -1693,7 +1693,7 @@
 
                 switch (sourceNode.item.typeAlias) {
                     case 'core:report':
-                        openResourcePickerDialog(sourceNode, targetNode, position, 'console:reportsReport');
+                        openResourcePickerDialog(sourceNode, targetNode, position, 'console:reportsPickerReport');
                         break;
                     case 'core:chart':
                         openResourcePickerDialog(sourceNode, targetNode, position, 'console:chartsReport');
@@ -2523,6 +2523,7 @@
                 };
                 var displayName;
                 var typeAlias;
+                var entityAlias;
                 var validForSelfService = ['core:chart', 'console:screen', 'core:report'];
                 var validContextMenuWithModifyAliases = ['core:chart', 'console:screen', 'core:report',
                     'console:customEditForm'];
@@ -2535,6 +2536,7 @@
                 var deletableContextMenuAliases = ['console:navSection', 'console:privateContentSection', 'console:topMenu', 'core:folder',
                     'core:documentFolder', 'core:chart', 'console:screen', 'core:report', 
                     'core:board'];
+                var nonDeletableAliases = ['core:adminMenu', 'core:homeMenu'];
 
                 if (!entity) {
                     return contextMenu;
@@ -2545,8 +2547,10 @@
 
                 if (!navItem) {
                     typeAlias = sp.result(entity, 'getType.alias');
+                    entityAlias = sp.result(entity, 'alias');
                 } else {
                     typeAlias = navItem.item.typeAlias;
+                    entityAlias = navItem.item.alias;
                 }
 
                 // Check if user has permission to manipulate this type
@@ -2587,7 +2591,7 @@
                             type: 'click',
                             click: 'configMenuRemoveEntity()'
                         });
-                    } else if (_.includes(deletableContextMenuAliases, typeAlias)) {
+                    } else if (_.includes(deletableContextMenuAliases, typeAlias) && (!entityAlias || !_.includes(nonDeletableAliases, entityAlias))) {
                         contextMenu.menuItems.push({
                             text: 'Delete ' + displayName,
                             icon: 'assets/images/16x16/delete.svg',

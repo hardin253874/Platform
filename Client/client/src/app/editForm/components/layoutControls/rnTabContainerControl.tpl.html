@@ -1,0 +1,17 @@
+<div class="rnTabContainerControl">
+
+    <ul class="rnTabContainerControl__titles">
+        <li ng-repeat="c in $ctrl.controls" ng-click="$ctrl.select(c)"
+            class="rnTabContainerControl__title"
+            ng-class="{'rnTabContainerControl__title--selected': $ctrl.isSelected(c)}">{{c.name}}</li>
+    </ul>
+    <div class="rnTabContainerControl__content">
+        <div ng-if="$ctrl.isRendered(c)" ng-show="$ctrl.isSelected(c)"
+             ng-repeat="c in $ctrl.controls" class="rnTabContainerControl__control">
+            <rn-form-control class="rnTabContainerControl__control {{c.cssClass}}"
+                             control="c.control" resource="$ctrl.resource" form="$ctrl.form"
+                             options="c.options" form-options="$ctrl.formOptions"></rn-form-control>
+        </div>
+    </div>
+
+</div>

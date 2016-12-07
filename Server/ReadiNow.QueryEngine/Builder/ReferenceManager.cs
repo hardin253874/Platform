@@ -86,9 +86,33 @@ namespace ReadiNow.QueryEngine.Builder
 		public SqlTable FindSqlTable( Entity entity )
 		{
 			return _tablesByEntity[ entity ].EntityTable;
-		}
+        }
 
-		public EntityTables FindTables( Guid nodeId )
+        public SqlTable FindSqlTable( Entity entity, bool searchSubqueries )
+        {
+            if ( !searchSubqueries )
+                return FindSqlTable( entity );
+
+            EntityTables result;
+            if ( _tablesByEntity.TryGetValue( entity, out result ) )
+                return result.EntityTable;
+
+            foreach ( var pair in _tablesByEntity )
+            {
+                SqlUnion subQueryUnion = pair.Value.EntityTable.SubQuery;
+                if ( subQueryUnion == null )
+                    continue;
+                foreach ( SqlQuery query in subQueryUnion.Queries )
+                {
+                    SqlTable res = query.References.FindSqlTable( entity, true );
+                    if ( res != null )
+                        return res;
+                }
+            }
+            return null;
+        }
+
+        public EntityTables FindTables( Guid nodeId )
 		{
 			var entity = FindEntity<Entity>( nodeId );
 			return _tablesByEntity[ entity ];

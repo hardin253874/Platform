@@ -23,7 +23,23 @@
         -relationshipType{string}-'choice' for edititng choice field relationship
     modalInstance is a modalinstance of a dialog to close and return the value to the parent window.
     */
-    angular.module('mod.app.configureDialog.choiceFieldProperties', ['ui.bootstrap', 'mod.app.editForm', 'mod.app.editForm.designerDirectives', 'mod.common.ui.spDialogService', 'ngGrid', 'ngGrid.services', 'mod.common.spEntityService', 'sp.navService', 'mod.app.configureDialog.relationshipProperties.spRelationshipFilters', 'spApps.enumValueService', 'mod.app.configureDialog.fieldPropertiesHelper', 'mod.app.formBuilder.services.spFormBuilderService', 'mod.app.configureDialog.spVisibilityCalculationControl', 'mod.app.spFormControlVisibilityService'])
+    angular.module('mod.app.configureDialog.choiceFieldProperties', [
+        'ui.bootstrap',
+        'mod.app.editForm',
+        'mod.app.editForm.designerDirectives',
+        'mod.common.ui.spDialogService',
+        'ngGrid',
+        'ngGrid.services',
+        'mod.common.spEntityService',
+        'sp.navService',
+        'mod.featureSwitch',
+        'mod.app.configureDialog.relationshipProperties.spRelationshipFilters',
+        'spApps.enumValueService',
+        'mod.app.configureDialog.fieldPropertiesHelper',
+        'mod.app.formBuilder.services.spFormBuilderService',
+        'mod.app.configureDialog.spVisibilityCalculationControl',
+        'mod.app.spFormControlVisibilityService',
+        'mod.ui.spConditionalFormattingConstants'])
         .directive('choiceProperties', function() {
             return {
                 restrict: 'E',
@@ -37,7 +53,7 @@
                 controller: 'choicePropertiesController'
             };
         })        
-        .controller('choicePropertiesController', function ($scope, $templateCache, spEditForm, spFieldValidator, configureDialogService, spEntityService, spNavService, spEnumValueService, fieldPropertiesHelper, spFormBuilderService, spFormControlVisibilityService) {
+        .controller('choicePropertiesController', function ($scope, $templateCache, spEditForm, spFieldValidator, configureDialogService, spEntityService, spNavService, spEnumValueService, fieldPropertiesHelper, spFormBuilderService, spFormControlVisibilityService, namedFgBgColors, rnFeatureSwitch) {
 
             $scope.isCollapsed = true;
 
@@ -65,7 +81,9 @@
                     return 'Options';
                 }
             };
-      
+            //
+            // enable default choice field formatting
+            $scope.defaultChoiceFieldFormatEnabled = rnFeatureSwitch.isFeatureOn('defaultChoiceFieldFormat');
             //define model object;
             $scope.model = {
                 errors: [],
@@ -75,14 +93,9 @@
                 isInTestMode: false,
                 isFormValid: true,
                 choiceValues: [],
-                choiceValuesDeleted:[],
-                choiceValuesGridOptions: {
-                    data: 'model.choiceValues',
-                    multiSelect:false,
-                    enableSorting: false,
-                    enableCellEdit: true,
-                    selectedItems:[],
-                    columnDefs: [
+                choiceValuesDeleted: [],
+                formatTypes: [],
+                choiceColumnDefs: [
                         {
                             field: 'name',
                             displayName: 'Name',
@@ -98,8 +111,44 @@
                             groupable: false,
                             enableCellEdit: true,
                             cellEditableCondition: 'canEditChoiceValueCell(row)'
+                        },
+                        {
+                            field: 'highlightFormat',
+                            displayName: 'Format',
+                            sortable: false,
+                            groupable: false,
+                            visible: false,
+                            cellTemplate: $templateCache.get('configDialogs/relationshipsProperties/choiceFieldProperties/views/highlightCellTemplate.tpl.html')
+                        },
+                        {
+                            field: 'iconFormat',
+                            displayName: 'Format',
+                            sortable: false,
+                            groupable: false,
+                            visible: false,
+                            cellTemplate: $templateCache.get('configDialogs/relationshipsProperties/choiceFieldProperties/views/iconCellTemplate.tpl.html')
                         }
-                    ],
+                ],
+                condFormatting: {
+                    hasCondFormatting: false,
+                    iconWidth: 16,
+                    iconHeight: 16,
+                    iconSizeId: new spEntity.EntityRef('console:iconThumbnailSize'),
+                    availableIconIds: [],
+                    availableIcons: [],
+                    availableIconNames: {},
+                    condFormatEntities: {},
+                    operators: [],
+                    iconPickerOptions: [],
+                    colors: []
+                    },
+                choiceValuesGridOptions: {
+                    data: 'model.choiceValues',
+                    multiSelect:false,
+                    enableSorting: false,
+                    enableCellEdit: true,
+                    selectedItems:[],
+                    columnDefs: 'model.choiceColumnDefs',
                     afterSelectionChange:function(row) {
                         $scope.selectedRowIndex = row.rowIndex;
                     }
@@ -110,6 +159,13 @@
                 selectedOption: {},
                 selectedHorizontalMode: {},
                 selectedVerticalMode: {},
+                formattingTypeOptions: {
+                    selectedEntityId: 0,
+                    selectedEntity: null,
+                    showSelectOption: true,
+                    entityTypeId: 'core:enumFormattingType'
+                },
+                currentFormattingType: 'None',
                 busyIndicator: {
                     type: 'spinner',
                     text: 'Loading...',
@@ -121,7 +177,10 @@
                     typeId: null,
                     error: null,                    
                     isShowHideOn: spFormControlVisibilityService.isShowHideFeatureOn()
-                }
+                },
+                noneFgBgColor: null,
+                defaultColor: {},
+                defaultIcon: {}
             };
 
             $scope.canEditChoiceValueCell = function (row) {
@@ -151,12 +210,23 @@
             //Add new choice value item to the list.
             //
             $scope.addChoiceFieldValue = function () {
-                var appId = spNavService.getCurrentApplicationId();
+                var appId = spUtils.result($scope, 'options.definition.inSolution.idP');
 
+                if (!appId) {
+                    appId = spNavService.getCurrentApplicationId();
+                }
+
+                var noneFgBgColor = _.find(namedFgBgColors, function (nc) {
+                    return nc.id === 'none';
+                });
+
+                var newFormattingRule = createFormattingRule();
+                
                 var newEntity = spEntity.fromJSON({
                     name: getNextAvailableValueName(),
                     description: jsonString(),
-                    enumOrder: jsonInt()
+                    enumOrder: jsonInt(),
+                    enumFormattingRule: newFormattingRule
                 });
 
                 if (appId) {
@@ -164,9 +234,39 @@
                 }
 
                 $scope.model.choiceValues.push(newEntity);
+
+                addChoiceFieldValueFormattingColumn(newEntity);
+
                 $scope.model.clearErrors();
                 $scope.model.isFormValid = true;                
             };
+
+
+            function addChoiceFieldValueFormattingColumn(choiceValue) {
+                if (choiceValue.enumFormattingRule.colorRules) {
+                    var foregroundColorObject = spUtils.getColorFromARGBString(choiceValue.enumFormattingRule.colorRules[0].colorRuleForeground);
+                    var backgroundColorObject = spUtils.getColorFromARGBString(choiceValue.enumFormattingRule.colorRules[0].colorRuleBackground);
+                    var icon = _.find($scope.model.condFormatting.availableIconIds, function (iconId) {
+                        return iconId.id() === choiceValue.enumFormattingRule.iconRules[0].iconRuleImage.id();
+                    });
+                    $scope.model.condFormatting.colors.push({
+                        foregroundColor: foregroundColorObject,
+                        backgroundColor: backgroundColorObject,
+                        choiceValueId: choiceValue.id()
+                    });
+
+                    $scope.model.condFormatting.iconPickerOptions.push({
+                        iconWidth: $scope.model.condFormatting.iconWidth,
+                        iconHeight: $scope.model.condFormatting.iconHeight,
+                        iconSizeId: $scope.model.condFormatting.iconSizeId,
+                        iconIds: $scope.model.condFormatting.availableIconIds,
+                        iconNames: $scope.model.condFormatting.availableIconNames,
+                        selectedIconId: icon,
+                        choiceValueId: choiceValue.id()
+                    });
+                }                                
+            }
+
             //
             //Get next available new value text to create new choice value.
             //
@@ -209,8 +309,17 @@
                 if ($scope.selectedRowIndex > 0) {                    
                     var arr = $scope.model.choiceValues.concat();
                     arr = arraymove(arr, $scope.selectedRowIndex, $scope.selectedRowIndex - 1);
+                    var arrayColors = $scope.model.condFormatting.colors.concat();
+                    arrayColors = arraymove(arrayColors, $scope.selectedRowIndex, $scope.selectedRowIndex - 1);
+                    var arrayIcons = $scope.model.condFormatting.iconPickerOptions.concat();
+                    arrayIcons = arraymove(arrayIcons, $scope.selectedRowIndex, $scope.selectedRowIndex - 1);
+
+
                     //refresh grid
                     $scope.model.choiceValues = arr;
+                    $scope.model.condFormatting.colors = arrayColors;
+                    $scope.model.condFormatting.iconPickerOptions = arrayIcons;
+
                     $scope.selectedRowIndex = $scope.selectedRowIndex - 1;
                     var grid = $scope.model.choiceValuesGridOptions.ngGrid;
                     if(grid)
@@ -264,10 +373,24 @@
                 } 
                 var arr = $scope.model.choiceValues.concat();
                 arr.splice($scope.selectedRowIndex, 1);
+                removeChoiceFieldValueFormattingColumn();
+
                 $scope.model.choiceValues = arr;
                 $scope.model.choiceValuesGridOptions.selectedItems = [];
                 $scope.selectedRowIndex = null;                
             };
+
+            //
+            //Delete choice field formatting column from list.
+            //
+            function removeChoiceFieldValueFormattingColumn() {
+                var arrayColors = $scope.model.condFormatting.colors.concat();
+                arrayColors.splice($scope.selectedRowIndex, 1);
+                $scope.model.condFormatting.colors = arrayColors;
+                var arrayIcons = $scope.model.condFormatting.iconPickerOptions.concat();
+                arrayColors.splice($scope.selectedRowIndex, 1);
+                $scope.model.condFormatting.iconPickerOptions = arrayIcons;
+            }
 
             //
             //Get if new button to add choice value is disabled.
@@ -461,8 +584,8 @@
                         $scope.model.addError(error);
                         entityLoaded = true;
                     });
-            };
-            
+            };                        
+
             //
             // Get formControl from the database.
             //
@@ -483,7 +606,7 @@
                         entityLoaded = true;
                     });
             };
-
+            
             //
             //Load the controls aftre all service calls finished.
             //
@@ -491,6 +614,8 @@
                 if (controlLoaded)
                     return;
                 controlLoaded = true;
+                
+                loadIconEntities();
 
                 //define formData
                 $scope.model.formData = spEntity.createEntityOfType('relationshipEntityType');
@@ -521,10 +646,11 @@
                     $scope.model.choiceDisplayNameControl = configureDialogService.getDummyFieldControlOnForm($scope.fields[0], 'Display Name');
                     $scope.model.choiceDescriptionControl = configureDialogService.getDummyFieldControlOnForm($scope.fields[1], 'Description');
                     $scope.model.formControlData = getDummyFormData('controlEntityType', $scope.fields[0], $scope.model.formControl.name);                    
-                    $scope.model.formControlData.setField($scope.fields[1], $scope.model.formControl.description, spEntity.DataType.String);
+                    $scope.model.formControlData.setField($scope.fields[1], $scope.model.formControl.description, spEntity.DataType.String);                   
                 }
+                getEnumTypeFormatting();
 
-                
+               
 
                 if ($scope.isNewRelationship) {
                     $scope.model.selectedOption = $scope.model.choiceFieldOptions[0];
@@ -639,7 +765,268 @@
 
                 initVisibilityCalculationModel();
             }
-            
+                        
+            function getEnumTypeFormatting() {
+                var enumValueFormattingType;
+                var control = $scope.options.isFormControl ? $scope.options.formControl.relationshipToRender : $scope.options.formControl;
+                
+                if (control && control.enumValueFormattingType) {
+                    if (control.enumValueFormattingType.length > 0)
+                        enumValueFormattingType = control.enumValueFormattingType[0];
+                    else
+                        enumValueFormattingType = control.enumValueFormattingType;
+                } else {
+                    enumValueFormattingType = null;
+                }
+               
+                $scope.model.formattingTypeOptions.selectedEntityId = enumValueFormattingType && enumValueFormattingType.id ? enumValueFormattingType.id() : 0;
+                $scope.model.formattingTypeOptions.selectedEntity = enumValueFormattingType;
+                $scope.model.currentFormattingType = enumValueFormattingType ? enumValueFormattingType.name : 'None';
+            }
+
+            $scope.$watch('model.formattingTypeOptions.selectedEntity', function () {
+                if ($scope.model.formattingTypeOptions.selectedEntity) {
+                    $scope.model.currentFormattingType = $scope.model.formattingTypeOptions.selectedEntity.name;
+                }
+            });
+
+            $scope.$watch('model.currentFormattingType', function (newVal, oldVal) {
+                if (newVal !== oldVal) {
+                    //load choice table with or without formatting column
+                    if (newVal === 'Highlight' || newVal === 'Icon') {
+                        $scope.model.choiceColumnDefs[2].visible = newVal === 'Highlight';
+                        $scope.model.choiceColumnDefs[3].visible = newVal === 'Icon';
+                    } else {
+                        $scope.model.choiceColumnDefs[2].visible = false;
+                        $scope.model.choiceColumnDefs[3].visible = false;
+                    }
+                }
+            });
+
+            //load default color and icon object from $scope.model.condFormatting
+            function loadDefaultFormat() {
+                $scope.model.noneFgBgColor = namedFgBgColors ? _.find(namedFgBgColors, function (nc) {
+                    return nc.id === 'none';
+                }) : null;
+
+                $scope.model.defaultColor = $scope.model.noneFgBgColor ? {
+                    foregroundColor:  _.clone($scope.model.noneFgBgColor.foregroundColor) ,
+                    backgroundColor:  _.clone($scope.model.noneFgBgColor.backgroundColor) 
+                } : {};
+
+                $scope.model.defaultIcon = $scope.model.condFormatting ? {
+                    iconWidth: $scope.model.condFormatting.iconWidth,
+                    iconHeight: $scope.model.condFormatting.iconHeight,
+                    iconSizeId: $scope.model.condFormatting.iconSizeId,
+                    iconIds: $scope.model.condFormatting.availableIconIds,
+                    iconNames: $scope.model.condFormatting.availableIconNames,
+                    selectedIconId: $scope.model.condFormatting.availableIconIds[1]
+                } : {};
+            }
+
+            // Load the available icon entities
+            function loadIconEntities() {
+                if (spEntityService.getEntity) {
+                    // Get the width and height of the specified icon size.
+                    spEntityService.getEntity($scope.model.condFormatting.iconSizeId.getNsAliasOrId(), 'k:thumbnailWidth, k:thumbnailHeight').then(function(e) {
+                        if (e) {
+                            $scope.model.condFormatting.iconWidth = e.getThumbnailWidth();
+                            $scope.model.condFormatting.iconHeight = e.getThumbnailHeight();
+                        } else {
+                            $scope.model.condFormatting.iconWidth = 16;
+                            $scope.model.condFormatting.iconHeight = 16;
+                        }
+
+                    });
+                }
+                if (spEntityService.getEntitiesOfType) {
+                    // Get the available icons and sort them
+                    spEntityService.getEntitiesOfType('conditionalFormatIcon', 'formatIconOrder, condFormatImage.{id, alias, name}', { hint: 'cfIcons', batch: true }).then(function (entities) {
+                        var iconIds = [],
+                            sortedEntities = [],
+                            iconNames = {},
+                            cfEntities = {};
+
+                        if (entities) {
+                            $scope.model.condFormatting.availableIcons = _.map(entities, function (e) {
+                                if (e.getCondFormatImage) {
+                                    return e.getCondFormatImage();
+                                } else {
+                                    return null;
+                                }
+                            });
+                            // Sort the icons by the sort order
+                            sortedEntities = _.sortBy(entities, function (e) {
+                                var iconOrder = e.getFormatIconOrder();
+                                if (!iconOrder) {
+                                    iconOrder = 0;
+                                }
+                                return iconOrder;
+                            });
+
+                            // Return the icon ids
+                            iconIds = _.map(sortedEntities, function (e) {
+                                if (e.getCondFormatImage()) {
+                                    var iconId = e.getCondFormatImage().id();
+                                    iconNames[iconId] = e.getCondFormatImage().name;
+                                    cfEntities[iconId] = e;
+                                    return e.getCondFormatImage().eid();
+                                } else {
+                                    return null;
+                                }
+                            });
+
+
+                            $scope.model.condFormatting.availableIconIds = _.filter(iconIds, function (id) {
+                                return id !== null;
+                            });
+                            $scope.model.condFormatting.availableIconNames = iconNames;
+                            $scope.model.condFormatting.availableIconIds.unshift(new spEntity.EntityRef(0));
+                            $scope.model.condFormatting.condFormatEntities = cfEntities;
+                        } else {
+                            $scope.model.condFormatting.availableIconIds = [];
+                        }
+
+                        loadDefaultFormat();
+
+                        updateAvailableChoiceValues();
+                        // Update any icons rules
+                        //updateIconRulesAvailableIcons();
+                    });
+                }                
+            }
+
+            function createDefaultColorRule() {
+                var foregroundColor = spUtils.getARGBStringFromRgb($scope.model.noneFgBgColor.foregroundColor);
+                var backgroundColor = spUtils.getARGBStringFromRgb($scope.model.noneFgBgColor.backgroundColor);
+
+                return spEntity.fromJSON({
+                    typeId: 'colorRule',
+                    colorRuleForeground: jsonString(foregroundColor),
+                    colorRuleBackground: jsonString(backgroundColor)
+                });
+            }
+
+            function createDefaultIconRule() {
+                var icon = _.find($scope.model.condFormatting.availableIcons, function (icon) { return icon.id() === $scope.model.condFormatting.availableIconIds[1].id(); });
+
+                return spEntity.fromJSON({
+                    typeId: 'iconRule',
+                    iconRuleImage: icon ? icon : jsonLookup($scope.model.condFormatting.availableIconIds[1].id())
+                });
+            }
+                      
+            // Create new formattingrule relationship entity
+            function createFormattingRule() {               
+                if ($scope.model.noneFgBgColor) {
+                    var foregroundColor = spUtils.getARGBStringFromRgb($scope.model.noneFgBgColor.foregroundColor);
+                    var backgroundColor = spUtils.getARGBStringFromRgb($scope.model.noneFgBgColor.backgroundColor);
+                    var icon = _.find($scope.model.condFormatting.availableIcons, function(icon) { return icon.id() === $scope.model.condFormatting.availableIconIds[1].id(); });
+
+                    return spEntity.fromJSON({
+                        name: jsonString(),
+                        typeId: 'formattingRule',
+                        colorRules: jsonRelationship({
+                            typeId: 'colorRule',
+                            colorRuleForeground: jsonString(foregroundColor),
+                            colorRuleBackground: jsonString(backgroundColor)
+                        }),
+                        iconRules: jsonRelationship({
+                            typeId: 'iconRule',
+                            iconRuleImage: icon ? icon : jsonLookup($scope.model.condFormatting.availableIconIds[1].id())
+                        })
+                    });
+                } else {
+                    return {};
+                }
+                
+            }
+
+            function setColorsAndIconsFromChoiceValues() {
+                $scope.model.condFormatting.colors = _.map($scope.model.choiceValues, function (choiceValue) {
+                    var foregroundColorObject = spUtils.getColorFromARGBString(choiceValue.enumFormattingRule.colorRules[0].colorRuleForeground);
+                    var backgroundColorObject = spUtils.getColorFromARGBString(choiceValue.enumFormattingRule.colorRules[0].colorRuleBackground);
+
+                    return {
+                        foregroundColor: foregroundColorObject,
+                        backgroundColor: backgroundColorObject,
+                        choiceValueId: choiceValue.id()
+                    };
+                });
+
+                $scope.model.condFormatting.iconPickerOptions = _.map($scope.model.choiceValues, function (choiceValue) {
+                    var icon = _.find($scope.model.condFormatting.availableIconIds, function (IconId) {
+                        return IconId.id() === choiceValue.enumFormattingRule.iconRules[0].iconRuleImage.id();
+                    });
+
+                    return {
+                        iconWidth: $scope.model.condFormatting.iconWidth,
+                        iconHeight: $scope.model.condFormatting.iconHeight,
+                        iconSizeId: $scope.model.condFormatting.iconSizeId,
+                        iconIds: $scope.model.condFormatting.availableIconIds,
+                        iconNames: $scope.model.condFormatting.availableIconNames,
+                        selectedIconId: icon,
+                        choiceValueId: choiceValue.id()
+                    };                    
+                });
+            }
+
+            function updateAvailableChoiceValues() {
+
+                if ($scope.model.choiceValues) {
+                    _.forEach($scope.model.choiceValues, function (value) {
+                        if (value) {
+                            //set default value of enumFormattingRule
+                            if (!value.enumFormattingRule) {                                
+                                value.enumFormattingRule = createFormattingRule();
+                            } else {
+                                if (value.enumFormattingRule && value.enumFormattingRule.colorRules && value.enumFormattingRule.colorRules.length === 0) {
+                                    value.enumFormattingRule.colorRules.push(createDefaultColorRule());
+                                }
+
+                                if (value.enumFormattingRule && value.enumFormattingRule.iconRules && value.enumFormattingRule.iconRules.length === 0) {
+                                    value.enumFormattingRule.iconRules.push(createDefaultIconRule());
+                                }
+                            }
+                        }
+                    });
+                }
+
+                setColorsAndIconsFromChoiceValues();
+            }
+
+            $scope.displayIconColumn = function (enumFormattingRule) {
+                if (enumFormattingRule && enumFormattingRule.iconRules.iconRuleImage) {
+                    var icon = _.find($scope.model.condFormatting.availableIconIds, function (IconId) { return IconId.id() === enumFormattingRule.iconRules.iconRuleImage.id(); });
+                    return {
+                        iconWidth: $scope.model.condFormatting.iconWidth,
+                        iconHeight: $scope.model.condFormatting.iconHeight,
+                        iconSizeId: $scope.model.condFormatting.iconSizeId,
+                        iconIds: $scope.model.condFormatting.availableIconIds,
+                        iconNames: $scope.model.condFormatting.availableIconNames,
+                        selectedIconId: icon
+                    };
+                } else {
+                    return $scope.model.defaultIcon;
+                }
+            };
+
+            //// Update the icon sizes for all the icon rules
+            //function updateIconRulesSizeInfo() {
+            //    _.each($scope.model.condFormatting.iconRules, function (ir) {
+            //        ir.icon.iconWidth = $scope.model.condFormatting.iconWidth;
+            //        ir.icon.iconHeight = $scope.model.condFormatting.iconHeight;
+            //    });
+            //}
+
+            //// Update the available icons for all the icon rules
+            //function updateIconRulesAvailableIcons() {
+            //    _.each($scope.model.condFormatting.iconRules, function (ir) {
+            //        ir.icon.iconIds = $scope.model.condFormatting.availableIconIds;
+            //        ir.icon.iconNames = $scope.model.condFormatting.availableIconNames;
+            //    });
+            //}
+
             //
             //get dummy formData
             //
@@ -683,7 +1070,7 @@
                 configureDialogService.getChoiceValuesOfType(idP).then(function (result) {
                     //set toType of the relationship
                     $scope.model.relationshipToRender.setToType(result);
-
+                    
                     var values = _.sortBy(result.instancesOfType, function (choiceValue) {
                         return choiceValue.enumOrder;
                     });
@@ -695,6 +1082,8 @@
                 });
             }
 
+          
+           
             var toTypeEntity = spEntity.fromJSON({
                 name: jsonString(''),
                 typeId: 'core:enumType',
@@ -734,7 +1123,8 @@
                 'console:renderingVerticalResizeMode': jsonLookup('console:resizeAutomatic'),
                 'console:mandatoryControl': false,
                 'console:showControlHelpText': false,
-                'console:readOnlyControl': false
+                'console:readOnlyControl': false,
+                'console:visibilityCalculation': jsonString('')
             };
            
             //
@@ -763,6 +1153,8 @@
                 };
                 return templateFn;
             }
+
+
 
             //check if its a new entity.
             $scope.isNewEntity = $scope.options.formControl.getDataState() === spEntity.DataStateEnum.Create ? true : false;
@@ -876,11 +1268,25 @@
                             return;
                         }
                     }
+                }                                
+
+                var visibilityCalculation;
+
+                if ($scope.model.isFormControl) {
+                    visibilityCalculation = $scope.model.formControl.visibilityCalculation;
+                } else {                    
+                    // Need to find the form control that is being rendered.
+                    // You gotta do what you gotta do. Avert your eyes !
+                    var allControls = spEditForm.getFormControls(spFormBuilderService.form);
+                    var relationshipToRenderId = sp.result($scope, "model.relationshipToRender.idP");
+                    var choiceControl = _.find(allControls, function(c) {
+                        return sp.result(c, "relationshipToRender.idP") === relationshipToRenderId;
+                    });
+                    visibilityCalculation = sp.result(choiceControl, "visibilityCalculation");                    
                 }
 
-                if ($scope.options.isFormControl &&
-                    $scope.model.formControl.visibilityCalculation &&
-                    $scope.model.formControl.relationshipToRender.relationshipIsMandatory &&
+                if (visibilityCalculation &&
+                    sp.result($scope, "model.relationshipToRender.relationshipIsMandatory") &&
                     !$scope.model.toTypeDefaultValue) {
                     $scope.model.addError("Visibility calculation cannot be defined as the field is mandatory and no default value is specified.");
                 }
@@ -981,7 +1387,12 @@
                         
                         if ($scope.isNewRelationship || $scope.model.formData.getField($scope.fields[1].idP) !== initialState.formData.getField($scope.fields[1].idP)) {
                             relationshipToRender.setDescription($scope.model.formData.getField($scope.fields[1].idP));
-                        }                        
+                        }
+                                                
+                        if (relationshipToRender.enumValueFormattingType === undefined)
+                            relationshipToRender.registerRelationship('core:enumValueFormattingType');
+
+                        relationshipToRender.enumValueFormattingType = $scope.model.formattingTypeOptions.selectedEntity;                        
 
                         var relScriptName = _.trim($scope.model.formData.getField($scope.fields[2].idP));
                         var existingScriptName = _.trim(initialState.formData.getField($scope.fields[2].idP));
@@ -996,10 +1407,15 @@
                                 typeId: 'core:enumType',
                                 inherits: [{ id: 'core:enumValue' }],
                                 defaultPickerReport: jsonLookup($scope.enumTypeReport.idP),
-                                inSolution: jsonLookup()
+                                inSolution: jsonLookup(),
+                                enumValueFormattingType: $scope.model.formattingTypeOptions ? jsonLookup($scope.model.formattingTypeOptions.selectedEntity) : jsonLookup()
                             });
 
-                            var appId = spNavService.getCurrentApplicationId();
+                            var appId = spUtils.result($scope, 'options.definition.inSolution.idP');
+
+                            if (!appId) {
+                                appId = spNavService.getCurrentApplicationId();
+                            }
 
                             if (appId) {
                                 entity.setInSolution(appId);
@@ -1014,12 +1430,14 @@
                                 //Set the emun order of choice values
                                 _.forEach($scope.model.choiceValues, function(value) {
                                     value.enumOrder = order++;
-                                    value.type = result;
+                                    value.type = result;                                    
                                 });
                                 
+                                var choiceValues = convertChoiceValuesFormat($scope.model.choiceValues);
+
                                 var relEntity = spEntity.fromJSON({
                                     id: result,
-                                    instancesOfType: $scope.model.choiceValues
+                                    instancesOfType: choiceValues
                                 });
 
                                 spEntityService.putEntity(relEntity).then(function(id) {
@@ -1068,8 +1486,9 @@
                                 
                                 saveEntity.registerRelationship('core:instancesOfType');
                                 
-                                _.forEach(changedChoiceFields, function(value) {
-                                    saveEntity.instancesOfType.add(value);
+                                _.forEach(changedChoiceFields, function (value) {
+                                    var changedValue = convertChoiceValueFormat(value);
+                                    saveEntity.instancesOfType.add(changedValue);
                                 });
 
                                 _.forEach($scope.model.choiceValuesDeleted, function(value) {
@@ -1117,6 +1536,84 @@
                     }
                 }
             };
+            
+            //
+            //Convert highlight color and icon to format object
+            //
+            function convertChoiceValuesFormat(choiceValues) {
+
+                var newChoiceValues = [];
+                _.forEach(choiceValues, function (value) {
+                    newChoiceValues.push(convertChoiceValueFormat(value));
+                });
+
+                return newChoiceValues;
+               
+            }
+
+            //
+            //Convert highlight color and icon to format object
+            //
+            function convertChoiceValueFormat(choiceValue) {
+
+                if (!choiceValue.enumFormattingRule) {
+                    choiceValue.enumFormattingRule = createFormattingRule();                    
+                }
+                choiceValue.registerRelationship('core:enumFormattingRule');
+
+                if ($scope.model.currentFormattingType === 'Highlight') {
+
+                    //convert colorRule properties from control
+                    var color = _.find($scope.model.condFormatting.colors, function (color) {
+                        return color.choiceValueId === choiceValue.id();
+                    });
+
+                    var foregroundColorString = spUtils.getARGBStringFromRgb(color.foregroundColor);
+                    var backgroundColorString = spUtils.getARGBStringFromRgb(color.backgroundColor);
+
+
+                    var colorRule = spEntity.fromJSON({
+                        typeId: 'colorRule',
+                        colorRuleForeground: jsonString(foregroundColorString),
+                        colorRuleBackground: jsonString(backgroundColorString),
+                    });
+
+                    var colorFormattingRule = spEntity.fromJSON({
+                        typeId: 'colorFormattingRule',
+                        colorRules: jsonRelationship([colorRule])
+                    });
+
+
+                    choiceValue.enumFormattingRule = colorFormattingRule;
+
+
+                } else if ($scope.model.currentFormattingType === 'Icon') {
+
+
+                    var iconPickerOption = _.find($scope.model.condFormatting.iconPickerOptions, function (option) {
+                        return option.choiceValueId === choiceValue.id();
+                    });
+                    var iconId = _.find($scope.model.condFormatting.availableIcons, function (iconId) { return iconId.id() === iconPickerOption.selectedIconId.id(); });
+
+                    var iconTypeRule = spEntity.fromJSON({
+                        typeId: 'iconRule',
+                        iconRuleImage: jsonLookup(iconId)
+                    });
+
+                    var iconFormattingRule = spEntity.fromJSON({
+                        typeId: 'iconFormattingRule',
+                        iconRules: jsonRelationship([iconTypeRule])
+                    });
+
+                    choiceValue.enumFormattingRule = iconFormattingRule;
+
+                } else {
+                    // none, do nothing
+                }
+              
+                return choiceValue;
+            }
+
             
             //
             //Set the default value for the relationship.

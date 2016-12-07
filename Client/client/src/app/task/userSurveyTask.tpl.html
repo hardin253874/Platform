@@ -1,4 +1,4 @@
-<div class="user-survey-view" ng-controller="UserSurveyTaskController as model">
+<div class="user-survey-view" ng-controller="UserSurveyTaskController as model" ng-keyup="model.onKeyup($event)">
 
     <div class="user-survey-buttons" ng-show="!model.readOnly">
         <button type="button" ng-click="model.save()"><img src="assets/images/toolbar_save.png" title="Save"><span>Save</span></button>

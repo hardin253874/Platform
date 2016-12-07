@@ -1,0 +1,2 @@
+﻿<a ng-if="match.model._suppressHighlight" class="spTypeaheadItem" href tabindex="-1">{{match.label}}</a>
+<a ng-if="!match.model._suppressHighlight" class="spTypeaheadItem" href tabindex="-1" ng-bind-html="match.label | uibTypeaheadHighlight:query"></a>

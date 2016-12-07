@@ -462,6 +462,16 @@
 
                     return true;
                 };
+                
+                this.updateGridShowSelectionCheckbox = function (showSelectionCheckbox) {
+                    if (!self || !self.scope || !self.grid) {
+                        return false;
+                    }
+                    
+                    self.grid.config.showSelectionCheckbox = showSelectionCheckbox;                    
+
+                    return true;
+                };
 
                 // This method is used to show/hide the report header
                 this.showReportHeader = function (show) {
@@ -930,7 +940,7 @@
                     self.lastClickedRow = undefined;
                     self.ignoreSelectedItemChanges = false; // flag to prevent circular event loops keeping single-select var in sync
                     self.pKeyParser = $parse(grid.config.primaryKey);
-                    self.isMac = navigator.platform.toLowerCase().indexOf('mac') >= 0;
+                    self.isMac = navigator.platform.toLowerCase().indexOf('mac') >= 0;                    
 
                     $scope.$on('$destroy', function () {
                         if (!self) {
@@ -955,6 +965,10 @@
                         var isUpDownKeyPress = (charCode === 40 || charCode === 38);
                         var contSelect = self.isMac ? evt.metaKey : evt.ctrlKey;
 
+                        if (!contSelect && grid.config.showSelectionCheckbox && self.multi) {
+                            contSelect = true;
+                        }
+
                         if (evt && evt.shiftKey && !evt.keyCode && self.multi && grid.config.enableRowSelection) {
                             if (self.lastClickedRow) {
                                 var rowsArr;
@@ -975,9 +989,9 @@
                                 }
 
                                 if (thisIndx < prevIndx) {
-                                    thisIndx = thisIndx ^ prevIndx;
-                                    prevIndx = thisIndx ^ prevIndx;
-                                    thisIndx = thisIndx ^ prevIndx;
+                                    thisIndx = thisIndx ^ prevIndx; //eslint-disable-line no-bitwise
+                                    prevIndx = thisIndx ^ prevIndx; //eslint-disable-line no-bitwise
+                                    thisIndx = thisIndx ^ prevIndx; //eslint-disable-line no-bitwise
                                     thisIndx--;
                                 }
                                 else {

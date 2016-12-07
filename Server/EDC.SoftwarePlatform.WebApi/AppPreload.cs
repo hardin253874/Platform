@@ -219,9 +219,6 @@ namespace EDC.SoftwarePlatform.WebApi
 			PerTenantEntityTypeCache.InitializeMessageChannel( );
 
 			RegisterModules( );
-
-			MessageQueueResponseManager.Start( );
-			CastComms.Initialize( );
 		}
 	}
 }

@@ -2,6 +2,8 @@
 {
     public interface IRemoteFileFetcher
     {
-        string FetchToTemporaryFile(string url, string username, string password);
+        string GetToTemporaryFile(string url, string username, string password);
+
+        void PutFromTemporaryFile(string fileHash, string url, string username, string password);
     }
 }

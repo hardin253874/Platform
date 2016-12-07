@@ -19,7 +19,6 @@ namespace ReadiNow.Connector.Test.Processing
         {
             EntityType type1 = null;
             EntityType type2 = null;
-            ImportConfig config = null;
             Relationship rel;
 
             try

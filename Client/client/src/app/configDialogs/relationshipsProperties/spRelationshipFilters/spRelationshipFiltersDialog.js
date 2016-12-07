@@ -12,8 +12,8 @@
        
       */
     angular.module('mod.app.configureDialog.relationshipProperties.spRelationshipFiltersDialog',
-        ['ui.bootstrap', 'mod.common.ui.spDialogService', 'mod.common.spEntityService', 'mod.common.ui.spBusyIndicator', 'mod.app.editFormServices'])
-        .controller('spRelationshipFiltersDialogController', function($scope, $uibModalInstance, options, spEntityService, spEditForm) {
+        ['ui.bootstrap', 'mod.common.ui.spDialogService', 'mod.common.spEntityService', 'mod.common.ui.spBusyIndicator', 'mod.app.editFormServices', 'sp.app.settings'])
+        .controller('spRelationshipFiltersDialogController', function($scope, $uibModalInstance, options, spEntityService, spEditForm, spAppSettings) {
             var relationshipsRequest = 'inherits*, { relationships, reverseRelationships }.{ alias, name, toName, fromName, cardinality.alias, description, { fromType, toType }.{ id } }';
 
 
@@ -179,8 +179,9 @@
                     relTypes = spResource.getDerivedTypesAndSelf(relType);
 
                     found = _.some(relTypes, function (t) {
-                         return t.id() === targetType.id();
-                     });                    
+                        return t.id() === targetType.id() ||
+                            ($scope.model.showAllRels && t.nsAlias === 'core:type'); // dev mode
+                    });
 
                     if (found) {
                         if (isReverse) {
@@ -399,8 +400,7 @@
                     setBusy(false);
                 });
             }
-
-
+            
             // Setup the dialog model
             $scope.model = {
                 errors: [],
@@ -416,10 +416,16 @@
                     text: 'Please wait...',
                     placement: 'element',
                     isBusy: false
-                }
+                },
+                showAllRels: false
             };
 
-
+            $scope.$watch('model.showAllRels', function (newVal, oldVal) {
+                if (newVal !== oldVal) {
+                    initialise();
+                }
+            });
+            
             $scope.onRelationshipControlFilterChanges = function(relationshipControlFilter) {
                 $scope.clearErrors();
 
@@ -434,6 +440,10 @@
                 $scope.model.errors = [];
             };
 
+            // Show dev options 
+            $scope.showAdvancedOption = function() {
+                return spAppSettings.initialSettings.devMode;
+            };
 
             // Returns true if a new filter can be added
             $scope.canAddFilter = function() {

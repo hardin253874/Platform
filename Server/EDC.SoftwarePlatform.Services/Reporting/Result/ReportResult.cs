@@ -139,6 +139,20 @@ namespace ReadiNow.Reporting.Result
             }
         }
 
+        private bool _defaultConditionalFormatRulesBuilt;
+        private Dictionary<string, ReportColumnConditionalFormat> _defaultConditionalFormatRules;
+        /// <summary>
+        /// Gets the conditional format rules.
+        /// </summary>
+        /// <value>The conditional format rules.</value>
+        public Dictionary<string, ReportColumnConditionalFormat> DefaultConditionalFormatRules
+        {
+            get
+            {
+                return _defaultConditionalFormatRulesBuilt ? _defaultConditionalFormatRules : BuildDefaultConditionalFormatRules();
+            }
+        }
+
         private bool _valueFormatRulesBuilt;
         private Dictionary<string, ReportColumnValueFormat> _valueFormatRules;
         public Dictionary<string, ReportColumnValueFormat> ValueFormatRules
@@ -489,7 +503,7 @@ namespace ReadiNow.Reporting.Result
                 if (_imageScaleRules == null)
                 {
                     _imageScaleRules = new Dictionary<string, ReportImageScale>(scalingRules);
-                }
+                }                
                 else
                 {
                     foreach (KeyValuePair<string, ReportImageScale> reportImageScale in scalingRules)
@@ -500,6 +514,131 @@ namespace ReadiNow.Reporting.Result
             }
             _conditionalFormatRulesBuilt = true;
             return _conditionalFormatRules;
+        }
+
+        private Dictionary<string, ReportColumnConditionalFormat> BuildDefaultConditionalFormatRules()
+        {            
+            if (_choiceSelections != null)
+            {
+                foreach (var choiceSelection in _choiceSelections)
+                {
+                    ReportColumnConditionalFormat columnFormat = new ReportColumnConditionalFormat();
+                    List<ReportConditionalFormatRule> rules = new List<ReportConditionalFormatRule>();                    
+                    columnFormat.Rules = new List<ReportConditionalFormatRule>(choiceSelection.Value.Select(csv => new ReportConditionalFormatRule
+                    {
+                        Operator = ConditionType.AnyOf,
+                        Values = getConditionValues(csv),
+                        BackgroundColor = !string.IsNullOrEmpty(csv.BackgroundColor) ? ColourFromString(csv.BackgroundColor) : null,
+                        ForegroundColor = !string.IsNullOrEmpty(csv.ForegroundColor) ? ColourFromString(csv.ForegroundColor) : null,
+                        ImageEntityId = csv.ImageEntityId,
+                        Predicate = PredicateForRule(csv.EntityIdentifier)
+                    }));
+
+                    if (_defaultConditionalFormatRules == null)
+                        _defaultConditionalFormatRules = new Dictionary<string, ReportColumnConditionalFormat>();
+
+                    if (columnFormat.Rules.Any(rule => rule != null && rule.Values != null))
+                    {
+                        _defaultConditionalFormatRules.Add(choiceSelection.Key.ToString(), columnFormat);
+                    }
+                    else
+                    {
+                        _defaultConditionalFormatRules.Add(choiceSelection.Key.ToString(), null);
+                    }
+                    
+
+                }
+                _defaultConditionalFormatRulesBuilt = true;
+            }
+            
+            return _defaultConditionalFormatRules;
+        }
+
+       
+
+        private Predicate<object> PredicateForRule(long conditionValue)
+        {
+            try
+            {
+
+                Predicate<object> valueFilterPredicate = BuildValueFilterPredicateNoNulls(conditionValue);
+
+                return value =>
+                {
+                    try
+                    {
+                        // Handle nulls
+                        // for now ANY type of filter on a column will reject null values
+                        if (value == null || value is DBNull)
+                        {
+                            return false;
+                        }
+
+                        var xml = (string)value;
+                        value = DatabaseTypeHelper.GetEntityXmlId(xml);
+
+                        // Evaluate the specific predicate
+                        return valueFilterPredicate(value);
+                    }
+                    catch
+                    {
+                        return false;                       
+                    }
+                };
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        private  Predicate<object> BuildValueFilterPredicateNoNulls(long value)
+        {
+            // Get and check argument           
+            return cell => checkEqual(cell, value);            
+
+        }
+
+        private bool checkEqual(object cellValue, long value)
+        {
+            if (cellValue == null || value == 0)
+                return false;
+            bool isEqualed = cellValue.ToString() == value.ToString();
+            return isEqualed;
+        }
+
+
+        private Dictionary<long, string> getConditionValues(ChoiceItemDefinition choiceItem)
+        {
+            if (choiceItem.ImageEntityId == null && 
+                string.IsNullOrEmpty(choiceItem.BackgroundColor) &&
+                string.IsNullOrEmpty(choiceItem.ForegroundColor))
+                return null;
+
+            Dictionary<long, string> values = new Dictionary<long, string>();
+            values[choiceItem.EntityIdentifier] = choiceItem.DisplayName;
+            return values;
+        }
+
+        private ReportConditionColor ColourFromString(string colourHexString)
+        {
+            try
+            {
+                UInt32 barColour = Convert.ToUInt32(colourHexString, 16);
+                ReportConditionColor colourInfo = new ReportConditionColor
+                {
+                    Alpha = (byte)((barColour & 0xff000000) >> 24),
+                    Red = (byte)((barColour & 0x00ff0000) >> 16),
+                    Green = (byte)((barColour & 0x0000ff00) >> 8),
+                    Blue = (byte)(barColour & 0x000000ff)
+                };
+                return colourInfo;
+            }
+            catch (Exception)
+            {
+                // Failed to format, just leave it as null
+                return null;
+            }
         }
 
         internal string EnumerationAlias(string value)
@@ -547,7 +686,7 @@ namespace ReadiNow.Reporting.Result
             if (_gridReportDataView != null)
             {
                 foreach (KeyValuePair<string, ReportColumn> reportQueryColumn in _reportQueryColumns)
-                {
+                {                    
                     ColumnFormatting columnFormatting = _gridReportDataView.ColumnFormats.FirstOrDefault(cf => cf.EntityId.ToString(CultureInfo.InvariantCulture) == reportQueryColumn.Key);
                     ReportColumnValueFormat reportColumnValueFormat = null;
                     if (columnFormatting != null)
@@ -558,6 +697,7 @@ namespace ReadiNow.Reporting.Result
                             {
                                 
                                 HideDisplayValue = !columnFormatting.ShowText,
+                                DisableDefaultFormat = columnFormatting.DisableDefaultFormat,
                                 Alignment = columnFormatting.Alignment != null && alignmentEnumeration != null ? alignmentEnumeration[EnumerationAlias(columnFormatting.Alignment.Alias)] : null,
                                 Prefix = string.IsNullOrEmpty(columnFormatting.Prefix) ? null : columnFormatting.Prefix, 
                                 Suffix = string.IsNullOrEmpty(columnFormatting.Suffix) ? null : columnFormatting.Suffix,
@@ -629,6 +769,16 @@ namespace ReadiNow.Reporting.Result
                                     _dateTimeValueSelections[reportQueryColumn.Value.Type] = typeEnumeration;
                                 }
                             }
+                        }
+                        
+                        if (reportQueryColumn.Value.IsAggregateColumn &&
+                            columnFormatting.EntityListColumnFormat != null &&
+                            (reportQueryColumn.Value.Type == "ChoiceRelationship" || 
+                            reportQueryColumn.Value.Type == "InlineRelationship" || 
+                            reportQueryColumn.Value.Type == "UserInlineRelationship" ||
+                            reportQueryColumn.Value.Type == "StructureLevels"))
+                        {
+                            reportColumnValueFormat.EntityListColumnFormat = EnumerationAlias(columnFormatting.EntityListColumnFormat.Alias);
                         }
                     }
                     else if (reportQueryColumn.Value.Type != null)
@@ -1507,11 +1657,7 @@ namespace ReadiNow.Reporting.Result
 				if ( entityType.InstancesOfType != null && entityType.InstancesOfType.Count > 0 )
                 {
                     _choiceSelections[entityType.Id] = new List<ChoiceItemDefinition>(entityType.InstancesOfType.OrderBy(t => t.As<Model.EnumValue>() != null ? t.As<Model.EnumValue>().EnumOrder : 0).
-                                                                                                 Select(resource => new ChoiceItemDefinition
-                                                                                                     {
-                                                                                                         DisplayName = resource.Name,
-                                                                                                         EntityIdentifier = resource.Id
-                                                                                                     }));
+                                                                                                 Select(resource => BuildChoiceItemDefinition(resource.As<Model.EnumValue>())));
                 }
             }
             if ((type == "InlineRelationship" || type == "StructureLevels") && !_inlineReports.ContainsKey(entityType.Id))
@@ -1519,6 +1665,25 @@ namespace ReadiNow.Reporting.Result
                 _inlineReports[entityType.Id] = entityType.DefaultPickerReport != null ?
                                                     entityType.DefaultPickerReport.Id : Model.Entity.Get<Model.Report>("core:templateReport").Id;
             }
+        }
+
+        private ChoiceItemDefinition BuildChoiceItemDefinition(Model.EnumValue choiceItem)
+        {
+            if (choiceItem == null)
+                return null;
+
+            Model.FormattingRule formattingRule = choiceItem.EnumFormattingRule;
+            Model.ColorFormattingRule colorFormattingRule = formattingRule != null ? formattingRule.As<Model.ColorFormattingRule>() : null;
+            Model.IconFormattingRule iconFormattingRule = formattingRule != null ? formattingRule.As<Model.IconFormattingRule>() : null;
+
+            return new ChoiceItemDefinition
+            {
+                DisplayName = choiceItem.Name,
+                EntityIdentifier = choiceItem.Id,
+                BackgroundColor = colorFormattingRule != null && colorFormattingRule.ColorRules.Count > 0 ? colorFormattingRule.ColorRules.First().ColorRuleBackground : String.Empty,
+                ForegroundColor = colorFormattingRule != null && colorFormattingRule.ColorRules.Count > 0 ? colorFormattingRule.ColorRules.First().ColorRuleForeground : String.Empty,
+                ImageEntityId = iconFormattingRule != null && iconFormattingRule.IconRules.Count > 0 ? iconFormattingRule.IconRules.First().IconRuleImage.Id : default(long?)
+            };
         }
 
         /// <summary>
@@ -1802,7 +1967,8 @@ namespace ReadiNow.Reporting.Result
                 }
                 System.Data.DataRow row = _queryResult.DataTable.Rows[rowIndex];
 
-                long rowEntityId = hasIdColumn ? (long) row[0] : 0;
+                object cell0 = row[ 0 ];
+                long rowEntityId = hasIdColumn && cell0 != null && cell0 != DBNull.Value ? (long) cell0 : 0;
                 DataRow gridRow = new DataRow { EntityId = rowEntityId, Values = new List<CellValue>() };
 
                 // If this is an image based report, inject the first column with a bogus value (that points to the image type)
@@ -1853,12 +2019,33 @@ namespace ReadiNow.Reporting.Result
             string columnIdIndex = column.RequestColumn.EntityId.ToString( CultureInfo.InvariantCulture );                        
 
             if ( column.IsRelatedResource || column.ColumnType is InlineRelationshipType || column.ColumnType is ChoiceRelationshipType )
-            {                
+            {
+                string columnIdString = columnIdIndex.ToString(CultureInfo.InvariantCulture);
+                long? formatIndex = ConditionalFormatIndex(columnIdIndex, value);
+
+                //if current column type is choice relationship and with default conditional format is set.  add format index from default condition formatting.
+                if (column.ColumnType is ChoiceRelationshipType &&
+                    ValueFormatRules != null &&
+                    ValueFormatRules.ContainsKey(columnIdString) &&
+                    ValueFormatRules[columnIdString] != null &&                    
+                    !ValueFormatRules[columnIdString].DisableDefaultFormat)
+                {
+                    string choiceFieldId = column.ResourceTypeId.ToString();
+
+                    long? defaultFormatIndex = DefaultConditionalFormatIndex(choiceFieldId, value);
+
+                    if (defaultFormatIndex != null)
+                    {
+                        formatIndex = defaultFormatIndex;                      
+                    }                    
+                }
+
+
                 cellValue = new CellValue
                     {
                         Values = value != null ? PopulateRelatedResourceItems(value.ToString(), column.RequestColumn) : null,
-                        ConditionalFormatIndex = ConditionalFormatIndex( columnIdIndex, value )
-                    };
+                        ConditionalFormatIndex = formatIndex
+                };
             }
             else
             {
@@ -1931,6 +2118,25 @@ namespace ReadiNow.Reporting.Result
             {
                 long conditionIndex;
                 if (_conditionalFormatter.TryGetRule(columnIndex, data, out conditionIndex))
+                {
+                    return conditionIndex;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Default Conditionals the index of the format.
+        /// </summary>
+        /// <param name="choiceValueId">choice Value Id.</param>
+        /// <param name="data">The data.</param>
+        /// <returns>System.Nullable{System.Int64}.</returns>
+        private long? DefaultConditionalFormatIndex(string choiceValueId, object data)
+        {
+            if (DefaultConditionalFormatRules != null && DefaultConditionalFormatRules.ContainsKey(choiceValueId))
+            {
+                long conditionIndex;
+                if (_conditionalFormatter.TryGetDefaultRule(DefaultConditionalFormatRules[choiceValueId], data, out conditionIndex))
                 {
                     return conditionIndex;
                 }
@@ -2308,12 +2514,12 @@ namespace ReadiNow.Reporting.Result
         {
             ResultColumn reportResultColumn = _queryResult.Columns.First(rc => rc.RequestColumn.ColumnId == reportColumn);
             if (reportResultColumn.IsRelatedResource || reportResultColumn.ColumnType is InlineRelationshipType || reportResultColumn.ColumnType is ChoiceRelationshipType)
-            {
+            {                
                 return new CellValue
                     {
                         Values = PopulateRelatedResourceItems(element.ToString(), reportResultColumn.RequestColumn),
                         ConditionalFormatIndex = ConditionalFormatIndex(columnId.ToString(CultureInfo.InvariantCulture), element)
-                    };
+                };
             }
             return new CellValue { Value = PopulateSimpleValue(element, reportResultColumn.ColumnType), 
                                    ConditionalFormatIndex = ConditionalFormatIndex(columnId.ToString(CultureInfo.InvariantCulture), element) };

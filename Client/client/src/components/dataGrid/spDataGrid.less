@@ -60,12 +60,20 @@
     display: inline-block;
     padding: 0;
     position: absolute;
+
+    a {
+        color: inherit;
+    }
 }
 
 .dataGridCellImageText {
     vertical-align: middle;
     display: inline-block;
     padding: 0;
+
+    a {
+        color: inherit;
+    }
 }
 
 .dataGridCell {
@@ -127,6 +135,10 @@
 
     .ngRow.canSelect {
         cursor: pointer;
+    }
+
+    .ngSelectionCell {
+        margin-top: 0;
     }
 
     .headerContextMenuPanel {
@@ -257,7 +269,7 @@
         overflow: hidden;
         max-width: 95%;
         font-size: 11px;
-        font-weight:bold;
+        font-weight: bold;
     }
 
     .dataGridAggregateLoadMoreData {
@@ -277,7 +289,7 @@
         color: #333 !important;
         transition: background-color ease-out .15s;
         cursor: pointer;
-        border-bottom:none;
+        border-bottom: none;
         box-shadow: 0 -1px 0 rgba(0,0,0,0.05) inset;
 
         &:hover {
@@ -300,7 +312,7 @@
         color: #505050 !important;
         cursor: pointer;
         overflow: initial;
-        border-bottom:none;
+        border-bottom: none;
         box-shadow: -100px 0px 0px #e0e0e0;
 
         &:hover {
@@ -326,11 +338,6 @@
 
     .ngVerticalBarVisible {
         color: #c5c5c5;
-
-        .sp-tablet-device &,
-        .sp-mobile-device & {
-            background-color: transparent;
-        }
     }
 
     .rowDataHeaderCell {
@@ -511,6 +518,10 @@
                 }
             }
         }
+
+        .ngVerticalBarVisible {
+            background-color: #d4d4d4 !important;
+        }
     }
 
     .ngColMenu {
@@ -683,7 +694,6 @@
                     }
 
                     .ngVerticalBar, .ngVerticalBarVisible {
-                        background-color: transparent;
                     }
 
                     .ngHeaderText {
@@ -777,7 +787,6 @@
                     }
 
                     .ngVerticalBar, .ngVerticalBarVisible {
-                        display: none;
                     }
 
                     .ngHeaderText {
@@ -1066,9 +1075,8 @@
         text-align: left;
         border-radius: 6px;
         background-color: rgb(254,254,240);
-
         box-shadow: 0 0 0 1px rgba(0,0,0,0.25) inset;
-        
+
         &.selected {
             box-shadow: 0 0 0 1px rgba(0,0,0,0.5) inset;
         }
@@ -1090,7 +1098,7 @@
         height: auto !important;
         max-height: none !important;
         overflow-y: visible !important;
-        height:auto !important;
+        height: auto !important;
         padding: 0;
         display: block;
         vertical-align: top;
@@ -1109,7 +1117,7 @@
         }
 
         &:last-child {
-            padding-top:4px;
+            padding-top: 4px;
             color: rgb(65, 65, 65);
         }
     }

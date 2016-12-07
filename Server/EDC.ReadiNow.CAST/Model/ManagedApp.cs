@@ -87,8 +87,8 @@ namespace EDC.ReadiNow.CAST.Model
         /// </summary>
         public IEntityCollection<ManagedApp> RequiredApps
         {
-            get { return GetRelationships<ManagedApp>(ManagedAppSchema.IsRequiredByAppRelationship, Direction.Forward).Entities; }
-            set { SetRelationships(ManagedAppSchema.IsRequiredByAppRelationship, value, Direction.Forward); }
+            get { return GetRelationships<ManagedApp>(ManagedAppSchema.RequiredAppsRelationship, Direction.Forward).Entities; }
+            set { SetRelationships(ManagedAppSchema.RequiredAppsRelationship, value, Direction.Forward); }
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace EDC.ReadiNow.CAST.Model
                         ManagedAppSchema.ReleaseDateField + "," +
                         ManagedAppSchema.AppIdField + "," +
                         ManagedAppSchema.VersionsRelationship + ".{alias,name,isOfType.{alias,name}," + ManagedAppVersionSchema.AppVersionIdField + "}," +
-                        ManagedAppSchema.IsRequiredByAppRelationship + ".{alias,name,isOfType.{alias,name}," + ManagedAppSchema.AppIdField + "}," +
+                        ManagedAppSchema.RequiredAppsRelationship + ".{alias,name,isOfType.{alias,name}," + ManagedAppSchema.AppIdField + "}," +
                         ManagedAppSchema.RequiredAppVersionsRelationship + ".{alias,name,isOfType.{alias,name}," + ManagedAppVersionSchema.AppVersionIdField + "}";
             }
         }

@@ -100,7 +100,12 @@ namespace ExpressionTester
                         }
                         else if (!string.IsNullOrEmpty(txtContextResource.Text))
                         {
-                            context = CodeNameResolver.GetInstance(txtContextResource.Text, txtContextType.Text);
+							long typeId = Factory.ScriptNameResolver.GetTypeByName( txtContextType.Text );
+							if ( typeId != 0 )
+							{
+								context = Factory.ScriptNameResolver.GetInstance( txtContextResource.Text, typeId );
+							}
+
                             if (context == null)
                             {
                                 sb.AppendLine("Cannot resolve context resource: " + txtContextType.Text);

@@ -31,7 +31,8 @@
                 'console:showControlHelpText': false,
                 'console:renderingHorizontalResizeMode': jsonLookup('console:resizeAutomatic'),
                 'console:renderingVerticalResizeMode': jsonLookup('console:resizeAutomatic'),
-                'console:fieldToRender': exports.fieldDefaultObject
+                'console:fieldToRender': exports.fieldDefaultObject,
+                'console:visibilityCalculation': jsonString('')
             };
             exports.formControlOnlyObject = {
                 name: jsonString(''),
@@ -42,7 +43,8 @@
                 'console:showControlHelpText': false,
                 'console:readOnlyControl': false,
                 'console:renderingHorizontalResizeMode': jsonLookup('console:resizeAutomatic'),
-                'console:renderingVerticalResizeMode': jsonLookup('console:resizeAutomatic')
+                'console:renderingVerticalResizeMode': jsonLookup('console:resizeAutomatic'),
+                'console:visibilityCalculation': jsonString('')
             };
 
             /**   

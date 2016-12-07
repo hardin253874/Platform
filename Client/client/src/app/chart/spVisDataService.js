@@ -218,7 +218,7 @@
             if (!sourceEntity.sourceAggMethod) {
                 var index = _.findIndex(reportMetadata.rmeta.groups, function (group) {
                     /*jshint -W116 */
-                    return _.first(_.keys(group)) == colId; //string==int
+                    return _.first(_.keys(group)) == colId; // eslint-disable-line eqeqeq
                     /*jshint +W116 */
                 });
                 if (index === -1) {
@@ -334,9 +334,36 @@
                 }
                 return outputCond;
             });
+
+            // Ensure that root record is not null.
+            // This is required because matrix charts typically involve right/full joins that will cause null rows to appear in the drilldown unless filtered.
+            conds.push({
+                expid: "_id", oper: "IsNotNull"
+            });
+
             var noNulls = _.compact(conds);
             noNulls.isConditions = true;
             return noNulls;
+        }
+
+        // A condition set that shows all rows (but filters out any right/full joins).
+        // This is required because matrix charts typically involve right/full joins that will cause null rows to appear in the drilldown unless filtered.
+        function getEmptyConds() {
+            return [{
+                expid: "_id",
+                oper: "IsNotNull"
+            }];
+        }
+
+        // Returns true if the conditions is the empty conditions
+        function isEmptyConds(conds) {
+            if (!conds)
+                return true;
+            if (conds.length === 0)
+                return true;
+            if (conds.length > 1)
+                return false;
+            return conds[0].expid === '_id' && conds[0].oper === 'IsNotNull';
         }
 
 
@@ -545,6 +572,8 @@
             convertPivotRowToConds: convertPivotRowToConds,
             isCategoricalScaleFormat: isCategoricalScaleFormat,
             getRuleColors: getRuleColors,
+            getEmptyConds: getEmptyConds,
+            isEmptyConds: isEmptyConds,
             test: {
                 locateColumnContent: locateColumnContent,
                 createReportRequest: createReportRequest,

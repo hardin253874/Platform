@@ -9,65 +9,370 @@
 
     angular.module('sp.workflow.parameterViewServices')
         .factory('spWorkflowEditorViewService', spWorkflowEditorViewService);
+    
+    function spWorkflowEditorViewService($q, spViewRegionService, spEntityService, spWorkflowService, spExpressionEditorService) {
 
+        var exports = {
+            getReportChooserView: getReportChooserView,
+            chooseResource: chooseResource,
+            chooseReport: chooseReport,
+            openSingleKnownEntityChooser: openSingleKnownEntityChooser,
+            openSingleParameterChooser: openSingleParameterChooser,
+            openExprEditor: openExprEditor
+        };
 
-    function spWorkflowEditorViewService($q, spViewRegionService, spWorkflowService) {
+        function getFilteredRows(view, columns) {
+            return _.filter(view.rows, function(row) {
+                var search = _.toLower(view.quickSearch.value || '');
+                return _.some(_.map(columns, 'field'), function(column) {
+                    return _.includes(_.toLower(_.get(row, column)), search);
+                });
+            });
+        }
 
-        // comments
-        // this is a little odd... most of the routines are about editing a parameter
-        // but some are for plain choosing... to capture that better
+        function getMetaData(resourceType) {
+            let req = 'name, description, isOfType.name, inherits*, { fields, relationships, reverseRelationships }.{ alias, name, toName, fromName, cardinality.alias, description, { fromType, toType }.{ name } }';
+            let resourceTypeRef = spEntity.asEntityRef(resourceType);
+            let id = resourceTypeRef.nsAliasOrId;
+            return spWorkflowService.getCacheableEntity('meta:' + id, id, req);
+        }
 
-        var exports = {};
+        function getFields(resourceType) {
+            if (!resourceType) {
+                return $q.when(null);
+            }
 
-        // return a promise for a resource selected via a chooser UI
+            return getMetaData(resourceType).then(function (type) {
+                var data = [];
+
+                if (type) {
+                    var t = new spResource.Type(type);
+                    var fields = t.getFields();
+                    var rels = _.filter(t.getAllRelationships(), function (r) { return r.isLookup() || r.isChoiceField(); });
+
+                    var dataFields = _.map(fields, function (f) {
+                        return {
+                            name: f.getName(),
+                            description: f.getDescription(),
+                            isReverse: false,
+                            entity: f.getEntity()
+                        };
+                    });
+
+                    var dataRels = _.map(rels, function (r) {
+                        return {
+                            name: r.getName(),
+                            description: r.getDescription(),
+                            isReverse: !!r.isReverse(),
+                            entity: r.getEntity()
+                        };
+                    });
+
+                    data = dataFields.concat(dataRels);
+                }
+
+                return data;
+            });
+        }
+
+        function getRelationships(resourceType) {
+            if (!resourceType) {
+                return $q.when(null);
+            }
+
+            return getMetaData(resourceType).then(function (type) {
+                var data = [];
+                if (type) {
+                    data = _.filter(new spResource.Type(type).getAllRelationships(), function (r) { return !r.isLookup(); });
+                }
+                return _.map(data, function (d) {
+                    return {
+                        name: d.getName(),
+                        description: d.getDescription(),
+                        direction: d.isReverse() ? 'reverse' : 'forward',
+                        isReverse: !!d.isReverse(),
+                        entity: d.getEntity()
+                    };
+                });
+            });
+        }
+
+        function getProperties(resourceType) {
+            if (!resourceType) {
+                return $q.when(null);
+            }
+
+            return getMetaData(resourceType).then(function (type) {
+                var data = [];
+                if (type) {
+                    data = new spResource.Type(type).getAllMembers();
+                }
+                return _.map(data, function (d) {
+                    return {
+                        name: d.getName(),
+                        description: d.getDescription(),
+                        entity: d.getEntity()
+                    };
+                });
+            });
+        }
+
+        /////
+        //
+        // getReportChooserView
+        //
+        /////
+        function getReportChooserView(chooserType, resourceType, reportEntity, selection, onApplyCallback, onCancelCallback) {
+            var resourceTypeId = sp.result(resourceType, 'idP');
+            var reportId = resourceTypeId ? sp.result(reportEntity, 'idP') : null;
+            var quickSearch = {
+                value: '',
+                onSearchValueChanged: function () { }
+            };
+            return {
+                templateUrl: 'workflow/workflowParameterView/chooserReportView.tpl.html',
+                reportOptions: {
+                    reportId: reportId,
+                    entityTypeId: resourceTypeId,
+                    selectedItems: selection,
+                    multiSelect: false,
+                    isEditMode: false,
+                    newButtonInfo: {},
+                    isInPicker: true,
+                    isMobile: false,
+                    fastRun: true,
+                    quickSearch: {
+                        quickSearch: quickSearch
+                    }
+                },
+                viewName: chooserType,
+                resourceType: resourceTypeId,
+                quickSearch: quickSearch,
+                allowPickerSwitch: true,
+                apply: function () {
+                    if (!onApplyCallback) return;
+                    var selectedId = sp.result(this, 'reportOptions.selectedItems.0.eid');
+                    if (selectedId) {
+                        var result = null;
+                        var rq = 'name, description, isOfType.name';
+                        if (chooserType === 'typeChooser') {
+                            rq = rq + ', inherits*.{id, alias}';
+                        }
+                        spWorkflowService.getCacheableEntity('entity:' + selectedId, selectedId, rq).then(function (e) {
+                            if (e) {
+                                result = { id: e.idP, name: e.name, entity: e };
+                            }
+                        }).catch(function () {
+                            console.error('error requesting entity for ', selectedId);
+                        }).finally(function () {
+                            onApplyCallback(result);
+                        });
+                    } else {
+                        onApplyCallback(null);
+                    }
+                },
+                cancel: onCancelCallback || function () { }
+            };
+        }
+
+        /////
+        //
+        // getResourceQueryChooserView
+        //
+        /////
+        function getResourceQueryChooserView(chooserType, resourceType, resourceQuery, selection, onPrepareResultCallback, onApplyCallback, onCancelCallback) {
+            var resourceTypeId = sp.result(resourceType, 'idP');
+
+            if (!onPrepareResultCallback) {
+                onPrepareResultCallback = function() {
+                    return [];
+                };
+            }
+
+            return spWorkflowService.getTemplateReport().then(function(templateReport) {
+                var view = getReportChooserView(chooserType, resourceType, templateReport, selection, onApplyCallback, onCancelCallback);
+                view.allowPickerSwitch = false;
+                view.customDataProvider = function (data) {
+
+                    return spWorkflowService.getCacheableEntity(chooserType + ':' + resourceTypeId, resourceTypeId, resourceQuery).then(function (result) {
+                        var selectedId = _.map(selection, 'id');
+
+                        var resultData = onPrepareResultCallback(result);
+                        
+                        var rows = _.map(resultData, function (r) {
+                            return {
+                                eid: r.idP,
+                                obj: r,
+                                values: [{ val: r.name }, { val: r.description }],
+                                selected: _.includes(selectedId, r.idP)
+                            };
+                        });
+
+                        // Quick Search
+                        if (data.quickSearch && data.quickSearch.value) {
+                            var quickSearch = data.quickSearch.value.toLowerCase();
+                            var filtered = _.filter(rows, function (dataRow) {
+                                var name = _.get(dataRow, 'values[0].val');
+                                return name && _.includes(name.toLowerCase(), quickSearch);
+                            });
+                            rows = filtered;
+                        }
+
+                        // Sorting
+                        if (data.meta) {
+                            if (!data.meta.rcols) {
+                                _.each(data.columnDefinitions, function(col, idx) {
+                                    _.set(data.meta, 'rcols.' + col.columnId, { ord: idx });
+                                });
+                            }
+                            var sorting = _.map(data.meta.sort, function (s) {
+                                var ord = _.get(data.meta.rcols, s.colid + '.ord');
+                                return {
+                                    val: 'values[' + ord + '].val',
+                                    dir: s.order === 'Ascending' ? 'asc' : 'desc'
+                                };
+                            });
+
+                            if (sorting && sorting.length) {
+                                rows = _.orderBy(rows, _.map(sorting, 'val'), _.map(sorting, 'dir'));
+                            }
+                        }
+                        
+                        // Selection
+                        _.each(rows, function(r, rowIndex) { _.set(r, 'rowIndex', rowIndex); });
+
+                        view.reportOptions.selectedItems = _.filter(rows, 'selected');
+                        
+                        return rows;
+                    });
+                };
+
+                return view;
+            });
+        }
+        
+        /////
+        //
+        // getChooserView
+        //
+        /////
+        function getChooserView(chooserType, resourceType, columns, selection, onLoadCallback, onApplyCallback, onCancelCallback) {
+            var sortInfo = {};
+            var firstField = sp.result(columns, '0.field');
+            if (firstField) {
+                sortInfo = { fields: [firstField], directions: ['asc'] };
+            }
+            var view = {
+                templateUrl: 'workflow/workflowParameterView/chooserReportView.tpl.html',
+                viewName: chooserType,
+                rows: [],
+                filteredRows: [],
+                quickSearch: {
+                    value: '',
+                    onSearchValueChanged: function () {
+                        view.filteredRows = getFilteredRows(view, columns);
+                    }
+                },
+                gridOptions: {
+                        data: 'view.filteredRows',
+                        targetvirtualizationThreshold: 10000,
+                        multiSelect: false,
+                        enableSorting: true,
+                        sortInfo: sortInfo,
+                        enableColumnResize: false,
+                        selectedItems: [],
+                        columnDefs: _.map(columns, function (col) {
+                            return {
+                                field: col.field,
+                                displayName: col.displayName,
+                                sortable: true,
+                                groupable: false,
+                                enableCellEdit: false
+                            };
+                        })
+                },
+                load: onLoadCallback,
+                apply: function () {
+                    var selected = _.first(this.gridOptions.selectedItems);
+                    onApplyCallback(selected);
+                },
+                cancel: onCancelCallback || function () { }
+            };
+            return view;
+        }
+
+        /////
+        //
+        // chooseResource - return a promise for a resource selected via a chooser UI
+        //
+        /////
         function chooseResource(resourceType, currentSelections, chooserType) {
 
             var defer = $q.defer();
 
-            currentSelections = currentSelections && (_.isArray(currentSelections) ? currentSelections : [currentSelections]) || [];
-            chooserType = chooserType || 'resourceChooser';
+            var selection = _.castArray(currentSelections || []);
 
-            var view = {
-                templateUrl: 'workflow/workflowParameterView/chooserView.tpl.html',
-                viewName: chooserType,
-                resourceType: resourceType,
-                currentSelections: currentSelections,
-                apply: function () {
-                    var rq = 'name,description,isOfType.name';
-                    if (chooserType === 'typeChooser')
-                        rq = rq + ',inherits*.{id, alias}';
-                    var selected = _.first(this.candidateSelections);
-                    if (selected) {
-                        spWorkflowService.getCacheableEntity('entity:' + selected.id, selected.id, rq)
-                            .then(function (e) {
-                                selected = _.extend({ name: e.name, entity: e }, selected);
-                            })
-                            .catch(function () {
-                                console.error('error requesting entity for ', selected);
-                            })
-                            .finally(function () {
-                                defer.resolve(selected);
-                            });
-                    } else {
-                        defer.resolve(null);
-                    }
-                },
-                cancel: function () {
-                    this.currentSelections = currentSelections;
-                },
-                onPopped: function () {
-                }
+            var onApply = function (selected) {
+                defer.resolve(selected);
             };
+            
+            chooserType = chooserType || 'resourceChooser';
+            
+            if (!resourceType && chooserType === 'typeChooser') {
+                resourceType = 'core:managedType';
+            }
 
-            spViewRegionService.pushView('workflow-properties-sidepanel', view);
+            spWorkflowService.getTemplateReport().then(function (templateReport) {
+                spWorkflowService.getCacheableType(resourceType).then(function (typeEntity) {
+                    var report = sp.result(typeEntity, 'defaultPickerReport') || templateReport;
+                    var view = getReportChooserView(chooserType, typeEntity, report, selection, onApply);
+
+                    spViewRegionService.pushView('workflow-properties-sidepanel', view);
+                });
+            });
 
             return defer.promise;
         }
 
-        exports.chooseResource = chooseResource;
+        /////
+        //
+        // chooseReport - special case. see alex.
+        //
+        /////
+        function chooseReport(resourceType, currentSelections) {
 
+            var defer = $q.defer();
+
+            var selection = _.castArray(currentSelections || []);
+            var onApply = function (selected) {
+                defer.resolve(selected);
+            };
+            var onPrepareResult = function (result) {
+                var reportsForType = [];
+                var derivedTypes = spResource.getDerivedTypesAndSelf(result);
+                _.forEach(derivedTypes, function (derivedType) {
+                    reportsForType = reportsForType.concat(derivedType.definitionUsedByReport);
+                });
+                return reportsForType;
+            };
+
+            spWorkflowService.getCacheableType(resourceType).then(function (typeEntity) {
+                var rq = 'name, isOfType.id, definitionUsedByReport.{ name, alias, description }, derivedTypes*.{ id, alias, definitionUsedByReport.{ name, alias, description }}';
+
+                getResourceQueryChooserView('reportChooser', typeEntity, rq, selection, onPrepareResult, onApply).then(function (view) {
+                    spViewRegionService.pushView('workflow-properties-sidepanel', view);
+                });
+            });
+
+            return defer.promise;
+        }
+
+        /////
+        //
+        // openEntityChooser
+        //
+        /////
         function openEntityChooser(context) {
-
             var workflow = context.workflow;
             var activity = context.activity || context.entity;
             var parameter = context.parameter;
@@ -76,70 +381,57 @@
             console.assert(workflow && activity && parameter && context.chooserType);
 
             var singleKnownEntity = spWorkflow.getAsSingleKnownEntity(workflow, parameter.expression);
-            var currentSelections = singleKnownEntity ? [
-                { id: singleKnownEntity.id(), name: singleKnownEntity.name }
-            ] : [];
 
-            //todo - switch this whole thing to using chooseResource, not just for resourceChoosers
-            if (context.chooserType === 'resourceChooser') {
-                return chooseResource(resourceType, currentSelections).then(function (selected) {
-                    if (context.apply) {
-                        context.apply(selected);
-                    }
-                    return selected && selected.name;
-                });
+            switch (context.chooserType) {
+                case 'parameterChooser':
+                    return openParameterChooser(context);
+                case 'fieldChooser':
+                case 'relChooser':
+                    return openPropertyChooser(context);
             }
 
-            var defer = $q.defer();
-
-            var view = {
-                templateUrl: 'workflow/workflowParameterView/chooserView.tpl.html',
-                viewName: context.chooserType,
-                workflow: workflow,
-                activity: activity,
-                resourceType: resourceType,
-                currentSelections: currentSelections,
-                apply: function () {
-                    var selected = _.first(this.candidateSelections);
-                    if (selected) {
-                        // Need to get the entity with its type information as we need the type of the "known entity"
-                        // when building parameter hint info for the expression editor.
-                        spWorkflowService.getCacheableEntity('entity:' + selected.id, selected.id, 'name,description,isOfType.name')
-                            .then(function (e) {
-                                selected = _.extend({ name: e.name, entity: e }, selected);
-                                if (context.apply) {
-                                    context.apply(selected);
-                                }
-                            })
-                            .catch(function () {
-                                console.error('error requesting entity for ', selected);
-                            })
-                            .finally(function () {
-                                defer.resolve(selected && selected.name);
-                            });
-                    } else {
-                        defer.resolve(null);
-                    }
-                },
-                cancel: function () {
-                    this.currentSelections = currentSelections;
-                },
-                onPopped: function () {
+            return chooseResource(resourceType, singleKnownEntity, context.chooserType).then(function (selected) {
+                if (context.apply) {
+                    context.apply(selected);
                 }
-            };
-
-            spViewRegionService.pushView('workflow-properties-sidepanel', view);
-
-            return defer.promise;
+                return selected && selected.name;
+            });
         }
 
-        exports.openEntityChooser = openEntityChooser;
+        /////
+        //
+        // openExprResourceChooser
+        //
+        /////
+        function openExprResourceChooser(context) {
+            return openEntityChooser(_.extend({}, context, {
+                chooserType: 'resourceChooser',
+                apply: function (selected) {
+                    if (selected) {
+                        var parameterName = selected.name;
 
+                        //todo - we need to deal with duplicates in name, whether same entity or different, and taking into account workflow params
+                        this.parentView.knownEntitiesParameters = this.parentView.knownEntitiesParameters.concat({ name: selected.name, entity: selected.entity });
+                        this.parentView.params = this.parentView.params.concat({
+                            name: parameterName,
+                            description: selected.entity.description,
+                            typeName: 'Entity',
+                            entityTypeId: sp.result(selected.entity, 'isOfType.0.idP') || 'core:resource'
+                        });
+                    }
+                }
+            }));
+        }
+        
+        /////
+        //
+        // openSingleKnownEntityChooser
+        //
+        /////
         function openSingleKnownEntityChooser(context) {
-
             var callersApply = context.apply;
             context.apply = function (selected) {
-                spWorkflow.setSingleKnownEntityExpression(this.workflow, this.activity, context.parameter.argument, selected.entity, selected.name);
+                spWorkflow.setSingleKnownEntityExpression(context.workflow, context.activity, context.parameter.argument, selected.entity, selected.name);
                 if (callersApply) {
                     callersApply(selected);
                 }
@@ -147,21 +439,25 @@
 
             return openEntityChooser(context);
         }
-
-        exports.openSingleKnownEntityChooser = openSingleKnownEntityChooser;
-
+        
+        /////
+        //
+        // openParameterChooser
+        //
+        /////
         function openParameterChooser(context) {
 
             var workflow = context.workflow;
             var activity = context.activity || context.entity;
             var parameter = context.parameter;
             var resourceType = context.resourceType || parameter.resourceType;
+            var sourceFilter = context.sourceFilter;
 
             console.assert(workflow && activity && parameter);
 
             var defer = $q.defer();
 
-            var currentSelections = _(spWorkflow.getWorkflowExpressionParameters(workflow))
+            var selection = _(spWorkflow.getWorkflowExpressionParameters(workflow))
                 .filter(function (p) {
                     return parameter.expression.expressionString === '[' + p.name + ']';
                 })
@@ -170,43 +466,41 @@
                 })
                 .value();
 
-            var view = {
-                templateUrl: 'workflow/workflowParameterView/chooserView.tpl.html',
-                viewName: 'parameterChooser',
-                sourceFilter: context.sourceFilter,
-                workflow: workflow,
-                activity: activity,
-                currentSelections: currentSelections,
-                resourceType: resourceType,
-                apply: function () {
-                    var selected = _.first(this.candidateSelections);
-                    if (selected) {
-                        if (context.apply) {
-                            context.apply(selected);
-                        }
-                    }
-                    defer.resolve(selected && selected.name);
-                },
-                cancel: function () {
-                    this.currentSelections = currentSelections;
-                    defer.resolve(null);
-                },
-                onPopped: function () {
-                }
+            var columns = [
+                { field: 'name', displayName: 'Name' },
+                { field: 'description', displayName: 'Description' }
+            ];
+
+            var onLoad = function () {
+                return $q.when().then(function () {
+                    return spWorkflow.getExpressionParameters(workflow, activity, sourceFilter);
+                });
             };
+
+            var onApply = context.apply || function (selected) {
+                if (selected && context.apply) {
+                    context.apply(selected);
+                }
+                defer.resolve(selected && selected.name);
+            };
+
+            var view = getChooserView('parameterChooser', resourceType, columns, selection, onLoad, onApply);
 
             spViewRegionService.pushView('workflow-properties-sidepanel', view);
 
             return defer.promise;
         }
 
-        exports.openParameterChooser = openParameterChooser;
-
+        /////
+        //
+        // openSingleParameterChooser
+        //
+        /////
         function openSingleParameterChooser(context) {
 
             var callersApply = context.apply;
             context.apply = function (selected) {
-                spWorkflow.updateExpressionForParameter(this.workflow, this.activity, context.parameter.argument, '[' + selected.name + ']');
+                spWorkflow.updateExpressionForParameter(context.workflow, context.activity, context.parameter.argument, '[' + selected.name + ']');
                 if (callersApply) {
                     callersApply(selected);
                 }
@@ -234,73 +528,93 @@
 
             return openParameterChooser(context);
         }
-
-        exports.openSingleParameterChooser = openSingleParameterChooser;
-
-        function openFunctionChooser(context) {
+        
+        /////
+        //
+        // openFunctionChooser
+        //
+        /////
+        function openFunctionChooser() {
 
             var defer = $q.defer();
 
-            var view = {
-                templateUrl: 'workflow/workflowParameterView/chooserView.tpl.html',
-                viewName: 'functionChooser',
-                apply: function () {
-                    var selected = _.first(this.candidateSelections);
-                    if (selected) {
-                        defer.resolve(selected.name);
-                    }
-                },
-                cancel: function () {
-                    defer.resolve(null);
-                },
-                onPopped: function () {
-                }
+            var columns = [
+                { field: 'name', displayName: 'Name' },
+                { field: 'signature', displayName: 'Signature' },
+                { field: 'description', displayName: 'Description' }
+            ];
+
+            var onLoad = function() {
+                return $q.when().then(function() {
+                    return _.filter(spExpressionEditorService.functionList, 'signature');
+                });
             };
+
+            var onApply = function (selected) {
+                defer.resolve(_.get(selected, 'name'));
+            };
+
+            var view = getChooserView('functionChooser', null, columns, [], onLoad, onApply);
 
             spViewRegionService.pushView('workflow-properties-sidepanel', view);
 
             return defer.promise;
         }
-
-        exports.openFunctionChooser = openFunctionChooser;
-
+        
+        /////
+        //
+        // openPropertyChooser
+        //
+        /////
         function openPropertyChooser(context) {
 
-            var workflow = context.workflow;
-            var activity = context.activity || context.entity;
+            //var workflow = context.workflow;
+            //var activity = context.activity || context.entity;
             var resourceType = context.resourceType;
+
+            var chooserType = context.chooserType || 'propertyChooser';
 
             var defer = $q.defer();
 
-            var view = {
-                templateUrl: 'workflow/workflowParameterView/chooserView.tpl.html',
-                viewName: 'propertyChooser',
-                workflow: workflow,
-                activity: activity,
-                resourceType: resourceType,
-                currentSelections: [],
-                apply: function () {
-                    var selected = _.first(this.candidateSelections);
-                    if (selected) {
-                        defer.resolve(selected.name);
-                    }
-                },
-                cancel: function () {
-                    defer.resolve(null);
-                },
-                onPopped: function () {
-                }
+            var fn = getProperties;
+            var columns = [
+                { field: 'name', displayName: 'Name' },
+                { field: 'description', displayName: 'Description' }
+            ];
+
+            if (chooserType === 'relChooser') {
+                columns.push({ field: 'direction', displayName: 'Direction' });
+                fn = getRelationships;
+            }
+
+            if (chooserType === 'fieldChooser') {
+                fn = getFields;
+            }
+
+            var onLoad = function () {
+                return $q.when().then(function () { return fn(resourceType); });
             };
+
+            var onApply = function (selected) {
+                if (selected && context.apply) {
+                    context.apply(selected);
+                }
+                defer.resolve(_.get(selected, 'name'));
+            };
+
+            var view = getChooserView(chooserType, resourceType, columns, [], onLoad, onApply);
 
             spViewRegionService.pushView('workflow-properties-sidepanel', view);
 
             return defer.promise;
         }
-
-        exports.openPropertyChooser = openPropertyChooser;
-
+        
+        /////
+        //
+        // openExprPropertyChooser
+        //
+        /////
         function openExprPropertyChooser(context, resourceTypeId) {
-
             return openPropertyChooser({
                 workflow: context.workflow,
                 activity: context.activity,
@@ -309,23 +623,12 @@
             });
         }
 
-        function openExprResourceChooser(context) {
-
-            return openEntityChooser(_.extend({}, context, {
-                chooserType: 'resourceChooser',
-                apply: function (selected) {
-                    var parameterName = selected.name;
-                    //todo - we need to deal with duplicates in name, whether same entity or different, and taking into account workflow params
-                    this.parentView.knownEntitiesParameters = this.parentView.knownEntitiesParameters.concat({name: selected.name, entity: selected.entity});
-                    this.parentView.params = this.parentView.params.concat({
-                        name: parameterName, description: selected.entity.description,
-                        typeName: 'Entity', entityTypeId: _.first(selected.entity.isOfType).id() || 'core:resource' });
-                }
-            }));
-        }
-
+        /////
+        //
+        // openExprEditor
+        //
+        /////
         function openExprEditor(context) {
-
             var workflow = context.workflow;
             var activity = context.activity || context.entity;
             var parameter = context.parameter;
@@ -341,7 +644,7 @@
                 functionChooser: {
                     label: 'fx',
                     iconUrl: null,
-                    chooserFn: _.partial(openFunctionChooser, chooserContext)
+                    chooserFn: openFunctionChooser
                 },
                 propertyChooser: {
                     label: 'property',
@@ -401,43 +704,7 @@
 
             return defer.promise;
         }
-
-        exports.openExprEditor = openExprEditor;
-
-        // special case. see alex.
-        function chooseReport(resourceType, currentSelections) {
-            var defer = $q.defer();
-            var view = {
-                templateUrl: 'workflow/workflowParameterView/chooserView.tpl.html',
-                viewName: 'reportChooser',
-                resourceType: resourceType,
-                currentSelections: currentSelections,
-                apply: function () {
-                    var selected = _.first(this.candidateSelections);
-                    if (selected) {
-                        spWorkflowService.getCacheableEntity('entity:' + selected.id, selected.id, 'name,description,isOfType.name')
-                            .then(function (e) {
-                                selected = _.extend({ name: e.name, entity: e }, selected);
-                            })
-                            .catch(function () {
-                                console.error('error requesting entity for ', selected);
-                            })
-                            .finally(function () {
-                                defer.resolve(selected);
-                            });
-                    } else {
-                        defer.resolve(null);
-                    }
-                },
-                cancel: function () { this.currentSelections = currentSelections; },
-                onPopped: function () { }
-            };
-            spViewRegionService.pushView('workflow-properties-sidepanel', view);
-            return defer.promise;
-        }
-
-        exports.chooseReport = chooseReport;
-
+        
         return exports;
     }
 })();

@@ -1,0 +1,33 @@
+<div ng-controller="sp.workflow.activityController">
+    <div ng-controller="launchPersonCampaignActivityController">
+        <form class="form-horizontal">
+            <div class="form-group">
+                <sp-workflow-expression-control parameter="activityParameters['core:inLaunchPersonSurvey']" show-label="true"
+                                                actions="parameterChooser,resourceChooser,exprEditor"></sp-workflow-expression-control>
+            </div>
+            <div class="form-group">
+                <sp-workflow-expression-control parameter="activityParameters['core:inLaunchPersonRecipients']" show-label="true"
+                                                actions="parameterChooser,resourceChooser,exprEditor"></sp-workflow-expression-control>
+            </div>
+            <div class="form-group">
+                <sp-workflow-expression-control parameter="activityParameters['core:inLaunchPersonTarget']" show-label="true"
+                                                actions="parameterChooser,resourceChooser,exprEditor"></sp-workflow-expression-control>
+            </div>
+            <div class="form-group">
+                <sp-workflow-expression-control parameter="activityParameters['core:inLaunchPersonTaskName']" show-label="true"
+                                                actions="exprEditor"></sp-workflow-expression-control>
+            </div>
+            <div class="form-group">
+                <div class="workflow-form-control">
+                    <label class="control-label" title="{{activityParameters['core:inLaunchPersonDueDays'].argument.description}}">
+                        {{activityParameters['core:inLaunchPersonDueDays'].argument.name}}
+                    </label>
+                    <sp-workflow-timespan-input class="sp-workflow-timespan-input" model="formTimeoutValue"></sp-workflow-timespan-input>
+                </div>
+            </div>
+            <div class="form-group">
+                <sp-workflow-parameter-bool-input parameter="'core:inLaunchPersonPause'"></sp-workflow-parameter-bool-input>
+            </div>
+        </form>
+    </div>
+</div>

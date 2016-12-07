@@ -1,4 +1,5 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -23,7 +24,7 @@ namespace ApplicationManager.Support
 		/// <summary>
 		///     Tenant collection.
 		/// </summary>
-		private ObservableCollection< Tenant > _tenantCollection;
+		private ObservableCollection<Tenant> _tenantCollection;
 
 		/// <summary>
 		///     Tenants
@@ -106,8 +107,7 @@ namespace ApplicationManager.Support
 			{
 				if ( _selectedTenant != value )
 				{
-					_selectedTenant = value;
-					RaisePropertyChanged( "SelectedTenant" );
+					SetProperty( ref _selectedTenant, value );
 				}
 			}
 		}
@@ -118,13 +118,13 @@ namespace ApplicationManager.Support
 		/// <value>
 		///     The tenant collection.
 		/// </value>
-		public ObservableCollection< Tenant > TenantCollection
+		public ObservableCollection<Tenant> TenantCollection
 		{
 			get
 			{
 				if ( _tenantCollection == null )
 				{
-					_tenantCollection = new ObservableCollection< Tenant >( );
+					_tenantCollection = new ObservableCollection<Tenant>( );
 
 					LoadTenants( );
 				}
@@ -139,21 +139,10 @@ namespace ApplicationManager.Support
 		/// <value>
 		///     The tenants.
 		/// </value>
-		public CollectionViewSource Tenants
-		{
-			get
-			{
-				if ( _tenants == null )
-				{
-					_tenants = new CollectionViewSource
-						{
-							Source = TenantCollection
-						};
-				}
-
-				return _tenants;
-			}
-		}
+		public CollectionViewSource Tenants => _tenants ?? ( _tenants = new CollectionViewSource
+		                                       {
+			                                       Source = TenantCollection
+		                                       } );
 
 		/// <summary>
 		///     Gets or sets the version.
@@ -250,17 +239,17 @@ WHERE
 
 					using ( IDataReader reader = command.ExecuteReader( ) )
 					{
-						if ( reader != null && reader.Read( ) )
+						if ( reader.Read( ) )
 						{
 							return new Package
-								{
-									Id = reader.GetInt64( 0 ),
-									Name = reader.GetString( 1 ),
-									Description = reader.GetString( 2, null ),
-									Version = reader.GetString( 3, null ),
-									AppVerId = reader.GetGuid( 4 ),
-									ReleaseDate = reader.GetDateTime( 5, DateTime.MinValue )
-								};
+							{
+								Id = reader.GetInt64( 0 ),
+								Name = reader.GetString( 1 ),
+								Description = reader.GetString( 2, null ),
+								Version = reader.GetString( 3, null ),
+								AppVerId = reader.GetGuid( 4 ),
+								ReleaseDate = reader.GetDateTime( 5, DateTime.MinValue )
+							};
 						}
 					}
 				}
@@ -273,9 +262,9 @@ WHERE
 		///     Gets the applications.
 		/// </summary>
 		/// <returns></returns>
-		public static IEnumerable< Package > GetPackages( Guid appId )
+		public static IEnumerable<Package> GetPackages( Guid appId )
 		{
-			var packages = new List< Package >( );
+			var packages = new List<Package>( );
 
 			var databaseInfo = new SqlDatabaseInfo( Config.ServerName, Config.DatabaseName, DatabaseAuthentication.Integrated, null, 60, 30, 300 );
 
@@ -409,22 +398,19 @@ ORDER BY
 
 					using ( IDataReader reader = command.ExecuteReader( ) )
 					{
-						if ( reader != null )
+						while ( reader.Read( ) )
 						{
-							while ( reader.Read( ) )
+							var package = new Package
 							{
-								var package = new Package
-									{
-										Id = reader.GetInt64( 0 ),
-										Name = reader.GetString( 1 ),
-										Description = reader.GetString( 2, null ),
-										Version = reader.GetString( 3, null ),
-										AppVerId = reader.GetGuid( 4 ),
-										ReleaseDate = reader.GetDateTime( 5, DateTime.MinValue )
-									};
+								Id = reader.GetInt64( 0 ),
+								Name = reader.GetString( 1 ),
+								Description = reader.GetString( 2, null ),
+								Version = reader.GetString( 3, null ),
+								AppVerId = reader.GetGuid( 4 ),
+								ReleaseDate = reader.GetDateTime( 5, DateTime.MinValue )
+							};
 
-								packages.Add( package );
-							}
+							packages.Add( package );
 						}
 					}
 				}
@@ -438,7 +424,7 @@ ORDER BY
 		/// </summary>
 		private void LoadTenants( )
 		{
-			IEnumerable< Tenant > tenants = Tenant.GetTenants( );
+			IEnumerable<Tenant> tenants = Tenant.GetTenants( );
 
 			foreach ( Tenant tenant in tenants )
 			{

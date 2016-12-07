@@ -94,7 +94,53 @@ namespace EDC.ReadiNow.Test.Model
 		}
 
 
-		[Test]
+
+        [Test]
+        [RunAsDefaultTenant]
+        [RunWithTransaction]
+        [ExpectedException(typeof(ValidationException))]
+        public void StringFieldMaxLengthNotOver10k()
+        {
+            var tooLargeStringLength = ReadiNow.Model.FieldTypes.StringFieldHelper.RealMaximumStringFieldLength + 1;
+
+            StringField field = new StringField();
+            field.Name = "f1";
+            field.IsRequired = true;
+            field.Pattern = Entity.Get<StringPattern>("emailPattern");
+            field.IsRequired = false;
+            field.MaxLength = tooLargeStringLength;
+
+            field.Save();
+        }
+
+        [Test]
+        [RunAsDefaultTenant]
+        [RunWithTransaction]
+        [ExpectedException(typeof(ValidationException))]
+        public void StringFieldNotOver10k()
+        {
+            var tooLargeStringLength = ReadiNow.Model.FieldTypes.StringFieldHelper.RealMaximumStringFieldLength + 1;
+
+            // Ensure that regex is not applied for empty string, if IsRequired is not set.
+
+            StringField field = new StringField();
+            field.Name = "f1";
+            field.IsRequired = true;
+            field.Pattern = Entity.Get<StringPattern>("emailPattern");
+            field.IsRequired = false;
+
+            EntityType type = new EntityType();
+            type.Name = "t1";
+            type.Fields.Add(field.As<Field>());
+            type.Save();
+
+            var e = new Entity(type.Id);
+            e.SetField(field, new string('#', tooLargeStringLength));
+            e.Save();
+
+        }
+
+        [Test]
 		[RunAsDefaultTenant]
 		public void EnsureTypeHasFields( )
 		{

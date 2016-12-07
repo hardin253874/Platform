@@ -23,7 +23,7 @@ namespace EDC.SoftwarePlatform.Activities.Test.Engine
     public class SchedulesRunTest : TestBase
     {
         private const int secondsBetweenChecks = 1;
-        private const int maximumChecks = 30;
+        private const int maximumChecks = 60;
 
         [TestFixtureSetUp]
         public void SetUp()

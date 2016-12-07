@@ -1,0 +1,72 @@
+[{:tags
+  [:user/kun
+   :nomodify
+   :prod
+   :regression
+   :desktop
+   :area/report],
+  :tests [],
+  :name "Inline-Editing Tests",
+  :steps
+  [{:script "(rt.po.app/navigate-via-tiles \"Foster University\")"}
+    {:script
+    "(rn.app/open-report \"Student report\" {:app-name \"Foster University\", :folder-name \"Reports\"})"}
+{:script
+    "(expect (not (rt.po.report-inline-edit/is-selected-row-in-inline-edit-mode)))"}
+   {:script
+    "(expect (not (rt.po.report-inline-edit/is-report-in-inline-edit-mode)))"}
+   {:script "(rt.po.report-inline-edit/enter-inline-edit-mode)"}
+   {:script
+    "(expect (rt.po.report-inline-edit/is-selected-row-in-inline-edit-mode))"}
+   {:script
+    "(expect (rt.po.report-inline-edit/is-report-in-inline-edit-mode))"}
+	 {:script
+    "(rt.po.report-inline-edit/select-report-row-by-row-column 0 1)"}
+   {:script
+    "(expect-equals \"edit\" (rt.po.report-inline-edit/get-inline-edit-row-state 0))"}
+   {:script
+    "(expect-equals \"view\" (rt.po.report-inline-edit/get-inline-edit-row-state 1))"}
+   {:script
+    "(expect-equals {:rowIndex 0, :columnIndex 1} (rt.po.report-inline-edit/get-row-column-with-focus))"}
+   {:script
+    "(expect-equals 1 (rt.po.report-inline-edit/count-inline-rows-with-state \"edit\"))"}
+   {:script
+    "(expect-equals 0 (rt.po.report-inline-edit/count-inline-rows-with-state \"changed\"))"}
+   {:script
+    "(expect-equals 0 (rt.po.report-inline-edit/count-inline-rows-with-state \"saved\"))"}
+   {:script
+    "(expect-equals [0] (rt.po.report-inline-edit/get-inline-row-indexes-with-state \"edit\"))"}
+   {:script
+    "(expect-equals [] (rt.po.report-inline-edit/get-inline-row-indexes-with-state \"changed\"))"}
+   {:script
+    "(expect-equals [] (rt.po.report-inline-edit/get-inline-row-indexes-with-state \"saved\"))"}
+	 {:script "(rt.po.report-inline-edit/select-next-row-by-down-key)"}
+   {:script
+    "(expect-equals {:rowIndex 1, :columnIndex 1} (rt.po.report-inline-edit/get-row-column-with-focus))"}
+   {:script
+    "(expect-equals \"view\" (rt.po.report-inline-edit/get-inline-edit-row-state 0))"}
+   {:script
+    "(expect-equals \"edit\" (rt.po.report-inline-edit/get-inline-edit-row-state 1))"}
+   {:script
+    "(expect-equals 1 (rt.po.report-inline-edit/count-inline-rows-with-state \"edit\"))"}
+   {:script
+    "(expect-equals [1] (rt.po.report-inline-edit/get-inline-row-indexes-with-state \"edit\"))"}	
+	{:script
+    "(rt.po.report-inline-edit/select-report-row-by-row-column 1 2)"}   
+   {:script
+    "(rt.po.report-inline-edit/set-inline-string 1 2 \"test address 1\")"}
+  {:script "(rt.po.report-inline-edit/set-inline-combo 1 3 \"NSW\")"}
+   {:script
+    "(expect-equals \"NSW\" (rt.po.report-inline-edit/get-inline-combo 1 3))"}
+	],
+  :type :test,
+  :source "./test-db",
+  :modified "20161125-111343",
+  :setup
+  [{:script
+    "(identity {:screen-name (rt.lib.util/make-test-name \"New Screen\")})"}],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/inline/editing/tests,
+  :teardown
+  [],
+  :modified-by "not-implemented"}]

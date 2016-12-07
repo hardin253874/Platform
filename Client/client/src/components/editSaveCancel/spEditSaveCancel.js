@@ -5,7 +5,7 @@
     angular.module('mod.common.ui.spEditSaveCancel', ['mod.common.spUserTask', 'mod.common.spMobile'])
     
   
-    .directive('spEditSaveCancel', function ($rootScope, spUserTask, spMobileContext) {
+    .directive('spEditSaveCancel', function ($rootScope, spUserTask, spMobileContext, spNavService) {
 
         var isMobile = spMobileContext.isMobile;
         var isTablet = spMobileContext.isTablet;
@@ -35,7 +35,7 @@
                 savePlusClick: '&',
                 backClick: '&',
                 actionsClick: '&',
-                title: '=?',
+                formTitle: '=?',
                 hasModifyAccess: '=?',
                 hasDeleteAccess: '=?',
                 hasCreateAccess: '=?',
@@ -43,6 +43,13 @@
 
             },
             link: function (scope) {
+                // we need to use a watch function to access the spNavService via a closure.
+                scope.watchFunction = function () {
+                    return sp.result(spNavService.getCurrentItem(), 'actionPanelOptions.formTitle');
+                };
+                scope.$watch('watchFunction()', function (value) {
+                    scope.formTitle = value;
+                });
             }
         };
     });

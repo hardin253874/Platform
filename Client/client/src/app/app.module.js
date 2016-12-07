@@ -17,7 +17,7 @@
         'http-auth-interceptor',
 
         // Correctly named
-        'mod.app.pages',
+        'mod.app.page',
         'mod.app.administration',
         'mod.app.adminToolbox',
         'mod.app.applicationConfiguration',
@@ -54,7 +54,12 @@
         'mod.diagnostics',
         'mod.feedback',
         'mod.common.spInclude',
+        'mod.common.spFormSubmitService',
+        'mod.app.spDocumentationService',
+        'mod.app.editForm.spDblclickToEdit',
 
+        'mod.app.controls',
+        // vvv yes? ^^^
         // can we pull these via a "common.ui" module? similar for places where you'd always want all of a group
         'mod.common.ui.spEntityRadioPicker',
         'mod.common.ui.spEntityReportPicker',
@@ -136,7 +141,7 @@
         'mod.common.misc.spWatch',
         'mod.common.ui.spResizableDialog',
         'mod.common.spEventRelay',
-        'mod.common.spConsoleService',
+        'mod.common.spConsoleService'
     ]);
 
     //
@@ -147,7 +152,7 @@
     /// Builders
     //
     'builders-templates',
-    'sp.workflow.builder',
+    'sp.workflow.builder'
 
     ]);
 

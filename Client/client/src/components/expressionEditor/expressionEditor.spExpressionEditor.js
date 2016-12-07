@@ -17,10 +17,10 @@
             replace: true,
             scope: {
                 host: '=',
-                context: '=',
+                context: '=',   // type ID or null
                 params: '=',
                 mode: '=', // 'full' or 'inline' with the latter the default
-                options: '=',   // {expectedResultType, disabled, choosers.{etc..} }
+                options: '=',   // {expectedResultType: {dataType: e.g. spEntity.DataType.Bool},  disabled, choosers.{etc..} }
                 onCompile: '&',
                 onScriptChanged: '&'
             },
@@ -241,7 +241,7 @@
                     var exp = { text: newValue };
 
 
-                    if (isInExpression(cm)) {
+                    if (isInExpression(cm) || isTestMode) {
                         if (_.last(exp.text) === '.') {
                             if (exp.text.length > 1) {
                                 showPropHint(exp.text.substring(0, exp.text.length - 1));
@@ -328,6 +328,10 @@
                 }
             };
 
+            scope.canShowResources = function () {
+                return !!sp.result(scope.options, 'choosers.resourceChooser');
+            };
+
             scope.showResources = function () {
                 var chooser = sp.result(scope.options, 'choosers.resourceChooser');
                 if (chooser && chooser.chooserFn) {
@@ -335,6 +339,11 @@
                         if (name) scope.parameterClicked({ name: name });
                     });
                 }
+            };
+
+            scope.canShowProperties = function() {
+                return !!(sp.result(scope.options, 'choosers.propertyChooser') &&
+                (codeMirror.getValue() || scope.context));
             };
 
             scope.showProperties = function () {

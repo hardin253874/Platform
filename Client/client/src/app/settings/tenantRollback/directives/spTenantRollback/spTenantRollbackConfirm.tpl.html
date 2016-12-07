@@ -7,16 +7,18 @@
         <b>NOTE:</b> all data and metadata additions, deletions and changes that occurred between now and the selected restore point will be reverted. This includes records, audit log entries, user password resets and schema changes.
     </div>
     <div>
-        <label style="margin-top: 10px"><input type="checkbox" ng-model="model.proceed" style="margin-right: 6px; vertical-align: text-bottom" />Proceed with rollback</label>
+        <label style="margin-top: 10px" ng-disabled="model.running"><input type="checkbox" ng-model="model.proceed" style="margin-right: 6px; vertical-align: text-bottom" ng-disabled="model.running" />Proceed with rollback</label>
     </div>
     
 </div>
 <div class="modal-footer">
-    <button class="btn btn-primary" ng-hide="model.okDisabled" ng-disabled="!model.proceed"
+    <span style="float:left; color: #555; font-weight: bold; margin-top: 4px" ng-show="model.running">Rolling back changes...</span>
+    <span class="spinner" ng-show="model.running"></span>
+    <button style="clear: both" class="btn btn-primary" ng-hide="model.okDisabled" ng-disabled="!model.proceed || model.running"
             data-ng-click="model.close(true);">
         {{model.okText}}
     </button>
-    <button type="button" class="btn"
+    <button type="button" class="btn" ng-disabled="model.running"
             data-ng-click="model.close(false)">
         {{model.cancelText}}
     </button>

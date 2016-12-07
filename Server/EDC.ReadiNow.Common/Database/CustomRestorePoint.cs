@@ -32,8 +32,7 @@ namespace EDC.ReadiNow.Database
 			}
 
 			Date = reader.GetDateTime( 0, DateTimeKind.Utc );
-			UserName = reader.GetString( 1, "Unknown" );
-			Name = reader.GetString( 2, null );
+			Name = reader.GetString( 1, null );
 		}
 
 		/// <summary>
@@ -57,19 +56,6 @@ namespace EDC.ReadiNow.Database
 		/// </value>
 		[DataMember( Name = "name" )]
 		public string Name
-		{
-			get;
-			set;
-		}
-
-		/// <summary>
-		///     Gets or sets the name of the user.
-		/// </summary>
-		/// <value>
-		///     The name of the user.
-		/// </value>
-		[DataMember( Name = "userName" )]
-		public string UserName
 		{
 			get;
 			set;

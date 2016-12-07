@@ -98,7 +98,7 @@
             /////
             function applyFilters(items, filter) {
 
-                if (!!(!$scope.model.showDiffOnly && !filter)) {
+                if (!$scope.model.showDiffOnly && !filter) {
                     $scope.ordered = $scope.results;
                     return;
                 }

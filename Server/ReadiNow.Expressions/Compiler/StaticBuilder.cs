@@ -784,9 +784,6 @@ namespace ReadiNow.Expressions.Compiler
         /// <param name="functionNode"></param>
         private ExpressionNode Compile_AllFunctionCall(ParseTreeNode argumentList, ParseTreeNode functionNode)
         {
-            if (Settings.ScriptHost == ScriptHostType.Report)
-                throw ParseExceptionHelper.New("The 'all' function is not available in reports.", functionNode);
-
             if (argumentList.ChildNodes.Count != 1)
                 throw ParseExceptionHelper.New("Wrong number of values passed to 'all' function.", functionNode);
 
@@ -801,6 +798,7 @@ namespace ReadiNow.Expressions.Compiler
 
             var result = new AllInstancesNode
             {
+                EntityTypeId = typeId,
                 Argument = CreateIdentifierLiteral(typeId),
                 ResultType = ExprTypeHelper.EntityOfType(ToEntityRef(typeId))
             };
@@ -817,9 +815,6 @@ namespace ReadiNow.Expressions.Compiler
         /// <param name="functionNode"></param>
         private ExpressionNode Compile_ResourceFunctionCall(ParseTreeNode argumentList, ParseTreeNode functionNode)
         {
-            if (Settings.ScriptHost == ScriptHostType.Report)
-                throw ParseExceptionHelper.New("The 'resource' function is not available in reports.", functionNode); // TODO: we should support this
-
             if (argumentList.ChildNodes.Count != 2)
                 throw ParseExceptionHelper.New("Wrong number of values passed to 'resource' function.", functionNode);
 
@@ -856,6 +851,9 @@ namespace ReadiNow.Expressions.Compiler
             }
             else // we have a dynamic argument
             {
+                if ( Settings.ScriptHost == ScriptHostType.Report )
+                    throw ParseExceptionHelper.New( "The 'resource' function cannot have dynamic parameters in reports.", functionNode ); // TODO: we should support this
+
                 ExpressionNode nameExpr = Compile_Expression(nameArg);
                 
                 var result = new ResourceInstanceDynamicNode

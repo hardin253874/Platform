@@ -51,7 +51,7 @@ Try
 	
 	Register-PerformanceCounters $deploymentSettings
 	
-	Install-Scheduler $deploymentSettings
+	$schedulerName = Install-Scheduler $deploymentSettings
 		
 	$platformConfigureProcess = Start-PlatformConfigure $deploymentSettings
 	
@@ -61,6 +61,9 @@ Try
 		Install-Bootstrap $platformConfigureProcess $deploymentSettings
 		
 		Upgrade-Bootstrap $platformConfigureProcess $deploymentSettings
+		
+		# Import Core, Console and CoreData into the application library
+		Install-CoreApplications $platformConfigureProcess $deploymentSettings
 		
 		# Import Shared, Power Tools, Test Solution, Foster University and Foster University Data into the application library
 		Install-BuiltInReadiNowApplications $platformConfigureProcess $deploymentSettings
@@ -81,6 +84,8 @@ Try
 	
    	
 	Configure-WebServer $deploymentSettings
+	
+	Start-Scheduler $schedulerName
 	
     Log-Message 'SoftwarePlatform successfully upgraded.'
 }

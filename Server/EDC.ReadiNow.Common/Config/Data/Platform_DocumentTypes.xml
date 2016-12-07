@@ -162,4 +162,22 @@
     <mimeType>text/plain</mimeType>
     <documentTypeImage>textDocumentImage</documentTypeImage>
   </documentType>
+  <!-- Image Document Document Type -->
+  <imageFileType source="../Binaries/ImageDocumentImage.jpg">
+    <alias>imageDocumentImage</alias>
+    <name>Image Document</name>
+    <description>Image document type.</description>
+    <imageHeight>160</imageHeight>
+    <imageWidth>160</imageWidth>
+    <fileExtension>.jpg</fileExtension>
+  </imageFileType>
+  <documentType>
+    <alias>imageDocumentDocumentType</alias>
+    <name>Photo or Image</name>
+    <shortFileTypeName>Image</shortFileTypeName>
+    <fileTypeDescription>Image Files (*.png;*.jpg;*.jpeg;*.svg)</fileTypeDescription>
+    <extension>*.png;*.jpg;*.jpeg;*.svg</extension>
+    <mimeType></mimeType>
+    <documentTypeImage>imageDocumentImage</documentTypeImage>
+  </documentType>
 </resources>
