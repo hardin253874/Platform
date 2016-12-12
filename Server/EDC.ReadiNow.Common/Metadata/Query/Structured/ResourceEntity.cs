@@ -51,6 +51,25 @@ namespace EDC.ReadiNow.Metadata.Query.Structured
         public bool ExactType { get; set; }
 
         /// <summary>
+        /// If true then a row will only be shown if the target exists (inner join).
+        /// If false, then the row will be shown regardless (left join).
+        /// </summary>
+        // field: targetMustExist
+        [DataMember( Order = 3 )]
+        [DefaultValue( false )]
+        public bool ResourceMustExist { get; set; }
+
+        /// <summary>
+        /// If true then this relationship will never constrain the parent node (forced left join),
+        /// even if a child node or expression has requires.
+        /// </summary>
+        // field: targetMustExist
+        [DataMember( Order = 4 )]
+        [DefaultValue( false )]
+        // field: resourceNeedNotExist
+        public bool ResourceNeedNotExist { get; set; }
+
+        /// <summary>
         /// Human readable representation.
         /// </summary>
         /// <returns></returns>

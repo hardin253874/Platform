@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using EDC.Cache;
 using EDC.Cache.Providers;
+using EDC.ReadiNow.Core;
 using EDC.ReadiNow.Core.Cache.Providers;
 using EDC.ReadiNow.Messaging;
 using EDC.ReadiNow.Messaging.Redis;
@@ -18,7 +19,7 @@ namespace EDC.ReadiNow.Test.Core.Cache.Providers
     [TestFixture]
     public class RedisPubSubCacheTests
     {
-        public readonly TimeSpan DefaultRedisWaitTime = TimeSpan.FromSeconds(2.5);
+        public readonly TimeSpan DefaultRedisWaitTime = TimeSpan.FromSeconds(5);
 
         [Test]
         public void Ctor_NotConnected()
@@ -119,44 +120,55 @@ namespace EDC.ReadiNow.Test.Core.Cache.Providers
                 Throws.TypeOf<ArgumentNullException>().And.Property("ParamName").EqualTo("memoryManager"));
         }
 
-        [Test]
-        public void Remove_NoSuppression()
-        {
-            const string cacheName = "My Precious";
-            Tuple<long, string>[] testData =
-            {
-                new Tuple<long, string>(144, "foo"), 
-                new Tuple<long, string>(96, "bar")
-            };
-            string value;
+		[Test]
+		public void Remove_NoSuppression( )
+		{
+			for ( int i = 0; i < 1000; i++ )
+			{
+				const string cacheName = "My Precious";
 
-            using (IDistributedMemoryManager memoryManager = new RedisManager())
-			using ( RedisPubSubCache<long, string> redisPubSubCache1 = new RedisPubSubCache<long, string>(
-				new DictionaryCache<long, string>( ), cacheName, memoryManager ) )
-			using ( RedisPubSubCache<long, string> redisPubSubCache2 = new RedisPubSubCache<long, string>(
-				new DictionaryCache<long, string>( ), cacheName, memoryManager ) )
-            {
-                foreach (Tuple<long, string> testDatum in testData)
-                {
-                    redisPubSubCache1.Add(testDatum.Item1, testDatum.Item2);
-                    redisPubSubCache2.Add(testDatum.Item1, testDatum.Item2);
-                }
+				Tuple<long, string> [ ] testData =
+				{
+				new Tuple<long, string>(144, "foo"),
+				new Tuple<long, string>(96, "bar")
+			};
 
-                redisPubSubCache1.Remove(testData[0].Item1);
+				string value;
 
-                // Wait for message
-                Thread.Sleep(DefaultRedisWaitTime);
+				IDistributedMemoryManager memoryManager = Factory.DistributedMemoryManager;
 
-                Assert.That(redisPubSubCache1.TryGetValue(testData[0].Item1, out value), Is.False, "Item not removed from cache 1");
-                Assert.That(redisPubSubCache2.TryGetValue(testData[0].Item1, out value), Is.False, "Item not removed from cache 2");
-                Assert.That(redisPubSubCache1.TryGetValue(testData[1].Item1, out value), Is.True, "Item 2 removed from cache 1");
-                Assert.That(value, Is.EqualTo(testData[1].Item2), "Item 2 incorrect value in cache 1");
-                Assert.That(redisPubSubCache2.TryGetValue(testData[1].Item1, out value), Is.True, "Item 2 removed from cache 2");
-                Assert.That(value, Is.EqualTo(testData[1].Item2), "Item 2 incorrect value in cache 2");
-            }
-        }
+				using ( RedisPubSubCache<long, string> redisPubSubCache1 = new RedisPubSubCache<long, string>( new DictionaryCache<long, string>( ), cacheName, memoryManager ) )
+				using ( RedisPubSubCache<long, string> redisPubSubCache2 = new RedisPubSubCache<long, string>( new DictionaryCache<long, string>( ), cacheName, memoryManager ) )
+				{
+					foreach ( Tuple<long, string> testDatum in testData )
+					{
+						redisPubSubCache1.Add( testDatum.Item1, testDatum.Item2 );
+						redisPubSubCache2.Add( testDatum.Item1, testDatum.Item2 );
+					}
 
-        [Test]
+					CountdownEvent evt = new CountdownEvent( 1 );
+
+					redisPubSubCache2.Channel.MessageReceived += ( sender, message ) =>
+					{
+						evt.Signal( );
+					};
+
+					redisPubSubCache1.Remove( testData [ 0 ].Item1 );
+
+					// Wait for message
+					evt.Wait( DefaultRedisWaitTime );
+
+					Assert.That( redisPubSubCache1.TryGetValue( testData [ 0 ].Item1, out value ), Is.False, "Item not removed from cache 1" );
+					Assert.That( redisPubSubCache2.TryGetValue( testData [ 0 ].Item1, out value ), Is.False, "Item not removed from cache 2" );
+					Assert.That( redisPubSubCache1.TryGetValue( testData [ 1 ].Item1, out value ), Is.True, "Item 2 removed from cache 1" );
+					Assert.That( value, Is.EqualTo( testData [ 1 ].Item2 ), "Item 2 incorrect value in cache 1" );
+					Assert.That( redisPubSubCache2.TryGetValue( testData [ 1 ].Item1, out value ), Is.True, "Item 2 removed from cache 2" );
+					Assert.That( value, Is.EqualTo( testData [ 1 ].Item2 ), "Item 2 incorrect value in cache 2" );
+				}
+			}
+		}
+
+		[Test]
         public void Remove_Suppression()
         {
             const string cacheName = "My Precious";
@@ -167,7 +179,8 @@ namespace EDC.ReadiNow.Test.Core.Cache.Providers
             };
             string value;
 
-            using (IDistributedMemoryManager memoryManager = new RedisManager())
+	        IDistributedMemoryManager memoryManager = Factory.DistributedMemoryManager;
+
 			using ( RedisPubSubCache<long, string> redisPubSubCache1 = new RedisPubSubCache<long, string>(
 				new DictionaryCache<long, string>( ), cacheName, memoryManager ) )
 			using ( RedisPubSubCache<long, string> redisPubSubCache2 = new RedisPubSubCache<long, string>(
@@ -183,9 +196,6 @@ namespace EDC.ReadiNow.Test.Core.Cache.Providers
                 {
                     redisPubSubCache1.Remove(testData[0].Item1);
                 }
-
-                // Wait for message, just in case
-                Thread.Sleep(DefaultRedisWaitTime);
 
                 Assert.That(redisPubSubCache1.TryGetValue(testData[0].Item1, out value), Is.False, "Item not removed from cache 1");
                 Assert.That(redisPubSubCache2.TryGetValue(testData[0].Item1, out value), Is.True, "Item removed from cache 2");
@@ -207,7 +217,8 @@ namespace EDC.ReadiNow.Test.Core.Cache.Providers
             };
             string value;
 
-            using (IDistributedMemoryManager memoryManager = new RedisManager())
+	        IDistributedMemoryManager memoryManager = Factory.DistributedMemoryManager;
+
 			using ( RedisPubSubCache<long, string> redisPubSubCache1 = new RedisPubSubCache<long, string>(
 				new DictionaryCache<long, string>( ), cacheName, memoryManager ) )
 			using ( RedisPubSubCache<long, string> redisPubSubCache2 = new RedisPubSubCache<long, string>(
@@ -219,10 +230,17 @@ namespace EDC.ReadiNow.Test.Core.Cache.Providers
                     redisPubSubCache2.Add(testDatum.Item1, testDatum.Item2);
                 }
 
-                redisPubSubCache1.Clear();
+				CountdownEvent evt = new CountdownEvent( 1 );
+
+				redisPubSubCache2.Channel.MessageReceived += ( sender, message ) =>
+				{
+					evt.Signal( );
+				};
+
+				redisPubSubCache1.Clear();
 
                 // Wait for message
-                Thread.Sleep(DefaultRedisWaitTime);
+                evt.Wait(DefaultRedisWaitTime);
 
                 Assert.That(redisPubSubCache1.TryGetValue(testData[0].Item1, out value), Is.False, "Item 1 not removed from cache 1");
                 Assert.That(redisPubSubCache2.TryGetValue(testData[0].Item1, out value), Is.False, "Item 1 not removed from cache 2");
@@ -244,7 +262,8 @@ namespace EDC.ReadiNow.Test.Core.Cache.Providers
             };
             string value;
 
-            using (IDistributedMemoryManager memoryManager = new RedisManager())
+	        IDistributedMemoryManager memoryManager = Factory.DistributedMemoryManager;
+
 			using ( RedisPubSubCache<long, string> redisPubSubCache1 = new RedisPubSubCache<long, string>(
 				new DictionaryCache<long, string>( ), cacheName, memoryManager ) )
 			using ( RedisPubSubCache<long, string> redisPubSubCache2 = new RedisPubSubCache<long, string>(
@@ -260,9 +279,6 @@ namespace EDC.ReadiNow.Test.Core.Cache.Providers
                 {
                     redisPubSubCache1.Clear();
                 }
-
-                // Wait for message
-                Thread.Sleep(DefaultRedisWaitTime);
 
                 Assert.That(redisPubSubCache1.TryGetValue(testData[0].Item1, out value), Is.False, "Item 1 not removed from cache 1");
                 Assert.That(redisPubSubCache2.TryGetValue(testData[0].Item1, out value), Is.True, "Item 1 removed from cache 2");

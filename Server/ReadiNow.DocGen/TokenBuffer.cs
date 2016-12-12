@@ -23,7 +23,7 @@ namespace ReadiNow.DocGen
         /// <summary>
         /// The tokens.
         /// </summary>
-        public List<Token> Tokens { get; private set; }
+        public List<Token> Tokens { get; }
 
 
         /// <summary>

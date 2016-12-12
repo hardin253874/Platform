@@ -9,7 +9,8 @@
 describe('Console|Pickers|spEntityCheckBoxPicker|spec:|spEntityCheckBoxPicker directive', function () {
     'use strict';
 
-    // Load the modules
+    // Load the modules    
+    beforeEach(module('mod.common.ui.spEntityMultiComboPicker'));
     beforeEach(module('mod.common.ui.spEntityCheckBoxPicker'));
     beforeEach(module('entityPickers/entityCheckBoxPicker/spEntityCheckBoxPicker.tpl.html'));
     beforeEach(module('mockedEntityService'));

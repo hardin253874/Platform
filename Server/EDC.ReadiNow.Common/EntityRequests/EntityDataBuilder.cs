@@ -3,20 +3,15 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using EDC.Collections.Generic;
-using EDC.ReadiNow.IO;
 using EDC.ReadiNow.Model;
 using EDC.ReadiNow.Model.Client;
 using EDC.ReadiNow.Diagnostics;
-using EDC.ReadiNow.Security;
-using DatabaseType = EDC.Database.DatabaseType;
 using IEntityRef = EDC.ReadiNow.Model.IEntityRef;
 using Entity = EDC.ReadiNow.Model.Entity;        // only for Entity.Direction
 using EntityRef = EDC.ReadiNow.Model.EntityRef;
 using TypedValue = EDC.ReadiNow.Metadata.TypedValue;
 using Direction = EDC.ReadiNow.Model.Direction;
 using EDC.ReadiNow.Configuration;
-using EDC.ReadiNow.Model.PartialClasses;
 
 namespace EDC.ReadiNow.EntityRequests
 {
@@ -28,16 +23,6 @@ namespace EDC.ReadiNow.EntityRequests
 	/// <typeparam name="TEntity">Type of object that represents an entity handle, which gets passed to the callbacks.</typeparam>
 	public class EntityDataBuilder<TEntity>
 	{
-		/// <summary>
-		/// The maximum number of related entities that can be loaded before results start getting clipped.
-		/// </summary>
-		public static int MaxRelatedEntities = EntityWebApiSettings.Current.MaxRelatedLimit;
-
-		/// <summary>
-		/// The maximum number of related entities that can be loaded before a warning is generated.
-		/// </summary>
-		public static int MaxRelatedEntitiesWarning = EntityWebApiSettings.Current.MaxRelatedWarning;
-
 		/// <summary>
 		/// Callback - given an entity and a field reference, returns the typed-value container for that field.
 		/// </summary>
@@ -266,36 +251,14 @@ namespace EDC.ReadiNow.EntityRequests
 
                     var relationships = relationshipsRaw
                         .Where(p => !Equals(p, default(TEntity)))
-                        .Take(MaxRelatedEntities + 1)
+                        .Take( FanoutHelper.MaxRelatedEntities + 1)
                         .ToList();
 
                     // Throttle list size
                     if (!BulkPreloader.TenantWarmupRunning)
                     {
                         int relCount = relationships.Count;
-
-                        if (relCount > MaxRelatedEntities && !BypassMaxRelatedEntities(relReq, GetId(entity)))
-                        {
-                            EventLog.Application.WriteError(
-                                "Exceeded maximum number ({0} > {1}) of related entities for EntityInfoService. Relationship: {2}. {3} entity: {4}",
-                                relationships.Count,
-                                MaxRelatedEntities,
-                                relReq.RelationshipTypeId,
-                                relReq.IsReverse ? "To" : "From",
-                                GetId(entity));
-
-                            throw new Exception("Exceeded maximum number of related entities for EntityInfoService.");
-                        }
-                        if (relCount > MaxRelatedEntitiesWarning)
-                        {
-                            EventLog.Application.WriteWarning(
-                                "Large number ({0} > {1}) of related entities for EntityInfoService. Relationship: {2}. {3} entity: {4}",
-                                relationships.Count,
-                                MaxRelatedEntitiesWarning,
-                                relReq.RelationshipTypeId,
-                                relReq.IsReverse ? "To" : "From",
-                                GetId(entity));
-                        }
+                        FanoutHelper.CheckFanoutLimit( relReq, GetId( entity ), relCount );
                     }
                     
                     // Split lists

@@ -52,7 +52,7 @@ namespace ReadiNow.DocGen
         /// <param name="indent">The indent.</param>
         public override void OnDebug(TextWriter writer, int indent)
         {
-            writer.Write(" " + MetadataField.ToString());
+            writer.Write( " " + MetadataField );
         }
 
     }

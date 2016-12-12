@@ -1,7 +1,6 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using EDC.ReadiNow.Model;
 using ReadiNow.Annotations;
@@ -516,10 +515,7 @@ namespace ReadiNow.Connector.Payload
 
             // Create callback
             long typeId = type.Id;
-            return ( ) =>
-            {
-                return _entityRepository.Create( typeId );
-            };
+            return ( ) => _entityRepository.Create( typeId );
         }
 
         /// <summary>

@@ -4,7 +4,6 @@ using EDC.ReadiNow.Model;
 using EDC.ReadiNow.Scheduling;
 using EDC.ReadiNow.Diagnostics;
 using EDC.ReadiNow.Core;
-using ReadiNow.Connector.ImportSpreadsheet;
 using Autofac;
 using EDC.ReadiNow.IO.RemoteFileFetcher;
 using EDC.ReadiNow.Security;
@@ -27,7 +26,7 @@ namespace ReadiNow.Connector.Scheduled
 
             if (scheduledExportConfig == null)
             {
-                throw GenerateJobException($"Unexpected error, ScheduleItemRef is not a ScheduledExportConfig.", scheduledExportConfig);
+                throw GenerateJobException( "Unexpected error, ScheduleItemRef is not a ScheduledExportConfig.", null );
             }
 
             
@@ -141,32 +140,6 @@ namespace ReadiNow.Connector.Scheduled
                 default:
                     throw new ArgumentException(nameof(importFormat));
             }
-        }
-
-
-
-        /// <summary>
-        ///     Creates an importRun entity - does not save it.
-        /// </summary>
-        /// <param name="importConfig">The import configuration.</param>
-        /// <param name="importSettings">Settings passed in for the current run.</param>
-        /// <returns>Returns the ID of the import run.</returns>
-        private void CreateFailedImportRunEntity(ScheduledImportConfig config, string message)
-        {
-            // DO nothing for the moment
-
-            //var importConfig = config.SicImportConfig;
-
-            //// Create a new import run
-            //ImportRun importRun = Entity.Create<ImportRun>();
-            //importRun.ImportFileName = config.SicUrl ?? string.Empty;
-            //importRun.ImportRunStatus_Enum = WorkflowRunState_Enumeration.WorkflowRunFailed;
-            //importRun.ImportConfigUsed = importConfig;
-            //importRun.ImportMessages = message;
-            //importRun.ImportRunStarted = DateTime.UtcNow;
-            //importRun.ImportRunFinished = DateTime.UtcNow;
-
-            //importRun.Save();
         }
 
         /// <summary>

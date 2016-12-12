@@ -27,7 +27,7 @@
         'mod.common.ui.spPopupProvider', 'mod.common.ui.spPopupStackManager'
     ]);
 
-    angular.module('mod.common.ui.spEntityMultiComboPicker')
+    angular.module('mod.common.ui.spEntityMultiComboPicker', ['mod.common.ui.entityPickerControllers'])
         .directive('spEntityMultiComboPicker', spEntityMultiComboPicker);
 
     function spEntityMultiComboPicker(spPopupProvider, $document, spPopupStackManager) {

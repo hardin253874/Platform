@@ -3,7 +3,6 @@ using EDC.ReadiNow.EntityRequests;
 using EDC.ReadiNow.Model;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ReadiNow.EntityGraph.Parser
 {
@@ -32,7 +31,7 @@ namespace ReadiNow.EntityGraph.Parser
         /// <summary>
         ///     Repository to load schema data from.
         /// </summary>
-        internal IEntityRepository EntityRepository { get; private set; }
+        internal IEntityRepository EntityRepository { get; }
 
 
         /// <summary>
@@ -250,8 +249,7 @@ namespace ReadiNow.EntityGraph.Parser
 
 			while ( true )
 			{
-				string data = _tokens.Current.Data;
-				if ( !( Accept( "." ) ) )
+				if ( !Accept( "." ) )
 				{
 					break;
 				}

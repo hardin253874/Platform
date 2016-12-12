@@ -33,9 +33,8 @@ namespace ReadiNow.Connector.Spreadsheet
 
             // Note: we are using the Sheet Name as its ID (because Excel enforces unique names within a document, and it will be more convenient for customers)
             Sheet sheet = sheets.FirstOrDefault( s => s.Name == worksheetName );
-            if ( sheet == null )
-                return null;
-            if ( sheet.Id == null || sheet.State != null && sheet.State.Value != SheetStateValues.Visible )
+
+            if ( sheet?.Id == null || sheet.State != null && sheet.State.Value != SheetStateValues.Visible )
                 return null;
 
             // Find the workbook
@@ -54,9 +53,7 @@ namespace ReadiNow.Connector.Spreadsheet
         /// <returns>Its text</returns>
         internal static string GetCellText( SpreadsheetDocument document, Cell cell )
         {
-            if ( cell == null )
-                return null;
-            if ( cell.CellValue == null )
+            if ( cell?.CellValue == null )
                 return null;
 
             string result = cell.CellValue.Text;
@@ -66,6 +63,8 @@ namespace ReadiNow.Connector.Spreadsheet
                 int stringIndex = int.Parse( result );
                 SharedStringTablePart stringTablePart = document.WorkbookPart.SharedStringTablePart;
                 result = stringTablePart.SharedStringTable.ChildElements [ stringIndex ].InnerText;
+
+	            result = result?.Trim( );
             }
 
             return result;

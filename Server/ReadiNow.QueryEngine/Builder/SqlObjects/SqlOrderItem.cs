@@ -27,7 +27,10 @@ namespace ReadiNow.QueryEngine.Builder.SqlObjects
             set
             { 
                 _expression = value;
-                string s = _expression.OrderingSql; // force the property to evaluate early, since we know it's going to get used; and we need to eval prior to starting any SQL generation.
+
+                // Force the property to evaluate early, since we know it's going to get used; and we need to eval prior to starting any SQL generation.
+                // ReSharper disable once UnusedVariable
+                string s = _expression.OrderingSql; 
             }
 		}
         SqlExpression _expression;

@@ -20,13 +20,13 @@ namespace ReadiNow.DocGen
         /// <summary>
         /// The XML element that is being represented.
         /// </summary>
-        public OpenXmlElement SourceNode { get; set; }
+        public OpenXmlElement SourceNode { get; }
 
 
         /// <summary>
         /// True if this is a close-tag.
         /// </summary>
-        public bool IsClose { get; set; }
+        public bool IsClose { get; }
 
 
         /// <summary>

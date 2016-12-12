@@ -88,6 +88,8 @@ namespace ReadiNow.Expressions.Evaluation
                             testData.Expected = ReadValue(dataRaw);
                             break;
                         case "param":
+                            if ( data == null )
+                                throw new InvalidOperationException( $"Unexpected null for {command}" );
                             string[] paramParts = data.Split(new[] { '=' }, 2);
                             testData.Parameters[paramParts[0]] = ReadValue(paramParts[1]);
                             break;
@@ -98,9 +100,13 @@ namespace ReadiNow.Expressions.Evaluation
                             testData.Unsorted = true;
                             break;
                         case "host":
+                            if ( data == null )
+                                throw new InvalidOperationException( $"Unexpected null for {command}" );
                             testData.ScriptHost = (ScriptHostType)Enum.Parse(typeof(ScriptHostType), data, true);
                             break;
                         case "hostapi":
+                            if ( data == null )
+                                throw new InvalidOperationException( $"Unexpected null for {command}" );
                             testData.ScriptHostIsApi = bool.Parse(data);
                             break;
                         case "":

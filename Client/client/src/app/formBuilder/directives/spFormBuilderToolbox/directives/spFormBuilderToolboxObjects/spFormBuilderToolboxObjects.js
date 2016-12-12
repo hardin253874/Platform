@@ -65,7 +65,7 @@
 
             scope.model = {
                 showTypes: false,
-                showAdvanced: false,
+                showAdvanced: true,
                 search: {
                     value: null,
                     id: 'searchObjects'
@@ -286,14 +286,18 @@
                         'definitionUsedByReport.reportForAccessRule.id,' +
                         '{ definitionUsedByReport, definitionUsedByReport.reportCharts, k:formsToEditType, k:defaultEditForm }.@COMPONENT' +
                     '} @TYPE';
-                var type = scope.objectTypeAlias || (scope.model.showTypes ? 'type' : 'definition');
+                let type;
 
-               if (scope.model.showTypes)
-                    type = 'type';
-                else if (scope.model.showAdvanced)
-                    type = 'managedType';
-                else
-                    type = 'definition';
+                if (scope.objectTypeAlias) {
+                    type = scope.objectTypeAlias;
+                } else {
+                    if (scope.model.showTypes)
+                        type = 'type';
+                    else if (scope.model.showAdvanced)
+                        type = 'managedType';
+                    else
+                        type = 'definition';
+                }
 
                 var name = scope.objectTypeName || 'Object';
                 var key = cacheKey(scope.selectedApp.id);
@@ -781,9 +785,9 @@
                 return res;
             };
 
-            scope.isDevMode = function () {                
-                return spAppSettings.initialSettings.devMode;
-            };
+            scope.isShowAdvancedVisible = function() {
+                return spAppSettings.initialSettings.devMode && !scope.objectTypeAlias;
+            };            
 
             scope.getComponentFilterText = function getComponentFilterText() {
                 var mode = scope.componentFilterMode;

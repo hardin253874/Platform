@@ -16,7 +16,7 @@ namespace EDC.ReadiNow.Diagnostics
         /// <summary>
 		///     Static instance of the ProcessMonitorWriter.
 		/// </summary>
-		private static readonly Lazy<ProcessMonitorWriter> instance = new Lazy<ProcessMonitorWriter>(() => new ProcessMonitorWriter(), false);
+		private static readonly Lazy<ProcessMonitorWriter> instance = new Lazy<ProcessMonitorWriter>(() => new ProcessMonitorWriter(), true);
 
         /// <summary>
         /// The time in milliseconds to check the enabled flag.

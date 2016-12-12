@@ -3,15 +3,15 @@
   <metadata>
     <type>AppPackage</type>
     <application id="abf12077-6fa5-43da-b608-b8b7514d07bb">
-      <name>ReadiNow Core Data Application Package 1.0.5.10</name>
+      <name>ReadiNow Core Data Application Package 1.0.5.12</name>
       <appName>ReadiNow Core Data</appName>
-      <description>Application Package for version 1.0.5.10 of ReadiNow Core Data.</description>
+      <description>Application Package for version 1.0.5.12 of ReadiNow Core Data.</description>
     </application>
-    <package id="e7a9fc6d-7154-4e1b-9950-40ce1800bb03">
-      <version>1.0.5.10</version>
+    <package id="c3bf9544-d6e8-4fb1-9cae-1f4cecbc87d3">
+      <version>1.0.5.12</version>
       <platformVersion>1.0.0.0</platformVersion>
-      <releaseDate>2016-12-06 00:00:00Z</releaseDate>
-      <publishDate>2016-12-06 21:28:16Z</publishDate>
+      <releaseDate>2016-12-07 00:00:00Z</releaseDate>
+      <publishDate>2016-12-09 01:43:43Z</publishDate>
     </package>
     <dependencies>
       <dependency>
@@ -31,13 +31,13 @@
         <hideOnDesktop>False</hideOnDesktop>
         <hideOnMobile>False</hideOnMobile>
         <hideOnTablet>False</hideOnTablet>
-        <solutionReleaseDate>2016-12-06 00:00:00Z</solutionReleaseDate>
-        <packageId>e7a9fc6d-7154-4e1b-9950-40ce1800bb03</packageId>
+        <solutionReleaseDate>2016-12-09 00:00:00Z</solutionReleaseDate>
+        <packageId>c3bf9544-d6e8-4fb1-9cae-1f4cecbc87d3</packageId>
         <legacyGuid>072871fe-35e3-49d6-86da-5c2a06a56caf</legacyGuid>
-        <solutionVersionString>1.0.5.10</solutionVersionString>
+        <solutionVersionString>1.0.5.12</solutionVersionString>
         <solutionPublisherUrl>http://www.readinow.com</solutionPublisherUrl>
         <solutionPublisher>ReadiNow</solutionPublisher>
-        <solutionVersionDetails>Added Delete action menu to Choice Field Values form.</solutionVersionDetails>
+        <solutionVersionDetails>Make Name, Document, Object controls mandatory on the report template form.</solutionVersionDetails>
         <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
         <securityOwner>administratorUserAccount</securityOwner>
         <indirectApplicationContents>02627396-9585-4a58-b792-e76c9005a67f</indirectApplicationContents>
@@ -22710,7 +22710,7 @@
                 <k:isReversed>False</k:isReversed>
                 <k:showControlHelpText>False</k:showControlHelpText>
                 <canCreateDerivedTypes>False</canCreateDerivedTypes>
-                <k:mandatoryControl>False</k:mandatoryControl>
+                <k:mandatoryControl>True</k:mandatoryControl>
                 <k:hideLabel>False</k:hideLabel>
                 <k:readOnlyControl>False</k:readOnlyControl>
                 <k:renderingOrdinal>0</k:renderingOrdinal>
@@ -22728,6 +22728,7 @@
                 <canCreate>False</canCreate>
                 <k:isReversed>False</k:isReversed>
                 <canCreateDerivedTypes>False</canCreateDerivedTypes>
+                <k:mandatoryControl>True</k:mandatoryControl>
                 <k:renderingOrdinal>2</k:renderingOrdinal>
                 <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
                 <k:relationshipToRender>reportTemplateAppliesToType</k:relationshipToRender>
@@ -22748,6 +22749,7 @@
             <k:renderingHorizontalResizeMode>k:resizeAutomatic</k:renderingHorizontalResizeMode>
           </k:singleLineTextControl>
           <k:singleLineTextControl id="e6510aa5-1db0-40c5-8522-6b590183366c">
+            <k:mandatoryControl>True</k:mandatoryControl>
             <k:renderingOrdinal>0</k:renderingOrdinal>
             <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
             <k:renderingVerticalResizeMode>k:resizeAutomatic</k:renderingVerticalResizeMode>
@@ -58762,213 +58764,6 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
       </structureView>
     </group>
     <group typeId="workflow">
-      <!-- Launch Person Campaign -->
-      <workflow id="3c813896-e6c0-4aee-a8fd-ed6c2c0205ec">
-        <name>Launch Person Campaign</name>
-        <canModifyProtectedResource>True</canModifyProtectedResource>
-        <workflowHasErrors>False</workflowHasErrors>
-        <workflowVersion>12</workflowVersion>
-        <workflowUpdateHash>1279698268</workflowUpdateHash>
-        <inputArgumentForAction>0bb4c987-c310-4708-b2c0-1d2c955713a2</inputArgumentForAction>
-        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-        <securityOwner>administratorUserAccount</securityOwner>
-        <firstActivity>362084fe-4a6b-46d8-9ef7-33ca556d66be</firstActivity>
-        <expressionParameters>
-          <!-- Launch Person Campaign.Responses -->
-          <wfArgumentInstance id="2f962749-644e-4e2b-b873-52c514573a3e">
-            <name>Launch Person Campaign.Responses</name>
-            <description>Launch Person Campaign - The survey results.</description>
-            <argumentInstanceActivity>4f3b45c5-0837-473d-8135-2d2d77f65543</argumentInstanceActivity>
-            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
-            <argumentInstanceArgument>outLaunchPersonResponses</argumentInstanceArgument>
-            <securityOwner>administratorUserAccount</securityOwner>
-          </wfArgumentInstance>
-          <!-- Survey -->
-          <wfArgumentInstance id="2fa79201-67ff-450e-b961-545cb434acb8">
-            <name>Survey</name>
-            <description>Workflow - no description</description>
-            <argumentInstanceActivity>3c813896-e6c0-4aee-a8fd-ed6c2c0205ec</argumentInstanceActivity>
-            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
-            <argumentInstanceArgument>5bff81f9-5b62-4df1-868e-f90523223417</argumentInstanceArgument>
-            <securityOwner>administratorUserAccount</securityOwner>
-          </wfArgumentInstance>
-          <!-- Recipients -->
-          <wfArgumentInstance id="e95db36b-cfc8-422f-81e4-5e0b581f53ce">
-            <name>Recipients</name>
-            <description>Workflow - no description</description>
-            <argumentInstanceActivity>3c813896-e6c0-4aee-a8fd-ed6c2c0205ec</argumentInstanceActivity>
-            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
-            <argumentInstanceArgument>215d16f9-a3fc-4370-b62b-5dd15976e7cf</argumentInstanceArgument>
-            <securityOwner>administratorUserAccount</securityOwner>
-          </wfArgumentInstance>
-          <!-- Input -->
-          <wfArgumentInstance id="eeea171f-97ab-4d70-b5c0-dd1833116cf4">
-            <name>Input</name>
-            <description>Workflow - no description</description>
-            <argumentInstanceActivity>3c813896-e6c0-4aee-a8fd-ed6c2c0205ec</argumentInstanceActivity>
-            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
-            <argumentInstanceArgument>0bb4c987-c310-4708-b2c0-1d2c955713a2</argumentInstanceArgument>
-            <securityOwner>administratorUserAccount</securityOwner>
-          </wfArgumentInstance>
-        </expressionParameters>
-        <transitions>
-          <transition id="0ad568e6-aaea-40f6-b20e-b3b08c27d080">
-            <toActivity>4f3b45c5-0837-473d-8135-2d2d77f65543</toActivity>
-            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
-            <fromActivity>362084fe-4a6b-46d8-9ef7-33ca556d66be</fromActivity>
-            <fromExitPoint>promptUserCompleted</fromExitPoint>
-            <securityOwner>administratorUserAccount</securityOwner>
-          </transition>
-        </transitions>
-        <expressionMap>
-          <wfExpression id="3b067b11-94db-4b64-aba1-8d68538f390b">
-            <isTemplateString>False</isTemplateString>
-            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
-            <argumentToPopulate>0bb4c987-c310-4708-b2c0-1d2c955713a2</argumentToPopulate>
-            <securityOwner>administratorUserAccount</securityOwner>
-          </wfExpression>
-          <wfExpression id="3eac12d8-ed66-4157-b662-5f1ef88d3c90">
-            <isTemplateString>False</isTemplateString>
-            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
-            <argumentToPopulate>215d16f9-a3fc-4370-b62b-5dd15976e7cf</argumentToPopulate>
-            <securityOwner>administratorUserAccount</securityOwner>
-          </wfExpression>
-          <wfExpression id="a5411321-ef18-45be-9b81-97947bb5fe52">
-            <isTemplateString>False</isTemplateString>
-            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
-            <argumentToPopulate>5bff81f9-5b62-4df1-868e-f90523223417</argumentToPopulate>
-            <securityOwner>administratorUserAccount</securityOwner>
-          </wfExpression>
-        </expressionMap>
-        <exitPoints>
-          <!-- end -->
-          <exitPoint id="8d546007-8606-4811-86c9-420f1f19de08">
-            <name>end</name>
-            <isDefaultExitPoint>True</isDefaultExitPoint>
-            <exitPointOrdinal>1</exitPointOrdinal>
-            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
-            <securityOwner>administratorUserAccount</securityOwner>
-          </exitPoint>
-        </exitPoints>
-        <containedActivities>
-          <!-- User Input -->
-          <promptUserActivity id="362084fe-4a6b-46d8-9ef7-33ca556d66be">
-            <name>User Input</name>
-            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
-            <securityOwner>administratorUserAccount</securityOwner>
-            <promptForArguments>
-              <activityPrompt id="4e919469-9f7c-49f8-a398-0aae6ff5ea23">
-                <activityPromptOrdinal>1</activityPromptOrdinal>
-                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
-                <securityOwner>administratorUserAccount</securityOwner>
-                <activityPromptArgument>5bff81f9-5b62-4df1-868e-f90523223417</activityPromptArgument>
-              </activityPrompt>
-              <activityPrompt id="83a638d9-a2e0-4f02-bd37-50814dbdc24b">
-                <activityPromptOrdinal>2</activityPromptOrdinal>
-                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
-                <securityOwner>administratorUserAccount</securityOwner>
-                <activityPromptArgument>215d16f9-a3fc-4370-b62b-5dd15976e7cf</activityPromptArgument>
-              </activityPrompt>
-            </promptForArguments>
-            <expressionMap>
-              <wfExpression id="0a76fa45-3261-4c9d-ae9e-438aa3b7ebda">
-                <isTemplateString>False</isTemplateString>
-                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
-                <argumentToPopulate>inPromptUserMessage</argumentToPopulate>
-                <securityOwner>administratorUserAccount</securityOwner>
-              </wfExpression>
-              <wfExpression id="85f3ac30-a036-4125-9ca0-64f03866826b">
-                <expressionString>[Triggering Person]</expressionString>
-                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
-                <argumentToPopulate>inPromptUserForPerson</argumentToPopulate>
-                <securityOwner>administratorUserAccount</securityOwner>
-              </wfExpression>
-            </expressionMap>
-          </promptUserActivity>
-          <!-- Launch Person Campaign -->
-          <launchPersonCampaignActivity id="4f3b45c5-0837-473d-8135-2d2d77f65543">
-            <name>Launch Person Campaign</name>
-            <designerData>{"x":438,"y":179}</designerData>
-            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
-            <securityOwner>administratorUserAccount</securityOwner>
-            <expressionMap>
-              <wfExpression id="12c56af3-33fe-4d44-9259-48b65b555896">
-                <expressionString>[Input]</expressionString>
-                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
-                <argumentToPopulate>inLaunchPersonTarget</argumentToPopulate>
-                <securityOwner>administratorUserAccount</securityOwner>
-              </wfExpression>
-              <wfExpression id="20c8fa00-7aa6-4616-8abb-5bdb57f33740">
-                <isTemplateString>False</isTemplateString>
-                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
-                <argumentToPopulate>inLaunchPersonTaskName</argumentToPopulate>
-                <securityOwner>administratorUserAccount</securityOwner>
-              </wfExpression>
-              <wfExpression id="95c14df7-14ca-46bf-8504-0e1be108a5c3">
-                <expressionString>[Recipients]</expressionString>
-                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
-                <argumentToPopulate>inLaunchPersonRecipients</argumentToPopulate>
-                <securityOwner>administratorUserAccount</securityOwner>
-              </wfExpression>
-              <wfExpression id="9c727bce-346a-4e85-9850-7eb4e3f720cb">
-                <expressionString>[Survey]</expressionString>
-                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
-                <argumentToPopulate>inLaunchPersonSurvey</argumentToPopulate>
-                <securityOwner>administratorUserAccount</securityOwner>
-              </wfExpression>
-              <wfExpression id="c69197be-9d69-4b44-a067-d9a21d971547">
-                <isTemplateString>False</isTemplateString>
-                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
-                <argumentToPopulate>inLaunchPersonPause</argumentToPopulate>
-                <securityOwner>administratorUserAccount</securityOwner>
-              </wfExpression>
-              <wfExpression id="f15d00c9-205c-4611-a15e-2ee23f42b1d7">
-                <isTemplateString>False</isTemplateString>
-                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
-                <argumentToPopulate>inLaunchPersonDueDays</argumentToPopulate>
-                <securityOwner>administratorUserAccount</securityOwner>
-              </wfExpression>
-            </expressionMap>
-          </launchPersonCampaignActivity>
-        </containedActivities>
-        <inputArguments>
-          <!-- Input -->
-          <resourceArgument id="0bb4c987-c310-4708-b2c0-1d2c955713a2">
-            <name>Input</name>
-            <argumentIsMandatory>False</argumentIsMandatory>
-            <conformsToType>userResource</conformsToType>
-            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
-            <securityOwner>administratorUserAccount</securityOwner>
-          </resourceArgument>
-        </inputArguments>
-        <terminations>
-          <termination id="5fb8de72-acc1-41d9-b4b3-6d3d06fa9e3f">
-            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
-            <fromActivity>4f3b45c5-0837-473d-8135-2d2d77f65543</fromActivity>
-            <fromExitPoint>exitLpc1</fromExitPoint>
-            <securityOwner>administratorUserAccount</securityOwner>
-            <workflowExitPoint>8d546007-8606-4811-86c9-420f1f19de08</workflowExitPoint>
-          </termination>
-        </terminations>
-        <variables>
-          <!-- Recipients -->
-          <resourceListArgument id="215d16f9-a3fc-4370-b62b-5dd15976e7cf">
-            <name>Recipients</name>
-            <argumentIsMandatory>False</argumentIsMandatory>
-            <conformsToType>person</conformsToType>
-            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
-            <securityOwner>administratorUserAccount</securityOwner>
-          </resourceListArgument>
-          <!-- Survey -->
-          <resourceArgument id="5bff81f9-5b62-4df1-868e-f90523223417">
-            <name>Survey</name>
-            <argumentIsMandatory>False</argumentIsMandatory>
-            <conformsToType>userSurvey</conformsToType>
-            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
-            <securityOwner>administratorUserAccount</securityOwner>
-          </resourceArgument>
-        </variables>
-      </workflow>
       <!-- Launch Campaign -->
       <workflow id="d6a7192a-107b-47e4-a618-3f83ce3ca1f9">
         <name>Launch Campaign</name>
@@ -59523,9 +59318,6 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
     <k:actionSuppressedOnMenu id="da754367-9534-4c30-a753-a9209c35b01a" type="rel" />
     <active id="b7433286-1bdf-4a73-8843-90f1a4d476b5" />
     <activityArgument id="fcba05d8-3454-4ba3-a1d0-742600e028fc" />
-    <activityPrompt id="df92e0cd-6a6b-479e-a2b6-18ce65d41721" type="type" />
-    <activityPromptArgument id="ec610eab-084b-4c14-ad36-e001a059875e" type="rel" />
-    <activityPromptOrdinal id="f0564ec3-cc58-483e-8484-ec9035e623de" type="int" />
     <k:addRelationshipAction id="9e930aa0-db09-48c2-8861-8c43e6bbf39a" />
     <administratorRole id="38d2e096-dcd2-4b8c-9987-a1f299ce9eab" />
     <administratorUserAccount id="d223c5fb-1e3f-4fba-b45c-2df451eb85c7" />
@@ -59813,7 +59605,6 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
     <everyoneRole id="76fd9f28-5d9d-4a4a-a769-ef4952dd892f" />
     <exactType id="4f9ea6b2-4d00-471e-9202-9702d6029823" type="bool" />
     <excludeFromPublish id="cc6e0988-828b-4e31-b4e6-7a48b95b16b4" type="bool" />
-    <exitLpc1 id="602d1323-2561-49a2-855f-1650a61bf4ec" />
     <exitPoint id="782e823e-0739-491e-8c83-d81d03f56b07" type="type" />
     <exitPointOrdinal id="ef0e2587-cb21-46ca-a1b6-d95087f29c07" type="int" />
     <exitPoints id="934bc2d0-180a-4419-bfe5-86b8b82de557" type="rel" />
@@ -59963,15 +59754,7 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
     <k:infoButtonVisible id="b5c56e6c-1c52-471a-b394-54403dde5fc4" type="bool" />
     <inFolder id="1a750abe-b8b7-4334-b273-0882db43537e" />
     <inherits id="50fe1b39-bb32-4825-8ab5-807a7df9b5b8" type="rel" />
-    <inLaunchPersonDueDays id="1d804eaf-47aa-4806-b8bf-69ea1234b011" />
-    <inLaunchPersonPause id="494097fa-f8c5-4c4c-834d-0270f318e937" />
-    <inLaunchPersonRecipients id="26b4d24a-c2d3-4e96-9b38-4c48ccc2c04d" />
-    <inLaunchPersonSurvey id="ac0cafc2-2249-41c9-8678-92d026e7ccfd" />
-    <inLaunchPersonTarget id="1b2f075e-0740-4b71-8f34-a53998a894b3" />
-    <inLaunchPersonTaskName id="0b2c29df-8c91-4ef0-8289-aa02d2a0e037" />
     <k:inlineRelationshipRenderControl id="a0c1566b-3794-4980-8b16-b4bc08a93e4b" type="type" />
-    <inPromptUserForPerson id="273a327a-d795-4c1c-8737-f9a3e410657b" />
-    <inPromptUserMessage id="dbe1adb0-47c3-42c2-90e9-29013fd0557d" />
     <inputArgumentForAction id="1959ac9f-a36d-4a0f-8dfe-d3d4ccba0e67" type="rel" />
     <inputArguments id="d3a125fa-c51d-4c12-bfff-05506734efc6" type="rel" />
     <inSolution id="7c77c3a0-75b5-4c59-99f6-3ba9229e6a55" type="rel" />
@@ -60009,7 +59792,6 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
     <keyRelationshipDirection id="01224600-3f42-47ce-9da1-93b6801c438c" />
     <lastModifiedBy id="653ebcf5-66ec-4238-9aba-fac99891f192" />
     <lastName id="0bf7ac3a-d9f7-4953-aab5-23b3b77fad29" />
-    <launchPersonCampaignActivity id="61fe70be-d7ed-4b1f-9c45-fc9d317abb0b" type="type" />
     <legacyGuid id="88f67720-430d-4dcd-8f7b-717a0becaa64" type="guid" />
     <libraryQuestions id="b8f0b58b-df81-41f4-88a2-d91b3ffa30ff" />
     <locked id="b13ae777-2609-4045-bfd3-d172baf7aebb" />
@@ -60087,7 +59869,6 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
     <operNotEqual id="612fe4ce-098e-4df1-9039-0ceb56ace3de" />
     <orderByExpression id="1f825d32-6463-4bd6-a87e-f72238ec9614" type="rel" />
     <orderPriority id="43c99d8a-f3ec-4cfb-b135-8651daaa2958" type="int" />
-    <outLaunchPersonResponses id="a422d926-2a29-48d4-9da0-515bcb4f0b2b" />
     <outStartSurveyResponses id="8eb15a87-1a7c-47de-8079-eec6c0d13f02" />
     <packageId id="1670eb43-6568-4e41-97c4-71b2bd1fba61" type="guid" />
     <parameter id="4637876a-f7a7-4c4e-87a0-c8141bb29814" type="type" />
@@ -60110,9 +59891,6 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
     <k:pickerReport id="c6733bc7-0fad-47c5-a2f1-c68e69b83384" type="rel" />
     <k:privateContentSectionBehavior id="7cce4406-9a4f-4093-875b-8e8f0ba032e1" />
     <privatelyOwnable id="c7f2adb5-5bdf-47dd-9f6e-846ea721215c" />
-    <promptForArguments id="3a16379e-373d-467a-8921-3ef455950803" type="rel" />
-    <promptUserActivity id="9f100fbd-5a84-4447-aefa-d62f10c7cc7d" type="type" />
-    <promptUserCompleted id="701b4030-395c-4ddf-90d8-8143aeb18872" />
     <providerOrdinal id="95cd35dc-32ed-4539-a970-c1c4f9b15d6c" />
     <publishApplicationAuditLogEntry id="7f595fd2-cf20-401f-b526-b912cd7e8b92" />
     <queryXml id="11ec1869-4622-465a-9eec-14ca22cec2ca" />
@@ -60434,7 +60212,6 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
     <timeColFmtEnum id="37671a7f-a0b1-4b31-b8dd-0766935dd3ab" />
     <timeField id="7f8cb22e-ac9a-4afe-b0ce-2332002a0543" />
     <timeKFieldRenderControl id="b396deb0-acd6-406f-ae0e-05153d68c368" type="type" />
-    <toActivity id="19badfd5-8f26-4e6e-8948-8bb29bc62b40" type="rel" />
     <toName id="a8e8fde3-0485-44c1-9bcb-9ab763b3ebcd" type="text" />
     <toolsSection id="88538c8e-5efc-4685-882d-471c52530ffb" />
     <k:topMenu id="ef71e8f0-3cc8-4da6-86d3-a66c06d1d52b" type="type" />
@@ -60446,8 +60223,6 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
     <tpAuthToken id="c0566ae4-c321-4565-96e6-91dfcf4c96e2" />
     <tpEnableTestMode id="ec77d30a-5be8-4cef-a4bf-170b918cfaee" />
     <tpSendingNumber id="e183a430-10cc-4617-8517-9a2e75485536" />
-    <transition id="6817980f-5c85-41a1-83bd-9b48bbc0bc8d" type="type" />
-    <transitions id="432e7c1e-fe7c-47f1-814b-fb5eb30533e7" type="rel" />
     <transitionStart id="0395f238-ccd7-40ea-9786-250159afb6e4" />
     <k:treeIcon id="6aa7f683-1f14-40a5-8b91-c6ea99806b05" type="rel" />
     <k:treeIconUrl id="2e97a390-7376-4fcf-8e1b-789110f66412" type="text" />
@@ -60483,7 +60258,6 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
     <userTaskStartedOn id="1eb492ca-c48f-4f19-a159-85eeb464de84" />
     <k:userTypesReport id="726f7fb1-9b3c-4853-93a2-03296c4c1d33" />
     <usesInboxProvider id="0559dd05-92ab-413d-9b42-09cc842b850c" />
-    <variables id="fcb36eb0-933f-4f24-9c86-c903d1ce6213" type="rel" />
     <version id="07ac7ae6-3b7b-44bd-9503-6077f87f4689" />
     <versionComments id="5c741677-9e7b-462c-b4f8-4f3ac8551a5c" />
     <k:verticalStackContainerControl id="712db082-0427-4375-8414-d80a3d5263fe" type="type" />

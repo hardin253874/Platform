@@ -1,0 +1,58 @@
+[{:tags
+  [:user/conc
+   :nomodify
+   :prod
+   :regression
+   :desktop
+   :area/screenbuilder],
+  :tests [],
+  :name "Screen builder button tests",
+  :steps
+  [{:script "(rt.po.app/navigate-via-tiles \"Foster University\")"}
+   {:script "(rt.po.app/add-screen (:screen-name *tc*) \"\")"}
+   {:script
+    "(rt.po.screen-builder/select-application \"Foster University\")"}
+   {:script "(rt.po.form-builder/set-toolbox-search-text \"Staff\")"}
+   {:script "(rt.po.screen-builder/toggle-toolbox-type \"Staff\")"}
+   {:script
+    "(rt.po.screen-builder/add-report-from-toolbox \"Staff\" \"Staff\")"}
+   {:script
+    "(rt.po.screen-builder/add-form-from-toolbox \"Staff\" \"Staff Form\")"}
+   {:script
+    "(rt.po.screen-builder/show-form-config-menu \"Staff Form\")"}
+   {:script "(rt.po.app/choose-context-menu \"Assign Parent\")"}
+   {:script
+    "(rt.po.form-builder-assign-parent/set-parent-element \"Staff Report (Staff Report)\")"}
+   {:script "(rt.po.form-builder-assign-parent/click-ok)"}
+   {:script
+    "(rt.po.screen-builder/click-actions-popup-launcher-button)"}
+   {:script "(rt.po.app/choose-context-menu \"Create Record\")"}
+   {:script "(rt.po.edit-form/set-lookup-value \"Object\" \"Staff\")"}
+   {:script "(rt.po.edit-form/set-lookup-value \"Form\" \"Form\")"}
+   {:script "(rt.po.common/click-ok)"}
+   {:script
+    "(expect (rt.po.screen-builder/action-button-exists? \"New\"))"}
+   
+   {:script "(rt.po.screen-builder/remove-action-button \"New\")"}
+   {:script
+    "(expect (not (rt.po.screen-builder/action-button-exists? \"New\")) )"}
+   {:script
+    "(rt.po.screen-builder/click-actions-popup-launcher-button)"}
+   {:script "(rt.po.app/choose-context-menu \"Run Workflow\")"}
+   {:script "(rt.po.report-new/set-lookup-object \"Staff\")"}
+   {:script
+    "(expect (rt.po.screen-builder/action-button-exists? \"Staff\"))"}
+	{:script "(rt.po.screen-builder/save-screen)"}
+	{:script "(rt.po.screen-builder/close)"}
+	],
+  :type :test,
+  :source "./test-db",
+  :modified "20161212-173945",
+  :setup
+  [{:script
+    "(identity {:screen-name (rt.lib.util/make-test-name \"New Screen\")})"}],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/screenbuilder/button-tests,
+  :teardown
+  [{:script "(rt.po.app/delete-nav-item (:screen-name *tc*))"}],
+  :modified-by "not-implemented"}]

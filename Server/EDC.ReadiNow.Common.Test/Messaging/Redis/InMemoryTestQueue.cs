@@ -3,8 +3,7 @@
 using EDC.ReadiNow.Messaging;
 using StackExchange.Redis;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Collections.Concurrent;
 
 namespace EDC.ReadiNow.Test.Messaging.Redis
 {
@@ -13,55 +12,40 @@ namespace EDC.ReadiNow.Test.Messaging.Redis
     /// </summary>
     class InMemoryTestQueue<T> : IQueue<T>
     {
-        readonly object _syncRoot = new object();
-
-        Queue<T> q;
+	    readonly ConcurrentQueue<T> _queue;
 
         public string Name { get; }
 
         public InMemoryTestQueue()
         {
-            q = new Queue<T>();
+            _queue = new ConcurrentQueue<T>();
             Name = "LocalQueue " + Guid.NewGuid();
         }
 
         public T Dequeue(CommandFlags flags = CommandFlags.None)
         {
-            lock(_syncRoot)
-            {
-                if (q.Count > 0)
-                    return q.Dequeue();
+			T msg;
+			if ( _queue.TryDequeue( out msg ) )
+			{
+				return msg;
+			}
 
-                return default(T);
-            }
+            return default(T);
         }
 
         public void Enqueue(T[] values, CommandFlags flags = CommandFlags.None)
         {
-            lock(_syncRoot)
-            {
-                foreach (var value in values)
-                    q.Enqueue(value);
-            }
+			foreach ( var value in values )
+			{
+				_queue.Enqueue( value );
+			}
         }
 
         public void Enqueue(T value, CommandFlags flags = CommandFlags.None)
         {
-            lock(_syncRoot)
-            {
-                q.Enqueue(value);
-            }
+            _queue.Enqueue(value);
         }
 
-        public long Length
-        {
-            get
-            {
-                lock (_syncRoot)
-                {
-                    return q.Count;
-                }
-            }
-        }
+        public long Length => _queue.Count;
     }
 }

@@ -1,6 +1,5 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
 
-using System.Collections.Generic;
 using ReadiNow.Connector.Interfaces;
 
 namespace ReadiNow.Connector.Processing

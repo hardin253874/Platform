@@ -307,6 +307,7 @@ namespace ReadiNow.Reporting.Result
                                 reportStyleEnumeration = GetReportStyleEnumerationPairs();
                             }
                             _reportMetadata = new ReportMetadata();
+                            _reportMetadata.Alias = _report.Alias;
                             using (Profiler.Measure("ReportTitle"))
                             {
                                 _reportMetadata.ReportTitle = _report.Name;
@@ -407,6 +408,11 @@ namespace ReadiNow.Reporting.Result
                         {                            
                             ReportColumns = ReportQueryColumns                         
                         };
+
+                        if (_report != null)
+                        {
+                            _reportMetadata.Alias = _report.Alias;
+                        }
                     }
                     else if (_settings.RequireSchemaMetadata)
                     {
@@ -431,6 +437,10 @@ namespace ReadiNow.Reporting.Result
                         using (Profiler.Measure("InvalidReportInformation"))
                         {
                             _reportMetadata.InvalidReportInformation = InvalidReportInformation;
+                        }
+                        if (_report != null)
+                        {
+                            _reportMetadata.Alias = _report.Alias;
                         }
                     }
                     _metadataBuilt = true;

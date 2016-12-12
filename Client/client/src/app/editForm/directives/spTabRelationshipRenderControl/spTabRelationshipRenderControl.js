@@ -338,7 +338,8 @@
 
                 // if we came in as createForm (from a report or a screen) and after saving we switched to viewForm without transitioning to viewForm state, then reset the flag
                 var navItem = spNavService.getCurrentItem();
-                if (navItem && navItem.href && navItem.href.includes('viewForm?') && $state.current.name === 'createForm') {
+                var href = sp.result(navItem, 'href');
+                if (href && href.indexOf('viewForm?') >= 0 && $state.current.name === 'createForm') {
                     scope.disallowCreateRelatedEntityInNewMode = false;
                 }
             });

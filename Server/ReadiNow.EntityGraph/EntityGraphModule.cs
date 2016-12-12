@@ -1,5 +1,4 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
-using System;
 using Autofac;
 using ReadiNow.EntityGraph.GraphModel;
 using EDC.ReadiNow.Model;

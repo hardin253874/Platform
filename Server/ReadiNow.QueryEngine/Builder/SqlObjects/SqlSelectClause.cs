@@ -36,7 +36,6 @@ namespace ReadiNow.QueryEngine.Builder.SqlObjects
 		public List<SqlSelectItem> Items
 		{
 			get;
-			private set;
 		}
 
 

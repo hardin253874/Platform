@@ -33,6 +33,7 @@
             resourceName: '',
             isResourceReportNode: false,
             isCustomJoinNode: false,
+            isRelationshipNode: false,
             isCheckExistenceOnlyEnabled: true,
             isExactTypeEnabled: true,
             isInstanceMustExistEnabled: true,
@@ -109,7 +110,7 @@
 
                     model.isResourceMustExistEnabled = false;
                     model.isRecursionModeEnabled = true;
-                    model.isCheckExistenceOnlyEnabled = false;
+                    model.isCheckExistenceOnlyEnabled = true;
                     model.isJoinTypeEnabled = false;
                     model.isParentNeedNotExistEnabled = false;
                     model.isResourceReportNode = false;
@@ -126,6 +127,7 @@
                     };
                     break;
                 case "core:relationshipReportNode":
+                    model.isRelationshipNode = true;
                     model.selectedNodeResourceMustExist = queryEntity.getTargetMustExist();
                     model.selectedNodeParentNeedNotExist = queryEntity.getEntity().parentNeedNotExist;
                     model.selectedNodeCheckExistenceOnly = queryEntity.getFollowRecursive();

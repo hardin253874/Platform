@@ -20,6 +20,8 @@ namespace EDC.ReadiNow.Test.BackgroundTasks
     [TestFixture]
     public class BackgroundTaskManagerTests
     {
+	    private static readonly TimeSpan DefaultTimeout = TimeSpan.FromSeconds( 30 );
+
         [Test]
         [RunAsGlobalTenant]
         public void Registeration()
@@ -30,57 +32,66 @@ namespace EDC.ReadiNow.Test.BackgroundTasks
         }
 
         static string result = "";
-        [Test]
-        [RunAsGlobalTenant]
-        public void Runs()
-        {
-            var edcTenantId = TenantHelper.GetTenantId("EDC", true);
+		[Test]
+		[RunAsGlobalTenant]
+		public void Runs( )
+		{
+			var edcTenantId = TenantHelper.GetTenantId( "EDC", true );
 
-            //static string result = "";
-            result = "";
+			//static string result = "";
+			result = "";
 
-            Action<DummyParam> act = (p) => 
-            {
-                result += p.S;
-            };
+			using ( CountdownEvent evt = new CountdownEvent( 1 ) )
+			{
+				Action<DummyParam> act = ( p ) =>
+				{
+					result += p.S;
+					// ReSharper disable once AccessToDisposedClosure
+					evt.Signal( );
+				};
 
 
-            var handler = new DummyHandler {Action = act};
-            var qFactory = new RedisTenantQueueFactory("BackgroundTaskManagerTests " + Guid.NewGuid());
-            var manager = new BackgroundTaskManager(qFactory, handlers: handler.ToEnumerable()) { IsActive = true };
+				var handler = new DummyHandler { Action = act };
+				var qFactory = new RedisTenantQueueFactory( "BackgroundTaskManagerTests " + Guid.NewGuid( ) );
+				var manager = new BackgroundTaskManager( qFactory, handlers: handler.ToEnumerable( ) ) { IsActive = true };
 
-            try
-            {
+				try
+				{
 
-                manager.EnqueueTask(edcTenantId, BackgroundTask.Create("DummyHandler", new DummyParam { S = "a" }));
-                Thread.Sleep(100);
-                Assert.That(result, Is.Empty);
+					manager.EnqueueTask( edcTenantId, BackgroundTask.Create( "DummyHandler", new DummyParam { S = "a" } ) );
+					Thread.Sleep( 100 );
+					Assert.That( result, Is.Empty );
 
-                manager.Start();
-                Thread.Sleep(100);
+					manager.Start( );
 
-                Assert.That(result, Is.EqualTo("a"));
+					evt.Wait( DefaultTimeout );
+					evt.Reset( );
 
-                manager.EnqueueTask(edcTenantId, BackgroundTask.Create("DummyHandler", new DummyParam { S = "b" }));
-                Thread.Sleep(100);
+					Assert.That( result, Is.EqualTo( "a" ) );
 
-                Assert.That(result, Is.EqualTo("ab"));
+					manager.EnqueueTask( edcTenantId, BackgroundTask.Create( "DummyHandler", new DummyParam { S = "b" } ) );
 
-                manager.Stop();
+					evt.Wait( DefaultTimeout );
+					evt.Reset( );
 
-                manager.EnqueueTask(edcTenantId, BackgroundTask.Create("DummyHandler", new DummyParam { S = "c" }));
-                Thread.Sleep(100);
+					Assert.That( result, Is.EqualTo( "ab" ) );
 
-                Assert.That(result, Is.EqualTo("ab"));      // c not processed
-                
-            }
-            finally
-            {
-                manager.Stop();
-                var items = manager.EmptyQueue(edcTenantId);
-                Assert.That(items.Count(), Is.EqualTo(1));
-            }
-        }
+					manager.Stop( );
+
+					manager.EnqueueTask( edcTenantId, BackgroundTask.Create( "DummyHandler", new DummyParam { S = "c" } ) );
+					Thread.Sleep( 100 );
+
+					Assert.That( result, Is.EqualTo( "ab" ) );      // c not processed
+
+				}
+				finally
+				{
+					manager.Stop( );
+					var items = manager.EmptyQueue( edcTenantId );
+					Assert.That( items.Count( ), Is.EqualTo( 1 ) );
+				}
+			}
+		}
 
         [Test]
         [Ignore]

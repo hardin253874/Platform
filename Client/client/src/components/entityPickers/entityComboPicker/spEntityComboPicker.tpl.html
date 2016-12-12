@@ -1,5 +1,6 @@
 <span>
-    <select ng-model="selectedEntity" ng-options="e as e.getName() for e in entities" ng-disabled="disabled" class="sp-combo-picker">
-        <option value="" ng-style="selectOptionStyle">[Select]</option>
+    <select ng-disabled="disabled" class="sp-combo-picker" ng-model="selectedEntityId" ng-style="getSelectedStyle()">
+        <option value="" ng-style="selectOptionStyle">[Select]</option>          
+        <option ng-repeat="e in entities" ng-style="getOptionStyle(e)" value="{{e.id()}}"> {{e.getName()}} </option>
     </select>
 </span>

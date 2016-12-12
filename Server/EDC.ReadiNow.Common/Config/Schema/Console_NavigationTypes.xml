@@ -897,6 +897,7 @@
         <fromName>Create action</fromName>
         <relType>relLookup</relType>
         <generateCode>false</generateCode>
+        <securesTo>true</securesTo>
         <hideOnToType>true</hideOnToType>
         <hideOnToTypeDefaultForm>true</hideOnToTypeDefaultForm>
         <relationshipInFromTypeGroup>k:navigateToCreateFormActionMenuItemDetails</relationshipInFromTypeGroup>

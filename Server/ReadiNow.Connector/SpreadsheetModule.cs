@@ -2,8 +2,6 @@
 using Autofac;
 using System;
 using Autofac.Extras.AttributeMetadata;
-using EDC.IO;
-using EDC.ReadiNow.Model;
 using ReadiNow.Connector.ImportSpreadsheet;
 using ReadiNow.Connector.Interfaces;
 using ReadiNow.Connector.Processing;

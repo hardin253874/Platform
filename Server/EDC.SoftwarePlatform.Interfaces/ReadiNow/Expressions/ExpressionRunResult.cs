@@ -1,5 +1,4 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
-using System;
 
 namespace EDC.ReadiNow.Expressions
 {
@@ -8,15 +7,13 @@ namespace EDC.ReadiNow.Expressions
     /// </summary>
     public class ExpressionRunResult
     {
-        private readonly object _result;
-
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="result">The result.</param>
         public ExpressionRunResult( object result )
         {
-            _result = result;
+            Value = result;
         }
 
         /// <summary>
@@ -24,7 +21,7 @@ namespace EDC.ReadiNow.Expressions
         /// </summary>
         public object Value
         {
-            get { return _result; }
-        }        
+            get;
+        }
     }
 }

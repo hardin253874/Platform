@@ -10,6 +10,8 @@ describe('Console|Pickers|spEntityComboBoxPicker|spec:|spEntityComboBoxPicker di
     'use strict';
 
     // Load the modules
+    beforeEach(module('mod.common.spWebService'));
+    beforeEach(module('mod.common.ui.spEntityMultiComboPicker'));
     beforeEach(module('mod.common.ui.spEntityComboPicker'));
     beforeEach(module('entityPickers/entityComboPicker/spEntityComboPicker.tpl.html'));
     beforeEach(module('mockedEntityService'));
@@ -44,9 +46,9 @@ describe('Console|Pickers|spEntityComboBoxPicker|spec:|spEntityComboBoxPicker di
         expect(options.length).toBe(4);
 
         expect(options[0].innerText).toBe('[Select]');
-        expect(options[1].innerText).toBe('Small');
-        expect(options[2].innerText).toBe('Large');
-        expect(options[3].innerText).toBe('Icon');
+        expect(options[1].innerText).toBe(' Small ');
+        expect(options[2].innerText).toBe(' Large ');
+        expect(options[3].innerText).toBe(' Icon ');
     }));
 
     // Set large thumbnail as selected item
@@ -113,8 +115,8 @@ describe('Console|Pickers|spEntityComboBoxPicker|spec:|spEntityComboBoxPicker di
         expect(options.length).toBe(3);
 
         expect(options[0].innerText).toBe('[Select]');
-        expect(options[1].innerText).toBe('Small');
-        expect(options[2].innerText).toBe('Icon');
+        expect(options[1].innerText).toBe(' Small ');
+        expect(options[2].innerText).toBe(' Icon ');
     }));
 
     it('should replace HTML element with appropriate entities content', inject(function ($rootScope, $compile, spEntityService) {
@@ -147,8 +149,8 @@ describe('Console|Pickers|spEntityComboBoxPicker|spec:|spEntityComboBoxPicker di
         expect(options.length).toBe(4);
 
         expect(options[0].innerText).toBe('[Select]');
-        expect(options[1].innerText).toBe('Small');
-        expect(options[2].innerText).toBe('Large');
-        expect(options[3].innerText).toBe('Icon');
+        expect(options[1].innerText).toBe(' Small ');
+        expect(options[2].innerText).toBe(' Large ');
+        expect(options[3].innerText).toBe(' Icon ');
     }));
 });

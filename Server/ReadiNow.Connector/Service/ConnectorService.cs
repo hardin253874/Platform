@@ -41,7 +41,7 @@ namespace ReadiNow.Connector.Service
                 throw new ArgumentNullException( "request" );
 
             ApiEndpoint endpoint;
-            ApiResourceEndpoint resourceEndpoint = null;
+            ApiResourceEndpoint resourceEndpoint;
             ApiSpreadsheetEndpoint spreadsheetEndpoint = null;
 
             using ( new SecurityBypassContext( ) )

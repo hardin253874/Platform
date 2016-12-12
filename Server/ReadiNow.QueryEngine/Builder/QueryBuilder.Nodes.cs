@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using EDC.ReadiNow.Core;
 using EDC.ReadiNow.Diagnostics;
 using EDC.ReadiNow.Model;
 using EDC.ReadiNow.Metadata;
@@ -11,7 +10,6 @@ using Model = EDC.ReadiNow.Model;
 using ReadiNow.QueryEngine.Builder.SqlObjects;
 using ReadiNow.QueryEngine.Runner;
 using EDC.ReadiNow.Core.Cache;
-using EDC.ReadiNow.Expressions;
 
 namespace ReadiNow.QueryEngine.Builder
 {
@@ -131,20 +129,6 @@ namespace ReadiNow.QueryEngine.Builder
 					}
 
 					BuildEntityTableJoinTree( query, relatedEntity, entityTables.EntityTable, sqlQuery );
-				}
-
-				// Optimization: Collapse root table if possible
-				if ( entity.GetType( ) == typeof ( ResourceEntity ) && _collapseRootEntity && entityTables.EntityTable.Children.Count == 1 )
-				{
-					SqlTable entityTable = entityTables.EntityTable;
-					SqlTable childTable = entityTables.EntityTable.Children[ 0 ];
-					entityTable.TableAlias = childTable.TableAlias;
-					entityTable.IdColumn = childTable.JoinColumn;
-					entityTables = new EntityTables
-						{
-							EntityTable = childTable,
-							HeadTable = childTable
-						};
 				}
 			}
 
@@ -266,8 +250,7 @@ namespace ReadiNow.QueryEngine.Builder
                     string sharedDerivedTableName = derivedTableName + formattedEntityId;
 			        string usedDerivedTableName;
 
-			        string createTableFormatString = exactTypeOnlyImpl ?
-                        "create table {0} ( Id bigint primary key ){2}insert into {0} select {1}" :
+			        string createTableFormatString = 
 						"create table {0} ( Id bigint primary key ){2}insert into {0} select Id from dbo.fnDerivedTypes({1}, @tenant)";
 			        const string dropTableFormatString = "drop table {0}";
 
@@ -554,18 +537,18 @@ namespace ReadiNow.QueryEngine.Builder
         /// To verify current grouped entity or related entity's nodeid is mathced the condition nodeId
         /// </summary>
         /// <param name="conditionNodeId">condition nodeId</param>
-        /// <param name="GroupedEntity">grouped entity</param>
+        /// <param name="groupedEntity">grouped entity</param>
         /// <returns></returns>
-        private bool MatchGroupedEntityNode(Guid conditionNodeId, Entity GroupedEntity)
+        private bool MatchGroupedEntityNode(Guid conditionNodeId, Entity groupedEntity )
         {
             bool isMatched = false;
            
-            if (conditionNodeId == GroupedEntity.NodeId)
+            if (conditionNodeId == groupedEntity.NodeId)
                 return true;
 
-            if (GroupedEntity.RelatedEntities != null && GroupedEntity.RelatedEntities.Count > 0)
+            if ( groupedEntity.RelatedEntities != null && groupedEntity.RelatedEntities.Count > 0 )
             {
-                if (GroupedEntity.RelatedEntities.Any(e => MatchGroupedEntityNode(conditionNodeId, e)))
+                if ( groupedEntity.RelatedEntities.Any(e => MatchGroupedEntityNode(conditionNodeId, e)))
                 {
                     isMatched = true;
                 }
@@ -762,7 +745,6 @@ namespace ReadiNow.QueryEngine.Builder
 
 			bool isRecursive = relationship.Recursive != RecursionMode.None;
 			bool isNormal = !isRecursive;
-		    bool nameContainsSql = false;
 
             // Ensure resource type is set
 		    var relEnt = relationshipDefinition.As<Model.Relationship>();
@@ -783,9 +765,14 @@ namespace ReadiNow.QueryEngine.Builder
 		    // Determine table name
 			if ( isRecursive )
 			{
-				string relationshipTypeIdParamName = RegisterSharedParameter( System.Data.DbType.Int64, relationship.RelationshipTypeId.Id.ToString( CultureInfo.InvariantCulture ) );
-				string fromTypeIdParamName = RegisterSharedParameter( System.Data.DbType.Int64, relEnt.FromType.Id.ToString( CultureInfo.InvariantCulture ) );
-				string toTypeIdParamName = RegisterSharedParameter( System.Data.DbType.Int64, relEnt.ToType.Id.ToString( CultureInfo.InvariantCulture ) );
+			    long? fromTypeId = relEnt.FromType?.Id;
+                long? toTypeId = relEnt.ToType?.Id;
+			    if ( fromTypeId == null || toTypeId == null )
+			        throw new Exception( $"Relationship {relEnt.Id} is missing endpoint type details." );
+
+                string relationshipTypeIdParamName = RegisterSharedParameter( System.Data.DbType.Int64, relationship.RelationshipTypeId.Id.ToString( CultureInfo.InvariantCulture ) );
+				string fromTypeIdParamName = RegisterSharedParameter( System.Data.DbType.Int64, fromTypeId.Value.ToString( CultureInfo.InvariantCulture ) );
+				string toTypeIdParamName = RegisterSharedParameter( System.Data.DbType.Int64, toTypeId.Value.ToString( CultureInfo.InvariantCulture ) );
 
 				relationshipTableName = sqlQuery.AliasManager.CreateAlias( "#rec" );
 
@@ -855,7 +842,6 @@ namespace ReadiNow.QueryEngine.Builder
 			SqlTable relationshipTable =
 				sqlQuery.CreateJoinedTable( relationshipTableName, "rel", parentTable, joinHint, forward ? fromColumnName : toColumnName, parentTable.IdColumn );
 
-		    relationshipTable.NameContainsSql = nameContainsSql;
 		    relationshipTable.JoinNotConstrainedByParent = relationship.ParentNeedNotExist;
 
             // Column that child tables should join to
@@ -884,19 +870,14 @@ namespace ReadiNow.QueryEngine.Builder
                 // Filter tenant
                 relationshipTable.FilterByTenant = true;
             }
-            if ( isNormal || isRecursive )
-		    {
-		        string relationshipTypeIdParamName = RegisterSharedParameter( System.Data.DbType.Int64, relationship.RelationshipTypeId.Id.ToString( CultureInfo.InvariantCulture ) );
 
-		        // Specify relationship type
-		        relationshipTable.Conditions.Add( "$.TypeId = " + FormatEntity( relationship.RelationshipTypeId, relationshipTypeIdParamName ) );
-		    }
+            string relationshipTypeIdParamName1 = RegisterSharedParameter( System.Data.DbType.Int64, relationship.RelationshipTypeId.Id.ToString( CultureInfo.InvariantCulture ) );
 
-			if ( isRecursive || isNormal )
-			{
-				// Secure the join
-				relationshipTable.SecureResources = _querySettings.SecureQuery;
-			}
+            // Specify relationship type
+            relationshipTable.Conditions.Add( "$.TypeId = " + FormatEntity( relationship.RelationshipTypeId, relationshipTypeIdParamName1 ) );
+
+            // Secure the join
+            relationshipTable.SecureResources = _querySettings.SecureQuery;
 
             if (relationshipTable.SecureResources)
             {
@@ -941,7 +922,7 @@ namespace ReadiNow.QueryEngine.Builder
             // Apply ID filter. If there was no type check then this may become the root table.
             if ( _querySettings.SupportRootIdFilter )
             {
-                primary = AddRootIdFilter( sqlQuery, primary );
+                primary = AddRootIdFilter( sqlQuery, null );
             }
 
             // Type constraint not required when applying security as the root entity gets constrained already.

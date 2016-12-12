@@ -62,7 +62,7 @@ namespace ReadiNow.QueryEngine.Runner
         /// <summary>
         ///     Used for security checks
         /// </summary>
-        private static IEntityAccessControlService EntityAccessControlService { get; set; }
+        private static IEntityAccessControlService EntityAccessControlService { get; }
 
 
         /// <summary>
@@ -459,13 +459,13 @@ namespace ReadiNow.QueryEngine.Runner
             /// <summary>
             /// The column index.
             /// </summary>
-            public int ColumnIndex { get; private set; }
+            public int ColumnIndex { get; }
 
 
             /// <summary>
             /// True if the column is an aggregate list.
             /// </summary>
-            public bool IsAggregateList { get; private set; }
+            public bool IsAggregateList { get; }
         }
 
 

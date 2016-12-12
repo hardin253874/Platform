@@ -147,9 +147,11 @@ namespace ReadiNow.Connector.Spreadsheet
         {
             _reader = new StreamReader( _csvStream );
 
-            _parser = new TextFieldParser(_reader);
-            _parser.TrimWhiteSpace = true;
-            _parser.TextFieldType = FieldType.Delimited;
+            _parser = new TextFieldParser( _reader )
+            {
+                TrimWhiteSpace = true,
+                TextFieldType = FieldType.Delimited
+            };
 
             if ( _importFormat == ImportFormat.Tab )
                 _parser.Delimiters = new [ ] { "\t" };

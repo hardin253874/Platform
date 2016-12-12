@@ -852,7 +852,31 @@ namespace EDC.Database
 					}
 
 					int temp = int.Parse( parsed );
+
+                    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    // Appending a space to the format string will force .NET
+                    // to interpret the format string as a custom numeric format string
+                    // rather than a standard one.
+                    // Without the trailing space, format strings like R0 will fail because
+                    // R is a standard format.
+                    // Ideally the format strings should escape the character literals but
+                    // unfortunately the format strings are used on the client and server
+                    // and are interpreted slightly differently by .NET and by jQuery.
+                    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+                    bool trimLastChar = false;
+				    if (!string.IsNullOrWhiteSpace(displayFormat))
+				    {                        
+				        displayFormat += " ";
+				        trimLastChar = true;
+				    }
+
 					text = temp.ToString( displayFormat, CultureInfo.InvariantCulture );
+
+				    if (trimLastChar && text.Length > 0)
+				    {
+				        text = text.Substring(0, text.Length - 1);
+				    }
 				}
 				else if ( type is Int32Type )
 				{

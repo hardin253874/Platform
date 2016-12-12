@@ -2,7 +2,6 @@
 using System;
 using System.Globalization;
 using EDC.Database.Types;
-using EDC.ReadiNow.Utc;
 
 namespace ReadiNow.Connector.Spreadsheet
 {

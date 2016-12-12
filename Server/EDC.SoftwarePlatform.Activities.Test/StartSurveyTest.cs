@@ -116,32 +116,34 @@ namespace EDC.SoftwarePlatform.Activities.Test
 
             Assert.That(run.WorkflowRunStatus_Enum, Is.EqualTo(WorkflowRunState_Enumeration.WorkflowRunCompleted));
         }
-
-
-        [Ignore("Start Survey activity now only takes Campaign as input.")]
+        
         [Test]
         [RunWithTransaction]
         [RunAsDefaultTenant]
-        public void TestInWf_allParametersSet()
+        public void TestInWf_LaunchPersonCampaign()
         {
-            var wf = CreateWf("TestInWf" + DateTime.UtcNow);
+            var wf = CreatePersonWf("TestInWf" + DateTime.UtcNow);
             var survey = CreateSurvey("TestInWf Survey " + DateTime.UtcNow);
-            var campaign = CreatePersonCampaign(survey, "PC " + DateTime.UtcNow);
             var person = Entity.Create<Person>();
-            campaign.CampaignPersonRecipients.Add(person);
-            var targetPerson = Entity.Create<Person>();
+            var recipients = new EntityCollection<Person>();
+            recipients.Add(person);
+
+            var targetObject = Entity.Create(new EntityRef("test:drink")).As<UserResource>();
 
             var wfInput = new Dictionary<string, object> {
-                { "campaign", campaign },
-                { "pause", false },
-                { "target", targetPerson },
+                { "survey", survey },
+                { "recipients", recipients },
+                { "target", targetObject },
+                { "taskName", "MyTaskName" },
                 { "dueDays", 1m },
-                { "taskName", "MyTaskName" }
+                { "pause", false }
             };
 
-            var run = RunWorkflow(wf, wfInput);
+            WorkflowRun run = RunWorkflow(wf, wfInput);
 
             Assert.That(run.TaskWithinWorkflowRun.Count, Is.EqualTo(0));        // we are not pausing
+
+            person = Entity.Get<Person>(person.Id);
 
             Assert.That(person.TaskForUser.Count, Is.EqualTo(1));
 
@@ -153,7 +155,7 @@ namespace EDC.SoftwarePlatform.Activities.Test
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result.SurveyTarget, Is.Not.Null);
-            Assert.That(result.SurveyTarget.Id, Is.EqualTo(targetPerson.Id), "targetPerson");
+            Assert.That(result.SurveyTarget.Id, Is.EqualTo(targetObject.Id), "targetObject");
 
             var hours = ((DateTime)task.UserTaskDueOn - DateTime.UtcNow).TotalHours;
 
@@ -161,44 +163,69 @@ namespace EDC.SoftwarePlatform.Activities.Test
             Assert.That(hours, Is.GreaterThan(23.0));
             Assert.That(task.Name, Is.EqualTo("MyTaskName"), "taskName");
         }
-
-        [Ignore("Start Survey activity now only takes Campaign as input.")]
+        
         [Test]
         [RunAsDefaultTenant]
         [RunWithoutTransaction]
-        public void TestInWf_pause()
+        public void TestInWf_LaunchTargetCampaign_pause()
         {
             Workflow wf = null;
             UserSurvey survey =  null;
-            SurveyPersonCampaign campaign = null;
             Person person = null;
+            Relationship surveyTaker = null;
+            Definition targetObject = null;
+            IEntity targetInstance = null;
 
             try
             {
-                wf = CreateWf("TestInWf" + DateTime.UtcNow);
+                wf = CreateTargetWf("TestInWf" + DateTime.UtcNow);
                 survey = CreateSurvey("TestInWf Survey " + DateTime.UtcNow);
-                campaign = CreatePersonCampaign(survey, "PC " + DateTime.UtcNow);
                 person = Entity.Create<Person>();
-                campaign.CampaignPersonRecipients.Add(person);
 
-                survey.Save();
-                campaign.Save();
-                person.Save();
+                surveyTaker = new Relationship
+                {
+                    Name = "Survey Tooker " + DateTime.UtcNow,
+                    Cardinality_Enum = CardinalityEnum_Enumeration.ManyToOne,
+                    ToType = Person.Person_Type
+                };
 
-                var wfInput = new Dictionary<string, object> {
-                { "campaign", campaign },
-                { "pause", true }
-            };
+                targetObject = Entity.Create<Definition>();
+                targetObject.Name = "TestInWf Target " + DateTime.UtcNow;
+                targetObject.Inherits.Add(UserResource.UserResource_Type);
+                targetObject.Relationships.Add(surveyTaker);
+                surveyTaker.FromType = targetObject.As<EntityType>();
+                targetObject.Save();
 
-                ToDelete.AddRange(new List<long> { person.Id, campaign.Id, survey.Id, wf.Id });
+                targetInstance = Entity.Create(targetObject.Id);
+                targetInstance.SetRelationships(surveyTaker.Id, new EntityRelationship<Person>(person).ToEntityRelationshipCollection(), Direction.Forward);
+                targetInstance.Save();
+
+                var targets = new EntityCollection<UserResource>();
+                targets.Add(targetInstance.As<UserResource>());
+
+                var wfInput = new Dictionary<string, object>
+                {
+                    {"survey", survey},
+                    {"targets", targets},
+                    {"surveyTaker", surveyTaker},
+                    {"targetObject", targetObject},
+                    {"taskName", "MyTaskName"},
+                    {"dueDays", 1m},
+                    {"pause", true}
+                };
+
+                ToDelete.AddRange(new List<long> { targetInstance.Id, targetObject.Id, surveyTaker.Id, person.Id, survey.Id, wf.Id });
 
                 var run = RunWorkflow(wf, wfInput);
 
                 Assert.That(run.WorkflowRunStatus_Enum, Is.EqualTo(WorkflowRunState_Enumeration.WorkflowRunPaused));
 
-                campaign.SurveyResponses.Count.Should().Be(1);
+                survey = Entity.Get<UserSurvey>(survey.Id).AsWritable<UserSurvey>();
 
-                var result = campaign.SurveyResponses.First();
+                survey.SurveyCampaigns.Count.Should().Be(1);
+                survey.SurveyCampaigns.First().SurveyResponses.Count.Should().Be(1);
+
+                var result = survey.SurveyCampaigns.First().SurveyResponses.First();
 
                 result.UserSurveyTaskForResults.Count.Should().Be(1);
 
@@ -224,10 +251,12 @@ namespace EDC.SoftwarePlatform.Activities.Test
             }
             finally
             {
+                targetInstance?.Delete();
+                targetObject?.Delete();
+                surveyTaker?.Delete();
+                person?.Delete();
+                survey?.Delete();
                 wf?.Delete();
-                survey?.Delete(); ;
-                campaign?.Delete(); ;
-                person?.Delete(); ;
             }
         }
 
@@ -262,16 +291,49 @@ namespace EDC.SoftwarePlatform.Activities.Test
         {
             var wf = Entity.Create<Workflow>();
             wf.Name = name;
-            wf
-                .AddDefaultExitPoint()
+            wf.AddDefaultExitPoint()
                 .AddInput<ResourceArgument>("campaign", SurveyCampaign.SurveyCampaign_Type)
                 .AddStartSurvey("Start Survey", "[campaign]");
 
             wf.Save();
             return wf;
         }
-        //TestCustomName
-        //TestTimeout
-        //TestTimeoutWithDeletedTask
+
+        Workflow CreatePersonWf(string name)
+        {
+            var wf = Entity.Create<Workflow>();
+            wf.Name = name;
+            wf.AddDefaultExitPoint()
+                .AddInput<ResourceArgument>("survey", UserSurvey.UserSurvey_Type)
+                .AddInput<ResourceListArgument>("recipients", Person.Person_Type)
+                .AddInput<ResourceArgument>("target", UserResource.UserResource_Type)
+                .AddInput<StringArgument>("taskName")
+                .AddInput<DecimalArgument>("dueDays")
+                .AddInput<BoolArgument>("pause")
+                .AddLaunchPersonCampaign("Launch Person Campaign",
+                "[survey]", "[recipients]", "[target]", "[taskName]", "[dueDays]", "[pause]");
+
+            wf.Save();
+            return wf;
+        }
+
+        Workflow CreateTargetWf(string name)
+        {
+            var wf = Entity.Create<Workflow>();
+            wf.Name = name;
+            wf.AddDefaultExitPoint()
+                .AddInput<ResourceArgument>("survey", UserSurvey.UserSurvey_Type)
+                .AddInput<ResourceListArgument>("targets", UserResource.UserResource_Type)
+                .AddInput<ResourceArgument>("surveyTaker", Relationship.Relationship_Type)
+                .AddInput<ResourceArgument>("targetObject", Definition.Definition_Type)
+                .AddInput<StringArgument>("taskName")
+                .AddInput<DecimalArgument>("dueDays")
+                .AddInput<BoolArgument>("pause")
+                .AddLaunchTargetCampaign("Launch Target Campaign",
+                "[survey]", "[targets]", "[surveyTaker]", "[targetObject]", "[taskName]", "[dueDays]", "[pause]");
+
+            wf.Save();
+            return wf;
+        }
     }
 }

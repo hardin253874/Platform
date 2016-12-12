@@ -26,7 +26,7 @@ namespace ReadiNow.Connector.Service
 
             // Determine API
             Api api = GetApi( apiPath [ 0 ] );
-            long apiId = api == null ? 0 : api.Id;
+            long apiId = api?.Id ?? 0;
 
             long endpointId = 0;
             if ( !apiOnly && apiPath.Length > 1 && api != null )
@@ -48,7 +48,7 @@ namespace ReadiNow.Connector.Service
         {
             List<Api> apis = Entity.GetByField<Api>( apiPart, "core:apiAddress", Api.ApiEnabled_Field, Api.ApiAddress_Field )
                 .Where( api => api != null && api.ApiEnabled == true )
-                .Where( api => string.Compare( api.ApiAddress, apiPart, false) == 0 ) // enforce case sensitivity
+                .Where( api => string.CompareOrdinal( api.ApiAddress, apiPart) == 0 ) // enforce case sensitivity
                 .Take(2).ToList();
 
             if ( apis.Count == 0 )
@@ -74,7 +74,7 @@ namespace ReadiNow.Connector.Service
 
             List<ApiEndpoint> endpoints = api.ApiEndpoints
                 .Where( endpoint => endpoint != null )
-                .Where( endpoint => string.Compare( endpoint.ApiEndpointAddress, endpointPart, false ) == 0 ) // enforce case sensitivity
+                .Where( endpoint => string.CompareOrdinal( endpoint.ApiEndpointAddress, endpointPart ) == 0 ) // enforce case sensitivity
                 .Where( endpoint => endpoint.ApiEndpointEnabled == true )
                 .Take( 2 ).ToList( );
 

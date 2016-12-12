@@ -1,9 +1,5 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ReadiNow.QueryEngine.Builder.SqlObjects;
 
 namespace ReadiNow.QueryEngine.Builder

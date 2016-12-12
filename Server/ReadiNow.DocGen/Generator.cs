@@ -8,7 +8,6 @@ using System.Xml;
 using System.IO;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
-using ReadiNow.Annotations;
 
 namespace ReadiNow.DocGen
 {
@@ -32,7 +31,7 @@ namespace ReadiNow.DocGen
         /// <summary>
         /// Contains references to external services.
         /// </summary>
-        public ExternalServices ExternalServices { get; private set; }
+        public ExternalServices ExternalServices { get; }
 
 
         /// <summary>
@@ -41,7 +40,7 @@ namespace ReadiNow.DocGen
         /// <param name="templateStream">File stream of the template Word document.</param>
         /// <param name="outputStream">Output stream to receive the generated document.</param>
         /// <param name="settings">Various settings to pass into generation.</param>
-        public void CreateDocument( [NotNull] Stream templateStream, [NotNull] Stream outputStream, [CanBeNull] GeneratorSettings settings = null)
+        public void CreateDocument( Stream templateStream, Stream outputStream, GeneratorSettings settings = null)
         {
             if ( templateStream == null )
                 throw new ArgumentNullException( nameof( templateStream ) );
@@ -79,9 +78,11 @@ namespace ReadiNow.DocGen
 
                     // Build instruction tree from the source stream
                     settings.UpdateProgress("Parsing template");
-                    OpenXmlReader reader = new OpenXmlReader(ExternalServices);
-                    reader.ReaderContext = new ReaderContext();
-                    reader.GeneratorSettings = settings;
+                    OpenXmlReader reader = new OpenXmlReader( ExternalServices )
+                    {
+                        ReaderContext = new ReaderContext( ),
+                        GeneratorSettings = settings
+                    };
 
                     TemplateData template;
 
@@ -138,9 +139,11 @@ namespace ReadiNow.DocGen
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(xml);
 
-            XmlWriterSettings settings = new XmlWriterSettings();
-            settings.Indent = true;
-            settings.IndentChars = "  ";
+            XmlWriterSettings settings = new XmlWriterSettings
+            {
+                Indent = true,
+                IndentChars = "  "
+            };
             XmlWriter w = XmlWriter.Create(path, settings);
             doc.WriteTo(w);
             w.Flush();

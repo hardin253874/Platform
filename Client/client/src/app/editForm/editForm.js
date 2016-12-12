@@ -248,7 +248,6 @@
         updateActionPanel();
         setFocus();
         setupPagerOptions();
-
         ///////////////////////////////////////////////////////////////////////
         // Implementation functions
         //
@@ -810,8 +809,9 @@
 
             var entityId = -1;
             var entityIds = [];
-            if (!areCreating) {
-                entityId = sp.result($scope.model, 'formData.idP');
+            var isCreated = sp.result($scope.model, 'formData._dataState') !== spEntity.DataStateEnum.Create;
+            if (!areCreating || isCreated) {
+                entityId = sp.result($scope.model, 'formData._id._id');
                 entityIds.push(entityId);
             }
 
@@ -944,15 +944,8 @@
         //
         // Flip to view mode
         //
-        function toViewMode() {
-            // ** todo: fix it properly. and check bugs #28634, #28693 ** //
-            // we do not transition to view mode. Initially change started in r49842 in sept 14 as part of performance changes 
-            // we do not transition to view mode. if we came in as 'new' then update the href of current item.
-            navItem.state.name = 'viewForm';
-            navItem.href = getViewModeHref();
-            navItem.state.params.eid = $scope.model.formData.idP;
+        function flipToViewMode() {
             $scope.model.formMode = spEditForm.formModes.view;
-            // ************************************ //
 
             updateActionPanel();
 
@@ -960,43 +953,20 @@
                 fetchTasks();
         }
 
-        function getViewModeHref() {
-            var tenant = sp.result(navItem, 'state.params.tenant');
-
-            if (!tenant) {
-                console.error('toViewMode: invalid tenant info.');
-                return navItem.href;
-            }
-            var actualHref = navItem.href;
-
-            // assuming the href looks like this: '#/EDC/11111/createForm?path=.....'
-            // in createForm state, the id in url is considered definition id. we need to replace the definition id with the id of the instance when it is saved and repalce state from createForm to viewForm
-            var prefix = '#/' + tenant + "/";
-
-            // check if prefix is valid
-            var prefixIndex = actualHref.indexOf(prefix);
-            if (prefixIndex !== 0) {
-                console.error('toViewMode: invalid href.');
-                return navItem.href;
-            }
-
-            var tempHref = actualHref.replace(prefix, ''); // '11111/createForm?path=.....';
-            var index = tempHref.indexOf('/');
-
-            var suffix = tempHref.substring(index); // 'createForm?path=.....';
-
-            var changedHref = prefix + $scope.model.formData.idP + suffix;
-            changedHref = changedHref.replace("createForm", "viewForm");
-
-            return changedHref;
+        function navigateToViewMode() {
+            var id = $scope.model.formData.eid().getNsAliasOrId();
+            spNavService.navigateToSibling(
+                'viewForm',
+                id,
+                $stateParams);
         }
-
+        
         function returnToParent() {
             if (!spNavService.navigateToParent()) {
                 console.log('editForm.js: unable to navigate back to the parent. Trying to switch to view mode.');
 
                 if ($scope.item.actionPanelOptions.areEditing || $scope.item.actionPanelOptions.areCreating) {
-                    toViewMode();
+                    navigateToViewMode();
                 }
             }
         }
@@ -1036,11 +1006,15 @@
             
             if (($state.params.returnToParent || $state.current.name === 'editForm') && !$scope.model.inWizard) {
                 returnToParent();
+            } else if ($state.current.name === 'createForm') {
+                navigateToViewMode();
             } else {
                 // reload the form data and flip to view mode
                 spEditForm.buildRequestStrings($scope.requestStrings, $scope.model.formControl);
 
-                $scope.requestFormData($scope.model.formData.idP).then(toViewMode);
+                $scope.requestFormData($scope.model.formData.idP)
+                    .then(setInitialBookmark) // prevent the confirm dialog
+                    .then(flipToViewMode);
             }
         }
 
@@ -1196,7 +1170,7 @@
                 spNavService.navigateInternal().then(function() {
                     clearPageAlerts();
                     revertToInitialBookmark();
-                    toViewMode();
+                    flipToViewMode();
                 });
             }
         }

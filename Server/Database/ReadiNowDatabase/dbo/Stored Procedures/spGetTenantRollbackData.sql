@@ -14,7 +14,7 @@ BEGIN
 
 	IF ( @days > 0 )
 	BEGIN
-		SET @time = DATEADD( dd, -@days, GETUTCDATE( ) )
+		SET @time = DATEADD( dd, -@days, GETDATE( ) )
 		SET @dateTime = CAST( @time AS DATETIME )
 	END
 

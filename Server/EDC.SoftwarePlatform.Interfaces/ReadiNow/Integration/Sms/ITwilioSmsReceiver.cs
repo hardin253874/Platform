@@ -1,10 +1,6 @@
 ﻿// Copyright 2011-2016 Global Software Innovation Pty Ltd
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReadiNow.Integration.Sms
 {
@@ -21,9 +17,8 @@ namespace ReadiNow.Integration.Sms
         string GetIncommingUrl(long notifierId);
 
         /// <summary>
-        /// Handle and incomminng SMS message
+        /// Handle and incoming SMS message
         /// </summary>
-        /// <param name="tenant">Tenant name</param>
         /// <param name="notifierId">The id of the notifier</param>
         /// <param name="sms">Twilio sms message</param>
         void HandleRequest(long notifierId, TwilioSms sms);
@@ -32,7 +27,10 @@ namespace ReadiNow.Integration.Sms
         /// Handle the receipt of a status update for a sent message
         /// </summary>
         /// <returns>True if the status was handled</returns>
-        /// <param name="sendRecordId"></param>
+        /// <param name="notifierId"></param>
+        /// <param name="messageSid"></param>
+        /// <param name="messageStatus"></param>
+        /// <param name="errorCode"></param>
         bool HandleStatusUpdate(long notifierId, string messageSid, string messageStatus, string errorCode);
 
         /// <summary>

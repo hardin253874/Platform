@@ -14,7 +14,6 @@
             'mod.app.resourceScopeService',
             'sp.navService',
             'mod.common.spVisDataActionService',
-            'mod.common.spVisDataService',
             'mod.common.spMobile'
         ]);
 
@@ -22,7 +21,7 @@
         .controller('chartRenderControl', chartRenderControl);
 
     /* @ngInject */
-    function chartRenderControl($scope, spResourceScope, spVisDataService, spVisDataActionService, spState, spMobileContext) {
+    function chartRenderControl($scope, spResourceScope, spVisDataActionService, spState, spMobileContext) {
         var chartId;
         var onScopeUpdateUnregisterListener;
         var condsChangedBySender = false;        
@@ -93,9 +92,7 @@
             // note - if on mobile we ignore on-screen linking and do the default drilldown
 
             if (spMobileContext.isMobile || !updateScopeIfApplicable(actionData)) {
-                if (!spVisDataService.isEmptyConds(newDrilldownConds)) {
-                    executeClickAction(actionData, true);
-                }
+                executeClickAction(actionData, true);
             }
         }
 

@@ -35,15 +35,17 @@ namespace ReadiNow.Connector.ImportSpreadsheet
             {
                 SheetMetadata metadata = dataFile.ReadMetadata( );
 
-                SampleTable table = new SampleTable( );
-                table.Columns = metadata.Fields.Select(
-                    field =>
-                        new SampleColumn
-                        {
-                            ColumnName = field.Key,
-                            Name = field.Title
-                        }
-                    ).ToList( );
+                SampleTable table = new SampleTable
+                {
+                    Columns = metadata.Fields.Select(
+                        field =>
+                            new SampleColumn
+                            {
+                                ColumnName = field.Key,
+                                Name = field.Title
+                            }
+                        ).ToList( )
+                };
 
                 // Read records
                 var records = dataFile.GetObjects( ).Take( NumberOfSampleRows );

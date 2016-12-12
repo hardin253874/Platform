@@ -85,7 +85,7 @@ namespace ReadiNow.Expressions.NameResolver
         {
             // Validate
             if (string.IsNullOrEmpty(typeScriptName))
-                throw new ArgumentNullException("memberScriptName");
+                throw new ArgumentNullException( nameof( typeScriptName ) );
 
             // Create key
             CachingScriptNameKey key = new CachingScriptNameKey(0, typeScriptName, MemberType.Type);

@@ -11,12 +11,12 @@
             <rn-info-button ng-if="::showHelp(tabItem)" heading="{{::tabItem.name}}" text="{{::tabItem.tooltip}}"> </rn-info-button>
             
             <span ng-if="tabItem.model.isInDesign && !tabItem.model.isPlaceholder"
-                  ng-click="configureTab(tabItem)" onclick="event.preventDefault()">
-                <img src="assets/images/icon_configure_w.png">
+                  ng-click="configureTab(tabItem)" onclick="event.preventDefault()" class="sp-form-builder-tabButton">
+                <img src="assets/images/icon_configure_w.svg">
             </span>
             <span ng-if="tabItem.model.isInDesign && !tabItem.model.isPlaceholder"
-                  ng-click="removeTab(tabItem)" onclick="event.preventDefault()">
-                <img src="assets/images/icon_remove_w.png">
+                  ng-click="removeTab(tabItem)" onclick="event.preventDefault()"  class="sp-form-builder-tabButton">
+                <img src="assets/images/icon_remove_w.svg">
             </span>
 
 

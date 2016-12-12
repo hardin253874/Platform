@@ -100,6 +100,8 @@ namespace ReadiNow.Expressions.Tree
         /// </summary>
         private static void ExpandTypeGroups<T>(List<T> functions) where T : Function
         {
+            // ReSharper disable PossibleMultipleEnumeration
+
             var numeric = new[] { DataType.Int32, DataType.Decimal, DataType.Currency };
             var dateOrTime = new[] { DataType.Date, DataType.Time, DataType.DateTime };
             var comparable = numeric.Union(dateOrTime).Union(new[] { DataType.String, DataType.Entity  });
@@ -131,6 +133,8 @@ namespace ReadiNow.Expressions.Tree
                         case TypeGroup.AllExceptBool: types = allExceptBool; break;
                         case TypeGroup.AllExceptEntity: types = allExceptEntity; break;
                         case TypeGroup.All: types = all; break;
+                        default:
+                            throw new Exception( "Unknown typeGroup" );
                     }
 
                     foreach (DataType type in types)

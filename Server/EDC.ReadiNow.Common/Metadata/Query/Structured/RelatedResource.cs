@@ -78,31 +78,12 @@ namespace EDC.ReadiNow.Metadata.Query.Structured
         public RelationshipDirection RelationshipDirection { get; set; }
 
         /// <summary>
-        /// If true then a row will only be shown if the target exists (inner join).
-        /// If false, then the row will be shown regardless (left join).
-        /// </summary>
-        // field: targetMustExist
-        [DataMember(Order = 3)]
-        [DefaultValue(false)]
-        public bool ResourceMustExist { get; set; }
-
-        /// <summary>
-        /// If true then this relationship will never constrain the parent node (forced left join),
-        /// even if a child node or expression has requires.
-        /// </summary>
-        // field: targetMustExist
-        [DataMember(Order = 4)]
-        [DefaultValue(false)]
-        // field: resourceNeedNotExist
-        public bool ResourceNeedNotExist { get; set; }
-
-        /// <summary>
         /// If true then a row from the parent node will only be shown if the target exists.
         /// I.e. it forces an inner join to the immediate parent.
         /// (c.f. with ResourceMustExist, which inner joins all the way to the root)
         /// </summary>
         // field: constrainParent
-        [DataMember(Order = 5)]
+        [DataMember(Order = 3)]
         [DefaultValue(false)]
         public bool ConstrainParent { get; set; }
 
@@ -111,7 +92,7 @@ namespace EDC.ReadiNow.Metadata.Query.Structured
         /// If false, then the row will be shown regardless (left join).
         /// </summary>
         // fields: followRecursive, includeSelfInRecursive
-        [DataMember(Order = 6)]
+        [DataMember(Order = 4)]
         [DefaultValue(RecursionMode.None)]
         public RecursionMode Recursive { get; set; }
 
@@ -121,7 +102,7 @@ namespace EDC.ReadiNow.Metadata.Query.Structured
         /// (As, joining may have the result of multiple result rows appearing when all we want to do is use it as a constriant).
         /// </summary>
         // field: checkExistenceOnly
-        [DataMember(Order = 7)]
+        [DataMember(Order = 5)]
         [DefaultValue(false)]
         public bool CheckExistenceOnly { get; set; }
 
@@ -130,9 +111,8 @@ namespace EDC.ReadiNow.Metadata.Query.Structured
         /// This allows for showing a report of related resources, when the list of related resources is currently being edited and is unsaved.
         /// </summary>
         // not included in entity model
-        [DataMember(Order = 8)]
+        [DataMember(Order = 6)]
         public FauxRelationships FauxRelationships { get; set; }
-
 
         /// <summary>
         /// Gets or sets a value indicating whether to exclude this relationship if is entity is not referenced in the query.
@@ -140,7 +120,7 @@ namespace EDC.ReadiNow.Metadata.Query.Structured
         /// <value>
         /// 	<c>true</c> to exclude the relationship if it is unreferenced; otherwise, <c>false</c>.
         /// </value>
-        [DataMember(Order = 9)]
+        [DataMember(Order = 7)]
         [DefaultValue(false)]
         // not sure if we want to include this in entity model
         public bool ExcludeIfNotReferenced { get; set; }
@@ -149,7 +129,7 @@ namespace EDC.ReadiNow.Metadata.Query.Structured
         /// If true then all related items are returned, not just those linked from the parent.
         /// </summary>
         // field: parentNeedNotExist
-        [DataMember( Order = 10 )]
+        [DataMember( Order = 8 )]
         [DefaultValue( false )]
         public bool ParentNeedNotExist { get; set; }
 

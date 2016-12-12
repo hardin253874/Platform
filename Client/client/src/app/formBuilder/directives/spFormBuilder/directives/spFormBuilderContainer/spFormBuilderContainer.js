@@ -2046,6 +2046,10 @@
 
                 scope.control.dataState = spEntity.DataStateEnum.Delete;
 
+                if (scope.control.graph && scope.control.graph.history && scope.control.graph.history.addBookmark) {
+                    scope.control.graph.history.addBookmark();
+                }
+
                 spFormBuilderService.refreshMemoizedFunctions();
 
                 performLayout();

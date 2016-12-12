@@ -1,10 +1,6 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
-using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Linq;
 using EDC.Common;
-using EDC.Database;
 using EDC.ReadiNow.Metadata.Query.Structured;
 
 namespace ReadiNow.QueryEngine.Builder.SqlObjects
@@ -33,7 +29,6 @@ namespace ReadiNow.QueryEngine.Builder.SqlObjects
 		public List<SqlOrderItem> Items
 		{
 			get;
-			private set;
 		}
 
 

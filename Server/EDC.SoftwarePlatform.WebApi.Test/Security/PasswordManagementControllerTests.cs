@@ -173,7 +173,7 @@ namespace EDC.SoftwarePlatform.WebApi.Test.Security
                     request.PopulateBody(new PasswordChangeInfo
                     {
 						CurrentPassword = initialPassword,
-                        Password = string.Empty
+						Password = string.Empty
                     });
 
                     response = request.GetResponse();
@@ -224,7 +224,7 @@ namespace EDC.SoftwarePlatform.WebApi.Test.Security
                     request.PopulateBody(new PasswordChangeInfo
                     {
 						CurrentPassword = initialPassword,
-                        Password = "a"
+						Password = "a"
                     });
 
                     response = request.GetResponse();

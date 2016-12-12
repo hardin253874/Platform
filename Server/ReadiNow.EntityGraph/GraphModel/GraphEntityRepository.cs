@@ -83,10 +83,8 @@ namespace ReadiNow.EntityGraph.GraphModel
         public T Get<T>( long id, string preloadQuery ) where T : class, IEntity
         {
             IEntity entity = GetImpl( id.ToEnumerable( ), preloadQuery, SecurityOption.DemandAll ).SingleOrDefault( );
-            if ( entity == null )
-                return null;
 
-            return entity.As<T>( );
+            return entity?.As<T>( );
         }
 
 
@@ -124,9 +122,9 @@ namespace ReadiNow.EntityGraph.GraphModel
         /// <summary>
         /// Loads a graph of entities and returns the root.
         /// </summary>
-        /// <param name="id">The root entity of the graph.</param>
+        /// <param name="ids">The root entity of the graph.</param>
         /// <param name="preloadQuery">The entity member request of what related content to load.</param>
-        /// <param name="securityDemand">Pass true for a security demand, false for a security check. I.e. throw exception vs return non-existant.</param>
+        /// <param name="securityOption"></param>
         /// <returns>An IEntity that represents the root node, or null if it could not be found.</returns>
         private IEnumerable<IEntity> GetImpl( IEnumerable<long> ids, string preloadQuery, SecurityOption securityOption )
         {

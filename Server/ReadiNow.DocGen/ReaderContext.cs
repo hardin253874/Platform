@@ -26,7 +26,7 @@ namespace ReadiNow.DocGen
         /// </summary>
         public EntityType CurrentEntityType
         {
-            get { return CurrentInstruction == null ? null : CurrentInstruction.ContextEntityType; }
+            get { return CurrentInstruction?.ContextEntityType; }
         }
 
 

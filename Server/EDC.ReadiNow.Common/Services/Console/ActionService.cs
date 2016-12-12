@@ -781,6 +781,7 @@ namespace EDC.ReadiNow.Services.Console
             var suppressActionsForType = default(bool);
             var showNewActionsButton = default(bool?);
             var showExportActionsButton = default(bool?);
+            var showEditInlineActionsButton = default(bool?);
 
             if (request.HostResources != null)
             {
@@ -818,6 +819,11 @@ namespace EDC.ReadiNow.Services.Console
                         if (selectBehavior.BehaviorActionMenu.ShowExportActionsButton.HasValue)
                         {
                             showExportActionsButton = selectBehavior.BehaviorActionMenu.ShowExportActionsButton.Value;
+                        }
+
+                        if (selectBehavior.BehaviorActionMenu.ShowEditInlineActionsButton.HasValue)
+                        {
+                            showEditInlineActionsButton = selectBehavior.BehaviorActionMenu.ShowEditInlineActionsButton.Value;
                         }
                     }
 
@@ -891,6 +897,11 @@ namespace EDC.ReadiNow.Services.Console
                 if (showExportActionsButton.HasValue)
                 {
                     request.ShowExportActionsButton = showExportActionsButton.Value;
+                }
+
+                if (showEditInlineActionsButton.HasValue)
+                {
+                    request.ShowEditInlineActionsButton = showEditInlineActionsButton.Value;
                 }
             }
         }

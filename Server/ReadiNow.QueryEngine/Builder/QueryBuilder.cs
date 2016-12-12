@@ -40,14 +40,6 @@ namespace ReadiNow.QueryEngine.Builder
     public partial class QueryBuilder
     {
         /// <summary>
-		///     If true, the root-level 'Entity' table is not rendered, and its
-		///     role is delegated to the first relationship join. This is an optimization.
-        /// </summary>
-#pragma warning disable 649
-		private bool _collapseRootEntity;
-#pragma warning restore 649
-
-        /// <summary>
 		///     The current select statement.
         /// </summary>
 		private SqlSelectStatement _currentStatement;
@@ -55,7 +47,7 @@ namespace ReadiNow.QueryEngine.Builder
         /// <summary>
 		///     Settings to apply when constructing SQL.
         /// </summary>
-        private QuerySqlBuilderSettings _querySettings;
+        private readonly QuerySqlBuilderSettings _querySettings;
 
         /// <summary>
         /// The result container.
@@ -70,7 +62,7 @@ namespace ReadiNow.QueryEngine.Builder
         /// <summary>
 		///     The input Structured-Query to be built.
         /// </summary>
-		private StructuredQuery _structuredQuery;
+		private readonly StructuredQuery _structuredQuery;
 
         /// <summary>
         /// Available shared sql preamble.
@@ -459,7 +451,6 @@ namespace ReadiNow.QueryEngine.Builder
         /// and convert them to script expressions.
         /// </summary>
         /// <param name="query">The query</param>
-        /// <param name="settings">The settings</param>
         private void CreateScriptExpressionsForCalculatedFields(StructuredQuery query)
         {
             var allExprs = StructuredQueryHelper.WalkExpressions(query);
@@ -675,45 +666,55 @@ namespace ReadiNow.QueryEngine.Builder
         }
 
         /// <summary>
-		///     Determine if a constraint needs to be applied to a specific child table.
-		///     This may be the case for 'exists' sub queries, or for forced left joins. 
+        ///     Determine if a constraint needs to be applied to a specific child table.
+        ///     This may be the case for 'exists' sub queries, or for forced left joins. 
         /// </summary>
-        private bool AddConditionToChildTableExplicitly(QueryCondition condition, SqlExpression sqlExpr, SqlQuery sqlQuery, StructuredQuery structuredQuery)
+        private bool AddConditionToChildTableExplicitly( QueryCondition condition, SqlExpression sqlExpr, SqlQuery sqlQuery, StructuredQuery structuredQuery, bool anyRightJoins )
         {
-			if ( condition.Expression != null )
+            var resCol = condition.Expression as EntityExpression;
+            if ( resCol == null )
+                return false;
+            
+            var relRes = sqlQuery.References.FindEntity<Entity>( resCol.NodeId );
+            if ( relRes == null )
+                return false;
+            
+            //find the full path of parent nodeEntities by current nodeId and rootNode
+            List<Entity> nodeEntitiesPath = StructuredQueryHelper.FindNodePath( resCol.NodeId,
+                structuredQuery.RootEntity );
+
+            nodeEntitiesPath.Add( relRes );
+
+            //if any relatedResource in the nodeEntitiesPath is CheckExistenceOnly or ResourceNeedNotExist                       
+            if ( nodeEntitiesPath.Any(
+                    e => (e as ResourceEntity)?.ResourceNeedNotExist == true 
+                    ||   (e as RelatedResource)?.CheckExistenceOnly == true ) )
             {
-				var resCol = condition.Expression as EntityExpression;
-				if ( resCol != null )
-                {
-                    var relRes = sqlQuery.References.FindEntity<Entity>(resCol.NodeId);
-                    if (relRes != null)
-                    {
-                        //find the full path of parent nodeEntities by current nodeId and rootNode
-                        List<Entity> nodeEntitiesPath = StructuredQueryHelper.FindNodePath(resCol.NodeId,
-                            structuredQuery.RootEntity);
-
-                        nodeEntitiesPath.Add(relRes);
-                        //if any relatedResource in the nodeEntitiesPath is CheckExistenceOnly or ResourceNeedNotExist                       
-                        if (
-                            nodeEntitiesPath.Any(
-                                e =>
-                                    (e is RelatedResource &&
-                                     (((RelatedResource) e).CheckExistenceOnly ||
-                                      ((RelatedResource) e).ResourceNeedNotExist))))
-                        {
-						    SqlTable table = sqlQuery.References.FindSqlTable( relRes );
-						    table.Conditions.Add( sqlExpr.Sql );
-                            table.HasCustomConditions = true;
-						    return true;
-                    }
-				}
-			}
+                SqlTable table = sqlQuery.References.FindSqlTable( relRes );
+                table.Conditions.Add( sqlExpr.Sql );
+                table.HasCustomConditions = true;
+                return true;
             }
-			return false;
-		}
 
-                
-		/// <summary>
+            // If the query contains any right joins, and this condition isn't part of one, then ensure it gets applied prior to the right joins
+            if ( anyRightJoins && !nodeEntitiesPath.Any( e => ( e as CustomJoinNode )?.ParentNeedNotExist == true ) )
+            {
+                // Special case exception if the condition is requesting that the root node is not null ..
+                // .. because matrix charts requires this for drilldown (and there's no other sane interpretation of this particular condition anyway)
+                bool rootIsNotNull = relRes == structuredQuery.RootEntity && condition.Operator == ConditionType.IsNotNull;
+
+                if ( !rootIsNotNull )
+                {
+                    sqlQuery.AddWhereCondition( sqlExpr, true );
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+
+        /// <summary>
 		///     Processes a structured query select column
 		/// </summary>
 		private void AddOrderByExpression( OrderByItem orderByItem, SqlQuery sqlQuery )
@@ -965,13 +966,14 @@ namespace ReadiNow.QueryEngine.Builder
                         sql = $"try_convert(nvarchar(max), {orderColumnSql}) + try_convert(nvarchar(max), {sql})";
                     }
 
-                    DatabaseType databaseType = selectColumn == null ? null : selectColumn.Expression.DatabaseType;
+                    DatabaseType databaseType = selectColumn?.Expression.DatabaseType;
                     if (databaseType == null)
                     {
                         SelectColumn selectColumnObject = selectColumns.FirstOrDefault(sc => sc.ColumnId == aggregatedColumn.ReportColumnId);
                         if (selectColumnObject != null)
                         {
-                            databaseType = (selectColumnObject.Expression is EntityExpression) ? GetSelectColumnCastType((EntityExpression)selectColumnObject.Expression) : DatabaseType.StringType;
+                            EntityExpression entityExpr = selectColumnObject.Expression as EntityExpression;
+                            databaseType = entityExpr != null ? GetSelectColumnCastType( entityExpr ) : DatabaseType.StringType;
                         }
                     }
 
@@ -989,11 +991,11 @@ namespace ReadiNow.QueryEngine.Builder
                     }
                     else
                     {
-                        existingAlias = selectColumn == null ? null : selectColumn.Alias;
+                        existingAlias = selectColumn?.Alias;
                         existingAliasDictionary.Add(aggregatedColumn.ReportColumnId, existingAlias);
                     }
 
-                    newSelect.Alias = string.Format("{0} {1}", aggregatedColumn.AggregateMethod.ToString(), existingAlias);
+                    newSelect.Alias = string.Format("{0} {1}", aggregatedColumn.AggregateMethod, existingAlias);
                     if (selectColumn != null) 
                     {
                         selectColumn.Alias = columnAlias;
@@ -1250,7 +1252,7 @@ namespace ReadiNow.QueryEngine.Builder
             foreach ( string rightSql in arguments )
 		    {
 		        long tempId;
-		        if ( rightSql == null || ( !rightSql.StartsWith( "@" ) && !long.TryParse(rightSql, out tempId)) )
+		        if ( !rightSql.StartsWith( "@" ) && !long.TryParse(rightSql, out tempId) )
 		        {
 		            continue;		            
 		        }
@@ -1360,7 +1362,10 @@ namespace ReadiNow.QueryEngine.Builder
 			// Get structure view details
 			var structureView = Model.Entity.Get<StructureView>( svExpr.StructureViewId );
             bool isReverse = structureView.FollowRelationshipInReverse ?? false;
+
             Relationship structureHierarchyRelationship = structureView.StructureHierarchyRelationship;                        
+            if ( structureHierarchyRelationship == null )
+                throw new Exception( $"Structure View {structureView.Id} is missing a structure relationship." );
 
             // Get levels being matched
             IEnumerable<string> structureLevels = condition.Arguments
@@ -1385,9 +1390,14 @@ namespace ReadiNow.QueryEngine.Builder
 
 		    string includeSelf = (op == ConditionType.AnyAtOrAboveStructureLevel || op == ConditionType.AnyAtOrBelowStructureLevel) ? "1" : "0";
 
+            long? fromTypeId = structureHierarchyRelationship.FromType?.Id;
+            long? toTypeId = structureHierarchyRelationship.ToType?.Id;
+            if ( fromTypeId == null || toTypeId == null )
+                throw new Exception( $"Relationship {structureHierarchyRelationship.Id} is missing endpoint type details." );
+
             string structureHierarchyRelationshipIdParamName = RegisterSharedParameter(DbType.Int64, structureHierarchyRelationship.Id.ToString(CultureInfo.InvariantCulture));
-            string fromTypeIdParamName = RegisterSharedParameter(DbType.Int64, structureHierarchyRelationship.FromType.Id.ToString(CultureInfo.InvariantCulture));
-            string toTypeIdParamName = RegisterSharedParameter(DbType.Int64, structureHierarchyRelationship.ToType.Id.ToString(CultureInfo.InvariantCulture));
+            string fromTypeIdParamName = RegisterSharedParameter(DbType.Int64, fromTypeId.Value.ToString(CultureInfo.InvariantCulture));
+            string toTypeIdParamName = RegisterSharedParameter(DbType.Int64, toTypeId.Value.ToString(CultureInfo.InvariantCulture));
             string includeSelfParamName = RegisterSharedParameter(DbType.Int32, includeSelf);
 
 		    string parentTableIdSql = GetColumnSql( parentTable, parentTable.IdColumn );
@@ -1452,39 +1462,38 @@ namespace ReadiNow.QueryEngine.Builder
             // get condition expression from existing query select clause first.
             SqlExpression leftHand = existingExpression ?? ConvertExpression(condition.Expression, sqlQuery);
 
+            if ( leftHand == null )
+                throw new InvalidOperationException( "Left-hand expression was null" );
 
-		    string leftSql = null;
+		    string leftSql;
 
-		    if (leftHand != null)
+		    if (leftHand.DatabaseType == DatabaseType.ChoiceRelationshipType ||
+		        leftHand.DatabaseType == DatabaseType.InlineRelationshipType ||
+                condition.Argument?.Type is ChoiceRelationshipType ||
+                condition.Argument?.Type is InlineRelationshipType )
 		    {
-		        if (leftHand.DatabaseType == DatabaseType.ChoiceRelationshipType ||
-		            leftHand.DatabaseType == DatabaseType.InlineRelationshipType ||
-                    (condition.Argument != null && condition.Argument.Type is ChoiceRelationshipType) ||
-                    (condition.Argument != null && condition.Argument.Type is InlineRelationshipType))
+				if ( sqlQuery.GroupByClause != null && sqlQuery.GroupByClause.Expressions != null && sqlQuery.GroupByClause.Expressions.Count > 0 )
 		        {
-					if ( sqlQuery.GroupByClause != null && sqlQuery.GroupByClause.Expressions != null && sqlQuery.GroupByClause.Expressions.Count > 0 )
-		            {
-                        // Use the correct column expression and not the alias table name
-		                SqlSelectItem selectItem = sqlQuery.SelectClause.Items.FirstOrDefault(sc => sc.Alias == leftHand.ConditionSql.Split('.').Last());
-                        leftSql = selectItem != null ? selectItem.Expression.ConditionSql : leftHand.ConditionSql;
-                    }
-		            else
-		            {
-                        leftSql = leftHand.ConditionSql;
-                    }
-		        }
+                    // Use the correct column expression and not the alias table name
+		            SqlSelectItem selectItem = sqlQuery.SelectClause.Items.FirstOrDefault(sc => sc.Alias == leftHand.ConditionSql.Split('.').Last());
+                    leftSql = selectItem != null ? selectItem.Expression.ConditionSql : leftHand.ConditionSql;
+                }
 		        else
 		        {
-		            if ((condition.Argument != null && !(condition.Argument.Type is ChoiceRelationshipType)) &&
-		                (condition.Argument != null && !(condition.Argument.Type is InlineRelationshipType)))
-		            {
-                        // Cater for a non ID lookup
-                        leftSql = leftHand.DisplaySql;
-                    }
-		            else
-		            {
-                        leftSql = leftHand.Sql;
-		            }
+                    leftSql = leftHand.ConditionSql;
+                }
+		    }
+		    else
+		    {
+		        if ((condition.Argument != null && !(condition.Argument.Type is ChoiceRelationshipType)) &&
+		            (condition.Argument != null && !(condition.Argument.Type is InlineRelationshipType)))
+		        {
+                    // Cater for a non ID lookup
+                    leftSql = leftHand.DisplaySql;
+                }
+		        else
+		        {
+                    leftSql = leftHand.Sql;
 		        }
 		    }
 
@@ -1530,7 +1539,7 @@ namespace ReadiNow.QueryEngine.Builder
                 }
             };
 
-            bool isStringType = leftHand != null && leftHand.DatabaseType is StringType;
+            bool isStringType = leftHand.DatabaseType is StringType;
 
             switch (condition.Operator)
             {
@@ -1705,13 +1714,13 @@ namespace ReadiNow.QueryEngine.Builder
         /// Generate SQL that tests for equality
         /// </summary>
         /// <param name="leftExpr">The left expression</param>
-        /// <param name="leftHand">The left expression</param>
+        /// <param name="databaseType"></param>
         /// <param name="leftSql">The left SQL (already generated)</param>
         /// <param name="rightSql">The right SQL (already generated)</param>
         /// <returns>The equality test</returns>
         private static string ConvertEqualityTest( ScalarExpression leftExpr, DatabaseType databaseType, string leftSql, string rightSql )
         {
-            string sql = null;
+            string sql;
 
             if ( leftExpr is ResourceDataColumn
                 && leftSql.EndsWith( ".Data" )
@@ -1734,9 +1743,11 @@ namespace ReadiNow.QueryEngine.Builder
         private int GetFinancialYearStartMonth()
         {
             var generalSetting = Model.Entity.Get<TenantGeneralSettings>(new EntityRef("core", "tenantGeneralSettingsInstance"));
-            if (generalSetting != null && generalSetting.FinYearStartMonth != null)
+
+            string startMonthAlias = generalSetting?.FinYearStartMonth?.Alias;
+            if ( startMonthAlias != null)
             {
-                return PeriodConditionHelper.GetFinancialYearStartMonth(generalSetting.FinYearStartMonth.Alias.Replace("core:", ""));
+                return PeriodConditionHelper.GetFinancialYearStartMonth( startMonthAlias.Replace("core:", ""));
             }
 
             return 1; //Jan
@@ -1747,8 +1758,6 @@ namespace ReadiNow.QueryEngine.Builder
         /// Creates a SQL object structure from a structured query.
         /// </summary>
         /// <param name="fullQuery">The structured query.</param>
-        /// <param name="additionalConditions">Additional <see cref="QueryCondition"/>s. This can be null</param>
-        /// <param name="additionalOrderColumns">The additional order columns. This can be null.</param>
         /// <returns>A SqlQuery instance.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="fullQuery"/> cannot be null.</exception>
         private SqlQuery CreateSqlQuery(SqlSelectStatement fullQuery)
@@ -1839,6 +1848,9 @@ namespace ReadiNow.QueryEngine.Builder
                 }
             }
 
+            // Determine if there are any right joins
+            bool anyRightJoins = StructuredQueryHelper.GetAllNodes( structuredQuery.RootEntity ).Any( node => ( node as CustomJoinNode )?.ParentNeedNotExist == true );
+
             // Add where clauses
             foreach (QueryCondition condition in conditions)
             {
@@ -1890,7 +1902,7 @@ namespace ReadiNow.QueryEngine.Builder
                 }
 
                 // Determine if the query should be placed within an exists-clause table
-                if (!AddConditionToChildTableExplicitly(condition, boolExpr, conditionQuery, structuredQuery))
+                if (!AddConditionToChildTableExplicitly(condition, boolExpr, conditionQuery, structuredQuery, anyRightJoins ) )
                 {
                     conditionQuery.AddWhereCondition(boolExpr);
                 }
@@ -2092,6 +2104,7 @@ namespace ReadiNow.QueryEngine.Builder
         /// </summary>
         /// <param name="entity">The entity.</param>
         /// <param name="suppressAlias">if set to <c>true</c> suppress alias.</param>
+        /// <param name="parameterName"></param>
         /// <returns></returns>
 		private string FormatEntity( IEntityRef entity, bool suppressAlias, string parameterName = null )
         {

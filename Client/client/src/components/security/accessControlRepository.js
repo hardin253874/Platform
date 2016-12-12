@@ -99,7 +99,7 @@
                 var typesPromiseBatch = new spEntityService.BatchRequest();
                 var typesPromise = $q.all({
                     definitions: spEntityService.getEntitiesOfType("core:definition", request, { batch: typesPromiseBatch }),
-                    others: spEntityService.getEntities(["console:customEditForm", "core:workflow", "core:reportTemplate", "core:fileType", "core:documentType", "core:imageFileType"], request, { batch: typesPromiseBatch })
+                    others: spEntityService.getEntities(["console:customEditForm", "core:workflow", "core:reportTemplate", "core:fileType", "core:documentType", "core:imageFileType", "core:photoFileType"], request, { batch: typesPromiseBatch })
                     // Add request(s) for new type or types here. Remember to change the code in AccessRulesController, too.
                 }).then(function (promises) {
                     return _.flatten(_.values(promises));

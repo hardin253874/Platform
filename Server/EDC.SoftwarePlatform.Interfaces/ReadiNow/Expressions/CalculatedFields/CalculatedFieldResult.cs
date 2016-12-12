@@ -15,12 +15,12 @@ namespace ReadiNow.Expressions.CalculatedFields
         /// </summary>
         /// <param name="fieldId">The calculated field ID.</param>
         /// <param name="entities">Results for this field on each individual entity.</param>
-        public CalculatedFieldResult(long fieldId, IReadOnlyCollection<CalculatedFieldSingleResult> entities)
+        public CalculatedFieldResult( long fieldId, IReadOnlyCollection<CalculatedFieldSingleResult> entities )
         {
-            if (fieldId <= 0)
-                throw new ArgumentOutOfRangeException("fieldId");
-            if (entities == null)
-                throw new ArgumentOutOfRangeException("entities");
+            if ( fieldId <= 0 )
+                throw new ArgumentOutOfRangeException( nameof( fieldId ) );
+            if ( entities == null )
+                throw new ArgumentOutOfRangeException( nameof( entities ) );
 
             FieldId = fieldId;
             Entities = entities;
@@ -31,12 +31,12 @@ namespace ReadiNow.Expressions.CalculatedFields
         /// </summary>
         /// <param name="fieldId">The calculated field ID.</param>
         /// <param name="exception">A parse exception that was encountered while compiling the calculation for this field.</param>
-        public CalculatedFieldResult(long fieldId, ParseException exception)
+        public CalculatedFieldResult( long fieldId, ParseException exception )
         {
-            if (fieldId <= 0)
-                throw new ArgumentOutOfRangeException("fieldId");
-            if (exception == null)
-                throw new ArgumentOutOfRangeException("exception");
+            if ( fieldId <= 0 )
+                throw new ArgumentOutOfRangeException( nameof( fieldId ) );
+            if ( exception == null )
+                throw new ArgumentOutOfRangeException( nameof( exception ) );
 
             FieldId = fieldId;
             ParseException = exception;

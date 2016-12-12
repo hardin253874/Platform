@@ -7,7 +7,7 @@ namespace ReadiNow.DocGen.MacroParser
         /// <summary>
         /// Please list ALL KEYWORDS here !!!!
         /// </summary>
-        public static readonly string[] AllKeywords = new[] {
+        public static readonly string[] AllKeywords = {
             Load, TestData,
             With, If, Force, Rows, List,
             End, Show, Position };

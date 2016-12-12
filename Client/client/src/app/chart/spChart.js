@@ -283,6 +283,8 @@
                 d3.select(scope.rootElem).select("svg").remove();
                 scope.options.selectedEntityId = 0;
                 scope.options.drilldownConds = spVisDataService.getEmptyConds();
+                scope.options.drilldownConds[0].initialEmpty = true;   // flag to tell click-through not to action it.. (hmm)
+                // problem is that we want an on-screen report binding to update, but we don't want to activate a click-through drilldown.
 
                 var chart = new spCharts.Chart();
                 chart.isMobile = spMobileContext.isMobile;

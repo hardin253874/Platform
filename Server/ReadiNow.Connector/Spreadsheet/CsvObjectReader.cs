@@ -13,7 +13,7 @@ namespace ReadiNow.Connector.Spreadsheet
     {
         private readonly string[ ] _fields;
         private readonly long _lineNumber;
-        private DataFileReaderSettings _settings;
+        private readonly DataFileReaderSettings _settings;
 
         /// <summary>
         /// Constructor.

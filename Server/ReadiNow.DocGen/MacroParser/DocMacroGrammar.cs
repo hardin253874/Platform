@@ -131,7 +131,8 @@ namespace ReadiNow.DocGen.MacroParser
         /// <summary>
         /// Thread-safe pool of grammars.
         /// </summary>
-        private static ObjectPool<DocMacroGrammar> _grammarPool = new ObjectPool<DocMacroGrammar>(CreateGrammar);
+        private static readonly ObjectPool<DocMacroGrammar> _grammarPool = new ObjectPool<DocMacroGrammar>( CreateGrammar );
+
         #endregion
     }
 }

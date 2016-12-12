@@ -164,7 +164,8 @@
             // if we came in as createForm (from a report or a screen) and after saving we switched to viewForm
             // without transitioning to viewForm state, then reset the flag
             var navItem = spNavService.getCurrentItem();
-            if (navItem && navItem.href && navItem.href.includes('viewForm?') && $state.current.name === 'createForm') {
+            var href = sp.result(navItem, 'href');
+            if (href && href.indexOf('viewForm?') >= 0 && $state.current.name === 'createForm') {
                 $scope.disallowCreateRelatedEntityInNewMode = false;
                 if ($scope.pickerOptions) {
                     $scope.pickerOptions.disallowCreateRelatedEntityInNewMode = $scope.disallowCreateRelatedEntityInNewMode;
@@ -186,9 +187,16 @@
                 // use a copy of the array so we are not modifying the internals of the entity
                 selectedEntities = selectedEntities.slice(0);
             }
+            //"Icon"
+            var formattingType = '';
+            if ($scope.formControl.relationshipToRender &&
+                    $scope.formControl.relationshipToRender.enumValueFormattingType
+            )
+                formattingType = $scope.formControl.relationshipToRender.enumValueFormattingType.name;
+            
 
             $scope.displayString = spEditForm.getDisplayName(selectedEntities);
-
+            $scope.displayStyle = spEditForm.getDisplayStyle(selectedEntities, formattingType);
             $scope.pickerOptions.displayString = $scope.displayString;
             setShowExpander();
             $scope.displayEntities = selectedEntities;

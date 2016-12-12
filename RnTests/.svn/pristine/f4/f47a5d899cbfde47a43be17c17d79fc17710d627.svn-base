@@ -1,0 +1,102 @@
+[{:tags [:user/hemant :app-tests/rocm :desktop],
+  :name
+  "Create a new issue, task on home screen. Create a a regulatory change event and link an issue",
+  :steps
+  [{:script
+    "(rn.common/start-app-and-login (:rocm-manager-creds *tc*))"}
+   {:script
+    "(rt.po.app/navigate-to \"Regulatory and Obligation Change Management\")"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-report \"My Tasks\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Subject\" (:task-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Due date\" (make-local-date 2017 2 2))"}
+   {:script "(rt.po.edit-form/set-lookup \"Assigned to\" \"Adam\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Task status\" \"Not started\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-report \"My Issues\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Name\" (:issue-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Expected_Resolution_Date\" (make-local-date 2016 12 12))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(rt.po.app/select-app-tab \"Regulatory Change Management\")"}
+   {:script
+    "(rt.po.app/select-navigator-item \"Regulatory Change Events\")"}
+   {:script "(rt.po.report-view/open-action-menu)"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:reg-event-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Category\" \"Amended Regulation\")"}
+   {:script
+    "(rt.po.edit-form/set-choice-value-v2 \"Source\" \"ASIC\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(rt.po.chart-view/select-data-point \"By Source\" \"ASIC\")"}
+   {:script
+    "(rt.po.report-view/set-search-text (:reg-event-name *tc*))"}
+   {:script
+    "(expect-equals (:reg-event-name *tc*) (rt.po.report-view/get-report-cell-text-content 0 \"Regulatory Event\"))"}
+   {:script
+    "(rt.po.app/select-navigator-item \"Change Impact Assessments\")"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"ACTIVE REGULATORY IMPACTS\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-lookup-value \"Regulatory Event\" (:reg-event-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-string-field-value \"Name\" (:reg-impact-assessment *tc*))"}
+   {:script "(rt.po.edit-form/open-lookup \"Organisational Levels\")"}
+   {:script
+    "(rt.po.view-form/select-structure-view-item-with-ctrl-key-by-text \"Org Level East\" \"\")"}
+   {:script "(rt.po.common/click-ok)"}
+   {:script "(rt.po.edit-form/open-lookup \"Corporate Obligations\")"}
+   {:script
+    "(rt.po.common/select-picker-dialog-grid-row-by-text \"ISO Guidance\")"}
+   {:script "(rt.po.common/click-ok)"}
+   {:script
+    "(rt.po.edit-form/set-lookup-value \"Products/Services\" \"External Product 1\")"}
+   {:script
+    "(rt.po.edit-form/set-lookup-value \"Processes\" \"Process 1\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"ACTION PLAN\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Subject\" (:actionplan-task *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Due date\" (make-local-date 2017 2 2))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script
+    "(rt.po.view-form/open-action-menu-for-relationship \"EXEMPTION REQUESTS\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Exemption Title\" (:exemption-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-date-field-value \"Expiry Date\" (make-local-date 2017 2 2))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(rt.po.report-view/set-search-text (:reg-impact-assessment *tc*))"}
+   {:script
+    "(expect-equals (:reg-impact-assessment *tc*) (rt.po.report-view/get-report-cell-text-content 0 \"Regulatory Impact\"))"}],
+  :type :test,
+  :source "./test-db",
+  :modified "20161208-174910",
+  :setup
+  [{:script
+    "(identity {:issue-name (rt.lib.util/make-test-name \"Issue\"), :reg-event-name (rt.lib.util/make-test-name \"Reg-Eve\"), :task-name (rt.lib.util/make-test-name \"Task\"), :actionplan-task (rt.lib.util/make-test-name \"ActionPlanTask\"), :reg-impact-assessment (rt.lib.util/make-test-name \"Reg-Impact-Assess\"), :exemption-name (rt.lib.util/make-test-name \"Exemption\")})"}],
+  :fixtures [:rn/fixture/rocm-manager-and-owner-creds],
+  :id :rocm/tests/manage-home-and-create-a-regulatory-change-event,
+  :teardown [],
+  :modified-by "not-implemented"}]

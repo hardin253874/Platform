@@ -20,12 +20,6 @@ namespace EDC.ReadiNow.EntityRequests
     public partial class EntityInfoService : IEntityInfoRead
     {
         /// <summary>
-        /// The maximum number of related entities that can be loaded before results start getting clipped.
-        /// </summary>
-        private static readonly int MaxRelatedEntities = EntityWebApiSettings.Current.MaxRelatedLimit;
-        private static readonly int MaxRelatedEntitiesWarning = EntityWebApiSettings.Current.MaxRelatedWarning;
-
-        /// <summary>
         /// Loads structured data for the specified entity.
         /// </summary>
         /// <param name="entityId">The entity to load.</param>
@@ -472,34 +466,10 @@ namespace EDC.ReadiNow.EntityRequests
                     var relationshipsRaw = Entity.GetRelationships(entity, relationshipDefn, direction);
 
                     // Throttle list size
-                    var relationships = relationshipsRaw.Take(MaxRelatedEntities + 1).ToList();
-                    long relCount = relationships.Count;
-
-                    if (relCount > MaxRelatedEntities && !EntityDataBuilder<EDC.ReadiNow.Model.IEntity>.BypassMaxRelatedEntities(relReq, entityData.Id.Id))
-                    {
-                        EventLog.Application.WriteError(
-                            "Exceeded maximum number ({0} > {1}) of related entities for EntityInfoService. Relationship: {2}. {3} entity: {4}",
-                            relationships.Count,
-                            MaxRelatedEntities,
-                            relReq.RelationshipTypeId,
-                            relReq.IsReverse ? "To" : "From",
-                            entity.Id);
-
-                        throw new InvalidOperationException("Exceeded maximum number of related entities for EntityInfoService.");
-                    }
-                    if (relCount > MaxRelatedEntities)
-                    {
-                        EventLog.Application.WriteWarning(
-                            "Large number ({0} > {1}) of related entities for EntityInfoService. Relationship: {2}. {3} entity: {4}",
-                            relationships.Count,
-                            MaxRelatedEntitiesWarning,
-                            relReq.RelationshipTypeId,
-                            relReq.IsReverse ? "To" : "From",
-                            entity.Id);
-                    }
+                    var relationships = relationshipsRaw.Take(FanoutHelper.MaxRelatedEntities + 1).ToList();
+                    FanoutHelper.CheckFanoutLimit( relReq, entityData.Id.Id, relationships.Count );
 
                     var entityIds = relationships.Where(p => p != null).Select(p => new EntityRef(p.Key));
-
 
                     var entityList =
                         Entity.Get(entityIds, false, true, relReq.RequestedMembers.Fields.Cast<IEntityRef>().ToArray())

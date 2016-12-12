@@ -605,24 +605,24 @@
              //}
          };
 
-         $scope.addCustomRelationship = function () {
-             var typeEntity = sp.result($scope.model, 'customTypePickerOptions.selectedEntities.0');
-             if (!typeEntity)
-                 return;      
+            $scope.addCustomRelationship = function() {
+                var typeEntity = sp.result($scope.model, 'customTypePickerOptions.selectedEntities.0');
+                if (!typeEntity)
+                    return;
 
-             var customJson = {
-                 "id": spUtils.newGuid(),
-                 "rid": 0,
-                 "relationshipName": typeEntity.name,
-                 "resourceName": typeEntity.name,
-                 "relationshipType": "customJoin",
-                 "isSelected": true,
-                 "predicateScript": $scope.model.customJoinScript,
-                 "eid": typeEntity.idP,
-                 "cols": []
-             };
-             $scope.addRelationship(customJson);
-         }
+                var customJson = {
+                    "id": spUtils.newGuid(),
+                    "rid": 0,
+                    "relationshipName": typeEntity.name,
+                    "resourceName": typeEntity.name,
+                    "relationshipType": "customJoin",
+                    "isSelected": true,
+                    "predicateScript": $scope.model.customJoinScript,
+                    "eid": typeEntity.idP,
+                    "cols": []
+                };
+                $scope.addRelationship(customJson);
+            };
 
          $scope.addRelationship = function (relationship) {
              $scope.showButton = false;

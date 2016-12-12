@@ -9,17 +9,17 @@ namespace ReadiNow.EntityGraph.GraphModel
     /// <summary>
     /// An implementation of IEntity from the graph model.
     /// </summary>
-    class GraphEntity : IdResolvingEntity, IEntity, IEquatable<GraphEntity>
+    class GraphEntity : IdResolvingEntity, IEquatable<GraphEntity>
     {
         /// <summary>
         /// ID of the entity.
         /// </summary>
-        private long _id;
+        private readonly long _id;
 
         /// <summary>
         /// Reference to the common graph to which this entity belongs.
         /// </summary>
-        private GraphEntityGraph _graph;
+        private readonly GraphEntityGraph _graph;
 
         /// <summary>
         /// Constructor
@@ -41,10 +41,7 @@ namespace ReadiNow.EntityGraph.GraphModel
         /// <summary>
         /// ID of the entity.
         /// </summary>
-        public override long Id
-        {
-            get { return _id; }
-        }
+        public override long Id => _id;
 
 
         /// <summary>

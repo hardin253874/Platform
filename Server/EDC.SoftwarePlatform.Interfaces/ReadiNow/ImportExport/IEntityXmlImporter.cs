@@ -11,15 +11,14 @@ namespace ReadiNow.ImportExport
         /// <summary>
         /// Interface for providing XML import.
         /// </summary>
-        /// <param name="entityId">ID of entity to export.</param>
-        /// <param name="xmlWriter">Xml Writer to write the exported entity to.</param>
+        /// <param name="xmlReader">XML reader to read content from.</param>
         /// <param name="settings">Export settings.</param>
         EntityXmlImportResult ImportXml( XmlReader xmlReader, EntityXmlImportSettings settings );
 
         /// <summary>
         /// Interface for providing XML import.
         /// </summary>
-        /// <param name="entityId">ID of entity to export.</param>
+        /// <param name="xml">XML content to import.</param>
         /// <param name="settings">Export settings.</param>
         EntityXmlImportResult ImportXml( string xml, EntityXmlImportSettings settings );
     }

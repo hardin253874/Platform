@@ -264,19 +264,19 @@ namespace EDC.ReadiNow.Test.Services.Console
         {
             "New (All)", "Export (All)", "Edit Inline", "Excel", "CSV", "Word",
             "Loose Unit", "Parent", "Grandparent", "View 'Loose Unit'", "Edit 'Loose Unit'",
-            "Delete 'Loose Unit'", "Assign Data to App", "Launch Person Campaign", "Stop", "Some Unit"
+            "Delete 'Loose Unit'", "Assign Data to App", "Stop", "Some Unit"
         })]
         [TestCase("parentReport", "Parent", new[]
         {
             "New (All)", "Export (All)", "Edit Inline", "Excel", "CSV", "Word",
             "Parent", "Grandparent", "View 'Parent'", "Edit 'Parent'",
-            "Delete 'Parent'", "Assign Data to App", "Launch Person Campaign", "Stop", "Look", "Some Unit", "Muppet"
+            "Delete 'Parent'", "Assign Data to App", "Stop", "Look", "Some Unit", "Muppet"
         })]
         [TestCase("grandParentReport", "Grandparent", new[]
         {
             "New (All)", "Export (All)", "Edit Inline", "Excel", "CSV", "Word",
             "Grandparent", "View 'Grandparent'", "Edit 'Grandparent'", "Delete 'Grandparent'",
-            "Assign Data to App", "Launch Person Campaign", "Stop", "Look", "Listen", "Some Unit", "Muppet", "Some Elder"
+            "Assign Data to App", "Stop", "Look", "Listen", "Some Unit", "Muppet", "Some Elder"
         })]
         public void Test_GetActions(string reportKey, string selectName, string[] expectedActionKeys)
         {
@@ -783,22 +783,6 @@ namespace EDC.ReadiNow.Test.Services.Console
                             Order = 1000,
                             Name = "Assign Data to App",
                             DisplayName = "Assign Data to App",
-                            Icon = "assets/images/run.svg",
-                            IsEnabled = false,
-                            IsMenu = true,
-                            IsContextMenu = true,
-                            IsSystem = false,
-                            AppliesToSelection = true,
-                            HtmlActionMethod = "run",
-                            HtmlActionState = "Input"
-                        }
-                    },
-	                {
-                        "Launch Person Campaign", new ActionMenuItemInfo
-                        {
-                            Order = 1000,
-                            Name = "Launch Person Campaign",
-                            DisplayName = "Launch Person Campaign",
                             Icon = "assets/images/run.svg",
                             IsEnabled = false,
                             IsMenu = true,

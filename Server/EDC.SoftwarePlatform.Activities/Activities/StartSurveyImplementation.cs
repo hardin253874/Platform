@@ -1,9 +1,7 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
 
-using System;
 using System.Linq;
 using EDC.ReadiNow.Model;
-using EDC.ReadiNow.Model.Interfaces;
 using EDC.ReadiNow.Model.PartialClasses;
 
 namespace EDC.SoftwarePlatform.Activities

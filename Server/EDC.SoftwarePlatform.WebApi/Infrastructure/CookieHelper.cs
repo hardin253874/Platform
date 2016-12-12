@@ -22,34 +22,6 @@ namespace EDC.SoftwarePlatform.WebApi.Infrastructure
 	/// </summary>
 	public static class CookieHelper
 	{
-		/// <summary>
-		/// The adc header
-		/// </summary>
-		public static readonly string AdcHeader = "adcAddress";
-
-		/// <summary>
-		/// Gets the adc header.
-		/// </summary>
-		/// <returns></returns>
-		private static string GetAdcHeader( )
-		{
-			string [ ] adcAddresses = HttpContext.Current.Request.Headers.GetValues( AdcHeader );
-
-			string adcAddress = null;
-
-			if ( adcAddresses != null && adcAddresses.Length > 0 )
-			{
-				adcAddress = adcAddresses [ 0 ];
-
-				if ( string.IsNullOrEmpty( adcAddress ) )
-				{
-					adcAddress = null;
-				}
-			}
-
-			return adcAddress;
-		}
-
         /// <summary>
         /// Creates both ASPXAUTH authentication and XSRF prevention token cookies and adds to current HttpResponse instance.
         /// </summary>
@@ -64,8 +36,6 @@ namespace EDC.SoftwarePlatform.WebApi.Infrastructure
 			HttpCookie authCookie;
 			HttpCookie xsrfCookie;
 
-			string adcAddress = GetAdcHeader( );
-
 			CreateAuthenticationAndXsrfCookies(
                 tenantId, 
                 identityProviderId, 
@@ -75,8 +45,6 @@ namespace EDC.SoftwarePlatform.WebApi.Infrastructure
 				xsrfToken,
 				DateTime.Now,
 				DateTime.Now.AddMinutes( LoginConstants.Cookie.Timeout ),
-				adcAddress ?? HttpContext.Current.Request.UserHostAddress,
-				HttpContext.Current.Request.UserAgent,
 				out authCookie,
 				out xsrfCookie );
 
@@ -84,31 +52,21 @@ namespace EDC.SoftwarePlatform.WebApi.Infrastructure
 			HttpContext.Current.Response.Cookies.Add( xsrfCookie );
 		}
 
-		/// <summary>
-		/// Creates both ASPXAUTH authentication and XSRF prevention token cookies.
-		/// </summary>
-		/// <param name="tenantId">The tenant identifier.</param>
-		/// <param name="identityProviderId">The identity provider identifier.</param>
-		/// <param name="identityProviderUser">The identity provider user.</param>
-		/// <param name="userAccountId">The user account identifier.</param>
-		/// <param name="persistent">if set to <c>true</c> [persistent].</param>
-		/// <param name="xsrfToken">(Optional) An XSRF token. If omitted, one is generated (recommended).</param>
-		/// <param name="issueDateTime">When the cookie is issued (normally DateTime.Now);</param>
-		/// <param name="expiryDateTime">When the cookie expires.</param>
-		/// <param name="userHostAddress">The user host address.</param>
-		/// <param name="userAgent">The user agent.</param>
-		/// <param name="authCookie">The initialized authentication cookie.</param>
-		/// <param name="xsrfCookie">The initialized xsrfCookie.</param>
-		/// <exception cref="System.ArgumentOutOfRangeException">
-		/// tenantId
-		/// or
-		/// identityProviderId
-		/// or
-		/// userAccountId
-		/// </exception>
-		/// <exception cref="System.ArgumentNullException">identityProviderUser</exception>
-		public static void CreateAuthenticationAndXsrfCookies( long tenantId, long identityProviderId, string identityProviderUser, long userAccountId, bool persistent,
-			string xsrfToken, DateTime issueDateTime, DateTime expiryDateTime, string userHostAddress, string userAgent, out HttpCookie authCookie, out HttpCookie xsrfCookie )
+        /// <summary>
+        /// Creates both ASPXAUTH authentication and XSRF prevention token cookies.
+        /// </summary>
+        /// <param name="tenantId">The tenant identifier.</param>
+        /// <param name="identityProviderId">The identity provider identifier.</param>
+        /// <param name="identityProviderUser">The identity provider user.</param>
+        /// <param name="userAccountId">The user account identifier.</param>
+        /// <param name="persistent">if set to <c>true</c> [persistent].</param>
+        /// <param name="xsrfToken">(Optional) An XSRF token. If omitted, one is generated (recommended).</param>
+        /// <param name="issueDateTime">When the cookie is issued (normally DateTime.Now);</param>
+        /// <param name="expiryDateTime">When the cookie expires.</param>
+        /// <param name="authCookie">The initialized authentication cookie.</param>
+        /// <param name="xsrfCookie">The initialized xsrfCookie.</param>        
+        public static void CreateAuthenticationAndXsrfCookies( long tenantId, long identityProviderId, string identityProviderUser, long userAccountId, bool persistent,
+			string xsrfToken, DateTime issueDateTime, DateTime expiryDateTime, out HttpCookie authCookie, out HttpCookie xsrfCookie )
 		{
             if (tenantId <= 0)
             {
@@ -142,10 +100,8 @@ namespace EDC.SoftwarePlatform.WebApi.Infrastructure
                 TenantId = tenantId,
                 IdentityProviderId = identityProviderId,
                 IdentityProviderUserName = identityProviderUser,
-                UserAccountId = userAccountId,
-				HostIp = userHostAddress,
-				UserAgent = userAgent
-			};
+                UserAccountId = userAccountId
+            };
 
 			string userData;
 
@@ -377,34 +333,6 @@ namespace EDC.SoftwarePlatform.WebApi.Infrastructure
 			}
 
 			return result;
-		}
-
-		/// <summary>
-		/// Verifies the session has not been hijacked.
-		/// </summary>
-		/// <param name="authTicket">The authentication ticket.</param>
-		/// <returns></returns>
-		/// <exception cref="System.ArgumentNullException">authTicket</exception>
-		public static bool VerifySessionNotHijacked( AuthenticationToken authTicket )
-		{
-			if ( authTicket == null )
-			{
-				throw new ArgumentNullException( nameof( authTicket ) );
-			}
-
-			string adcAddress = GetAdcHeader( );
-
-			if ( authTicket.HostIp != null && !string.Equals( authTicket.HostIp, adcAddress ?? HttpContext.Current.Request.UserHostAddress, StringComparison.InvariantCultureIgnoreCase ) )
-			{
-				return false;
-			}
-
-			if ( authTicket.UserAgent != null && !string.Equals( authTicket.UserAgent, HttpContext.Current.Request.UserAgent, StringComparison.InvariantCultureIgnoreCase ) )
-			{
-				return false;
-			}
-
-			return true;
 		}
 	}
 }

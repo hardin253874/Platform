@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using EDC.ReadiNow.Metadata;
+using ReadiNow.Annotations;
 
 namespace ReadiNow.QueryEngine.ReportConverter
 {
@@ -76,32 +77,34 @@ namespace ReadiNow.QueryEngine.ReportConverter
                 // Build up query starting with the root node
                 using (Profiler.Measure("Query Tree"))
                 {
-                    sq.RootEntity = StructuredQueryEntityHelper.BuildReportNode(report.RootNode, context);
+                    sq.RootEntity = BuildReportNode(report.RootNode, context);
                 }
 
                 // then the list of select columns
                 using (Profiler.Measure("Columns"))
                 {
-                    sq.SelectColumns = StructuredQueryEntityHelper.BuildSelectColumns(report.ReportColumns, context, settings);
+                    sq.SelectColumns = BuildSelectColumns(report.ReportColumns, context, settings);
                 }
 
                 // and then the list query conditions
                 using (Profiler.Measure("Conditions"))
                 {
-                    sq.Conditions = StructuredQueryEntityHelper.BuildQueryConditions(report.HasConditions, context, settings);
+                    sq.Conditions = BuildQueryConditions(report.HasConditions, context, settings);
                 }
 
                 // finally build up the list of order by items
-                sq.OrderBy = StructuredQueryEntityHelper.BuildOrderBy(report.ReportOrderBys, context, settings);
+                sq.OrderBy = BuildOrderBy(report.ReportOrderBys, context, settings);
 
                 // Hook up the references
-                StructuredQueryEntityHelper.ResolveReferences(sq, report, context);
+                ResolveReferences(sq, report, context);
 
                 // Report back any errors
-                sq.InvalidReportInformation = new Dictionary<string, Dictionary<long, string>>();
-                sq.InvalidReportInformation["nodes"] = context.ReportInvalidNodes;
-                sq.InvalidReportInformation["columns"] = context.ReportInvalidColumns;
-                sq.InvalidReportInformation["conditions"] = context.ReportInvalidConditions;
+                sq.InvalidReportInformation = new Dictionary<string, Dictionary<long, string>>
+                {
+                    { "nodes", context.ReportInvalidNodes },
+                    { "columns", context.ReportInvalidColumns },
+                    { "conditions", context.ReportInvalidConditions }
+                };
 
                 return sq;
             }
@@ -365,7 +368,7 @@ namespace ReadiNow.QueryEngine.ReportConverter
             if (query.RootEntity is AggregateEntity)
             {
                 AggregateEntity ae = query.RootEntity as AggregateEntity;
-                foreach (ResourceDataColumn rdc in ae.GroupBy.OfType<ResourceDataColumn>().Select(expression => expression as ResourceDataColumn))
+                foreach (ResourceDataColumn rdc in ae.GroupBy.OfType<ResourceDataColumn>())
                 {
                     rdc.NodeId = context.ReportNodeMap[rdc.SourceNodeEntityId];
                 }
@@ -408,7 +411,7 @@ namespace ReadiNow.QueryEngine.ReportConverter
         /// <param name="columns">The columns.</param>
         /// <param name="reportColumn">The report column.</param>
         /// <param name="context">The context.</param>
-        static private void AssignColumnNodeGuidForExpression(IEnumerable<SelectColumn> columns, ReportColumn reportColumn, FromEntityContext context)
+        private static void AssignColumnNodeGuidForExpression(IEnumerable<SelectColumn> columns, ReportColumn reportColumn, FromEntityContext context)
         {
             // Get the GUID of the report column
             Guid reportColumnGuid;
@@ -449,7 +452,7 @@ namespace ReadiNow.QueryEngine.ReportConverter
             }
         }
 
-        static private void ResolveExpressionToNode(IEnumerable<ScalarExpression> scalarExpressions, FromEntityContext context)
+        private static void ResolveExpressionToNode(IEnumerable<ScalarExpression> scalarExpressions, FromEntityContext context)
         {
             foreach (ScalarExpression expression in scalarExpressions)
             {
@@ -662,12 +665,16 @@ namespace ReadiNow.QueryEngine.ReportConverter
         /// </summary>
         /// <param name="reportCondition">The report condition.</param>
         /// <param name="queryCondition">The query condition.</param>
-        internal static void BuildConditionParameter(ReportCondition reportCondition, QueryCondition queryCondition, FromEntityContext context)
+        /// <param name="context"></param>
+        internal static void BuildConditionParameter( [NotNull] ReportCondition reportCondition, QueryCondition queryCondition, FromEntityContext context)
         {
+            if ( reportCondition == null )
+                throw new ArgumentNullException( nameof( reportCondition ) );
+
             ActivityArgument activityArgument;
 
             // Get the column expression for the analysable field. If this is a referenced column then use it's referenced column's expression.
-            ReportExpression reportExpression = reportCondition != null ? reportCondition.ConditionExpression : null;
+            ReportExpression reportExpression = reportCondition.ConditionExpression;
 
             if (reportExpression != null && reportExpression.Is<ColumnReferenceExpression>())
             {
@@ -677,11 +684,11 @@ namespace ReadiNow.QueryEngine.ReportConverter
             }
             
 
-            if (reportCondition.ConditionParameter != null && reportCondition.ConditionParameter.ParamTypeAndDefault != null)
+            if (reportCondition.ConditionParameter?.ParamTypeAndDefault != null)
             {
                 activityArgument = reportCondition.ConditionParameter.ParamTypeAndDefault;
             }
-            else if (reportExpression != null && reportExpression.ReportExpressionResultType != null)
+            else if (reportExpression?.ReportExpressionResultType != null)
             {
                 activityArgument = reportCondition.ConditionExpression.ReportExpressionResultType;
             }
@@ -712,7 +719,7 @@ namespace ReadiNow.QueryEngine.ReportConverter
                 return null;
             }
 
-            ScalarExpression scalarExpression = null;
+            ScalarExpression scalarExpression;
             
             if (context.InstanceExpressionMap.TryGetValue(reportExpression.Id, out scalarExpression))
             {
@@ -788,6 +795,7 @@ namespace ReadiNow.QueryEngine.ReportConverter
         /// </summary>
         /// <param name="resourceExpression">The resource expression.</param>
         /// <returns>ResourceExpression.</returns>
+        /// <param name="context"></param>
         private static ResourceExpression BuildResourceExpression(Model.ResourceExpression resourceExpression, FromEntityContext context)
         {
             //resourceExpression entity node's followRelationship must not be null           
@@ -958,10 +966,8 @@ namespace ReadiNow.QueryEngine.ReportConverter
                 return;
 
             var reportColumn = reportExpression.ExpressionForColumn;
-            if (reportColumn == null)
-                return;
 
-            var displayFormat = reportColumn.ColumnDisplayFormat;
+            var displayFormat = reportColumn?.ColumnDisplayFormat;
             if (displayFormat == null)
                 return;
 

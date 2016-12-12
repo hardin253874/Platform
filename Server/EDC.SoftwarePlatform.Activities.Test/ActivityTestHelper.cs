@@ -112,7 +112,6 @@ namespace EDC.SoftwarePlatform.Activities.Test
             return wf;
         }
 
-
         /// <summary>
         /// Add Clone activity
         /// </summary>
@@ -129,7 +128,6 @@ namespace EDC.SoftwarePlatform.Activities.Test
 
             return wf;
         }
-
 
         /// <summary>
         /// Add a delete activity
@@ -174,6 +172,7 @@ namespace EDC.SoftwarePlatform.Activities.Test
 
             return wf;
         }
+
         /// <summary>
         /// Add a foreach activity
         /// </summary>
@@ -197,7 +196,6 @@ namespace EDC.SoftwarePlatform.Activities.Test
             return wf;
         }
 
-
         /// <summary>
         /// Add a foreach activity
         /// </summary>
@@ -206,7 +204,6 @@ namespace EDC.SoftwarePlatform.Activities.Test
         {
             return AddForEach(wf, name, listExpression, Entity.Get<EntityType>(listType), fromNamed, fromExit);
         }
-
 
         /// <summary>
         /// Add a switch activity
@@ -228,7 +225,6 @@ namespace EDC.SoftwarePlatform.Activities.Test
 
             return wf;
         }
-
 
         private static void AddExits(IEntityCollection<ExitPoint> exitPoints, string[] exits)
         {
@@ -397,6 +393,93 @@ namespace EDC.SoftwarePlatform.Activities.Test
             return wf;
         }
 
+        public static Workflow AddLaunchPersonCampaign(
+            this Workflow wf,
+            string name,
+            string surveyExpression,
+            string recipientsExpression,
+            string targetExpression = null,
+            string taskNameExpression = null,
+            string dueDaysExpression = null,
+            string pauseExpression = null,
+            string fromNamed = null,
+            string fromExit = null)
+        {
+            var act = new LaunchPersonCampaignActivity
+            {
+                Name = name
+            };
+            var actAs = act.As<WfActivity>();
+
+            if (surveyExpression != null)
+                AddExpressionToActivityArgument(wf, actAs, "Survey", surveyExpression);
+
+            if (recipientsExpression != null)
+                AddExpressionToActivityArgument(wf, actAs, "Recipients", recipientsExpression);
+
+            if (targetExpression != null)
+                AddExpressionToActivityArgument(wf, actAs, "Target object", targetExpression);
+            
+            if (taskNameExpression != null)
+                AddExpressionToActivityArgument(wf, actAs, "Task name", taskNameExpression);
+
+            if (dueDaysExpression != null)
+                AddExpressionToActivityArgument(wf, actAs, "Due in (Days)", dueDaysExpression);
+
+            if (pauseExpression != null)
+                AddExpressionToActivityArgument(wf, actAs, "Pause Until Completed", pauseExpression);
+
+            wf.AddActivity(actAs, fromNamed, fromExit);
+            AddMissingExpressionParametersToWorkflow(wf);
+
+            return wf;
+        }
+
+        public static Workflow AddLaunchTargetCampaign(
+            this Workflow wf,
+            string name,
+            string surveyExpression,
+            string targetsExpression,
+            string surveyTakerExpression,
+            string targetExpression = null,
+            string taskNameExpression = null,
+            string dueDaysExpression = null,
+            string pauseExpression = null,
+            string fromNamed = null,
+            string fromExit = null)
+        {
+            var act = new LaunchTargetCampaignActivity
+            {
+                Name = name
+            };
+            var actAs = act.As<WfActivity>();
+
+            if (surveyExpression != null)
+                AddExpressionToActivityArgument(wf, actAs, "Survey", surveyExpression);
+
+            if (targetsExpression != null)
+                AddExpressionToActivityArgument(wf, actAs, "Targets", targetsExpression);
+
+            if (surveyTakerExpression != null)
+                AddExpressionToActivityArgument(wf, actAs, "Survey Taker", surveyTakerExpression);
+
+            if (targetExpression != null)
+                AddExpressionToActivityArgument(wf, actAs, "Target Object", targetExpression);
+
+            if (taskNameExpression != null)
+                AddExpressionToActivityArgument(wf, actAs, "Task name", taskNameExpression);
+
+            if (dueDaysExpression != null)
+                AddExpressionToActivityArgument(wf, actAs, "Due in (Days)", dueDaysExpression);
+
+            if (pauseExpression != null)
+                AddExpressionToActivityArgument(wf, actAs, "Pause Until Completed", pauseExpression);
+
+            wf.AddActivity(actAs, fromNamed, fromExit);
+            AddMissingExpressionParametersToWorkflow(wf);
+
+            return wf;
+        }
 
         /// <summary>
         /// Add a notify activity
@@ -458,7 +541,6 @@ namespace EDC.SoftwarePlatform.Activities.Test
             return wf;
         }
 
-
         public static Workflow AddExpressionToArgument(this Workflow wf, string activityName, string argumentName, string expressionString, bool isTemplate = false)
         {
             var wfAs = wf.As<WfActivity>();
@@ -495,8 +577,6 @@ namespace EDC.SoftwarePlatform.Activities.Test
             activity.ExpressionMap.Add(exp.As<WfExpression>());
             return wf;
         }
-
-
 
         public static Workflow AddEntityExpressionToInputArgument(this Workflow wf, WfActivity activity, string argumentName, EntityRef entityRef)
         {
@@ -633,11 +713,6 @@ namespace EDC.SoftwarePlatform.Activities.Test
             wf.ExpressionParameters.Add(sourceInstance);
 
             return uniqueName;
-        }
-
-        private static void CreateResourceListArgumentInstance(Workflow wf, WfActivity from, ActivityArgument argument, string uniqueName)
-        {
-            
         }
 
         /// <summary>

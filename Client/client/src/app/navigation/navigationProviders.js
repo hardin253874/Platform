@@ -1777,22 +1777,28 @@
                                 parent: targetNodeItem
                             };
 
+                            const isEmptyAppTab = targetNodeItem &&
+                                sp.result(targetNodeItem, "item.isAppTab") &&
+                                sp.result(targetNodeItem, "item.viewType") &&
+                                sp.result(targetNodeItem, "item.state") &&
+                                !sp.result(targetNodeItem, "children.length");
+
                             // Navigate the report object or chart object after copy the navitem to target Node
                             var movedItem = moveItem(newSourceNode, targetNode, position, false, true);
 
                             if (movedItem) {
-                                movedItem.then(function () {
+                                movedItem.then(function() {
                                     var isTopItem = spNavService.getParentItem() && spNavService.getParentItem().id === spNavService.getCurrentApplicationId() && targetNode.children && targetNode.children.length === 0;
 
                                     switch (sourceNode.item.typeAlias) {
                                         case 'core:report':
-                                            navigateTo('report', newSourceNode.item.id, isTopItem);
+                                            navigateTo('report', newSourceNode.item.id, isTopItem, isEmptyAppTab ? targetNodeItem : null);
                                             break;
                                         case 'core:chart':
-                                            navigateTo('chart', newSourceNode.item.id, isTopItem);
+                                            navigateTo('chart', newSourceNode.item.id, isTopItem, isEmptyAppTab ? targetNodeItem : null);
                                             break;
                                         case 'core:board':
-                                            navigateTo('board', newSourceNode.item.id, isTopItem);
+                                            navigateTo('board', newSourceNode.item.id, isTopItem, isEmptyAppTab ? targetNodeItem : null);
                                             break;
                                         default:
                                             break;
@@ -1805,14 +1811,22 @@
             }
 
 
-            function navigateTo(type, itemId, isTopItem) {
+            function navigateTo(type, itemId, isTopItem, parentNode) {
                 if (isTopItem === true) {
                     spNavService.navigateToSibling(type, itemId).finally(function () {
                         spNavService.navigateToChildState(type, itemId);
                         spNavService.navigateToParent();
                     });
                 } else {
-                    spNavService.navigateToSibling(type, itemId);
+                    if (parentNode &&                                                
+                        sp.result(parentNode, "item.viewType") &&
+                        sp.result(parentNode, "item.state")) {
+                        // Navigate to parent first and then to the other element as a child
+                        spNavService.navigateToState(parentNode.item.viewType, parentNode.item.state.params).finally(() =>
+                            spNavService.navigateToChildState(type, itemId));
+                    } else {
+                        spNavService.navigateToSibling(type, itemId);
+                    }                    
                 }
             }
 

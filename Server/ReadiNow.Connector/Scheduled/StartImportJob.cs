@@ -6,10 +6,8 @@ using EDC.ReadiNow.Diagnostics;
 using EDC.ReadiNow.Core;
 using ReadiNow.Connector.ImportSpreadsheet;
 using Autofac;
-using Quartz;
 using EDC.ReadiNow.IO.RemoteFileFetcher;
 using EDC.ReadiNow.Security;
-using EDC.ReadiNow.IO;
 
 namespace ReadiNow.Connector.Scheduled
 {
@@ -96,7 +94,7 @@ namespace ReadiNow.Connector.Scheduled
                 throw GenerateJobException(ex.Message, config);
             }
         }
-     
+
 
 
 
@@ -104,8 +102,8 @@ namespace ReadiNow.Connector.Scheduled
         /// <summary>
         ///     Creates an importRun entity - does not save it.
         /// </summary>
-        /// <param name="importConfig">The import configuration.</param>
-        /// <param name="importSettings">Settings passed in for the current run.</param>
+        /// <param name="config">The import configuration.</param>
+        /// <param name="message"></param>
         /// <returns>Returns the ID of the import run.</returns>
         private void CreateFailedImportRunEntity(ScheduledImportConfig config, string message)
         {

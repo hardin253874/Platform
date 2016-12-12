@@ -28,7 +28,6 @@ namespace ReadiNow.QueryEngine.Builder.SqlObjects
 		public List<SqlCte> Items
 		{
 			get;
-			private set;
 		}
 
 

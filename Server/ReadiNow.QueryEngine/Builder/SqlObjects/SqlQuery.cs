@@ -1,7 +1,5 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
 using System.Collections.Generic;
-using EDC.Common;
-using EDC.Database;
 
 namespace ReadiNow.QueryEngine.Builder.SqlObjects
 {
@@ -147,9 +145,13 @@ namespace ReadiNow.QueryEngine.Builder.SqlObjects
         ///     Short-cut to add conditions, which actually get held in individual tables.
         /// </summary>
         /// <param name="expression">The conditions to add</param>
-        public void AddWhereCondition( SqlExpression expression )
+        /// <param name="addBeforeRightJoins">If true, then the condition must be evaluated prior to any right joins.</param>
+        public void AddWhereCondition( SqlExpression expression, bool addBeforeRightJoins = false )
 		{
-            WhereClause.Conditions.Add( expression );
+            if ( addBeforeRightJoins )
+                WhereClause.ConditionsBeforeRightJoins.Add( expression );
+            else
+                WhereClause.Conditions.Add( expression );
 		}
 
 		/// <summary>

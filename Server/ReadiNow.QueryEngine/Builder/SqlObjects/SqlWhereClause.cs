@@ -1,9 +1,6 @@
 ﻿// Copyright 2011-2016 Global Software Innovation Pty Ltd
 
-using System;
 using System.Collections.Generic;
-using EDC.Common;
-using EDC.Database;
 
 namespace ReadiNow.QueryEngine.Builder.SqlObjects
 {
@@ -14,9 +11,17 @@ namespace ReadiNow.QueryEngine.Builder.SqlObjects
     class SqlWhereClause
     {
         /// <summary>
-        ///     A SQL Boolean expression to be appended to the join ON clause of a specific node.
+        ///     SQL Boolean expressions to be appended to the WHERE clause of a query.
         /// </summary>
         public List<SqlExpression> Conditions
+        {
+            get;
+        } = new List<SqlExpression>( );
+
+        /// <summary>
+        ///     SQL Boolean expressions to be appended to query prior to any right joins.
+        /// </summary>
+        public List<SqlExpression> ConditionsBeforeRightJoins
         {
             get;
         } = new List<SqlExpression>( );

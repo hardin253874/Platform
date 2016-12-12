@@ -40,7 +40,7 @@ namespace ReadiNow.Connector.Service
             if ( string.IsNullOrEmpty( resourceIdentity ) )
                 throw new ArgumentNullException( "resourceIdentity" );
 
-            var identities = new string [ ] { resourceIdentity };
+            var identities = new [ ] { resourceIdentity };
             var dict = ResolveResources( identities );
             ResourceResolverEntry result = dict[ resourceIdentity ];
 

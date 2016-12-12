@@ -55,7 +55,7 @@ namespace ReadiNow.QueryEngine.Builder
 
         public static SqlExpression FindMappedExpression(Guid columnId, SqlQuery query)
         {
-            SqlExpression result = null;
+            SqlExpression result;
             query.References._columnExpressionByColumnId.TryGetValue(columnId, out result);      
             return result;
         }

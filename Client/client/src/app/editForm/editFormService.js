@@ -21,7 +21,8 @@
         'mod.common.spTenantSettings',
         'spApps.reportServices',
         'mod.ui.spReportFilters',
-        'spApps.enumValueService'
+        'spApps.enumValueService',
+        'mod.common.spXsrf'
     ]);
 
     /**
@@ -36,11 +37,11 @@
 
     /* @ngInject */
     function spEditForm($q, spLoginService, spFieldValidator, spEntityService, editFormWebServices, editFormCache,
-                        spTenantSettings, spReportService, $filter, spEnumValueService) {
+                        spTenantSettings, spReportService, $filter, spEnumValueService, spWebService, spXsrf) {
 
         // The registered filter source controls, keyed off the form id.
         var filterSourceControlsPerForm = {};
-        var reportDataAsEntities = $filter('reportDataAsEntities');
+        var reportDataAsEntities = $filter('reportDataAsEntities');       
         var exports = {};
 
         /**
@@ -205,13 +206,16 @@
         };
 
         /* note, use the reverse alias or forward alias accordingly */
-        exports.updateRequestStringsForRelationship = function (requestStrings, relAlias, isMetaDataOnlyRequest) {
+        exports.updateRequestStringsForRelationship = function (requestStrings, relAlias, isMetaDataOnlyRequest, isChoiceField) {
             if (relAlias) {
                 if (isMetaDataOnlyRequest) {
                     requestStrings.push(relAlias + '.?');  // get rel metadata only
                 }
                 else {
-                    requestStrings.push(relAlias + '.{alias, name, description}');
+                    if (isChoiceField)
+                        requestStrings.push(relAlias + '.{alias, name, description, enumFormattingRule.{name,alias,iconRules.{iconRuleImage.{name, alias}},colorRules.{colorRuleForeground,colorRuleBackground}}}');
+                    else
+                        requestStrings.push(relAlias + '.{alias, name, description}');
                 }
             } else {
                 console.error("Missing alias for relationship");
@@ -247,8 +251,8 @@
                     var isReversed = (ctrl.hasOwnProperty('isReversed') && ctrl.getIsReversed()) ? ctrl.getIsReversed() : false;
                     var relAlias = exports.getRelIdForRequest(relationship, isReversed);
                     var isMetaDataOnlyRequest = exports.getIsMetaDataOnlyRequest(ctrl);
-
-                    exports.updateRequestStringsForRelationship(requestStrings, relAlias, isMetaDataOnlyRequest);
+                    var isChoiceField = exports.isChoiceField(relationship);
+                    exports.updateRequestStringsForRelationship(requestStrings, relAlias, isMetaDataOnlyRequest, isChoiceField);
                 }
 
                 // map control
@@ -269,6 +273,13 @@
             });
 
             return requestStrings;
+        };
+
+        exports.isChoiceField = function(relationship) {
+            if (!relationship || !relationship.relType)
+                return false;
+
+            return relationship.relType.aliasOnly === 'relChoiceField';
         };
 
         //
@@ -1444,6 +1455,81 @@
             }
         };
 
+        exports.getDisplayStyle = function (entity, formattingType) {
+
+            var currentEntity;
+
+            if (_.isArray(entity)) {
+                currentEntity = entity[0];
+            } else if (entity) {
+                currentEntity = entity;
+            } else {
+                return {};
+            }
+
+            var choiceFieldStyle = {};
+
+            if (formattingType === 'Highlight' &&
+                currentEntity &&
+                currentEntity.enumFormattingRule &&
+                currentEntity.enumFormattingRule.colorRules &&
+                currentEntity.enumFormattingRule.colorRules.length > 0) {
+
+                var backgroundColor = currentEntity.enumFormattingRule.colorRules[0].colorRuleBackground;
+                var foregroundColor = currentEntity.enumFormattingRule.colorRules[0].colorRuleForeground;
+
+
+                if (backgroundColor) {
+                    choiceFieldStyle['background'] = spUtils.getCssColorFromARGBString(backgroundColor);
+                    choiceFieldStyle['background-color'] = spUtils.getCssColorFromARGBString(backgroundColor);
+                }
+
+                if (foregroundColor) {
+                    choiceFieldStyle['color'] = spUtils.getCssColorFromARGBString(foregroundColor);
+                }
+
+                return choiceFieldStyle;
+            }
+
+
+            if (formattingType === 'Icon' &&
+                currentEntity &&
+                currentEntity.enumFormattingRule &&
+                currentEntity.enumFormattingRule.iconRules &&
+                currentEntity.enumFormattingRule.iconRules.length > 0 &&
+                currentEntity.enumFormattingRule.iconRules[0].iconRuleImage) {
+
+                
+                var iconId = currentEntity.enumFormattingRule.iconRules[0].iconRuleImage.id();
+
+
+                if (iconId) {
+                    choiceFieldStyle['background-image'] = 'url(\'' + getIconUrl(iconId, 'console-iconThumbnailSize') + '\')';
+                    choiceFieldStyle['background-repeat'] = 'no-repeat';
+                    choiceFieldStyle['background-position'] = 'left center';
+                    choiceFieldStyle['padding-left'] = '20px';
+                }
+
+              
+                return choiceFieldStyle;
+            }
+
+            return {};
+        };
+
+        // Private methods
+        function getIconUrl(imageId, sizeId) {
+            if (imageId &&
+                sizeId) {
+                var IMAGE_BASE_URL = spWebService.getWebApiRoot() + '/spapi/data/v1/image/thumbnail/';
+                var uri = IMAGE_BASE_URL + imageId + '/' + sizeId + '/core-scaleImageProportionally';
+
+                return spXsrf.addXsrfTokenAsQueryString(uri);
+            } else {
+                return '';
+            }
+        }
+
         // get comma separated name of selected entities
         exports.getEntitiesDisplayName = function (entities) {
             var name = '';
@@ -1810,7 +1896,8 @@
                     return spEnumValueService.getEnumValue(reportId, reportOptions).then(function (data) {
                         return reportDataAsEntities(data);
                     });
-                } else {
+                }                
+                else {
 
                     return spReportService.getReportData(reportId, reportOptions).then(function (data) {
                         return reportDataAsEntities(data);
@@ -1819,11 +1906,14 @@
             });
         };
 
-        // Run the report and get the result
+       // Run the report and get the result
         exports.getReportData = function (reportId, options) {
             if (!reportId || !options) {
                 return $q.when();
             }
+
+
+
 
             return spTenantSettings.getTemplateReportIds().then(ids => {
                 const isTemplateReport = _.has(ids, reportId);
@@ -1831,6 +1921,43 @@
 
                 reportOptions.entityTypeId = isTemplateReport ? options.entityTypeId : 0;
                 return spReportService.getReportData(reportId, reportOptions);
+            });
+        };
+
+
+       exports.getChoiceValuesAsEntities = function (choiceField) {
+           if (!choiceField)
+                return null;
+
+           var entities = choiceField.instancesOfType;
+           var enumValueFormattingType = choiceField.enumValueFormattingType ? choiceField.enumValueFormattingType.name : null;
+           if (!entities)
+               return null;
+
+            return _.map(_.sortBy(entities, 'enumOrder'), function (choiceValue) {
+                var entity,
+                    id = choiceValue.id(),
+                    name = choiceValue.name,
+                    colorRule = choiceValue.enumFormattingRule && choiceValue.enumFormattingRule.colorRules && choiceValue.enumFormattingRule.colorRules.length > 0 ? choiceValue.enumFormattingRule.colorRules[0] : null,
+                    backgroundColor = colorRule ? colorRule.colorRuleBackground : null,
+                    foregroundColor = colorRule ? colorRule.colorRuleForeground : null,
+                    iconRule = choiceValue.enumFormattingRule && choiceValue.enumFormattingRule.iconRules && choiceValue.enumFormattingRule.iconRules.length > 0 ? choiceValue.enumFormattingRule.iconRules[0] : null,
+                    icon = iconRule && iconRule.iconRuleImage ? iconRule.iconRuleImage.id() : null;
+
+
+                entity = spEntity.fromJSON({
+                    id: id,
+                    name: name,
+                    enumType: jsonString(enumValueFormattingType),
+                    backgroundColor: jsonString(backgroundColor),
+                    foregroundColor: jsonString(foregroundColor),
+                    icon: jsonString(icon)
+                });
+
+                entity.setDataState(spEntity.DataStateEnum.Unchanged);
+
+                return entity;
+
             });
         };
 
@@ -1846,12 +1973,40 @@
                 return;
             }
 
+            
+
             var withFilter = reportOptions.relfilters && reportOptions.relfilters.length > 0;
 
-            return exports.getReportDataAsEntities(reportOptions.reportId, reportOptions, withFilter).then(function (entities) {
-                pickerOptions.entities = entities;
-            });
+
+            if (reportOptions.reportId === "console:enumValuesReport" && !withFilter && reportOptions.entityTypeId) {
+                
+
+                let query = `name,alias,description,
+                     enumValueFormattingType.{name,alias},
+                     instancesOfType.{name,description,enumOrder,
+                                         enumFormattingRule.{
+                                             name,alias,
+                                             
+                                             iconRules.{iconRuleImage.{name, alias}},
+                                             colorRules.{
+                                                 colorRuleForeground,
+                                                 colorRuleBackground
+                                                 }
+                                         }
+                                       }`;
+              
+                return spEntityService.getEntity(reportOptions.entityTypeId, query, { hint: 'EnumValueWithFormatting', batch: true }).then(function (entities) {
+                    pickerOptions.entities = exports.getChoiceValuesAsEntities(entities);
+                });
+
+            } else {
+                return exports.getReportDataAsEntities(reportOptions.reportId, reportOptions, withFilter).then(function(entities) {
+                    pickerOptions.entities = entities;
+                });
+            }
         };
+
+        
 
 
         // flatted the controls into a single list preserving order according to renderingOrdinal

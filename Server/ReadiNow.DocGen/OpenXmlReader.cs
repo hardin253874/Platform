@@ -41,14 +41,14 @@ namespace ReadiNow.DocGen
         /// <summary>
         /// Stack that maintains Word mergefields. Complex fields can contain nested fields.
         /// </summary>
-        Stack<FieldData> _fieldDataStack = new Stack<FieldData>();
+        readonly Stack<FieldData> _fieldDataStack = new Stack<FieldData>();
 
 
         /// <summary>
         /// Stack that maintains what instruction we're currently reading.
         /// Instructions get organized into a tree.
         /// </summary>
-        Stack<Instruction> _instructionStack = new Stack<Instruction>();
+        readonly Stack<Instruction> _instructionStack = new Stack<Instruction>();
 
 
         /// <summary>

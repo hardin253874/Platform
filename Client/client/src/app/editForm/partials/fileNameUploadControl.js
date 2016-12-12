@@ -5,6 +5,7 @@ angular.module('app.editForm.fileNameUploadController', ['mod.app.editForm', 'sp
             'use strict';
 
             var loadedDocumentTypes = [];
+            let isFirstValidation = true;
 
             $scope.fieldToRender = $scope.formControl.hasRelationship('console:fieldToRender') && $scope.formControl.getFieldToRender() !== null ? $scope.formControl.getFieldToRender() : null;
             $scope.isReadOnlyControl = false;
@@ -28,8 +29,8 @@ angular.module('app.editForm.fileNameUploadController', ['mod.app.editForm', 'sp
             $scope.uploadDisplayName = '';
             $scope.downloadUri = '';
 
-            // Watches
-            
+            // Watches            
+
             $scope.$watch('formControl', function() {
                 if ($scope.formControl) {
                     var fieldToRender = $scope.formControl.getFieldToRender();
@@ -37,6 +38,11 @@ angular.module('app.editForm.fileNameUploadController', ['mod.app.editForm', 'sp
                     $scope.isMandatoryOnForm = $scope.formControl.mandatoryControl;
                     $scope.isRequired = $scope.isMandatoryOnForm || (fieldToRender && fieldToRender.isRequired);
                     $scope.titleModel = spEditForm.createTitleModel($scope.formControl);
+
+                    $scope.formControl.spValidateControl = function (entity) {
+                        validate();
+                        return $scope.customValidationMessages.length === 0;
+                    };
 
                     spEditForm.commonFieldControlInit(fieldToRender);
 
@@ -54,11 +60,12 @@ angular.module('app.editForm.fileNameUploadController', ['mod.app.editForm', 'sp
                     $scope.isReadOnlyControl = $scope.isReadOnly;
                 } else if ($scope.formMode && $scope.formMode === 'view') {
                     $scope.isReadOnlyControl = true;
-                }
+                    $scope.customValidationMessages = [];                    
+                }                
             });
 
             $scope.$watch("formData", function () {                
-                if ($scope.formData) {                                        
+                if ($scope.formData) {                    
                     $scope.downloadUri = spXsrf.addXsrfTokenAsQueryString(spWebService.getWebApiRoot() + '/spapi/data/v2/file/' + ($scope.formData.id()));
                     $scope.selectedEntity = $scope.formData;
                     $scope.uploadDisplayName = $scope.formData.name;
@@ -73,6 +80,8 @@ angular.module('app.editForm.fileNameUploadController', ['mod.app.editForm', 'sp
                 } else {
                     $scope.uploadDisplayName = '';
                 }
+
+                validate();
             });
 
             // Event Handlers
@@ -166,6 +175,26 @@ angular.module('app.editForm.fileNameUploadController', ['mod.app.editForm', 'sp
                         }
                     });
                 });
+            }
+
+            function validate() {
+                $scope.customValidationMessages = [];                                
+
+                // Skip initial validation
+                if (isFirstValidation) {
+                    isFirstValidation = false;
+                    return;
+                }                
+
+                if ($scope.isReadOnlyControl) {
+                    return;
+                }
+
+                if ($scope.isRequired && !$scope.uploadDisplayName) {
+                    spFieldValidator.raiseValidationErrors($scope, ['A file is required.']);
+                } else {
+                    spFieldValidator.clearValidationErrors($scope);
+                }
             }
         });
 

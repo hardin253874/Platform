@@ -72,7 +72,7 @@ namespace ReadiNow.EntityGraph.GraphModel
         /// Load a relationship
         /// </summary>
         /// <returns>The related entity IDs.</returns>
-        /// <exception cref="InvalidOperation">Thrown if it is not valid to request the specified field on the specified entity.</exception>
+        /// <exception cref="InvalidOperationException">Thrown if it is not valid to request the specified field on the specified entity.</exception>
         public IReadOnlyCollection<long> GetRelationship( long entityId, long relTypeId, Direction direction )
         {
             IReadOnlyCollection<long> result;
@@ -160,8 +160,6 @@ namespace ReadiNow.EntityGraph.GraphModel
         /// <returns>True if the data was originally requested (even if not returned), otherwise false.</returns>
         public bool WasRelationshipRequested( long entityId, long relTypeId, Direction direction )
         {
-            bool isReverse = direction == Direction.Reverse;
-
             bool result = WasMemberRequested( entityId, memberRequest =>
             {
                 if ( memberRequest.Relationships == null )
@@ -199,9 +197,6 @@ namespace ReadiNow.EntityGraph.GraphModel
 
             // The query nodes that were responsible for returning this entity in the result
             IEnumerable<RequestNodeInfo> nodes = entityValue.Nodes;
-
-            // All query nodes in the original query
-            Dictionary<int, RequestNodeInfo> requestNodes = _unsecuredGraphData.BulkSqlQuery.RequestNodes;
 
             // Check each node to see if any of them have the member
             foreach ( RequestNodeInfo requestNode in nodes )

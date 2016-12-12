@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using EDC.Database;
 
 namespace ReadiNow.QueryEngine.Builder.SqlObjects
 {

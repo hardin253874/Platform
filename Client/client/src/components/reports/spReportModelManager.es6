@@ -463,6 +463,24 @@
                     return null;
             }
 
+            function canEnableHyperlinksForReport(metadata) {
+                if (!metadata || !metadata.alias) {
+                    return true;
+                }
+
+                const alias = metadata.alias;
+
+                return alias !== "console:boardsReport" &&
+                    alias !== "console:reportsReport" &&
+                    alias !== "console:chartsReport" &&
+                    alias !== "console:customFormsReport" &&
+                    alias !== "console:screensReport" &&
+                    alias !== "core:importConfigReport" &&
+                    alias !== "console:workflowReport" &&
+                    alias !== "console:workflowRunsReport";
+            }
+
+
             // Initialize column definitions from metadata
             function loadColumnDefinitions(metadata, params) {
                 var columnDefinitions, groupColumns, orderedColumns;
@@ -530,7 +548,8 @@
                         !params.isMobile &&
                         !rcol.aggcol &&
                         rcol.type !== "ChoiceRelationship" &&
-                        (nameFieldEntity && rcol.fid === nameFieldEntity.id() || rcol.entityname);                    
+                        (nameFieldEntity && rcol.fid === nameFieldEntity.id() || rcol.entityname) &&
+                        canEnableHyperlinksForReport(metadata);
 
                     columnDefinition = {
                         // Column definition members
@@ -893,10 +912,14 @@
                 }
 
                 // Is the value hidden via conditional format settings
-                if (angular.isDefined(cfRule.showval)) {
-                    condHideVal = !cfRule.showval;
-                } else {
-                    condHideVal = true;
+                if (!angular.isDefined(cfRule))
+                    condHideVal = false;
+                else {
+                    if (angular.isDefined(cfRule.showval)) {
+                        condHideVal = !cfRule.showval;
+                    } else {
+                        condHideVal = true;
+                    }
                 }
 
                 columnDefinition.hideValue = colHideVal || condHideVal;

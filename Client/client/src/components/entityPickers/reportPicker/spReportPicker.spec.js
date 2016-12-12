@@ -5,11 +5,12 @@ describe('Console|Pickers|spec|spReportPicker directive', function () {
     'use strict';
 
     // Load the modules
+    beforeEach(module('mod.common.spWebService'));    
     beforeEach(module('mod.common.ui.spReportPicker'));
     beforeEach(module('entityPickers/reportPicker/spReportPicker.tpl.html'));
     beforeEach(module('entityPickers/entityComboPicker/spEntityComboPicker.tpl.html'));
     beforeEach(module('mockedEntityService'));
-
+    
     // Set the mocked data
     beforeEach(inject(function (spEntityService) {
         // Set the data we wish the mock to return

@@ -1,6 +1,5 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using EDC.ReadiNow.Model;
@@ -17,7 +16,7 @@ namespace ReadiNow.Connector.Processing
     class ImportRunReporter : IImportReporter
     {
         private readonly HashSet<IObjectReader> _readersWithErrors = new HashSet<IObjectReader>( );
-        private ImportRun _importRun;
+        private readonly ImportRun _importRun;
 
         private int _recordsFailed;
         private int _recordsSucceeded;

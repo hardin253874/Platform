@@ -7,7 +7,6 @@ using EDC.ReadiNow.EntityRequests.BulkRequests;
 using EDC.ReadiNow.Security;
 using EDC.ReadiNow.IO;
 using EDC.ReadiNow.Security.AccessControl;
-using EDC.ReadiNow.Core;
 
 namespace ReadiNow.EntityGraph.GraphModel
 {
@@ -32,7 +31,7 @@ namespace ReadiNow.EntityGraph.GraphModel
         /// <summary>
         /// Handle for security service.
         /// </summary>
-        private IEntityAccessControlService _entityAccessControlService;
+        private readonly IEntityAccessControlService _entityAccessControlService;
 
         /// <summary>
         /// Constructor.
@@ -80,7 +79,7 @@ namespace ReadiNow.EntityGraph.GraphModel
         /// Note: this does not affect the cacheability, as caching happens at BulkRequestResult, which is unsecured.
         /// </remarks>
         /// <param name="list">The entities to secure</param>
-        /// <param name="secureDemand">True for a security demand, false for a security check. I.e. throw vs return non-existant.</param>
+        /// <param name="securityOption"></param>
         /// <param name="relTypeAndDir">Optionally, the relationship along which the entities were reached. Use negative for reverse.</param>
         /// <returns>The list to which the user has read permission.</returns>
         internal IReadOnlyCollection<long> SecureList( IReadOnlyCollection<long> list, SecurityOption securityOption, long relTypeAndDir = 0 )

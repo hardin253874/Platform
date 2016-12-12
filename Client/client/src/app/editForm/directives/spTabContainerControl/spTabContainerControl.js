@@ -240,6 +240,10 @@
 
                         tab.model.formControl.dataState = spEntity.DataStateEnum.Delete;
 
+                        if (tab.model.formControl.graph && tab.model.formControl.graph.history && tab.model.formControl.graph.history.addBookmark) {
+                            tab.model.formControl.graph.history.addBookmark();
+                        }
+
                         configureFormControl();
 
                         $scope.$emit('tabRemoved');

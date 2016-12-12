@@ -324,7 +324,7 @@
                     var entities = [];
                     $scope.model.rootEntityType = type;
                     //the first report for an object that report should be marked as the default picker report and default display report automatically
-                    if (type.definitionUsedByReport.length === 0) {
+                    if (!type.definitionUsedByReport || type.definitionUsedByReport.length === 0) {
                         $scope.model.defaultDisplayReport = true;
                         $scope.model.defaultPickerReport = true;
                     } else if ($scope.model.reportEntity && $scope.model.reportEntity.getEntity()) {

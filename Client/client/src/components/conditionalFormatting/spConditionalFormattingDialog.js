@@ -439,7 +439,7 @@
             };
                                                                                           
             $scope.disabledControl = function () {
-                return $scope.model.condFormatting.useDefaultFormat && options.type === 'ChoiceRelationship' && $scope.defaultChoiceFieldFormatEnabled;
+                return $scope.defaultChoiceFieldFormatEnabled && options.type === 'ChoiceRelationship' && $scope.model.condFormatting.useDefaultFormat;
             };
             // Setup watchers
 

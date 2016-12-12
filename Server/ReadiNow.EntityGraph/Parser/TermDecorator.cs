@@ -45,7 +45,7 @@ namespace ReadiNow.EntityGraph.Parser
         /// <summary>
         /// List of variable names and the actions that need to be invoked once the variable is available.
         /// </summary>
-        List<Tuple<string, Action<EntityMemberRequest>>> _variableBindTasks = new List<Tuple<string, Action<EntityMemberRequest>>>();
+        readonly List<Tuple<string, Action<EntityMemberRequest>>> _variableBindTasks = new List<Tuple<string, Action<EntityMemberRequest>>>();
 
 		/// <summary>
 		/// Map of (internal) paths to individual relationship requests.

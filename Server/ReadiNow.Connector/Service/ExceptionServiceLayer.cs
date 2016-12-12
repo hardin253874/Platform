@@ -65,24 +65,24 @@ namespace ReadiNow.Connector.Service
         public ConnectorResponse HandleException(Exception ex)
         {
             HttpStatusCode httpCode;
-            string platformCode = null;
-            string message = null;
+            string platformCode;
+            string message;
 
             if (ex is ConnectorRequestException)
             {
-                EventLog.Application.WriteTrace("Connector: Bad request by caller: " + ex.ToString());
+                EventLog.Application.WriteTrace("Connector: Bad request by caller: " + ex );
                 httpCode = HttpStatusCode.BadRequest;
                 message = ex.Message;
             }
             else if (ex is ConnectorConfigException)
             {
-                EventLog.Application.WriteWarning("Connector: Tenant config error " + ex.ToString());
+                EventLog.Application.WriteWarning("Connector: Tenant config error " + ex );
                 httpCode = HttpStatusCode.InternalServerError;
                 message = ex.Message;
             }
             else
             {
-                EventLog.Application.WriteError("Connector: Unhandled internal exception: " + ex.ToString());
+                EventLog.Application.WriteError("Connector: Unhandled internal exception: " + ex );
                 httpCode = HttpStatusCode.InternalServerError;
                 message = Messages.PlatformInternalError;
             }

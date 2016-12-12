@@ -202,6 +202,21 @@ namespace ReadiNow.QueryEngine.Builder.SqlObjects
                 return;
 
             MoveConditionsToPseudoTable( rootTable );
+
+            if ( query.WhereClause.ConditionsBeforeRightJoins.Count > 0 )
+            {
+                string pseudoAlias = "queryConds";
+                SqlTable pseudoWhere = new SqlTable
+                {
+                    Name = "(values(1))",
+                    NameContainsSql = true,
+                    TableAlias = pseudoAlias,
+                    FullTableAlias = pseudoAlias + "(val)",
+                    FilterByTenant = false
+                };
+                rootTable.Children.Add( pseudoWhere );
+                pseudoWhere.Conditions.AddRange( query.WhereClause.ConditionsBeforeRightJoins.Select( expr => expr.ConditionSql ) );
+            }
         }
 
         /// <summary>

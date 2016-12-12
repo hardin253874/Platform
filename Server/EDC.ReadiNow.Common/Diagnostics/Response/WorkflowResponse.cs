@@ -127,5 +127,25 @@ namespace EDC.ReadiNow.Diagnostics.Response
             get;
             set;
         }
+
+        /// <summary>
+        ///     Gets or sets the step count.
+        /// </summary>
+        [ProtoMember(10)]
+        public int StepCount
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        ///     Gets or sets the tenant name.
+        /// </summary>
+        [ProtoMember(11)]
+        public string TenantName
+        {
+            get;
+            set;
+        }
     }
 }

@@ -141,7 +141,7 @@
                 }
 
                 var currentNavItem = spNavService.getCurrentItem();
-                if (currentNavItem) {
+                if (currentNavItem && currentNavItem.isDirty !== isDirty) {
 
                     originalIsDirty = currentNavItem.isDirty;
 

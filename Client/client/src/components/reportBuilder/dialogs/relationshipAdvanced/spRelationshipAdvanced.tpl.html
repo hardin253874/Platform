@@ -27,11 +27,11 @@
             <!-- <li>
                  <input type="checkbox" ng-model="model.selectedNodeResourceMustExist" ng-readonly="model.isResourceMustExistEnabled" ng-disabled="model.isResourceMustExistEnabled" />
                  Node must Exist</li>-->
-            <li ng-show="!model.isResourceReportNode">
+            <li ng-show="model.isRelationshipNode">
                 <input type="checkbox" ng-model="model.selectedNodeCheckExistenceOnly" ng-readonly="model.isCheckExistenceOnlyEnabled" ng-disabled="model.isCheckExistenceOnlyEnabled" />
                 Follow recursion (Show indirect relationships):
             </li>
-            <ul ng-show="!model.isResourceReportNode">
+            <ul ng-show="model.isRelationshipNode">
                 <li>
                     <select ng-model="model.selectedNodeRecursionMode" ng-disabled="!model.selectedNodeCheckExistenceOnly">
                         <option value="Recursive">Don't include self</option>

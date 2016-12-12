@@ -12,7 +12,7 @@ namespace ReadiNow.QueryEngine.Builder.SqlObjects
     /// </remarks>
     class SqlBuilderContext : SqlBuilder
     {
-        QueryBuilder _queryBuilder;
+        readonly QueryBuilder _queryBuilder;
 
         public SqlBuilderContext( QueryBuilder queryBuilder )
         {

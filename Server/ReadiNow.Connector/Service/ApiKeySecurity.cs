@@ -37,9 +37,9 @@ namespace ReadiNow.Connector.Service
         public ApiKeySecurity( IConnectorService innerService, IEndpointResolver endpointResolver, IEntityRepository entityRepository )
         {
             if ( innerService == null )
-                throw new ArgumentNullException( "innerService" );
+                throw new ArgumentNullException( nameof( innerService ) );
             if ( endpointResolver == null )
-                throw new ArgumentNullException( "endpointResolver" );
+                throw new ArgumentNullException( nameof( endpointResolver ) );
             
             _innerService = innerService;
             _endpointResolver = endpointResolver;
@@ -62,9 +62,9 @@ namespace ReadiNow.Connector.Service
         public ConnectorResponse HandleRequest( ConnectorRequest request )
         {
             if ( request == null )
-                throw new ArgumentNullException( "request" );
+                throw new ArgumentNullException( nameof( request ) );
             if ( request.QueryString == null )
-                throw new ArgumentNullException( "request.QueryString" );
+                throw new ArgumentException( "QueryString is not set.", nameof( request ) );
 
             // Diagnostic - no tenant
             if ( string.IsNullOrEmpty( request.TenantName ) )

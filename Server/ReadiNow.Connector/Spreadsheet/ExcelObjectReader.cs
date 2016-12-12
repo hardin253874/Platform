@@ -18,7 +18,7 @@ namespace ReadiNow.Connector.Spreadsheet
         private readonly Row _row;
         private readonly SpreadsheetDocument _document;
         private readonly uint _rowIndex;
-        private DataFileReaderSettings _settings;
+        private readonly DataFileReaderSettings _settings;
 
         /// <summary>
         /// Constructor.
@@ -214,7 +214,10 @@ namespace ReadiNow.Connector.Spreadsheet
                 return null;
 
             string result = ExcelCellFormatter.CellToString(cell, _document);
-            return result;
+
+	        result = result?.Trim( );
+
+	        return result;
         }
 
         /// <summary>

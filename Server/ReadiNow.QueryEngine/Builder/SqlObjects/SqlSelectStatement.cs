@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using EDC.Common;
-using EDC.Database;
 
 namespace ReadiNow.QueryEngine.Builder.SqlObjects
 {
@@ -52,7 +51,6 @@ namespace ReadiNow.QueryEngine.Builder.SqlObjects
 		public Stack<SqlCte> CurrentCte
 		{
 			get;
-			private set;
 		}
 
 
@@ -91,7 +89,6 @@ namespace ReadiNow.QueryEngine.Builder.SqlObjects
 		public SqlWithClause WithClause
 		{
 			get;
-			private set;
 		}
 
 

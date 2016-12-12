@@ -67,7 +67,7 @@ namespace ReadiNow.EntityGraph.Parser
 		public Token Current
 		{
 			get;
-			private set;
+            private set;
 		}
 
 		/// <summary>
@@ -175,7 +175,7 @@ namespace ReadiNow.EntityGraph.Parser
 		/// <param name="message">Message to appear within the exception.</param>
 		internal void RaiseError( string message )
 		{
-            throw new TokenizerException(message + string.Format(" at {0} line {1}.\nQuery:\n", _linePos, _line, _text));
+		    throw new TokenizerException( message + string.Format( " at {0} line {1}.\nQuery:\n", _linePos, _line ) );
 		}
 
 

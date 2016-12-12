@@ -33,7 +33,7 @@ namespace ReadiNow.DocGen.MacroParser
         /// <summary>
         /// DI provider for resolving script names.
         /// </summary>
-        internal ExternalServices ExternalServices { get; private set; }
+        internal ExternalServices ExternalServices { get; }
 
         /// <summary>
         /// Compiles an expression.
@@ -67,9 +67,9 @@ namespace ReadiNow.DocGen.MacroParser
         internal string ConvertEntity(ParseTreeNode entityNode)
         {
             if (entityNode == null)
-                throw new ArgumentNullException("entityNode");
-            if (entityNode.Term.Name != Terms.Identifier)
-                throw new ArgumentException("Expected Identifier", "entityNode");
+                throw new ArgumentNullException( nameof( entityNode ) );
+            if ( entityNode.Term.Name != Terms.Identifier )
+                throw new ArgumentException( "Expected Identifier", nameof( entityNode ) );
 
             return entityNode.Token.ValueString;
         }

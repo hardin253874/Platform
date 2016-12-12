@@ -1,8 +1,5 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Xml.Serialization;
 using EDC.Database;
 using EDC.ReadiNow.Model;
@@ -114,7 +111,7 @@ namespace EDC.ReadiNow.Expressions
         [XmlIgnore]
         public long EntityTypeId
         {
-            get { return EntityType == null ? 0 : EntityType.Id; }
+            get { return EntityType?.Id ?? 0; }
         }
 
 

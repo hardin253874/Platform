@@ -23,7 +23,7 @@ namespace ReadiNow.DocGen
         /// <summary>
         /// Not currently in a field.
         /// </summary>
-        Done,
+        Done
     }
 
     

@@ -1,10 +1,6 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
 using StackExchange.Redis;
 using ProtoBuf;
 
@@ -15,25 +11,22 @@ namespace EDC.ReadiNow.Messaging.Redis
 	/// </summary>
 	public class ListeningQueue<T> : IListeningQueue<T>
 	{
-        const string EnqueueMessage = "enqueue";
-        const string IgnoreMessage = "ignore";
-
         private IQueue<T> InnerQueue { get; }
         private IChannel<ListeningQueueMessage> Channel { get; }
 
-        public string Name { get { return InnerQueue.Name; } }
+        public string Name => InnerQueue.Name;
 
-        /// <summary>
+		/// <summary>
         /// Event when something has been added to the queue
         /// </summary>
         public event EventHandler EnqueuedReceived;
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="ListeningQueue" /> class.
-        /// </summary>
-        /// <param name="innerQueue">The inner queue to used for storage</param>
-        /// <param name="redisMgr">The redis manager to use for messages</param>
-        public ListeningQueue( IQueue<T> innerQueue, RedisManager redisMgr )
+		/// <summary>
+		/// Initializes a new instance of the <see cref="ListeningQueue{T}"/> class.
+		/// </summary>
+		/// <param name="innerQueue">The inner queue.</param>
+		/// <param name="redisMgr">The redis MGR.</param>
+		public ListeningQueue( IQueue<T> innerQueue, IDistributedMemoryManager redisMgr )
 		{
             InnerQueue = innerQueue;
             Channel = redisMgr.GetChannel<ListeningQueueMessage>($"channel|{innerQueue.Name}");
@@ -63,7 +56,7 @@ namespace EDC.ReadiNow.Messaging.Redis
 
 
         /// <summary>
-        /// Retieve a value from the queue
+        /// Retrieve a value from the queue
         /// </summary>
         /// <param name="flags">Flags to pass to Redis</param>
         /// <returns>The head element or null if the queue is empty</returns>
@@ -75,15 +68,9 @@ namespace EDC.ReadiNow.Messaging.Redis
         /// <summary>
         /// The length of the queue
         /// </summary>
-        public long Length
-        {
-            get
-            {
-                return InnerQueue.Length;
-            }
-        }
+        public long Length => InnerQueue.Length;
 
-        private void ChannelMessageReceived(object sender, MessageEventArgs<ListeningQueueMessage> e)
+		private void ChannelMessageReceived(object sender, MessageEventArgs<ListeningQueueMessage> e)
         {
             if (e != null)
             {
@@ -92,11 +79,11 @@ namespace EDC.ReadiNow.Messaging.Redis
         }
 
         #region IDisposable Support
-        private bool disposedValue = false; // To detect redundant calls
+        private bool _disposedValue = false; // To detect redundant calls
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            if (!_disposedValue)
             {
                 if (disposing)
                 {
@@ -104,7 +91,7 @@ namespace EDC.ReadiNow.Messaging.Redis
                     Channel.Dispose();
                 }
 
-                disposedValue = true;
+                _disposedValue = true;
             }
         }
 

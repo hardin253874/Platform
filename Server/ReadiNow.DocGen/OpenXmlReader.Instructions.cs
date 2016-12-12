@@ -242,11 +242,9 @@ namespace ReadiNow.DocGen
         {
             // Find the paragraph that contains the run
             OpenXmlElement paragraph = context.FieldData.SourceStart.SourceNode.Parent as Paragraph;
-            if (paragraph == null)
-                return null;
 
             // Find the row that contains the paragraph
-            OpenXmlElement row = paragraph.Parent.Parent as TableRow;
+            OpenXmlElement row = paragraph?.Parent?.Parent as TableRow;
             if (row == null)
                 return null;
 
@@ -348,6 +346,7 @@ namespace ReadiNow.DocGen
                 throw new InvalidOperationException(string.Format("Expected {0}, found {1}.", termName, node.Term.Name));
         }
 
+        // ReSharper disable UnusedParameter.Local
         private static void AssertChildren(ParseTreeNode node, int min, int max = int.MaxValue)
         {
             if (node == null)

@@ -1,7 +1,6 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using EDC.ReadiNow.Model;
 
 namespace ReadiNow.EntityGraph.GraphModel
@@ -14,7 +13,7 @@ namespace ReadiNow.EntityGraph.GraphModel
     /// </remarks>
     public class IdResolvingEntityRepository : IEntityRepository
     {
-        IEntityRepository<long> _innerRepository;
+        readonly IEntityRepository<long> _innerRepository;
 
         public IdResolvingEntityRepository( IEntityRepository<long> innerRepository )
         {

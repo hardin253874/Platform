@@ -1646,5 +1646,22 @@ namespace EDC.Test.Database
         {
             Assert.AreEqual( 123, DatabaseTypeHelper.GetEntityXmlId( @"<e text=""whatever"" id=""123"" />" ) );
         }
-	}
+
+        /// <summary>
+		///     Verifies that the ConvertToString method correctly converts a ConvertToString_AutoIncrementType value.
+		/// </summary>
+		[Test]
+        [TestCase(10, "R0", "R10")]
+        [TestCase(123, "R0", "R123")]
+        [TestCase(234, "", "234")]
+        [TestCase(567, "X0", "X567")]
+        [TestCase(890, "FMT0", "FMT890")]
+        [TestCase(777, "START0END", "START777END")]
+        [TestCase(888, "START0END ", "START888END ")]
+        public void ConvertToString_AutoIncrementType(int number, string format, string result)
+        {            
+            string stringData = DatabaseTypeHelper.ConvertToString(DatabaseType.AutoIncrementType, number, format);            
+            Assert.AreEqual(result, stringData, "The converted data is invalid.");        
+        }        
+    }
 }

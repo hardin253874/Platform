@@ -122,9 +122,6 @@ namespace EDC.ReadiNow.BackgroundTasks
                 tenantIds = TenantHelper.GetAll().Select(t => t.Id).ToList();
             }
 
-            var redisManager = new RedisManager();
-            redisManager.Connect();
-
             foreach (var tenantId in tenantIds)
             {
                 var queue = _tenantQueueFactory.Create(tenantId);

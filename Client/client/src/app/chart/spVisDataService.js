@@ -355,17 +355,6 @@
             }];
         }
 
-        // Returns true if the conditions is the empty conditions
-        function isEmptyConds(conds) {
-            if (!conds)
-                return true;
-            if (conds.length === 0)
-                return true;
-            if (conds.length > 1)
-                return false;
-            return conds[0].expid === '_id' && conds[0].oper === 'IsNotNull';
-        }
-
 
         // Checks the format type to see if it is one that can transform from linear to categorical
         function isCategoricalScaleFormat(formatType) {
@@ -573,7 +562,6 @@
             isCategoricalScaleFormat: isCategoricalScaleFormat,
             getRuleColors: getRuleColors,
             getEmptyConds: getEmptyConds,
-            isEmptyConds: isEmptyConds,
             test: {
                 locateColumnContent: locateColumnContent,
                 createReportRequest: createReportRequest,

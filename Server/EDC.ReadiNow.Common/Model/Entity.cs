@@ -5007,18 +5007,46 @@ SELECT d.EntityId, d.Data FROM dbo.{0} d JOIN @list l ON d.EntityId = l.Id AND d
 			}
 
 			return string.Empty;
-		}
+        }
 
-		/// <summary>
-		///     Gets the relationship from database.
-		/// </summary>
-		/// <param name="entity">The entity.</param>
-		/// <param name="relationshipDefinition">The relationship definition.</param>
-		/// <param name="direction">The direction.</param>
-		/// <param name="entityInternal">The entity internal.</param>
-		/// <param name="readOnlyCacheValues">The read only cache values.</param>
-		/// <returns></returns>
-		private static IEnumerable<long> GetRelationshipFromDatabase( IEntityRef entity, IEntityRef relationshipDefinition, Direction direction, IEntityInternal entityInternal, IDictionary<long, ISet<long>> readOnlyCacheValues )
+        /// <summary>
+        ///     Gets an unsecured name or UpgradeId strictly for use in log entries.
+        /// </summary>
+        /// <param name="entityId">The entityId.</param>
+        /// <returns></returns>
+        public static string GetNameForLogEntry( long entityId )
+        {
+            using ( new SecurityBypassContext( ) )
+            {
+                try
+                {
+                    return GetName( entityId );
+                }
+                catch
+                {
+                    try
+                    {
+                        Guid upgradeId = GetUpgradeId( entityId );
+                        return upgradeId.ToString( );
+                    }
+                    catch
+                    {
+                        return entityId.ToString( );
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        ///     Gets the relationship from database.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        /// <param name="relationshipDefinition">The relationship definition.</param>
+        /// <param name="direction">The direction.</param>
+        /// <param name="entityInternal">The entity internal.</param>
+        /// <param name="readOnlyCacheValues">The read only cache values.</param>
+        /// <returns></returns>
+        private static IEnumerable<long> GetRelationshipFromDatabase( IEntityRef entity, IEntityRef relationshipDefinition, Direction direction, IEntityInternal entityInternal, IDictionary<long, ISet<long>> readOnlyCacheValues )
 		{
 			ISet<long> readOnlyCacheValue = new HashSet<long>( );
 

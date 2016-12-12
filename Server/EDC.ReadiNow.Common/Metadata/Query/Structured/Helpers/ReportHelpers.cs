@@ -76,7 +76,7 @@ namespace EDC.ReadiNow.Metadata.Query.Structured.Helpers
                 parentReportNode.@NODE,
                 exactType,
                 targetMustExist,
-                targetNeedNotExist,
+                targetNeedNotExist,                                
                 parentNeedNotExist,
                 joinPredicateCalculation,
                 resourceReportNodeType.@ALIASTYPE,
@@ -137,7 +137,7 @@ namespace EDC.ReadiNow.Metadata.Query.Structured.Helpers
                 formatImageScale.@ALIASTYPE,
                 formatImageSize.@ALIASTYPE,
                 formatAlignment.@ALIASTYPE,
-                columnShowText,
+                columnShowText,                
                 disableDefaultFormat,
                 formatDecimalPlaces,
                 formatPrefix,
@@ -177,6 +177,7 @@ namespace EDC.ReadiNow.Metadata.Query.Structured.Helpers
 
             let @REPORT = {
                 name,
+                alias,
                 modifiedDate,
                 isOfType.id,
                 rootNode.@NODE,

@@ -8,7 +8,6 @@ using System.Text;
 using EDC.Common;
 using EDC.Database;
 using EDC.Database.Types;
-using EDC.ReadiNow.Diagnostics;
 using EDC.ReadiNow.Security;
 using EDC.ReadiNow.Utc;
 using EDC.ReadiNow.Model;
@@ -100,28 +99,12 @@ namespace ReadiNow.QueryEngine.Builder
 		    throw convertResult.GetConvertException( );
 	    }
 
-		/// <summary>
-		///		Tries to convert the aggregate expression.
-		/// </summary>
-		/// <param name="aggExpression">The aggregate expression.</param>
-		/// <param name="sqlQuery">The SQL query.</param>
-		/// <param name="sqlExpression">The SQL expression.</param>
-		/// <returns></returns>
-	    private bool TryConvertAggregateExpression( AggregateExpression aggExpression, SqlQuery sqlQuery, out SqlExpression sqlExpression )
-	    {
-			var convertResult = new ConvertResult( );
-
-		    bool result = TryConvertAggregateExpressionImpl( aggExpression, sqlQuery, ref convertResult );
-
-		    sqlExpression = convertResult.Expression;
-		    return result;
-	    }
-
 	    /// <summary>
         /// Converts an aggregate expression, such as max or sum.
         /// </summary>
         /// <param name="aggExpression">The agg expression.</param>
         /// <param name="sqlQuery">The SQL query.</param>
+        /// <param name="convertResult"></param>
         private bool TryConvertAggregateExpressionImpl(AggregateExpression aggExpression, SqlQuery sqlQuery, ref ConvertResult convertResult )
         {
 		    try
@@ -136,11 +119,11 @@ namespace ReadiNow.QueryEngine.Builder
 			    }
 
 			    // Get field type
-			    Field field = null;
 			    FieldType fieldType = null;
-			    if ( aggExpression.Expression is ResourceDataColumn )
+                ResourceDataColumn resourceDataColumn = aggExpression.Expression as ResourceDataColumn;
+		        if ( resourceDataColumn != null )
 			    {
-				    field = Model.Entity.Get<Field>( ( ( ResourceDataColumn ) aggExpression.Expression ).FieldId );
+                    Field field = Model.Entity.Get<Field>( resourceDataColumn.FieldId );
 				    fieldType = field.GetFieldType( );
 			    }
 			    // Find the sub query
@@ -443,41 +426,6 @@ namespace ReadiNow.QueryEngine.Builder
         }
 
 		/// <summary>
-		///		Converts the aggregate XML list expression.
-		/// </summary>
-		/// <param name="aggExpression">The aggregate expression.</param>
-		/// <param name="sqlQuery">The SQL query.</param>
-		/// <returns></returns>
-	    private SqlExpression ConvertAggregateXmlListExpression( AggregateExpression aggExpression, SqlQuery sqlQuery )
-	    {
-		    var convertResult = new ConvertResult( );
-
-		    if ( TryConvertAggregateXmlListExpressionImpl( aggExpression, sqlQuery, ref convertResult ) )
-		    {
-			    return convertResult.Expression;
-		    }
-
-		    throw convertResult.GetConvertException( );
-	    }
-
-		/// <summary>
-		///		Tries to convert the aggregate XML list expression.
-		/// </summary>
-		/// <param name="aggExpression">The aggregate expression.</param>
-		/// <param name="sqlQuery">The SQL query.</param>
-		/// <param name="sqlExpression">The SQL expression.</param>
-		/// <returns></returns>
-	    private bool TryConvertAggregateXmlListExpression( AggregateExpression aggExpression, SqlQuery sqlQuery, out SqlExpression sqlExpression )
-	    {
-			var convertResult = new ConvertResult( );
-
-		    bool result = TryConvertAggregateXmlListExpressionImpl( aggExpression, sqlQuery, ref convertResult );
-
-		    sqlExpression = convertResult.Expression;
-		    return result;
-	    }
-
-		/// <summary>
 		/// Converts an aggregate expression that compresses multiple rows into a single XML list.
 		/// </summary>
 		/// <param name="aggExpression">The agg expression.</param>
@@ -585,7 +533,7 @@ namespace ReadiNow.QueryEngine.Builder
 			    k += ( child.Conditions.Count - conditionCountBeforeRender );
 
 			    //after query renderSql, the rootTable children may different, set back to original.
-			    if ( subQuery.FromClause.RootTable.Children.Count( ) != childSqlTables.Count( ) )
+			    if ( subQuery.FromClause.RootTable.Children.Count != childSqlTables.Count )
 			    {
 				    subQuery.FromClause.RootTable.Children = childSqlTables;
 			    }
@@ -624,24 +572,6 @@ namespace ReadiNow.QueryEngine.Builder
 				return false;
 		    }
         }
-
-		/// <summary>
-		///		Converts the script expression.
-		/// </summary>
-		/// <param name="scriptExpression">The script expression.</param>
-		/// <param name="sqlQuery">The SQL query.</param>
-		/// <returns></returns>
-	    private SqlExpression ConvertScriptExpression( ScriptExpression scriptExpression, SqlQuery sqlQuery )
-	    {
-		    var convertResult = new ConvertResult( );
-
-		    if ( TryConvertScriptExpressionImpl( scriptExpression, sqlQuery, ref convertResult ) )
-		    {
-			    return convertResult.Expression;
-		    }
-
-		    throw convertResult.GetConvertException( );
-	    }
 
 		/// <summary>
 		/// Tries to convert the script expression.
@@ -726,41 +656,6 @@ namespace ReadiNow.QueryEngine.Builder
 				return false;
 		    }
         }
-
-		/// <summary>
-		///		Converts the calculation expression.
-		/// </summary>
-		/// <param name="calculationExpression">The calculation expression.</param>
-		/// <param name="sqlQuery">The SQL query.</param>
-		/// <returns></returns>
-	    private SqlExpression ConvertCalculationExpression( CalculationExpression calculationExpression, SqlQuery sqlQuery )
-	    {
-		    var convertResult = new ConvertResult( );
-
-		    if ( TryConvertCalculationExpressionImpl( calculationExpression, sqlQuery, ref convertResult ) )
-		    {
-			    return convertResult.Expression;
-		    }
-
-		    throw convertResult.GetConvertException( );
-	    }
-
-		/// <summary>
-		///		Tries to convert the calculation expression.
-		/// </summary>
-		/// <param name="calculationExpression">The calculation expression.</param>
-		/// <param name="sqlQuery">The SQL query.</param>
-		/// <param name="sqlExpression">The SQL expression.</param>
-		/// <returns></returns>
-	    private bool TryConvertCalculationExpression( CalculationExpression calculationExpression, SqlQuery sqlQuery, out SqlExpression sqlExpression )
-	    {
-			var convertResult = new ConvertResult( );
-
-		    bool result = TryConvertCalculationExpressionImpl( calculationExpression, sqlQuery, ref convertResult );
-
-		    sqlExpression = convertResult.Expression;
-		    return result;
-	    }
 
 		/// <summary>
 		///		Converts the calculation expression.
@@ -1545,15 +1440,15 @@ namespace ReadiNow.QueryEngine.Builder
             }
             else
 			{
-                throw new Exception("Incorrect number of arguments passed to SQL function " + calculationExpression.ToString());
+                throw new Exception("Incorrect number of arguments passed to SQL function " + calculationExpression );
 			}                
         }
 
         /// <summary>
         ///     Clusters values together (e.g. dates by month) by converting them to a canonical form. (e.g. first of the month)
         /// </summary>
-        /// <param name="scalarExpression">The cluster expression.</param>
         /// <param name="sqlExpression">The cluster expression.</param>
+        /// <param name="operation"></param>
         /// <param name="sqlQuery">The SQL query.</param>
         /// <returns></returns>
         private SqlExpression ApplyClusterOperation(SqlExpression sqlExpression, ClusterOperation operation, SqlQuery sqlQuery)
@@ -1561,8 +1456,14 @@ namespace ReadiNow.QueryEngine.Builder
             if (operation == ClusterOperation.None)
                 return sqlExpression;
 
-            // Adjust time zone
-            SqlExpression adjusted = ConvertExpressionToLocalTime(sqlExpression);
+	        SqlExpression adjusted = sqlExpression;
+
+			if ( operation != ( ClusterOperation.Hour | ClusterOperation.Second | ClusterOperation.Minute ) )
+			{
+				// Adjust time zone
+				// Note* Not certain that this call should be here at all???
+				adjusted = ConvertExpressionToLocalTime( sqlExpression );
+			}
 
             // Build a string pattern
             string pattern;
@@ -1614,41 +1515,6 @@ namespace ReadiNow.QueryEngine.Builder
         }
 
 		/// <summary>
-		///		Converts the column reference expression.
-		/// </summary>
-		/// <param name="columnReference">The column reference.</param>
-		/// <param name="sqlQuery">The SQL query.</param>
-		/// <returns></returns>
-	    private SqlExpression ConvertColumnReferenceExpression( ColumnReference columnReference, SqlQuery sqlQuery )
-	    {
-		    var convertResult = new ConvertResult( );
-
-		    if ( TryConvertColumnReferenceExpressionImpl( columnReference, sqlQuery, ref convertResult ) )
-		    {
-			    return convertResult.Expression;
-		    }
-
-		    throw convertResult.GetConvertException( );
-	    }
-
-		/// <summary>
-		///		Tries to convert the column reference expression.
-		/// </summary>
-		/// <param name="columnReference">The column reference.</param>
-		/// <param name="sqlQuery">The SQL query.</param>
-		/// <param name="sqlExpression">The SQL expression.</param>
-		/// <returns></returns>
-	    private bool TryConvertColumnReferenceExpression( ColumnReference columnReference, SqlQuery sqlQuery, out SqlExpression sqlExpression )
-	    {
-			var convertResult = new ConvertResult( );
-
-		    bool result = TryConvertColumnReferenceExpressionImpl( columnReference, sqlQuery, ref convertResult );
-
-		    sqlExpression = convertResult.Expression;
-		    return result;
-	    }
-
-		/// <summary>
 		///		Converts the column reference expression into a SqlExpression.
 		/// </summary>
 		/// <param name="columnReference">The column reference.</param>
@@ -1676,41 +1542,6 @@ namespace ReadiNow.QueryEngine.Builder
 			    return false;
 		    }
         }
-
-		/// <summary>
-		///		Converts the comparison expression.
-		/// </summary>
-		/// <param name="comparisonExpression">The comparison expression.</param>
-		/// <param name="sqlQuery">The SQL query.</param>
-		/// <returns></returns>
-	    private SqlExpression ConvertComparisonExpression( ComparisonExpression comparisonExpression, SqlQuery sqlQuery )
-	    {
-			var convertResult = new ConvertResult( );
-
-		    if ( TryConvertComparisonExpressionImpl( comparisonExpression, sqlQuery, ref convertResult ) )
-		    {
-			    return convertResult.Expression;
-		    }
-
-		    throw convertResult.GetConvertException( );
-	    }
-
-		/// <summary>
-		/// Tries to convert the comparison expression.
-		/// </summary>
-		/// <param name="comparisonExpression">The comparison expression.</param>
-		/// <param name="sqlQuery">The SQL query.</param>
-		/// <param name="sqlExpression">The SQL expression.</param>
-		/// <returns></returns>
-	    private bool TryConvertComparisonExpression( ComparisonExpression comparisonExpression, SqlQuery sqlQuery, out SqlExpression sqlExpression )
-	    {
-			var convertResult = new ConvertResult( );
-
-		    bool result = TryConvertComparisonExpressionImpl( comparisonExpression, sqlQuery, ref convertResult );
-
-		    sqlExpression = convertResult.Expression;
-		    return result;
-	    }
 
 		/// <summary>
 		///		Converts the comparison expression.
@@ -2093,23 +1924,6 @@ namespace ReadiNow.QueryEngine.Builder
 		    throw convertResult.GetConvertException( );
 	    }
 
-		/// <summary>
-		///		Converts the identifier expression.
-		/// </summary>
-		/// <param name="idExpression">The identifier expression.</param>
-		/// <param name="sqlQuery">The SQL query.</param>
-		/// <param name="sqlExpression">The SQL expression.</param>
-		/// <returns></returns>
-	    private bool ConvertIdExpression( IdExpression idExpression, SqlQuery sqlQuery, out SqlExpression sqlExpression )
-	    {
-			var convertResult = new ConvertResult( );
-
-		    bool result = TryConvertIdExpressionImpl( idExpression, sqlQuery, ref convertResult );
-
-		    sqlExpression = convertResult.Expression;
-		    return result;
-	    }
-
 
 		/// <summary>
 		///		Converts a structure view expression request into a SqlExpression.
@@ -2149,41 +1963,6 @@ namespace ReadiNow.QueryEngine.Builder
 			    return false;
 		    }
 		}
-
-		/// <summary>
-		///		Converts if else expression.
-		/// </summary>
-		/// <param name="ifElseExpr">If else expression.</param>
-		/// <param name="sqlQuery">The SQL query.</param>
-		/// <returns></returns>
-	    private SqlExpression ConvertIfElseExpression( IfElseExpression ifElseExpr, SqlQuery sqlQuery )
-	    {
-		    var convertResult = new ConvertResult( );
-
-		    if ( TryConvertIfElseExpressionImpl( ifElseExpr, sqlQuery, ref convertResult ) )
-		    {
-			    return convertResult.Expression;
-		    }
-
-		    throw convertResult.GetConvertException( );
-	    }
-
-		/// <summary>
-		///		Tries to convert the if else expression.
-		/// </summary>
-		/// <param name="ifElseExpr">If else expr.</param>
-		/// <param name="sqlQuery">The SQL query.</param>
-		/// <param name="sqlExpression">The SQL expression.</param>
-		/// <returns></returns>
-	    private bool TryConvertIfElseExpression( IfElseExpression ifElseExpr, SqlQuery sqlQuery, out SqlExpression sqlExpression )
-	    {
-			var convertResult = new ConvertResult( );
-
-		    bool result = TryConvertIfElseExpressionImpl( ifElseExpr, sqlQuery, ref convertResult );
-
-			sqlExpression = convertResult.Expression;
-		    return result;
-	    }
 
 
 		/// <summary>
@@ -2245,39 +2024,6 @@ namespace ReadiNow.QueryEngine.Builder
         }
 
 		/// <summary>
-		///		Converts the literal expression.
-		/// </summary>
-		/// <param name="literalExpression">The literal expression.</param>
-		/// <returns></returns>
-	    private SqlExpression ConvertLiteralExpression( LiteralExpression literalExpression )
-	    {
-			var convertResult = new ConvertResult( );
-
-			if ( TryConvertLiteralExpressionImpl( literalExpression, ref convertResult ) )
-			{
-				return convertResult.Expression;
-			}
-
-			throw convertResult.GetConvertException( );
-	    }
-
-		/// <summary>
-		///		Tries to convert the literal expression.
-		/// </summary>
-		/// <param name="literalExpression">The literal expression.</param>
-		/// <param name="sqlExpression">The SQL expression.</param>
-		/// <returns></returns>
-	    private bool TryConvertLiteralExpression( LiteralExpression literalExpression, out SqlExpression sqlExpression )
-	    {
-			var convertResult = new ConvertResult( );
-
-		    bool result = TryConvertLiteralExpressionImpl( literalExpression, ref convertResult );
-
-			sqlExpression = convertResult.Expression;
-		    return result;
-	    }
-
-		/// <summary>
 		///		Converts a literal (some constant value) to a SQL expression.
 		/// </summary>
 		/// <param name="literalExpression">The literal expression.</param>
@@ -2326,41 +2072,6 @@ namespace ReadiNow.QueryEngine.Builder
         }
 
 		/// <summary>
-		///		Converts the mutate expression.
-		/// </summary>
-		/// <param name="mutateExpression">The mutate expression.</param>
-		/// <param name="sqlQuery">The SQL query.</param>
-		/// <returns></returns>
-	    private SqlExpression ConvertMutateExpression( MutateExpression mutateExpression, SqlQuery sqlQuery )
-	    {
-			var convertResult = new ConvertResult( );
-
-			if ( TryConvertMutateExpressionImpl( mutateExpression, sqlQuery, ref convertResult ) )
-			{
-				return convertResult.Expression;
-			}
-
-			throw convertResult.GetConvertException( );
-	    }
-
-		/// <summary>
-		///		Tries to convert the mutate expression.
-		/// </summary>
-		/// <param name="mutateExpression">The mutate expression.</param>
-		/// <param name="sqlQuery">The SQL query.</param>
-		/// <param name="sqlExpression">The SQL expression.</param>
-		/// <returns></returns>
-	    private bool TryConvertMutateExpression( MutateExpression mutateExpression, SqlQuery sqlQuery, out SqlExpression sqlExpression )
-	    {
-			var convertResult = new ConvertResult( );
-
-		    bool result = TryConvertMutateExpressionImpl( mutateExpression, sqlQuery, ref convertResult );
-
-		    sqlExpression = convertResult.Expression;
-		    return result;
-	    }
-
-		/// <summary>
 		///		Mutates an expression by calling one of its purpose specific callbacks.
 		/// </summary>
 		/// <param name="mutateExpression">The mutate expression.</param>
@@ -2396,41 +2107,6 @@ namespace ReadiNow.QueryEngine.Builder
 				return false;
 		    }
         }
-
-		/// <summary>
-		///		Converts the logical expression.
-		/// </summary>
-		/// <param name="logicalExpression">The logical expression.</param>
-		/// <param name="sqlQuery">The SQL query.</param>
-		/// <returns></returns>
-	    private SqlExpression ConvertLogicalExpression( LogicalExpression logicalExpression, SqlQuery sqlQuery )
-	    {
-			var convertResult = new ConvertResult( );
-
-			if ( TryConvertLogicalExpressionImpl( logicalExpression, sqlQuery, ref convertResult ) )
-			{
-				return convertResult.Expression;
-			}
-
-			throw convertResult.GetConvertException( );
-	    }
-
-		/// <summary>
-		///		Tries to convert the logical expression.
-		/// </summary>
-		/// <param name="logicalExpression">The logical expression.</param>
-		/// <param name="sqlQuery">The SQL query.</param>
-		/// <param name="sqlExpression">The SQL expression.</param>
-		/// <returns></returns>
-	    private bool TryConvertLogicalExpression( LogicalExpression logicalExpression, SqlQuery sqlQuery, out SqlExpression sqlExpression )
-	    {
-			var convertResult = new ConvertResult( );
-
-		    bool result = TryConvertLogicalExpressionImpl( logicalExpression, sqlQuery, ref convertResult );
-
-		    sqlExpression = convertResult.Expression;
-		    return result;
-	    }
 
 		/// <summary>
 		///		Converts the logical expression.
@@ -2498,23 +2174,6 @@ namespace ReadiNow.QueryEngine.Builder
 		    throw convertResult.GetConvertException( );
 	    }
 
-		/// <summary>
-		///		Tries to convert the resource data column expression.
-		/// </summary>
-		/// <param name="resourceDataColumn">The resource data column.</param>
-		/// <param name="sqlQuery">The SQL query.</param>
-		/// <param name="sqlExpression">The SQL expression.</param>
-		/// <returns></returns>
-	    private bool TryConvertResourceDataColumnExpression( ResourceDataColumn resourceDataColumn, SqlQuery sqlQuery, out SqlExpression sqlExpression )
-	    {
-            var convertResult = new ConvertResult( );
-
-		    bool result = TryConvertResourceDataColumnExpressionImpl( resourceDataColumn, sqlQuery, ref convertResult );
-
-		    sqlExpression = convertResult.Expression;
-		    return result;
-	    }
-
 	    /// <summary>
 		///		Converts a resource data column expression request into a SqlExpression.
 		/// </summary>
@@ -2570,7 +2229,7 @@ namespace ReadiNow.QueryEngine.Builder
 					sqlQuery.CreateJoinedTable( "dbo." + fieldTable, "d", parentTable, JoinHint.Unspecified, // data-table to resource
 						"EntityId", parentTable.IdColumn );
 
-				bool isFieldWriteOnly = false;
+				bool isFieldWriteOnly;
                 isFieldWriteOnly = field.IsFieldWriteOnly ?? false;
 
                 string fieldIdParamName = RegisterSharedParameter( DbType.Int64, resourceDataColumn.FieldId.Id.ToString( CultureInfo.InvariantCulture ) );
@@ -2658,43 +2317,6 @@ namespace ReadiNow.QueryEngine.Builder
         }
 
 		/// <summary>
-		///		Converts the resource expression.
-		/// </summary>
-		/// <param name="resourceExpression">The resource expression.</param>
-		/// <param name="sqlQuery">The SQL query.</param>
-		/// <param name="isUnderAggregateExpression">if set to <c>true</c> [is under aggregate expression].</param>
-		/// <returns></returns>
-	    private SqlExpression ConvertResourceExpression( ResourceExpression resourceExpression, SqlQuery sqlQuery, bool isUnderAggregateExpression = false )
-	    {
-		    var convertResult = new ConvertResult( );
-
-		    if ( TryConvertResourceExpressionImpl( resourceExpression, sqlQuery, isUnderAggregateExpression, ref convertResult ) )
-		    {
-			    return convertResult.Expression;
-		    }
-
-		    throw convertResult.GetConvertException( );
-	    }
-
-		/// <summary>
-		/// Tries to convert the resource expression.
-		/// </summary>
-		/// <param name="resourceExpression">The resource expression.</param>
-		/// <param name="sqlQuery">The SQL query.</param>
-		/// <param name="isUnderAggregateExpression">if set to <c>true</c> [is under aggregate expression].</param>
-		/// <param name="sqlExpression">The SQL expression.</param>
-		/// <returns></returns>
-	    private bool TryConvertResourceExpression( ResourceExpression resourceExpression, SqlQuery sqlQuery, bool isUnderAggregateExpression, out SqlExpression sqlExpression )
-	    {
-			var convertResult = new ConvertResult( );
-
-		    bool result = TryConvertResourceExpressionImpl( resourceExpression, sqlQuery, isUnderAggregateExpression, ref convertResult );
-
-			sqlExpression = convertResult.Expression;
-				return result;
-	    }
-
-		/// <summary>
 		///		Converts a RelationshipField expression request into a SqlExpression.
 		/// </summary>
 		/// <param name="resourceExpression">The resource expression.</param>
@@ -2731,7 +2353,6 @@ namespace ReadiNow.QueryEngine.Builder
 				    else
 				    {
 					    orderField = new EntityRef( "core:name" );
-					    isEnum = false;
 				    }
 			    }
 
@@ -2851,41 +2472,6 @@ namespace ReadiNow.QueryEngine.Builder
         }
 
 		/// <summary>
-		///		Converts the structure view expression.
-		/// </summary>
-		/// <param name="structureViewExpression">The structure view expression.</param>
-		/// <param name="sqlQuery">The SQL query.</param>
-		/// <returns></returns>
-	    private SqlExpression ConvertStructureViewExpression( StructureViewExpression structureViewExpression, SqlQuery sqlQuery )
-	    {
-		    var convertResult = new ConvertResult( );
-
-		    if ( TryConvertStructureViewExpressionImpl( structureViewExpression, sqlQuery, ref convertResult ) )
-		    {
-			    return convertResult.Expression;
-		    }
-
-		    throw convertResult.GetConvertException( );
-	    }
-
-		/// <summary>
-		///		Tries to convert the structure view expression.
-		/// </summary>
-		/// <param name="structureViewExpression">The structure view expression.</param>
-		/// <param name="sqlQuery">The SQL query.</param>
-		/// <param name="sqlExpression">The SQL expression.</param>
-		/// <returns></returns>
-	    private bool TryConvertStructureViewExpression( StructureViewExpression structureViewExpression, SqlQuery sqlQuery, out SqlExpression  sqlExpression )
-	    {
-			var convertResult = new ConvertResult( );
-
-		    bool result = TryConvertStructureViewExpressionImpl( structureViewExpression, sqlQuery, ref convertResult );
-
-			sqlExpression = convertResult.Expression;
-		    return result;
-	    }
-
-		/// <summary>
 		///		Converts a resource data column expression request into a SqlExpression.
 		/// </summary>
 		/// <param name="structureViewExpression">The structure view expression.</param>
@@ -2903,6 +2489,10 @@ namespace ReadiNow.QueryEngine.Builder
 			    var structureView = Model.Entity.Get<StructureView>( structureViewExpression.StructureViewId );
 			    EntityRef rootRelationshipId = new EntityRef( "isRootForStructureView" );			    
 			    IEntity structureHierarchyRelationshipId = structureView.StructureHierarchyRelationship;
+
+                if ( structureHierarchyRelationshipId == null )
+                    throw new Exception( $"Structure View {structureView.Id} has no structure relationship." );
+
                 EntityRef nameFieldId = new EntityRef("core:name");
                 string directionSuffix = (structureView.FollowRelationshipInReverse ?? false) ? "Fwd" : "Rev";
                 bool detectRoots = structureView.DetectRootLevels ?? false;                

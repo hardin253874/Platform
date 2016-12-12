@@ -6,6 +6,9 @@ using EDC.ReadiNow.Security.AccessControl;
 using EDC.ReadiNow.Model.CacheInvalidation;
 using EDC.ReadiNow.Model;
 
+// ReSharper disable RedundantOverridenMember
+// Note: these are added to aid placement of debug statements
+
 namespace ReadiNow.QueryEngine.CachingRunner
 {
     /// <summary>

@@ -31,7 +31,7 @@ namespace ReadiNow.DocGen
         /// <summary>
         /// Stack of data elements.
         /// </summary>
-        public Stack<DataElement> DataElementStack { get; private set; }
+        public Stack<DataElement> DataElementStack { get; }
 
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace ReadiNow.DocGen
         /// <summary>
         /// Set of image IDs that we've written in the output document.
         /// </summary>
-        public HashSet<uint> ImageIdsUsed { get; private set; }
+        public HashSet<uint> ImageIdsUsed { get; }
 
 
         /// <summary>

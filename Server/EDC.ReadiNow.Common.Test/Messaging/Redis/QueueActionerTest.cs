@@ -6,367 +6,463 @@ using System;
 using EDC.ReadiNow.Messaging.Redis;
 using System.Threading;
 using System.Collections.Generic;
-using System.Text;
+using System.Diagnostics;
+using EDC.ReadiNow.Core;
 
 namespace EDC.ReadiNow.Test.Messaging.Redis
 {
     [TestFixture]
     public class QueueActionerTest
     {
+		/// <summary>
+		/// The timeout (30 seconds)
+		/// </summary>
+		private static readonly int Timeout = 30000;
 
-        [TestCase(1)]
-        [TestCase(5)]
-        public void GoldenPath(int concurrency)
-        {
-            string result = "";
-            using (var q = CreateQueue())
-            {
-                Action<string> action = (s) => { lock(this) result += s; };
+		[TestCase( 1 )]
+		[TestCase( 5 )]
+		public void GoldenPath( int concurrency )
+		{
+			string result = "";
 
-                using (var actioner = new QueueActioner<string>(q, action, concurrency))
-                {
-                    Assert.That(actioner.State, Is.EqualTo(ActionerState.Stopped));
+			object syncRoot = new object( );
 
-                    q.Enqueue("a");                 // wont be processed until started
+			var mgr = Factory.DistributedMemoryManager;
 
-                    Thread.Sleep(50);
-                    Assert.That(result, Is.Empty);  
+			using ( var q = CreateQueue( mgr ) )
+			using ( CountdownEvent evt = new CountdownEvent( 1 ) )
+			{
+				Action<string> action = ( s ) =>
+				{
+					lock ( syncRoot )
+					{
+						result += s;
+					}
 
-                    actioner.Start();
+					// ReSharper disable once AccessToDisposedClosure
+					evt.Signal( );
+				};
 
-                    Thread.Sleep(50);
-                    Assert.That(result, Is.EqualTo("a"));
+				using ( var actioner = new QueueActioner<string>( q, action, concurrency ) )
+				{
+					Assert.That( actioner.State, Is.EqualTo( ActionerState.Stopped ) );
 
-                    q.Enqueue("b");
+					q.Enqueue( "a" );                 // wont be processed until started
 
-                    Thread.Sleep(50);
-                    Assert.That(result, Is.EqualTo("ab"));
+					Thread.Sleep( 50 );
+					Assert.That( result, Is.Empty );
 
-                    q.Enqueue("c");
+					actioner.Start( );
 
-                    Thread.Sleep(50);
-                    Assert.That(result, Is.EqualTo("abc"));
+					evt.Wait( Timeout );
+					evt.Reset( );
 
-                    var stopped = actioner.Stop(500);
+					Assert.That( result, Is.EqualTo( "a" ) );
 
-                    Assert.That(stopped, Is.True);
+					q.Enqueue( "b" );
 
-                    Assert.That(actioner.State, Is.EqualTo(ActionerState.Stopped));
+					evt.Wait( Timeout );
+					evt.Reset( );
 
-                    q.Enqueue("d");             // wont be processed
+					Assert.That( result, Is.EqualTo( "ab" ) );
 
-                    Thread.Sleep(50);
-                    Assert.That(result, Is.EqualTo("abc"));
+					q.Enqueue( "c" );
 
-                }
-            }
-        }
+					evt.Wait( Timeout );
+					evt.Reset( );
+					Assert.That( result, Is.EqualTo( "abc" ) );
 
+					var stopped = actioner.Stop( 500 );
 
-        [TestCase(1)]
-        [TestCase(5)]
-        public void ProcessInitialEntries(int concurrency)
-        {
-            string result = "";
+					Assert.That( stopped, Is.True );
 
-            using (var q = CreateQueue())
-            {
-                Action<string> action = (s) => { lock(this) result += s; };
+					Assert.That( actioner.State, Is.EqualTo( ActionerState.Stopped ) );
 
-                using (var actioner = new QueueActioner<string>(q, action, concurrency))
-                {
+					q.Enqueue( "d" );             // wont be processed
 
-                    q.Enqueue("a");
-                    q.Enqueue("b");
-                    q.Enqueue("c");
-                    q.Enqueue("d");
-                    q.Enqueue("e");
-                    q.Enqueue("f");
+					Thread.Sleep( 50 );
+					Assert.That( result, Is.EqualTo( "abc" ) );
 
-                    actioner.Start();
-
-                    Thread.Sleep(100);
-
-                    Assert.That(q.Length, Is.EqualTo(0));
-                    Assert.That(result.Length, Is.EqualTo(6));
-                    Assert.That(result, Is.StringContaining("a"));
-                    Assert.That(result, Is.StringContaining("b"));
-                    Assert.That(result, Is.StringContaining("c"));
-                    Assert.That(result, Is.StringContaining("d"));
-                    Assert.That(result, Is.StringContaining("e"));
-                    Assert.That(result, Is.StringContaining("f"));
-                }
-            }
-        }
-
-        [TestCase(1)]
-        [TestCase(5)]
-        public void CanRestart(int concurrency)
-        {
-            string result = "";
-
-            using (var q = CreateQueue())
-            {
-                Action<string> action = (s) => { lock(this) result += s; };
-
-                using (var actioner = new QueueActioner<string>(q, action, concurrency))
-                {
+				}
+			}
+		}
 
 
-                    actioner.Start();
-                    q.Enqueue("a");
+		[TestCase( 1 )]
+		[TestCase( 5 )]
+		public void ProcessInitialEntries( int concurrency )
+		{
+			string result = "";
 
-                    Thread.Sleep(100);
+			object syncRoot = new object( );
 
-                    var stopped = actioner.Stop(500);
-                    Assert.That(stopped, Is.True);
+			var mgr = Factory.DistributedMemoryManager;
 
-                    q.Enqueue("b");
+			using ( var q = CreateQueue( mgr ) )
+			using ( CountdownEvent evt = new CountdownEvent( 6 ) )
+			{
+				Action<string> action = ( s ) =>
+				{
+					lock ( syncRoot )
+					{
+						result += s;
+					}
 
-                    actioner.Start();
+						// ReSharper disable once AccessToDisposedClosure
+						evt.Signal( );
+				};
 
-                    Thread.Sleep(100);
-                    q.Enqueue("c");
-                    Thread.Sleep(100);
+				using ( var actioner = new QueueActioner<string>( q, action, concurrency ) )
+				{
 
-                    Assert.That(result, Is.EqualTo("abc"));
-                }
-            }
-        }
+					q.Enqueue( "a" );
+					q.Enqueue( "b" );
+					q.Enqueue( "c" );
+					q.Enqueue( "d" );
+					q.Enqueue( "e" );
+					q.Enqueue( "f" );
 
-        [TestCase(1)]
-        [TestCase(5)]
-        public void StoppingStateCorrect(int concurrency)
-        {
-            string result = "";
-            using (var q = CreateQueue())
-            {
-                Action<string> action = (s) =>
-                {
-                    Thread.Sleep(200);
-                    lock(this) result += s;
-                };
+					actioner.Start( );
 
-                using (var actioner = new QueueActioner<string>(q, action, concurrency))
-                {
-                    actioner.Start();
-                    q.Enqueue("a");
-                    Thread.Sleep(100);
+					evt.Wait( );
 
-                    Assert.That(actioner.Stop(0), Is.False);
+					Assert.That( q.Length, Is.EqualTo( 0 ) );
+					Assert.That( result.Length, Is.EqualTo( 6 ) );
+					Assert.That( result, Is.StringContaining( "a" ) );
+					Assert.That( result, Is.StringContaining( "b" ) );
+					Assert.That( result, Is.StringContaining( "c" ) );
+					Assert.That( result, Is.StringContaining( "d" ) );
+					Assert.That( result, Is.StringContaining( "e" ) );
+					Assert.That( result, Is.StringContaining( "f" ) );
+				}
+			}
+		}
 
-                    Assert.That(actioner.State, Is.EqualTo(ActionerState.Stopping));
+		[TestCase( 1 )]
+		[TestCase( 5 )]
+		public void CanRestart( int concurrency )
+		{
+			string result = "";
 
-                    Assert.That(actioner.Stop(200), Is.True);
+			object syncRoot = new object( );
 
-                    Assert.That(actioner.State, Is.EqualTo(ActionerState.Stopped));
+			var mgr = Factory.DistributedMemoryManager;
 
-                    Assert.That(result, Is.EqualTo("a"));
+			using ( var q = CreateQueue( mgr ) )
+			using ( CountdownEvent evt = new CountdownEvent( 1 ) )
+			{
+				Action<string> action = ( s ) =>
+				{
+					lock ( syncRoot )
+					{
+						Debug.WriteLine( $"result: {result}, s: {s}" );
+						result += s;
+					}
 
-                }
-            }
-        }
+						// ReSharper disable once AccessToDisposedClosure
+						evt.Signal( );
+				};
 
-        [TestCase(1)]
-        [TestCase(5)]
-        public void AbortsCleanly(int concurrency)
-        {
-            string result = "";
-
-            using (var q = CreateQueue())
-            {
-                Action<string> action = (s) =>
-                {
-                    Thread.Sleep(100);
-                    lock(this) result += s;
-                };
-
-                using (var actioner = new QueueActioner<string>(q, action, concurrency))
-                {
-                    actioner.Start();
-                    q.Enqueue("a");
-                    Thread.Sleep(50);
-
-                    actioner.Stop();
-                }
-            }
-        }
-
-        [TestCase(1)]
-        [TestCase(5)]
-        public void DoubleStartDoesNothing(int concurrency)
-        {
-            using (var q = CreateQueue())
-            {
-                Action<string> action = (s) => { };
-
-                using (var actioner = new QueueActioner<string>(q, action, concurrency))
-                {
-                    actioner.Start();
-                    actioner.Start();
-                }
-            }
-        }
+				using ( var actioner = new QueueActioner<string>( q, action, concurrency ) )
+				{
 
 
-        [TestCase(1)]
-        [TestCase(5)]
-        public void DoubleStopDoesNothing(int concurrency)
-        {
-            using (var q = CreateQueue())
-            {
-                Action<string> action = (s) => { Thread.Sleep(100); };
+					actioner.Start( );
+					q.Enqueue( "a" );
 
-                using (var actioner = new QueueActioner<string>(q, action, concurrency))
-                {
-                    actioner.Start();
-                    Thread.Sleep(50);
-                    actioner.Stop(1);
-                    actioner.Stop(1);
-                }
-            }
-        }
+					evt.Wait( Timeout );
+					evt.Reset( );
 
-        [TestCase(1)]
-        [TestCase(5)]
-        public void EnqueuingStoppedDoesNothing(int concurrency)
-        {
-            string test = null;
+					var stopped = actioner.Stop( 500 );
+					Assert.That( stopped, Is.True );
 
-            using (var q = CreateQueue())
-            {
-                Action<string> action = (s) => { test = s; };
+					q.Enqueue( "b" );
 
-                using (var actioner = new QueueActioner<string>(q, action, concurrency))
-                {
-                    actioner.Queue.Enqueue("dummy");
-                    Thread.Sleep(50);
-                    Assert.That(test == null);
-                }
-            }
-        }
+					actioner.Start( );
+
+					evt.Wait( Timeout );
+					evt.Reset( );
+
+					q.Enqueue( "c" );
+
+					evt.Wait( Timeout );
+					evt.Reset( );
+
+					Assert.That( result, Is.EqualTo( "abc" ) );
+				}
+			}
+		}
+
+		[TestCase( 1 )]
+		[TestCase( 5 )]
+		public void StoppingStateCorrect( int concurrency )
+		{
+			string result = "";
+
+			object syncRoot = new object( );
+
+			var mgr = Factory.DistributedMemoryManager;
+
+			using ( var q = CreateQueue( mgr ) )
+			using ( CountdownEvent evt = new CountdownEvent( 1 ) )
+			{
+				Action<string> action = ( s ) =>
+				{
+					lock ( syncRoot )
+					{
+						result += s;
+					}
+
+						// ReSharper disable once AccessToDisposedClosure
+						evt.Signal( );
+				};
+
+				using ( var actioner = new QueueActioner<string>( q, action, concurrency ) )
+				{
+					actioner.Start( );
+					q.Enqueue( "a" );
+
+					evt.Wait( Timeout );
+					evt.Reset( );
+
+					var retVal = actioner.Stop( 0 );
+
+					if ( !retVal )
+					{
+						/////
+						// By the time we evaluate this statement, the state may have transitioned from Stopping to Stopped.
+						/////
+						Assert.IsTrue( actioner.State == ActionerState.Stopping || actioner.State == ActionerState.Stopped );
+					}
+
+					Assert.That( actioner.Stop( 200 ), Is.True );
+
+					Assert.That( actioner.State, Is.EqualTo( ActionerState.Stopped ) );
+
+					Assert.That( result, Is.EqualTo( "a" ) );
+
+				}
+			}
+		}
+
+		[TestCase( 1 )]
+		[TestCase( 5 )]
+		public void AbortsCleanly( int concurrency )
+		{
+			string result = "";
+
+			var mgr = Factory.DistributedMemoryManager;
+
+			using ( var q = CreateQueue( mgr ) )
+			using ( CountdownEvent evt = new CountdownEvent( 1 ) )
+			{
+				Action<string> action = ( s ) =>
+				{
+					lock ( this )
+					{
+						result += s;
+					}
+
+						// ReSharper disable once AccessToDisposedClosure
+						evt.Signal( );
+				};
+
+				using ( var actioner = new QueueActioner<string>( q, action, concurrency ) )
+				{
+					actioner.Start( );
+					q.Enqueue( "a" );
+
+					evt.Wait( Timeout );
+					evt.Reset( );
+
+					actioner.Stop( );
+
+					Assert.That( result, Is.EqualTo( "a" ) );
+				}
+			}
+		}
+
+		[TestCase( 1 )]
+		[TestCase( 5 )]
+		public void DoubleStartDoesNothing( int concurrency )
+		{
+			var mgr = Factory.DistributedMemoryManager;
+
+			using ( var q = CreateQueue( mgr ) )
+			{
+				Action<string> action = ( s ) =>
+				{
+				};
+
+				using ( var actioner = new QueueActioner<string>( q, action, concurrency ) )
+				{
+					actioner.Start( );
+					actioner.Start( );
+				}
+			}
+		}
 
 
-        [Test]
-        public void ExceptionInActionOK()
-        {
-            using (var q = CreateQueue())
-            {
-                Action<string> action = (s) => { };
+		[TestCase( 1 )]
+		[TestCase( 5 )]
+		public void DoubleStopDoesNothing( int concurrency )
+		{
+			var mgr = Factory.DistributedMemoryManager;
 
-                using (var actioner = new QueueActioner<string>(q, action, 1))
-                {
-                    actioner.Start();
-                    q.Enqueue("a");
-                    q.Enqueue("b");
-                    Thread.Sleep(50);
-                    Assert.That(q.Length, Is.EqualTo(0));
-                }
-            }
-        }
+			using ( var q = CreateQueue( mgr ) )
+			{
+				Action<string> action = ( s ) =>
+				{
+					Thread.Sleep( 100 );
+				};
+
+				using ( var actioner = new QueueActioner<string>( q, action, concurrency ) )
+				{
+					actioner.Start( );
+					Thread.Sleep( 50 );
+					actioner.Stop( 1 );
+					actioner.Stop( 1 );
+				}
+			}
+		}
+
+		[TestCase( 1 )]
+		[TestCase( 5 )]
+		public void EnqueuingStoppedDoesNothing( int concurrency )
+		{
+			string test = null;
+
+			var mgr = Factory.DistributedMemoryManager;
+
+			using ( var q = CreateQueue( mgr ) )
+			{
+				Action<string> action = ( s ) =>
+				{
+					test = s;
+				};
+
+				using ( var actioner = new QueueActioner<string>( q, action, concurrency ) )
+				{
+					actioner.Queue.Enqueue( "dummy" );
+					Thread.Sleep( 50 );
+					Assert.That( test == null );
+				}
+			}
+		}
+
+
+		[Test]
+		public void ExceptionInActionOk( )
+		{
+			var mgr = Factory.DistributedMemoryManager;
+
+			using ( var q = CreateQueue( mgr ) )
+			using ( CountdownEvent evt = new CountdownEvent( 2 ) )
+			{
+				Action<string> action = ( s ) =>
+				{
+						// ReSharper disable once AccessToDisposedClosure
+						evt.Signal( );
+				};
+
+				using ( var actioner = new QueueActioner<string>( q, action, 1 ) )
+				{
+					actioner.Start( );
+					q.Enqueue( "a" );
+					q.Enqueue( "b" );
+
+					evt.Wait( Timeout );
+					evt.Reset( );
+
+					Assert.That( q.Length, Is.EqualTo( 0 ) );
+				}
+			}
+		}
 
 
 
-        [Test(Description ="A faster concurrency test that does not use the redis queue so can process more events")]
-        [Timeout(30000)]
-        public void ConcurrencyTest_Listener()
-        {
-            using (var q = CreateQueue())
-            {
-                ConcurrencyQueueTester(q, 5, 10, 500, 10);
-            }
-        }
+		[Test( Description = "A faster concurrency test that does not use the redis queue so can process more events" )]
+		public void ConcurrencyTest_Listener( )
+		{
+			var mgr = Factory.DistributedMemoryManager;
+
+			using ( var q = CreateQueue( mgr ) )
+			{
+				ConcurrencyQueueTester( q, 1, 10, 500 );
+			}
+		}
 
         [Test]
         [Timeout(30000)]
         public void ConcurrencyTest_Full()
         {
-            var mgr = new RedisManager();
-            mgr.Connect();
-            var innerQ = mgr.GetQueue<string>("FullConcurrencyTest" + Guid.NewGuid().ToString(), false);
+	        var dmMgr = Factory.DistributedMemoryManager;
 
-            using (var q = new ListeningQueue<string>(innerQ, mgr))
-            {
-                ConcurrencyQueueTester(q, 5, 10, 100, 40);
-            }
+	        var mgr = dmMgr as RedisManager;
+
+			if ( mgr != null )
+			{
+				var innerQ = mgr.GetQueue<string>( "FullConcurrencyTest" + Guid.NewGuid( ) );
+
+				using ( var q = new ListeningQueue<string>( innerQ, mgr ) )
+				{
+					ConcurrencyQueueTester( q, 5, 10, 100 );
+				}
+			}
         }
 
-        public void ConcurrencyQueueTester(IListeningQueue<string> q, int machineCount, int threadCount, int messagesPerThread, int actionSleep)
+        public void ConcurrencyQueueTester(IListeningQueue<string> q, int machineCount, int threadCount, int messagesPerThread)
         { 
-            var rand = new Random(1234);
-
             int runCount = 0;
             int sentCount = 0;
 
-            var sb = new StringBuilder(10000);
-
-            var actioners = new List<QueueActioner<string>>(threadCount);
+            var actionerList = new List<QueueActioner<string>>(threadCount);
+	        var counter = new CountdownEvent( threadCount * messagesPerThread );
 
             try
             {
-                for (int i = 0; i < machineCount; i++)
-                {
-                    var actioner = new QueueActioner<string>(q, (s) => 
-                    {
+				for ( int i = 0; i < machineCount; i++ )
+				{
+					var actioner = new QueueActioner<string>( q, ( s ) =>
+					{
+						counter.Signal( );
+						Interlocked.Increment( ref runCount );
+					}, threadCount );
 
-                        lock(this)
-                        {
-                            runCount++;
-                            if (runCount % 10 == 0)
-                            {
-                                sb.Append($"sentCount: {sentCount} \trunCount: {runCount}\n");
-                            }
-                        }
-                        Thread.Sleep(actionSleep);
-
-                    }, threadCount);
-                    actioners.Add(actioner);
-                    actioner.Start();
-                    }
-
+					actionerList.Add( actioner );
+					actioner.Start( );
+					Thread.Sleep( 500 );
+				}
 
                 for (int i=0; i< messagesPerThread * threadCount; i++)
                 {
                     q.Enqueue("");
                     sentCount++;
-
-                    var needToSleep = sentCount - runCount >  threadCount / 2;
-
-                    if (needToSleep)
-                        sb.Append("Getting too far ahead. Sleeping\n");
-
-                    while (sentCount - runCount > threadCount / 2)
-                        Thread.Sleep(5);
-
-                    if (needToSleep)
-                        sb.Append("Waking Up\n");
-
                 }
 
+	            counter.Wait( );
 
-                while (q.Length > 0)
-                    Thread.Sleep(100);
-
-                foreach (var actioner in actioners)
+				foreach (var actioner in actionerList)
                     actioner.Stop(1000);
 
-                sb.Append($"============================================\nsentCount: {sentCount} \trunCount: {runCount}\n");
+				if ( runCount != sentCount )
+				{
+					Debugger.Launch( );
+				}
 
                 Assert.That(runCount, Is.EqualTo(sentCount));
             }
             finally
             {
-                Console.Write(sb.ToString());
+	            Debug.WriteLine( $"SendCount: {sentCount} - RunCount: {runCount} - Counter: {counter.CurrentCount}" );
 
-                foreach (var actioner in actioners)
+                foreach (var actioner in actionerList)
                     actioner.Dispose();
             }
         }
 
-        IListeningQueue<string> CreateQueue()
+        IListeningQueue<string> CreateQueue( IDistributedMemoryManager mgr )
         {
-            var mgr = new RedisManager();
-            mgr.Connect();
             var q = new InMemoryTestQueue<string>();
             return new ListeningQueue<string>(q, mgr);
         }

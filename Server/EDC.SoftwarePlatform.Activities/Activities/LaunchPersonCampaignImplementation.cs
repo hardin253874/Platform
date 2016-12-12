@@ -20,11 +20,17 @@ namespace EDC.SoftwarePlatform.Activities
         public override bool OnStart(IRunState context, ActivityInputs inputs)
         {
             var survey = GetArgumentEntity<UserSurvey>(inputs, "inLaunchPersonSurvey");
-            var recipients = GetArgumentEntityList<Person>(inputs, "inLaunchPersonRecipients");
+            var recipients = GetArgumentEntityList<Person>(inputs, "inLaunchPersonRecipients").ToList();
             var targetObject = GetArgumentEntity<UserResource>(inputs, "inLaunchPersonTarget");
             var taskName = GetArgumentValue<string>(inputs, "inLaunchPersonTaskName");
             var dueInDays = GetArgumentValue(inputs, "inLaunchPersonDueDays", 0m);
             var pause = GetArgumentValue(inputs, "inLaunchPersonPause", false);
+
+            // ensure that there is at least one recipient
+            if (recipients.Count <= 0)
+            {
+                throw new WorkflowRunException("The recipients list for the Survey was empty.");
+            }
 
             var campaign = Entity.Create<SurveyPersonCampaign>();
             campaign.Name = $"Person Campaign ({survey.Name})";

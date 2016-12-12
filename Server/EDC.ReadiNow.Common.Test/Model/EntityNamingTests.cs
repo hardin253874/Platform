@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using EDC.ReadiNow.EntityRequests;
 using EDC.ReadiNow.Model;
 using NUnit.Framework;
 
@@ -199,8 +200,8 @@ namespace EDC.ReadiNow.Test.Model
         public void EnsureEntityFieldNaming(string typeAlias, string fieldIds, CapitalisationStyle capitalisationStyle, bool includeDerivedTypes)
         {
             // Increate the fanout limit during the test.
-            var originalMax = ReadiNow.EntityRequests.EntityDataBuilder<EDC.ReadiNow.Model.IEntity>.MaxRelatedEntities;
-            ReadiNow.EntityRequests.EntityDataBuilder<long>.MaxRelatedEntities = 1000;
+            var originalMax = FanoutHelper.MaxRelatedEntities;
+            FanoutHelper.MaxRelatedEntities = 10000;
 
             var errors = new StringBuilder();
 
@@ -249,7 +250,7 @@ namespace EDC.ReadiNow.Test.Model
             }
             finally
             {
-                ReadiNow.EntityRequests.EntityDataBuilder<long>.MaxRelatedEntities = originalMax;
+                FanoutHelper.MaxRelatedEntities = originalMax;
             }
 
             Assert.IsNullOrEmpty(errors.ToString());

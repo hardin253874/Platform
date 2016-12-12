@@ -107,17 +107,7 @@
                 // This is kept in sync if navigating away to a report and returning
                 if (spAccessControlService.viewMode === spAccessControlService.modes.edit && $scope.options.mode !== 'edit') {
                     $scope.options.mode = 'edit';
-                }
-
-                var currentNavItem = spNavService.getCurrentItem();
-
-                // Initialise the dirty handler
-                if (currentNavItem && currentNavItem.isDirty !== isDirty) {
-
-                    originalIsDirty = currentNavItem.isDirty;
-                    
-                    currentNavItem.isDirty = isDirty;
-                }
+                }                
 
                 $timeout(function() {
                     $scope.gridLoaded = true;
@@ -465,5 +455,19 @@
                     gridLayoutPlugin = null;
                 }
             });
+
+            function initializeDirtyHandler() {
+                var currentNavItem = spNavService.getCurrentItem();
+
+                // Initialise the dirty handler
+                if (currentNavItem && currentNavItem.isDirty !== isDirty) {
+
+                    originalIsDirty = currentNavItem.isDirty;
+                    
+                    currentNavItem.isDirty = isDirty;
+                }
+            }
+
+            initializeDirtyHandler();
         });
 }());

@@ -25,7 +25,7 @@ namespace ReadiNow.DocGen
         /// <summary>
         /// Child instructions for this instruction.
         /// </summary>
-        public List<Instruction> Children { get; private set; }
+        public List<Instruction> Children { get; }
 
 
         /// <summary>

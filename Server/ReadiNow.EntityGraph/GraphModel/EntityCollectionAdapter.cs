@@ -17,7 +17,7 @@ namespace ReadiNow.EntityGraph.GraphModel
     {
         private static readonly string ReadOnlyError = "Collection is read-only.";
 
-        IReadOnlyList<T> _inner;
+        readonly IReadOnlyList<T> _inner;
 
         public EntityCollectionAdapter( IReadOnlyList<T> inner )
         {

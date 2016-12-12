@@ -15,14 +15,14 @@ namespace EDC.ReadiNow.Expressions
         /// <param name="identifiedEntities">IDs of all entities that are referenced within the *text* of the script. (Including fields and relationships)</param>
         /// <param name="fields">Fields that are accessed by a calculation.</param>
         /// <param name="relationships">Fields that are accessed by a calculation.</param>
-        public CalculationDependencies(IReadOnlyCollection<long> identifiedEntities, IReadOnlyCollection<long> fields, IReadOnlyCollection<long> relationships)
+        public CalculationDependencies( IReadOnlyCollection<long> identifiedEntities, IReadOnlyCollection<long> fields, IReadOnlyCollection<long> relationships )
         {
-            if (identifiedEntities == null)
-                throw new ArgumentNullException("identifiedEntities");
-            if (fields == null)
-                throw new ArgumentNullException("fields");
-            if (relationships == null)
-                throw new ArgumentNullException("relationships");
+            if ( identifiedEntities == null )
+                throw new ArgumentNullException( nameof( identifiedEntities ) );
+            if ( fields == null )
+                throw new ArgumentNullException( nameof( fields ) );
+            if ( relationships == null )
+                throw new ArgumentNullException( nameof( relationships ) );
 
             IdentifiedEntities = identifiedEntities;
             Fields = fields;
@@ -35,16 +35,16 @@ namespace EDC.ReadiNow.Expressions
         /// <remarks>
         /// Excludes the root entity, as it is not explicitly referenced.
         /// </remarks>
-        public IReadOnlyCollection<long> IdentifiedEntities { get; private set; }
+        public IReadOnlyCollection<long> IdentifiedEntities { get; }
 
         /// <summary>
         /// IDs of all fields used in the calculation.
         /// </summary>
-        public IReadOnlyCollection<long> Fields { get; private set; }
+        public IReadOnlyCollection<long> Fields { get; }
 
         /// <summary>
         /// IDs of all relationship types used in the calculation.
         /// </summary>
-        public IReadOnlyCollection<long> Relationships { get; private set; }
+        public IReadOnlyCollection<long> Relationships { get; }
     }
 }

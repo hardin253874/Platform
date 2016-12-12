@@ -273,8 +273,8 @@
                         case 'relSingleLookup':
                             relationship.setRelType('relSingleLookup');
                             relationship.setCardinality('oneToOne');
-                            //relationship.setRelationshipIsMandatory(true);    // optional
-                            //relationship.setRevRelationshipIsMandatory(true);   // optional
+                            relationship.setRelationshipIsMandatory(false);    // we don't mark relationships mandatory. Only the controls that display them can be marked mandatoy on a specific form
+                            relationship.setRevRelationshipIsMandatory(false);   // optional
                             relationship.setCascadeDelete(false);
                             relationship.setCascadeDeleteTo(false);
                             relationship.setCloneAction('drop');
@@ -287,7 +287,7 @@
                             relationship.setRelType('relSingleComponentOf');
                             relationship.setCardinality('oneToOne');
                             relationship.setRelationshipIsMandatory(true);
-                            //relationship.setRevRelationshipIsMandatory(true);   // optional
+                            relationship.setRevRelationshipIsMandatory(false);   // optional
                             relationship.setCascadeDelete(true);
                             relationship.setCascadeDeleteTo(false);
                             relationship.setCloneAction('drop');

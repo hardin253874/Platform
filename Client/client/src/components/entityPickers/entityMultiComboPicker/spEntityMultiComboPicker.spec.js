@@ -3,8 +3,11 @@
 describe('Console|Pickers|spEntityMultiComboPicker|spec:|spEntityMultiComboPicker directive', function () {
     'use strict';
 
-    // Load the modules
+    // Load the modules    
+    beforeEach(module('mod.common.ui.entityPickerControllers'));
     beforeEach(module('mod.common.ui.spEntityMultiComboPicker'));
+    beforeEach(module('mod.common.ui.spPopupProvider'));
+    beforeEach(module('mod.common.ui.spPopupStackManager'));    
     beforeEach(module('entityPickers/entityMultiComboPicker/spEntityMultiComboPicker.tpl.html'));
     beforeEach(module('entityPickers/entityMultiComboPicker/spEntityMultiComboPickerPopup.tpl.html'));
     beforeEach(module('mockedEntityService'));

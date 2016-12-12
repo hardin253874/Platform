@@ -21,7 +21,7 @@ namespace ReadiNow.Connector.Spreadsheet
             {
                 return new ExcelFileReader( excelSpreadsheet, settings );
             }
-            catch ( System.IO.FileFormatException ex )
+            catch ( FileFormatException ex )
             {
                 throw new RN.FileFormatException( ex.Message );
             }

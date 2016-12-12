@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using EDC.ReadiNow.Diagnostics;
 
 namespace EDC.ReadiNow.Model.PartialClasses
 {
@@ -90,7 +91,14 @@ namespace EDC.ReadiNow.Model.PartialClasses
                 throw new InvalidCampaignException("Survey person campaign must be part of an existing survey.");
 
             if (!campaign.CampaignPersonRecipients.Any())
-                throw new InvalidCampaignException("Survey person campaign does not have any recipients.");
+            {
+                //throw new InvalidCampaignException("Survey person campaign does not have any recipients.");
+
+                // Bug: #28737
+                EventLog.Application.WriteWarning("Survey person campaign does not have any recipients. Ignoring launch.");
+
+                return Enumerable.Empty<UserSurveyTask>();
+            }
 
             // relaunch is not permitted.
             if (campaign.CampaignIsLaunched == true)
@@ -138,7 +146,14 @@ namespace EDC.ReadiNow.Model.PartialClasses
                 throw new InvalidCampaignException("Survey target campaign must be part of an existing survey.");
 
             if (!campaign.CampaignTargetTargets.Any())
-                throw new InvalidCampaignException("Survey target campaign does not have any targets.");
+            {
+                //throw new InvalidCampaignException("Survey target campaign does not have any targets.");
+
+                // Bug: #28737
+                EventLog.Application.WriteWarning("Survey target campaign does not have any targets. Ignoring launch.");
+
+                return Enumerable.Empty<UserSurveyTask>();
+            }
 
             if (campaign.CampaignTargetRelationship == null)
                 throw new InvalidCampaignException("Survey target campaign does not provide a relationship to survey taker.");

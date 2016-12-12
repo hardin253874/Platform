@@ -30,7 +30,7 @@ namespace ReadiNow.DocGen.DataSources
             EvaluationSettings settings = new EvaluationSettings
             {
                 ContextEntity = context.CurrentEntity,
-                TimeZoneName = context.Settings.TimeZoneName,
+                TimeZoneName = context.Settings.TimeZoneName
             };
             ExpressionRunResult result = context.ExternalServices.ExpressionRunner.Run(Expression, settings);
 

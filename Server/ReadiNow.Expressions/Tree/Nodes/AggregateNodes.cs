@@ -214,6 +214,8 @@ namespace ReadiNow.Expressions.Tree.Nodes
     {
         protected override decimal? OnEvaluateDecimal(EvaluationContext evalContext)
         {
+            // ReSharper disable PossibleMultipleEnumeration
+
             var handles = VisitChildItems(evalContext);
 
             decimal sum = 0;
@@ -237,7 +239,7 @@ namespace ReadiNow.Expressions.Tree.Nodes
             double mean = (double)sum / count;
             double sqDiffSum = 0;
 
-            foreach (var handle in handles)
+            foreach ( var handle in handles)
             {
                 handle.Activate(evalContext);
                 decimal? singleResult = Argument.EvaluateDecimal(evalContext);
@@ -256,6 +258,8 @@ namespace ReadiNow.Expressions.Tree.Nodes
             double variance = sqDiffSum / (count - adjust);
             decimal stdev = (decimal)Math.Sqrt(variance);
             return stdev;
+
+            // ReSharper enable PossibleMultipleEnumeration
         }
 
         protected override AggregateMethod Method
@@ -304,7 +308,7 @@ namespace ReadiNow.Expressions.Tree.Nodes
 
         protected override IEntity OnEvaluateEntity( EvaluationContext evalContext )
         {
-            bool isEnum = false;
+            bool isEnum;
             if (!evalContext.TypeIsEnum.TryGetValue(ResultType.EntityTypeId, out isEnum))
             {
                 isEnum = EDC.ReadiNow.Model.Entity.Get<EntityType>( ResultType.EntityTypeId ).Is<EnumType>( );
@@ -335,7 +339,7 @@ namespace ReadiNow.Expressions.Tree.Nodes
                     else
                     {
                         string cur = entity.GetField<string>( "core:name" );
-                        if ( bestName == null || cur != null && string.Compare( cur, bestName, true ) == match )
+                        if ( cur != null && string.Compare( cur, bestName, StringComparison.OrdinalIgnoreCase ) == match )
                         {
                             bestName = cur;
                             bestEntity = entity;

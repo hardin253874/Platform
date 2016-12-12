@@ -55,9 +55,7 @@ namespace ReadiNow.QueryEngine.ReportConverter
                 settings = ReportToQueryConverterSettings.Default;
             }
 
-            StructuredQuery query;
-
-            query = StructuredQueryEntityHelper.ConvertReport( report, settings );
+            StructuredQuery query = StructuredQueryEntityHelper.ConvertReport( report, settings );
 
             // Tell the cache what entities were referenced to return
             // the StructuredQuery result

@@ -18,6 +18,9 @@
             function executeClickAction(params, isPivotChart, reportEntity) {
                 if (isPivotChart) {
                     if (params && params.drilldownConds) {
+                        if (isInitialEmptyConds(params.drilldownConds)) {
+                            return;
+                        }
                         var reportId = reportEntity.idP;
                         if (reportId)
                             spNavService.navigateToChildState('report', reportId, $stateParams, { conds: params.drilldownConds });
@@ -29,6 +32,14 @@
                 }
             }
 
+
+            // Returns true if the conditions is the empty conditions
+            function isInitialEmptyConds(conds) {
+                if (!conds || conds.length !== 1)
+                    return false;
+                return conds[0].initialEmpty === true;
+            }
+            
             exports.executeClickAction = executeClickAction;
 
             return exports;

@@ -495,5 +495,25 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.Report
 		{
 			return Modified != DateTime.MinValue;
 		}
-	}
+
+        /// <summary>
+        /// Gets or sets the report alias.
+        /// </summary>
+        [DataMember(Name = "alias", EmitDefaultValue = false, IsRequired = false)]
+        public string Alias
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        ///		Should the alias be serialized.
+        /// </summary>
+        /// <returns></returns>
+        [UsedImplicitly]
+        private bool ShouldSerializeAlias()
+        {
+            return Alias != null;
+        }
+    }
 }

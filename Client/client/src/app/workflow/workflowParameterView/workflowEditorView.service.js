@@ -387,7 +387,7 @@
                     return openParameterChooser(context);
                 case 'fieldChooser':
                 case 'relChooser':
-                    return openPropertyChooser(context);
+                    return openPropertyChooser(context, resourceType);
             }
 
             return chooseResource(resourceType, singleKnownEntity, context.chooserType).then(function (selected) {
@@ -566,11 +566,13 @@
         // openPropertyChooser
         //
         /////
-        function openPropertyChooser(context) {
+        function openPropertyChooser(context, resourceType) {
 
             //var workflow = context.workflow;
             //var activity = context.activity || context.entity;
-            var resourceType = context.resourceType;
+            if (!resourceType) {
+                resourceType = context.resourceType;
+            }
 
             var chooserType = context.chooserType || 'propertyChooser';
 

@@ -26,7 +26,7 @@
     <div><span style="display:inline-block; color:#999;padding:5px 0;">Drag and drop to page <img src="assets/images/dragdrop.png"></span></div>
     <!-- Show system types -->
     <div style="color:#ccc; padding: 5px 0" ng-show="showTypesVisible()"><input ng-model="model.showTypes" type="checkbox" />Show types (dev only)</div>
-    <div style="color:#ccc; padding: 5px 0" ng-show="isDevMode()"><input ng-model="model.showAdvanced" type="checkbox" />Show advanced (dev only)</div>
+    <div style="color:#ccc; padding: 5px 0" ng-show="isShowAdvancedVisible()"><input ng-model="model.showAdvanced" type="checkbox" />Show advanced (dev only)</div>
     <div class="fb-loading" ng-show="spFormBuilderService.screenObjectsLoading">
         <img class="spinner" src="assets/images/refresh_light.png" />
     </div>
@@ -40,7 +40,7 @@
             <button type="button" class="toggleButton" sp-context-menu-trigger="rightclick" sp-context-menu="toggleContextMenu" sp-context-menu-append-to-body ng-click="type.expanded = !type.expanded"><img ng-src="{{'assets/images/' + (type.expanded ? 'fieldgroup_opened.png' : 'fieldgroup_collapsed.png')}}" /></button>
             <div class="toggleGroup" ng-click="type.expanded = !type.expanded" uib-tooltip="{{type.description}}">{{type.name}}</div>
             <span class="fb-toolbox-config" sp-context-menu-trigger="leftclick" sp-context-menu="type.contextMenu" sp-context-menu-append-to-body ng-show="spAppSettings.fullConfig">
-                <img src="assets/images/icon_configure_w.png" />
+                <img src="assets/images/icon_configure_w.svg">
             </span>
         </div>
 
@@ -56,7 +56,7 @@
                     <div class="itemicon"><img src="assets/images/itemicon/Reports.png" />  </div>
                     <div class="itemname" uib-tooltip="{{report.description}}">{{report.name}}</div>
                     <span class="fb-toolbox-config" sp-context-menu-trigger="leftclick" sp-context-menu="report.contextMenu" sp-context-menu-append-to-body>
-                        <img src="assets/images/icon_configure_w.png" />
+                        <img src="assets/images/icon_configure_w.svg">
                     </span>
                 </div>
             </div>
@@ -71,7 +71,7 @@
                     <div class="itemicon"><img src="assets/images/itemicon/Charts.png" />   </div>
                     <div class="itemname" uib-tooltip="{{chart.description}}">{{chart.name}}</div>
                     <span class="fb-toolbox-config" sp-context-menu-trigger="leftclick" sp-context-menu="chart.contextMenu" sp-context-menu-append-to-body>
-                        <img src="assets/images/icon_configure_w.png" />
+                        <img src="assets/images/icon_configure_w.svg">
                     </span>
                 </div>
             </div>
@@ -86,7 +86,7 @@
                     <div class="itemicon"><img src="assets/images/itemicon/Forms.png" /></div>
                     <div class="itemname" uib-tooltip="{{form.description}}">{{form.name}}</div>
                     <span class="fb-toolbox-config" sp-context-menu-trigger="leftclick" sp-context-menu="form.contextMenu" sp-context-menu-append-to-body>
-                        <img src="assets/images/icon_configure_w.png" />
+                        <img src="assets/images/icon_configure_w.svg">
                     </span>
                 </div>
             </div>

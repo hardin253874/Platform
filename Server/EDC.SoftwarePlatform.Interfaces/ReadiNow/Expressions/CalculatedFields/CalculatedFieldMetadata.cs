@@ -1,6 +1,4 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
-using System;
-using System.Collections.Generic;
 using EDC.ReadiNow.Expressions;
 
 namespace ReadiNow.Expressions.CalculatedFields

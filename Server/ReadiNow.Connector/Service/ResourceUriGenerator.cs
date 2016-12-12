@@ -1,8 +1,6 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using EDC.ReadiNow.Model;
 using EDC.ReadiNow.Security;
 using ReadiNow.Connector.Interfaces;
@@ -15,7 +13,7 @@ namespace ReadiNow.Connector.Service
 	/// <returns>The label. E.g. a guid, or some other string.</returns>
     class ResourceUriGenerator : IResourceUriGenerator
     {
-        public string CreateResourceUri( IEntity instance, ConnectorRequest request, EDC.ReadiNow.Model.ApiResourceMapping mapping )
+        public string CreateResourceUri( IEntity instance, ConnectorRequest request, ApiResourceMapping mapping )
         {
             if ( instance == null )
                 throw new ArgumentNullException( "instance" );
@@ -45,15 +43,15 @@ namespace ReadiNow.Connector.Service
         /// <param name="instance">The resource to identify.</param>
         /// <param name="mapping">The mapping context.</param>
         /// <returns>The label. E.g. a guid, or some other string.</returns>
-        private static string GetResourceIdentifier( IEntity instance, EDC.ReadiNow.Model.ApiResourceMapping mapping )
+        private static string GetResourceIdentifier( IEntity instance, ApiResourceMapping mapping )
         {
             // Get field info
             Field field;
-            bool isWriteOnly = false;
+            bool isWriteOnly;
             using ( new SecurityBypassContext( ) )
             {
                 field = mapping.ResourceMappingIdentityField;
-                isWriteOnly = field == null ? false : field.IsFieldWriteOnly == true;
+                isWriteOnly = field != null && field.IsFieldWriteOnly == true;
             }
 
             string result;

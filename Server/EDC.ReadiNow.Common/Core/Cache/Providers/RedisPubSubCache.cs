@@ -3,6 +3,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using Autofac;
 using EDC.Cache;
 using EDC.Collections.Generic;
@@ -336,17 +337,22 @@ namespace EDC.ReadiNow.Core.Cache.Providers
             return InnerCache.TryGetOrAdd(key, out value, valueFactory);
         }
 
-        /// <summary>
-        /// Called when a cache invalidation message is received from Redis.
-        /// </summary>
-        /// <param name="sender">
-        /// The object that raised the message.
-        /// </param>
-        /// <param name="e">
-        /// Event-specific arguments.
-        /// </param>
-        private void Channel_MessageReceived(object sender, MessageEventArgs<RedisPubSubCacheMessage<TKey>>  e)
-        {
+	    public int MessagesReceived;
+		public int MessagesSent;
+
+		/// <summary>
+		/// Called when a cache invalidation message is received from Redis.
+		/// </summary>
+		/// <param name="sender">
+		/// The object that raised the message.
+		/// </param>
+		/// <param name="e">
+		/// Event-specific arguments.
+		/// </param>
+		private void Channel_MessageReceived(object sender, MessageEventArgs<RedisPubSubCacheMessage<TKey>>  e)
+		{
+			Interlocked.Increment( ref MessagesReceived );
+
             if (e == null)
             {
                 return;
@@ -448,7 +454,8 @@ namespace EDC.ReadiNow.Core.Cache.Providers
         /// </param>
         private void InnerCache_ItemsRemoved(object sender, ItemsRemovedEventArgs<TKey> e)
         {
-            if (!RedisCacheMessageSuppressionContext.IsSet(Name))
+			Interlocked.Increment( ref MessagesSent );
+			if (!RedisCacheMessageSuppressionContext.IsSet(Name))
             {
 	            if ( IsolateTenants )
 	            {

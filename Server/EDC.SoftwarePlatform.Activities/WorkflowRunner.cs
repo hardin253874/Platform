@@ -451,20 +451,21 @@ namespace EDC.SoftwarePlatform.Activities
 		/// <param name="status">The status.</param>
 	    private void SendDiagnostics( WorkflowRun workflowRun, string status )
 	    {
-		    var response = new WorkflowResponse
-		    {
-				Id = workflowRun.Id,
+            var response = new WorkflowResponse
+            {
+                TenantName = RequestContext.GetContext().Tenant.Name,
+                Id = workflowRun.Id,
                 TaskId = workflowRun.TaskId,
                 WorkflowName = workflowRun?.WorkflowBeingRun?.Name,
-			    WorkflowRunName = workflowRun?.Name,
-				Status = status ?? ( workflowRun.WorkflowRunStatus_Enum != null ? workflowRun.WorkflowRunStatus_Enum.ToString( ) : "Unknown"),
-				Date = DateTime.Now,
-				TriggeredBy = workflowRun.TriggeringUser != null ? workflowRun.TriggeringUser.Name : "Unknown",
+                WorkflowRunName = workflowRun?.Name,
+                Status = status ?? (workflowRun.WorkflowRunStatus_Enum != null ? workflowRun.WorkflowRunStatus_Enum.ToString() : "Unknown"),
+                Date = DateTime.Now,
+                TriggeredBy = workflowRun.TriggeringUser != null ? workflowRun.TriggeringUser.Name : "Unknown",
                 Server = Environment.MachineName,
                 Process = Process.GetCurrentProcess().MainModule.ModuleName,
+                StepCount = workflowRun.RunStepCounter ?? -1,
             };
 
-			
 
 		    DiagnosticChannel.Publish( response );
 	    }

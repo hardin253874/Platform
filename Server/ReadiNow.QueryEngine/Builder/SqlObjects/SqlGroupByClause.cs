@@ -1,7 +1,6 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
 using System.Collections.Generic;
 using EDC.Common;
-using EDC.Database;
 
 namespace ReadiNow.QueryEngine.Builder.SqlObjects
 {
@@ -26,7 +25,6 @@ namespace ReadiNow.QueryEngine.Builder.SqlObjects
 		public List<SqlExpression> Expressions
 		{
 			get;
-			private set;
 		}
 
 

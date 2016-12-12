@@ -158,13 +158,7 @@ namespace EDC.SoftwarePlatform.WebApi.Infrastructure
 			{
 			    EventLog.Application.WriteWarning( $"Invalid XSRF token detected. Headers:\n{actionContext?.Request?.Headers}" );
 				throw new XsrfValidationException( );
-			}
-
-			if ( !CookieHelper.VerifySessionNotHijacked( authTicket ) )
-			{
-				EventLog.Application.WriteWarning( $"Possible session hijack detected.\nExpected HostIp: '{authTicket.HostIp}', Actual HostIp: '{HttpContext.Current.Request.UserHostAddress ?? string.Empty}'\nExpected UserAgent: '{authTicket.UserAgent}, Actual UserAgent: '{HttpContext.Current.Request.UserAgent}'" );
-				throw new InvalidCredentialException( AuthenticationCookieInvalidMessage );
-			}
+			}		    
 
 		    RequestContextData requestContextData = Factory.IdentityProviderRequestContextCache.GetRequestContextData(authTicket.TenantId,
                 authTicket.IdentityProviderId, authTicket.IdentityProviderUserName, false);

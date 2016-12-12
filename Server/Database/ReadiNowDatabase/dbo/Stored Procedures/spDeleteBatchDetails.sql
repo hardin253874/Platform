@@ -30,6 +30,8 @@ BEGIN
 
 	-- Store the ids for the commonly used aliases
 	DECLARE @isOfType BIGINT = dbo.fnAliasNsId( 'isOfType', 'core', @tenantId )
+	DECLARE @inherits BIGINT = dbo.fnAliasNsId( 'inherits', 'core', @tenantId )
+	DECLARE @definition BIGINT = dbo.fnAliasNsId( 'definition', 'core', @tenantId )
 	DECLARE @name BIGINT = dbo.fnAliasNsId( 'name', 'core', @tenantId )
 	DECLARE @description BIGINT = dbo.fnAliasNsId( 'description', 'core', @tenantId )
 	DECLARE @excludeFromDeleteDetails BIGINT = dbo.fnAliasNsId( 'excludeFromDeleteDetails', 'core', @tenantId )
@@ -45,6 +47,23 @@ BEGIN
 	INSERT INTO #types SELECT Id, 'Field' FROM dbo.fnDerivedTypes( dbo.fnAliasNsId( 'field', 'core', @tenantId ), @tenantId )
 	INSERT INTO #types SELECT Id, 'Workflow' FROM dbo.fnDerivedTypes( dbo.fnAliasNsId( 'workflow', 'core', @tenantId ), @tenantId )
 	INSERT INTO #types SELECT Id, 'Screen' FROM dbo.fnDerivedTypes( dbo.fnAliasNsId( 'screen', 'console', @tenantId ), @tenantId )
+
+	INSERT INTO
+		#types
+	SELECT
+		r.FromId, n.Data_StartsWith
+	FROM
+		fnDescendantsAndSelf( @inherits, @definition, @tenantId ) a
+	JOIN
+		Relationship r ON
+			a.Id = r.ToId
+			AND r.TenantId = @tenantId
+			AND r.TypeId = @isOfType
+	JOIN
+		Data_NVarChar n ON
+			r.FromId = n.EntityId
+			AND r.TenantId = n.TenantId
+			AND n.FieldId = @name
 	
 	-- The relationship types that are to be excluded when walking the graph.
 	-- Add new values as appropriate

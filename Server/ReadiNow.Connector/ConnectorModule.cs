@@ -1,11 +1,6 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
 using Autofac;
-using Autofac.Extras.AttributeMetadata;
-using System;
 
-using EDC.ReadiNow.Model.CacheInvalidation;
-using EDC.ReadiNow.Core;
-using ICacheService = EDC.ReadiNow.Cache.ICacheService;
 using ReadiNow.Connector.Payload;
 using ReadiNow.Connector.Service;
 using ReadiNow.Connector.Interfaces;

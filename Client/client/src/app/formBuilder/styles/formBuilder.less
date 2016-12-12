@@ -20,6 +20,13 @@
             display: inline-block;
         }
     }
+    .sp-form-builder-tabButton{
+        img {
+            cursor: pointer;
+            width: 16px;
+            height: 16px;
+        }
+    }
 
     .sp-form-builder-toolbar {
         position: absolute;
@@ -53,11 +60,18 @@
             &:hover {
                 background-color: overlay(#31a89f, #666);
             }
+
+            img {
+                cursor: pointer;
+                width: 16px;
+                height: 16px;
+            }
         }
 
         & > span {
+            float: right;
             display: inline-block;
-            margin-right: 2px;
+            margin-left: 2px;
 
             &:last-child {
                 margin: 0;

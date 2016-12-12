@@ -1202,6 +1202,13 @@
         <conformsToType>relationship</conformsToType>
         <argumentIsMandatory>true</argumentIsMandatory>
       </resourceArgument>
+      <resourceArgument>
+        <alias>inLaunchTargetTargetObject</alias>
+        <name>Target Object</name>
+        <description>The type that all targets and the survey taker relationship should conform to.</description>
+        <conformsToType>definition</conformsToType>
+        <argumentIsMandatory>false</argumentIsMandatory>
+      </resourceArgument>
       <boolArgument>
         <alias>inLaunchTargetPause</alias>
         <name>Pause Until Completed</name>

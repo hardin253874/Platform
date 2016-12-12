@@ -146,5 +146,13 @@ namespace ReadiNow.Reporting.Result
         /// Gets or sets the time that the report was last modified.
         /// </summary>
         public DateTime Modified { get; set; }
+
+        /// <summary>
+        /// The report alias.
+        /// </summary>
+        /// <value>
+        /// The alias.
+        /// </value>
+        public string Alias { get; set; }
     }
 }

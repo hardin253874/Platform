@@ -704,6 +704,7 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.Report
             // Return the JSON friendly metadata structure
             return new ReportMetadata
             {              
+                Alias = metadata.Alias,
                 ReportTitle = "",
                 ReportStyle = "",
                 ReportColumns = reportColumns
@@ -1019,6 +1020,7 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.Report
 			// Return the JSON friendly metadata structure
 			return new ReportMetadata
 			{
+                Alias = metadata.Alias,
 				ReportTitle = metadata.ReportTitle,
 				HideAddButton = metadata.HideAddButton,
 				HideNewButton = metadata.HideNewButton,

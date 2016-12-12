@@ -5,7 +5,7 @@
     angular.module('mod.common.ui.entityPickerControllers')
         .controller('singleEntityPickerController', SingleEntityPickerController);
 
-    function SingleEntityPickerController($scope, spEntityService) {
+    function SingleEntityPickerController($scope, spEntityService, spXsrf, spWebService) {
         'ngInject';
 
         /*
@@ -15,7 +15,9 @@
 
         $scope.entities = [];
         $scope.selectedEntity = null;
+        $scope.selectedEntityId = null;
         $scope.selectOptionStyle = {};
+        var IMAGE_BASE_URL = spWebService.getWebApiRoot() + '/spapi/data/v1/image/thumbnail/';
         // This function sets the selected entity property
         function setSelectedEntity() {
             var isAlias,
@@ -30,7 +32,7 @@
             }
 
             if (!$scope.options.selectedEntityId ||
-                $scope.options.selectedEntityId === 0) {
+                $scope.options.selectedEntityId === 0) {                
                 $scope.selectedEntity = null;
                 return;
             }
@@ -52,12 +54,13 @@
                 return false;
             });
 
-            // Set the local selected entity.
+            // Set the local selected entity && selectedEntityId.
             if (entity !== $scope.selectedEntity) {
                 $scope.selectedEntity = entity;
+                $scope.selectedEntityId = entity ? entity.id().toString() : null;
             }
         }
-
+                
         // This function is used to filter hidden aliases
         function filterHiddenAliases(items, hiddenAliases) {
             if (!hiddenAliases || hiddenAliases.length === 0) {
@@ -169,6 +172,14 @@
             setSelectedEntity();
         });
 
+        $scope.$watch('selectedEntityId', function () {
+            if ($scope.selectedEntityId) {
+                $scope.selectedEntity = _.find($scope.entities, function(entity) { return entity && entity.id && entity.id().toString() === $scope.selectedEntityId; });
+            } else {
+                $scope.selectedEntity = null;
+            }
+        });
+
         // Watch the showSelectOption flag
         $scope.$watch('options.showSelectOption', function () {
             if ($scope.options && $scope.options.showSelectOption !== undefined && $scope.options.showSelectOption !== null && $scope.options.showSelectOption === false) {
@@ -198,6 +209,59 @@
             }
         };
 
+        $scope.getOptionStyle = function (optionEntity) {
+
+            var optionStyle = {};
+
+            if (optionEntity.backgroundColor) {
+                optionStyle['background'] = spUtils.getCssColorFromARGBString(optionEntity.backgroundColor);
+                optionStyle['background-color'] = spUtils.getCssColorFromARGBString(optionEntity.backgroundColor);
+            }
+
+            if (optionEntity.foregroundColor) {
+                optionStyle['color'] = spUtils.getCssColorFromARGBString(optionEntity.foregroundColor);
+            }           
+          
+            return optionStyle;
+        };
+
+        $scope.getSelectedStyle = function () {
+            var optionStyle = {};
+            if ($scope.selectedEntity && $scope.selectedEntityId) {
+
+                if ($scope.selectedEntity.backgroundColor && $scope.selectedEntity.enumType === 'Highlight') {
+                    optionStyle['background'] = spUtils.getCssColorFromARGBString($scope.selectedEntity.backgroundColor);
+                    optionStyle['background-color'] = spUtils.getCssColorFromARGBString($scope.selectedEntity.backgroundColor);
+                }
+
+                if ($scope.selectedEntity.foregroundColor && $scope.selectedEntity.enumType === 'Highlight') {
+                    optionStyle['color'] = spUtils.getCssColorFromARGBString($scope.selectedEntity.foregroundColor);
+                }
+
+                if ($scope.selectedEntity.icon && $scope.selectedEntity.enumType === 'Icon') {
+                    optionStyle['background-image'] = 'url(\'' + getIconUrl($scope.selectedEntity.icon, 'console-iconThumbnailSize') + '\')';
+                    optionStyle['background-repeat'] = 'no-repeat';
+                    optionStyle['background-position'] = 'left center';
+                    optionStyle['padding-left'] = '16px';
+                }               
+            }
+            return optionStyle;
+        };
+
+        // Private methods
+        function getIconUrl(imageId, sizeId) {
+            if (imageId &&
+                sizeId) {                
+              
+                var uri = IMAGE_BASE_URL + imageId + '/' + sizeId + '/core-scaleImageProportionally';
+
+                return spXsrf.addXsrfTokenAsQueryString(uri);
+            } else {
+                return '';
+            }
+        }
+      
+
         // Update the output value if there has been a change in selected entity (and we actually have entities)
         $scope.$watch('selectedEntity', function () {
             if ($scope.options) {
@@ -223,14 +287,14 @@
                     isAlias = _.isString($scope.options.selectedEntityId);
                     isId = _.isNumber($scope.options.selectedEntityId);
 
-                    if ((isId && $scope.options.selectedEntityId !== $scope.selectedEntity.id()) ||
-                        (isAlias && $scope.options.selectedEntityId !== $scope.selectedEntity.alias())) {
+                    if ((isId && $scope.selectedEntity.id && $scope.options.selectedEntityId !== $scope.selectedEntity.id()) ||
+                        (isAlias && $scope.selectedEntity.alias && $scope.options.selectedEntityId !== $scope.selectedEntity.alias())) {
                         $scope.options.selectedEntityId = $scope.selectedEntity.id();
                     }
 
-                    if (angular.isDefined($scope.options.selectedEntity) &&
+                    if (angular.isDefined($scope.options.selectedEntity) &&                      
                         ($scope.options.selectedEntity === null ||
-                        ($scope.options.selectedEntity.id() !== $scope.selectedEntity.id()))) {
+                        ($scope.options.selectedEntity.id && ($scope.options.selectedEntity.id() !== $scope.selectedEntity.id())))) {
                         $scope.options.selectedEntity = $scope.selectedEntity;
                     }
                 } else {
@@ -238,9 +302,11 @@
                         if (angular.isDefined($scope.options.selectedEntity) &&
                             $scope.options.selectedEntity !== null) {
                             $scope.options.selectedEntity = null;
+                            $scope.selectedEntity = null;
                         }
                         if ($scope.options.selectedEntityId !== 0) {
                             $scope.options.selectedEntityId = 0;
+                            $scope.selectedEntityId = 0;
                         }
                     }
                 }
@@ -256,5 +322,4 @@
             return dummyEntity;
         }
     }
-
 }());

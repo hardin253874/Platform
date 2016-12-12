@@ -102,7 +102,7 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.Security
 			}
 
             // Restrict to the types visible in the UI. If modifying this, also change the code in accessControlRepository.
-		    allowedTypes = new[] {"console:customEditForm", "core:workflow", "core:reportTemplate", "core:fileType", "core:documentType", "core:imageFileType"}
+		    allowedTypes = new[] {"console:customEditForm", "core:workflow", "core:reportTemplate", "core:fileType", "core:documentType", "core:imageFileType", "core:photoFileType" }
                 .Select(ReadiNow.Model.Entity.GetId)
                 .ToSet();
 		    if (!(securableEntity.Is<ManagedType>()

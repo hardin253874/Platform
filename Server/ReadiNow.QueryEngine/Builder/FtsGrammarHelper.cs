@@ -1,4 +1,5 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
+using System;
 using System.Globalization;
 using Irony.Parsing;
 
@@ -185,7 +186,7 @@ namespace ReadiNow.QueryEngine.Builder
                     }
                     break;
                 default:
-                    break;
+                    throw new InvalidOperationException( $"Unknown node type {node.Term.Name}" );
             }
             return result;
         }    

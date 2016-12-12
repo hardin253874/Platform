@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using EDC.ReadiNow.Core;
 
 
 namespace EDC.ReadiNow.Test.Messaging.Redis
@@ -56,12 +56,13 @@ namespace EDC.ReadiNow.Test.Messaging.Redis
                 queueName = "QueueTest " + DateTime.UtcNow.Ticks;
             }
 
-            var mgr = new RedisManager();
-            mgr.Connect();
+	        var dmMgr = Factory.DistributedMemoryManager;
 
-            var q = mgr.GetQueue<string>(queueName);
+			var mgr = dmMgr as RedisManager;
 
-            return q;
+	        var q = mgr?.GetQueue<string>( queueName );
+
+	        return q;
         }
     }
 }

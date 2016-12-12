@@ -72,7 +72,9 @@ namespace ReadiNow.QueryEngine.ReportConverter
         }
 
         public override int GetHashCode()
-        {            
+        {
+            // _hashCode cannot be readonly due to OnAfterDeserialization
+            // ReSharper disable once NonReadonlyMemberInGetHashCode
             return _hashCode;
         }
 

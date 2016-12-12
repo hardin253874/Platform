@@ -106,26 +106,26 @@ namespace EDC.ReadiNow.Test.Security.SecuredData
             _dbSecuredData.Update(dummySecureId, null);
         }
 
-        [Test]
-        [RunAsDefaultTenant]
-        public void SecuredValuesSurviveAfterDbMasterKeyChange()
-        {
-            var dummyValue = "dummy value";
-            var dummyContext = "dummy context";
-            var newPassword = CryptoHelper.GetRandomPrintableString(10);
+		[Test]
+		[RunAsDefaultTenant]
+		public void SecuredValuesSurviveAfterDbMasterKeyChange( )
+		{
+			var dummyValue = "dummy value";
+			var dummyContext = "dummy context";
+			var newPassword = CryptoHelper.GetRandomPrintableString( 10 ) + "aA1!";
 
-            var secureId = _dbSecuredData.Create(RequestContext.TenantId, dummyContext, dummyValue);
+			var secureId = _dbSecuredData.Create( RequestContext.TenantId, dummyContext, dummyValue );
 
-            // update master key
+			// update master key
 
-            using (new GlobalAdministratorContext())
-            {
-                var dbInfo = DatabaseContext.GetContext().DatabaseInfo;
-                DatabaseHelper.CycleMasterKey(dbInfo, newPassword);
-            }
+			using ( new GlobalAdministratorContext( ) )
+			{
+				var dbInfo = DatabaseContext.GetContext( ).DatabaseInfo;
+				DatabaseHelper.CycleMasterKey( dbInfo, newPassword );
+			}
 
-            var getUpdate = _dbSecuredData.Read(secureId);
-            Assert.That(getUpdate, Is.EqualTo(dummyValue));
-        }
+			var getUpdate = _dbSecuredData.Read( secureId );
+			Assert.That( getUpdate, Is.EqualTo( dummyValue ) );
+		}
     }
 }

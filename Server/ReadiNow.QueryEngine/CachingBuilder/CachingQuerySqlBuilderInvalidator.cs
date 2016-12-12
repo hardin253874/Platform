@@ -1,17 +1,13 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using EDC.Cache;
-using EDC.Collections.Generic;
-using EDC.ReadiNow.Metadata.Query.Structured;
 using EDC.ReadiNow.Model;
 using EDC.ReadiNow.Model.CacheInvalidation;
-
 using EDC.ReadiNow.Security.AccessControl;
+
+// ReSharper disable RedundantOverridenMember
+// Note: these are added to aid placement of debug statements
 
 namespace ReadiNow.QueryEngine.CachingBuilder
 {

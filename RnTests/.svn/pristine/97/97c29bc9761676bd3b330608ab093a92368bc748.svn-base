@@ -1,0 +1,13 @@
+[{:type :testfixture,
+  :id :rn/fixture/rocm-manager-and-owner-creds,
+  :setup
+  [{:script
+    "(identity {:rocm-manager-creds {:password \"Readi911\", :username \"rocm_manager\"}})"}
+   {:script
+    "(identity {:rocm-owner-creds {:password \"Readi911\", :username \"rocm_owner\"}})"}],
+  :teardown [],
+  :modified "20161208-142839",
+  :modified-by "not-implemented",
+  :source "./test-db",
+  :name
+  "User creds for Regulatory obligation change manager and owner (non-admin user)"}]

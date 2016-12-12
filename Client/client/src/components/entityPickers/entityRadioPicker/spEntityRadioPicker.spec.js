@@ -10,6 +10,7 @@ describe('Console|Pickers|spEntityRadioPicker|spec:|spEntityRadioPicker directiv
     'use strict';
 
     // Load the modules
+    beforeEach(module('mod.common.spWebService'));
     beforeEach(module('mod.common.ui.spEntityRadioPicker'));
     beforeEach(module('entityPickers/entityRadioPicker/spEntityRadioPicker.tpl.html'));
     beforeEach(module('mockedEntityService'));

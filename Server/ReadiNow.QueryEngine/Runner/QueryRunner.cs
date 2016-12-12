@@ -361,6 +361,7 @@ namespace ReadiNow.QueryEngine.Runner
         {
             const string customerMessage = "The report has been prevented from running due to identified performance issues. Please contact your administrator.";
             const string reasonCode = "ReportCpuExceeded";
+
             public ExceededReportCpuLimitException(SqlException ex) : base(ex.Message, customerMessage, reasonCode, ex)
             {
             }

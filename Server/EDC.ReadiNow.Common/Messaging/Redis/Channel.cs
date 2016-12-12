@@ -1,6 +1,7 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
 
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using EDC.IO;
 using EDC.ReadiNow.Core.Cache.Providers;
@@ -152,6 +153,7 @@ namespace EDC.ReadiNow.Messaging.Redis
 			{
 				var pubResult = PublishMessage( ( subscriber, bytes, flags ) =>
 				{
+					Interlocked.Increment( ref MessagesPublished );
 					subscriber.Publish( ChannelName, bytes, flags );
 					return null;
 				}, message, options, publishToOriginator );
@@ -210,6 +212,8 @@ namespace EDC.ReadiNow.Messaging.Redis
 			_disposed = true;
 		}
 
+		public static int MessagesPublished;
+		public static int MessagesReceived;
 
 		/// <summary>
 		///     Messages the handler.
@@ -218,6 +222,7 @@ namespace EDC.ReadiNow.Messaging.Redis
 		/// <param name="message">The message.</param>
 		private void MessageHandler( RedisChannel channel, RedisValue message )
 		{
+			Interlocked.Increment( ref MessagesReceived );
 			try
 			{
 				byte[ ] decompress = CompressionHelper.Decompress( message );

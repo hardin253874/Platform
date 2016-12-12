@@ -435,10 +435,9 @@ namespace EDC.SoftwarePlatform.WebApi.Test.Console
             
             result.Should().NotBeNull();
             result.Actions.Should().NotBeNull().And.NotBeEmpty();
-            result.Actions.Count.Should().Be(3);
+            result.Actions.Count.Should().Be(2);
             result.Actions.Count(a => a.Name == "Assign Data to App").Should().Be(1);
             result.Actions.Count(a => a.Name == "Person Name Update").Should().Be(1);
-            result.Actions.Count(a => a.Name == "Launch Person Campaign").Should().Be(1);
         }
 
         /// <summary>
@@ -466,10 +465,9 @@ namespace EDC.SoftwarePlatform.WebApi.Test.Console
 
             result.Should().NotBeNull();
             result.Actions.Should().NotBeNull().And.NotBeEmpty();
-            result.Actions.Count.Should().Be(3);
+            result.Actions.Count.Should().Be(2);
             result.Actions.Count(a => a.Name == "Assign Data to App").Should().Be(1);
             result.Actions.Count(a => a.Name == "Person Name Update").Should().Be(1);
-            result.Actions.Count(a => a.Name == "Launch Person Campaign").Should().Be(1);
 
             // create new action item and assign it to the form
             // form action

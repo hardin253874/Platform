@@ -1,7 +1,6 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
 using System.Collections.Generic;
 using EDC.Common;
-using EDC.Database;
 using EDC.ReadiNow.Metadata.Query.Structured;
 
 namespace ReadiNow.QueryEngine.Builder.SqlObjects

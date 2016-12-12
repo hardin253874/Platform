@@ -15,11 +15,11 @@
               sp-context-menu-trigger="leftclick"
               sp-context-menu="board.configContextMenu"
               sp-context-menu-append-to-body>
-            <img src="assets/images/icon_configure_w.png" />
+            <img src="assets/images/icon_configure_w.svg">
         </span>
     </div>
     <div class="board-header" ng-if="!board.isTablet">
-        <span ng-if="board.iconInfo.headerIconUrl" class="headertype" ng-style="board.iconInfo.headerIconStyle" class="headertype">
+        <span ng-if="board.iconInfo.headerIconUrl"ng-style="board.iconInfo.headerIconStyle" class="headertype">
             <img ng-src="{{board.iconInfo.headerIconUrl}}" ng-style="board.iconInfo.headerIconStyle" />
         </span>
         

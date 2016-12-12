@@ -1,13 +1,9 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using EDC.ReadiNow.Common.Workflow;
 using EDC.ReadiNow.Model;
 using EDC.ReadiNow.Security;
 using ReadiNow.Connector.ImportSpreadsheet;
-using ReadiNow.Connector.Interfaces;
 
 namespace ReadiNow.Connector.EndpointTypes
 {

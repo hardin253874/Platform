@@ -1204,8 +1204,15 @@ namespace EDC.Diagnostics.Test
                 eventLogDetails1.LogWriter.Purge();
                 eventLogDetails2.LogWriter.Purge();
 
-                var files = Directory.GetFiles(folder);
-                Assert.That(files.Count(), Is.EqualTo(4));
+	            var files = Directory.GetFiles( folder ).Where( f =>
+	            {
+		            FileInfo fi = new FileInfo( f );
+
+		            return fi.Name.StartsWith( "first_" ) || fi.Name.StartsWith( "second_" );
+	            } ).ToList( );
+
+				
+                Assert.That(files.Count, Is.EqualTo(4));
             }
             finally
             {

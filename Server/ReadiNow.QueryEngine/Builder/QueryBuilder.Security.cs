@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Globalization;
 using System.Linq;
 using System.Text;
 using EDC.Common;
@@ -68,7 +67,7 @@ namespace ReadiNow.QueryEngine.Builder
         /// <summary>
         /// Is security disabled
         /// </summary>
-        private static Lazy<bool> _securityDisabled = new Lazy<bool>(
+        private static readonly Lazy<bool> _securityDisabled = new Lazy<bool>(
             ( ) => EDC.ReadiNow.Configuration.ConfigurationSettings.GetServerConfigurationSection( ).Security.Disabled );        
         
 
@@ -282,10 +281,10 @@ namespace ReadiNow.QueryEngine.Builder
                     RuleForTypeId = ruleForTypeId
                 };
 
-
-                accessRuleCte.PrepareCte = ( bool appliesToAllInstances ) =>
+                // bool appliesToAllInstances
+                accessRuleCte.PrepareCte = appliesToAllInstances =>
                     {
-                        QueryBuild qr = null;
+                        QueryBuild qr;
 
                         var settings = new QuerySettings
                         {
@@ -329,6 +328,7 @@ namespace ReadiNow.QueryEngine.Builder
                         catch ( Exception ex )
                         {
                             AccessControlDiagnosticsHelper.WriteInvalidSecurityReportMessage(accessRuleStructuredQuery, null, ex);
+                            throw;
                         }
 
 
@@ -376,7 +376,6 @@ namespace ReadiNow.QueryEngine.Builder
                         accessRuleCte.SqlCte = fullQuery.WithClause.AddRawCte(secCteSql.ToString());
                         accessRuleCte.SqlCteSuppressedRootType = settings.SuppressRootTypeCheck;
                     };
-
 
                 // Register this access rule report against each descendant that is in the report referenced types
                 descendants.Intersect(referencedTypes).ToList().ForEach(id => fullQuery.References.RegisterAccessRuleCteForType(id, accessRuleCte, true, cteType));
@@ -870,7 +869,8 @@ namespace ReadiNow.QueryEngine.Builder
                     AllowAll = false
                 };
 
-                accessRuleCte.PrepareCte = ( bool appliesToAllInstances ) =>
+                // bool appliesToAllInstances
+                accessRuleCte.PrepareCte = appliesToAllInstances =>
                 {
                     // Get all entities of the specified type
                     ICollection<long> entityIds = GetEntitiesOfType( descendants, result );
@@ -958,68 +958,6 @@ namespace ReadiNow.QueryEngine.Builder
                 _sqlBatch.SqlPostamble = string.Concat(_sqlBatch.SqlPostamble, Environment.NewLine, string.Join(Environment.NewLine, sharedSqlPost));               
             }                        
 	    }
-               
-
-		/// <summary>
-		///     Fast single-pass substitution of aliases into SQL text.
-		///     E.g. select FromId from Relationship where TypeId = $shared:worksFor$
-		///     Dollar sign can be escaped (in sql content, not alias) by passing it twice.
-		/// </summary>
-		/// <param name="sql">The SQL.</param>
-		/// <returns></returns>
-		/// <exception cref="System.Exception">Unbalanced escape sequence</exception>
-		private string SubstituteAliases( string sql )
-		{
-			var sb = new StringBuilder( );
-
-			int pos = 0;
-
-			while ( true )
-			{
-				if ( pos == sql.Length )
-				{
-					break;
-				}
-				int startAlias = sql.IndexOf( '$', pos );
-				if ( startAlias == -1 )
-				{
-					break;
-				}
-
-				string rawSql = sql.Substring( pos, startAlias - pos );
-				sb.Append( rawSql );
-
-				int endAlias = sql.IndexOf( '$', startAlias + 1 );
-				if ( endAlias == -1 )
-				{
-					throw new Exception( "Unbalanced escape sequence" );
-				}
-
-				int aliasLength = endAlias - startAlias - 1;
-				if ( aliasLength == 0 )
-				{
-					sb.Append( "$" );
-				}
-				else
-				{
-					string alias = sql.Substring( startAlias + 1, aliasLength );
-					var er = new EntityRef( alias );
-
-					string erParamName = RegisterSharedParameter( DbType.Int64, er.Id.ToString( CultureInfo.InvariantCulture ) );
-
-					string id = FormatEntity( er, erParamName );
-					sb.Append( id );
-				}
-				pos = endAlias + 1;
-			}
-			if ( pos != sql.Length )
-			{
-				sb.Append( sql.Substring( pos ) );
-			}
-
-			string result = sb.ToString( );
-			return result;
-		}
 
         /// <summary>
         /// Return true if the specified list of access rules allow access to all.

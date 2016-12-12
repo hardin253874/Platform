@@ -1,11 +1,6 @@
 ﻿// Copyright 2011-2016 Global Software Innovation Pty Ltd
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace ReadiNow.Integration.Sms
 {
@@ -14,10 +9,10 @@ namespace ReadiNow.Integration.Sms
     /// </summary>
     public static class PhoneNumberHelper
     {
-        static Regex _whiteSpace = new Regex(@"\s*");
-        static Regex _backetedZero = new Regex(@"\(0\)");
-        static Regex _areaCodeZero = new Regex(@"\(0");
-        static Regex _digitPlusOnly = new Regex(@"[^+\d]");
+        static readonly Regex _whiteSpace = new Regex(@"\s*");
+        static readonly Regex _backetedZero = new Regex(@"\(0\)");
+        static readonly Regex _areaCodeZero = new Regex(@"\(0");
+        static readonly Regex _digitPlusOnly = new Regex(@"[^+\d]");
 
         // TODO: Use a tenant specific default country code
         public const string DefaultCountryCode = "+61";
@@ -25,7 +20,6 @@ namespace ReadiNow.Integration.Sms
         /// <summary>
         /// Clear a telephone number and turn it into E.123 format with no spaces
         /// </summary>
-        /// <param name="countryCode"></param>
         /// <param name="number"></param>
         /// <returns></returns>
         public static string CleanNumber(string number)
@@ -39,15 +33,15 @@ namespace ReadiNow.Integration.Sms
         /// <param name="countryCode"></param>
         /// <param name="number"></param>
         /// <returns></returns>
-        public static string CleanNumber(string countryCode, string number)
+        public static string CleanNumber( string countryCode, string number )
         {
             // remove all non-numeric characters and deal with area code zeros in brackets
-            string _number = StripNumber(number);
+            string _number = StripNumber( number );
 
             // check for this in case they've entered 44 (0)xxxxxxxxx or similar
-            if (!_number.StartsWith("+"))
+            if ( !_number.StartsWith( "+" ) )
             {
-                _number = _number.TrimStart('0');
+                _number = _number.TrimStart( '0' );
                 _number = countryCode + _number;
             }
 
@@ -55,8 +49,11 @@ namespace ReadiNow.Integration.Sms
         }
 
 
-
-
+        /// <summary>
+        /// Strip unnecessary characters from a phone number.
+        /// </summary>
+        /// <param name="number">The unfiltered number.</param>
+        /// <remarks>The filtered number.</remarks>
         static string StripNumber(string number)
         {
             number = _whiteSpace.Replace(number, string.Empty);           

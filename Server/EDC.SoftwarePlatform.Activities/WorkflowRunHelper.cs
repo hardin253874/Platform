@@ -9,6 +9,7 @@ using EDC.ReadiNow.Core;
 using EDC.ReadiNow.Diagnostics.Response;
 using System.Diagnostics;
 using EDC.SoftwarePlatform.Activities.BackgroundTasks;
+using EDC.ReadiNow.IO;
 
 namespace EDC.SoftwarePlatform.Activities
 {
@@ -175,6 +176,7 @@ namespace EDC.SoftwarePlatform.Activities
             // Update the diagnostics info
             var response = new WorkflowResponse
             {
+                TenantName = RequestContext.GetContext().Tenant.Name,
                 Id = run.Id,
                 TaskId = run.TaskId,
                 WorkflowName = run?.WorkflowBeingRun?.Name,
@@ -184,6 +186,7 @@ namespace EDC.SoftwarePlatform.Activities
                 TriggeredBy = run.TriggeringUser != null ? run.TriggeringUser.Name : "Unknown",
                 Server = Environment.MachineName,
                 Process = Process.GetCurrentProcess().MainModule.ModuleName,
+                StepCount = run.RunStepCounter ?? -1
             };
 
             ReadiNow.Diagnostics.DiagnosticChannel.Publish(response);

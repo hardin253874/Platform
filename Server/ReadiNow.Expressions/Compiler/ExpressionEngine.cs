@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using EDC.Database;
 using ReadiNow.Expressions.Parser;
 using EDC.ReadiNow.Metadata.Query.Structured;
 using Irony.Parsing;
@@ -13,7 +12,6 @@ using EDC.ReadiNow.Expressions;
 using EDC.ReadiNow.IO;
 using EDC.Common;
 using ReadiNow.Expressions.Tree.Nodes;
-using EDC.ReadiNow.Core;
 using EDC.ReadiNow.Model;
 
 namespace ReadiNow.Expressions.Compiler
@@ -40,12 +38,12 @@ namespace ReadiNow.Expressions.Compiler
         /// <summary>
         /// Repository used to load information about schema entities.
         /// </summary>
-        private IEntityRepository EntityRepository { get; set; }
+        private IEntityRepository EntityRepository { get; }
 
         /// <summary>
         /// Service used to resolve identifiers.
         /// </summary>
-        private IScriptNameResolver ScriptNameResolver { get; set; }
+        private IScriptNameResolver ScriptNameResolver { get; }
 
 
         /// <summary>

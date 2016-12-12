@@ -301,6 +301,7 @@
             <k:renderingOrdinal>0</k:renderingOrdinal>
             <k:fieldToRender>name</k:fieldToRender>
             <k:readOnlyControl>true</k:readOnlyControl>
+            <k:mandatoryControl>true</k:mandatoryControl>
           </k:fileNameUploadControl>
           <k:inlineRelationshipRenderControl>
             <alias>k:documentTypeRelationshipControlOnForm3698gen</alias>

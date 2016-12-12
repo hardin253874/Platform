@@ -25,7 +25,7 @@ namespace EDC.ReadiNow.Model
         /// <summary>
         ///     Gets the upgrade IDs of a multiple entities.
         /// </summary>
-        /// <param name="entityId">The Int64 ID of an entity.</param>
+        /// <param name="entityIds">The Int64 entity IDs.</param>
         IDictionary<long, Guid> GetUpgradeIds(IEnumerable<long> entityIds);
 
         /// <summary>
