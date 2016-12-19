@@ -1,6 +1,5 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
@@ -132,11 +131,11 @@ namespace EDC.Common
 		{
 			if ( collection == null )
 			{
-				throw new ArgumentNullException( "collection" );
+				throw new ArgumentNullException( nameof( collection ) );
 			}
 			if ( test == null )
 			{
-				throw new ArgumentNullException( "test" );
+				throw new ArgumentNullException( nameof( test ) );
 			}
 
 			int i = 0;
@@ -339,9 +338,11 @@ namespace EDC.Common
 			{
 				return null;
 			}
-			if ( source is TList )
+
+            TList list = source as TList;
+		    if ( list != null )
 			{
-				return ( TList ) source;
+				return list;
 			}
 			return source.Copy<TList, TItem>( );
 		}
@@ -368,9 +369,9 @@ namespace EDC.Common
         public static Dictionary<TKey, TSource> ToDictionarySafe<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException( nameof( source ) );
             if (keySelector == null)
-                throw new ArgumentNullException("keySelector");
+                throw new ArgumentNullException( nameof( keySelector ) );
 
             var dict = new Dictionary<TKey, TSource>();
             foreach (TSource value in source)            
@@ -387,11 +388,11 @@ namespace EDC.Common
         public static Dictionary<TKey, TValue> ToDictionarySafe<TSource, TKey, TValue>( this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TValue> valueSelector )
         {
             if ( source == null )
-                throw new ArgumentNullException( "source" );
+                throw new ArgumentNullException( nameof( source ) );
             if ( keySelector == null )
-                throw new ArgumentNullException( "keySelector" );
+                throw new ArgumentNullException( nameof( keySelector ) );
             if ( valueSelector == null )
-                throw new ArgumentNullException( "valueSelector" );
+                throw new ArgumentNullException( nameof( valueSelector ) );
 
             var dict = new Dictionary<TKey, TValue>( );
             foreach ( TSource sourceItem in source )
@@ -454,11 +455,11 @@ namespace EDC.Common
 		{
 			if ( startNodes == null )
 			{
-				throw new ArgumentNullException( "startNodes" );
+				throw new ArgumentNullException( nameof( startNodes ) );
 			}
 			if ( getRelated == null )
 			{
-				throw new ArgumentNullException( "getRelated" );
+				throw new ArgumentNullException( nameof( getRelated ) );
 			}
 
 			var nodesProcessed = new HashSet<T>( nodeEqualityComparer ?? EqualityComparer<T>.Default );
@@ -568,7 +569,7 @@ namespace EDC.Common
         public static IEnumerable<T> WhereType<T>(this IEnumerable<object> source) where T : class
         {
             if ( source == null )
-                throw new ArgumentNullException( "source" );
+                throw new ArgumentNullException( nameof( source ) );
             return source.Select( o => o as T ).Where( o => o != null );
         }
 
@@ -579,7 +580,7 @@ namespace EDC.Common
         public static IEnumerable<T> WhereNotNull<T>( this IEnumerable<T> source ) where T : class
         {
             if ( source == null )
-                throw new ArgumentNullException( "source" );
+                throw new ArgumentNullException( nameof( source ) );
             return source.Where( o => o != null );
         }
 
@@ -651,7 +652,7 @@ namespace EDC.Common
                 else
                     sb.Append(separator);
                 if (o != null)
-                    sb.Append(o.ToString());
+                    sb.Append( o );
             }
         }
 
@@ -661,7 +662,7 @@ namespace EDC.Common
         public static Dictionary<string, string> ToDictionary( this NameValueCollection collection )
         {
             if ( collection == null )
-                throw new ArgumentNullException( "collection" );
+                throw new ArgumentNullException( nameof( collection ) );
             return collection.AllKeys.ToDictionary( k => k, k => collection [ k ] );
         }
     }

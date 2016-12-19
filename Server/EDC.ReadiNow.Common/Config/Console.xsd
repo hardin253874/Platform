@@ -281,6 +281,11 @@
       <xs:restriction base="xs:string" />
     </xs:simpleType>
   </xs:element>
+  <xs:element name="actionButtonBackgroundColor">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" />
+    </xs:simpleType>
+  </xs:element>
   <xs:element name="textControlWidth">
     <xs:simpleType>
       <xs:restriction base="xs:int">
@@ -2189,6 +2194,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="consoleGeneralContentAreaTabControlLineColor" />
       <xs:element minOccurs="0" maxOccurs="1" ref="consoleGeneralContentAreaReportHeaderColor" />
       <xs:element minOccurs="0" maxOccurs="1" ref="consoleGeneralContentAreaReportHeaderFontColor" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="actionButtonBackgroundColor" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:isOfType" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:resourceHasResourceKeyDataHashes" />
       <xs:element minOccurs="0" maxOccurs="1" ref="core:flags" />

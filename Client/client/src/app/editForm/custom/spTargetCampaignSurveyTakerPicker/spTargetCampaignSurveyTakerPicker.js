@@ -46,6 +46,28 @@
                        
                        var relSurveyTakerDirection = { id: -1, isReverse: false };
 
+                       function loadSurveyTakerDirection() {
+                           if (scope.formData && relSurveyTakerDirection && relSurveyTakerDirection.id > 0) {
+
+                               var direction = scope.formData.getLookup(relSurveyTakerDirection);
+                               if (!direction) {
+
+                                   if (scope.formData.dataState !== spEntity.DataStateEnum.Create && scope.formData.id) {
+                                       spEntityService.getEntity(scope.formData.id(), 'campaignTargetRelationshipDirection.alias').then(function (dir) {
+
+                                           if (dir && dir.campaignTargetRelationshipDirection) {
+                                               var dirAlias = dir.campaignTargetRelationshipDirection.nsAlias;
+                                               scope.formData.setLookup(relSurveyTakerDirection, dirAlias);
+                                               scope.model.isReverse = dirAlias === 'core:reverse';
+                                           }
+                                       });
+                                   }
+                               }
+                           }
+                       }
+
+                       var loadSurveyTakerDirectionDebounce = _.debounce(loadSurveyTakerDirection, 200);
+
                        scope.$watch("formControl", function () {
 
                            if (scope.formControl) {
@@ -85,6 +107,7 @@
                                    spEntityService.getEntity('core:campaignTargetRelationshipDirection', 'name').then(function (rel) {
                                        if (rel) {
                                            relSurveyTakerDirection = { id: rel.idP, isReverse: false };
+                                           loadSurveyTakerDirectionDebounce();
                                        }
                                    });
                                }
@@ -108,11 +131,22 @@
                                    if (scope.formData && scope.relSurveyTaker && scope.relSurveyTaker.id > 0) {
                                        selectedEntities = scope.formData.getRelationship(scope.relSurveyTaker);
                                    }
+
                                    scope.model.relEntity = _.first(selectedEntities) || null;
+                                   
+                                   loadSurveyTakerDirectionDebounce();
+                               });
+
+                               // also may have to create and fetch the direction information if it was set previously,
+                               // or it won't load or save with formData
+                               scope.$watch('formData', function () {
+                                   if (scope.formData && relSurveyTakerDirection && relSurveyTakerDirection.id > 0) {
+                                       loadSurveyTakerDirectionDebounce();
+                                   }
                                });
                            }
                        });
-
+                       
                        /////
                        // Validation.
                        /////
@@ -165,9 +199,15 @@
                                if (rel) {
                                    var relEntity = rel.getEntity();
 
+                                   scope.model.isReverse = !!rel.isReverse();
+
                                    if (relEntity) {
                                        var existingValue = scope.formData.getLookup(scope.relSurveyTaker);
-                                       if (!existingValue || (existingValue.idP !== relEntity.idP)) {
+                                       var existingDirection = scope.formData.getLookup(relSurveyTakerDirection);
+                                       var existingIsReverse = sp.result(existingDirection, 'nsAlias') === 'core:reverse';
+
+                                       if (!existingValue || (existingValue.idP !== relEntity.idP) ||
+                                           !existingDirection || (existingIsReverse !== scope.model.isReverse)) {
 
                                            if (scope.model.targetTypeEntity && relSurveyTakerDirection && relSurveyTakerDirection.id > 0) {
                                                scope.formData.setLookup(relSurveyTakerDirection, !rel.isReverse() ? 'core:forward' : 'core:reverse');
@@ -177,6 +217,7 @@
                                        }
                                    }
                                } else {
+                                   delete scope.model.isReverse;
                                    scope.formData.setLookup(relSurveyTakerDirection, null);
                                    scope.formData.setLookup(scope.relSurveyTaker, null);
                                }

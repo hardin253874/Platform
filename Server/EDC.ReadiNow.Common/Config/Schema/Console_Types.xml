@@ -1339,6 +1339,13 @@
         <fieldRepresents>fieldRepresentsColor</fieldRepresents>
         <fieldInGroup>k:consoleContentAreaGroup</fieldInGroup>
       </stringField>
+      <stringField>
+        <name>Action button background colour (ARGB)</name>
+        <alias>k:actionButtonBackgroundColor</alias>
+        <description>The colour of action buttons on form and screen.</description>
+        <fieldRepresents>fieldRepresentsColor</fieldRepresents>
+        <fieldInGroup>k:consoleContentAreaGroup</fieldInGroup>
+      </stringField>
     </fields>
   </type>
   <!-- Top Navigation Style Enumeration type -->

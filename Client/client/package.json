@@ -14,7 +14,9 @@
     "test": "grunt unit",
     "intg": "grunt intg",
     "coverage": "grunt coverage",
-    "flow": "flow"
+    "flow": "flow",
+    "kss": "grunt less sass & kss --config kss.json",
+    "stylelint" : "grunt stylelint"
   },
   "dependencies": {},
   "devDependencies": {
@@ -36,7 +38,9 @@
     "grunt-newer": "^1.1.2",
     "grunt-ng-annotate": "^2.0.0",
     "grunt-postcss": "^0.8.0",
+    "grunt-sass": "^1.2.1",
     "grunt-shell": "^1.0.0",
+    "grunt-stylelint": "^0.6.0",
     "grunt-sync": "^0.5.2",
     "jit-grunt": "^0.10.0",
     "jsdoc": "^3.4.0",
@@ -49,7 +53,12 @@
     "karma-junit-reporter": "^0.4.0",
     "karma-ng-scenario": "^0.1.0",
     "karma-teamcity-reporter": "^0.2.0",
+    "kss": "^3.0.0-beta.16",
     "load-grunt-tasks": "^3.5.0",
+    "postcss-less": "^0.15.0",
+    "postcss-scss": "^0.4.0",
+    "stylelint": "^7.6.0",
+    "stylelint-config-standard": "^15.0.0",
     "time-grunt": "^1.3.0"
   }
 }

@@ -29,32 +29,46 @@ namespace EDC.ReadiNow.Test.Messaging.Redis
 			ReceivedMessages = new List<MessageEventArgs<T>>( );
 			MessageReceived = new AutoResetEvent( false );
 
-			EventHandler<MessageEventArgs<T>> eventHandler = ( o, m ) =>
-			{
-				ReceivedMessages.Add( m );
-
-				if ( Filter != null )
-				{
-					if ( Filter( m ) )
-					{
-						MessageReceived.Set( );
-					}
-				}
-				else
-				{
-					MessageReceived.Set( );
-				}
-			};
-
 			Channel = Manager.GetChannel<T>( channelName );
 
-			Channel.MessageReceived += eventHandler;
+			Channel.MessageReceived += Handler;
 			Channel.Subscribe( );
 
 			/////
 			// Allow time for the server to receive the message and process it.
 			/////
 			Thread.Sleep( 1000 );
+		}
+
+		/// <summary>
+		///     Gets or sets the filter.
+		/// </summary>
+		/// <value>
+		///     The filter.
+		/// </value>
+		public Func<MessageEventArgs<T>, bool> Filter
+		{
+			get;
+			set;
+		}
+
+		/// <summary>
+		///     The message received event
+		/// </summary>
+		public AutoResetEvent MessageReceived
+		{
+			get;
+		}
+
+		/// <summary>
+		///     Gets the received messages.
+		/// </summary>
+		/// <value>
+		///     The received messages.
+		/// </value>
+		public List<MessageEventArgs<T>> ReceivedMessages
+		{
+			get;
 		}
 
 		/// <summary>
@@ -82,18 +96,6 @@ namespace EDC.ReadiNow.Test.Messaging.Redis
 		}
 
 		/// <summary>
-		///     Gets or sets the filter.
-		/// </summary>
-		/// <value>
-		///     The filter.
-		/// </value>
-		public Func<MessageEventArgs<T>, bool> Filter
-		{
-			get;
-			set;
-		}
-
-		/// <summary>
 		///     Gets or sets the manager.
 		/// </summary>
 		/// <value>
@@ -106,44 +108,27 @@ namespace EDC.ReadiNow.Test.Messaging.Redis
 		}
 
 		/// <summary>
-		///     The message received event
-		/// </summary>
-		public AutoResetEvent MessageReceived
-		{
-			get;
-			private set;
-		}
-
-		/// <summary>
-		///     Gets the received messages.
-		/// </summary>
-		/// <value>
-		///     The received messages.
-		/// </value>
-		public List<MessageEventArgs<T>> ReceivedMessages
-		{
-			get;
-			private set;
-		}
-
-		/// <summary>
 		///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
 		/// </summary>
 		public void Dispose( )
 		{
 			if ( Channel != null )
 			{
+				Channel.MessageReceived -= Handler;
 				Channel.Dispose( );
+				Channel = null;
 			}
 
 			if ( Manager != null )
 			{
 				Manager.Dispose( );
+				Manager = null;
 			}
 
 			if ( Context != null )
 			{
 				Context.Dispose( );
+				Context = null;
 			}
 		}
 
@@ -153,6 +138,28 @@ namespace EDC.ReadiNow.Test.Messaging.Redis
 		public void Unsubscribe( )
 		{
 			Channel.Unsubscribe( );
+		}
+
+		/// <summary>
+		///     Handlers the specified sender.
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="eventArgs">The <see cref="MessageEventArgs{T}" /> instance containing the event data.</param>
+		private void Handler( object sender, MessageEventArgs<T> eventArgs )
+		{
+			ReceivedMessages.Add( eventArgs );
+
+			if ( Filter != null )
+			{
+				if ( Filter( eventArgs ) )
+				{
+					MessageReceived.Set( );
+				}
+			}
+			else
+			{
+				MessageReceived.Set( );
+			}
 		}
 	}
 }

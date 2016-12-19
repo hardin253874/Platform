@@ -58,7 +58,7 @@ namespace EDC.Threading
 		{
 			if ( string.IsNullOrEmpty( name ) )
 			{
-				throw new ArgumentNullException( "name" );
+				throw new ArgumentNullException( nameof( name ) );
 			}
 
 			var mutexSecurity = new MutexSecurity( );
@@ -79,7 +79,7 @@ namespace EDC.Threading
 		{
 			if ( string.IsNullOrEmpty( name ) )
 			{
-				throw new ArgumentNullException( "name" );
+				throw new ArgumentNullException( nameof( name ) );
 			}
 
 			bool createdNew;
@@ -115,7 +115,7 @@ namespace EDC.Threading
 
 			if ( millsecondsTimeout < -1 )
 			{
-				throw new ArgumentOutOfRangeException( "millsecondsTimeout" );
+				throw new ArgumentOutOfRangeException( nameof( millsecondsTimeout ) );
 			}
 
 			try

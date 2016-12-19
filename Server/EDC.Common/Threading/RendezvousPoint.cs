@@ -68,12 +68,12 @@ namespace EDC.Threading
         {
             if (string.IsNullOrEmpty(id))
             {
-                throw new ArgumentNullException("id");
+                throw new ArgumentNullException( nameof( id ) );
             }
 
             if (!RendezvousPoints.TryAdd(id, this))
             {
-                throw new ArgumentException(@"The rendezvousPoint id is already used.", "id");
+                throw new ArgumentException(@"The rendezvousPoint id is already used.", nameof( id ));
             }            
 
             _id = id;
@@ -225,12 +225,12 @@ namespace EDC.Threading
         {
             if (string.IsNullOrEmpty(id))
             {
-                throw new ArgumentNullException("id");
+                throw new ArgumentNullException( nameof( id ) );
             }
 
             if (action == null)
             {
-                throw new ArgumentNullException("action");
+                throw new ArgumentNullException( nameof( action ) );
             }
 
             RendezvousPoint rendezvousPoint;

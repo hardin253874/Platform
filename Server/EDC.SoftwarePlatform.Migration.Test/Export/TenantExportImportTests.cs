@@ -62,7 +62,7 @@ namespace EDC.SoftwarePlatform.Migration.Test.Export
                     var secureDataId = Factory.SecuredData.Create(oldTenantId, "test", "testValue");
 
                     // Export and Import
-                    TenantManager.ExportTenant(oldName, filePath);
+                    TenantManager.ExportTenant(oldName, filePath, false);
 
                     newTenantId = TenantManager.ImportTenant(filePath, newName);
 

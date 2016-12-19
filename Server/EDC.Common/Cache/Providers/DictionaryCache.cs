@@ -45,7 +45,6 @@ namespace EDC.Cache.Providers
 		public ICache<TKey, TValue> InnerCache
 		{
 			get;
-			private set;
 		}
 
 	    /// <summary>
@@ -108,7 +107,7 @@ namespace EDC.Cache.Providers
         public bool TryGetOrAdd( TKey key, out TValue value, Func<TKey, TValue> valueFactory )
         {
             if ( valueFactory == null )
-                throw new ArgumentNullException( "valueFactory" );
+                throw new ArgumentNullException( nameof( valueFactory ) );
 
             bool added;
 
@@ -191,7 +190,7 @@ namespace EDC.Cache.Providers
         public IReadOnlyCollection<TKey> Remove( IEnumerable<TKey> keys )
         {
             if ( keys == null )
-                throw new ArgumentNullException( "keys" );
+                throw new ArgumentNullException( nameof( keys ) );
 
 	        TKey[] keyArray = keys.ToArray( );
 
@@ -283,7 +282,7 @@ namespace EDC.Cache.Providers
         {
             if (itemsRemovedEventArgs == null)
             {
-                throw new ArgumentNullException("itemsRemovedEventArgs");
+                throw new ArgumentNullException( nameof( itemsRemovedEventArgs ) );
             }
 
 	        ItemsRemovedEventHandler<TKey> itemsRemovedEventHandler = ItemsRemoved;

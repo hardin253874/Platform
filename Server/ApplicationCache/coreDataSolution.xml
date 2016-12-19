@@ -3,15 +3,15 @@
   <metadata>
     <type>AppPackage</type>
     <application id="abf12077-6fa5-43da-b608-b8b7514d07bb">
-      <name>ReadiNow Core Data Application Package 1.0.5.12</name>
+      <name>ReadiNow Core Data Application Package 1.0.5.16</name>
       <appName>ReadiNow Core Data</appName>
-      <description>Application Package for version 1.0.5.12 of ReadiNow Core Data.</description>
+      <description>Application Package for version 1.0.5.16 of ReadiNow Core Data.</description>
     </application>
-    <package id="c3bf9544-d6e8-4fb1-9cae-1f4cecbc87d3">
-      <version>1.0.5.12</version>
+    <package id="b171af9b-2743-484d-9b0c-d6bd4ad0822c">
+      <version>1.0.5.16</version>
       <platformVersion>1.0.0.0</platformVersion>
-      <releaseDate>2016-12-07 00:00:00Z</releaseDate>
-      <publishDate>2016-12-09 01:43:43Z</publishDate>
+      <releaseDate>2016-12-16 00:00:00Z</releaseDate>
+      <publishDate>2016-12-16 08:01:11Z</publishDate>
     </package>
     <dependencies>
       <dependency>
@@ -31,18 +31,19 @@
         <hideOnDesktop>False</hideOnDesktop>
         <hideOnMobile>False</hideOnMobile>
         <hideOnTablet>False</hideOnTablet>
-        <solutionReleaseDate>2016-12-09 00:00:00Z</solutionReleaseDate>
-        <packageId>c3bf9544-d6e8-4fb1-9cae-1f4cecbc87d3</packageId>
+        <solutionReleaseDate>2016-12-16 00:00:00Z</solutionReleaseDate>
+        <packageId>b171af9b-2743-484d-9b0c-d6bd4ad0822c</packageId>
         <legacyGuid>072871fe-35e3-49d6-86da-5c2a06a56caf</legacyGuid>
-        <solutionVersionString>1.0.5.12</solutionVersionString>
+        <solutionVersionString>1.0.5.16</solutionVersionString>
         <solutionPublisherUrl>http://www.readinow.com</solutionPublisherUrl>
         <solutionPublisher>ReadiNow</solutionPublisher>
-        <solutionVersionDetails>Make Name, Document, Object controls mandatory on the report template form.</solutionVersionDetails>
+        <solutionVersionDetails>Updated 'createRecordActionItemDialog' form.</solutionVersionDetails>
         <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
         <securityOwner>administratorUserAccount</securityOwner>
         <indirectApplicationContents>02627396-9585-4a58-b792-e76c9005a67f</indirectApplicationContents>
         <indirectApplicationContents>0498bbc8-f3cd-4b03-ba98-5f5ea461df7a</indirectApplicationContents>
         <indirectApplicationContents>0bbf2ddb-f53c-4c30-9f65-1351a9ea9466</indirectApplicationContents>
+        <indirectApplicationContents>11493e15-33ba-456d-b21b-d943a4b86f4d</indirectApplicationContents>
         <indirectApplicationContents>141cea97-713a-4efc-a7b7-8720569ec331</indirectApplicationContents>
         <indirectApplicationContents>14ed4ede-f4a7-4132-8aba-4d1d866a142c</indirectApplicationContents>
         <indirectApplicationContents>1e532e20-c4af-4cad-8d71-878fb3368bb0</indirectApplicationContents>
@@ -67,13 +68,16 @@
         <indirectApplicationContents>bae82fc5-9afc-4af1-81a7-f53986009c4d</indirectApplicationContents>
         <indirectApplicationContents>bc2cea69-a8c5-42ac-9e4a-d8cd8e051a45</indirectApplicationContents>
         <indirectApplicationContents>bfba6b94-44ce-46cc-bb7b-90e32ca942fd</indirectApplicationContents>
+        <indirectApplicationContents>c64ec5ea-08ae-444f-8d58-dec118a3345a</indirectApplicationContents>
         <indirectApplicationContents>c7f8019d-b519-497b-b6c8-e3ccc96282f8</indirectApplicationContents>
         <indirectApplicationContents>cc2f6157-29b1-4859-9ecd-7c9a75bc8233</indirectApplicationContents>
         <indirectApplicationContents>d4618e9a-3ea2-4e56-876a-ea6f8c11dfba</indirectApplicationContents>
         <indirectApplicationContents>d788882b-8af6-4867-8783-cf663700de10</indirectApplicationContents>
         <indirectApplicationContents>da077d3a-eb82-40b7-b7f2-58703311c5b6</indirectApplicationContents>
+        <indirectApplicationContents>db2602af-39fd-46fa-a1d7-96e0e14e2b2a</indirectApplicationContents>
         <indirectApplicationContents>dd0380e8-7085-472c-8fe4-ac640893afec</indirectApplicationContents>
         <indirectApplicationContents>e29e8289-0294-4fe8-a6be-1933fade9d4e</indirectApplicationContents>
+        <indirectApplicationContents>e604425a-c6a3-4e2f-be8d-c57c0c2afd07</indirectApplicationContents>
         <indirectApplicationContents>f81fec98-c931-4964-9984-d74944c68178</indirectApplicationContents>
         <indirectApplicationContents>fcf80ec3-e52e-428e-b9b9-e6665553260a</indirectApplicationContents>
         <indirectApplicationContents>fd55c559-1d73-4ff0-b690-b40235dedf95</indirectApplicationContents>
@@ -4968,6 +4972,112 @@
           </report>
         </accessRuleReport>
       </accessRule>
+      <!-- 'Administrators' accessing 'Inbox' -->
+      <accessRule id="7392c411-0a50-412a-b124-b175255cd6b3">
+        <name>'Administrators' accessing 'Inbox'</name>
+        <accessRuleEnabled>True</accessRuleEnabled>
+        <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+        <permissionAccess>read</permissionAccess>
+        <permissionAccess>create</permissionAccess>
+        <permissionAccess>modify</permissionAccess>
+        <permissionAccess>delete</permissionAccess>
+        <securityOwner>administratorUserAccount</securityOwner>
+        <controlAccess>inbox</controlAccess>
+        <allowAccessBy>administratorRole</allowAccessBy>
+        <accessRuleReport>
+          <!-- Inbox -->
+          <report id="8aa4e886-2075-4207-905e-20148d522bfb">
+            <name>Inbox</name>
+            <description></description>
+            <hideReportHeader>False</hideReportHeader>
+            <hideOnDesktop>False</hideOnDesktop>
+            <hideOnMobile>False</hideOnMobile>
+            <hideActionBar>False</hideActionBar>
+            <hideOnTablet>False</hideOnTablet>
+            <reportUsesDefinition>inbox</reportUsesDefinition>
+            <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
+            <k:resourceInFolder>56f4ad0a-4688-43be-9c31-bd145048aa5a</k:resourceInFolder>
+            <securityOwner>administratorUserAccount</securityOwner>
+            <rootNode>
+              <resourceReportNode id="de3304d9-845e-4f4b-be46-330ec7324805">
+                <exactType>False</exactType>
+                <targetMustExist>True</targetMustExist>
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <resourceReportNodeType>inbox</resourceReportNodeType>
+                <securityOwner>administratorUserAccount</securityOwner>
+              </resourceReportNode>
+            </rootNode>
+            <reportColumns>
+              <!-- Id -->
+              <reportColumn id="0553828d-40bb-4d7d-9799-4de89466af82">
+                <name>Id</name>
+                <columnIsHidden>True</columnIsHidden>
+                <columnDisplayOrder>0</columnDisplayOrder>
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <securityOwner>administratorUserAccount</securityOwner>
+                <columnExpression>
+                  <idExpression id="83714887-d050-4a3a-8216-2c12ebd93084">
+                    <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                    <securityOwner>administratorUserAccount</securityOwner>
+                    <sourceNode>de3304d9-845e-4f4b-be46-330ec7324805</sourceNode>
+                    <reportExpressionResultType>
+                      <resourceArgument id="244f3e4a-5294-4fab-a58c-39d7c9b055ec">
+                        <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                        <securityOwner>administratorUserAccount</securityOwner>
+                      </resourceArgument>
+                    </reportExpressionResultType>
+                  </idExpression>
+                </columnExpression>
+              </reportColumn>
+              <!-- Inbox -->
+              <reportColumn id="48768074-83c5-424b-9ddf-01e06d95cb4a">
+                <name>Inbox</name>
+                <columnIsHidden>False</columnIsHidden>
+                <columnDisplayOrder>1</columnDisplayOrder>
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <securityOwner>administratorUserAccount</securityOwner>
+                <columnExpression>
+                  <fieldExpression id="fd9b5172-bc83-4bee-bdcd-4689aa8dcbee">
+                    <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                    <fieldExpressionField>name</fieldExpressionField>
+                    <securityOwner>administratorUserAccount</securityOwner>
+                    <sourceNode>de3304d9-845e-4f4b-be46-330ec7324805</sourceNode>
+                    <reportExpressionResultType>
+                      <stringArgument id="ddc9335a-115c-4522-badd-a4c25b99e134">
+                        <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                        <securityOwner>administratorUserAccount</securityOwner>
+                      </stringArgument>
+                    </reportExpressionResultType>
+                  </fieldExpression>
+                </columnExpression>
+              </reportColumn>
+              <!-- Description -->
+              <reportColumn id="acb2bdfb-bd1b-43fe-b440-4a7b6c03ff1d">
+                <name>Description</name>
+                <columnIsHidden>False</columnIsHidden>
+                <columnDisplayOrder>2</columnDisplayOrder>
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <securityOwner>administratorUserAccount</securityOwner>
+                <columnExpression>
+                  <fieldExpression id="495d7980-4fee-4f08-bdab-c50bfe8f57be">
+                    <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                    <fieldExpressionField>description</fieldExpressionField>
+                    <securityOwner>administratorUserAccount</securityOwner>
+                    <sourceNode>de3304d9-845e-4f4b-be46-330ec7324805</sourceNode>
+                    <reportExpressionResultType>
+                      <stringArgument id="440676fc-c7d0-4171-999d-737d03ad3765">
+                        <stringMultiLine>True</stringMultiLine>
+                        <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                        <securityOwner>administratorUserAccount</securityOwner>
+                      </stringArgument>
+                    </reportExpressionResultType>
+                  </fieldExpression>
+                </columnExpression>
+              </reportColumn>
+            </reportColumns>
+          </report>
+        </accessRuleReport>
+      </accessRule>
       <!-- 'Everyone' accessing visible objects -->
       <accessRule id="745f48fa-cf48-4d35-9f36-13facddc97e3">
         <name>'Everyone' accessing visible objects</name>
@@ -6173,87 +6283,100 @@
           </report>
         </accessRuleReport>
       </accessRule>
-      <!-- 'Administrators' accessing 'Inbox Email Action' -->
-      <accessRule id="8301e6fb-2084-471f-a7bf-48aa367962e3">
-        <name>'Administrators' accessing 'Inbox Email Action'</name>
-        <alias>core:administratorsinboxEmailActionFullControlAccessRule</alias>
-        <accessRuleHidden>True</accessRuleHidden>
+      <!-- 'Administrators' accessing 'Email' -->
+      <accessRule id="839727f2-da85-4223-93cd-3b3defae5115">
+        <name>'Administrators' accessing 'Email'</name>
         <accessRuleEnabled>True</accessRuleEnabled>
-        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
+        <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
         <permissionAccess>read</permissionAccess>
-        <permissionAccess>create</permissionAccess>
-        <permissionAccess>modify</permissionAccess>
-        <permissionAccess>delete</permissionAccess>
-        <controlAccess>inboxEmailAction</controlAccess>
+        <securityOwner>administratorUserAccount</securityOwner>
+        <controlAccess>emailMessage</controlAccess>
         <allowAccessBy>administratorRole</allowAccessBy>
         <accessRuleReport>
-          <!-- Inbox Email Action -->
-          <report id="101acc17-28c8-4259-8a08-e7766a820a0b">
-            <name>Inbox Email Action</name>
+          <!-- Email -->
+          <report id="cdb07213-0e0e-4dbb-af05-e71f42ff048e">
+            <name>Email</name>
             <description></description>
-            <reportUsesDefinition>inboxEmailAction</reportUsesDefinition>
+            <hideReportHeader>False</hideReportHeader>
+            <hideOnDesktop>False</hideOnDesktop>
+            <hideOnMobile>False</hideOnMobile>
+            <hideActionBar>False</hideActionBar>
+            <hideOnTablet>False</hideOnTablet>
+            <reportUsesDefinition>emailMessage</reportUsesDefinition>
             <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
+            <k:resourceInFolder>0ae21661-cad6-4895-b931-176096fb0f2f</k:resourceInFolder>
+            <securityOwner>administratorUserAccount</securityOwner>
             <rootNode>
-              <resourceReportNode id="069722ee-ad73-4a9b-a1e7-3f8c8486e11d">
+              <resourceReportNode id="f7c18649-37b3-4a94-9151-bd52b17f30d4">
                 <exactType>False</exactType>
                 <targetMustExist>True</targetMustExist>
-                <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                <resourceReportNodeType>inboxEmailAction</resourceReportNodeType>
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <resourceReportNodeType>emailMessage</resourceReportNodeType>
+                <securityOwner>administratorUserAccount</securityOwner>
               </resourceReportNode>
             </rootNode>
             <reportColumns>
-              <!-- Description -->
-              <reportColumn id="549ac170-e994-409b-94cc-63d99e47a3e0">
-                <name>Description</name>
-                <columnIsHidden>False</columnIsHidden>
-                <columnDisplayOrder>2</columnDisplayOrder>
-                <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                <columnExpression>
-                  <fieldExpression id="6ebd494a-3143-4390-88c4-98cf9d3280b6">
-                    <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                    <fieldExpressionField>description</fieldExpressionField>
-                    <sourceNode>069722ee-ad73-4a9b-a1e7-3f8c8486e11d</sourceNode>
-                    <reportExpressionResultType>
-                      <stringArgument id="18ed0a4a-467f-4d9b-9d08-b72c1a00b2b2">
-                        <stringMultiLine>True</stringMultiLine>
-                        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                      </stringArgument>
-                    </reportExpressionResultType>
-                  </fieldExpression>
-                </columnExpression>
-              </reportColumn>
               <!-- Id -->
-              <reportColumn id="62cd64c5-dda1-49f9-84ac-52fa06c2adbe">
+              <reportColumn id="2903eed3-cdaa-4674-aae9-09c956e35cfb">
                 <name>Id</name>
                 <columnIsHidden>True</columnIsHidden>
                 <columnDisplayOrder>0</columnDisplayOrder>
-                <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <securityOwner>administratorUserAccount</securityOwner>
                 <columnExpression>
-                  <idExpression id="52944cf5-1051-4250-b322-8c56d4772d16">
-                    <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                    <sourceNode>069722ee-ad73-4a9b-a1e7-3f8c8486e11d</sourceNode>
+                  <idExpression id="986b2d7d-73d8-4dae-9b02-129427de482c">
+                    <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                    <securityOwner>administratorUserAccount</securityOwner>
+                    <sourceNode>f7c18649-37b3-4a94-9151-bd52b17f30d4</sourceNode>
                     <reportExpressionResultType>
-                      <resourceArgument id="6ec895e0-8a52-4480-8582-27d578c3cd6b">
-                        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
+                      <resourceArgument id="c632a5b1-4c83-40ab-9a06-7aaf588d1832">
+                        <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                        <securityOwner>administratorUserAccount</securityOwner>
                       </resourceArgument>
                     </reportExpressionResultType>
                   </idExpression>
                 </columnExpression>
               </reportColumn>
-              <!-- Name -->
-              <reportColumn id="88777703-2b59-438d-8b4c-17619906a279">
-                <name>Name</name>
+              <!-- Email -->
+              <reportColumn id="3bab9189-16f6-4992-9f86-7a4c2ec88daf">
+                <name>Email</name>
                 <columnIsHidden>False</columnIsHidden>
                 <columnDisplayOrder>1</columnDisplayOrder>
-                <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <securityOwner>administratorUserAccount</securityOwner>
                 <columnExpression>
-                  <fieldExpression id="7d73fdc7-f383-4a06-8d26-8f70f684d430">
-                    <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
+                  <fieldExpression id="7a2025ef-3a59-44b3-8fbe-7d80a274805d">
+                    <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
                     <fieldExpressionField>name</fieldExpressionField>
-                    <sourceNode>069722ee-ad73-4a9b-a1e7-3f8c8486e11d</sourceNode>
+                    <securityOwner>administratorUserAccount</securityOwner>
+                    <sourceNode>f7c18649-37b3-4a94-9151-bd52b17f30d4</sourceNode>
                     <reportExpressionResultType>
-                      <stringArgument id="2845c38d-46de-4375-8000-e2bde8ae621e">
-                        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
+                      <stringArgument id="81e5f132-9df1-4e91-8b2f-be4e036be8ab">
+                        <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                        <securityOwner>administratorUserAccount</securityOwner>
+                      </stringArgument>
+                    </reportExpressionResultType>
+                  </fieldExpression>
+                </columnExpression>
+              </reportColumn>
+              <!-- Description -->
+              <reportColumn id="f70fd253-010b-4db8-96e0-a3a694eeef45">
+                <name>Description</name>
+                <columnIsHidden>False</columnIsHidden>
+                <columnDisplayOrder>2</columnDisplayOrder>
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <securityOwner>administratorUserAccount</securityOwner>
+                <columnExpression>
+                  <fieldExpression id="13bf94ff-5d18-42fb-8f7d-8b34fa738f0e">
+                    <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                    <fieldExpressionField>description</fieldExpressionField>
+                    <securityOwner>administratorUserAccount</securityOwner>
+                    <sourceNode>f7c18649-37b3-4a94-9151-bd52b17f30d4</sourceNode>
+                    <reportExpressionResultType>
+                      <stringArgument id="7389fe41-35f9-4306-8777-0f60ddbc0e11">
+                        <stringMultiLine>True</stringMultiLine>
+                        <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                        <securityOwner>administratorUserAccount</securityOwner>
                       </stringArgument>
                     </reportExpressionResultType>
                   </fieldExpression>
@@ -6655,96 +6778,6 @@
                     <sourceNode>9bebdb20-ce26-41ce-9776-94a09b464b6f</sourceNode>
                     <reportExpressionResultType>
                       <stringArgument id="3971fce9-96f6-430d-a30a-48fcc63b1b2e">
-                        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                      </stringArgument>
-                    </reportExpressionResultType>
-                  </fieldExpression>
-                </columnExpression>
-              </reportColumn>
-            </reportColumns>
-          </report>
-        </accessRuleReport>
-      </accessRule>
-      <!-- 'Administrators' accessing 'Inbox' -->
-      <accessRule id="89a4dcca-7706-4a2c-a569-bd86506b4d53">
-        <name>'Administrators' accessing 'Inbox'</name>
-        <alias>core:administratorsinboxFullControlAccessRule</alias>
-        <accessRuleHidden>True</accessRuleHidden>
-        <accessRuleEnabled>True</accessRuleEnabled>
-        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-        <permissionAccess>read</permissionAccess>
-        <permissionAccess>create</permissionAccess>
-        <permissionAccess>modify</permissionAccess>
-        <permissionAccess>delete</permissionAccess>
-        <controlAccess>inbox</controlAccess>
-        <allowAccessBy>administratorRole</allowAccessBy>
-        <accessRuleReport>
-          <!-- Inbox -->
-          <report id="d1c4bd03-e917-46c6-a6a9-1d64ae38ce59">
-            <name>Inbox</name>
-            <description></description>
-            <reportUsesDefinition>inbox</reportUsesDefinition>
-            <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-            <rootNode>
-              <resourceReportNode id="1a6c27cc-0a86-4b71-8e47-5fe16f13036d">
-                <exactType>False</exactType>
-                <targetMustExist>True</targetMustExist>
-                <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                <resourceReportNodeType>inbox</resourceReportNodeType>
-              </resourceReportNode>
-            </rootNode>
-            <reportColumns>
-              <!-- Id -->
-              <reportColumn id="ab682720-62e0-4e8c-9773-008e9845ff0d">
-                <name>Id</name>
-                <columnIsHidden>True</columnIsHidden>
-                <columnDisplayOrder>0</columnDisplayOrder>
-                <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                <columnExpression>
-                  <idExpression id="034cc070-846e-40be-9c9c-0c1dad4d4420">
-                    <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                    <sourceNode>1a6c27cc-0a86-4b71-8e47-5fe16f13036d</sourceNode>
-                    <reportExpressionResultType>
-                      <resourceArgument id="a225204a-b1ca-4543-8548-a5be2f027793">
-                        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                      </resourceArgument>
-                    </reportExpressionResultType>
-                  </idExpression>
-                </columnExpression>
-              </reportColumn>
-              <!-- Name -->
-              <reportColumn id="af199066-83a4-4cdb-bade-daf26566bcc0">
-                <name>Name</name>
-                <columnIsHidden>False</columnIsHidden>
-                <columnDisplayOrder>1</columnDisplayOrder>
-                <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                <columnExpression>
-                  <fieldExpression id="f7178446-ca29-45db-bd40-f2aa1d300a36">
-                    <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                    <fieldExpressionField>name</fieldExpressionField>
-                    <sourceNode>1a6c27cc-0a86-4b71-8e47-5fe16f13036d</sourceNode>
-                    <reportExpressionResultType>
-                      <stringArgument id="102cb9fc-ad96-40e6-a077-e1408dc89ea0">
-                        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                      </stringArgument>
-                    </reportExpressionResultType>
-                  </fieldExpression>
-                </columnExpression>
-              </reportColumn>
-              <!-- Description -->
-              <reportColumn id="fc3001b3-9205-4997-b0d4-742275175c9d">
-                <name>Description</name>
-                <columnIsHidden>False</columnIsHidden>
-                <columnDisplayOrder>2</columnDisplayOrder>
-                <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                <columnExpression>
-                  <fieldExpression id="a233b87d-eb65-4ed6-9d9b-64948950291d">
-                    <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                    <fieldExpressionField>description</fieldExpressionField>
-                    <sourceNode>1a6c27cc-0a86-4b71-8e47-5fe16f13036d</sourceNode>
-                    <reportExpressionResultType>
-                      <stringArgument id="819417bd-fc1f-4016-aaec-b80d55f04481">
-                        <stringMultiLine>True</stringMultiLine>
                         <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
                       </stringArgument>
                     </reportExpressionResultType>
@@ -9705,6 +9738,110 @@
           </report>
         </accessRuleReport>
       </accessRule>
+      <!-- 'Administrators' accessing 'Email Server Settings' -->
+      <accessRule id="b54a6961-21a8-4851-a306-4e9a9405876b">
+        <name>'Administrators' accessing 'Email Server Settings'</name>
+        <accessRuleEnabled>True</accessRuleEnabled>
+        <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+        <permissionAccess>read</permissionAccess>
+        <permissionAccess>modify</permissionAccess>
+        <securityOwner>administratorUserAccount</securityOwner>
+        <controlAccess>tenantEmailSetting</controlAccess>
+        <allowAccessBy>administratorRole</allowAccessBy>
+        <accessRuleReport>
+          <!-- Email Server Settings -->
+          <report id="d136f133-55fb-41db-ac9e-2fe624922499">
+            <name>Email Server Settings</name>
+            <description></description>
+            <hideReportHeader>False</hideReportHeader>
+            <hideOnDesktop>False</hideOnDesktop>
+            <hideOnMobile>False</hideOnMobile>
+            <hideActionBar>False</hideActionBar>
+            <hideOnTablet>False</hideOnTablet>
+            <reportUsesDefinition>tenantEmailSetting</reportUsesDefinition>
+            <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
+            <k:resourceInFolder>a9b0e07e-da56-40c1-a0b3-335fee06d3b0</k:resourceInFolder>
+            <securityOwner>administratorUserAccount</securityOwner>
+            <rootNode>
+              <resourceReportNode id="900c19b4-bf57-4fff-a66a-dd66d12e1603">
+                <exactType>False</exactType>
+                <targetMustExist>True</targetMustExist>
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <resourceReportNodeType>tenantEmailSetting</resourceReportNodeType>
+                <securityOwner>administratorUserAccount</securityOwner>
+              </resourceReportNode>
+            </rootNode>
+            <reportColumns>
+              <!-- Id -->
+              <reportColumn id="dac066a9-1b76-4580-b0db-443354097a70">
+                <name>Id</name>
+                <columnIsHidden>True</columnIsHidden>
+                <columnDisplayOrder>0</columnDisplayOrder>
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <securityOwner>administratorUserAccount</securityOwner>
+                <columnExpression>
+                  <idExpression id="ec062328-7a41-455b-841f-638220c73b04">
+                    <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                    <securityOwner>administratorUserAccount</securityOwner>
+                    <sourceNode>900c19b4-bf57-4fff-a66a-dd66d12e1603</sourceNode>
+                    <reportExpressionResultType>
+                      <resourceArgument id="d46faa5b-87af-44d9-9a50-e3271c068a05">
+                        <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                        <securityOwner>administratorUserAccount</securityOwner>
+                      </resourceArgument>
+                    </reportExpressionResultType>
+                  </idExpression>
+                </columnExpression>
+              </reportColumn>
+              <!-- Description -->
+              <reportColumn id="dfbd1a4c-a3df-4350-a20a-53b598c21b94">
+                <name>Description</name>
+                <columnIsHidden>False</columnIsHidden>
+                <columnDisplayOrder>2</columnDisplayOrder>
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <securityOwner>administratorUserAccount</securityOwner>
+                <columnExpression>
+                  <fieldExpression id="1936cd0f-cf77-47af-8caa-6e74267d54bf">
+                    <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                    <fieldExpressionField>description</fieldExpressionField>
+                    <securityOwner>administratorUserAccount</securityOwner>
+                    <sourceNode>900c19b4-bf57-4fff-a66a-dd66d12e1603</sourceNode>
+                    <reportExpressionResultType>
+                      <stringArgument id="9ada59d8-894e-4653-8225-5db6632ef2fd">
+                        <stringMultiLine>True</stringMultiLine>
+                        <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                        <securityOwner>administratorUserAccount</securityOwner>
+                      </stringArgument>
+                    </reportExpressionResultType>
+                  </fieldExpression>
+                </columnExpression>
+              </reportColumn>
+              <!-- Email Server Settings -->
+              <reportColumn id="ee35c36f-d95d-4bb3-9da7-1c3a087b35d7">
+                <name>Email Server Settings</name>
+                <columnIsHidden>False</columnIsHidden>
+                <columnDisplayOrder>1</columnDisplayOrder>
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <securityOwner>administratorUserAccount</securityOwner>
+                <columnExpression>
+                  <fieldExpression id="ec61ac35-a2a2-40d7-8764-8aff36013adb">
+                    <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                    <fieldExpressionField>name</fieldExpressionField>
+                    <securityOwner>administratorUserAccount</securityOwner>
+                    <sourceNode>900c19b4-bf57-4fff-a66a-dd66d12e1603</sourceNode>
+                    <reportExpressionResultType>
+                      <stringArgument id="28c05b97-e2eb-4fea-b211-e618a51afd22">
+                        <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                        <securityOwner>administratorUserAccount</securityOwner>
+                      </stringArgument>
+                    </reportExpressionResultType>
+                  </fieldExpression>
+                </columnExpression>
+              </reportColumn>
+            </reportColumns>
+          </report>
+        </accessRuleReport>
+      </accessRule>
       <!-- 'Administrators' accessing 'String Pattern' -->
       <accessRule id="b94dde22-6fe3-4756-8a8c-1019c497f277">
         <name>'Administrators' accessing 'String Pattern'</name>
@@ -10982,182 +11119,6 @@
           </report>
         </accessRuleReport>
       </accessRule>
-      <!-- 'Administrators' accessing 'Inbox Provider' -->
-      <accessRule id="dbed5f17-7c05-407b-a584-4937d92e79f5">
-        <name>'Administrators' accessing 'Inbox Provider'</name>
-        <alias>core:administratorsinboxProviderReadModifyAccessRule</alias>
-        <accessRuleHidden>True</accessRuleHidden>
-        <accessRuleEnabled>True</accessRuleEnabled>
-        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-        <permissionAccess>read</permissionAccess>
-        <permissionAccess>modify</permissionAccess>
-        <controlAccess>inboxProvider</controlAccess>
-        <allowAccessBy>administratorRole</allowAccessBy>
-        <accessRuleReport>
-          <!-- Inbox Provider -->
-          <report id="3f1590cb-5bbe-42a3-9b31-f5b2feb3a182">
-            <name>Inbox Provider</name>
-            <description></description>
-            <reportUsesDefinition>inboxProvider</reportUsesDefinition>
-            <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-            <rootNode>
-              <resourceReportNode id="821abc4c-1cbe-4c34-9329-161ea946a772">
-                <exactType>False</exactType>
-                <targetMustExist>True</targetMustExist>
-                <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                <resourceReportNodeType>inboxProvider</resourceReportNodeType>
-              </resourceReportNode>
-            </rootNode>
-            <reportColumns>
-              <!-- Name -->
-              <reportColumn id="039ac500-4d1c-44ef-b2d9-0cd584207f4a">
-                <name>Name</name>
-                <columnIsHidden>False</columnIsHidden>
-                <columnDisplayOrder>1</columnDisplayOrder>
-                <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                <columnExpression>
-                  <fieldExpression id="9129a216-243e-4973-a10a-9f45b2308913">
-                    <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                    <fieldExpressionField>name</fieldExpressionField>
-                    <sourceNode>821abc4c-1cbe-4c34-9329-161ea946a772</sourceNode>
-                    <reportExpressionResultType>
-                      <stringArgument id="1a8c8a9d-7de8-4cc4-b6b1-888d9256374e">
-                        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                      </stringArgument>
-                    </reportExpressionResultType>
-                  </fieldExpression>
-                </columnExpression>
-              </reportColumn>
-              <!-- Id -->
-              <reportColumn id="ca768843-4dcd-44f8-8442-1f1d823785e9">
-                <name>Id</name>
-                <columnIsHidden>True</columnIsHidden>
-                <columnDisplayOrder>0</columnDisplayOrder>
-                <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                <columnExpression>
-                  <idExpression id="63199e72-39c8-40ad-9926-7dcfa2a3d20a">
-                    <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                    <sourceNode>821abc4c-1cbe-4c34-9329-161ea946a772</sourceNode>
-                    <reportExpressionResultType>
-                      <resourceArgument id="2dae5c36-f57e-4e03-a522-cb7431aefe65">
-                        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                      </resourceArgument>
-                    </reportExpressionResultType>
-                  </idExpression>
-                </columnExpression>
-              </reportColumn>
-              <!-- Description -->
-              <reportColumn id="e72ac190-64f3-4260-820c-faf4e391bc00">
-                <name>Description</name>
-                <columnIsHidden>False</columnIsHidden>
-                <columnDisplayOrder>2</columnDisplayOrder>
-                <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                <columnExpression>
-                  <fieldExpression id="e805abd4-0b14-4eae-934d-1c3335c55ec3">
-                    <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                    <fieldExpressionField>description</fieldExpressionField>
-                    <sourceNode>821abc4c-1cbe-4c34-9329-161ea946a772</sourceNode>
-                    <reportExpressionResultType>
-                      <stringArgument id="88c2ac0f-36ac-4023-80e6-5b0ba5c4e42a">
-                        <stringMultiLine>True</stringMultiLine>
-                        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                      </stringArgument>
-                    </reportExpressionResultType>
-                  </fieldExpression>
-                </columnExpression>
-              </reportColumn>
-            </reportColumns>
-          </report>
-        </accessRuleReport>
-      </accessRule>
-      <!-- 'Administrators' accessing 'Tenant Email Settings' -->
-      <accessRule id="dc2a6ade-9ef0-4ece-9f21-b5c29c308655">
-        <name>'Administrators' accessing 'Tenant Email Settings'</name>
-        <alias>core:administratorstenantEmailSettingReadModifyAccessRule</alias>
-        <accessRuleHidden>True</accessRuleHidden>
-        <accessRuleEnabled>True</accessRuleEnabled>
-        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-        <permissionAccess>read</permissionAccess>
-        <permissionAccess>modify</permissionAccess>
-        <controlAccess>tenantEmailSetting</controlAccess>
-        <allowAccessBy>administratorRole</allowAccessBy>
-        <accessRuleReport>
-          <!-- Tenant Email Settings -->
-          <report id="564be89e-99ca-4b79-8e49-4782bbf2a964">
-            <name>Tenant Email Settings</name>
-            <description></description>
-            <reportUsesDefinition>tenantEmailSetting</reportUsesDefinition>
-            <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-            <rootNode>
-              <resourceReportNode id="835336d3-83c9-46f0-8f0a-1581abccb387">
-                <exactType>False</exactType>
-                <targetMustExist>True</targetMustExist>
-                <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                <resourceReportNodeType>tenantEmailSetting</resourceReportNodeType>
-              </resourceReportNode>
-            </rootNode>
-            <reportColumns>
-              <!-- Description -->
-              <reportColumn id="3d7f1433-15f6-4d9a-926b-9075da43d804">
-                <name>Description</name>
-                <columnIsHidden>False</columnIsHidden>
-                <columnDisplayOrder>2</columnDisplayOrder>
-                <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                <columnExpression>
-                  <fieldExpression id="cb02af15-9fbe-4ae7-81b8-f8e3ecd4c53e">
-                    <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                    <fieldExpressionField>description</fieldExpressionField>
-                    <sourceNode>835336d3-83c9-46f0-8f0a-1581abccb387</sourceNode>
-                    <reportExpressionResultType>
-                      <stringArgument id="5cfd59f9-aee6-4147-b1df-ebfa9110f6a6">
-                        <stringMultiLine>True</stringMultiLine>
-                        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                      </stringArgument>
-                    </reportExpressionResultType>
-                  </fieldExpression>
-                </columnExpression>
-              </reportColumn>
-              <!-- Id -->
-              <reportColumn id="f42a6df0-1618-49e0-a85f-162811ad966e">
-                <name>Id</name>
-                <columnIsHidden>True</columnIsHidden>
-                <columnDisplayOrder>0</columnDisplayOrder>
-                <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                <columnExpression>
-                  <idExpression id="2361e449-bb82-40e6-8125-216b6dbe3d44">
-                    <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                    <sourceNode>835336d3-83c9-46f0-8f0a-1581abccb387</sourceNode>
-                    <reportExpressionResultType>
-                      <resourceArgument id="27ec81a1-612a-4e02-8590-9769474fdadb">
-                        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                      </resourceArgument>
-                    </reportExpressionResultType>
-                  </idExpression>
-                </columnExpression>
-              </reportColumn>
-              <!-- Name -->
-              <reportColumn id="fe54d00b-3b98-450d-959f-e0beea7f2210">
-                <name>Name</name>
-                <columnIsHidden>False</columnIsHidden>
-                <columnDisplayOrder>1</columnDisplayOrder>
-                <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                <columnExpression>
-                  <fieldExpression id="7bdecf08-7a7f-4b56-b244-6dd69e86eeda">
-                    <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                    <fieldExpressionField>name</fieldExpressionField>
-                    <sourceNode>835336d3-83c9-46f0-8f0a-1581abccb387</sourceNode>
-                    <reportExpressionResultType>
-                      <stringArgument id="596cda5b-9d3a-4291-b5c1-65b928ff1366">
-                        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                      </stringArgument>
-                    </reportExpressionResultType>
-                  </fieldExpression>
-                </columnExpression>
-              </reportColumn>
-            </reportColumns>
-          </report>
-        </accessRuleReport>
-      </accessRule>
       <!-- 'Administrators' accessing 'Report Template' -->
       <accessRule id="dd5e2c1b-3f82-4475-b5d5-9dcf84c811d9">
         <name>'Administrators' accessing 'Report Template'</name>
@@ -11332,105 +11293,6 @@
                       </resourceArgument>
                     </reportExpressionResultType>
                   </idExpression>
-                </columnExpression>
-              </reportColumn>
-            </reportColumns>
-          </report>
-        </accessRuleReport>
-      </accessRule>
-      <!-- Everyone accessing tenant E-mail settings. -->
-      <accessRule id="e579ece2-1278-4e7d-afc0-5be6f22dfe4c">
-        <name>Everyone accessing tenant E-mail settings.</name>
-        <accessRuleHidden>True</accessRuleHidden>
-        <accessRuleEnabled>True</accessRuleEnabled>
-        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-        <permissionAccess>read</permissionAccess>
-        <securityOwner>administratorUserAccount</securityOwner>
-        <controlAccess>tenantEmailSetting</controlAccess>
-        <allowAccessBy>everyoneRole</allowAccessBy>
-        <accessRuleReport>
-          <!-- The Tenant Email Settings -->
-          <report id="40ba8350-7633-44df-9029-22a53e5ef933">
-            <name>The Tenant Email Settings</name>
-            <description></description>
-            <reportUsesDefinition>tenantEmailSetting</reportUsesDefinition>
-            <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-            <securityOwner>administratorUserAccount</securityOwner>
-            <resourceHasResourceKeyDataHashes>bd7259a1-f35d-450b-9e0c-ff2d0c3c722e</resourceHasResourceKeyDataHashes>
-            <rootNode>
-              <resourceReportNode id="c30ba216-d97c-4d9b-a476-a632fa48fe49">
-                <exactType>False</exactType>
-                <targetMustExist>True</targetMustExist>
-                <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                <resourceReportNodeType>tenantEmailSetting</resourceReportNodeType>
-                <securityOwner>administratorUserAccount</securityOwner>
-              </resourceReportNode>
-            </rootNode>
-            <reportColumns>
-              <!-- Id -->
-              <reportColumn id="262d641a-1e05-4a32-ab24-52b5ddb2e365">
-                <name>Id</name>
-                <columnIsHidden>True</columnIsHidden>
-                <columnDisplayOrder>0</columnDisplayOrder>
-                <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                <securityOwner>administratorUserAccount</securityOwner>
-                <columnExpression>
-                  <idExpression id="fd5e4b74-60e0-4ee4-8e32-27e97154c327">
-                    <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                    <securityOwner>administratorUserAccount</securityOwner>
-                    <sourceNode>c30ba216-d97c-4d9b-a476-a632fa48fe49</sourceNode>
-                    <reportExpressionResultType>
-                      <resourceArgument id="462133c1-3d6a-4e74-81b7-08571e6198c1">
-                        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                        <securityOwner>administratorUserAccount</securityOwner>
-                      </resourceArgument>
-                    </reportExpressionResultType>
-                  </idExpression>
-                </columnExpression>
-              </reportColumn>
-              <!-- Name -->
-              <reportColumn id="69440952-7544-40cd-a161-6ffa3b9ad160">
-                <name>Name</name>
-                <columnIsHidden>False</columnIsHidden>
-                <columnDisplayOrder>1</columnDisplayOrder>
-                <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                <securityOwner>administratorUserAccount</securityOwner>
-                <columnExpression>
-                  <fieldExpression id="9282db52-e4ed-412e-9d7a-1726ddc16f77">
-                    <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                    <fieldExpressionField>name</fieldExpressionField>
-                    <securityOwner>administratorUserAccount</securityOwner>
-                    <sourceNode>c30ba216-d97c-4d9b-a476-a632fa48fe49</sourceNode>
-                    <reportExpressionResultType>
-                      <stringArgument id="aab0d234-08cc-454e-924b-9a16ea2db49e">
-                        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                        <securityOwner>administratorUserAccount</securityOwner>
-                      </stringArgument>
-                    </reportExpressionResultType>
-                  </fieldExpression>
-                </columnExpression>
-              </reportColumn>
-              <!-- Description -->
-              <reportColumn id="aef4bfe3-4b91-456c-8f35-4ad519db011a">
-                <name>Description</name>
-                <columnIsHidden>False</columnIsHidden>
-                <columnDisplayOrder>2</columnDisplayOrder>
-                <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                <securityOwner>administratorUserAccount</securityOwner>
-                <columnExpression>
-                  <fieldExpression id="0e3dabb3-d426-401e-aad7-c46144ebdf2d">
-                    <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                    <fieldExpressionField>description</fieldExpressionField>
-                    <securityOwner>administratorUserAccount</securityOwner>
-                    <sourceNode>c30ba216-d97c-4d9b-a476-a632fa48fe49</sourceNode>
-                    <reportExpressionResultType>
-                      <stringArgument id="a52f3aa0-c980-4018-a4c1-e81dc88e3428">
-                        <stringMultiLine>True</stringMultiLine>
-                        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                        <securityOwner>administratorUserAccount</securityOwner>
-                      </stringArgument>
-                    </reportExpressionResultType>
-                  </fieldExpression>
                 </columnExpression>
               </reportColumn>
             </reportColumns>
@@ -12860,6 +12722,15 @@
         </apiEndpoints>
       </api>
     </group>
+    <group typeId="boolArgument">
+      <!-- Bool -->
+      <boolArgument id="c9431792-0369-4fbc-b01f-d0580ccef732">
+        <name>Bool</name>
+        <boolParameterValue>False</boolParameterValue>
+        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
+        <securityOwner>administratorUserAccount</securityOwner>
+      </boolArgument>
+    </group>
     <group typeId="decimalArgument">
       <!-- Decimal -->
       <decimalArgument id="0a6738d9-05a9-4a89-9b03-90e66987199b">
@@ -13854,7 +13725,9 @@
         <imageBackgroundColor>ff777e79</imageBackgroundColor>
         <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
         <securityOwner>administratorUserAccount</securityOwner>
-        <revRel id="6aa7f683-1f14-40a5-8b91-c6ea99806b05">k:tenantEmailSettingsConsoleBehaviour</revRel>
+        <revRel id="6aa7f683-1f14-40a5-8b91-c6ea99806b05">k:tenantEmailSettingsInstanceConsoleBehaviour</revRel>
+        <revRel id="6aa7f683-1f14-40a5-8b91-c6ea99806b05">82e62cf1-1231-46a0-bdc1-f1e7f710e154</revRel>
+        <revRel id="6aa7f683-1f14-40a5-8b91-c6ea99806b05">e97b246b-d356-4b0a-aa26-b79f43eca671</revRel>
       </iconFileType>
       <!-- Scheduleicon.png -->
       <iconFileType id="83254a83-b6b6-43b4-b225-b9617e835527">
@@ -14013,6 +13886,8 @@
         <imageBackgroundColor>ff8dbe3f</imageBackgroundColor>
         <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
         <securityOwner>administratorUserAccount</securityOwner>
+        <revRel id="6aa7f683-1f14-40a5-8b91-c6ea99806b05">6a07315a-679b-421d-822e-6de188a87630</revRel>
+        <revRel id="cfd4db58-3585-4922-b727-ba59d1594214">006bf7d5-feae-4cb1-be16-b5780027937e</revRel>
       </iconFileType>
       <!-- Chart.svg -->
       <iconFileType id="9d7af32d-0f1f-4e94-b140-e02a28e7ae5d">
@@ -14806,9 +14681,9 @@
         <k:renderingWidth>100</k:renderingWidth>
         <k:renderingVerticalResizeMode>k:resizeSpring</k:renderingVerticalResizeMode>
         <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-        <k:typeToEditWithForm>tenantEmailSetting</k:typeToEditWithForm>
+        <k:typeToEditWithForm>0287b978-bde2-421a-81b4-4caef9354f7a</k:typeToEditWithForm>
         <k:renderingHorizontalResizeMode>k:resizeSpring</k:renderingHorizontalResizeMode>
-        <k:isDefaultForEntityType>tenantEmailSetting</k:isDefaultForEntityType>
+        <k:isDefaultForEntityType>0287b978-bde2-421a-81b4-4caef9354f7a</k:isDefaultForEntityType>
         <k:containedControlsOnForm>
           <!-- Tenant Email Details -->
           <k:verticalStackContainerControl id="09a53b59-bea0-47e4-b7fa-112801c5c86b">
@@ -14820,70 +14695,6 @@
             <k:renderingVerticalResizeMode>k:resizeManual</k:renderingVerticalResizeMode>
             <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
             <k:renderingHorizontalResizeMode>k:resizeAutomatic</k:renderingHorizontalResizeMode>
-            <k:containedControlsOnForm>
-              <k:inlineRelationshipRenderControl id="1c3c3a8c-2bec-415c-9625-e2aa9d7e161c">
-                <k:isReversed>False</k:isReversed>
-                <k:renderingOrdinal>1</k:renderingOrdinal>
-                <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
-                <k:relationshipToRender>tesCalendarInbox</k:relationshipToRender>
-                <k:renderingVerticalResizeMode>k:resizeAutomatic</k:renderingVerticalResizeMode>
-                <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                <k:renderingHorizontalResizeMode>k:resizeAutomatic</k:renderingHorizontalResizeMode>
-              </k:inlineRelationshipRenderControl>
-              <k:inlineRelationshipRenderControl id="36de5bd9-b21b-4032-abd9-55adc30c442e">
-                <k:isReversed>False</k:isReversed>
-                <k:renderingOrdinal>2</k:renderingOrdinal>
-                <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
-                <k:relationshipToRender>tesNewTicketsInbox</k:relationshipToRender>
-                <k:renderingVerticalResizeMode>k:resizeAutomatic</k:renderingVerticalResizeMode>
-                <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                <k:renderingHorizontalResizeMode>k:resizeAutomatic</k:renderingHorizontalResizeMode>
-              </k:inlineRelationshipRenderControl>
-              <k:inlineRelationshipRenderControl id="4b47b6ad-3d75-4d2e-b181-ae1519c26668">
-                <k:isReversed>False</k:isReversed>
-                <k:renderingOrdinal>4</k:renderingOrdinal>
-                <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
-                <k:relationshipToRender>tesPasswordResetInbox</k:relationshipToRender>
-                <k:renderingVerticalResizeMode>k:resizeAutomatic</k:renderingVerticalResizeMode>
-                <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                <securityOwner>administratorUserAccount</securityOwner>
-                <k:renderingHorizontalResizeMode>k:resizeAutomatic</k:renderingHorizontalResizeMode>
-              </k:inlineRelationshipRenderControl>
-              <k:singleLineTextControl id="4c1c0f18-edbd-4bae-be7a-3a6f0db1cbc8">
-                <k:renderingOrdinal>7</k:renderingOrdinal>
-                <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
-                <k:renderingVerticalResizeMode>k:resizeAutomatic</k:renderingVerticalResizeMode>
-                <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                <k:fieldToRender>emailServerNoReplyAddress</k:fieldToRender>
-                <k:renderingHorizontalResizeMode>k:resizeAutomatic</k:renderingHorizontalResizeMode>
-              </k:singleLineTextControl>
-              <k:inlineRelationshipRenderControl id="50cfdab0-bff3-423b-a775-3b80074898d8">
-                <k:isReversed>False</k:isReversed>
-                <k:renderingOrdinal>3</k:renderingOrdinal>
-                <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
-                <k:relationshipToRender>tesSupportInbox</k:relationshipToRender>
-                <k:renderingVerticalResizeMode>k:resizeAutomatic</k:renderingVerticalResizeMode>
-                <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                <k:renderingHorizontalResizeMode>k:resizeAutomatic</k:renderingHorizontalResizeMode>
-              </k:inlineRelationshipRenderControl>
-              <k:singleLineTextControl id="51477b4c-873f-44b3-8d5d-6c6d777f55da">
-                <k:renderingOrdinal>5</k:renderingOrdinal>
-                <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
-                <k:renderingVerticalResizeMode>k:resizeAutomatic</k:renderingVerticalResizeMode>
-                <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                <k:fieldToRender>emailServer</k:fieldToRender>
-                <k:renderingHorizontalResizeMode>k:resizeAutomatic</k:renderingHorizontalResizeMode>
-              </k:singleLineTextControl>
-              <k:inlineRelationshipRenderControl id="a01c3650-f298-403b-91a3-9d07e1e679af">
-                <k:isReversed>False</k:isReversed>
-                <k:renderingOrdinal>0</k:renderingOrdinal>
-                <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
-                <k:relationshipToRender>tesApprovalsInbox</k:relationshipToRender>
-                <k:renderingVerticalResizeMode>k:resizeAutomatic</k:renderingVerticalResizeMode>
-                <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                <k:renderingHorizontalResizeMode>k:resizeAutomatic</k:renderingHorizontalResizeMode>
-              </k:inlineRelationshipRenderControl>
-            </k:containedControlsOnForm>
           </k:verticalStackContainerControl>
           <k:singleLineTextControl id="665c6ff6-eec4-419f-b4f5-1fa64a09081a">
             <k:mandatoryControl>False</k:mandatoryControl>
@@ -19281,7 +19092,7 @@
         <alias>core:createRecordActionItemDialog</alias>
         <k:hideLabel>True</k:hideLabel>
         <k:showFormHelpText>False</k:showFormHelpText>
-        <cacheChangeMarker>8c86efe7-212c-4819-a259-521d68bbd46c</cacheChangeMarker>
+        <cacheChangeMarker>2b865ba6-92ac-46cf-9b2f-94318f2a1603</cacheChangeMarker>
         <k:renderingHeight>100</k:renderingHeight>
         <k:renderingOrdinal>0</k:renderingOrdinal>
         <k:renderingWidth>100</k:renderingWidth>
@@ -19292,11 +19103,22 @@
         <k:renderingHorizontalResizeMode>k:resizeSpring</k:renderingHorizontalResizeMode>
         <k:isDefaultForEntityType>k:navigateToCreateFormActionMenuItem</k:isDefaultForEntityType>
         <k:containedControlsOnForm>
+          <k:singleLineTextControl id="05c13268-2dc8-4f5a-a287-5a8edba694f3">
+            <k:mandatoryControl>True</k:mandatoryControl>
+            <k:renderingOrdinal>0</k:renderingOrdinal>
+            <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
+            <k:renderingVerticalResizeMode>k:resizeAutomatic</k:renderingVerticalResizeMode>
+            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+            <k:fieldToRender>name</k:fieldToRender>
+            <securityOwner>administratorUserAccount</securityOwner>
+            <k:renderingHorizontalResizeMode>k:resizeAutomatic</k:renderingHorizontalResizeMode>
+          </k:singleLineTextControl>
           <!-- Object -->
           <k:inlineRelationshipRenderControl id="7c77f74e-6f20-4f6e-994a-cee82b01ba90">
             <name>Object</name>
             <k:isReversed>False</k:isReversed>
-            <k:renderingOrdinal>0</k:renderingOrdinal>
+            <k:mandatoryControl>True</k:mandatoryControl>
+            <k:renderingOrdinal>1</k:renderingOrdinal>
             <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
             <k:relationshipToRender>k:navigateToCreateFormActionDefinition</k:relationshipToRender>
             <k:renderingVerticalResizeMode>k:resizeAutomatic</k:renderingVerticalResizeMode>
@@ -19312,7 +19134,7 @@
             <k:mandatoryControl>False</k:mandatoryControl>
             <k:hideLabel>False</k:hideLabel>
             <k:readOnlyControl>False</k:readOnlyControl>
-            <k:renderingOrdinal>1</k:renderingOrdinal>
+            <k:renderingOrdinal>2</k:renderingOrdinal>
             <k:renderingBackgroundColor>rgba(255,255,255,1)</k:renderingBackgroundColor>
             <k:relationshipToRender>k:navigateToCreateFormActionForm</k:relationshipToRender>
             <k:renderingVerticalResizeMode>k:resizeAutomatic</k:renderingVerticalResizeMode>
@@ -22011,6 +21833,212 @@
           </resourceKeyDataHash>
         </resourceHasResourceKeyDataHashes>
       </k:customEditForm>
+      <!-- Sent Email -->
+      <k:customEditForm id="96c3c333-d761-4178-86cd-618775be975c">
+        <name>Sent Email</name>
+        <allowSelectMultiTypes>False</allowSelectMultiTypes>
+        <cacheChangeMarker>e0e6ff1f-bfae-4771-b017-7c5768b044b7</cacheChangeMarker>
+        <k:renderingVerticalResizeMode>k:resizeAutomatic</k:renderingVerticalResizeMode>
+        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
+        <securityOwner>administratorUserAccount</securityOwner>
+        <k:typeToEditWithForm>sentEmailMessage</k:typeToEditWithForm>
+        <k:renderingHorizontalResizeMode>k:resizeSpring</k:renderingHorizontalResizeMode>
+        <k:isDefaultForEntityType>sentEmailMessage</k:isDefaultForEntityType>
+        <k:containedControlsOnForm>
+          <k:horizontalStackContainerControl id="ab677a4a-48b8-47ec-8421-b4f204ea7b0c">
+            <k:hideLabel>True</k:hideLabel>
+            <k:renderingOrdinal>0</k:renderingOrdinal>
+            <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
+            <k:renderingVerticalResizeMode>k:resizeAutomatic</k:renderingVerticalResizeMode>
+            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+            <securityOwner>administratorUserAccount</securityOwner>
+            <k:renderingHorizontalResizeMode>k:resizeSpring</k:renderingHorizontalResizeMode>
+            <k:containedControlsOnForm>
+              <!-- Sent Message Details -->
+              <k:verticalStackContainerControl id="85026c4b-d9a7-4634-929c-2b74f564f948">
+                <name>Sent Message Details</name>
+                <k:hideLabel>False</k:hideLabel>
+                <k:renderingHeight>28</k:renderingHeight>
+                <k:renderingOrdinal>0</k:renderingOrdinal>
+                <k:renderingWidth>36</k:renderingWidth>
+                <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
+                <k:renderingVerticalResizeMode>k:resizeManual</k:renderingVerticalResizeMode>
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <securityOwner>administratorUserAccount</securityOwner>
+                <k:renderingHorizontalResizeMode>k:resizeManual</k:renderingHorizontalResizeMode>
+                <k:containedControlsOnForm>
+                  <k:singleLineTextControl id="12d6cf89-37c8-4f72-aa75-2626208de038">
+                    <k:renderingOrdinal>3</k:renderingOrdinal>
+                    <k:renderingWidth>90</k:renderingWidth>
+                    <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
+                    <k:renderingVerticalResizeMode>k:resizeAutomatic</k:renderingVerticalResizeMode>
+                    <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                    <k:fieldToRender>emCC</k:fieldToRender>
+                    <securityOwner>administratorUserAccount</securityOwner>
+                    <k:renderingHorizontalResizeMode>k:resizeManual</k:renderingHorizontalResizeMode>
+                  </k:singleLineTextControl>
+                  <dateAndTimeKFieldRenderControl id="4b09c833-b178-41d7-968f-21967e9750aa">
+                    <k:renderingOrdinal>0</k:renderingOrdinal>
+                    <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
+                    <k:renderingVerticalResizeMode>k:resizeAutomatic</k:renderingVerticalResizeMode>
+                    <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                    <k:fieldToRender>emSentDate</k:fieldToRender>
+                    <securityOwner>administratorUserAccount</securityOwner>
+                    <k:renderingHorizontalResizeMode>k:resizeAutomatic</k:renderingHorizontalResizeMode>
+                  </dateAndTimeKFieldRenderControl>
+                  <k:singleLineTextControl id="5468f86d-fd3e-475b-a474-a48b1983ce94">
+                    <k:renderingOrdinal>2</k:renderingOrdinal>
+                    <k:renderingWidth>92</k:renderingWidth>
+                    <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
+                    <k:renderingVerticalResizeMode>k:resizeAutomatic</k:renderingVerticalResizeMode>
+                    <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                    <k:fieldToRender>emTo</k:fieldToRender>
+                    <securityOwner>administratorUserAccount</securityOwner>
+                    <k:renderingHorizontalResizeMode>k:resizeManual</k:renderingHorizontalResizeMode>
+                  </k:singleLineTextControl>
+                  <k:singleLineTextControl id="9fe2d9d2-9aac-4624-a7e2-891a325207d2">
+                    <k:renderingOrdinal>4</k:renderingOrdinal>
+                    <k:renderingWidth>90</k:renderingWidth>
+                    <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
+                    <k:renderingVerticalResizeMode>k:resizeAutomatic</k:renderingVerticalResizeMode>
+                    <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                    <k:fieldToRender>emBCC</k:fieldToRender>
+                    <securityOwner>administratorUserAccount</securityOwner>
+                    <k:renderingHorizontalResizeMode>k:resizeManual</k:renderingHorizontalResizeMode>
+                  </k:singleLineTextControl>
+                  <k:singleLineTextControl id="ff7bbd19-ff64-4853-9723-b4bd548a57c3">
+                    <k:renderingOrdinal>1</k:renderingOrdinal>
+                    <k:renderingWidth>93</k:renderingWidth>
+                    <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
+                    <k:renderingVerticalResizeMode>k:resizeAutomatic</k:renderingVerticalResizeMode>
+                    <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                    <k:fieldToRender>emFrom</k:fieldToRender>
+                    <securityOwner>administratorUserAccount</securityOwner>
+                    <k:renderingHorizontalResizeMode>k:resizeManual</k:renderingHorizontalResizeMode>
+                  </k:singleLineTextControl>
+                </k:containedControlsOnForm>
+              </k:verticalStackContainerControl>
+              <!-- Email Body -->
+              <k:verticalStackContainerControl id="fb882dcb-fc8e-47e7-98bc-e8268c1d0f8b">
+                <name>Email Body</name>
+                <k:hideLabel>False</k:hideLabel>
+                <k:renderingHeight>28</k:renderingHeight>
+                <k:renderingOrdinal>1</k:renderingOrdinal>
+                <k:renderingWidth>64</k:renderingWidth>
+                <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
+                <k:renderingVerticalResizeMode>k:resizeManual</k:renderingVerticalResizeMode>
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <securityOwner>administratorUserAccount</securityOwner>
+                <k:renderingHorizontalResizeMode>k:resizeManual</k:renderingHorizontalResizeMode>
+                <k:containedControlsOnForm>
+                  <k:singleLineTextControl id="11a740cc-4055-498c-b428-c64326a89058">
+                    <k:renderingHeight>83</k:renderingHeight>
+                    <k:renderingOrdinal>0</k:renderingOrdinal>
+                    <k:renderingWidth>98</k:renderingWidth>
+                    <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
+                    <k:renderingVerticalResizeMode>k:resizeManual</k:renderingVerticalResizeMode>
+                    <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                    <k:fieldToRender>emBody</k:fieldToRender>
+                    <securityOwner>administratorUserAccount</securityOwner>
+                    <k:renderingHorizontalResizeMode>k:resizeManual</k:renderingHorizontalResizeMode>
+                  </k:singleLineTextControl>
+                </k:containedControlsOnForm>
+              </k:verticalStackContainerControl>
+            </k:containedControlsOnForm>
+          </k:horizontalStackContainerControl>
+          <!-- Attachments -->
+          <k:verticalStackContainerControl id="bde9e500-fcce-4957-b213-8c0b300a9f40">
+            <name>Attachments</name>
+            <k:hideLabel>False</k:hideLabel>
+            <k:renderingHeight>40</k:renderingHeight>
+            <k:renderingOrdinal>1</k:renderingOrdinal>
+            <k:renderingWidth>100</k:renderingWidth>
+            <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
+            <k:renderingVerticalResizeMode>k:resizeManual</k:renderingVerticalResizeMode>
+            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+            <securityOwner>administratorUserAccount</securityOwner>
+            <k:renderingHorizontalResizeMode>k:resizeManual</k:renderingHorizontalResizeMode>
+            <k:containedControlsOnForm>
+              <k:tabRelationshipRenderControl id="e15fb9fd-ddda-43a4-a2f9-7e6affaacb49">
+                <k:isReversed>False</k:isReversed>
+                <k:renderingHeight>65</k:renderingHeight>
+                <k:renderingOrdinal>0</k:renderingOrdinal>
+                <k:renderingWidth>99</k:renderingWidth>
+                <k:renderingBackgroundColor>rgba(255,255,255,1)</k:renderingBackgroundColor>
+                <k:relationshipToRender>emAttachments</k:relationshipToRender>
+                <k:renderingVerticalResizeMode>k:resizeManual</k:renderingVerticalResizeMode>
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <securityOwner>administratorUserAccount</securityOwner>
+                <k:renderingHorizontalResizeMode>k:resizeManual</k:renderingHorizontalResizeMode>
+                <k:relationshipDisplayReport>dfab0f4d-e117-42fa-aa4d-ddb0736f026b</k:relationshipDisplayReport>
+                <k:selectionBehavior>
+                  <!-- null_sb -->
+                  <k:consoleBehavior id="09fcee84-435f-4f6b-a8e5-96d0adab85fe">
+                    <name>null_sb</name>
+                    <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                    <securityOwner>administratorUserAccount</securityOwner>
+                    <k:behaviorActionMenu>
+                      <!-- null_sb_menu -->
+                      <k:actionMenu id="5ec850ca-7dbb-42ca-b1e3-0e27d5610094">
+                        <name>null_sb_menu</name>
+                        <k:showEditInlineActionsButton>False</k:showEditInlineActionsButton>
+                        <k:showExportActionsButton>False</k:showExportActionsButton>
+                        <k:showNewActionsButton>False</k:showNewActionsButton>
+                        <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                        <securityOwner>administratorUserAccount</securityOwner>
+                        <k:suppressedActions>2df46ebb-9141-455e-b725-894b706ee9f7</k:suppressedActions>
+                        <k:suppressedActions>k:addRelationshipAction</k:suppressedActions>
+                      </k:actionMenu>
+                    </k:behaviorActionMenu>
+                  </k:consoleBehavior>
+                </k:selectionBehavior>
+                <k:resourceConsoleBehavior>
+                  <!-- null_rcb -->
+                  <k:consoleBehavior id="95524b3d-0327-4bbe-ab11-add623e753fa">
+                    <name>null_rcb</name>
+                    <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                    <securityOwner>administratorUserAccount</securityOwner>
+                    <k:behaviorActionMenu>
+                      <!-- null_rcb_menu -->
+                      <k:actionMenu id="4ab54823-5408-483e-bf17-f6ce598af0a8">
+                        <name>null_rcb_menu</name>
+                        <k:showEditInlineActionsButton>False</k:showEditInlineActionsButton>
+                        <k:showExportActionsButton>False</k:showExportActionsButton>
+                        <k:showNewActionsButton>False</k:showNewActionsButton>
+                        <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                        <securityOwner>administratorUserAccount</securityOwner>
+                        <k:suppressedTypesForNewMenu>photoFileType</k:suppressedTypesForNewMenu>
+                        <k:suppressedTypesForNewMenu>document</k:suppressedTypesForNewMenu>
+                        <k:suppressedTypesForNewMenu>imageFileType</k:suppressedTypesForNewMenu>
+                        <k:suppressedTypesForNewMenu>fileType</k:suppressedTypesForNewMenu>
+                        <k:suppressedTypesForNewMenu>documentRevision</k:suppressedTypesForNewMenu>
+                        <k:suppressedTypesForNewMenu>surveyAttachment</k:suppressedTypesForNewMenu>
+                        <k:suppressedTypesForNewMenu>iconFileType</k:suppressedTypesForNewMenu>
+                        <k:suppressedTypesForNewMenu>thumbnailFileType</k:suppressedTypesForNewMenu>
+                        <k:suppressedActions>16fc9a79-39fd-4847-a2e6-3485b2ca7e6f</k:suppressedActions>
+                        <k:suppressedActions>3fea4d25-2d84-44c1-8aca-b413b8f2d026</k:suppressedActions>
+                        <k:suppressedActions>k:deleteResourceAction</k:suppressedActions>
+                        <k:suppressedActions>k:editResourceAction</k:suppressedActions>
+                        <k:suppressedActions>afd945d6-fc7a-4c62-a393-91df9053c3e3</k:suppressedActions>
+                        <k:suppressedActions>k:removeRelationshipAction</k:suppressedActions>
+                        <k:suppressedActions>f4b9efe8-69fa-4985-87d9-761b1fff3078</k:suppressedActions>
+                      </k:actionMenu>
+                    </k:behaviorActionMenu>
+                  </k:consoleBehavior>
+                </k:resourceConsoleBehavior>
+              </k:tabRelationshipRenderControl>
+            </k:containedControlsOnForm>
+          </k:verticalStackContainerControl>
+        </k:containedControlsOnForm>
+        <resourceHasResourceKeyDataHashes>
+          <resourceKeyDataHash id="18fa86d7-2229-4d0c-b910-e8d4bf7e5fe2">
+            <dataHash>9B0264D024FED9564F4CDF43830F4713FAF0D344</dataHash>
+            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+            <resourceKeyDataHashAppliesToResourceKey>customEditFormUniqueNameKey</resourceKeyDataHashAppliesToResourceKey>
+            <securityOwner>administratorUserAccount</securityOwner>
+          </resourceKeyDataHash>
+        </resourceHasResourceKeyDataHashes>
+      </k:customEditForm>
       <!-- Password Policy Form -->
       <k:customEditForm id="99306b50-b4fe-4718-9318-338208c76be9">
         <name>Password Policy Form</name>
@@ -23273,6 +23301,189 @@
           </resourceKeyDataHash>
         </resourceHasResourceKeyDataHashes>
       </k:customEditForm>
+      <!-- SMTP Server Settings -->
+      <k:customEditForm id="b5bcfe20-78a3-4c70-b76b-81933e30e218">
+        <name>SMTP Server Settings</name>
+        <allowSelectMultiTypes>False</allowSelectMultiTypes>
+        <k:hideLabel>True</k:hideLabel>
+        <k:showFormHelpText>False</k:showFormHelpText>
+        <cacheChangeMarker>5e526ef2-0de3-4c9a-95fe-54f65549188b</cacheChangeMarker>
+        <k:renderingHeight>100</k:renderingHeight>
+        <k:renderingOrdinal>0</k:renderingOrdinal>
+        <k:renderingWidth>100</k:renderingWidth>
+        <k:renderingVerticalResizeMode>k:resizeSpring</k:renderingVerticalResizeMode>
+        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
+        <securityOwner>administratorUserAccount</securityOwner>
+        <k:typeToEditWithForm>tenantEmailSetting</k:typeToEditWithForm>
+        <k:renderingHorizontalResizeMode>k:resizeSpring</k:renderingHorizontalResizeMode>
+        <k:isDefaultForEntityType>tenantEmailSetting</k:isDefaultForEntityType>
+        <k:containedControlsOnForm>
+          <!-- Sent Email Messages -->
+          <k:verticalStackContainerControl id="65a442a8-fff2-4a7a-8ca8-219e9851077c">
+            <name>Sent Email Messages</name>
+            <k:hideLabel>False</k:hideLabel>
+            <k:renderingHeight>44</k:renderingHeight>
+            <k:renderingOrdinal>1</k:renderingOrdinal>
+            <k:renderingWidth>97</k:renderingWidth>
+            <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
+            <k:renderingVerticalResizeMode>k:resizeManual</k:renderingVerticalResizeMode>
+            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+            <securityOwner>administratorUserAccount</securityOwner>
+            <k:renderingHorizontalResizeMode>k:resizeManual</k:renderingHorizontalResizeMode>
+            <k:containedControlsOnForm>
+              <k:tabRelationshipRenderControl id="16be5cb8-9e56-41c6-b23e-7224290b23a6">
+                <k:isReversed>False</k:isReversed>
+                <k:renderingHeight>82</k:renderingHeight>
+                <k:renderingOrdinal>0</k:renderingOrdinal>
+                <k:renderingWidth>99</k:renderingWidth>
+                <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
+                <k:relationshipToRender>sentMessages</k:relationshipToRender>
+                <k:renderingVerticalResizeMode>k:resizeManual</k:renderingVerticalResizeMode>
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <securityOwner>administratorUserAccount</securityOwner>
+                <k:renderingHorizontalResizeMode>k:resizeManual</k:renderingHorizontalResizeMode>
+                <k:selectionBehavior>
+                  <!-- null_sb -->
+                  <k:consoleBehavior id="aa0f94ec-23c0-427e-8e86-98cef4c22ae0">
+                    <name>null_sb</name>
+                    <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                    <securityOwner>administratorUserAccount</securityOwner>
+                    <k:behaviorActionMenu>
+                      <!-- null_sb_menu -->
+                      <k:actionMenu id="71d09e74-c845-482c-a405-4d7b24e117a4">
+                        <name>null_sb_menu</name>
+                        <k:showEditInlineActionsButton>False</k:showEditInlineActionsButton>
+                        <k:showExportActionsButton>False</k:showExportActionsButton>
+                        <k:showNewActionsButton>False</k:showNewActionsButton>
+                        <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                        <securityOwner>administratorUserAccount</securityOwner>
+                        <k:suppressedActions>2df46ebb-9141-455e-b725-894b706ee9f7</k:suppressedActions>
+                        <k:suppressedActions>k:addRelationshipAction</k:suppressedActions>
+                      </k:actionMenu>
+                    </k:behaviorActionMenu>
+                  </k:consoleBehavior>
+                </k:selectionBehavior>
+                <k:resourceConsoleBehavior>
+                  <!-- null_rcb -->
+                  <k:consoleBehavior id="88343271-88cf-4a00-9dc7-bbebb051b2fa">
+                    <name>null_rcb</name>
+                    <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                    <securityOwner>administratorUserAccount</securityOwner>
+                    <k:behaviorActionMenu>
+                      <!-- null_rcb_menu -->
+                      <k:actionMenu id="57bcb6b3-e23e-4b11-b11f-a8f6a98bb708">
+                        <name>null_rcb_menu</name>
+                        <k:showEditInlineActionsButton>False</k:showEditInlineActionsButton>
+                        <k:showExportActionsButton>False</k:showExportActionsButton>
+                        <k:showNewActionsButton>False</k:showNewActionsButton>
+                        <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                        <securityOwner>administratorUserAccount</securityOwner>
+                        <k:suppressedTypesForNewMenu>sentEmailMessage</k:suppressedTypesForNewMenu>
+                        <k:suppressedActions>16fc9a79-39fd-4847-a2e6-3485b2ca7e6f</k:suppressedActions>
+                        <k:suppressedActions>k:deleteResourceAction</k:suppressedActions>
+                        <k:suppressedActions>k:editResourceAction</k:suppressedActions>
+                        <k:suppressedActions>afd945d6-fc7a-4c62-a393-91df9053c3e3</k:suppressedActions>
+                        <k:suppressedActions>k:removeRelationshipAction</k:suppressedActions>
+                        <k:suppressedActions>f4b9efe8-69fa-4985-87d9-761b1fff3078</k:suppressedActions>
+                      </k:actionMenu>
+                    </k:behaviorActionMenu>
+                  </k:consoleBehavior>
+                </k:resourceConsoleBehavior>
+              </k:tabRelationshipRenderControl>
+            </k:containedControlsOnForm>
+          </k:verticalStackContainerControl>
+          <!-- SMTP Server Details -->
+          <k:verticalStackContainerControl id="ee89e2e2-edee-4aee-8b58-0e2fa9623f54">
+            <name>SMTP Server Details</name>
+            <k:hideLabel>False</k:hideLabel>
+            <k:renderingHeight>42</k:renderingHeight>
+            <k:renderingOrdinal>0</k:renderingOrdinal>
+            <k:renderingWidth>53</k:renderingWidth>
+            <k:renderingBackgroundColor>rgba(255,255,255,1)</k:renderingBackgroundColor>
+            <k:renderingVerticalResizeMode>k:resizeManual</k:renderingVerticalResizeMode>
+            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+            <securityOwner>administratorUserAccount</securityOwner>
+            <k:renderingHorizontalResizeMode>k:resizeManual</k:renderingHorizontalResizeMode>
+            <k:containedControlsOnForm>
+              <numericKFieldRenderControl id="03e627b6-1bb0-48cf-904e-b8c031e930cc">
+                <k:renderingOrdinal>1</k:renderingOrdinal>
+                <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
+                <k:renderingVerticalResizeMode>k:resizeAutomatic</k:renderingVerticalResizeMode>
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <k:fieldToRender>smtpPort</k:fieldToRender>
+                <securityOwner>administratorUserAccount</securityOwner>
+                <k:renderingHorizontalResizeMode>k:resizeAutomatic</k:renderingHorizontalResizeMode>
+              </numericKFieldRenderControl>
+              <k:singleLineTextControl id="09ecead0-73ed-4377-a62d-0621a7c1f3dc">
+                <k:renderingOrdinal>3</k:renderingOrdinal>
+                <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
+                <k:renderingVerticalResizeMode>k:resizeAutomatic</k:renderingVerticalResizeMode>
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <k:fieldToRender>smtpAccount</k:fieldToRender>
+                <securityOwner>administratorUserAccount</securityOwner>
+                <k:renderingHorizontalResizeMode>k:resizeAutomatic</k:renderingHorizontalResizeMode>
+              </k:singleLineTextControl>
+              <k:singleLineTextControl id="1e22921a-df1e-4737-8768-e5a3f8ee63b7">
+                <k:renderingOrdinal>5</k:renderingOrdinal>
+                <k:renderingWidth>51</k:renderingWidth>
+                <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
+                <k:renderingVerticalResizeMode>k:resizeAutomatic</k:renderingVerticalResizeMode>
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <k:fieldToRender>emailNoReplyAddress</k:fieldToRender>
+                <securityOwner>administratorUserAccount</securityOwner>
+                <k:renderingHorizontalResizeMode>k:resizeManual</k:renderingHorizontalResizeMode>
+              </k:singleLineTextControl>
+              <k:singleLineTextControl id="218419e6-a6fc-4e06-b57f-fc1aa6bc8a92">
+                <k:renderingOrdinal>4</k:renderingOrdinal>
+                <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
+                <k:renderingVerticalResizeMode>k:resizeAutomatic</k:renderingVerticalResizeMode>
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <k:fieldToRender>smtpPassword</k:fieldToRender>
+                <securityOwner>administratorUserAccount</securityOwner>
+                <k:renderingHorizontalResizeMode>k:resizeAutomatic</k:renderingHorizontalResizeMode>
+              </k:singleLineTextControl>
+              <checkboxKFieldRenderControl id="612717b0-1119-455d-b533-792c26efed86">
+                <k:renderingOrdinal>2</k:renderingOrdinal>
+                <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
+                <k:renderingVerticalResizeMode>k:resizeAutomatic</k:renderingVerticalResizeMode>
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <k:fieldToRender>smtpUseSSL</k:fieldToRender>
+                <securityOwner>administratorUserAccount</securityOwner>
+                <k:renderingHorizontalResizeMode>k:resizeAutomatic</k:renderingHorizontalResizeMode>
+              </checkboxKFieldRenderControl>
+              <k:singleLineTextControl id="9320129a-4f50-4a66-a96a-17235ebc18c0">
+                <k:renderingOrdinal>0</k:renderingOrdinal>
+                <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
+                <k:renderingVerticalResizeMode>k:resizeAutomatic</k:renderingVerticalResizeMode>
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <k:fieldToRender>smtpServer</k:fieldToRender>
+                <securityOwner>administratorUserAccount</securityOwner>
+                <k:renderingHorizontalResizeMode>k:resizeAutomatic</k:renderingHorizontalResizeMode>
+              </k:singleLineTextControl>
+              <!-- Override TO Address -->
+              <k:singleLineTextControl id="daeb68b7-3fcc-45b5-8309-da8c19006d64">
+                <name>Override TO Address</name>
+                <k:renderingOrdinal>6</k:renderingOrdinal>
+                <k:renderingWidth>48</k:renderingWidth>
+                <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
+                <k:renderingVerticalResizeMode>k:resizeAutomatic</k:renderingVerticalResizeMode>
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <k:fieldToRender>testingOverrideToAddress</k:fieldToRender>
+                <securityOwner>administratorUserAccount</securityOwner>
+                <k:renderingHorizontalResizeMode>k:resizeManual</k:renderingHorizontalResizeMode>
+              </k:singleLineTextControl>
+            </k:containedControlsOnForm>
+          </k:verticalStackContainerControl>
+        </k:containedControlsOnForm>
+        <resourceHasResourceKeyDataHashes>
+          <resourceKeyDataHash id="4d6cb8ee-67aa-45b7-bbbd-2b63ded310c0">
+            <dataHash>6BA94A4CCCD2CEF414438C640EED5FE93089FD00</dataHash>
+            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+            <resourceKeyDataHashAppliesToResourceKey>customEditFormUniqueNameKey</resourceKeyDataHashAppliesToResourceKey>
+            <securityOwner>administratorUserAccount</securityOwner>
+          </resourceKeyDataHash>
+        </resourceHasResourceKeyDataHashes>
+      </k:customEditForm>
       <!-- Document Type Form -->
       <k:customEditForm id="b840171a-d477-4a0f-899c-367719af1042">
         <name>Document Type Form</name>
@@ -23744,11 +23955,12 @@
           </resourceKeyDataHash>
         </resourceHasResourceKeyDataHashes>
       </k:customEditForm>
-      <!-- New Inbox Form -->
+      <!-- Edit Inbox -->
       <k:customEditForm id="bce4bac4-9b78-416c-be71-6f0957d0116e">
-        <name>New Inbox Form</name>
+        <name>Edit Inbox</name>
+        <allowSelectMultiTypes>False</allowSelectMultiTypes>
         <k:hideLabel>True</k:hideLabel>
-        <cacheChangeMarker>2589bb14-3a93-4c5c-bbd8-1cbb5efefb58</cacheChangeMarker>
+        <cacheChangeMarker>8a39c0c3-6261-47b7-8c50-c0bd9a9811d7</cacheChangeMarker>
         <k:renderingHeight>100</k:renderingHeight>
         <k:renderingOrdinal>0</k:renderingOrdinal>
         <k:renderingWidth>100</k:renderingWidth>
@@ -23759,203 +23971,116 @@
         <k:renderingHorizontalResizeMode>k:resizeSpring</k:renderingHorizontalResizeMode>
         <k:isDefaultForEntityType>inbox</k:isDefaultForEntityType>
         <k:containedControlsOnForm>
-          <!-- Application -->
-          <k:inlineRelationshipRenderControl id="0cb87112-ae20-497f-a925-9b1312d7b6cc">
-            <name>Application</name>
-            <k:isReversed>False</k:isReversed>
-            <k:renderingOrdinal>2</k:renderingOrdinal>
+          <checkboxKFieldRenderControl id="1cd6e3f3-8e96-4ec9-87bb-d9aa4da2bf4a">
+            <k:renderingOrdinal>3</k:renderingOrdinal>
             <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
-            <k:relationshipToRender>inSolution</k:relationshipToRender>
             <k:renderingVerticalResizeMode>k:resizeAutomatic</k:renderingVerticalResizeMode>
-            <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
+            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+            <k:fieldToRender>inboxEnabled</k:fieldToRender>
             <securityOwner>administratorUserAccount</securityOwner>
             <k:renderingHorizontalResizeMode>k:resizeAutomatic</k:renderingHorizontalResizeMode>
-          </k:inlineRelationshipRenderControl>
+          </checkboxKFieldRenderControl>
+          <!-- Email Address -->
+          <k:singleLineTextControl id="3f0782ff-23b8-499d-a84d-48f36aeb39f6">
+            <name>Email Address</name>
+            <k:showControlHelpText>False</k:showControlHelpText>
+            <k:mandatoryControl>False</k:mandatoryControl>
+            <k:readOnlyControl>True</k:readOnlyControl>
+            <k:renderingOrdinal>6</k:renderingOrdinal>
+            <k:renderingWidth>44</k:renderingWidth>
+            <k:renderingBackgroundColor>rgba(255,255,255,1)</k:renderingBackgroundColor>
+            <k:renderingVerticalResizeMode>k:resizeAutomatic</k:renderingVerticalResizeMode>
+            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+            <k:fieldToRender>inboxEmailAddress</k:fieldToRender>
+            <securityOwner>administratorUserAccount</securityOwner>
+            <k:renderingHorizontalResizeMode>k:resizeManual</k:renderingHorizontalResizeMode>
+          </k:singleLineTextControl>
+          <k:singleLineTextControl id="4418843c-216a-43cc-85f8-f86d023f84b2">
+            <k:renderingOrdinal>4</k:renderingOrdinal>
+            <k:renderingWidth>44</k:renderingWidth>
+            <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
+            <k:renderingVerticalResizeMode>k:resizeAutomatic</k:renderingVerticalResizeMode>
+            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+            <k:fieldToRender>inboxFromName</k:fieldToRender>
+            <securityOwner>administratorUserAccount</securityOwner>
+            <k:renderingHorizontalResizeMode>k:resizeManual</k:renderingHorizontalResizeMode>
+          </k:singleLineTextControl>
           <k:singleLineTextControl id="8af539b9-3a93-4d8b-adae-18f30dd4281c">
             <k:mandatoryControl>True</k:mandatoryControl>
             <k:readOnlyControl>False</k:readOnlyControl>
             <k:renderingOrdinal>0</k:renderingOrdinal>
+            <k:renderingWidth>44</k:renderingWidth>
             <k:renderingBackgroundColor>rgba(255,255,255,1)</k:renderingBackgroundColor>
             <k:renderingVerticalResizeMode>k:resizeAutomatic</k:renderingVerticalResizeMode>
             <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
             <k:fieldToRender>name</k:fieldToRender>
             <securityOwner>administratorUserAccount</securityOwner>
-            <k:renderingHorizontalResizeMode>k:resizeAutomatic</k:renderingHorizontalResizeMode>
+            <k:renderingHorizontalResizeMode>k:resizeManual</k:renderingHorizontalResizeMode>
+          </k:singleLineTextControl>
+          <k:singleLineTextControl id="c176935d-5231-4ae1-b739-84bd49c75472">
+            <k:renderingOrdinal>5</k:renderingOrdinal>
+            <k:renderingWidth>44</k:renderingWidth>
+            <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
+            <k:renderingVerticalResizeMode>k:resizeAutomatic</k:renderingVerticalResizeMode>
+            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+            <k:fieldToRender>inboxReplyAddress</k:fieldToRender>
+            <securityOwner>administratorUserAccount</securityOwner>
+            <k:renderingHorizontalResizeMode>k:resizeManual</k:renderingHorizontalResizeMode>
           </k:singleLineTextControl>
           <!-- New Inbox Form -->
           <k:tabContainerControl id="d3e70e0d-a9af-4529-a245-9596860129b1">
             <name>New Inbox Form</name>
             <k:hideLabel>False</k:hideLabel>
-            <k:renderingHeight>50</k:renderingHeight>
-            <k:renderingOrdinal>4</k:renderingOrdinal>
-            <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
-            <k:renderingVerticalResizeMode>k:resizeFifty</k:renderingVerticalResizeMode>
+            <k:renderingHeight>49</k:renderingHeight>
+            <k:renderingOrdinal>7</k:renderingOrdinal>
+            <k:renderingWidth>100</k:renderingWidth>
+            <k:renderingBackgroundColor>rgba(255,255,255,1)</k:renderingBackgroundColor>
+            <k:renderingVerticalResizeMode>k:resizeManual</k:renderingVerticalResizeMode>
             <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
             <securityOwner>administratorUserAccount</securityOwner>
-            <k:renderingHorizontalResizeMode>k:resizeSpring</k:renderingHorizontalResizeMode>
+            <k:renderingHorizontalResizeMode>k:resizeManual</k:renderingHorizontalResizeMode>
             <k:containedControlsOnForm>
-              <!-- Actions -->
-              <k:verticalStackContainerControl id="4c5a816c-20e4-4ed7-92d3-35d0ff39db5b">
-                <name>Actions</name>
-                <k:hideLabel>True</k:hideLabel>
-                <k:renderingOrdinal>0</k:renderingOrdinal>
-                <k:renderingBackgroundColor>transparent</k:renderingBackgroundColor>
-                <k:renderingVerticalResizeMode>k:resizeSpring</k:renderingVerticalResizeMode>
-                <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                <securityOwner>administratorUserAccount</securityOwner>
-                <k:renderingHorizontalResizeMode>k:resizeSpring</k:renderingHorizontalResizeMode>
-                <k:containedControlsOnForm>
-                  <k:tabRelationshipRenderControl id="60b02171-db33-4a30-a430-f5aeb44f4dbf">
-                    <k:isReversed>False</k:isReversed>
-                    <k:renderingOrdinal>0</k:renderingOrdinal>
-                    <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
-                    <k:relationshipToRender>inboxEmailActions</k:relationshipToRender>
-                    <k:renderingVerticalResizeMode>k:resizeSpring</k:renderingVerticalResizeMode>
-                    <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                    <securityOwner>administratorUserAccount</securityOwner>
-                    <k:renderingHorizontalResizeMode>k:resizeSpring</k:renderingHorizontalResizeMode>
-                    <k:selectionBehavior>
-                      <!-- null_sb -->
-                      <k:consoleBehavior id="cb95638a-17b6-48db-86ac-3d9232ed3959">
-                        <name>null_sb</name>
-                        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                        <securityOwner>administratorUserAccount</securityOwner>
-                        <k:behaviorActionMenu>
-                          <!-- null_sb_menu -->
-                          <k:actionMenu id="aa3da874-71c1-4515-9ad7-2090b61abcbb">
-                            <name>null_sb_menu</name>
-                            <k:showExportActionsButton>False</k:showExportActionsButton>
-                            <k:showNewActionsButton>False</k:showNewActionsButton>
-                            <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                            <securityOwner>administratorUserAccount</securityOwner>
-                            <k:includeActionsAsButtons>k:addRelationshipAction</k:includeActionsAsButtons>
-                          </k:actionMenu>
-                        </k:behaviorActionMenu>
-                      </k:consoleBehavior>
-                    </k:selectionBehavior>
-                    <k:resourceConsoleBehavior>
-                      <!-- null_rcb -->
-                      <k:consoleBehavior id="91541e49-dd58-4137-8abf-c83fca0496cf">
-                        <name>null_rcb</name>
-                        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                        <securityOwner>administratorUserAccount</securityOwner>
-                        <k:behaviorActionMenu>
-                          <!-- null_rcb_menu -->
-                          <k:actionMenu id="75fb3d5d-5ef7-4cdc-9b4a-989b75ef75af">
-                            <name>null_rcb_menu</name>
-                            <k:showExportActionsButton>False</k:showExportActionsButton>
-                            <k:showNewActionsButton>True</k:showNewActionsButton>
-                            <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                            <securityOwner>administratorUserAccount</securityOwner>
-                            <k:suppressedTypesForNewMenu>inboxEmailAction</k:suppressedTypesForNewMenu>
-                            <k:includeActionsAsButtons>k:removeRelationshipAction</k:includeActionsAsButtons>
-                            <k:includeActionsAsButtons>k:viewResourceAction</k:includeActionsAsButtons>
-                            <k:suppressedActions>k:deleteResourceAction</k:suppressedActions>
-                            <k:suppressedActions>k:editResourceAction</k:suppressedActions>
-                          </k:actionMenu>
-                        </k:behaviorActionMenu>
-                      </k:consoleBehavior>
-                    </k:resourceConsoleBehavior>
-                  </k:tabRelationshipRenderControl>
-                </k:containedControlsOnForm>
-              </k:verticalStackContainerControl>
-              <!-- Sent Messages -->
-              <k:verticalStackContainerControl id="c0d4dee8-b774-4059-b2c4-3f25c73d4db4">
-                <name>Sent Messages</name>
+              <!-- Received messages -->
+              <k:verticalStackContainerControl id="ca70e732-25f8-42c8-b155-873038e4a9a5">
+                <name>Received messages</name>
+                <k:showControlHelpText>False</k:showControlHelpText>
                 <k:hideLabel>True</k:hideLabel>
                 <k:renderingOrdinal>2</k:renderingOrdinal>
                 <k:renderingBackgroundColor>rgba(0,0,0,0)</k:renderingBackgroundColor>
                 <k:renderingVerticalResizeMode>k:resizeSpring</k:renderingVerticalResizeMode>
-                <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
                 <securityOwner>administratorUserAccount</securityOwner>
                 <k:renderingHorizontalResizeMode>k:resizeSpring</k:renderingHorizontalResizeMode>
                 <k:containedControlsOnForm>
-                  <k:tabRelationshipRenderControl id="35883024-ba0e-4522-9e5d-f143424d7075">
+                  <k:tabRelationshipRenderControl id="a8c87c78-19f9-4df0-adfa-29801f86330e">
                     <k:isReversed>False</k:isReversed>
+                    <k:showControlHelpText>False</k:showControlHelpText>
+                    <k:mandatoryControl>False</k:mandatoryControl>
+                    <k:hideLabel>False</k:hideLabel>
+                    <k:readOnlyControl>False</k:readOnlyControl>
+                    <k:renderingHeight>54</k:renderingHeight>
                     <k:renderingOrdinal>0</k:renderingOrdinal>
-                    <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
-                    <k:relationshipToRender>sentMessages</k:relationshipToRender>
-                    <k:renderingVerticalResizeMode>k:resizeSpring</k:renderingVerticalResizeMode>
-                    <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                    <securityOwner>administratorUserAccount</securityOwner>
-                    <k:renderingHorizontalResizeMode>k:resizeSpring</k:renderingHorizontalResizeMode>
-                    <k:selectionBehavior>
-                      <!-- null_sb -->
-                      <k:consoleBehavior id="965d5e20-6163-4d3c-96ff-d22142dc758d">
-                        <name>null_sb</name>
-                        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                        <securityOwner>administratorUserAccount</securityOwner>
-                        <k:behaviorActionMenu>
-                          <!-- null_sb_menu -->
-                          <k:actionMenu id="8f547f77-a3e3-414c-aba9-64e08d743536">
-                            <name>null_sb_menu</name>
-                            <k:showExportActionsButton>False</k:showExportActionsButton>
-                            <k:showNewActionsButton>False</k:showNewActionsButton>
-                            <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                            <securityOwner>administratorUserAccount</securityOwner>
-                            <k:suppressedActions>k:addRelationshipAction</k:suppressedActions>
-                          </k:actionMenu>
-                        </k:behaviorActionMenu>
-                      </k:consoleBehavior>
-                    </k:selectionBehavior>
-                    <k:resourceConsoleBehavior>
-                      <!-- null_rcb -->
-                      <k:consoleBehavior id="d45bd31c-e859-4844-85e8-4ef40214223e">
-                        <name>null_rcb</name>
-                        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                        <securityOwner>administratorUserAccount</securityOwner>
-                        <k:behaviorActionMenu>
-                          <!-- null_rcb_menu -->
-                          <k:actionMenu id="f64e8a70-9fda-4025-8ce6-1cd3e2ef012a">
-                            <name>null_rcb_menu</name>
-                            <k:showExportActionsButton>False</k:showExportActionsButton>
-                            <k:showNewActionsButton>False</k:showNewActionsButton>
-                            <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                            <securityOwner>administratorUserAccount</securityOwner>
-                            <k:suppressedTypesForNewMenu>sentEmailMessage</k:suppressedTypesForNewMenu>
-                            <k:suppressedActions>k:deleteResourceAction</k:suppressedActions>
-                            <k:suppressedActions>k:editResourceAction</k:suppressedActions>
-                            <k:suppressedActions>k:removeRelationshipAction</k:suppressedActions>
-                          </k:actionMenu>
-                        </k:behaviorActionMenu>
-                      </k:consoleBehavior>
-                    </k:resourceConsoleBehavior>
-                  </k:tabRelationshipRenderControl>
-                </k:containedControlsOnForm>
-              </k:verticalStackContainerControl>
-              <!-- Received Messages -->
-              <k:verticalStackContainerControl id="c7e4e9ac-e579-406d-bc8f-bac9c59a1885">
-                <name>Received Messages</name>
-                <k:hideLabel>True</k:hideLabel>
-                <k:renderingOrdinal>1</k:renderingOrdinal>
-                <k:renderingBackgroundColor>rgba(0,0,0,0)</k:renderingBackgroundColor>
-                <k:renderingVerticalResizeMode>k:resizeSpring</k:renderingVerticalResizeMode>
-                <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                <securityOwner>administratorUserAccount</securityOwner>
-                <k:renderingHorizontalResizeMode>k:resizeSpring</k:renderingHorizontalResizeMode>
-                <k:containedControlsOnForm>
-                  <k:tabRelationshipRenderControl id="8bef125e-5d61-44c6-ba31-bcc37b8ae060">
-                    <k:isReversed>False</k:isReversed>
-                    <k:renderingOrdinal>0</k:renderingOrdinal>
-                    <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
+                    <k:renderingWidth>99</k:renderingWidth>
+                    <k:renderingBackgroundColor>rgba(255,255,255,1)</k:renderingBackgroundColor>
                     <k:relationshipToRender>receivedMessages</k:relationshipToRender>
-                    <k:renderingVerticalResizeMode>k:resizeSpring</k:renderingVerticalResizeMode>
-                    <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
+                    <k:renderingVerticalResizeMode>k:resizeManual</k:renderingVerticalResizeMode>
+                    <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
                     <securityOwner>administratorUserAccount</securityOwner>
-                    <k:renderingHorizontalResizeMode>k:resizeSpring</k:renderingHorizontalResizeMode>
+                    <k:renderingHorizontalResizeMode>k:resizeManual</k:renderingHorizontalResizeMode>
                     <k:selectionBehavior>
                       <!-- null_sb -->
-                      <k:consoleBehavior id="8ce3a2dc-776e-4bc1-a679-a4c3f8d3b678">
+                      <k:consoleBehavior id="5450341e-1ded-410d-90f4-8a473c01209c">
                         <name>null_sb</name>
-                        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
+                        <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
                         <securityOwner>administratorUserAccount</securityOwner>
                         <k:behaviorActionMenu>
                           <!-- null_sb_menu -->
-                          <k:actionMenu id="a5d91d96-1742-4a9a-b788-c449c54acdb7">
+                          <k:actionMenu id="f5004b93-aa4c-4dc2-bbf5-ab2730df8f13">
                             <name>null_sb_menu</name>
+                            <k:showEditInlineActionsButton>False</k:showEditInlineActionsButton>
                             <k:showExportActionsButton>False</k:showExportActionsButton>
                             <k:showNewActionsButton>False</k:showNewActionsButton>
-                            <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
+                            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
                             <securityOwner>administratorUserAccount</securityOwner>
                             <k:suppressedActions>k:addRelationshipAction</k:suppressedActions>
                           </k:actionMenu>
@@ -23964,17 +24089,18 @@
                     </k:selectionBehavior>
                     <k:resourceConsoleBehavior>
                       <!-- null_rcb -->
-                      <k:consoleBehavior id="42df347c-d5c8-4233-b748-fd6540e97a9f">
+                      <k:consoleBehavior id="629e2c76-8b12-49fe-b1c1-97f8efdf04ee">
                         <name>null_rcb</name>
-                        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
+                        <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
                         <securityOwner>administratorUserAccount</securityOwner>
                         <k:behaviorActionMenu>
                           <!-- null_rcb_menu -->
-                          <k:actionMenu id="bd4efe43-c28f-4b3b-9c25-32c3d7f13583">
+                          <k:actionMenu id="9f2aea42-cd40-43f3-b9a7-6d12783f8f1f">
                             <name>null_rcb_menu</name>
+                            <k:showEditInlineActionsButton>False</k:showEditInlineActionsButton>
                             <k:showExportActionsButton>False</k:showExportActionsButton>
                             <k:showNewActionsButton>False</k:showNewActionsButton>
-                            <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
+                            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
                             <securityOwner>administratorUserAccount</securityOwner>
                             <k:suppressedTypesForNewMenu>receivedEmailMessage</k:suppressedTypesForNewMenu>
                             <k:suppressedActions>k:deleteResourceAction</k:suppressedActions>
@@ -24002,14 +24128,16 @@
                     <k:isReversed>False</k:isReversed>
                     <k:mandatoryControl>False</k:mandatoryControl>
                     <k:readOnlyControl>False</k:readOnlyControl>
+                    <k:renderingHeight>79</k:renderingHeight>
                     <k:renderingOrdinal>0</k:renderingOrdinal>
+                    <k:renderingWidth>99</k:renderingWidth>
                     <k:renderingBackgroundColor>rgba(255,255,255,1)</k:renderingBackgroundColor>
                     <k:relationshipToRender>inboxWorkflows</k:relationshipToRender>
-                    <k:renderingVerticalResizeMode>k:resizeSpring</k:renderingVerticalResizeMode>
+                    <k:renderingVerticalResizeMode>k:resizeManual</k:renderingVerticalResizeMode>
                     <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
                     <securityOwner>administratorUserAccount</securityOwner>
                     <k:pickerReport>9a47abc1-06f0-44c0-a760-7a1ac1ec9a83</k:pickerReport>
-                    <k:renderingHorizontalResizeMode>k:resizeSpring</k:renderingHorizontalResizeMode>
+                    <k:renderingHorizontalResizeMode>k:resizeManual</k:renderingHorizontalResizeMode>
                     <k:relationshipDisplayReport>9a47abc1-06f0-44c0-a760-7a1ac1ec9a83</k:relationshipDisplayReport>
                     <k:selectionBehavior>
                       <!-- null_sb -->
@@ -24062,68 +24190,232 @@
             </k:containedControlsOnForm>
           </k:tabContainerControl>
           <k:singleLineTextControl id="e499ac3d-1555-4729-ab11-7ba738c2b9b0">
-            <k:renderingOrdinal>1</k:renderingOrdinal>
+            <k:renderingHeight>10</k:renderingHeight>
+            <k:renderingOrdinal>2</k:renderingOrdinal>
+            <k:renderingWidth>43</k:renderingWidth>
             <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
-            <k:renderingVerticalResizeMode>k:resizeAutomatic</k:renderingVerticalResizeMode>
+            <k:renderingVerticalResizeMode>k:resizeManual</k:renderingVerticalResizeMode>
             <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
             <k:fieldToRender>description</k:fieldToRender>
             <securityOwner>administratorUserAccount</securityOwner>
-            <k:renderingHorizontalResizeMode>k:resizeAutomatic</k:renderingHorizontalResizeMode>
+            <k:renderingHorizontalResizeMode>k:resizeManual</k:renderingHorizontalResizeMode>
           </k:singleLineTextControl>
-          <!-- Inbox Settings -->
-          <k:verticalStackContainerControl id="fc9c5469-ea5a-493a-babf-fb8a9349b58b">
-            <name>Inbox Settings</name>
-            <k:hideLabel>False</k:hideLabel>
-            <k:renderingHeight>50</k:renderingHeight>
-            <k:renderingOrdinal>3</k:renderingOrdinal>
-            <k:renderingBackgroundColor>rgba(255,255,255,1)</k:renderingBackgroundColor>
-            <k:renderingVerticalResizeMode>k:resizeAutomatic</k:renderingVerticalResizeMode>
-            <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
+        </k:containedControlsOnForm>
+        <resourceHasResourceKeyDataHashes>
+          <resourceKeyDataHash id="6bf25ff5-c800-46f3-ad0e-8d12a1874b64">
+            <dataHash>05A9671C156DF639DAAA3768A47F6E46E1BEC8DE</dataHash>
+            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+            <resourceKeyDataHashAppliesToResourceKey>customEditFormUniqueNameKey</resourceKeyDataHashAppliesToResourceKey>
             <securityOwner>administratorUserAccount</securityOwner>
-            <k:renderingHorizontalResizeMode>k:resizeAutomatic</k:renderingHorizontalResizeMode>
+          </resourceKeyDataHash>
+        </resourceHasResourceKeyDataHashes>
+      </k:customEditForm>
+      <!-- Received Email -->
+      <k:customEditForm id="be4b78e2-78a3-4438-8e64-d8b6b747f489">
+        <name>Received Email</name>
+        <allowSelectMultiTypes>False</allowSelectMultiTypes>
+        <cacheChangeMarker>076224c2-1ccc-4ed5-bdc6-c1f28f5e36b3</cacheChangeMarker>
+        <k:renderingVerticalResizeMode>k:resizeAutomatic</k:renderingVerticalResizeMode>
+        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
+        <securityOwner>administratorUserAccount</securityOwner>
+        <k:typeToEditWithForm>receivedEmailMessage</k:typeToEditWithForm>
+        <k:renderingHorizontalResizeMode>k:resizeSpring</k:renderingHorizontalResizeMode>
+        <k:isDefaultForEntityType>receivedEmailMessage</k:isDefaultForEntityType>
+        <k:containedControlsOnForm>
+          <k:horizontalStackContainerControl id="8349ad8d-11cc-4d91-bb80-b0405f9889d3">
+            <k:hideLabel>True</k:hideLabel>
+            <k:renderingOrdinal>0</k:renderingOrdinal>
+            <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
+            <k:renderingVerticalResizeMode>k:resizeAutomatic</k:renderingVerticalResizeMode>
+            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+            <securityOwner>administratorUserAccount</securityOwner>
+            <k:renderingHorizontalResizeMode>k:resizeSpring</k:renderingHorizontalResizeMode>
             <k:containedControlsOnForm>
-              <k:inlineRelationshipRenderControl id="15e74738-818d-423a-9d41-4755a482ed58">
-                <k:isReversed>False</k:isReversed>
+              <!-- Email Body -->
+              <k:verticalStackContainerControl id="2532793e-4656-4611-ada5-779e05dd9122">
+                <name>Email Body</name>
+                <k:hideLabel>False</k:hideLabel>
+                <k:renderingHeight>30</k:renderingHeight>
                 <k:renderingOrdinal>1</k:renderingOrdinal>
+                <k:renderingWidth>100</k:renderingWidth>
                 <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
-                <k:relationshipToRender>inboxCreatedEventType</k:relationshipToRender>
-                <k:renderingVerticalResizeMode>k:resizeAutomatic</k:renderingVerticalResizeMode>
-                <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
+                <k:renderingVerticalResizeMode>k:resizeManual</k:renderingVerticalResizeMode>
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
                 <securityOwner>administratorUserAccount</securityOwner>
-                <k:renderingHorizontalResizeMode>k:resizeAutomatic</k:renderingHorizontalResizeMode>
-              </k:inlineRelationshipRenderControl>
-              <k:inlineRelationshipRenderControl id="3d90e23f-68b0-43e3-8280-8804a8e92de1">
-                <canCreate>False</canCreate>
+                <k:renderingHorizontalResizeMode>k:resizeSpring</k:renderingHorizontalResizeMode>
+                <k:containedControlsOnForm>
+                  <k:singleLineTextControl id="11a0ea67-b5f2-4ad7-9666-abe41bb961fb">
+                    <k:renderingHeight>85</k:renderingHeight>
+                    <k:renderingOrdinal>0</k:renderingOrdinal>
+                    <k:renderingWidth>98</k:renderingWidth>
+                    <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
+                    <k:renderingVerticalResizeMode>k:resizeManual</k:renderingVerticalResizeMode>
+                    <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                    <k:fieldToRender>emReplyFragment</k:fieldToRender>
+                    <securityOwner>administratorUserAccount</securityOwner>
+                    <k:renderingHorizontalResizeMode>k:resizeManual</k:renderingHorizontalResizeMode>
+                  </k:singleLineTextControl>
+                </k:containedControlsOnForm>
+              </k:verticalStackContainerControl>
+              <!-- Received Email Details -->
+              <k:verticalStackContainerControl id="939a4e93-0137-4b2a-893f-89387953c7ba">
+                <name>Received Email Details</name>
+                <k:hideLabel>False</k:hideLabel>
+                <k:renderingHeight>29</k:renderingHeight>
+                <k:renderingOrdinal>0</k:renderingOrdinal>
+                <k:renderingWidth>39</k:renderingWidth>
+                <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
+                <k:renderingVerticalResizeMode>k:resizeManual</k:renderingVerticalResizeMode>
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <securityOwner>administratorUserAccount</securityOwner>
+                <k:renderingHorizontalResizeMode>k:resizeManual</k:renderingHorizontalResizeMode>
+                <k:containedControlsOnForm>
+                  <k:singleLineTextControl id="524587e1-72c2-42fa-86c2-afb255310010">
+                    <k:renderingOrdinal>2</k:renderingOrdinal>
+                    <k:renderingWidth>90</k:renderingWidth>
+                    <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
+                    <k:renderingVerticalResizeMode>k:resizeAutomatic</k:renderingVerticalResizeMode>
+                    <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                    <k:fieldToRender>emFrom</k:fieldToRender>
+                    <securityOwner>administratorUserAccount</securityOwner>
+                    <k:renderingHorizontalResizeMode>k:resizeManual</k:renderingHorizontalResizeMode>
+                  </k:singleLineTextControl>
+                  <k:singleLineTextControl id="74549416-e56c-4e21-9689-e774ebfb6b8e">
+                    <k:renderingOrdinal>3</k:renderingOrdinal>
+                    <k:renderingWidth>90</k:renderingWidth>
+                    <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
+                    <k:renderingVerticalResizeMode>k:resizeAutomatic</k:renderingVerticalResizeMode>
+                    <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                    <k:fieldToRender>emSubject</k:fieldToRender>
+                    <securityOwner>administratorUserAccount</securityOwner>
+                    <k:renderingHorizontalResizeMode>k:resizeManual</k:renderingHorizontalResizeMode>
+                  </k:singleLineTextControl>
+                  <!-- Inbox -->
+                  <k:inlineRelationshipRenderControl id="d84ca3fa-26b2-4c76-9bf5-11238b2dd36b">
+                    <name>Inbox</name>
+                    <k:isReversed>True</k:isReversed>
+                    <k:renderingOrdinal>1</k:renderingOrdinal>
+                    <k:renderingWidth>91</k:renderingWidth>
+                    <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
+                    <k:relationshipToRender>receivedMessages</k:relationshipToRender>
+                    <k:renderingVerticalResizeMode>k:resizeAutomatic</k:renderingVerticalResizeMode>
+                    <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                    <securityOwner>administratorUserAccount</securityOwner>
+                    <k:renderingHorizontalResizeMode>k:resizeManual</k:renderingHorizontalResizeMode>
+                  </k:inlineRelationshipRenderControl>
+                  <!-- Date Received -->
+                  <dateAndTimeKFieldRenderControl id="e15ed24a-2ee1-4602-82c2-66fb8168afce">
+                    <name>Date Received</name>
+                    <k:renderingOrdinal>0</k:renderingOrdinal>
+                    <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
+                    <k:renderingVerticalResizeMode>k:resizeAutomatic</k:renderingVerticalResizeMode>
+                    <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                    <k:fieldToRender>emReceivedDate</k:fieldToRender>
+                    <securityOwner>administratorUserAccount</securityOwner>
+                    <k:renderingHorizontalResizeMode>k:resizeAutomatic</k:renderingHorizontalResizeMode>
+                  </dateAndTimeKFieldRenderControl>
+                  <k:inlineRelationshipRenderControl id="e2d37b0b-c46d-4622-8d4d-64d65bd3e09b">
+                    <k:isReversed>False</k:isReversed>
+                    <k:renderingOrdinal>4</k:renderingOrdinal>
+                    <k:renderingWidth>90</k:renderingWidth>
+                    <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
+                    <k:relationshipToRender>originalMessage</k:relationshipToRender>
+                    <k:renderingVerticalResizeMode>k:resizeAutomatic</k:renderingVerticalResizeMode>
+                    <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                    <securityOwner>administratorUserAccount</securityOwner>
+                    <k:renderingHorizontalResizeMode>k:resizeManual</k:renderingHorizontalResizeMode>
+                  </k:inlineRelationshipRenderControl>
+                </k:containedControlsOnForm>
+              </k:verticalStackContainerControl>
+            </k:containedControlsOnForm>
+          </k:horizontalStackContainerControl>
+          <!-- Attachments -->
+          <k:verticalStackContainerControl id="cfd924d1-3908-4f7e-9617-4b72e8033a7f">
+            <name>Attachments</name>
+            <k:hideLabel>False</k:hideLabel>
+            <k:renderingHeight>37</k:renderingHeight>
+            <k:renderingOrdinal>1</k:renderingOrdinal>
+            <k:renderingWidth>100</k:renderingWidth>
+            <k:renderingBackgroundColor>white</k:renderingBackgroundColor>
+            <k:renderingVerticalResizeMode>k:resizeManual</k:renderingVerticalResizeMode>
+            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+            <securityOwner>administratorUserAccount</securityOwner>
+            <k:renderingHorizontalResizeMode>k:resizeSpring</k:renderingHorizontalResizeMode>
+            <k:containedControlsOnForm>
+              <k:tabRelationshipRenderControl id="73c65860-6f4e-4dbc-9916-a112b8d30c77">
                 <k:isReversed>False</k:isReversed>
-                <canCreateDerivedTypes>False</canCreateDerivedTypes>
-                <k:mandatoryControl>True</k:mandatoryControl>
-                <k:readOnlyControl>False</k:readOnlyControl>
-                <k:renderingOrdinal>6</k:renderingOrdinal>
+                <k:renderingHeight>64</k:renderingHeight>
+                <k:renderingOrdinal>0</k:renderingOrdinal>
+                <k:renderingWidth>99</k:renderingWidth>
                 <k:renderingBackgroundColor>rgba(255,255,255,1)</k:renderingBackgroundColor>
-                <k:relationshipToRender>usesInboxProvider</k:relationshipToRender>
-                <k:renderingVerticalResizeMode>k:resizeAutomatic</k:renderingVerticalResizeMode>
-                <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
+                <k:relationshipToRender>emAttachments</k:relationshipToRender>
+                <k:renderingVerticalResizeMode>k:resizeManual</k:renderingVerticalResizeMode>
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
                 <securityOwner>administratorUserAccount</securityOwner>
-                <k:renderingHorizontalResizeMode>k:resizeAutomatic</k:renderingHorizontalResizeMode>
-              </k:inlineRelationshipRenderControl>
-              <k:singleLineTextControl id="a7235ed6-16ea-4158-8197-1292f5623ac0">
-                <k:mandatoryControl>True</k:mandatoryControl>
-                <k:readOnlyControl>False</k:readOnlyControl>
-                <k:renderingOrdinal>2</k:renderingOrdinal>
-                <k:renderingBackgroundColor>rgba(255,255,255,1)</k:renderingBackgroundColor>
-                <k:renderingVerticalResizeMode>k:resizeAutomatic</k:renderingVerticalResizeMode>
-                <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                <k:fieldToRender>inboxEmailAddress</k:fieldToRender>
-                <securityOwner>administratorUserAccount</securityOwner>
-                <k:renderingHorizontalResizeMode>k:resizeAutomatic</k:renderingHorizontalResizeMode>
-              </k:singleLineTextControl>
+                <k:renderingHorizontalResizeMode>k:resizeManual</k:renderingHorizontalResizeMode>
+                <k:relationshipDisplayReport>dfab0f4d-e117-42fa-aa4d-ddb0736f026b</k:relationshipDisplayReport>
+                <k:selectionBehavior>
+                  <!-- null_sb -->
+                  <k:consoleBehavior id="33619607-b5cb-4adf-bc29-e8a4071cb23d">
+                    <name>null_sb</name>
+                    <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                    <securityOwner>administratorUserAccount</securityOwner>
+                    <k:behaviorActionMenu>
+                      <!-- null_sb_menu -->
+                      <k:actionMenu id="de7ea2c2-d0d1-4f3e-b1d0-9aa6c74c6791">
+                        <name>null_sb_menu</name>
+                        <k:showEditInlineActionsButton>False</k:showEditInlineActionsButton>
+                        <k:showExportActionsButton>False</k:showExportActionsButton>
+                        <k:showNewActionsButton>False</k:showNewActionsButton>
+                        <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                        <securityOwner>administratorUserAccount</securityOwner>
+                        <k:suppressedActions>2df46ebb-9141-455e-b725-894b706ee9f7</k:suppressedActions>
+                        <k:suppressedActions>k:addRelationshipAction</k:suppressedActions>
+                      </k:actionMenu>
+                    </k:behaviorActionMenu>
+                  </k:consoleBehavior>
+                </k:selectionBehavior>
+                <k:resourceConsoleBehavior>
+                  <!-- null_rcb -->
+                  <k:consoleBehavior id="d413b37e-3b11-4467-ae3d-42dffcddcbbb">
+                    <name>null_rcb</name>
+                    <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                    <securityOwner>administratorUserAccount</securityOwner>
+                    <k:behaviorActionMenu>
+                      <!-- null_rcb_menu -->
+                      <k:actionMenu id="2059647a-e6cd-46d6-a15f-973fd419e35f">
+                        <name>null_rcb_menu</name>
+                        <k:showEditInlineActionsButton>False</k:showEditInlineActionsButton>
+                        <k:showExportActionsButton>False</k:showExportActionsButton>
+                        <k:showNewActionsButton>False</k:showNewActionsButton>
+                        <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                        <securityOwner>administratorUserAccount</securityOwner>
+                        <k:suppressedTypesForNewMenu>photoFileType</k:suppressedTypesForNewMenu>
+                        <k:suppressedTypesForNewMenu>document</k:suppressedTypesForNewMenu>
+                        <k:suppressedTypesForNewMenu>imageFileType</k:suppressedTypesForNewMenu>
+                        <k:suppressedTypesForNewMenu>fileType</k:suppressedTypesForNewMenu>
+                        <k:suppressedTypesForNewMenu>documentRevision</k:suppressedTypesForNewMenu>
+                        <k:suppressedTypesForNewMenu>surveyAttachment</k:suppressedTypesForNewMenu>
+                        <k:suppressedTypesForNewMenu>iconFileType</k:suppressedTypesForNewMenu>
+                        <k:suppressedTypesForNewMenu>thumbnailFileType</k:suppressedTypesForNewMenu>
+                        <k:suppressedActions>16fc9a79-39fd-4847-a2e6-3485b2ca7e6f</k:suppressedActions>
+                        <k:suppressedActions>k:deleteResourceAction</k:suppressedActions>
+                        <k:suppressedActions>k:editResourceAction</k:suppressedActions>
+                        <k:suppressedActions>afd945d6-fc7a-4c62-a393-91df9053c3e3</k:suppressedActions>
+                        <k:suppressedActions>k:removeRelationshipAction</k:suppressedActions>
+                        <k:suppressedActions>f4b9efe8-69fa-4985-87d9-761b1fff3078</k:suppressedActions>
+                      </k:actionMenu>
+                    </k:behaviorActionMenu>
+                  </k:consoleBehavior>
+                </k:resourceConsoleBehavior>
+              </k:tabRelationshipRenderControl>
             </k:containedControlsOnForm>
           </k:verticalStackContainerControl>
         </k:containedControlsOnForm>
         <resourceHasResourceKeyDataHashes>
-          <resourceKeyDataHash id="8376261d-033b-45ff-8d3b-54b2b2593746">
-            <dataHash>41D2715B79521264AFDD0C415587B97D01DA45C2</dataHash>
-            <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
+          <resourceKeyDataHash id="0261244f-6517-4fa9-8021-bc53e3bf02ab">
+            <dataHash>4B7B335226E63F432BA0380C481B1FFCBAC2D4B6</dataHash>
+            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
             <resourceKeyDataHashAppliesToResourceKey>customEditFormUniqueNameKey</resourceKeyDataHashAppliesToResourceKey>
             <securityOwner>administratorUserAccount</securityOwner>
           </resourceKeyDataHash>
@@ -31317,6 +31609,63 @@
             </columnExpression>
           </reportColumn>
         </reportColumns>
+      </report>
+      <!-- Sent Email -->
+      <report id="30846558-33c2-45ba-abf6-dade8020c3be">
+        <name>Sent Email</name>
+        <hideReportHeader>False</hideReportHeader>
+        <hideOnDesktop>False</hideOnDesktop>
+        <hideOnMobile>False</hideOnMobile>
+        <hideActionBar>False</hideActionBar>
+        <hideOnTablet>False</hideOnTablet>
+        <reportUsesDefinition>sentEmailMessage</reportUsesDefinition>
+        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
+        <securityOwner>administratorUserAccount</securityOwner>
+        <isDefaultPickerReportForTypes>sentEmailMessage</isDefaultPickerReportForTypes>
+        <isDefaultDisplayReportForTypes>sentEmailMessage</isDefaultDisplayReportForTypes>
+        <k:selectionBehavior>
+          <!-- Sent Email_sb -->
+          <k:consoleBehavior id="33486693-03e8-4c47-acdb-972fcc4d1726">
+            <name>Sent Email_sb</name>
+            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+            <securityOwner>administratorUserAccount</securityOwner>
+            <k:behaviorActionMenu>
+              <!-- Sent Email_sb_menu -->
+              <k:actionMenu id="c64c4a47-451a-4501-8c07-d5a9825dd85e">
+                <name>Sent Email_sb_menu</name>
+                <k:showEditInlineActionsButton>False</k:showEditInlineActionsButton>
+                <k:showExportActionsButton>False</k:showExportActionsButton>
+                <k:showNewActionsButton>False</k:showNewActionsButton>
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <securityOwner>administratorUserAccount</securityOwner>
+              </k:actionMenu>
+            </k:behaviorActionMenu>
+          </k:consoleBehavior>
+        </k:selectionBehavior>
+        <k:resourceConsoleBehavior>
+          <!-- Sent Email_rcb -->
+          <k:consoleBehavior id="5f90e662-a31c-4334-ad4c-de00981c3f0b">
+            <name>Sent Email_rcb</name>
+            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+            <securityOwner>administratorUserAccount</securityOwner>
+            <k:behaviorActionMenu>
+              <!-- Sent Email_rcb_menu -->
+              <k:actionMenu id="fdb2a63f-5456-4314-81be-c4f302244014">
+                <name>Sent Email_rcb_menu</name>
+                <k:showEditInlineActionsButton>False</k:showEditInlineActionsButton>
+                <k:showExportActionsButton>False</k:showExportActionsButton>
+                <k:showNewActionsButton>False</k:showNewActionsButton>
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <securityOwner>administratorUserAccount</securityOwner>
+                <k:suppressedTypesForNewMenu>sentEmailMessage</k:suppressedTypesForNewMenu>
+                <k:suppressedActions>16fc9a79-39fd-4847-a2e6-3485b2ca7e6f</k:suppressedActions>
+                <k:suppressedActions>k:deleteResourceAction</k:suppressedActions>
+                <k:suppressedActions>k:editResourceAction</k:suppressedActions>
+                <k:suppressedActions>afd945d6-fc7a-4c62-a393-91df9053c3e3</k:suppressedActions>
+              </k:actionMenu>
+            </k:behaviorActionMenu>
+          </k:consoleBehavior>
+        </k:resourceConsoleBehavior>
       </report>
       <!-- Relationship Choice Field Object Report -->
       <report id="30ac0804-0ec9-409c-b837-d3d521751f30">
@@ -40007,6 +40356,39 @@ iif([Parent Organisation Level] is not null,'    '+[Name] ,[Name] )   )  )
               </fieldExpression>
             </conditionExpression>
           </reportCondition>
+          <!-- Advanced object -->
+          <reportCondition id="d674fb37-3ff8-4a42-8568-a7ad41ff1a34">
+            <name>Advanced object</name>
+            <conditionIsHidden>False</conditionIsHidden>
+            <conditionIsLocked>False</conditionIsLocked>
+            <conditionDisplayOrder>2</conditionDisplayOrder>
+            <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
+            <securityOwner>administratorUserAccount</securityOwner>
+            <operator>operIsFalse</operator>
+            <conditionParameter>
+              <parameter id="48c7bab7-dad1-49eb-9305-1248f455d216">
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <securityOwner>administratorUserAccount</securityOwner>
+              </parameter>
+            </conditionParameter>
+            <conditionExpression>
+              <fieldExpression id="618f1200-d7e2-4776-b2b8-ff1b28c98983">
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <fieldExpressionField>isAdvancedType</fieldExpressionField>
+                <securityOwner>administratorUserAccount</securityOwner>
+                <sourceNode>7cc0d89d-a52b-47f1-9715-3390ddb34908</sourceNode>
+                <reportExpressionResultType>
+                  <!-- Bool -->
+                  <boolArgument id="bcb1c213-165f-4497-b84b-02290b6b1d5e">
+                    <name>Bool</name>
+                    <boolParameterValue>False</boolParameterValue>
+                    <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                    <securityOwner>administratorUserAccount</securityOwner>
+                  </boolArgument>
+                </reportExpressionResultType>
+              </fieldExpression>
+            </conditionExpression>
+          </reportCondition>
         </hasConditions>
         <reportOrderBys>
           <reportOrderBy id="a55a2865-4846-4cb1-9025-1660d90b3dbe">
@@ -42877,9 +43259,9 @@ iif([Parent Organisation Level] is not null,'    '+[Name] ,[Name] )   )  )
           </k:consoleBehavior>
         </k:selectionBehavior>
       </report>
-      <!-- Mail Boxes -->
+      <!-- Inboxes -->
       <report id="c7029c23-3f01-4cb5-89a0-3d6c1daa3c07">
-        <name>Mail Boxes</name>
+        <name>Inboxes</name>
         <description>Mail boxes for sending and receiving emails</description>
         <alias>console:inboxesReport</alias>
         <canCreate>True</canCreate>
@@ -42958,31 +43340,6 @@ iif([Parent Organisation Level] is not null,'    '+[Name] ,[Name] )   )  )
               <aggregateReportNode id="37403e11-4bb6-4fc0-ae6b-d3b2eb688359">
                 <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
                 <securityOwner>administratorUserAccount</securityOwner>
-                <groupedBy>
-                  <aggregateExpression id="3526ae40-e8bc-4bd7-9474-b10eb0c823ed">
-                    <aggregateMethod>aggList</aggregateMethod>
-                    <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                    <securityOwner>administratorUserAccount</securityOwner>
-                    <sourceNode>37403e11-4bb6-4fc0-ae6b-d3b2eb688359</sourceNode>
-                    <aggregatedExpression>
-                      <fieldExpression id="d4f4f5d8-3828-40c2-a9f1-892cc2fd136c">
-                        <reportExpressionResultType>76672cd9-cdd1-4b31-9506-b9d24144ad17</reportExpressionResultType>
-                        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                        <fieldExpressionField>name</fieldExpressionField>
-                        <securityOwner>administratorUserAccount</securityOwner>
-                        <sourceNode>df508394-d1e1-4cac-8191-d26c92c83890</sourceNode>
-                      </fieldExpression>
-                    </aggregatedExpression>
-                    <reportExpressionResultType>
-                      <!-- String -->
-                      <stringArgument id="76672cd9-cdd1-4b31-9506-b9d24144ad17">
-                        <name>String</name>
-                        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                        <securityOwner>administratorUserAccount</securityOwner>
-                      </stringArgument>
-                    </reportExpressionResultType>
-                  </aggregateExpression>
-                </groupedBy>
                 <groupedNode>
                   <relationshipReportNode id="df508394-d1e1-4cac-8191-d26c92c83890">
                     <followInReverse>False</followInReverse>
@@ -43004,6 +43361,31 @@ iif([Parent Organisation Level] is not null,'    '+[Name] ,[Name] )   )  )
           </resourceReportNode>
         </rootNode>
         <reportColumns>
+          <!-- Enabled -->
+          <reportColumn id="1adf917f-3ff0-4bb5-ade9-6f8082946662">
+            <name>Enabled</name>
+            <columnIsHidden>False</columnIsHidden>
+            <columnDisplayOrder>6</columnDisplayOrder>
+            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+            <securityOwner>administratorUserAccount</securityOwner>
+            <columnExpression>
+              <fieldExpression id="06784310-13db-46d1-9fab-a2b0af2ac9cf">
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <fieldExpressionField>inboxEnabled</fieldExpressionField>
+                <securityOwner>administratorUserAccount</securityOwner>
+                <sourceNode>3b369897-c449-4c86-8461-741f6227a1f7</sourceNode>
+                <reportExpressionResultType>
+                  <!-- Bool -->
+                  <boolArgument id="39c61830-fe42-4179-b017-1bf074fd239a">
+                    <name>Bool</name>
+                    <boolParameterValue>False</boolParameterValue>
+                    <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                    <securityOwner>administratorUserAccount</securityOwner>
+                  </boolArgument>
+                </reportExpressionResultType>
+              </fieldExpression>
+            </columnExpression>
+          </reportColumn>
           <reportColumn id="1b9c9e7e-cddc-4f44-80e4-794d6b79e036">
             <columnIsHidden>True</columnIsHidden>
             <columnDisplayOrder>0</columnDisplayOrder>
@@ -43018,6 +43400,30 @@ iif([Parent Organisation Level] is not null,'    '+[Name] ,[Name] )   )  )
                   </resourceArgument>
                 </reportExpressionResultType>
               </idExpression>
+            </columnExpression>
+          </reportColumn>
+          <!-- Mail address -->
+          <reportColumn id="69e7559a-19bb-4917-9581-bc5e692e4518">
+            <name>Mail address</name>
+            <columnIsHidden>False</columnIsHidden>
+            <columnDisplayOrder>3</columnDisplayOrder>
+            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+            <securityOwner>administratorUserAccount</securityOwner>
+            <columnExpression>
+              <fieldExpression id="266ea8ff-7c73-41da-82b9-23a11bed8431">
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <fieldExpressionField>inboxEmailAddress</fieldExpressionField>
+                <securityOwner>administratorUserAccount</securityOwner>
+                <sourceNode>3b369897-c449-4c86-8461-741f6227a1f7</sourceNode>
+                <reportExpressionResultType>
+                  <!-- String -->
+                  <stringArgument id="7c181eea-04af-4559-b772-abd0eff4ee96">
+                    <name>String</name>
+                    <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                    <securityOwner>administratorUserAccount</securityOwner>
+                  </stringArgument>
+                </reportExpressionResultType>
+              </fieldExpression>
             </columnExpression>
           </reportColumn>
           <!-- Name -->
@@ -43038,103 +43444,6 @@ iif([Parent Organisation Level] is not null,'    '+[Name] ,[Name] )   )  )
                 </reportExpressionResultType>
               </fieldExpression>
             </columnExpression>
-          </reportColumn>
-          <!-- Enabled -->
-          <reportColumn id="9a929ab8-4330-43fe-8d18-29d7ca381ab3">
-            <name>Enabled</name>
-            <columnIsHidden>False</columnIsHidden>
-            <columnDisplayOrder>3</columnDisplayOrder>
-            <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-            <securityOwner>administratorUserAccount</securityOwner>
-            <columnFormattingRule>
-              <iconFormattingRule id="ba4e602d-ace9-4068-a9a6-3301564484fd">
-                <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                <securityOwner>administratorUserAccount</securityOwner>
-                <iconRules>
-                  <iconRule id="22e679ca-606d-4fb8-9d77-a620becd1283">
-                    <rulePriority>0</rulePriority>
-                    <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                    <iconRuleImage>greenTickCondFormatIcon</iconRuleImage>
-                    <securityOwner>administratorUserAccount</securityOwner>
-                    <ruleCondition>
-                      <reportCondition id="38697fe1-09cd-4ae8-a493-8d1c8a6801ae">
-                        <conditionIsHidden>False</conditionIsHidden>
-                        <conditionIsLocked>False</conditionIsLocked>
-                        <conditionDisplayOrder>0</conditionDisplayOrder>
-                        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                        <securityOwner>administratorUserAccount</securityOwner>
-                        <operator>operIsTrue</operator>
-                        <conditionParameter>
-                          <parameter id="b0ea84f2-e994-4099-b46b-c50551e42c43">
-                            <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                            <securityOwner>administratorUserAccount</securityOwner>
-                            <paramTypeAndDefault>
-                              <!-- Boolean -->
-                              <boolArgument id="42199340-e8bb-4c4a-8940-907a8e858910">
-                                <name>Boolean</name>
-                                <boolParameterValue>False</boolParameterValue>
-                                <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                                <securityOwner>administratorUserAccount</securityOwner>
-                              </boolArgument>
-                            </paramTypeAndDefault>
-                          </parameter>
-                        </conditionParameter>
-                      </reportCondition>
-                    </ruleCondition>
-                  </iconRule>
-                  <iconRule id="93a3cea6-ce2f-4047-a958-a16ad995923d">
-                    <rulePriority>1</rulePriority>
-                    <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                    <securityOwner>administratorUserAccount</securityOwner>
-                    <ruleCondition>
-                      <reportCondition id="732d08fb-8eb9-49f7-975c-cacd5229945f">
-                        <conditionIsHidden>False</conditionIsHidden>
-                        <conditionIsLocked>False</conditionIsLocked>
-                        <conditionDisplayOrder>0</conditionDisplayOrder>
-                        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                        <securityOwner>administratorUserAccount</securityOwner>
-                      </reportCondition>
-                    </ruleCondition>
-                  </iconRule>
-                </iconRules>
-              </iconFormattingRule>
-            </columnFormattingRule>
-            <columnExpression>
-              <fieldExpression id="613da4e1-c507-447a-a297-4d8179eb9c2f">
-                <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                <fieldExpressionField>inboxEnabled</fieldExpressionField>
-                <securityOwner>administratorUserAccount</securityOwner>
-                <sourceNode>3b369897-c449-4c86-8461-741f6227a1f7</sourceNode>
-                <reportExpressionResultType>
-                  <!-- Bool -->
-                  <boolArgument id="c9431792-0369-4fbc-b01f-d0580ccef732">
-                    <name>Bool</name>
-                    <boolParameterValue>False</boolParameterValue>
-                    <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                    <securityOwner>administratorUserAccount</securityOwner>
-                  </boolArgument>
-                </reportExpressionResultType>
-              </fieldExpression>
-            </columnExpression>
-            <columnDisplayFormat>
-              <displayFormat id="cfd95ecf-3411-4817-93d7-fc40600287eb">
-                <columnShowText>False</columnShowText>
-                <maxLineCount>0</maxLineCount>
-                <formatDecimalPlaces>0</formatDecimalPlaces>
-                <formatAlignment>alignAutomatic</formatAlignment>
-                <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-                <securityOwner>administratorUserAccount</securityOwner>
-              </displayFormat>
-            </columnDisplayFormat>
-          </reportColumn>
-          <!-- Application -->
-          <reportColumn id="f89048de-5431-418e-9a18-8ad7c30fa3ca">
-            <name>Application</name>
-            <columnIsHidden>False</columnIsHidden>
-            <columnDisplayOrder>4</columnDisplayOrder>
-            <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
-            <securityOwner>administratorUserAccount</securityOwner>
-            <columnExpression>3526ae40-e8bc-4bd7-9474-b10eb0c823ed</columnExpression>
           </reportColumn>
           <!-- Description -->
           <reportColumn id="fcb7c956-0c75-4b7d-810e-2e041eaa3a2f">
@@ -43158,20 +43467,43 @@ iif([Parent Organisation Level] is not null,'    '+[Name] ,[Name] )   )  )
           </reportColumn>
         </reportColumns>
         <k:selectionBehavior>
-          <!-- Mail Boxes_sb -->
-          <k:consoleBehavior id="11493e15-33ba-456d-b21b-d943a4b86f4d">
-            <name>Mail Boxes_sb</name>
+          <!-- Inboxes_sb -->
+          <k:consoleBehavior id="db847a0e-cb30-43fc-acd9-d0ac911b806c">
+            <name>Inboxes_sb</name>
             <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+            <securityOwner>administratorUserAccount</securityOwner>
             <k:behaviorActionMenu>
-              <!-- Mail Boxes_sb_menu -->
-              <k:actionMenu id="c64ec5ea-08ae-444f-8d58-dec118a3345a">
-                <name>Mail Boxes_sb_menu</name>
+              <!-- Inboxes_sb_menu -->
+              <k:actionMenu id="f6f43a24-6c32-471d-89ac-14e37ff6694a">
+                <name>Inboxes_sb_menu</name>
                 <k:showEditInlineActionsButton>False</k:showEditInlineActionsButton>
+                <k:showExportActionsButton>False</k:showExportActionsButton>
+                <k:showNewActionsButton>False</k:showNewActionsButton>
                 <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <securityOwner>administratorUserAccount</securityOwner>
               </k:actionMenu>
             </k:behaviorActionMenu>
           </k:consoleBehavior>
         </k:selectionBehavior>
+        <k:resourceConsoleBehavior>
+          <!-- Inboxes_rcb -->
+          <k:consoleBehavior id="fd81e326-3395-4934-9070-5e8e3c3790e7">
+            <name>Inboxes_rcb</name>
+            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+            <securityOwner>administratorUserAccount</securityOwner>
+            <k:behaviorActionMenu>
+              <!-- Inboxes_rcb_menu -->
+              <k:actionMenu id="a8d3c34d-5a53-4faa-9260-6f141187dddf">
+                <name>Inboxes_rcb_menu</name>
+                <k:showEditInlineActionsButton>False</k:showEditInlineActionsButton>
+                <k:showExportActionsButton>False</k:showExportActionsButton>
+                <k:showNewActionsButton>True</k:showNewActionsButton>
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <securityOwner>administratorUserAccount</securityOwner>
+              </k:actionMenu>
+            </k:behaviorActionMenu>
+          </k:consoleBehavior>
+        </k:resourceConsoleBehavior>
       </report>
       <!-- Report Picker Report -->
       <report id="c9f9fdc2-ce77-487e-a700-625abc23973f">
@@ -46308,6 +46640,160 @@ iif([Parent Organisation Level] is not null,'    '+[Name] ,[Name] )   )  )
           </reportColumn>
         </reportColumns>
       </report>
+      <!-- Email Attachments -->
+      <report id="dfab0f4d-e117-42fa-aa4d-ddb0736f026b">
+        <name>Email Attachments</name>
+        <hideReportHeader>False</hideReportHeader>
+        <rollupOptionLabels>True</rollupOptionLabels>
+        <hideOnDesktop>False</hideOnDesktop>
+        <hideOnMobile>True</hideOnMobile>
+        <hideActionBar>False</hideActionBar>
+        <isPrivatelyOwned>False</isPrivatelyOwned>
+        <hideOnTablet>True</hideOnTablet>
+        <reportUsesDefinition>fileType</reportUsesDefinition>
+        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
+        <securityOwner>administratorUserAccount</securityOwner>
+        <isDefaultPickerReportForTypes>fileType</isDefaultPickerReportForTypes>
+        <isDefaultDisplayReportForTypes>fileType</isDefaultDisplayReportForTypes>
+        <hasConditions>
+          <!-- File -->
+          <reportCondition id="df33b29e-b06d-4e42-9cfb-127861df0b92">
+            <name>File</name>
+            <conditionIsHidden>False</conditionIsHidden>
+            <conditionIsLocked>False</conditionIsLocked>
+            <conditionDisplayOrder>0</conditionDisplayOrder>
+            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+            <securityOwner>administratorUserAccount</securityOwner>
+            <conditionParameter>
+              <parameter id="f8342f90-ba82-410b-a60c-2d3bdf616e22">
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <securityOwner>administratorUserAccount</securityOwner>
+                <paramTypeAndDefault>
+                  <!-- String -->
+                  <stringArgument id="a751b043-3d08-4bc4-8db5-cdd4170fb02f">
+                    <name>String</name>
+                    <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                    <securityOwner>administratorUserAccount</securityOwner>
+                  </stringArgument>
+                </paramTypeAndDefault>
+              </parameter>
+            </conditionParameter>
+            <conditionExpression>
+              <fieldExpression id="900aef8f-ddc2-4c63-b825-370a50d60aaf">
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <fieldExpressionField>name</fieldExpressionField>
+                <securityOwner>administratorUserAccount</securityOwner>
+                <sourceNode>dbe02b8d-f838-433f-8e65-a83b863b202f</sourceNode>
+                <reportExpressionResultType>
+                  <!-- String -->
+                  <stringArgument id="84a0fe21-69ec-4da5-beb3-46efa4177643">
+                    <name>String</name>
+                    <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                    <securityOwner>administratorUserAccount</securityOwner>
+                  </stringArgument>
+                </reportExpressionResultType>
+              </fieldExpression>
+            </conditionExpression>
+          </reportCondition>
+        </hasConditions>
+        <rootNode>
+          <resourceReportNode id="dbe02b8d-f838-433f-8e65-a83b863b202f">
+            <exactType>False</exactType>
+            <targetMustExist>False</targetMustExist>
+            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+            <resourceReportNodeType>fileType</resourceReportNodeType>
+            <securityOwner>administratorUserAccount</securityOwner>
+          </resourceReportNode>
+        </rootNode>
+        <reportColumns>
+          <!-- File -->
+          <reportColumn id="56c8ce5c-271a-45e8-b928-ae6d310c409a">
+            <name>File</name>
+            <columnIsHidden>False</columnIsHidden>
+            <columnDisplayOrder>1</columnDisplayOrder>
+            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+            <securityOwner>administratorUserAccount</securityOwner>
+            <columnExpression>
+              <fieldExpression id="fd77049e-d1ea-4ace-8750-5025c58f4d82">
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <fieldExpressionField>name</fieldExpressionField>
+                <securityOwner>administratorUserAccount</securityOwner>
+                <sourceNode>dbe02b8d-f838-433f-8e65-a83b863b202f</sourceNode>
+                <reportExpressionResultType>
+                  <!-- String -->
+                  <stringArgument id="e406d244-2bfd-4885-998d-580a4dbb5764">
+                    <name>String</name>
+                    <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                    <securityOwner>administratorUserAccount</securityOwner>
+                  </stringArgument>
+                </reportExpressionResultType>
+              </fieldExpression>
+            </columnExpression>
+          </reportColumn>
+          <!-- _id -->
+          <reportColumn id="6fa15989-80ce-4362-94e5-097b24bcc1b5">
+            <name>_id</name>
+            <columnIsHidden>True</columnIsHidden>
+            <columnDisplayOrder>0</columnDisplayOrder>
+            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+            <securityOwner>administratorUserAccount</securityOwner>
+            <columnExpression>
+              <idExpression id="4b3a818b-d4d4-4bdd-8244-86fe9bd39035">
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <securityOwner>administratorUserAccount</securityOwner>
+                <sourceNode>dbe02b8d-f838-433f-8e65-a83b863b202f</sourceNode>
+              </idExpression>
+            </columnExpression>
+          </reportColumn>
+        </reportColumns>
+        <k:selectionBehavior>
+          <!-- Email Attachments_sb -->
+          <k:consoleBehavior id="3e46cb94-bb9f-41d6-beb2-38c6410ac5f6">
+            <name>Email Attachments_sb</name>
+            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+            <securityOwner>administratorUserAccount</securityOwner>
+            <k:behaviorActionMenu>
+              <!-- Email Attachments_sb_menu -->
+              <k:actionMenu id="caaaecfa-1bc5-4613-84a3-b04334c073f1">
+                <name>Email Attachments_sb_menu</name>
+                <k:showEditInlineActionsButton>False</k:showEditInlineActionsButton>
+                <k:showExportActionsButton>False</k:showExportActionsButton>
+                <k:showNewActionsButton>False</k:showNewActionsButton>
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <securityOwner>administratorUserAccount</securityOwner>
+              </k:actionMenu>
+            </k:behaviorActionMenu>
+          </k:consoleBehavior>
+        </k:selectionBehavior>
+        <k:resourceConsoleBehavior>
+          <!-- Email Attachments_rcb -->
+          <k:consoleBehavior id="7d720832-e842-43f2-9587-7e0043b0f6a4">
+            <name>Email Attachments_rcb</name>
+            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+            <securityOwner>administratorUserAccount</securityOwner>
+            <k:behaviorActionMenu>
+              <!-- Email Attachments_rcb_menu -->
+              <k:actionMenu id="2a7d9dc1-157c-4ae9-98b4-61e4561a76d4">
+                <name>Email Attachments_rcb_menu</name>
+                <k:showEditInlineActionsButton>False</k:showEditInlineActionsButton>
+                <k:showExportActionsButton>False</k:showExportActionsButton>
+                <k:showNewActionsButton>False</k:showNewActionsButton>
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <securityOwner>administratorUserAccount</securityOwner>
+                <k:suppressedTypesForNewMenu>photoFileType</k:suppressedTypesForNewMenu>
+                <k:suppressedTypesForNewMenu>document</k:suppressedTypesForNewMenu>
+                <k:suppressedTypesForNewMenu>imageFileType</k:suppressedTypesForNewMenu>
+                <k:suppressedTypesForNewMenu>fileType</k:suppressedTypesForNewMenu>
+                <k:suppressedTypesForNewMenu>documentRevision</k:suppressedTypesForNewMenu>
+                <k:suppressedTypesForNewMenu>surveyAttachment</k:suppressedTypesForNewMenu>
+                <k:suppressedTypesForNewMenu>iconFileType</k:suppressedTypesForNewMenu>
+                <k:suppressedTypesForNewMenu>thumbnailFileType</k:suppressedTypesForNewMenu>
+                <k:suppressedActions>k:editResourceAction</k:suppressedActions>
+              </k:actionMenu>
+            </k:behaviorActionMenu>
+          </k:consoleBehavior>
+        </k:resourceConsoleBehavior>
+      </report>
       <!-- Document Picker Report -->
       <report id="e02e72ef-dd7d-4b93-8d67-49cee92e46a3">
         <name>Document Picker Report</name>
@@ -48585,6 +49071,86 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
             </columnExpression>
           </reportColumn>
         </reportColumns>
+      </report>
+      <!-- Received Email -->
+      <report id="ebec3855-2327-46c6-999c-4197c8eda98f">
+        <name>Received Email</name>
+        <hideReportHeader>False</hideReportHeader>
+        <hideOnDesktop>False</hideOnDesktop>
+        <hideOnMobile>False</hideOnMobile>
+        <hideActionBar>False</hideActionBar>
+        <hideOnTablet>False</hideOnTablet>
+        <reportUsesDefinition>receivedEmailMessage</reportUsesDefinition>
+        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
+        <securityOwner>administratorUserAccount</securityOwner>
+        <isDefaultPickerReportForTypes>receivedEmailMessage</isDefaultPickerReportForTypes>
+        <isDefaultDisplayReportForTypes>receivedEmailMessage</isDefaultDisplayReportForTypes>
+        <reportOrderBys>
+          <reportOrderBy id="a268b1c8-5d3c-4bca-b86c-309bfe0b388a">
+            <reverseOrder>False</reverseOrder>
+            <orderPriority>0</orderPriority>
+            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+            <securityOwner>administratorUserAccount</securityOwner>
+            <orderByExpression>
+              <columnReferenceExpression id="bcf1b793-c5f2-4cf8-bae1-54332fd32d93">
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <securityOwner>administratorUserAccount</securityOwner>
+              </columnReferenceExpression>
+            </orderByExpression>
+          </reportOrderBy>
+          <reportOrderBy id="ebe5a912-f429-4afa-b108-6ddee0bb738f">
+            <reverseOrder>False</reverseOrder>
+            <orderPriority>0</orderPriority>
+            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+            <securityOwner>administratorUserAccount</securityOwner>
+            <orderByExpression>
+              <columnReferenceExpression id="8eeab36d-b3df-4bda-b12f-da56bd6cf90d">
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <securityOwner>administratorUserAccount</securityOwner>
+              </columnReferenceExpression>
+            </orderByExpression>
+          </reportOrderBy>
+        </reportOrderBys>
+        <k:selectionBehavior>
+          <!-- Received Emails_sb -->
+          <k:consoleBehavior id="f95ce9bb-eac9-4297-9dd9-0199c4127792">
+            <name>Received Emails_sb</name>
+            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+            <securityOwner>administratorUserAccount</securityOwner>
+            <k:behaviorActionMenu>
+              <!-- Received Emails_sb_menu -->
+              <k:actionMenu id="b92fcda3-8375-4ef1-9b3c-a3fb4b56d8ab">
+                <name>Received Emails_sb_menu</name>
+                <k:showEditInlineActionsButton>False</k:showEditInlineActionsButton>
+                <k:showExportActionsButton>False</k:showExportActionsButton>
+                <k:showNewActionsButton>False</k:showNewActionsButton>
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <securityOwner>administratorUserAccount</securityOwner>
+              </k:actionMenu>
+            </k:behaviorActionMenu>
+          </k:consoleBehavior>
+        </k:selectionBehavior>
+        <k:resourceConsoleBehavior>
+          <!-- Received Emails_rcb -->
+          <k:consoleBehavior id="64e8e25d-5749-4b7f-a58a-be05c2873335">
+            <name>Received Emails_rcb</name>
+            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+            <securityOwner>administratorUserAccount</securityOwner>
+            <k:behaviorActionMenu>
+              <!-- Received Emails_rcb_menu -->
+              <k:actionMenu id="6792e2c0-d7fd-42d7-901d-a6ec956a258d">
+                <name>Received Emails_rcb_menu</name>
+                <k:showEditInlineActionsButton>False</k:showEditInlineActionsButton>
+                <k:showExportActionsButton>False</k:showExportActionsButton>
+                <k:showNewActionsButton>False</k:showNewActionsButton>
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <securityOwner>administratorUserAccount</securityOwner>
+                <k:suppressedTypesForNewMenu>receivedEmailMessage</k:suppressedTypesForNewMenu>
+                <k:suppressedActions>k:editResourceAction</k:suppressedActions>
+              </k:actionMenu>
+            </k:behaviorActionMenu>
+          </k:consoleBehavior>
+        </k:resourceConsoleBehavior>
       </report>
       <!-- Reports -->
       <report id="ef02d53f-5b24-41f5-9842-d58affc07a75">
@@ -56044,6 +56610,9 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
       <resourceArgument id="23ad572b-9dd9-49a0-bceb-2ca5017bdbd2">
         <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
       </resourceArgument>
+      <resourceArgument id="27ec81a1-612a-4e02-8590-9769474fdadb">
+        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
+      </resourceArgument>
       <!-- InlineRelationship -->
       <resourceArgument id="28ab6089-ebd8-4d9f-9c94-ba94d0153f2e">
         <name>InlineRelationship</name>
@@ -56053,10 +56622,17 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
       <resourceArgument id="2a982128-19d5-41c9-9141-39ef45b0f145">
         <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
       </resourceArgument>
+      <resourceArgument id="2dae5c36-f57e-4e03-a522-cb7431aefe65">
+        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
+      </resourceArgument>
       <!-- InlineRelationship -->
       <resourceArgument id="38f1cac0-47d2-4292-96c0-265cd7833d43">
         <name>InlineRelationship</name>
         <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
+      </resourceArgument>
+      <resourceArgument id="462133c1-3d6a-4e74-81b7-08571e6198c1">
+        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
+        <securityOwner>administratorUserAccount</securityOwner>
       </resourceArgument>
       <!-- InlineRelationship -->
       <resourceArgument id="4e001b09-2dde-4edb-81d4-49e4ceb9cbb2">
@@ -56074,12 +56650,18 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
         <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
         <securityOwner>administratorUserAccount</securityOwner>
       </resourceArgument>
+      <resourceArgument id="6ec895e0-8a52-4480-8582-27d578c3cd6b">
+        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
+      </resourceArgument>
       <resourceArgument id="75feb151-1c41-49d4-bdad-b7d80a409e1d">
         <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
       </resourceArgument>
       <resourceArgument id="8fa9b857-d6bf-4a0d-8359-49bd4d01506e">
         <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
         <securityOwner>administratorUserAccount</securityOwner>
+      </resourceArgument>
+      <resourceArgument id="a225204a-b1ca-4543-8548-a5be2f027793">
+        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
       </resourceArgument>
       <!-- InlineRelationship -->
       <resourceArgument id="b62d19d3-9cff-4f64-96bb-24ee157f6cd9">
@@ -58250,12 +58832,22 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
         <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
         <securityOwner>administratorUserAccount</securityOwner>
       </stringArgument>
+      <stringArgument id="102cb9fc-ad96-40e6-a077-e1408dc89ea0">
+        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
+      </stringArgument>
       <stringArgument id="17e42141-9eea-45bd-a919-64b5e61869be">
+        <stringMultiLine>True</stringMultiLine>
+        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
+      </stringArgument>
+      <stringArgument id="18ed0a4a-467f-4d9b-9d08-b72c1a00b2b2">
         <stringMultiLine>True</stringMultiLine>
         <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
       </stringArgument>
       <stringArgument id="1a103cbc-12e6-44e9-b923-1c5e2a04c81e">
         <stringMultiLine>True</stringMultiLine>
+        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
+      </stringArgument>
+      <stringArgument id="1a8c8a9d-7de8-4cc4-b6b1-888d9256374e">
         <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
       </stringArgument>
       <!-- String -->
@@ -58272,6 +58864,9 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
         <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
       </stringArgument>
       <stringArgument id="2376771e-8764-481e-9d4a-9c2bdcf36657">
+        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
+      </stringArgument>
+      <stringArgument id="2845c38d-46de-4375-8000-e2bde8ae621e">
         <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
       </stringArgument>
       <!-- String -->
@@ -58333,7 +58928,14 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
         <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
         <securityOwner>administratorUserAccount</securityOwner>
       </stringArgument>
+      <stringArgument id="596cda5b-9d3a-4291-b5c1-65b928ff1366">
+        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
+      </stringArgument>
       <stringArgument id="5abb76fb-7e3f-4768-82d0-bc203c22c183">
+        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
+      </stringArgument>
+      <stringArgument id="5cfd59f9-aee6-4147-b1df-ebfa9110f6a6">
+        <stringMultiLine>True</stringMultiLine>
         <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
       </stringArgument>
       <stringArgument id="60813581-284e-4189-8802-772793c8c5e3">
@@ -58363,7 +58965,21 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
         <stringMultiLine>True</stringMultiLine>
         <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
       </stringArgument>
+      <!-- String -->
+      <stringArgument id="76672cd9-cdd1-4b31-9506-b9d24144ad17">
+        <name>String</name>
+        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
+        <securityOwner>administratorUserAccount</securityOwner>
+      </stringArgument>
       <stringArgument id="76ec8a0d-37d4-467d-8bda-056334b9bcbc">
+        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
+      </stringArgument>
+      <stringArgument id="819417bd-fc1f-4016-aaec-b80d55f04481">
+        <stringMultiLine>True</stringMultiLine>
+        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
+      </stringArgument>
+      <stringArgument id="88c2ac0f-36ac-4023-80e6-5b0ba5c4e42a">
+        <stringMultiLine>True</stringMultiLine>
         <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
       </stringArgument>
       <stringArgument id="8c8fd67a-14a4-41f6-9717-c8137a698cf8">
@@ -58399,6 +59015,15 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
       </stringArgument>
       <stringArgument id="a2e0b3ad-4e08-44c0-be44-deaeda14bc54">
         <stringMultiLine>True</stringMultiLine>
+        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
+        <securityOwner>administratorUserAccount</securityOwner>
+      </stringArgument>
+      <stringArgument id="a52f3aa0-c980-4018-a4c1-e81dc88e3428">
+        <stringMultiLine>True</stringMultiLine>
+        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
+        <securityOwner>administratorUserAccount</securityOwner>
+      </stringArgument>
+      <stringArgument id="aab0d234-08cc-454e-924b-9a16ea2db49e">
         <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
         <securityOwner>administratorUserAccount</securityOwner>
       </stringArgument>
@@ -58776,6 +59401,7 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
         <firstActivity>f9761adb-55c8-498e-acae-df6eed5949c2</firstActivity>
         <runningInstances>3b841bfd-d298-41d6-b6ae-de7f5324dde7</runningInstances>
         <runningInstances>456294fa-dd6c-4cdb-8738-1e5316c9ad22</runningInstances>
+        <runningInstances>8d618a50-a102-4849-9743-17a70e5eab60</runningInstances>
         <runningInstances>a7687da1-fc61-42cc-8df0-bea8459b435e</runningInstances>
         <runningInstances>c190cdf2-b2a1-4576-aeb1-d183387c904e</runningInstances>
         <runningInstances>fec11ad5-539d-41a6-96fe-a887b65335eb</runningInstances>
@@ -58816,6 +59442,7 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
             <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
             <securityOwner>administratorUserAccount</securityOwner>
             <revRel id="4045e65c-5781-4873-9439-674591b4f6de">456294fa-dd6c-4cdb-8738-1e5316c9ad22</revRel>
+            <revRel id="4045e65c-5781-4873-9439-674591b4f6de">8d618a50-a102-4849-9743-17a70e5eab60</revRel>
           </exitPoint>
         </exitPoints>
         <containedActivities>
@@ -58914,8 +59541,32 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
       <to>k:enumReport</to>
     </defaultPickerReport>
     <k:relationshipToRender>
+      <from>1c3c3a8c-2bec-415c-9625-e2aa9d7e161c</from>
+      <to>1910e6c0-5564-4f35-b417-d8052888e61c</to>
+    </k:relationshipToRender>
+    <k:relationshipToRender>
+      <from>36de5bd9-b21b-4032-abd9-55adc30c442e</from>
+      <to>5a5ea45f-434f-4ec2-a5a8-626c70313913</to>
+    </k:relationshipToRender>
+    <k:relationshipToRender>
+      <from>3d90e23f-68b0-43e3-8280-8804a8e92de1</from>
+      <to>0559dd05-92ab-413d-9b42-09cc842b850c</to>
+    </k:relationshipToRender>
+    <k:relationshipToRender>
+      <from>4b47b6ad-3d75-4d2e-b181-ae1519c26668</from>
+      <to>d5dbe051-cead-4d96-912b-44ec1d6c6c1f</to>
+    </k:relationshipToRender>
+    <k:relationshipToRender>
+      <from>50cfdab0-bff3-423b-a775-3b80074898d8</from>
+      <to>1e5301ea-4cd1-4db8-a823-2a223b2d0c79</to>
+    </k:relationshipToRender>
+    <k:relationshipToRender>
       <from>97e91be6-08b8-4000-9519-7c09c211fd1e</from>
       <to>8636106b-faca-40fa-819e-eee90a19b692</to>
+    </k:relationshipToRender>
+    <k:relationshipToRender>
+      <from>a01c3650-f298-403b-91a3-9d07e1e679af</from>
+      <to>92d50f86-3c2e-4394-9f4e-c3a95cbec0c4</to>
     </k:relationshipToRender>
     <k:relationshipToRender>
       <from>d079c509-0cb0-4e28-8670-46e2743134cf</from>
@@ -58993,6 +59644,18 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
       <from>fce35827-17ca-4a98-9cfc-2fd636f1f63f</from>
       <to>person</to>
     </conformsToType>
+    <reportUsesDefinition>
+      <from>3f1590cb-5bbe-42a3-9b31-f5b2feb3a182</from>
+      <to>8e37cf66-529d-4258-a744-b0cef9665263</to>
+    </reportUsesDefinition>
+    <reportUsesDefinition>
+      <from>40ba8350-7633-44df-9029-22a53e5ef933</from>
+      <to>0287b978-bde2-421a-81b4-4caef9354f7a</to>
+    </reportUsesDefinition>
+    <reportUsesDefinition>
+      <from>564be89e-99ca-4b79-8e49-4782bbf2a964</from>
+      <to>0287b978-bde2-421a-81b4-4caef9354f7a</to>
+    </reportUsesDefinition>
     <inherits>
       <from>person</from>
       <to>f45794d4-098a-462d-9246-4be97b7c9d4b</to>
@@ -59018,12 +59681,24 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
       <to>person</to>
     </resourceReportNodeType>
     <resourceReportNodeType>
+      <from>821abc4c-1cbe-4c34-9329-161ea946a772</from>
+      <to>8e37cf66-529d-4258-a744-b0cef9665263</to>
+    </resourceReportNodeType>
+    <resourceReportNodeType>
+      <from>835336d3-83c9-46f0-8f0a-1581abccb387</from>
+      <to>0287b978-bde2-421a-81b4-4caef9354f7a</to>
+    </resourceReportNodeType>
+    <resourceReportNodeType>
       <from>c1cc1cda-d99b-48dd-9267-58197f5ecc4d</from>
       <to>person</to>
     </resourceReportNodeType>
     <resourceReportNodeType>
       <from>c1efe7d4-d0f0-42ce-8617-4c8969c95237</from>
       <to>person</to>
+    </resourceReportNodeType>
+    <resourceReportNodeType>
+      <from>c30ba216-d97c-4d9b-a476-a632fa48fe49</from>
+      <to>0287b978-bde2-421a-81b4-4caef9354f7a</to>
     </resourceReportNodeType>
     <resourceReportNodeType>
       <from>d1f14311-4414-43d7-b128-b2f777c6b160</from>
@@ -59033,6 +59708,18 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
       <from>db8b10f2-6715-4df2-9b30-e726e2ac4ac7</from>
       <to>person</to>
     </resourceReportNodeType>
+    <k:fieldToRender>
+      <from>4c1c0f18-edbd-4bae-be7a-3a6f0db1cbc8</from>
+      <to>d20d1395-5a5b-4585-8023-c5b9acfda57b</to>
+    </k:fieldToRender>
+    <k:fieldToRender>
+      <from>51477b4c-873f-44b3-8d5d-6c6d777f55da</from>
+      <to>94cbb5d0-98f1-43f6-b19c-01901d28e8ab</to>
+    </k:fieldToRender>
+    <k:fieldToRender>
+      <from>a7235ed6-16ea-4158-8197-1292f5623ac0</from>
+      <to>469ae49f-4c95-4004-962d-943f296372f4</to>
+    </k:fieldToRender>
     <k:fieldToRender>
       <from>af0da6fd-9c11-4f59-8fc3-2c615bee68d2</from>
       <to>af14f4b4-99ed-4ffd-8405-9f761323204d</to>
@@ -59073,6 +59760,10 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
       <from>docLibrarySection</from>
       <to>d5dc55ea-4b5f-42c5-a98d-2f2072cdda08</to>
     </k:resourceInFolder>
+    <k:resourceInFolder>
+      <from>d00b6cec-e571-4311-bec6-416c1ad0ba5b</from>
+      <to>9bc0e4a9-9980-4e14-82e3-40a1f1c8785e</to>
+    </k:resourceInFolder>
     <resourceHasResourceKeyDataHashes>
       <from>everyoneAllowDisplayByRoleReport</from>
       <to>58e2d7bd-5a84-4ee0-9dd7-9b700b995eae</to>
@@ -59108,6 +59799,10 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
     <resourceHasResourceKeyDataHashes>
       <from>everyoneAllRelationships</from>
       <to>e696c26d-c3ad-45ed-b7de-58b6c518d01b</to>
+    </resourceHasResourceKeyDataHashes>
+    <resourceHasResourceKeyDataHashes>
+      <from>40ba8350-7633-44df-9029-22a53e5ef933</from>
+      <to>bd7259a1-f35d-450b-9e0c-ff2d0c3c722e</to>
     </resourceHasResourceKeyDataHashes>
     <resourceHasResourceKeyDataHashes>
       <from>everyoneEnumTypes</from>
@@ -59197,6 +59892,38 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
       <from>ed4f680e-ef62-4a62-aeed-b3b4b0b93aff</from>
       <to>templateReport</to>
     </k:pickerReport>
+    <k:actionSuppressedOnMenu>
+      <from>k:deleteResourceAction</from>
+      <to>5aedd2bf-e5cb-4961-a6e9-06afa4980be4</to>
+    </k:actionSuppressedOnMenu>
+    <k:actionSuppressedOnMenu>
+      <from>k:deleteResourceAction</from>
+      <to>63630f98-310a-44b7-a1f8-70a6d473e589</to>
+    </k:actionSuppressedOnMenu>
+    <k:actionSuppressedOnMenu>
+      <from>k:editResourceAction</from>
+      <to>5aedd2bf-e5cb-4961-a6e9-06afa4980be4</to>
+    </k:actionSuppressedOnMenu>
+    <k:actionSuppressedOnMenu>
+      <from>k:editResourceAction</from>
+      <to>63630f98-310a-44b7-a1f8-70a6d473e589</to>
+    </k:actionSuppressedOnMenu>
+    <k:actionSuppressedOnMenu>
+      <from>k:addRelationshipAction</from>
+      <to>6003afde-a426-4152-95c6-0e8d53f66e3d</to>
+    </k:actionSuppressedOnMenu>
+    <k:actionSuppressedOnMenu>
+      <from>k:addRelationshipAction</from>
+      <to>8c073a65-984d-4b17-a10e-2dd61d32a5f9</to>
+    </k:actionSuppressedOnMenu>
+    <k:actionSuppressedOnMenu>
+      <from>k:removeRelationshipAction</from>
+      <to>5aedd2bf-e5cb-4961-a6e9-06afa4980be4</to>
+    </k:actionSuppressedOnMenu>
+    <k:actionSuppressedOnMenu>
+      <from>k:removeRelationshipAction</from>
+      <to>63630f98-310a-44b7-a1f8-70a6d473e589</to>
+    </k:actionSuppressedOnMenu>
     <k:relationshipDisplayReport>
       <from>168ca28e-ac49-48e0-a2a3-30d9344a925f</from>
       <to>templateReport</to>
@@ -59213,6 +59940,18 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
       <from>214f9d7e-1b1b-4e46-bb8f-44e2fdabba04</from>
       <to>d6f36560-6a89-4577-a066-2c1e47a83db0</to>
     </isOfType>
+    <controlAccess>
+      <from>dbed5f17-7c05-407b-a584-4937d92e79f5</from>
+      <to>8e37cf66-529d-4258-a744-b0cef9665263</to>
+    </controlAccess>
+    <controlAccess>
+      <from>dc2a6ade-9ef0-4ece-9f21-b5c29c308655</from>
+      <to>0287b978-bde2-421a-81b4-4caef9354f7a</to>
+    </controlAccess>
+    <controlAccess>
+      <from>e579ece2-1278-4e7d-afc0-5be6f22dfe4c</from>
+      <to>0287b978-bde2-421a-81b4-4caef9354f7a</to>
+    </controlAccess>
   </relationships>
   <secureData />
   <binaries>
@@ -59571,10 +60310,20 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
     <k:editResourceAction id="800d26c9-3442-48e4-9616-ab97bfc57492" />
     <k:editWorkflowInDesignerAction id="548f2a0b-2db2-48dc-9df3-92eb5b3e3089" />
     <emailAlarmActionEnum id="826b3b4e-fe19-4f62-99ba-155165d35db6" />
+    <emailMessage id="1f3abd5d-aed4-45a5-b60b-bf0a22ced2e9" />
+    <emailNoReplyAddress id="c16c60ee-a494-4ee2-bd85-4f8a078dc0de" />
     <emailPattern id="12885ab4-6244-4fb8-86c0-feeeb80b92df" />
-    <emailServer id="94cbb5d0-98f1-43f6-b19c-01901d28e8ab" />
-    <emailServerNoReplyAddress id="d20d1395-5a5b-4585-8023-c5b9acfda57b" />
     <emailTypeEnum id="1d776284-030e-4dcc-8076-82425f2b1b24" />
+    <emAttachments id="c9dcd8b4-ab19-4d7b-977a-4d1ad53b6390" />
+    <emBCC id="067632a7-943c-4df1-9012-913a16b47546" />
+    <emBody id="a3fd206b-a44d-46b3-b25c-7c3984551187" />
+    <emCC id="98c1b0c8-6143-40eb-bb53-3db7032fd3a3" />
+    <emFrom id="523dc02a-f854-4b8e-b745-f0672b5a3a66" />
+    <emReceivedDate id="969cb18b-586b-4f15-a4ee-3e2b9520e992" />
+    <emReplyFragment id="b48c6655-9c72-4650-a223-fd296ae85565" />
+    <emSentDate id="a1b2b00a-9df9-4ba0-8bff-5d031d6819c6" />
+    <emSubject id="2dac3015-f01c-4454-bcc5-af9193d368ce" />
+    <emTo id="efaed036-7b72-4840-80d3-a9292cc3f320" />
     <enableAccessRuleAuditLogEntry id="39c0a34f-16a9-4e8d-9c36-30d0cb9d585a" />
     <endpointCanCreate id="3fee1347-055d-447e-8277-c2d700a1c36d" type="bool" />
     <endpointCanDelete id="48ac19af-2a78-4581-bcd9-4431c544b754" type="bool" />
@@ -59638,6 +60387,7 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
     <fileDataHash id="256d76bc-b5e4-4ad7-a765-5ddcabe1121f" type="text" />
     <fileExtension id="2ea3cc77-2bdc-479e-b55b-81f5a7b565be" type="text" />
     <k:fileNameUploadControl id="1af24c74-f858-49de-b403-01b9ee7d57f2" type="type" />
+    <fileType id="5a0c9fdb-4bb2-4e88-82de-58840b84e12b" />
     <fileTypeDescription id="af657dc9-10ba-4608-afa5-3036111cd2dc" />
     <finYearStartMonth id="49089954-0691-439f-b5eb-8a13d8480d0c" />
     <firstActivity id="a7a4efa5-095c-4b63-99cd-5998f8ba7fef" type="rel" />
@@ -59738,12 +60488,10 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
     <importTestRun id="986890a9-0de1-467a-a00a-7760eb6500e7" />
     <importTimeZone id="fc1fb697-6554-4b0c-a0e7-a8252dbf9b2d" />
     <inbox id="3039d09c-d050-466a-a164-ea664ef1b1dc" />
-    <inboxCreatedEventType id="2f42c10c-2c62-4e3e-9cc9-a88bebc63bd0" />
-    <inboxEmailAction id="c391652b-49e0-457b-b479-aa137b471ef2" />
-    <inboxEmailActions id="65023b05-547e-4880-8812-1df6a22c7222" />
-    <inboxEmailAddress id="469ae49f-4c95-4004-962d-943f296372f4" />
+    <inboxEmailAddress id="869d202e-ecee-4b13-9566-86f3bae07eb6" />
     <inboxEnabled id="2b216738-308c-4944-8a71-4a12eea2537c" />
-    <inboxProvider id="8e37cf66-529d-4258-a744-b0cef9665263" />
+    <inboxFromName id="93b55356-0a44-40f5-8c14-3233b976ee4e" />
+    <inboxReplyAddress id="95d28acd-7123-40da-a144-f5a356917a60" />
     <inboxWorkflows id="0e188a20-c001-4a51-90af-8145025715df" />
     <k:includeActionsAsButtons id="b8d564c4-7406-4a92-9834-7ac1a1ef466b" type="revRel" />
     <includeSelfInRecursive id="c101c89f-4fc2-4a09-bbcd-e00149129732" type="bool" />
@@ -59869,6 +60617,7 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
     <operNotEqual id="612fe4ce-098e-4df1-9039-0ceb56ace3de" />
     <orderByExpression id="1f825d32-6463-4bd6-a87e-f72238ec9614" type="rel" />
     <orderPriority id="43c99d8a-f3ec-4cfb-b135-8651daaa2958" type="int" />
+    <originalMessage id="b6339511-4c31-48d6-8ebf-67c625f1f8fe" />
     <outStartSurveyResponses id="8eb15a87-1a7c-47de-8079-eec6c0d13f02" />
     <packageId id="1670eb43-6568-4e41-97c4-71b2bd1fba61" type="guid" />
     <parameter id="4637876a-f7a7-4c4e-87a0-c8141bb29814" type="type" />
@@ -60081,6 +60830,11 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
     <sizeEnum id="ad8b4b98-d775-4761-80a0-01aa5c1dbae4" />
     <k:smallThumbnail id="83c7e1f7-dea1-4454-8b79-4d24a4f3b77b" />
     <smsSendRecord id="fb3111b5-8e8a-4243-9e55-8b40c9ada638" />
+    <smtpAccount id="eb349108-37b7-4137-b03e-c79045dd811c" />
+    <smtpPassword id="cc35db6a-e1ae-4c42-a383-3495e495f614" />
+    <smtpPort id="ab125abc-e2a6-470c-bc79-23a72b852bc8" />
+    <smtpServer id="ae2b77b8-dedb-4dc7-928d-b55d8d425347" />
+    <smtpUseSSL id="e3335ff8-b1a5-4389-a4a5-34eb5ed61bc8" />
     <solution id="f6ebea8a-0989-4ae0-be53-5d6541cb0908" type="type" />
     <k:solutionConsoleTheme id="5d3dc7e2-6699-40b0-94b1-ca93419a082e" />
     <solutionPublisher id="9a94dbce-4fe6-4143-b32a-ffc44c39a278" type="text" />
@@ -60182,8 +60936,8 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
     <k:tenantAuditLogSettingsConsoleBehaviour id="bd6245ba-0351-40f3-823f-b949e58c6b2a" />
     <k:tenantConsoleThemeSettings id="8e4ca445-cd27-4586-9bbe-01bf2f06baa1" />
     <tenantCurrencySymbol id="0775f413-f16d-42fd-9d2d-021f6bc57ed3" />
-    <tenantEmailSetting id="0287b978-bde2-421a-81b4-4caef9354f7a" />
-    <k:tenantEmailSettingsConsoleBehaviour id="e97b246b-d356-4b0a-aa26-b79f43eca671" />
+    <tenantEmailSetting id="3a8a8329-4555-4757-ac20-26a0d2adcf86" />
+    <k:tenantEmailSettingsInstanceConsoleBehaviour id="6eff76c9-f310-4665-a8a4-89a51cbaf3b4" />
     <k:tenantEventLogSettingsConsoleBehaviour id="29bd9d8c-cab9-4e0d-a6db-ace28d623dbd" />
     <tenantGeneralSettings id="afdd692c-02bb-4cfd-9f02-c8e7efcc1517" />
     <k:tenantGeneralSettingsConsoleBehaviour id="d1db31d5-5b4a-450f-ab33-2c342104a52f" />
@@ -60194,11 +60948,7 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
     <k:tenantRollbackBehavior id="cac872e8-016f-43bf-9977-af686aa31eac" />
     <termination id="1bce458a-b3f1-490a-a1b2-c2d919a777bb" type="type" />
     <terminations id="d53eded3-4745-4ab8-9d20-2e28c62a6ca2" type="rel" />
-    <tesApprovalsInbox id="92d50f86-3c2e-4394-9f4e-c3a95cbec0c4" />
-    <tesCalendarInbox id="1910e6c0-5564-4f35-b417-d8052888e61c" />
-    <tesNewTicketsInbox id="5a5ea45f-434f-4ec2-a5a8-626c70313913" />
-    <tesPasswordResetInbox id="d5dbe051-cead-4d96-912b-44ec1d6c6c1f" />
-    <tesSupportInbox id="1e5301ea-4cd1-4db8-a823-2a223b2d0c79" />
+    <testingOverrideToAddress id="45dd10f7-8aae-4a53-bbff-11540e370baf" />
     <k:textControlHeight id="549f718b-7248-44bd-afbd-4779774faef1" type="int" />
     <k:textControlWidth id="969f3604-41e4-4cd4-aed6-adb439c7f889" type="int" />
     <textQuestion id="679320b3-8c81-48ba-8dc7-91642ab40bf1" />
@@ -60257,7 +61007,6 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
     <userTaskReminderEnabled id="73eee8a6-9299-4aa4-846f-11a627e59b1e" />
     <userTaskStartedOn id="1eb492ca-c48f-4f19-a159-85eeb464de84" />
     <k:userTypesReport id="726f7fb1-9b3c-4853-93a2-03296c4c1d33" />
-    <usesInboxProvider id="0559dd05-92ab-413d-9b42-09cc842b850c" />
     <version id="07ac7ae6-3b7b-44bd-9503-6077f87f4689" />
     <versionComments id="5c741677-9e7b-462c-b4f8-4f3ac8551a5c" />
     <k:verticalStackContainerControl id="712db082-0427-4375-8414-d80a3d5263fe" type="type" />
@@ -60375,6 +61124,7 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
     <leaveEntity id="bfba6b94-44ce-46cc-bb7b-90e32ca942fd" />
     <leaveEntity id="f89e013c-a473-48d5-b93b-919c3dacadfa" />
     <leaveEntity id="d3d30557-22df-4d06-94b4-9252195eb420" />
+    <leaveEntity id="db2602af-39fd-46fa-a1d7-96e0e14e2b2a" />
     <leaveEntity id="ff3a4b76-0ad5-45ae-a223-9d3dccaf208b" />
     <leaveEntity id="b4d401ca-c620-4068-b50c-9fe11bb47b1c" />
     <leaveEntity id="b15c8a6f-1aab-4fe8-9816-a0404fab8f93" />
@@ -60399,6 +61149,8 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
     <leaveEntity id="11f76977-4237-41ce-a43e-bd189b4f7286" />
     <leaveEntity id="454d8b37-afa5-4d7f-9b4d-c1e2c57fab86" />
     <leaveEntity id="0e9edc64-fc51-471c-9469-c35a2dd3ba76" />
+    <leaveEntity id="e604425a-c6a3-4e2f-be8d-c57c0c2afd07" />
+    <leaveEntity id="01472466-ef8c-47b1-b9db-c609a265411b" />
     <leaveEntity id="aae18d37-50d4-4c82-ad83-c6267934a4dc" />
     <leaveEntity id="4585010a-5f6a-4606-ad6e-ca70fda7351c" />
     <leaveEntity id="d788882b-8af6-4867-8783-cf663700de10" />
@@ -60409,9 +61161,11 @@ iif(r.[Mapped relationship] is not null, 'Relationship, Lookup or Choice', '') )
     <leaveEntity id="f81fec98-c931-4964-9984-d74944c68178" />
     <leaveEntity id="cfd630ea-8504-4f95-a123-d804994d180b" />
     <leaveEntity id="bc2cea69-a8c5-42ac-9e4a-d8cd8e051a45" />
+    <leaveEntity id="11493e15-33ba-456d-b21b-d943a4b86f4d" />
     <leaveEntity id="d0646859-c3fb-49a9-a394-da63d1851f26" />
     <leaveEntity id="5d1605c3-fa89-4d38-b803-dc35b291dbb9" />
     <leaveEntity id="a6ba5f51-d44f-40d5-9f71-dc43b75b22b0" />
+    <leaveEntity id="c64ec5ea-08ae-444f-8d58-dec118a3345a" />
     <leaveEntity id="a3645e1f-07de-4682-8ba4-df779a82e8b3" />
     <leaveEntity id="55240897-59e2-4df5-b97d-e0f44d221aec" />
     <leaveEntity id="c7f8019d-b519-497b-b6c8-e3ccc96282f8" />

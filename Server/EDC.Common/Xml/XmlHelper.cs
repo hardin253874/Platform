@@ -23,19 +23,19 @@ namespace EDC.Xml
 		/// <returns></returns>
 		public static string EscapeXmlText( string xml )
 		{
-			if ( !string.IsNullOrEmpty( xml ) )
-			{
-				var sb = new StringBuilder( xml );
-				sb.Replace( "&", "&amp;" );
-				sb.Replace( ">", "&gt;" );
-				sb.Replace( "<", "&lt;" );
-				sb.Replace( "\"", "&quot;" );
-				sb.Replace( "'", "&apos;" );
+		    if ( string.IsNullOrEmpty( xml ) )
+                return xml;
 
-				xml = sb.ToString( );
-			}
+		    var sb = new StringBuilder( xml );
+		    sb.Replace( "&", "&amp;" );
+		    sb.Replace( ">", "&gt;" );
+		    sb.Replace( "<", "&lt;" );
+		    sb.Replace( "\"", "&quot;" );
+		    sb.Replace( "'", "&apos;" );
 
-			return xml;
+		    xml = sb.ToString( );
+
+		    return xml;
 		}
 
 		/// <summary>
@@ -54,7 +54,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -90,7 +90,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -123,7 +123,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			var nodeNames = new StringCollection( );
@@ -159,7 +159,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -196,7 +196,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -227,7 +227,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -264,7 +264,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -295,7 +295,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -332,7 +332,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -364,7 +364,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -401,7 +401,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -432,7 +432,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -469,7 +469,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -503,7 +503,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -513,7 +513,7 @@ namespace EDC.Xml
 
 			if ( type == null )
 			{
-				throw new ArgumentNullException( "type", @"The specified type parameter is null." );
+				throw new ArgumentNullException( nameof( type ), @"The specified type parameter is null." );
 			}
 
 			// Extract the value from the attribute
@@ -548,7 +548,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -558,7 +558,7 @@ namespace EDC.Xml
 
 			if ( type == null )
 			{
-				throw new ArgumentNullException( "type", @"The specified type parameter is null." );
+				throw new ArgumentNullException( nameof( type ), @"The specified type parameter is null." );
 			}
 
 			// Extract the value from the attribute
@@ -584,7 +584,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -621,7 +621,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -683,7 +683,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -720,7 +720,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -751,7 +751,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -788,7 +788,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -819,7 +819,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -856,7 +856,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -887,7 +887,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -924,7 +924,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -955,7 +955,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -992,7 +992,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -1023,7 +1023,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -1060,7 +1060,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -1091,7 +1091,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -1128,7 +1128,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -1159,7 +1159,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -1196,7 +1196,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -1227,7 +1227,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -1264,7 +1264,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -1298,7 +1298,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -1308,7 +1308,7 @@ namespace EDC.Xml
 
 			if ( type == null )
 			{
-				throw new ArgumentNullException( "type", @"The specified type parameter is null." );
+				throw new ArgumentNullException( nameof( type ), @"The specified type parameter is null." );
 			}
 
 			// Extract the inner text from the element
@@ -1343,7 +1343,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -1353,7 +1353,7 @@ namespace EDC.Xml
 
 			if ( type == null )
 			{
-				throw new ArgumentNullException( "type", @"The specified type parameter is null." );
+				throw new ArgumentNullException( nameof( type ), @"The specified type parameter is null." );
 			}
 
 			// Extract the inner text from the element
@@ -1379,7 +1379,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -1416,7 +1416,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -1484,7 +1484,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -1521,7 +1521,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -1552,7 +1552,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -1589,7 +1589,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -1620,7 +1620,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -1657,7 +1657,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -1688,7 +1688,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -1725,7 +1725,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -1756,7 +1756,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -1793,7 +1793,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -1862,7 +1862,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -1889,7 +1889,7 @@ namespace EDC.Xml
 		{
 			if ( node == null )
 			{
-				throw new ArgumentNullException( "node" );
+				throw new ArgumentNullException( nameof( node ) );
 			}
 
 			if ( string.IsNullOrEmpty( xpath ) )
@@ -1939,7 +1939,7 @@ namespace EDC.Xml
         public static string SerializeUsingDataContract<T>(T value) where T : class
 	    {
             if (value == null)
-                throw new ArgumentNullException("value");
+                throw new ArgumentNullException( nameof( value ) );
 
             StringBuilder sb = new StringBuilder();
             var settings = new XmlWriterSettings();
@@ -1965,7 +1965,7 @@ namespace EDC.Xml
         public static T DeserializeUsingDataContract<T>(string xml) where T : class
         {
             if (string.IsNullOrEmpty(xml))
-                throw new ArgumentNullException("xml");
+                throw new ArgumentNullException( nameof( xml ) );
 
             StringReader stringReader = new StringReader(xml);
             XmlReader xmlReader = XmlReader.Create(stringReader);

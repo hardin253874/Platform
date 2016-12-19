@@ -12,6 +12,14 @@ namespace EDC.ReadiNow.Scheduling
     /// </summary>
     public class SyncAction : ItemBase
     {
+        protected override bool RunAsOwner
+        {
+            get
+            {
+                return true;
+            }
+        }
+
         static string GetName(EntityRef scheduledItemRef)
         {
             return "Global\\EDC.Scheduling.SyncAction-" + scheduledItemRef.Id;

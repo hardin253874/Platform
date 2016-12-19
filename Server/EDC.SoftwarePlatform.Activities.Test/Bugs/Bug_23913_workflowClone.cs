@@ -16,7 +16,8 @@ namespace EDC.SoftwarePlatform.Activities.Test.Bugs
         [Test]
         [RunAsDefaultTenant, RunWithTransaction]
         //[Ignore("Has not been fixed yet")]
-        [Category("WorkflowTests"), Category("Bug"), Category("ExtendedTests")]
+        [Category("WorkflowTests"), Category("Bug")]
+        //[Category( "ExtendedTests" )]
         public void Test()
         {
             var wf = Entity

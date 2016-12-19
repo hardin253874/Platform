@@ -35,11 +35,11 @@ namespace EDC.Core
         {
             if (value == null)
             {
-                throw new ArgumentNullException("value");
+                throw new ArgumentNullException( nameof( value ) );
             }
             if (maxLength < 1)
             {
-                throw new ArgumentException("Must be positive", "maxLength");
+                throw new ArgumentException("Must be positive", nameof( maxLength ));
             }
 
             return value.Length <= maxLength ? value : value.Substring(0, maxLength);
@@ -68,11 +68,11 @@ namespace EDC.Core
         {
             if (value == null)
             {
-                throw new ArgumentNullException("value");
+                throw new ArgumentNullException( nameof( value ) );
             }
             if (chunkSize < 1)
             {
-                throw new ArgumentException("Must be positive", "chunkSize");
+                throw new ArgumentException("Must be positive", nameof( chunkSize ));
             }
 
             IList<string> result;
@@ -127,11 +127,11 @@ namespace EDC.Core
         {
             if (str == null)
             {
-                throw new ArgumentNullException("str");
+                throw new ArgumentNullException( nameof( str ) );
             }
             if (template == null)
             {
-                throw new ArgumentNullException("template");
+                throw new ArgumentNullException( nameof( template ) );
             }
             if (keyDecorator == null)
             {

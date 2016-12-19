@@ -100,7 +100,7 @@ namespace EDC.Database.Types
 
 			if ( !String.IsNullOrEmpty( value ) )
 			{
-                if ( string.Equals( value, DateType.DefaultValueToday, StringComparison.InvariantCultureIgnoreCase ) )
+                if ( string.Equals( value, DefaultValueToday, StringComparison.InvariantCultureIgnoreCase ) )
                 {
                     return DateTime.Today; // server time (should be adjusted for local... but isn't)
                 }

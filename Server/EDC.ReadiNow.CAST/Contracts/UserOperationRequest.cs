@@ -34,7 +34,7 @@ namespace EDC.ReadiNow.CAST.Contracts
         /// The list of roles that the user should belong to.
         /// </summary>
         [DataMember(Name = "roles")]
-        public RoleList Roles { get; set; }
+        public RoleNames Roles { get; set; }
 
         /// <summary>
         /// The type of operation to attempt.
@@ -47,10 +47,10 @@ namespace EDC.ReadiNow.CAST.Contracts
     /// A collection of role names.
     /// </summary>
     [CollectionDataContract(ItemName = "role")]
-    public class RoleList : List<string>
+    public class RoleNames : List<string>
     {
-        public RoleList() { }
-        public RoleList(int capacity) : base(capacity) { }
-        public RoleList(IEnumerable<string> collection) : base(collection) { }
+        public RoleNames() { }
+        public RoleNames(int capacity) : base(capacity) { }
+        public RoleNames(IEnumerable<string> collection) : base(collection) { }
     }
 }

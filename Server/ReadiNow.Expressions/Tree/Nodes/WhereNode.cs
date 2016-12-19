@@ -37,17 +37,26 @@ namespace ReadiNow.Expressions.Tree.Nodes
         public override SQ.Entity OnBuildQueryNode(QueryBuilderContext context, bool allowReuse)
         {
             // Find a node
-            if (ChildContainer.ChildEntityNodes.Count != 1) // TODO
+            if (ChildContainer.ChildEntityNodes.Count > 1)
                 throw new Exception("Cross-join in report calculations are unsupported.");
-            var result = ChildContainer.ChildEntityNodes.Single().BuildQueryNode(context, false);
+
+            SQ.Entity reportNode;
+            if ( ChildContainer.ChildEntityNodes.Count == 0 )
+            {
+                reportNode = new SingleRowNode( );
+            }
+            else
+            {
+                reportNode = ChildContainer.ChildEntityNodes.Single( ).BuildQueryNode( context, false );
+            }
 
             // Attach conditions
             ScalarExpression condition = Right.BuildQuery(context);
-            if (result.Conditions == null)
-                result.Conditions = new List<ScalarExpression>();
-            result.Conditions.Add(condition);
+            if ( reportNode.Conditions == null)
+                reportNode.Conditions = new List<ScalarExpression>();
+            reportNode.Conditions.Add(condition);
 
-            return result;
+            return reportNode;
         }
     }
 }

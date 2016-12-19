@@ -63,17 +63,17 @@ namespace EDC.Cache.Providers
 	    {
 		    if ( innerCache == null )
 		    {
-			    throw new ArgumentNullException( "innerCache" );
+			    throw new ArgumentNullException( nameof( innerCache ) );
 		    }
 
 		    if ( expirationInterval == TimeSpan.Zero )
 		    {
-			    throw new ArgumentException( @"Invalid expiration interval", "expirationInterval" );
+			    throw new ArgumentException( @"Invalid expiration interval", nameof( expirationInterval ) );
 		    }
 
 		    if ( evictionFrequency != null && evictionFrequency.Value == TimeSpan.Zero )
 		    {
-				throw new ArgumentException( @"Invalid eviction frequency", "evictionFrequency" );
+				throw new ArgumentException( @"Invalid eviction frequency", nameof( evictionFrequency ) );
 		    }
 
 		    _cache = innerCache;
@@ -134,7 +134,6 @@ namespace EDC.Cache.Providers
 		public string CacheName
 		{
 			get;
-			private set;
 		}
 
 	    /// <summary>
@@ -184,7 +183,7 @@ namespace EDC.Cache.Providers
         {
 			if ( valueFactory == null )
 			{
-				throw new ArgumentNullException( "valueFactory" );
+				throw new ArgumentNullException( nameof( valueFactory ) );
 			}
 
 			Func<TKey, TimeoutEntry> callback = key1 =>
@@ -380,7 +379,6 @@ namespace EDC.Cache.Providers
 	        public long CreationTime
 	        {
 		        get;
-		        private set;
 	        }
 
 	        /// <summary>
@@ -390,7 +388,6 @@ namespace EDC.Cache.Providers
 	        public TValue Value
 	        {
 		        get;
-		        private set;
 	        }
 
 			/// <summary>

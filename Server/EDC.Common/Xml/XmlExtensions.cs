@@ -25,18 +25,16 @@ namespace EDC.Xml
 			}
 
 			XmlNode node = doc.SelectSingleNode( xpath );
+		    if ( node == null )
+                return defaultValue;
 
-			if ( node != null )
-			{
-				Guid result;
+		    Guid result;
+		    if ( Guid.TryParse( node.InnerText, out result ) )
+		    {
+		        return result;
+		    }
 
-				if ( Guid.TryParse( node.InnerText, out result ) )
-				{
-					return result;
-				}
-			}
-
-			return defaultValue;
+		    return defaultValue;
 		}
 
 		/// <summary>

@@ -49,7 +49,7 @@ namespace EDC.Cache.Providers
         {
             if (innerCache == null)
             {
-                throw new ArgumentNullException("innerCache");
+                throw new ArgumentNullException( nameof( innerCache ) );
             }
 
             _cache = innerCache;
@@ -113,7 +113,7 @@ namespace EDC.Cache.Providers
         {
 			if ( valueFactory == null )
 			{
-				throw new ArgumentNullException( "valueFactory" );
+				throw new ArgumentNullException( nameof( valueFactory ) );
 			}
 
 			Lazy<TValue> lazy;
@@ -171,7 +171,7 @@ namespace EDC.Cache.Providers
         public IReadOnlyCollection<TKey> Remove( IEnumerable<TKey> keys )
         {
             if ( keys == null )
-                throw new ArgumentNullException( "keys" );
+                throw new ArgumentNullException( nameof( keys ) );
             
             return _cache.Remove( keys );
         }

@@ -1,7 +1,6 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
 using System;
 using EDC.Cache.Providers;
-using Microsoft.Win32;
 
 namespace EDC.Cache.Locators
 {

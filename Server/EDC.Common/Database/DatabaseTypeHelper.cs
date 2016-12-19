@@ -238,22 +238,24 @@ namespace EDC.Database
         {
             if (string.IsNullOrEmpty(xml))
                 return xml;
-            if (xml.IndexOf("<e") == 0)
+            if (xml.IndexOf("<e", StringComparison.Ordinal) == 0)
             {
                 using (StringReader stringReader = new StringReader("<root>" + xml + "</root>"))
                 {
                     XDocument xdoc = XDocument.Load(stringReader);
+                    if ( xdoc.Root == null )
+                        return null; // assert false
                     var entities = xdoc.Root.Descendants("e");
-                    var texts = entities.Select(e => e.Attribute("text")).Select(a => a == null ? null : a.Value);
+                    var texts = entities.Select(e => e.Attribute("text")).Select(a => a?.Value);
                     var result = string.Join(", ", texts.Where(t => !string.IsNullOrEmpty(t)));
                     return result;
                 }
             }
             else
             {
-                if (xml.IndexOf("<e") > 0)
+                if (xml.IndexOf("<e", StringComparison.Ordinal ) > 0)
                 {
-                    if (xml.IndexOf("\r") > 0)
+                    if (xml.IndexOf("\r", StringComparison.Ordinal ) > 0)
                     {
                         System.Collections.Generic.List<string> xmlResults = new System.Collections.Generic.List<string>();
                         foreach (string subXml in xml.Split("\r".ToCharArray()))
@@ -268,12 +270,14 @@ namespace EDC.Database
                     }
                     else
                     {
-                        string pre = xml.Substring(0, xml.IndexOf("<e"));
+                        string pre = xml.Substring(0, xml.IndexOf("<e", StringComparison.Ordinal ) );
                         using (StringReader stringReader = new StringReader("<root>" + xml + "</root>"))
                         {
                             XDocument xdoc = XDocument.Load(stringReader);
+                            if ( xdoc.Root == null )
+                                return null; // assert false
                             var entities = xdoc.Root.Descendants("e");
-                            var texts = entities.Select(e => e.Attribute("text")).Select(a => a == null ? null : a.Value);
+                            var texts = entities.Select(e => e.Attribute("text")).Select(a => a?.Value);
                             var result = string.Join(", ", texts.Where(t => !string.IsNullOrEmpty(t)));
                             return pre + result;
                         }
@@ -317,6 +321,8 @@ namespace EDC.Database
                 using (XmlReader xmlReader = XmlReader.Create(stringReader, xmlReaderSettings))
                 {
                     XDocument xdoc = XDocument.Load(xmlReader);
+                    if ( xdoc.Root == null )
+                        return 0;   // assert false
                     var entities = xdoc.Root.Descendants("e");
                     long result = entities.Select(e => e.Attribute("id")).Select(a => a == null ? 0 : long.Parse(a.Value)).FirstOrDefault();
                     return result;
@@ -443,7 +449,7 @@ namespace EDC.Database
 				}
 				else if ( type is DecimalType )
 				{
-                    decimal temp = 0;
+                    decimal temp;
 
                     if (Decimal.TryParse(value, out temp))
                     {
@@ -457,7 +463,7 @@ namespace EDC.Database
 				}
 				else if ( type is CurrencyType )
 				{
-                    decimal temp = 0;
+                    decimal temp;
                     if (Decimal.TryParse(value, out temp))
                     {
                         temp = Decimal.Parse(value, NumberStyles.AllowCurrencySymbol | NumberStyles.AllowThousands | NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign);
@@ -493,7 +499,7 @@ namespace EDC.Database
 					}
                     else if (value.StartsWith("<"))
                     {
-                        long temp = DatabaseTypeHelper.GetEntityXmlId(value);
+                        long temp = GetEntityXmlId(value);
                         obj = temp;
                     }
                     else
@@ -703,7 +709,7 @@ namespace EDC.Database
 		/// </exception>
 		public static string ConvertToString( DatabaseType type, object value, string displayFormat, DateTimeKind defaultDateTimeKind = DateTimeKind.Unspecified )
 		{
-			string text = null;
+			string text;
 			//TODO:  This is hack code. we need remove later
 
             if (value == null || value is DBNull)

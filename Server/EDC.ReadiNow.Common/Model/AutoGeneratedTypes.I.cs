@@ -10813,18 +10813,18 @@ namespace EDC.ReadiNow.Model
 	}
 
 	/// <summary>
-	/// The server providing the inbox support via IMAP.
+	/// Implementation for the <see cref="ImapServerSettings" /> class.
 	/// </summary>
 	[Serializable]
 	[DebuggerStepThrough]
-	[ModelClass("core:imapEmailProvider")]
-	public class ImapEmailProvider : StrongEntity
+	[ModelClass("core:imapServerSettings")]
+	public class ImapServerSettings : StrongEntity
 	{
 		/// <summary>
 		/// Public constructor.
 		/// </summary>
-		public ImapEmailProvider( )
-			: base( typeof( ImapEmailProvider ))
+		public ImapServerSettings( )
+			: base( typeof( ImapServerSettings ))
 		{
 
 		}
@@ -10832,132 +10832,121 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Internal constructor.
 		/// </summary>
-		internal ImapEmailProvider( IActivationData activationData )
+		internal ImapServerSettings( IActivationData activationData )
 			: base( activationData )
 		{
 
 		}
 
-		#region ImapEmailProvider Public Fields
+		#region ImapServerSettings Public Fields
 
 		/// <summary>
 		/// Public static accessor to the field.
 		/// </summary>
-		public static StringField OaAccount_Field
+		public static StringField ImapAccount_Field
 		{
 			get
 			{
-				return EDC.ReadiNow.Model.Entity.GetFieldEntity<StringField>( "core:oaAccount" );
+				return EDC.ReadiNow.Model.Entity.GetFieldEntity<StringField>( "core:imapAccount" );
 			}
 		}
 
 		/// <summary>
 		/// Public static accessor to the field.
 		/// </summary>
-		public static StringField OaDomainName_Field
+		public static StringField ImapDomainName_Field
 		{
 			get
 			{
-				return EDC.ReadiNow.Model.Entity.GetFieldEntity<StringField>( "core:oaDomainName" );
+				return EDC.ReadiNow.Model.Entity.GetFieldEntity<StringField>( "core:imapDomainName" );
 			}
 		}
 
 		/// <summary>
 		/// Public static accessor to the field.
 		/// </summary>
-		public static StringField OaEmailAddress_Field
+		public static StringField ImapFolder_Field
 		{
 			get
 			{
-				return EDC.ReadiNow.Model.Entity.GetFieldEntity<StringField>( "core:oaEmailAddress" );
+				return EDC.ReadiNow.Model.Entity.GetFieldEntity<StringField>( "core:imapFolder" );
 			}
 		}
 
 		/// <summary>
 		/// Public static accessor to the field.
 		/// </summary>
-		public static StringField OaPassword_Field
+		public static StringField ImapPassword_Field
 		{
 			get
 			{
-				return EDC.ReadiNow.Model.Entity.GetFieldEntity<StringField>( "core:oaPassword" );
+				return EDC.ReadiNow.Model.Entity.GetFieldEntity<StringField>( "core:imapPassword" );
 			}
 		}
 
 		/// <summary>
 		/// Public static accessor to the field.
 		/// </summary>
-		public static GuidField OaPasswordSecureId_Field
+		public static GuidField ImapPasswordSecureId_Field
 		{
 			get
 			{
-				return EDC.ReadiNow.Model.Entity.GetFieldEntity<GuidField>( "core:oaPasswordSecureId" );
+				return EDC.ReadiNow.Model.Entity.GetFieldEntity<GuidField>( "core:imapPasswordSecureId" );
 			}
 		}
 
 		/// <summary>
 		/// Public static accessor to the field.
 		/// </summary>
-		public static IntField OaPort_Field
+		public static IntField ImapPort_Field
 		{
 			get
 			{
-				return EDC.ReadiNow.Model.Entity.GetFieldEntity<IntField>( "core:oaPort" );
+				return EDC.ReadiNow.Model.Entity.GetFieldEntity<IntField>( "core:imapPort" );
 			}
 		}
 
 		/// <summary>
 		/// Public static accessor to the field.
 		/// </summary>
-		public static BoolField OaPostInDirectory_Field
+		public static StringField ImapServer_Field
 		{
 			get
 			{
-				return EDC.ReadiNow.Model.Entity.GetFieldEntity<BoolField>( "core:oaPostInDirectory" );
+				return EDC.ReadiNow.Model.Entity.GetFieldEntity<StringField>( "core:imapServer" );
 			}
 		}
 
 		/// <summary>
 		/// Public static accessor to the field.
 		/// </summary>
-		public static StringField OaServer_Field
+		public static BoolField ImapUseIntegratedAuth_Field
 		{
 			get
 			{
-				return EDC.ReadiNow.Model.Entity.GetFieldEntity<StringField>( "core:oaServer" );
+				return EDC.ReadiNow.Model.Entity.GetFieldEntity<BoolField>( "core:imapUseIntegratedAuth" );
 			}
 		}
 
 		/// <summary>
 		/// Public static accessor to the field.
 		/// </summary>
-		public static BoolField OaUseFolder_Field
+		public static BoolField ImapUseSSL_Field
 		{
 			get
 			{
-				return EDC.ReadiNow.Model.Entity.GetFieldEntity<BoolField>( "core:oaUseFolder" );
+				return EDC.ReadiNow.Model.Entity.GetFieldEntity<BoolField>( "core:imapUseSSL" );
 			}
 		}
 
 		/// <summary>
 		/// Public static accessor to the field.
 		/// </summary>
-		public static BoolField OaUseIntegratedAuth_Field
+		public static StringField InboxEmailAddressDomain_Field
 		{
 			get
 			{
-				return EDC.ReadiNow.Model.Entity.GetFieldEntity<BoolField>( "core:oaUseIntegratedAuth" );
-			}
-		}
-
-		/// <summary>
-		/// Public static accessor to the field.
-		/// </summary>
-		public static BoolField OaUseSSL_Field
-		{
-			get
-			{
-				return EDC.ReadiNow.Model.Entity.GetFieldEntity<BoolField>( "core:oaUseSSL" );
+				return EDC.ReadiNow.Model.Entity.GetFieldEntity<StringField>( "core:inboxEmailAddressDomain" );
 			}
 		}
 
@@ -11199,166 +11188,152 @@ namespace EDC.ReadiNow.Model
 		{
 			get
 			{
-				return new IEntity [ ] { ImapEmailProvider.OaAccount_Field, ImapEmailProvider.OaDomainName_Field, ImapEmailProvider.OaEmailAddress_Field, ImapEmailProvider.OaPassword_Field, ImapEmailProvider.OaPasswordSecureId_Field, ImapEmailProvider.OaPort_Field, ImapEmailProvider.OaPostInDirectory_Field, ImapEmailProvider.OaServer_Field, ImapEmailProvider.OaUseFolder_Field, ImapEmailProvider.OaUseIntegratedAuth_Field, ImapEmailProvider.OaUseSSL_Field, ImapEmailProvider.Alias_Field, ImapEmailProvider.CanDelete_Field, ImapEmailProvider.CanModify_Field, ImapEmailProvider.CreatedDate_Field, ImapEmailProvider.Description_Field, ImapEmailProvider.ModifiedDate_Field, ImapEmailProvider.Name_Field, ImapEmailProvider.CreatedBy_Field, ImapEmailProvider.Flags_Field, ImapEmailProvider.IndirectInSolution_Field, ImapEmailProvider.InSolution_Field, ImapEmailProvider.InStructureLevel_Field, ImapEmailProvider.IsOfType_Field, ImapEmailProvider.IsRootForStructureView_Field, ImapEmailProvider.LastModifiedBy_Field, ImapEmailProvider.ResourceConsoleBehavior_Field, ImapEmailProvider.ResourceHasResourceKeyDataHashes_Field, ImapEmailProvider.ResourceInFolder_Field, ImapEmailProvider.SecurityOwner_Field, ImapEmailProvider.SelectionBehavior_Field, ImapEmailProvider.ShortcutInFolder_Field };
+				return new IEntity [ ] { ImapServerSettings.ImapAccount_Field, ImapServerSettings.ImapDomainName_Field, ImapServerSettings.ImapFolder_Field, ImapServerSettings.ImapPassword_Field, ImapServerSettings.ImapPasswordSecureId_Field, ImapServerSettings.ImapPort_Field, ImapServerSettings.ImapServer_Field, ImapServerSettings.ImapUseIntegratedAuth_Field, ImapServerSettings.ImapUseSSL_Field, ImapServerSettings.InboxEmailAddressDomain_Field, ImapServerSettings.Alias_Field, ImapServerSettings.CanDelete_Field, ImapServerSettings.CanModify_Field, ImapServerSettings.CreatedDate_Field, ImapServerSettings.Description_Field, ImapServerSettings.ModifiedDate_Field, ImapServerSettings.Name_Field, ImapServerSettings.CreatedBy_Field, ImapServerSettings.Flags_Field, ImapServerSettings.IndirectInSolution_Field, ImapServerSettings.InSolution_Field, ImapServerSettings.InStructureLevel_Field, ImapServerSettings.IsOfType_Field, ImapServerSettings.IsRootForStructureView_Field, ImapServerSettings.LastModifiedBy_Field, ImapServerSettings.ResourceConsoleBehavior_Field, ImapServerSettings.ResourceHasResourceKeyDataHashes_Field, ImapServerSettings.ResourceInFolder_Field, ImapServerSettings.SecurityOwner_Field, ImapServerSettings.SelectionBehavior_Field, ImapServerSettings.ShortcutInFolder_Field };
 			}
 		}
 
-		#endregion ImapEmailProvider Public Fields
+		#endregion ImapServerSettings Public Fields
 
-		#region ImapEmailProvider Public Properties
+		#region ImapServerSettings Public Properties
 
 		/// <summary>
 		/// Public accessor for the field.
 		/// </summary>
-		public string OaAccount
+		public string ImapAccount
 		{
 			get
 			{
-				return ( string ) this.GetField( "core:oaAccount" );
+				return ( string ) this.GetField( "core:imapAccount" );
 			}
 			set
 			{
-				this.SetField( "core:oaAccount", value);
+				this.SetField( "core:imapAccount", value);
 			}
 		}
 		/// <summary>
 		/// Public accessor for the field.
 		/// </summary>
-		public string OaDomainName
+		public string ImapDomainName
 		{
 			get
 			{
-				return ( string ) this.GetField( "core:oaDomainName" );
+				return ( string ) this.GetField( "core:imapDomainName" );
 			}
 			set
 			{
-				this.SetField( "core:oaDomainName", value);
+				this.SetField( "core:imapDomainName", value);
 			}
 		}
 		/// <summary>
 		/// Public accessor for the field.
 		/// </summary>
-		public string OaEmailAddress
+		public string ImapFolder
 		{
 			get
 			{
-				return ( string ) this.GetField( "core:oaEmailAddress" );
+				return ( string ) this.GetField( "core:imapFolder" );
 			}
 			set
 			{
-				this.SetField( "core:oaEmailAddress", value);
+				this.SetField( "core:imapFolder", value);
 			}
 		}
 		/// <summary>
 		/// Public accessor for the field.
 		/// </summary>
-		public string OaPassword
+		public string ImapPassword
 		{
 			get
 			{
-				return ( string ) this.GetField( "core:oaPassword" );
+				return ( string ) this.GetField( "core:imapPassword" );
 			}
 			set
 			{
-				this.SetField( "core:oaPassword", value);
+				this.SetField( "core:imapPassword", value);
 			}
 		}
 		/// <summary>
 		/// Public accessor for the field.
 		/// </summary>
-		public Guid? OaPasswordSecureId
+		public Guid? ImapPasswordSecureId
 		{
 			get
 			{
-				return ( Guid? ) this.GetField( "core:oaPasswordSecureId" );
+				return ( Guid? ) this.GetField( "core:imapPasswordSecureId" );
 			}
 			set
 			{
-				this.SetField( "core:oaPasswordSecureId", value);
+				this.SetField( "core:imapPasswordSecureId", value);
 			}
 		}
 		/// <summary>
 		/// Public accessor for the field.
 		/// </summary>
-		public int? OaPort
+		public int? ImapPort
 		{
 			get
 			{
-				return ( int? ) this.GetField( "core:oaPort" );
+				return ( int? ) this.GetField( "core:imapPort" );
 			}
 			set
 			{
-				this.SetField( "core:oaPort", value);
+				this.SetField( "core:imapPort", value);
 			}
 		}
 		/// <summary>
 		/// Public accessor for the field.
 		/// </summary>
-		public bool? OaPostInDirectory
+		public string ImapServer
 		{
 			get
 			{
-				return ( bool? ) this.GetField( "core:oaPostInDirectory" );
+				return ( string ) this.GetField( "core:imapServer" );
 			}
 			set
 			{
-				this.SetField( "core:oaPostInDirectory", value);
+				this.SetField( "core:imapServer", value);
 			}
 		}
 		/// <summary>
 		/// Public accessor for the field.
 		/// </summary>
-		public string OaServer
+		public bool? ImapUseIntegratedAuth
 		{
 			get
 			{
-				return ( string ) this.GetField( "core:oaServer" );
+				return ( bool? ) this.GetField( "core:imapUseIntegratedAuth" );
 			}
 			set
 			{
-				this.SetField( "core:oaServer", value);
+				this.SetField( "core:imapUseIntegratedAuth", value);
 			}
 		}
 		/// <summary>
 		/// Public accessor for the field.
 		/// </summary>
-		public bool? OaUseFolder
+		public bool? ImapUseSSL
 		{
 			get
 			{
-				return ( bool? ) this.GetField( "core:oaUseFolder" );
+				return ( bool? ) this.GetField( "core:imapUseSSL" );
 			}
 			set
 			{
-				this.SetField( "core:oaUseFolder", value);
+				this.SetField( "core:imapUseSSL", value);
 			}
 		}
 		/// <summary>
 		/// Public accessor for the field.
 		/// </summary>
-		public bool? OaUseIntegratedAuth
+		public string InboxEmailAddressDomain
 		{
 			get
 			{
-				return ( bool? ) this.GetField( "core:oaUseIntegratedAuth" );
+				return ( string ) this.GetField( "core:inboxEmailAddressDomain" );
 			}
 			set
 			{
-				this.SetField( "core:oaUseIntegratedAuth", value);
-			}
-		}
-		/// <summary>
-		/// Public accessor for the field.
-		/// </summary>
-		public bool? OaUseSSL
-		{
-			get
-			{
-				return ( bool? ) this.GetField( "core:oaUseSSL" );
-			}
-			set
-			{
-				this.SetField( "core:oaUseSSL", value);
+				this.SetField( "core:inboxEmailAddressDomain", value);
 			}
 		}
 		/// <summary>
@@ -11685,19 +11660,19 @@ namespace EDC.ReadiNow.Model
 
 
 
-		#endregion ImapEmailProvider Public Properties
+		#endregion ImapServerSettings Public Properties
 
 		#region Additional Static Content
 
 		/// <summary>
-        /// Returns all instances of the ImapEmailProvider type
+        /// Returns all instances of the ImapServerSettings type
         /// </summary>
         /// <returns>An enumeration of instances of this type.</returns>
-        public static EntityType ImapEmailProvider_Type
+        public static EntityType ImapServerSettings_Type
 		{
 			get
 			{
-				return EDC.ReadiNow.Model.Entity.Get<EntityType>("core:imapEmailProvider");
+				return EDC.ReadiNow.Model.Entity.Get<EntityType>("core:imapServerSettings");
 			}
 		}
 		
@@ -16095,7 +16070,7 @@ namespace EDC.ReadiNow.Model
 	}
 
 	/// <summary>
-	/// A mail box for recieving incoming emails.
+	/// A mail box for receiving emails.
 	/// </summary>
 	[Serializable]
 	[DebuggerStepThrough]
@@ -16141,6 +16116,28 @@ namespace EDC.ReadiNow.Model
 			get
 			{
 				return EDC.ReadiNow.Model.Entity.GetFieldEntity<BoolField>( "core:inboxEnabled" );
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the field.
+		/// </summary>
+		public static StringField InboxFromName_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Entity.GetFieldEntity<StringField>( "core:inboxFromName" );
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the field.
+		/// </summary>
+		public static StringField InboxReplyAddress_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Entity.GetFieldEntity<StringField>( "core:inboxReplyAddress" );
 			}
 		}
 
@@ -16431,17 +16428,6 @@ namespace EDC.ReadiNow.Model
 		}
 
 		/// <summary>
-		/// Public static accessor to the direct forward relationship.
-		/// </summary>
-		public static IEntity SentMessages_Field
-		{
-			get
-			{
-				return EDC.ReadiNow.Model.Entity.GetFieldEntity<Entity>( "core:sentMessages" );
-			}
-		}
-
-		/// <summary>
 		/// Public static accessor to the inherited  forward relationship.
 		/// </summary>
 		public static IEntity ShortcutInFolder_Field
@@ -16453,24 +16439,13 @@ namespace EDC.ReadiNow.Model
 		}
 
 		/// <summary>
-		/// Public static accessor to the direct forward relationship.
-		/// </summary>
-		public static IEntity UsesInboxProvider_Field
-		{
-			get
-			{
-				return EDC.ReadiNow.Model.Entity.GetFieldEntity<Entity>( "core:usesInboxProvider" );
-			}
-		}
-
-		/// <summary>
 		/// Public static accessor to the array of all fields registered against this type.
 		/// </summary>
 		public static IEntity [ ] AllFields
 		{
 			get
 			{
-				return new IEntity [ ] { Inbox.InboxEmailAddress_Field, Inbox.InboxEnabled_Field, Inbox.Alias_Field, Inbox.CanDelete_Field, Inbox.CanModify_Field, Inbox.CreatedDate_Field, Inbox.Description_Field, Inbox.ModifiedDate_Field, Inbox.Name_Field, Inbox.CreatedBy_Field, Inbox.Flags_Field, Inbox.InboxCreatedEventType_Field, Inbox.InboxEmailActions_Field, Inbox.InboxReceivedMessageType_Field, Inbox.InboxWorkflows_Field, Inbox.IndirectInSolution_Field, Inbox.InSolution_Field, Inbox.InStructureLevel_Field, Inbox.IsOfType_Field, Inbox.IsRootForStructureView_Field, Inbox.LastModifiedBy_Field, Inbox.MailMessageFormatter_Field, Inbox.ReceivedMessages_Field, Inbox.ResourceConsoleBehavior_Field, Inbox.ResourceHasResourceKeyDataHashes_Field, Inbox.ResourceInFolder_Field, Inbox.SecurityOwner_Field, Inbox.SelectionBehavior_Field, Inbox.SentMessages_Field, Inbox.ShortcutInFolder_Field, Inbox.UsesInboxProvider_Field };
+				return new IEntity [ ] { Inbox.InboxEmailAddress_Field, Inbox.InboxEnabled_Field, Inbox.InboxFromName_Field, Inbox.InboxReplyAddress_Field, Inbox.Alias_Field, Inbox.CanDelete_Field, Inbox.CanModify_Field, Inbox.CreatedDate_Field, Inbox.Description_Field, Inbox.ModifiedDate_Field, Inbox.Name_Field, Inbox.CreatedBy_Field, Inbox.Flags_Field, Inbox.InboxCreatedEventType_Field, Inbox.InboxEmailActions_Field, Inbox.InboxReceivedMessageType_Field, Inbox.InboxWorkflows_Field, Inbox.IndirectInSolution_Field, Inbox.InSolution_Field, Inbox.InStructureLevel_Field, Inbox.IsOfType_Field, Inbox.IsRootForStructureView_Field, Inbox.LastModifiedBy_Field, Inbox.MailMessageFormatter_Field, Inbox.ReceivedMessages_Field, Inbox.ResourceConsoleBehavior_Field, Inbox.ResourceHasResourceKeyDataHashes_Field, Inbox.ResourceInFolder_Field, Inbox.SecurityOwner_Field, Inbox.SelectionBehavior_Field, Inbox.ShortcutInFolder_Field };
 			}
 		}
 
@@ -16504,6 +16479,34 @@ namespace EDC.ReadiNow.Model
 			set
 			{
 				this.SetField( "core:inboxEnabled", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the field.
+		/// </summary>
+		public string InboxFromName
+		{
+			get
+			{
+				return ( string ) this.GetField( "core:inboxFromName" );
+			}
+			set
+			{
+				this.SetField( "core:inboxFromName", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the field.
+		/// </summary>
+		public string InboxReplyAddress
+		{
+			get
+			{
+				return ( string ) this.GetField( "core:inboxReplyAddress" );
+			}
+			set
+			{
+				this.SetField( "core:inboxReplyAddress", value);
 			}
 		}
 		/// <summary>
@@ -16898,20 +16901,6 @@ namespace EDC.ReadiNow.Model
 			}
 		}
 		/// <summary>
-		/// Public accessor for the directforward relationship.
-		/// </summary>
-		public IEntityCollection<SentEmailMessage> SentMessages
-		{
-			get
-			{
-				return this.GetRelationships<SentEmailMessage>( "core:sentMessages", Direction.Forward ).Entities;
-			}
-			set
-			{
-				this.SetRelationships<SentEmailMessage>( "core:sentMessages", value, Direction.Forward );
-			}
-		}
-		/// <summary>
 		/// Public accessor for the inherited forward relationship.
 		/// </summary>
 		public IEntityCollection<NavContainer> ShortcutInFolder
@@ -16923,20 +16912,6 @@ namespace EDC.ReadiNow.Model
 			set
 			{
 				this.SetRelationships<NavContainer>( "console:shortcutInFolder", value, Direction.Forward );
-			}
-		}
-		/// <summary>
-		/// Public accessor for the directforward relationship.
-		/// </summary>
-		public InboxProvider UsesInboxProvider
-		{
-			get
-			{
-				return this.GetLookup<InboxProvider>( "core:usesInboxProvider", Direction.Forward );
-			}
-			set
-			{
-				this.SetLookup<InboxProvider>( "core:usesInboxProvider", value, Direction.Forward );
 			}
 		}
 
@@ -17623,644 +17598,6 @@ namespace EDC.ReadiNow.Model
 			get
 			{
 				return EDC.ReadiNow.Model.Entity.Get<EntityType>("core:inboxEmailAction");
-			}
-		}
-		
-		#endregion Additional Static Content
-
-	}
-
-	/// <summary>
-	/// The server providing the inbox support
-	/// </summary>
-	[Serializable]
-	[DebuggerStepThrough]
-	[ModelClass("core:inboxProvider")]
-	public class InboxProvider : StrongEntity
-	{
-		/// <summary>
-		/// Public constructor.
-		/// </summary>
-		public InboxProvider( )
-			: base( typeof( InboxProvider ))
-		{
-
-		}
-
-		/// <summary>
-		/// Internal constructor.
-		/// </summary>
-		internal InboxProvider( IActivationData activationData )
-			: base( activationData )
-		{
-
-		}
-
-		#region InboxProvider Public Fields
-
-		/// <summary>
-		/// Public static accessor to the inherited field.
-		/// </summary>
-		public static AliasField Alias_Field
-		{
-			get
-			{
-				return EDC.ReadiNow.Model.Resource.Alias_Field;
-			}
-		}
-
-		/// <summary>
-		/// Public static accessor to the inherited field.
-		/// </summary>
-		public static BoolField CanDelete_Field
-		{
-			get
-			{
-				return EDC.ReadiNow.Model.Resource.CanDelete_Field;
-			}
-		}
-
-		/// <summary>
-		/// Public static accessor to the inherited field.
-		/// </summary>
-		public static BoolField CanModify_Field
-		{
-			get
-			{
-				return EDC.ReadiNow.Model.Resource.CanModify_Field;
-			}
-		}
-
-		/// <summary>
-		/// Public static accessor to the inherited field.
-		/// </summary>
-		public static DateTimeField CreatedDate_Field
-		{
-			get
-			{
-				return EDC.ReadiNow.Model.Resource.CreatedDate_Field;
-			}
-		}
-
-		/// <summary>
-		/// Public static accessor to the inherited field.
-		/// </summary>
-		public static StringField Description_Field
-		{
-			get
-			{
-				return EDC.ReadiNow.Model.Resource.Description_Field;
-			}
-		}
-
-		/// <summary>
-		/// Public static accessor to the inherited field.
-		/// </summary>
-		public static DateTimeField ModifiedDate_Field
-		{
-			get
-			{
-				return EDC.ReadiNow.Model.Resource.ModifiedDate_Field;
-			}
-		}
-
-		/// <summary>
-		/// Public static accessor to the inherited field.
-		/// </summary>
-		public static StringField Name_Field
-		{
-			get
-			{
-				return EDC.ReadiNow.Model.Resource.Name_Field;
-			}
-		}
-
-		/// <summary>
-		/// Public static accessor to the inherited  forward relationship.
-		/// </summary>
-		public static IEntity CreatedBy_Field
-		{
-			get
-			{
-				return EDC.ReadiNow.Model.Resource.CreatedBy_Field;
-			}
-		}
-
-		/// <summary>
-		/// Public static accessor to the inherited  forward relationship.
-		/// </summary>
-		public static IEntity Flags_Field
-		{
-			get
-			{
-				return EDC.ReadiNow.Model.Resource.Flags_Field;
-			}
-		}
-
-		/// <summary>
-		/// Public static accessor to the inherited  forward relationship.
-		/// </summary>
-		public static IEntity IndirectInSolution_Field
-		{
-			get
-			{
-				return EDC.ReadiNow.Model.Resource.IndirectInSolution_Field;
-			}
-		}
-
-		/// <summary>
-		/// Public static accessor to the inherited  forward relationship.
-		/// </summary>
-		public static IEntity InSolution_Field
-		{
-			get
-			{
-				return EDC.ReadiNow.Model.Resource.InSolution_Field;
-			}
-		}
-
-		/// <summary>
-		/// Public static accessor to the inherited  forward relationship.
-		/// </summary>
-		public static IEntity InStructureLevel_Field
-		{
-			get
-			{
-				return EDC.ReadiNow.Model.Resource.InStructureLevel_Field;
-			}
-		}
-
-		/// <summary>
-		/// Public static accessor to the inherited  forward relationship.
-		/// </summary>
-		public static IEntity IsOfType_Field
-		{
-			get
-			{
-				return EDC.ReadiNow.Model.Resource.IsOfType_Field;
-			}
-		}
-
-		/// <summary>
-		/// Public static accessor to the inherited  forward relationship.
-		/// </summary>
-		public static IEntity IsRootForStructureView_Field
-		{
-			get
-			{
-				return EDC.ReadiNow.Model.Resource.IsRootForStructureView_Field;
-			}
-		}
-
-		/// <summary>
-		/// Public static accessor to the inherited  forward relationship.
-		/// </summary>
-		public static IEntity LastModifiedBy_Field
-		{
-			get
-			{
-				return EDC.ReadiNow.Model.Resource.LastModifiedBy_Field;
-			}
-		}
-
-		/// <summary>
-		/// Public static accessor to the inherited  forward relationship.
-		/// </summary>
-		public static IEntity ResourceConsoleBehavior_Field
-		{
-			get
-			{
-				return EDC.ReadiNow.Model.Resource.ResourceConsoleBehavior_Field;
-			}
-		}
-
-		/// <summary>
-		/// Public static accessor to the inherited  forward relationship.
-		/// </summary>
-		public static IEntity ResourceHasResourceKeyDataHashes_Field
-		{
-			get
-			{
-				return EDC.ReadiNow.Model.Resource.ResourceHasResourceKeyDataHashes_Field;
-			}
-		}
-
-		/// <summary>
-		/// Public static accessor to the inherited  forward relationship.
-		/// </summary>
-		public static IEntity ResourceInFolder_Field
-		{
-			get
-			{
-				return EDC.ReadiNow.Model.Resource.ResourceInFolder_Field;
-			}
-		}
-
-		/// <summary>
-		/// Public static accessor to the inherited  forward relationship.
-		/// </summary>
-		public static IEntity SecurityOwner_Field
-		{
-			get
-			{
-				return EDC.ReadiNow.Model.Resource.SecurityOwner_Field;
-			}
-		}
-
-		/// <summary>
-		/// Public static accessor to the inherited  forward relationship.
-		/// </summary>
-		public static IEntity SelectionBehavior_Field
-		{
-			get
-			{
-				return EDC.ReadiNow.Model.Resource.SelectionBehavior_Field;
-			}
-		}
-
-		/// <summary>
-		/// Public static accessor to the inherited  forward relationship.
-		/// </summary>
-		public static IEntity ShortcutInFolder_Field
-		{
-			get
-			{
-				return EDC.ReadiNow.Model.Resource.ShortcutInFolder_Field;
-			}
-		}
-
-		/// <summary>
-		/// Public static accessor to the array of all fields registered against this type.
-		/// </summary>
-		public static IEntity [ ] AllFields
-		{
-			get
-			{
-				return new IEntity [ ] { InboxProvider.Alias_Field, InboxProvider.CanDelete_Field, InboxProvider.CanModify_Field, InboxProvider.CreatedDate_Field, InboxProvider.Description_Field, InboxProvider.ModifiedDate_Field, InboxProvider.Name_Field, InboxProvider.CreatedBy_Field, InboxProvider.Flags_Field, InboxProvider.IndirectInSolution_Field, InboxProvider.InSolution_Field, InboxProvider.InStructureLevel_Field, InboxProvider.IsOfType_Field, InboxProvider.IsRootForStructureView_Field, InboxProvider.LastModifiedBy_Field, InboxProvider.ResourceConsoleBehavior_Field, InboxProvider.ResourceHasResourceKeyDataHashes_Field, InboxProvider.ResourceInFolder_Field, InboxProvider.SecurityOwner_Field, InboxProvider.SelectionBehavior_Field, InboxProvider.ShortcutInFolder_Field };
-			}
-		}
-
-		#endregion InboxProvider Public Fields
-
-		#region InboxProvider Public Properties
-
-		/// <summary>
-		/// Public accessor for the inherited field.
-		/// </summary>
-		public string Alias
-		{
-			get
-			{
-				return ( string ) this.GetField( "core:alias" );
-			}
-			set
-			{
-				this.SetField( "core:alias", value);
-			}
-		}
-		/// <summary>
-		/// Public accessor for the inherited field.
-		/// </summary>
-		public bool? CanDelete
-		{
-			get
-			{
-				return ( bool? ) this.GetField( "core:canDelete" );
-			}
-			set
-			{
-				this.SetField( "core:canDelete", value);
-			}
-		}
-		/// <summary>
-		/// Public accessor for the inherited field.
-		/// </summary>
-		public bool? CanModify
-		{
-			get
-			{
-				return ( bool? ) this.GetField( "core:canModify" );
-			}
-			set
-			{
-				this.SetField( "core:canModify", value);
-			}
-		}
-		/// <summary>
-		/// Public accessor for the inherited field.
-		/// </summary>
-		public DateTime? CreatedDate
-		{
-			get
-			{
-				return ( DateTime? ) this.GetField( "core:createdDate" );
-			}
-			set
-			{
-				this.SetField( "core:createdDate", value);
-			}
-		}
-		/// <summary>
-		/// Public accessor for the inherited field.
-		/// </summary>
-		public string Description
-		{
-			get
-			{
-				return ( string ) this.GetField( "core:description" );
-			}
-			set
-			{
-				this.SetField( "core:description", value);
-			}
-		}
-		/// <summary>
-		/// Public accessor for the inherited field.
-		/// </summary>
-		public DateTime? ModifiedDate
-		{
-			get
-			{
-				return ( DateTime? ) this.GetField( "core:modifiedDate" );
-			}
-			set
-			{
-				this.SetField( "core:modifiedDate", value);
-			}
-		}
-		/// <summary>
-		/// Public accessor for the inherited field.
-		/// </summary>
-		public string Name
-		{
-			get
-			{
-				return ( string ) this.GetField( "core:name" );
-			}
-			set
-			{
-				this.SetField( "core:name", value);
-			}
-		}
-
-		/// <summary>
-		/// Public accessor for the inherited forward relationship.
-		/// </summary>
-		public UserAccount CreatedBy
-		{
-			get
-			{
-				return this.GetLookup<UserAccount>( "core:createdBy", Direction.Forward );
-			}
-			set
-			{
-				this.SetLookup<UserAccount>( "core:createdBy", value, Direction.Forward );
-			}
-		}
-		/// <summary>
-		/// Public accessor for the inherited forward relationship.
-		/// </summary>
-		public IEntityCollection<ResourceFlagsEnum> Flags
-		{
-			get
-			{
-				return this.GetRelationships<ResourceFlagsEnum>( "core:flags", Direction.Forward ).Entities;
-			}
-			set
-			{
-				this.SetRelationships<ResourceFlagsEnum>( "core:flags", value, Direction.Forward );
-			}
-		}
-		/// <summary>
-		/// Public accessor for the enumeration value.
-		/// </summary>
-		public ResourceFlagsEnum_Enumeration? Flags_Enum
-		{
-			get
-			{
-				return GetMultiEnum<ResourceFlagsEnum, ResourceFlagsEnum_Enumeration>( "core:flags", Direction.Forward, ResourceFlagsEnum.ConvertAliasToEnum, (enum1, enum2) => enum1 | enum2 );
-			}
-			set
-			{
-				if ( value == null )
-				{
-					this.SetRelationships( "core:flags", null, Direction.Forward );
-					return;
-				}
-				var relationships = new List<ResourceFlagsEnum>( );
-
-				foreach ( ResourceFlagsEnum_Enumeration enumValue in ResourceFlagsEnum.GetEnumValues( value.Value ) )
-				{
-				    relationships.Add( EDC.ReadiNow.Model.Entity.Get<ResourceFlagsEnum>( EntityRefHelper.ConvertAliasWithNamespace( ResourceFlagsEnum.ConvertEnumToAlias( enumValue ) ) ) );
-				}
-
-				this.SetRelationships( "core:flags", new EntityRelationshipCollection<ResourceFlagsEnum>( relationships ), Direction.Forward );
-			}
-		}		
-		/// <summary>
-		/// Public accessor for the inherited forward relationship.
-		/// </summary>
-		public Solution IndirectInSolution
-		{
-			get
-			{
-				return this.GetLookup<Solution>( "core:indirectInSolution", Direction.Forward );
-			}
-			set
-			{
-				this.SetLookup<Solution>( "core:indirectInSolution", value, Direction.Forward );
-			}
-		}
-		/// <summary>
-		/// Public accessor for the inherited forward relationship.
-		/// </summary>
-		public Solution InSolution
-		{
-			get
-			{
-				return this.GetLookup<Solution>( "core:inSolution", Direction.Forward );
-			}
-			set
-			{
-				this.SetLookup<Solution>( "core:inSolution", value, Direction.Forward );
-			}
-		}
-		/// <summary>
-		/// Public accessor for the inherited forward relationship.
-		/// </summary>
-		public IEntityCollection<StructureLevel> InStructureLevel
-		{
-			get
-			{
-				return this.GetRelationships<StructureLevel>( "core:inStructureLevel", Direction.Forward ).Entities;
-			}
-			set
-			{
-				this.SetRelationships<StructureLevel>( "core:inStructureLevel", value, Direction.Forward );
-			}
-		}
-		/// <summary>
-		/// Public accessor for the inherited forward relationship.
-		/// </summary>
-		public IEntityCollection<EntityType> IsOfType
-		{
-			get
-			{
-				return this.GetRelationships<EntityType>( "core:isOfType", Direction.Forward ).Entities;
-			}
-			set
-			{
-				this.SetRelationships<EntityType>( "core:isOfType", value, Direction.Forward );
-			}
-		}
-		/// <summary>
-		/// Public accessor for the inherited forward relationship.
-		/// </summary>
-		public IEntityCollection<StructureView> IsRootForStructureView
-		{
-			get
-			{
-				return this.GetRelationships<StructureView>( "core:isRootForStructureView", Direction.Forward ).Entities;
-			}
-			set
-			{
-				this.SetRelationships<StructureView>( "core:isRootForStructureView", value, Direction.Forward );
-			}
-		}
-		/// <summary>
-		/// Public accessor for the inherited forward relationship.
-		/// </summary>
-		public UserAccount LastModifiedBy
-		{
-			get
-			{
-				return this.GetLookup<UserAccount>( "core:lastModifiedBy", Direction.Forward );
-			}
-			set
-			{
-				this.SetLookup<UserAccount>( "core:lastModifiedBy", value, Direction.Forward );
-			}
-		}
-		/// <summary>
-		/// Public accessor for the inherited forward relationship.
-		/// </summary>
-		public ConsoleBehavior ResourceConsoleBehavior
-		{
-			get
-			{
-				return this.GetLookup<ConsoleBehavior>( "console:resourceConsoleBehavior", Direction.Forward );
-			}
-			set
-			{
-				this.SetLookup<ConsoleBehavior>( "console:resourceConsoleBehavior", value, Direction.Forward );
-			}
-		}
-		/// <summary>
-		/// Public accessor for the inherited forward relationship.
-		/// </summary>
-		public IEntityCollection<ResourceKeyDataHash> ResourceHasResourceKeyDataHashes
-		{
-			get
-			{
-				return this.GetRelationships<ResourceKeyDataHash>( "core:resourceHasResourceKeyDataHashes", Direction.Forward ).Entities;
-			}
-			set
-			{
-				this.SetRelationships<ResourceKeyDataHash>( "core:resourceHasResourceKeyDataHashes", value, Direction.Forward );
-			}
-		}
-		/// <summary>
-		/// Public accessor for the inherited forward relationship.
-		/// </summary>
-		public IEntityCollection<NavContainer> ResourceInFolder
-		{
-			get
-			{
-				return this.GetRelationships<NavContainer>( "console:resourceInFolder", Direction.Forward ).Entities;
-			}
-			set
-			{
-				this.SetRelationships<NavContainer>( "console:resourceInFolder", value, Direction.Forward );
-			}
-		}
-		/// <summary>
-		/// Public accessor for the inherited forward relationship.
-		/// </summary>
-		public UserAccount SecurityOwner
-		{
-			get
-			{
-				return this.GetLookup<UserAccount>( "core:securityOwner", Direction.Forward );
-			}
-			set
-			{
-				this.SetLookup<UserAccount>( "core:securityOwner", value, Direction.Forward );
-			}
-		}
-		/// <summary>
-		/// Public accessor for the inherited forward relationship.
-		/// </summary>
-		public ConsoleBehavior SelectionBehavior
-		{
-			get
-			{
-				return this.GetLookup<ConsoleBehavior>( "console:selectionBehavior", Direction.Forward );
-			}
-			set
-			{
-				this.SetLookup<ConsoleBehavior>( "console:selectionBehavior", value, Direction.Forward );
-			}
-		}
-		/// <summary>
-		/// Public accessor for the inherited forward relationship.
-		/// </summary>
-		public IEntityCollection<NavContainer> ShortcutInFolder
-		{
-			get
-			{
-				return this.GetRelationships<NavContainer>( "console:shortcutInFolder", Direction.Forward ).Entities;
-			}
-			set
-			{
-				this.SetRelationships<NavContainer>( "console:shortcutInFolder", value, Direction.Forward );
-			}
-		}
-
-
-
-		#endregion InboxProvider Public Properties
-
-		#region Type casting
-
-		/// <summary>
-		/// Explicit cast from the specified type to the current type.
-		/// </summary>
-		public static explicit operator InboxProvider( ImapEmailProvider entity )
-		{
-			return entity.Cast<InboxProvider>( );
-		}
-
-		/// <summary>
-		/// Explicit cast from the specified type to the current type.
-		/// </summary>
-		public static explicit operator InboxProvider( ProxyInboxProvider entity )
-		{
-			return entity.Cast<InboxProvider>( );
-		}
-
-		#endregion Type casting
-
-		#region Additional Static Content
-
-		/// <summary>
-        /// Returns all instances of the InboxProvider type
-        /// </summary>
-        /// <returns>An enumeration of instances of this type.</returns>
-        public static EntityType InboxProvider_Type
-		{
-			get
-			{
-				return EDC.ReadiNow.Model.Entity.Get<EntityType>("core:inboxProvider");
 			}
 		}
 		

@@ -46,7 +46,7 @@ namespace ReadiNow.Reporting
         {
 			get
 			{
-				return ( _formatRules.Count > 0 );
+				return (_formatRules != null && _formatRules.Count > 0 );
 			}
         }
 
@@ -225,115 +225,120 @@ namespace ReadiNow.Reporting
         /// <param name="reportResult">The report result.</param>
         public ConditionalFormatter(IList<ColumnFormatting> columnFormats, IEnumerable<ResultColumn> additionalColumnInfo, ReportResult reportResult)
         {
-            _formatRules = new Dictionary<string, List<ConditionInfo>>(columnFormats.Count);
             _reportResult = reportResult;
-            // Cache the formatting rules into a dictionary for fast lookup.
-            Dictionary<string, ColumnFormatting> formatters = columnFormats.ToDictionary(cf => cf.EntityId.ToString(CultureInfo.InvariantCulture));            
-            
-            foreach (KeyValuePair<string, ColumnFormatting> keyValuePair in formatters.Where(f => f.Value != null))
+
+            if (columnFormats != null)
             {
-                BarFormattingRule barFormattingRule = keyValuePair.Value.FormattingRule as BarFormattingRule;
-                if (barFormattingRule != null)
+                _formatRules = new Dictionary<string, List<ConditionInfo>>(columnFormats.Count);
+
+                // Cache the formatting rules into a dictionary for fast lookup.
+                Dictionary<string, ColumnFormatting> formatters = columnFormats.ToDictionary(cf => cf.EntityId.ToString(CultureInfo.InvariantCulture));
+
+                foreach (KeyValuePair<string, ColumnFormatting> keyValuePair in formatters.Where(f => f.Value != null))
                 {
-                    ConditionInfo condition = new ConditionInfo
+                    BarFormattingRule barFormattingRule = keyValuePair.Value.FormattingRule as BarFormattingRule;
+                    if (barFormattingRule != null)
+                    {
+                        ConditionInfo condition = new ConditionInfo
                         {
-                            ColorRule = new ColorRule {BackgroundColor = barFormattingRule.Color},
+                            ColorRule = new ColorRule { BackgroundColor = barFormattingRule.Color },
                             Style = ConditionalFormatStyleEnum.ProgressBar,
                             ShowText = keyValuePair.Value.ShowText
                         };
-                    DatabaseType columnForFormatType = additionalColumnInfo.FirstOrDefault(ac => ac.RequestColumn.EntityId.ToString(CultureInfo.InvariantCulture) == keyValuePair.Key).ColumnType;
-                    if (columnForFormatType != null)
-                    {
-                        barFormattingRule.Minimum.Type = columnForFormatType;
-                        barFormattingRule.Maximum.Type = columnForFormatType;
-                    }
+                        DatabaseType columnForFormatType = additionalColumnInfo.FirstOrDefault(ac => ac.RequestColumn.EntityId.ToString(CultureInfo.InvariantCulture) == keyValuePair.Key).ColumnType;
+                        if (columnForFormatType != null)
+                        {
+                            barFormattingRule.Minimum.Type = columnForFormatType;
+                            barFormattingRule.Maximum.Type = columnForFormatType;
+                        }
 
-                    DateTime minumumDateTime;
-                    if (barFormattingRule.Minimum.Value != null &&
-                        (columnForFormatType is DateType || columnForFormatType is TimeType || columnForFormatType is DateTimeType)
-                        && DateTime.TryParse(barFormattingRule.Minimum.Value.ToString(), out minumumDateTime))
-                    {
-                        condition.LowerBounds = minumumDateTime.ToString("yyyy-MM-ddTHH:mm:ssZ");
-                    }
-                    else
-                    {
-                        float minimum;
-                        condition.LowerBounds = float.TryParse(barFormattingRule.Minimum.ValueString, out minimum) ? minimum : 0.0f;
-                    }
-                    DateTime maximumDateTime;
-                    if (barFormattingRule.Maximum.Value != null && 
-                        (columnForFormatType is DateType || columnForFormatType is TimeType || columnForFormatType is DateTimeType)
-                        && DateTime.TryParse(barFormattingRule.Maximum.Value.ToString(), out maximumDateTime))
-                    {
-                        condition.Upperbounds = maximumDateTime.ToString("yyyy-MM-ddTHH:mm:ssZ");
-                    }
-                    else
-                    {
-                        float maximum;
-                        if (float.TryParse(barFormattingRule.Maximum.ValueString, out maximum))
+                        DateTime minumumDateTime;
+                        if (barFormattingRule.Minimum.Value != null &&
+                            (columnForFormatType is DateType || columnForFormatType is TimeType || columnForFormatType is DateTimeType)
+                            && DateTime.TryParse(barFormattingRule.Minimum.Value.ToString(), out minumumDateTime))
                         {
-                            condition.Upperbounds = maximum;
+                            condition.LowerBounds = minumumDateTime.ToString("yyyy-MM-ddTHH:mm:ssZ");
                         }
-                    }
-                    _formatRules.Add(keyValuePair.Key, new List<ConditionInfo>(new[] { condition }));
-                }
-                ColorFormattingRule colorFormattingRule = keyValuePair.Value.FormattingRule as ColorFormattingRule;
-                if (colorFormattingRule != null)
-                {
-                    IList<ColorRule> colorRules = colorFormattingRule.Rules;
-                    List<ConditionInfo> predicates = new List<ConditionInfo>(colorRules.Count);
-                    foreach (ColorRule colorRule in colorRules)
-                    {
-                        ResultColumn gridResultColumn = additionalColumnInfo.FirstOrDefault(gu => gu.RequestColumn.EntityId.ToString(CultureInfo.InvariantCulture) == keyValuePair.Key);
-                        if (gridResultColumn == null)
+                        else
                         {
-                            continue;
+                            float minimum;
+                            condition.LowerBounds = float.TryParse(barFormattingRule.Minimum.ValueString, out minimum) ? minimum : 0.0f;
                         }
-                        colorRule.Condition.Arguments = TypedValuesForOperatorColumnType(colorRule.Condition.Arguments, colorRule.Condition.Operator, gridResultColumn.ColumnType);
-                    }      
-                    predicates.AddRange(from colorRule in colorRules
-                                        let gridResultColumn = additionalColumnInfo.FirstOrDefault(gu => gu.RequestColumn.EntityId.ToString(CultureInfo.InvariantCulture) == keyValuePair.Key)
-                                        let predicate = PredicateForRule(colorRule.Condition, IsResourceCondition(gridResultColumn), gridResultColumn, this)
-                                        where (predicate != null)
-                                        select new ConditionInfo
-                                        {
-                                            Predicate = predicate,
-                                            ColorRule = colorRule,
-                                            Operator = colorRule.Condition.Operator,
-                                            Values = colorRule.Condition.Arguments,
-                                            Style = ConditionalFormatStyleEnum.Highlight,
-                                            ShowText = keyValuePair.Value.ShowText
-                                        });
-                    _formatRules.Add(keyValuePair.Key, predicates);
-                }
-                IconFormattingRule iconFormattingRule = keyValuePair.Value.FormattingRule as IconFormattingRule;
-                if (iconFormattingRule != null)
-                {
-                    IList<IconRule> iconRulesRules = iconFormattingRule.Rules;
-                    foreach (IconRule iconRule in iconRulesRules)
-                    {
-                        ResultColumn gridResultColumn = additionalColumnInfo.FirstOrDefault(gu => gu.RequestColumn.EntityId.ToString(CultureInfo.InvariantCulture) == keyValuePair.Key);
-                        if (gridResultColumn == null)
+                        DateTime maximumDateTime;
+                        if (barFormattingRule.Maximum.Value != null &&
+                            (columnForFormatType is DateType || columnForFormatType is TimeType || columnForFormatType is DateTimeType)
+                            && DateTime.TryParse(barFormattingRule.Maximum.Value.ToString(), out maximumDateTime))
                         {
-                            continue;
+                            condition.Upperbounds = maximumDateTime.ToString("yyyy-MM-ddTHH:mm:ssZ");
                         }
-                        iconRule.Condition.Arguments = TypedValuesForOperatorColumnType(iconRule.Condition.Arguments, iconRule.Condition.Operator, gridResultColumn.ColumnType);
+                        else
+                        {
+                            float maximum;
+                            if (float.TryParse(barFormattingRule.Maximum.ValueString, out maximum))
+                            {
+                                condition.Upperbounds = maximum;
+                            }
+                        }
+                        _formatRules.Add(keyValuePair.Key, new List<ConditionInfo>(new[] { condition }));
                     }
-                    List<ConditionInfo> predicates = new List<ConditionInfo>(iconRulesRules.Count);
-                    predicates.AddRange(from iconRule in iconRulesRules
-                                        let gridResultColumn = additionalColumnInfo.FirstOrDefault(gu => gu.RequestColumn.EntityId.ToString(CultureInfo.InvariantCulture) == keyValuePair.Key)
-                                        let predicate = PredicateForRule(iconRule.Condition, IsResourceCondition(gridResultColumn), gridResultColumn, this)
-                                        where (predicate != null)
-                                        select new ConditionInfo
-                                        {
-                                            Predicate = predicate,
-                                            IconRule = iconRule,
-                                            Operator = iconRule.Condition.Operator,
-                                            Values = iconRule.Condition.Arguments,
-                                            Style = ConditionalFormatStyleEnum.Icon,
-                                            ShowText = keyValuePair.Value.ShowText
-                                        });
-                    _formatRules.Add(keyValuePair.Key, predicates);
+                    ColorFormattingRule colorFormattingRule = keyValuePair.Value.FormattingRule as ColorFormattingRule;
+                    if (colorFormattingRule != null)
+                    {
+                        IList<ColorRule> colorRules = colorFormattingRule.Rules;
+                        List<ConditionInfo> predicates = new List<ConditionInfo>(colorRules.Count);
+                        foreach (ColorRule colorRule in colorRules)
+                        {
+                            ResultColumn gridResultColumn = additionalColumnInfo.FirstOrDefault(gu => gu.RequestColumn.EntityId.ToString(CultureInfo.InvariantCulture) == keyValuePair.Key);
+                            if (gridResultColumn == null)
+                            {
+                                continue;
+                            }
+                            colorRule.Condition.Arguments = TypedValuesForOperatorColumnType(colorRule.Condition.Arguments, colorRule.Condition.Operator, gridResultColumn.ColumnType);
+                        }
+                        predicates.AddRange(from colorRule in colorRules
+                                            let gridResultColumn = additionalColumnInfo.FirstOrDefault(gu => gu.RequestColumn.EntityId.ToString(CultureInfo.InvariantCulture) == keyValuePair.Key)
+                                            let predicate = PredicateForRule(colorRule.Condition, IsResourceCondition(gridResultColumn), gridResultColumn, this)
+                                            where (predicate != null)
+                                            select new ConditionInfo
+                                            {
+                                                Predicate = predicate,
+                                                ColorRule = colorRule,
+                                                Operator = colorRule.Condition.Operator,
+                                                Values = colorRule.Condition.Arguments,
+                                                Style = ConditionalFormatStyleEnum.Highlight,
+                                                ShowText = keyValuePair.Value.ShowText
+                                            });
+                        _formatRules.Add(keyValuePair.Key, predicates);
+                    }
+                    IconFormattingRule iconFormattingRule = keyValuePair.Value.FormattingRule as IconFormattingRule;
+                    if (iconFormattingRule != null)
+                    {
+                        IList<IconRule> iconRulesRules = iconFormattingRule.Rules;
+                        foreach (IconRule iconRule in iconRulesRules)
+                        {
+                            ResultColumn gridResultColumn = additionalColumnInfo.FirstOrDefault(gu => gu.RequestColumn.EntityId.ToString(CultureInfo.InvariantCulture) == keyValuePair.Key);
+                            if (gridResultColumn == null)
+                            {
+                                continue;
+                            }
+                            iconRule.Condition.Arguments = TypedValuesForOperatorColumnType(iconRule.Condition.Arguments, iconRule.Condition.Operator, gridResultColumn.ColumnType);
+                        }
+                        List<ConditionInfo> predicates = new List<ConditionInfo>(iconRulesRules.Count);
+                        predicates.AddRange(from iconRule in iconRulesRules
+                                            let gridResultColumn = additionalColumnInfo.FirstOrDefault(gu => gu.RequestColumn.EntityId.ToString(CultureInfo.InvariantCulture) == keyValuePair.Key)
+                                            let predicate = PredicateForRule(iconRule.Condition, IsResourceCondition(gridResultColumn), gridResultColumn, this)
+                                            where (predicate != null)
+                                            select new ConditionInfo
+                                            {
+                                                Predicate = predicate,
+                                                IconRule = iconRule,
+                                                Operator = iconRule.Condition.Operator,
+                                                Values = iconRule.Condition.Arguments,
+                                                Style = ConditionalFormatStyleEnum.Icon,
+                                                ShowText = keyValuePair.Value.ShowText
+                                            });
+                        _formatRules.Add(keyValuePair.Key, predicates);
+                    }
                 }
             }
         }

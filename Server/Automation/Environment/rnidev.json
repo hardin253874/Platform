@@ -184,5 +184,5 @@
 		grantCanModifyTestAndSampleApps: true
 	},
 	importTestAndSampleApps: true,
-    featureSwitches: "submitABug,longRunningWorkflow,applicationDependency,tenantRollback,unlimitedTenantRollback,defaultChoiceFieldFormat"
+    featureSwitches: "submitABug,applicationDependency,tenantRollback,unlimitedTenantRollback,defaultChoiceFieldFormat"
 }

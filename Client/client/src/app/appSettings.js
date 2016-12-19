@@ -175,11 +175,9 @@
                 } else {
                     return spEntityService.getEntities(['core:fullConfigButton', 'core:selfServiceConfigButton', 'console:adminToolboxStaticPage'], 'id, alias', { hint: 'navConfig', batch: true }).then(function (entities) {
 
-                        var fsSelfServe = exports.isFeatureOn('fsSelfServe');
-
                         exports.fullConfig = !!_.find(entities, { nsAlias: 'core:fullConfigButton' });
                         exports.adminToolbox = !!_.find(entities, { nsAlias: 'console:adminToolboxStaticPage' });
-                        var hasSelfServeButton = (fsSelfServe && !!_.find(entities, { nsAlias: 'core:selfServiceConfigButton' }));
+                        var hasSelfServeButton = !!_.find(entities, { nsAlias: 'core:selfServiceConfigButton' });
                         exports.selfServeNonAdmin = hasSelfServeButton && !exports.adminToolbox;
                         exports.selfServeOrAdmin = hasSelfServeButton || exports.adminToolbox;
 

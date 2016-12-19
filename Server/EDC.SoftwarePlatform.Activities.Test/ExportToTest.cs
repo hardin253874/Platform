@@ -1,25 +1,16 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using EDC.ReadiNow.Expressions;
 using EDC.ReadiNow.Model;
 using EDC.ReadiNow.Test;
 using NUnit.Framework;
-using EDC.ReadiNow.Common.Workflow;
-using EDC.ReadiNow.Database;
 using EDC.ReadiNow.Utc;
-using System.Reflection;
-using System.IO;
 using EDC.ReadiNow.IO;
-using EDC.Security;
-using EDC.SoftwarePlatform.Services.ExportData;
 using ReadiNow.ExportData;
 
 namespace EDC.SoftwarePlatform.Activities.Test
 {
     [TestFixture]
-    [Category("ExtendedTests")]
+    //[Category("ExtendedTests")]
     [Category("WorkflowTests")]
     public class ExportToTest : TestBase
     {

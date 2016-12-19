@@ -86,10 +86,10 @@ namespace EDC.ReadiNow.CAST.Model
         /// <summary>
         /// The names of user roles presently configured on this tenant.
         /// </summary>
-        public IEntityCollection<ManagedUserRole> UserRoles
+        public IEntityCollection<ManagedRole> Roles
         {
-            get { return GetRelationships<ManagedUserRole>(ManagedTenantSchema.UserRolesRelationship, Direction.Forward).Entities; }
-            set { SetRelationships(ManagedTenantSchema.UserRolesRelationship, value, Direction.Forward); }
+            get { return GetRelationships<ManagedRole>(ManagedTenantSchema.RolesRelationship, Direction.Forward).Entities; }
+            set { SetRelationships(ManagedTenantSchema.RolesRelationship, value, Direction.Forward); }
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace EDC.ReadiNow.CAST.Model
                         ManagedTenantSchema.DisabledField + "," +
                         ManagedTenantSchema.PlatformLookup + ".{alias,name,isOfType.{alias,name}," + ManagedPlatformSchema.DatabaseIdField + "}," +
                         ManagedTenantSchema.TenantHasAppInstalledRelationship + ".{" + ManagedAppVersion.ManagedAppVersionPreloadQuery + "}," +
-                        ManagedTenantSchema.UserRolesRelationship + ".{"+ ManagedUserRole.ManagedUserRolePreloadQuery + "}," +
+                        ManagedTenantSchema.RolesRelationship + ".{"+ ManagedRole.ManagedRolePreloadQuery + "}," +
                         ManagedTenantSchema.UsersRelationship + ".{" + ManagedUser.ManagedUserPreloadQuery + "}";
             }
         }

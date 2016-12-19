@@ -19,6 +19,7 @@ namespace EDC.ReadiNow.Metadata.Query.Structured
     [KnownType(typeof(DownCastResource)), XmlInclude(typeof(DownCastResource)), ProtoInclude(101, typeof(DownCastResource))]
     [KnownType(typeof(JoinToSelfEntity)), XmlInclude(typeof(JoinToSelfEntity)), ProtoInclude(102, typeof(JoinToSelfEntity))]
     [KnownType(typeof(CustomJoinNode)), XmlInclude(typeof(CustomJoinNode)), ProtoInclude(103, typeof(CustomJoinNode))]
+    [KnownType(typeof(SingleRowNode)), XmlInclude(typeof( SingleRowNode ) ), ProtoInclude(104, typeof(SingleRowNode) )]
     [XmlType(Namespace = Constants.StructuredQueryNamespace)]
     public class ResourceEntity : Entity
     {

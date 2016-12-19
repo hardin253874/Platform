@@ -39,11 +39,11 @@ namespace EDC.Monitoring
         {
             if (string.IsNullOrWhiteSpace(categoryName))
             {
-                throw new ArgumentNullException("categoryName");
+                throw new ArgumentNullException( nameof( categoryName ) );
             }
             if (string.IsNullOrWhiteSpace(counterName))
             {
-                throw new ArgumentNullException("counterName");
+                throw new ArgumentNullException( nameof( counterName ) );
             }
 
             string baseCounterName;

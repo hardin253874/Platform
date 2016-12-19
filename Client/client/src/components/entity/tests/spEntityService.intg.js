@@ -673,12 +673,14 @@ describe('Entity Model|spEntityService|intg:', function () {
         it('should get entities for a known type filtered', function () {
 
             TestSupport.wait(
-                spEntityService.getEntitiesOfType('core:report', 'name', { filter: '[Name]=\'Mail Boxes\'' })
+                spEntityService.getEntitiesOfType('core:report', 'name', { filter: '[Name]=\'Inboxes\'' })
                 .then(function (entities) {
                     expect(entities).toBeTruthy();
                     expect(entities.length).toBe(1);
-                    var item = entities[0];
-                    expect(item.getField('name')).toBe('Mail Boxes');
+					if (entities.length > 1) {
+						var item = entities[0];
+						expect(item.getField('name')).toBe('Inboxes');
+					}
                 }));
         });
 

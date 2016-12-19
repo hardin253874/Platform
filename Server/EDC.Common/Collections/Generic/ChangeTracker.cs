@@ -252,7 +252,7 @@ namespace EDC.Collections.Generic
 		{
 			if ( array == null )
 			{
-				throw new ArgumentNullException( "array" );
+				throw new ArgumentNullException( nameof( array ) );
 			}
 
 			lock ( _syncRoot )
@@ -403,7 +403,7 @@ namespace EDC.Collections.Generic
 		{
 			if ( collection == null )
 			{
-				throw new ArgumentNullException( "collection" );
+				throw new ArgumentNullException( nameof( collection ) );
 			}
 
 			lock ( _syncRoot )
@@ -423,7 +423,7 @@ namespace EDC.Collections.Generic
 		{
 			if ( collection == null )
 			{
-				throw new ArgumentNullException( "collection" );
+				throw new ArgumentNullException( nameof( collection ) );
 			}
 
 			lock ( _syncRoot )

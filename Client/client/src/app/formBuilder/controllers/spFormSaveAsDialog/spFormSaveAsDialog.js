@@ -30,8 +30,6 @@
             'mod.featureSwitch'
         ])
         .controller("spFormSaveAsController", function ($scope, $uibModalInstance, options, spEntityService, spAlertsService, spFormBuilderService, spAppSettings, rnFeatureSwitch) {
-            var fsSelfServeEnabled = rnFeatureSwitch.isFeatureOn('fsSelfServe');
-
             $scope.options = options || {};
             $scope.model = {
                 disableOkButton: true,
@@ -45,7 +43,7 @@
             };
 
             $scope.canSetContainer = function () {
-                return fsSelfServeEnabled && $scope.options.mode === spFormBuilderService.builders.screen;
+                return $scope.options.mode === spFormBuilderService.builders.screen;
             };
 
             $scope.getTitle = function () {

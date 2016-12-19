@@ -15,9 +15,18 @@ namespace EDC.SoftwarePlatform.Activities.Scheduling
     /// </summary>
     public class StartWorkflowJob: ItemBase
     {
+        protected override bool RunAsOwner
+        {
+            get
+            {
+                return true;            // Runs as the user
+            }
+        }
+
+
         public override void Execute(EntityRef scheduledItemRef)
         {
-
+            
             var trigger = Entity.Get<WfTrigger>(scheduledItemRef);
 
             if (trigger == null)

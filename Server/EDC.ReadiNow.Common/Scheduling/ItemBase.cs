@@ -24,6 +24,11 @@ namespace EDC.ReadiNow.Scheduling
     {
         private static ISingleInstancePerformanceCounterCategory perfCounters = new SingleInstancePerformanceCounterCategory(WorkflowPerformanceCounters.CategoryName);
 
+        /// <summary>
+        /// Does the Job require a security owner to be set. Only internal system code should set this to false
+        /// </summary>
+        protected abstract bool RunAsOwner { get; }
+
         protected override void Execute(IJobExecutionContext jobContext)
         {
 
@@ -43,22 +48,29 @@ namespace EDC.ReadiNow.Scheduling
                     // Set the context to the owner of the scheduled item.
                     var scheduledItem = Entity.Get<ScheduledItem>(jobRef);
 
-                    var owner = scheduledItem.SecurityOwner;
-
-                    if (owner == null)
+                    if (RunAsOwner)
                     {
-                        var message = $"Unable to start scheduled job as import configuration has no owner";
-                        Diagnostics.EventLog.Application.WriteError($"StartImportJob.Execute: {message}. {scheduledItem.Id}");
-                        throw GenerateJobException(message, scheduledItem);
+                        var owner = scheduledItem.SecurityOwner;
+
+                        if (owner == null)
+                        {
+                            var message = $"Unable to start scheduled job as import configuration has no owner";
+                            Diagnostics.EventLog.Application.WriteError($"StartImportJob.Execute: {message}. {scheduledItem.Id}");
+                            throw GenerateJobException(message, scheduledItem);
+                        }
+
+                        var identityInfo = new IdentityInfo(owner.Id, owner.Name);
+                        var contextData = new RequestContextData(RequestContext.GetContext());
+                        contextData.Identity = identityInfo;
+
+                        using (CustomContext.SetContext(contextData))
+                        {
+
+                            Execute(jobRef);
+                        }
                     }
-
-                    var identityInfo = new IdentityInfo(owner.Id, owner.Name);
-                    var contextData = new RequestContextData(RequestContext.GetContext());
-                    contextData.Identity = identityInfo;
-
-                    using (CustomContext.SetContext(contextData))
+                    else
                     {
-
                         Execute(jobRef);
                     }
                 }                    

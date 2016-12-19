@@ -3,8 +3,6 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EDC.Collections.Generic
 {
@@ -82,7 +80,7 @@ namespace EDC.Collections.Generic
         {
             if (keys == null)
             {
-                throw new ArgumentNullException("keys");
+                throw new ArgumentNullException( nameof( keys ) );
             }
 
             foreach (TKey key in keys)
@@ -194,7 +192,7 @@ namespace EDC.Collections.Generic
         {
             if (values == null)
             {
-                throw new ArgumentNullException("values");
+                throw new ArgumentNullException( nameof( values ) );
             }
 
             foreach (TValue value in values)

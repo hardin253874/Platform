@@ -33,7 +33,7 @@ namespace EDC.ReadiNow.CAST.Services
         /// </summary>
         /// <param name="tenant">The tenant to check.</param>
         /// <returns>List of role names.</returns>
-        public IList<string> GetRoles(string tenant)
+        public IList<RemoteRoleInfo> GetRoles(string tenant)
         {
             using (Profiler.Measure("UserService.GetRoles"))
             {
@@ -49,7 +49,7 @@ namespace EDC.ReadiNow.CAST.Services
         /// </summary>
         /// <param name="id">The tenant id to check.</param>
         /// <returns>List of role names.</returns>
-        public IList<string> GetRoles(long id)
+        public IList<RemoteRoleInfo> GetRoles(long id)
         {
             using (Profiler.Measure("UserService.GetRoles"))
             {
@@ -252,18 +252,27 @@ namespace EDC.ReadiNow.CAST.Services
                 RemoteId = user.Id,
                 Name = user.Name,
                 Status = GetStatus(user.AccountStatus_Enum),
-                Roles = new RoleList(user.UserHasRole.Select(r => r.Name))
+                Roles = new RoleList(user.UserHasRole.Select(GetRoleInfo))
             };
         }
 
-        private IList<string> GetRolesImpl()
+        private RemoteRoleInfo GetRoleInfo(Role role)
+        {
+            return new RemoteRoleInfo
+            {
+                Name = role.Name,
+                RemoteId = role.Id
+            };
+        }
+
+        private IList<RemoteRoleInfo> GetRolesImpl()
         {
             if (!Entity.Exists(new EntityRef("core:role")))
-                return new List<string>();
+                return new List<RemoteRoleInfo>();
 
             var roles = CastEntityHelper.GetEntitiesByType<Role>();
 
-            return roles.Select(r => r.Name).ToList();
+            return roles.Select(GetRoleInfo).ToList();
         }
 
         private IList<RemoteUserInfo> GetUsersImpl()

@@ -24,7 +24,7 @@ namespace EDC.Collections.Generic
         {
             if (items == null)
             {
-                throw new ArgumentNullException("items");
+                throw new ArgumentNullException( nameof( items ) );
             }
 
             Items = new List<T>(items).AsReadOnly();            

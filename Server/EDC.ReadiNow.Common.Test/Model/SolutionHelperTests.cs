@@ -17,7 +17,8 @@ namespace EDC.ReadiNow.Test.Model
 	///     Solution Helper Tests class.
 	/// </summary>
 	[ReadiNowTestFixture]
-	public class SolutionHelperTests
+    [Category( "ExtendedTests" )]
+    public class SolutionHelperTests
 	{
 		/// <summary>
 		///     Afters the test.

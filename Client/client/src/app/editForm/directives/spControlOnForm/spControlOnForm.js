@@ -103,6 +103,11 @@
                     style.overflow = 'hidden';
                 }
 
+                // Bug 28769: Workflow Buttons are not actionable when logged in as User. (Client: Origin)
+                if (alias === 'tabRelationshipRenderControl') {
+                    delete style.display;
+                }
+
                 if (style.height && style.width) {
                     styleVal.height = style.height.toString() + 'px';
                     styleVal.width = style.width.toString() + 'px';

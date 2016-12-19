@@ -18,7 +18,7 @@ namespace EDC.Syslog
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentNullException(nameof(name));
+                throw new ArgumentNullException( nameof(name));
             }
 
             Name = name;

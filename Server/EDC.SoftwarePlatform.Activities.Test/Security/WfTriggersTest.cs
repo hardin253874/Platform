@@ -15,7 +15,7 @@ using EDC.ReadiNow.Common.Workflow;
 namespace EDC.SoftwarePlatform.Activities.Test.Security
 {
     [TestFixture]
-    [Category("ExtendedTests")]
+    //[Category("ExtendedTests")]
     [Category("WorkflowTests")]
     public class WfTriggersTest : TriggerTestBase
     {

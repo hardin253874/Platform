@@ -14,21 +14,21 @@ namespace EDC.Text
 		/// </returns>
 		public static bool ContainsControlChars( this string value )
 		{
-			bool containsControlChars = false;
+		    if ( string.IsNullOrEmpty( value ) )
+                return false;
 
-			if ( !string.IsNullOrEmpty( value ) )
-			{
-				foreach ( char c in value )
-				{
-					containsControlChars = char.IsControl( c ) && !char.IsWhiteSpace( c );
-					if ( containsControlChars )
-					{
-						break;
-					}
-				}
-			}
+            bool containsControlChars = false;
 
-			return containsControlChars;
+            foreach ( char c in value )
+		    {
+		        containsControlChars = char.IsControl( c ) && !char.IsWhiteSpace( c );
+		        if ( containsControlChars )
+		        {
+		            break;
+		        }
+		    }
+
+		    return containsControlChars;
 		}
 	}
 }

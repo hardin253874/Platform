@@ -2391,6 +2391,17 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Public static accessor to the field.
 		/// </summary>
+		public static StringField EmBCC_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Entity.GetFieldEntity<StringField>( "core:emBCC" );
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the field.
+		/// </summary>
 		public static StringField EmBody_Field
 		{
 			get
@@ -2418,6 +2429,17 @@ namespace EDC.ReadiNow.Model
 			get
 			{
 				return EDC.ReadiNow.Model.Entity.GetFieldEntity<StringField>( "core:emFrom" );
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the field.
+		/// </summary>
+		public static StringField EmFromName_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Entity.GetFieldEntity<StringField>( "core:emFromName" );
 			}
 		}
 
@@ -2747,7 +2769,7 @@ namespace EDC.ReadiNow.Model
 		{
 			get
 			{
-				return new IEntity [ ] { EmailMessage.EmBody_Field, EmailMessage.EmCC_Field, EmailMessage.EmFrom_Field, EmailMessage.EmIsHtml_Field, EmailMessage.EmSubject_Field, EmailMessage.EmTo_Field, EmailMessage.EmUid_Field, EmailMessage.Alias_Field, EmailMessage.CanDelete_Field, EmailMessage.CanModify_Field, EmailMessage.CreatedDate_Field, EmailMessage.Description_Field, EmailMessage.ModifiedDate_Field, EmailMessage.Name_Field, EmailMessage.CreatedBy_Field, EmailMessage.EmAttachments_Field, EmailMessage.Flags_Field, EmailMessage.IndirectInSolution_Field, EmailMessage.InSolution_Field, EmailMessage.InStructureLevel_Field, EmailMessage.IsOfType_Field, EmailMessage.IsRootForStructureView_Field, EmailMessage.LastModifiedBy_Field, EmailMessage.LogEntriesForObject_Field, EmailMessage.RelatedTask_Field, EmailMessage.ResourceConsoleBehavior_Field, EmailMessage.ResourceHasResourceKeyDataHashes_Field, EmailMessage.ResourceInFolder_Field, EmailMessage.SecurityOwner_Field, EmailMessage.SelectionBehavior_Field, EmailMessage.ShortcutInFolder_Field, EmailMessage.TasksForRecord_Field };
+				return new IEntity [ ] { EmailMessage.EmBCC_Field, EmailMessage.EmBody_Field, EmailMessage.EmCC_Field, EmailMessage.EmFrom_Field, EmailMessage.EmFromName_Field, EmailMessage.EmIsHtml_Field, EmailMessage.EmSubject_Field, EmailMessage.EmTo_Field, EmailMessage.EmUid_Field, EmailMessage.Alias_Field, EmailMessage.CanDelete_Field, EmailMessage.CanModify_Field, EmailMessage.CreatedDate_Field, EmailMessage.Description_Field, EmailMessage.ModifiedDate_Field, EmailMessage.Name_Field, EmailMessage.CreatedBy_Field, EmailMessage.EmAttachments_Field, EmailMessage.Flags_Field, EmailMessage.IndirectInSolution_Field, EmailMessage.InSolution_Field, EmailMessage.InStructureLevel_Field, EmailMessage.IsOfType_Field, EmailMessage.IsRootForStructureView_Field, EmailMessage.LastModifiedBy_Field, EmailMessage.LogEntriesForObject_Field, EmailMessage.RelatedTask_Field, EmailMessage.ResourceConsoleBehavior_Field, EmailMessage.ResourceHasResourceKeyDataHashes_Field, EmailMessage.ResourceInFolder_Field, EmailMessage.SecurityOwner_Field, EmailMessage.SelectionBehavior_Field, EmailMessage.ShortcutInFolder_Field, EmailMessage.TasksForRecord_Field };
 			}
 		}
 
@@ -2755,6 +2777,20 @@ namespace EDC.ReadiNow.Model
 
 		#region EmailMessage Public Properties
 
+		/// <summary>
+		/// Public accessor for the field.
+		/// </summary>
+		public string EmBCC
+		{
+			get
+			{
+				return ( string ) this.GetField( "core:emBCC" );
+			}
+			set
+			{
+				this.SetField( "core:emBCC", value);
+			}
+		}
 		/// <summary>
 		/// Public accessor for the field.
 		/// </summary>
@@ -2795,6 +2831,20 @@ namespace EDC.ReadiNow.Model
 			set
 			{
 				this.SetField( "core:emFrom", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the field.
+		/// </summary>
+		public string EmFromName
+		{
+			get
+			{
+				return ( string ) this.GetField( "core:emFromName" );
+			}
+			set
+			{
+				this.SetField( "core:emFromName", value);
 			}
 		}
 		/// <summary>
@@ -2969,15 +3019,15 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Public accessor for the directforward relationship.
 		/// </summary>
-		public IEntityCollection<Document> EmAttachments
+		public IEntityCollection<FileType> EmAttachments
 		{
 			get
 			{
-				return this.GetRelationships<Document>( "core:emAttachments", Direction.Forward ).Entities;
+				return this.GetRelationships<FileType>( "core:emAttachments", Direction.Forward ).Entities;
 			}
 			set
 			{
-				this.SetRelationships<Document>( "core:emAttachments", value, Direction.Forward );
+				this.SetRelationships<FileType>( "core:emAttachments", value, Direction.Forward );
 			}
 		}
 		/// <summary>
@@ -11777,6 +11827,22 @@ namespace EDC.ReadiNow.Model
 		/// Explicit cast from the specified type to the current type.
 		/// </summary>
 		public static explicit operator EnumValue( ResourceFlagsEnum entity )
+		{
+			return entity.Cast<EnumValue>( );
+		}
+
+		/// <summary>
+		/// Explicit cast from the specified type to the current type.
+		/// </summary>
+		public static explicit operator EnumValue( SendEmailActivityDistributionTypeEnum entity )
+		{
+			return entity.Cast<EnumValue>( );
+		}
+
+		/// <summary>
+		/// Explicit cast from the specified type to the current type.
+		/// </summary>
+		public static explicit operator EnumValue( SendEmailActivityRecipientsTypeEnum entity )
 		{
 			return entity.Cast<EnumValue>( );
 		}

@@ -25,7 +25,7 @@ using Relationship = EDC.ReadiNow.Model.Relationship;
 namespace EDC.SoftwarePlatform.WebApi.Test.Security
 {
     [TestFixture]
-    [Category("ExtendedTests")]
+    //[Category("ExtendedTests")]
     [Category("SecurityTests")]
     public class EntityV1Tests
     {
@@ -677,6 +677,8 @@ namespace EDC.SoftwarePlatform.WebApi.Test.Security
                     Assert.That(response, Has.Property("StatusCode").EqualTo(expectedResult), "Web service call failed");
 
                     if (expectedResult != HttpStatusCode.OK) return;
+
+                    EntityCache.Instance.Remove(entity.Id);
                     modifiedEntity = Entity.Get(entity.Id);
                     Assert.That(modifiedEntity, Is.Null, "Entity not deleted");
                 }

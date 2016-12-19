@@ -58,8 +58,16 @@ namespace EDC.ReadiNow.IO
         /// <summary>
         /// The list of repos to clean.
         /// </summary>
-        private readonly List<IFileRepository> _repositoriesToClean = new List<IFileRepository>();       
+        private readonly List<IFileRepository> _repositoriesToClean = new List<IFileRepository>();
 
+
+        protected override bool RunAsOwner
+        {
+            get
+            {
+                return false;
+            }
+        }
 
         /// <summary>
         ///     Default constructor. Called by schedule.

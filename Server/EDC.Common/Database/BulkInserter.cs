@@ -17,8 +17,7 @@ namespace EDC.Database
 
 		private readonly IDbCommand _cmd;
 		private readonly string _firstHalf;
-		private readonly string _insertClause;
-		private readonly StringBuilder _sb = new StringBuilder( );
+	    private readonly StringBuilder _sb = new StringBuilder( );
 		private readonly string _secondHalf;
 		private bool _anyRows;
 		private bool _insertedFirstPart;
@@ -43,16 +42,15 @@ namespace EDC.Database
 		/// <param name="insertIntoTableColumns">E.g.: insert into Table (Column1, Column2) values %ROWS%</param>
 		public BulkInserter( IDbCommand cmd, string insertIntoTableColumns )
 		{
-			_cmd = cmd;
-			_insertClause = insertIntoTableColumns;
+		    _cmd = cmd;
 
-			string[] parts = _insertClause.Split( new[]
+		    string[] parts = insertIntoTableColumns.Split( new[]
 				{
 					"%ROWS%"
 				}, StringSplitOptions.None );
 			if ( parts.Length != 2 )
 			{
-				throw new ArgumentException( @"Insert statement must contain %ROWS% exactly once", "insertIntoTableColumns" );
+				throw new ArgumentException( @"Insert statement must contain %ROWS% exactly once", nameof( insertIntoTableColumns ) );
 			}
 
 			_firstHalf = parts[ 0 ];

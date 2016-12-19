@@ -435,9 +435,10 @@
                 dummyReportRun();
             });
 
-            scope.$on('gather', function (event, callback) {
-                callback(scope.formControl, scope.parentControl, iElement);
-            });
+            // REM: Bug 28769: Workflow Buttons are not actionable when logged in as User. (Client: Origin)
+            //scope.$on('gather', function (event, callback) {
+            //    callback(scope.formControl, scope.parentControl, iElement);
+            //});
 
             // #23850. this event is to check if this control is going to run report in context of a resource. If no resource is available then it does a dummy run of the report to bring the report columns.
             scope.$emit('spTabRelRenderCtrlEventIsParentResourceAvailable', function (parentResourceAvailable) {

@@ -1039,6 +1039,12 @@ namespace PlatformConfigure
                 return;
 
             /////
+            // IMAP Server Connection settings
+            /////
+            if (RunAction("setIMAPServerSettings", "imap", SetIMAPServerConnectionSettings))
+                return;
+
+            /////
             // Help or no parameters
             /////
             if ( _parser.Count == 0 || _parser.ContainsArgument( @"help" ) || _parser.ContainsArgument( @"?" ) || _parser.ContainsArgument( @"-help" ) || _parser.ContainsArgument( "help" ) )
@@ -1339,7 +1345,8 @@ namespace PlatformConfigure
 		[Function( "exportTenant", "Exports the specified tenant from the system.", "et" )]
 		[FunctionArgument( "tenant", "is the name of the tenant to export." )]
 		[FunctionArgument( "package", "is the location on disk the package is to be written to." )]
-		[FunctionArgument( "server", "refers to the server on which the tenant currently resides.", "localhost", FunctionArgumentOptions.Optional )]
+        [FunctionArgument( "metadata", "True to export metadata only. Default is false.", "False", FunctionArgumentOptions.Optional )]
+        [FunctionArgument( "server", "refers to the server on which the tenant currently resides.", "localhost", FunctionArgumentOptions.Optional )]
 		[FunctionArgument( "database", "refers to the name of the database where the tenant currently resides.", "SoftwarePlatform", FunctionArgumentOptions.Optional )]
 		[FunctionArgument( "dbUser", "the username used to connect to the sql server.", null, FunctionArgumentOptions.Optional )]
 		[FunctionArgument( "dbPassword", "the password used to connect to the database.", null, FunctionArgumentOptions.Optional )]
@@ -1347,7 +1354,8 @@ namespace PlatformConfigure
 		{
 			var tenant = GetArgument<string>( "tenant" );
 			var package = GetArgument<string>( "package" );
-			var server = GetArgument<string>( "server" );
+            bool metadataOnly = GetArgument<bool>( "metadata" );
+            var server = GetArgument<string>( "server" );
 			var database = GetArgument<string>( "database" );
 			var dbUser = GetArgument<string>( "dbUser" );
 			var dbPassword = GetArgument<string>( "dbPassword" );
@@ -1355,7 +1363,7 @@ namespace PlatformConfigure
 			using ( DatabaseInfo.Override( server, database, dbUser, dbPassword ) )
 			using ( DatabaseContextInfo.SetContextInfo( $"Export tenant '{tenant}'" ) )
 			{
-				TenantManager.ExportTenant( tenant, package );
+				TenantManager.ExportTenant( tenant, package, metadataOnly );
 			}
         }
 
@@ -1630,6 +1638,7 @@ namespace PlatformConfigure
         [Function("importEntity", "Imports the specified entity into the system.", "ie")]
         [FunctionArgument("tenant", "is the name of the tenant to import into.")]
         [FunctionArgument("package", "is the location on disk the export is to be written to.")]
+        [FunctionArgument("ignoreMissingDeps", "If true, ignores missing dependencies", "False", FunctionArgumentOptions.Optional )]
         [FunctionArgument("server", "refers to the server on which the tenant currently resides.", "localhost", FunctionArgumentOptions.Optional)]
         [FunctionArgument("database", "refers to the name of the database where the tenant currently resides.", "SoftwarePlatform", FunctionArgumentOptions.Optional)]
         [FunctionArgument("dbUser", "the username used to connect to the sql server.", null, FunctionArgumentOptions.Optional)]
@@ -1638,6 +1647,7 @@ namespace PlatformConfigure
         {
             var tenant = GetArgument<string>("tenant");
             var package = GetArgument<string>("package");
+            var ignoreMissingDeps = GetArgument<bool>( "ignoreMissingDeps" );
             var server = GetArgument<string>("server");
             var database = GetArgument<string>("database");
             var dbUser = GetArgument<string>("dbUser");
@@ -1645,7 +1655,7 @@ namespace PlatformConfigure
 
             using (DatabaseInfo.Override(server, database, dbUser, dbPassword))
             {
-                EntityManager.ImportEntity(tenant, package);
+                EntityManager.ImportEntity(tenant, package, ignoreMissingDeps );
             }
         }
 
@@ -3046,6 +3056,45 @@ namespace PlatformConfigure
                 ConsoleLogger.WriteLine(SystemHelper.SetDocumentationSettings(docoSettings) ? @"Setting documentation settings succeeded." : @"Setting documentation settings failed.");
             }
         }
+
+        [Function("setIMAPServerSettings", "Sets the IMAP Server connection used by the email listener.", "imap")]
+        [FunctionArgument("server", "refers to the server on which the documentation settings will be set.", "localhost", FunctionArgumentOptions.Optional)]
+        [FunctionArgument("database", "refers to the name of the database on which the documentation settings will be set.", "SoftwarePlatform", FunctionArgumentOptions.Optional)]
+        [FunctionArgument("dbUser", "the username used to connect to the sql server.", null, FunctionArgumentOptions.Optional)]
+        [FunctionArgument("dbPassword", "the password used to connect to the database.", null, FunctionArgumentOptions.Optional)]
+        [FunctionArgument("imapServer", "the name or IP address of the IMAP server.", null, FunctionArgumentOptions.Optional)]
+        [FunctionArgument("imapPort", "the port to connect to the IMAP server on.", null, FunctionArgumentOptions.Optional)]
+        [FunctionArgument("imapUseSSL", "use SSL when connecting to the IMAP server.", null, FunctionArgumentOptions.Optional)]
+        [FunctionArgument("imapAccount", "account/user id to use when authenticating with the IMAP server.", null, FunctionArgumentOptions.Optional)]
+        [FunctionArgument("imapPassword", "password to use when authenticating with the IMAP server.", null, FunctionArgumentOptions.Optional)]
+        [FunctionArgument("imapFolder", "the inbox folder to fetch emails from.", null, FunctionArgumentOptions.Optional)]
+        [FunctionArgument("emailAddressDomain", "the domain name that this inbox receives emails for.", null, FunctionArgumentOptions.Optional)]
+        private void SetIMAPServerConnectionSettings()
+        {
+            var server = GetArgument<string>("server");
+            var database = GetArgument<string>("database");
+            var dbUser = GetArgument<string>("dbUser");
+            var dbPassword = GetArgument<string>("dbPassword");
+
+            string imapServer = GetArgument<string>("imapServer");
+            int? imapPort = GetArgument<int?>("imapPort");
+            bool? imapUseSSL = GetArgument<bool?>("imapUseSSL");
+            string imapAccount = GetArgument<string>("imapAccount");
+            string imapPassword = GetArgument<string>("imapPassword");
+            string imapFolder = GetArgument<string>("imapFolder");
+            string emailDomain = GetArgument<string>("emailAddressDomain");
+
+            using (DatabaseInfo.Override(server, database, dbUser, dbPassword))
+            using (DatabaseContextInfo.SetContextInfo("Setting IMAP Server connection settings"))
+            {
+                if (SystemHelper.SetIMAPServerConnectionSettings(imapServer, imapPort, imapUseSSL, imapAccount, imapPassword, imapFolder, emailDomain))
+                    ConsoleLogger.WriteLine("Setting IMAP Server connection settings succeeded.");
+                else
+                    ConsoleLogger.WriteLine("No changes made to IMAP Server connection settings.");
+            }
+        }
+        
+
 
         /// <summary>
         /// Validates the specified documentation url arg.

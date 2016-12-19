@@ -30,6 +30,7 @@ namespace ReadiNow.Expressions.Test.Runner
         [TestCase( "script: convert(aa_manager,context()).[Direct Reports] order by Name         ;host:Evaluate;context:AA_Employee:Peter Aylett  ;expect: AA_Employee list:Anurag Sharma,Con Christou,David Quint,Kun Dai,Peter Choi,Sri Korada" )]
         [TestCase("script: count(convert(aa_manager,context()).[Direct Reports])        ;context:AA_Employee:Peter Aylett  ;expect: int:6")]
         [TestCase( "script: let level= len([AA_Herb].[Name]) select iif([AA_Herb] is null, level, 'x') ;context:AA_All Fields:Test 30 ;expect: string:null" )]
+        [TestCase( "script: let a = max([AA_All Fields].[DateTime]) select ([AA_All Fields] where [DateTime] = a).[Name] ;context:AA_Herb:Coriander ;expect: string list:Test 28" )] // #28406
         // TODO: Fix text .. data no longer valid //[TestCase("script: all ([AF_All Fields]) where [Priority - Choice]='low'   ;host:Evaluate ;context:AF_All Fields:Test 01  ;expect: All Fields list:AF 1,AF 2 ;unsorted")]
         // TODO: Fix text .. data no longer valid //[TestCase("script: all ([AF_All Fields]) where [Priority - Choice]='low'   ;host:Evaluate ;expect: AF_All Fields list:AF 1,AF 2 ;unsorted")]
         // TODO: Fix text .. data no longer valid //[TestCase("script: all ([AF_All Fields]) where [Priority - Choice]='lowx'  ;host:Evaluate ;context:AF_All Fields:AF 1  ;expect: All Fields list:empty ;unsorted")]
@@ -143,7 +144,7 @@ namespace ReadiNow.Expressions.Test.Runner
         [TestCase("script: count([Direct Reports] where Name='David Quint') ;context:AA_Manager:Peter Aylett   ;expect: int:1")]
         [TestCase("script: count(all([All Fields]))                                                         ;host:Evaluate	;expect: int:5")]
         [TestCase("script: count(p)                                         ;param:p=AA_Person list:Scott Hopwood,Peter Aylett         ;expect: int:2")]
-        [TestCase("script:let d = convert(AA_Manager, [Direct Reports]) select count(d)    ;context:AA_Manager:Peter Aylett            ;expect: int:6")]
+        [TestCase("script:let d = convert(AA_Manager, [Direct Reports]) select count(d)    ;context:AA_Manager:Peter Aylett            ;expect: int:1")]    // This does NOT count the direct reports. They used to, but it was a bad language choice as it prevented variables from being used in aggregate conditions.
         [TestCase("script: sum(all([All Fields]).Number)                                                    ;host:Evaluate	;expect: int:1500")]
         [TestCase("script: max(all([All Fields]).Number)                                                    ;host:Evaluate	;expect: int:500")]
         [TestCase("script: min(all([All Fields]).Number)                                                    ;host:Evaluate	;expect: int:100")]

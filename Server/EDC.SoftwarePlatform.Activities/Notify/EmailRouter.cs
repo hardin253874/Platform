@@ -1,6 +1,7 @@
 ﻿// Copyright 2011-2016 Global Software Innovation Pty Ltd
 
 using EDC.ReadiNow.Core;
+using EDC.ReadiNow.Email;
 using EDC.ReadiNow.Expressions;
 using EDC.ReadiNow.IO;
 using EDC.ReadiNow.Model;
@@ -43,8 +44,6 @@ namespace EDC.SoftwarePlatform.Activities.Notify
                 return sendRecord;
             });
 
-            
-
             var emailNotifier = notifier.Cast<EmailNotifier>();
 
             var inbox = notifier.GetRelationships("core:emailNotifierInbox").FirstOrDefault()?.As<Inbox>();
@@ -72,27 +71,17 @@ namespace EDC.SoftwarePlatform.Activities.Notify
                 if (!string.IsNullOrEmpty(notification.NMessage))
                     mail.EmBody = notification.NMessage;
 
+                var emailServerSettings = Entity.Get<TenantEmailSetting>("core:tenantEmailSettingsInstance");
 
                 mail.EmFrom = inbox?.InboxEmailAddress;
-                mail.SentFromInbox = inbox;
+                mail.SentFromEmailServer = emailServerSettings;
                 mail.EmSentDate = DateTime.UtcNow;
-
                 mail.Save();
 
-                var mailMessages = mail.Cast<SentEmailMessage>().ToMailMessage().ToEnumerable();
+                var mailMessages = mail.Cast<SentEmailMessage>().ToMailMessage().ToEnumerable().ToList();
 
-                var provider = inbox.UsesInboxProvider;
-
-                var tenantId = RequestContext.GetContext().Tenant.Id;
-                string tenantName;
-                using (new AdministratorContext())
-                {
-                    tenantName = Entity.Get<Tenant>(tenantId, Resource.Name_Field).Name;
-                }
-
-                var inboxProviderHelper = provider.GetHelper();
-
-                inboxProviderHelper.SendMessages(mailMessages, tenantName, inbox.Name);
+                var emailsender = new SmtpEmailSender(emailServerSettings);
+                emailsender.SendMessages(mailMessages);
             }
 
             Entity.Save(sends);

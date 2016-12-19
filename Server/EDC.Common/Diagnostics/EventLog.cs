@@ -71,7 +71,7 @@ namespace EDC.Diagnostics
         {
             if (eventLogWriters == null)
             {
-                throw new ArgumentNullException(nameof(eventLogWriters));
+                throw new ArgumentNullException( nameof(eventLogWriters));
             }
 
             _eventLogWriters = new List<IEventLogWriter>();

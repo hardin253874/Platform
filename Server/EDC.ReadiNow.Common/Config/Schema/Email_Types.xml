@@ -1,0 +1,481 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<resources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="core" xsi:schemaLocation=". ../Core.xsd" defaultSolution="coreSolution">
+  <!--Copyright 2011-2016 Global Software Innovation Pty Ltd-->
+  <!-- emailMessage type-->
+  <managedType>
+    <alias>emailMessage</alias>
+    <name>Email</name>
+    <description>An email message that has been received by the email listener.</description>
+    <isAbstract>true</isAbstract>
+    <generateCode>true</generateCode>
+    <inherits>userResource</inherits>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Email Details</name>
+        <alias>emailMessageDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <intField>
+        <alias>emUid</alias>
+        <name>Uid</name>
+        <description>The server specific unique ID</description>
+        <isRequired>true</isRequired>
+        <fieldInGroup>emailMessageDetails</fieldInGroup>
+      </intField>
+      <stringField>
+        <alias>emTo</alias>
+        <name>To</name>
+        <description>The text in the 'To' field of the original message.</description>
+        <fieldInGroup>emailMessageDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>emCC</alias>
+        <name>CC</name>
+        <description>The text in the 'CC' field of the original message.</description>
+        <fieldInGroup>emailMessageDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>emBCC</alias>
+        <name>BCC</name>
+        <description>The text in the 'BCC' field of the original message.</description>
+        <fieldInGroup>emailMessageDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>emFrom</alias>
+        <name>From</name>
+        <description>The email address in the 'From' field of the original message.</description>
+        <fieldInGroup>emailMessageDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>emFromName</alias>
+        <name>From name</name>
+        <description>The display name of the From email.</description>
+        <fieldInGroup>emailMessageDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>emSubject</alias>
+        <name>Subject</name>
+        <description>The text in the 'Subject' field of the original message.</description>
+        <fieldInGroup>emailMessageDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>emBody</alias>
+        <name>Body</name>
+        <allowMultiLines>true</allowMultiLines>
+        <description>The text in the 'Subject' field of the original message.</description>
+        <fieldInGroup>emailMessageDetails</fieldInGroup>
+      </stringField>
+      <boolField>
+        <alias>emIsHtml</alias>
+        <name>Is HTML</name>
+        <description>Is the body of the email encoded as HTML</description>
+        <fieldInGroup>emailMessageDetails</fieldInGroup>
+      </boolField>
+    </fields>
+    <relationships>
+      <relationship>
+        <alias>emAttachments</alias>
+        <name>Attachments</name>
+        <toType>fileType</toType>
+        <description>Documents attached to the email.</description>
+        <relType>relManyToManyFwd</relType>
+        <relationshipInFromTypeGroup>emailMessageDetails</relationshipInFromTypeGroup>
+        <hideOnToType>true</hideOnToType>
+        <hideOnToTypeDefaultForm>true</hideOnToTypeDefaultForm>
+        <generateCode>true</generateCode>
+      </relationship>
+
+    </relationships>
+  </managedType>
+
+  <!-- sentEmailMessage type-->
+  <managedType>
+    <alias>sentEmailMessage</alias>
+    <name>Sent Email</name>
+    <description>An email messages that was sent out from the system.</description>
+    <inherits>emailMessage</inherits>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Sent Email Details</name>
+        <alias>sentEmailMessageDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>semSequenceNumber</alias>
+        <name>Sequence number</name>
+        <description>The Message-ID that is used to track related messages.</description>
+        <fieldInGroup>sentEmailMessageDetails</fieldInGroup>
+      </stringField>
+      <dateTimeField>
+        <alias>emSentDate</alias>
+        <name>Sent</name>
+        <description>The date and time the message was sent.</description>
+        <fieldInGroup>sentEmailMessageDetails</fieldInGroup>
+      </dateTimeField>
+    </fields>
+    <onBeforeSave>
+      <target>
+        <alias>sentEmailTarget</alias>
+        <typeName>EDC.SoftwarePlatform.Activities.EmailListener.SentEmailTarget</typeName>
+        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+        <ordinal>0</ordinal>
+      </target>
+    </onBeforeSave>
+  </managedType>
+
+  <!-- receivedEmailMessage type-->
+  <managedType>
+    <alias>receivedEmailMessage</alias>
+    <name>Received Email</name>
+    <description>An email messages that was received by the system.</description>
+    <inherits>emailMessage</inherits>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Received Email Details</name>
+        <alias>receivedEmailMessageDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <dateTimeField>
+        <alias>emReceivedDate</alias>
+        <name>Received</name>
+        <description>The date and time the message was received.</description>
+        <fieldInGroup>receivedEmailMessageDetails</fieldInGroup>
+      </dateTimeField>
+      <stringField>
+        <alias>emReferences</alias>
+        <name>References</name>
+        <description>The referenced Message Ids.</description>
+        <fieldInGroup>receivedEmailMessageDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>emReplyFragment</alias>
+        <name>Reply</name>
+        <allowMultiLines>true</allowMultiLines>
+        <description>The Reply component of the body in the email.</description>
+        <fieldInGroup>emailMessageDetails</fieldInGroup>
+      </stringField>
+
+    </fields>
+    <relationships>
+      <relationship>
+        <alias>originalMessage</alias>
+        <reverseAlias>responseToMessage</reverseAlias>
+        <name>Original message</name>
+        <description>The message that was sent that this message was a response for.</description>
+        <toName>Response to</toName>
+        <toType>sentEmailMessage</toType>
+        <relType>relLookup</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>receivedEmailMessageDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>sentEmailMessageDetails</relationshipInToTypeGroup>
+      </relationship>
+    </relationships>
+  </managedType>
+
+  <!-- tenantEmailSetting type-->
+  <managedType>
+    <alias>tenantEmailSetting</alias>
+    <name>Email Server Settings</name>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Tenant SMTP Server Details</name>
+        <alias>tenantSMTPServerDetails</alias>
+      </fieldGroup>
+      <fieldGroup>
+        <name>Tenant Email Details</name>
+        <alias>tenantEmailDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <boolField>
+        <alias>postInDirectory</alias>
+        <name>Post email in directory</name>
+        <description>When true emails are posted into the Program Data directory rather then to the email server.</description>
+        <fieldInGroup>tenantEmailDetails</fieldInGroup>
+      </boolField>
+      <stringField>
+        <alias>testingOverrideToAddress</alias>
+        <name>Testing override to address</name>
+        <description>When specified all emails will be sent to this address instead of their normal To address. This is intended for testing purposes.</description>
+        <isRequired>false</isRequired>
+        <fieldRepresents>fieldRepresentsEmail</fieldRepresents>
+        <fieldInGroup>tenantEmailDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>emailNoReplyAddress</alias>
+        <name>No-reply address</name>
+        <isRequired>true</isRequired>
+        <description>The address used for replies that will be ignored.</description>
+        <fieldRepresents>fieldRepresentsEmail</fieldRepresents>
+        <fieldInGroup>tenantEmailDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>smtpServer</alias>
+        <name>Server</name>
+        <description>Name or IP of the SMTP server</description>
+        <pattern>hostNamePattern</pattern>
+        <isRequired>true</isRequired>
+        <fieldInGroup>tenantSMTPServerDetails</fieldInGroup>
+      </stringField>
+      <intField>
+        <alias>smtpPort</alias>
+        <name>Port</name>
+        <fieldInGroup>tenantSMTPServerDetails</fieldInGroup>
+      </intField>
+      <boolField>
+        <alias>smtpUseSSL</alias>
+        <name>Use SSL</name>
+        <defaultValue>true</defaultValue>
+        <fieldInGroup>tenantSMTPServerDetails</fieldInGroup>
+      </boolField>
+      <stringField>
+        <alias>smtpAccount</alias>
+        <name>Account</name>
+        <description>The Account name to use when authenicating with SMTP server.</description>
+        <isRequired>false</isRequired>
+        <fieldInGroup>tenantSMTPServerDetails</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>smtpPassword</alias>
+        <name>Password</name>
+        <description>The password to use when authenticating with the SMTP server</description>
+        <isFieldWriteOnly>true</isFieldWriteOnly>
+        <fieldRepresents>fieldRepresentsPassword</fieldRepresents>
+        <fieldInGroup>tenantSMTPServerDetails</fieldInGroup>
+      </stringField>
+      <guidField>
+        <alias>smtpPasswordSecureId</alias>
+        <name>Password secure Id</name>
+        <description>Reference to the SecureId field.</description>
+        <isFieldWriteOnly>true</isFieldWriteOnly>
+        <hideField>true</hideField>
+        <fieldInGroup>tenantSMTPServerDetails</fieldInGroup>
+      </guidField>
+    </fields>
+    <relationships>
+      <relationship>
+        <alias>sentMessages</alias>
+        <reverseAlias>sentFromEmailServer</reverseAlias>
+        <name>Messages from email server</name>
+        <toType>sentEmailMessage</toType>
+        <relType>relExclusiveCollection</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>tenantEmailDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>sentEmailMessageDetails</relationshipInToTypeGroup>
+      </relationship>
+    </relationships>
+    <onBeforeSave>
+      <target>
+        <alias>emailServerSettingsEventTarget</alias>
+        <typeName>EDC.ReadiNow.Model.EventClasses.EmailServerSettingsEventTarget</typeName>
+        <assemblyName>EDC.ReadiNow.Common, Version=1.0.0.0, Culture=neutral</assemblyName>
+        <ordinal>0</ordinal>
+      </target>
+    </onBeforeSave>
+  </managedType>
+
+  <!-- inbox type-->
+  <managedType>
+    <alias>inbox</alias>
+    <name>Inbox</name>
+    <description>A mail box for receiving emails.</description>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Inbox Settings</name>
+        <alias>inboxFieldGroup</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <boolField>
+        <name>Enabled</name>
+        <description>Whether the inbox is enabled.</description>
+        <alias>inboxEnabled</alias>
+        <defaultValue>true</defaultValue>
+        <fieldInGroup>inboxFieldGroup</fieldInGroup>
+      </boolField>
+      <stringField>
+        <alias>inboxReplyAddress</alias>
+        <name>Reply address</name>
+        <description>This is the email address that the Send Email workflow activity uses as the From/Reply To Address when it sends emails</description>
+        <fieldRepresents>fieldRepresentsEmail</fieldRepresents>
+        <fieldInGroup>inboxFieldGroup</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>inboxFromName</alias>
+        <name>From name</name>
+        <description>This is the from name that the Send Email workflow activity uses when it sends emails</description>
+        <fieldRepresents>fieldRepresentsEmail</fieldRepresents>
+        <fieldInGroup>inboxFieldGroup</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>inboxEmailAddress</alias>
+        <name>Mail address</name>
+        <fieldRepresents>fieldRepresentsEmail</fieldRepresents>
+        <fieldInGroup>inboxFieldGroup</fieldInGroup>
+      </stringField>
+    </fields>
+    <relationships>
+      <relationship>
+        <alias>receivedMessages</alias>
+        <reverseAlias>fromInbox</reverseAlias>
+        <name>Messages to inbox</name>
+        <fromName>From inbox</fromName>
+        <toName>Received messages</toName>
+        <toType>receivedEmailMessage</toType>
+        <relType>relExclusiveCollection</relType>
+        <!-- TODO: dependency? -->
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>inboxFieldGroup</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>receivedEmailMessageDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
+        <alias>inboxWorkflows</alias>
+        <toType>workflow</toType>
+        <name>Workflows to run on inbox</name>
+        <description>The workflows to run on new messages received from a mailbox.</description>
+        <toName>Workflows to run</toName>
+        <fromName>Inbox to action</fromName>
+        <relType>relManyToMany</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>inboxFieldGroup</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>workflowDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <alias>inboxEmailActions</alias>
+        <toType>inboxEmailAction</toType>
+        <name>Inbox email actions</name>
+        <description>Actions to run on the incoming emails.</description>
+        <toName>Actions</toName>
+        <fromName>Inboxes</fromName>
+        <relType>relManyToMany</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>inboxFieldGroup</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>inboxEmailActionDetails</relationshipInToTypeGroup>
+      </relationship>
+      <relationship>
+        <name>Message formatter</name>
+        <description>Custom MailMessage formatter.</description>
+        <alias>mailMessageFormatter</alias>
+        <toType>class</toType>
+        <hideOnFromType>true</hideOnFromType>
+        <hideOnToType>true</hideOnToType>
+        <relType>relManyToMany</relType>
+        <generateCode>true</generateCode>
+      </relationship>
+      <relationship>
+        <name>Received message type</name>
+        <description>Type of messages this inbox receives.</description>
+        <alias>inboxReceivedMessageType</alias>
+        <toType>class</toType>
+        <hideOnFromType>true</hideOnFromType>
+        <hideOnToType>true</hideOnToType>
+        <relType>relLookup</relType>
+        <generateCode>true</generateCode>
+      </relationship>
+      <relationship>
+        <name>Created event type</name>
+        <description>Type of event that this inbox creates.</description>
+        <alias>inboxCreatedEventType</alias>
+        <toType>type</toType>
+        <hideOnFromType>false</hideOnFromType>
+        <hideOnToType>true</hideOnToType>
+        <relType>relLookup</relType>
+        <generateCode>true</generateCode>
+        <relationshipInFromTypeGroup>inboxFieldGroup</relationshipInFromTypeGroup>
+      </relationship>
+    </relationships>
+    <onBeforeSave>
+      <target>
+        <alias>inboxEventTarget</alias>
+        <typeName>EDC.ReadiNow.Model.EventClasses.InboxEventTarget</typeName>
+        <assemblyName>EDC.ReadiNow.Common, Version=1.0.0.0, Culture=neutral</assemblyName>
+        <ordinal>0</ordinal>
+      </target>
+    </onBeforeSave>
+  </managedType>
+
+  <!-- tenantEmailSettingsInstance -->
+  <tenantEmailSetting>
+    <alias>tenantEmailSettingsInstance</alias>
+    <name>Email Server Settings</name>
+    <description>SMTP Server settings used for sending emails.</description>
+    <smtpServer>mail.readinow.com</smtpServer>
+    <smtpUseSSL>false</smtpUseSSL>
+    <postInDirectory>false</postInDirectory>
+    <emailNoReplyAddress>noreply@readinow.com</emailNoReplyAddress>
+  </tenantEmailSetting>
+
+  <!-- inboxEmailAction -->
+  <type>
+    <alias>inboxEmailAction</alias>
+    <name>Inbox Email Action</name>
+    <description>An action that can be performed upon an email that has been received.</description>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>Inbox Email Action Details</name>
+        <alias>inboxEmailActionDetails</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <intField>
+        <alias>ieaOrdinal</alias>
+        <name>Ordinal</name>
+        <description>The order the actions are processed in.</description>
+        <fieldInGroup>inboxEmailActionDetails</fieldInGroup>
+      </intField>
+    </fields>
+    <relationships>
+      <relationship>
+        <alias>ieaBackingClass</alias>
+        <name>Backing class</name>
+        <toType>class</toType>
+        <relType>relLookup</relType>
+        <hideOnToType>true</hideOnToType>
+        <hideOnFromType>true</hideOnFromType>
+        <generateCode>true</generateCode>
+      </relationship>
+    </relationships>
+  </type>
+
+  <!-- matchSentToReceivedEmailsAction -->
+  <inboxEmailAction>
+    <alias>matchSentToReceivedEmailsAction</alias>
+    <name>Match Sent to Received Emails</name>
+    <description>If an email contains a sequence matching a sent email, update the "Response To" relationship.</description>
+    <ieaOrdinal>50</ieaOrdinal>
+    <ieaBackingClass>
+      <class>
+        <alias>matchSentToReceivedEmailsActionClass</alias>
+        <name>MatchSentToReceivedEmailsActionClass</name>
+        <typeName>EDC.SoftwarePlatform.Activities.EmailListener.MatchSentToReceivedEmailsAction</typeName>
+        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+      </class>
+    </ieaBackingClass>
+  </inboxEmailAction>
+
+  <!-- sendICalUpdateEmailsAction -->
+  <inboxEmailAction>
+    <alias>sendICalUpdateEmailsAction</alias>
+    <name>Send iCal Updates.</name>
+    <description>Send out iCal updates to the attendees.</description>
+    <ieaOrdinal>150</ieaOrdinal>
+    <ieaBackingClass>
+      <class>
+        <alias>sendICalUpdateEmailsActionClass</alias>
+        <name>SendICalUpdateEmailsActionClass</name>
+        <typeName>EDC.SoftwarePlatform.Activities.EmailListener.SendICalUpdatesEmailAction</typeName>
+        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+      </class>
+    </ieaBackingClass>
+  </inboxEmailAction>
+
+</resources>

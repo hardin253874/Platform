@@ -38,7 +38,7 @@ namespace EDC.Diagnostics
         {
             if (syslogWriter == null)
             {
-                throw new ArgumentNullException(nameof(syslogWriter));
+                throw new ArgumentNullException( nameof(syslogWriter));
             }
 
             _syslogWriter = syslogWriter;

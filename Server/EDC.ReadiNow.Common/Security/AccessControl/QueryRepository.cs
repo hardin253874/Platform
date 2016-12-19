@@ -123,6 +123,8 @@ namespace EDC.ReadiNow.Security.AccessControl
                     Report accessRuleReport = allowAccess.AccessRuleReport;
                     if ( accessRuleReport == null )
                         continue;
+                    if (allowAccess.ControlAccess == null)
+                        continue;
 
                     // Load the report query graph
                     Report accessRuleReportGraph = ReportEntityRepository.Get<Report>( allowAccess.AccessRuleReport.Id, ReportHelpers.QueryPreloaderQuery );

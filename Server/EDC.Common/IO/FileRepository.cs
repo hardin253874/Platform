@@ -112,32 +112,32 @@ namespace EDC.IO
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentNullException(@"name");
+                throw new ArgumentNullException( nameof( name ) );
             }
 
             if (string.IsNullOrWhiteSpace(path))
             {
-                throw new ArgumentNullException(@"path");
+                throw new ArgumentNullException( nameof( path ) );
             }
 
             if (tokenProvider == null)
             {
-                throw new ArgumentNullException(@"tokenProvider");
+                throw new ArgumentNullException( nameof( tokenProvider ) );
             }
 
             if (eventLog == null)
             {
-                throw new ArgumentNullException(@"eventLog");
+                throw new ArgumentNullException( nameof( eventLog ) );
             }
 
             if (retentionPeriod.TotalMilliseconds <= 0)
             {
-                throw new ArgumentOutOfRangeException(@"retentionPeriod");
+                throw new ArgumentOutOfRangeException( nameof( retentionPeriod ) );
             }
 
             if (cleanupInterval.TotalMilliseconds <= 0)
             {
-                throw new ArgumentOutOfRangeException(@"cleanupInterval");
+                throw new ArgumentOutOfRangeException( nameof( cleanupInterval ) );
             }
 
             // Try and create the file repository path if it does not exist                        
@@ -180,7 +180,7 @@ namespace EDC.IO
         {
             if (string.IsNullOrWhiteSpace(token))
             {
-                throw new ArgumentNullException(@"token");
+                throw new ArgumentNullException( nameof( token ) );
             }
 
             var directoryPath = GetDataDirectoryPath(token);
@@ -203,7 +203,7 @@ namespace EDC.IO
         {
             if (string.IsNullOrWhiteSpace(token))
             {
-                throw new ArgumentNullException(@"token");
+                throw new ArgumentNullException( nameof( token ) );
             }
 
             var directoryPath = GetDataDirectoryPath(token);
@@ -224,7 +224,7 @@ namespace EDC.IO
         {
             if (stream == null)
             {
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException( nameof( stream ) );
             }
 
             RunFileCleanup();
@@ -443,7 +443,7 @@ namespace EDC.IO
         {
             if (stream == null)
             {
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException( nameof( stream ) );
             }
 
             return _tokenProvider.ComputeToken(stream);
@@ -620,7 +620,7 @@ namespace EDC.IO
 
             if (string.IsNullOrWhiteSpace(token))
             {
-                throw new ArgumentNullException("token");
+                throw new ArgumentNullException( nameof( token ) );
             }
 
             var start = 0;

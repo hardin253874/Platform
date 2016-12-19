@@ -199,6 +199,13 @@ namespace EDC.ReadiNow.Common.Workflow
         /// <param name="action"></param>
         public void DeferAction(Action action, bool runBeforeSave = false)
         {
+            Action wrappedAction = action;
+
+            if (SecurityBypassContext.IsActive)
+            {
+                wrappedAction = () => SecurityBypassContext.Elevate(action);
+            }
+            
             if (this == _rootContext)
                 throw new ArgumentException("action");
             
@@ -206,11 +213,11 @@ namespace EDC.ReadiNow.Common.Workflow
             {
                 var queue = runBeforeSave ? _deferredBeforeActions : _deferredAfterActions;
 
-                queue.Enqueue(action);
+                queue.Enqueue(wrappedAction);
             }
             else
             {
-                _parentContext.DeferAction(action, runBeforeSave);
+                _parentContext.DeferAction(wrappedAction, runBeforeSave);
             }
         }
 

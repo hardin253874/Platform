@@ -11,7 +11,7 @@ using EDC.ReadiNow.Common.Workflow;
 namespace EDC.SoftwarePlatform.Activities.Test
 {
 	[TestFixture]
-    [Category("ExtendedTests")]
+    //[Category("ExtendedTests")]
     [Category("WorkflowTests")]
 	public class ForEachResourceTest : TestBase
 	{

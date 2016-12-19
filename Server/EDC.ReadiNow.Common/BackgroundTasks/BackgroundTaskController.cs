@@ -1,6 +1,5 @@
 ﻿// Copyright 2011-2016 Global Software Innovation Pty Ltd
 
-using EDC.ReadiNow.Core;
 using EDC.ReadiNow.Diagnostics;
 using EDC.ReadiNow.Messaging;
 using ProtoBuf;
@@ -13,24 +12,24 @@ namespace EDC.ReadiNow.BackgroundTasks
     /// <summary>
     /// Controls the background tasks
     /// </summary>
-    public class BackgroundTaskController : IBackgroundTaskController
+    public class BackgroundTaskController : IBackgroundTaskController, IDisposable
     {
         enum MessageAction { StartAll, StopAll, Stopped, PollRunning, IsRunning, ReportRequest, ReportAnswer };
 
         const int MaxWaitTimeSec = 20;
 
-        IBackgroundTaskManager _taskManager;
-        int _runningCount = 0;
+	    readonly IBackgroundTaskManager _taskManager;
+        int _runningCount;
         bool _stoppingInitiator;
         string _reportAnswer;    
 
-        private IChannel<BackgroundTaskControllerMessage> Channel { get; }
+        private IChannel<BackgroundTaskControllerMessage> Channel { get; set; }
 
         public BackgroundTaskController(IDistributedMemoryManager redisMgr, IBackgroundTaskManager backgroundTaskManager)
         {
             _taskManager = backgroundTaskManager;
 
-            Channel = redisMgr.GetChannel<BackgroundTaskControllerMessage>($"BackgroundTaskController");
+            Channel = redisMgr.GetChannel<BackgroundTaskControllerMessage>("BackgroundTaskController");
             Channel.MessageReceived += ChannelMessageReceived;
             Channel.Subscribe();
         }
@@ -65,10 +64,11 @@ namespace EDC.ReadiNow.BackgroundTasks
                 int i = MaxWaitTimeSec;
                 while (i-- > 0)
                 {
-                    Thread.Sleep(5000);
                     if (_runningCount == 0)
                         break;
-                }
+
+					Thread.Sleep( 5000 );
+				}
 
                 return i > 0;
             }
@@ -116,14 +116,14 @@ namespace EDC.ReadiNow.BackgroundTasks
 
         private void Publish(MessageAction action, bool publishToOriginator = true, string additionalInfo = null)
         {
-            Channel.Publish(new BackgroundTaskControllerMessage() { Action = action.ToString(), Additionalnfo = additionalInfo }, PublishMethod.Immediate, options: PublishOptions.None, publishToOriginator: publishToOriginator);
+            Channel.Publish(new BackgroundTaskControllerMessage() { Action = action.ToString(), AdditionalInfo = additionalInfo }, PublishMethod.Immediate, options: PublishOptions.None, publishToOriginator: publishToOriginator);
         }
 
         private void ChannelMessageReceived(object sender, MessageEventArgs<BackgroundTaskControllerMessage> e)
         {
             if (e != null)
            {
-                var action = MessageAction.Parse(typeof(MessageAction), e.Message.Action);
+                var action = Enum.Parse(typeof(MessageAction), e.Message.Action);
 
                 if (action != null)
                 {
@@ -137,7 +137,7 @@ namespace EDC.ReadiNow.BackgroundTasks
                             IfActive(tm =>
                             {
                                 tm.Stop();
-                                Publish(MessageAction.Stopped, true);
+                                Publish(MessageAction.Stopped);
                             });
                             break;
 
@@ -150,7 +150,7 @@ namespace EDC.ReadiNow.BackgroundTasks
                             break;
 
                         case MessageAction.PollRunning:
-                            IfActive(tm => Publish(MessageAction.IsRunning, true));
+                            IfActive(tm => Publish(MessageAction.IsRunning));
                             break;
 
                         case MessageAction.IsRunning:
@@ -165,7 +165,7 @@ namespace EDC.ReadiNow.BackgroundTasks
                             break;
 
                         case MessageAction.ReportAnswer:
-                            _reportAnswer += e.Message.Additionalnfo + '\n';
+                            _reportAnswer += e.Message.AdditionalInfo + '\n';
                             break;
 
                     }
@@ -191,6 +191,17 @@ namespace EDC.ReadiNow.BackgroundTasks
                 _taskManager.GenerateReport(sb);
             return sb.ToString();
         }
+
+	    public void Dispose( )
+	    {
+			if ( Channel != null )
+			{
+				Channel.MessageReceived -= ChannelMessageReceived;
+				Channel.Unsubscribe( );
+				Channel.Dispose( );
+				Channel = null;
+			}
+	    }
     }
 
 
@@ -198,6 +209,6 @@ namespace EDC.ReadiNow.BackgroundTasks
     public class BackgroundTaskControllerMessage
     {
         public string Action;
-        public string Additionalnfo;
+        public string AdditionalInfo;
     }
 }

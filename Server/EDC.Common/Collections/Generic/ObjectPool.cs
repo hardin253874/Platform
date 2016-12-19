@@ -1,10 +1,6 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EDC.Collections.Generic
 {
@@ -22,7 +18,7 @@ namespace EDC.Collections.Generic
         public ObjectPool(Func<T> objectGenerator)
         {
             if (objectGenerator == null)
-                throw new ArgumentNullException("objectGenerator");
+                throw new ArgumentNullException( nameof( objectGenerator ) );
             _objects = new ConcurrentBag<T>();
             _objectGenerator = objectGenerator;
         }

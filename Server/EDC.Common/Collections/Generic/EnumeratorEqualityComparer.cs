@@ -20,7 +20,7 @@ namespace EDC.Collections.Generic
         /// <summary>
         /// Used to compare elements.
         /// </summary>
-        public IEqualityComparer<T> EqualityComparer { get; private set; }
+        public IEqualityComparer<T> EqualityComparer { get; }
 
         /// <summary>
         /// Determines whether the specified objects are equal.

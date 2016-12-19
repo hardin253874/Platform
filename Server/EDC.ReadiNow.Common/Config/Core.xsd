@@ -164,6 +164,12 @@
       <xs:element ref="systemOnlyScheduleAction" />
       <xs:element ref="processInboxesAction" />
       <xs:element ref="systemDocumentationSettings" />
+      <xs:element ref="imapServerSettings" />
+      <xs:element ref="sentEmailMessage" />
+      <xs:element ref="receivedEmailMessage" />
+      <xs:element ref="tenantEmailSetting" />
+      <xs:element ref="inbox" />
+      <xs:element ref="inboxEmailAction" />
       <xs:element ref="console:uiContext" />
       <xs:element ref="console:renderControlType" />
       <xs:element ref="console:customRenderControlType" />
@@ -282,7 +288,6 @@
       <xs:element ref="tenantLogEntry" />
       <xs:element ref="recordChangeLogEntry" />
       <xs:element ref="resourceViewer" />
-      <xs:element ref="tenantEmailSetting" />
       <xs:element ref="fileType" />
       <xs:element ref="imageFileType" />
       <xs:element ref="photoFileType" />
@@ -337,12 +342,6 @@
       <xs:element ref="runTraceLogEntry" />
       <xs:element ref="workflowEventEnum" />
       <xs:element ref="cleanUpWorkflowRunsAction" />
-      <xs:element ref="sentEmailMessage" />
-      <xs:element ref="receivedEmailMessage" />
-      <xs:element ref="proxyInboxProvider" />
-      <xs:element ref="imapEmailProvider" />
-      <xs:element ref="inbox" />
-      <xs:element ref="inboxEmailAction" />
       <xs:element ref="taskStatusEnum" />
       <xs:element ref="logActivity" />
       <xs:element ref="createActivity" />
@@ -352,6 +351,8 @@
       <xs:element ref="setRelationshipActivity" />
       <xs:element ref="decisionActivity" />
       <xs:element ref="assignToVariable" />
+      <xs:element ref="sendEmailActivityRecipientsTypeEnum" />
+      <xs:element ref="sendEmailActivityDistributionTypeEnum" />
       <xs:element ref="sendEmailActivity" />
       <xs:element ref="displayFormActivity" />
       <xs:element ref="forEachResource" />
@@ -650,6 +651,19 @@
       <xs:element ref="tenantsWithPackage.instance" />
       <xs:element ref="canInstallApplication.instance" />
       <xs:element ref="canPublishApplication.instance" />
+      <xs:element ref="emAttachments.instance" />
+      <xs:element ref="originalMessage.instance" />
+      <xs:element ref="responseToMessage.instance" />
+      <xs:element ref="sentMessages.instance" />
+      <xs:element ref="sentFromEmailServer.instance" />
+      <xs:element ref="receivedMessages.instance" />
+      <xs:element ref="fromInbox.instance" />
+      <xs:element ref="inboxWorkflows.instance" />
+      <xs:element ref="inboxEmailActions.instance" />
+      <xs:element ref="mailMessageFormatter.instance" />
+      <xs:element ref="inboxReceivedMessageType.instance" />
+      <xs:element ref="inboxCreatedEventType.instance" />
+      <xs:element ref="ieaBackingClass.instance" />
       <xs:element ref="console:context.instance" />
       <xs:element ref="console:applicableControl.instance" />
       <xs:element ref="console:customRenderControlForType.instance" />
@@ -826,11 +840,6 @@
       <xs:element ref="logEntriesForObject.instance" />
       <xs:element ref="actingPersonReferencedInLog.instance" />
       <xs:element ref="logEntriesForActingPerson.instance" />
-      <xs:element ref="tesApprovalsInbox.instance" />
-      <xs:element ref="tesSupportInbox.instance" />
-      <xs:element ref="tesNewTicketsInbox.instance" />
-      <xs:element ref="tesCalendarInbox.instance" />
-      <xs:element ref="tesPasswordResetInbox.instance" />
       <xs:element ref="thumbnailScaling.instance" />
       <xs:element ref="imageHasThumbnails.instance" />
       <xs:element ref="isThumbnailForImage.instance" />
@@ -956,20 +965,6 @@
       <xs:element ref="logEntryForUserAction.instance" />
       <xs:element ref="activityBeingRun.instance" />
       <xs:element ref="eventBackingClass.instance" />
-      <xs:element ref="emAttachments.instance" />
-      <xs:element ref="originalMessage.instance" />
-      <xs:element ref="responseToMessage.instance" />
-      <xs:element ref="usesInboxProvider.instance" />
-      <xs:element ref="receivedMessages.instance" />
-      <xs:element ref="fromInbox.instance" />
-      <xs:element ref="sentMessages.instance" />
-      <xs:element ref="sentFromInbox.instance" />
-      <xs:element ref="inboxWorkflows.instance" />
-      <xs:element ref="inboxEmailActions.instance" />
-      <xs:element ref="mailMessageFormatter.instance" />
-      <xs:element ref="inboxReceivedMessageType.instance" />
-      <xs:element ref="inboxCreatedEventType.instance" />
-      <xs:element ref="ieaBackingClass.instance" />
       <xs:element ref="targetVariable.instance" />
       <xs:element ref="workflowToProxy.instance" />
       <xs:element ref="rmeWorkflow.instance" />
@@ -2500,6 +2495,200 @@
       <xs:restriction base="xs:string" />
     </xs:simpleType>
   </xs:element>
+  <xs:element name="imapDomainName">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="imapUseIntegratedAuth">
+    <xs:simpleType>
+      <xs:restriction base="xs:boolean" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="imapFolder">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="imapServer">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:pattern value="^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$" />
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="imapPort">
+    <xs:simpleType>
+      <xs:restriction base="xs:int" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="imapUseSSL">
+    <xs:simpleType>
+      <xs:restriction base="xs:boolean" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="imapAccount">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="imapPassword">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="imapPasswordSecureId">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="inboxEmailAddressDomain">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="emUid">
+    <xs:simpleType>
+      <xs:restriction base="xs:int" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="emTo">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="emCC">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="emBCC">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="emFrom">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="emFromName">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="emSubject">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="emBody">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="emIsHtml">
+    <xs:simpleType>
+      <xs:restriction base="xs:boolean" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="semSequenceNumber">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="emSentDate">
+    <xs:simpleType>
+      <xs:restriction base="xs:dateTime" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="emReceivedDate">
+    <xs:simpleType>
+      <xs:restriction base="xs:dateTime" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="emReferences">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="emReplyFragment">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="postInDirectory">
+    <xs:simpleType>
+      <xs:restriction base="xs:boolean" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="testingOverrideToAddress">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="emailNoReplyAddress">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="smtpServer">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:pattern value="^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$" />
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="smtpPort">
+    <xs:simpleType>
+      <xs:restriction base="xs:int" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="smtpUseSSL">
+    <xs:simpleType>
+      <xs:restriction base="xs:boolean" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="smtpAccount">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="smtpPassword">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="smtpPasswordSecureId">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="inboxEnabled">
+    <xs:simpleType>
+      <xs:restriction base="xs:boolean" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="inboxReplyAddress">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="inboxFromName">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="inboxEmailAddress">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" />
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="ieaOrdinal">
+    <xs:simpleType>
+      <xs:restriction base="xs:int" />
+    </xs:simpleType>
+  </xs:element>
   <xs:element name="allowSelectMultiTypes">
     <xs:simpleType>
       <xs:restriction base="xs:boolean" />
@@ -3193,16 +3382,6 @@
       <xs:restriction base="xs:boolean" />
     </xs:simpleType>
   </xs:element>
-  <xs:element name="emailServer">
-    <xs:simpleType>
-      <xs:restriction base="xs:string" />
-    </xs:simpleType>
-  </xs:element>
-  <xs:element name="emailServerNoReplyAddress">
-    <xs:simpleType>
-      <xs:restriction base="xs:string" />
-    </xs:simpleType>
-  </xs:element>
   <xs:element name="fileDataHash">
     <xs:simpleType>
       <xs:restriction base="xs:string" />
@@ -3605,51 +3784,6 @@
       <xs:restriction base="xs:int" />
     </xs:simpleType>
   </xs:element>
-  <xs:element name="emUid">
-    <xs:simpleType>
-      <xs:restriction base="xs:int" />
-    </xs:simpleType>
-  </xs:element>
-  <xs:element name="emTo">
-    <xs:simpleType>
-      <xs:restriction base="xs:string" />
-    </xs:simpleType>
-  </xs:element>
-  <xs:element name="emCC">
-    <xs:simpleType>
-      <xs:restriction base="xs:string" />
-    </xs:simpleType>
-  </xs:element>
-  <xs:element name="emFrom">
-    <xs:simpleType>
-      <xs:restriction base="xs:string" />
-    </xs:simpleType>
-  </xs:element>
-  <xs:element name="emSubject">
-    <xs:simpleType>
-      <xs:restriction base="xs:string" />
-    </xs:simpleType>
-  </xs:element>
-  <xs:element name="emBody">
-    <xs:simpleType>
-      <xs:restriction base="xs:string" />
-    </xs:simpleType>
-  </xs:element>
-  <xs:element name="emIsHtml">
-    <xs:simpleType>
-      <xs:restriction base="xs:boolean" />
-    </xs:simpleType>
-  </xs:element>
-  <xs:element name="semSequenceNumber">
-    <xs:simpleType>
-      <xs:restriction base="xs:string" />
-    </xs:simpleType>
-  </xs:element>
-  <xs:element name="emSentDate">
-    <xs:simpleType>
-      <xs:restriction base="xs:dateTime" />
-    </xs:simpleType>
-  </xs:element>
   <xs:element name="iCalUid">
     <xs:simpleType>
       <xs:restriction base="xs:string" />
@@ -3660,96 +3794,9 @@
       <xs:restriction base="xs:string" />
     </xs:simpleType>
   </xs:element>
-  <xs:element name="emReceivedDate">
-    <xs:simpleType>
-      <xs:restriction base="xs:dateTime" />
-    </xs:simpleType>
-  </xs:element>
-  <xs:element name="emReferences">
-    <xs:simpleType>
-      <xs:restriction base="xs:string" />
-    </xs:simpleType>
-  </xs:element>
   <xs:element name="iCalUpdate">
     <xs:simpleType>
       <xs:restriction base="xs:string" />
-    </xs:simpleType>
-  </xs:element>
-  <xs:element name="providerAlias">
-    <xs:simpleType>
-      <xs:restriction base="xs:string" />
-    </xs:simpleType>
-  </xs:element>
-  <xs:element name="oaPostInDirectory">
-    <xs:simpleType>
-      <xs:restriction base="xs:boolean" />
-    </xs:simpleType>
-  </xs:element>
-  <xs:element name="oaDomainName">
-    <xs:simpleType>
-      <xs:restriction base="xs:string" />
-    </xs:simpleType>
-  </xs:element>
-  <xs:element name="oaServer">
-    <xs:simpleType>
-      <xs:restriction base="xs:string">
-        <xs:pattern value="^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$" />
-      </xs:restriction>
-    </xs:simpleType>
-  </xs:element>
-  <xs:element name="oaPort">
-    <xs:simpleType>
-      <xs:restriction base="xs:int" />
-    </xs:simpleType>
-  </xs:element>
-  <xs:element name="oaUseSSL">
-    <xs:simpleType>
-      <xs:restriction base="xs:boolean" />
-    </xs:simpleType>
-  </xs:element>
-  <xs:element name="oaAccount">
-    <xs:simpleType>
-      <xs:restriction base="xs:string" />
-    </xs:simpleType>
-  </xs:element>
-  <xs:element name="oaPassword">
-    <xs:simpleType>
-      <xs:restriction base="xs:string" />
-    </xs:simpleType>
-  </xs:element>
-  <xs:element name="oaPasswordSecureId">
-    <xs:simpleType>
-      <xs:restriction base="xs:string" />
-    </xs:simpleType>
-  </xs:element>
-  <xs:element name="oaUseIntegratedAuth">
-    <xs:simpleType>
-      <xs:restriction base="xs:boolean" />
-    </xs:simpleType>
-  </xs:element>
-  <xs:element name="oaEmailAddress">
-    <xs:simpleType>
-      <xs:restriction base="xs:string" />
-    </xs:simpleType>
-  </xs:element>
-  <xs:element name="oaUseFolder">
-    <xs:simpleType>
-      <xs:restriction base="xs:boolean" />
-    </xs:simpleType>
-  </xs:element>
-  <xs:element name="inboxEmailAddress">
-    <xs:simpleType>
-      <xs:restriction base="xs:string" />
-    </xs:simpleType>
-  </xs:element>
-  <xs:element name="inboxEnabled">
-    <xs:simpleType>
-      <xs:restriction base="xs:boolean" />
-    </xs:simpleType>
-  </xs:element>
-  <xs:element name="ieaOrdinal">
-    <xs:simpleType>
-      <xs:restriction base="xs:int" />
     </xs:simpleType>
   </xs:element>
   <xs:element name="rmeOrder">
@@ -4009,6 +4056,12 @@
       <xs:element ref="systemOnlyScheduleAction" />
       <xs:element ref="processInboxesAction" />
       <xs:element ref="systemDocumentationSettings" />
+      <xs:element ref="imapServerSettings" />
+      <xs:element ref="sentEmailMessage" />
+      <xs:element ref="receivedEmailMessage" />
+      <xs:element ref="tenantEmailSetting" />
+      <xs:element ref="inbox" />
+      <xs:element ref="inboxEmailAction" />
       <xs:element ref="console:uiContext" />
       <xs:element ref="console:renderControlType" />
       <xs:element ref="console:customRenderControlType" />
@@ -4127,7 +4180,6 @@
       <xs:element ref="tenantLogEntry" />
       <xs:element ref="recordChangeLogEntry" />
       <xs:element ref="resourceViewer" />
-      <xs:element ref="tenantEmailSetting" />
       <xs:element ref="fileType" />
       <xs:element ref="imageFileType" />
       <xs:element ref="photoFileType" />
@@ -4182,12 +4234,6 @@
       <xs:element ref="runTraceLogEntry" />
       <xs:element ref="workflowEventEnum" />
       <xs:element ref="cleanUpWorkflowRunsAction" />
-      <xs:element ref="sentEmailMessage" />
-      <xs:element ref="receivedEmailMessage" />
-      <xs:element ref="proxyInboxProvider" />
-      <xs:element ref="imapEmailProvider" />
-      <xs:element ref="inbox" />
-      <xs:element ref="inboxEmailAction" />
       <xs:element ref="taskStatusEnum" />
       <xs:element ref="logActivity" />
       <xs:element ref="createActivity" />
@@ -4197,6 +4243,8 @@
       <xs:element ref="setRelationshipActivity" />
       <xs:element ref="decisionActivity" />
       <xs:element ref="assignToVariable" />
+      <xs:element ref="sendEmailActivityRecipientsTypeEnum" />
+      <xs:element ref="sendEmailActivityDistributionTypeEnum" />
       <xs:element ref="sendEmailActivity" />
       <xs:element ref="displayFormActivity" />
       <xs:element ref="forEachResource" />
@@ -11193,6 +11241,311 @@
       <xs:element ref="systemDocumentationSettings" />
     </xs:choice>
   </xs:group>
+  <xs:element name="imapServerSettings" type="type_imapServerSettings" />
+  <xs:complexType name="type_imapServerSettings">
+    <xs:all>
+      <xs:element minOccurs="0" maxOccurs="1" ref="name" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="description" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdDate" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="modifiedDate" />
+      <xs:element minOccurs="1" maxOccurs="1" ref="alias" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canModify" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canDelete" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="imapDomainName" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="imapUseIntegratedAuth" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="imapFolder" />
+      <xs:element minOccurs="1" maxOccurs="1" ref="imapServer" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="imapPort" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="imapUseSSL" />
+      <xs:element minOccurs="1" maxOccurs="1" ref="imapAccount" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="imapPassword" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="imapPasswordSecureId" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inboxEmailAddressDomain" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="flags" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="securityOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="lastModifiedBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isRootForStructureView" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inStructureLevel" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="indirectInSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
+    </xs:all>
+  </xs:complexType>
+  <xs:group name="is_imapServerSettings">
+    <xs:choice>
+      <xs:element ref="imapServerSettings" />
+    </xs:choice>
+  </xs:group>
+  <xs:element name="emailMessage" type="type_emailMessage" />
+  <xs:complexType name="type_emailMessage">
+    <xs:all>
+      <xs:element minOccurs="0" maxOccurs="1" ref="name" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="description" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdDate" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="modifiedDate" />
+      <xs:element minOccurs="1" maxOccurs="1" ref="alias" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canModify" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canDelete" />
+      <xs:element minOccurs="1" maxOccurs="1" ref="emUid" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="emTo" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="emCC" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="emBCC" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="emFrom" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="emFromName" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="emSubject" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="emBody" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="emIsHtml" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="flags" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="securityOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="lastModifiedBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isRootForStructureView" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inStructureLevel" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="indirectInSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="emAttachments" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="relatedTask" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="logEntriesForObject" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="tasksForRecord" />
+    </xs:all>
+  </xs:complexType>
+  <xs:group name="is_emailMessage">
+    <xs:choice>
+      <xs:element ref="sentEmailMessage" />
+      <xs:element ref="receivedEmailMessage" />
+    </xs:choice>
+  </xs:group>
+  <xs:element name="sentEmailMessage" type="type_sentEmailMessage" />
+  <xs:complexType name="type_sentEmailMessage">
+    <xs:all>
+      <xs:element minOccurs="0" maxOccurs="1" ref="name" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="description" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdDate" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="modifiedDate" />
+      <xs:element minOccurs="1" maxOccurs="1" ref="alias" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canModify" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canDelete" />
+      <xs:element minOccurs="1" maxOccurs="1" ref="emUid" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="emTo" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="emCC" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="emBCC" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="emFrom" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="emFromName" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="emSubject" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="emBody" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="emIsHtml" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="semSequenceNumber" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="emSentDate" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="flags" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="securityOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="lastModifiedBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isRootForStructureView" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inStructureLevel" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="indirectInSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="emAttachments" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="relatedTask" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="responseToMessage" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="sentFromEmailServer" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="logEntriesForObject" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="tasksForRecord" />
+    </xs:all>
+  </xs:complexType>
+  <xs:group name="is_sentEmailMessage">
+    <xs:choice>
+      <xs:element ref="sentEmailMessage" />
+    </xs:choice>
+  </xs:group>
+  <xs:element name="receivedEmailMessage" type="type_receivedEmailMessage" />
+  <xs:complexType name="type_receivedEmailMessage">
+    <xs:all>
+      <xs:element minOccurs="0" maxOccurs="1" ref="name" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="description" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdDate" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="modifiedDate" />
+      <xs:element minOccurs="1" maxOccurs="1" ref="alias" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canModify" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canDelete" />
+      <xs:element minOccurs="1" maxOccurs="1" ref="emUid" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="emTo" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="emCC" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="emBCC" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="emFrom" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="emFromName" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="emSubject" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="emBody" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="emIsHtml" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="emReceivedDate" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="emReferences" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="emReplyFragment" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="flags" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="securityOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="lastModifiedBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isRootForStructureView" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inStructureLevel" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="indirectInSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="emAttachments" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="originalMessage" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="relatedTask" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="fromInbox" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="logEntriesForObject" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="tasksForRecord" />
+    </xs:all>
+  </xs:complexType>
+  <xs:group name="is_receivedEmailMessage">
+    <xs:choice>
+      <xs:element ref="receivedEmailMessage" />
+    </xs:choice>
+  </xs:group>
+  <xs:element name="tenantEmailSetting" type="type_tenantEmailSetting" />
+  <xs:complexType name="type_tenantEmailSetting">
+    <xs:all>
+      <xs:element minOccurs="0" maxOccurs="1" ref="name" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="description" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdDate" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="modifiedDate" />
+      <xs:element minOccurs="1" maxOccurs="1" ref="alias" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canModify" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canDelete" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="postInDirectory" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="testingOverrideToAddress" />
+      <xs:element minOccurs="1" maxOccurs="1" ref="emailNoReplyAddress" />
+      <xs:element minOccurs="1" maxOccurs="1" ref="smtpServer" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="smtpPort" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="smtpUseSSL" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="smtpAccount" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="smtpPassword" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="smtpPasswordSecureId" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="flags" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="securityOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="lastModifiedBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isRootForStructureView" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inStructureLevel" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="indirectInSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="sentMessages" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
+    </xs:all>
+  </xs:complexType>
+  <xs:group name="is_tenantEmailSetting">
+    <xs:choice>
+      <xs:element ref="tenantEmailSetting" />
+    </xs:choice>
+  </xs:group>
+  <xs:element name="inbox" type="type_inbox" />
+  <xs:complexType name="type_inbox">
+    <xs:all>
+      <xs:element minOccurs="0" maxOccurs="1" ref="name" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="description" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdDate" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="modifiedDate" />
+      <xs:element minOccurs="1" maxOccurs="1" ref="alias" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canModify" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canDelete" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inboxEnabled" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inboxReplyAddress" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inboxFromName" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inboxEmailAddress" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="flags" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="securityOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="lastModifiedBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isRootForStructureView" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inStructureLevel" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="indirectInSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="receivedMessages" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inboxWorkflows" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inboxEmailActions" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="mailMessageFormatter" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inboxReceivedMessageType" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inboxCreatedEventType" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
+    </xs:all>
+  </xs:complexType>
+  <xs:group name="is_inbox">
+    <xs:choice>
+      <xs:element ref="inbox" />
+    </xs:choice>
+  </xs:group>
+  <xs:element name="inboxEmailAction" type="type_inboxEmailAction" />
+  <xs:complexType name="type_inboxEmailAction">
+    <xs:all>
+      <xs:element minOccurs="0" maxOccurs="1" ref="name" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="description" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdDate" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="modifiedDate" />
+      <xs:element minOccurs="1" maxOccurs="1" ref="alias" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canModify" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canDelete" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="ieaOrdinal" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="flags" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="securityOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="lastModifiedBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isRootForStructureView" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inStructureLevel" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="indirectInSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="ieaBackingClass" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
+    </xs:all>
+  </xs:complexType>
+  <xs:group name="is_inboxEmailAction">
+    <xs:choice>
+      <xs:element ref="inboxEmailAction" />
+    </xs:choice>
+  </xs:group>
   <xs:element name="eventLogSettings" type="type_eventLogSettings" />
   <xs:complexType name="type_eventLogSettings">
     <xs:all>
@@ -11394,6 +11747,8 @@
       <xs:element ref="workflowRunState" />
       <xs:element ref="workflowEventEnum" />
       <xs:element ref="taskStatusEnum" />
+      <xs:element ref="sendEmailActivityRecipientsTypeEnum" />
+      <xs:element ref="sendEmailActivityDistributionTypeEnum" />
       <xs:element ref="dayOfWeekEnum" />
       <xs:element ref="monthOfYearEnum" />
     </xs:choice>
@@ -14571,6 +14926,8 @@
       <xs:element ref="setRelationshipActivity" />
       <xs:element ref="decisionActivity" />
       <xs:element ref="assignToVariable" />
+      <xs:element ref="sendEmailActivityRecipientsTypeEnum" />
+      <xs:element ref="sendEmailActivityDistributionTypeEnum" />
       <xs:element ref="sendEmailActivity" />
       <xs:element ref="displayFormActivity" />
       <xs:element ref="forEachResource" />
@@ -14720,6 +15077,8 @@
       <xs:element ref="sendRecord" />
       <xs:element ref="replyRecord" />
       <xs:element ref="smsSendRecord" />
+      <xs:element ref="sentEmailMessage" />
+      <xs:element ref="receivedEmailMessage" />
       <xs:element ref="document" />
       <xs:element ref="documentRevision" />
       <xs:element ref="documentType" />
@@ -14743,8 +15102,6 @@
       <xs:element ref="baseUserTask" />
       <xs:element ref="displayFormUserTask" />
       <xs:element ref="userSurveyTask" />
-      <xs:element ref="sentEmailMessage" />
-      <xs:element ref="receivedEmailMessage" />
     </xs:choice>
   </xs:group>
   <xs:element name="resourcePicker" type="type_resourcePicker" />
@@ -15145,45 +15502,6 @@
       <xs:element ref="console:structureViewRelationshipControl" />
       <xs:element ref="console:imageRelationshipRenderControl" />
       <xs:element ref="resourceViewer" />
-    </xs:choice>
-  </xs:group>
-  <xs:element name="tenantEmailSetting" type="type_tenantEmailSetting" />
-  <xs:complexType name="type_tenantEmailSetting">
-    <xs:all>
-      <xs:element minOccurs="0" maxOccurs="1" ref="name" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="description" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="createdDate" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="modifiedDate" />
-      <xs:element minOccurs="1" maxOccurs="1" ref="alias" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="canModify" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="canDelete" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="emailServer" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="emailServerNoReplyAddress" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="flags" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="securityOwner" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="createdBy" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="lastModifiedBy" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="isRootForStructureView" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="inStructureLevel" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="inSolution" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="indirectInSolution" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="tesApprovalsInbox" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="tesSupportInbox" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="tesNewTicketsInbox" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="tesCalendarInbox" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="tesPasswordResetInbox" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
-    </xs:all>
-  </xs:complexType>
-  <xs:group name="is_tenantEmailSetting">
-    <xs:choice>
-      <xs:element ref="tenantEmailSetting" />
     </xs:choice>
   </xs:group>
   <xs:element name="fileType" type="type_fileType" />
@@ -17754,97 +18072,6 @@
       <xs:element ref="cleanUpWorkflowRunsAction" />
     </xs:choice>
   </xs:group>
-  <xs:element name="emailMessage" type="type_emailMessage" />
-  <xs:complexType name="type_emailMessage">
-    <xs:all>
-      <xs:element minOccurs="0" maxOccurs="1" ref="name" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="description" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="createdDate" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="modifiedDate" />
-      <xs:element minOccurs="1" maxOccurs="1" ref="alias" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="canModify" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="canDelete" />
-      <xs:element minOccurs="1" maxOccurs="1" ref="emUid" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="emTo" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="emCC" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="emFrom" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="emSubject" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="emBody" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="emIsHtml" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="flags" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="securityOwner" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="createdBy" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="lastModifiedBy" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="isRootForStructureView" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="inStructureLevel" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="inSolution" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="indirectInSolution" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="emAttachments" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="logEntriesForObject" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="tasksForRecord" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="relatedTask" />
-    </xs:all>
-  </xs:complexType>
-  <xs:group name="is_emailMessage">
-    <xs:choice>
-      <xs:element ref="sentEmailMessage" />
-      <xs:element ref="receivedEmailMessage" />
-    </xs:choice>
-  </xs:group>
-  <xs:element name="sentEmailMessage" type="type_sentEmailMessage" />
-  <xs:complexType name="type_sentEmailMessage">
-    <xs:all>
-      <xs:element minOccurs="0" maxOccurs="1" ref="name" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="description" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="createdDate" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="modifiedDate" />
-      <xs:element minOccurs="1" maxOccurs="1" ref="alias" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="canModify" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="canDelete" />
-      <xs:element minOccurs="1" maxOccurs="1" ref="emUid" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="emTo" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="emCC" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="emFrom" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="emSubject" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="emBody" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="emIsHtml" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="semSequenceNumber" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="emSentDate" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="flags" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="securityOwner" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="createdBy" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="lastModifiedBy" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="isRootForStructureView" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="inStructureLevel" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="inSolution" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="indirectInSolution" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="emAttachments" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="logEntriesForObject" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="tasksForRecord" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="relatedTask" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="responseToMessage" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="sentFromInbox" />
-    </xs:all>
-  </xs:complexType>
-  <xs:group name="is_sentEmailMessage">
-    <xs:choice>
-      <xs:element ref="sentEmailMessage" />
-    </xs:choice>
-  </xs:group>
   <xs:element name="iCalUidContainer" type="type_iCalUidContainer" />
   <xs:complexType name="type_iCalUidContainer">
     <xs:all>
@@ -17890,7 +18117,9 @@
       <xs:element minOccurs="1" maxOccurs="1" ref="emUid" />
       <xs:element minOccurs="0" maxOccurs="1" ref="emTo" />
       <xs:element minOccurs="0" maxOccurs="1" ref="emCC" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="emBCC" />
       <xs:element minOccurs="0" maxOccurs="1" ref="emFrom" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="emFromName" />
       <xs:element minOccurs="0" maxOccurs="1" ref="emSubject" />
       <xs:element minOccurs="0" maxOccurs="1" ref="emBody" />
       <xs:element minOccurs="0" maxOccurs="1" ref="emIsHtml" />
@@ -17913,63 +18142,16 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
       <xs:element minOccurs="0" maxOccurs="1" ref="emAttachments" />
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="logEntriesForObject" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="tasksForRecord" />
       <xs:element minOccurs="0" maxOccurs="1" ref="relatedTask" />
       <xs:element minOccurs="0" maxOccurs="1" ref="responseToMessage" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="sentFromInbox" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="sentFromEmailServer" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="logEntriesForObject" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="tasksForRecord" />
       <xs:element minOccurs="0" maxOccurs="1" ref="ownerEventEmail" />
     </xs:all>
   </xs:complexType>
   <xs:group name="is_sentICalEmailMessage">
     <xs:choice />
-  </xs:group>
-  <xs:element name="receivedEmailMessage" type="type_receivedEmailMessage" />
-  <xs:complexType name="type_receivedEmailMessage">
-    <xs:all>
-      <xs:element minOccurs="0" maxOccurs="1" ref="name" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="description" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="createdDate" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="modifiedDate" />
-      <xs:element minOccurs="1" maxOccurs="1" ref="alias" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="canModify" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="canDelete" />
-      <xs:element minOccurs="1" maxOccurs="1" ref="emUid" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="emTo" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="emCC" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="emFrom" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="emSubject" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="emBody" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="emIsHtml" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="emReceivedDate" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="emReferences" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="flags" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="securityOwner" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="createdBy" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="lastModifiedBy" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="isRootForStructureView" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="inStructureLevel" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="inSolution" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="indirectInSolution" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="emAttachments" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="originalMessage" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="logEntriesForObject" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="tasksForRecord" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="relatedTask" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="fromInbox" />
-    </xs:all>
-  </xs:complexType>
-  <xs:group name="is_receivedEmailMessage">
-    <xs:choice>
-      <xs:element ref="receivedEmailMessage" />
-    </xs:choice>
   </xs:group>
   <xs:element name="receivedICalEmailMessage" type="type_receivedICalEmailMessage" />
   <xs:complexType name="type_receivedICalEmailMessage">
@@ -17984,12 +18166,15 @@
       <xs:element minOccurs="1" maxOccurs="1" ref="emUid" />
       <xs:element minOccurs="0" maxOccurs="1" ref="emTo" />
       <xs:element minOccurs="0" maxOccurs="1" ref="emCC" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="emBCC" />
       <xs:element minOccurs="0" maxOccurs="1" ref="emFrom" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="emFromName" />
       <xs:element minOccurs="0" maxOccurs="1" ref="emSubject" />
       <xs:element minOccurs="0" maxOccurs="1" ref="emBody" />
       <xs:element minOccurs="0" maxOccurs="1" ref="emIsHtml" />
       <xs:element minOccurs="0" maxOccurs="1" ref="emReceivedDate" />
       <xs:element minOccurs="0" maxOccurs="1" ref="emReferences" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="emReplyFragment" />
       <xs:element minOccurs="0" maxOccurs="1" ref="iCalUpdate" />
       <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
       <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
@@ -18008,200 +18193,15 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="emAttachments" />
       <xs:element minOccurs="0" maxOccurs="1" ref="originalMessage" />
       <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="logEntriesForObject" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="tasksForRecord" />
       <xs:element minOccurs="0" maxOccurs="1" ref="relatedTask" />
       <xs:element minOccurs="0" maxOccurs="1" ref="fromInbox" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="logEntriesForObject" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="tasksForRecord" />
       <xs:element minOccurs="0" maxOccurs="1" ref="createdEventEmail" />
     </xs:all>
   </xs:complexType>
   <xs:group name="is_receivedICalEmailMessage">
     <xs:choice />
-  </xs:group>
-  <xs:element name="inboxProvider" type="type_inboxProvider" />
-  <xs:complexType name="type_inboxProvider">
-    <xs:all>
-      <xs:element minOccurs="0" maxOccurs="1" ref="name" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="description" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="createdDate" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="modifiedDate" />
-      <xs:element minOccurs="1" maxOccurs="1" ref="alias" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="canModify" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="canDelete" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="flags" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="securityOwner" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="createdBy" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="lastModifiedBy" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="isRootForStructureView" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="inStructureLevel" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="inSolution" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="indirectInSolution" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
-    </xs:all>
-  </xs:complexType>
-  <xs:group name="is_inboxProvider">
-    <xs:choice>
-      <xs:element ref="proxyInboxProvider" />
-      <xs:element ref="imapEmailProvider" />
-    </xs:choice>
-  </xs:group>
-  <xs:element name="proxyInboxProvider" type="type_proxyInboxProvider" />
-  <xs:complexType name="type_proxyInboxProvider">
-    <xs:all>
-      <xs:element minOccurs="0" maxOccurs="1" ref="name" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="description" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="createdDate" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="modifiedDate" />
-      <xs:element minOccurs="1" maxOccurs="1" ref="alias" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="canModify" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="canDelete" />
-      <xs:element minOccurs="1" maxOccurs="1" ref="providerAlias" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="flags" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="securityOwner" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="createdBy" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="lastModifiedBy" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="isRootForStructureView" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="inStructureLevel" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="inSolution" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="indirectInSolution" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
-    </xs:all>
-  </xs:complexType>
-  <xs:group name="is_proxyInboxProvider">
-    <xs:choice>
-      <xs:element ref="proxyInboxProvider" />
-    </xs:choice>
-  </xs:group>
-  <xs:element name="imapEmailProvider" type="type_imapEmailProvider" />
-  <xs:complexType name="type_imapEmailProvider">
-    <xs:all>
-      <xs:element minOccurs="0" maxOccurs="1" ref="name" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="description" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="createdDate" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="modifiedDate" />
-      <xs:element minOccurs="1" maxOccurs="1" ref="alias" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="canModify" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="canDelete" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="oaPostInDirectory" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="oaDomainName" />
-      <xs:element minOccurs="1" maxOccurs="1" ref="oaServer" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="oaPort" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="oaUseSSL" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="oaAccount" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="oaPassword" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="oaPasswordSecureId" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="oaUseIntegratedAuth" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="oaEmailAddress" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="oaUseFolder" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="flags" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="securityOwner" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="createdBy" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="lastModifiedBy" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="isRootForStructureView" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="inStructureLevel" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="inSolution" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="indirectInSolution" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
-    </xs:all>
-  </xs:complexType>
-  <xs:group name="is_imapEmailProvider">
-    <xs:choice>
-      <xs:element ref="imapEmailProvider" />
-    </xs:choice>
-  </xs:group>
-  <xs:element name="inbox" type="type_inbox" />
-  <xs:complexType name="type_inbox">
-    <xs:all>
-      <xs:element minOccurs="0" maxOccurs="1" ref="name" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="description" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="createdDate" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="modifiedDate" />
-      <xs:element minOccurs="1" maxOccurs="1" ref="alias" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="canModify" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="canDelete" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="inboxEmailAddress" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="inboxEnabled" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="flags" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="securityOwner" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="createdBy" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="lastModifiedBy" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="isRootForStructureView" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="inStructureLevel" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="inSolution" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="indirectInSolution" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="usesInboxProvider" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="receivedMessages" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="sentMessages" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="inboxWorkflows" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="inboxEmailActions" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="mailMessageFormatter" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="inboxReceivedMessageType" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="inboxCreatedEventType" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
-    </xs:all>
-  </xs:complexType>
-  <xs:group name="is_inbox">
-    <xs:choice>
-      <xs:element ref="inbox" />
-    </xs:choice>
-  </xs:group>
-  <xs:element name="inboxEmailAction" type="type_inboxEmailAction" />
-  <xs:complexType name="type_inboxEmailAction">
-    <xs:all>
-      <xs:element minOccurs="0" maxOccurs="1" ref="name" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="description" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="createdDate" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="modifiedDate" />
-      <xs:element minOccurs="1" maxOccurs="1" ref="alias" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="canModify" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="canDelete" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="ieaOrdinal" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="flags" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="securityOwner" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="createdBy" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="lastModifiedBy" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="isRootForStructureView" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="inStructureLevel" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="inSolution" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="indirectInSolution" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="ieaBackingClass" />
-      <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
-    </xs:all>
-  </xs:complexType>
-  <xs:group name="is_inboxEmailAction">
-    <xs:choice>
-      <xs:element ref="inboxEmailAction" />
-    </xs:choice>
   </xs:group>
   <xs:element name="taskStatusEnum" type="type_taskStatusEnum" />
   <xs:complexType name="type_taskStatusEnum">
@@ -18562,6 +18562,78 @@
   <xs:group name="is_assignToVariable">
     <xs:choice>
       <xs:element ref="assignToVariable" />
+    </xs:choice>
+  </xs:group>
+  <xs:element name="sendEmailActivityRecipientsTypeEnum" type="type_sendEmailActivityRecipientsTypeEnum" />
+  <xs:complexType name="type_sendEmailActivityRecipientsTypeEnum">
+    <xs:all>
+      <xs:element minOccurs="0" maxOccurs="1" ref="name" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="description" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdDate" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="modifiedDate" />
+      <xs:element minOccurs="1" maxOccurs="1" ref="alias" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canModify" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canDelete" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumOrder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canModifyProtectedResource" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="flags" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="securityOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="lastModifiedBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isRootForStructureView" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inStructureLevel" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="indirectInSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
+    </xs:all>
+  </xs:complexType>
+  <xs:group name="is_sendEmailActivityRecipientsTypeEnum">
+    <xs:choice>
+      <xs:element ref="sendEmailActivityRecipientsTypeEnum" />
+    </xs:choice>
+  </xs:group>
+  <xs:element name="sendEmailActivityDistributionTypeEnum" type="type_sendEmailActivityDistributionTypeEnum" />
+  <xs:complexType name="type_sendEmailActivityDistributionTypeEnum">
+    <xs:all>
+      <xs:element minOccurs="0" maxOccurs="1" ref="name" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="description" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdDate" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="modifiedDate" />
+      <xs:element minOccurs="1" maxOccurs="1" ref="alias" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canModify" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canDelete" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumOrder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="canModifyProtectedResource" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isOfType" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="resourceHasResourceKeyDataHashes" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="flags" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="securityOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="createdBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="lastModifiedBy" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="isRootForStructureView" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inStructureLevel" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="inSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="indirectInSolution" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:shortcutInFolder" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:resourceConsoleBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="console:selectionBehavior" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumOwner" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="enumFormattingRule" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="allowedAccessInternalBy" />
+    </xs:all>
+  </xs:complexType>
+  <xs:group name="is_sendEmailActivityDistributionTypeEnum">
+    <xs:choice>
+      <xs:element ref="sendEmailActivityDistributionTypeEnum" />
     </xs:choice>
   </xs:group>
   <xs:element name="sendEmailActivity" type="type_sendEmailActivity" />
@@ -25542,6 +25614,292 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="emAttachments.instance" type="ri_emAttachments" />
+  <xs:complexType name="ri_emAttachments">
+    <xs:all>
+      <xs:element minOccurs="1" maxOccurs="1" name="from">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_emailMessage" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="to">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_fileType" />
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:element name="emAttachments">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:group minOccurs="0" maxOccurs="unbounded" ref="is_fileType" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="originalMessage.instance" type="ri_originalMessage" />
+  <xs:complexType name="ri_originalMessage">
+    <xs:all>
+      <xs:element minOccurs="1" maxOccurs="1" name="from">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_receivedEmailMessage" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="to">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_sentEmailMessage" />
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:element name="originalMessage">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:group minOccurs="0" maxOccurs="1" ref="is_sentEmailMessage" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="responseToMessage.instance" type="ri_responseToMessage" />
+  <xs:complexType name="ri_responseToMessage">
+    <xs:all>
+      <xs:element minOccurs="1" maxOccurs="1" name="to">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_receivedEmailMessage" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="from">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_sentEmailMessage" />
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:element name="responseToMessage">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:group minOccurs="0" maxOccurs="unbounded" ref="is_receivedEmailMessage" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="sentMessages.instance" type="ri_sentMessages" />
+  <xs:complexType name="ri_sentMessages">
+    <xs:all>
+      <xs:element minOccurs="1" maxOccurs="1" name="from">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_tenantEmailSetting" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="to">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_sentEmailMessage" />
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:element name="sentMessages">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:group minOccurs="0" maxOccurs="unbounded" ref="is_sentEmailMessage" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="sentFromEmailServer.instance" type="ri_sentFromEmailServer" />
+  <xs:complexType name="ri_sentFromEmailServer">
+    <xs:all>
+      <xs:element minOccurs="1" maxOccurs="1" name="to">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_tenantEmailSetting" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="from">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_sentEmailMessage" />
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:element name="sentFromEmailServer">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:group minOccurs="0" maxOccurs="1" ref="is_tenantEmailSetting" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="receivedMessages.instance" type="ri_receivedMessages" />
+  <xs:complexType name="ri_receivedMessages">
+    <xs:all>
+      <xs:element minOccurs="1" maxOccurs="1" name="from">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_inbox" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="to">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_receivedEmailMessage" />
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:element name="receivedMessages">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:group minOccurs="0" maxOccurs="unbounded" ref="is_receivedEmailMessage" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="fromInbox.instance" type="ri_fromInbox" />
+  <xs:complexType name="ri_fromInbox">
+    <xs:all>
+      <xs:element minOccurs="1" maxOccurs="1" name="to">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_inbox" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="from">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_receivedEmailMessage" />
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:element name="fromInbox">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:group minOccurs="0" maxOccurs="1" ref="is_inbox" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="inboxWorkflows.instance" type="ri_inboxWorkflows" />
+  <xs:complexType name="ri_inboxWorkflows">
+    <xs:all>
+      <xs:element minOccurs="1" maxOccurs="1" name="from">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_inbox" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="to">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_workflow" />
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:element name="inboxWorkflows">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:group minOccurs="0" maxOccurs="unbounded" ref="is_workflow" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="inboxEmailActions.instance" type="ri_inboxEmailActions" />
+  <xs:complexType name="ri_inboxEmailActions">
+    <xs:all>
+      <xs:element minOccurs="1" maxOccurs="1" name="from">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_inbox" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="to">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_inboxEmailAction" />
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:element name="inboxEmailActions">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:group minOccurs="0" maxOccurs="unbounded" ref="is_inboxEmailAction" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="mailMessageFormatter.instance" type="ri_mailMessageFormatter" />
+  <xs:complexType name="ri_mailMessageFormatter">
+    <xs:all>
+      <xs:element minOccurs="1" maxOccurs="1" name="from">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_inbox" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="to">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_class" />
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:element name="mailMessageFormatter">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:group minOccurs="0" maxOccurs="unbounded" ref="is_class" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="inboxReceivedMessageType.instance" type="ri_inboxReceivedMessageType" />
+  <xs:complexType name="ri_inboxReceivedMessageType">
+    <xs:all>
+      <xs:element minOccurs="1" maxOccurs="1" name="from">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_inbox" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="to">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_class" />
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:element name="inboxReceivedMessageType">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:group minOccurs="0" maxOccurs="1" ref="is_class" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="inboxCreatedEventType.instance" type="ri_inboxCreatedEventType" />
+  <xs:complexType name="ri_inboxCreatedEventType">
+    <xs:all>
+      <xs:element minOccurs="1" maxOccurs="1" name="from">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_inbox" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="to">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_type" />
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:element name="inboxCreatedEventType">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:group minOccurs="0" maxOccurs="1" ref="is_type" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ieaBackingClass.instance" type="ri_ieaBackingClass" />
+  <xs:complexType name="ri_ieaBackingClass">
+    <xs:all>
+      <xs:element minOccurs="1" maxOccurs="1" name="from">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_inboxEmailAction" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="to">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_class" />
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:element name="ieaBackingClass">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:group minOccurs="0" maxOccurs="1" ref="is_class" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="formToUse.instance" type="ri_formToUse" />
   <xs:complexType name="ri_formToUse">
     <xs:all>
@@ -27997,116 +28355,6 @@
     <xs:complexType mixed="true">
       <xs:sequence>
         <xs:group minOccurs="0" maxOccurs="unbounded" ref="is_actingPersonLogEntry" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="tesApprovalsInbox.instance" type="ri_tesApprovalsInbox" />
-  <xs:complexType name="ri_tesApprovalsInbox">
-    <xs:all>
-      <xs:element minOccurs="1" maxOccurs="1" name="from">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_tenantEmailSetting" />
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="1" maxOccurs="1" name="to">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_inbox" />
-        </xs:complexType>
-      </xs:element>
-    </xs:all>
-  </xs:complexType>
-  <xs:element name="tesApprovalsInbox">
-    <xs:complexType mixed="true">
-      <xs:sequence>
-        <xs:group minOccurs="0" maxOccurs="1" ref="is_inbox" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="tesSupportInbox.instance" type="ri_tesSupportInbox" />
-  <xs:complexType name="ri_tesSupportInbox">
-    <xs:all>
-      <xs:element minOccurs="1" maxOccurs="1" name="from">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_tenantEmailSetting" />
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="1" maxOccurs="1" name="to">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_inbox" />
-        </xs:complexType>
-      </xs:element>
-    </xs:all>
-  </xs:complexType>
-  <xs:element name="tesSupportInbox">
-    <xs:complexType mixed="true">
-      <xs:sequence>
-        <xs:group minOccurs="0" maxOccurs="1" ref="is_inbox" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="tesNewTicketsInbox.instance" type="ri_tesNewTicketsInbox" />
-  <xs:complexType name="ri_tesNewTicketsInbox">
-    <xs:all>
-      <xs:element minOccurs="1" maxOccurs="1" name="from">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_tenantEmailSetting" />
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="1" maxOccurs="1" name="to">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_inbox" />
-        </xs:complexType>
-      </xs:element>
-    </xs:all>
-  </xs:complexType>
-  <xs:element name="tesNewTicketsInbox">
-    <xs:complexType mixed="true">
-      <xs:sequence>
-        <xs:group minOccurs="0" maxOccurs="1" ref="is_inbox" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="tesCalendarInbox.instance" type="ri_tesCalendarInbox" />
-  <xs:complexType name="ri_tesCalendarInbox">
-    <xs:all>
-      <xs:element minOccurs="1" maxOccurs="1" name="from">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_tenantEmailSetting" />
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="1" maxOccurs="1" name="to">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_inbox" />
-        </xs:complexType>
-      </xs:element>
-    </xs:all>
-  </xs:complexType>
-  <xs:element name="tesCalendarInbox">
-    <xs:complexType mixed="true">
-      <xs:sequence>
-        <xs:group minOccurs="0" maxOccurs="1" ref="is_inbox" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="tesPasswordResetInbox.instance" type="ri_tesPasswordResetInbox" />
-  <xs:complexType name="ri_tesPasswordResetInbox">
-    <xs:all>
-      <xs:element minOccurs="1" maxOccurs="1" name="from">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_tenantEmailSetting" />
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="1" maxOccurs="1" name="to">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_inbox" />
-        </xs:complexType>
-      </xs:element>
-    </xs:all>
-  </xs:complexType>
-  <xs:element name="tesPasswordResetInbox">
-    <xs:complexType mixed="true">
-      <xs:sequence>
-        <xs:group minOccurs="0" maxOccurs="1" ref="is_inbox" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -30925,314 +31173,6 @@
     </xs:all>
   </xs:complexType>
   <xs:element name="eventBackingClass">
-    <xs:complexType mixed="true">
-      <xs:sequence>
-        <xs:group minOccurs="0" maxOccurs="1" ref="is_class" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="emAttachments.instance" type="ri_emAttachments" />
-  <xs:complexType name="ri_emAttachments">
-    <xs:all>
-      <xs:element minOccurs="1" maxOccurs="1" name="from">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_emailMessage" />
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="1" maxOccurs="1" name="to">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_document" />
-        </xs:complexType>
-      </xs:element>
-    </xs:all>
-  </xs:complexType>
-  <xs:element name="emAttachments">
-    <xs:complexType mixed="true">
-      <xs:sequence>
-        <xs:group minOccurs="0" maxOccurs="unbounded" ref="is_document" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="originalMessage.instance" type="ri_originalMessage" />
-  <xs:complexType name="ri_originalMessage">
-    <xs:all>
-      <xs:element minOccurs="1" maxOccurs="1" name="from">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_receivedEmailMessage" />
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="1" maxOccurs="1" name="to">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_sentEmailMessage" />
-        </xs:complexType>
-      </xs:element>
-    </xs:all>
-  </xs:complexType>
-  <xs:element name="originalMessage">
-    <xs:complexType mixed="true">
-      <xs:sequence>
-        <xs:group minOccurs="0" maxOccurs="1" ref="is_sentEmailMessage" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="responseToMessage.instance" type="ri_responseToMessage" />
-  <xs:complexType name="ri_responseToMessage">
-    <xs:all>
-      <xs:element minOccurs="1" maxOccurs="1" name="to">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_receivedEmailMessage" />
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="1" maxOccurs="1" name="from">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_sentEmailMessage" />
-        </xs:complexType>
-      </xs:element>
-    </xs:all>
-  </xs:complexType>
-  <xs:element name="responseToMessage">
-    <xs:complexType mixed="true">
-      <xs:sequence>
-        <xs:group minOccurs="0" maxOccurs="unbounded" ref="is_receivedEmailMessage" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="usesInboxProvider.instance" type="ri_usesInboxProvider" />
-  <xs:complexType name="ri_usesInboxProvider">
-    <xs:all>
-      <xs:element minOccurs="1" maxOccurs="1" name="from">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_inbox" />
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="1" maxOccurs="1" name="to">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_inboxProvider" />
-        </xs:complexType>
-      </xs:element>
-    </xs:all>
-  </xs:complexType>
-  <xs:element name="usesInboxProvider">
-    <xs:complexType mixed="true">
-      <xs:sequence>
-        <xs:group minOccurs="0" maxOccurs="1" ref="is_inboxProvider" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="receivedMessages.instance" type="ri_receivedMessages" />
-  <xs:complexType name="ri_receivedMessages">
-    <xs:all>
-      <xs:element minOccurs="1" maxOccurs="1" name="from">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_inbox" />
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="1" maxOccurs="1" name="to">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_receivedEmailMessage" />
-        </xs:complexType>
-      </xs:element>
-    </xs:all>
-  </xs:complexType>
-  <xs:element name="receivedMessages">
-    <xs:complexType mixed="true">
-      <xs:sequence>
-        <xs:group minOccurs="0" maxOccurs="unbounded" ref="is_receivedEmailMessage" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="fromInbox.instance" type="ri_fromInbox" />
-  <xs:complexType name="ri_fromInbox">
-    <xs:all>
-      <xs:element minOccurs="1" maxOccurs="1" name="to">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_inbox" />
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="1" maxOccurs="1" name="from">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_receivedEmailMessage" />
-        </xs:complexType>
-      </xs:element>
-    </xs:all>
-  </xs:complexType>
-  <xs:element name="fromInbox">
-    <xs:complexType mixed="true">
-      <xs:sequence>
-        <xs:group minOccurs="0" maxOccurs="1" ref="is_inbox" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="sentMessages.instance" type="ri_sentMessages" />
-  <xs:complexType name="ri_sentMessages">
-    <xs:all>
-      <xs:element minOccurs="1" maxOccurs="1" name="from">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_inbox" />
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="1" maxOccurs="1" name="to">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_sentEmailMessage" />
-        </xs:complexType>
-      </xs:element>
-    </xs:all>
-  </xs:complexType>
-  <xs:element name="sentMessages">
-    <xs:complexType mixed="true">
-      <xs:sequence>
-        <xs:group minOccurs="0" maxOccurs="unbounded" ref="is_sentEmailMessage" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="sentFromInbox.instance" type="ri_sentFromInbox" />
-  <xs:complexType name="ri_sentFromInbox">
-    <xs:all>
-      <xs:element minOccurs="1" maxOccurs="1" name="to">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_inbox" />
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="1" maxOccurs="1" name="from">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_sentEmailMessage" />
-        </xs:complexType>
-      </xs:element>
-    </xs:all>
-  </xs:complexType>
-  <xs:element name="sentFromInbox">
-    <xs:complexType mixed="true">
-      <xs:sequence>
-        <xs:group minOccurs="0" maxOccurs="1" ref="is_inbox" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="inboxWorkflows.instance" type="ri_inboxWorkflows" />
-  <xs:complexType name="ri_inboxWorkflows">
-    <xs:all>
-      <xs:element minOccurs="1" maxOccurs="1" name="from">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_inbox" />
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="1" maxOccurs="1" name="to">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_workflow" />
-        </xs:complexType>
-      </xs:element>
-    </xs:all>
-  </xs:complexType>
-  <xs:element name="inboxWorkflows">
-    <xs:complexType mixed="true">
-      <xs:sequence>
-        <xs:group minOccurs="0" maxOccurs="unbounded" ref="is_workflow" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="inboxEmailActions.instance" type="ri_inboxEmailActions" />
-  <xs:complexType name="ri_inboxEmailActions">
-    <xs:all>
-      <xs:element minOccurs="1" maxOccurs="1" name="from">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_inbox" />
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="1" maxOccurs="1" name="to">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_inboxEmailAction" />
-        </xs:complexType>
-      </xs:element>
-    </xs:all>
-  </xs:complexType>
-  <xs:element name="inboxEmailActions">
-    <xs:complexType mixed="true">
-      <xs:sequence>
-        <xs:group minOccurs="0" maxOccurs="unbounded" ref="is_inboxEmailAction" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="mailMessageFormatter.instance" type="ri_mailMessageFormatter" />
-  <xs:complexType name="ri_mailMessageFormatter">
-    <xs:all>
-      <xs:element minOccurs="1" maxOccurs="1" name="from">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_inbox" />
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="1" maxOccurs="1" name="to">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_class" />
-        </xs:complexType>
-      </xs:element>
-    </xs:all>
-  </xs:complexType>
-  <xs:element name="mailMessageFormatter">
-    <xs:complexType mixed="true">
-      <xs:sequence>
-        <xs:group minOccurs="0" maxOccurs="unbounded" ref="is_class" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="inboxReceivedMessageType.instance" type="ri_inboxReceivedMessageType" />
-  <xs:complexType name="ri_inboxReceivedMessageType">
-    <xs:all>
-      <xs:element minOccurs="1" maxOccurs="1" name="from">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_inbox" />
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="1" maxOccurs="1" name="to">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_class" />
-        </xs:complexType>
-      </xs:element>
-    </xs:all>
-  </xs:complexType>
-  <xs:element name="inboxReceivedMessageType">
-    <xs:complexType mixed="true">
-      <xs:sequence>
-        <xs:group minOccurs="0" maxOccurs="1" ref="is_class" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="inboxCreatedEventType.instance" type="ri_inboxCreatedEventType" />
-  <xs:complexType name="ri_inboxCreatedEventType">
-    <xs:all>
-      <xs:element minOccurs="1" maxOccurs="1" name="from">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_inbox" />
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="1" maxOccurs="1" name="to">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_type" />
-        </xs:complexType>
-      </xs:element>
-    </xs:all>
-  </xs:complexType>
-  <xs:element name="inboxCreatedEventType">
-    <xs:complexType mixed="true">
-      <xs:sequence>
-        <xs:group minOccurs="0" maxOccurs="1" ref="is_type" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="ieaBackingClass.instance" type="ri_ieaBackingClass" />
-  <xs:complexType name="ri_ieaBackingClass">
-    <xs:all>
-      <xs:element minOccurs="1" maxOccurs="1" name="from">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_inboxEmailAction" />
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="1" maxOccurs="1" name="to">
-        <xs:complexType mixed="true">
-          <xs:group minOccurs="0" maxOccurs="1" ref="is_class" />
-        </xs:complexType>
-      </xs:element>
-    </xs:all>
-  </xs:complexType>
-  <xs:element name="ieaBackingClass">
     <xs:complexType mixed="true">
       <xs:sequence>
         <xs:group minOccurs="0" maxOccurs="1" ref="is_class" />

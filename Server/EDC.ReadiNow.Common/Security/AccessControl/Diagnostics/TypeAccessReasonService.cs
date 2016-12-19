@@ -99,19 +99,19 @@ namespace EDC.ReadiNow.Security.AccessControl.Diagnostics
         {
             HashSet<long> whitelist;
 
-            if ( settings.AdvancedTypes )
+            if (settings.AdvancedTypes)
             {
-                whitelist = new HashSet<long>( Entity.GetInstancesOfType( "core:managedType" ).Select( e => e.Id ) );
-                whitelist.Add( new EntityRef( "core:resource" ).Id );
-                whitelist.Add( new EntityRef( "core:userAccount" ).Id );
+                whitelist = new HashSet<long>(Entity.GetInstancesOfType("core:managedType").Select(e => e.Id));
+                whitelist.Add(new EntityRef("core:resource").Id);
+                whitelist.Add(new EntityRef("core:userAccount").Id);
             }
             else
             {
-                whitelist = new HashSet<long>( Entity.GetInstancesOfType( "core:definition" ).Select( e => e.Id ) );
-                whitelist.Add( new EntityRef( "core:userAccount" ).Id );
+                whitelist = new HashSet<long>(Entity.GetInstancesOfType("core:definition").Select(e => e.Id));
+                whitelist.Add(new EntityRef("core:userAccount").Id);
             }
 
-            return reasons.Where( reason => whitelist.Contains( reason.TypeId ) );
+            return reasons.Where(reason => whitelist.Contains(reason.TypeId));
         }
 
         private IEnumerable<AccessReason> FilterOverlappingReasons( IEnumerable<AccessReason> reasons )

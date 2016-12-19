@@ -1,39 +1,84 @@
 <div ng-controller="sp.workflow.activityController">
-	
+    <div ng-controller="sendEmailActivityController">
+        
+        <form class="form-horizontal">
+            <div class="col-md-6">
+                
+                <sp-workflow-expression-control parameter="activityParameters['core:sendEmailRecipientsType']" show-label="true"
+                                                actions="resourceChooser"></sp-workflow-expression-control>
+                
+                <div ng-show="showRecipientListSettings">
+                    
+                   <!-- <sp-workflow-expression-control parameter="activityParameters['core:sendEmailDistributionType']" show-label="true"
+                                                    actions="resourceChooser"></sp-workflow-expression-control>
+                       -->
+                    <!-- Parameter containing list objects -->
+                    <div class="form-group">
+                        <sp-workflow-expression-control parameter="activityParameters['core:sendEmailRecipientList']" show-label="true"
+                                                        actions="parameterChooser,resourceChooser,exprEditor"></sp-workflow-expression-control>
+                    </div>
+                   
+                    <!-- Field for TO Address -->
+                    <div class="form-group">
+                        <sp-workflow-expression-control parameter="activityParameters['core:sendEmailRecipientField']" show-label="true"
+                                                        actions="fieldChooser"></sp-workflow-expression-control>
+                    </div>
+                    <!-- Field for CC Address -->
+                    <div class="form-group">
+                        <sp-workflow-expression-control parameter="activityParameters['core:sendEmailRecipientCCField']" show-label="true"
+                                                        actions="fieldChooser"></sp-workflow-expression-control>
+                    </div>
+                   
+                    <!-- Field for BCC Address -->
+                    <div class="form-group">
+                        <sp-workflow-expression-control parameter="activityParameters['core:sendEmailRecipientBCCField']" show-label="true"
+                                                        actions="fieldChooser"></sp-workflow-expression-control>
+                    </div>
 
-    <form class="form-horizontal">
-        <div class="col-md-6">
-            <div class="form-group">
-                <sp-workflow-expression-control parameter="activityParameters['core:sendEmailRecipientList']" show-label="true"
-                                                actions="parameterChooser,resourceChooser,exprEditor"></sp-workflow-expression-control>
-            </div>
-            <div class="form-group">
-                <sp-workflow-expression-control parameter="activityParameters['core:sendEmailRecipientField']" show-label="true"
-                                                actions="fieldChooser"></sp-workflow-expression-control>
-            </div>
-            <div class="form-group">
-                <sp-workflow-expression-control parameter="activityParameters['core:sendEmailInbox']" show-label="true"
-                                                actions="parameterChooser,resourceChooser,exprEditor"></sp-workflow-expression-control>
-            </div>
-            <div class="form-group">
-                <sp-workflow-expression-control parameter="activityParameters['core:sendEmailRecipientArgument']" show-label="true"
-                                                actions="exprEditor"></sp-workflow-expression-control>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <sp-workflow-expression-control parameter="activityParameters['core:sendEmailSubjectArgument']" show-label="true"
-                                                actions="exprEditor"></sp-workflow-expression-control>
-            </div>
-            <div class="form-group">
-                <sp-workflow-expression-control parameter="activityParameters['core:sendEmailBodyArgument']" show-label="true"
-                                                actions="exprEditor"></sp-workflow-expression-control>
-            </div>
-            <div class="form-group">
-                <sp-workflow-expression-control parameter="activityParameters['core:sendEmailAttachments']" show-label="true"
-                                                actions="parameterChooser,resourceChooser,exprEditor"></sp-workflow-expression-control>
-            </div>
-         </div>
-    </form>
+                </div>
+                
+                <div ng-show="showRecipientAddressSettings">
+                    <!-- TO Address Expression -->
+                    <div class="form-group">
+                        <sp-workflow-expression-control parameter="activityParameters['core:sendEmailRecipientArgument']" show-label="true"
+                                                        actions="exprEditor"></sp-workflow-expression-control>
+                    </div>
+                    <!-- CC Address Expression -->
+                    <div class="form-group">
+                        <sp-workflow-expression-control parameter="activityParameters['core:sendEmailRecipientCCArgument']" show-label="true"
+                                                        actions="exprEditor"></sp-workflow-expression-control>
+                    </div>
+                    <!-- BCC Address Expression -->
+                    <div class="form-group">
+                        <sp-workflow-expression-control parameter="activityParameters['core:sendEmailRecipientBCCArgument']" show-label="true"
+                                                        actions="exprEditor"></sp-workflow-expression-control>
+                    </div>
+                </div>
 
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <sp-workflow-parameter-bool-input parameter="'core:sendEmailNoReply'"></sp-workflow-parameter-bool-input>
+                </div>
+                <div class="form-group" ng-hide="showInboxPicker">
+                    <sp-workflow-expression-control parameter="activityParameters['core:sendEmailFromInbox']" show-label="true"
+                                                    actions="resourceChooser"></sp-workflow-expression-control>
+                </div>
+
+                <div class="form-group">
+                    <sp-workflow-expression-control parameter="activityParameters['core:sendEmailSubjectArgument']" show-label="true"
+                                                    actions="exprEditor"></sp-workflow-expression-control>
+                </div>
+                <div class="form-group">
+                    <sp-workflow-expression-control parameter="activityParameters['core:sendEmailBodyArgument']" show-label="true"
+                                                    actions="exprEditor"></sp-workflow-expression-control>
+                </div>
+                <div class="form-group">
+                    <sp-workflow-expression-control parameter="activityParameters['core:sendEmailAttachments']" show-label="true"
+                                                    actions="parameterChooser,resourceChooser,exprEditor"></sp-workflow-expression-control>
+                </div>
+            </div>
+        </form>
+
+    </div>
 </div>

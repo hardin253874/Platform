@@ -24,18 +24,19 @@ namespace EDC.SoftwarePlatform.Migration.Processing
 	/// </summary>
 	public static class TenantManager
 	{
-		/// <summary>
-		///     Exports the tenant.
-		/// </summary>
-		/// <param name="tenantName">Name of the tenant.</param>
-		/// <param name="packagePath">The package path.</param>
-		/// <param name="context">The context.</param>
-		/// <exception cref="System.ArgumentNullException">
-		///     tenantName
-		///     or
-		///     tenantStorePath
-		/// </exception>
-		public static void ExportTenant( string tenantName, string packagePath, IProcessingContext context = null )
+        /// <summary>
+        ///     Exports the tenant.
+        /// </summary>
+        /// <param name="tenantName">Name of the tenant.</param>
+        /// <param name="packagePath">The package path.</param>
+        /// <param name="metadataOnly">If true, exclude user data.</param>
+        /// <param name="context">The context.</param>
+        /// <exception cref="System.ArgumentNullException">
+        ///     tenantName
+        ///     or
+        ///     tenantStorePath
+        /// </exception>
+        public static void ExportTenant( string tenantName, string packagePath, bool metadataOnly, IProcessingContext context = null )
 		{
 			if ( string.IsNullOrEmpty( tenantName ) )
 			{
@@ -56,22 +57,21 @@ namespace EDC.SoftwarePlatform.Migration.Processing
 
 			long tenantId = TenantHelper.GetTenantId( tenantName, true );
 
-			/////
-			// Create source to load app data from tenant
-			/////
-			using ( var source = new TenantSource
-			{
-				TenantId = tenantId,
-				TenantName = tenantName
-			} )
-			{
-				/////
-				// Create target to write to SQLite database
-				/////
-				using ( var target = new SqLiteTarget
-				{
-					StorageProvider = SqliteStorageProvider.CreateNewDatabase( packagePath )
-				} )
+            IDataSource source = metadataOnly
+                ? (IDataSource)new TenantMetadataSource { TenantId = tenantId, TenantName = tenantName }
+                : (IDataSource)new TenantSource { TenantId = tenantId, TenantName = tenantName };
+
+            /////
+            // Create source to load app data from tenant
+            /////
+            using ( source )
+            {
+                Format packageFormat = FileManager.GetExportFileFormat( packagePath );
+                
+                /////
+                 // Create target to write to SQLite database
+                 /////
+                using ( var target = FileManager.CreateDataTarget( packageFormat, packagePath ) )
 				{
 					/////
 					// Copy the data
@@ -212,9 +212,6 @@ namespace EDC.SoftwarePlatform.Migration.Processing
         /// <summary>
         ///     Imports the tenant.
         /// </summary>
-        /// <param name="packagePath">The package path.</param>
-        /// <param name="tenantName">Name of the tenant.</param>
-        /// <param name="context">The context.</param>
         /// <returns>the tenant id</returns>
         public static void InstallGlobalTenant( )
         {
@@ -362,10 +359,7 @@ namespace EDC.SoftwarePlatform.Migration.Processing
 				/////
 				// Create source to load app data from tenant
 				/////
-				using ( var source = new SqLiteSource
-				{
-					StorageProvider = new SqliteStorageProvider( packagePath )
-				} )
+				using ( var source = FileManager.CreateDataSource( packagePath ) )
 				{
 					Metadata metadata = source.GetMetadata( context );
 
@@ -406,7 +400,7 @@ namespace EDC.SoftwarePlatform.Migration.Processing
 					/////
 					using ( var target = new TenantCopyTarget( ) )
 					{
-                        Tenant tenant = null;
+                        Tenant tenant;
 
 						/////
 						// Create the tenant.

@@ -16,6 +16,7 @@ namespace EDC.Test.Cache.Providers
     ///     This is the test case for the AbsoluteExpirationCache class.
     /// </summary>
     [TestFixture]
+    [Category("ExtendedTests")]
     public class AbsoluteExpirationCacheTests
     {
         private ICache<TKey, TValue> CreateCache<TKey, TValue>(bool transactionAware, TimeSpan timeout, TimeSpan? frequency = null)

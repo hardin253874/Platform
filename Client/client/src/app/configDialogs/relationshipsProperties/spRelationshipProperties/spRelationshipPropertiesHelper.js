@@ -221,8 +221,8 @@
                             //effectiveRelType = 'core:relExclusiveCollection';
                             relationship.setRelType('relLookup');
                             relationship.setCardinality('manyToOne');
-                            //relationship.setRelationshipIsMandatory(true);      // optional
-                            //relationship.setRevRelationshipIsMandatory(true);   // optional
+                            relationship.setRelationshipIsMandatory(false);      // optional
+                            relationship.setRevRelationshipIsMandatory(false);   // optional
                             relationship.setCascadeDelete(false);
                             relationship.setCascadeDeleteTo(false);
                             relationship.setCloneAction('cloneReferences');
@@ -235,7 +235,7 @@
                             relationship.setRelType('relDependantOf');
                             relationship.setCardinality('manyToOne');
                             relationship.setRelationshipIsMandatory(true);
-                            //relationship.setRevRelationshipIsMandatory(true);   // optional
+                            relationship.setRevRelationshipIsMandatory(false);   // optional
                             relationship.setCascadeDelete(true);
                             relationship.setCascadeDeleteTo(false);
                             relationship.setCloneAction('cloneReferences');
@@ -248,7 +248,7 @@
                             relationship.setRelType('relComponentOf');
                             relationship.setCardinality('manyToOne');
                             relationship.setRelationshipIsMandatory(true);
-                            //relationship.setRevRelationshipIsMandatory(true);   // optional
+                            relationship.setRevRelationshipIsMandatory(false);   // optional
                             relationship.setCascadeDelete(true);
                             relationship.setCascadeDeleteTo(false);
                             relationship.setCloneAction('cloneReferences');
@@ -299,8 +299,8 @@
                         case 'relSingleComponent':
                             relationship.setRelType('relSingleComponent');
                             relationship.setCardinality('oneToOne');
-                            //relationship.setRelationshipIsMandatory(true);        // optional
-                            //relationship.setRevRelationshipIsMandatory(true);     // optional
+                            relationship.setRelationshipIsMandatory(false);        // optional
+                            relationship.setRevRelationshipIsMandatory(true);     // optional
                             relationship.setCascadeDelete(false);
                             relationship.setCascadeDeleteTo(true);
                             relationship.setCloneAction('cloneEntities');
@@ -312,8 +312,8 @@
                         case 'relExclusiveCollection':
                             relationship.setRelType('relExclusiveCollection');
                             relationship.setCardinality('oneToMany');
-                            //relationship.setRelationshipIsMandatory(true);        // optional
-                            //relationship.setRevRelationshipIsMandatory(true);     // optional
+                            relationship.setRelationshipIsMandatory(false);        // optional
+                            relationship.setRevRelationshipIsMandatory(false);     // optional
                             relationship.setCascadeDelete(false);
                             relationship.setCascadeDeleteTo(false);
                             relationship.setCloneAction('drop');
@@ -325,7 +325,7 @@
                         case 'relDependants':
                             relationship.setRelType('relDependants');
                             relationship.setCardinality('oneToMany');
-                            //relationship.setRelationshipIsMandatory(true);        // optional
+                            relationship.setRelationshipIsMandatory(false);        // optional
                             relationship.setRevRelationshipIsMandatory(true);
                             relationship.setCascadeDelete(false);
                             relationship.setCascadeDeleteTo(true);
@@ -338,7 +338,7 @@
                         case 'relComponents':
                             relationship.setRelType('relComponents');
                             relationship.setCardinality('oneToMany');
-                            //relationship.setRelationshipIsMandatory(true);        // optional
+                            relationship.setRelationshipIsMandatory(false);        // optional
                             relationship.setRevRelationshipIsMandatory(true);
                             relationship.setCascadeDelete(false);
                             relationship.setCascadeDeleteTo(true);

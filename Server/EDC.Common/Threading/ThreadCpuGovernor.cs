@@ -23,7 +23,7 @@ namespace EDC.Threading
         {
             if (waitPercentage <= 0 || waitPercentage > 100)
             {
-                throw new ArgumentOutOfRangeException("waitPercentage");
+                throw new ArgumentOutOfRangeException( nameof( waitPercentage ) );
             }
 
             _waitPercentage = waitPercentage;

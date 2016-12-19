@@ -77,6 +77,7 @@ Try
 		
 		# Import Shared, Power Tools, Test Solution, Foster University and Foster University Data into the application library
 		Install-BuiltInReadiNowApplications $platformConfigureProcess $deploymentSettings
+		Install-CastApplication $platformConfigureProcess $deploymentSettings
 		
 		# Upgrade Core, Console and Core Data for each tenant on the system
 		Upgrade-TenantCoreApplications $platformConfigureProcess $deploymentSettings

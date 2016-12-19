@@ -76,11 +76,11 @@ namespace EDC.Cache.Providers
 		{
             if (publicCache == null)
             {
-                throw new ArgumentNullException("publicCache");
+                throw new ArgumentNullException( nameof( publicCache ) );
             }
             if (privateCacheFactory == null)
             {
-                throw new ArgumentNullException("privateCacheFactory");
+                throw new ArgumentNullException( nameof( privateCacheFactory ) );
             }
 
 		    _cacheName = cacheName;
@@ -127,7 +127,7 @@ namespace EDC.Cache.Providers
         public bool TryGetOrAdd( TKey key, out TValue value, Func<TKey, TValue> valueFactory )
         {
             if ( valueFactory == null )
-                throw new ArgumentNullException( "valueFactory" );
+                throw new ArgumentNullException( nameof( valueFactory ) );
 
             // TODO: This implementation can be improved
             if ( !TryGetValue( key, out value ) )
@@ -179,7 +179,8 @@ namespace EDC.Cache.Providers
         /// </summary>
         public IReadOnlyCollection<TKey> Remove( IEnumerable<TKey> keys )
         {
-            IEnumerable<TKey> toRemove = keys;
+            ICollection<TKey> keyList = keys.ToList( );
+            IEnumerable<TKey> toRemove = keyList;
             IReadOnlyCollection<TKey> removed = null;
 
             // Remove the entry from the public cache                
@@ -187,7 +188,7 @@ namespace EDC.Cache.Providers
             if ( publicCache != null )
             {
                 removed = publicCache.Remove( toRemove );
-                toRemove = keys.Except( removed );
+                toRemove = keyList.Except( removed );
             }
 
             // Remove the entry from the private cache.
@@ -414,12 +415,12 @@ namespace EDC.Cache.Providers
 
             if (key == null)
             {
-                throw new ArgumentNullException("key");
+                throw new ArgumentNullException( nameof( key ) );
             }
 
             if (cache == null)
             {
-                throw new ArgumentNullException("cache");
+                throw new ArgumentNullException( nameof( cache ) );
             }
 
             if (enlistTran)

@@ -88,9 +88,9 @@ namespace EDC.ReadiNow.CAST.Model
         /// <summary>
         /// The roles that this user currently belongs to.
         /// </summary>
-        public IEntityCollection<ManagedUserRole> Roles
+        public IEntityCollection<ManagedRole> Roles
         {
-            get { return GetRelationships<ManagedUserRole>(ManagedUserSchema.RolesRelationship, Direction.Forward).Entities; }
+            get { return GetRelationships<ManagedRole>(ManagedUserSchema.RolesRelationship, Direction.Forward).Entities; }
             set { SetRelationships(ManagedUserSchema.RolesRelationship, value, Direction.Forward); }
         }
 
@@ -103,7 +103,7 @@ namespace EDC.ReadiNow.CAST.Model
                 return "alias,name,isOfType.{alias,name}," +
                         ManagedUserSchema.RemoteIdField + "," +
                         ManagedUserSchema.ManagedUserStatusEnum + ".{alias,name,isOfType.{alias,name}}," +
-                        ManagedUserSchema.RolesRelationship + ".{" + ManagedUserRole.ManagedUserRolePreloadQuery + "}";
+                        ManagedUserSchema.RolesRelationship + ".{" + ManagedRole.ManagedRolePreloadQuery + "}";
             }
         }
 

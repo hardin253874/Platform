@@ -28,9 +28,17 @@ namespace EDC.SoftwarePlatform.Activities.Test.Engine
         [TestFixtureSetUp]
         public void SetUp()
         {
-            // start the scheduler outside the tests to lower timeout risk
+            // start the local scheduler so we are not reliant on the service.
             var scheduler = SchedulingHelper.Instance;
-            Assert.IsTrue(scheduler.InStandbyMode);
+            scheduler.Start();
+        }
+
+
+
+        [TestFixtureTearDown]
+        public void TearDown()
+        {
+            SchedulingHelper.Instance.Standby();
         }
 
         private static Workflow WaitForWfRun(WfTriggerOnSchedule tos)

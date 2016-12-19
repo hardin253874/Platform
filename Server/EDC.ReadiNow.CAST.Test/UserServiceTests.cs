@@ -46,7 +46,7 @@ namespace EDC.ReadiNow.CAST.Test
 
                 roles = userService.GetRoles(RunAsDefaultTenant.DefaultTenantName);
                 roles.Count.Should().Be(n + 1);
-                roles.Should().Contain(roleName);
+                roles.Select(r => r.Name).Should().Contain(roleName);
 
                 role.Delete();
 
@@ -54,7 +54,7 @@ namespace EDC.ReadiNow.CAST.Test
 
                 roles = userService.GetRoles(RunAsDefaultTenant.DefaultTenantName);
                 roles.Count.Should().Be(n);
-                roles.Should().NotContain(roleName);
+                roles.Select(r => r.Name).Should().NotContain(roleName);
 
                 Action a1 = () => userService.GetRoles(null);
                 a1.ShouldThrow<ArgumentException>().WithMessage("The specified tenantName parameter is invalid.");

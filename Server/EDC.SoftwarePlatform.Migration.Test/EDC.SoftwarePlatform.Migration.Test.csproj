@@ -124,9 +124,9 @@
       <Project>{a1c54cf6-e515-4132-a3cb-5cbe32b11d7e}</Project>
       <Name>EDC.ReadiNow.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EDC.SoftwarePlatform.Interfaces\EDC.SoftwarePlatform.Interfaces.csproj">
+    <ProjectReference Include="..\ReadiNow.Interfaces\ReadiNow.Interfaces.csproj">
       <Project>{c1fc97b7-aacc-45b5-9969-7995b27093ca}</Project>
-      <Name>EDC.SoftwarePlatform.Interfaces</Name>
+      <Name>ReadiNow.Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\EDC.SoftwarePlatform.Migration\EDC.SoftwarePlatform.Migration.csproj">
       <Project>{acc17a7d-5bd0-4f9e-8569-3e4d51588064}</Project>
@@ -159,6 +159,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Import\TestFiles\ReverseAlias.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

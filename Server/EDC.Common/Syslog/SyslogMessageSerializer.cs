@@ -105,12 +105,12 @@ namespace EDC.Syslog
         {
             if (message == null)
             {
-                throw new ArgumentNullException(nameof(message));
+                throw new ArgumentNullException( nameof(message));
             }
 
             if (stream == null)
             {
-                throw new ArgumentNullException(nameof(stream));
+                throw new ArgumentNullException( nameof(stream));
             }
 
             var messageBuilder = new StringBuilder();

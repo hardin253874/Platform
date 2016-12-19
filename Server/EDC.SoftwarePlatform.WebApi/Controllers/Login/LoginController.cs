@@ -24,6 +24,7 @@ using System.Threading.Tasks;
 using Autofac;
 using EDC.ReadiNow.Core;
 using EDC.SoftwarePlatform.WebApi.Controllers.Login.OpenIdConnect;
+using EDC.ReadiNow.Email;
 
 namespace EDC.SoftwarePlatform.WebApi.Controllers.Login
 {
@@ -441,28 +442,26 @@ namespace EDC.SoftwarePlatform.WebApi.Controllers.Login
                 string link = string.Format("{0}#/{1}/?key={2}&type=reset", Request.Headers.Referrer.ToString(), tenant, key);
                 string mailBoday = string.Format("Hi {0} <br> <br> We've received a request to reset your account {1} password for email address {2} <br> If you didn't make the request, please contact your administrator. <br> Otherwise, you can reset your password using this link: {3} <br><br>Best Regards, <br>ReadiNow", accountFullName, account.Name, email, link);
 
-                var emailSettings = ReadiNow.Model.Entity.Get<TenantEmailSetting>("tenantEmailSettingsInstance", TenantEmailSetting.AllFields);
-
-                if (emailSettings.TesPasswordResetInbox != null && emailSettings.TesPasswordResetInbox.UsesInboxProvider != null)
+                var emailServer = ReadiNow.Model.Entity.Get<TenantEmailSetting>("tenantEmailSettingsInstance", TenantEmailSetting.AllFields);
+                
+                if (!string.IsNullOrEmpty(emailServer.SmtpServer) && !string.IsNullOrEmpty(emailServer.EmailNoReplyAddress))
                 {
                     EventLog.Application.WriteInformation("Send user {0} reset password email to account '{1}' by email '{2}'", accountFullName, account.Name, email);
 
-                    var mailBox = emailSettings.TesPasswordResetInbox;
-                    var provider = mailBox.UsesInboxProvider;
-
-                    var inboxProviderHelper = provider.GetHelper();
                     var sentMessage = new SentEmailMessage()
                     {
                         EmTo = email,
-                        EmFrom = emailSettings.EmailServerNoReplyAddress,
+                        EmFrom = emailServer.EmailNoReplyAddress,
                         EmSubject = subject,
                         EmBody = mailBoday,
                         EmIsHtml = true,
                         EmSentDate = DateTime.UtcNow,
-                        SentFromInbox = mailBox
+                        SentFromEmailServer = emailServer
                     };
                     sentMessage.Save();
-                    inboxProviderHelper.SendMessages(sentMessage.ToMailMessage().ToEnumerable(), LoginConstants.DefaultTenantName, mailBox.Name);
+
+                    var sender = new SmtpEmailSender(emailServer);
+                    sender.SendMessages(sentMessage.ToMailMessage().ToEnumerable().ToList());
                 }
 
                 successSentEmail = true;

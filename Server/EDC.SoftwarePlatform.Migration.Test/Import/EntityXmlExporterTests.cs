@@ -152,6 +152,70 @@ namespace EDC.SoftwarePlatform.Migration.Test.Import
         }
 
         /// <summary>
+        /// Export a nested entity that has multiple parents - some present and some not.
+        /// Specifically, when exporting an object containing a relationship, the type of the other end of the relationship should also be referenced.
+        /// </summary>
+        [Test]
+        public void Export_MultipleParents_ObjectWithRel( )
+        {
+            IEntityXmlExporter exporter = Factory.EntityXmlExporter;
+            IEntityRepository repository = Factory.EntityRepository;
+
+            Definition def1 = new Definition( );
+            def1.Name = "End1";
+            def1.Save( );
+            Definition def2 = new Definition( );
+            def2.Name = "End2";
+            def2.Save( );
+            Relationship rel = new Relationship( );
+            rel.Name = "Rel321";
+            rel.FromType = def1.As<EntityType>( );
+            rel.ToType = def2.As<EntityType>( );
+            rel.Cardinality_Enum = CardinalityEnum_Enumeration.ManyToMany;
+            rel.Save( );
+
+            try
+            {
+                def1.Save( );
+                def2.Save( );
+                rel.Save( );
+
+                string xml;
+                using ( RunAsImportExportRole( ) )
+                {
+                    xml = exporter.GenerateXml( def1.Id, EntityXmlExportSettings.Default );
+                }
+
+                XmlDocument doc = new XmlDocument( );
+                doc.LoadXml( xml );
+
+                XmlNamespaceManager ns = new XmlNamespaceManager( doc.NameTable );
+                // Note: can't get xpath to work with default namespace
+                ns.AddNamespace( "c", "core" );
+                ns.AddNamespace( "k", "console" );
+
+                XmlElement e = doc.SelectSingleNode( "/c:xml/c:entities/c:group/c:definition", ns ) as XmlElement;
+                Assert.That( e, Is.Not.Null, "e" );
+
+                Assert.That( e.SelectSingleNode( "@id", ns ).Value, Is.Not.Null );
+                Assert.That( e.SelectSingleNode( "c:name", ns ).InnerText, Is.EqualTo( "End1" ) );
+                XmlElement re = e.SelectSingleNode( "c:relationships/c:relationship", ns ) as XmlElement;
+                Assert.That( re, Is.Not.Null, "re" );
+                Assert.That( re.SelectSingleNode( "@id", ns ).Value, Is.Not.Null );
+                Assert.That( re.SelectSingleNode( "c:name", ns ).InnerText, Is.EqualTo( "Rel321" ) );
+                Assert.That( re.SelectSingleNode( "c:toType", ns ).InnerText, Is.Not.Null );
+                Guid guid = Guid.Parse( re.SelectSingleNode( "c:toType", ns ).InnerText );
+                Assert.That( guid, Is.EqualTo( Entity.GetUpgradeId( def2.Id ) ) );
+            }
+            finally
+            {
+                rel.AsWritable( ).Delete( );
+                def1.AsWritable( ).Delete( );
+                def2.AsWritable( ).Delete( );
+            }
+        }
+
+        /// <summary>
         /// Export an entity and verify that all required content is present.
         /// Tests scenarios where aliases are available, and nested relationships in both directions.
         /// </summary>
@@ -226,14 +290,14 @@ namespace EDC.SoftwarePlatform.Migration.Test.Import
         [TestCase( "rel=fwd, fc=entity, rc=entity, expect=nest" )]  // CloneByEntity in both directions isn't really a supported scenario
         [TestCase( "rel=fwd, fc=entity, rc=drop,   expect=nest" )]
         [TestCase( "rel=fwd, fc=entity, rc=ref,    expect=nest" )]
-        [TestCase( "rel=fwd, fc=drop,   rc=entity, expect=drop" )]
+        [TestCase( "rel=fwd, fc=drop,   rc=entity, expect=ref" )]
         [TestCase( "rel=fwd, fc=drop,   rc=drop,   expect=drop" )]
         [TestCase( "rel=fwd, fc=drop,   rc=ref,    expect=drop" )]
         [TestCase( "rel=fwd, fc=ref,    rc=entity, expect=ref" )]
         [TestCase( "rel=fwd, fc=ref,    rc=drop,   expect=ref" )]
         [TestCase( "rel=fwd, fc=ref,    rc=ref,    expect=ref" )]
         //[TestCase( "rel=rev, fc=entity, rc=entity, expect=nest" )]  // CloneByEntity in both directions isn't really a supported scenario
-        [TestCase( "rel=rev, fc=entity, rc=drop,   expect=drop" )]
+        [TestCase( "rel=rev, fc=entity, rc=drop,   expect=ref" )]
         [TestCase( "rel=rev, fc=entity, rc=ref,    expect=ref" )]
         [TestCase( "rel=rev, fc=drop,   rc=entity, expect=nest" )]
         [TestCase( "rel=rev, fc=drop,   rc=drop,   expect=drop" )]
@@ -380,6 +444,98 @@ namespace EDC.SoftwarePlatform.Migration.Test.Import
 
             string base64 = e.InnerText;
             Assert.That( base64, Is.StringStarting( "H4sIAAAAAAAEAOsM8" ).And.StringEnding( "lNAJmM74+OAQAA" ) );
+        }
+
+        /// <summary>
+        /// Export a nested entity that has multiple parents - some present and some not.
+        /// Specifically, when exporting an object containing a relationship, the type of the other end of the relationship should also be referenced.
+        /// </summary>
+        [TestCase( false, false )]
+        [TestCase( true, false )]
+        [TestCase( false, true )]
+        [TestCase( true, true )]
+        public void Export_SingleComponent( bool parent, bool reverse )
+        {
+            IEntityXmlExporter exporter = Factory.EntityXmlExporter;
+            IEntityRepository repository = Factory.EntityRepository;
+
+            Definition def1 = new Definition( );
+            def1.Inherits.Add( UserResource.UserResource_Type );
+            def1.Name = "End1";
+            def1.Save( );
+            Definition def2 = new Definition( );
+            def2.Inherits.Add( UserResource.UserResource_Type );
+            def2.Name = "End2";
+            def2.Save( );
+            Relationship rel = new Relationship( );
+            rel.Name = "Rel321";
+            rel.FromType = def1.As<EntityType>( );
+            rel.ToType = def2.As<EntityType>( );
+            rel.Cardinality_Enum = CardinalityEnum_Enumeration.OneToOne;
+            rel.RelType_Enum = reverse ? RelTypeEnum_Enumeration.RelSingleComponent : RelTypeEnum_Enumeration.RelSingleComponentOf;
+            rel.CloneAction_Enum = reverse ? CloneActionEnum_Enumeration.CloneEntities : CloneActionEnum_Enumeration.Drop;
+            rel.ReverseCloneAction_Enum = reverse ? CloneActionEnum_Enumeration.Drop : CloneActionEnum_Enumeration.CloneEntities;
+            rel.Save( );
+            Guid relType = Entity.GetUpgradeId( rel.Id );
+
+            try
+            {
+                def1.Save( );
+                def2.Save( );
+                rel.Save( );
+
+                IEntity e2 = Entity.Create( def2 );
+                e2.Save( );
+                IEntity e1 = Entity.Create( def1 );
+                e1.GetRelationships( rel.Id, Direction.Forward ).Add(e2);
+                e1.Save( );
+
+                string e1id = Entity.GetUpgradeId( e1.Id ).ToString();
+                string e2id = Entity.GetUpgradeId( e2.Id ).ToString( );
+                string rootId = parent ? e2id : e1id;
+                string childId = parent ? e1id : e2id;
+                bool isNested = parent != reverse;
+                string relTag = reverse ? "revRel" : "rel";
+                string revRelTag = reverse ? "rel" : "revRel";
+
+                long id = parent ? e2.Id : e1.Id;
+                
+                string xml;
+                using ( RunAsImportExportRole( ) )
+                {
+                    xml = exporter.GenerateXml( id, EntityXmlExportSettings.Default );
+                }
+
+                XmlDocument doc = new XmlDocument( );
+                doc.LoadXml( xml );
+
+                XmlNamespaceManager ns = new XmlNamespaceManager( doc.NameTable );
+                // Note: can't get xpath to work with default namespace
+                ns.AddNamespace( "c", "core" );
+                ns.AddNamespace( "k", "console" );
+
+                XmlElement e = doc.SelectSingleNode( "/c:xml/c:entities/c:group/c:entity", ns ) as XmlElement;
+                Assert.That( e, Is.Not.Null, "e" );
+
+                Assert.That( e.SelectSingleNode( "@id", ns ).Value, Is.EqualTo( rootId ) );
+
+                if ( isNested )
+                {
+                    XmlElement re = e.SelectSingleNode( $"c:{revRelTag}[@id='{relType}']/c:entity", ns ) as XmlElement;
+                    Assert.That( re.GetAttribute("id"), Is.EqualTo( childId ) );
+                }
+                else
+                {
+                    XmlElement re = e.SelectSingleNode( $"c:{relTag}[@id='{relType}']", ns ) as XmlElement;
+                    Assert.That( re.InnerText, Is.EqualTo( childId ) );
+                }
+            }
+            finally
+            {
+                rel.AsWritable( ).Delete( );
+                def1.AsWritable( ).Delete( );
+                def2.AsWritable( ).Delete( );
+            }
         }
 
         [Test]

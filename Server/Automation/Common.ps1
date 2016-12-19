@@ -420,6 +420,8 @@ function Clear-InstallationDirectory($settings)
 	$path = Get-InstallPath $settings
 	
     Log-Message "Clear installation directory $path"
+    
+    Stop-Process -f -processname SchedulerService -ErrorAction SilentlyContinue
 	
     if (Test-Path $path)
 	{
@@ -653,6 +655,11 @@ function Grant-CanModifyApplications($process, $settings)
 	else
 	{
 		Log-Message "Grant Can-Modify on test and sample apps has been disabled for the default tenant."
+	}
+	
+	if ($settings.defaultTenant.grantCanModifyCastManagementApp)
+	{
+		Grant-CanModifyApplication $process $settings $settings.defaultTenant.name 'CAST'	
 	}
 }
 
@@ -1927,6 +1934,19 @@ function Create-TenantRestorePoints($process, $settings)
 	}
 }
 
+# Install the CAST application
+function Install-CastApplication($process, $settings)
+{
+	if ($settings.importCastManagementApp)
+	{
+		Log-Message "Importing CAST into the application library..."
+		
+		Install-App $process 'CAST' $settings $false
+	
+		Log-Message "CAST imported successfully."
+	}
+}
+
 # Install the builtin ReadiNow applications
 function Install-BuiltInReadiNowApplications($process, $settings)
 {
@@ -1980,6 +2000,11 @@ function Create-DefaultTenant($process, $settings)
 		Deploy-App $process $settings $tenantName 'Test Solution'
 		Deploy-App $process $settings $tenantName 'Foster University'
 		Deploy-App $process $settings $tenantName 'Foster University DATA'
+	}
+	
+	if ($settings.defaultTenant.deployCastManagementApp)
+	{
+		Deploy-App $process $settings $tenantName 'CAST'	
 	}
 }
 

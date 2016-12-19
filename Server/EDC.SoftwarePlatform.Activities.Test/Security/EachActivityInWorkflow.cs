@@ -16,59 +16,83 @@ using EDC.ReadiNow.Security;
 namespace EDC.SoftwarePlatform.Activities.Test.Security
 {
     [TestFixture]
-    [Category("ExtendedTests")]
+    //[Category("ExtendedTests")]
     [Category("WorkflowTests")]
     public class EachActivityInWorkflow
     {
+        RunAsDefaultTenant _ratAttrib;
 
-        void TestWorkflow(Func<Workflow> generateWf, Action<WorkflowRun> testWf = null)
+        UserAccount _userAccount = null;
+
+        [TestFixtureSetUp]
+        public void SetUp()
         {
-            var userAccount = Entity.Create<UserAccount>();
-            userAccount.Name = "Test user " + Guid.NewGuid().ToString();
-            userAccount.Save();
+            _ratAttrib = new RunAsDefaultTenant();          // Explicitly calling the RunAsDefaultTenant attribute so that we can set up some common objects to speed up the test.
+
+            _ratAttrib.BeforeTest(null);
+
+            _userAccount = Entity.Create<UserAccount>();
+            _userAccount.Name = "Test user " + Guid.NewGuid().ToString();
+            _userAccount.Save();
+
 
             new AccessRuleFactory().AddAllowByQuery(
-                userAccount.As<Subject>(),
+                _userAccount.As<Subject>(),
                 Workflow.Workflow_Type.As<SecurableEntity>(),
                 Permissions.Read.ToEnumerable(),
                 TestQueries.WorkflowWithName("A").ToReport());
+
+            new AccessRuleFactory().AddAllowByQuery(
+                 _userAccount.As<Subject>(),
+                 Resource.Resource_Type.As<SecurableEntity>(),
+                 new EntityRef("core:read").ToEnumerable(),
+                 TestQueries.EntitiesWithName("Readable").ToReport());
+
+            new AccessRuleFactory().AddAllowByQuery(
+                _userAccount.As<Subject>(),
+                Resource.Resource_Type.As<SecurableEntity>(),
+                new EntityRef("core:modify").ToEnumerable(),
+                TestQueries.EntitiesWithName("Writable").ToReport());
+
+            new AccessRuleFactory().AddAllowByQuery(
+                _userAccount.As<Subject>(),
+                Resource.Resource_Type.As<SecurableEntity>(),
+                new EntityRef("core:create").ToEnumerable(),
+                TestQueries.EntitiesWithName("Creatable").ToReport());
+
+            new AccessRuleFactory().AddAllowByQuery(
+                _userAccount.As<Subject>(),
+                Resource.Resource_Type.As<SecurableEntity>(),
+                new EntityRef("core:delete").ToEnumerable(),
+                TestQueries.EntitiesWithName("Deletable").ToReport());
+
+            new AccessRuleFactory().AddAllowByQuery(
+                _userAccount.As<Subject>(),
+                Resource.Resource_Type.As<SecurableEntity>(),
+                new EntityRef("core:read").ToEnumerable(),
+                TestQueries.EntitiesWithName("Deletable").ToReport());
+
+        }
+
+        [TestFixtureTearDown]
+
+        public void TearDown()
+        {
+            _userAccount.Delete();
+
+            _ratAttrib.AfterTest(null);
+        }
+
+        void TestWorkflow(Func<Workflow> generateWf, Action<WorkflowRun> testWf = null)
+        {
 
             var wf = generateWf();
 
             wf.Name = "A";
             wf.Save();
 
-            new AccessRuleFactory().AddAllowByQuery(
-                userAccount.As<Subject>(),
-                Resource.Resource_Type.As<SecurableEntity>(),
-                new EntityRef("core:read").ToEnumerable(),
-                TestQueries.EntitiesWithName("Readable").ToReport());
-
-            new AccessRuleFactory().AddAllowByQuery(
-                userAccount.As<Subject>(),
-                Resource.Resource_Type.As<SecurableEntity>(),
-                new EntityRef("core:modify").ToEnumerable(),
-                TestQueries.EntitiesWithName("Writable").ToReport());
-
-            new AccessRuleFactory().AddAllowByQuery(
-                userAccount.As<Subject>(),
-                Resource.Resource_Type.As<SecurableEntity>(),
-                new EntityRef("core:create").ToEnumerable(),
-                TestQueries.EntitiesWithName("Creatable").ToReport());
-
-            new AccessRuleFactory().AddAllowByQuery(
-                userAccount.As<Subject>(),
-                Resource.Resource_Type.As<SecurableEntity>(),
-                new EntityRef("core:delete").ToEnumerable(),
-                TestQueries.EntitiesWithName("Deletable").ToReport());
-
-            new AccessRuleFactory().AddAllowByQuery(
-                userAccount.As<Subject>(),
-                Resource.Resource_Type.As<SecurableEntity>(),
-                new EntityRef("core:read").ToEnumerable(),
-                TestQueries.EntitiesWithName("Deletable").ToReport());
-
-            using (new SetUser(userAccount))
+ 
+            using (new SetUser(_userAccount))
             {
                 var dummyWf = Entity.Get<Workflow>(wf.Id);
                 
@@ -91,7 +115,6 @@ namespace EDC.SoftwarePlatform.Activities.Test.Security
         }
 
         [Test]
-        [RunAsDefaultTenant]
         [RunWithTransaction()]
         [TestCaseSource("PositiveCases")]
         [Description("Create a workflow for each activity type containing just the activity. Give a user permission to read the workflow and then run the workflow and check the status as that user. (Note that displayForm is not included in this test.)")]
@@ -228,7 +251,6 @@ namespace EDC.SoftwarePlatform.Activities.Test.Security
 
 
         [Test]
-        [RunAsDefaultTenant]
         [RunWithTransaction()]
         public void DisplayForm_TestPositive()
         {
@@ -249,7 +271,6 @@ namespace EDC.SoftwarePlatform.Activities.Test.Security
         //
 
         [Test]
-        [RunAsDefaultTenant]
         [RunWithTransaction()]
         public void UpdateField_TestNegative_Resource()
         {

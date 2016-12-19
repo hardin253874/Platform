@@ -188,11 +188,23 @@
             var act = spWorkflow.activityData(workflow, activity);
             var recipientsParam = act.parameters['core:sendEmailRecipientList'];
 
-            act.parameters['core:sendEmailRecipientField'].resourceType =
-                recipientsParam.compileResult.entityTypeId ||
-                sp.result(spWorkflow.getAsSingleKnownEntity(workflow, recipientsParam.expression), 'type.idP');
+            if (_.get(recipientsParam, 'compileResult')) {
 
-            act.parameters['core:sendEmailInbox'].resourceType = 'core:inbox';
+                act.parameters['core:sendEmailRecipientField'].resourceType =
+                    recipientsParam.compileResult.entityTypeId ||
+                    sp.result(spWorkflow.getAsSingleKnownEntity(workflow, recipientsParam.expression), 'type.idP');
+
+                act.parameters['core:sendEmailRecipientCCField'].resourceType =
+                    recipientsParam.compileResult.entityTypeId ||
+                    sp.result(spWorkflow.getAsSingleKnownEntity(workflow, recipientsParam.expression), 'type.idP');
+
+                act.parameters['core:sendEmailRecipientBCCField'].resourceType =
+                    recipientsParam.compileResult.entityTypeId ||
+                    sp.result(spWorkflow.getAsSingleKnownEntity(workflow, recipientsParam.expression), 'type.idP');
+            }
+
+
+            act.parameters['core:sendEmailFromInbox'].resourceType = 'core:inbox';
         }
 
         function logActivityCreated(workflow, activity) {

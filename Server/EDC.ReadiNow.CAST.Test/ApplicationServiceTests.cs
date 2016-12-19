@@ -16,6 +16,7 @@ using NUnit.Framework;
 namespace EDC.ReadiNow.CAST.Test
 {
     [TestFixture]
+    [Category( "ExtendedTests" )]
     public class ApplicationServiceTests
     {
         [Test]

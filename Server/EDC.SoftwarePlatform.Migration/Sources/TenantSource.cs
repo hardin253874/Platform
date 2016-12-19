@@ -3,21 +3,15 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using EDC.Database;
-using EDC.IO;
 using EDC.ReadiNow.Core;
-using EDC.ReadiNow.Database;
 using EDC.ReadiNow.Diagnostics;
 using EDC.SoftwarePlatform.Migration.Contract;
 using EDC.SoftwarePlatform.Migration.Processing;
 using EDC.SoftwarePlatform.Migration.Storage;
 using System.Text;
 using System.Security.Cryptography;
-using EDC.Security;
 
 namespace EDC.SoftwarePlatform.Migration.Sources
 {
@@ -174,12 +168,9 @@ namespace EDC.SoftwarePlatform.Migration.Sources
 						{
 							if ( reader.IsDBNull( 0 ) )
 							{
-								if ( context != null )
-								{
-									context.WriteWarning( "Unexpected null UpgradeId in Entity." );
-								}
+							    context?.WriteWarning( "Unexpected null UpgradeId in Entity." );
 
-								continue;
+							    continue;
 							}
 
 							var entry = new EntityEntry
@@ -310,12 +301,9 @@ namespace EDC.SoftwarePlatform.Migration.Sources
 						{
 							if ( reader.IsDBNull( 0 ) )
 							{
-								if ( context != null )
-								{
-									context.WriteWarning( "Unexpected null UpgradeId in Entity." );
-								}
+							    context?.WriteWarning( "Unexpected null UpgradeId in Entity." );
 
-								continue;
+							    continue;
 							}
 
 							Guid typeId = reader.GetGuid( 0 );
@@ -394,10 +382,7 @@ namespace EDC.SoftwarePlatform.Migration.Sources
                     {
                         if (reader.IsDBNull(0))
                         {
-                            if (context != null)
-                            {
-                                context.WriteWarning("Unexpected null SecureDataEntry.");
-                            }
+                            context?.WriteWarning("Unexpected null SecureDataEntry.");
 
                             continue;
                         }

@@ -38,24 +38,26 @@ namespace EDC.ReadiNow.Test.BackgroundTasks
             mockTm1.Setup(tm => tm.Start());
             mockTm1.Setup(tm => tm.IsActive).Returns(true);
             mockTm1.Setup(tm => tm.Start());
-            var controller1 = new BackgroundTaskController(redisMgr, mockTm1.Object);
+			using ( var controller1 = new BackgroundTaskController( redisMgr, mockTm1.Object ) )
+			{
+				// passive TM
+				var mockTm2 = new Mock<IBackgroundTaskManager>( MockBehavior.Strict );
+				mockTm1.Name = nameof( mockTm2 );
+				mockTm2.Setup( tm => tm.IsActive ).Returns( false );
+				mockTm2.Setup( tm => tm.IsActive ).Returns( false );
+				using ( var controller2 = new BackgroundTaskController( redisMgr, mockTm2.Object ) )
+				{
 
+					controller1.StartAll( );
+					Thread.Sleep( 200 );
 
-            // passive TM
-            var mockTm2 = new Mock<IBackgroundTaskManager>(MockBehavior.Strict);
-            mockTm1.Name = nameof(mockTm2);
-            mockTm2.Setup(tm => tm.IsActive).Returns(false);
-            mockTm2.Setup(tm => tm.IsActive).Returns(false);
-            var controller2 = new BackgroundTaskController(redisMgr, mockTm2.Object);
+					controller2.StartAll( );
+					Thread.Sleep( 200 );
 
-            controller1.StartAll();
-            Thread.Sleep(200);
-
-            controller2.StartAll();
-            Thread.Sleep(200);
-
-            mockTm1.VerifyAll();
-            mockTm2.VerifyAll();
+					mockTm1.VerifyAll( );
+					mockTm2.VerifyAll( );
+				}
+			}
         }
 
 
@@ -65,25 +67,28 @@ namespace EDC.ReadiNow.Test.BackgroundTasks
             var redisMgr = Factory.DistributedMemoryManager;
 
             // active TM
-            var mockTm1 = new Mock<IBackgroundTaskManager>(MockBehavior.Strict);
-            mockTm1.Setup(tm => tm.IsActive).Returns(true);
-            mockTm1.Setup(tm => tm.Stop());
-            mockTm1.Setup(tm => tm.IsActive).Returns(true);
-            mockTm1.Setup(tm => tm.Stop());
-            var controller1 = new BackgroundTaskController(redisMgr, mockTm1.Object);
+            var mockTm11 = new Mock<IBackgroundTaskManager>(MockBehavior.Strict);
+	        mockTm11.Name = nameof( mockTm11 );
+            mockTm11.Setup(tm => tm.IsActive).Returns(true);
+            mockTm11.Setup(tm => tm.Stop());
+            mockTm11.Setup(tm => tm.IsActive).Returns(true);
+            mockTm11.Setup(tm => tm.Stop());
+			using ( var controller1 = new BackgroundTaskController( redisMgr, mockTm11.Object ) )
+			{
+				// passive TM
+				var mockTm22 = new Mock<IBackgroundTaskManager>( MockBehavior.Strict );
+				mockTm22.Name = nameof( mockTm22 );
+				mockTm22.Setup( tm => tm.IsActive ).Returns( false );
+				mockTm22.Setup( tm => tm.IsActive ).Returns( false );
+				using ( var controller2 = new BackgroundTaskController( redisMgr, mockTm22.Object ) )
+				{
+					controller1.StopAll( );
+					controller2.StopAll( );
 
-
-            // passive TM
-            var mockTm2 = new Mock<IBackgroundTaskManager>(MockBehavior.Strict);
-            mockTm2.Setup(tm => tm.IsActive).Returns(false);
-            mockTm2.Setup(tm => tm.IsActive).Returns(false);
-            var controller2 = new BackgroundTaskController(redisMgr, mockTm2.Object);
-
-            controller1.StopAll();
-            controller2.StopAll();
-
-            mockTm1.VerifyAll();
-            mockTm2.VerifyAll();
+					mockTm11.VerifyAll( );
+					mockTm22.VerifyAll( );
+				}
+			}
         }
 
         [Test]

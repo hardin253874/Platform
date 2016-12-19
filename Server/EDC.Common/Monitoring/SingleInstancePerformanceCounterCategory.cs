@@ -28,7 +28,7 @@ namespace EDC.Monitoring
         {
             if (string.IsNullOrWhiteSpace(categoryName))
             {
-                throw new ArgumentNullException("categoryName");
+                throw new ArgumentNullException( nameof( categoryName ) );
             }
 
             CategoryName = categoryName;
@@ -81,7 +81,8 @@ namespace EDC.Monitoring
         /// <summary>
         /// Category name.
         /// </summary>
-        public string CategoryName { get; private set; }
+        public string CategoryName { get;
+        }
 
         /// <summary>
         /// Get the requested performance counter, constructing it on the first access.
@@ -107,12 +108,13 @@ namespace EDC.Monitoring
         {
             if (string.IsNullOrWhiteSpace(counterName))
             {
-                throw new ArgumentNullException("counterName");
+                throw new ArgumentNullException( nameof( counterName ) );
             }
 
             return (T)PerformanceCounters.GetOrAdd(counterName, c =>
             {
-                BasePerformanceCounter newPerformanceCounter = null;
+                BasePerformanceCounter newPerformanceCounter;
+
                 if (typeof(T) == typeof(AverageTimer32PerformanceCounter))
                 {
                     newPerformanceCounter = new AverageTimer32PerformanceCounter(CategoryName, c);

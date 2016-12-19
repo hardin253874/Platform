@@ -11,8 +11,7 @@
 
      /* @ngInject */
     function spEntitySaveAsDialogController($scope, $uibModalInstance, options, spEntityService, spAppSettings, rnFeatureSwitch) {
-        var fsSelfServeEnabled = rnFeatureSwitch.isFeatureOn('fsSelfServe');
-
+        
         $scope.options = options || {};
         $scope.model = {
             disableOkButton: true,
@@ -55,10 +54,6 @@
         };
 
         $scope.canSetContainer = function () {
-            if (!fsSelfServeEnabled) {
-                return false;
-            }
-
             if ($scope.options.canSetContainer) {
                 return true;
             } else {

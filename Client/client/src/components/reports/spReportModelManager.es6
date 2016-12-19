@@ -506,9 +506,12 @@
                     
                     //if column is choice field and user default formatting rule is set to true,  use choice field formatting.
                     if (rcol && rcol.type === "ChoiceRelationship" &&
-                        angular.isDefined(valRule) &&
-                        valRule &&
-                        !valRule.disabledefft) {
+                        (   //if column formatting rule is null and column type is choice field, load default formatting rule as init.
+                            !angular.isDefined(valRule) || 
+                            (angular.isDefined(valRule) &&
+                             valRule &&
+                             !valRule.disabledefft)
+                        )) {
                         var defaultRule = buildDefaultFormattingRule(rcol, metadata);
                         //reset defaultRue to condition format rule
                         if (defaultRule) {
@@ -895,7 +898,12 @@
                 };
                 
 
-                if (defcfRule && defcfRule.rules && !valRule.disablecffmt) {
+                if (defcfRule && defcfRule.rules &&
+                    (
+                        !valRule || 
+                        !valRule.disablecffmt
+                    )
+                 ) {
                     updateCellFormattings(defcfRule.rules);
 
                 } else if (cfRule && cfRule.rules) {

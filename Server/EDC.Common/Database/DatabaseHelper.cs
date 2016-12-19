@@ -13,8 +13,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using EDC.Security;
 using Microsoft.SqlServer.Dac;
-using EDC.Diagnostics;
-using System.Security;
 
 namespace EDC.Database
 {
@@ -83,7 +81,7 @@ namespace EDC.Database
 		{
 			if ( command == null )
 			{
-				throw new ArgumentNullException( "command" );
+				throw new ArgumentNullException( nameof( command ) );
 			}
 
 			if ( String.IsNullOrEmpty( name ) )
@@ -295,7 +293,7 @@ namespace EDC.Database
 		{
 			if ( command == null )
 			{
-				throw new ArgumentNullException( "command" );
+				throw new ArgumentNullException( nameof( command ) );
 			}
 
 			// Clear the parameters
@@ -317,7 +315,7 @@ namespace EDC.Database
 		{
 			if ( connection == null )
 			{
-				throw new ArgumentNullException( "connection" );
+				throw new ArgumentNullException( nameof( connection ) );
 			}
 
 			if ( connection.State != ConnectionState.Open )
@@ -397,7 +395,7 @@ namespace EDC.Database
 		{
 			if ( databaseInfo == null )
 			{
-				throw new ArgumentNullException( "databaseInfo" );
+				throw new ArgumentNullException( nameof( databaseInfo ) );
 			}
 
 			if ( string.IsNullOrEmpty( database ) )
@@ -500,7 +498,7 @@ namespace EDC.Database
 		{
 			if ( databaseInfo == null )
 			{
-				throw new ArgumentNullException( "databaseInfo" );
+				throw new ArgumentNullException( nameof( databaseInfo ) );
 			}
 
 			bool exists = false;
@@ -544,7 +542,7 @@ namespace EDC.Database
         {
             if (databaseInfo == null)
             {
-                throw new ArgumentNullException("databaseInfo");
+                throw new ArgumentNullException( nameof( databaseInfo ) );
             }
 
             // Can't use parameters for this command. We could use exec SQL but that just pushes the escaping problem to SQL.
@@ -577,7 +575,7 @@ namespace EDC.Database
         {
             if (databaseInfo == null)
             {
-                throw new ArgumentNullException("databaseInfo");
+                throw new ArgumentNullException( nameof( databaseInfo ) );
             }
 
             // Can't use parameters for this command. We could use exec SQL but that just pushes the escaping problem to SQL.
@@ -611,7 +609,7 @@ namespace EDC.Database
 		{
 			if ( databaseInfo == null )
 			{
-				throw new ArgumentNullException( "databaseInfo" );
+				throw new ArgumentNullException( nameof( databaseInfo ) );
 			}
 
 			IDbConnection connection;
@@ -639,7 +637,7 @@ namespace EDC.Database
 		{
 			if ( databaseInfo == null )
 			{
-				throw new ArgumentNullException( "databaseInfo" );
+				throw new ArgumentNullException( nameof( databaseInfo ) );
 			}
 
 			if ( string.IsNullOrEmpty( database ) )
@@ -682,7 +680,7 @@ namespace EDC.Database
 		{
 			if ( databaseInfo == null )
 			{
-				throw new ArgumentNullException( "databaseInfo" );
+				throw new ArgumentNullException( nameof( databaseInfo ) );
 			}
 
 			string version = null;
@@ -719,7 +717,7 @@ namespace EDC.Database
 		{
 			if ( databaseInfo == null )
 			{
-				throw new ArgumentNullException( "databaseInfo" );
+				throw new ArgumentNullException( nameof( databaseInfo ) );
 			}
 
 			var databases = new string[0];
@@ -778,7 +776,7 @@ namespace EDC.Database
 		{
 			if ( string.IsNullOrEmpty( dacpacPath ) )
 			{
-				throw new ArgumentNullException( "dacpacPath" );
+				throw new ArgumentNullException( nameof( dacpacPath ) );
 			}
 
 			if ( !File.Exists( dacpacPath ) )

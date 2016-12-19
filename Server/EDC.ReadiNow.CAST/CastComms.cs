@@ -57,25 +57,20 @@ namespace EDC.ReadiNow.CAST
         /// </summary>
         public void Start()
         {
-            try
+            if (CastService.GetIsCastConfigured())
             {
-                if (CastService.GetIsCastConfigured())
+                EventLog.Application.WriteWarning("CAST communications are starting.");
+
+                // Server specific
+                if (CastService.GetIsCastServer())
                 {
-                    // Server specific
-                    if (CastService.GetIsCastServer())
-                    {
-                        HeartbeatListener.Receive<RemotePlatformInfo>(SpecialStrings.CastHeartbeatKey, HandleHeartbeat, false);
-                    }
-
-                    SendHeartbeatNowListener.Subscribe<string>(SpecialStrings.CastHeartbeatDemandKey, SendHeartbeatNow);
-                    StartHeartbeat();
-
-                    ClientListener.Respond<CastRequest, CastResponse>(CastService.GetClientCommunicationKey(), HandleRequest);
+                    HeartbeatListener.Receive<RemotePlatformInfo>(SpecialStrings.CastHeartbeatKey, HandleHeartbeat, false);
                 }
-            }
-            catch (Exception err)
-            {
-                EventLog.Application.WriteError("Failed to start CAST communications. {0}", err);
+
+                SendHeartbeatNowListener.Subscribe<string>(SpecialStrings.CastHeartbeatDemandKey, SendHeartbeatNow);
+                StartHeartbeat();
+
+                ClientListener.Respond<CastRequest, CastResponse>(CastService.GetClientCommunicationKey(), HandleRequest);
             }
         }
 
@@ -84,23 +79,16 @@ namespace EDC.ReadiNow.CAST
         /// </summary>
         public void Stop()
         {
-            try
+            // Stop heartbeat
+            if (_timer != null)
             {
-                // Stop heartbeat
-                if (_timer != null)
-                {
-                    _timer.Stop();
-                }
-
-                HeartbeatListener.Stop();
-                SendHeartbeatNowListener.Stop();
-
-                ClientListener.Stop();
+                _timer.Stop();
             }
-            catch (Exception err)
-            {
-                EventLog.Application.WriteError("Failed to stop CAST communications. {0}", err);
-            }
+
+            HeartbeatListener.Stop();
+            SendHeartbeatNowListener.Stop();
+
+            ClientListener.Stop();
         }
 
         /// <summary>
@@ -116,23 +104,16 @@ namespace EDC.ReadiNow.CAST
         /// </summary>
         public static void Initialize()
         {
-            try
-            {
-                if (_cc != null)
-                    return;
+            if (_cc != null)
+                return;
 
-                lock (Sync)
-                {
-                    if (_cc == null)
-                    {
-                        _cc = new CastComms();
-                        _cc.Start();
-                    }
-                }
-            }
-            catch (Exception e)
+            lock (Sync)
             {
-                EventLog.Application.WriteError("Unexpected failure initializing CAST communications. {0}", e);
+                if (_cc == null)
+                {
+                    _cc = new CastComms();
+                    _cc.Start();
+                }
             }
         }
 
@@ -141,16 +122,9 @@ namespace EDC.ReadiNow.CAST
         /// </summary>
         public static void Shutdown()
         {
-            try
+            if (_cc != null)
             {
-                if (_cc != null)
-                {
-                    _cc.Dispose();
-                }
-            }
-            catch (Exception e)
-            {
-                EventLog.Application.WriteError("Unexpected failure shutting down CAST communications. {0}", e);
+                _cc.Dispose();
             }
         }
 
@@ -171,38 +145,38 @@ namespace EDC.ReadiNow.CAST
         /// </summary>
         private void StartHeartbeat()
         {
-            try
+            var castConfiguration = ConfigurationSettings.GetCastConfigurationSection();
+            if (castConfiguration == null)
+                return;
+
+            var castSettings = castConfiguration.Cast;
+            if (castSettings == null)
+                return;
+
+            if (castSettings.Enabled != true)
+                return;
+
+            var interval = castConfiguration.Cast.Heartbeat;
+            if (interval < 0)
+                interval = 60;
+
+            EventLog.Application.WriteInformation("Sending heartbeat every {0} minutes.", interval);
+            //CastService.SendHeartbeat();
+
+            _timer.Interval = interval * 1000 * 60;
+            _timer.Elapsed += (s, a) =>
             {
-                var castConfiguration = ConfigurationSettings.GetCastConfigurationSection();
-                if (castConfiguration == null)
-                    return;
-
-                var castSettings = castConfiguration.Cast;
-                if (castSettings == null)
-                    return;
-
-                if (castSettings.Enabled != true)
-                    return;
-
-                var interval = castConfiguration.Cast.Heartbeat;
-                if (interval < 0)
-                    interval = 60;
-
-                EventLog.Application.WriteInformation("Sending heartbeat every {0} minutes.", interval);
-                CastService.SendHeartbeat();
-
-                _timer.Interval = interval * 1000 * 60;
-                _timer.Elapsed += (s, a) =>
+                try
                 {
                     EventLog.Application.WriteInformation("Sending heartbeat.");
                     CastService.SendHeartbeat();
-                };
-                _timer.Start();
-            }
-            catch (Exception e)
-            {
-                EventLog.Application.WriteError("Unexpected failure starting CAST heartbeat. {0}", e);
-            }
+                }
+                catch (Exception ex)
+                {
+                    EventLog.Application.WriteError("Unexpected failure starting CAST heartbeat on timer. {0}", ex);
+                }
+            };
+            _timer.Start();
         }
 
         /// <summary>
@@ -211,21 +185,14 @@ namespace EDC.ReadiNow.CAST
         /// <param name="pi">The platform information received.</param>
         private void HandleHeartbeat(RemotePlatformInfo pi)
         {
-            try
-            {
-                if (!CastService.GetIsCastConfigured() || !CastService.GetIsCastServer())
-                    return;
+            if (!CastService.GetIsCastConfigured() || !CastService.GetIsCastServer())
+                return;
 
-                using (new DeferredChannelMessageContext())
-                using (CastService.GetCastContext())
-                using (CastService.GetCastUser())
-                {
-                    PlatformService.CreateOrUpdate(pi);
-                }
-            }
-            catch (Exception e)
+            using (new DeferredChannelMessageContext())
+            using (CastService.GetCastContext())
+            using (CastService.GetCastUser())
             {
-                EventLog.Application.WriteError("Unexpected failure processing CAST heartbeat. {0}", e);
+                PlatformService.CreateOrUpdate(pi);
             }
         }
 
@@ -236,43 +203,36 @@ namespace EDC.ReadiNow.CAST
         /// <returns>The response to pass back to the CAST Server.</returns>
         private CastResponse HandleRequest(CastRequest request)
         {
-            try
+            // direct the appropriate requests to the activity service (TODO: some kind of registration would be nice)
+            if (request == null)
             {
-                // direct the appropriate requests to the activity service (TODO: some kind of registration would be nice)
-                if (request == null)
-                {
-                    throw new ArgumentNullException("request");
-                }
-
-                if (CastService.GetIsCastConfigured())
-                {
-                    using (new DeferredChannelMessageContext())
-                    {
-                        // Log
-                        var logRequest = request as LogRequest;
-                        if (logRequest != null)
-                            return CastActivityService.Log(logRequest);
-
-                        // Tenant
-                        var tenantRequest = request as TenantOperationRequest;
-                        if (tenantRequest != null)
-                            return CastActivityService.TenantOperation(tenantRequest);
-
-                        // User
-                        var userRequest = request as UserOperationRequest;
-                        if (userRequest != null)
-                            return CastActivityService.UserOperation(userRequest);
-
-                        // Application
-                        var appRequest = request as ApplicationOperationRequest;
-                        if (appRequest != null)
-                            return CastActivityService.ApplicationOperation(appRequest);
-                    }
-                }
+                throw new ArgumentNullException("request");
             }
-            catch (Exception e)
+
+            if (CastService.GetIsCastConfigured())
             {
-                EventLog.Application.WriteError("Unexpected failure processing CAST request. {0}", e);
+                using (new DeferredChannelMessageContext())
+                {
+                    // Log
+                    var logRequest = request as LogRequest;
+                    if (logRequest != null)
+                        return CastActivityService.Log(logRequest);
+
+                    // Tenant
+                    var tenantRequest = request as TenantOperationRequest;
+                    if (tenantRequest != null)
+                        return CastActivityService.TenantOperation(tenantRequest);
+
+                    // User
+                    var userRequest = request as UserOperationRequest;
+                    if (userRequest != null)
+                        return CastActivityService.UserOperation(userRequest);
+
+                    // Application
+                    var appRequest = request as ApplicationOperationRequest;
+                    if (appRequest != null)
+                        return CastActivityService.ApplicationOperation(appRequest);
+                }
             }
 
             return default(CastResponse);

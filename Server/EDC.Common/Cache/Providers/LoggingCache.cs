@@ -62,15 +62,15 @@ namespace EDC.Cache.Providers
         {
             if (innerCache == null)
             {
-                throw new ArgumentNullException("innerCache");
+                throw new ArgumentNullException( nameof( innerCache ) );
             }
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException( nameof( name ) );
             }
             if (metricReporter == null)
             {
-                throw new ArgumentNullException("metricReporter");
+                throw new ArgumentNullException( nameof( metricReporter ) );
             }
 
             InnerCache = innerCache;
@@ -86,17 +86,17 @@ namespace EDC.Cache.Providers
         /// <summary>
         /// The wrapped cache.
         /// </summary>
-        internal ICache<TKey, TValue> InnerCache { get; private set; }
+        internal ICache<TKey, TValue> InnerCache { get; }
 
         /// <summary>
         /// The cache name.
         /// </summary>
-        public string Name { get; private set; }
+        public string Name { get; }
 
         /// <summary>
         /// The metric repository to write metrics to.
         /// </summary>
-        public ILoggingCacheMetricReporter MetricReporter { get; private set; }
+        public ILoggingCacheMetricReporter MetricReporter { get; }
 
         /// <summary>
         /// Returns an enumerator that iterates through the collection.
@@ -194,7 +194,7 @@ namespace EDC.Cache.Providers
         public bool TryGetOrAdd( TKey key, out TValue value, Func<TKey, TValue> valueFactory )
         {
             if ( valueFactory == null )
-                throw new ArgumentNullException( "valueFactory" );
+                throw new ArgumentNullException( nameof( valueFactory ) );
             
             bool cameFromCache = InnerCache.TryGetOrAdd( key, out value, valueFactory );
 

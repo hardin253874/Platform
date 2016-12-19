@@ -24,7 +24,7 @@ namespace EDC.ReadiNow.CAST
 
         IManagedAppVersion CreateAppVersion();
 
-        IManagedUserRole CreateRole();
+        IManagedRole CreateRole();
 
         IManagedUser CreateUser();
 

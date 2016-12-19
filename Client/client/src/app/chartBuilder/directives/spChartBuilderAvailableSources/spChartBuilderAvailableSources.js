@@ -26,6 +26,8 @@
         })
         .controller('spChartBuilderAvailableSourcesController', function ($scope, $rootScope, spChartBuilderService, spNavService) {
 
+            $scope.encPath = encodeURIComponent(sp.result(spNavService.getCurrentItem(), 'state.params.path'));
+            
             // Dragging of sources
             $scope.dragOptions = {};
             $scope.appData = $rootScope.appData;

@@ -151,17 +151,17 @@ namespace EDC.Security
         {
             if (version <= 0)
             {
-                throw new ArgumentOutOfRangeException("version");
+                throw new ArgumentOutOfRangeException( nameof( version ) );
             }
 
             if (iv == null || iv.Length <= 0)
             {
-                throw new ArgumentNullException("iv");
+                throw new ArgumentNullException( nameof( iv ) );
             }
 
             if (cipherText == null || cipherText.Length <= 0)
             {
-                throw new ArgumentNullException("cipherText");
+                throw new ArgumentNullException( nameof( cipherText ) );
             }
 
 
@@ -235,7 +235,7 @@ namespace EDC.Security
 
                 if (settings == null)
                 {
-                    throw new ArgumentOutOfRangeException("version");
+                    throw new ArgumentOutOfRangeException( nameof( version ) );
                 }
 
                 return settings;

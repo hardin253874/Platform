@@ -1,26 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="core" xmlns:k="console" xsi:schemaLocation=". ../Core.xsd k ../Console.xsd" defaultSolution="consoleSolution">
   <!--Copyright 2011-2016 Global Software Innovation Pty Ltd-->
-  <!-- password reset inbox -->
-  <inbox>
-    <name>Password Reset Inbox</name>
-    <description>Inbox that password reset.</description>
-    <alias>passwordResetInbox</alias>
-    <usesInboxProvider>spInboxProvider</usesInboxProvider>
-    <inboxEmailActions>completeUserTaskEmailAction,matchSentToReceivedEmailsAction</inboxEmailActions>
-    <inboxEnabled>false</inboxEnabled>
-  </inbox>
-  <tenantEmailSetting>
-    <alias>tenantEmailSettingsInstance</alias>
-    <name>Email Settings</name>
-    <description>The email settings used to control emails sent by workflows configured by the tenant.</description>
-    <emailServerNoReplyAddress>noreply@readinow.net</emailServerNoReplyAddress>
-    <tesApprovalsInbox>approvalsInbox</tesApprovalsInbox>
-    <tesSupportInbox>supportInbox</tesSupportInbox>
-    <tesNewTicketsInbox>newTicketsInbox</tesNewTicketsInbox>
-    <tesCalendarInbox>calendarInbox</tesCalendarInbox>
-    <tesPasswordResetInbox>passwordResetInbox</tesPasswordResetInbox>
-  </tenantEmailSetting>
+  
+  
   <!-- Tenant Image settings -->
   <tenantImageSettings>
     <alias>tenantImageSettingsInstance</alias>

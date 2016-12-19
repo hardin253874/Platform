@@ -351,6 +351,13 @@ namespace ReadiNow.QueryEngine.Builder
                 return table;
             }
 
+            var singleRow = entity as SingleRowNode;
+            if ( singleRow != null )
+            {
+                table = RegisterSingleRowNode( singleRow, parentTable, sqlQuery );
+                return table;
+            }
+
             var resourceEntity = entity as ResourceEntity;
             if (resourceEntity != null) // must be after types that derive from ResourceEntity
             {
@@ -704,6 +711,24 @@ namespace ReadiNow.QueryEngine.Builder
             childTable.JoinNotConstrainedByParent = customJoinNode.ParentNeedNotExist;
 
             return new EntityTables( childTable );
+        }
+
+
+        /// <summary>
+        ///     Handles a custom join.
+        /// </summary>
+        /// <param name="singleRowNode"></param>
+        /// <param name="parentTable">The parent table.</param>
+        /// <param name="sqlQuery">The SQL query that the table will be created in.</param>
+        /// <returns>The table to use for upward joins.</returns>
+        private EntityTables RegisterSingleRowNode( SingleRowNode singleRowNode, SqlTable parentTable, SqlQuery sqlQuery )
+        {
+            SqlTable table = sqlQuery.CreateJoinedTable( "(values(1))", "t", parentTable, JoinHint.Unspecified, null, null );
+            table.NameContainsSql = true;
+            table.FullTableAlias = table.TableAlias + "(val)";
+            table.FilterByTenant = false;
+
+            return new EntityTables( table );
         }
 
 

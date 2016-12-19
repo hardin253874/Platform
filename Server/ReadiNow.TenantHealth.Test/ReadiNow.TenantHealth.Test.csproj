@@ -148,9 +148,9 @@
       <Project>{98ec024c-6439-44b1-8b1e-29e457b2201f}</Project>
       <Name>EDC.SoftwarePlatform.Activities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EDC.SoftwarePlatform.Interfaces\EDC.SoftwarePlatform.Interfaces.csproj">
+    <ProjectReference Include="..\ReadiNow.Interfaces\ReadiNow.Interfaces.csproj">
       <Project>{c1fc97b7-aacc-45b5-9969-7995b27093ca}</Project>
-      <Name>EDC.SoftwarePlatform.Interfaces</Name>
+      <Name>ReadiNow.Interfaces</Name>
       <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\EDC.SoftwarePlatform.Services\EDC.SoftwarePlatform.Services.csproj">
@@ -172,6 +172,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir).build\MSBuild.Community.Tasks.targets" />

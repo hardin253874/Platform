@@ -21,7 +21,8 @@ namespace EDC.ReadiNow.Test.Database
 		///     Tests the trigger impact.
 		/// </summary>
 		[Test]
-		public void TestTriggerImpact( )
+        [Category("ExtendedTests")]
+        public void TestTriggerImpact( )
 		{
 			int runCount = 3;
 			int threadCount = 10;

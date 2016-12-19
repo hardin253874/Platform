@@ -25,7 +25,7 @@ namespace EDC.Security
 		{
 			if ( string.IsNullOrEmpty( input ) )
 			{
-				throw new ArgumentNullException( "input" );
+				throw new ArgumentNullException( nameof( input ) );
 			}
 
 			using ( MD5 md5Hash = MD5.Create( ) )
@@ -54,7 +54,7 @@ namespace EDC.Security
         {
             if (string.IsNullOrEmpty(filePath))
             {
-                throw new ArgumentNullException("filePath");
+                throw new ArgumentNullException( nameof( filePath ) );
             }
 
             using (BufferedStream source = new BufferedStream(new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read), Sha256Chunkiness))
@@ -72,7 +72,7 @@ namespace EDC.Security
         {
             if (sourceStream == null)
             {
-                throw new ArgumentNullException("sourceStream");
+                throw new ArgumentNullException( nameof( sourceStream ) );
             }
 
             byte[] hashBytes;
@@ -98,7 +98,7 @@ namespace EDC.Security
 		{
 			if ( string.IsNullOrEmpty( input ) )
 			{
-				throw new ArgumentNullException( "input" );
+				throw new ArgumentNullException( nameof( input ) );
 			}
 
 			using ( SHA1 sha1Hash = new SHA1Managed( ) )
@@ -130,27 +130,27 @@ namespace EDC.Security
 		{
 			if ( version <= 0 )
 			{
-				throw new ArgumentOutOfRangeException( "version" );
+				throw new ArgumentOutOfRangeException( nameof( version ) );
 			}
 
 			if ( salt == null )
 			{
-				throw new ArgumentNullException( "salt" );
+				throw new ArgumentNullException( nameof( salt ) );
 			}
 
 			if ( salt.Length == 0 )
 			{
-				throw new ArgumentException( @"The salt is empty.", "salt" );
+				throw new ArgumentException( @"The salt is empty.", nameof( salt ) );
 			}
 
 			if ( hash == null )
 			{
-				throw new ArgumentNullException( "hash" );
+				throw new ArgumentNullException( nameof( hash ) );
 			}
 
 			if ( hash.Length == 0 )
 			{
-				throw new ArgumentException( @"The hash is empty.", "hash" );
+				throw new ArgumentException( @"The hash is empty.", nameof( hash ) );
 			}
 
 			return string.Format( "{0}|{1}|{2}", version, Convert.ToBase64String( salt ), Convert.ToBase64String( hash ) );
@@ -228,7 +228,7 @@ namespace EDC.Security
 		{
 			if ( string.IsNullOrEmpty( input ) )
 			{
-				throw new ArgumentNullException( "input" );
+				throw new ArgumentNullException( nameof( input ) );
 			}
 
 			// Get the current hash settings
@@ -250,11 +250,11 @@ namespace EDC.Security
 	    {
             if (string.IsNullOrEmpty(input))
             {
-                throw new ArgumentNullException("input");
+                throw new ArgumentNullException( nameof( input ) );
             }
             if (hashSettings == null)
             {
-                throw new ArgumentNullException("hashSettings");
+                throw new ArgumentNullException( nameof( hashSettings ) );
             }
 
             // Create the salt data
@@ -295,12 +295,12 @@ namespace EDC.Security
 		{
 			if ( password == null )
 			{
-				throw new ArgumentNullException( "password" );
+				throw new ArgumentNullException( nameof( password ) );
 			}
 
 			if ( string.IsNullOrEmpty( encodedHash ) )
 			{
-				throw new ArgumentNullException( "encodedHash" );
+				throw new ArgumentNullException( nameof( encodedHash ) );
 			}
 
             int actualVersion;
@@ -354,7 +354,7 @@ namespace EDC.Security
 		{
 			if ( size <= 0 )
 			{
-				throw new ArgumentOutOfRangeException( "size" );
+				throw new ArgumentOutOfRangeException( nameof( size ) );
 			}
 
 			var bytes = new byte[size];
@@ -376,7 +376,7 @@ namespace EDC.Security
         {
             if (size <= 0)
             {
-                throw new ArgumentOutOfRangeException("size");
+                throw new ArgumentOutOfRangeException( nameof( size ) );
             }
 
             StringBuilder coupon = new StringBuilder(size);
@@ -404,7 +404,7 @@ namespace EDC.Security
         {
             if (string.IsNullOrEmpty(filePath))
             {
-                throw new ArgumentNullException("filePath");
+                throw new ArgumentNullException( nameof( filePath ) );
             }
 
             using (var source = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
@@ -422,7 +422,7 @@ namespace EDC.Security
         {
             if (sourceStream == null)
             {
-                throw new ArgumentNullException("sourceStream");
+                throw new ArgumentNullException( nameof( sourceStream ) );
             }
 
             byte[] hashBytes;
@@ -563,7 +563,7 @@ namespace EDC.Security
 
 				if ( settings == null )
 				{
-					throw new ArgumentOutOfRangeException( "version" );
+					throw new ArgumentOutOfRangeException( nameof( version ) );
 				}
 
 				return settings;

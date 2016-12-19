@@ -21,7 +21,7 @@ namespace EDC.IO
         {
             if (stream == null)
             {
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException( nameof( stream ) );
             }
 
             byte[] hashBytes;

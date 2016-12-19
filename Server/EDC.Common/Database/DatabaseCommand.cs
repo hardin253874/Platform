@@ -1,10 +1,7 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
 
-using EDC.Diagnostics;
 using System;
 using System.Data;
-using System.Data.SqlClient;
-using System.Diagnostics;
 
 namespace EDC.Database
 {
@@ -33,7 +30,7 @@ namespace EDC.Database
 		{
 			if ( command == null )
 			{
-				throw new ArgumentNullException( "command" );
+				throw new ArgumentNullException( nameof( command ) );
 			}
 
             _callbackAction = callbackAction;

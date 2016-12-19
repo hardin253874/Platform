@@ -19,7 +19,7 @@ namespace EDC.IO
         {
             if (stream == null)
             {
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException( nameof( stream ) );
             }
 
             return Guid.NewGuid().ToString("N").ToUpperInvariant();

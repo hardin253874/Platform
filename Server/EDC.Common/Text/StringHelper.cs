@@ -24,81 +24,81 @@ namespace EDC.Text
 		/// </returns>
 		public static object FromCsv( string list, Type type )
 		{
-			object values = null;
+            if ( string.IsNullOrEmpty( list ) )
+                return null;
 
-			if ( !String.IsNullOrEmpty( list ) )
-			{
-				if ( type == typeof ( Int16 ) )
-				{
-					string[] elements = list.Split( new[]
-						{
-							','
-						}, StringSplitOptions.RemoveEmptyEntries );
-					if ( ( elements.Length > 0 ) )
-					{
-						var temp = new Int16[elements.Length];
-						for ( int x = 0; x < elements.Length; ++x )
-						{
-							temp[ x ] = Convert.ToInt16( elements[ x ] );
-						}
-						values = temp;
-					}
-				}
-				else if ( type == typeof ( Int32 ) )
-				{
-					string[] elements = list.Split( new[]
-						{
-							','
-						}, StringSplitOptions.RemoveEmptyEntries );
-					if ( ( elements.Length > 0 ) )
-					{
-						var temp = new Int32[elements.Length];
-						for ( int x = 0; x < elements.Length; ++x )
-						{
-							temp[ x ] = Convert.ToInt32( elements[ x ] );
-						}
-						values = temp;
-					}
-				}
-				else if ( type == typeof ( long ) )
-				{
-					string[] elements = list.Split( new[]
-						{
-							','
-						}, StringSplitOptions.RemoveEmptyEntries );
-					if ( ( elements.Length > 0 ) )
-					{
-						var temp = new Int64[elements.Length];
-						for ( int x = 0; x < elements.Length; ++x )
-						{
-							temp[ x ] = Convert.ToInt64( elements[ x ] );
-						}
-						values = temp;
-					}
-				}
-				else if ( type == typeof ( Guid ) )
-				{
-					string[] elements = list.Split( new[]
-						{
-							','
-						}, StringSplitOptions.RemoveEmptyEntries );
-					if ( ( elements.Length > 0 ) )
-					{
-						var temp = new Guid[elements.Length];
-						for ( int x = 0; x < elements.Length; ++x )
-						{
-							temp[ x ] = Guid.Parse( elements[ x ] );
-						}
-						values = temp;
-					}
-				}
-				else
-				{
-					throw new InvalidOperationException( "The specified list cannot be converted." );
-				}
-			}
+            object values = null;
 
-			return values;
+		    if ( type == typeof ( Int16 ) )
+		    {
+		        string[] elements = list.Split( new[]
+		        {
+		            ','
+		        }, StringSplitOptions.RemoveEmptyEntries );
+		        if ( ( elements.Length > 0 ) )
+		        {
+		            var temp = new Int16[elements.Length];
+		            for ( int x = 0; x < elements.Length; ++x )
+		            {
+		                temp[ x ] = Convert.ToInt16( elements[ x ] );
+		            }
+		            values = temp;
+		        }
+		    }
+		    else if ( type == typeof ( Int32 ) )
+		    {
+		        string[] elements = list.Split( new[]
+		        {
+		            ','
+		        }, StringSplitOptions.RemoveEmptyEntries );
+		        if ( ( elements.Length > 0 ) )
+		        {
+		            var temp = new Int32[elements.Length];
+		            for ( int x = 0; x < elements.Length; ++x )
+		            {
+		                temp[ x ] = Convert.ToInt32( elements[ x ] );
+		            }
+		            values = temp;
+		        }
+		    }
+		    else if ( type == typeof ( long ) )
+		    {
+		        string[] elements = list.Split( new[]
+		        {
+		            ','
+		        }, StringSplitOptions.RemoveEmptyEntries );
+		        if ( ( elements.Length > 0 ) )
+		        {
+		            var temp = new Int64[elements.Length];
+		            for ( int x = 0; x < elements.Length; ++x )
+		            {
+		                temp[ x ] = Convert.ToInt64( elements[ x ] );
+		            }
+		            values = temp;
+		        }
+		    }
+		    else if ( type == typeof ( Guid ) )
+		    {
+		        string[] elements = list.Split( new[]
+		        {
+		            ','
+		        }, StringSplitOptions.RemoveEmptyEntries );
+		        if ( ( elements.Length > 0 ) )
+		        {
+		            var temp = new Guid[elements.Length];
+		            for ( int x = 0; x < elements.Length; ++x )
+		            {
+		                temp[ x ] = Guid.Parse( elements[ x ] );
+		            }
+		            values = temp;
+		        }
+		    }
+		    else
+		    {
+		        throw new InvalidOperationException( "The specified list cannot be converted." );
+		    }
+
+		    return values;
 		}
 
 		/// <summary>
@@ -117,12 +117,12 @@ namespace EDC.Text
 		{
 			if ( source == null )
 			{
-				throw new ArgumentNullException( "source" );
+				throw new ArgumentNullException( nameof( source ) );
 			}
 
 			if ( string.IsNullOrEmpty( delimiter ) )
 			{
-				throw new ArgumentException( @"Invalid delimiter.", "delimiter" );
+				throw new ArgumentException( @"Invalid delimiter.", nameof( delimiter ) );
 			}
 
 			if ( source == string.Empty )
@@ -169,17 +169,17 @@ namespace EDC.Text
 		{
 			if ( source == null )
 			{
-				throw new ArgumentNullException( "source" );
+				throw new ArgumentNullException( nameof( source ) );
 			}
 
 			if ( string.IsNullOrEmpty( delimiter ) )
 			{
-				throw new ArgumentException( @"Invalid delimiter.", "delimiter" );
+				throw new ArgumentException( @"Invalid delimiter.", nameof( delimiter ) );
 			}
 
 			if ( string.IsNullOrEmpty( delimiter ) )
 			{
-				throw new ArgumentException( @"Invalid Key Value Pair delimiter.", "keyValuePairDelimiter" );
+				throw new ArgumentException( @"Invalid Key Value Pair delimiter.", nameof( keyValuePairDelimiter ) );
 			}
 
 			IDictionary<string, string> dictionary = new Dictionary<string, string>( );

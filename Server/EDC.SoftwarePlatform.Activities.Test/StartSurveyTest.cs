@@ -14,7 +14,7 @@ using System.Threading;
 namespace EDC.SoftwarePlatform.Activities.Test
 {
     [TestFixture]
-    [Category("ExtendedTests")]
+    //[Category("ExtendedTests")]
     [Category("WorkflowTests")]
     public class StartSurveyTest : TestBase
     {

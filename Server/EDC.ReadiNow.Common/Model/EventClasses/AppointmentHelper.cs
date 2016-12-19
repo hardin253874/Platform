@@ -18,12 +18,6 @@ namespace EDC.ReadiNow.Model.EventClasses
     public static class AppointmentHelper
     {
 
-        /// <summary>
-        ///     Calendar inbox alias.
-        /// </summary>
-        private const string CalendarInboxAlias = "core:calendarInbox";
-
-
 		/// <summary>
 		///     Converts the specified date time from the source time zone to the destination time zone.
 		/// </summary>
@@ -75,6 +69,8 @@ namespace EDC.ReadiNow.Model.EventClasses
 		/// </summary>
 		public static void GenerateAndSendICalAppointment( Appointment appointment )
 		{
+            throw new NotImplementedException("Support for ICAL has been removed. The required Calendar Inbox has been removed");
+            /*
             // Are we sending anything?
             if (! (appointment.ApptSendEmail ?? false))     
             {
@@ -83,41 +79,38 @@ namespace EDC.ReadiNow.Model.EventClasses
                 return;
             }
 
-            EventEmail eventEmail;
-
             if (appointment.ICalAppt == null)
             {
-                eventEmail = Entity.Create<EventEmail>();
+                EventEmail eventEmail = Entity.Create<EventEmail>();
                 eventEmail.Name = string.Format(appointment.Name);
                 appointment.ICalAppt = eventEmail;
                 eventEmail.Save();
             }
 
-			/////
-			// Calendar inbox.
-			/////
-			var inbox = Entity.Get<Inbox>( CalendarInboxAlias );
+            var emailServerSettings = Entity.Get<TenantEmailSetting>("core:tenantEmailSettingsInstance");
 
-			/////
-			// Create the iCal attachment.
-			/////
-            iCalendar iCal = GenerateICalendar(appointment, inbox);
+
+            /////
+            // Calendar inbox.
+            /////
+            var inbox = Entity.Get<Inbox>("core:calendarInbox");
+            iCalendar iCal = GenerateICalendar(appointment, inbox.InboxEmailAddress);
 
 			if ( iCal != null )
 			{
 				/////
 				// Create the SentICalEmailMessage instance.
 				/////
-                SentICalEmailMessage emailEntity = GenerateEmail(appointment, inbox, iCal);
+                SentICalEmailMessage emailEntity = GenerateEmail(appointment, emailServerSettings, iCal);
 
 				if ( appointment.EventEmailAttendees.Count > 0 )
 				{
 					/////
 					// Send the email.
 					/////
-					SendEmail( emailEntity.As<SentEmailMessage>( ), iCal, inbox );
+					SendEmail( emailEntity.As<SentEmailMessage>( ), iCal, emailServerSettings);
 				}
-			}
+			}*/
 		}
 
 		/// <summary>
@@ -130,16 +123,16 @@ namespace EDC.ReadiNow.Model.EventClasses
 		///     or
 		///     iCal
 		/// </exception>
-		private static SentICalEmailMessage GenerateEmail( Appointment appointment, Inbox inbox, iCalendar iCal )
+		private static SentICalEmailMessage GenerateEmail( Appointment appointment, TenantEmailSetting emailServerSettings, iCalendar iCal )
 		{
             if (appointment.ICalAppt == null)
 			{
 				throw new ArgumentNullException( "eventEntity" );
 			}
 
-			if ( inbox == null )
+			if (emailServerSettings == null )
 			{
-				throw new ArgumentNullException( "inbox" );
+				throw new ArgumentNullException("emailServerSettings");
 			}
 
 			if ( iCal == null )
@@ -163,9 +156,9 @@ namespace EDC.ReadiNow.Model.EventClasses
 			}
 
 			/////
-			// From.
+			// From. 
 			/////
-			emailMessage.EmFrom = inbox.InboxEmailAddress;
+			emailMessage.EmFrom = emailServerSettings.EmailNoReplyAddress;   // This will need to be chagned to something else 
 
 			/////
 			// Is Html.
@@ -232,7 +225,7 @@ namespace EDC.ReadiNow.Model.EventClasses
 			/////
 			emailMessage.OwnerEventEmail = appointment.ICalAppt;
 
-			emailMessage.SentFromInbox = inbox;
+			emailMessage.SentFromEmailServer = emailServerSettings;
 
 			emailMessage.Save( );
 
@@ -247,16 +240,16 @@ namespace EDC.ReadiNow.Model.EventClasses
 		///     or
 		///     inbox
 		/// </exception>
-		private static iCalendar GenerateICalendar( Appointment appointment, Inbox inbox )
+		private static iCalendar GenerateICalendar( Appointment appointment, string emailAddress )
 		{
-			if ( appointment == null )
+            if ( appointment == null )
 			{
 				throw new ArgumentNullException( "eventEntity" );
 			}
 
-			if ( inbox == null )
+            if (string.IsNullOrEmpty(emailAddress))
 			{
-				throw new ArgumentNullException( "inbox" );
+				throw new ArgumentNullException("emailAddress");
 			}
 
 			try
@@ -397,12 +390,12 @@ namespace EDC.ReadiNow.Model.EventClasses
 				/////
 				// Process the organizer.
 				/////
-				ProcessOrganizer( calendarEvent, inbox );
+				ProcessOrganizer( calendarEvent, emailAddress );
 
 				/////
 				// Process attendees.
 				/////
-				ProcessAttendees( calendarEvent, appointment, inbox );
+				ProcessAttendees( calendarEvent, appointment );
 
                 // if there are no attendees there is no iCal appointment
 				if ( calendarEvent.Attendees.Count <= 0 )
@@ -444,9 +437,9 @@ namespace EDC.ReadiNow.Model.EventClasses
 		/// <summary>
 		///     Processes the attendees.
 		/// </summary>
-		private static void ProcessAttendees( iCalEvent calendarEvent, Appointment appointment, Inbox inbox )
+		private static void ProcessAttendees( iCalEvent calendarEvent, Appointment appointment )
 		{
-            if (appointment == null || calendarEvent == null || inbox == null)
+            if (appointment == null || calendarEvent == null)
 			{
 				return;
 			}
@@ -511,16 +504,16 @@ namespace EDC.ReadiNow.Model.EventClasses
 		///     or
 		///     inbox
 		/// </exception>
-		private static void ProcessOrganizer( iCalEvent calendarEvent, Inbox inbox )
+		private static void ProcessOrganizer( iCalEvent calendarEvent, string emailAddress )
 		{
 			if ( calendarEvent == null )
 			{
 				throw new ArgumentNullException( "calendarEvent" );
 			}
 
-			if ( inbox == null )
+			if ( String.IsNullOrEmpty(emailAddress))
 			{
-				throw new ArgumentNullException( "inbox" );
+				throw new ArgumentNullException("emailAddress");
 			}
 
 			/////
@@ -529,7 +522,7 @@ namespace EDC.ReadiNow.Model.EventClasses
 			var organizer = new Organizer
 				{
 					CommonName = "Software Platform",
-					Value = new Uri( string.Format( "MAILTO:{0}", inbox.InboxEmailAddress ) )
+					Value = new Uri( string.Format( "MAILTO:{0}", emailAddress) )
 				};
 
 			calendarEvent.Organizer = organizer;
@@ -545,7 +538,7 @@ namespace EDC.ReadiNow.Model.EventClasses
 		///     or
 		///     inbox
 		/// </exception>
-		private static void SendEmail( SentEmailMessage emailEntity, iCalendar iCal, Inbox inbox )
+		private static void SendEmail( SentEmailMessage emailEntity, iCalendar iCal, TenantEmailSetting emailServerSettings)
 		{
 			if ( emailEntity == null )
 			{
@@ -557,16 +550,16 @@ namespace EDC.ReadiNow.Model.EventClasses
 				throw new ArgumentNullException( "iCal" );
 			}
 
-			if ( inbox == null )
+			if (emailServerSettings == null )
 			{
-				throw new ArgumentNullException( "inbox" );
+				throw new ArgumentNullException("emailServerSettings");
 			}
 
 
 			/////
 			// Send the email.
 			/////
-			iCalEmailHelper.SendICalEmail( iCal, emailEntity.ToMailMessage( ), inbox );
+			iCalEmailHelper.SendICalEmail( iCal, emailEntity.ToMailMessage( ), emailServerSettings);
 		}
 	}
 }

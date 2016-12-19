@@ -17,6 +17,14 @@ namespace EDC.SoftwarePlatform.Activities.Engine
 {
     public class CleanUpWorkflowRunsAction : ItemBase
     {
+        protected override bool RunAsOwner
+        {
+            get
+            {
+                return false;
+            }
+        }
+
 
         internal void RemoveOldWorkflowVersions()
         {

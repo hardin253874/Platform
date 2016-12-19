@@ -42,11 +42,11 @@ namespace EDC.Monitoring
         {
             if (string.IsNullOrWhiteSpace(categoryName))
             {
-                throw new ArgumentNullException("categoryName");
+                throw new ArgumentNullException( nameof( categoryName ) );
             }
             if (string.IsNullOrWhiteSpace(counterName))
             {
-                throw new ArgumentNullException("counterName");
+                throw new ArgumentNullException( nameof( counterName ) );
             }
 
             Timer = new PerformanceCounter(categoryName, counterName, instanceName ?? string.Empty, false);
@@ -124,7 +124,7 @@ namespace EDC.Monitoring
         {
             if (stopwatch == null)
             {
-                throw new ArgumentNullException("stopwatch");
+                throw new ArgumentNullException( nameof( stopwatch ) );
             }
 
             // These are threadsafe

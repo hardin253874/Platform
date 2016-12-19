@@ -9,6 +9,7 @@
     function relationshipPickerController($scope, $element, spCachingCompile, spEntityService) {
         let ctrl = this;
         let relationshipRef;
+        let relationshipReverse;
         let relationshipList = [];
 
         ctrl.options = [];
@@ -101,9 +102,9 @@
                     ctrl.options = options;
 
                     // pre-select the correct option if we were handed an existing relationship as input
-                    if (relationshipRef) {
+                    if (relationshipRef && _.isBoolean(relationshipReverse)) {
                         ctrl.selectedOption = _.find(ctrl.options, function(o) {
-                            return o.id === relationshipRef.getId();
+                            return o.id === relationshipRef.getId() && o.forward !== relationshipReverse;
                         });
                     }
                 });
@@ -127,6 +128,10 @@
             if (ctrl.relationship) {
                 relationshipRef = spEntity.asEntityRef(ctrl.relationship);
             }
+
+            if (ctrl.isReverse) {
+                relationshipReverse = ctrl.isReverse;
+            }
             
             refreshOptionsDebounce();
         };
@@ -149,6 +154,11 @@
                 relationshipRef = spEntity.asEntityRef(changesObj.relationship.currentValue);
                 refreshOptionsDebounce();
             }
+
+            if (changesObj.isReverse) {
+                relationshipReverse = changesObj.isReverse.currentValue;
+                refreshOptionsDebounce();
+            }
         };
 
         /////
@@ -160,9 +170,9 @@
             if (newValue !== oldValue) {
                 let relId = _.get(newValue, 'id');
                 let selected = relId ? _.find(relationshipList, function(rel) {
-                    return rel && rel.getEntity() && rel.getEntity().idP === newValue.id;
+                    return rel && rel.getEntity() && rel.getEntity().idP === newValue.id && rel.isReverse() !== newValue.forward;
                 }) : null;
-                ctrl.onSelect({ selected: selected });
+                ctrl.onSelect({ selected: selected  });
             }
         });
 
@@ -177,6 +187,7 @@
             controller: relationshipPickerController,
             bindings: {
                 relationship: '<',  // The current relationship
+                isReverse: '<',     // The direction of the current relationship
                 startType: '<',     // Relationships that this type can participate in
                 endType: '<',       // Filter the relationship further by their complimentary types
                 isReadOnly: '<',    // Controls if in read only mode

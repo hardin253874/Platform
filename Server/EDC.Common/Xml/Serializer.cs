@@ -1,6 +1,4 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
-using System;
-using System.Linq;
 using System.IO;
 using System.Text;
 using System.Xml;
@@ -37,7 +35,7 @@ namespace EDC.Xml
             var settings = new XmlWriterSettings();
             settings.OmitXmlDeclaration = true;
             settings.Indent = true;
-            using (XmlWriter xmlWriter = XmlTextWriter.Create(sb, settings))
+            using (XmlWriter xmlWriter = XmlWriter.Create(sb, settings))
             {
                 ToXml(xmlWriter, query);
                 xmlWriter.Flush();

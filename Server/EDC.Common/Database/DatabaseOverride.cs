@@ -71,7 +71,7 @@ namespace EDC.Database
 		{
 			get
 			{
-				return CallContext.LogicalGetData( Key ) as DatabaseInfo != null;
+				return CallContext.LogicalGetData( Key ) is DatabaseInfo;
 			}
 		}
 
@@ -84,7 +84,6 @@ namespace EDC.Database
 		private DatabaseInfo PreviousOverride
 		{
 			get;
-			set;
 		}
 
 		/// <summary>

@@ -3,7 +3,7 @@
 namespace EDC.Common
 {
     /// <summary>
-    /// Captures a <see cref="Delegates.WalkGraphWithSteps"/> graph walk step.
+    /// Captures a WalkGraphWithSteps graph walk step.
     /// </summary>
     /// <typeparam name="T">Type of nodes being tracked.</typeparam>
     public class WalkStep<T>

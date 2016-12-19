@@ -98,7 +98,9 @@
     <Compile Include="Sms\TwilioSmsReceiver.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -112,9 +114,9 @@
       <Name>EDC.ReadiNow.Common</Name>
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="..\EDC.SoftwarePlatform.Interfaces\EDC.SoftwarePlatform.Interfaces.csproj">
+    <ProjectReference Include="..\ReadiNow.Interfaces\ReadiNow.Interfaces.csproj">
       <Project>{c1fc97b7-aacc-45b5-9969-7995b27093ca}</Project>
-      <Name>EDC.SoftwarePlatform.Interfaces</Name>
+      <Name>ReadiNow.Interfaces</Name>
       <Private>True</Private>
     </ProjectReference>
   </ItemGroup>

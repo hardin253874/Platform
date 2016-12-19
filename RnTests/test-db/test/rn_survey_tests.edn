@@ -1,0 +1,236 @@
+[{:tags [:user/kun :area/survey :nomodify :prod :regression :desktop],
+  :name "Survey test",
+  :steps
+  [{:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Surveys\")"}
+   {:script
+    "(comment \"------------Adding new choice option----------------\")"}
+   {:script "(rt.po.app/select-navigator-item \"Choice Options\")"}
+   {:script "(rt.po.report-view/open-new-menu)"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:choice-option-name *tc*))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.view-form/click-edit)"}
+   {:script "(rt.po.view-form/select-form-tab \"Choices\")"}
+   {:script
+    "(rt.po.view-form/click-button-in-relationship-v2 \"Choices\" \"Action\")"}
+   {:script "(rt.po.app/choose-context-menu \"New\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" \"Option 1\")"}
+   {:script "(rt.po.edit-form/set-number-field-value \"Order\" \"1\")"}
+   {:script "(rt.po.edit-form/set-number-field-value \"Value\" \"1\")"}
+   {:script "(rt.po.edit-form/click-save-plus-button)"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" \"Option 2\")"}
+   {:script "(rt.po.edit-form/set-number-field-value \"Order\" \"2\")"}
+   {:script "(rt.po.edit-form/set-number-field-value \"Value\" \"2\")"}
+   {:script "(rt.po.edit-form/click-save-plus-button)"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" \"Option 3\")"}
+   {:script "(rt.po.edit-form/set-number-field-value \"Order\" \"3\")"}
+   {:script "(rt.po.edit-form/set-number-field-value \"Value\" \"3\")"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(expect-equals true (rt.po.common/report-row-contains-text? (:choice-option-name *tc*)))"}
+   {:script
+    "(comment \"------------Adding new Question Category----------------\")"}
+   {:script
+    "(rt.po.app/select-navigator-item \"Question Categories\")"}
+   {:script "(rt.po.report-view/open-new-menu)"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:question-category-name *tc*))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(expect-equals true (rt.po.common/report-row-contains-text? (:question-category-name *tc*)))"}
+   {:script
+    "(comment \"------------Adding new Question Library----------------\")"}
+   {:script "(rt.po.app/select-navigator-item \"Question Libraries\")"}
+   {:script "(rt.po.report-view/open-new-menu)"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:question-library-name *tc*))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    "(expect-equals true (rt.po.common/report-row-contains-text? (:question-library-name *tc*)))"}
+   {:script
+    "(comment \"------------Adding new Survey----------------\")"}
+   {:script
+    "(rt.po.app/select-non-toggle-navigator-item \"Surveys\" 1)"}
+   {:script "(rt.po.report-view/open-new-menu)"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:survey-name *tc*))"}
+   {:script "(rt.po.edit-form/save)"}
+   {:script "(rt.po.view-form/select-form-tab \"Survey Layout\")"}
+   {:script "(rt.po.survey/new-section (:section-name *tc*))"}
+   {:script "(rt.po.survey/expect-section (:section-name *tc*))"}
+   {:script "(rt.po.survey/new-text-question)"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Question\" (:text-question-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Allow attachments\" true)"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Allow notes\" true)"}
+  {:script
+    "(rt.po.edit-form/set-number-field-value \"Weighting\" \"1\")"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Categories\" (:question-category-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Library\" (:question-library-name *tc*))"}
+   {:script "(rt.po.survey/click-question-dialog-ok)"}
+   {:script "(rt.po.survey/add-break)"}
+   {:script "(rt.po.survey/new-numeric-question)"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Question\" (:number-question-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-bool-field-value \"Only allow whole numbers\" true)"}
+  {:script
+    "(rt.po.edit-form/set-number-field-value \"Weighting\" \"1\")"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Categories\" (:question-category-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Library\" (:question-library-name *tc*))"}
+   {:script "(rt.po.survey/click-question-dialog-ok)"}
+   {:script "(rt.po.survey/add-break)"}
+   {:script "(rt.po.survey/new-choice-question)"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Question\" (:choice-question-name *tc*))"}
+   {:script "(rt.po.edit-form/select-form-tab \"Choices\")"}
+   {:script "(rt.test.expects/expect (rt.po.survey/choice-set-new?))"}
+   {:script "(rt.po.survey/use-existing-choice-set)"}
+   {:script
+    "(rt.po.survey/set-existing-choice-set (:choice-option-name *tc*))"}
+   {:script "(rt.po.view-form/select-form-tab \"Question Details\")"}
+   {:script
+    "(rt.po.edit-form/set-number-field-value \"Weighting\" \"1\")"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Categories\" (:question-category-name *tc*))"}
+   {:script
+    "(rt.po.edit-form/set-lookup \"Library\" (:question-library-name *tc*))"}	
+   {:script "(rt.po.survey/click-question-dialog-ok)"}   
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script
+    ";;(expect-equals true (rt.po.common/report-row-contains-text? (:survey-name *tc*)))"}
+	
+   {:script
+    "(comment \"------------Adding new Campaign----------------\")"}	
+   {:script
+    "(rt.po.report-view/right-click-row-by-text (:survey-name *tc*))"}
+   {:script "(rt.po.app/choose-context-menu \"Edit\")"}
+   {:script "(rt.po.view-form/select-form-tab \"Campaigns\")"}
+   {:script
+    "(rt.po.view-form/click-button-in-relationship-v2 \"Campaigns\" \"Action\")"}
+   {:script
+    "(rt.po.report-view/click-sub-menu-item \"New\" \"Person Campaign\")"}
+   {:script
+    "(rt.po.edit-form/set-text-field-value \"Name\" (:person-campaign-name *tc*))"}
+	
+	{:script
+    "(rt.po.view-form/click-button-in-relationship-v2 \"Recipients\" \"Action\")"}
+	{:script "(rt.po.app/choose-context-menu \"Link to Existing\")"}	
+	{:script
+    "(rt.po.common/select-picker-dialog-grid-row-by-text \"Admin\")"}
+	{:script "(rt.po.survey/click-question-dialog-ok)"}
+	{:script "(rt.po.view-form/select-form-tab \"Responses\")"}
+	 {:script "(rt.po.view-form/expect-report-row-count 0)"}
+	{:script "(rt.po.edit-form/save)"}
+	{:script
+    "(rt.po.report-view/right-click-row-by-text (:person-campaign-name *tc*))"}
+	{:script "(rt.po.app/choose-context-menu \"Launch Campaign\")"}
+	{:script "(rt.po.edit-form/save)"}
+	{:script
+    "(comment \"------------User process survey----------------\")"}
+	{:script "(rt.po.app/navigate-to-item \"Home\" \"Tasks\")"}	
+	 {:script
+    "(rt.po.app/select-navigator-item \"My Tasks\")"}
+	{:script "(rt.po.report-view/right-click-row-by-text (:survey-name *tc*))"}
+	{:script "(rt.po.app/choose-context-menu \"View\")"}
+	{:script "(rt.po.survey/set-text-area-question-field-value \"test\")"}    
+	{:script "(rt.scripts.common/sleep 2000)"}
+	{:script
+    "(expect-equals \"33%\" (rt.po.survey/get-survey-progress-value))"}
+	{:script "(rt.po.survey/click-next-survey-button)"}	
+	{:script "(rt.po.survey/set-number-question-field-value \"123\")"}
+	{:script "(rt.scripts.common/sleep 2000)"}
+	{:script "(rt.po.survey/click-survey-save)"}
+	{:script
+    "(expect-equals \"66%\" (rt.po.survey/get-survey-progress-value))"}	
+	{:script "(rt.po.survey/click-next-survey-button)"}	
+	{:script "(rt.po.survey/set-radio-question-field  \"Option 1\")"}
+	{:script "(rt.scripts.common/sleep 2000)"}
+	{:script "(rt.po.survey/click-survey-save)"}	
+	{:script
+    "(expect-equals \"100%\" (rt.po.survey/get-survey-progress-value))"}	
+	
+	{:script "(rt.po.survey/click-survey-complete)"}	
+	{:script ";;(expect (not (rt.po.common/report-row-contains-text? (:survey-name *tc*))))"}
+	{:script
+    "(comment \"------------Check survey response----------------\")"}
+	{:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Surveys\")"}
+    {:script
+    "(rt.po.app/select-non-toggle-navigator-item \"Surveys\" 1)"}
+	{:script "(rt.po.report-view/right-click-row-by-text (:survey-name *tc*))"}
+	{:script "(rt.po.app/choose-context-menu \"View\")"}
+	{:script "(rt.po.view-form/select-form-tab \"Campaigns\")"}
+	{:script
+    "(rt.po.view-form/click-button-in-relationship-v2 \"Campaigns\" \"Action\")"}
+	{:script "(rt.po.app/choose-context-menu \"View\")"}
+	{:script "(rt.po.view-form/select-form-tab \"Responses\")"}
+	 {:script
+    "(expect-equals true (> (rt.po.report-view/count-report-row) 0))"}
+	{:script
+    ";;(expect-equals \"125\" (rt.po.report-view/get-report-cell-text-content 0 \"Total Score\"))"}
+	
+	],
+  :type :test,
+  :source "./test-db",
+  :modified "20161215-134408",
+  :setup
+  [{:script
+    "(identity {:section-name (make-test-name \"Section\"), 
+				:text-question-name (make-test-name \"TextQuestion\"), 
+				:number-question-name (make-test-name \"TextQuestion\"), 
+				:choice-question-name (make-test-name \"TextQuestion\"), 
+				:survey-name (make-test-name \"Survey\"),
+				:person-campaign-name (make-test-name \"PersonCampaign\"),
+				:choice-option-name (make-test-name \"ChoiceOption\"),
+				:question-category-name (make-test-name \"QuestionCategory\"),
+				:question-library-name (make-test-name \"QuestionLibrary\")})"}],
+  :fixtures [:common/fixture/test-account-creds :common/fixture/login],
+  :id :rn/survey/tests,
+  :teardown
+  [{:script
+    "(comment \"------------teardown---------------\")"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Surveys\")"}
+   {:script
+    "(rt.po.app/select-non-toggle-navigator-item \"Surveys\" 1)"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text (:survey-name *tc*))"}
+   {:script "(rt.po.app/choose-context-menu \"Delete\")"}
+   {:script "(rt.po.edit-form/click-confirm-delete-ok-button)"}
+   {:script
+    "(rt.po.app/select-navigator-item \"Question Libraries\")"}
+    {:script
+    "(rt.po.report-view/right-click-row-by-text (:question-library-name *tc*))"}
+   {:script "(rt.po.app/choose-context-menu \"Delete\")"}
+   {:script "(rt.po.edit-form/click-confirm-delete-ok-button)"}   
+   {:script
+    "(rt.po.app/select-navigator-item \"Question Categories\")"}
+    {:script
+    "(rt.po.report-view/right-click-row-by-text (:question-category-name *tc*))"}
+   {:script "(rt.po.app/choose-context-menu \"Delete\")"} 
+   {:script "(rt.po.edit-form/click-confirm-delete-ok-button)"}   
+   {:script
+    "(rt.po.app/select-navigator-item \"Choice Options\")"}
+    {:script
+    "(rt.po.report-view/right-click-row-by-text (:choice-option-name *tc*))"}
+   {:script "(rt.po.app/choose-context-menu \"Delete\")"}
+   {:script "(rt.po.edit-form/click-confirm-delete-ok-button)"}
+   ],
+  :doc "Survey test",
+  :modified-by "not-implemented"}]

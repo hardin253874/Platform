@@ -887,6 +887,11 @@
 
         function refreshFormData() {
             var entityId = sp.result($scope.model, 'formData.idP');
+            $scope.requestStrings = $scope.requestStrings || [];
+
+            if (!$scope.requestStrings.length > 0)
+                spEditForm.buildRequestStrings($scope.requestStrings, $scope.model.formControl);
+
             requestFormData(entityId)
                 .then(setInitialBookmark)
                 .then(function() {

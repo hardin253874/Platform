@@ -8,6 +8,15 @@ using EDC.ReadiNow.Common.Workflow;
 using EDC.ReadiNow.IO;
 using System.IO;
 using EDC.Security;
+using EDC.ReadiNow.Core;
+using Autofac;
+using Moq;
+using EDC.ReadiNow.Email;
+using System.Net.Mail;
+using System.Text;
+using System.Linq;
+using EDC.ReadiNow.Database;
+using EDC.IO;
 
 namespace EDC.SoftwarePlatform.Activities.Test
 {
@@ -16,103 +25,307 @@ namespace EDC.SoftwarePlatform.Activities.Test
     [RunAsDefaultTenant]
 	public class SendEmailImplementationTest : TestBase
 	{
-		private bool? _initialPostInDirectoryValue;
-
 		[TestFixtureSetUp]
 		public void TextFixtureSetup( )
 		{
-			using ( new TenantAdministratorContext( RunAsDefaultTenant.DefaultTenantName ) )
-			{
-				ImapEmailProvider provider = Entity.Get<ImapEmailProvider>( new EntityRef( "core:spInboxProvider" ), true );
-
-				if ( provider != null )
-				{
-					_initialPostInDirectoryValue = provider.OaPostInDirectory;
-
-					provider.OaPostInDirectory = true;
-					provider.Save( );
-				}
-			}
+			
 		}
 
 		[TestFixtureTearDown]
 		public void TestFixtureTearDown( )
 		{
-			using ( new TenantAdministratorContext( RunAsDefaultTenant.DefaultTenantName ) )
-			{
-				ImapEmailProvider provider = Entity.Get<ImapEmailProvider>( new EntityRef( "core:spInboxProvider" ), true );
-
-				if ( provider != null && provider.OaPostInDirectory != _initialPostInDirectoryValue )
-				{
-					provider.OaPostInDirectory = _initialPostInDirectoryValue;
-					provider.Save( );
-				}
-			}
+			
 		}
+
+        bool ContainsAddress(MailAddressCollection addresses, string addressStr)
+        {
+            foreach(var str in addresses)
+            {
+                if (str.Address.ToLower() == addressStr.ToLower())
+                    return true;
+            }
+            return false;
+        }
 
 		[Test]
         [Timeout(40000)]
-	    public void SendMailUsingSingleRecipientAddress()
+	    public void SendMailUsingAddresses()
 	    {
-            SendMailWithConfigAction((wf, emailActionAs) => ActivityTestHelper.AddExpressionToActivityArgument(wf, emailActionAs, "Recipient Address",
-                                                                                                               "'bobble1@readinow.com'"));
+            string subject = "Subject " + Guid.NewGuid().ToString();
+            string body = "Body " + Guid.NewGuid().ToString();
+
+            var emailSenderMock = new Mock<IEmailSender>();
+            emailSenderMock
+                .Setup(m => m.SendMessages(It.IsAny<IReadOnlyCollection<MailMessage>>()))
+                .Callback<IReadOnlyCollection<MailMessage>>(x =>
+                {
+                    var emails = x.ToList();
+                    Assert.True(emails.Count == 1);
+                    Assert.True(emails[0].Subject == subject);
+                    Assert.True(emails[0].Body == body);
+                    Assert.True(emails[0].To.Count == 3);
+                    Assert.True(ContainsAddress(emails[0].To, "email1@readinow.com"));
+                    Assert.True(ContainsAddress(emails[0].To, "email2@readinow.com"));
+                    Assert.True(ContainsAddress(emails[0].To, "email3@readinow.com"));
+                    Assert.True(emails[0].CC.Count == 2);
+                    Assert.True(ContainsAddress(emails[0].CC, "email4@readinow.com"));
+                    Assert.True(ContainsAddress(emails[0].CC, "email5@readinow.com"));
+                    Assert.True(emails[0].Bcc.Count == 1);
+                    Assert.True(ContainsAddress(emails[0].Bcc, "email6@readinow.com"));
+                    Assert.True(emails[0].Attachments.Count == 0);
+                });
+
+            Action<Workflow, WfActivity> configurationCallback = (wf, emailActionAs) =>
+            {
+                ActivityTestHelper.AddEntityExpressionToInputArgument(wf, emailActionAs, "Email To", new EntityRef("core:sendEmailActivityRecipientsAddress"));
+                ActivityTestHelper.AddEntityExpressionToInputArgument(wf, emailActionAs, "Send As", new EntityRef("core:sendEmailActivityGroupDistribution"));
+                ActivityTestHelper.AddExpressionToActivityArgument(wf, emailActionAs, "To Addresses", "'email1@readinow.com; email2@readinow.com;email3@readinow.com'");
+                ActivityTestHelper.AddExpressionToActivityArgument(wf, emailActionAs, "CC Addresses", "'email4@readinow.com; email5@readinow.com'");
+                ActivityTestHelper.AddExpressionToActivityArgument(wf, emailActionAs, "BCC Addresses", "'email6@readinow.com'");
+                ActivityTestHelper.AddExpressionToActivityArgument(wf, emailActionAs, "Subject", $"'{subject}'", false);
+                ActivityTestHelper.AddExpressionToActivityArgument(wf, emailActionAs, "Body", $"'{body}'", false);
+                ActivityTestHelper.AddExpressionToActivityArgument(wf, emailActionAs, "No Reply", "true", false);
+            };
+
+            SendMailWithConfigAction(configurationCallback, emailSenderMock.Object);
 	    }
+
 
         [Test]
         [Timeout(40000)]
-        public void SendMailUsingMultipleRecipientAddresses()
+        public void SendMailUsingAddressesFromInbox()
         {
-            SendMailWithConfigAction((wf, emailActionAs) => ActivityTestHelper.AddExpressionToActivityArgument(wf, emailActionAs, "Recipient Address",
-                                                                                                               "'bobble1@readinow.com, booble2@ereadinow.com'"));
+            string subject = "Subject " + Guid.NewGuid().ToString();
+            string body = "Body " + Guid.NewGuid().ToString();
+
+            var inbox = new Inbox() { Name = "Test Inbox 1", InboxEmailAddress = "test12354@somewhere.com" };
+            inbox.Save();
+
+            var emailSenderMock = new Mock<IEmailSender>();
+            emailSenderMock
+                .Setup(m => m.SendMessages(It.IsAny<IReadOnlyCollection<MailMessage>>()))
+                .Callback<IReadOnlyCollection<MailMessage>>(x =>
+                {
+                    var emails = x.ToList();
+                    Assert.True(emails.Count == 1);
+                    Assert.True(emails[0].Subject == subject);
+                    Assert.True(emails[0].Body == body);
+                    Assert.True(emails[0].To.Count == 1);
+                    Assert.True(ContainsAddress(emails[0].To, "email1@readinow.com"));
+                    Assert.True(emails[0].CC.Count == 1);
+                    Assert.True(ContainsAddress(emails[0].CC, "email2@readinow.com"));
+                    Assert.True(emails[0].Bcc.Count == 1);
+                    Assert.True(ContainsAddress(emails[0].Bcc, "email3@readinow.com"));
+                    Assert.True(emails[0].Attachments.Count == 0);
+                    Assert.True(emails[0].From.DisplayName == inbox.Name);
+                    Assert.True(emails[0].From.Address == inbox.InboxEmailAddress);
+                });
+
+            Action<Workflow, WfActivity> configurationCallback = (wf, emailActionAs) =>
+            {
+                ActivityTestHelper.AddEntityExpressionToInputArgument(wf, emailActionAs, "Email To", new EntityRef("core:sendEmailActivityRecipientsAddress"));
+                ActivityTestHelper.AddEntityExpressionToInputArgument(wf, emailActionAs, "Send As", new EntityRef("core:sendEmailActivityGroupDistribution"));
+                ActivityTestHelper.AddExpressionToActivityArgument(wf, emailActionAs, "To Addresses", "'email1@readinow.com'");
+                ActivityTestHelper.AddExpressionToActivityArgument(wf, emailActionAs, "CC Addresses", "'email2@readinow.com'");
+                ActivityTestHelper.AddExpressionToActivityArgument(wf, emailActionAs, "BCC Addresses", "'email3@readinow.com'");
+                ActivityTestHelper.AddExpressionToActivityArgument(wf, emailActionAs, "Subject", $"'{subject}'", false);
+                ActivityTestHelper.AddExpressionToActivityArgument(wf, emailActionAs, "Body", $"'{body}'", false);
+                ActivityTestHelper.AddExpressionToActivityArgument(wf, emailActionAs, "No Reply", "false", false);
+                ActivityTestHelper.AddEntityExpressionToInputArgument(wf, emailActionAs, "Reply to Inbox", new EntityRef(inbox));
+            };
+
+            SendMailWithConfigAction(configurationCallback, emailSenderMock.Object);
+
+            inbox.Delete();
+        }
+
+        [Test]
+        [Timeout(40000)]
+        public void SendMailUsingAddressesFromInboxWithReplyAddress()
+        {
+            string subject = "Subject " + Guid.NewGuid().ToString();
+            string body = "Body " + Guid.NewGuid().ToString();
+
+            var inbox = new Inbox() { Name = "Test Inbox 2", InboxEmailAddress = "test7891@somewhere.com", InboxFromName = "TestFromName", InboxReplyAddress = "RepyAddress@somewhereelsecom" };
+            inbox.Save();
+
+            var emailSenderMock = new Mock<IEmailSender>();
+            emailSenderMock
+                .Setup(m => m.SendMessages(It.IsAny<IReadOnlyCollection<MailMessage>>()))
+                .Callback<IReadOnlyCollection<MailMessage>>(x =>
+                {
+                    var emails = x.ToList();
+                    Assert.True(emails.Count == 1);
+                    Assert.True(emails[0].Subject == subject);
+                    Assert.True(emails[0].Body == body);
+                    Assert.True(emails[0].To.Count == 1);
+                    Assert.True(ContainsAddress(emails[0].To, "email1@readinow.com"));
+                    Assert.True(emails[0].CC.Count == 1);
+                    Assert.True(ContainsAddress(emails[0].CC, "email2@readinow.com"));
+                    Assert.True(emails[0].Bcc.Count == 1);
+                    Assert.True(ContainsAddress(emails[0].Bcc, "email3@readinow.com"));
+                    Assert.True(emails[0].Attachments.Count == 0);
+                    Assert.True(emails[0].From.DisplayName == inbox.InboxFromName);
+                    Assert.True(emails[0].From.Address == inbox.InboxReplyAddress);
+                });
+
+            Action<Workflow, WfActivity> configurationCallback = (wf, emailActionAs) =>
+            {
+                ActivityTestHelper.AddEntityExpressionToInputArgument(wf, emailActionAs, "Email To", new EntityRef("core:sendEmailActivityRecipientsAddress"));
+                ActivityTestHelper.AddEntityExpressionToInputArgument(wf, emailActionAs, "Send As", new EntityRef("core:sendEmailActivityGroupDistribution"));
+                ActivityTestHelper.AddExpressionToActivityArgument(wf, emailActionAs, "To Addresses", "'email1@readinow.com'");
+                ActivityTestHelper.AddExpressionToActivityArgument(wf, emailActionAs, "CC Addresses", "'email2@readinow.com'");
+                ActivityTestHelper.AddExpressionToActivityArgument(wf, emailActionAs, "BCC Addresses", "'email3@readinow.com'");
+                ActivityTestHelper.AddExpressionToActivityArgument(wf, emailActionAs, "Subject", $"'{subject}'", false);
+                ActivityTestHelper.AddExpressionToActivityArgument(wf, emailActionAs, "Body", $"'{body}'", false);
+                ActivityTestHelper.AddExpressionToActivityArgument(wf, emailActionAs, "No Reply", "false", false);
+                ActivityTestHelper.AddEntityExpressionToInputArgument(wf, emailActionAs, "Reply to Inbox", new EntityRef(inbox));
+
+            };
+
+            SendMailWithConfigAction(configurationCallback, emailSenderMock.Object);
+
+            inbox.Delete();
+        }
+
+        [Test]
+        [Timeout(40000)]
+        public void SendMailUsingAddressesWithBadAddress()
+        {
+            string subject = "Subject " + Guid.NewGuid().ToString();
+            string body = "Body " + Guid.NewGuid().ToString();
+
+            var emailSenderMock = new Mock<IEmailSender>();
+            emailSenderMock
+                .Setup(m => m.SendMessages(It.IsAny<IReadOnlyCollection<MailMessage>>()))
+                .Callback<IReadOnlyCollection<MailMessage>>(x =>
+                {
+                    var emails = x.ToList();
+                    Assert.True(emails.Count == 1);
+                    Assert.True(emails[0].Subject == subject);
+                    Assert.True(emails[0].Body == body);
+                    Assert.True(emails[0].To.Count == 2);
+                    Assert.True(ContainsAddress(emails[0].To, "email1@readinow.com"));
+                    Assert.True(ContainsAddress(emails[0].To, "email2@readinow.com"));
+                    Assert.True(emails[0].CC.Count == 0);
+                    Assert.True(emails[0].Bcc.Count == 0);
+                    Assert.True(emails[0].Attachments.Count == 0);
+                });
+
+            Action<Workflow, WfActivity> configurationCallback = (wf, emailActionAs) =>
+            {
+                ActivityTestHelper.AddEntityExpressionToInputArgument(wf, emailActionAs, "Email To", new EntityRef("core:sendEmailActivityRecipientsAddress"));
+                ActivityTestHelper.AddEntityExpressionToInputArgument(wf, emailActionAs, "Send As", new EntityRef("core:sendEmailActivityGroupDistribution"));
+                ActivityTestHelper.AddExpressionToActivityArgument(wf, emailActionAs, "To Addresses", "'email1@readinow.com; NotAnEmailAddress.com; email2@readinow.com'");
+                ActivityTestHelper.AddExpressionToActivityArgument(wf, emailActionAs, "Subject", $"'{subject}'", false);
+                ActivityTestHelper.AddExpressionToActivityArgument(wf, emailActionAs, "Body", $"'{body}'", false);
+                ActivityTestHelper.AddExpressionToActivityArgument(wf, emailActionAs, "No Reply", "true", false);
+            };
+
+            SendMailWithConfigAction(configurationCallback, emailSenderMock.Object);
         }
 
         [Test]
         [Timeout(40000)]
         public void SendMailUsingRecipientList()
         {
-            SendMailWithConfigAction((wf, emailActionAs) =>
-                {
-                    ActivityTestHelper.AddExpressionToActivityArgument(wf, emailActionAs, "Recipients",
-                                                                   "all(Employee_Test)", false);
-                    ActivityTestHelper.SetActivityArgumentToResource(wf, emailActionAs, "Email Field", Entity.Get<Resource>("oldshared:workEmail") );
+            string subject = "Subject " + Guid.NewGuid().ToString();
+            string body = "Body " + Guid.NewGuid().ToString();
 
-                }
-                );
+            var emailSenderMock = new Mock<IEmailSender>();
+            emailSenderMock
+                .Setup(m => m.SendMessages(It.IsAny<IReadOnlyCollection<MailMessage>>()))
+                .Callback<IReadOnlyCollection<MailMessage>>(x =>
+                {
+                    var emails = x.ToList();
+                    Assert.True(emails.Count == 1);
+                    Assert.True(emails[0].Subject == subject);
+                    Assert.True(emails[0].Body == body);
+                    Assert.True(emails[0].To.Count > 1);
+                    Assert.True(emails[0].CC.Count == 0);
+                    Assert.True(emails[0].Bcc.Count == 0);
+                    Assert.True(emails[0].Attachments.Count == 0);
+                });
+
+            Action<Workflow, WfActivity> configurationCallback = (wf, emailActionAs) =>
+            {
+                ActivityTestHelper.AddEntityExpressionToInputArgument(wf, emailActionAs, "Email To", new EntityRef("core:sendEmailActivityRecipientsList"));
+                ActivityTestHelper.AddEntityExpressionToInputArgument(wf, emailActionAs, "Send As", new EntityRef("core:sendEmailActivityGroupDistribution"));
+                ActivityTestHelper.AddExpressionToActivityArgument(wf, emailActionAs, "Recipients List", "all(Employee_Test)", false);
+                ActivityTestHelper.SetActivityArgumentToResource(wf, emailActionAs, "TO Address Field", Entity.Get<Resource>("oldshared:workEmail"));
+                ActivityTestHelper.AddExpressionToActivityArgument(wf, emailActionAs, "Subject", $"'{subject}'", false);
+                ActivityTestHelper.AddExpressionToActivityArgument(wf, emailActionAs, "Body", $"'{body}'", false);
+                ActivityTestHelper.AddExpressionToActivityArgument(wf, emailActionAs, "No Reply", "true", false);
+            };
+
+            SendMailWithConfigAction(configurationCallback, emailSenderMock.Object);
         }
 
-
+        
         [Test]
         [Timeout(40000)]
         public void SendMailWithAttachments()
         {
-            using (MemoryStream stream = new MemoryStream())
+            string subject = "Subject " + Guid.NewGuid().ToString();
+            string body = "Body " + Guid.NewGuid().ToString();
+
+            string tempHash = null;
+            var buff = Encoding.UTF8.GetBytes("Email Attachment File " + CryptoHelper.GetRandomPrintableString(10));
+            using (MemoryStream stream = new MemoryStream(buff))
             {
-                var bytes = System.Text.Encoding.UTF8.GetBytes("My file" + CryptoHelper.GetRandomPrintableString(10));
-                stream.Write(bytes, 0, bytes.Length);
+                tempHash = Factory.DocumentFileRepository.Put(stream);
+            }
 
-                var fileHash = FileRepositoryHelper.AddTemporaryFile(stream);
-
-                Document doc = new Document { Name = "MyFile", FileExtension = "txt", FileDataHash = fileHash };
-                doc.Save();
-
-                SendMailWithConfigAction((wf, emailActionAs) =>
+            var file = Entity.Create<Document>();
+            file.Name = "Email Attachment Test File";
+            file.Description = "Send Email Attachment Test";
+            file.FileDataHash = tempHash;
+            file.Size = buff.Length;
+            file.FileExtension = "txt";
+            file.Save();
+            
+            var emailSenderMock = new Mock<IEmailSender>();
+            emailSenderMock
+                .Setup(m => m.SendMessages(It.IsAny<IReadOnlyCollection<MailMessage>>()))
+                .Callback<IReadOnlyCollection<MailMessage>>(x =>
                 {
-                    ActivityTestHelper.AddExpressionToActivityArgument(wf, emailActionAs, "Recipient Address", "'bobble1@readinow.com'");
-                    ActivityTestHelper.AddExpressionToActivityArgument(wf, emailActionAs, "Attachments", doc.Cast<Resource>().ToEnumerable());
+                    var emails = x.ToList();
+                    Assert.True(emails.Count == 1);
+                    Assert.True(emails[0].To.Count == 2);
+                    Assert.True(ContainsAddress(emails[0].To, "bobble1@readinow.com"));
+                    Assert.True(ContainsAddress(emails[0].To, "bobble2@readinow.com"));
+                    Assert.True(emails[0].CC.Count == 0);
+                    Assert.True(emails[0].Bcc.Count == 0);
+                    Assert.True(emails[0].Attachments.Count == 1);
+                    Assert.True(emails[0].Attachments[0].ContentStream.Length == buff.Length);
                 });
 
-            }
+
+            Action<Workflow, WfActivity> configurationCallback = (wf, emailActionAs) =>
+            {
+                ActivityTestHelper.AddEntityExpressionToInputArgument(wf, emailActionAs, "Email To", new EntityRef("core:sendEmailActivityRecipientsAddress"));
+                ActivityTestHelper.AddEntityExpressionToInputArgument(wf, emailActionAs, "Send As", new EntityRef("core:sendEmailActivityGroupDistribution"));
+                ActivityTestHelper.AddExpressionToActivityArgument(wf, emailActionAs, "To Addresses", "'bobble1@readinow.com; bobble2@readinow.com'");
+                ActivityTestHelper.AddExpressionToActivityArgument(wf, emailActionAs, "Subject", $"'{subject}'", false);
+                ActivityTestHelper.AddExpressionToActivityArgument(wf, emailActionAs, "Body", $"'{body}'", false);
+                ActivityTestHelper.AddExpressionToActivityArgument(wf, emailActionAs, "No Reply", "true", false);
+                ActivityTestHelper.AddExpressionToActivityArgument(wf, emailActionAs, "Attachments", file.Cast<Resource>().ToEnumerable());
+            };
+
+            SendMailWithConfigAction(configurationCallback, emailSenderMock.Object);
+
+            file.Delete();
         }
 
 
-        public void SendMailWithConfigAction(Action<Workflow, WfActivity> configurationAction )
+        public void SendMailWithConfigAction(Action<Workflow, WfActivity> configurationAction, IEmailSender emailSender)
 		{
+
             using (new WorkflowRunContext { RunTriggersInCurrentThread = true })
             {
-                // Employee bob = new Employee() { Email = "shopwood@enterprisedata.com.au" };
-
                 var emailAction = new SendEmailActivity( );
-			    var emailActionAs = emailAction.Cast<WfActivity>( );
+                
+                var emailActionAs = emailAction.Cast<WfActivity>( );
 
 			    var wf = new Workflow
 				    {
@@ -122,22 +335,26 @@ namespace EDC.SoftwarePlatform.Activities.Test
 			    wf.ContainedActivities.Add( emailActionAs );
 
 			    wf.FirstActivity = emailActionAs;
-
 		        configurationAction(wf, emailActionAs);
-
-			    ActivityTestHelper.AddExpressionToActivityArgument( wf, emailActionAs, "Subject", "'test subject'", false );
-			    ActivityTestHelper.AddExpressionToActivityArgument( wf, emailActionAs, "Body", "'test body'", false );
-                ActivityTestHelper.AddEntityExpressionToInputArgument(wf, emailActionAs, "From Inbox", new EntityRef("core:approvalsInbox"));
-
 			    ActivityTestHelper.AddTermination( wf, emailActionAs );
-
 			    wf.Save( );
-			    ToDelete.Add( wf.Id );
+                ToDelete.Add( wf.Id );
+                
+                using (var scope = Factory.Current.BeginLifetimeScope(builder =>
+                {
+                    builder.RegisterInstance<IEmailSender>(emailSender);
 
-                var wfRun = TestBase.RunWorkflow(wf);
+                }))
+                using (Factory.SetCurrentScope(scope))
+                {
 
-                Assert.That(wfRun.WorkflowRunStatus_Enum, Is.EqualTo(WorkflowRunState_Enumeration.WorkflowRunCompleted));
+                    var wfRun = TestBase.RunWorkflow(wf);
+                    Assert.That(wfRun.WorkflowRunStatus_Enum, Is.EqualTo(WorkflowRunState_Enumeration.WorkflowRunCompleted));
+                }
+
+                
             }
 		}
+
 	}
 }

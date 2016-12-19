@@ -1,7 +1,6 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace EDC.Common
 {
@@ -51,7 +50,7 @@ namespace EDC.Common
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (obj.GetType() != GetType()) return false;
             return Equals((ProtectedTuple<T1, T2>)obj);
         }
 
@@ -60,6 +59,8 @@ namespace EDC.Common
         /// </summary>
         public override int GetHashCode()
         {
+            // ReSharper disable NonReadonlyMemberInGetHashCode
+
             unchecked
             {
                 int hashCode = EqualityComparer<T1>.Default.GetHashCode(Item1);

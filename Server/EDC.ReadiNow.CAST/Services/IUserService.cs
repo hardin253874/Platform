@@ -15,14 +15,14 @@ namespace EDC.ReadiNow.CAST.Services
         /// </summary>
         /// <param name="tenant">The tenant to check.</param>
         /// <returns>List of role names.</returns>
-        IList<string> GetRoles(string tenant);
+        IList<RemoteRoleInfo> GetRoles(string tenant);
 
         /// <summary>
         /// Gets a list of the names of the present roles that exist in the tenant.
         /// </summary>
         /// <param name="id">The tenant id to check.</param>
         /// <returns>List of role names.</returns>
-        IList<string> GetRoles(long id);
+        IList<RemoteRoleInfo> GetRoles(long id);
 
         /// <summary>
         /// Gets information about the user with the given name.

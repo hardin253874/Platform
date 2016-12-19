@@ -32,7 +32,7 @@ namespace EDC.Common.Threading
         // Creates a new instance with the specified degree of parallelism.  
         public LimitedConcurrencyLevelTaskScheduler(int maxDegreeOfParallelism)
         {
-            if (maxDegreeOfParallelism < 1) throw new ArgumentOutOfRangeException("maxDegreeOfParallelism");
+            if (maxDegreeOfParallelism < 1) throw new ArgumentOutOfRangeException( nameof( maxDegreeOfParallelism ) );
             _maxDegreeOfParallelism = maxDegreeOfParallelism;
         }
 

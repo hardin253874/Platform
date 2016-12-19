@@ -35,22 +35,22 @@ namespace EDC.Collections.Generic
 		{
 			if ( dictionary == null )
 			{
-				throw new ArgumentNullException( "dictionary" );
+				throw new ArgumentNullException( nameof( dictionary ) );
 			}
 
 			if ( key == null )
 			{
-				throw new ArgumentNullException( "key" );
+				throw new ArgumentNullException( nameof( key ) );
 			}
 
 			if ( addValueFactory == null )
 			{
-				throw new ArgumentNullException( "addValueFactory" );
+				throw new ArgumentNullException( nameof( addValueFactory ) );
 			}
 
 			if ( updateValueFactory == null )
 			{
-				throw new ArgumentNullException( "updateValueFactory" );
+				throw new ArgumentNullException( nameof( updateValueFactory ) );
 			}
 
 			added = false;
@@ -112,17 +112,17 @@ namespace EDC.Collections.Generic
 		{
 			if ( dictionary == null )
 			{
-				throw new ArgumentNullException( "dictionary" );
+				throw new ArgumentNullException( nameof( dictionary ) );
 			}
 
 			if ( key == null )
 			{
-				throw new ArgumentNullException( "key" );
+				throw new ArgumentNullException( nameof( key ) );
 			}
 
 			if ( valueFactory == null )
 			{
-				throw new ArgumentNullException( "valueFactory" );
+				throw new ArgumentNullException( nameof( valueFactory ) );
 			}
 
 			while ( true )

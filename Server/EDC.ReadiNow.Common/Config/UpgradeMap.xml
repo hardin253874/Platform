@@ -7,6 +7,8 @@
   <entity alias="console:accountStatusStructureControlOnForm3955gen" upgradeId="422f25a9-14e9-4cd7-a5bd-fa2720ced2c6" />
   <entity alias="console:actionAppliesToMenu" upgradeId="135c12c8-3602-4c91-9354-5c46fcb9eb23" />
   <entity alias="console:actionAppliesToRelationshipControlBehavior" upgradeId="dcc7dce7-d480-4578-b1ff-9a5db8ceb701" />
+  <entity alias="console:actionButtonBackgroundColor" upgradeId="cc3f8df0-3dd4-4971-942b-ad9c618184a2" />
+  <entity alias="console:actionButtonBackgroundColorControlOnForm111gen" upgradeId="c8479e39-1038-4a9c-a346-d1baf0e12d0c" />
   <entity alias="console:actionExpression" upgradeId="319184d6-b93a-4374-ad0e-54b3704f39b8" />
   <entity alias="console:actionExpressionDetails" upgradeId="7a1bdc37-a094-464c-a406-0c18f6da686b" />
   <entity alias="console:actionExpressionEntities" upgradeId="fdad0a34-5154-4aa6-bf4f-cb4a44b01bdd" />
@@ -293,23 +295,6 @@
   <entity alias="console:imageFileNameUploadControl" upgradeId="35618B99-D97A-4DF8-9A1C-8A30647E7337" />
   <entity alias="console:imageRelationshipRenderControl" upgradeId="2217EB4F-F68C-4A5D-91B9-C3CD3A8246C5" />
   <entity alias="console:imageRelationshipRenderControlDetails" upgradeId="195D3827-ED7A-4825-A1D7-E81C32EFF2D6" />
-  <entity alias="console:imapEmailProviderForm" upgradeId="FA0A9EAB-F1D0-4579-A9AE-4BE2D5622018" />
-  <entity alias="console:imapEmailProviderFormControlAccount" upgradeId="5562910D-AB65-4CBE-AB6B-5CCE0947A300" />
-  <entity alias="console:imapEmailProviderFormControlDescription" upgradeId="F2538354-17C9-46D6-B7EE-E1BC1B3B1E97" />
-  <entity alias="console:imapEmailProviderFormControlDomain" upgradeId="F3D93BB6-0268-4F06-9C76-21F5A7C8A2B3" />
-  <entity alias="console:imapEmailProviderFormControlEmail" upgradeId="28B04C34-E9AC-416D-B281-A2C902781AFD" />
-  <entity alias="console:imapEmailProviderFormControlName" upgradeId="670028F1-7C71-4772-B623-A9167878496C" />
-  <entity alias="console:imapEmailProviderFormControlPassword" upgradeId="67C01E8B-B2AA-4834-AFC3-619428CEAFDD" />
-  <entity alias="console:imapEmailProviderFormControlPort" upgradeId="DAFFEEBA-25FD-409D-A6D9-714E7A48FCDC" />
-  <entity alias="console:imapEmailProviderFormControlPostInDir" upgradeId="036284CF-5E81-47A7-8FFC-8D3310DE7FAB" />
-  <entity alias="console:imapEmailProviderFormControlServer" upgradeId="3912EDD0-A421-40B0-9FE5-CFEE6719FF8B" />
-  <entity alias="console:imapEmailProviderFormControlUseFolder" upgradeId="B469B8CF-1D38-4701-A2C6-C1D10F2FE55D" />
-  <entity alias="console:imapEmailProviderFormControlUseInboxProvider" upgradeId="6C82578E-FBE1-4C77-9DAE-53BE1209F111" />
-  <entity alias="console:imapEmailProviderFormControlUseIntAuth" upgradeId="75DC269D-6881-4394-B1C9-2014FF33BE71" />
-  <entity alias="console:imapEmailProviderFormControlUseSSL" upgradeId="0BF970DA-72B2-41B4-A9AC-33123BD86F21" />
-  <entity alias="console:imapEmailProviderFormTabControl" upgradeId="E34BF07C-CB91-4D0D-8AEB-7579AD1941AF" />
-  <entity alias="console:imapEmailProviderFormVerControl1" upgradeId="5560265A-B0D7-4832-A15B-2F74429136E0" />
-  <entity alias="console:imapEmailProviderFormVerControl2" upgradeId="D6D8DF4F-48C7-472D-A200-9582AFF07B43" />
   <entity alias="console:importConfigBehavior" upgradeId="1b63f541-3e5a-41f3-9cf4-d4341e1dfa87" />
   <entity alias="console:infoButtonVisible" upgradeId="B5C56E6C-1C52-471A-B394-54403DDE5FC4" />
   <entity alias="console:inlineRelationshipRenderControl" upgradeId="a0c1566b-3794-4980-8b16-b4bc08a93e4b" />
@@ -516,7 +501,6 @@
   <entity alias="console:sizeFieldControlOnForm3717gen" upgradeId="9cf0efc6-378e-47e0-a136-66666713a2a1" />
   <entity alias="console:smallThumbnail" upgradeId="83C7E1F7-DEA1-4454-8B79-4D24A4F3B77B" />
   <entity alias="console:solutionConsoleTheme" upgradeId="5D3DC7E2-6699-40B0-94B1-CA93419A082E" />
-  <entity alias="console:spInboxProviderConsoleBehaviour" upgradeId="d386f1f2-8e92-4608-81f8-2aec99357887" />
   <entity alias="console:staticPage" upgradeId="30434bbf-1ccd-45e6-b600-7790295a2812" />
   <entity alias="console:structureControlOnForm" upgradeId="d0a55e5a-e0d2-4640-9ec9-646eedfc628e" />
   <entity alias="console:structureControlOnForm3612gen" upgradeId="c4dcbb87-07f0-4778-b627-08fdb22dfe6d" />
@@ -554,7 +538,7 @@
   <entity alias="console:tenantAuditLogSettingsConsoleBehaviour" upgradeId="BD6245BA-0351-40F3-823F-B949E58C6B2A" />
   <entity alias="console:tenantConsoleTheme" upgradeId="5DBA3F1E-27E4-470A-A5F9-B91761D53F46" />
   <entity alias="console:tenantConsoleThemeSettings" upgradeId="8E4CA445-CD27-4586-9BBE-01BF2F06BAA1" />
-  <entity alias="console:tenantEmailSettingsConsoleBehaviour" upgradeId="e97b246b-d356-4b0a-aa26-b79f43eca671" />
+  <entity alias="console:tenantEmailSettingsInstanceConsoleBehaviour" upgradeId="6eff76c9-f310-4665-a8a4-89a51cbaf3b4" />
   <entity alias="console:tenantEventLogSettingsConsoleBehaviour" upgradeId="29bd9d8c-cab9-4e0d-a6db-ace28d623dbd" />
   <entity alias="console:tenantGeneralSettingsConsoleBehaviour" upgradeId="d1db31d5-5b4a-450f-ab33-2c342104a52f" />
   <entity alias="console:tenantImageSettingsConsoleBehaviour" upgradeId="01323138-BE8D-44D6-80BF-AF6576D03470" />
@@ -752,7 +736,6 @@
   <entity alias="core:appPackageMaximumVersion" upgradeId="2C8A76E3-C130-4B23-B703-00DCA2315122" />
   <entity alias="core:appPackageMinimumVersion" upgradeId="3B4AB46D-C14B-46C1-97B6-E682D730F11B" />
   <entity alias="core:appPackageReleaseDate" upgradeId="0FC8713B-641B-4E5C-BD8B-0F81D107E60B" />
-  <entity alias="core:approvalsInbox" upgradeId="02089782-742d-4534-9cdb-38fed31e0f85" />
   <entity alias="core:apptDetails" upgradeId="ab5cbc1f-a6c5-49c7-ae6d-c7eaca11dbc4" />
   <entity alias="core:apptIsPrivate" upgradeId="F2BCC018-A3DB-49E1-8705-E2522A50F6DE" />
   <entity alias="core:apptOrganiser" upgradeId="669F513F-C5FB-47E6-BCD3-3820E79F948F" />
@@ -909,7 +892,6 @@
   <entity alias="core:calculatedResultType" upgradeId="6AB621AE-9A47-4A52-B37E-83D624857F40" />
   <entity alias="core:calculatedResultXml" upgradeId="9F9EF2F3-FF2A-4AFC-A3A4-48E06EB744E0" />
   <entity alias="core:calendarId" upgradeId="{8e6198f7-a4d2-4778-8d3a-5db752d094df}" />
-  <entity alias="core:calendarInbox" upgradeId="{855f4a9b-c734-4b09-b2a2-86c594b688d4}" />
   <entity alias="core:campaignIsComplete" upgradeId="06f40817-d260-4b09-85d3-bc68e9ba3325" />
   <entity alias="core:campaignIsLaunched" upgradeId="80919001-d006-4bc0-8839-3dee5d51e9e3" />
   <entity alias="core:campaignLaunchedOn" upgradeId="d80996da-80d2-4355-81e1-fd7830599dfe" />
@@ -1034,8 +1016,6 @@
   <entity alias="core:columnReferenceExpressionDetails" upgradeId="0E1F33EF-DEBE-4B41-9DC2-A1888C5132E3" />
   <entity alias="core:columnShowText" upgradeId="4924151d-4c23-4693-86a0-cc5c2d0a8270" />
   <entity alias="core:commaSeparatedList" upgradeId="44D06EBC-5AAE-44FB-B9A1-554C51E887D7" />
-  <entity alias="core:completeUserTaskEmailAction" upgradeId="26acd824-58c5-4b3a-8c7c-044f92ba7791" />
-  <entity alias="core:completeUserTaskEmailActionClass" upgradeId="41468539-eeb7-4226-b075-153059d9b987" />
   <entity alias="core:condFormatImage" upgradeId="aedc3abb-6356-4db1-bccc-b9a5b39498d5" />
   <entity alias="core:conditionalFormatIcon" upgradeId="7d136d12-6626-43b8-bb03-437b749ce2db" />
   <entity alias="core:conditionalFormatIconDetails" upgradeId="F61797BB-0CB9-42F9-B396-076A18D9D698" />
@@ -1281,24 +1261,27 @@
   <entity alias="core:emailContactIsInactive" upgradeId="a421ef73-af9c-49a5-8049-61e0f876cdf3" />
   <entity alias="core:emailMessage" upgradeId="1f3abd5d-aed4-45a5-b60b-bf0a22ced2e9" />
   <entity alias="core:emailMessageDetails" upgradeId="4CDA4ED9-B14A-4A15-AF7D-6658BA95ABF3" />
+  <entity alias="core:emailNoReplyAddress" upgradeId="c16c60ee-a494-4ee2-bd85-4f8a078dc0de" />
   <entity alias="core:emailNotifier" upgradeId="7fd4e249-fca4-4170-8ec8-cc21fcefb4a5" />
   <entity alias="core:emailNotifierInbox" upgradeId="4e9fa886-940e-44f0-9d2a-22047ae17244" />
   <entity alias="core:emailPattern" upgradeId="12885ab4-6244-4fb8-86c0-feeeb80b92df" />
-  <entity alias="core:emailServer" upgradeId="94cbb5d0-98f1-43f6-b19c-01901d28e8ab" />
-  <entity alias="core:emailServerNoReplyAddress" upgradeId="d20d1395-5a5b-4585-8023-c5b9acfda57b" />
+  <entity alias="core:emailServerSettingsEventTarget" upgradeId="50c48fc5-e596-4a00-8c23-f14b58627f73" />
   <entity alias="core:emailType" upgradeId="dd188e9e-6e7c-44ae-9404-c6cf9380caac" />
   <entity alias="core:emailTypeBusiness" upgradeId="69C89ED7-1C7A-45A3-B5CD-D3F605990194" />
   <entity alias="core:emailTypeEnum" upgradeId="1d776284-030e-4dcc-8076-82425f2b1b24" />
   <entity alias="core:emailTypeOther" upgradeId="0CC37667-6DA2-4FBE-AFC7-D4805394D549" />
   <entity alias="core:emailTypePersonal" upgradeId="8BA67032-97D3-4648-870E-C423C78A73B0" />
   <entity alias="core:emAttachments" upgradeId="c9dcd8b4-ab19-4d7b-977a-4d1ad53b6390" />
+  <entity alias="core:emBCC" upgradeId="067632a7-943c-4df1-9012-913a16b47546" />
   <entity alias="core:emBody" upgradeId="a3fd206b-a44d-46b3-b25c-7c3984551187" />
   <entity alias="core:emCC" upgradeId="98c1b0c8-6143-40eb-bb53-3db7032fd3a3" />
   <entity alias="core:emFrom" upgradeId="523dc02a-f854-4b8e-b745-f0672b5a3a66" />
+  <entity alias="core:emFromName" upgradeId="2fabc835-72f7-4341-9ca6-b4099887ae3d" />
   <entity alias="core:emIsHtml" upgradeId="44274ee1-f3c6-45f6-b4ea-4e00579ef8ed" />
   <entity alias="core:emptySelectName" upgradeId="047f3d8c-81bd-47e6-8ffe-86defe4a34fa" />
   <entity alias="core:emReceivedDate" upgradeId="969cb18b-586b-4f15-a4ee-3e2b9520e992" />
   <entity alias="core:emReferences" upgradeId="{864b8a6b-c74a-48b2-87b5-f867ec1c0de8}" />
+  <entity alias="core:emReplyFragment" upgradeId="b48c6655-9c72-4650-a223-fd296ae85565" />
   <entity alias="core:emSentDate" upgradeId="a1b2b00a-9df9-4ba0-8bff-5d031d6819c6" />
   <entity alias="core:emSubject" upgradeId="2dac3015-f01c-4454-bcc5-af9193d368ce" />
   <entity alias="core:emTo" upgradeId="efaed036-7b72-4840-80d3-a9292cc3f320" />
@@ -1385,8 +1368,8 @@
   <entity alias="core:exit7" upgradeId="5e7f1ff3-66fc-4735-a295-dd9652df98fb" />
   <entity alias="core:exit8" upgradeId="ddea2010-d688-4dc0-8b6c-43e5419947de" />
   <entity alias="core:exit9" upgradeId="0ae6809b-ba66-400a-859a-d038b9537001" />
-  <entity alias="core:exitLpc1" upgradeId="602d1323-2561-49a2-855f-1650a61bf4ec" />
-  <entity alias="core:exitLtc1" upgradeId="a52dc916-4292-4bc0-8411-6c27d03fb5a9" />
+  <entity alias="core:exitLpc1" upgradeId="6c5700f0-0ec5-41e3-8e5b-7287a7c4e89c" />
+  <entity alias="core:exitLtc1" upgradeId="3cee9377-4a40-4bbf-8e84-07b142757971" />
   <entity alias="core:exitPoint" upgradeId="782e823e-0739-491e-8c83-d81d03f56b07" />
   <entity alias="core:exitPointActionSummary" upgradeId="7e61c408-3786-4a10-828f-a4fc6eb78bbe" />
   <entity alias="core:exitPointDetails" upgradeId="398F46AD-02CB-44A2-AB87-F0D0E6B25857" />
@@ -1610,12 +1593,11 @@
   <entity alias="core:idExpression" upgradeId="6a13a795-190b-4883-b14d-0572582f51ca" />
   <entity alias="core:ieaBackingClass" upgradeId="38297d26-4157-4240-9791-631a91ba0f99" />
   <entity alias="core:ieaOrdinal" upgradeId="25e98bcb-1935-44ff-ab6b-50fad642bff2" />
-  <entity alias="core:iInboxProvider" upgradeId="3bca40af-b7c3-4e9b-95ba-a58a4afc4e34" />
   <entity alias="core:imageBackgroundColor" upgradeId="e8c81d76-fc37-49ad-af2b-66b2589bb0b6" />
   <entity alias="core:imageDetails" upgradeId="A4B77B37-3F86-492E-8171-50A68C9FC72B" />
   <entity alias="core:imageDimensions" upgradeId="D5301030-66F1-4136-A342-8356F39FAE59" />
-  <entity alias="core:imageDocumentDocumentType" upgradeId="68d8cf7d-29d3-4104-a304-1863df56d263" />
-  <entity alias="core:imageDocumentImage" upgradeId="06efae45-1d9d-4bac-a629-bd1baff6449a" />
+  <entity alias="core:imageDocumentDocumentType" upgradeId="3bb03ee9-3169-4180-bc59-6b478f2e96f4" />
+  <entity alias="core:imageDocumentImage" upgradeId="32c449dc-f9f5-4b57-b322-579dea8dba3f" />
   <entity alias="core:imageFileType" upgradeId="4E061E43-38DD-412E-AD8C-580089A5F8FA" />
   <entity alias="core:imageFormattingRule" upgradeId="2d12fea1-2bed-4c8d-8ccc-fc200ed300a0" />
   <entity alias="core:imageFormattingRuleDetails" upgradeId="18B75E52-D84E-4F80-9F45-F10AB8330DC6" />
@@ -1625,9 +1607,19 @@
   <entity alias="core:imageSettings" upgradeId="4FE51E98-0350-452D-8AA2-27E4558663B2" />
   <entity alias="core:imageSource" upgradeId="f9b818ba-aeae-4409-afac-2cb80e276b3e" />
   <entity alias="core:imageWidth" upgradeId="FD73664A-FF9E-44BC-BD8B-92F1C7A06657" />
-  <entity alias="core:imapEmailProvider" upgradeId="45687408-0748-4e98-8749-e2dc1b482fa2" />
-  <entity alias="core:imapEmailProviderDetails" upgradeId="E746C197-A7EE-4C3A-AE4E-2380EB1D8A1D" />
-  <entity alias="core:imapEmailProviderTarget" upgradeId="3A4DA8DC-A471-420E-8FE9-E48564F0C530" />
+  <entity alias="core:imapAccount" upgradeId="5dfcba5f-edf2-4c90-9add-9e4de8eb29c4" />
+  <entity alias="core:imapDomainName" upgradeId="4083a077-94df-4e33-a9f4-1fbe21ba7723" />
+  <entity alias="core:imapFolder" upgradeId="bd854981-8907-48f2-bb90-e0c7d6413468" />
+  <entity alias="core:imapPassword" upgradeId="c72aca7a-890d-478e-96d7-e1e0cb194bf4" />
+  <entity alias="core:imapPasswordSecureId" upgradeId="ad921ef5-4dbe-40de-a81f-2aa0dd9a7001" />
+  <entity alias="core:imapPort" upgradeId="85c33a95-9bf5-4a33-801f-5c019cbd7de6" />
+  <entity alias="core:imapServer" upgradeId="3e8f1060-4e2c-4adf-9f2f-3da4f77fedd7" />
+  <entity alias="core:imapServerSettings" upgradeId="bf8b4867-be2b-45f6-bb55-2d3fd3fcc384" />
+  <entity alias="core:imapServerSettingsEventTarget" upgradeId="518579e1-495b-41bf-b71c-d6e3838e4d38" />
+  <entity alias="core:imapServerSettingsFieldGroup" upgradeId="e8c2e558-364d-4989-b293-85dc6ef035c8" />
+  <entity alias="core:imapServerSettingsInstance" upgradeId="f3dcb105-304c-4986-bd97-746228622d3e" />
+  <entity alias="core:imapUseIntegratedAuth" upgradeId="e321fbff-37ce-48c6-b1a7-7974fd39c60a" />
+  <entity alias="core:imapUseSSL" upgradeId="a88c4eeb-be60-4890-af64-607bbfcef787" />
   <entity alias="core:implicitInSolution" upgradeId="cd706403-83dc-44d7-8445-2ae956c76088" />
   <entity alias="core:importableType" upgradeId="bcfc8fa7-b538-4ea8-bdea-f195ed54ead0" />
   <entity alias="core:importConfig" upgradeId="c5b5845d-3552-4d38-8d00-45466ed1ac26" />
@@ -1665,13 +1657,14 @@
   <entity alias="core:inboxEmailAction" upgradeId="c391652b-49e0-457b-b479-aa137b471ef2" />
   <entity alias="core:inboxEmailActionDetails" upgradeId="E19498B4-92FA-4C47-97B0-90551F7041E3" />
   <entity alias="core:inboxEmailActions" upgradeId="65023b05-547e-4880-8812-1df6a22c7222" />
-  <entity alias="core:inboxEmailAddress" upgradeId="469ae49f-4c95-4004-962d-943f296372f4" />
+  <entity alias="core:inboxEmailAddress" upgradeId="869d202e-ecee-4b13-9566-86f3bae07eb6" />
+  <entity alias="core:inboxEmailAddressDomain" upgradeId="e324fc9e-ea68-4633-9279-30dda0487f86" />
   <entity alias="core:inboxEnabled" upgradeId="{2b216738-308c-4944-8a71-4a12eea2537c}" />
+  <entity alias="core:inboxEventTarget" upgradeId="3b762812-1a48-4f71-8230-c8f303c2fa4c" />
   <entity alias="core:inboxFieldGroup" upgradeId="{b8744414-0b2f-4e10-a69e-fc22e7fde8cc}" />
-  <entity alias="core:inboxProvider" upgradeId="8e37cf66-529d-4258-a744-b0cef9665263" />
-  <entity alias="core:inboxProviderDetails" upgradeId="0E72BB3C-DC0A-4E7B-8E85-2F68DC40E46D" />
+  <entity alias="core:inboxFromName" upgradeId="93b55356-0a44-40f5-8c14-3233b976ee4e" />
   <entity alias="core:inboxReceivedMessageType" upgradeId="{9ddbb7c6-2450-4f35-8112-dd55969e3bf0}" />
-  <entity alias="core:inboxTarget" upgradeId="35ee3afc-eb7d-4b0c-afac-c4f44ae4ec42" />
+  <entity alias="core:inboxReplyAddress" upgradeId="95d28acd-7123-40da-a144-f5a356917a60" />
   <entity alias="core:inboxWorkflows" upgradeId="0e188a20-c001-4a51-90af-8145025715df" />
   <entity alias="core:includeSelfInRecursive" upgradeId="c101c89f-4fc2-4a09-bbcd-e00149129732" />
   <entity alias="core:includesRoles" upgradeId="3d1dc4c4-9f52-42c6-939b-286c19bbfc2e" />
@@ -1770,12 +1763,12 @@
   <entity alias="core:lastLogon" upgradeId="79dc4b60-0e59-49ee-8995-9d625a8d12e7" />
   <entity alias="core:lastModifiedBy" upgradeId="653ebcf5-66ec-4238-9aba-fac99891f192" />
   <entity alias="core:lastName" upgradeId="0bf7ac3a-d9f7-4953-aab5-23b3b77fad29" />
-  <entity alias="core:launchPersonCampaignActivity" upgradeId="61fe70be-d7ed-4b1f-9c45-fc9d317abb0b" />
-  <entity alias="core:launchPersonCampaignActivityClass" upgradeId="f117e23c-999a-4495-87bd-8289b59c1848" />
-  <entity alias="core:launchPersonTimeout" upgradeId="e905c0ef-6e14-46cd-a60b-0e66e09b3b03" />
-  <entity alias="core:launchTargetCampaignActivity" upgradeId="37b094a3-ec2b-4a2d-9cf3-307b0f795da7" />
-  <entity alias="core:launchTargetCampaignActivityClass" upgradeId="cc9b7bf8-be98-4be9-88ad-5b97abeb4d2a" />
-  <entity alias="core:launchTargetTimeout" upgradeId="aa73853f-fd83-4da1-b2a8-e2aa7b0f24de" />
+  <entity alias="core:launchPersonCampaignActivity" upgradeId="fe0c55e9-b7f6-4f41-a322-1b93d5341a7f" />
+  <entity alias="core:launchPersonCampaignActivityClass" upgradeId="4f5e936b-ec4c-42b0-b421-4526aec75b63" />
+  <entity alias="core:launchPersonTimeout" upgradeId="7e5eceb5-00a5-490e-829c-327a9ce54b0f" />
+  <entity alias="core:launchTargetCampaignActivity" upgradeId="6882f3b2-088f-4811-ba1f-1e838c7bba42" />
+  <entity alias="core:launchTargetCampaignActivityClass" upgradeId="32c42236-3db7-4fa2-8c78-6fb82d4ec6c5" />
+  <entity alias="core:launchTargetTimeout" upgradeId="e676cfce-2ce6-4132-81b3-82f14ef53e08" />
   <entity alias="core:legacyGuid" upgradeId="88f67720-430d-4dcd-8f7b-717a0becaa64" />
   <entity alias="core:legacyReportDetails" upgradeId="D3FC2F0B-4720-4E59-BB1B-C36B3C259105" />
   <entity alias="core:libraryQuestions" upgradeId="b8f0b58b-df81-41f4-88a2-d91b3ffa30ff" />
@@ -1906,7 +1899,6 @@
   <entity alias="core:newPermissionNamesChangeAccessRulePerm" upgradeId="F8F40D9C-C9EA-4F37-867D-99383D198EE1" />
   <entity alias="core:newRoleName" upgradeId="A2A96523-02CA-4A05-8EAD-46F727BCC903" />
   <entity alias="core:newStatus" upgradeId="5E30B52A-DAF7-4275-BD6C-2DB39576F1EA" />
-  <entity alias="core:newTicketsInbox" upgradeId="295c77b1-e82b-458f-93ab-bbcd7c305aff" />
   <entity alias="core:newUserName" upgradeId="527B3B4F-2C36-448C-8837-04E3EDB3D97F" />
   <entity alias="core:nMessage" upgradeId="55a1cf88-7a42-4f2f-88e7-75cff9462da3" />
   <entity alias="core:nodeExpression" upgradeId="1d3a3bc4-0627-4f63-8bb8-a28c17dcc118" />
@@ -1928,17 +1920,6 @@
   <entity alias="core:numericKFieldRenderControl2" upgradeId="4d87788e-5ccc-48a8-9742-cccf0b60bf16" />
   <entity alias="core:numericQuestion" upgradeId="733ede95-ec26-4df4-98f5-844f39f42f8e" />
   <entity alias="core:numericQuestionIsInteger" upgradeId="3a0311a4-084c-422e-b0d8-ce3cb2677837" />
-  <entity alias="core:oaAccount" upgradeId="8d10ae91-4f6d-4c5c-91a8-b1522c27fcf2" />
-  <entity alias="core:oaDomainName" upgradeId="1ff118c5-147d-4355-93b6-ecde21d71fca" />
-  <entity alias="core:oaEmailAddress" upgradeId="3b511df9-fa7a-41f4-9877-5f9981c8dee9" />
-  <entity alias="core:oaPassword" upgradeId="315a8f4e-2c88-4103-981c-a55a74ad9d29" />
-  <entity alias="core:oaPasswordSecureId" upgradeId="3fe79bfe-0277-4603-ac22-02186fdfe40b" />
-  <entity alias="core:oaPort" upgradeId="6f444945-9a86-47d7-a89d-afb794fdef27" />
-  <entity alias="core:oaPostInDirectory" upgradeId="88be4606-d0c4-4e5c-85cc-687b3f43c120" />
-  <entity alias="core:oaServer" upgradeId="4f5438d6-6e47-4649-9282-a084c1dc521d" />
-  <entity alias="core:oaUseFolder" upgradeId="d830188e-107c-45a1-9fdd-a981cb70869f" />
-  <entity alias="core:oaUseIntegratedAuth" upgradeId="22fd58fb-e5f5-4198-8c11-c7d20b37db4d" />
-  <entity alias="core:oaUseSSL" upgradeId="8bfa483f-b4de-4616-a3bb-4ab4269bf442" />
   <entity alias="core:objectArgument" upgradeId="0ca916fe-3cd5-460d-a836-9e6307d7a75d" />
   <entity alias="core:objectReferencedInLog" upgradeId="2de7b7c9-22ed-4b1d-8e17-438147373790" />
   <entity alias="core:oidcAlwaysPrompt" upgradeId="{172D4873-2A18-489F-BD51-C38241B1D6C2}" />
@@ -2035,12 +2016,13 @@
   <entity alias="core:outDisplayFormUserTask" upgradeId="d687f6a0-3368-4808-aef8-07bd40bc339f" />
   <entity alias="core:outExportToDoc" upgradeId="0782ce9e-805b-4319-baad-e5aa14483d1d" />
   <entity alias="core:outGenerateDocDoc" upgradeId="51c8ead5-13e1-4483-b52a-b37fc440cb7b" />
-  <entity alias="core:outLaunchPersonResponses" upgradeId="a422d926-2a29-48d4-9da0-515bcb4f0b2b" />
-  <entity alias="core:outLaunchTargetResponses" upgradeId="101976e4-38ce-4d21-81da-b78af220312d" />
+  <entity alias="core:outLaunchPersonResponses" upgradeId="00cefa03-f4ca-4be3-8a3a-a31b2f872401" />
+  <entity alias="core:outLaunchTargetResponses" upgradeId="6b5e09dd-0e8d-47b6-b163-844b0364662e" />
   <entity alias="core:outlookDocumentDocumentType" upgradeId="461dbd34-3a9a-4ffc-84ec-524313a0a102" />
   <entity alias="core:outlookDocumentImage" upgradeId="016d6cbf-74de-4d4b-9e85-1885669790fd" />
   <entity alias="core:outNotificationRecord" upgradeId="6ce414a4-403b-407a-914c-c2709100b842" />
   <entity alias="core:outputArguments" upgradeId="5d7d18be-469f-45df-8d38-3a4d93cc80ce" />
+  <entity alias="core:outSentEmailMessages" upgradeId="b6101b9e-56ca-4d2f-aa04-da22039a92fa" />
   <entity alias="core:outStartSurveyResponses" upgradeId="8eb15a87-1a7c-47de-8079-eec6c0d13f02" />
   <entity alias="core:outTaskComment" upgradeId="d41b6900-b2d6-4395-a3f4-b4d1ca4d62ed" />
   <entity alias="core:packageForApplication" upgradeId="31bca990-4675-4f62-a1d2-e217a4ad5ca8" />
@@ -2062,7 +2044,6 @@
   <entity alias="core:passwordReset" upgradeId="{80363765-7C2B-47E3-AF31-0B9B6E75EF64}" />
   <entity alias="core:passwordResetDetails" upgradeId="{17DE5C4E-6A3E-4B0A-97EF-129FAFC0E931}" />
   <entity alias="core:passwordResetExpiry" upgradeId="{85E412A8-382F-460E-BADD-B71726B983F0}" />
-  <entity alias="core:passwordResetInbox" upgradeId="82EC9813-725E-44CC-A340-2D1DC9A627A3" />
   <entity alias="core:passwordResetKey" upgradeId="{D589801E-A10B-49FB-8572-32E69F210343}" />
   <entity alias="core:passwordResetRecord" upgradeId="{226CACA8-6CA8-4855-9BA3-D9C7FADD4A05}" />
   <entity alias="core:pattern" upgradeId="e699c19c-a04f-4a2f-97cf-eed34a8ea906" />
@@ -2097,6 +2078,7 @@
   <entity alias="core:photoFileTypeDetails" upgradeId="289234BD-1840-4352-85BC-D79404EA1465" />
   <entity alias="core:piaLastRun" upgradeId="cc47532d-7617-4dcd-9557-6a5f214db2fb" />
   <entity alias="core:pieChart" upgradeId="39b86ada-5add-4fec-856b-3d851fd2cbcb" />
+  <entity alias="core:postInDirectory" upgradeId="a3aeddd5-5c2a-48e2-90a1-9fd3c9363fa2" />
   <entity alias="core:powerpointDocumentImage" upgradeId="ce1c2ff1-186c-4f8c-bf80-82e80d43a0f5" />
   <entity alias="core:powerPointPresentationDocumentType" upgradeId="64fdc12a-1b46-491b-b4d7-241f00548c16" />
   <entity alias="core:primaryAxis" upgradeId="348d2e97-77bb-453d-a03f-b33e7e0c9edf" />
@@ -2123,10 +2105,7 @@
   <entity alias="core:protectableType" upgradeId="0E56555F-4A43-42B5-A7CB-4CFA271E52E1" />
   <entity alias="core:protectableTypeDetails" upgradeId="2FAC0CE0-2EDA-4463-9A34-08A2276714B9" />
   <entity alias="core:protectableTypeEventTarget" upgradeId="5F22EC40-7DF3-4D0D-ACB1-7288CAF7D48C" />
-  <entity alias="core:providerAlias" upgradeId="79e6b09b-ba2e-4ce1-90cd-0e39eb7b35c7" />
   <entity alias="core:providerOrdinal" upgradeId="{95CD35DC-32ED-4539-A970-C1C4F9B15D6C}" />
-  <entity alias="core:proxyInboxProvider" upgradeId="9612da12-0340-4c78-b6d5-5e35d0f88eae" />
-  <entity alias="core:proxyInboxProviderDetails" upgradeId="5CBEC0DA-1A2F-48B7-B829-9337AA636801" />
   <entity alias="core:publishApplicationAuditLogEntry" upgradeId="7F595FD2-CF20-401F-B526-B912CD7E8B92" />
   <entity alias="core:publishApplicationAuditLogEntryDetails" upgradeId="30B472B9-395D-41B7-A259-B1E06625D351" />
   <entity alias="core:publishApplicationAuditLogEntryMetadata" upgradeId="929783B7-BEFF-44BB-A185-46509D3CEE10" />
@@ -2414,13 +2393,26 @@
   <entity alias="core:semSequenceNumber" upgradeId="7fb2d7cc-de1a-4ac7-b891-60b7992f8b16" />
   <entity alias="core:sendEmailActivity" upgradeId="aeaf7119-b81d-4c1e-9496-23c00ea2db0c" />
   <entity alias="core:sendEmailActivityClass" upgradeId="83ef34ad-9998-4d8f-9ed8-1a99ae9541bd" />
+  <entity alias="core:sendEmailActivityDistributionTypeEnum" upgradeId="d5d319f2-57e5-461d-9e6f-e72d02eef988" />
+  <entity alias="core:sendEmailActivityGroupDistribution" upgradeId="5e89a9e0-f800-4e5b-a5ca-e6100b65432e" />
+  <entity alias="core:sendEmailActivityIndividualDistribution" upgradeId="5a721b53-02f9-4d72-b642-f32f603e241a" />
+  <entity alias="core:sendEmailActivityRecipientsAddress" upgradeId="aee55908-59b4-47d0-aef7-9ed7185f471e" />
+  <entity alias="core:sendEmailActivityRecipientsList" upgradeId="07cb0596-1051-41bf-a7f8-391e60c57642" />
+  <entity alias="core:sendEmailActivityRecipientsTypeEnum" upgradeId="ee34f81e-654e-435a-81b9-4d5aec48c78b" />
   <entity alias="core:sendEmailAttachments" upgradeId="e5cd12cd-cf96-4e0e-939e-160f21e0e42b" />
   <entity alias="core:sendEmailBodyArgument" upgradeId="b57f6846-2d55-4677-a56e-3b7c89d80d35" />
+  <entity alias="core:sendEmailDistributionType" upgradeId="404ed641-d17a-4657-afdf-c76ddbe5251b" />
   <entity alias="core:sendEmailFailedSend" upgradeId="02eaae95-a5b7-4233-b177-6684e7d6547a" />
-  <entity alias="core:sendEmailInbox" upgradeId="bf5c35d0-6317-45e7-b871-020eadb89feb" />
+  <entity alias="core:sendEmailFromInbox" upgradeId="3d003a09-1966-40bb-9eb4-cc98f11399d2" />
+  <entity alias="core:sendEmailNoReply" upgradeId="c2cf794c-c83b-43a6-b8e6-7797dbc8da98" />
   <entity alias="core:sendEmailRecipientArgument" upgradeId="3488e710-e387-4a4d-ba52-dbe90a007b48" />
+  <entity alias="core:sendEmailRecipientBCCArgument" upgradeId="76d105b2-5158-4302-9a4b-fda6556f2241" />
+  <entity alias="core:sendEmailRecipientBCCField" upgradeId="69f70f18-2ac2-468f-9419-841489f866bc" />
+  <entity alias="core:sendEmailRecipientCCArgument" upgradeId="fe6bcf75-519d-45d2-91c1-e3c2fd1047d8" />
+  <entity alias="core:sendEmailRecipientCCField" upgradeId="4e7305f7-f8ca-4c9e-8c8f-f74c4ca2e51e" />
   <entity alias="core:sendEmailRecipientField" upgradeId="ed9a8a6f-f82d-4c36-9009-bb1c2af40d77" />
   <entity alias="core:sendEmailRecipientList" upgradeId="c4cef18f-4087-4b4e-a403-3d7033dbe1ef" />
+  <entity alias="core:sendEmailRecipientsType" upgradeId="1f6b0b5a-8427-4e61-91f2-194064bf6b18" />
   <entity alias="core:sendEmailSubjectArgument" upgradeId="eb203a35-a89e-4ca7-9fa5-8c9f5b20ad38" />
   <entity alias="core:sendEmailSucceededSend" upgradeId="dec31679-a7ec-431a-adb4-af16aab3a806" />
   <entity alias="core:sendICalUpdateEmailsAction" upgradeId="{5e349f9d-0d87-4cca-9d0b-aa2aec22efba}" />
@@ -2474,6 +2466,12 @@
   <entity alias="core:sizeSmall" upgradeId="0aefa291-2f2a-4324-aebe-fa43dd42e4fd" />
   <entity alias="core:sizeSource" upgradeId="94f7869b-7b50-4a52-afe9-60f1443995b2" />
   <entity alias="core:smsSendRecord" upgradeId="fb3111b5-8e8a-4243-9e55-8b40c9ada638" />
+  <entity alias="core:smtpAccount" upgradeId="eb349108-37b7-4137-b03e-c79045dd811c" />
+  <entity alias="core:smtpPassword" upgradeId="cc35db6a-e1ae-4c42-a383-3495e495f614" />
+  <entity alias="core:smtpPasswordSecureId" upgradeId="463c926c-b787-43b6-b2c1-a069c5455f3e" />
+  <entity alias="core:smtpPort" upgradeId="ab125abc-e2a6-470c-bc79-23a72b852bc8" />
+  <entity alias="core:smtpServer" upgradeId="ae2b77b8-dedb-4dc7-928d-b55d8d425347" />
+  <entity alias="core:smtpUseSSL" upgradeId="e3335ff8-b1a5-4389-a4a5-34eb5ed61bc8" />
   <entity alias="core:softwarePlatformEmailContact" upgradeId="{e3987107-13d6-4ade-8346-8b9daf4efbbf}" />
   <entity alias="core:solution" upgradeId="f6ebea8a-0989-4ae0-be53-5d6541cb0908" />
   <entity alias="core:solutionDetails" upgradeId="E5F26BC8-FFDE-41CD-9C82-0FD718A592F4" />
@@ -2488,7 +2486,6 @@
   <entity alias="core:sourceNode" upgradeId="b385b664-22b7-4ed0-a194-a42e45e5b7f0" />
   <entity alias="core:specialChartSource" upgradeId="3a3b9e42-7441-48d1-8cfb-ac5804a9545b" />
   <entity alias="core:specialChartSourceEnum" upgradeId="4d8390a4-8326-471f-b13c-c5a4da03f4fc" />
-  <entity alias="core:spInboxProvider" upgradeId="a34bc430-3625-4fbb-9e39-6b905e24e741" />
   <entity alias="core:srErrorMessage" upgradeId="4d73efeb-f3b8-4a42-9106-0b41d726a95b" />
   <entity alias="core:srRun" upgradeId="4fabe059-b673-4ff2-ac74-614151ccc3bd" />
   <entity alias="core:srSendDate" upgradeId="c2c46f5b-810a-4aa9-b98d-a6e21d3d3696" />
@@ -2559,7 +2556,6 @@
   <entity alias="core:subjectNameDeleteAccessRule" upgradeId="671AB07A-FAC0-4F15-9EFF-0800B784DBB5" />
   <entity alias="core:subjectNameEnableAccessRule" upgradeId="19E47E92-36D3-4FCB-909D-72B7B48C2317" />
   <entity alias="core:sunburstChart" upgradeId="99f7ce0d-6472-410c-a43c-3f06c06e0a99" />
-  <entity alias="core:supportInbox" upgradeId="b6ce3d7e-cd5c-4136-80ed-abe57df7214c" />
   <entity alias="core:supportMultiTypes" upgradeId="cfe48491-a59d-4066-a695-e14e830dbe81" />
   <entity alias="core:surveyAnswer" upgradeId="4de7e97e-9048-4ab0-a42c-ee12cacb2304" />
   <entity alias="core:surveyAnswerAttachments" upgradeId="c84c8588-8749-48d4-9e2c-6d1e458fe15d" />
@@ -2652,8 +2648,8 @@
   <entity alias="core:tenantAuditLogSettingsInstance" upgradeId="5BE62FDD-37BD-4EB8-8AF3-DF184FAD8991" />
   <entity alias="core:tenantCurrencySymbol" upgradeId="0775f413-f16d-42fd-9d2d-021f6bc57ed3" />
   <entity alias="core:tenantEmailDetails" upgradeId="93753D2C-8B3F-4B84-A554-0798FDC49466" />
-  <entity alias="core:tenantEmailSetting" upgradeId="0287b978-bde2-421a-81b4-4caef9354f7a" />
-  <entity alias="core:tenantEmailSettingsInstance" upgradeId="03acbfb7-d62e-438c-9f1a-5903141053f1" />
+  <entity alias="core:tenantEmailSetting" upgradeId="3a8a8329-4555-4757-ac20-26a0d2adcf86" />
+  <entity alias="core:tenantEmailSettingsInstance" upgradeId="1ea0d5fb-1468-44cb-8b07-7b409f0bda7a" />
   <entity alias="core:tenantEventLogSettingsInstance" upgradeId="f10b1fcb-c466-4eb6-af1e-6b396bbb390b" />
   <entity alias="core:tenantEventTarget" upgradeId="0F9A0FFE-CB98-413C-AAD7-FE3F94786CCE" />
   <entity alias="core:tenantGeneralSettings" upgradeId="afdd692c-02bb-4cfd-9f02-c8e7efcc1517" />
@@ -2666,14 +2662,11 @@
   <entity alias="core:tenantRollbackAuditLogEntry" upgradeId="C58D309C-286B-4BFF-9FAB-F45DBC55C917" />
   <entity alias="core:tenantRollbackAuditLogEntryDetails" upgradeId="4E92B201-A8CE-48EA-B643-A4126659C9D4" />
   <entity alias="core:tenantRollbackAuditLogEntryMetadata" upgradeId="D21797B2-32B1-4394-9B2F-D7C3A485978B" />
+  <entity alias="core:tenantSMTPServerDetails" upgradeId="39dfbd90-6234-4e19-b979-5ece0381f6be" />
   <entity alias="core:termination" upgradeId="1bce458a-b3f1-490a-a1b2-c2d919a777bb" />
   <entity alias="core:terminationDetails" upgradeId="3D6A5FEF-02B9-4DF5-A4BA-D0F256B21B8E" />
   <entity alias="core:terminations" upgradeId="d53eded3-4745-4ab8-9d20-2e28c62a6ca2" />
-  <entity alias="core:tesApprovalsInbox" upgradeId="92d50f86-3c2e-4394-9f4e-c3a95cbec0c4" />
-  <entity alias="core:tesCalendarInbox" upgradeId="{1910e6c0-5564-4f35-b417-d8052888e61c}" />
-  <entity alias="core:tesNewTicketsInbox" upgradeId="5a5ea45f-434f-4ec2-a5a8-626c70313913" />
-  <entity alias="core:tesPasswordResetInbox" upgradeId="D5DBE051-CEAD-4D96-912B-44EC1D6C6C1F" />
-  <entity alias="core:tesSupportInbox" upgradeId="1e5301ea-4cd1-4db8-a823-2a223b2d0c79" />
+  <entity alias="core:testingOverrideToAddress" upgradeId="45dd10f7-8aae-4a53-bbff-11540e370baf" />
   <entity alias="core:textBoxKFieldRenderControl" upgradeId="fe61f606-e6df-4469-a051-f7ccb02010e8" />
   <entity alias="core:textDocumentDocumentType" upgradeId="6cd1fd85-c84a-49ca-9394-ec14e0ea7c4c" />
   <entity alias="core:textDocumentImage" upgradeId="3f5e6f5f-f512-4287-b96f-99e5caf847d1" />
@@ -2775,7 +2768,6 @@
   <entity alias="core:userTaskReminderEnabled" upgradeId="73eee8a6-9299-4aa4-846f-11a627e59b1e" />
   <entity alias="core:userTaskStartedOn" upgradeId="1eb492ca-c48f-4f19-a159-85eeb464de84" />
   <entity alias="core:userTaskTargetClass" upgradeId="fdd1cded-3009-489a-9a76-ad090da8389c" />
-  <entity alias="core:usesInboxProvider" upgradeId="0559dd05-92ab-413d-9b42-09cc842b850c" />
   <entity alias="core:valueAxis" upgradeId="bdca52c0-7d0a-46ca-afb7-d2d67bd5938b" />
   <entity alias="core:valueSource" upgradeId="e21c6d7a-f48d-4e31-a268-491c15c39ef9" />
   <entity alias="core:variables" upgradeId="fcb36eb0-933f-4f24-9c86-c903d1ce6213" />

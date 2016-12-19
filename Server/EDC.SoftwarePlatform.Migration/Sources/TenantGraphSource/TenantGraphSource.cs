@@ -205,12 +205,25 @@ namespace EDC.SoftwarePlatform.Migration.Sources
                 RelationshipInfo relInfo;
                 if ( !_bulkResult.BulkSqlQuery.Relationships.TryGetValue( pair.Key.TypeIdAndDirection, out relInfo ) )
                     continue; // assert false
-                var cloneAction = direction == Direction.Forward ? relInfo.CloneAction : relInfo.ReverseCloneAction;
-                bool isDrop = cloneAction == CloneActionEnum_Enumeration.Drop;
+                var effectiveCloneAction = direction == Direction.Forward ? relInfo.CloneAction : relInfo.ReverseCloneAction;
+
+                // If the cloneAction is a drop, then the export action is ordinarily also a drop
+                // However, if the cloneAction is the other direction is a clone entities, then it must actually be a single component, and this is 
+                // the scenario where export&clone behave differently. Clone drops because it must to maintain cardinality, but the reference
+                // still makes sense for an export. See #28790
+                if ( effectiveCloneAction == CloneActionEnum_Enumeration.Drop )
+                {
+                    var oppCloneAction = direction == Direction.Forward ? relInfo.ReverseCloneAction : relInfo.CloneAction;
+                    if ( oppCloneAction == CloneActionEnum_Enumeration.CloneEntities )
+                    {
+                        effectiveCloneAction = CloneActionEnum_Enumeration.CloneReferences;
+                    }
+                }
+                
+                bool isDrop = effectiveCloneAction == CloneActionEnum_Enumeration.Drop;
 
                 // Prepare to handle duplicate entries
                 bool wouldDiscardIfDuplicate = WouldDiscardIfDuplicate( relInfo, direction );
-                Direction oppositeDir = direction == Direction.Forward ? Direction.Reverse : Direction.Forward;
 
                 // Resolve IDs
                 Guid originUid;
@@ -439,7 +452,7 @@ namespace EDC.SoftwarePlatform.Migration.Sources
             }
             else
             {
-                _canRead = ( long id ) => true;
+                _canRead = id => true;
             }
         }
 
@@ -570,7 +583,7 @@ namespace EDC.SoftwarePlatform.Migration.Sources
                 RelationshipKey typeRelKey = new RelationshipKey( entityId, isOfType );
                 List<long> types;
                 _bulkResult.Relationships.TryGetValue( typeRelKey, out types );
-                long? singleType = types.FirstOrDefault( );
+                long? singleType = types?.FirstOrDefault( );
                 if ( singleType == null )
                     continue;
                 long typeId = singleType.Value;

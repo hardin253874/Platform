@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
+using EDC.ReadiNow.Email;
 using EDC.ReadiNow.Model;
 using EDC.ReadiNow.Test;
 using EDC.SoftwarePlatform.Activities.EmailListener;

@@ -45,6 +45,9 @@
       <entities format="external" path="Charts_Types.xml" designTimeFolder="Schema" />
       <!-- Workflow Resources -->
       <entities format="external" path="Workflow_Types.xml" designTimeFolder="Schema" />
+      <!--Email Entities -->
+      <entities format="external" path="Email_Types.xml" designTimeFolder="Schema" />
+    
       <entities format="external" path="Workflow_Activities.xml" designTimeFolder="Schema" />
       <!-- Survey -->
       <entities format="external" path="Survey_Types.xml" designTimeFolder="Schema" />

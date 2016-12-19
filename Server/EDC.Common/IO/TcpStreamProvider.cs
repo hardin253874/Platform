@@ -82,7 +82,7 @@ namespace EDC.IO
         {
             if (string.IsNullOrWhiteSpace(hostName))
             {
-                throw new ArgumentNullException("hostName");
+                throw new ArgumentNullException( nameof( hostName ) );
             }
 
             if (port <= 0)

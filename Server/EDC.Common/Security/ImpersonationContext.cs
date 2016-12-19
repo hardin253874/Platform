@@ -75,7 +75,7 @@ namespace EDC.Security
 		{
 			if ( credentials == null )
 			{
-				throw new ArgumentNullException( "credentials" );
+				throw new ArgumentNullException( nameof( credentials ) );
 			}
 
 			ImpersonationContext context = null;

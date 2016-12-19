@@ -60,6 +60,10 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=4.2.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.2.0\lib\net45\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Common.Logging, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
       <HintPath>..\packages\Common.Logging.3.3.1\lib\net40\Common.Logging.dll</HintPath>
       <Private>True</Private>
@@ -117,9 +121,9 @@
       <Project>{98ec024c-6439-44b1-8b1e-29e457b2201f}</Project>
       <Name>EDC.SoftwarePlatform.Activities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EDC.SoftwarePlatform.Interfaces\EDC.SoftwarePlatform.Interfaces.csproj">
+    <ProjectReference Include="..\ReadiNow.Interfaces\ReadiNow.Interfaces.csproj">
       <Project>{c1fc97b7-aacc-45b5-9969-7995b27093ca}</Project>
-      <Name>EDC.SoftwarePlatform.Interfaces</Name>
+      <Name>ReadiNow.Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\ReadiNow.EntityGraph\ReadiNow.EntityGraph.csproj">
       <Project>{9c2bc19b-0d62-4e3c-a5e2-9850c1526460}</Project>

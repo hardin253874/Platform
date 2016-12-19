@@ -48,9 +48,9 @@ namespace EDC.ReadiNow.CAST
             return EntityRepository.Create<ManagedAppVersion>();
         }
 
-        public IManagedUserRole CreateRole()
+        public IManagedRole CreateRole()
         {
-            return EntityRepository.Create<ManagedUserRole>();
+            return EntityRepository.Create<ManagedRole>();
         }
 
         public IManagedUser CreateUser()

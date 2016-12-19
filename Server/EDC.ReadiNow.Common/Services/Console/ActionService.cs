@@ -1795,13 +1795,22 @@ namespace EDC.ReadiNow.Services.Console
             var types = new List<EntityType>();
 
             // skip if the type is base resource. it's too all encompassing.
-            if (type.Alias != "core:resource")
+            if ( type.Alias == "core:resource" )
+                return types;
+
+            IEnumerable<EntityType> typesToAdd = GetAllDerivedTypes( type );
+
+            // If the type being displayed is a definition, then only permit derived types that are also definitions
+            // (Specifically introduced for #27489, to ensure User Survey Task (managedType) doesn't appear under Task reports.)
+            if ( type.Is<Definition>( ) )
             {
-                types.AddRange(GetAllDerivedTypes(type));
-                if (type.IsAbstract != true && types.All(t => t.Id != type.Id))
-                {
-                    types.Add(type);
-                }
+                typesToAdd = typesToAdd.Where( entityType => entityType.Is<Definition>( ) );
+            }
+
+            types.AddRange( typesToAdd );
+            if (type.IsAbstract != true && types.All(t => t.Id != type.Id))
+            {
+                types.Add(type);
             }
 
             return types;

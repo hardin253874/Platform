@@ -6,6 +6,7 @@ using System.Net.Mail;
 using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
+using EDC.ReadiNow.Email;
 using EDC.ReadiNow.IO;
 using EDC.ReadiNow.Model;
 using EDC.ReadiNow.Scheduling.iCalendar.Serialization;
@@ -14,18 +15,9 @@ namespace EDC.ReadiNow.Scheduling.iCalendar.Email
 {
 	public static class iCalEmailHelper
 	{
-		public static void SendICalEmail( IICalendar iCal, MailMessage message, Inbox inbox )
+		public static void SendICalEmail( IICalendar iCal, MailMessage message, TenantEmailSetting emailServerSettings)
 		{
-			/////
-			// Get the inbox provider.
-			/////
-			InboxProvider inboxProvider = inbox.UsesInboxProvider;
-
-			if ( inboxProvider == null )
-			{
-				return;
-			}
-
+			
 			/////
 			// Create an instance of the iCalendar serializer.
 			/////
@@ -74,11 +66,8 @@ namespace EDC.ReadiNow.Scheduling.iCalendar.Email
 					message
 				};
 
-			/////
-			// Send the messages.
-			/////
-            var inboxProviderHelper = inboxProvider.GetHelper();
-            inboxProviderHelper.SendMessages(messages, RequestContext.GetContext().Tenant.Name, inbox.Name);
+		    var emailsender = new SmtpEmailSender(emailServerSettings);
+            emailsender.SendMessages(messages);
 		}
 	}
 }

@@ -19,7 +19,7 @@ namespace EDC.Syslog
         {
             if (string.IsNullOrWhiteSpace(sdId))
             {
-                throw new ArgumentNullException(nameof(sdId));
+                throw new ArgumentNullException( nameof(sdId));
             }
 
             SdId = sdId;

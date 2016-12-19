@@ -345,8 +345,8 @@
     </exitPoints>
   </activityType>
   
+  
   <!-- Send email -->
-  <!-- TODO: Add mulitple recipients -->
   <activityType>
     <alias>sendEmailActivity</alias>
     <inherits>wfActivity</inherits>
@@ -363,22 +363,108 @@
     </activityExecutionClass>
     <generateCode>true</generateCode>
     <inputArguments>
+      <resourceArgument>
+        <alias>sendEmailRecipientsType</alias>
+        <name>Email To</name>
+        <description>Select the way the list of recipients is generated</description>
+        <argumentIsMandatory>true</argumentIsMandatory>
+        <conformsToType>
+          <enumType>
+            <alias>sendEmailActivityRecipientsTypeEnum</alias>
+            <name>Send Email Activity Recipients Type</name>
+            <generateCode>true</generateCode>
+            <inherits>enumValue</inherits>
+            <enumValues>
+              <sendEmailActivityRecipientsTypeEnum>
+                <alias>sendEmailActivityRecipientsList</alias>
+                <name>List</name>
+                <enumOrder>1</enumOrder>
+              </sendEmailActivityRecipientsTypeEnum>
+              <sendEmailActivityRecipientsTypeEnum>
+                <alias>sendEmailActivityRecipientsAddress</alias>
+                <name>Email Address</name>
+                <enumOrder>2</enumOrder>
+              </sendEmailActivityRecipientsTypeEnum>
+            </enumValues>
+          </enumType>
+        </conformsToType>
+      </resourceArgument>
+      <resourceArgument>
+        <alias>sendEmailDistributionType</alias>
+        <name>Send As</name>
+        <description>Select whether a single (group) email is sent to all recipients or an individual email is sent to each recipient</description>
+        <conformsToType>
+          <enumType>
+            <alias>sendEmailActivityDistributionTypeEnum</alias>
+            <name>Send Email Activity Recipients Type</name>
+            <generateCode>true</generateCode>
+            <inherits>enumValue</inherits>
+            <enumValues>
+              <sendEmailActivityDistributionTypeEnum>
+                <alias>sendEmailActivityGroupDistribution</alias>
+                <name>Group</name>
+                <enumOrder>1</enumOrder>
+              </sendEmailActivityDistributionTypeEnum>
+              <sendEmailActivityDistributionTypeEnum>
+                <alias>sendEmailActivityIndividualDistribution</alias>
+                <name>Individual</name>
+                <enumOrder>2</enumOrder>
+              </sendEmailActivityDistributionTypeEnum>
+            </enumValues>
+          </enumType>
+        </conformsToType>
+      </resourceArgument>
+      
+      <!-- TO Recipients string -->
       <stringArgument>
         <alias>sendEmailRecipientArgument</alias>
-        <name>Recipient Address</name>
-        <description>The email address of the intended recipient.</description>
+        <name>To Addresses</name>
+        <description>A comma seperated list of the recipient's TO addresses.</description>
       </stringArgument>
+      <!-- CC Recipients string -->
+      <stringArgument>
+        <alias>sendEmailRecipientCCArgument</alias>
+        <name>CC Addresses</name>
+        <description>A comma seperated list of the recipient's CC addresses.</description>
+      </stringArgument>
+      <!-- BCC Recipients string -->
+      <stringArgument>
+        <alias>sendEmailRecipientBCCArgument</alias>
+        <name>BCC Addresses</name>
+        <description>A comma seperated list of the recipient's BCC addresses.</description>
+      </stringArgument>
+      
+      <!-- Recipients Entity List-->
       <resourceListArgument>
         <alias>sendEmailRecipientList</alias>
-        <name>Recipients</name>
+        <name>Recipients List</name>
         <description>The list of recipients for the email.</description>
       </resourceListArgument>
+      
+      <!-- TO Recipients field-->
       <resourceArgument>
         <alias>sendEmailRecipientField</alias>
-        <name>Email Field</name>
-        <description>The field that will be used to get email addresses. This must be a string fields that has been marked as email addresses. </description>
+        <name>TO Address Field</name>
+        <description>The field that will be used to get the TO address. This must be a string fields that has been marked as email addresses. </description>
         <conformsToType>stringField</conformsToType>
       </resourceArgument>
+
+      <!-- CC Recipients field-->
+      <resourceArgument>
+        <alias>sendEmailRecipientCCField</alias>
+        <name>CC Address Field</name>
+        <description>The field that will be used to get the CC address. This must be a string fields that has been marked as email addresses. </description>
+        <conformsToType>stringField</conformsToType>
+      </resourceArgument>
+      
+      <!-- BCC Recipients field-->
+      <resourceArgument>
+        <alias>sendEmailRecipientBCCField</alias>
+        <name>BCC Address Field</name>
+        <description>The field that will be used to get the BCC address. This must be a string fields that has been marked as email addresses. </description>
+        <conformsToType>stringField</conformsToType>
+      </resourceArgument>
+
       <stringArgument>
         <alias>sendEmailSubjectArgument</alias>
         <name>Subject</name>
@@ -393,16 +479,29 @@
         <alias>sendEmailAttachments</alias>
         <name>Attachments</name>
         <description>Any attachments to include in the email.</description>
-        <conformsToType>document</conformsToType>
+        <conformsToType>fileType</conformsToType>
       </resourceListArgument>
+      <boolArgument>
+        <alias>sendEmailNoReply</alias>
+        <name>No Reply</name>
+        <description>Indicates that no reply to this email is possible. This will cause the generated email's From and Reply To addresses to be the NoReply email addresss.</description>
+      </boolArgument>      
       <resourceArgument>
-        <alias>sendEmailInbox</alias>
-        <name>From Inbox</name>
-        <description>The inbox that will be used as the 'From' address.</description>
+        <alias>sendEmailFromInbox</alias>
+        <name>Reply to Inbox</name>
+        <description>The inbox that will be used as the 'From' address. When a user replies to this email this is the inbox into which the reply email will appear.</description>
         <conformsToType>inbox</conformsToType>
-        <argumentIsMandatory>true</argumentIsMandatory>
       </resourceArgument>
     </inputArguments>
+    <outputArguments>
+      <resourceListArgument>
+        <alias>outSentEmailMessages</alias>
+        <name>Sent Emails</name>
+        <description>The list email messages that was sent</description>
+        <conformsToType>sentEmailMessage</conformsToType>
+      </resourceListArgument>
+
+    </outputArguments>
     <exitPoints>
       <exitPoint>
         <alias>sendEmailSucceededSend</alias>

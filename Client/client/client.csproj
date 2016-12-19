@@ -1216,6 +1216,7 @@
     <Content Include="src\app\workflow\typeTemplates\launchTargetCampaignActivity.controller.js" />
     <Content Include="src\app\workflow\typeTemplates\launchTargetCampaignActivity.tpl.html" />
     <Content Include="src\app\workflow\typeTemplates\notifyActivity.tpl.html" />
+    <Content Include="src\app\workflow\typeTemplates\sendEmailActivity.controller.js" />
     <Content Include="src\app\workflow\typeTemplates\reviewSurveyActivity.controller.js" />
     <Content Include="src\app\workflow\typeTemplates\notifyActivity.controller.js" />
     <Content Include="src\app\workflow\typeTemplates\dummy.tpl.html" />

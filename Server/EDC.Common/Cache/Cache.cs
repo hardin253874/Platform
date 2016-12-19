@@ -22,7 +22,7 @@ namespace EDC.Cache
         {
             if (cacheName == null)
             {
-                throw new ArgumentNullException("cacheName");
+                throw new ArgumentNullException( nameof( cacheName ) );
             }
 
             _provider = Default.GetProvider<TKey, TValue>(cacheName);
@@ -36,7 +36,7 @@ namespace EDC.Cache
 		{
 			if ( cacheProvider == null )
 			{
-				throw new ArgumentNullException( "cacheProvider" );
+				throw new ArgumentNullException( nameof( cacheProvider ) );
 			}
 
 			_provider = cacheProvider;

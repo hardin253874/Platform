@@ -11925,6 +11925,1560 @@ namespace EDC.ReadiNow.Model
 	}
 
 	/// <summary>
+	/// Implementation for the <see cref="SendEmailActivityDistributionTypeEnum" /> class.
+	/// </summary>
+	[Serializable]
+	[DebuggerStepThrough]
+	[ModelClass("core:sendEmailActivityDistributionTypeEnum")]
+	public class SendEmailActivityDistributionTypeEnum : StrongEntity
+	{
+		/// <summary>
+		/// Public constructor.
+		/// </summary>
+		public SendEmailActivityDistributionTypeEnum( )
+			: base( typeof( SendEmailActivityDistributionTypeEnum ))
+		{
+
+		}
+
+		/// <summary>
+		/// Internal constructor.
+		/// </summary>
+		internal SendEmailActivityDistributionTypeEnum( IActivationData activationData )
+			: base( activationData )
+		{
+
+		}
+
+		#region SendEmailActivityDistributionTypeEnum Public Fields
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static AliasField Alias_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.Alias_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static BoolField CanDelete_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.CanDelete_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static BoolField CanModify_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.CanModify_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static BoolField CanModifyProtectedResource_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.ProtectableType.CanModifyProtectedResource_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static DateTimeField CreatedDate_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.CreatedDate_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static StringField Description_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.Description_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static IntField EnumOrder_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.EnumValue.EnumOrder_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static DateTimeField ModifiedDate_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.ModifiedDate_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static StringField Name_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.Name_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity CreatedBy_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.CreatedBy_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity EnumFormattingRule_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.EnumValue.EnumFormattingRule_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity EnumOwner_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.EnumValue.EnumOwner_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity Flags_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.Flags_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity IndirectInSolution_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.IndirectInSolution_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity InSolution_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.InSolution_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity InStructureLevel_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.InStructureLevel_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity IsOfType_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.IsOfType_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity IsRootForStructureView_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.IsRootForStructureView_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity LastModifiedBy_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.LastModifiedBy_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity ResourceConsoleBehavior_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.ResourceConsoleBehavior_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity ResourceHasResourceKeyDataHashes_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.ResourceHasResourceKeyDataHashes_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity ResourceInFolder_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.ResourceInFolder_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity SecurityOwner_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.SecurityOwner_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity SelectionBehavior_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.SelectionBehavior_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity ShortcutInFolder_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.ShortcutInFolder_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the array of all fields registered against this type.
+		/// </summary>
+		public static IEntity [ ] AllFields
+		{
+			get
+			{
+				return new IEntity [ ] { SendEmailActivityDistributionTypeEnum.Alias_Field, SendEmailActivityDistributionTypeEnum.CanDelete_Field, SendEmailActivityDistributionTypeEnum.CanModify_Field, SendEmailActivityDistributionTypeEnum.CanModifyProtectedResource_Field, SendEmailActivityDistributionTypeEnum.CreatedDate_Field, SendEmailActivityDistributionTypeEnum.Description_Field, SendEmailActivityDistributionTypeEnum.EnumOrder_Field, SendEmailActivityDistributionTypeEnum.ModifiedDate_Field, SendEmailActivityDistributionTypeEnum.Name_Field, SendEmailActivityDistributionTypeEnum.CreatedBy_Field, SendEmailActivityDistributionTypeEnum.EnumFormattingRule_Field, SendEmailActivityDistributionTypeEnum.EnumOwner_Field, SendEmailActivityDistributionTypeEnum.Flags_Field, SendEmailActivityDistributionTypeEnum.IndirectInSolution_Field, SendEmailActivityDistributionTypeEnum.InSolution_Field, SendEmailActivityDistributionTypeEnum.InStructureLevel_Field, SendEmailActivityDistributionTypeEnum.IsOfType_Field, SendEmailActivityDistributionTypeEnum.IsRootForStructureView_Field, SendEmailActivityDistributionTypeEnum.LastModifiedBy_Field, SendEmailActivityDistributionTypeEnum.ResourceConsoleBehavior_Field, SendEmailActivityDistributionTypeEnum.ResourceHasResourceKeyDataHashes_Field, SendEmailActivityDistributionTypeEnum.ResourceInFolder_Field, SendEmailActivityDistributionTypeEnum.SecurityOwner_Field, SendEmailActivityDistributionTypeEnum.SelectionBehavior_Field, SendEmailActivityDistributionTypeEnum.ShortcutInFolder_Field };
+			}
+		}
+
+		#endregion SendEmailActivityDistributionTypeEnum Public Fields
+
+		#region SendEmailActivityDistributionTypeEnum Public Properties
+
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public string Alias
+		{
+			get
+			{
+				return ( string ) this.GetField( "core:alias" );
+			}
+			set
+			{
+				this.SetField( "core:alias", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public bool? CanDelete
+		{
+			get
+			{
+				return ( bool? ) this.GetField( "core:canDelete" );
+			}
+			set
+			{
+				this.SetField( "core:canDelete", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public bool? CanModify
+		{
+			get
+			{
+				return ( bool? ) this.GetField( "core:canModify" );
+			}
+			set
+			{
+				this.SetField( "core:canModify", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public bool? CanModifyProtectedResource
+		{
+			get
+			{
+				return ( bool? ) this.GetField( "core:canModifyProtectedResource" );
+			}
+			set
+			{
+				this.SetField( "core:canModifyProtectedResource", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public DateTime? CreatedDate
+		{
+			get
+			{
+				return ( DateTime? ) this.GetField( "core:createdDate" );
+			}
+			set
+			{
+				this.SetField( "core:createdDate", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public string Description
+		{
+			get
+			{
+				return ( string ) this.GetField( "core:description" );
+			}
+			set
+			{
+				this.SetField( "core:description", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public int? EnumOrder
+		{
+			get
+			{
+				return ( int? ) this.GetField( "core:enumOrder" );
+			}
+			set
+			{
+				this.SetField( "core:enumOrder", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public DateTime? ModifiedDate
+		{
+			get
+			{
+				return ( DateTime? ) this.GetField( "core:modifiedDate" );
+			}
+			set
+			{
+				this.SetField( "core:modifiedDate", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public string Name
+		{
+			get
+			{
+				return ( string ) this.GetField( "core:name" );
+			}
+			set
+			{
+				this.SetField( "core:name", value);
+			}
+		}
+
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public UserAccount CreatedBy
+		{
+			get
+			{
+				return this.GetLookup<UserAccount>( "core:createdBy", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<UserAccount>( "core:createdBy", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public FormattingRule EnumFormattingRule
+		{
+			get
+			{
+				return this.GetLookup<FormattingRule>( "core:enumFormattingRule", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<FormattingRule>( "core:enumFormattingRule", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public EnumType EnumOwner
+		{
+			get
+			{
+				return this.GetLookup<EnumType>( "core:enumOwner", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<EnumType>( "core:enumOwner", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public IEntityCollection<ResourceFlagsEnum> Flags
+		{
+			get
+			{
+				return this.GetRelationships<ResourceFlagsEnum>( "core:flags", Direction.Forward ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<ResourceFlagsEnum>( "core:flags", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the enumeration value.
+		/// </summary>
+		public ResourceFlagsEnum_Enumeration? Flags_Enum
+		{
+			get
+			{
+				return GetMultiEnum<ResourceFlagsEnum, ResourceFlagsEnum_Enumeration>( "core:flags", Direction.Forward, ResourceFlagsEnum.ConvertAliasToEnum, (enum1, enum2) => enum1 | enum2 );
+			}
+			set
+			{
+				if ( value == null )
+				{
+					this.SetRelationships( "core:flags", null, Direction.Forward );
+					return;
+				}
+				var relationships = new List<ResourceFlagsEnum>( );
+
+				foreach ( ResourceFlagsEnum_Enumeration enumValue in ResourceFlagsEnum.GetEnumValues( value.Value ) )
+				{
+				    relationships.Add( EDC.ReadiNow.Model.Entity.Get<ResourceFlagsEnum>( EntityRefHelper.ConvertAliasWithNamespace( ResourceFlagsEnum.ConvertEnumToAlias( enumValue ) ) ) );
+				}
+
+				this.SetRelationships( "core:flags", new EntityRelationshipCollection<ResourceFlagsEnum>( relationships ), Direction.Forward );
+			}
+		}		
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public Solution IndirectInSolution
+		{
+			get
+			{
+				return this.GetLookup<Solution>( "core:indirectInSolution", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<Solution>( "core:indirectInSolution", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public Solution InSolution
+		{
+			get
+			{
+				return this.GetLookup<Solution>( "core:inSolution", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<Solution>( "core:inSolution", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public IEntityCollection<StructureLevel> InStructureLevel
+		{
+			get
+			{
+				return this.GetRelationships<StructureLevel>( "core:inStructureLevel", Direction.Forward ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<StructureLevel>( "core:inStructureLevel", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public IEntityCollection<EntityType> IsOfType
+		{
+			get
+			{
+				return this.GetRelationships<EntityType>( "core:isOfType", Direction.Forward ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<EntityType>( "core:isOfType", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public IEntityCollection<StructureView> IsRootForStructureView
+		{
+			get
+			{
+				return this.GetRelationships<StructureView>( "core:isRootForStructureView", Direction.Forward ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<StructureView>( "core:isRootForStructureView", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public UserAccount LastModifiedBy
+		{
+			get
+			{
+				return this.GetLookup<UserAccount>( "core:lastModifiedBy", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<UserAccount>( "core:lastModifiedBy", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public ConsoleBehavior ResourceConsoleBehavior
+		{
+			get
+			{
+				return this.GetLookup<ConsoleBehavior>( "console:resourceConsoleBehavior", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<ConsoleBehavior>( "console:resourceConsoleBehavior", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public IEntityCollection<ResourceKeyDataHash> ResourceHasResourceKeyDataHashes
+		{
+			get
+			{
+				return this.GetRelationships<ResourceKeyDataHash>( "core:resourceHasResourceKeyDataHashes", Direction.Forward ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<ResourceKeyDataHash>( "core:resourceHasResourceKeyDataHashes", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public IEntityCollection<NavContainer> ResourceInFolder
+		{
+			get
+			{
+				return this.GetRelationships<NavContainer>( "console:resourceInFolder", Direction.Forward ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<NavContainer>( "console:resourceInFolder", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public UserAccount SecurityOwner
+		{
+			get
+			{
+				return this.GetLookup<UserAccount>( "core:securityOwner", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<UserAccount>( "core:securityOwner", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public ConsoleBehavior SelectionBehavior
+		{
+			get
+			{
+				return this.GetLookup<ConsoleBehavior>( "console:selectionBehavior", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<ConsoleBehavior>( "console:selectionBehavior", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public IEntityCollection<NavContainer> ShortcutInFolder
+		{
+			get
+			{
+				return this.GetRelationships<NavContainer>( "console:shortcutInFolder", Direction.Forward ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<NavContainer>( "console:shortcutInFolder", value, Direction.Forward );
+			}
+		}
+
+
+
+		#endregion SendEmailActivityDistributionTypeEnum Public Properties
+
+		#region Additional Static Content
+
+		/// <summary>
+        /// Returns all instances of the SendEmailActivityDistributionTypeEnum type
+        /// </summary>
+        /// <returns>An enumeration of instances of this type.</returns>
+        public static EntityType SendEmailActivityDistributionTypeEnum_Type
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Entity.Get<EntityType>("core:sendEmailActivityDistributionTypeEnum");
+			}
+		}
+		
+		#endregion Additional Static Content
+
+		#region Static Enum Converters
+		/// <summary>
+		/// Converts an enumValue alias to a SendEmailActivityDistributionTypeEnum_Enumeration value.
+		/// </summary>
+		public static SendEmailActivityDistributionTypeEnum_Enumeration? ConvertAliasToEnum(string nsAlias)
+		{
+			switch (nsAlias)
+			{
+				case "core:sendEmailActivityGroupDistribution": return SendEmailActivityDistributionTypeEnum_Enumeration.SendEmailActivityGroupDistribution;
+				case "core:sendEmailActivityIndividualDistribution": return SendEmailActivityDistributionTypeEnum_Enumeration.SendEmailActivityIndividualDistribution;
+				default: return null;
+			}
+		}
+	
+		/// <summary>
+		/// Converts a SendEmailActivityDistributionTypeEnum_Enumeration to its alias string.
+		/// </summary>
+		public static string ConvertEnumToAlias(SendEmailActivityDistributionTypeEnum_Enumeration value)
+		{
+			switch (value)
+			{
+				case SendEmailActivityDistributionTypeEnum_Enumeration.SendEmailActivityGroupDistribution: return "core:sendEmailActivityGroupDistribution";
+				case SendEmailActivityDistributionTypeEnum_Enumeration.SendEmailActivityIndividualDistribution: return "core:sendEmailActivityIndividualDistribution";
+				default: return null;
+			}
+		}
+
+		/// <summary>
+		/// Gets the individual values that comprise the enumeration.
+		/// </summary>
+		public static IEnumerable<SendEmailActivityDistributionTypeEnum_Enumeration> GetEnumValues( SendEmailActivityDistributionTypeEnum_Enumeration value )
+		{
+			foreach ( object o in Enum.GetValues( typeof( SendEmailActivityDistributionTypeEnum_Enumeration ) ) )
+			{
+				if ( ( ( int ) o & ( int ) ( object ) value ) != 0 )
+				{
+					yield return ( SendEmailActivityDistributionTypeEnum_Enumeration ) o;
+				}
+			}
+		}
+		#endregion
+
+	}
+
+	/// <summary>
+	/// SendEmailActivityDistributionTypeEnum enumeration type.
+	/// </summary>
+	public enum SendEmailActivityDistributionTypeEnum_Enumeration : ulong
+	{
+		/// <summary>
+		/// 
+		/// </summary>
+		SendEmailActivityGroupDistribution = 1,
+
+		/// <summary>
+		/// 
+		/// </summary>
+		SendEmailActivityIndividualDistribution = 2,
+
+	}
+
+	/// <summary>
+	/// Implementation for the <see cref="SendEmailActivityRecipientsTypeEnum" /> class.
+	/// </summary>
+	[Serializable]
+	[DebuggerStepThrough]
+	[ModelClass("core:sendEmailActivityRecipientsTypeEnum")]
+	public class SendEmailActivityRecipientsTypeEnum : StrongEntity
+	{
+		/// <summary>
+		/// Public constructor.
+		/// </summary>
+		public SendEmailActivityRecipientsTypeEnum( )
+			: base( typeof( SendEmailActivityRecipientsTypeEnum ))
+		{
+
+		}
+
+		/// <summary>
+		/// Internal constructor.
+		/// </summary>
+		internal SendEmailActivityRecipientsTypeEnum( IActivationData activationData )
+			: base( activationData )
+		{
+
+		}
+
+		#region SendEmailActivityRecipientsTypeEnum Public Fields
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static AliasField Alias_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.Alias_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static BoolField CanDelete_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.CanDelete_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static BoolField CanModify_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.CanModify_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static BoolField CanModifyProtectedResource_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.ProtectableType.CanModifyProtectedResource_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static DateTimeField CreatedDate_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.CreatedDate_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static StringField Description_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.Description_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static IntField EnumOrder_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.EnumValue.EnumOrder_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static DateTimeField ModifiedDate_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.ModifiedDate_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static StringField Name_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.Name_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity CreatedBy_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.CreatedBy_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity EnumFormattingRule_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.EnumValue.EnumFormattingRule_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity EnumOwner_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.EnumValue.EnumOwner_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity Flags_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.Flags_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity IndirectInSolution_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.IndirectInSolution_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity InSolution_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.InSolution_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity InStructureLevel_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.InStructureLevel_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity IsOfType_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.IsOfType_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity IsRootForStructureView_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.IsRootForStructureView_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity LastModifiedBy_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.LastModifiedBy_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity ResourceConsoleBehavior_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.ResourceConsoleBehavior_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity ResourceHasResourceKeyDataHashes_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.ResourceHasResourceKeyDataHashes_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity ResourceInFolder_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.ResourceInFolder_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity SecurityOwner_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.SecurityOwner_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity SelectionBehavior_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.SelectionBehavior_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited  forward relationship.
+		/// </summary>
+		public static IEntity ShortcutInFolder_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Resource.ShortcutInFolder_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the array of all fields registered against this type.
+		/// </summary>
+		public static IEntity [ ] AllFields
+		{
+			get
+			{
+				return new IEntity [ ] { SendEmailActivityRecipientsTypeEnum.Alias_Field, SendEmailActivityRecipientsTypeEnum.CanDelete_Field, SendEmailActivityRecipientsTypeEnum.CanModify_Field, SendEmailActivityRecipientsTypeEnum.CanModifyProtectedResource_Field, SendEmailActivityRecipientsTypeEnum.CreatedDate_Field, SendEmailActivityRecipientsTypeEnum.Description_Field, SendEmailActivityRecipientsTypeEnum.EnumOrder_Field, SendEmailActivityRecipientsTypeEnum.ModifiedDate_Field, SendEmailActivityRecipientsTypeEnum.Name_Field, SendEmailActivityRecipientsTypeEnum.CreatedBy_Field, SendEmailActivityRecipientsTypeEnum.EnumFormattingRule_Field, SendEmailActivityRecipientsTypeEnum.EnumOwner_Field, SendEmailActivityRecipientsTypeEnum.Flags_Field, SendEmailActivityRecipientsTypeEnum.IndirectInSolution_Field, SendEmailActivityRecipientsTypeEnum.InSolution_Field, SendEmailActivityRecipientsTypeEnum.InStructureLevel_Field, SendEmailActivityRecipientsTypeEnum.IsOfType_Field, SendEmailActivityRecipientsTypeEnum.IsRootForStructureView_Field, SendEmailActivityRecipientsTypeEnum.LastModifiedBy_Field, SendEmailActivityRecipientsTypeEnum.ResourceConsoleBehavior_Field, SendEmailActivityRecipientsTypeEnum.ResourceHasResourceKeyDataHashes_Field, SendEmailActivityRecipientsTypeEnum.ResourceInFolder_Field, SendEmailActivityRecipientsTypeEnum.SecurityOwner_Field, SendEmailActivityRecipientsTypeEnum.SelectionBehavior_Field, SendEmailActivityRecipientsTypeEnum.ShortcutInFolder_Field };
+			}
+		}
+
+		#endregion SendEmailActivityRecipientsTypeEnum Public Fields
+
+		#region SendEmailActivityRecipientsTypeEnum Public Properties
+
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public string Alias
+		{
+			get
+			{
+				return ( string ) this.GetField( "core:alias" );
+			}
+			set
+			{
+				this.SetField( "core:alias", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public bool? CanDelete
+		{
+			get
+			{
+				return ( bool? ) this.GetField( "core:canDelete" );
+			}
+			set
+			{
+				this.SetField( "core:canDelete", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public bool? CanModify
+		{
+			get
+			{
+				return ( bool? ) this.GetField( "core:canModify" );
+			}
+			set
+			{
+				this.SetField( "core:canModify", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public bool? CanModifyProtectedResource
+		{
+			get
+			{
+				return ( bool? ) this.GetField( "core:canModifyProtectedResource" );
+			}
+			set
+			{
+				this.SetField( "core:canModifyProtectedResource", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public DateTime? CreatedDate
+		{
+			get
+			{
+				return ( DateTime? ) this.GetField( "core:createdDate" );
+			}
+			set
+			{
+				this.SetField( "core:createdDate", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public string Description
+		{
+			get
+			{
+				return ( string ) this.GetField( "core:description" );
+			}
+			set
+			{
+				this.SetField( "core:description", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public int? EnumOrder
+		{
+			get
+			{
+				return ( int? ) this.GetField( "core:enumOrder" );
+			}
+			set
+			{
+				this.SetField( "core:enumOrder", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public DateTime? ModifiedDate
+		{
+			get
+			{
+				return ( DateTime? ) this.GetField( "core:modifiedDate" );
+			}
+			set
+			{
+				this.SetField( "core:modifiedDate", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public string Name
+		{
+			get
+			{
+				return ( string ) this.GetField( "core:name" );
+			}
+			set
+			{
+				this.SetField( "core:name", value);
+			}
+		}
+
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public UserAccount CreatedBy
+		{
+			get
+			{
+				return this.GetLookup<UserAccount>( "core:createdBy", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<UserAccount>( "core:createdBy", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public FormattingRule EnumFormattingRule
+		{
+			get
+			{
+				return this.GetLookup<FormattingRule>( "core:enumFormattingRule", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<FormattingRule>( "core:enumFormattingRule", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public EnumType EnumOwner
+		{
+			get
+			{
+				return this.GetLookup<EnumType>( "core:enumOwner", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<EnumType>( "core:enumOwner", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public IEntityCollection<ResourceFlagsEnum> Flags
+		{
+			get
+			{
+				return this.GetRelationships<ResourceFlagsEnum>( "core:flags", Direction.Forward ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<ResourceFlagsEnum>( "core:flags", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the enumeration value.
+		/// </summary>
+		public ResourceFlagsEnum_Enumeration? Flags_Enum
+		{
+			get
+			{
+				return GetMultiEnum<ResourceFlagsEnum, ResourceFlagsEnum_Enumeration>( "core:flags", Direction.Forward, ResourceFlagsEnum.ConvertAliasToEnum, (enum1, enum2) => enum1 | enum2 );
+			}
+			set
+			{
+				if ( value == null )
+				{
+					this.SetRelationships( "core:flags", null, Direction.Forward );
+					return;
+				}
+				var relationships = new List<ResourceFlagsEnum>( );
+
+				foreach ( ResourceFlagsEnum_Enumeration enumValue in ResourceFlagsEnum.GetEnumValues( value.Value ) )
+				{
+				    relationships.Add( EDC.ReadiNow.Model.Entity.Get<ResourceFlagsEnum>( EntityRefHelper.ConvertAliasWithNamespace( ResourceFlagsEnum.ConvertEnumToAlias( enumValue ) ) ) );
+				}
+
+				this.SetRelationships( "core:flags", new EntityRelationshipCollection<ResourceFlagsEnum>( relationships ), Direction.Forward );
+			}
+		}		
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public Solution IndirectInSolution
+		{
+			get
+			{
+				return this.GetLookup<Solution>( "core:indirectInSolution", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<Solution>( "core:indirectInSolution", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public Solution InSolution
+		{
+			get
+			{
+				return this.GetLookup<Solution>( "core:inSolution", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<Solution>( "core:inSolution", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public IEntityCollection<StructureLevel> InStructureLevel
+		{
+			get
+			{
+				return this.GetRelationships<StructureLevel>( "core:inStructureLevel", Direction.Forward ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<StructureLevel>( "core:inStructureLevel", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public IEntityCollection<EntityType> IsOfType
+		{
+			get
+			{
+				return this.GetRelationships<EntityType>( "core:isOfType", Direction.Forward ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<EntityType>( "core:isOfType", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public IEntityCollection<StructureView> IsRootForStructureView
+		{
+			get
+			{
+				return this.GetRelationships<StructureView>( "core:isRootForStructureView", Direction.Forward ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<StructureView>( "core:isRootForStructureView", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public UserAccount LastModifiedBy
+		{
+			get
+			{
+				return this.GetLookup<UserAccount>( "core:lastModifiedBy", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<UserAccount>( "core:lastModifiedBy", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public ConsoleBehavior ResourceConsoleBehavior
+		{
+			get
+			{
+				return this.GetLookup<ConsoleBehavior>( "console:resourceConsoleBehavior", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<ConsoleBehavior>( "console:resourceConsoleBehavior", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public IEntityCollection<ResourceKeyDataHash> ResourceHasResourceKeyDataHashes
+		{
+			get
+			{
+				return this.GetRelationships<ResourceKeyDataHash>( "core:resourceHasResourceKeyDataHashes", Direction.Forward ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<ResourceKeyDataHash>( "core:resourceHasResourceKeyDataHashes", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public IEntityCollection<NavContainer> ResourceInFolder
+		{
+			get
+			{
+				return this.GetRelationships<NavContainer>( "console:resourceInFolder", Direction.Forward ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<NavContainer>( "console:resourceInFolder", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public UserAccount SecurityOwner
+		{
+			get
+			{
+				return this.GetLookup<UserAccount>( "core:securityOwner", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<UserAccount>( "core:securityOwner", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public ConsoleBehavior SelectionBehavior
+		{
+			get
+			{
+				return this.GetLookup<ConsoleBehavior>( "console:selectionBehavior", Direction.Forward );
+			}
+			set
+			{
+				this.SetLookup<ConsoleBehavior>( "console:selectionBehavior", value, Direction.Forward );
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited forward relationship.
+		/// </summary>
+		public IEntityCollection<NavContainer> ShortcutInFolder
+		{
+			get
+			{
+				return this.GetRelationships<NavContainer>( "console:shortcutInFolder", Direction.Forward ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<NavContainer>( "console:shortcutInFolder", value, Direction.Forward );
+			}
+		}
+
+
+
+		#endregion SendEmailActivityRecipientsTypeEnum Public Properties
+
+		#region Additional Static Content
+
+		/// <summary>
+        /// Returns all instances of the SendEmailActivityRecipientsTypeEnum type
+        /// </summary>
+        /// <returns>An enumeration of instances of this type.</returns>
+        public static EntityType SendEmailActivityRecipientsTypeEnum_Type
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Entity.Get<EntityType>("core:sendEmailActivityRecipientsTypeEnum");
+			}
+		}
+		
+		#endregion Additional Static Content
+
+		#region Static Enum Converters
+		/// <summary>
+		/// Converts an enumValue alias to a SendEmailActivityRecipientsTypeEnum_Enumeration value.
+		/// </summary>
+		public static SendEmailActivityRecipientsTypeEnum_Enumeration? ConvertAliasToEnum(string nsAlias)
+		{
+			switch (nsAlias)
+			{
+				case "core:sendEmailActivityRecipientsList": return SendEmailActivityRecipientsTypeEnum_Enumeration.SendEmailActivityRecipientsList;
+				case "core:sendEmailActivityRecipientsAddress": return SendEmailActivityRecipientsTypeEnum_Enumeration.SendEmailActivityRecipientsAddress;
+				default: return null;
+			}
+		}
+	
+		/// <summary>
+		/// Converts a SendEmailActivityRecipientsTypeEnum_Enumeration to its alias string.
+		/// </summary>
+		public static string ConvertEnumToAlias(SendEmailActivityRecipientsTypeEnum_Enumeration value)
+		{
+			switch (value)
+			{
+				case SendEmailActivityRecipientsTypeEnum_Enumeration.SendEmailActivityRecipientsList: return "core:sendEmailActivityRecipientsList";
+				case SendEmailActivityRecipientsTypeEnum_Enumeration.SendEmailActivityRecipientsAddress: return "core:sendEmailActivityRecipientsAddress";
+				default: return null;
+			}
+		}
+
+		/// <summary>
+		/// Gets the individual values that comprise the enumeration.
+		/// </summary>
+		public static IEnumerable<SendEmailActivityRecipientsTypeEnum_Enumeration> GetEnumValues( SendEmailActivityRecipientsTypeEnum_Enumeration value )
+		{
+			foreach ( object o in Enum.GetValues( typeof( SendEmailActivityRecipientsTypeEnum_Enumeration ) ) )
+			{
+				if ( ( ( int ) o & ( int ) ( object ) value ) != 0 )
+				{
+					yield return ( SendEmailActivityRecipientsTypeEnum_Enumeration ) o;
+				}
+			}
+		}
+		#endregion
+
+	}
+
+	/// <summary>
+	/// SendEmailActivityRecipientsTypeEnum enumeration type.
+	/// </summary>
+	public enum SendEmailActivityRecipientsTypeEnum_Enumeration : ulong
+	{
+		/// <summary>
+		/// 
+		/// </summary>
+		SendEmailActivityRecipientsList = 1,
+
+		/// <summary>
+		/// 
+		/// </summary>
+		SendEmailActivityRecipientsAddress = 2,
+
+	}
+
+	/// <summary>
 	/// A record containing details of a notification to a person.
 	/// </summary>
 	[Serializable]
@@ -12837,6 +14391,17 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Public static accessor to the inherited field.
 		/// </summary>
+		public static StringField EmBCC_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.EmailMessage.EmBCC_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
 		public static StringField EmBody_Field
 		{
 			get
@@ -12864,6 +14429,17 @@ namespace EDC.ReadiNow.Model
 			get
 			{
 				return EDC.ReadiNow.Model.EmailMessage.EmFrom_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static StringField EmFromName_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.EmailMessage.EmFromName_Field;
 			}
 		}
 
@@ -13123,7 +14699,7 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Public static accessor to the direct reverse relationship.
 		/// </summary>
-		public static IEntity SentFromInbox_Field
+		public static IEntity SentFromEmailServer_Field
 		{
 			get
 			{
@@ -13160,7 +14736,7 @@ namespace EDC.ReadiNow.Model
 		{
 			get
 			{
-				return new IEntity [ ] { SentEmailMessage.EmSentDate_Field, SentEmailMessage.SemSequenceNumber_Field, SentEmailMessage.Alias_Field, SentEmailMessage.CanDelete_Field, SentEmailMessage.CanModify_Field, SentEmailMessage.CreatedDate_Field, SentEmailMessage.Description_Field, SentEmailMessage.EmBody_Field, SentEmailMessage.EmCC_Field, SentEmailMessage.EmFrom_Field, SentEmailMessage.EmIsHtml_Field, SentEmailMessage.EmSubject_Field, SentEmailMessage.EmTo_Field, SentEmailMessage.EmUid_Field, SentEmailMessage.ModifiedDate_Field, SentEmailMessage.Name_Field, SentEmailMessage.CreatedBy_Field, SentEmailMessage.EmAttachments_Field, SentEmailMessage.Flags_Field, SentEmailMessage.IndirectInSolution_Field, SentEmailMessage.InSolution_Field, SentEmailMessage.InStructureLevel_Field, SentEmailMessage.IsOfType_Field, SentEmailMessage.IsRootForStructureView_Field, SentEmailMessage.LastModifiedBy_Field, SentEmailMessage.LogEntriesForObject_Field, SentEmailMessage.RelatedTask_Field, SentEmailMessage.ResourceConsoleBehavior_Field, SentEmailMessage.ResourceHasResourceKeyDataHashes_Field, SentEmailMessage.ResourceInFolder_Field, SentEmailMessage.ResponseToMessage_Field, SentEmailMessage.SecurityOwner_Field, SentEmailMessage.SelectionBehavior_Field, SentEmailMessage.SentFromInbox_Field, SentEmailMessage.ShortcutInFolder_Field, SentEmailMessage.TasksForRecord_Field };
+				return new IEntity [ ] { SentEmailMessage.EmSentDate_Field, SentEmailMessage.SemSequenceNumber_Field, SentEmailMessage.Alias_Field, SentEmailMessage.CanDelete_Field, SentEmailMessage.CanModify_Field, SentEmailMessage.CreatedDate_Field, SentEmailMessage.Description_Field, SentEmailMessage.EmBCC_Field, SentEmailMessage.EmBody_Field, SentEmailMessage.EmCC_Field, SentEmailMessage.EmFrom_Field, SentEmailMessage.EmFromName_Field, SentEmailMessage.EmIsHtml_Field, SentEmailMessage.EmSubject_Field, SentEmailMessage.EmTo_Field, SentEmailMessage.EmUid_Field, SentEmailMessage.ModifiedDate_Field, SentEmailMessage.Name_Field, SentEmailMessage.CreatedBy_Field, SentEmailMessage.EmAttachments_Field, SentEmailMessage.Flags_Field, SentEmailMessage.IndirectInSolution_Field, SentEmailMessage.InSolution_Field, SentEmailMessage.InStructureLevel_Field, SentEmailMessage.IsOfType_Field, SentEmailMessage.IsRootForStructureView_Field, SentEmailMessage.LastModifiedBy_Field, SentEmailMessage.LogEntriesForObject_Field, SentEmailMessage.RelatedTask_Field, SentEmailMessage.ResourceConsoleBehavior_Field, SentEmailMessage.ResourceHasResourceKeyDataHashes_Field, SentEmailMessage.ResourceInFolder_Field, SentEmailMessage.ResponseToMessage_Field, SentEmailMessage.SecurityOwner_Field, SentEmailMessage.SelectionBehavior_Field, SentEmailMessage.SentFromEmailServer_Field, SentEmailMessage.ShortcutInFolder_Field, SentEmailMessage.TasksForRecord_Field };
 			}
 		}
 
@@ -13269,6 +14845,20 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Public accessor for the inherited field.
 		/// </summary>
+		public string EmBCC
+		{
+			get
+			{
+				return ( string ) this.GetField( "core:emBCC" );
+			}
+			set
+			{
+				this.SetField( "core:emBCC", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
 		public string EmBody
 		{
 			get
@@ -13306,6 +14896,20 @@ namespace EDC.ReadiNow.Model
 			set
 			{
 				this.SetField( "core:emFrom", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public string EmFromName
+		{
+			get
+			{
+				return ( string ) this.GetField( "core:emFromName" );
+			}
+			set
+			{
+				this.SetField( "core:emFromName", value);
 			}
 		}
 		/// <summary>
@@ -13410,15 +15014,15 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Public accessor for the inherited forward relationship.
 		/// </summary>
-		public IEntityCollection<Document> EmAttachments
+		public IEntityCollection<FileType> EmAttachments
 		{
 			get
 			{
-				return this.GetRelationships<Document>( "core:emAttachments", Direction.Forward ).Entities;
+				return this.GetRelationships<FileType>( "core:emAttachments", Direction.Forward ).Entities;
 			}
 			set
 			{
-				this.SetRelationships<Document>( "core:emAttachments", value, Direction.Forward );
+				this.SetRelationships<FileType>( "core:emAttachments", value, Direction.Forward );
 			}
 		}
 		/// <summary>
@@ -13660,15 +15264,15 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Public accessor for the directreverse relationship.
 		/// </summary>
-		public Inbox SentFromInbox
+		public TenantEmailSetting SentFromEmailServer
 		{
 			get
 			{
-				return this.GetLookup<Inbox>( "core:sentFromInbox", Direction.Reverse );
+				return this.GetLookup<TenantEmailSetting>( "core:sentFromEmailServer", Direction.Reverse );
 			}
 			set
 			{
-				this.SetLookup<Inbox>( "core:sentFromInbox", value, Direction.Reverse );
+				this.SetLookup<TenantEmailSetting>( "core:sentFromEmailServer", value, Direction.Reverse );
 			}
 		}
 		/// <summary>
@@ -13831,6 +15435,17 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Public static accessor to the inherited field.
 		/// </summary>
+		public static StringField EmBCC_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.EmailMessage.EmBCC_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
 		public static StringField EmBody_Field
 		{
 			get
@@ -13858,6 +15473,17 @@ namespace EDC.ReadiNow.Model
 			get
 			{
 				return EDC.ReadiNow.Model.EmailMessage.EmFrom_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static StringField EmFromName_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.EmailMessage.EmFromName_Field;
 			}
 		}
 
@@ -14150,11 +15776,11 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Public static accessor to the inherited  reverse relationship.
 		/// </summary>
-		public static IEntity SentFromInbox_Field
+		public static IEntity SentFromEmailServer_Field
 		{
 			get
 			{
-				return EDC.ReadiNow.Model.SentEmailMessage.SentFromInbox_Field;
+				return EDC.ReadiNow.Model.SentEmailMessage.SentFromEmailServer_Field;
 			}
 		}
 
@@ -14187,7 +15813,7 @@ namespace EDC.ReadiNow.Model
 		{
 			get
 			{
-				return new IEntity [ ] { SentICalEmailMessage.ICalTimeZone_Field, SentICalEmailMessage.Alias_Field, SentICalEmailMessage.CanDelete_Field, SentICalEmailMessage.CanModify_Field, SentICalEmailMessage.CreatedDate_Field, SentICalEmailMessage.Description_Field, SentICalEmailMessage.EmBody_Field, SentICalEmailMessage.EmCC_Field, SentICalEmailMessage.EmFrom_Field, SentICalEmailMessage.EmIsHtml_Field, SentICalEmailMessage.EmSentDate_Field, SentICalEmailMessage.EmSubject_Field, SentICalEmailMessage.EmTo_Field, SentICalEmailMessage.EmUid_Field, SentICalEmailMessage.ModifiedDate_Field, SentICalEmailMessage.Name_Field, SentICalEmailMessage.SemSequenceNumber_Field, SentICalEmailMessage.CreatedBy_Field, SentICalEmailMessage.EmAttachments_Field, SentICalEmailMessage.Flags_Field, SentICalEmailMessage.IndirectInSolution_Field, SentICalEmailMessage.InSolution_Field, SentICalEmailMessage.InStructureLevel_Field, SentICalEmailMessage.IsOfType_Field, SentICalEmailMessage.IsRootForStructureView_Field, SentICalEmailMessage.LastModifiedBy_Field, SentICalEmailMessage.LogEntriesForObject_Field, SentICalEmailMessage.OwnerEventEmail_Field, SentICalEmailMessage.RelatedTask_Field, SentICalEmailMessage.ResourceConsoleBehavior_Field, SentICalEmailMessage.ResourceHasResourceKeyDataHashes_Field, SentICalEmailMessage.ResourceInFolder_Field, SentICalEmailMessage.ResponseToMessage_Field, SentICalEmailMessage.SecurityOwner_Field, SentICalEmailMessage.SelectionBehavior_Field, SentICalEmailMessage.SentFromInbox_Field, SentICalEmailMessage.ShortcutInFolder_Field, SentICalEmailMessage.TasksForRecord_Field };
+				return new IEntity [ ] { SentICalEmailMessage.ICalTimeZone_Field, SentICalEmailMessage.Alias_Field, SentICalEmailMessage.CanDelete_Field, SentICalEmailMessage.CanModify_Field, SentICalEmailMessage.CreatedDate_Field, SentICalEmailMessage.Description_Field, SentICalEmailMessage.EmBCC_Field, SentICalEmailMessage.EmBody_Field, SentICalEmailMessage.EmCC_Field, SentICalEmailMessage.EmFrom_Field, SentICalEmailMessage.EmFromName_Field, SentICalEmailMessage.EmIsHtml_Field, SentICalEmailMessage.EmSentDate_Field, SentICalEmailMessage.EmSubject_Field, SentICalEmailMessage.EmTo_Field, SentICalEmailMessage.EmUid_Field, SentICalEmailMessage.ModifiedDate_Field, SentICalEmailMessage.Name_Field, SentICalEmailMessage.SemSequenceNumber_Field, SentICalEmailMessage.CreatedBy_Field, SentICalEmailMessage.EmAttachments_Field, SentICalEmailMessage.Flags_Field, SentICalEmailMessage.IndirectInSolution_Field, SentICalEmailMessage.InSolution_Field, SentICalEmailMessage.InStructureLevel_Field, SentICalEmailMessage.IsOfType_Field, SentICalEmailMessage.IsRootForStructureView_Field, SentICalEmailMessage.LastModifiedBy_Field, SentICalEmailMessage.LogEntriesForObject_Field, SentICalEmailMessage.OwnerEventEmail_Field, SentICalEmailMessage.RelatedTask_Field, SentICalEmailMessage.ResourceConsoleBehavior_Field, SentICalEmailMessage.ResourceHasResourceKeyDataHashes_Field, SentICalEmailMessage.ResourceInFolder_Field, SentICalEmailMessage.ResponseToMessage_Field, SentICalEmailMessage.SecurityOwner_Field, SentICalEmailMessage.SelectionBehavior_Field, SentICalEmailMessage.SentFromEmailServer_Field, SentICalEmailMessage.ShortcutInFolder_Field, SentICalEmailMessage.TasksForRecord_Field };
 			}
 		}
 
@@ -14282,6 +15908,20 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Public accessor for the inherited field.
 		/// </summary>
+		public string EmBCC
+		{
+			get
+			{
+				return ( string ) this.GetField( "core:emBCC" );
+			}
+			set
+			{
+				this.SetField( "core:emBCC", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
 		public string EmBody
 		{
 			get
@@ -14319,6 +15959,20 @@ namespace EDC.ReadiNow.Model
 			set
 			{
 				this.SetField( "core:emFrom", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public string EmFromName
+		{
+			get
+			{
+				return ( string ) this.GetField( "core:emFromName" );
+			}
+			set
+			{
+				this.SetField( "core:emFromName", value);
 			}
 		}
 		/// <summary>
@@ -14451,15 +16105,15 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Public accessor for the inherited forward relationship.
 		/// </summary>
-		public IEntityCollection<Document> EmAttachments
+		public IEntityCollection<FileType> EmAttachments
 		{
 			get
 			{
-				return this.GetRelationships<Document>( "core:emAttachments", Direction.Forward ).Entities;
+				return this.GetRelationships<FileType>( "core:emAttachments", Direction.Forward ).Entities;
 			}
 			set
 			{
-				this.SetRelationships<Document>( "core:emAttachments", value, Direction.Forward );
+				this.SetRelationships<FileType>( "core:emAttachments", value, Direction.Forward );
 			}
 		}
 		/// <summary>
@@ -14715,15 +16369,15 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Public accessor for the inherited reverse relationship.
 		/// </summary>
-		public Inbox SentFromInbox
+		public TenantEmailSetting SentFromEmailServer
 		{
 			get
 			{
-				return this.GetLookup<Inbox>( "core:sentFromInbox", Direction.Reverse );
+				return this.GetLookup<TenantEmailSetting>( "core:sentFromEmailServer", Direction.Reverse );
 			}
 			set
 			{
-				this.SetLookup<Inbox>( "core:sentFromInbox", value, Direction.Reverse );
+				this.SetLookup<TenantEmailSetting>( "core:sentFromEmailServer", value, Direction.Reverse );
 			}
 		}
 		/// <summary>

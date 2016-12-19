@@ -15,7 +15,8 @@ namespace EDC.SoftwarePlatform.Activities.Test.Bugs
     {
         [Test]
         [RunAsDefaultTenant]
-        [Category("WorkflowTests"), Category("Bug"), Category("ExtendedTests")]
+        [Category("WorkflowTests"), Category("Bug")]
+        //[Category( "ExtendedTests" )]
         // NOTE: Cannot be run in transaction
         public void Test()
         {

@@ -195,7 +195,6 @@ namespace EDC.SoftwarePlatform.Migration.Processing
         /// Determines whether [is valid XML file] [the specified path].
         /// </summary>
         /// <param name="path">The path.</param>
-        /// <param name="provider">The provider.</param>
         /// <returns>Version string, or null if invalid.</returns>
         private static Format DetermineXmlFileVersion( string path )
         {

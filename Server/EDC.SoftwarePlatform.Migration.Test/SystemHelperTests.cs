@@ -98,5 +98,51 @@ namespace EDC.SoftwarePlatform.Migration.Test
             Assert.AreEqual(settings["core:documentationUserPassword"],
                 Factory.SecuredData.Read(docoSettingsEntity.DocumentationUserPasswordSecureId.Value));
         }
+
+        [Test]
+        public void SetImapSettingsTest()
+        {
+            // get the orignal settings so that we can restore them after the test
+            var imapSettingsEntity = Entity.Get<ImapServerSettings>("core:imapServerSettingsInstance", true);
+            var orig_server = imapSettingsEntity.ImapServer;
+            var orig_port = imapSettingsEntity.ImapPort;
+            var orig_useSSL = imapSettingsEntity.ImapUseSSL;
+            var orig_account = imapSettingsEntity.ImapAccount;
+            var orig_password = (imapSettingsEntity.ImapPasswordSecureId != null) ? Factory.SecuredData.Read(imapSettingsEntity.ImapPasswordSecureId.Value) : null;
+            var orig_folder = imapSettingsEntity.ImapFolder;
+            var orig_emailDomain = imapSettingsEntity.InboxEmailAddressDomain;
+
+            string server = Guid.NewGuid().ToString("N");
+            int? port = new Random().Next(65000);
+            bool? useSSL = false;
+            string account = Guid.NewGuid().ToString("N");
+            string password = Guid.NewGuid().ToString("N");
+            string folder = Guid.NewGuid().ToString("N");
+            string emailDomain = Guid.NewGuid().ToString("N") + "@somewhere.com";
+
+            // test setting of only the password (most common scenario)
+            SystemHelper.SetIMAPServerConnectionSettings(null, null, null, null, password, null, null);
+            CacheManager.ClearCaches();
+
+            imapSettingsEntity = Entity.Get<ImapServerSettings>("core:imapServerSettingsInstance", true);
+            Assert.AreEqual(password, Factory.SecuredData.Read(imapSettingsEntity.ImapPasswordSecureId.Value));
+
+            // test setting of all fields at once.
+            SystemHelper.SetIMAPServerConnectionSettings(server, port, useSSL, account, password, folder, emailDomain);
+            CacheManager.ClearCaches();
+
+            imapSettingsEntity = Entity.Get<ImapServerSettings>("core:imapServerSettingsInstance", true);
+            Assert.AreEqual(server, imapSettingsEntity.ImapServer);
+            Assert.AreEqual(port, imapSettingsEntity.ImapPort);
+            Assert.AreEqual(useSSL, imapSettingsEntity.ImapUseSSL);
+            Assert.AreEqual(account, imapSettingsEntity.ImapAccount);
+            Assert.AreEqual(password, Factory.SecuredData.Read(imapSettingsEntity.ImapPasswordSecureId.Value));
+            Assert.AreEqual(folder, imapSettingsEntity.ImapFolder);
+            Assert.AreEqual(emailDomain, imapSettingsEntity.InboxEmailAddressDomain);
+
+            // restore the original settings
+            SystemHelper.SetIMAPServerConnectionSettings(orig_server, orig_port, orig_useSSL, orig_account, orig_password, orig_folder, orig_emailDomain);
+
+        }
     }
 }

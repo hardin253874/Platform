@@ -24,20 +24,73 @@ namespace EDC.SoftwarePlatform.Migration.Processing
         {
             Guid appGuid;
 
-	        var result = Guid.TryParse( applicationNameOrGuid, out appGuid ) ? GetResourceIdByGuid( "app", 0, appGuid ) : GetResourceIdByName<App>( applicationNameOrGuid );
+	        var result = Guid.TryParse( applicationNameOrGuid, out appGuid ) ? GetGlobalApplicationByGuid( appGuid ) : GetResourceIdByName<App>( applicationNameOrGuid );
 
             return result;
         }
 
-		/// <summary>
-		///     Look up a application by name.
-		/// </summary>
-		/// <param name="applicationName">Name of the application</param>
-		/// <returns>
-		///     The application ID.
-		/// </returns>
-		/// <exception cref="System.Exception">Multiple application found with name  + applicationName</exception>
-		public static long GetApplicationIdByName( string applicationName )
+        /// <summary>
+        ///     Looks up an application in the global tenant by name or guid.
+        /// </summary>
+        /// <param name="appGuid">The Application ID guid</param>
+        /// <returns>Entity ID of the app resource.</returns>
+        private static long GetGlobalApplicationByGuid( Guid appGuid )
+        {
+            long applicationId = -1;
+
+            using ( DatabaseContext ctx = DatabaseContext.GetContext( ) )
+            {
+                const string sql = @"
+DECLARE @tenantId BIGINT = 0
+DECLARE @isOfType BIGINT = dbo.fnAliasNsId( 'isOfType', 'core', @tenantId )
+DECLARE @app BIGINT = dbo.fnAliasNsId( 'app', 'core', @tenantId )
+DECLARE @applicationId BIGINT = dbo.fnAliasNsId( 'applicationId', 'core', @tenantId )
+
+SELECT
+	e.Id
+FROM
+	Entity e
+INNER JOIN
+	Relationship r ON
+		e.Id = r.FromId AND
+		r.TenantId = e.TenantId AND
+		r.TypeId = @isOfType AND
+		r.ToId = @app
+INNER JOIN
+	Data_Guid f ON
+		e.Id = f.EntityId AND
+		f.TenantId = e.TenantId AND
+		f.FieldId = @applicationId AND
+		f.Data = @appGuid
+WHERE
+	f.Data = @appGuid AND
+	e.TenantId = @tenantId";
+
+                using ( IDbCommand command = ctx.CreateCommand( sql ) )
+                {
+                    ctx.AddParameter( command, "@appGuid", DbType.Guid, appGuid );
+
+                    object applicationIdObject = command.ExecuteScalar( );
+
+                    if ( applicationIdObject != null && applicationIdObject != DBNull.Value )
+                    {
+                        applicationId = (long)applicationIdObject;
+                    }
+                }
+            }
+
+            return applicationId;
+        }
+
+        /// <summary>
+        ///     Look up a application by name.
+        /// </summary>
+        /// <param name="applicationName">Name of the application</param>
+        /// <returns>
+        ///     The application ID.
+        /// </returns>
+        /// <exception cref="System.Exception">Multiple application found with name  + applicationName</exception>
+        public static long GetApplicationIdByName( string applicationName )
 		{
             return GetResourceIdByName<Solution>( applicationName );
 		}
@@ -49,7 +102,7 @@ namespace EDC.SoftwarePlatform.Migration.Processing
 		/// <returns></returns>
 		public static long GetApplicationIdByGuid( Guid applicationGuid )
 		{
-            return GetResourceIdByGuid( "solution", RequestContext.TenantId, applicationGuid );
+            return GetResourceIdByGuid( RequestContext.TenantId, applicationGuid );
         }
 
         /// <summary>
@@ -82,7 +135,7 @@ namespace EDC.SoftwarePlatform.Migration.Processing
         /// <summary>
         ///     Gets a resource by its guid.
         /// </summary>
-        private static long GetResourceIdByGuid( string typeAlias, long tenantId, Guid upgradeId )
+        private static long GetResourceIdByGuid( long tenantId, Guid upgradeId )
         {
 			long applicationId = -1;
 
@@ -108,7 +161,6 @@ WHERE
 
 				using ( IDbCommand command = ctx.CreateCommand( sql ) )
 				{
-                    ctx.AddParameter( command, "@typeAlias", DbType.String, typeAlias );
                     ctx.AddParameter( command, "@upgradeId", DbType.Guid, upgradeId );
 					ctx.AddParameter( command, "@tenantId", DbType.Int64, tenantId );
 
@@ -860,6 +912,62 @@ WHERE
             }
 
             return true;
+        }
+
+        /// <summary>
+	    /// Sets the IMAP server connection details into the global tenant.
+	    /// </summary>
+	    /// <returns></returns>
+	    /// <exception cref="ArgumentNullException"></exception>
+	    public static bool SetIMAPServerConnectionSettings(string server, int? port, bool? useSSL, string account, string password, string folder, string emailDomain)
+        {
+            bool changeMade = false;
+            using (new GlobalAdministratorContext())
+            {
+                var imapSettingsEntity = Entity.Get<ImapServerSettings>("core:imapServerSettingsInstance", true);
+                
+                if (!string.IsNullOrEmpty(server))
+                {
+                    imapSettingsEntity.SetField("core:imapServer", server);
+                    changeMade = true;
+                }
+                if (port.HasValue)
+                {
+                    imapSettingsEntity.SetField("core:imapPort", port.Value);
+                    changeMade = true;
+                }
+                if (useSSL.HasValue)
+                {
+                    imapSettingsEntity.SetField("core:imapUseSSL", useSSL);
+                    changeMade = true;
+                }
+                if (!string.IsNullOrEmpty(account))
+                {
+                    imapSettingsEntity.SetField("core:imapAccount", account);
+                    changeMade = true;
+                }
+                if (!string.IsNullOrEmpty(password))
+                {
+                    imapSettingsEntity.SetField("core:imapPassword", password);
+                    changeMade = true;
+                }
+                if (!string.IsNullOrEmpty(folder))
+                {
+                    imapSettingsEntity.SetField("core:imapFolder", folder);
+                    changeMade = true;
+                }
+                if (!string.IsNullOrEmpty(emailDomain))
+                {
+                    imapSettingsEntity.SetField("core:inboxEmailAddressDomain", emailDomain);
+                    changeMade = true;
+                }
+
+                if (changeMade)
+                    imapSettingsEntity.Save();
+            }
+
+            return changeMade;
+
         }
     }
 }

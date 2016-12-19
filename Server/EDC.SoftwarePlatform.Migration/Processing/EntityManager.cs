@@ -4,6 +4,7 @@ using EDC.ReadiNow.Metadata.Tenants;
 using EDC.SoftwarePlatform.Migration.Contract;
 using EDC.SoftwarePlatform.Migration.Processing.Xml;
 using EDC.ReadiNow.Core;
+using ReadiNow.ImportExport;
 
 namespace EDC.SoftwarePlatform.Migration.Processing
 {
@@ -54,8 +55,9 @@ namespace EDC.SoftwarePlatform.Migration.Processing
         /// </summary>
         /// <param name="tenantName">Name of the tenant.</param>
         /// <param name="packagePath">The package path.</param>
+        /// <param name="ignoreMissingDeps"></param>
         /// <param name="context">The context.</param>
-        public static void ImportEntity(string tenantName, string packagePath, IProcessingContext context = null)
+        public static void ImportEntity(string tenantName, string packagePath, bool ignoreMissingDeps, IProcessingContext context = null)
         {
             if (string.IsNullOrEmpty(tenantName))
                 throw new ArgumentNullException(nameof(tenantName));
@@ -74,8 +76,19 @@ namespace EDC.SoftwarePlatform.Migration.Processing
             /////
             using ( IDataSource importSource = FileManager.CreateDataSource( packagePath ) )
             {
+                EntityXmlImportSettings settings = new EntityXmlImportSettings
+                {
+                    IgnoreMissingDependencies = ignoreMissingDeps
+                };
                 EntityXmlImporter importer = ( EntityXmlImporter )Factory.EntityXmlImporter;
-                importer.ImportEntity( tenantId, importSource, context );
+                try
+                {
+                    importer.ImportEntity( tenantId, importSource, settings, context );
+                }
+                catch ( EntityXmlImporter.ImportDependencyException )
+                {
+                    context.WriteError( "Import failed due to missing dependencies. Use -ignoreMissingDeps True to ignore." );
+                }
             }
 
             context.Report.EndTime = DateTime.Now;

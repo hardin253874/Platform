@@ -43,7 +43,7 @@ namespace EDC.ReadiNow.CAST.Model
         /// <summary>
         /// The names of user roles presently configured on this tenant.
         /// </summary>
-        IEntityCollection<ManagedUserRole> UserRoles { get; set; }
+        IEntityCollection<ManagedRole> Roles { get; set; }
 
         /// <summary>
         /// Details of the user accounts present on this tenant.

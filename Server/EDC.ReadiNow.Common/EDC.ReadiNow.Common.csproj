@@ -96,6 +96,10 @@
       <HintPath>..\packages\Common.Logging.Core.3.3.1\lib\net40\Common.Logging.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="HtmlAgilityPack, Version=1.4.9.5, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlAgilityPack.1.4.9.5\lib\Net45\HtmlAgilityPack.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Jil, Version=2.14.5.0, Culture=neutral, PublicKeyToken=83a7b913e85df348, processorArchitecture=MSIL">
       <HintPath>..\packages\Jil.StrongName.2.14.5\lib\net45\Jil.dll</HintPath>
       <Private>True</Private>
@@ -123,9 +127,9 @@
     <Reference Include="Renci.SshNet">
       <HintPath>..\Dependencies\ThirdParty\Renci.SshNet.dll</HintPath>
     </Reference>
-    <Reference Include="S22.Imap, Version=3.3.4862.22008, Culture=neutral, PublicKeyToken=36d66e51a95be77c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dependencies\ThirdParty\S22.Imap.dll</HintPath>
+    <Reference Include="S22.Imap, Version=3.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\S22.Imap.3.6.0.0\lib\net40\S22.Imap.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Sigil, Version=4.7.0.0, Culture=neutral, PublicKeyToken=2d06c3494341c8ab, processorArchitecture=MSIL">
       <HintPath>..\packages\Sigil.4.7.0\lib\net45\Sigil.dll</HintPath>
@@ -209,9 +213,13 @@
     <Compile Include="Diagnostics\Severity.cs" />
     <Compile Include="Diagnostics\ThreadInfo.cs" />
     <Compile Include="EntityRequests\FanoutHelper.cs" />
+    <Compile Include="Email\EmailBodyParser.cs" />
+    <Compile Include="Email\SmtpEmailSender.cs" />
     <Compile Include="Expressions\CalculatedFieldsExtensions.cs" />
     <Compile Include="Expressions\ExprTypeHelper.cs" />
     <Compile Include="Expressions\QueryBuilderSettings.cs" />
+    <Compile Include="Html\HtmlSanitize.cs" />
+    <Compile Include="Html\HtmlToText.cs" />
     <Compile Include="IO\CleanupFileRepositoriesAction.cs" />
     <Compile Include="IO\FileDetails.cs" />
     <Compile Include="IO\RemoteFileFetcher\ConnectionException.cs" />
@@ -245,6 +253,10 @@
     <Compile Include="Metadata\Query\Structured\Helpers\IDictionaryExtensionMethods.cs" />
     <Compile Include="Metadata\Query\Structured\ParameterValue.cs" />
     <Compile Include="Metadata\Query\Structured\QueryBuild.cs" />
+    <Compile Include="Metadata\Query\Structured\SingleRowNode.cs" />
+    <Compile Include="Metadata\Solutions\DataUpgrade\WorkflowUpgradeHelper.cs" />
+    <Compile Include="Metadata\Solutions\DataUpgrade\InputArguments.cs" />
+    <Compile Include="Metadata\Solutions\DataUpgrade\SendEmailWorkflowActivity.cs" />
     <Compile Include="Metadata\Tenants\TenantHelperModule.cs" />
     <Compile Include="Model\CacheInvalidation\ISerializableCacheInvalidator.cs" />
     <Compile Include="Model\CacheInvalidation\MultiCacheInvalidator.cs" />
@@ -259,6 +271,8 @@
     <Compile Include="Model\EntityTypeContext.cs" />
     <Compile Include="Model\EventClasses\CustomFormEventTarget.cs" />
     <Compile Include="Model\EventClasses\HierarchyEventTarget.cs" />
+    <Compile Include="Model\EventClasses\EmailServerSettingEventTarget.cs" />
+    <Compile Include="Model\EventClasses\InboxEventTarget.cs" />
     <Compile Include="Model\EventClasses\OidcIdentityProviderEventTarget.cs" />
     <Compile Include="Model\EventClasses\ProtectableTypeEventTarget.cs" />
     <Compile Include="Model\EventClasses\ResourceTriggerFilter\EventHandlers\RecordChangeAuditFormatter.cs" />
@@ -508,7 +522,7 @@
     <Compile Include="Model\EventClasses\ClientCachableEventTarget.cs" />
     <Compile Include="Model\EventClasses\AppointmentEventTarget.cs" />
     <Compile Include="Model\EventClasses\FilteredTarget.cs" />
-    <Compile Include="Model\EventClasses\ImapEmailProviderEventTarget.cs" />
+    <Compile Include="Model\EventClasses\ImapServerSettingsEventTarget.cs" />
     <Compile Include="Model\EventClasses\PasswordPolicyEventTarget.cs" />
     <Compile Include="Model\EventClasses\TenantEventTarget.cs" />
     <Compile Include="Model\EventClasses\TypeAddResourceBaseTypeEventTarget.cs" />
@@ -517,14 +531,12 @@
     <Compile Include="Model\FieldTypes\FieldExtensionMethods.cs" />
     <Compile Include="Model\FieldTypes\IFieldHelper.cs" />
     <Compile Include="Model\DirectionalEntityRelationshipCache.cs" />
-    <Compile Include="Model\Interfaces\IInboxProviderHelper.cs" />
     <Compile Include="Model\ModelClassAttribute.cs" />
     <Compile Include="Model\PartialClasses\ClassHelper.cs" />
     <Compile Include="Model\PartialClasses\EmailMessageHelper.cs" />
-    <Compile Include="Model\PartialClasses\InboxProviderHelper.cs" />
-    <Compile Include="Model\PartialClasses\ReceivedEmailMessageHelper.cs" />
+    <Compile Include="Email\ReceivedEmailMessageHelper.cs" />
     <Compile Include="Model\PartialClasses\ResourceHelper.cs" />
-    <Compile Include="Model\PartialClasses\SentEmailMessageHelper.cs" />
+    <Compile Include="Email\SentEmailMessageHelper.cs" />
     <Compile Include="Model\PartialClasses\SolutionHelper.cs" />
     <Compile Include="Model\PerTenantEntityTypeCache.cs" />
     <Compile Include="Model\PerTenantEntityTypeCacheMessage.cs" />
@@ -615,7 +627,7 @@
     <Compile Include="Metadata\Reporting\ReportAggregateField.cs" />
     <Compile Include="Metadata\Reporting\ReportGroupField.cs" />
     <Compile Include="Model\Console\NavigationHelper.cs" />
-    <Compile Include="Model\EmailHelper.cs" />
+    <Compile Include="Email\EmailHelper.cs" />
     <Compile Include="Model\EntityAlias.cs" />
     <Compile Include="Model\EntityCacheExclusionContext.cs" />
     <Compile Include="Model\EntityModel-js.cs" />
@@ -623,11 +635,9 @@
     <Compile Include="Model\EntityRef.cs" />
     <Compile Include="Model\EventClasses\DocumentEventTarget.cs" />
     <Compile Include="Model\EventClasses\FileTypeEventTarget.cs" />
-    <Compile Include="Model\EventClasses\InboxTarget.cs" />
     <Compile Include="Model\FieldTypes\AutoNumberFieldHelper.cs" />
     <Compile Include="Model\MutableKey.cs" />
-    <Compile Include="Model\PartialClasses\ProxyInboxProviderHelper.cs" />
-    <Compile Include="Model\PartialClasses\ImapEmailProviderHelper.cs" />
+    <Compile Include="Email\ImapEmailReceiver.cs" />
     <Compile Include="Model\RelationshipHelper.cs" />
     <Compile Include="Model\SourceEntityContext.cs" />
     <Compile Include="Monitoring\AccessControl\AccessControlCacheInvalidationPerformanceCounters.cs" />
@@ -921,6 +931,9 @@
       <SubType>Designer</SubType>
     </ReadiNowXmlWithSchema>
     <ReadiNowXmlWithSchema Include="Config\Schema\System_Global.xml">
+      <SubType>Designer</SubType>
+    </ReadiNowXmlWithSchema>
+    <ReadiNowXmlWithSchema Include="Config\Schema\Email_Types.xml">
       <SubType>Designer</SubType>
     </ReadiNowXmlWithSchema>
     <Content Include="Scheduling\iCalendar\Serialization\iCalendar\iCalParserTokenTypes.txt" />
@@ -1296,7 +1309,9 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Model\Client\_EntityData.cd" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Scheduling\iCalendar\Serialization\iCalendar\iCal.g" />
     <None Include="Security\AccessControl\Access Control - Checks.cd" />
     <None Include="Security\AccessControl\Access Control - Repositories.cd" />
@@ -1333,19 +1348,14 @@
       <Name>EDC.Common</Name>
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="..\EDC.Interop\EDC.Interop.csproj">
-      <Project>{90FA9820-A3EC-40B2-A5C8-F3A3C533F000}</Project>
-      <Name>EDC.Interop</Name>
-      <Private>True</Private>
-    </ProjectReference>
     <ProjectReference Include="..\EDC.ReadiNow.Common.ConfigParser\EDC.ReadiNow.Common.ConfigParser.csproj">
       <Project>{151AD911-0248-4207-9B90-8B230A32131D}</Project>
       <Name>EDC.ReadiNow.Common.ConfigParser</Name>
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="..\EDC.SoftwarePlatform.Interfaces\EDC.SoftwarePlatform.Interfaces.csproj">
+    <ProjectReference Include="..\ReadiNow.Interfaces\ReadiNow.Interfaces.csproj">
       <Project>{c1fc97b7-aacc-45b5-9969-7995b27093ca}</Project>
-      <Name>EDC.SoftwarePlatform.Interfaces</Name>
+      <Name>ReadiNow.Interfaces</Name>
       <Private>True</Private>
     </ProjectReference>
   </ItemGroup>

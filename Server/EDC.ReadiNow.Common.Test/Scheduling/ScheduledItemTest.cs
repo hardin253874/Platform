@@ -20,16 +20,11 @@ namespace EDC.ReadiNow.Test.Scheduling
     {
         List<long> toDelete;
 
-
         [TestFixtureSetUp]
         public void SetUp()
         {
-            // start the scheduler outside the tests to lower timeout risk
-            var scheduler = SchedulingHelper.Instance;
-            if (!scheduler.IsStarted && !scheduler.InStandbyMode)
-            {
-                scheduler.Standby();
-            }
+            //  Start a local scheduler so we are not relying on the service
+            SchedulingHelper.Instance.Start();
           
             toDelete = new List<long>();
         }
@@ -38,6 +33,8 @@ namespace EDC.ReadiNow.Test.Scheduling
         [RunAsDefaultTenant]
         public void CleanUp()
         {
+            SchedulingHelper.Instance.Standby();
+
             using (new TenantAdministratorContext("EDC"))
             {
                 var deleteList = toDelete.Distinct().ToList( );

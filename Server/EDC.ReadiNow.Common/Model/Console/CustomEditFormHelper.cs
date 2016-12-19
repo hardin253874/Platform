@@ -50,6 +50,7 @@ k:typeToEditWithForm.{name, canCreateType, k:typeConsoleBehavior.{ k:treeIcon.{ 
 k:resourceConsoleBehavior.{id, name, alias, k:suppressActionsForType},
 k:resourceInFolder.{ id, name, alias},            
 allowSelectMultiTypes,
+k:hideLabel,
 k:showFormHelpText,
 k:renderingHorizontalResizeMode.{alias},
 k:renderingVerticalResizeMode.{alias},

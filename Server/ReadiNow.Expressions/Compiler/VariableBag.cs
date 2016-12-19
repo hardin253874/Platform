@@ -12,9 +12,9 @@ namespace ReadiNow.Expressions.Compiler
 
         readonly Dictionary<string, VariableInfo> _variables = new Dictionary<string, VariableInfo>();
 
-        public void SetVariable(Token token, ExpressionNode expr, ChildContainer childContainer)
+        public void SetVariable(Token token, ExpressionNode expr, ChildContainer variableChildContainer, ChildContainer variableHostContainer )
         {
-            VariableInfo info = new VariableInfo( expr, childContainer );
+            VariableInfo info = new VariableInfo( expr, variableChildContainer, variableHostContainer );
 
             string name = token.Value.ToString();
             if (name != "_" && HasVariable(token))

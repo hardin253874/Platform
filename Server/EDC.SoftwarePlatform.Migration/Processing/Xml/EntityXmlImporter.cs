@@ -31,7 +31,8 @@ namespace EDC.SoftwarePlatform.Migration.Processing.Xml
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="userRoleRepository"></param>
+        /// <param name="securityProcessor"></param>
+        /// <param name="upgradeIdProvider"></param>
         public EntityXmlImporter( ISecurityProcessor securityProcessor, IUpgradeIdProvider upgradeIdProvider )
         {
             if ( securityProcessor == null )
@@ -46,8 +47,7 @@ namespace EDC.SoftwarePlatform.Migration.Processing.Xml
         /// <summary>
         /// Interface for providing XML import.
         /// </summary>
-        /// <param name="entityId">ID of entity to export.</param>
-        /// <param name="xmlWriter">Xml Writer to write the exported entity to.</param>
+        /// <param name="xmlReader">Xml Writer to write the exported entity to.</param>
         /// <param name="settings">Export settings.</param>
         public EntityXmlImportResult ImportXml( XmlReader xmlReader, EntityXmlImportSettings settings )
         {
@@ -73,7 +73,7 @@ namespace EDC.SoftwarePlatform.Migration.Processing.Xml
                 {
                     CheckImportSecurity( source, context );
 
-                    rootGuids = ImportEntity( tenantId, source, context );
+                    rootGuids = ImportEntity( tenantId, source, settings, context );
                 }
             }
             catch ( ImportDependencyException )
@@ -87,7 +87,7 @@ namespace EDC.SoftwarePlatform.Migration.Processing.Xml
             context.Report.EndTime = DateTime.Now;
 
             // Prepare result
-            List<long> rootIds = rootGuids.Select( guid => Entity.GetIdFromUpgradeId( guid ) ).ToList( );
+            List<long> rootIds = rootGuids.Select( Entity.GetIdFromUpgradeId ).ToList( );
 
             return new EntityXmlImportResult( rootIds );
         }
@@ -95,7 +95,7 @@ namespace EDC.SoftwarePlatform.Migration.Processing.Xml
         /// <summary>
         /// Interface for providing XML import.
         /// </summary>
-        /// <param name="entityId">ID of entity to export.</param>
+        /// <param name="xml">ID of entity to export.</param>
         /// <param name="settings">Export settings.</param>
         public EntityXmlImportResult ImportXml( string xml, EntityXmlImportSettings settings )
         {
@@ -111,9 +111,9 @@ namespace EDC.SoftwarePlatform.Migration.Processing.Xml
         /// </summary>
         /// <param name="tenantId"></param>
         /// <param name="importSource"></param>
-        /// <param name="context"></param>
         /// <param name="settings"></param>
-        internal IEnumerable<Guid> ImportEntity( long tenantId, IDataSource importSource, IProcessingContext context )
+        /// <param name="context"></param>
+        internal IEnumerable<Guid> ImportEntity( long tenantId, IDataSource importSource, EntityXmlImportSettings settings, IProcessingContext context )
         {
             IList<Guid> rootGuids = GetRootGuidsFromMetadata( importSource, context );
             
@@ -136,7 +136,7 @@ namespace EDC.SoftwarePlatform.Migration.Processing.Xml
                 {
                     processor.MergeData( );
 
-                    //CheckForMissingDependencies( context );
+                    CheckForMissingDependencies( context, settings );
 
                     target.Commit( );
                 }
@@ -152,20 +152,18 @@ namespace EDC.SoftwarePlatform.Migration.Processing.Xml
         /// Exception will roll back the transaction.
         /// </summary>
         /// <param name="context"></param>
-        private void CheckForMissingDependencies( IProcessingContext context )
+        /// <param name="settings"></param>
+        private void CheckForMissingDependencies( IProcessingContext context, EntityXmlImportSettings settings )
         {
-            if ( Settings.IgnoreMissingDependencies )
+            if ( settings?.IgnoreMissingDependencies == true )
                 return;
             if ( context.Report.MissingDependencies.Count == 0 )
                 return;
 
             StringBuilder sb = new StringBuilder( );
             sb.AppendLine( "The import failed because there are missing dependencies." );
-            foreach ( object obj in context.Report.MissingDependencies )
+            foreach ( MissingDependency<object> dep in context.Report.MissingDependencies )
             {
-                IMissingDependency dep = obj as IMissingDependency;
-                if ( dep == null )
-                    continue;
                 sb.AppendLine( dep.GetLogMessage( ) );
             }
             EventLog.Application.WriteWarning( sb.ToString( ) );
@@ -252,7 +250,7 @@ namespace EDC.SoftwarePlatform.Migration.Processing.Xml
         /// <summary>
         ///     Exception caused by missing dependencies.
         /// </summary>
-        private class ImportDependencyException : Exception
+        internal class ImportDependencyException : Exception
         {
             
         }

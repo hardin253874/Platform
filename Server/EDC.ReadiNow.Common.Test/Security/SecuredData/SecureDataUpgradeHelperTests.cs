@@ -22,23 +22,47 @@ namespace EDC.ReadiNow.Test.Security.SecuredData
         EncodingCryptoProvider _crypto = new EncodingCryptoProvider();
 
         [Test]
-        public void ImapUpgrade()
+        public void TenantInboxesSettingsUpgrade()
         {
-            var imap = new ImapEmailProvider();
+            //throw new Exception("TODO");
+            /*var tenantInboxesSettings = new TenantInboxesSettings();
             var oldSecret =  "Test" + DateTime.UtcNow.Ticks;
-            imap.OaPassword = _crypto.EncryptAndEncode(oldSecret);
+            tenantInboxesSettings.ImapPassword = _crypto.EncryptAndEncode(oldSecret);
 
             using (var scope = Factory.Current.BeginLifetimeScope(builder => builder.RegisterType<SecuredDataSaveHelper.DisabledSaveHelper>().As<ISecuredDataSaveHelper>()))
             using (Factory.SetCurrentScope(scope))
             {
-                imap.Save();
+                tenantInboxesSettings.Save();
             }
 
             SecureDataUpgradeHelper.Upgrade("EDC");
 
-            var secureId = imap.OaPasswordSecureId;
+            var secureId = tenantInboxesSettings.ImapPasswordSecureId;
             Assert.That(secureId, Is.Not.Null);
             var secret = Factory.SecuredData.Read((Guid) secureId);
+
+            Assert.That(secret, Is.EqualTo(oldSecret));
+            */
+        }
+
+        [Test]
+        public void TenantEmailServerSettingUpgrade()
+        {
+            var emailSettings = new TenantEmailSetting();
+            var oldSecret = "Test" + DateTime.UtcNow.Ticks;
+            emailSettings.SmtpPassword = _crypto.EncryptAndEncode(oldSecret);
+
+            using (var scope = Factory.Current.BeginLifetimeScope(builder => builder.RegisterType<SecuredDataSaveHelper.DisabledSaveHelper>().As<ISecuredDataSaveHelper>()))
+            using (Factory.SetCurrentScope(scope))
+            {
+                emailSettings.Save();
+            }
+
+            SecureDataUpgradeHelper.Upgrade("EDC");
+
+            var secureId = emailSettings.SmtpPasswordSecureId;
+            Assert.That(secureId, Is.Not.Null);
+            var secret = Factory.SecuredData.Read((Guid)secureId);
 
             Assert.That(secret, Is.EqualTo(oldSecret));
         }

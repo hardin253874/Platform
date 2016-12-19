@@ -57,64 +57,72 @@ namespace ReadiNow.QueryEngine.ReportConverter
 
             StructuredQuery query = StructuredQueryEntityHelper.ConvertReport( report, settings );
 
+            IdentifyCacheDependencies( report, settings, query );
+
+            return query;
+        }
+
+        /// <summary>
+        /// Identify cache dependencies.
+        /// </summary>
+        private static void IdentifyCacheDependencies( Report report, ReportToQueryConverterSettings settings, StructuredQuery query )
+        {
             // Tell the cache what entities were referenced to return
             // the StructuredQuery result
-            using (CacheContext cacheContext = CacheContext.GetContext())
+            using ( CacheContext cacheContext = CacheContext.GetContext( ) )
             {
-                cacheContext.Entities.Add(report.Id);
+                cacheContext.Entities.Add( report.Id );
 
-	            if ( query.Conditions != null )
-	            {
-		            foreach ( var condition in query.Conditions )
-		            {
-						cacheContext.Entities.Add( condition.EntityId );
+                if ( query.Conditions != null )
+                {
+                    foreach ( var condition in query.Conditions )
+                    {
+                        cacheContext.Entities.Add( condition.EntityId );
 
-			            if ( condition.Expression != null )
-			            {
-							cacheContext.Entities.Add( condition.Expression.EntityId );
-			            }
-		            }
-	            }
+                        if ( condition.Expression != null )
+                        {
+                            cacheContext.Entities.Add( condition.Expression.EntityId );
+                        }
+                    }
+                }
 
-	            if ( query.OrderBy != null )
-	            {
-		            foreach ( var orderBy in query.OrderBy )
-		            {
-			            if ( orderBy.Expression != null )
-			            {
-				            cacheContext.Entities.Add( orderBy.Expression.EntityId );
-			            }
-		            }
-	            }
+                if ( query.OrderBy != null )
+                {
+                    foreach ( var orderBy in query.OrderBy )
+                    {
+                        if ( orderBy.Expression != null )
+                        {
+                            cacheContext.Entities.Add( orderBy.Expression.EntityId );
+                        }
+                    }
+                }
 
-	            if ( query.SelectColumns != null )
-	            {
-		            foreach ( var column in query.SelectColumns )
-		            {
-			            cacheContext.Entities.Add( column.EntityId );
+                if ( query.SelectColumns != null )
+                {
+                    foreach ( var column in query.SelectColumns )
+                    {
+                        cacheContext.Entities.Add( column.EntityId );
 
-			            if ( column.Expression != null )
-			            {
-							cacheContext.Entities.Add( column.Expression.EntityId );
-			            }
-		            }
-	            }
+                        if ( column.Expression != null )
+                        {
+                            cacheContext.Entities.Add( column.Expression.EntityId );
+                        }
+                    }
+                }
 
-	            if ( report.ReportOrderBys != null )
-	            {
-		            foreach ( var orderBy in report.ReportOrderBys )
-		            {
-			            if ( orderBy != null )
-			            {
-							cacheContext.Entities.Add( orderBy.Id );
-			            }
-		            }
-	            }
+                if ( report.ReportOrderBys != null )
+                {
+                    foreach ( var orderBy in report.ReportOrderBys )
+                    {
+                        if ( orderBy != null )
+                        {
+                            cacheContext.Entities.Add( orderBy.Id );
+                        }
+                    }
+                }
             }
 
             StructuredQueryHelper.IdentifyStructureCacheDependencies( query, settings.ConditionsOnly );
-
-            return query;
         }
     }
 }

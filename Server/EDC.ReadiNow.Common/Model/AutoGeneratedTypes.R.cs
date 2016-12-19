@@ -814,6 +814,17 @@ namespace EDC.ReadiNow.Model
 		}
 
 		/// <summary>
+		/// Public static accessor to the field.
+		/// </summary>
+		public static StringField EmReplyFragment_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Entity.GetFieldEntity<StringField>( "core:emReplyFragment" );
+			}
+		}
+
+		/// <summary>
 		/// Public static accessor to the inherited field.
 		/// </summary>
 		public static AliasField Alias_Field
@@ -871,6 +882,17 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Public static accessor to the inherited field.
 		/// </summary>
+		public static StringField EmBCC_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.EmailMessage.EmBCC_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
 		public static StringField EmBody_Field
 		{
 			get
@@ -898,6 +920,17 @@ namespace EDC.ReadiNow.Model
 			get
 			{
 				return EDC.ReadiNow.Model.EmailMessage.EmFrom_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static StringField EmFromName_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.EmailMessage.EmFromName_Field;
 			}
 		}
 
@@ -1194,7 +1227,7 @@ namespace EDC.ReadiNow.Model
 		{
 			get
 			{
-				return new IEntity [ ] { ReceivedEmailMessage.EmReceivedDate_Field, ReceivedEmailMessage.EmReferences_Field, ReceivedEmailMessage.Alias_Field, ReceivedEmailMessage.CanDelete_Field, ReceivedEmailMessage.CanModify_Field, ReceivedEmailMessage.CreatedDate_Field, ReceivedEmailMessage.Description_Field, ReceivedEmailMessage.EmBody_Field, ReceivedEmailMessage.EmCC_Field, ReceivedEmailMessage.EmFrom_Field, ReceivedEmailMessage.EmIsHtml_Field, ReceivedEmailMessage.EmSubject_Field, ReceivedEmailMessage.EmTo_Field, ReceivedEmailMessage.EmUid_Field, ReceivedEmailMessage.ModifiedDate_Field, ReceivedEmailMessage.Name_Field, ReceivedEmailMessage.CreatedBy_Field, ReceivedEmailMessage.EmAttachments_Field, ReceivedEmailMessage.Flags_Field, ReceivedEmailMessage.FromInbox_Field, ReceivedEmailMessage.IndirectInSolution_Field, ReceivedEmailMessage.InSolution_Field, ReceivedEmailMessage.InStructureLevel_Field, ReceivedEmailMessage.IsOfType_Field, ReceivedEmailMessage.IsRootForStructureView_Field, ReceivedEmailMessage.LastModifiedBy_Field, ReceivedEmailMessage.LogEntriesForObject_Field, ReceivedEmailMessage.OriginalMessage_Field, ReceivedEmailMessage.RelatedTask_Field, ReceivedEmailMessage.ResourceConsoleBehavior_Field, ReceivedEmailMessage.ResourceHasResourceKeyDataHashes_Field, ReceivedEmailMessage.ResourceInFolder_Field, ReceivedEmailMessage.SecurityOwner_Field, ReceivedEmailMessage.SelectionBehavior_Field, ReceivedEmailMessage.ShortcutInFolder_Field, ReceivedEmailMessage.TasksForRecord_Field };
+				return new IEntity [ ] { ReceivedEmailMessage.EmReceivedDate_Field, ReceivedEmailMessage.EmReferences_Field, ReceivedEmailMessage.EmReplyFragment_Field, ReceivedEmailMessage.Alias_Field, ReceivedEmailMessage.CanDelete_Field, ReceivedEmailMessage.CanModify_Field, ReceivedEmailMessage.CreatedDate_Field, ReceivedEmailMessage.Description_Field, ReceivedEmailMessage.EmBCC_Field, ReceivedEmailMessage.EmBody_Field, ReceivedEmailMessage.EmCC_Field, ReceivedEmailMessage.EmFrom_Field, ReceivedEmailMessage.EmFromName_Field, ReceivedEmailMessage.EmIsHtml_Field, ReceivedEmailMessage.EmSubject_Field, ReceivedEmailMessage.EmTo_Field, ReceivedEmailMessage.EmUid_Field, ReceivedEmailMessage.ModifiedDate_Field, ReceivedEmailMessage.Name_Field, ReceivedEmailMessage.CreatedBy_Field, ReceivedEmailMessage.EmAttachments_Field, ReceivedEmailMessage.Flags_Field, ReceivedEmailMessage.FromInbox_Field, ReceivedEmailMessage.IndirectInSolution_Field, ReceivedEmailMessage.InSolution_Field, ReceivedEmailMessage.InStructureLevel_Field, ReceivedEmailMessage.IsOfType_Field, ReceivedEmailMessage.IsRootForStructureView_Field, ReceivedEmailMessage.LastModifiedBy_Field, ReceivedEmailMessage.LogEntriesForObject_Field, ReceivedEmailMessage.OriginalMessage_Field, ReceivedEmailMessage.RelatedTask_Field, ReceivedEmailMessage.ResourceConsoleBehavior_Field, ReceivedEmailMessage.ResourceHasResourceKeyDataHashes_Field, ReceivedEmailMessage.ResourceInFolder_Field, ReceivedEmailMessage.SecurityOwner_Field, ReceivedEmailMessage.SelectionBehavior_Field, ReceivedEmailMessage.ShortcutInFolder_Field, ReceivedEmailMessage.TasksForRecord_Field };
 			}
 		}
 
@@ -1228,6 +1261,20 @@ namespace EDC.ReadiNow.Model
 			set
 			{
 				this.SetField( "core:emReferences", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the field.
+		/// </summary>
+		public string EmReplyFragment
+		{
+			get
+			{
+				return ( string ) this.GetField( "core:emReplyFragment" );
+			}
+			set
+			{
+				this.SetField( "core:emReplyFragment", value);
 			}
 		}
 		/// <summary>
@@ -1303,6 +1350,20 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Public accessor for the inherited field.
 		/// </summary>
+		public string EmBCC
+		{
+			get
+			{
+				return ( string ) this.GetField( "core:emBCC" );
+			}
+			set
+			{
+				this.SetField( "core:emBCC", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
 		public string EmBody
 		{
 			get
@@ -1340,6 +1401,20 @@ namespace EDC.ReadiNow.Model
 			set
 			{
 				this.SetField( "core:emFrom", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public string EmFromName
+		{
+			get
+			{
+				return ( string ) this.GetField( "core:emFromName" );
+			}
+			set
+			{
+				this.SetField( "core:emFromName", value);
 			}
 		}
 		/// <summary>
@@ -1444,15 +1519,15 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Public accessor for the inherited forward relationship.
 		/// </summary>
-		public IEntityCollection<Document> EmAttachments
+		public IEntityCollection<FileType> EmAttachments
 		{
 			get
 			{
-				return this.GetRelationships<Document>( "core:emAttachments", Direction.Forward ).Entities;
+				return this.GetRelationships<FileType>( "core:emAttachments", Direction.Forward ).Entities;
 			}
 			set
 			{
-				this.SetRelationships<Document>( "core:emAttachments", value, Direction.Forward );
+				this.SetRelationships<FileType>( "core:emAttachments", value, Direction.Forward );
 			}
 		}
 		/// <summary>
@@ -1865,6 +1940,17 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Public static accessor to the inherited field.
 		/// </summary>
+		public static StringField EmBCC_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.EmailMessage.EmBCC_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
 		public static StringField EmBody_Field
 		{
 			get
@@ -1898,6 +1984,17 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Public static accessor to the inherited field.
 		/// </summary>
+		public static StringField EmFromName_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.EmailMessage.EmFromName_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
 		public static BoolField EmIsHtml_Field
 		{
 			get
@@ -1925,6 +2022,17 @@ namespace EDC.ReadiNow.Model
 			get
 			{
 				return EDC.ReadiNow.Model.ReceivedEmailMessage.EmReferences_Field;
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the inherited field.
+		/// </summary>
+		public static StringField EmReplyFragment_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.ReceivedEmailMessage.EmReplyFragment_Field;
 			}
 		}
 
@@ -2221,7 +2329,7 @@ namespace EDC.ReadiNow.Model
 		{
 			get
 			{
-				return new IEntity [ ] { ReceivedICalEmailMessage.ICalUpdate_Field, ReceivedICalEmailMessage.Alias_Field, ReceivedICalEmailMessage.CanDelete_Field, ReceivedICalEmailMessage.CanModify_Field, ReceivedICalEmailMessage.CreatedDate_Field, ReceivedICalEmailMessage.Description_Field, ReceivedICalEmailMessage.EmBody_Field, ReceivedICalEmailMessage.EmCC_Field, ReceivedICalEmailMessage.EmFrom_Field, ReceivedICalEmailMessage.EmIsHtml_Field, ReceivedICalEmailMessage.EmReceivedDate_Field, ReceivedICalEmailMessage.EmReferences_Field, ReceivedICalEmailMessage.EmSubject_Field, ReceivedICalEmailMessage.EmTo_Field, ReceivedICalEmailMessage.EmUid_Field, ReceivedICalEmailMessage.ModifiedDate_Field, ReceivedICalEmailMessage.Name_Field, ReceivedICalEmailMessage.CreatedBy_Field, ReceivedICalEmailMessage.CreatedEventEmail_Field, ReceivedICalEmailMessage.EmAttachments_Field, ReceivedICalEmailMessage.Flags_Field, ReceivedICalEmailMessage.FromInbox_Field, ReceivedICalEmailMessage.IndirectInSolution_Field, ReceivedICalEmailMessage.InSolution_Field, ReceivedICalEmailMessage.InStructureLevel_Field, ReceivedICalEmailMessage.IsOfType_Field, ReceivedICalEmailMessage.IsRootForStructureView_Field, ReceivedICalEmailMessage.LastModifiedBy_Field, ReceivedICalEmailMessage.LogEntriesForObject_Field, ReceivedICalEmailMessage.OriginalMessage_Field, ReceivedICalEmailMessage.RelatedTask_Field, ReceivedICalEmailMessage.ResourceConsoleBehavior_Field, ReceivedICalEmailMessage.ResourceHasResourceKeyDataHashes_Field, ReceivedICalEmailMessage.ResourceInFolder_Field, ReceivedICalEmailMessage.SecurityOwner_Field, ReceivedICalEmailMessage.SelectionBehavior_Field, ReceivedICalEmailMessage.ShortcutInFolder_Field, ReceivedICalEmailMessage.TasksForRecord_Field };
+				return new IEntity [ ] { ReceivedICalEmailMessage.ICalUpdate_Field, ReceivedICalEmailMessage.Alias_Field, ReceivedICalEmailMessage.CanDelete_Field, ReceivedICalEmailMessage.CanModify_Field, ReceivedICalEmailMessage.CreatedDate_Field, ReceivedICalEmailMessage.Description_Field, ReceivedICalEmailMessage.EmBCC_Field, ReceivedICalEmailMessage.EmBody_Field, ReceivedICalEmailMessage.EmCC_Field, ReceivedICalEmailMessage.EmFrom_Field, ReceivedICalEmailMessage.EmFromName_Field, ReceivedICalEmailMessage.EmIsHtml_Field, ReceivedICalEmailMessage.EmReceivedDate_Field, ReceivedICalEmailMessage.EmReferences_Field, ReceivedICalEmailMessage.EmReplyFragment_Field, ReceivedICalEmailMessage.EmSubject_Field, ReceivedICalEmailMessage.EmTo_Field, ReceivedICalEmailMessage.EmUid_Field, ReceivedICalEmailMessage.ModifiedDate_Field, ReceivedICalEmailMessage.Name_Field, ReceivedICalEmailMessage.CreatedBy_Field, ReceivedICalEmailMessage.CreatedEventEmail_Field, ReceivedICalEmailMessage.EmAttachments_Field, ReceivedICalEmailMessage.Flags_Field, ReceivedICalEmailMessage.FromInbox_Field, ReceivedICalEmailMessage.IndirectInSolution_Field, ReceivedICalEmailMessage.InSolution_Field, ReceivedICalEmailMessage.InStructureLevel_Field, ReceivedICalEmailMessage.IsOfType_Field, ReceivedICalEmailMessage.IsRootForStructureView_Field, ReceivedICalEmailMessage.LastModifiedBy_Field, ReceivedICalEmailMessage.LogEntriesForObject_Field, ReceivedICalEmailMessage.OriginalMessage_Field, ReceivedICalEmailMessage.RelatedTask_Field, ReceivedICalEmailMessage.ResourceConsoleBehavior_Field, ReceivedICalEmailMessage.ResourceHasResourceKeyDataHashes_Field, ReceivedICalEmailMessage.ResourceInFolder_Field, ReceivedICalEmailMessage.SecurityOwner_Field, ReceivedICalEmailMessage.SelectionBehavior_Field, ReceivedICalEmailMessage.ShortcutInFolder_Field, ReceivedICalEmailMessage.TasksForRecord_Field };
 			}
 		}
 
@@ -2316,6 +2424,20 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Public accessor for the inherited field.
 		/// </summary>
+		public string EmBCC
+		{
+			get
+			{
+				return ( string ) this.GetField( "core:emBCC" );
+			}
+			set
+			{
+				this.SetField( "core:emBCC", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
 		public string EmBody
 		{
 			get
@@ -2358,6 +2480,20 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Public accessor for the inherited field.
 		/// </summary>
+		public string EmFromName
+		{
+			get
+			{
+				return ( string ) this.GetField( "core:emFromName" );
+			}
+			set
+			{
+				this.SetField( "core:emFromName", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
 		public bool? EmIsHtml
 		{
 			get
@@ -2395,6 +2531,20 @@ namespace EDC.ReadiNow.Model
 			set
 			{
 				this.SetField( "core:emReferences", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the inherited field.
+		/// </summary>
+		public string EmReplyFragment
+		{
+			get
+			{
+				return ( string ) this.GetField( "core:emReplyFragment" );
+			}
+			set
+			{
+				this.SetField( "core:emReplyFragment", value);
 			}
 		}
 		/// <summary>
@@ -2499,15 +2649,15 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Public accessor for the inherited forward relationship.
 		/// </summary>
-		public IEntityCollection<Document> EmAttachments
+		public IEntityCollection<FileType> EmAttachments
 		{
 			get
 			{
-				return this.GetRelationships<Document>( "core:emAttachments", Direction.Forward ).Entities;
+				return this.GetRelationships<FileType>( "core:emAttachments", Direction.Forward ).Entities;
 			}
 			set
 			{
-				this.SetRelationships<Document>( "core:emAttachments", value, Direction.Forward );
+				this.SetRelationships<FileType>( "core:emAttachments", value, Direction.Forward );
 			}
 		}
 		/// <summary>
@@ -30903,7 +31053,7 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Explicit cast from the specified type to the current type.
 		/// </summary>
-		public static explicit operator Resource( ImapEmailProvider entity )
+		public static explicit operator Resource( ImapServerSettings entity )
 		{
 			return entity.Cast<Resource>( );
 		}
@@ -30952,14 +31102,6 @@ namespace EDC.ReadiNow.Model
 		/// Explicit cast from the specified type to the current type.
 		/// </summary>
 		public static explicit operator Resource( InboxEmailAction entity )
-		{
-			return entity.Cast<Resource>( );
-		}
-
-		/// <summary>
-		/// Explicit cast from the specified type to the current type.
-		/// </summary>
-		public static explicit operator Resource( InboxProvider entity )
 		{
 			return entity.Cast<Resource>( );
 		}
@@ -31376,14 +31518,6 @@ namespace EDC.ReadiNow.Model
 		/// Explicit cast from the specified type to the current type.
 		/// </summary>
 		public static explicit operator Resource( ProtectableType entity )
-		{
-			return entity.Cast<Resource>( );
-		}
-
-		/// <summary>
-		/// Explicit cast from the specified type to the current type.
-		/// </summary>
-		public static explicit operator Resource( ProxyInboxProvider entity )
 		{
 			return entity.Cast<Resource>( );
 		}
@@ -31848,6 +31982,22 @@ namespace EDC.ReadiNow.Model
 		/// Explicit cast from the specified type to the current type.
 		/// </summary>
 		public static explicit operator Resource( SendEmailActivity entity )
+		{
+			return entity.Cast<Resource>( );
+		}
+
+		/// <summary>
+		/// Explicit cast from the specified type to the current type.
+		/// </summary>
+		public static explicit operator Resource( SendEmailActivityDistributionTypeEnum entity )
+		{
+			return entity.Cast<Resource>( );
+		}
+
+		/// <summary>
+		/// Explicit cast from the specified type to the current type.
+		/// </summary>
+		public static explicit operator Resource( SendEmailActivityRecipientsTypeEnum entity )
 		{
 			return entity.Cast<Resource>( );
 		}

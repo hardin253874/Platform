@@ -915,7 +915,8 @@ namespace EDC.Diagnostics.Test
         /// Test purging log files when the max count has been exceeded.
         /// </summary>
 	    [Test]
-	    public void Purge_MaxCount_Test()
+        [Category("ExtendedTests")]
+        public void Purge_MaxCount_Test()
 	    {
             // Setup unique log folder and file names
             EventLogDetails eventLogDetails = null;
@@ -1182,24 +1183,21 @@ namespace EDC.Diagnostics.Test
                     eventLog2.WriteWarning("SecondOne");
                 }
                 
-                Stopwatch stopWatch = Stopwatch.StartNew();
-                bool done = false;
+
+                Stopwatch stopWatch1 = Stopwatch.StartNew();
                                 
-                while (!done)
-                {                    
+                while (true)
+                {
+                    Thread.Sleep(100);
                     TimeSpan diff = DateTime.UtcNow - _lastChangedTime;
 
-                    if (diff.TotalSeconds > 5 ||
-                        stopWatch.Elapsed.TotalSeconds > 30)
+                    if (diff.TotalSeconds > 5 || stopWatch1.Elapsed.TotalSeconds > 30)
                     {
                         // 5 seconds have passed since the last file change event 
                         // or 30 seconds in total then we are done waiting
-                        done = true;
+                        break;
                     }
                 }
-
-                // Wait for the thread pool to write entries and to do a rotate and purge
-                Thread.Sleep(5000);
 
                 eventLogDetails1.LogWriter.Purge();
                 eventLogDetails2.LogWriter.Purge();

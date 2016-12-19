@@ -100,11 +100,13 @@ namespace EDC.ReadiNow.Test.Services.Console
 
         [Test]
         [RunAsDefaultTenant]
-        [TestCase("AA_Employee", "")]
-        [TestCase("AA_Employee", "AA_Employee")]
-        [TestCase("AA_Employee", "AA_Manager")]
-        [TestCase("AA_Employee", "AA_Employee,AA_Manager")]
-        public void Test_GetActions_Security_Create(string reportName, string typeNames)
+        [TestCase("AA_Employee", "", false)]
+        [TestCase("AA_Employee", "AA_Employee", false )]
+        [TestCase("AA_Employee", "AA_Manager", false )]
+        [TestCase("AA_Employee", "AA_Employee,AA_Manager", false )]
+        [TestCase("Tasks", "Task", false )] //#27489
+        [TestCase("API Endpoints", "API Resource Endpoint,API Spreadsheet Endpoint", true )] //#27489
+        public void Test_GetActions_Security_Create(string reportName, string typeNames, bool admin)
         {
 			ActionRequestExtended actionRequest;
             ActionResponse response;
@@ -154,9 +156,16 @@ namespace EDC.ReadiNow.Test.Services.Console
                 ActionDisplayContext = ActionContext.ActionsMenu
             };
 
-            using (new SetUser(userAccount))
+            if ( admin )
             {
-                response = new ActionService().GetActions(actionRequest);
+                response = new ActionService( ).GetActions( actionRequest );
+            }
+            else
+            {
+                using ( new SetUser( userAccount ) )
+                {
+                    response = new ActionService( ).GetActions( actionRequest );
+                }
             }
 
             flattenedResults = response.Actions.SelectMany(Flatten).ToList();
@@ -165,8 +174,11 @@ namespace EDC.ReadiNow.Test.Services.Console
             {
                 foreach (string typeName in splitTypeNames)
                 {
+
+                    string expectState = typeName == "API Resource Endpoint" ? "resourceEndpointNew" : ActionService.CreateMenuItemActionState;
+
                     Assert.That(flattenedResults,
-                        Has.Exactly(1).Property("HtmlActionState").EqualTo(ActionService.CreateMenuItemActionState)
+                        Has.Exactly(1).Property("HtmlActionState").EqualTo( expectState )
                             .And.Property("Name").EqualTo(typeName));
                 }
             }

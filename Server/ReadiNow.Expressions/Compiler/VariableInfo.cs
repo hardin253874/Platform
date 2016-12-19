@@ -10,13 +10,14 @@ namespace ReadiNow.Expressions.Compiler
     /// </summary>
     public class VariableInfo
     {
-        public VariableInfo( [NotNull] ExpressionNode expression, [CanBeNull] ChildContainer childContainer )
+        public VariableInfo( [NotNull] ExpressionNode expression, [CanBeNull] ChildContainer variableChildContainer, [CanBeNull] ChildContainer variableHostContainer )
         {
             if ( expression == null )
                 throw new ArgumentNullException( nameof( expression ) );
 
             Expression = expression;
-            ChildContainer = childContainer;
+            VariableChildContainer = variableChildContainer;
+            VariableHostContainer = variableHostContainer;
         }
 
         /// <summary>
@@ -27,6 +28,11 @@ namespace ReadiNow.Expressions.Compiler
         /// <summary>
         /// A container that in turn contains things registered during the parsing of the variable.
         /// </summary>
-        public ChildContainer ChildContainer { get; }
+        public ChildContainer VariableChildContainer { get; }
+
+        /// <summary>
+        /// The container that was in content at the time a variable was declared.
+        /// </summary>
+        public ChildContainer VariableHostContainer { get; }
     }
 }

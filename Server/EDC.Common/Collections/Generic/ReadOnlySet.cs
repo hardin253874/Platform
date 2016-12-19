@@ -26,7 +26,7 @@ namespace EDC.Collections.Generic
         {
             if (innerInnerSet == null)
             {
-                throw new ArgumentNullException("innerInnerSet");    
+                throw new ArgumentNullException( nameof( innerInnerSet ) );    
             }
 
             _innerSet = innerInnerSet;

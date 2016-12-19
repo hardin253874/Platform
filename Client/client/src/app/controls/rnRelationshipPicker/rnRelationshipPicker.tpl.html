@@ -4,7 +4,7 @@
         <span class="fieldControl">
             <select class="picker-value-edit-option"
                     ng-model="$ctrl.selectedOption"
-                    ng-options="e as e.name for e in $ctrl.options track by e.id"
+                    ng-options="e as e.name for e in $ctrl.options track by (e.id + e.forward)"
                     ng-disabled="$ctrl.isInDesign">
                 <option value="">{{$ctrl.selectString}}</option>
             </select>

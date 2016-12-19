@@ -1,6 +1,5 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
 using System;
-using System.Collections;
 using System.Data;
 using System.Globalization;
 using System.Runtime.Serialization;
@@ -121,7 +120,7 @@ namespace EDC.Database.Types
                     return DateTime.UtcNow; //return DateTime.Today;
                 }
 
-                if ( string.Equals( value, DateTimeType.DefaultValueNow, StringComparison.InvariantCultureIgnoreCase ) )
+                if ( string.Equals( value, DefaultValueNow, StringComparison.InvariantCultureIgnoreCase ) )
                 {
                     return DateTime.UtcNow;
                 }

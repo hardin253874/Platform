@@ -163,7 +163,7 @@ namespace EDC.Database
 		public static string EscapeSqlIdentifier( string name )
 		{
             if ( string.IsNullOrEmpty( name ) )
-                throw new ArgumentNullException( "name" );
+                throw new ArgumentNullException( nameof( name ) );
 
             if (name.StartsWith("dbo."))
                 return "[dbo].[" + name.Substring(4).Replace( "]", "]]" ) + "]";
@@ -261,7 +261,7 @@ namespace EDC.Database
         public static string BuildSafeLikeParameter( string searchFor, string prefix, string suffix )
         {
             if ( searchFor == null )
-                throw new ArgumentNullException( "searchFor" );
+                throw new ArgumentNullException( nameof( searchFor ) );
 
             string likeEscaped = searchFor;
 
@@ -289,7 +289,7 @@ namespace EDC.Database
         public static string BuildSafeLikeStatement( string searchFor, string prefix, string suffix )
         {
             string param = BuildSafeLikeParameter( searchFor, prefix, suffix );
-            string result = string.Concat( " like '", SqlBuilder.EscapeStringLiteral( param ), "'" );
+            string result = string.Concat( " like '", EscapeStringLiteral( param ), "'" );
             return result;
         }
 	}

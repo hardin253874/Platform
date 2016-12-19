@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using EDC.Monitoring;
 using EDC.Monitoring.Cache;
 
@@ -26,7 +25,7 @@ namespace EDC.Cache.Providers.MetricRepositories
         {
             if (category == null)
             {
-                throw new ArgumentNullException("category");
+                throw new ArgumentNullException( nameof( category ) );
             }
 
             Category = category;
@@ -60,37 +59,37 @@ namespace EDC.Cache.Providers.MetricRepositories
         /// <summary>
         /// Maps the cache name to the size performance counter.
         /// </summary>
-        internal ConcurrentDictionary<string, NumberOfItems64PerformanceCounter> SizeCounters { get; private set; }
+        internal ConcurrentDictionary<string, NumberOfItems64PerformanceCounter> SizeCounters { get; }
 
         /// <summary>
         /// Maps the cache name to the hit rate performance counter.
         /// </summary>
-        internal ConcurrentDictionary<string, PercentageRatePerformanceCounter> HitRateCounters { get; private set; }
+        internal ConcurrentDictionary<string, PercentageRatePerformanceCounter> HitRateCounters { get; }
 
         /// <summary>
         /// Maps the cache name to the total hits performance counter.
         /// </summary>
-        internal ConcurrentDictionary<string, NumberOfItems64PerformanceCounter> TotalHitsCounters { get; private set; }
+        internal ConcurrentDictionary<string, NumberOfItems64PerformanceCounter> TotalHitsCounters { get; }
 
         /// <summary>
         /// Maps the cache name to the total misses performance counter.
         /// </summary>
-        internal ConcurrentDictionary<string, NumberOfItems64PerformanceCounter> TotalMissesCounters { get; private set; }
+        internal ConcurrentDictionary<string, NumberOfItems64PerformanceCounter> TotalMissesCounters { get; }
 
         /// <summary>
         /// The performance counter category.
         /// </summary>
-        public IMultiInstancePerformanceCounterCategory Category { get; private set; }
+        public IMultiInstancePerformanceCounterCategory Category { get; }
 
         /// <summary>
         /// Callbacks to get the cache sizes.
         /// </summary>
-        public ConcurrentDictionary<string, Func<long>> SizeCallbacks { get; private set; }
+        public ConcurrentDictionary<string, Func<long>> SizeCallbacks { get; }
 
         /// <summary>
         /// Callbacks to get the cache hit and miss rates.
         /// </summary>
-        public ConcurrentDictionary<string, Func<HitsAndMisses>> HitsAndMissesCallbacks { get; private set; }
+        public ConcurrentDictionary<string, Func<HitsAndMisses>> HitsAndMissesCallbacks { get; }
 
         /// <summary>
         /// Update the cache size counter.
@@ -99,7 +98,7 @@ namespace EDC.Cache.Providers.MetricRepositories
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException( nameof( name ) );
             }
 
             PercentageRatePerformanceCounter hitRateCounter;
@@ -133,7 +132,7 @@ namespace EDC.Cache.Providers.MetricRepositories
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException( nameof( name ) );
             }
 
             NumberOfItems64PerformanceCounter sizeCounter; 
@@ -152,7 +151,7 @@ namespace EDC.Cache.Providers.MetricRepositories
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException( nameof( name ) );
             }
 
             PercentageRatePerformanceCounter hitRateCounter;
@@ -185,7 +184,7 @@ namespace EDC.Cache.Providers.MetricRepositories
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException( nameof( name ) );
             }
 
             NumberOfItems64PerformanceCounter sizeCounter;
@@ -237,11 +236,11 @@ namespace EDC.Cache.Providers.MetricRepositories
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException( nameof( name ) );
             }
             if (getSize == null)
             {
-                throw new ArgumentNullException("getSize");
+                throw new ArgumentNullException( nameof( getSize ) );
             }
 
             SizeCallbacks.AddOrUpdate(name, n => getSize, (n, gs) => getSize);
@@ -265,11 +264,11 @@ namespace EDC.Cache.Providers.MetricRepositories
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException( nameof( name ) );
             }
             if (getHitsAndMisses == null)
             {
-                throw new ArgumentNullException("getHitsAndMisses");
+                throw new ArgumentNullException( nameof( getHitsAndMisses ) );
             }
 
             HitsAndMissesCallbacks.AddOrUpdate(name, n => getHitsAndMisses, (n, ghm) => getHitsAndMisses);
@@ -290,7 +289,7 @@ namespace EDC.Cache.Providers.MetricRepositories
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException( nameof( name ) );
             }
 
             Func<long> oldGetSize;
@@ -311,7 +310,7 @@ namespace EDC.Cache.Providers.MetricRepositories
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException( nameof( name ) );
             }
 
             Func<HitsAndMisses> oldGetHitsAndMisses;

@@ -21,7 +21,7 @@ namespace EDC.IO
 		{
 			if ( bytes == null )
 			{
-				throw new ArgumentNullException( "bytes" );
+				throw new ArgumentNullException( nameof( bytes ) );
 			}
 
 			using ( var memoryStream = new MemoryStream( ) )
@@ -46,7 +46,7 @@ namespace EDC.IO
 		{
 			if ( bytes == null )
 			{
-				throw new ArgumentNullException( "bytes" );
+				throw new ArgumentNullException( nameof( bytes ) );
 			}
 
 			using ( var compressedStream = new MemoryStream( bytes ) )

@@ -16,6 +16,15 @@ namespace ReadiNow.Connector.Scheduled
     /// </summary>
     public class StartImportJob: ItemBase
     {
+        protected override bool RunAsOwner
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+
         public override void Execute(EntityRef scheduledItemRef)
         {
             var scheduledImportConfig = Entity.Get<ScheduledImportConfig>(scheduledItemRef);

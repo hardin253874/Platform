@@ -177,6 +177,7 @@ namespace EDC.Test.IO
         }
 
         [Test]
+        [Category("ExtendedTests")]
         public void CleanupExpiredFilesTest()
         {
             var repoPath = GetTempDirectoryPath();

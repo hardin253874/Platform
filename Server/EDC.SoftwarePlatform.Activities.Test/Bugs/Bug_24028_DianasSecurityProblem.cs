@@ -56,7 +56,8 @@ namespace EDC.SoftwarePlatform.Activities.Test.Bugs
 
         [Test]
         [RunAsDefaultTenant]
-        [Category("WorkflowTests"), Category("Bug"), Category("ExtendedTests")]
+        [Category("WorkflowTests"), Category("Bug")]
+        //[Category( "ExtendedTests" )]
         public void TestWithWorkflowContext()
         {
             using (new WorkflowRunContext {RunTriggersInCurrentThread = true})

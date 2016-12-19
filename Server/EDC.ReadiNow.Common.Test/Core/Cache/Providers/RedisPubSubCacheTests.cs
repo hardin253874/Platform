@@ -148,15 +148,19 @@ namespace EDC.ReadiNow.Test.Core.Cache.Providers
 
 					CountdownEvent evt = new CountdownEvent( 1 );
 
-					redisPubSubCache2.Channel.MessageReceived += ( sender, message ) =>
+					EventHandler<MessageEventArgs<RedisPubSubCacheMessage<long>>> handler = ( sender, message ) =>
 					{
 						evt.Signal( );
 					};
+
+					redisPubSubCache2.Channel.MessageReceived += handler;
 
 					redisPubSubCache1.Remove( testData [ 0 ].Item1 );
 
 					// Wait for message
 					evt.Wait( DefaultRedisWaitTime );
+
+					redisPubSubCache2.Channel.MessageReceived -= handler;
 
 					Assert.That( redisPubSubCache1.TryGetValue( testData [ 0 ].Item1, out value ), Is.False, "Item not removed from cache 1" );
 					Assert.That( redisPubSubCache2.TryGetValue( testData [ 0 ].Item1, out value ), Is.False, "Item not removed from cache 2" );
@@ -164,6 +168,7 @@ namespace EDC.ReadiNow.Test.Core.Cache.Providers
 					Assert.That( value, Is.EqualTo( testData [ 1 ].Item2 ), "Item 2 incorrect value in cache 1" );
 					Assert.That( redisPubSubCache2.TryGetValue( testData [ 1 ].Item1, out value ), Is.True, "Item 2 removed from cache 2" );
 					Assert.That( value, Is.EqualTo( testData [ 1 ].Item2 ), "Item 2 incorrect value in cache 2" );
+
 				}
 			}
 		}
@@ -232,17 +237,21 @@ namespace EDC.ReadiNow.Test.Core.Cache.Providers
 
 				CountdownEvent evt = new CountdownEvent( 1 );
 
-				redisPubSubCache2.Channel.MessageReceived += ( sender, message ) =>
+				EventHandler<MessageEventArgs<RedisPubSubCacheMessage<long>>> handler = ( sender, message ) =>
 				{
 					evt.Signal( );
 				};
+
+	            redisPubSubCache2.Channel.MessageReceived += handler;
 
 				redisPubSubCache1.Clear();
 
                 // Wait for message
                 evt.Wait(DefaultRedisWaitTime);
 
-                Assert.That(redisPubSubCache1.TryGetValue(testData[0].Item1, out value), Is.False, "Item 1 not removed from cache 1");
+				redisPubSubCache2.Channel.MessageReceived -= handler;
+
+				Assert.That(redisPubSubCache1.TryGetValue(testData[0].Item1, out value), Is.False, "Item 1 not removed from cache 1");
                 Assert.That(redisPubSubCache2.TryGetValue(testData[0].Item1, out value), Is.False, "Item 1 not removed from cache 2");
                 Assert.That(redisPubSubCache1.TryGetValue(testData[1].Item1, out value), Is.False, "Item 2 not removed from cache 1");
                 Assert.That(redisPubSubCache2.TryGetValue(testData[1].Item1, out value), Is.False, "Item 2 not removed from cache 2");

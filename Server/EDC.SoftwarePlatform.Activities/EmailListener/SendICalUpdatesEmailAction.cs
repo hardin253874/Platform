@@ -652,10 +652,8 @@ namespace EDC.SoftwarePlatform.Activities.EmailListener
 
 			sentMessage.Save( );
 
-			/////
-			// Send the message.
-			/////
-			iCalEmailHelper.SendICalEmail( calendar, sentMessage.As<SentEmailMessage>( ).ToMailMessage( ), inbox );
+            var emailServerSettings = Entity.Get<TenantEmailSetting>("core:tenantEmailSettingsInstance");
+            iCalEmailHelper.SendICalEmail( calendar, sentMessage.As<SentEmailMessage>( ).ToMailMessage( ), emailServerSettings);
 		}
 	}
 }

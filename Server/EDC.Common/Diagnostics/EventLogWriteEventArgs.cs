@@ -1,10 +1,5 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EDC.Diagnostics;
 
 namespace EDC.Diagnostics
 {
@@ -26,7 +21,7 @@ namespace EDC.Diagnostics
         {
             if (entry == null)
             {
-                throw new ArgumentNullException("entry");
+                throw new ArgumentNullException( nameof( entry ) );
             }
 
             Entry = entry;

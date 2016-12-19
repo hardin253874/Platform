@@ -67,11 +67,11 @@ namespace EDC
 		{
 			if ( name == null )
 			{
-				throw new ArgumentNullException( "name" );
+				throw new ArgumentNullException( nameof( name ) );
 			}
 			if ( version != 3 && version != 5 )
 			{
-				throw new ArgumentOutOfRangeException( "version", @"version must be either 3 or 5." );
+				throw new ArgumentOutOfRangeException( nameof( version ), @"version must be either 3 or 5." );
 			}
 
 			/////

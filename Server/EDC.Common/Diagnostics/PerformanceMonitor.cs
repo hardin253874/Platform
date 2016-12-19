@@ -58,7 +58,6 @@ namespace EDC.Diagnostics
 		public string Name
 		{
 			get;
-			private set;
 		}
 
 		/// <summary>
@@ -70,7 +69,6 @@ namespace EDC.Diagnostics
 		private Stopwatch Timer
 		{
 			get;
-			set;
 		}
 
 		/// <summary>
@@ -169,13 +167,16 @@ namespace EDC.Diagnostics
 				}
 			}
 
-			depth.Pop( );
+		    if ( depth != null )
+		    {
+                depth.Pop( );
 
-			if ( depth.Count <= 0 )
-			{
-				CallContext.FreeNamedDataSlot( "PerformanceMonitor" );
-			}
-		}
+                if ( depth.Count <= 0 )
+                {
+                    CallContext.FreeNamedDataSlot( "PerformanceMonitor" );
+                }
+            }
+        }
 	}
 
 	/// <summary>

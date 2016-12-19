@@ -156,7 +156,7 @@ namespace EDC.Text
         {
             if (bytes == null)
             {
-                throw new ArgumentNullException("bytes");
+                throw new ArgumentNullException( nameof( bytes ) );
             }
 
             if (bytes.Length == 0)

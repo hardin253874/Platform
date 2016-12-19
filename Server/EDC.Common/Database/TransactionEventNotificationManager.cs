@@ -71,7 +71,7 @@ namespace EDC.Database
 		{
 			if ( eventNotification == null )
 			{
-				throw new ArgumentNullException( "eventNotification" );
+				throw new ArgumentNullException( nameof( eventNotification ) );
 			}
 
 			_eventNotification = eventNotification;
@@ -129,7 +129,7 @@ namespace EDC.Database
 		{
 			if ( string.IsNullOrEmpty( transactionId ) )
 			{
-				throw new ArgumentNullException( "transactionId" );
+				throw new ArgumentNullException( nameof( transactionId ) );
 			}
 
 			var args = new TransactionEventNotificationArgs( transactionId, TransactionEventType.Commit );
@@ -182,7 +182,7 @@ namespace EDC.Database
 		{
 			if ( string.IsNullOrEmpty( transactionId ) )
 			{
-				throw new ArgumentNullException( "transactionId" );
+				throw new ArgumentNullException( nameof( transactionId ) );
 			}
 
 			lock ( _syncRoot )
@@ -199,7 +199,7 @@ namespace EDC.Database
 		{
 			if ( string.IsNullOrEmpty( transactionId ) )
 			{
-				throw new ArgumentNullException( "transactionId" );
+				throw new ArgumentNullException( nameof( transactionId ) );
 			}
 
 			var args = new TransactionEventNotificationArgs( transactionId, TransactionEventType.Rollback );
@@ -278,12 +278,12 @@ namespace EDC.Database
 			{
 				if ( notificationManager == null )
 				{
-					throw new ArgumentNullException( "notificationManager" );
+					throw new ArgumentNullException( nameof( notificationManager ) );
 				}
 
 				if ( transaction == null )
 				{
-					throw new ArgumentNullException( "transaction" );
+					throw new ArgumentNullException( nameof( transaction ) );
 				}
 
 				_notificationManager = notificationManager;

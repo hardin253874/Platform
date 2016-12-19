@@ -654,10 +654,108 @@ WHERE
 	d.Data <> o.Data
 ";
 
-		/// <summary>
-		///     The tenant source get binary data command text
-		/// </summary>
-		public const string TenantSourceGetBinaryDataCommandText = @"
+        /// <summary>
+        ///     The tenant source get entities command text
+        /// </summary>
+        public const string TenantSchemaSourceGetEntitiesCommandText = @"
+DECLARE @isOfType BIGINT = dbo.fnAliasNsId( 'isOfType', 'core', @tenant )
+
+-- Exclude types
+DECLARE @resourceKeyDataHash BIGINT = dbo.fnAliasNsId( 'resourceKeyDataHash', 'core', @tenant )
+
+-- Exclude type types
+DECLARE @managedType BIGINT = dbo.fnAliasNsId( 'managedType', 'core', @tenant )
+DECLARE @definition BIGINT = dbo.fnAliasNsId( 'definition', 'core', @tenant )
+DECLARE @importableType BIGINT = dbo.fnAliasNsId( 'importableType', 'core', @tenant )
+DECLARE @logoffAuditLogEntry BIGINT = dbo.fnAliasNsId( 'logoffAuditLogEntry', 'core', @tenant )
+DECLARE @logonAuditLogEntry BIGINT = dbo.fnAliasNsId( 'logonAuditLogEntry', 'core', @tenant )
+
+SELECT
+	e.UpgradeId
+FROM
+	Entity e
+JOIN
+	Relationship rt ON rt.TenantId = @tenant AND rt.TypeId = @isOfType AND rt.FromId = e.Id AND rt.ToId NOT IN (@resourceKeyDataHash, @logoffAuditLogEntry, @logonAuditLogEntry)
+JOIN
+	Relationship rtt ON rtt.TenantId = @tenant AND rtt.TypeId = @isOfType AND rtt.FromId = rt.ToId AND rtt.ToId NOT IN (@managedType, @definition, @importableType)
+WHERE
+	e.TenantId = @tenant
+";
+
+        /// <summary>
+        ///     The tenant source get field data command text
+        /// </summary>
+        public const string TenantSchemaSourceGetFieldDataCommandText = @"
+DECLARE @isOfType BIGINT = dbo.fnAliasNsId( 'isOfType', 'core', @tenant )
+
+-- Exclude types
+DECLARE @resourceKeyDataHash BIGINT = dbo.fnAliasNsId( 'resourceKeyDataHash', 'core', @tenant )
+DECLARE @logoffAuditLogEntry BIGINT = dbo.fnAliasNsId( 'logoffAuditLogEntry', 'core', @tenant )
+DECLARE @logonAuditLogEntry BIGINT = dbo.fnAliasNsId( 'logonAuditLogEntry', 'core', @tenant )
+
+-- Exclude type types
+DECLARE @managedType BIGINT = dbo.fnAliasNsId( 'managedType', 'core', @tenant )
+DECLARE @definition BIGINT = dbo.fnAliasNsId( 'definition', 'core', @tenant )
+DECLARE @importableType BIGINT = dbo.fnAliasNsId( 'importableType', 'core', @tenant )
+
+SELECT
+	e.UpgradeId, f.UpgradeId, d.Data{1}
+FROM
+	Data_{0} d
+JOIN
+	Entity e ON e.TenantId = @tenant AND d.EntityId = e.Id
+JOIN
+	Entity f ON f.TenantId = @tenant AND d.FieldId = f.Id
+JOIN
+	Relationship rt ON rt.TenantId = @tenant AND rt.TypeId = @isOfType AND rt.FromId = e.Id AND rt.ToId NOT IN (@resourceKeyDataHash, @logoffAuditLogEntry, @logonAuditLogEntry)
+JOIN
+	Relationship rtt ON rtt.TenantId = @tenant AND rtt.TypeId = @isOfType AND rtt.FromId = rt.ToId AND rtt.ToId NOT IN (@managedType, @definition, @importableType)
+WHERE
+	e.TenantId = @tenant
+";
+
+        /// <summary>
+        ///     The tenant source get relationships command text
+        /// </summary>
+        public const string TenantSchemaSourceGetRelationshipsCommandText = @"
+DECLARE @isOfType BIGINT = dbo.fnAliasNsId( 'isOfType', 'core', @tenant )
+
+-- Exclude types
+DECLARE @resourceKeyDataHash BIGINT = dbo.fnAliasNsId( 'resourceKeyDataHash', 'core', @tenant )
+DECLARE @logoffAuditLogEntry BIGINT = dbo.fnAliasNsId( 'logoffAuditLogEntry', 'core', @tenant )
+DECLARE @logonAuditLogEntry BIGINT = dbo.fnAliasNsId( 'logonAuditLogEntry', 'core', @tenant )
+
+-- Exclude type types
+DECLARE @managedType BIGINT = dbo.fnAliasNsId( 'managedType', 'core', @tenant )
+DECLARE @definition BIGINT = dbo.fnAliasNsId( 'definition', 'core', @tenant )
+DECLARE @importableType BIGINT = dbo.fnAliasNsId( 'importableType', 'core', @tenant )
+
+SELECT
+	etype.UpgradeId, efrom.UpgradeId, eto.UpgradeId
+FROM
+	Relationship r
+JOIN
+	Entity efrom ON efrom.TenantId = @tenant AND efrom.Id = r.FromId
+JOIN
+	Entity eto ON eto.TenantId = @tenant AND eto.Id = r.ToId
+JOIN
+	Entity etype ON etype.TenantId = @tenant AND etype.Id = r.TypeId
+JOIN
+	Relationship rt1 ON rt1.TenantId = @tenant AND rt1.TypeId = @isOfType AND rt1.FromId = r.FromId AND rt1.ToId NOT IN (@resourceKeyDataHash, @logoffAuditLogEntry, @logonAuditLogEntry)
+JOIN
+	Relationship rtt1 ON rtt1.TenantId = @tenant AND rtt1.TypeId = @isOfType AND rtt1.FromId = rt1.ToId AND rtt1.ToId NOT IN (@managedType, @definition, @importableType)
+JOIN
+	Relationship rt2 ON rt2.TenantId = @tenant AND rt2.TypeId = @isOfType AND rt2.FromId = r.ToId AND rt2.ToId NOT IN (@resourceKeyDataHash, @logoffAuditLogEntry, @logonAuditLogEntry)
+JOIN
+	Relationship rtt2 ON rtt2.TenantId = @tenant AND rtt2.TypeId = @isOfType AND rtt2.FromId = rt2.ToId AND rtt2.ToId NOT IN (@managedType, @definition, @importableType)
+WHERE
+	r.TenantId = @tenant
+";
+
+        /// <summary>
+        ///     The tenant source get binary data command text
+        /// </summary>
+        public const string TenantSourceGetBinaryDataCommandText = @"
 DECLARE @fileDataHashFieldId BIGINT = dbo.fnAliasNsId( 'fileDataHash', 'core', @tenant )
 DECLARE @imageFileTypeId BIGINT = dbo.fnAliasNsId( 'imageFileType', 'core', @tenant )
 DECLARE @isOfType BIGINT = dbo.fnAliasNsId( 'isOfType', 'core', @tenant )

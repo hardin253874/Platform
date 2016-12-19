@@ -26,7 +26,7 @@ using Entity = EDC.ReadiNow.Model.Entity;
 namespace EDC.SoftwarePlatform.WebApi.Test.Security
 {
     [TestFixture]
-    [Category("ExtendedTests")]
+    //[Category("ExtendedTests")]
     [Category("SecurityTests")]
     public class EntityV2Tests
     {

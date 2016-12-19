@@ -132,7 +132,8 @@ namespace EDC.Diagnostics
         /// </returns>
         public static bool ProcMonDebugOutput(string message, params object[] args)
         {
-            bool returnValue = false;
+            bool returnValue;
+
             StringBuilder renderedMessage = new StringBuilder();
             if (args == null || args.Length == 0)
             {
@@ -157,7 +158,7 @@ namespace EDC.Diagnostics
             returnValue = DeviceIoControl(hProcMon,
                                           IOCTL_EXTERNAL_LOG_DEBUGOUT,
                                           renderedMessage,
-                                          (uint)(renderedMessage.Length * sizeof(System.Char)),
+                                          (uint)(renderedMessage.Length * sizeof(char)),
                                           IntPtr.Zero,
                                           0,
                                           out outLen,

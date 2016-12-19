@@ -36,7 +36,7 @@ namespace ReadiNow.Expressions.Compiler
         public EntityNode ContextExpression
         {
             get { return (EntityNode)Variables.GetVariable(_contextToken).Expression; }
-            set { Variables.SetVariable(_contextToken, value, null ); }
+            set { Variables.SetVariable( _contextToken, value, null, null ); }
         }
 
         /// <summary>

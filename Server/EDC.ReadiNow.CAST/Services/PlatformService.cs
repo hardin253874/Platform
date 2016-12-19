@@ -208,10 +208,8 @@ namespace EDC.ReadiNow.CAST.Services
                             mt = mt.AsWritable<ManagedTenant>();
 
                             entities.Add(mt);
-
-                            var roles = GetRoles().ToList();
-
-                            mu = UpdateUser(mt, u, roles);
+                            
+                            mu = UpdateUser(mt, u, entities);
 
                             entities.Add(mu);
                         }
@@ -456,13 +454,10 @@ namespace EDC.ReadiNow.CAST.Services
                 mt.Name = tenant.Name;
                 mt.Disabled = tenant.Disabled;
 
-                var roles = CreateOrUpdateRoles(tenant.Roles, entities).ToList();
-                roles.AddRange(GetRoles());
+                var userRoles = UpdateRoles(mt, tenant.Roles, entities);
+                mt.Roles.AddRange(userRoles);
 
-                var userRoles = UpdateRoles(mt, tenant.Roles, roles);
-                mt.UserRoles.AddRange(userRoles);
-
-                var users = UpdateUsers(mt, tenant.Users, roles, entities);
+                var users = UpdateUsers(mt, tenant.Users, entities);
                 mt.Users.AddRange(users);
 
                 var apps = UpdateInstalledApps(mt, tenant.Apps, entities, existingApps);
@@ -671,80 +666,93 @@ namespace EDC.ReadiNow.CAST.Services
 
         #region Roles
 
-        private IEnumerable<ManagedUserRole> GetRoles()
+        private IEnumerable<ManagedRole> UpdateRoles(IManagedTenant tenant, RoleList roles, ICollection<IEntity> entities)
         {
-            using (Profiler.Measure("PlatformService.GetRoles"))
-            {
-                return CastEntityHelper.GetEntitiesByType<ManagedUserRole>();
-            }
-        }
-
-        private IEnumerable<ManagedUserRole> CreateOrUpdateRoles(RoleList roles, ICollection<IEntity> entities)
-        {
-            using (Profiler.Measure("PlatformService.CreateRole"))
-            {
-                var names = new HashSet<string>();
-                var existingRoles = GetRoles().ToList();
-
-                names.AddRange(existingRoles.Select(e => e.Name));
-
-                var missingRoles = roles != null ? roles.Where(r => !names.Contains(r)) : Enumerable.Empty<string>();
-
-                var newRoles = missingRoles.Select(CreateRole).ToList();
-
-                entities.AddRange(newRoles);
-                
-                newRoles.AddRange(existingRoles.ToList());
-
-                return newRoles;
-            }
-        }
-
-        private ManagedUserRole CreateRole(string role)
-        {
-            using (Profiler.Measure("PlatformService.CreateRole"))
-            {
-                var mur = CastEntityHelper.CreateRole();
-                mur.Name = role;
-                return (ManagedUserRole)mur;
-            }
-        }
-
-        private IEnumerable<ManagedUserRole> UpdateRoles(IManagedTenant tenant, RoleList roles, ICollection<ManagedUserRole> existingRoles)
-        {
-            using (Profiler.Measure("PlatformService.UpdateRoles"))
+            using (Profiler.Measure("PlatformService.UpdateRoles:tenant"))
             {
                 if (tenant == null)
                 {
                     throw new ArgumentNullException("tenant");
                 }
+                
+                var ids = roles == null ? Enumerable.Empty<string>() : roles.Select(r => r.RemoteId.ToString());
 
-                var removeRoles = roles != null ? tenant.UserRoles.Where(r => !roles.Contains(r.Name)) : Enumerable.Empty<ManagedUserRole>();
-                tenant.UserRoles.RemoveRange(removeRoles);
+                CastEntityHelper.Delete(tenant.Roles.Where(r => !ids.Contains(r.RemoteId)).Select(t => new EntityRef(t.Id)));
 
-                if (existingRoles == null)
-                    return Enumerable.Empty<ManagedUserRole>();
+                if (roles == null)
+                {
+                    return Enumerable.Empty<ManagedRole>();
+                }
 
-                return roles != null ? existingRoles.Where(e => roles.Contains(e.Name)) : existingRoles;
+                var updatedEntities = roles.Where(r => r.RemoteId > 0).Select(r => UpdateRole(tenant, r, entities)).ToList();
+
+                entities.AddRange(updatedEntities);
+
+                return updatedEntities;
             }
         }
 
-        private IEnumerable<ManagedUserRole> UpdateRoles(IManagedUser user, RoleList roles, ICollection<ManagedUserRole> existingRoles)
+        private IEnumerable<ManagedRole> UpdateRoles(IManagedUser user, RoleList roles, ICollection<IEntity> entities)
         {
-            using (Profiler.Measure("PlatformService.UpdateRoles"))
+            using (Profiler.Measure("PlatformService.UpdateRoles:user"))
             {
                 if (user == null)
                 {
                     throw new ArgumentNullException("user");
                 }
 
-                var removeRoles = roles != null ? user.Roles.Where(r => !roles.Contains(r.Name)) : Enumerable.Empty<ManagedUserRole>();
+                var ids = roles == null ? Enumerable.Empty<string>() : roles.Select(r => r.RemoteId.ToString());
+
+                var removeRoles = roles != null ? user.Roles.Where(r => !ids.Contains(r.RemoteId)) : Enumerable.Empty<ManagedRole>();
                 user.Roles.RemoveRange(removeRoles);
 
-                if (existingRoles == null)
-                    return Enumerable.Empty<ManagedUserRole>();
+                if (roles == null)
+                {
+                    return Enumerable.Empty<ManagedRole>();
+                }
 
-                return roles != null ? existingRoles.Where(e => roles.Contains(e.Name)) : existingRoles;
+                var updatedEntities = roles.Where(r => r.RemoteId > 0).Select(r => UpdateRole(null, r, entities)).ToList();
+
+                entities.AddRange(updatedEntities);
+
+                return updatedEntities;
+            }
+        }
+
+        private ManagedRole UpdateRole(IManagedTenant tenant, RemoteRoleInfo role, ICollection<IEntity> entities)
+        {
+            using (Profiler.Measure("PlatformService.UpdateRole"))
+            {
+                var mr = default(IManagedRole);
+
+                if (role.RemoteId <= 0)
+                {
+                    return null;
+                }
+
+                if (tenant != null)
+                {
+                    mr = tenant.Roles.FirstOrDefault(r => r.RemoteId == role.RemoteId.ToString());
+                }
+
+                if (mr != null)
+                {
+                    mr = mr.AsWritable<ManagedRole>();
+                }
+                else
+                {
+                    mr = CastEntityHelper.CreateRole();
+                    mr.RemoteId = role.RemoteId.ToString();
+                }
+
+                mr.Name = role.Name;
+
+                if (tenant != null)
+                {
+                    mr.Tenant = tenant;
+                }
+
+                return (ManagedRole)mr;
             }
         }
 
@@ -752,7 +760,7 @@ namespace EDC.ReadiNow.CAST.Services
 
         #region Users
 
-        private IEnumerable<ManagedUser> UpdateUsers(IManagedTenant tenant, UserList users, ICollection<ManagedUserRole> roles, ICollection<IEntity> entities)
+        private IEnumerable<ManagedUser> UpdateUsers(IManagedTenant tenant, UserList users, ICollection<IEntity> entities)
         {
             using (Profiler.Measure("PlatformService.UpdateUsers"))
             {
@@ -770,7 +778,7 @@ namespace EDC.ReadiNow.CAST.Services
                     return Enumerable.Empty<ManagedUser>();
                 }
                 
-                var updatedEntities = users.Where(u => u.RemoteId > 0).Select(u => UpdateUser(tenant, u, roles)).ToList();
+                var updatedEntities = users.Where(u => u.RemoteId > 0).Select(u => UpdateUser(tenant, u, entities)).ToList();
 
                 entities.AddRange(updatedEntities);
 
@@ -778,7 +786,7 @@ namespace EDC.ReadiNow.CAST.Services
             }
         }
 
-        private ManagedUser UpdateUser(IManagedTenant tenant, RemoteUserInfo user, ICollection<ManagedUserRole> roles)
+        private ManagedUser UpdateUser(IManagedTenant tenant, RemoteUserInfo user, ICollection<IEntity> entities)
         {
             using (Profiler.Measure("PlatformService.UpdateUser"))
             {
@@ -815,7 +823,7 @@ namespace EDC.ReadiNow.CAST.Services
                     default: mu.Status_Enum = ManagedUserStatusEnumeration.Unknown; break;
                 }
 
-                var r = UpdateRoles(mu, user.Roles, roles);
+                var r = UpdateRoles(mu, user.Roles, entities);
                 mu.Roles.AddRange(r);
 
                 if (tenant != null)

@@ -526,6 +526,8 @@ namespace EDC.ReadiNow.Model.EventClasses
 
             AutoNumber.Upgrade(solutions);
 
+            SendEmailWorkflowActivity.Upgrade(solutions);
+
             InvalidateBulkRequestCache();
 
             InvalidateMetadataCaches(); // we need to do this explicitly as the app import will not necessarily fire the normal event targets.
@@ -832,6 +834,8 @@ namespace EDC.ReadiNow.Model.EventClasses
             var solutions = enumerable.Select(e => e.As<Solution>()).Where(s => s != null);
 
             AutoNumber.Upgrade(solutions);
+
+            SendEmailWorkflowActivity.Upgrade(solutions);
 
             FixNavigationSections();
 

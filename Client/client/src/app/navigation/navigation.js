@@ -26,20 +26,13 @@
             //
             // Board
             var boardFeatureEnabled = true; // rnFeatureSwitch.isFeatureOn('boardFeature');
-            var fsSelfServeEnabled = rnFeatureSwitch.isFeatureOn('fsSelfServe');
-
+            
             $scope.newNavItemPopoverEntries = newNavItemPopoverEntries;
             $scope.docoService = spDocumentationService;            
 
             if (!boardFeatureEnabled) {
                 $scope.newNavItemPopoverEntries = _.reject($scope.newNavItemPopoverEntries, function (p) {
                     return /task board/ig.test(p.name);
-                });
-            }
-
-            if (!fsSelfServeEnabled) {
-                $scope.newNavItemPopoverEntries = _.reject($scope.newNavItemPopoverEntries, function (p) {
-                    return /privateContentSection/ig.test(p.item.typeAlias);
                 });
             }
 

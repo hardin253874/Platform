@@ -114,8 +114,6 @@ namespace EDC.SoftwarePlatform.Migration.Sources
         {
             EntityMemberRequest request = _requests[ typeId ];
 
-            bool isRootType = typeId == RootTypesMarker;
-
             // We will need to determine all applicable fields and relationships for any instance of this type.
             // So this will include both ancestor types, as well as fields for instances of potentially derived types.
 
@@ -161,11 +159,6 @@ namespace EDC.SoftwarePlatform.Migration.Sources
                 {
                     case CloneActionEnum_Enumeration.Drop:
                     case CloneActionEnum_Enumeration.CloneReferences:
-                        // Note: We need to request the data for 'Drop', but it only gets included if the 'target' is also present in the dataset.
-                        // Otherwise internal relationships (e.g. relSingleLookup) won't get included properly.
-
-                        if ( !isRootType && relationship.ReverseCloneAction_Enum == CloneActionEnum_Enumeration.CloneEntities )
-                            continue;   // don't request relationships in the forward direction if they are clones in the reverse direction.
                         innerRequest = _requestReferenceOnly;
                         break;
 
@@ -200,8 +193,6 @@ namespace EDC.SoftwarePlatform.Migration.Sources
                 {
                     case CloneActionEnum_Enumeration.Drop:
                     case CloneActionEnum_Enumeration.CloneReferences:
-                        if ( !isRootType && relationship.CloneAction_Enum == CloneActionEnum_Enumeration.CloneEntities )
-                            continue;   // don't request relationships in the reverse direction if they are full clones in the forward direction.
                         innerRequest = _requestReferenceOnly;
                         break;              
 

@@ -4,9 +4,10 @@
             <sp-title-plus-markers is-read-only="isReadOnly" is-required="isMandatory" messages="customValidationMessages" title-model="titleModel"></sp-title-plus-markers>
         </div>
         <rn-relationship-picker class="edit-form-value"
-                                relationship="model.relEntity"
                                 start-type="model.targetTypeEntity"
                                 end-type="'core:person'"
+                                relationship="model.relEntity"
+                                is-reverse="model.isReverse"
                                 is-read-only="isReadOnly"
                                 is-in-design="isInDesign"
                                 on-select="handleSelect(selected)"

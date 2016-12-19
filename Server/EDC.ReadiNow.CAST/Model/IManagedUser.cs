@@ -40,6 +40,6 @@ namespace EDC.ReadiNow.CAST.Model
         /// <summary>
         /// The roles that this user currently belongs to.
         /// </summary>
-        IEntityCollection<ManagedUserRole> Roles { get; set; }
+        IEntityCollection<ManagedRole> Roles { get; set; }
     }
 }

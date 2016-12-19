@@ -41,12 +41,12 @@ namespace EDC.Syslog
         {
             if (streamProvider == null)
             {
-                throw new ArgumentNullException(nameof(streamProvider));
+                throw new ArgumentNullException( nameof(streamProvider));
             }
 
             if (serializer == null)
             {
-                throw new ArgumentNullException(nameof(serializer));
+                throw new ArgumentNullException( nameof(serializer));
             }            
 
             _streamProvider = streamProvider;
@@ -81,7 +81,7 @@ namespace EDC.Syslog
         {
             if (message == null)
             {
-                throw new ArgumentNullException(nameof(message));
+                throw new ArgumentNullException( nameof(message));
             }
 
             try

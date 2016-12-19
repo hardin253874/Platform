@@ -1,7 +1,6 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
-using System;
+
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
 
 // http://stackoverflow.com/questions/4901320/is-there-any-kind-of-referencecomparer-in-net

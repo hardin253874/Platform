@@ -126,6 +126,7 @@
     <Compile Include="Bugs\Bug_23913_workflowClone.cs" />
     <Compile Include="Bugs\Bug_23903_resumeMissingInput.cs" />
     <Compile Include="Bugs\Bug_25271_triggerFiringTooOften.cs" />
+    <Compile Include="EmailListener\ProcessInboxesActionTest.cs" />
     <Compile Include="Engine\SuspendRestoreTest.cs" />
     <Compile Include="Engine\WorkflowRunDeferredTest.cs" />
     <Compile Include="Engine\RunStateTest.cs" />
@@ -217,9 +218,9 @@
       <Name>EDC.SoftwarePlatform.Activities</Name>
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="..\EDC.SoftwarePlatform.Interfaces\EDC.SoftwarePlatform.Interfaces.csproj">
+    <ProjectReference Include="..\ReadiNow.Interfaces\ReadiNow.Interfaces.csproj">
       <Project>{c1fc97b7-aacc-45b5-9969-7995b27093ca}</Project>
-      <Name>EDC.SoftwarePlatform.Interfaces</Name>
+      <Name>ReadiNow.Interfaces</Name>
       <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\EDC.SoftwarePlatform.Services\EDC.SoftwarePlatform.Services.csproj">

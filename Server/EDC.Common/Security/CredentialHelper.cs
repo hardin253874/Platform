@@ -20,24 +20,24 @@ namespace EDC.Security
 		{
 			var credential = new NetworkCredential( );
 
-			if ( ! string.IsNullOrEmpty( username ) )
-			{
-				int delimiter = username.IndexOf( "\\", StringComparison.Ordinal );
+		    if ( string.IsNullOrEmpty( username ) )
+                return credential;
 
-				credential.Password = password;
+		    int delimiter = username.IndexOf( "\\", StringComparison.Ordinal );
 
-				if ( delimiter > -1 )
-				{
-					credential.Domain = username.Substring( 0, delimiter );
-					credential.UserName = username.Substring( delimiter + 1 );
-				}
-				else
-				{
-					credential.UserName = username;
-				}
-			}
+		    credential.Password = password;
 
-			return credential;
+		    if ( delimiter > -1 )
+		    {
+		        credential.Domain = username.Substring( 0, delimiter );
+		        credential.UserName = username.Substring( delimiter + 1 );
+		    }
+		    else
+		    {
+		        credential.UserName = username;
+		    }
+
+		    return credential;
 		}
 
 		/// <summary>

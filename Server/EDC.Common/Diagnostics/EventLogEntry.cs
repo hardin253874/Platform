@@ -1,8 +1,6 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
 using System;
-using System.Diagnostics;
 using System.Linq;
-using EDC.Common;
 
 namespace EDC.Diagnostics
 {
@@ -12,19 +10,19 @@ namespace EDC.Diagnostics
 	[Serializable]
 	public class EventLogEntry
 	{
-		private readonly DateTime _date = DateTime.Now;
+		private readonly DateTime _date;
 		private Guid _id = Guid.Empty;
         private string _machine = string.Empty;
         private string _process = string.Empty;
-        private readonly EventLogLevel _level = EventLogLevel.Trace;
-		private readonly string _message = string.Empty;
-		private readonly string _source = string.Empty;
+        private readonly EventLogLevel _level;
+		private readonly string _message;
+		private readonly string _source;
 		private readonly int _threadId;
 		private readonly long _timestamp;
         private readonly long _tenantId;
-        private readonly string _tenantName = string.Empty;
-        private readonly string _userName = string.Empty;
-        private readonly string _logFilePath = string.Empty;
+        private readonly string _tenantName;
+        private readonly string _userName;
+        private readonly string _logFilePath;
 
         /// <summary>
         ///     Initializes a new instance of the EventLogEntry class.

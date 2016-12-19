@@ -17,6 +17,14 @@ namespace ReadiNow.Connector.Scheduled
     /// </summary>
     public class StartExportJob: ItemBase
     {
+        protected override bool RunAsOwner
+        {
+            get
+            {
+                return true;
+            }
+        }
+
         public override void Execute(EntityRef scheduledItemRef)
         {
             string logMessage = null;

@@ -53,16 +53,16 @@ namespace EDC.Monitoring
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException( nameof( name ) );
             }
             if (string.IsNullOrWhiteSpace(help))
             {
-                throw new ArgumentNullException("help");
+                throw new ArgumentNullException( nameof( help ) );
             }
             if (categoryType == PerformanceCounterCategoryType.Unknown)
             {
                 throw new ArgumentException("Must be either single or multi instance", 
-                    "categoryType");
+                    nameof( categoryType ));
             }
 
             if (PerformanceCounterCategory.Exists(name))
@@ -96,11 +96,11 @@ namespace EDC.Monitoring
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException( nameof( name ) );
             }
             if (string.IsNullOrWhiteSpace(help))
             {
-                throw new ArgumentNullException("help");
+                throw new ArgumentNullException( nameof( help ) );
             }
 
             // Note: the base must immediately follow the non-base in the list.
@@ -137,11 +137,11 @@ namespace EDC.Monitoring
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException( nameof( name ) );
             }
             if (string.IsNullOrWhiteSpace(help))
             {
-                throw new ArgumentNullException("help");
+                throw new ArgumentNullException( nameof( help ) );
             }
 
             counterCreationDataCollection.AddRange(new[]
@@ -175,11 +175,11 @@ namespace EDC.Monitoring
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException( nameof( name ) );
             }
             if (string.IsNullOrWhiteSpace(help))
             {
-                throw new ArgumentNullException("help");
+                throw new ArgumentNullException( nameof( help ) );
             }
 
             counterCreationDataCollection.AddRange(new[]
@@ -215,11 +215,11 @@ namespace EDC.Monitoring
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException( nameof( name ) );
             }
             if (string.IsNullOrWhiteSpace(help))
             {
-                throw new ArgumentNullException("help");
+                throw new ArgumentNullException( nameof( help ) );
             }
 
             counterCreationDataCollection.AddRange(new[]

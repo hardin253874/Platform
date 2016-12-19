@@ -5,8 +5,6 @@ using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EDC.Collections.Generic
 {
@@ -63,7 +61,7 @@ namespace EDC.Collections.Generic
         {
 	        if ( items == null )
 	        {
-				throw new ArgumentNullException( "items" );
+				throw new ArgumentNullException( nameof( items ) );
 	        }
 
 	        if ( items.Length <= 0 )
@@ -90,7 +88,7 @@ namespace EDC.Collections.Generic
         {
             if (items == null)
             {
-                throw new ArgumentNullException("items");
+                throw new ArgumentNullException( nameof( items ) );
             }
 
 	        IList<T> itemsAdded = items.Where(item => _set.TryAdd(item, null)).ToList();
@@ -144,7 +142,7 @@ namespace EDC.Collections.Generic
         {
             if (items == null)
             {
-                throw new ArgumentNullException("items");
+                throw new ArgumentNullException( nameof( items ) );
             }
 
             ItemsAddedEventHandler<T> itemsAddedEventHandler;

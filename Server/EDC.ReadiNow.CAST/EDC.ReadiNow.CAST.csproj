@@ -40,7 +40,7 @@
     <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <LangVersion>5</LangVersion>
+    <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>bin\x64\Release\</OutputPath>
@@ -108,6 +108,7 @@
     <Compile Include="Contracts\LogRequest.cs" />
     <Compile Include="Contracts\LogResponse.cs" />
     <Compile Include="Contracts\Operation.cs" />
+    <Compile Include="Contracts\RemoteRoleInfo.cs" />
     <Compile Include="Contracts\RemoteTenantInfo.cs" />
     <Compile Include="Contracts\RemoteUserInfo.cs" />
     <Compile Include="Contracts\TenantInfoResponse.cs" />
@@ -130,14 +131,14 @@
     <Compile Include="Model\IManagedApp.cs" />
     <Compile Include="Model\IManagedAppVersion.cs" />
     <Compile Include="Model\IManagedPlatform.cs" />
+    <Compile Include="Model\IManagedRole.cs" />
     <Compile Include="Model\IManagedTenant.cs" />
     <Compile Include="Model\IManagedUser.cs" />
-    <Compile Include="Model\IManagedUserRole.cs" />
     <Compile Include="Model\IManagedUserStatus.cs" />
     <Compile Include="Model\IPlatformDatabase.cs" />
     <Compile Include="Model\IPlatformFrontEnd.cs" />
+    <Compile Include="Model\ManagedRole.cs" />
     <Compile Include="Model\ManagedUser.cs" />
-    <Compile Include="Model\ManagedUserRole.cs" />
     <Compile Include="Model\ManagedUserStatus.cs" />
     <Compile Include="Model\PlatformDatabase.cs" />
     <Compile Include="Model\PlatformFrontEnd.cs" />
@@ -170,9 +171,9 @@
     <Compile Include="Template\Model\ManagedAppVersion.cs" />
     <Compile Include="Template\Model\ManagedCustomer.cs" />
     <Compile Include="Template\Model\ManagedPlatform.cs" />
+    <Compile Include="Template\Model\ManagedRole.cs" />
     <Compile Include="Template\Model\ManagedTenant.cs" />
     <Compile Include="Template\Model\ManagedUser.cs" />
-    <Compile Include="Template\Model\ManagedUserRoles.cs" />
     <Compile Include="Template\Model\ManagedUserStatus.cs" />
     <Compile Include="Template\Model\MarketplaceLicence.cs" />
     <Compile Include="Template\Model\MarketplaceOrderHistory.cs" />
@@ -207,9 +208,9 @@
       <Name>EDC.SoftwarePlatform.Activities</Name>
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="..\EDC.SoftwarePlatform.Interfaces\EDC.SoftwarePlatform.Interfaces.csproj">
+    <ProjectReference Include="..\ReadiNow.Interfaces\ReadiNow.Interfaces.csproj">
       <Project>{c1fc97b7-aacc-45b5-9969-7995b27093ca}</Project>
-      <Name>EDC.SoftwarePlatform.Interfaces</Name>
+      <Name>ReadiNow.Interfaces</Name>
       <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\EDC.SoftwarePlatform.Migration\EDC.SoftwarePlatform.Migration.csproj">

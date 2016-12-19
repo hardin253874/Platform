@@ -1,0 +1,6 @@
+{
+  "source": ["src"],
+  "destination": "styleguide/",
+  "css": ["../dist/assets/app.css", "../dist/assets/softwareplatform.client.css"],
+  "js": []
+}

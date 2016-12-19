@@ -24,28 +24,41 @@ namespace EDC.ReadiNow.Security.SecuredData
         public static void Upgrade(string tenantName)
         {
             using (new SecurityBypassContext())
-            using (new TenantAdministratorContext(tenantName))
             {
                 var crypto = new EncodingCryptoProvider();
 
-                // ImapEmailProvider
-                Factory.SecuredDataSaveHelper.UpgradeField(
-                    ImapEmailProviderEventTarget.SecureIdContext,
-                    ImapEmailProvider.ImapEmailProvider_Type,
-                    ImapEmailProvider.OaPassword_Field,
-                    ImapEmailProvider.OaPasswordSecureId_Field,
-                    (s) => crypto.DecodeAndDecrypt(s));
+                using (new GlobalAdministratorContext())
+                {
+                    /* 
+                     ImapServerSettings has been moved to the global tenant only. Not sure if we need to move this elsewhere as here it will be run for each tenant
+                     */
+                    Factory.SecuredDataSaveHelper.UpgradeField(
+                        ImapServerSettingsEventTarget.SecureIdContext,
+                        ImapServerSettings.ImapServerSettings_Type,
+                        ImapServerSettings.ImapPassword_Field,
+                        ImapServerSettings.ImapPasswordSecureId_Field,
+                        (s) => crypto.DecodeAndDecrypt(s));
+                }
+                using (new TenantAdministratorContext(tenantName))
+                {
 
-                // identityProvider OidcClientSecret
-                Factory.SecuredDataSaveHelper.UpgradeField(
-                    OidcIdentityProviderEventTarget.SecureIdContext,
-                    OidcIdentityProvider.OidcIdentityProvider_Type,
-                    OidcIdentityProvider.OidcClientSecret_Field,
-                    OidcIdentityProvider.OidcClientSecretSecureId_Field,
-                    (s) => crypto.DecodeAndDecrypt(s)
-                    );
+                    Factory.SecuredDataSaveHelper.UpgradeField(
+                        EmailServerSettingsEventTarget.SecureIdContext,
+                        TenantEmailSetting.TenantEmailSetting_Type,
+                        TenantEmailSetting.SmtpPassword_Field,
+                        TenantEmailSetting.SmtpPasswordSecureId_Field,
+                        (s) => crypto.DecodeAndDecrypt(s));
+
+                    // identityProvider OidcClientSecret
+                    Factory.SecuredDataSaveHelper.UpgradeField(
+                        OidcIdentityProviderEventTarget.SecureIdContext,
+                        OidcIdentityProvider.OidcIdentityProvider_Type,
+                        OidcIdentityProvider.OidcClientSecret_Field,
+                        OidcIdentityProvider.OidcClientSecretSecureId_Field,
+                        (s) => crypto.DecodeAndDecrypt(s)
+                        );
+                }
             }
         }
-       
     }
 }

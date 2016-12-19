@@ -80,7 +80,7 @@ namespace EDC.Syslog
         {
             if (messageWriter == null)
             {
-                throw new ArgumentNullException(nameof(messageWriter));
+                throw new ArgumentNullException( nameof(messageWriter));
             }            
 
             _messageWriter = messageWriter;
@@ -133,7 +133,7 @@ namespace EDC.Syslog
         {
             if (message == null)
             {
-                throw new ArgumentNullException(nameof(message));
+                throw new ArgumentNullException( nameof(message));
             }
 
             if (_disposed || !_canWriteMessages) return;

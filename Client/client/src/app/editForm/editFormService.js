@@ -1482,6 +1482,8 @@
                 if (backgroundColor) {
                     choiceFieldStyle['background'] = spUtils.getCssColorFromARGBString(backgroundColor);
                     choiceFieldStyle['background-color'] = spUtils.getCssColorFromARGBString(backgroundColor);
+                    choiceFieldStyle['padding'] = '2px 10px';
+                    choiceFieldStyle['border-radius'] = '4px';
                 }
 
                 if (foregroundColor) {

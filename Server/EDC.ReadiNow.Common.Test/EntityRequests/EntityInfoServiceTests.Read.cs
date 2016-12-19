@@ -389,7 +389,7 @@ namespace EDC.ReadiNow.Test.EntityRequests
                 Assert.Ignore();
 
             var request = new EntityRequest("core:resourceViewer", "name", QueryType.FilterInstances, "Test");
-            request.Filter = "[Name] = 'Mail Boxes'";
+            request.Filter = "[Name] = 'Inboxes'";
 
             IEnumerable<EntityData> results = BulkRequestRunner.GetEntities(request);
 
@@ -397,7 +397,7 @@ namespace EDC.ReadiNow.Test.EntityRequests
 
             EntityData resource = results.Single();
             Assert.That(resource.Fields, Has.Count.EqualTo(1));
-            Assert.That(resource.Fields[0].Value.ValueString, Is.EqualTo("Mail Boxes"));
+            Assert.That(resource.Fields[0].Value.ValueString, Is.EqualTo("Inboxes"));
         }
 
         [Test]
@@ -408,7 +408,7 @@ namespace EDC.ReadiNow.Test.EntityRequests
                 Assert.Ignore();
 
             var request = new EntityRequest("core:report", "name", QueryType.FilterExactInstances, "Test");
-            request.Filter = "[Name] = 'Mail Boxes'";
+            request.Filter = "[Name] = 'Inboxes'";
 
             IEnumerable<EntityData> results = BulkRequestRunner.GetEntities(request);
 
@@ -416,7 +416,7 @@ namespace EDC.ReadiNow.Test.EntityRequests
 
             EntityData resource = results.Single();
             Assert.That(resource.Fields, Has.Count.EqualTo(1));
-            Assert.That(resource.Fields[0].Value.ValueString, Is.EqualTo("Mail Boxes"));
+            Assert.That(resource.Fields[0].Value.ValueString, Is.EqualTo("Inboxes"));
         }
 
         [Test]

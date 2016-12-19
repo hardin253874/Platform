@@ -54,17 +54,17 @@ namespace EDC.Security
         {
             if (string.IsNullOrEmpty(plainText))
             {
-                throw new ArgumentNullException("plainText");
+                throw new ArgumentNullException( nameof( plainText ) );
             }
 
             if (key == null || key.Length <= 0)
             {
-                throw new ArgumentNullException("key");
+                throw new ArgumentNullException( nameof( key ) );
             }
 
             if (iv == null || iv.Length <= 0)
             {
-                throw new ArgumentNullException("iv");
+                throw new ArgumentNullException( nameof( iv ) );
             }
 
             using (AesManaged aes256 = CreateAesManaged(key, iv))
@@ -105,17 +105,17 @@ namespace EDC.Security
         {
             if (cipherText == null || cipherText.Length <= 0)
             {
-                throw new ArgumentNullException("cipherText");
+                throw new ArgumentNullException( nameof( cipherText ) );
             }
 
             if (key == null || key.Length <= 0)
             {
-                throw new ArgumentNullException("key");
+                throw new ArgumentNullException( nameof( key ) );
             }
 
             if (iv == null || iv.Length <= 0)
             {
-                throw new ArgumentNullException("iv");
+                throw new ArgumentNullException( nameof( iv ) );
             }
 
             string plainText;

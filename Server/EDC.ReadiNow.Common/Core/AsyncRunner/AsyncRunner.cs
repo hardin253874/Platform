@@ -5,6 +5,7 @@ using EDC.ReadiNow.Database;
 using EDC.ReadiNow.Diagnostics;
 using EDC.ReadiNow.IO;
 using ReadiNow.Core;
+using EDC.ReadiNow.Messaging;
 
 namespace EDC.ReadiNow.Core.AsyncRunner
 {
@@ -46,6 +47,7 @@ namespace EDC.ReadiNow.Core.AsyncRunner
             {
                 Action action = ( Action ) o;
 
+                using (new DeferredChannelMessageContext())
                 using ( DatabaseContext.GetContext( ) )
                 {
                     action( );

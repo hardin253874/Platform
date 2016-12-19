@@ -2,9 +2,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EDC.Collections.Generic
 {
@@ -49,10 +46,9 @@ namespace EDC.Collections.Generic
     public class BatchingEnumerator<R, T> : IEnumerator<T>
     {
         IEnumerable<R> _list;
-        IEnumerator<R> _listEnumerator;
+        readonly IEnumerator<R> _listEnumerator;
         IEnumerator<T> _batchEnumerator;
-        int _batchSize;
-        int _leftInBatch;
+        readonly int _batchSize;
         bool _listFinished;
         Func<IEnumerable<R>, IEnumerable<T>> _getBatchFn;
 
@@ -63,7 +59,6 @@ namespace EDC.Collections.Generic
             _listEnumerator = _list.GetEnumerator();
             _batchEnumerator = null;
             _batchSize = batchSize;
-            _leftInBatch = 0;
 
             FillBatch();
         }
@@ -123,7 +118,6 @@ namespace EDC.Collections.Generic
                     break;
 
                 fetchList.Add(_listEnumerator.Current);
-                _leftInBatch++;
             }
 
             var batch = fetchList.Count > 0 ? _getBatchFn(fetchList) : new List<T>();

@@ -16,7 +16,7 @@ using EDC.ReadiNow.Test.Security.AccessControl;
 namespace EDC.SoftwarePlatform.Activities.Test
 {
 	[TestFixture]
-    [Category("ExtendedTests")]
+    //[Category("ExtendedTests")]
     [Category("WorkflowTests")]
 	public class WorkflowProxyImplementationTest : TestBase
 	{

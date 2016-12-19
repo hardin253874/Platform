@@ -9484,22 +9484,99 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Public static accessor to the field.
 		/// </summary>
-		public static StringField EmailServer_Field
+		public static StringField EmailNoReplyAddress_Field
 		{
 			get
 			{
-				return EDC.ReadiNow.Model.Entity.GetFieldEntity<StringField>( "core:emailServer" );
+				return EDC.ReadiNow.Model.Entity.GetFieldEntity<StringField>( "core:emailNoReplyAddress" );
 			}
 		}
 
 		/// <summary>
 		/// Public static accessor to the field.
 		/// </summary>
-		public static StringField EmailServerNoReplyAddress_Field
+		public static BoolField PostInDirectory_Field
 		{
 			get
 			{
-				return EDC.ReadiNow.Model.Entity.GetFieldEntity<StringField>( "core:emailServerNoReplyAddress" );
+				return EDC.ReadiNow.Model.Entity.GetFieldEntity<BoolField>( "core:postInDirectory" );
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the field.
+		/// </summary>
+		public static StringField SmtpAccount_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Entity.GetFieldEntity<StringField>( "core:smtpAccount" );
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the field.
+		/// </summary>
+		public static StringField SmtpPassword_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Entity.GetFieldEntity<StringField>( "core:smtpPassword" );
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the field.
+		/// </summary>
+		public static GuidField SmtpPasswordSecureId_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Entity.GetFieldEntity<GuidField>( "core:smtpPasswordSecureId" );
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the field.
+		/// </summary>
+		public static IntField SmtpPort_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Entity.GetFieldEntity<IntField>( "core:smtpPort" );
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the field.
+		/// </summary>
+		public static StringField SmtpServer_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Entity.GetFieldEntity<StringField>( "core:smtpServer" );
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the field.
+		/// </summary>
+		public static BoolField SmtpUseSSL_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Entity.GetFieldEntity<BoolField>( "core:smtpUseSSL" );
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the field.
+		/// </summary>
+		public static StringField TestingOverrideToAddress_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Entity.GetFieldEntity<StringField>( "core:testingOverrideToAddress" );
 			}
 		}
 
@@ -9724,6 +9801,17 @@ namespace EDC.ReadiNow.Model
 		}
 
 		/// <summary>
+		/// Public static accessor to the direct forward relationship.
+		/// </summary>
+		public static IEntity SentMessages_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Entity.GetFieldEntity<Entity>( "core:sentMessages" );
+			}
+		}
+
+		/// <summary>
 		/// Public static accessor to the inherited  forward relationship.
 		/// </summary>
 		public static IEntity ShortcutInFolder_Field
@@ -9735,68 +9823,13 @@ namespace EDC.ReadiNow.Model
 		}
 
 		/// <summary>
-		/// Public static accessor to the direct forward relationship.
-		/// </summary>
-		public static IEntity TesApprovalsInbox_Field
-		{
-			get
-			{
-				return EDC.ReadiNow.Model.Entity.GetFieldEntity<Entity>( "core:tesApprovalsInbox" );
-			}
-		}
-
-		/// <summary>
-		/// Public static accessor to the direct forward relationship.
-		/// </summary>
-		public static IEntity TesCalendarInbox_Field
-		{
-			get
-			{
-				return EDC.ReadiNow.Model.Entity.GetFieldEntity<Entity>( "core:tesCalendarInbox" );
-			}
-		}
-
-		/// <summary>
-		/// Public static accessor to the direct forward relationship.
-		/// </summary>
-		public static IEntity TesNewTicketsInbox_Field
-		{
-			get
-			{
-				return EDC.ReadiNow.Model.Entity.GetFieldEntity<Entity>( "core:tesNewTicketsInbox" );
-			}
-		}
-
-		/// <summary>
-		/// Public static accessor to the direct forward relationship.
-		/// </summary>
-		public static IEntity TesPasswordResetInbox_Field
-		{
-			get
-			{
-				return EDC.ReadiNow.Model.Entity.GetFieldEntity<Entity>( "core:tesPasswordResetInbox" );
-			}
-		}
-
-		/// <summary>
-		/// Public static accessor to the direct forward relationship.
-		/// </summary>
-		public static IEntity TesSupportInbox_Field
-		{
-			get
-			{
-				return EDC.ReadiNow.Model.Entity.GetFieldEntity<Entity>( "core:tesSupportInbox" );
-			}
-		}
-
-		/// <summary>
 		/// Public static accessor to the array of all fields registered against this type.
 		/// </summary>
 		public static IEntity [ ] AllFields
 		{
 			get
 			{
-				return new IEntity [ ] { TenantEmailSetting.EmailServer_Field, TenantEmailSetting.EmailServerNoReplyAddress_Field, TenantEmailSetting.Alias_Field, TenantEmailSetting.CanDelete_Field, TenantEmailSetting.CanModify_Field, TenantEmailSetting.CreatedDate_Field, TenantEmailSetting.Description_Field, TenantEmailSetting.ModifiedDate_Field, TenantEmailSetting.Name_Field, TenantEmailSetting.CreatedBy_Field, TenantEmailSetting.Flags_Field, TenantEmailSetting.IndirectInSolution_Field, TenantEmailSetting.InSolution_Field, TenantEmailSetting.InStructureLevel_Field, TenantEmailSetting.IsOfType_Field, TenantEmailSetting.IsRootForStructureView_Field, TenantEmailSetting.LastModifiedBy_Field, TenantEmailSetting.ResourceConsoleBehavior_Field, TenantEmailSetting.ResourceHasResourceKeyDataHashes_Field, TenantEmailSetting.ResourceInFolder_Field, TenantEmailSetting.SecurityOwner_Field, TenantEmailSetting.SelectionBehavior_Field, TenantEmailSetting.ShortcutInFolder_Field, TenantEmailSetting.TesApprovalsInbox_Field, TenantEmailSetting.TesCalendarInbox_Field, TenantEmailSetting.TesNewTicketsInbox_Field, TenantEmailSetting.TesPasswordResetInbox_Field, TenantEmailSetting.TesSupportInbox_Field };
+				return new IEntity [ ] { TenantEmailSetting.EmailNoReplyAddress_Field, TenantEmailSetting.PostInDirectory_Field, TenantEmailSetting.SmtpAccount_Field, TenantEmailSetting.SmtpPassword_Field, TenantEmailSetting.SmtpPasswordSecureId_Field, TenantEmailSetting.SmtpPort_Field, TenantEmailSetting.SmtpServer_Field, TenantEmailSetting.SmtpUseSSL_Field, TenantEmailSetting.TestingOverrideToAddress_Field, TenantEmailSetting.Alias_Field, TenantEmailSetting.CanDelete_Field, TenantEmailSetting.CanModify_Field, TenantEmailSetting.CreatedDate_Field, TenantEmailSetting.Description_Field, TenantEmailSetting.ModifiedDate_Field, TenantEmailSetting.Name_Field, TenantEmailSetting.CreatedBy_Field, TenantEmailSetting.Flags_Field, TenantEmailSetting.IndirectInSolution_Field, TenantEmailSetting.InSolution_Field, TenantEmailSetting.InStructureLevel_Field, TenantEmailSetting.IsOfType_Field, TenantEmailSetting.IsRootForStructureView_Field, TenantEmailSetting.LastModifiedBy_Field, TenantEmailSetting.ResourceConsoleBehavior_Field, TenantEmailSetting.ResourceHasResourceKeyDataHashes_Field, TenantEmailSetting.ResourceInFolder_Field, TenantEmailSetting.SecurityOwner_Field, TenantEmailSetting.SelectionBehavior_Field, TenantEmailSetting.SentMessages_Field, TenantEmailSetting.ShortcutInFolder_Field };
 			}
 		}
 
@@ -9807,29 +9840,127 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Public accessor for the field.
 		/// </summary>
-		public string EmailServer
+		public string EmailNoReplyAddress
 		{
 			get
 			{
-				return ( string ) this.GetField( "core:emailServer" );
+				return ( string ) this.GetField( "core:emailNoReplyAddress" );
 			}
 			set
 			{
-				this.SetField( "core:emailServer", value);
+				this.SetField( "core:emailNoReplyAddress", value);
 			}
 		}
 		/// <summary>
 		/// Public accessor for the field.
 		/// </summary>
-		public string EmailServerNoReplyAddress
+		public bool? PostInDirectory
 		{
 			get
 			{
-				return ( string ) this.GetField( "core:emailServerNoReplyAddress" );
+				return ( bool? ) this.GetField( "core:postInDirectory" );
 			}
 			set
 			{
-				this.SetField( "core:emailServerNoReplyAddress", value);
+				this.SetField( "core:postInDirectory", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the field.
+		/// </summary>
+		public string SmtpAccount
+		{
+			get
+			{
+				return ( string ) this.GetField( "core:smtpAccount" );
+			}
+			set
+			{
+				this.SetField( "core:smtpAccount", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the field.
+		/// </summary>
+		public string SmtpPassword
+		{
+			get
+			{
+				return ( string ) this.GetField( "core:smtpPassword" );
+			}
+			set
+			{
+				this.SetField( "core:smtpPassword", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the field.
+		/// </summary>
+		public Guid? SmtpPasswordSecureId
+		{
+			get
+			{
+				return ( Guid? ) this.GetField( "core:smtpPasswordSecureId" );
+			}
+			set
+			{
+				this.SetField( "core:smtpPasswordSecureId", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the field.
+		/// </summary>
+		public int? SmtpPort
+		{
+			get
+			{
+				return ( int? ) this.GetField( "core:smtpPort" );
+			}
+			set
+			{
+				this.SetField( "core:smtpPort", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the field.
+		/// </summary>
+		public string SmtpServer
+		{
+			get
+			{
+				return ( string ) this.GetField( "core:smtpServer" );
+			}
+			set
+			{
+				this.SetField( "core:smtpServer", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the field.
+		/// </summary>
+		public bool? SmtpUseSSL
+		{
+			get
+			{
+				return ( bool? ) this.GetField( "core:smtpUseSSL" );
+			}
+			set
+			{
+				this.SetField( "core:smtpUseSSL", value);
+			}
+		}
+		/// <summary>
+		/// Public accessor for the field.
+		/// </summary>
+		public string TestingOverrideToAddress
+		{
+			get
+			{
+				return ( string ) this.GetField( "core:testingOverrideToAddress" );
+			}
+			set
+			{
+				this.SetField( "core:testingOverrideToAddress", value);
 			}
 		}
 		/// <summary>
@@ -10140,6 +10271,20 @@ namespace EDC.ReadiNow.Model
 			}
 		}
 		/// <summary>
+		/// Public accessor for the directforward relationship.
+		/// </summary>
+		public IEntityCollection<SentEmailMessage> SentMessages
+		{
+			get
+			{
+				return this.GetRelationships<SentEmailMessage>( "core:sentMessages", Direction.Forward ).Entities;
+			}
+			set
+			{
+				this.SetRelationships<SentEmailMessage>( "core:sentMessages", value, Direction.Forward );
+			}
+		}
+		/// <summary>
 		/// Public accessor for the inherited forward relationship.
 		/// </summary>
 		public IEntityCollection<NavContainer> ShortcutInFolder
@@ -10151,76 +10296,6 @@ namespace EDC.ReadiNow.Model
 			set
 			{
 				this.SetRelationships<NavContainer>( "console:shortcutInFolder", value, Direction.Forward );
-			}
-		}
-		/// <summary>
-		/// Public accessor for the directforward relationship.
-		/// </summary>
-		public Inbox TesApprovalsInbox
-		{
-			get
-			{
-				return this.GetLookup<Inbox>( "core:tesApprovalsInbox", Direction.Forward );
-			}
-			set
-			{
-				this.SetLookup<Inbox>( "core:tesApprovalsInbox", value, Direction.Forward );
-			}
-		}
-		/// <summary>
-		/// Public accessor for the directforward relationship.
-		/// </summary>
-		public Inbox TesCalendarInbox
-		{
-			get
-			{
-				return this.GetLookup<Inbox>( "core:tesCalendarInbox", Direction.Forward );
-			}
-			set
-			{
-				this.SetLookup<Inbox>( "core:tesCalendarInbox", value, Direction.Forward );
-			}
-		}
-		/// <summary>
-		/// Public accessor for the directforward relationship.
-		/// </summary>
-		public Inbox TesNewTicketsInbox
-		{
-			get
-			{
-				return this.GetLookup<Inbox>( "core:tesNewTicketsInbox", Direction.Forward );
-			}
-			set
-			{
-				this.SetLookup<Inbox>( "core:tesNewTicketsInbox", value, Direction.Forward );
-			}
-		}
-		/// <summary>
-		/// Public accessor for the directforward relationship.
-		/// </summary>
-		public Inbox TesPasswordResetInbox
-		{
-			get
-			{
-				return this.GetLookup<Inbox>( "core:tesPasswordResetInbox", Direction.Forward );
-			}
-			set
-			{
-				this.SetLookup<Inbox>( "core:tesPasswordResetInbox", value, Direction.Forward );
-			}
-		}
-		/// <summary>
-		/// Public accessor for the directforward relationship.
-		/// </summary>
-		public Inbox TesSupportInbox
-		{
-			get
-			{
-				return this.GetLookup<Inbox>( "core:tesSupportInbox", Direction.Forward );
-			}
-			set
-			{
-				this.SetLookup<Inbox>( "core:tesSupportInbox", value, Direction.Forward );
 			}
 		}
 

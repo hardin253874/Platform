@@ -507,8 +507,8 @@
       </dateField>
       <decimalField>
         <alias>surveyResponseCalculatedValue</alias>
-        <name>Caclulated value</name>
-        <description>The sume of all the calculated values in the result. Set when a survey is completed.</description>
+        <name>Calculated value</name>
+        <description>The sum of all the calculated values in the result. Set when a survey is completed.</description>
         <fieldInGroup>surveyFieldGroup</fieldInGroup>
         <isFieldReadOnly>true</isFieldReadOnly>
       </decimalField>

@@ -17,7 +17,7 @@ namespace EDC.ReadiNow.Test.Database
         /// </summary>
         [Test]
         [RunWithoutTransaction]
-        [Category("ExtendedTests")]
+        //[Category("ExtendedTests")]
         public void RunsLikeTheScheduledAgentJob()
         {
             using (var ctx = DatabaseContext.GetContext(true))

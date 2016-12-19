@@ -44,7 +44,7 @@ namespace EDC.Cache.Providers.MetricRepositories
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException( nameof( name ) );
             }
 
             UpdateSizeCounter(name, SizeCallbacks[name]());
@@ -63,7 +63,7 @@ namespace EDC.Cache.Providers.MetricRepositories
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException( nameof( name ) );
             }
 
             HitsAndMisses hitsAndMisses;

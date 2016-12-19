@@ -274,11 +274,16 @@ namespace ReadiNow.Reporting.Result
             if (structuredQuery != null)
             {
                 InvalidReportInformation = structuredQuery.InvalidReportInformation;
-            }
+            }           
 
-			if ( _queryResult != null && _gridReportDataView != null && _gridReportDataView.ColumnFormats != null && _gridReportDataView.ColumnFormats.Count > 0 )
+            if ( _queryResult != null && _gridReportDataView != null)
             {
-                _conditionalFormatter = new ConditionalFormatter(_gridReportDataView.ColumnFormats, _queryResult.Columns, this);
+                //if column type is choicefield and with default conditional formatting. still requires ConditionalFormatter object.
+                //create ConditionalFormatter even ColumnFormats is null or count is 0
+                if (_gridReportDataView.ColumnFormats != null && _gridReportDataView.ColumnFormats.Count > 0)
+                    _conditionalFormatter = new ConditionalFormatter(_gridReportDataView.ColumnFormats, _queryResult.Columns, this);
+                else
+                    _conditionalFormatter = new ConditionalFormatter(null, _queryResult.Columns, this);
             }            
         }
 
@@ -2036,9 +2041,16 @@ namespace ReadiNow.Reporting.Result
                 //if current column type is choice relationship and with default conditional format is set.  add format index from default condition formatting.
                 if (column.ColumnType is ChoiceRelationshipType &&
                     ValueFormatRules != null &&
-                    ValueFormatRules.ContainsKey(columnIdString) &&
-                    ValueFormatRules[columnIdString] != null &&                    
-                    !ValueFormatRules[columnIdString].DisableDefaultFormat)
+                    (
+                        !ValueFormatRules.ContainsKey(columnIdString) ||
+                        (
+                            ValueFormatRules.ContainsKey(columnIdString) &&
+                            ValueFormatRules[columnIdString] != null &&
+                            !ValueFormatRules[columnIdString].DisableDefaultFormat)
+                        )
+                    )
+
+                  
                 {
                     string choiceFieldId = column.ResourceTypeId.ToString();
 
@@ -2145,7 +2157,8 @@ namespace ReadiNow.Reporting.Result
         {
             if (DefaultConditionalFormatRules != null && DefaultConditionalFormatRules.ContainsKey(choiceValueId))
             {
-                long conditionIndex;
+                long conditionIndex;               
+
                 if (_conditionalFormatter.TryGetDefaultRule(DefaultConditionalFormatRules[choiceValueId], data, out conditionIndex))
                 {
                     return conditionIndex;

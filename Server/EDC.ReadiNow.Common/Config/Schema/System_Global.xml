@@ -420,5 +420,113 @@
     <alias>systemDocumentationSettingsInstance</alias>
     <name>Documentation Settings</name>
   </systemDocumentationSettings>
+
+
+  <!-- imapServerSettings -->
+  <managedType>
+    <alias>imapServerSettings</alias>
+    <name>IMAP Server Connection Settings</name>
+    <generateCode>true</generateCode>
+    <fieldGroups>
+      <fieldGroup>
+        <name>IMAP Server Details</name>
+        <alias>imapServerSettingsFieldGroup</alias>
+      </fieldGroup>
+    </fieldGroups>
+    <fields>
+      <stringField>
+        <alias>imapDomainName</alias>
+        <name>Domain name</name>
+        <description>The base email address that will be used for the inbox</description>
+        <isRequired>false</isRequired>
+        <fieldInGroup>imapServerSettingsFieldGroup</fieldInGroup>
+      </stringField>
+      <boolField>
+        <alias>imapUseIntegratedAuth</alias>
+        <name>Use integrated authentication</name>
+        <description>Use integrated authentication for verifying indentity. (Internal use only.) When true the password field is ignored.</description>
+        <defaultValue>false</defaultValue>
+        <fieldInGroup>imapServerSettingsFieldGroup</fieldInGroup>
+      </boolField>
+      <stringField>
+        <alias>imapFolder</alias>
+        <name>Folder</name>
+        <description>The folder within the InBox to import email messages from.</description>
+        <isRequired>false</isRequired>
+        <fieldInGroup>imapServerSettingsFieldGroup</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>imapServer</alias>
+        <name>Server</name>
+        <description>IMAP server (FQDN or IPAddress) to use to access the mail box</description>
+        <pattern>hostNamePattern</pattern>
+        <isRequired>true</isRequired>
+        <fieldInGroup>imapServerSettingsFieldGroup</fieldInGroup>
+      </stringField>
+      <intField>
+        <alias>imapPort</alias>
+        <name>Port</name>
+        <fieldInGroup>imapServerSettingsFieldGroup</fieldInGroup>
+      </intField>
+      <boolField>
+        <alias>imapUseSSL</alias>
+        <name>Use SSL</name>
+        <description>Use SSL when communicating with the IMAP server.</description>
+        <defaultValue>true</defaultValue>
+        <fieldInGroup>imapServerSettingsFieldGroup</fieldInGroup>
+      </boolField>
+      <stringField>
+        <alias>imapAccount</alias>
+        <name>Account</name>
+        <description>The User Id to used to connect to the mailbox on the IMAP server.</description>
+        <isRequired>true</isRequired>
+        <fieldInGroup>imapServerSettingsFieldGroup</fieldInGroup>
+      </stringField>
+      <stringField>
+        <alias>imapPassword</alias>
+        <name>Password</name>
+        <description>The password to use to connect to the mailbox on the IMAP server</description>
+        <isFieldWriteOnly>true</isFieldWriteOnly>
+        <fieldRepresents>fieldRepresentsPassword</fieldRepresents>
+        <fieldInGroup>imapServerSettingsFieldGroup</fieldInGroup>
+      </stringField>
+      <guidField>
+        <alias>imapPasswordSecureId</alias>
+        <name>Password secure Id</name>
+        <description>Reference to the SecureId field.</description>
+        <isFieldWriteOnly>true</isFieldWriteOnly>
+        <hideField>true</hideField>
+        <fieldInGroup>imapServerSettingsFieldGroup</fieldInGroup>
+      </guidField>
+      <stringField>
+        <alias>inboxEmailAddressDomain</alias>
+        <name>Email Address Domain</name>
+        <description>The domain name for the inbox email addresses.</description>
+        <isRequired>false</isRequired>
+        <fieldInGroup>imapServerSettingsFieldGroup</fieldInGroup>
+      </stringField>
+    </fields>
+    <onBeforeSave>
+      <target>
+        <alias>imapServerSettingsEventTarget</alias>
+        <typeName>EDC.ReadiNow.Model.EventClasses.ImapServerSettingsEventTarget</typeName>
+        <assemblyName>EDC.ReadiNow.Common, Version=1.0.0.0, Culture=neutral</assemblyName>
+        <ordinal>0</ordinal>
+      </target>
+    </onBeforeSave>
+  </managedType>
+
+  <!-- IMAPServerSettingsInstance -->
+  <imapServerSettings>
+    <alias>imapServerSettingsInstance</alias>
+    <name>IMAP Server Settings Instance</name>
+    <description>IMAP server connection settings for email listener.</description>
+    <imapServer>outlook.office365.com</imapServer>
+    <imapPort>993</imapPort>
+    <imapUseSSL>true</imapUseSSL>
+    <imapAccount>email_listener@readinow.com</imapAccount>
+    <inboxEmailAddressDomain>apps.readinow.com</inboxEmailAddressDomain>
+  </imapServerSettings>
+  
   
 </resources>

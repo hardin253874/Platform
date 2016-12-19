@@ -17,13 +17,13 @@ namespace EDC.Collections.Generic
         /// <param name="enumeration">The enumeration.</param>
         /// <param name="callback">The callback.</param>
         /// <returns>The same enumeration, but wrapped.</returns>
-        public static IEnumerable<T> CallbackAtEnd<T>(this IEnumerable<T> enumeration, Action callback)
+        public static IEnumerable<T> CallbackAtEnd<T>( this IEnumerable<T> enumeration, Action callback )
         {
-            if (enumeration == null)
-                throw new ArgumentNullException("inner");
-            if (callback == null)
-                throw new ArgumentNullException("callback");
-            return new CallbackAtEnd<T>(enumeration, callback);
+            if ( enumeration == null )
+                throw new ArgumentNullException( nameof( enumeration ) );
+            if ( callback == null )
+                throw new ArgumentNullException( nameof( callback ) );
+            return new CallbackAtEnd<T>( enumeration, callback );
         }
     }
 
@@ -32,8 +32,8 @@ namespace EDC.Collections.Generic
     /// </summary>
     class CallbackAtEnd<T> : IEnumerable<T>
     {
-        private IEnumerable<T> _inner;
-        private Action _callback;
+        private readonly IEnumerable<T> _inner;
+        private readonly Action _callback;
 
         public CallbackAtEnd(IEnumerable<T> inner, Action callback)
         {

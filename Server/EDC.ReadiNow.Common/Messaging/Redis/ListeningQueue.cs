@@ -12,7 +12,7 @@ namespace EDC.ReadiNow.Messaging.Redis
 	public class ListeningQueue<T> : IListeningQueue<T>
 	{
         private IQueue<T> InnerQueue { get; }
-        private IChannel<ListeningQueueMessage> Channel { get; }
+        private IChannel<ListeningQueueMessage> Channel { get; set; }
 
         public string Name => InnerQueue.Name;
 
@@ -79,7 +79,7 @@ namespace EDC.ReadiNow.Messaging.Redis
         }
 
         #region IDisposable Support
-        private bool _disposedValue = false; // To detect redundant calls
+        private bool _disposedValue; // To detect redundant calls
 
         protected virtual void Dispose(bool disposing)
         {
@@ -89,6 +89,7 @@ namespace EDC.ReadiNow.Messaging.Redis
                 {
                     Channel.MessageReceived -= ChannelMessageReceived;
                     Channel.Dispose();
+					Channel = null;
                 }
 
                 _disposedValue = true;

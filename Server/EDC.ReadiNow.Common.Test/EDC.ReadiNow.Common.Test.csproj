@@ -189,6 +189,7 @@
     <Compile Include="Diagnostics\ActivityLog\ActivityLogPurgerTests.cs" />
     <Compile Include="Diagnostics\ActivityLog\ActivityLogWriterTests.cs" />
     <Compile Include="Diagnostics\MessageContextTests.cs" />
+    <Compile Include="Html\HtmlSanitizerTests.cs" />
     <Compile Include="IO\CleanupFileRepositoriesActionTests.cs" />
     <Compile Include="IO\RemoteFileFetcher\Common.cs" />
     <Compile Include="IO\RemoteFileFetcher\FtpFileFetcherTest.cs" />
@@ -267,8 +268,9 @@
     <Compile Include="Model\EntityFieldGroupTests.cs" />
     <Compile Include="Model\EntityRelationshipCacheTests.cs" />
     <Compile Include="Model\EntityRepositoryTests.cs" />
+    <Compile Include="Model\EventClasses\ImapServerSettingsEventTargetTest.cs" />
     <Compile Include="Model\EventClasses\OidcIdentityProviderEventTargetTest.cs" />
-    <Compile Include="Model\EventClasses\ImapEmailProviderEventTargetTest.cs" />
+    <Compile Include="Model\EventClasses\EmailServerSettingEventTargetTest.cs" />
     <Compile Include="Model\EventClasses\ProtectableTypeEventTargetTests.cs" />
     <Compile Include="Model\EventClasses\ReportEventTargetTests.cs" />
     <Compile Include="Model\EventClasses\ResourceTriggerFilter\RecordChangeAuditEventHandlerTests.cs" />
@@ -441,9 +443,9 @@
       <Name>EDC.ReadiNow.Common</Name>
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="..\EDC.SoftwarePlatform.Interfaces\EDC.SoftwarePlatform.Interfaces.csproj">
+    <ProjectReference Include="..\ReadiNow.Interfaces\ReadiNow.Interfaces.csproj">
       <Project>{c1fc97b7-aacc-45b5-9969-7995b27093ca}</Project>
-      <Name>EDC.SoftwarePlatform.Interfaces</Name>
+      <Name>ReadiNow.Interfaces</Name>
       <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\EDC.SoftwarePlatform.Migration\EDC.SoftwarePlatform.Migration.csproj">

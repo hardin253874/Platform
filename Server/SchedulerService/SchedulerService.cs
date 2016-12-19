@@ -57,7 +57,15 @@ namespace SchedulerService
                 scheduler.Start();
                 
                 MessageQueueResponseManager.Start();
-                CastComms.Initialize();
+
+                try
+                {
+                    CastComms.Initialize();
+                }
+                catch (Exception ex)
+                {
+                    logger.Error("CAST initialization failed: " + ex.Message, ex);
+                }
 
                 try
                 {
@@ -78,15 +86,23 @@ namespace SchedulerService
 
         protected override void OnStop()
         {
-            logger.Info("Scheduler service: Stopping");
+            try
+            {
+                logger.Info("Scheduler service: Stopping");
 
-            CastComms.Shutdown();
-            MessageQueueResponseManager.Stop();
+                scheduler.Shutdown(true);
 
-            scheduler.Shutdown(true);
+                Factory.BackgroundTaskManager.Stop();
 
-            Factory.BackgroundTaskManager.Stop();
-            logger.Info("Scheduler service: Stopping complete");
+                CastComms.Shutdown();
+                MessageQueueResponseManager.Stop();
+            }
+            finally
+            {
+                Factory.Global.Dispose();
+
+                logger.Info("Scheduler service: Stopping complete");
+            }
         }
 
 

@@ -88,6 +88,7 @@ Try
 		Install-Bootstrap $platformConfigureProcess $deploymentSettings
 		
 		Install-BuiltInReadiNowApplications $platformConfigureProcess $deploymentSettings
+		Install-CastApplication $platformConfigureProcess $deploymentSettings
 		
 		Create-DefaultTenant $platformConfigureProcess $deploymentSettings
 		Switch-IntegrationTestModeOn $platformConfigureProcess		

@@ -1,6 +1,5 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
 
-using System;
 using System.Collections.Specialized;
 using System.Net;
 using EDC.Security;
@@ -106,7 +105,6 @@ namespace EDC.Database
 		public virtual DatabaseAuthentication Authentication
 		{
 			get;
-			private set;
 		}
 
 		/// <summary>
@@ -115,7 +113,6 @@ namespace EDC.Database
 		public virtual int CommandTimeout
 		{
 			get;
-			private set;
 		}
 
 		/// <summary>
@@ -132,7 +129,6 @@ namespace EDC.Database
 		public virtual int ConnectionTimeout
 		{
 			get;
-			private set;
 		}
 
 		/// <summary>
@@ -141,7 +137,6 @@ namespace EDC.Database
 		public virtual NetworkCredential Credentials
 		{
 			get;
-			private set;
 		}
 
 		/// <summary>
@@ -150,7 +145,6 @@ namespace EDC.Database
 		public virtual string Database
 		{
 			get;
-			private set;
 		}	
 
 		/// <summary>
@@ -159,7 +153,6 @@ namespace EDC.Database
 		public virtual StringDictionary Parameters
 		{
 			get;
-			private set;
 		}
 
 		/// <summary>
@@ -168,7 +161,6 @@ namespace EDC.Database
 		public virtual string Server
 		{
 			get;
-			private set;
 		}
 
         /// <summary>
@@ -177,7 +169,6 @@ namespace EDC.Database
         public virtual int TransactionTimeout
         {
             get;
-            private set;
         }
 
         /// <summary>
@@ -185,9 +176,8 @@ namespace EDC.Database
         /// </summary>
 	    public virtual int MaxPoolSize
 	    {
-	        get; 
-            private set;
-        }
+	        get;
+	    }
 
 		/// <summary>
 		///     Determines whether the specified database information is equal to the current object.

@@ -241,13 +241,31 @@ namespace ReadiNow.Expressions.Compiler
 
             // Make variable available as the usage context is evaluated
             Context.PushScope();
-            Context.Variables.SetVariable(identifier, assignedValue, variableChildContainer );
+            Context.Variables.SetVariable(identifier, assignedValue, variableChildContainer, prevParentExpr );
 
             ExpressionNode appliesToExpression = Compile_Expression(letClause.ChildNodes[4]);
 
             Context.PopScope();
 
             return appliesToExpression;
+        }
+
+        /// <summary>
+        /// Access a variable
+        /// </summary>
+        private static ExpressionNode Compile_VariableAccess( VariableInfo variableInfo, ChildContainer parentNode )
+        {
+            // Attach variable child containers
+            ExpressionNode variableExpr = variableInfo.Expression;
+            ChildContainer variableChildContainer = variableInfo.VariableChildContainer;
+            foreach ( EntityNode childEntityNode in variableChildContainer.ChildEntityNodes )
+            {
+                if ( childEntityNode.RootForVariableContainer == null )
+                    childEntityNode.RootForVariableContainer = variableChildContainer;
+                variableInfo.VariableHostContainer.RegisterOrReuseChild( childEntityNode );
+            }
+
+            return variableExpr;
         }
 
 
@@ -1081,21 +1099,6 @@ namespace ReadiNow.Expressions.Compiler
                 resultNode = Compile_RelationshipAccess(contextType, contextNode, parentNode, member);
             }
             return resultNode;
-        }
-
-        private static ExpressionNode Compile_VariableAccess( VariableInfo variableInfo, ChildContainer parentNode )
-        {
-            // Attach variable child containers
-            ExpressionNode variableExpr = variableInfo.Expression;
-            ChildContainer variableChildContainer = variableInfo.ChildContainer;
-            foreach ( EntityNode childEntityNode in variableChildContainer.ChildEntityNodes )
-            {
-                if ( childEntityNode.RootForVariableContainer == null )
-                    childEntityNode.RootForVariableContainer = variableChildContainer; 
-                parentNode.RegisterOrReuseChild( childEntityNode );
-            }
-
-            return variableExpr;
         }
 
         private ExpressionNode Compile_FieldAccess(EntityNode contextNode, MemberInfo member, ParseTreeNode fieldParseNode)

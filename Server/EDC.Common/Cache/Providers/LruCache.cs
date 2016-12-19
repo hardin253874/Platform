@@ -87,7 +87,7 @@ namespace EDC.Cache.Providers
 		{
 		    if (innerCache == null)
 		    {
-		        throw new ArgumentNullException("innerCache");
+		        throw new ArgumentNullException( nameof( innerCache ) );
 		    }
 
             _cache = innerCache;
@@ -106,7 +106,6 @@ namespace EDC.Cache.Providers
 		public TimeSpan EvictionFrequency
 		{
 			get;
-			private set;
 		}
 
 		/// <summary>
@@ -115,7 +114,6 @@ namespace EDC.Cache.Providers
 		public string CacheName
 		{
 			get;
-			private set;
 		}
 
 
@@ -126,8 +124,7 @@ namespace EDC.Cache.Providers
 	    public int MaximumSize
 	    {
 			get;
-			private set;
-		}
+	    }
 
 		/// <summary>
 		/// Increments the size of the cache.
@@ -269,7 +266,7 @@ namespace EDC.Cache.Providers
 		{
             if (key == null)
             {
-                throw new ArgumentNullException("key");
+                throw new ArgumentNullException( nameof( key ) );
             }
 
 			bool added = _cache.Add( key, LastAccessedEntry.Create( value ) );
@@ -298,7 +295,7 @@ namespace EDC.Cache.Providers
         {
 			if ( valueFactory == null )
 			{
-				throw new ArgumentNullException( "valueFactory" );
+				throw new ArgumentNullException( nameof( valueFactory ) );
 			}
 
 			Func<TKey, LastAccessedEntry> factory = k =>
@@ -355,7 +352,7 @@ namespace EDC.Cache.Providers
         {
 	        if ( keys == null )
 	        {
-		        throw new ArgumentNullException( "keys" );
+		        throw new ArgumentNullException( nameof( keys ) );
 	        }
 
 	        TKey [ ] keyArray = keys.ToArray( );
@@ -500,7 +497,7 @@ namespace EDC.Cache.Providers
 			public TValue Value
 			{
 				get;
-				private set;
+                set;
 			}
 
 			/// <summary>

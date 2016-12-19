@@ -23683,6 +23683,17 @@ namespace EDC.ReadiNow.Model
 		/// <summary>
 		/// Public static accessor to the field.
 		/// </summary>
+		public static StringField ActionButtonBackgroundColor_Field
+		{
+			get
+			{
+				return EDC.ReadiNow.Model.Entity.GetFieldEntity<StringField>( "console:actionButtonBackgroundColor" );
+			}
+		}
+
+		/// <summary>
+		/// Public static accessor to the field.
+		/// </summary>
 		public static StringField ConsoleGeneralContentAreaContainerHeadingFontColor_Field
 		{
 			get
@@ -24259,7 +24270,7 @@ namespace EDC.ReadiNow.Model
 		{
 			get
 			{
-				return new IEntity [ ] { ConsoleTheme.ConsoleGeneralContentAreaContainerHeadingFontColor_Field, ConsoleTheme.ConsoleGeneralContentAreaContainerHeadingLineColor_Field, ConsoleTheme.ConsoleGeneralContentAreaReportHeaderColor_Field, ConsoleTheme.ConsoleGeneralContentAreaReportHeaderFontColor_Field, ConsoleTheme.ConsoleGeneralContentAreaSelectedTabColor_Field, ConsoleTheme.ConsoleGeneralContentAreaSelectedTabFontColor_Field, ConsoleTheme.ConsoleGeneralContentAreaTabControlLineColor_Field, ConsoleTheme.ConsoleGeneralContentAreaTitleFontColor_Field, ConsoleTheme.ConsoleGeneralContentAreaUnselectedTabColor_Field, ConsoleTheme.ConsoleGeneralContentAreaUnselectedTabFontColor_Field, ConsoleTheme.ConsoleHeaderBackgroundColor_Field, ConsoleTheme.ConsoleHeaderBackgroundImageRepeat_Field, ConsoleTheme.ConsoleHeaderMenuTextColor_Field, ConsoleTheme.ConsoleLeftBackgroundImageRepeat_Field, ConsoleTheme.ConsoleLeftNavigationAreaBackgroundColor_Field, ConsoleTheme.ConsoleLeftNavigationAreaFontColor_Field, ConsoleTheme.ConsoleLeftNavigationSelectedElementColor_Field, ConsoleTheme.ConsoleLeftNavigationSelectedFontColor_Field, ConsoleTheme.ConsoleTopBackgroundImageRepeat_Field, ConsoleTheme.ConsoleTopNavigationAreaBackgroundColor_Field, ConsoleTheme.ConsoleTopNavigationSelectedTabBorderColor_Field, ConsoleTheme.ConsoleTopNavigationSelectedTabColor_Field, ConsoleTheme.ConsoleTopNavigationSelectedTabFontColor_Field, ConsoleTheme.ConsoleTopNavigationUnselectedTabColor_Field, ConsoleTheme.ConsoleTopNavigationUnselectedTabFontColor_Field, ConsoleTheme.MobileLeftNavigationAreaBackgroundColor_Field, ConsoleTheme.Alias_Field, ConsoleTheme.CanDelete_Field, ConsoleTheme.CanModify_Field, ConsoleTheme.CreatedDate_Field, ConsoleTheme.Description_Field, ConsoleTheme.ModifiedDate_Field, ConsoleTheme.Name_Field, ConsoleTheme.ConsoleHeaderBackgroundImage_Field, ConsoleTheme.ConsoleLeftBackgroundImage_Field, ConsoleTheme.ConsoleLogoImage_Field, ConsoleTheme.ConsoleTopBackgroundImage_Field, ConsoleTheme.ConsoleTopNavigationStyle_Field, ConsoleTheme.CreatedBy_Field, ConsoleTheme.Flags_Field, ConsoleTheme.IndirectInSolution_Field, ConsoleTheme.InSolution_Field, ConsoleTheme.InStructureLevel_Field, ConsoleTheme.IsOfType_Field, ConsoleTheme.IsRootForStructureView_Field, ConsoleTheme.LastModifiedBy_Field, ConsoleTheme.ResourceConsoleBehavior_Field, ConsoleTheme.ResourceHasResourceKeyDataHashes_Field, ConsoleTheme.ResourceInFolder_Field, ConsoleTheme.SecurityOwner_Field, ConsoleTheme.SelectionBehavior_Field, ConsoleTheme.ShortcutInFolder_Field };
+				return new IEntity [ ] { ConsoleTheme.ActionButtonBackgroundColor_Field, ConsoleTheme.ConsoleGeneralContentAreaContainerHeadingFontColor_Field, ConsoleTheme.ConsoleGeneralContentAreaContainerHeadingLineColor_Field, ConsoleTheme.ConsoleGeneralContentAreaReportHeaderColor_Field, ConsoleTheme.ConsoleGeneralContentAreaReportHeaderFontColor_Field, ConsoleTheme.ConsoleGeneralContentAreaSelectedTabColor_Field, ConsoleTheme.ConsoleGeneralContentAreaSelectedTabFontColor_Field, ConsoleTheme.ConsoleGeneralContentAreaTabControlLineColor_Field, ConsoleTheme.ConsoleGeneralContentAreaTitleFontColor_Field, ConsoleTheme.ConsoleGeneralContentAreaUnselectedTabColor_Field, ConsoleTheme.ConsoleGeneralContentAreaUnselectedTabFontColor_Field, ConsoleTheme.ConsoleHeaderBackgroundColor_Field, ConsoleTheme.ConsoleHeaderBackgroundImageRepeat_Field, ConsoleTheme.ConsoleHeaderMenuTextColor_Field, ConsoleTheme.ConsoleLeftBackgroundImageRepeat_Field, ConsoleTheme.ConsoleLeftNavigationAreaBackgroundColor_Field, ConsoleTheme.ConsoleLeftNavigationAreaFontColor_Field, ConsoleTheme.ConsoleLeftNavigationSelectedElementColor_Field, ConsoleTheme.ConsoleLeftNavigationSelectedFontColor_Field, ConsoleTheme.ConsoleTopBackgroundImageRepeat_Field, ConsoleTheme.ConsoleTopNavigationAreaBackgroundColor_Field, ConsoleTheme.ConsoleTopNavigationSelectedTabBorderColor_Field, ConsoleTheme.ConsoleTopNavigationSelectedTabColor_Field, ConsoleTheme.ConsoleTopNavigationSelectedTabFontColor_Field, ConsoleTheme.ConsoleTopNavigationUnselectedTabColor_Field, ConsoleTheme.ConsoleTopNavigationUnselectedTabFontColor_Field, ConsoleTheme.MobileLeftNavigationAreaBackgroundColor_Field, ConsoleTheme.Alias_Field, ConsoleTheme.CanDelete_Field, ConsoleTheme.CanModify_Field, ConsoleTheme.CreatedDate_Field, ConsoleTheme.Description_Field, ConsoleTheme.ModifiedDate_Field, ConsoleTheme.Name_Field, ConsoleTheme.ConsoleHeaderBackgroundImage_Field, ConsoleTheme.ConsoleLeftBackgroundImage_Field, ConsoleTheme.ConsoleLogoImage_Field, ConsoleTheme.ConsoleTopBackgroundImage_Field, ConsoleTheme.ConsoleTopNavigationStyle_Field, ConsoleTheme.CreatedBy_Field, ConsoleTheme.Flags_Field, ConsoleTheme.IndirectInSolution_Field, ConsoleTheme.InSolution_Field, ConsoleTheme.InStructureLevel_Field, ConsoleTheme.IsOfType_Field, ConsoleTheme.IsRootForStructureView_Field, ConsoleTheme.LastModifiedBy_Field, ConsoleTheme.ResourceConsoleBehavior_Field, ConsoleTheme.ResourceHasResourceKeyDataHashes_Field, ConsoleTheme.ResourceInFolder_Field, ConsoleTheme.SecurityOwner_Field, ConsoleTheme.SelectionBehavior_Field, ConsoleTheme.ShortcutInFolder_Field };
 			}
 		}
 
@@ -24267,6 +24278,20 @@ namespace EDC.ReadiNow.Model
 
 		#region ConsoleTheme Public Properties
 
+		/// <summary>
+		/// Public accessor for the field.
+		/// </summary>
+		public string ActionButtonBackgroundColor
+		{
+			get
+			{
+				return ( string ) this.GetField( "console:actionButtonBackgroundColor" );
+			}
+			set
+			{
+				this.SetField( "console:actionButtonBackgroundColor", value);
+			}
+		}
 		/// <summary>
 		/// Public accessor for the field.
 		/// </summary>

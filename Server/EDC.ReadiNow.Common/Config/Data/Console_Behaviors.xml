@@ -214,15 +214,11 @@
     <k:html5ViewId>viewForm</k:html5ViewId>
   </k:consoleBehavior>
   <!-- General Settings -->
+  
+  <!-- Email -->
   <k:consoleBehavior>
-    <alias>k:tenantEmailSettingsConsoleBehaviour</alias>
+    <alias>k:tenantEmailSettingsInstanceConsoleBehaviour</alias>
     <k:behaviorForResources>tenantEmailSettingsInstance</k:behaviorForResources>
-    <k:treeIconUrl>Assets/Images/Nav/Lock.svg</k:treeIconUrl>
-    <k:html5ViewId>viewForm</k:html5ViewId>
-  </k:consoleBehavior>
-  <k:consoleBehavior>
-    <alias>k:spInboxProviderConsoleBehaviour</alias>
-    <k:behaviorForResources>spInboxProvider</k:behaviorForResources>
     <k:treeIconUrl>Assets/Images/Nav/Lock.svg</k:treeIconUrl>
     <k:html5ViewId>viewForm</k:html5ViewId>
   </k:consoleBehavior>

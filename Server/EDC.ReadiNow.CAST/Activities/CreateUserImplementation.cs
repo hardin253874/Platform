@@ -57,11 +57,11 @@ namespace EDC.ReadiNow.CAST.Activities
             var userTenant = GetArgumentValue<string>(inputs, UserTenantArgumentAlias);
             var userRoles = GetArgumentValue<IEnumerable<IEntity>>(inputs, UserRolesArgumentAlias);
 
-            var roles = new RoleList();
+            var roles = new RoleNames();
             if (userRoles != null)
             {
-                var managedUserRoles = userRoles.Select(u => u.As<ManagedUserRole>());
-                roles.AddRange(managedUserRoles.Where(m => m != null).Select(m => m.Name));
+                var managedRoles = userRoles.Select(u => u.As<ManagedRole>());
+                roles.AddRange(managedRoles.Where(m => m != null).Select(m => m.Name));
             }
 
             return new UserOperationRequest

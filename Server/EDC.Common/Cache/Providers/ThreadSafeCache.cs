@@ -32,7 +32,7 @@ namespace EDC.Cache.Providers
         {
             if (innerCache == null)
             {
-                throw new ArgumentNullException("innerCache");
+                throw new ArgumentNullException( nameof( innerCache ) );
             }
 
             _cache = innerCache;
@@ -94,7 +94,7 @@ namespace EDC.Cache.Providers
         public bool TryGetOrAdd( TKey key, out TValue value, Func<TKey, TValue> valueFactory )
         {
             if ( valueFactory == null )
-                throw new ArgumentNullException( "valueFactory" );
+                throw new ArgumentNullException( nameof( valueFactory ) );
 
             lock ( _syncRoot )
             {
@@ -134,7 +134,7 @@ namespace EDC.Cache.Providers
         public IReadOnlyCollection<TKey> Remove( IEnumerable<TKey> keys )
         {
             if ( keys == null )
-                throw new ArgumentNullException( "keys" );
+                throw new ArgumentNullException( nameof( keys ) );
 
             lock ( _syncRoot )
             {

@@ -38,8 +38,6 @@
              updatedContainerId: null
          };
          
-         var fsSelfServeEnabled = rnFeatureSwitch.isFeatureOn('fsSelfServe');
-
          $scope.$watch('options', function () {
              if ($scope.options && $scope.options.reportEntity) {
                  $scope.model.reportEntity = $scope.options.reportEntity;
@@ -103,7 +101,7 @@
          };
 
          $scope.canSetContainer = function() {
-             return fsSelfServeEnabled;
+             return true;
          };
 
          // Add an error

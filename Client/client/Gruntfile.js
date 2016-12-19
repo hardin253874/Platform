@@ -63,7 +63,7 @@ module.exports = function (grunt) {
                 'lib/jquery/jquery.js',
                 'lib/jquery-ui/jquery-ui.js',
                 'lib/jquery-ellipsis/jquery.dotdotdot.js',
-                'lib/bootstrap/js/bootstrap.js',
+//                'lib/bootstrap/js/bootstrap.js',
                 'lib/q/q.js',
                 'lib/angular/angular.js',
                 'lib/angular/angular-route.js',
@@ -115,7 +115,7 @@ module.exports = function (grunt) {
 
         /**
          * less handles our LESS compilation and uglification automatically. Only
-         * our `main.less` file is included in compilation; all other files must be
+         * our main app less file is included in compilation; all other files must be
          * imported from this file.
          */
         less: {
@@ -127,6 +127,21 @@ module.exports = function (grunt) {
 
         },
 
+        sass: {
+            options: {sourceMap: true},
+            dist: {
+                files: {'<%= distdir %>/assets/app.css': 'src/styles/app.scss'}
+            }
+        },
+
+        stylelint: {
+            options: {
+                configFile: '.stylelintrc',
+                format: 'less'
+            },
+            src: 'src/**/*.{css,less}'
+        },
+
         /**
          * clean up css wrt to prefixes
          */
@@ -135,7 +150,9 @@ module.exports = function (grunt) {
                 map: false,
                 processors: [
                     require('autoprefixer')({
-                        browsers: [browserRule]
+                        browsers: [browserRule],
+                        add: true,
+                        remove: true
                     })
                 ]
             },
@@ -751,6 +768,14 @@ module.exports = function (grunt) {
                     'notifyGrowl:ReadiNow Client:Building less file(s)...',
                     'less', 'postcss', 'ready',
                     'notifyGrowl:ReadiNow Client:Less file(s) updated!'
+                ]
+            },
+            sass: {
+                files: ['src/**/*.scss'],
+                tasks: [
+                    'notifyGrowl:ReadiNow Client:Building scss file(s)...',
+                    'sass', 'postcss', 'ready',
+                    'notifyGrowl:ReadiNow Client:Scss file(s) updated!'
                 ]
             },
             // unittest: {

@@ -23,7 +23,7 @@ namespace EDC.Database
 		{
 			if ( dataTable == null )
 			{
-				throw new ArgumentNullException( "dataTable" );
+				throw new ArgumentNullException( nameof( dataTable ) );
 			}
 
 			dataTable.Columns.Add( new DataColumn( name, typeof ( T ) ) );
@@ -41,7 +41,7 @@ namespace EDC.Database
 		{
 			if ( dataTable == null )
 			{
-				throw new ArgumentNullException( "dataTable" );
+				throw new ArgumentNullException( nameof( dataTable ) );
 			}
 
 			dataTable.AddColumn<T>( "Data" );
@@ -59,7 +59,7 @@ namespace EDC.Database
 		{
 			if ( dataTable == null )
 			{
-				throw new ArgumentNullException( "dataTable" );
+				throw new ArgumentNullException( nameof( dataTable ) );
 			}
 
 			dataTable.Columns.AddRange( new[ ]
@@ -82,7 +82,7 @@ namespace EDC.Database
 		{
 			if ( dataTable == null )
 			{
-				throw new ArgumentNullException( "dataTable" );
+				throw new ArgumentNullException( nameof( dataTable ) );
 			}
 
 			dataTable.Columns.AddRange( new[ ]
@@ -103,7 +103,7 @@ namespace EDC.Database
 		{
 			if ( dataTable == null )
 			{
-				throw new ArgumentNullException( "dataTable" );
+				throw new ArgumentNullException( nameof( dataTable ) );
 			}
 
 			dataTable.AddColumn<long>( "FromId" );
@@ -131,17 +131,17 @@ namespace EDC.Database
 		{
 			if ( command == null )
 			{
-				throw new ArgumentNullException( "command" );
+				throw new ArgumentNullException( nameof( command ) );
 			}
 
 			if ( name == null )
 			{
-				throw new ArgumentNullException( "name" );
+				throw new ArgumentNullException( nameof( name ) );
 			}
 
 			if ( value == null )
 			{
-				throw new ArgumentNullException( "value" );
+				throw new ArgumentNullException( nameof( value ) );
 			}
 
 			if ( typeName == null )
@@ -154,7 +154,7 @@ namespace EDC.Database
 
 			if ( typeName == null )
 			{
-				throw new ArgumentNullException( "typeName" );
+				throw new ArgumentNullException( nameof( typeName ) );
 			}
 
 			var parameter = new SqlParameter( name, SqlDbType.Structured )
@@ -177,7 +177,7 @@ namespace EDC.Database
 		{
 			if ( dataTable == null )
 			{
-				throw new ArgumentNullException( "dataTable" );
+				throw new ArgumentNullException( nameof( dataTable ) );
 			}
 
 			dataTable.AddColumn<long>( "ToId" );
@@ -370,7 +370,7 @@ namespace EDC.Database
                     break;
                 
 				default:
-					throw new ArgumentException( @"Invalid table valued parameter type", "type" );
+					throw new ArgumentException( @"Invalid table valued parameter type", nameof( type ) );
 			}
 
 			return dt;
@@ -388,7 +388,7 @@ namespace EDC.Database
 		{
 			if ( command == null )
 			{
-				throw new ArgumentNullException( "command" );
+				throw new ArgumentNullException( nameof( command ) );
 			}
 
 			return Create( type );
@@ -402,26 +402,24 @@ namespace EDC.Database
 		/// <returns></returns>
 		/// <exception cref="System.ArgumentNullException">dataTable</exception>
 		/// <exception cref="System.ArgumentException">@Invalid type specified;type</exception>
-		private static DataTable SetType( this DataTable dataTable, string type )
+		private static void SetType( this DataTable dataTable, string type )
 		{
 			if ( dataTable == null )
 			{
-				throw new ArgumentNullException( "dataTable" );
+				throw new ArgumentNullException( nameof( dataTable ) );
 			}
 
 			if ( type == null )
 			{
-				throw new ArgumentNullException( "type" );
+				throw new ArgumentNullException( nameof( type ) );
 			}
 
 			if ( string.IsNullOrWhiteSpace( type ) )
 			{
-				throw new ArgumentException( @"Invalid type specified", "type" );
+				throw new ArgumentException( @"Invalid type specified", nameof( type ) );
 			}
 
 			dataTable.ExtendedProperties[ "dataType" ] = type;
-
-			return dataTable;
 		}
 	}
 }

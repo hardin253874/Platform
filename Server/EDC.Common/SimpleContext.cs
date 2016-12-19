@@ -8,12 +8,12 @@ namespace EDC
     /// </summary>
     public static class ContextHelper
     {
-        public static IDisposable Create(Action exitAction)
+        public static IDisposable Create( Action exitAction )
         {
-            if (exitAction == null)
-                throw new ArgumentNullException("exitAction");
+            if ( exitAction == null )
+                throw new ArgumentNullException( nameof( exitAction ) );
 
-            return new Context(exitAction);
+            return new Context( exitAction );
         }
 
         private class Context : IDisposable

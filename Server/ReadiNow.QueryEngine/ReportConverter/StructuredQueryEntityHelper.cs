@@ -719,9 +719,28 @@ namespace ReadiNow.QueryEngine.ReportConverter
                 return null;
             }
 
+
+            // Verify that there is a valid node - prior to converting expressions (invalid nodes may be only partially loaded)
+            // Update the reference table for expressions of interest ignoring anything that is a column expression
+            long nodeId = 0;
+            NodeExpression nodeExpression = reportExpression.As<NodeExpression>( );
+
+            if ( nodeExpression != null )
+            {
+                nodeId = nodeExpression.SourceNode.Id;
+
+                // Check that we have a valid node for it
+                if ( !context.ReportNodeToEntityMap.ContainsKey( nodeId ) )
+                {
+                    EventLog.Application.WriteWarning( context.DebugInfo + "expression node could not be found" );
+                    return null;
+                }
+            }
+
+            // Convert specific expression types
             ScalarExpression scalarExpression;
-            
-            if (context.InstanceExpressionMap.TryGetValue(reportExpression.Id, out scalarExpression))
+
+            if ( context.InstanceExpressionMap.TryGetValue(reportExpression.Id, out scalarExpression))
             {
                 return scalarExpression;
             }
@@ -753,40 +772,29 @@ namespace ReadiNow.QueryEngine.ReportConverter
             {
                 return BuildStructureViewExpression(reportExpression.As<Model.StructureViewExpression>(), context);
             }
-            if (scalarExpression != null)
-            {
-                // Update the reference table for expressions of interest ignoring anything that is a column expression
-                if (reportExpression.Is<NodeExpression>())
-                {
-                    NodeExpression nodeExpression = reportExpression.As<NodeExpression>();
-                    long nodeId = nodeExpression.SourceNode.Id;
 
-                    // Check that we have a valid node for it
-                    if (context.ReportNodeToEntityMap.ContainsKey(nodeId))
-                    {
-                        Guid key = Guid.NewGuid();
-                        context.ReportExpressionMap[key] = nodeId;
-                        scalarExpression.ExpressionId = key;
-                        scalarExpression.EntityId = nodeExpression.Id;
-                    }
-                    else
-                    {
-                        EventLog.Application.WriteWarning(context.DebugInfo + "expression node could not be found"); 
-                        scalarExpression = null;
-                    }
-                }
-            }
+            // Final book keeping
             if (scalarExpression != null)
             {
+                if ( nodeExpression != null )
+                {
+                    Guid key = Guid.NewGuid( );
+                    context.ReportExpressionMap[ key ] = nodeId;
+                    scalarExpression.ExpressionId = key;
+                    scalarExpression.EntityId = nodeExpression.Id;
+                }
+
                 context.InstanceExpressionMap[reportExpression.Id] = scalarExpression;
             }
             ApplyExpressionClustering(scalarExpression, reportExpression, context);
             return scalarExpression;
         }
 
+        /// <summary>
+        /// Builds an id expression.
+        /// </summary>
         private static IdExpression BuildIdExpression(Model.IdExpression idExpression)
         {
-            // MPK - This does not seem to be populated _or_ for that matter needed, should this be removed????
             return new IdExpression();
         }
 

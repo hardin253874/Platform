@@ -79,7 +79,7 @@
                             return;
                         }
                         // skip the datepicker popup control which raised from current popup window
-                        if (event.target.closest("[ng-switch=datepickerMode]")) {
+                        if ($(event.target).closest("[ng-switch=datepickerMode]").length > 0) {
                             return;
                         }
 

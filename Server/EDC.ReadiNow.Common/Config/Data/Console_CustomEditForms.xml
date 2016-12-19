@@ -973,6 +973,13 @@
                 <k:renderingOrdinal>99</k:renderingOrdinal>
                 <k:fieldToRender>k:consoleGeneralContentAreaReportHeaderFontColor</k:fieldToRender>
               </k:singleLineTextControl>
+              <k:singleLineTextControl>
+                <alias>k:actionButtonBackgroundColorControlOnForm111gen</alias>
+                <name>Action button background colour</name>
+                <description>The background colour of action buttons on forms and screens.</description>
+                <k:renderingOrdinal>100</k:renderingOrdinal>
+                <k:fieldToRender>k:actionButtonBackgroundColor</k:fieldToRender>
+              </k:singleLineTextControl>
             </k:containedControlsOnForm>
           </k:verticalStackContainerControl>
         </k:containedControlsOnForm>
@@ -1076,111 +1083,7 @@
       </k:verticalStackContainerControl>
     </k:containedControlsOnForm>
   </k:customEditForm>
-  <!-- 'IMAP Email Provider' custom edit form -->
-  <k:customEditForm>
-    <name>IMAP Email Provider Form</name>
-    <alias>k:imapEmailProviderForm</alias>
-    <k:isDefaultForEntityType>imapEmailProvider</k:isDefaultForEntityType>
-    <k:typeToEditWithForm>imapEmailProvider</k:typeToEditWithForm>
-    <k:containedControlsOnForm>
-      <k:headerColumnContainerControl>
-        <alias>k:imapEmailProviderFormVerControl1</alias>
-        <k:renderingOrdinal>0</k:renderingOrdinal>
-        <k:containedControlsOnForm>
-          <k:singleLineTextControl>
-            <alias>k:imapEmailProviderFormControlName</alias>
-            <k:renderingOrdinal>0</k:renderingOrdinal>
-            <k:fieldToRender>name</k:fieldToRender>
-          </k:singleLineTextControl>
-          <k:singleLineTextControl>
-            <alias>k:imapEmailProviderFormControlDescription</alias>
-            <k:renderingOrdinal>1</k:renderingOrdinal>
-            <k:fieldToRender>description</k:fieldToRender>
-          </k:singleLineTextControl>
-        </k:containedControlsOnForm>
-      </k:headerColumnContainerControl>
-      <k:verticalStackContainerControl>
-        <alias>k:imapEmailProviderFormVerControl2</alias>
-        <name>IMAP Email Server Details</name>
-        <k:renderingOrdinal>1</k:renderingOrdinal>
-        <k:renderingHorizontalResizeMode>console:resizeSpring</k:renderingHorizontalResizeMode>
-        <k:renderingVerticalResizeMode>console:resizeSpring</k:renderingVerticalResizeMode>
-        <k:containedControlsOnForm>
-          <k:singleLineTextControl>
-            <alias>k:imapEmailProviderFormControlAccount</alias>
-            <k:renderingOrdinal>0</k:renderingOrdinal>
-            <k:fieldToRender>oaAccount</k:fieldToRender>
-          </k:singleLineTextControl>
-          <k:singleLineTextControl>
-            <alias>k:imapEmailProviderFormControlDomain</alias>
-            <k:renderingOrdinal>1</k:renderingOrdinal>
-            <k:fieldToRender>oaDomainName</k:fieldToRender>
-          </k:singleLineTextControl>
-          <k:singleLineTextControl>
-            <alias>k:imapEmailProviderFormControlEmail</alias>
-            <k:renderingOrdinal>2</k:renderingOrdinal>
-            <k:fieldToRender>oaEmailAddress</k:fieldToRender>
-          </k:singleLineTextControl>
-          <k:singleLineTextControl>
-            <alias>k:imapEmailProviderFormControlPassword</alias>
-            <k:renderingOrdinal>3</k:renderingOrdinal>
-            <k:fieldToRender>oaPassword</k:fieldToRender>
-          </k:singleLineTextControl>
-          <numericKFieldRenderControl>
-            <alias>k:imapEmailProviderFormControlPort</alias>
-            <k:renderingOrdinal>4</k:renderingOrdinal>
-            <k:fieldToRender>oaPort</k:fieldToRender>
-          </numericKFieldRenderControl>
-          <checkboxKFieldRenderControl>
-            <alias>k:imapEmailProviderFormControlPostInDir</alias>
-            <k:renderingOrdinal>5</k:renderingOrdinal>
-            <k:fieldToRender>oaPostInDirectory</k:fieldToRender>
-          </checkboxKFieldRenderControl>
-          <k:singleLineTextControl>
-            <alias>k:imapEmailProviderFormControlServer</alias>
-            <k:renderingOrdinal>6</k:renderingOrdinal>
-            <k:fieldToRender>oaServer</k:fieldToRender>
-          </k:singleLineTextControl>
-          <checkboxKFieldRenderControl>
-            <alias>k:imapEmailProviderFormControlUseFolder</alias>
-            <k:renderingOrdinal>7</k:renderingOrdinal>
-            <k:fieldToRender>oaUseFolder</k:fieldToRender>
-          </checkboxKFieldRenderControl>
-          <checkboxKFieldRenderControl>
-            <alias>k:imapEmailProviderFormControlUseIntAuth</alias>
-            <k:renderingOrdinal>8</k:renderingOrdinal>
-            <k:fieldToRender>oaUseIntegratedAuth</k:fieldToRender>
-          </checkboxKFieldRenderControl>
-          <checkboxKFieldRenderControl>
-            <alias>k:imapEmailProviderFormControlUseSSL</alias>
-            <k:renderingOrdinal>9</k:renderingOrdinal>
-            <k:fieldToRender>oaUseSSL</k:fieldToRender>
-          </checkboxKFieldRenderControl>
-        </k:containedControlsOnForm>
-      </k:verticalStackContainerControl>
-      <k:tabContainerControl>
-        <name>Tab container</name>
-        <alias>k:imapEmailProviderFormTabControl</alias>
-        <k:renderingOrdinal>2</k:renderingOrdinal>
-        <k:renderingHorizontalResizeMode>console:resizeSpring</k:renderingHorizontalResizeMode>
-        <k:renderingVerticalResizeMode>console:resizeSpring</k:renderingVerticalResizeMode>
-        <k:containedControlsOnForm>
-          <k:tabRelationshipRenderControl>
-            <name>Uses provider</name>
-            <k:renderingHorizontalResizeMode>console:resizeSpring</k:renderingHorizontalResizeMode>
-            <k:renderingVerticalResizeMode>console:resizeSpring</k:renderingVerticalResizeMode>
-            <alias>k:imapEmailProviderFormControlUseInboxProvider</alias>
-            <k:renderingOrdinal>0</k:renderingOrdinal>
-            <k:relationshipToRender>usesInboxProvider</k:relationshipToRender>
-            <k:isReversed>true</k:isReversed>
-            <k:hasRelationshipControlBehavior>k:defaultRelationshipBehavior</k:hasRelationshipControlBehavior>
-            <k:pickerReport>templateReport</k:pickerReport>
-            <k:relationshipDisplayReport>templateReport</k:relationshipDisplayReport>
-          </k:tabRelationshipRenderControl>
-        </k:containedControlsOnForm>
-      </k:tabContainerControl>
-    </k:containedControlsOnForm>
-  </k:customEditForm>
+  
   <!-- Identity Provider Form -->
   <k:customEditForm>
     <alias>k:oidcIdpForm</alias>

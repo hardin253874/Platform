@@ -101,7 +101,9 @@ namespace EDC.ReadiNow.Model
 			{
 				if ( MessageChannel != null )
 				{
+					MessageChannel.MessageReceived -= Channel_MessageReceived;
 					MessageChannel.Dispose( );
+					MessageChannel = null;
 				}
 			}
 

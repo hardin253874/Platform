@@ -17,7 +17,8 @@ namespace EDC.SoftwarePlatform.Activities.Test.Bugs
     {
         [Test]
         [RunAsDefaultTenant, RunWithTransaction]
-        [Category("WorkflowTests"), Category("Bug"), Category("ExtendedTests")]
+        [Category("WorkflowTests"), Category("Bug")]
+        //[Category( "ExtendedTests" )]
         public void Test()
         {
             WorkflowRun run;

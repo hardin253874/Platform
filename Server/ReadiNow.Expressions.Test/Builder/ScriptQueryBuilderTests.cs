@@ -766,37 +766,6 @@ namespace ReadiNow.Expressions.Test.Builder
 
         [Test]
         [RunAsDefaultTenant]
-        public void TestAggegateUsesVariable( )
-        {
-            var result = CreateQueryXml( "let d = convert(AA_Manager, [Direct Reports]) select count(d)", "name:AA_Manager" );
-
-            string expected =
-@"<Query>
-  <RootEntity xsi:type='ResourceEntity' id='guid0'>
-    <RelatedEntities>
-      <Entity xsi:type='AggregateEntity' id='guid1'>
-        <GroupedEntity xsi:type='RelatedResource' id='guid2'>
-          <RelationshipTypeId entityRef='true'>test:reportsTo</RelationshipTypeId>
-          <RelationshipDirection>Reverse</RelationshipDirection>
-        </GroupedEntity>
-      </Entity>
-    </RelatedEntities>
-    <EntityTypeId entityRef='true'>test:manager</EntityTypeId>
-  </RootEntity>
-  <Columns>
-    <Column id='guid3'>
-      <Expression xsi:type='AggregateExpression'>
-        <NodeId>guid1</NodeId>
-        <AggregateMethod>Count</AggregateMethod>
-      </Expression>
-    </Column>
-  </Columns>
-</Query>";
-            Assert.AreEqual( expected, result );
-        }
-
-        [Test]
-        [RunAsDefaultTenant]
         public void TestSimpleUsesVariable( )
         {
             var result = CreateQueryXml( "let x = [Resource Type].Name select x", "name:AA_Manager" );
@@ -900,6 +869,61 @@ namespace ReadiNow.Expressions.Test.Builder
             <FieldId entityRef='true'>core:name</FieldId>
           </Expression>
         </Expressions>
+      </Expression>
+    </Column>
+  </Columns>
+</Query>";
+            Assert.AreEqual( expected, result );
+        }
+
+        [Test]
+        [RunAsDefaultTenant]
+        public void Test_Bug28406( )
+        {
+            var result = CreateQueryXml( "let m = max([AA_All Fields].[DateTime]) select ([AA_All Fields] where [DateTime] = m).[Name]", "name:AA_Herb" );
+
+            // This is probably the WRONG expected results
+            string expected =
+@"<Query>
+  <RootEntity xsi:type='ResourceEntity' id='guid0'>
+    <RelatedEntities>
+      <Entity xsi:type='AggregateEntity' id='guid1'>
+        <GroupedEntity xsi:type='RelatedResource' id='guid2'>
+          <RelationshipTypeId entityRef='true'>test:herbs</RelationshipTypeId>
+          <RelationshipDirection>Reverse</RelationshipDirection>
+        </GroupedEntity>
+      </Entity>
+      <Entity xsi:type='RelatedResource' id='guid3'>
+        <Conditions>
+          <Condition xsi:type='ComparisonExpression'>
+            <Operator>Equal</Operator>
+            <Expressions>
+              <Expression xsi:type='ResourceDataColumn'>
+                <NodeId>guid3</NodeId>
+                <FieldId entityRef='true'>test:afDateTime</FieldId>
+              </Expression>
+              <Expression xsi:type='AggregateExpression'>
+                <NodeId>guid1</NodeId>
+                <AggregateMethod>Max</AggregateMethod>
+                <Expression xsi:type='ResourceDataColumn'>
+                  <NodeId>guid2</NodeId>
+                  <FieldId entityRef='true'>test:afDateTime</FieldId>
+                </Expression>
+              </Expression>
+            </Expressions>
+          </Condition>
+        </Conditions>
+        <RelationshipTypeId entityRef='true'>test:herbs</RelationshipTypeId>
+        <RelationshipDirection>Reverse</RelationshipDirection>
+      </Entity>
+    </RelatedEntities>
+    <EntityTypeId entityRef='true'>test:herb</EntityTypeId>
+  </RootEntity>
+  <Columns>
+    <Column id='guid4'>
+      <Expression xsi:type='ResourceDataColumn'>
+        <NodeId>guid3</NodeId>
+        <FieldId entityRef='true'>core:name</FieldId>
       </Expression>
     </Column>
   </Columns>

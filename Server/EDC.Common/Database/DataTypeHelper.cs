@@ -1,7 +1,5 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using EDC.Database.Types;
 
 namespace EDC.Database
@@ -111,7 +109,7 @@ namespace EDC.Database
             if (type.Name == "EntityRef")
                 return DataType.Entity;
 
-            throw new ArgumentException("Unknown data type: " + type.Name, "type");
+            throw new ArgumentException("Unknown data type: " + type.Name, nameof( type ));
             
         }
 

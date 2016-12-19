@@ -1,11 +1,8 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
 
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
-using EDC.Collections.Generic;
 using EDC.Monitoring;
 using EDC.Monitoring.Cache;
 
@@ -72,17 +69,17 @@ namespace EDC.Cache.Providers.MetricRepositories
         /// <summary>
         /// The background thread.
         /// </summary>
-        internal Thread BackgroundThread{ get; private set; }
+        internal Thread BackgroundThread{ get; }
 
         /// <summary>
         /// Whether to log hit rates.
         /// </summary>
-        internal bool LogHitRates { get; private set; }
+        internal bool LogHitRates { get; }
 
         /// <summary>
         /// Synchronization object used to inform background thread to report new metrics.
         /// </summary>
-        internal object ThreadSyncObject { get; private set; }
+        internal object ThreadSyncObject { get; }
 
         /// <summary>
         /// Is the background thread stopping?
@@ -102,7 +99,7 @@ namespace EDC.Cache.Providers.MetricRepositories
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException( nameof( name ) );
             }
 
             lock (ThreadSyncObject)
@@ -124,7 +121,7 @@ namespace EDC.Cache.Providers.MetricRepositories
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException( nameof( name ) );
             }
 
             if (LogHitRates)

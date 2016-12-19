@@ -31,6 +31,7 @@ namespace ReadiNow.Expressions.Test.Builder
         [TestCase("[Direct Reports] where context().Age", Result = "GetRootContextEntityNode(WhereNode(AccessRelationshipNode(GetRootContextEntityNode)))")] //hmm
         [TestCase("count([Direct Reports])", Result = "GetRootContextEntityNode(CountNode(AccessRelationshipNode))")]
         [TestCase("max([Direct Reports].Age)", Result = "GetRootContextEntityNode(MaxNode(AccessRelationshipNode))")]
+        [TestCase("let m = max([AA_All Fields].[DateTime]) select ([AA_All Fields] where [DateTime] = m).[Name]", Result = "GetRootContextEntityNode(MaxNode(AccessRelationshipNode),WhereNode(AccessRelationshipNode))" )] // #28406
         [RunAsDefaultTenant]
         public string Calculations_NodeStructure(string script)
         {

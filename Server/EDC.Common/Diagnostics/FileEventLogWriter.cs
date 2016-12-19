@@ -26,12 +26,12 @@ namespace EDC.Diagnostics
 	public class FileEventLogWriter : CriticalFinalizerObject, IEventLogWriter, IDisposable
 	{		
         private readonly ConcurrentQueue<EventLogEntry> _eventLogEntryQueue;
-        private readonly string _filename = string.Empty;
-		private readonly string _folder = string.Empty;
-        private readonly string _path = string.Empty;
-        private readonly string _baseFileName = string.Empty;
-        private readonly string _baseExtension = string.Empty;
-        private readonly object _lock = new Object( );
+        private readonly string _filename;
+		private readonly string _folder;
+        private readonly string _path;
+        private readonly string _baseFileName;
+        private readonly string _baseExtension;
+        private readonly object _lock = new object( );
 		private readonly string _syncMutexName;
         private readonly Lazy<NamedMutex> _syncMutex;
 
@@ -55,12 +55,12 @@ namespace EDC.Diagnostics
 		{
 			if ( string.IsNullOrEmpty( folder ) )
 			{
-				throw new ArgumentNullException( "folder" );
+				throw new ArgumentNullException( nameof( folder ) );
 			}
 
 			if ( string.IsNullOrEmpty( filename ) )
 			{
-				throw new ArgumentNullException( "filename" );
+				throw new ArgumentNullException( nameof( filename ) );
 			}
 
             TraceEnabled = true;
@@ -138,7 +138,7 @@ namespace EDC.Diagnostics
 				// Check that the property value is between 1 and 10000
 				if ( ( maxCount < 1 ) || ( maxCount > 10000 ) )
 				{
-					throw new ArgumentOutOfRangeException( "value", @"The specified MaxCount property is out or range." );
+					throw new ArgumentOutOfRangeException( nameof( value ), @"The specified MaxCount property is out or range." );
 				}
 
                 _maxCount = maxCount;
@@ -162,7 +162,7 @@ namespace EDC.Diagnostics
 				// Check that the property value is between 1 day and 10 years
 				if ( ( maxRetention <= 0 ) || ( maxRetention > 365 * 10 ) )
 				{
-					throw new ArgumentOutOfRangeException( "value", @"The specified MaxRetention property is out or range." );
+					throw new ArgumentOutOfRangeException( nameof( value ), @"The specified MaxRetention property is out or range." );
 				}
 
 				_maxRetention = maxRetention;
@@ -186,7 +186,7 @@ namespace EDC.Diagnostics
 				// Check that the property value is between 1 and 8192 K (1K - 8M)
 				if ( ( maxSize < 1 ) || ( maxSize > 8192 ) )
 				{
-					throw new ArgumentOutOfRangeException( "value", @"The specified MaxSize property is out or range." );
+					throw new ArgumentOutOfRangeException( nameof( value ), @"The specified MaxSize property is out or range." );
 				}
 
 				_maxSize = maxSize;
@@ -308,9 +308,9 @@ namespace EDC.Diagnostics
 					}
 				}
 			}
-			catch ( Exception exc )
+			catch ( Exception ex )
 			{
-				Trace.TraceError( "Failed to flush file event log. {0}", exc.ToString( ) );
+				Trace.TraceError( "Failed to flush file event log. {0}", ex );
 			}
 			finally
 			{
@@ -523,7 +523,7 @@ namespace EDC.Diagnostics
                 }
                 catch (Exception exception)
                 {
-                    Trace.TraceError("Unable to delete the log file. {0}", exception.ToString());
+                    Trace.TraceError( "Unable to delete the log file. {0}", exception );
                 }
             }            
         }
@@ -549,9 +549,9 @@ namespace EDC.Diagnostics
 				// Rename the specified event log file
 				FileHelper.TryMoveFile( path, newPath, 10000 );
 			}
-			catch ( Exception exception )
+			catch ( Exception ex )
 			{
-				Trace.TraceError( "Unable to rotate the log file. {0}", exception.ToString( ) );
+				Trace.TraceError( "Unable to rotate the log file. {0}", ex );
 			}
 		}
 
@@ -565,7 +565,7 @@ namespace EDC.Diagnostics
 				// Check the path of the log file				
 				// Check if the event log file should be rotated
 				var fileInfo = new FileInfo( _path );
-				if (fileInfo.Length >= ( _maxSize * 1024 ) )
+				if (fileInfo.Length >= _maxSize * 1024 )
 				{
 					// Rotate the current event log file
 					Rotate( _path );
@@ -577,9 +577,9 @@ namespace EDC.Diagnostics
 					}
 				}				
 			}
-			catch ( Exception exc )
+			catch ( Exception ex )
 			{
-				Trace.TraceError( "Failed to validate log file. {0}", exc.ToString( ) );
+				Trace.TraceError( "Failed to validate log file. {0}", ex );
 			}
 		}
 
@@ -636,7 +636,7 @@ namespace EDC.Diagnostics
 			}
 			catch ( Exception ex )
 			{
-				Trace.TraceError( "FileEventLog.WriteEntries failed. Error {0}.", ex.ToString( ) );
+				Trace.TraceError( "FileEventLog.WriteEntries failed. Error {0}.", ex );
 			}
 		}
 
@@ -709,7 +709,7 @@ namespace EDC.Diagnostics
             }
 			catch ( Exception exception )
 			{
-				Trace.TraceError( "Unable to write an entry to the event log. {0}", exception.ToString( ) );
+				Trace.TraceError( "Unable to write an entry to the event log. {0}", exception );
                 return false;
 			}
 		}
@@ -725,7 +725,7 @@ namespace EDC.Diagnostics
 		{
 			if ( string.IsNullOrEmpty( logFolder ) )
 			{
-				throw new ArgumentNullException( "logFolder" );
+				throw new ArgumentNullException( nameof( logFolder ) );
 			}
 
 			return string.Format( @"Global\ReadiNowLogMutex_{0}", CryptoHelper.GetMd5Hash( logFolder.ToUpperInvariant( ) ) );

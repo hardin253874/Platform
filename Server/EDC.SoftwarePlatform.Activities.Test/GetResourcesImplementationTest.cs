@@ -9,7 +9,7 @@ using EDC.ReadiNow.Expressions;
 namespace EDC.SoftwarePlatform.Activities.Test
 {
 	[TestFixture]
-    [Category("ExtendedTests")]
+    //[Category("ExtendedTests")]
     [Category("WorkflowTests")]
 	public class GetResourcesImplementationTest : TestBase
 	{

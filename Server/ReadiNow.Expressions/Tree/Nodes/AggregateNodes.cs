@@ -71,21 +71,25 @@ namespace ReadiNow.Expressions.Tree.Nodes
                 nodesToProcess = nodesToProcess[0].ChildContainer.ChildEntityNodes;
 
             // Find the child tree node
-            if (nodesToProcess.Count != 1) // TODO
-                throw new Exception("Cross-join in report calculations are unsupported.");
-            
-            var aggregateQueryNode = new AggregateEntity();
-            context.ParentNodeStack.Push(aggregateQueryNode);
+            if ( nodesToProcess.Count > 1 )
+                throw new Exception( "Cross-join in report calculations are unsupported." );
 
-            var childNode = nodesToProcess.Single().BuildQueryNode(context, false);
+            var aggregateQueryNode = new AggregateEntity( );
+            context.ParentNodeStack.Push( aggregateQueryNode );
+
+            SQ.Entity childNode;
+            if ( nodesToProcess.Count == 0 )
+                childNode = new SingleRowNode( );
+            else
+                childNode = nodesToProcess.Single( ).BuildQueryNode( context, false );
 
             // Move child node to the right place (it will try to add to RelatedEntities, but we don't want it there)
-            aggregateQueryNode.RelatedEntities.Clear();
+            aggregateQueryNode.RelatedEntities.Clear( );
             aggregateQueryNode.GroupedEntity = childNode;
-            context.ParentNodeStack.Pop();
+            context.ParentNodeStack.Pop( );
 
             // Register the aggregate 
-            context.ParentNode.RelatedEntities.Add(aggregateQueryNode);
+            context.ParentNode.RelatedEntities.Add( aggregateQueryNode );
             return aggregateQueryNode;
         }
 

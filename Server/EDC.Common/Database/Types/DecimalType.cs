@@ -3,10 +3,8 @@ using System;
 using System.Data;
 using System.Globalization;
 using System.Runtime.Serialization;
-using System.Xml;
 using System.Xml.Serialization;
 using EDC.Core;
-using EDC.Xml;
 
 namespace EDC.Database.Types
 {
