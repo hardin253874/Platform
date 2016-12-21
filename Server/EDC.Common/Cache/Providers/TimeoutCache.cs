@@ -105,17 +105,16 @@ namespace EDC.Cache.Providers
 				    // This will evict entries that have expired at this point in time keeping in mind that other entries could
 				    // expire while this is running in which case they will be evicted next run.
 				    /////
-				    List<TKey> keys = _cache.Where( p => p.Value.CreationTime + _expirationInterval < currentTime ).Select( p => p.Key ).ToList( );
+				    TKey[] keys = _cache.Where( p => p.Value.CreationTime + _expirationInterval < currentTime ).Select( p => p.Key ).ToArray( );
 
 				    int count = 0;
 
-				    foreach ( TKey key in keys )
-				    {
-					    if ( Remove( key ) )
-					    {
-						    count++;
-					    }
-				    }
+				    var removed = Remove( keys );
+
+					if ( removed != null )
+					{
+						count = removed.Count;
+					}
 
 				    sw.Stop( );
 

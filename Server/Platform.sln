@@ -106,9 +106,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{AB47E8
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDC.SoftwarePlatform.Activities", "EDC.SoftwarePlatform.Activities\EDC.SoftwarePlatform.Activities.csproj", "{98EC024C-6439-44B1-8B1E-29E457B2201F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadiNow.Activities", "ReadiNow.Activities\ReadiNow.Activities.csproj", "{98EC024C-6439-44B1-8B1E-29E457B2201F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDC.SoftwarePlatform.Activities.Test", "EDC.SoftwarePlatform.Activities.Test\EDC.SoftwarePlatform.Activities.Test.csproj", "{6B768DDB-0D2A-4F14-9E8B-436AEC5647FE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadiNow.Activities.Test", "ReadiNow.Activities.Test\ReadiNow.Activities.Test.csproj", "{6B768DDB-0D2A-4F14-9E8B-436AEC5647FE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDC.SoftwarePlatform.Migration", "EDC.SoftwarePlatform.Migration\EDC.SoftwarePlatform.Migration.csproj", "{ACC17A7D-5BD0-4F9E-8569-3E4D51588064}"
 EndProject

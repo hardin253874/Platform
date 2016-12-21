@@ -1,13 +1,9 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.Tracing;
-using System.Linq;
+using System.Threading;
 using EDC.Monitoring;
-using EDC.ReadiNow.Model;
-using EDC.ReadiNow.Monitoring;
 using EDC.ReadiNow.Monitoring.Model;
-using EDC.ReadiNow.Monitoring.Workflow;
 
 namespace EDC.ReadiNow.Diagnostics.Tracing
 {
@@ -17,38 +13,25 @@ namespace EDC.ReadiNow.Diagnostics.Tracing
 	[EventSource( Name = "EDC-SoftwarePlatform" )]
 	public class PlatformTrace : EventSource
 	{
-		/// <summary>
-		///     Static sync root.
-		/// </summary>
-		private static readonly object StaticSyncRoot = new object( );
-        private static ISingleInstancePerformanceCounterCategory perfCounters = new SingleInstancePerformanceCounterCategory(PlatformTracePerformanceCounters.CategoryName);
+        private static readonly ISingleInstancePerformanceCounterCategory perfCounters = new SingleInstancePerformanceCounterCategory(PlatformTracePerformanceCounters.CategoryName);
 
 
-		/// <summary>
-		///     Singleton instance.
-		/// </summary>
-		private static readonly Lazy<PlatformTrace> TraceInstance = new Lazy<PlatformTrace>( ( ) => new PlatformTrace( ), false );
+        /// <summary>
+        ///     Singleton instance.
+        /// </summary>
+        private static readonly Lazy<PlatformTrace> TraceInstance = new Lazy<PlatformTrace>( ( ) => new PlatformTrace( ), true );
 
-		/// <summary>
-		///     Prevents a default instance of the <see cref="PlatformTrace" /> class from being created.
-		/// </summary>
-		private PlatformTrace( )
+        /// <summary>
+        ///     Prevents a default instance of the <see cref="PlatformTrace" /> class from being created.
+        /// </summary>
+        private PlatformTrace( )
 		{
 		}
 
-		/// <summary>
-		///     Gets the instance.
-		/// </summary>
-		public static PlatformTrace Instance
-		{
-			get
-			{
-				lock ( StaticSyncRoot )
-				{
-					return TraceInstance.Value;
-				}
-			}
-		}
+	    /// <summary>
+	    ///     Gets the instance.
+	    /// </summary>
+	    public static PlatformTrace Instance => TraceInstance.Value;
 
 		/// <summary>
 		///     Traces the entity cache hit.

@@ -1,5 +1,6 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
 using System;
+using System.Threading;
 using EDC.Cache.Providers;
 
 namespace EDC.Cache.Locators
@@ -9,36 +10,22 @@ namespace EDC.Cache.Locators
 	/// </summary>
 	public sealed class Default : ICacheLocator
 	{
-		/// <summary>
-		///     Static sync root.
-		/// </summary>
-		private static readonly object StaticSyncRoot = new object( );
+        /// <summary>
+        ///     Static instance of the Default locator.
+        /// </summary>
+        private static readonly Lazy<Default> DefaultInstance = new Lazy<Default>( ( ) => new Default( ), true );
 
-		/// <summary>
-		///     Static instance of the Default locator.
-		/// </summary>
-		private static readonly Lazy<Default> DefaultInstance = new Lazy<Default>( ( ) => new Default( ), false );
-
-		/// <summary>
-		///     Prevents a default instance of the <see cref="Default" /> class from being created.
-		/// </summary>
-		private Default( )
+        /// <summary>
+        ///     Prevents a default instance of the <see cref="Default" /> class from being created.
+        /// </summary>
+        private Default( )
 		{
 		}
 
-		/// <summary>
-		///     Gets the instance.
-		/// </summary>
-		public static Default Instance
-		{
-			get
-			{
-				lock ( StaticSyncRoot )
-				{
-					return DefaultInstance.Value;
-				}
-			}
-		}
+	    /// <summary>
+	    ///     Gets the instance.
+	    /// </summary>
+	    public static Default Instance => DefaultInstance.Value;
 
         /// <summary>
         ///     Locates the active cache provider.

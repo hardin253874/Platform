@@ -75,7 +75,7 @@
       <stringField>
         <alias>fromName</alias>
         <name>From name</name>
-        <maxLength>200</maxLength>
+        <maxLength>300</maxLength>
         <pattern>namePattern</pattern>
         <description>A more descriptive name for the source (relative to the target). For example, a 'Person administers Mail Server' relationship, might want to show the source as 'System Administrator', rather than just 'Person'.</description>
         <fieldInGroup>relationshipDetails</fieldInGroup>
@@ -83,7 +83,7 @@
       <stringField>
         <alias>toName</alias>
         <name>To name</name>
-        <maxLength>200</maxLength>
+        <maxLength>300</maxLength>
         <pattern>namePattern</pattern>
         <description>A more descriptive name for the target (relative to the source). For example, a 'Person administers Mail Server' relationship, might want to show the target as 'Administered Mail Servers', rather than just 'Computer'.</description>
         <fieldInGroup>relationshipDetails</fieldInGroup>
@@ -91,7 +91,7 @@
       <stringField>
         <alias>fromScriptName</alias>
         <name>From script name</name>
-        <maxLength>200</maxLength>
+        <maxLength>300</maxLength>
         <pattern>scriptNamePattern</pattern>
         <description>The name to use when referring to this relationship in a reverse direction in scripts.</description>
         <fieldInGroup>relationshipDetails</fieldInGroup>
@@ -99,7 +99,7 @@
       <stringField>
         <alias>toScriptName</alias>
         <name>To script name</name>
-        <maxLength>200</maxLength>
+        <maxLength>300</maxLength>
         <pattern>scriptNamePattern</pattern>
         <description>The name to use when referring to this relationship in a forward direction in scripts.</description>
         <fieldInGroup>relationshipDetails</fieldInGroup>

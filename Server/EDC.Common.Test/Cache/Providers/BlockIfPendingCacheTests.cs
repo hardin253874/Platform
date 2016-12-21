@@ -28,7 +28,6 @@ namespace EDC.Test.Cache.Providers
             Func<int, string> valueFactory = key =>
             {
                 Interlocked.Increment( ref callCount );
-                Thread.Sleep( 200 );    //ms
                 return key.ToString();
             };
 

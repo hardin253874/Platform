@@ -12,20 +12,15 @@ namespace EDC.ReadiNow.Model
 	[SuppressMessage( "Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix" )]
 	internal sealed class EntityFieldModificationCache : CacheBase<EntityFieldModificationCache.EntityFieldModificationCacheKey, IEntityFieldValues>
 	{
-		/// <summary>
-		///     Static sync root.
-		/// </summary>
-		private static readonly object StaticSyncRoot = new object( );
+        /// <summary>
+        ///     Represents the singleton instance of the cache.
+        /// </summary>
+        private static readonly Lazy<EntityFieldModificationCache> CacheInstance = new Lazy<EntityFieldModificationCache>( ( ) => new EntityFieldModificationCache( ), true );
 
-		/// <summary>
-		///     Represents the singleton instance of the cache.
-		/// </summary>
-		private static readonly Lazy<EntityFieldModificationCache> CacheInstance = new Lazy<EntityFieldModificationCache>( ( ) => new EntityFieldModificationCache( ), false );
-
-		/// <summary>
-		///     Primary Key lookup.
-		/// </summary>
-		private readonly Dictionary<long, ISet<EntityFieldModificationCacheKey>> _primaryKeyLookup = new Dictionary<long, ISet<EntityFieldModificationCacheKey>>( );
+        /// <summary>
+        ///     Primary Key lookup.
+        /// </summary>
+        private readonly Dictionary<long, ISet<EntityFieldModificationCacheKey>> _primaryKeyLookup = new Dictionary<long, ISet<EntityFieldModificationCacheKey>>( );
 
 		/// <summary>
 		///     Thread synchronization.
@@ -40,19 +35,10 @@ namespace EDC.ReadiNow.Model
         {
 		}
 
-		/// <summary>
-		///     Gets the instance.
-		/// </summary>
-		public static EntityFieldModificationCache Instance
-		{
-			get
-			{
-				lock ( StaticSyncRoot )
-				{
-					return CacheInstance.Value;
-				}
-			}
-		}
+	    /// <summary>
+	    ///     Gets the instance.
+	    /// </summary>
+	    public static EntityFieldModificationCache Instance => CacheInstance.Value;
 
 		/// <summary>
 		///     Gets or sets the <see cref="IDictionary{Int64,Object}" /> with the specified key.

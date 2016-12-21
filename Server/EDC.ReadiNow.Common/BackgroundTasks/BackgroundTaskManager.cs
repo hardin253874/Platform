@@ -1,7 +1,6 @@
 ﻿// Copyright 2011-2016 Global Software Innovation Pty Ltd
 
 using Autofac;
-using EDC.ReadiNow.Core;
 using EDC.ReadiNow.Diagnostics;
 using EDC.ReadiNow.IO;
 using EDC.ReadiNow.Messaging;
@@ -12,7 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 
 namespace EDC.ReadiNow.BackgroundTasks
 {
@@ -24,12 +23,12 @@ namespace EDC.ReadiNow.BackgroundTasks
         const string QueuePrefix = "BackgroundTaskManager";
         readonly object _sync = new object();
 
-        readonly int _waitForStopTimeMs;
         readonly int _perTenantConcurrency;
         readonly ITenantQueueFactory _tenantQueueFactory;
 
-        Lazy<Dictionary<long, QueueActioner<BackgroundTask>>> _tenantActioners;
-        private Dictionary<long, QueueActioner<BackgroundTask>> TenantActioners { get { return _tenantActioners.Value; } }
+        readonly Lazy<Dictionary<long, QueueActioner<BackgroundTask>>> _tenantActioners;
+
+        private Dictionary<long, QueueActioner<BackgroundTask>> TenantActioners => _tenantActioners.Value;
 
         private Dictionary<string, ITaskHandler> TaskHandlers { get; }
 
@@ -47,7 +46,6 @@ namespace EDC.ReadiNow.BackgroundTasks
         public BackgroundTaskManager(ITenantQueueFactory tenantQueueFactory, int perTenantConcurrency = 20, int waitForStopTimeMs = 30000, IEnumerable<ITaskHandler> handlers = null)
         {
             _tenantQueueFactory = tenantQueueFactory;
-            _waitForStopTimeMs = waitForStopTimeMs;
             _perTenantConcurrency = perTenantConcurrency;
 
             if (handlers == null)
@@ -57,7 +55,7 @@ namespace EDC.ReadiNow.BackgroundTasks
 
             TaskHandlers = handlers.ToDictionary(h => h.TaskHandlerKey, h => h);
 
-            _tenantActioners = new Lazy<Dictionary<long, QueueActioner<BackgroundTask>>>(CreateActioners, false);
+            _tenantActioners = new Lazy<Dictionary<long, QueueActioner<BackgroundTask>>>(CreateActioners, true );
         }
 
         /// <summary>
@@ -87,31 +85,48 @@ namespace EDC.ReadiNow.BackgroundTasks
         /// <summary>
         /// Stop the task manager
         /// </summary>
-        public void Stop()
+        public void Stop( )
         {
-            var actioners = TenantActioners.Values;
-
-            // Tell them all to stop.
-            foreach (var actioner in actioners)
-            {
-                actioner.Stop(0);
-            }
-
-            // Wait for them to stop
-            foreach (var actioner in actioners)
-            {
-                actioner.Stop();
-            }
-            EventLog.Application.WriteInformation($"BackgroundTaskManager stopped");
+	        Stop( 0 );
         }
 
+		/// <summary>
+		/// Stop the task manager
+		/// </summary>
+		/// <param name="millisecondsTimeout">The milliseconds timeout.</param>
+		public bool Stop( int millisecondsTimeout = 0 )
+		{
+			var actioners = TenantActioners.Values;
+
+			bool allStopped = true;
+
+			// Tell them all to stop.
+			foreach ( var actioner in actioners )
+			{
+				allStopped &= actioner.Stop( millisecondsTimeout );
+			}
+
+			if ( !allStopped )
+			{
+				allStopped = true;
+
+				// Wait for them to stop
+				foreach ( var actioner in actioners )
+				{
+					allStopped &= actioner.Stop( );
+				}
+			}
+
+			EventLog.Application.WriteInformation( $"BackgroundTaskManager stopped" );
+
+			return allStopped;
+		}
 
 
-
-        /// <summary>
-        /// Make sure a queue exusts for every tenant and have the correct concurrency
-        /// </summary>
-        private Dictionary<long, QueueActioner<BackgroundTask>> CreateActioners()
+		/// <summary>
+		/// Make sure a queue exusts for every tenant and have the correct concurrency
+		/// </summary>
+		private Dictionary<long, QueueActioner<BackgroundTask>> CreateActioners()
         {
             var result = new Dictionary<long, QueueActioner<BackgroundTask>>();
 

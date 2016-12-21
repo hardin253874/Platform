@@ -43,10 +43,12 @@ namespace EDC.ReadiNow.Model
 		/// </summary>
         public static Type GetClass(this Class classEntity)
 		{
+		    string asmName = CheckAssemblyName( classEntity.AssemblyName );
+
             if (classEntity == null)
                 throw new ArgumentNullException("classEntity");
 
-            if (string.IsNullOrEmpty(classEntity.AssemblyName))
+            if (string.IsNullOrEmpty(asmName))
 			{
 				throw new Exception( "AssemblyName is not specified." );
 			}
@@ -55,11 +57,27 @@ namespace EDC.ReadiNow.Model
 				throw new Exception( "TypeName is not specified." );
 			}
 
-			Assembly asm = Assembly.Load( classEntity.AssemblyName );
+			Assembly asm = Assembly.Load( asmName );
 			Type result = asm.GetType( classEntity.TypeName, true );
 
 			return result;
 		}
+
+        /// <summary>
+        /// Ensure that we are using the correct name for renamed assemblies.
+        /// </summary>
+	    public static string CheckAssemblyName( string assemblyName )
+	    {
+	        if ( string.IsNullOrEmpty( assemblyName ) )
+	            return assemblyName;
+
+            if ( assemblyName.StartsWith( "EDC.SoftwarePlatform.Activities" ) )
+            {
+                assemblyName = assemblyName.Replace( "EDC.SoftwarePlatform.Activities", "ReadiNow.Activities" );
+            }
+
+	        return assemblyName;
+	    }
 	}
 }
 

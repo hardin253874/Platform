@@ -49,7 +49,7 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("EDC.SoftwarePlatform.Services.Test")]
 [assembly: InternalsVisibleTo("EDC.ReadiNow.CAST")]
 [assembly: InternalsVisibleTo("ReadiNow.QueryEngine.Test")]
-[assembly: InternalsVisibleTo("EDC.SoftwarePlatform.Activities.Test")]
+[assembly: InternalsVisibleTo("ReadiNow.Activities.Test")]
 
 /////
 // TODO: Remove this once the BulkRequest mechanism is moved into ReadiNow.EntityGraph

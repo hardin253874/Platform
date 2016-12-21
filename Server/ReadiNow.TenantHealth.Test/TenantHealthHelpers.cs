@@ -147,7 +147,13 @@ namespace ReadiNow.TenantHealth.Test
                         if ( ignoreNames.Contains( entityName ) )
                             testCaseData = testCaseData.Ignore( "Ignored" );
                         testCaseData = testCaseData.SetCategory( tenantInfo.TenantName );
-                        result.Add( testCaseData );
+
+						if ( entityName == "Self Serve Component" || entityName == "Control on Form Except Screens" )
+						{
+							testCaseData = testCaseData.SetCategory( "ExtendedTests" );
+						}
+
+						result.Add( testCaseData );
                     }
                 }
             }

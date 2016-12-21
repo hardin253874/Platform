@@ -31,25 +31,32 @@ namespace EDC.Test.Syslog
 
             var mockRepo = new MockRepository(MockBehavior.Strict);
 
-            Mock<ISyslogMessageWriter> syslogMessageWriterMock = mockRepo.Create<ISyslogMessageWriter>();
-            syslogMessageWriterMock.Setup(w => w.Write(msg)).Throws<InvalidOperationException>();            
+			if ( maxRetries > 5 )
+			{
+				maxRetries = 5;
+			}
 
-            var queuingWriter = new SyslogQueueingMessageWriter(syslogMessageWriterMock.Object, maxRetries);
+			using ( CountdownEvent evt = new CountdownEvent( maxRetries + 1 ) )
+			{
+				Mock<ISyslogMessageWriter> syslogMessageWriterMock = mockRepo.Create<ISyslogMessageWriter>( );
+				syslogMessageWriterMock.Setup( w => w.Write( msg ) ).Callback( ( ) =>
+				{
+					// ReSharper disable once AccessToDisposedClosure
+					evt.Signal( );
+					throw new InvalidOperationException( )
+					;
+				} );
 
-            if (maxRetries > 5)
-            {
-                maxRetries = 5;
-            }
+				var queuingWriter = new SyslogQueueingMessageWriter( syslogMessageWriterMock.Object, maxRetries );
 
-            Thread.Sleep(2000);
+				// Test
+				queuingWriter.Write( msg );
 
-            // Test
-            queuingWriter.Write(msg);
+				evt.Wait( 3000 );
 
-            Thread.Sleep(3000);
-
-            // Validation
-            syslogMessageWriterMock.Verify(w => w.Write(It.IsAny<SyslogMessage>()), Times.Exactly(maxRetries + 1));            
+				// Validation
+				syslogMessageWriterMock.Verify( w => w.Write( It.IsAny<SyslogMessage>( ) ), Times.Exactly( maxRetries + 1 ) );
+			}
 
             mockRepo.VerifyAll();
         }
@@ -72,30 +79,33 @@ namespace EDC.Test.Syslog
 
             var mockRepo = new MockRepository(MockBehavior.Strict);
 
-            int callCount = 0;
+			using ( CountdownEvent evt = new CountdownEvent( maxRetries ) )
+			{
 
-            Mock<ISyslogMessageWriter> syslogMessageWriterMock = mockRepo.Create<ISyslogMessageWriter>();
-            syslogMessageWriterMock.Setup(w => w.Write(msg)).Callback<SyslogMessage>(m =>
-            {
-                callCount++;
-                if (callCount == 1)
-                {
-                    // Throw on first call
-                    throw new InvalidOperationException();
-                }
-            });            
+				Mock<ISyslogMessageWriter> syslogMessageWriterMock = mockRepo.Create<ISyslogMessageWriter>( );
+				syslogMessageWriterMock.Setup( w => w.Write( msg ) ).Callback<SyslogMessage>( m =>
+				{
+					// ReSharper disable once AccessToDisposedClosure
+					evt.Signal( );
 
-            var queuingWriter = new SyslogQueueingMessageWriter(syslogMessageWriterMock.Object, maxRetries);
+					// ReSharper disable once AccessToDisposedClosure
+					if ( evt.CurrentCount == 1 )
+					{
+						// Throw on first call
+						throw new InvalidOperationException( );
+					}
+				} );
 
-            Thread.Sleep(2000);
+				var queuingWriter = new SyslogQueueingMessageWriter( syslogMessageWriterMock.Object, maxRetries );
 
-            // Test
-            queuingWriter.Write(msg);
+				// Test
+				queuingWriter.Write( msg );
 
-            Thread.Sleep(3000);
+				evt.Wait( 3000 );
 
-            // Validation
-            syslogMessageWriterMock.Verify(w => w.Write(It.IsAny<SyslogMessage>()), Times.Exactly(maxRetries));
+				// Validation
+				syslogMessageWriterMock.Verify( w => w.Write( It.IsAny<SyslogMessage>( ) ), Times.Exactly( maxRetries ) );
+			}
 
             mockRepo.VerifyAll();
         }        
@@ -142,15 +152,21 @@ namespace EDC.Test.Syslog
             var mockRepo = new MockRepository(MockBehavior.Strict);
 
             Mock<ISyslogMessageWriter> syslogMessageWriterMock = mockRepo.Create<ISyslogMessageWriter>();
-            syslogMessageWriterMock.Setup(w => w.Write(msg));            
 
-            var queuingWriter = new SyslogQueueingMessageWriter(syslogMessageWriterMock.Object, 2);
+			using ( AutoResetEvent evt = new AutoResetEvent( false ) )
+			{
+				syslogMessageWriterMock.Setup( w => w.Write( msg ) ).Callback( ( ) =>
+				{
+					// ReSharper disable once AccessToDisposedClosure
+					evt.Set( );
+				} );
 
-            Thread.Sleep(2000);
+				var queuingWriter = new SyslogQueueingMessageWriter( syslogMessageWriterMock.Object, 2 );
 
-            queuingWriter.Write(msg);
+				queuingWriter.Write( msg );
 
-            Thread.Sleep(3000);
+				evt.WaitOne( 3000 );
+			}
 
             mockRepo.VerifyAll();
         }

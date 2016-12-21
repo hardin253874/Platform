@@ -74,5 +74,26 @@ namespace EDC.SoftwarePlatform.Activities.Test
 			Assert.IsTrue( url.StartsWith( "https://" ), "Starts with Https" );
 			Assert.IsTrue( url.Contains( report.Id.ToString( CultureInfo.InvariantCulture ) ), "Url contains the correct Id" );
 		}
+
+        [Test]
+        [RunAsDefaultTenant]
+        [ExpectedException(typeof(WorkflowRunException))]
+        public void HandleNull()
+        {
+            var createLinkActivity = new CreateLinkActivity();
+            createLinkActivity.Save();
+            ToDelete.Add(createLinkActivity.Id);
+
+            var nextActivity = (CreateLinkImplementation)createLinkActivity.As<WfActivity>().CreateWindowsActivity();
+
+            var inputs = new Dictionary<string, object>
+                {
+                    {
+                        "Resource", null
+                    }
+                };
+
+            IDictionary<string, object> result = RunActivity(nextActivity, inputs);
+        }
 	}
 }

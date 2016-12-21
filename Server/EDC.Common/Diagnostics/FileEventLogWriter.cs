@@ -32,26 +32,37 @@ namespace EDC.Diagnostics
         private readonly string _baseFileName;
         private readonly string _baseExtension;
         private readonly object _lock = new object( );
-		private readonly string _syncMutexName;
-        private readonly Lazy<NamedMutex> _syncMutex;
+
+		/// <summary>
+		/// The synchronize mutex
+		/// </summary>
+		/// <remarks>
+		/// Cannot be in a lazy since the owning thread is not deterministic.
+		/// Could be primary thread or worker thread depending on which runs first.
+		/// </remarks>
+		private readonly NamedMutex _syncMutex;
+
+		private readonly ManualResetEvent _shutdownEvent = new ManualResetEvent( false );
 
 		/// <summary>
 		///     True if the object has been disposed, false otherwise.
 		/// </summary>
 		private bool _disposed;	    		
 		private Thread _eventLogWorkerThread;
-        private int _maxBatchSize = 20; // max number of log entries to write at once
+        private readonly int _maxBatchSize = 20; // max number of log entries to write at once
 		private int _maxRetention = 30; // 30 days
 		private int _maxSize = 1024; // 1024 kilobytes
 		private int _rotationCount;
-	    private int _maxCount = 100;				
+	    private int _maxCount = 100;
 
-        /// <summary>
-        ///     This constructs a FileEventLog object.
-        /// </summary>
-        /// <param name="folder">The path of the event log folder.</param>
-        /// <param name="filename">The name of the default log file.</param>        
-        public FileEventLogWriter( string folder, string filename )
+		internal event EventHandler<LogWrittenEventArgs> LogWritten;
+
+		/// <summary>
+		///     This constructs a FileEventLog object.
+		/// </summary>
+		/// <param name="folder">The path of the event log folder.</param>
+		/// <param name="filename">The name of the default log file.</param>        
+		public FileEventLogWriter( string folder, string filename )
 		{
 			if ( string.IsNullOrEmpty( folder ) )
 			{
@@ -79,13 +90,10 @@ namespace EDC.Diagnostics
             // Derive the name of the mutex from the folder name.            
             // FileEventLog objects with different log folders
             // will have different mutex names.
-            _syncMutexName = GetLogMutexName( folder );
+            var syncMutexName = GetLogMutexName( folder );
 
             // Lazy mutex factory
-            _syncMutex = new Lazy<NamedMutex>( ( ) =>
-            {
-                return new NamedMutex( _syncMutexName  ); 
-            } );
+            _syncMutex = new NamedMutex( syncMutexName  );
 
             _eventLogEntryQueue = new ConcurrentQueue<EventLogEntry>();
 
@@ -102,24 +110,12 @@ namespace EDC.Diagnostics
 		/// <summary>
 		///     Gets the name of the default log file.
 		/// </summary>
-		public string Filename
-		{
-			get
-			{
-				return _filename;
-			}
-		}
+		public string Filename => _filename;
 
 		/// <summary>
 		///     Gets the path of the event log folder
 		/// </summary>
-		public string Folder
-		{
-			get
-			{
-				return _folder;
-			}
-		}
+		public string Folder => _folder;
 
 		/// <summary>
 		///     Gets or sets the maximum number of log file to retain.
@@ -246,64 +242,81 @@ namespace EDC.Diagnostics
 			// Any events not flushed after 2 seconds will be lost due to the internal finalizer timeout.
 			/////
 			try
-			{			    
-                Trace.TraceInformation("Flush starting... " + _eventLogEntryQueue.Count + " entries found.");
+			{
+				Trace.TraceInformation( "Flush starting... " + _eventLogEntryQueue.Count + " entries found." );
 
 				// Get the path of the log file
 				string machineName = Environment.MachineName;
-				string processName = Process.GetCurrentProcess( ).ProcessName;
+				string processName = Process.GetCurrentProcess( ).MainModule.ModuleName;	// Was the wrong process string randonly causing tests to fail.
 
 				// Write the log entry to the event log
                 bool acquired;
-				using ( _syncMutex.Value.AcquireRelease(out acquired) )
+				using ( _syncMutex.AcquireRelease(out acquired) )
 				{
 					// Wait to acquire the mutex
-                    if ( acquired )
+					if ( acquired )
 					{
-						// Attempt to open the file
-						FileStream logStream = FileHelper.TryOpenFile( _path, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read, 10000 );
+						int entriesWritten = 0;
 
-						if ( logStream != null )
+						EventLogEntry logEntry;
+						List<EventLogEntry> entries = new List<EventLogEntry>( );
+						while ( _eventLogEntryQueue.TryDequeue( out logEntry ) )
 						{
+							if ( logEntry == null )
+							{
+								continue;
+							}
+
+							logEntry.Id = Guid.NewGuid( );
+							logEntry.Machine = machineName;
+							logEntry.Process = processName;
+
+							entries.Add( logEntry );
+						}
+
+						if ( entries.Count > 0 )
+						{
+							// Only attempt to open the file if there are entries to be written
+							FileStream logStream = FileHelper.TryOpenFile( _path, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read, 10000 );
 							try
 							{
-								logStream.Seek( 0, SeekOrigin.End );
+								if ( logStream != null )
+								{
+									try
+									{
+										logStream.Seek( 0, SeekOrigin.End );
 
-                                EventLogEntry logEntry;
-                                List<EventLogEntry> entries = new List<EventLogEntry>( );
-                                while ( _eventLogEntryQueue.TryDequeue( out logEntry ) )
-                                {
-                                    if ( logEntry == null )
-                                    {
-                                        continue;
-                                    }
+										// Encode the log entry to raw bytes
+										byte [ ] data = EncodeEntries( entries );
 
-                                    logEntry.Id = Guid.NewGuid( );
-                                    logEntry.Machine = machineName;
-                                    logEntry.Process = processName;
+										// Write the log entry
+										if ( data != null && data.Length > 0 )
+										{
+											logStream.Write( data, 0, data.Length );
 
-                                    entries.Add( logEntry );
-                                }
-									
+											entriesWritten = entries.Count;
+										}
 
-								// Encode the log entry to raw bytes
-                                byte [ ] data = EncodeEntries( entries );
-
-								// Write the log entry
-                                if ( data != null && data.Length > 0 )
-                                {
-                                    logStream.Write( data, 0, data.Length );
-                                }
-
-								logStream.Flush( );
+										logStream.Flush( );
+									}
+									finally
+									{
+										logStream.Flush( );
+									}
+								}
 							}
 							finally
 							{
-								logStream.Flush( );
-								logStream.Close( );
+								logStream?.Dispose( );
 							}
+						}
 
-							logStream.Dispose( );
+						if ( entriesWritten > 0 )
+						{
+							// Validate the current log file and check if any processing is required
+							var details = Validate( LogWritten != null );
+
+							LogWritten?.Invoke( this, new LogWrittenEventArgs( _path, entriesWritten, details.RotateDetails, details.PurgeDetails ) );
 						}
 					}
 				}
@@ -332,15 +345,15 @@ namespace EDC.Diagnostics
             if (logEntry == null || !CanWriteEntry(logEntry.Level))
             {
                 return;
-            }			
+            }
 
 			// Add the entry to the list
 			_eventLogEntryQueue.Enqueue(logEntry);
 			    
             lock (_lock)
             {
-                // Signal the worker thread that a new entry is available
-                Monitor.Pulse(_lock);
+				// Signal the worker thread that a new entry is available
+				Monitor.Pulse(_lock);
             }			    			
 		}
 
@@ -438,7 +451,10 @@ namespace EDC.Diagnostics
 
                     logBuilder.Append( "</entry>" );
                 }
-                catch { }
+                catch( Exception exc )
+                {
+	                Trace.WriteLine( exc.Message );
+                }
             }
 
 			// Encode the XML fragment to a byte array
@@ -453,50 +469,61 @@ namespace EDC.Diagnostics
 		/// </summary>
 		private string GetUniquePath()
 		{						
-			string newFileName = string.Format( "{0}_{1}-{2}{3}", _baseFileName, DateTime.Now.ToString( "yy-MM-dd_HH-mm-ss" ), Path.GetRandomFileName(), _baseExtension);			
+			string newFileName = $"{_baseFileName}_{DateTime.Now:yy-MM-dd_HH-mm-ss}-{Path.GetRandomFileName( )}{_baseExtension}";			
 			return Path.Combine(_folder, newFileName );
 		}
 
 		/// <summary>
-		///     Purges all stale event log files.
+		///		Purges all stale event log files.
 		/// </summary>
-        public void Purge()
+		/// <param name="generateValidateDetails">if set to <c>true</c> [generate validate details].</param>
+		/// <returns></returns>
+		public PurgeDetails Purge( bool generateValidateDetails = false )
         {
-            // Get the file contents of the log folder
-            var directoryInfo = new DirectoryInfo(_folder);
+			// Get the file contents of the log folder
+			var directoryInfo = new DirectoryInfo(_folder);
 
             // Check for any files to purge (based on age). Only include date stamped files with a matching base name
             Dictionary<string, FileInfo> files = directoryInfo.GetFiles().Where(fi => fi.Name.StartsWith(_baseFileName + '_')).ToDictionary(fi => fi.Name);
 
-            if (files.Count > 0)
+			List<string> staleFilenames = null;
+	        
+	        if (files.Count > 0)
             {
-                // Check for any stale event log files
-                IEnumerable<FileInfo> staleFiles =
-                    from f in files.Values
-                    where
-                        String.Compare(f.Name, _filename, StringComparison.OrdinalIgnoreCase) != 0 &&
-                         (DateTime.Now - f.LastWriteTime) >= TimeSpan.FromDays(_maxRetention)
-                    select f;
+	            // Check for any stale event log files
+	            List<FileInfo> staleFiles = files.Values.Where( f => string.Compare( f.Name, _filename, StringComparison.OrdinalIgnoreCase ) != 0 && DateTime.Now - f.LastWriteTime >= TimeSpan.FromDays( _maxRetention ) ).ToList( );
 
-                // Delete any files and remove from the initial set
+				if ( generateValidateDetails && staleFiles.Count > 0 )
+				{
+					staleFilenames = staleFiles.Select( fi => fi.FullName ).ToList( );
+				}
+
+	            // Delete any files and remove from the initial set
                 DeleteFiles(staleFiles.ToArray(), files);
             }
+
+	        List<string> overflowFilenames = null;
 
             // Check for any files to purge (based on count)			
             if (files.Count > MaxCount)
             {
                 // Sort the files by last modified date
-                IEnumerable<FileInfo> sortedFiles =
-                    from f in files.Values
-                    where
-                        String.Compare(f.Name, _filename, StringComparison.OrdinalIgnoreCase) != 0
-                    orderby f.LastWriteTime
-                    select f;
+                List<FileInfo> filesToDelete = files.Values.Where( f => string.Compare( f.Name, _filename, StringComparison.OrdinalIgnoreCase ) != 0 ).OrderBy( f => f.LastWriteTime ).Take( files.Count - MaxCount ).ToList( );
 
-                IEnumerable<FileInfo> filesToDelete = sortedFiles.Take(files.Count - MaxCount);
+				if ( generateValidateDetails && filesToDelete.Count > 0 )
+				{
+					overflowFilenames = filesToDelete.Select( fi => fi.FullName ).ToList( );
+				}
 
                 DeleteFiles(filesToDelete, null);
             }
+
+			if ( generateValidateDetails )
+			{
+				return new PurgeDetails( staleFilenames, overflowFilenames );
+			}
+
+			return null;
         }
 
         /// <summary>
@@ -515,16 +542,14 @@ namespace EDC.Diagnostics
             {
                 try
                 {
-                    file.Delete();
-                    if (files != null)
-                    {
-                        files.Remove(file.Name);
-                    }                    
+					file.Delete();
+
+	                files?.Remove(file.Name);
                 }
                 catch (Exception exception)
                 {
-                    Trace.TraceError( "Unable to delete the log file. {0}", exception );
-                }
+					Trace.TraceError( "Unable to delete the log file. {0}", exception );
+				}
             }            
         }
 
@@ -534,7 +559,7 @@ namespace EDC.Diagnostics
 		/// <param name="path">
 		///     A string containing the path of the event log file.
 		/// </param>
-		private void Rotate( string path )
+		private RotateDetails Rotate( string path )
 		{
 			if ( path == null )
 			{
@@ -547,40 +572,57 @@ namespace EDC.Diagnostics
 				string newPath = GetUniquePath();
 
 				// Rename the specified event log file
-				FileHelper.TryMoveFile( path, newPath, 10000 );
+				if ( FileHelper.TryMoveFile( path, newPath, 10000 ) )
+				{
+					return new RotateDetails( newPath );
+				}
 			}
 			catch ( Exception ex )
 			{
 				Trace.TraceError( "Unable to rotate the log file. {0}", ex );
 			}
+
+			return null;
 		}
 
 		/// <summary>
 		///     Validate the current log file and check if any processing is required.
 		/// </summary>
-		private void Validate( )
+		private ValidateDetails Validate( bool generateValidateDetails = false )
 		{
 			try
 			{
+				RotateDetails rotateDetails = null;
+				PurgeDetails purgeDetails = null;
+
 				// Check the path of the log file				
 				// Check if the event log file should be rotated
 				var fileInfo = new FileInfo( _path );
-				if (fileInfo.Length >= _maxSize * 1024 )
+				if (fileInfo.Exists && fileInfo.Length >= _maxSize * 1024 )
 				{
 					// Rotate the current event log file
-					Rotate( _path );
+					rotateDetails = Rotate( _path );
 
 					// Purge any stale event log files (every 10 rotations)
 					if ( _rotationCount++ % 10 == 0 )
 					{
-						Purge( );
+						purgeDetails = Purge( generateValidateDetails );
 					}
-				}				
+				}
+
+				if ( generateValidateDetails )
+				{
+					return new ValidateDetails( rotateDetails, purgeDetails );
+				}
+
+				return null;
 			}
 			catch ( Exception ex )
 			{
 				Trace.TraceError( "Failed to validate log file. {0}", ex );
 			}
+
+			return null;
 		}
 
 		/// <summary>
@@ -601,24 +643,30 @@ namespace EDC.Diagnostics
 				        while (_eventLogEntryQueue.Count == 0)
 				        {
 				            Monitor.Wait(_lock);
-				        }
+
+							if ( _disposed || _shutdownEvent.WaitOne( 0 ) )
+							{
+								break;
+							}
+						}
 				    }
 
-				    if (_disposed)
+				    if ( _disposed || _shutdownEvent.WaitOne( 0 ) )
 					{
 					    break;
 					}
 
 					// Get the first log from the list
 					EventLogEntry logEntry;
-                    while ( entriesToWrite.Count < _maxBatchSize && _eventLogEntryQueue.TryDequeue( out logEntry ) )
+					
+					while ( entriesToWrite.Count < _maxBatchSize && _eventLogEntryQueue.TryDequeue( out logEntry ) )
                     {
                         logEntry.Id = Guid.NewGuid( );                        
 
                         entriesToWrite.Add( logEntry );
-                    }
+					}
 
-                    if ( entriesToWrite.Count > 0 )
+					if ( entriesToWrite.Count > 0 )
                     {
 					    // Write the log entry to the event log
                         WriteEntriesToFile( entriesToWrite );                        
@@ -632,7 +680,7 @@ namespace EDC.Diagnostics
 			catch ( ThreadAbortException )
 			{
 				Thread.ResetAbort( );
-                Trace.TraceInformation("FileEventLog.WriteEntries thread aborted. " + _eventLogEntryQueue.Count + " entries remain.");											
+                Trace.TraceInformation("FileEventLog.WriteEntries thread aborted. " + _eventLogEntryQueue.Count + " entries remain.");
 			}
 			catch ( Exception ex )
 			{
@@ -651,26 +699,29 @@ namespace EDC.Diagnostics
 			{
 				// Create a mutex with the specified name.
                 bool acquired;
-				using ( _syncMutex.Value.AcquireRelease(out acquired) )
+				using ( _syncMutex.AcquireRelease(out acquired) )
 				{
 					// Wait to acquire the mutex
-                    if ( acquired )
+					if ( acquired )
 					{
 						// Encode the log entry to raw bytes
 						byte[ ] data = EncodeEntries( logEntries );
 
 						// Write the log entry
 						if (WriteEntryBytesToFile( data))
-                        {
-                            // Validate the current log file and check if any processing is required
-                            Validate();
-                        }						
+						{
+							var logWrittenHandler = LogWritten;
+
+							// Validate the current log file and check if any processing is required
+							var details = Validate( logWrittenHandler != null );
+
+							logWrittenHandler?.Invoke( this, new LogWrittenEventArgs( _path, logEntries.Count, details.RotateDetails, details.PurgeDetails ) );
+						}
 					}
 				}
 			}
 			catch
 			{
-				// Do nothing
 			}
 			// ReSharper restore EmptyGeneralCatchClause
 		}
@@ -691,21 +742,23 @@ namespace EDC.Diagnostics
 
 				// Attempt to open the file
 				FileStream logStream = FileHelper.TryOpenFile( _path, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read, 10000 );
-				if ( logStream != null )
+				try
 				{
-					try
+					if ( logStream != null )
 					{
 						logStream.Seek( 0, SeekOrigin.End );
 						logStream.Write( data, 0, data.Length );
 						logStream.Flush( );
+
+						return true;
 					}
-					finally
-					{
-						logStream.Close( );
-					}
-                    return true;
-                }
-                return false;
+				}
+				finally
+				{
+					logStream?.Dispose( );
+				}
+
+				return false;
             }
 			catch ( Exception exception )
 			{
@@ -728,7 +781,7 @@ namespace EDC.Diagnostics
 				throw new ArgumentNullException( nameof( logFolder ) );
 			}
 
-			return string.Format( @"Global\ReadiNowLogMutex_{0}", CryptoHelper.GetMd5Hash( logFolder.ToUpperInvariant( ) ) );
+			return $@"Global\ReadiNowLogMutex_{CryptoHelper.GetMd5Hash( logFolder.ToUpperInvariant( ) )}";
 		}
 
 		#endregion
@@ -754,8 +807,21 @@ namespace EDC.Diagnostics
 			{
 				if ( disposing )
 				{
-					if ( _eventLogWorkerThread != null &&
-					     _eventLogWorkerThread.IsAlive )
+					if ( _eventLogWorkerThread != null && _eventLogWorkerThread.IsAlive )
+					{
+						_shutdownEvent.Set( );
+
+						lock ( _lock )
+						{
+							Monitor.Pulse( _lock );
+						}
+
+						_eventLogWorkerThread.Join( 5000 );
+
+						_shutdownEvent?.Dispose( );
+					}
+
+					if ( _eventLogWorkerThread != null && _eventLogWorkerThread.IsAlive )
 					{
 						_eventLogWorkerThread.Abort( );
 						_eventLogWorkerThread = null;
@@ -766,10 +832,7 @@ namespace EDC.Diagnostics
 
 				FlushLog(disposing);
 
-                if ( _syncMutex != null && _syncMutex.Value != null )
-                {
-                    _syncMutex.Value.Dispose( );
-                }
+				_syncMutex?.Dispose( );
 			}
 		}
 

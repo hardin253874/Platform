@@ -120,7 +120,7 @@
       <target>
         <alias>sentEmailTarget</alias>
         <typeName>EDC.SoftwarePlatform.Activities.EmailListener.SentEmailTarget</typeName>
-        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+        <assemblyName>ReadiNow.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
         <ordinal>0</ordinal>
       </target>
     </onBeforeSave>
@@ -457,7 +457,7 @@
         <alias>matchSentToReceivedEmailsActionClass</alias>
         <name>MatchSentToReceivedEmailsActionClass</name>
         <typeName>EDC.SoftwarePlatform.Activities.EmailListener.MatchSentToReceivedEmailsAction</typeName>
-        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+        <assemblyName>ReadiNow.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
       </class>
     </ieaBackingClass>
   </inboxEmailAction>
@@ -473,7 +473,7 @@
         <alias>sendICalUpdateEmailsActionClass</alias>
         <name>SendICalUpdateEmailsActionClass</name>
         <typeName>EDC.SoftwarePlatform.Activities.EmailListener.SendICalUpdatesEmailAction</typeName>
-        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+        <assemblyName>ReadiNow.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
       </class>
     </ieaBackingClass>
   </inboxEmailAction>

@@ -1,4 +1,6 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
+
+using System;
 using System.IO;
 using System.Threading;
 using NUnit.Framework;
@@ -22,7 +24,8 @@ namespace EDC.IO.Test
 			// Create the first file
 			string path2 = Path.GetTempFileName( );
 
-			Thread.Sleep( 500 );
+			// Testing the comparer here, not the file system.
+			File.SetCreationTime( path2, DateTime.Now.AddMinutes( -1 ) );
 
 			// Create the second file
 			string path1 = Path.GetTempFileName( );
@@ -51,7 +54,8 @@ namespace EDC.IO.Test
 			// Create the first file
 			string path1 = Path.GetTempFileName( );
 
-			Thread.Sleep( 500 );
+			// Testing the comparer here, not the file system.
+			File.SetCreationTime( path1, DateTime.Now.AddMinutes( -1 ) );
 
 			// Create the second file
 			string path2 = Path.GetTempFileName( );

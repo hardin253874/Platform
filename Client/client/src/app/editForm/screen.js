@@ -128,7 +128,8 @@
         $scope.item.data = _.extend($scope.item.data, $scope.model);
         $scope.consoleThemeModel = {
             consoleTheme: null,
-            titleStyle: {}
+            titleStyle: {},
+            actionButtonStyle: {}
         };
 
         // Navigate to builder to modify the screen.
@@ -180,6 +181,7 @@
         $scope.$watch('navService.getThemes()', function (getThemesCompleted) {
             if (getThemesCompleted === true) {
                 $scope.consoleThemeModel.titleStyle = spThemeService.getTitleStyle();
+                $scope.consoleThemeModel.actionButtonStyle = spThemeService.getActionButtonStyle();
             }
         });
 

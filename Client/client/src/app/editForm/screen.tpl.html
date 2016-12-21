@@ -22,8 +22,9 @@
         <button type="button" ng-repeat="ab in model.actionButtons"
                 ng-disabled="isDisabledAction(ab)"
                 ng-click="ab.execute()"
+                ng-style="consoleThemeModel.actionButtonStyle"
                 title="{{ab.name}}">
-            <img ng-src="{{ab.icon}}" width="16" height="16"/><span>{{ab.nameshort}}</span>
+            <span>{{ab.nameshort}}</span>
         </button>
     </div>
 

@@ -882,7 +882,6 @@ namespace ReadiNow.Expressions.Test.Builder
         {
             var result = CreateQueryXml( "let m = max([AA_All Fields].[DateTime]) select ([AA_All Fields] where [DateTime] = m).[Name]", "name:AA_Herb" );
 
-            // This is probably the WRONG expected results
             string expected =
 @"<Query>
   <RootEntity xsi:type='ResourceEntity' id='guid0'>

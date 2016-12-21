@@ -26,7 +26,7 @@ namespace EDC.ReadiNow.Test.Core.Cache.Providers
         {
             public EDC.Cache.ICache<string, string> Inner;
 
-            public bool ThreadSafe { get { return false; }            }
+            public bool ThreadSafe { get { return false; } }
 
             public EDC.Cache.ICache<TKey, TValue> Create<TKey, TValue>( string cacheName )
             {
@@ -79,16 +79,30 @@ namespace EDC.ReadiNow.Test.Core.Cache.Providers
 
             var cache = CreateCache(innerFactory, new TimeSpan(0, 0, 1));
 
-            cache.Add("a", "a");
-            cache.Add("b", "b");
-            innerFactory.Inner.Clear();
+			using ( ManualResetEvent evt = new ManualResetEvent( false ) )
+			{
+				ItemsRemovedEventHandler<string> handler = ( sender, args ) =>
+				{
+					// ReSharper disable once AccessToDisposedClosure
+					evt.Set( );
+				};
 
-            Thread.Sleep(1500);
+				cache.ItemsRemoved += handler;
+
+				cache.Add( "a", "a" );
+				cache.Add( "b", "b" );
+				innerFactory.Inner.Clear( );
+
+				evt.WaitOne( 5000 );
+
+				cache.ItemsRemoved -= handler;
+			}
 
             string value;
             Assert.That(cache.TryGetValue("a", out value), Is.False);
-            Assert.That(cache.TryGetOrAdd("b", out value, (k) => { return "c"; }), Is.False);
+            Assert.That(cache.TryGetOrAdd("b", out value, (k) => "c" ), Is.False);
 
+	        
         }
 
 
@@ -275,6 +289,7 @@ namespace EDC.ReadiNow.Test.Core.Cache.Providers
             {
                 DelayedInvalidates = true
             };
+
             var cache = fact.Create<string, string>( "name" );
 
             Stopwatch sw = new Stopwatch( );
@@ -285,7 +300,6 @@ namespace EDC.ReadiNow.Test.Core.Cache.Providers
             {
                 Interlocked.Increment( ref callbackCount );
                 Console.WriteLine( sw.ElapsedMilliseconds );
-                Thread.Sleep( 2000 );
                 return "value";
             };
 
@@ -321,7 +335,6 @@ namespace EDC.ReadiNow.Test.Core.Cache.Providers
                 }
             } );
             Assert.That( callbackCount, Is.EqualTo( 2 ) );
-            Assert.That( sw.ElapsedMilliseconds, Is.GreaterThan( 3000 ) );
         }
     }
 }

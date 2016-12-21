@@ -8,7 +8,7 @@ using NUnit.Framework;
 using EDC.Cache;
 using EDC.ReadiNow.Database;
 using EDC.ReadiNow.Core.Cache;
-using System.Diagnostics;
+using EDC.ReadiNow.Test;
 
 namespace EDC.Test.Cache.Providers
 {
@@ -28,6 +28,7 @@ namespace EDC.Test.Cache.Providers
                 TransactionAware = transactionAware,
 				TimeoutEvictionFrequency = frequency ?? timeout
             };
+
             return fact.Create<TKey, TValue>();
         }
 
@@ -107,146 +108,192 @@ namespace EDC.Test.Cache.Providers
         [Test]
         public void TestExpiration()
         {
-			var cache = CreateCache<string, string>( false, TimeSpan.FromSeconds( 2 ), TimeSpan.FromMilliseconds( 500 ) );    //,6
-            cache.Add("a", "A");
-            cache.Add("b", "B");
-            cache.Add("c", "C");
+			TimeSpan timeout = TimeSpan.FromSeconds( 1 );
 
-            /////
-            // Add 3 elements.
-            /////
+			var cache = CreateCache<string, string>( false, TimeSpan.FromMilliseconds( 100 ) );
 
-            Assert.AreEqual(3, cache.Count);
+			using ( AutoResetEvent evt = new AutoResetEvent( false ) )
+			{
+				int removedItemCount = 0;
 
-            /////
-            // Wait .25 seconds.
-            /////
-            Thread.Sleep(1000);
+				ItemsRemovedEventHandler<string> itemsRemoved = ( sender, args ) =>
+				{
+					removedItemCount += args.Items.Count;
 
-            /////
-            // Add another 3 elements.
-            /////
-            cache.Add("d", "D");
-            cache.Add("e", "E");
-            cache.Add("f", "F");
+					// ReSharper disable once AccessToDisposedClosure
+					evt.Set( );
+				};
 
-            /////
-            // Ensure all elements are present.
-            /////
-            Assert.AreEqual(6, cache.Count);
+				cache.ItemsRemoved += itemsRemoved;
 
-            /////
-            // Wait another .3 seconds causing the initial 3 elements to expire.
-            /////
-            Thread.Sleep(1000);
+				/////
+				// Add 3 elements.
+				/////
+				cache.Add( "a", "A" );
+				cache.Add( "b", "B" );
+				cache.Add( "c", "C" );
 
-            Assert.AreEqual(3, cache.Count);
+				/////
+				// Wait (may remove variable number of items depending on timing)
+				/////
+				evt.WaitOne( timeout );
 
-            /////
-            // Wait another .3 seconds causing the last 3 elements to expire.
-            /////
-            Thread.Sleep(1000);
+				/////
+				// Add another 3 elements.
+				/////
+				cache.Add( "d", "D" );
+				cache.Add( "e", "E" );
+				cache.Add( "f", "F" );
 
-            Assert.AreEqual(0, cache.Count);
+				/////
+				// Wait (may remove variable number of items depending on timing)
+				/////
+				evt.WaitOne( timeout );
 
-            /////
-            // Add 3 elements.
-            /////
-            cache.Add("a", "A");
-            cache.Add("b", "B");
-            cache.Add("c", "C");
+				/////
+				// Add 3 elements.
+				/////
+				cache.Add( "g", "G" );
+				cache.Add( "h", "H" );
+				cache.Add( "i", "I" );
 
-            Assert.AreEqual(3, cache.Count);
+				/////
+				// Wait (may remove variable number of items depending on timing)
+				/////
+				evt.WaitOne( timeout );
 
-            /////
-            // Wait .25 seconds.
-            /////
-            Thread.Sleep(1000);
+				/////
+				// If not all items have been removed (due to timing), wait for the next eviction pass.
+				/////
+				if ( removedItemCount < 9 )
+				{
+					evt.WaitOne( timeout );
+				}
 
-            /////
-            // Move the entry to the front of th lru list.
-            /////
-            Assert.IsTrue(cache.ContainsKey("b"));
+				Assert.AreEqual( 0, cache.Count );
 
-            /////
-            // Wait .3 seconds.
-            /////
-            Thread.Sleep(1000);
+				Assert.IsFalse( cache.ContainsKey( "a" ) );
+				Assert.IsFalse( cache.ContainsKey( "b" ) );
+				Assert.IsFalse( cache.ContainsKey( "c" ) );
 
-            Assert.AreEqual(0, cache.Count);
-
-            Assert.IsFalse(cache.ContainsKey("a"));
-            Assert.IsFalse(cache.ContainsKey("b"));
-            Assert.IsFalse(cache.ContainsKey("c"));
+				cache.ItemsRemoved -= itemsRemoved;
+			}
         }
 
         [Test]
-        //[Repeat(100)]
         public void Test_ItemsRemoved()
         {
-            var cacheExpiry = TimeSpan.FromMilliseconds(3000);
-            var refreshRate = TimeSpan.FromMilliseconds(100);
-            var delta = TimeSpan.FromMilliseconds(1000);            // WATCH OUT - as we a relying on other threads anything less than a second tends to generate occasional errors.
+            var cacheExpiry = TimeSpan.FromMilliseconds(100);
             var itemsRemoved = new List<int>();
             var expectedRemoved = new List<int>();
 
-            var cache = CreateCache<int, int>(false, cacheExpiry, refreshRate);
-            cache.ItemsRemoved += (sender, args) => itemsRemoved.AddRange(args.Items);
+			using ( AutoResetEvent evt = new AutoResetEvent( false ) )
+			{
+				var cache = CreateCache<int, int>( false, cacheExpiry );
 
-            Thread.Sleep(1000);
-            foreach (var key in new int[] { 1,2,3,4,5,6,7,8,9,10 })
-            {
-                cache.Add(key, key);
-                expectedRemoved.Add(key);
+				ItemsRemovedEventHandler<int> itemsRemovedHandler = ( sender, args ) =>
+				{
+					itemsRemoved.AddRange( args.Items );
 
-                // Wait with a little bit of breathing room for the refresh rate
-                Thread.Sleep(cacheExpiry + delta);
+					// ReSharper disable once AccessToDisposedClosure
+					evt.Set( );
+				};
 
-                // Generate strings so that the error message doesn't get confusing when the removedList is mutating underneith us.
-                var expectedString = String.Join(", ", expectedRemoved);
-                var removedString = String.Join(", ", itemsRemoved);
+				cache.ItemsRemoved += itemsRemovedHandler;
 
-                Assert.That(removedString, Is.EqualTo(expectedString), "Not removed");
-            }
+				foreach ( var key in new [ ] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 } )
+				{
+					cache.Add( key, key );
+					expectedRemoved.Add( key );
+				}
+
+				evt.WaitOne( cacheExpiry );
+
+				int loopCounter = 0;
+
+				while ( itemsRemoved.Count < 10 )
+				{
+					evt.WaitOne( cacheExpiry );
+
+					loopCounter++;
+
+					if ( loopCounter > 20 )
+					{
+						break;
+					}
+				}
+
+				// Generate strings so that the error message doesn't get confusing when the removedList is mutating underneath us.
+				var expectedString = string.Join( ", ", expectedRemoved );
+				var removedString = string.Join( ", ", itemsRemoved.OrderBy( a => a ) );
+
+				Assert.That( removedString, Is.EqualTo( expectedString ), "Not removed" );
+
+				cache.ItemsRemoved -= itemsRemovedHandler;
+			}
         }
 
         [Test]
         public void Test_Purging()
         {
-            int testCount = 1000000;
-            ICache<string, string> cache;
-            TimeSpan cacheExpiry;
+            int testCount = 1000;
 
-            cacheExpiry = TimeSpan.FromMilliseconds(500);
+	        var cacheExpiry = TimeSpan.FromMilliseconds(100);
 
-            cache = CreateCache<string, string>(false, cacheExpiry);
+			using ( AutoResetEvent evt = new AutoResetEvent( false ) )
+			{
+				int removedItemCount = 0;
 
-            for (int i = 0; i < testCount; i++)
-                cache.Add(Guid.NewGuid().ToString(), "a");
+				ItemsRemovedEventHandler<string> itemsRemoved = ( sender, args ) =>
+				{
+					removedItemCount += args.Items.Count;
 
+					// ReSharper disable once AccessToDisposedClosure
+					evt.Set( );
+				};
 
-            Thread.Sleep(600);
-            //Assert.That(cache.Count, Is.EqualTo(testCount));
+				var cache = CreateCache<string, string>( false, cacheExpiry );
 
-            cache.Add(Guid.NewGuid().ToString(), "a");      // Purging is triggered by an add
+				cache.ItemsRemoved += itemsRemoved;
 
-            // check that it is all purged
-            Assert.That(cache.Count, Is.EqualTo(1));
+				for ( int i = 0; i < testCount; i++ )
+					cache.Add( Guid.NewGuid( ).ToString( ), "a" );
+
+				evt.WaitOne( 100 );
+
+				int loopCounter = 0;
+
+				while ( removedItemCount < testCount )
+				{
+					evt.WaitOne( 100 );
+
+					loopCounter++;
+
+					if ( loopCounter > 20 )
+					{
+						break;
+					}
+				}
+
+				cache.Add( Guid.NewGuid( ).ToString( ), "a" );      // Purging is triggered by an add
+
+				// check that it is all purged
+				Assert.That( cache.Count, Is.EqualTo( 1 ) );
+
+				cache.ItemsRemoved -= itemsRemoved;
+			}
         }
 
 
         [Test]
         public void Test_MultithreadedPurging()
         {
-            ICache<string, string> cache;
-            TimeSpan cacheExpiry;
+	        var cacheExpiry = TimeSpan.FromMilliseconds(500);
 
-            cacheExpiry = TimeSpan.FromMilliseconds(500);
-
-            cache = CreateCache<string, string>(false, cacheExpiry);
+            var cache = CreateCache<string, string>(false, cacheExpiry);
 
             // just making sure that removing entries that don't exist doesn't cause a problem.
-            cache.Remove(new string[] { "a", "b" });
+            cache.Remove(new[] { "a", "b" });
         }
     }
 }

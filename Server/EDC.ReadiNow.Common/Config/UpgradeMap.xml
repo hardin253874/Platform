@@ -1296,6 +1296,7 @@
   <entity alias="core:endpointCanUpdate" upgradeId="fd1193b8-77d5-4d0a-8780-007fc6dd9a7e" />
   <entity alias="core:endpointImportConfig" upgradeId="96ee9f87-aa05-46bb-af26-368afca1ebe5" />
   <entity alias="core:endpointResourceMapping" upgradeId="0935d9f0-19ac-4531-8fa4-5086ff96aa33" />
+  <entity alias="core:endPrimarySource" upgradeId="7dfd8f51-e23c-4252-a019-a847a4774478" />
   <entity alias="core:endValueSource" upgradeId="3e8dc8ba-3200-442e-9445-bac257141904" />
   <entity alias="core:enEmailAddressExpression" upgradeId="a8aea2f0-4185-471b-b76d-031f30173f47" />
   <entity alias="core:enSubject" upgradeId="acb8e2b5-43cd-4f41-9085-cf8e72154bf8" />
@@ -2771,6 +2772,7 @@
   <entity alias="core:valueAxis" upgradeId="bdca52c0-7d0a-46ca-afb7-d2d67bd5938b" />
   <entity alias="core:valueSource" upgradeId="e21c6d7a-f48d-4e31-a268-491c15c39ef9" />
   <entity alias="core:variables" upgradeId="fcb36eb0-933f-4f24-9c86-c903d1ce6213" />
+  <entity alias="core:vectorFieldChart" upgradeId="41353b20-5ec5-4fb7-b9f7-769253b4ab01" />
   <entity alias="core:version" upgradeId="07ac7ae6-3b7b-44bd-9503-6077f87f4689" />
   <entity alias="core:versionComments" upgradeId="5c741677-9e7b-462c-b4f8-4f3ac8551a5c" />
   <entity alias="core:verticalAxis" upgradeId="D1251FB5-AFF6-4B23-854A-0D2195CB7725" />

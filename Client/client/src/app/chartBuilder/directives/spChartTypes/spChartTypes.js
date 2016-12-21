@@ -26,7 +26,7 @@
         })
         .controller('spChartTypesController', function ($scope, spChartService) {
 
-            $scope.chartTypes = spChartService.chartTypes;
+            $scope.chartTypes = _.filter(spChartService.chartTypes, ct => !ct.hidden);
 
             $scope.onSelect = function(chartType) {
                 $scope.chartType = chartType;

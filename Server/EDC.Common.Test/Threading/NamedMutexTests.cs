@@ -1,6 +1,7 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
 using System;
 using System.Collections.Generic;
+using System.Security.AccessControl;
 using System.Threading;
 using EDC.Threading;
 using NUnit.Framework;
@@ -22,7 +23,6 @@ namespace EDC.Test.Threading
 		/// </summary>
 		/// <param name="autoRelease">True to auto release the mutex, false to explicitly release it.</param>
 		[Test]
-        [Ignore("Randomly fails. Need to investigate this further.")]
         [TestCase(true)]
         [TestCase(false)]
         public void MultipleThreads_AcquireRelease(bool autoRelease)
@@ -310,28 +310,39 @@ namespace EDC.Test.Threading
 		[Test]
 		public void MultipleThreads_TimedOutMutex( )
 		{
-			// Create a thread that abandons a mutex
-			var t = new Thread( ( ) =>
-				{
-					using ( var mutex = new NamedMutex( "TestMutex" ) )
+			using ( AutoResetEvent evt = new AutoResetEvent( false ) )
+			using ( AutoResetEvent evt2 = new AutoResetEvent( false ) )
+			{
+				// Create a thread that abandons a mutex
+				var t = new Thread( ( ) =>
 					{
-						mutex.Acquire( );
-						// Hold the mutex for 1 second
-						Thread.Sleep( 5000 );
-					}
-				} )
+						using ( var mutex = new NamedMutex( "TestMutex" ) )
+						{
+							// Hold the mutex
+							mutex.Acquire( );
+
+							// ReSharper disable once AccessToDisposedClosure
+							evt2.Set( );
+
+							// ReSharper disable once AccessToDisposedClosure
+							evt.WaitOne( );
+						}
+					} )
 				{
 					IsBackground = true
 				};
-			t.Start( );
+				t.Start( );
 
-			Thread.Sleep( 500 );
+				evt2.WaitOne( 500 );
 
-			using ( var mutex = new NamedMutex( "TestMutex" ) )
-			{
-				// Attempt to acquire the mutex after waiting 100 ms
-				// This should fail as the thread above is holding the mutex for 10 seconds.
-				Assert.IsFalse( mutex.Acquire( 100 ), "Test mutex should not be acquired" );
+				using ( var mutex = new NamedMutex( "TestMutex" ) )
+				{
+					// Attempt to acquire the mutex after waiting 100 ms
+					// This should fail as the thread above is holding the mutex for 10 seconds.
+					Assert.IsFalse( mutex.Acquire( 100 ), "Test mutex should not be acquired" );
+
+					evt.Set( );
+				}
 			}
 		}
 
@@ -356,27 +367,30 @@ namespace EDC.Test.Threading
 		[Test]
 		public void SingleThread_MultipleAcquireRelease( )
 		{
-			using ( var mutex = new NamedMutex( "TestMutex", null ) )
+			using ( var mutex = new NamedMutex( "Global\\TestMutex", null ) )
 			{
 				Assert.IsNotNull( mutex, "The mutex should not be null" );
 
-				mutex.Acquire( );
-				Assert.IsTrue( mutex.IsAcquired, "The mutex should be acquired" );
+				bool isAcquired = mutex.Acquire( 0 );
+
+				Assert.IsTrue( isAcquired, "The mutex should be acquired" );
 
 				mutex.Release( );
-				Assert.IsFalse( mutex.IsAcquired, "The mutex should not be acquired" );
 
-				mutex.Acquire( );
-				Assert.IsTrue( mutex.IsAcquired, "The mutex should be acquired" );
+				isAcquired = mutex.Acquire( 0 );
+				Assert.IsTrue( isAcquired, "The mutex should be acquired" );
 
-				mutex.Release( );
-				Assert.IsFalse( mutex.IsAcquired, "The mutex should not be acquired" );
-
-				mutex.Acquire( );
-				Assert.IsTrue( mutex.IsAcquired, "The mutex should be acquired" );
+				isAcquired = mutex.Acquire( 0 );
+				Assert.IsTrue( isAcquired, "The mutex should be acquired" );
 
 				mutex.Release( );
-				Assert.IsFalse( mutex.IsAcquired, "The mutex should not be acquired" );
+				isAcquired = mutex.Acquire( 0 );
+				Assert.IsTrue( isAcquired, "The mutex should be acquired" );
+
+				isAcquired = mutex.Acquire( 0 );
+				Assert.IsTrue( isAcquired, "The mutex should be acquired" );
+
+				mutex.Release( );
 			}
 		}
 
@@ -391,17 +405,17 @@ namespace EDC.Test.Threading
 			{
 				Assert.IsNotNull( mutex, "The mutex should not be null" );
 
-				mutex.Acquire( );
-				Assert.IsTrue( mutex.IsAcquired, "The mutex should be acquired" );
+				bool isAcquired = mutex.Acquire( );
+				Assert.IsTrue( isAcquired, "The mutex should be acquired" );
 
-				mutex.Acquire( );
-				Assert.IsTrue( mutex.IsAcquired, "The mutex should be acquired" );
-
-				mutex.Release( );
-				Assert.IsFalse( mutex.IsAcquired, "The mutex should not be acquired" );
+				isAcquired = mutex.Acquire( );
+				Assert.IsTrue( isAcquired, "The mutex should not be acquired" );
 
 				mutex.Release( );
-				Assert.IsFalse( mutex.IsAcquired, "The mutex should not be acquired" );
+				isAcquired = mutex.Acquire( 0 );
+				Assert.IsTrue( isAcquired, "The mutex should be acquired" );
+
+				mutex.Release( );
 			}
 		}
 
@@ -415,8 +429,8 @@ namespace EDC.Test.Threading
 			{
 				Assert.IsNotNull( mutex, "The mutex should not be null" );
 
-				mutex.Acquire( );
-				Assert.IsTrue( mutex.IsAcquired, "The mutex should be acquired" );
+				bool isAcquired = mutex.Acquire( );
+				Assert.IsTrue( isAcquired, "The mutex should be acquired" );
 			}
 		}
 
@@ -431,11 +445,10 @@ namespace EDC.Test.Threading
 			{
 				Assert.IsNotNull( mutex, "The mutex should not be null" );
 
-				mutex.Acquire( );
-				Assert.IsTrue( mutex.IsAcquired, "The mutex should be acquired" );
+				bool isAcquired = mutex.Acquire( );
+				Assert.IsTrue( isAcquired, "The mutex should be acquired" );
 
 				mutex.Release( );
-				Assert.IsFalse( mutex.IsAcquired, "The mutex should not be acquired" );
 			}
 		}
 	}

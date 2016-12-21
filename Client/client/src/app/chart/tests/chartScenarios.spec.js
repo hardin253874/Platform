@@ -118,9 +118,9 @@ describe('Charts|spec|spChartService|scenarios', function () {
 
         spChartTypes.forceGraph.testMode = true;
                     
-        var simpleChartTypes = ['barChart', 'columnChart', 'areaChart', 'lineChart', 'pieChart', 'donutChart', 'matrixChart', 'scatterChart', 'funnelChart', 'bubbleChart', 'gaugeChart'];
+        var simpleChartTypes = ['barChart', 'columnChart', 'areaChart', 'lineChart', 'pieChart', 'donutChart', 'matrixChart', 'scatterChart', 'funnelChart', 'bubbleChart', 'gaugeChart', 'vectorFieldChart'];
         var hierarchyCharts = ['horzHierarchy', 'radialTreeGraph', 'sunburstChart', 'treeMapChart', 'forceGraph'];
-        var allChartTypes = ['barChart', 'columnChart', 'areaChart', 'lineChart', 'pieChart', 'donutChart', 'matrixChart', 'scatterChart', 'funnelChart', 'bubbleChart', 'gaugeChart', 'horzHierarchy', 'radialTreeGraph', 'sunburstChart', 'treeMapChart', 'forceGraph'];
+        var allChartTypes = ['barChart', 'columnChart', 'areaChart', 'lineChart', 'pieChart', 'donutChart', 'matrixChart', 'scatterChart', 'funnelChart', 'bubbleChart', 'gaugeChart', 'horzHierarchy', 'radialTreeGraph', 'sunburstChart', 'treeMapChart', 'forceGraph', 'vectorFieldChart'];
 
         describe('for simple', function () {
             _.forEach(simpleChartTypes, function (chartType) {
@@ -134,6 +134,10 @@ describe('Charts|spec|spChartService|scenarios', function () {
                     series.valueSource = scenario.makeColumnSource('Number');
                     if (chartType === 'bubbleChart')
                         series.sizeSource = scenario.makeColumnSource('Number');
+                    if (chartType === 'vectorFieldChart') {
+                        series.endPrimarySource = scenario.makeColumnSource('Name');
+                        series.endValueSource = scenario.makeColumnSource('Autonumber');
+                    }
                     testScenario(scenario);
                 });
             });
@@ -221,6 +225,10 @@ describe('Charts|spec|spChartService|scenarios', function () {
                         series.associateSource = scenario.makeColumnSource('Weekday');
                         if (chartType === 'bubbleChart')
                             series.sizeSource = scenario.makeColumnSource('Number');
+                        if (chartType === 'vectorFieldChart') {
+                            series.endPrimarySource = scenario.makeColumnSource('Name');
+                            series.endValueSource = scenario.makeColumnSource('Autonumber');
+                        }
                         testScenario(scenario);
                     });
                 });

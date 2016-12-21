@@ -273,7 +273,7 @@ namespace EDC.Test.Database
 			using ( var scope = new TransactionScope( TransactionScopeOption.Required ) )
 			{
 				// Create a notification manager with a time out interval of 1 seconds.
-				var cacheManager = new TransactionEventNotificationManager( testCache, 1 );
+				var cacheManager = new TransactionEventNotificationManager( testCache, 0 );
 
 				// Add an items to the cache while inside a transaction
 				testCache.AddItem( "A" );
@@ -281,9 +281,6 @@ namespace EDC.Test.Database
 
 				testCache.AddItem( "B" );
 				cacheManager.EnlistTransaction( Transaction.Current );
-
-				// Simulate a transaction taking longer than the timeout interval.
-				Thread.Sleep( 1500 );
 
 				testCache.AddItem( "C" );
 				cacheManager.EnlistTransaction( Transaction.Current );

@@ -327,7 +327,7 @@
         <alias>processInboxesActionClass</alias>
         <name>processInboxesActionClass</name>
         <typeName>EDC.SoftwarePlatform.Activities.EmailListener.ProcessInboxesAction</typeName>
-        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+        <assemblyName>ReadiNow.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
       </class>
     </onScheduleFire>
   </systemOnlyScheduleAction>

@@ -42,18 +42,31 @@ namespace EDC.ReadiNow.Test.Core.Cache.Providers
 		{
 			int hits = 1000;
 
-			var cache = CreateTimeoutCache<int, int>( "Test cache" );
-
-			for ( int i = 0; i < hits; i++ )
+			using ( CountdownEvent evt = new CountdownEvent( 1000 ) )
 			{
-				cache.Add( i, i );
+				var cache = CreateTimeoutCache<int, int>( "Test cache" );
+
+				ItemsRemovedEventHandler<int> handler = ( sender, args ) =>
+				{
+					// ReSharper disable once AccessToDisposedClosure
+					evt.Signal( args.Items.Count );
+				};
+
+				cache.ItemsRemoved += handler;
+
+				for ( int i = 0; i < hits; i++ )
+				{
+					cache.Add( i, i );
+				}
+
+				Assert.AreEqual( 1000, cache.Count );
+
+				evt.Wait( 5000 );
+
+				cache.ItemsRemoved -= handler;
+
+				Assert.AreEqual( 0, cache.Count );
 			}
-
-			Assert.AreEqual( 1000, cache.Count );
-
-			Thread.Sleep( 5000 );
-
-			Assert.AreEqual( 0, cache.Count );
 		}
 
 		[Test]
@@ -99,32 +112,48 @@ namespace EDC.ReadiNow.Test.Core.Cache.Providers
 				}
 			};
 
-			for ( int i = 0; i < threadCount; i++ )
+			using ( ManualResetEvent evt = new ManualResetEvent( false ) )
 			{
-				addThreads [ i ] = new Thread( addThreadStart )
+				ItemsRemovedEventHandler<int> handler = ( sender, args ) =>
 				{
-					IsBackground = true
+					if ( cache.Count == 0 )
+					{
+						// ReSharper disable once AccessToDisposedClosure
+						evt.Set( );
+					}
 				};
 
-				addThreads [ i ].Start( );
+				cache.ItemsRemoved += handler;
 
-				removeThreads [ i ] = new Thread( removeThreadStart )
+				for ( int i = 0; i < threadCount; i++ )
 				{
-					IsBackground = true
-				};
+					addThreads [ i ] = new Thread( addThreadStart )
+					{
+						IsBackground = true
+					};
 
-				removeThreads [ i ].Start( );
+					addThreads [ i ].Start( );
+
+					removeThreads [ i ] = new Thread( removeThreadStart )
+					{
+						IsBackground = true
+					};
+
+					removeThreads [ i ].Start( );
+				}
+
+				for ( int i = 0; i < threadCount; i++ )
+				{
+					addThreads [ i ].Join( );
+					removeThreads [ i ].Join( );
+				}
+
+				evt.WaitOne( 10000 );
+
+				cache.ItemsRemoved -= handler;
+
+				Assert.That( cache.Count, Is.EqualTo( 0 ) );
 			}
-
-			for ( int i = 0; i < threadCount; i++ )
-			{
-				addThreads [ i ].Join( );
-				removeThreads [ i ].Join( );
-			}
-
-			Thread.Sleep( 5000 );
-
-			Assert.That( cache.Count, Is.EqualTo( 0 ) );
 		}
 	}
 }

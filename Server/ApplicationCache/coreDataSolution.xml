@@ -3,15 +3,15 @@
   <metadata>
     <type>AppPackage</type>
     <application id="abf12077-6fa5-43da-b608-b8b7514d07bb">
-      <name>ReadiNow Core Data Application Package 1.0.5.16</name>
+      <name>ReadiNow Core Data Application Package 1.0.5.17</name>
       <appName>ReadiNow Core Data</appName>
-      <description>Application Package for version 1.0.5.16 of ReadiNow Core Data.</description>
+      <description>Application Package for version 1.0.5.17 of ReadiNow Core Data.</description>
     </application>
-    <package id="b171af9b-2743-484d-9b0c-d6bd4ad0822c">
-      <version>1.0.5.16</version>
+    <package id="c7353a30-c2bb-4823-b475-d3535e3d4d0c">
+      <version>1.0.5.17</version>
       <platformVersion>1.0.0.0</platformVersion>
-      <releaseDate>2016-12-16 00:00:00Z</releaseDate>
-      <publishDate>2016-12-16 08:01:11Z</publishDate>
+      <releaseDate>2016-12-21 00:00:00Z</releaseDate>
+      <publishDate>2016-12-21 03:52:33Z</publishDate>
     </package>
     <dependencies>
       <dependency>
@@ -31,13 +31,13 @@
         <hideOnDesktop>False</hideOnDesktop>
         <hideOnMobile>False</hideOnMobile>
         <hideOnTablet>False</hideOnTablet>
-        <solutionReleaseDate>2016-12-16 00:00:00Z</solutionReleaseDate>
-        <packageId>b171af9b-2743-484d-9b0c-d6bd4ad0822c</packageId>
+        <solutionReleaseDate>2016-12-21 00:00:00Z</solutionReleaseDate>
+        <packageId>c7353a30-c2bb-4823-b475-d3535e3d4d0c</packageId>
         <legacyGuid>072871fe-35e3-49d6-86da-5c2a06a56caf</legacyGuid>
-        <solutionVersionString>1.0.5.16</solutionVersionString>
+        <solutionVersionString>1.0.5.17</solutionVersionString>
         <solutionPublisherUrl>http://www.readinow.com</solutionPublisherUrl>
         <solutionPublisher>ReadiNow</solutionPublisher>
-        <solutionVersionDetails>Updated 'createRecordActionItemDialog' form.</solutionVersionDetails>
+        <solutionVersionDetails>Created new 'Non Abstract Objects' report and updated 'createRecordActionItemDialog' form to use this report as picker report for Object.</solutionVersionDetails>
         <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
         <securityOwner>administratorUserAccount</securityOwner>
         <indirectApplicationContents>02627396-9585-4a58-b792-e76c9005a67f</indirectApplicationContents>
@@ -19124,6 +19124,7 @@
             <k:renderingVerticalResizeMode>k:resizeAutomatic</k:renderingVerticalResizeMode>
             <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
             <securityOwner>administratorUserAccount</securityOwner>
+            <k:pickerReport>83382de2-7de1-44c6-bf97-2abe3fad3634</k:pickerReport>
             <k:renderingHorizontalResizeMode>k:resizeAutomatic</k:renderingHorizontalResizeMode>
           </k:inlineRelationshipRenderControl>
           <k:inlineRelationshipRenderControl id="96861107-a90f-431d-8b94-bff3e3e0b453">
@@ -38447,6 +38448,255 @@ iif([Parent Organisation Level] is not null,'    '+[Name] ,[Name] )   )  )
             </k:behaviorActionMenu>
           </k:consoleBehavior>
         </k:resourceConsoleBehavior>
+      </report>
+      <!-- Non Abstract Objects -->
+      <report id="83382de2-7de1-44c6-bf97-2abe3fad3634">
+        <name>Non Abstract Objects</name>
+        <hideReportHeader>False</hideReportHeader>
+        <rollupOptionLabels>True</rollupOptionLabels>
+        <hideOnDesktop>False</hideOnDesktop>
+        <hideOnMobile>True</hideOnMobile>
+        <hideActionBar>False</hideActionBar>
+        <isPrivatelyOwned>False</isPrivatelyOwned>
+        <hideOnTablet>True</hideOnTablet>
+        <reportUsesDefinition>type</reportUsesDefinition>
+        <inSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</inSolution>
+        <securityOwner>administratorUserAccount</securityOwner>
+        <hasConditions>
+          <!-- Is abstract -->
+          <reportCondition id="03b0080e-b3aa-4b40-b172-767b32d90346">
+            <name>Is abstract</name>
+            <conditionIsHidden>False</conditionIsHidden>
+            <conditionIsLocked>False</conditionIsLocked>
+            <conditionDisplayOrder>2</conditionDisplayOrder>
+            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+            <securityOwner>administratorUserAccount</securityOwner>
+            <operator>operIsFalse</operator>
+            <conditionParameter>
+              <parameter id="3049edfd-d762-4534-be59-f187035013bc">
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <securityOwner>administratorUserAccount</securityOwner>
+              </parameter>
+            </conditionParameter>
+            <conditionExpression>
+              <fieldExpression id="cb937adc-4672-410b-bc56-34e23decd6d2">
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <fieldExpressionField>isAbstract</fieldExpressionField>
+                <securityOwner>administratorUserAccount</securityOwner>
+                <sourceNode>d95361db-0e7c-4d79-87a2-ef3b5f601963</sourceNode>
+                <reportExpressionResultType>
+                  <!-- Bool -->
+                  <boolArgument id="c5e1f6fc-9359-4760-9f9f-1b50e78d7017">
+                    <name>Bool</name>
+                    <boolParameterValue>False</boolParameterValue>
+                    <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                    <securityOwner>administratorUserAccount</securityOwner>
+                  </boolArgument>
+                </reportExpressionResultType>
+              </fieldExpression>
+            </conditionExpression>
+          </reportCondition>
+          <!-- Description -->
+          <reportCondition id="41dd491c-2c16-41a6-b321-2407e543fa50">
+            <name>Description</name>
+            <conditionIsHidden>False</conditionIsHidden>
+            <conditionIsLocked>False</conditionIsLocked>
+            <conditionDisplayOrder>1</conditionDisplayOrder>
+            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+            <securityOwner>administratorUserAccount</securityOwner>
+            <conditionExpression>
+              <fieldExpression id="410d525f-9a9f-4169-96af-4e65091f8722">
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <fieldExpressionField>description</fieldExpressionField>
+                <securityOwner>administratorUserAccount</securityOwner>
+                <sourceNode>d95361db-0e7c-4d79-87a2-ef3b5f601963</sourceNode>
+                <reportExpressionResultType>
+                  <!-- String -->
+                  <stringArgument id="dd6d0d0b-8678-4734-a4c3-08f3bc00096e">
+                    <name>String</name>
+                    <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                    <securityOwner>administratorUserAccount</securityOwner>
+                  </stringArgument>
+                </reportExpressionResultType>
+              </fieldExpression>
+            </conditionExpression>
+          </reportCondition>
+          <!-- Type -->
+          <reportCondition id="6bfa31a4-1731-460f-9bcf-dcd9528ce2b7">
+            <name>Type</name>
+            <conditionIsHidden>False</conditionIsHidden>
+            <conditionIsLocked>False</conditionIsLocked>
+            <conditionDisplayOrder>0</conditionDisplayOrder>
+            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+            <securityOwner>administratorUserAccount</securityOwner>
+            <conditionExpression>
+              <fieldExpression id="61d47d54-fdae-4f49-ada8-693c3a6ecc75">
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <fieldExpressionField>name</fieldExpressionField>
+                <securityOwner>administratorUserAccount</securityOwner>
+                <sourceNode>d95361db-0e7c-4d79-87a2-ef3b5f601963</sourceNode>
+                <reportExpressionResultType>
+                  <!-- String -->
+                  <stringArgument id="1e09e65e-bcf2-4a42-9cdc-03ffd3a28120">
+                    <name>String</name>
+                    <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                    <securityOwner>administratorUserAccount</securityOwner>
+                  </stringArgument>
+                </reportExpressionResultType>
+              </fieldExpression>
+            </conditionExpression>
+          </reportCondition>
+        </hasConditions>
+        <rootNode>
+          <resourceReportNode id="d95361db-0e7c-4d79-87a2-ef3b5f601963">
+            <exactType>False</exactType>
+            <targetMustExist>False</targetMustExist>
+            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+            <resourceReportNodeType>type</resourceReportNodeType>
+            <securityOwner>administratorUserAccount</securityOwner>
+            <relatedReportNodes>
+              <relationshipReportNode id="0deb3f9f-0962-4a86-8d55-c6d6a587a136">
+                <followInReverse>False</followInReverse>
+                <followRecursive>False</followRecursive>
+                <checkExistenceOnly>False</checkExistenceOnly>
+                <exactType>False</exactType>
+                <targetMustExist>False</targetMustExist>
+                <constrainParent>False</constrainParent>
+                <targetNeedNotExist>False</targetNeedNotExist>
+                <includeSelfInRecursive>False</includeSelfInRecursive>
+                <followRelationship>inSolution</followRelationship>
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <resourceReportNodeType>solution</resourceReportNodeType>
+                <securityOwner>administratorUserAccount</securityOwner>
+              </relationshipReportNode>
+              <relationshipReportNode id="21341cde-f061-4f56-8ea7-228b29cbd5ea">
+                <followInReverse>False</followInReverse>
+                <followRecursive>False</followRecursive>
+                <checkExistenceOnly>False</checkExistenceOnly>
+                <exactType>False</exactType>
+                <targetMustExist>False</targetMustExist>
+                <constrainParent>False</constrainParent>
+                <targetNeedNotExist>False</targetNeedNotExist>
+                <includeSelfInRecursive>False</includeSelfInRecursive>
+                <followRelationship>inherits</followRelationship>
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <resourceReportNodeType>type</resourceReportNodeType>
+                <securityOwner>administratorUserAccount</securityOwner>
+              </relationshipReportNode>
+            </relatedReportNodes>
+          </resourceReportNode>
+        </rootNode>
+        <reportColumns>
+          <!-- Description -->
+          <reportColumn id="00558cd7-a665-4815-b428-1bd0941b9bb6">
+            <name>Description</name>
+            <columnIsHidden>False</columnIsHidden>
+            <columnDisplayOrder>2</columnDisplayOrder>
+            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+            <securityOwner>administratorUserAccount</securityOwner>
+            <columnExpression>
+              <fieldExpression id="8a53704a-67dd-468d-ae07-99461f4774c1">
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <fieldExpressionField>description</fieldExpressionField>
+                <securityOwner>administratorUserAccount</securityOwner>
+                <sourceNode>d95361db-0e7c-4d79-87a2-ef3b5f601963</sourceNode>
+                <reportExpressionResultType>
+                  <!-- String -->
+                  <stringArgument id="b6656223-1eab-439c-8d77-f21e0e0a8770">
+                    <name>String</name>
+                    <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                    <securityOwner>administratorUserAccount</securityOwner>
+                  </stringArgument>
+                </reportExpressionResultType>
+              </fieldExpression>
+            </columnExpression>
+          </reportColumn>
+          <!-- Inherits -->
+          <reportColumn id="1a1be432-347e-4168-b431-92943903bcc3">
+            <name>Inherits</name>
+            <columnIsHidden>False</columnIsHidden>
+            <columnDisplayOrder>3</columnDisplayOrder>
+            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+            <securityOwner>administratorUserAccount</securityOwner>
+            <columnExpression>
+              <resourceExpression id="b12db659-c8c7-47a6-8339-316db03123eb">
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <securityOwner>administratorUserAccount</securityOwner>
+                <sourceNode>21341cde-f061-4f56-8ea7-228b29cbd5ea</sourceNode>
+                <reportExpressionResultType>
+                  <!-- InlineRelationship -->
+                  <resourceArgument id="34defcd8-d02f-46ed-a6f5-0e3fce10539a">
+                    <name>InlineRelationship</name>
+                    <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                    <securityOwner>administratorUserAccount</securityOwner>
+                  </resourceArgument>
+                </reportExpressionResultType>
+              </resourceExpression>
+            </columnExpression>
+          </reportColumn>
+          <!-- Applications -->
+          <reportColumn id="6c2fc441-2c12-4eed-a07a-8acca62ca743">
+            <name>Applications</name>
+            <columnIsHidden>False</columnIsHidden>
+            <columnDisplayOrder>4</columnDisplayOrder>
+            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+            <securityOwner>administratorUserAccount</securityOwner>
+            <columnExpression>
+              <resourceExpression id="0977a58d-54a1-4b06-9a96-a077b3792d0c">
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <securityOwner>administratorUserAccount</securityOwner>
+                <sourceNode>0deb3f9f-0962-4a86-8d55-c6d6a587a136</sourceNode>
+                <reportExpressionResultType>
+                  <!-- InlineRelationship -->
+                  <resourceArgument id="ea156970-2c2c-4ea7-91e0-faaf219f52df">
+                    <name>InlineRelationship</name>
+                    <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                    <securityOwner>administratorUserAccount</securityOwner>
+                  </resourceArgument>
+                </reportExpressionResultType>
+              </resourceExpression>
+            </columnExpression>
+          </reportColumn>
+          <!-- Type -->
+          <reportColumn id="c32b8a49-8071-48cb-9cc0-a84d35ccf198">
+            <name>Type</name>
+            <columnIsHidden>False</columnIsHidden>
+            <columnDisplayOrder>1</columnDisplayOrder>
+            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+            <securityOwner>administratorUserAccount</securityOwner>
+            <columnExpression>
+              <fieldExpression id="a38a6383-8299-4497-b6ae-107417cc37da">
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <fieldExpressionField>name</fieldExpressionField>
+                <securityOwner>administratorUserAccount</securityOwner>
+                <sourceNode>d95361db-0e7c-4d79-87a2-ef3b5f601963</sourceNode>
+                <reportExpressionResultType>
+                  <!-- String -->
+                  <stringArgument id="8b8c723b-6e12-415a-8e47-2d4c6de1ceea">
+                    <name>String</name>
+                    <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                    <securityOwner>administratorUserAccount</securityOwner>
+                  </stringArgument>
+                </reportExpressionResultType>
+              </fieldExpression>
+            </columnExpression>
+          </reportColumn>
+          <!-- _id -->
+          <reportColumn id="dc906831-deae-4e8a-80d1-55b838fce094">
+            <name>_id</name>
+            <columnIsHidden>True</columnIsHidden>
+            <columnDisplayOrder>0</columnDisplayOrder>
+            <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+            <securityOwner>administratorUserAccount</securityOwner>
+            <columnExpression>
+              <idExpression id="923d0819-ec1d-465c-8b13-7260a757631e">
+                <indirectInSolution>abf12077-6fa5-43da-b608-b8b7514d07bb</indirectInSolution>
+                <securityOwner>administratorUserAccount</securityOwner>
+                <sourceNode>d95361db-0e7c-4d79-87a2-ef3b5f601963</sourceNode>
+              </idExpression>
+            </columnExpression>
+          </reportColumn>
+        </reportColumns>
       </report>
       <!-- Survey Questions -->
       <report id="84b81136-e891-4d8d-9c38-10ee0401fbda">

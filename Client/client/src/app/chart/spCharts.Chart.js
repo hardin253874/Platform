@@ -7,7 +7,7 @@ var spCharts;
 (function (spCharts) {
     'use strict';
 
-    spChartService.sourceTypes = ['primarySource', 'valueSource', 'endValueSource', 'sizeSource', 'colorSource', 'imageSource', 'textSource', 'symbolSource', 'associateSource'];
+    spChartService.sourceTypes = ['primarySource', 'valueSource', 'endPrimarySource', 'endValueSource', 'sizeSource', 'colorSource', 'imageSource', 'textSource', 'symbolSource', 'associateSource'];
 
     spCharts.defaultColor = _.constant('#1f77b4');
     spCharts.defaultNegativeColor = _.constant('#ff0000');

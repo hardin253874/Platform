@@ -60,8 +60,6 @@ namespace EDC.Test.IO
                     repository.Put(stream);
                 }
 
-                Thread.Sleep(2000);
-
                 // Add some files into the temp directory
                 var tempDirectoryPath = Path.Combine(repoPath, TempDirectory);
 
@@ -88,8 +86,6 @@ namespace EDC.Test.IO
                     repository.Put(stream);
                 }
 
-                Thread.Sleep(2000);
-                
                 var success = File.Exists(tempFileToBeDeleted1) &&
                             File.Exists(tempFileToBeDeleted2) &&
                             File.Exists(tempFileToNotBeDeleted1) &&
@@ -177,7 +173,6 @@ namespace EDC.Test.IO
         }
 
         [Test]
-        [Category("ExtendedTests")]
         public void CleanupExpiredFilesTest()
         {
             var repoPath = GetTempDirectoryPath();
@@ -195,57 +190,66 @@ namespace EDC.Test.IO
                     File.WriteAllText(sourceFilePath, @"Test" + i);
                 }
 
-                // Create a repo with a retention period of 20 seconds and a cleanup interval of 50 milliseconds
-                var repository = CreateTestRepository(repoPath, true, TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(5));
+				using ( AutoResetEvent evt = new AutoResetEvent( false ) )
+				{
+					// Create a repo with a retention period of 100 milliseconds and a cleanup interval of 50 milliseconds
+					var repository = CreateTestRepository( repoPath, true, TimeSpan.FromMilliseconds( 100 ), TimeSpan.FromMilliseconds( 5 ) );
 
-                Dictionary<int, string> tokensMap = new Dictionary<int, string>();
+					EventHandler<FilesRemovedEventArgs> filesRemovedHandler = ( sender, args ) =>
+					{
+						// ReSharper disable once AccessToDisposedClosure
+						evt.Set( );
+					};
 
-                for (int i = 0; i < 3; i++)
-                {
-                    // Put 3 files into the repository.                    
-                    using (var stream = File.OpenRead(Path.Combine(sourceDirPath, string.Format(sourceFileName, i))))
-                    {
-                        tokensMap[i] = repository.Put(stream);
-                    }
-                }                
+					repository.FilesRemoved += filesRemovedHandler;
 
-                Thread.Sleep(500);
+					Dictionary<int, string> tokensMap = new Dictionary<int, string>( );
 
-                using (var stream = File.OpenRead(Path.Combine(sourceDirPath, string.Format(sourceFileName, 3))))
-                {
-                    repository.Put(stream);
-                }
+					for ( int i = 0; i < 3; i++ )
+					{
+						// Put 3 files into the repository.                    
+						using ( var stream = File.OpenRead( Path.Combine( sourceDirPath, string.Format( sourceFileName, i ) ) ) )
+						{
+							tokensMap [ i ] = repository.Put( stream );
+						}
+					}
 
-                // Wait for a cleanup to happen
-                Thread.Sleep(TimeSpan.FromSeconds(5));
+					Task.Delay( 150 ).Wait( );
 
-                // At this point tokens1 - 3 should still exist
-                var tokensSet = new HashSet<string>(repository.GetTokens().ToList());
+					using ( var stream = File.OpenRead( Path.Combine( sourceDirPath, string.Format( sourceFileName, 3 ) ) ) )
+					{
+						repository.Put( stream );
+					}
 
-                foreach (var token in tokensMap.Values)
-                {
-                    Assert.IsTrue(tokensSet.Contains(token), "The token {0} should still exist", token);
-                }
+					evt.WaitOne( 100 );
 
-                // Wait until the retension period expires
-                Thread.Sleep(TimeSpan.FromSeconds(30));
+					// At this point token3 should only exist
+					var tokensSet = new HashSet<string>( repository.GetTokens( ).ToList( ) );
 
-                // Put one more file to trigger a cleanup
-                using (var stream = File.OpenRead(Path.Combine(sourceDirPath, string.Format(sourceFileName, 4))))
-                {
-                    repository.Put(stream);
-                }
+					foreach ( var token in tokensMap.Values )
+					{
+						Assert.IsFalse( tokensSet.Contains( token ), "The token {0} should no longer exist", token );
+					}
 
-                // Wait for the cleanup to happen
-                Thread.Sleep(TimeSpan.FromSeconds(5));
+					// Put one more file to trigger a cleanup
+					using ( var stream = File.OpenRead( Path.Combine( sourceDirPath, string.Format( sourceFileName, 4 ) ) ) )
+					{
+						repository.Put( stream );
+					}
 
-                // At this point tokens1 - 3 should not exist
-                tokensSet = new HashSet<string>(repository.GetTokens().ToList());
+					// Wait for the cleanup to happen
+					evt.WaitOne( 100 );
 
-                foreach (var token in tokensMap.Values)
-                {
-                    Assert.IsFalse(tokensSet.Contains(token), "The token {0} should not exist", token);
-                }
+					// At this point tokens1 - 3 should not exist
+					tokensSet = new HashSet<string>( repository.GetTokens( ).ToList( ) );
+
+					foreach ( var token in tokensMap.Values )
+					{
+						Assert.IsFalse( tokensSet.Contains( token ), "The token {0} should not exist", token );
+					}
+
+					repository.FilesRemoved -= filesRemovedHandler;
+				}
             }
             finally
             {

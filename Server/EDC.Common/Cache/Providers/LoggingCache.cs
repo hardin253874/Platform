@@ -277,10 +277,7 @@ namespace EDC.Cache.Providers
         /// <returns>
         /// The number of entries - however they may not all be valid.
         /// </returns>
-        public int Count
-        {
-            get { return InnerCache.Count; }
-        }
+        public int Count => InnerCache.Count;
 
         /// <summary>
         /// Raised when items are removed from the set. Note, this may be called
@@ -339,10 +336,7 @@ namespace EDC.Cache.Providers
         /// <summary>
         /// Is this cache thread-safe.
         /// </summary>
-        public bool ThreadSafe
-        {
-            get { return Inner.ThreadSafe; }
-        }
+        public bool ThreadSafe => Inner.ThreadSafe;
 
         /// <summary>
         /// The maximum size of the created cache.
@@ -354,7 +348,7 @@ namespace EDC.Cache.Providers
         /// handled by DI.
         /// </summary>
         public static Lazy<ILoggingCacheMetricReporter> MetricReporter =
-            new Lazy<ILoggingCacheMetricReporter>(() => new AsynchronousLoggingCacheMetricReporter(), false);
+            new Lazy<ILoggingCacheMetricReporter>(() => new AsynchronousLoggingCacheMetricReporter(), true);
 
         /// <summary>
         /// Create a cache, using the specified type parameters.

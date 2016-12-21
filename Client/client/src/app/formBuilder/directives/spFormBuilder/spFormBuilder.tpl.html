@@ -26,8 +26,9 @@
         <div ng-repeat="ab in model.actionButtons">
             <button type="button"
                     ng-disabled="true"
+                    ng-style="consoleThemeModel.actionButtonStyle"
                     title="{{ab.name || ab.displayname}}">
-                <img ng-src="{{ab.icon}}" width="16" height="16"/><span>{{ab.nameshort}}</span>
+                <span>{{ab.nameshort}}</span>
             </button>
             <div class="configure-Builder-Action">
                 <span class="ui-icon ui-icon-white ui-icon-wrench ui-icon-hover-darkgray fb-toolbox-adornment fb-toolbox-adornment-light"

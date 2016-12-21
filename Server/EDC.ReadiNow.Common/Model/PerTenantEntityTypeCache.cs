@@ -29,19 +29,7 @@ namespace EDC.ReadiNow.Model
         /// <summary>
         ///     Singleton instance.
         /// </summary>
-        private static readonly Lazy<PerTenantEntityTypeCache> CacheInstance = new Lazy<PerTenantEntityTypeCache>(() => new PerTenantEntityTypeCache(), false);
-
-
-        /// <summary>
-        ///     Static sync root.
-        /// </summary>
-        private static readonly object StaticSyncRoot = new object();
-
-
-        /// <summary>
-        ///     The cache invalidator.
-        /// </summary>
-        private readonly ICacheInvalidator _cacheInvalidator;
+        private static readonly Lazy<PerTenantEntityTypeCache> CacheInstance = new Lazy<PerTenantEntityTypeCache>( ( ) => new PerTenantEntityTypeCache( ), true );
 
 
         /// <summary>
@@ -90,36 +78,23 @@ namespace EDC.ReadiNow.Model
 			_innerCacheDescendantsSorted = factory.Create<long, ICollection<long>>( "PerTenantEntityTypeCache Descendants Sorted" );
 			_innerCacheAncestors = factory.Create<long, ICollection<long>>( "PerTenantEntityTypeCache Ancestors" );
 			_innerCacheAncestorsSorted = factory.Create<long, ICollection<long>>( "PerTenantEntityTypeCache Ancestors Sorted" );
-			_cacheInvalidator = new PerTenantEntityTypeCacheInvalidator("PerTenantEntityTypeCacheInvalidator");
+			CacheInvalidator = new PerTenantEntityTypeCacheInvalidator("PerTenantEntityTypeCacheInvalidator");
             _strongTypeIdCache = factory.Create<Type, long>( "PerTenantEntityTypeCache StrongTypeIdCache" );
         }
 
         /// <summary>
-        ///     Gets the cache invalidator.
-        /// </summary>
-        /// <value>
         ///     The cache invalidator.
-        /// </value>
+        /// </summary>
         public ICacheInvalidator CacheInvalidator
         {
-            get { return _cacheInvalidator; }
+            get;
         }
 
 
         /// <summary>
         ///     Gets the instance.
         /// </summary>
-        public static PerTenantEntityTypeCache Instance
-        {
-            get
-            {
-                lock (StaticSyncRoot)
-                {
-                    return CacheInstance.Value;
-                }
-            }
-        }
-
+        public static PerTenantEntityTypeCache Instance => CacheInstance.Value;
 
 
         /// <summary>

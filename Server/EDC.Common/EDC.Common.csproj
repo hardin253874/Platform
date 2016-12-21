@@ -117,7 +117,12 @@
     <Compile Include="Database\DatabaseContextInfo.cs" />
     <Compile Include="DateTime\DateTimeProvider.cs" />
     <Compile Include="DateTime\IDateTime.cs" />
+    <Compile Include="Diagnostics\LogWrittenEventArgs.cs" />
+    <Compile Include="Diagnostics\PurgeDetails.cs" />
+    <Compile Include="Diagnostics\RotateDetails.cs" />
+    <Compile Include="Diagnostics\ValidateDetails.cs" />
     <Compile Include="Interop\Windows.cs" />
+    <Compile Include="IO\FilesRemovedEventArgs.cs" />
     <Compile Include="Properties\Annotations.EDC.cs" />
     <Compile Include="Cache\Cache.cs" />
     <Compile Include="Cache\CacheEventArgs.cs" />

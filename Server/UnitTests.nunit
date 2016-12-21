@@ -5,7 +5,7 @@
     <assembly path="EDC.ReadiNow.Common.Test\bin\Debug\EDC.ReadiNow.Common.Test.dll" />
     <assembly path="EDC.SoftwarePlatform.WebApi.Test\bin\Debug\EDC.SoftwarePlatform.WebApi.Test.dll" />
     <assembly path="ReadiNow.DocGen.Test\bin\Debug\ReadiNow.DocGen.Test.dll" />
-    <assembly path="EDC.SoftwarePlatform.Activities.Test\bin\Debug\EDC.SoftwarePlatform.Activities.Test.dll" />
+    <assembly path="ReadiNow.Activities.Test\bin\Debug\ReadiNow.Activities.Test.dll" />
     <assembly path="EDC.SoftwarePlatform.Migration.Test\bin\Debug\EDC.SoftwarePlatform.Migration.Test.dll" />
     <assembly path="EDC.SoftwarePlatform.Services.Test\bin\Debug\EDC.SoftwarePlatform.Services.Test.dll" />
     <assembly path="Deployment\EDC.SoftwarePlatform.Install.Actions.Test\bin\Debug\EDC.SoftwarePlatform.Install.Actions.Test.dll" />
@@ -16,7 +16,7 @@
     <assembly path="EDC.ReadiNow.Common.Test\bin\Release\EDC.ReadiNow.Common.Test.dll" />
     <assembly path="EDC.SoftwarePlatform.WebApi.Test\bin\Release\EDC.SoftwarePlatform.WebApi.Test.dll" />
     <assembly path="ReadiNow.DocGen.Test\bin\Release\ReadiNow.DocGen.Test.dll" />
-    <assembly path="EDC.SoftwarePlatform.Activities.Test\bin\Release\EDC.SoftwarePlatform.Activities.Test.dll" />
+    <assembly path="ReadiNow.Test\bin\Release\ReadiNow.Activities.Test.dll" />
     <assembly path="EDC.SoftwarePlatform.Migration.Test\bin\Release\EDC.SoftwarePlatform.Migration.Test.dll" />
     <assembly path="EDC.SoftwarePlatform.Services.Test\bin\Release\EDC.SoftwarePlatform.Services.Test.dll" />
     <assembly path="Deployment\EDC.SoftwarePlatform.Install.Actions.Test\bin\Release\EDC.SoftwarePlatform.Install.Actions.Test.dll" />
@@ -26,7 +26,7 @@
     <assembly path="EDC.ReadiNow.Common.Test.dll" />
     <assembly path="EDC.SoftwarePlatform.WebApi.Test.dll" />
     <assembly path="ReadiNow.DocGen.Test.dll" />
-    <assembly path="EDC.SoftwarePlatform.Activities.Test.dll" />
+    <assembly path="ReadiNow.Activities.Test.dll" />
     <assembly path="EDC.SoftwarePlatform.Migration.Test.dll" />
     <assembly path="EDC.SoftwarePlatform.Services.Test.dll" />
     <assembly path="EDC.SoftwarePlatform.Install.Actions.Test.dll" />

@@ -420,9 +420,7 @@ function Clear-InstallationDirectory($settings)
 	$path = Get-InstallPath $settings
 	
     Log-Message "Clear installation directory $path"
-    
-    Stop-Process -f -processname SchedulerService -ErrorAction SilentlyContinue
-	
+
     if (Test-Path $path)
 	{
         Remove-Item "$path*" -Recurse

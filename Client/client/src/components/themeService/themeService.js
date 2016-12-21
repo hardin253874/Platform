@@ -36,6 +36,7 @@
             var currentGeneralSelectedTabHeadingStyle = {};
             var currentGeneralTabHeadingStyle = {};
             var currentReportheaderStyle = {};
+            var currentActionButtonStyle = {};
 
             var currentDefaultLogo = 'assets/images/logo_RN_main.png';
             exports.setStyle = function (consoleTheme)
@@ -254,6 +255,7 @@
                     currentGeneralTabHeadingStyle = {};
                     currentTabControlLineColor = "";
                     currentReportheaderStyle = {};
+                    currentActionButtonStyle = {};
                     var titleFontColor = consoleTheme.consoleGeneralContentAreaTitleFontColor;
                     if (titleFontColor) {
                         currentTitleStyle['color'] = spUtils.getCssColorFromARGBString(titleFontColor);
@@ -311,6 +313,16 @@
                         currentReportheaderStyle['color'] = spUtils.getCssColorFromARGBString(reportHeaderFontColor);
                     }
 
+                    var actionButtonBackgroundColor = consoleTheme.actionButtonBackgroundColor;
+                    if (actionButtonBackgroundColor) {
+                        currentActionButtonStyle['background'] = spUtils.getCssColorFromARGBString(actionButtonBackgroundColor);
+                        currentActionButtonStyle['background-color'] = spUtils.getCssColorFromARGBString(actionButtonBackgroundColor);
+
+                        let cssColor = spUtils.getContrastColor(spUtils.getColorFromARGBString(actionButtonBackgroundColor));
+                        if (cssColor) {
+                            currentActionButtonStyle['color'] = cssColor;
+                        }
+                    }
                 }
 
 
@@ -419,6 +431,10 @@
 
         exports.getReportHeaderStyle = function() {
             return currentReportheaderStyle;
+        };
+
+        exports.getActionButtonStyle = function () {
+            return currentActionButtonStyle;
         };
             return exports;
 

@@ -51,36 +51,36 @@ namespace EDC.Test.Threading
         [Test]
         public void TestRegisterActionExceedingTimeout()
         {
-            bool rendezvousCompleted = false;
-            bool actionCalled = false;
+			using ( ManualResetEvent rendezvousCompleted = new ManualResetEvent( false ) )
+			{
+				bool actionCalled = false;
 
-            RendezvousPoint rendezvousPoint = null;
+				RendezvousPoint rendezvousPoint = null;
 
-            string rpId = "RpId" + Guid.NewGuid();
+				string rpId = "RpId" + Guid.NewGuid( );
 
-            try
-            {
-                rendezvousPoint = new RendezvousPoint(rpId, 500, EventLog.Application);
-                // Register an action that never completes
-                RendezvousPoint.RegisterAction(rpId, () =>
-                {
-                    while (!rendezvousCompleted)
-                    {
-                        Thread.Sleep(200);
-                    }
+				try
+				{
+					rendezvousPoint = new RendezvousPoint( rpId, 500, EventLog.Application );
+					// Register an action that never completes
+					RendezvousPoint.RegisterAction( rpId, ( ) =>
+					{
+						// ReSharper disable once AccessToDisposedClosure
+						rendezvousCompleted.WaitOne( 5000 );
 
-                    actionCalled = true;
-                });
-            }
-            finally
-            {
-                Assert.IsFalse(actionCalled, "Action should not be called.");
-                rendezvousPoint.Dispose();
-                // If we are here the rendezvous has completed but the action has not.
-                // That's a good thing !
-                Assert.IsFalse(actionCalled, "Action should not be called.");
-                rendezvousCompleted = true;
-            }
+						 actionCalled = true;
+					 } );
+				}
+				finally
+				{
+					Assert.IsFalse( actionCalled, "Action should not be called." );
+					rendezvousPoint?.Dispose( );
+					// If we are here the rendezvous has completed but the action has not.
+					// That's a good thing !
+					Assert.IsFalse( actionCalled, "Action should not be called." );
+					rendezvousCompleted.Set( );
+				}
+			}
         }
 
 

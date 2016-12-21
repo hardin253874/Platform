@@ -104,7 +104,7 @@ namespace EDC.SoftwarePlatform.Activities
             Class firstActivityBackingClass = backingClassEntity.ActivityExecutionClass;
             var s = typeof(LogActivityImplementation).FullName;
             var q = typeof(LogActivityImplementation).FullName;
-            var typeString = string.Format("{0}, {1}", firstActivityBackingClass.TypeName, firstActivityBackingClass.AssemblyName);
+            var typeString = string.Format("{0}, {1}", firstActivityBackingClass.TypeName, ClassHelper.CheckAssemblyName( firstActivityBackingClass.AssemblyName ) );
             var activityType = Type.GetType(typeString, true);
             var activityInstance = (ActivityImplementationBase) Activator.CreateInstance(activityType);
 

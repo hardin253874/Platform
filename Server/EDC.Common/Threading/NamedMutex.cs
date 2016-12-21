@@ -33,19 +33,6 @@ namespace EDC.Threading
 
 		#region Properties
 
-		private bool _isAcquired;
-
-		/// <summary>
-		///     True if the mutex has been acquired, false otherwise.
-		/// </summary>
-		public bool IsAcquired
-		{
-			get
-			{
-				return _isAcquired;
-			}
-		}
-
 		#endregion
 
 		#region Constructors
@@ -107,11 +94,11 @@ namespace EDC.Threading
 		/// <returns>True if the mutex was acquired successfully, false otherwise.</returns>
 		public bool Acquire( int millsecondsTimeout )
 		{
-			if ( _isAcquired )
-			{
-				// The mutex is already acquired by the current thread. So return.
-				return true;
-			}
+			//if ( _isAcquired )
+			//{
+			//	// The mutex is already acquired by the current thread. So return.
+			//	return true;
+			//}
 
 			if ( millsecondsTimeout < -1 )
 			{
@@ -121,17 +108,15 @@ namespace EDC.Threading
 			try
 			{
 				// Wait for the specified timeout to acquire the mutex
-				_isAcquired = _mutex.WaitOne( millsecondsTimeout, false );
+				return _mutex.WaitOne( millsecondsTimeout, false );
 			}
 			catch ( AbandonedMutexException )
 			{
 				// Ignore the abandoned mutex exception.
 				// This means another process\thread with the mutex has exited before releasing the mutex and
 				// this thread now has ownership.
-				_isAcquired = true;
+				return true;
 			}
-
-			return _isAcquired;
 		}
 
 
@@ -140,11 +125,7 @@ namespace EDC.Threading
 		/// </summary>
 		public void Release( )
 		{
-			if ( _isAcquired )
-			{
-				_mutex.ReleaseMutex( );
-				_isAcquired = false;
-			}
+			_mutex.ReleaseMutex( );
 		}
 
         /// <summary>
@@ -189,14 +170,12 @@ namespace EDC.Threading
 					if ( _mutex != null )
 					{
 						// If the mutex was acquired release it.
-						if ( _isAcquired )
-						{
-                            try
-                            {
-                                _mutex.ReleaseMutex( );
-                            }
-                            catch { }
-						}
+                        try
+                        {
+                            _mutex.ReleaseMutex( );
+                        }
+                        catch { }
+
 						_mutex.Close( );
 					}
 					_mutex = null;

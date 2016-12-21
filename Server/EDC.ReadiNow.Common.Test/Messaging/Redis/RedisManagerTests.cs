@@ -434,7 +434,7 @@ namespace EDC.ReadiNow.Test.Messaging.Redis
 							channel.Publish( message );
 
 							waitOne1 = instance1.MessageReceived.WaitOne( DefaultTimeout );
-							waitOne2 = instance2.MessageReceived.WaitOne( DefaultTimeout );
+							waitOne2 = instance2.MessageReceived.WaitOne( 0 );
 
 							Assert.IsTrue( waitOne1, "No message received in " + DefaultTimeout + "ms for app domain 1." );
 							Assert.IsFalse( waitOne2, "Message received in app domain 1 when it should not have been." );
@@ -445,8 +445,8 @@ namespace EDC.ReadiNow.Test.Messaging.Redis
 
 							channel.Publish( channelMessage );
 
-							waitOne1 = instance1.MessageReceived.WaitOne( DefaultTimeout );
-							waitOne2 = instance2.MessageReceived.WaitOne( DefaultTimeout );
+							waitOne1 = instance1.MessageReceived.WaitOne( 0 );
+							waitOne2 = instance2.MessageReceived.WaitOne( 0 );
 
 							Assert.IsFalse( waitOne1, "Message received in app domain 1 when it should not have been." );
 							Assert.IsFalse( waitOne2, "Message received in app domain 2 when it should not have been." );

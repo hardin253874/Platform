@@ -1,8 +1,6 @@
 // Copyright 2011-2016 Global Software Innovation Pty Ltd
 
 using EDC.Diagnostics;
-using EDC.ReadiNow.Resources;
-using Microsoft.Win32;
 using System;
 using EDC.ReadiNow.Configuration;
 
@@ -16,7 +14,7 @@ namespace EDC.ReadiNow.Diagnostics
         /// <summary>
 		///     Static instance of the ProcessMonitorWriter.
 		/// </summary>
-		private static readonly Lazy<ProcessMonitorWriter> instance = new Lazy<ProcessMonitorWriter>(() => new ProcessMonitorWriter(), true);
+		private static readonly Lazy<ProcessMonitorWriter> instance = new Lazy<ProcessMonitorWriter>( ( ) => new ProcessMonitorWriter( ), true );
 
         /// <summary>
         /// The time in milliseconds to check the enabled flag.

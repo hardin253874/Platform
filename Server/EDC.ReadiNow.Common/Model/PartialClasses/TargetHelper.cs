@@ -35,9 +35,11 @@ namespace EDC.ReadiNow.Model
                 fqtn += target.TypeName;
             }
 
-            if (!string.IsNullOrEmpty(target.AssemblyName))
+		    string asmName = ClassHelper.CheckAssemblyName( target.AssemblyName );
+
+            if (!string.IsNullOrEmpty( asmName ) )
             {
-                fqtn += string.Format(", {0}", target.AssemblyName);
+                fqtn += string.Format(", {0}", asmName );
             }
 
             return fqtn;

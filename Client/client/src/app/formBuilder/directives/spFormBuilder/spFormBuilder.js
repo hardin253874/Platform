@@ -30,14 +30,15 @@
         'mod.app.configureDialogs.spFormActionsDialog',
         'mod.common.ui.spActionsService',
         'mod.common.ui.spEditFormDialog',
-        'mod.featureSwitch'
+        'mod.featureSwitch',
+        'sp.themeService'
     ])
         .directive('spFormBuilder', spFormBuilder);
 
     function spFormBuilder($state, $stateParams, spFormBuilderService, spEntityService, spNavService, $timeout, $q,
                            spTypeProperties, spAlertsService, spState, spFormSaveAsDialog, spDialogService, titleService, navDirtyMessage,
                            spMeasureArrangeService, spNavigationBuilderProvider, editFormCache, spFormActionsDialog,
-                           spActionsService, spEditForm, spEditFormDialog, rnFeatureSwitch) {
+                           spActionsService, spEditForm, spEditFormDialog, rnFeatureSwitch, spThemeService) {
 
         'ngInject';
 
@@ -65,6 +66,11 @@
                 /////
                 scope.model = scope.model || {};
 
+                scope.consoleThemeModel = {
+                    actionButtonStyle: {}
+                };
+
+                scope.nav = spNavService;
                 var navItem = spNavService.getCurrentItem();
                 var setBookmark = false;
                 var forceReload = false;
@@ -86,6 +92,15 @@
                             event.defaultPrevented = true;
                         }
                     });
+
+                //
+                // Get and set the theme of screen
+                //
+                scope.$watch('nav.getThemes()', function (getThemesCompleted) {
+                    if (getThemesCompleted === true) {
+                        scope.consoleThemeModel.actionButtonStyle = spThemeService.getActionButtonStyle();
+                    }
+                });
 
                 scope.spFormBuilderService = spFormBuilderService;
 
@@ -150,9 +165,7 @@
                 };
 
                 scope.getAddActionsImage = function () {
-                    return spFormBuilderService.getBuilder() === spFormBuilderService.builders.screen ?
-                        'assets/images/16x16/add_w.svg' :
-                        'assets/images/16x16/add.svg';
+                    return 'assets/images/16x16/add_w.svg';
                 };
 
                 /////

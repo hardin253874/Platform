@@ -116,7 +116,7 @@
         <name>Script name</name>
         <description>The name to use when referring to this field in scripts.</description>
         <alias>fieldScriptName</alias>
-        <maxLength>200</maxLength>
+        <maxLength>300</maxLength>
         <pattern>scriptNamePattern</pattern>
       </stringField>
       <boolField>

@@ -87,13 +87,13 @@
   <target>
     <alias>scheduleSyncTarget</alias>
     <typeName>EDC.SoftwarePlatform.Activities.Scheduling.ScheduleSyncTarget</typeName>
-    <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+    <assemblyName>ReadiNow.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
     <ordinal>0</ordinal>
   </target>
   <target>
     <alias>scheduledItemSyncTarget</alias>
     <typeName>EDC.SoftwarePlatform.Activities.Scheduling.ScheduledItemSyncTarget</typeName>
-    <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+    <assemblyName>ReadiNow.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
     <ordinal>0</ordinal>
     <onAfterSolutionDeploy>solution</onAfterSolutionDeploy>
     <!-- update any new scheduledItems -->
@@ -110,7 +110,7 @@
         <alias>startWorkflowJobClass</alias>
         <name>StartWorkflowJobClass</name>
         <typeName>EDC.SoftwarePlatform.Activities.Scheduling.StartWorkflowJob</typeName>
-        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+        <assemblyName>ReadiNow.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
       </class>
     </onScheduleFire>
   </scheduleAction>
@@ -193,7 +193,7 @@
       <target>
         <alias>scheduleDailyRepeatTarget</alias>
         <typeName>EDC.SoftwarePlatform.Activities.Scheduling.ScheduleDailyRepeatTarget</typeName>
-        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+        <assemblyName>ReadiNow.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
         <ordinal>0</ordinal>
       </target>
     </onBeforeSave>

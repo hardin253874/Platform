@@ -100,7 +100,7 @@ namespace EDC.ReadiNow.Core
             RegisterAssemblyModules(builder, "ReadiNow.QueryEngine, Version=1.0.0.0, Culture=neutral");
             RegisterAssemblyModules(builder, "EDC.ReadiNow.Common, Version=1.0.0.0, Culture=neutral");
             RegisterAssemblyModules(builder, "EDC.ReadiNow.CAST, Version=1.0.0.0, Culture=neutral");
-            RegisterAssemblyModules(builder, "EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral");
+            RegisterAssemblyModules(builder, "ReadiNow.Activities, Version=1.0.0.0, Culture=neutral");
             RegisterAssemblyModules(builder, "EDC.SoftwarePlatform.Services, Version=1.0.0.0, Culture=neutral");
 			RegisterAssemblyModules(builder, "EDC.SoftwarePlatform.Migration, Version=1.0.0.0, Culture=neutral" );
 			RegisterAssemblyModules(builder, "ReadiNow.Integration, Version=1.0.0.0, Culture=neutral");

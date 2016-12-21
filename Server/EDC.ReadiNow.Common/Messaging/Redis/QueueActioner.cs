@@ -107,7 +107,7 @@ namespace EDC.ReadiNow.Messaging.Redis
 
             State = ActionerState.Running;
 
-            LoopingThread = new Thread(ActionLoop) { Name = $"{ActionLoopTheadPrefix} {Queue.Name}" };
+            LoopingThread = new Thread(ActionLoop) { Name = $"{ActionLoopTheadPrefix} {Queue.Name}", IsBackground = true };
             LoopingThread.Start();
         }
 

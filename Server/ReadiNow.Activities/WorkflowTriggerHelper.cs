@@ -7,6 +7,7 @@ using EDC.ReadiNow.Model;
 using EDC.ReadiNow.Monitoring.Workflow;
 using EDC.ReadiNow.Model.Interfaces;
 using EDC.ReadiNow.Core;
+using EDC.ReadiNow.Diagnostics;
 
 namespace EDC.SoftwarePlatform.Activities
 {
@@ -68,14 +69,23 @@ namespace EDC.SoftwarePlatform.Activities
 
         private static void RunWorkflow(WfTriggerUserUpdatesResource trigger, EntityRef updatedEntity)
         {
-            var args = new Dictionary<string, object>();
+            var wf = trigger.WorkflowToRun;
 
-            var actionArg = trigger.WorkflowToRun.InputArgumentForAction;
+            if (wf != null)
+            {
+                var args = new Dictionary<string, object>();
 
-            if (actionArg != null)
-                args.Add(trigger.WorkflowToRun.InputArgumentForAction.Name, updatedEntity.Entity);
+                var actionArg = wf.InputArgumentForAction;
 
-            WorkflowRunner.Instance.RunWorkflow(new WorkflowStartEvent(trigger.Cast<WfTrigger>()) { Arguments = args });
+                if (actionArg != null && !string.IsNullOrEmpty(actionArg.Name))
+                    args.Add(actionArg.Name, updatedEntity.Entity);
+
+                WorkflowRunner.Instance.RunWorkflow(new WorkflowStartEvent(trigger.Cast<WfTrigger>()) { Arguments = args });
+            }
+            else
+            {
+                EventLog.Application.WriteWarning($"WorkflowTriggerHelper.RunWorkflow: Trigger is missing a workflow to run. This is a constraints violation, igoring trigger. Trigger: {trigger.Name ?? "[Unnamed]"}({trigger.Id})");
+            }
         }
     }
 }

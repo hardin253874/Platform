@@ -31,9 +31,6 @@ namespace EDC.Test.Threading
 
             Assert.DoesNotThrow(() => governor.Yield());
             Assert.DoesNotThrow(() => governor.Yield());
-
-            Thread.Sleep(1000);
-
             Assert.DoesNotThrow(() => governor.Yield());
         }
     }

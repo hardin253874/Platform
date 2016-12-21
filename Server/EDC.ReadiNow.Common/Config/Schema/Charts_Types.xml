@@ -207,7 +207,7 @@
       <!-- Primary Series Source-->
       <relationship>
         <name>Primary source</name>
-        <description>The source for the primary series of a chart.</description>
+        <description>The source for the independent axis of a chart.</description>
         <alias>primarySource</alias>
         <toType>chartSource</toType>
         <relType>relSingleComponent</relType>
@@ -216,8 +216,18 @@
         <securesTo>true</securesTo>
       </relationship>
       <relationship>
+        <name>End primary source</name>
+        <description>The secondary source for the independent axis of a chart.</description>
+        <alias>endPrimarySource</alias>
+        <toType>chartSource</toType>
+        <relType>relSingleComponent</relType>
+        <relationshipInFromTypeGroup>chartSeriesDetails</relationshipInFromTypeGroup>
+        <relationshipInToTypeGroup>chartSourceDetails</relationshipInToTypeGroup>
+        <securesTo>true</securesTo>
+      </relationship>
+      <relationship>
         <name>Values source</name>
-        <description>The source for the primary series of a chart.</description>
+        <description>The source for the dependent axis of a chart.</description>
         <alias>valueSource</alias>
         <toType>chartSource</toType>
         <relType>relSingleComponent</relType>
@@ -227,7 +237,7 @@
       </relationship>
       <relationship>
         <name>End values source</name>
-        <description>The source for the primary series of a chart.</description>
+        <description>The secondary source for the dependent axis of a chart.</description>
         <alias>endValueSource</alias>
         <toType>chartSource</toType>
         <relType>relSingleComponent</relType>
@@ -237,7 +247,7 @@
       </relationship>
       <relationship>
         <name>Associate source</name>
-        <description>The to connect to.</description>
+        <description>The source for related data points.</description>
         <alias>associateSource</alias>
         <toType>chartSource</toType>
         <relType>relSingleComponent</relType>
@@ -247,7 +257,7 @@
       </relationship>
       <relationship>
         <name>Size source</name>
-        <description>The source for the primary series of a chart.</description>
+        <description>The source for chart sizing.</description>
         <alias>sizeSource</alias>
         <toType>chartSource</toType>
         <relType>relSingleComponent</relType>
@@ -257,7 +267,7 @@
       </relationship>
       <relationship>
         <name>Colour source</name>
-        <description>The source for the primary series of a chart.</description>
+        <description>The source for chart colours.</description>
         <alias>colorSource</alias>
         <toType>chartSource</toType>
         <relType>relSingleComponent</relType>
@@ -267,7 +277,7 @@
       </relationship>
       <relationship>
         <name>Image source</name>
-        <description>The source for the primary series of a chart.</description>
+        <description>The source for chart images.</description>
         <alias>imageSource</alias>
         <toType>chartSource</toType>
         <relType>relSingleComponent</relType>
@@ -277,7 +287,7 @@
       </relationship>
       <relationship>
         <name>Text source</name>
-        <description>The source for the primary series of a chart.</description>
+        <description>The source for chart text.</description>
         <alias>textSource</alias>
         <toType>chartSource</toType>
         <relType>relSingleComponent</relType>
@@ -287,7 +297,7 @@
       </relationship>
       <relationship>
         <name>Symbol source</name>
-        <description>The source for the primary series of a chart.</description>
+        <description>The source for chart symbols.</description>
         <alias>symbolSource</alias>
         <toType>chartSource</toType>
         <relType>relSingleComponent</relType>
@@ -505,6 +515,10 @@
       <chartTypeEnum>
         <name>Matrix</name>
         <alias>matrixChart</alias>
+      </chartTypeEnum>
+      <chartTypeEnum>
+        <name>Vector Field</name>
+        <alias>vectorFieldChart</alias>
       </chartTypeEnum>
     </enumValues>
   </enumType>

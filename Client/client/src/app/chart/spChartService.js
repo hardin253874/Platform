@@ -9,10 +9,10 @@
     *
     */
 
-    var sourceTypes = ['primarySource', 'valueSource', 'endValueSource', 'sizeSource', 'colorSource', 'imageSource', 'textSource', 'symbolSource', 'associateSource'];
+    var sourceTypes = ['primarySource', 'valueSource', 'endPrimarySource', 'endValueSource', 'sizeSource', 'colorSource', 'imageSource', 'textSource', 'symbolSource', 'associateSource'];
     var chartPropertiesQueryString = 'name, description, chartTitle, chartReport.name, chartTitleAlign.alias,inSolution.name,console:navigationElementIcon.{alias, name, imageBackgroundColor},hideOnDesktop,hideOnTablet,hideOnMobile,isPrivatelyOwned';
 
-    angular.module('mod.common.ui.spChartService', ['mod.common.spEntityService', 'mod.common.spVisDataService', 'sp.app.settings'])
+    angular.module('mod.common.ui.spChartService', ['mod.common.spEntityService', 'mod.common.spVisDataService', 'sp.app.settings', 'mod.featureSwitch'])
         .value('sourceTypes', sourceTypes)
         .value('chartProperties', chartPropertiesQueryString)
         .value('chartQuery', '' +
@@ -24,7 +24,7 @@
             '   {' + sourceTypes.join() + '}.{ name, chartReportColumn.id, specialChartSource.alias, sourceAggMethod.alias } ' +
             '}'
         )
-        .service('spChartService', function ($q, spEntityService, chartQuery, sourceTypes, chartProperties, spVisDataService, spAppSettings) {
+        .service('spChartService', function ($q, spEntityService, chartQuery, sourceTypes, chartProperties, spVisDataService, spAppSettings, rnFeatureSwitch) {
             var exports = this;
             var svc = this;
 
@@ -43,6 +43,7 @@
                     { alias: 'matrixChart', name: 'Matrix', hasImage: true, reqValue: true, hasAxes: true },
                     { alias: 'scatterChart', name: 'Scatter', reqValue: true, labelAbove: true, hasAxes: true },
                     { alias: 'bubbleChart', name: 'Bubble', hasImage: true, reqValue: true, hasAxes: true },
+                    { alias: 'vectorFieldChart', name: 'Arrows', reqValue: true, labelAbove: true, hasAxes: true, hidden: !rnFeatureSwitch.isFeatureOn('arrowChart') },
                     { alias: 'funnelChart', name: 'Funnel', hasImage: true, reqValue: true },
                     { alias: 'gaugeChart', name: 'Gauge', reqValue: true },
                     { alias: 'treeMapChart', name: 'Tree Map', isTree: true, hasImage: true, reqPrimary: true, reqValue: true },
@@ -77,7 +78,8 @@
                         // display = callback to determine if applicable
                         { alias: 'primarySource', name: 'Primary', hasProps: true, display: anyExcept(['gaugeChart']), dropCallback: _.partial(setAxisName, 'primaryAxis') },
                         { alias: 'valueSource', name: 'Values', hasProps: true, display: anyExcept(['forceGraph', 'horzHierarchy', 'radialTreeGraph']), dropCallback: _.partial(setAxisName, 'valueAxis') },
-                        { alias: 'endValueSource', name: 'End value', display: anyOf(['barChart', 'columnChart', 'areaChart']) },
+                        { alias: 'endPrimarySource', name: 'End primary', display: anyOf(['vectorFieldChart']) },
+                        { alias: 'endValueSource', name: 'End value', display: anyOf(['barChart', 'columnChart', 'areaChart', 'vectorFieldChart']) },
                         { alias: 'associateSource', name: 'Associate', display: hasProp('isTree') },
                         { alias: 'sizeSource', name: 'Size', display: anyOf(['bubbleChart']) },
                         { alias: 'colorSource', name: 'Colour', hasProps: true, display: anyExcept(['gaugeChart']) },

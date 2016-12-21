@@ -17,7 +17,7 @@
       <class>
         <alias>logActivityClass</alias>
         <typeName>EDC.SoftwarePlatform.Activities.LogActivityImplementation</typeName>
-        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+        <assemblyName>ReadiNow.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
       </class>
     </activityExecutionClass>
     <generateCode>true</generateCode>
@@ -58,7 +58,7 @@
       <class>
         <alias>createActivityClass</alias>
         <typeName>EDC.SoftwarePlatform.Activities.CreateImplementation</typeName>
-        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+        <assemblyName>ReadiNow.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
       </class>
     </activityExecutionClass>
     <generateCode>true</generateCode>
@@ -98,7 +98,7 @@
       <class>
         <alias>deleteActivityClass</alias>
         <typeName>EDC.SoftwarePlatform.Activities.DeleteImplementation</typeName>
-        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+        <assemblyName>ReadiNow.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
       </class>
     </activityExecutionClass>
     <generateCode>true</generateCode>
@@ -130,7 +130,7 @@
       <class>
         <alias>updateFieldActivityClass</alias>
         <typeName>EDC.SoftwarePlatform.Activities.UpdateFieldImplementation</typeName>
-        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+        <assemblyName>ReadiNow.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
       </class>
     </activityExecutionClass>
     <generateCode>true</generateCode>
@@ -163,7 +163,7 @@
       <class>
         <alias>setChoiceActivityClass</alias>
         <typeName>EDC.SoftwarePlatform.Activities.SetChoiceImplementation</typeName>
-        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+        <assemblyName>ReadiNow.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
       </class>
     </activityExecutionClass>
     <inputArguments>
@@ -213,7 +213,7 @@
       <class>
         <alias>setRelationshipChoiceActivityClass</alias>
         <typeName>EDC.SoftwarePlatform.Activities.SetRelationshipImplementation</typeName>
-        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+        <assemblyName>ReadiNow.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
       </class>
     </activityExecutionClass>
     <inputArguments>
@@ -267,7 +267,7 @@
       <class>
         <alias>decisionActivityClass</alias>
         <typeName>EDC.SoftwarePlatform.Activities.DecisionImplementation</typeName>
-        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+        <assemblyName>ReadiNow.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
       </class>
     </activityExecutionClass>
     <inputArguments>
@@ -313,7 +313,7 @@
       <class>
         <alias>assignToVariableClass</alias>
         <typeName>EDC.SoftwarePlatform.Activities.AssignToVariableImplementation</typeName>
-        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+        <assemblyName>ReadiNow.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
       </class>
     </activityExecutionClass>
     <inputArguments>
@@ -358,7 +358,7 @@
       <class>
         <alias>sendEmailActivityClass</alias>
         <typeName>EDC.SoftwarePlatform.Activities.SendEmailImplementation</typeName>
-        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+        <assemblyName>ReadiNow.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
       </class>
     </activityExecutionClass>
     <generateCode>true</generateCode>
@@ -531,7 +531,7 @@
       <class>
         <alias>displayFormActivityClass</alias>
         <typeName>EDC.SoftwarePlatform.Activities.DisplayFormImplementation</typeName>
-        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+        <assemblyName>ReadiNow.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
       </class>
     </activityExecutionClass>
     <generateCode>true</generateCode>
@@ -635,7 +635,7 @@
       <class>
         <alias>foreachActivityClass</alias>
         <typeName>EDC.SoftwarePlatform.Activities.ForeachImplementation</typeName>
-        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+        <assemblyName>ReadiNow.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
       </class>
     </activityExecutionClass>
     <generateCode>true</generateCode>
@@ -695,7 +695,7 @@
       <class>
         <alias>switchActivityClass</alias>
         <typeName>EDC.SoftwarePlatform.Activities.SwitchImplementation</typeName>
-        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+        <assemblyName>ReadiNow.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
       </class>
     </activityExecutionClass>
     <inputArguments>
@@ -728,7 +728,7 @@
       <class>
         <alias>workflowProxyClass</alias>
         <typeName>EDC.SoftwarePlatform.Activities.WorkflowProxyImplementation</typeName>
-        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+        <assemblyName>ReadiNow.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
       </class>
     </activityExecutionClass>
     <relationships>
@@ -757,7 +757,7 @@
       <class>
         <alias>cloneActivityClass</alias>
         <typeName>EDC.SoftwarePlatform.Activities.CloneImplementation</typeName>
-        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+        <assemblyName>ReadiNow.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
       </class>
     </activityExecutionClass>
     <inputArguments>
@@ -802,7 +802,7 @@
       <class>
         <alias>getResourcesActivityClass</alias>
         <typeName>EDC.SoftwarePlatform.Activities.GetResourcesImplementation</typeName>
-        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+        <assemblyName>ReadiNow.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
       </class>
     </activityExecutionClass>
     <generateCode>true</generateCode>
@@ -857,7 +857,7 @@
       <class>
         <alias>createLinkActivityClass</alias>
         <typeName>EDC.SoftwarePlatform.Activities.CreateLinkImplementation</typeName>
-        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+        <assemblyName>ReadiNow.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
       </class>
     </activityExecutionClass>
     <generateCode>true</generateCode>
@@ -902,7 +902,7 @@
       <class>
         <alias>generateDocActivityClass</alias>
         <typeName>EDC.SoftwarePlatform.Activities.GenerateDocImplementation</typeName>
-        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+        <assemblyName>ReadiNow.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
       </class>
     </activityExecutionClass>
     <generateCode>true</generateCode>
@@ -957,7 +957,7 @@
       <class>
         <alias>exportToActivityClass</alias>
         <typeName>EDC.SoftwarePlatform.Activities.ExportToImplementation</typeName>
-        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+        <assemblyName>ReadiNow.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
       </class>
     </activityExecutionClass>
     <generateCode>true</generateCode>
@@ -1015,7 +1015,7 @@
       <class>
         <alias>notifyActivityClass</alias>
         <typeName>EDC.SoftwarePlatform.Activities.NotifyImplementation</typeName>
-        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+        <assemblyName>ReadiNow.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
       </class>
     </activityExecutionClass>
     <generateCode>true</generateCode>
@@ -1144,7 +1144,7 @@
       <class>
         <alias>promptUserActivityClass</alias>
         <typeName>EDC.SoftwarePlatform.Activities.PromptUserImplementation</typeName>
-        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+        <assemblyName>ReadiNow.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
       </class>
     </activityExecutionClass>
     <generateCode>true</generateCode>
@@ -1197,7 +1197,7 @@
       <class>
         <alias>launchPersonCampaignActivityClass</alias>
         <typeName>EDC.SoftwarePlatform.Activities.LaunchPersonCampaignImplementation</typeName>
-        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+        <assemblyName>ReadiNow.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
       </class>
     </activityExecutionClass>
     <generateCode>true</generateCode>
@@ -1275,7 +1275,7 @@
       <class>
         <alias>launchTargetCampaignActivityClass</alias>
         <typeName>EDC.SoftwarePlatform.Activities.LaunchTargetCampaignImplementation</typeName>
-        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+        <assemblyName>ReadiNow.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
       </class>
     </activityExecutionClass>
     <generateCode>true</generateCode>
@@ -1361,7 +1361,7 @@
       <class>
         <alias>reviewSurveyActivityClass</alias>
         <typeName>EDC.SoftwarePlatform.Activities.ReviewSurveyImplementation</typeName>
-        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+        <assemblyName>ReadiNow.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
       </class>
     </activityExecutionClass>
     <generateCode>true</generateCode>
@@ -1426,7 +1426,7 @@
       <class>
         <alias>startSurveyActivityClass</alias>
         <typeName>EDC.SoftwarePlatform.Activities.StartSurveyImplementation</typeName>
-        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+        <assemblyName>ReadiNow.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
       </class>
     </activityExecutionClass>
     <generateCode>true</generateCode>

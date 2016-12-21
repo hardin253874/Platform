@@ -1,7 +1,7 @@
 @echo off
 SET RunCodeCoverage=%~1
 SET NUNIT="C:\Program Files (x86)\NUnit 2.6.1\bin\nunit-console.exe"
-SET ASSEMBLYFILTER="+[EDC.Common]* +[EDC.Interop]* +[EDC.ReadiNow.Common]* +[EDC.ReadiNow.Services]* +[EDC.SoftwarePlatform.Install.Common]* +[EDC.ReadiNow.Common.ConfigParser]* +[EDC.SoftwarePlatform.Services]* +[EDC.ReadiNow.Silverlight.Solution]* +[EDC.SoftwarePlatform.Activities]* +[EDC.SoftwarePlatform.Migration]* +[ReadiNow.DocGen]* +[EDC.SoftwarePlatform.WebApi]* +[EDC.SoftwarePlatform.Web]*"
+SET ASSEMBLYFILTER="+[EDC.Common]* +[EDC.Interop]* +[EDC.ReadiNow.Common]* +[EDC.ReadiNow.Services]* +[EDC.SoftwarePlatform.Install.Common]* +[EDC.ReadiNow.Common.ConfigParser]* +[EDC.SoftwarePlatform.Services]* +[EDC.ReadiNow.Silverlight.Solution]* +[ReadiNow.Activities]* +[EDC.SoftwarePlatform.Migration]* +[ReadiNow.DocGen]* +[EDC.SoftwarePlatform.WebApi]* +[EDC.SoftwarePlatform.Web]*"
 SET TARGETDIR=".\Tests"
 SET NUNITARGS="/nologo /nodots /framework=net-4.5 /config=SmokeTest UnitTests.nunit"	
 SET NUNITERRORLEVEL=0

@@ -156,6 +156,7 @@
         $scope.$watch('nav.getThemes()', function (getThemesCompleted) {
             if (getThemesCompleted === true) {
                 $scope.model.titleStyle = spThemeService.getTitleStyle();
+                $scope.model.actionButtonStyle = spThemeService.getActionButtonStyle();
             }
         });
 
@@ -756,6 +757,7 @@
         // Update the theming
         function updateTheme() {
             $scope.model.titleStyle = spThemeService.getTitleStyle();
+            $scope.model.actionButtonStyle = spThemeService.getActionButtonStyle();
         }
 
         // Update the form header icon and icon background

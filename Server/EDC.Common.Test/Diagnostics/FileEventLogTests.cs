@@ -30,7 +30,7 @@ namespace EDC.Diagnostics.Test
 
 			// Initialize the event log properties
 			string folder = Path.GetTempPath( );
-			string filename = string.Format( "{0}.xml", key );
+			string filename = $"{key}.xml";
 
 			return CreateEventLog( folder, filename, options);
 		}
@@ -39,13 +39,16 @@ namespace EDC.Diagnostics.Test
 		///     Create an event log.
 		/// </summary>
 		private EventLogDetails CreateEventLog( string folder, string filename, EventLogOptions options)
-		{            
-            var writer = new FileEventLogWriter(folder, filename);
-            writer.ErrorEnabled = options.ErrorEnabled;
-            writer.WarningEnabled = options.WarningEnabled;
-            writer.InformationEnabled = options.InformationEnabled;
-            writer.TraceEnabled = options.TraceEnabled;
-            var eventLog = new EventLog(new List<IEventLogWriter> { writer });
+		{
+			var writer = new FileEventLogWriter( folder, filename )
+			{
+				ErrorEnabled = options.ErrorEnabled,
+				WarningEnabled = options.WarningEnabled,
+				InformationEnabled = options.InformationEnabled,
+				TraceEnabled = options.TraceEnabled
+			};
+
+			var eventLog = new EventLog(new List<IEventLogWriter> { writer });
 
             return new EventLogDetails
             {
@@ -65,7 +68,7 @@ namespace EDC.Diagnostics.Test
 				{
 					string path = Path.Combine( eventLog.Folder, eventLog.Filename );
 					string key = Path.GetFileNameWithoutExtension( path );
-					string pattern = string.Format( "{0}*.xml", key );
+					string pattern = $"{key}*.xml";
 
 					// Get the list of all temporary log files
 					string[] files = Directory.GetFiles( eventLog.Folder, pattern );
@@ -117,7 +120,7 @@ namespace EDC.Diagnostics.Test
 
                 string path = Path.Combine( eventLog.Folder, eventLog.Filename );
 				string key = Path.GetFileNameWithoutExtension( path );
-				string pattern = string.Format( "{0}*.xml", key );
+				string pattern = $"{key}*.xml";
 
 				// Get the list of all the log files
 				string[] files = Directory.GetFiles( eventLog.Folder, pattern );
@@ -158,16 +161,16 @@ namespace EDC.Diagnostics.Test
 					try
 					{
 						var xrs = new XmlReaderSettings
-							{
-								ConformanceLevel = ConformanceLevel.Fragment
-							};
+						{
+							ConformanceLevel = ConformanceLevel.Fragment
+						};
 
 						using ( XmlReader xr = XmlReader.Create( logStream, xrs ) )
 						{
 							while ( xr.Read( ) )
 							{
 								if ( xr.NodeType == XmlNodeType.Element &&
-								     xr.Name == "entry" )
+									 xr.Name == "entry" )
 								{
 									try
 									{
@@ -186,7 +189,7 @@ namespace EDC.Diagnostics.Test
 												XElement element = entry.Element( "level" );
 												if ( element != null )
 												{
-													var level = ( EventLogLevel ) Enum.Parse( typeof ( EventLogLevel ), element.Value, true );
+													var level = ( EventLogLevel ) Enum.Parse( typeof( EventLogLevel ), element.Value, true );
 													XElement xElement1 = entry.Element( "machine" );
 													if ( xElement1 != null )
 													{
@@ -218,12 +221,12 @@ namespace EDC.Diagnostics.Test
 																			}
 																		}
 
-                                                                        string tenantName = string.Empty;
-                                                                        XElement tenantNameElement = entry.Element("tenantName");
-                                                                        if (tenantNameElement != null)
-                                                                        {
-                                                                            tenantName = tenantNameElement.Value;
-                                                                        }
+																		string tenantName = string.Empty;
+																		XElement tenantNameElement = entry.Element( "tenantName" );
+																		if ( tenantNameElement != null )
+																		{
+																			tenantName = tenantNameElement.Value;
+																		}
 
 																		string userName = string.Empty;
 																		XElement userNameElement = entry.Element( "userName" );
@@ -233,7 +236,7 @@ namespace EDC.Diagnostics.Test
 																		}
 
 																		var logEntry = new EventLogEntry( id, date, timestamp, level, machine, process, thread, source, message, tenantId, tenantName, userName );
-																		logEntries[ id ] = logEntry;
+																		logEntries [ id ] = logEntry;
 																	}
 																}
 															}
@@ -243,9 +246,9 @@ namespace EDC.Diagnostics.Test
 											}
 										}
 									}
-// ReSharper disable EmptyGeneralCatchClause
+									// ReSharper disable EmptyGeneralCatchClause
 									catch
-// ReSharper restore EmptyGeneralCatchClause
+									// ReSharper restore EmptyGeneralCatchClause
 									{
 										// Do nothing
 									}
@@ -261,6 +264,18 @@ namespace EDC.Diagnostics.Test
 			}
 
 			return logEntries;
+		}
+
+		/// <summary>
+		/// Flushes the event log.
+		/// </summary>
+		/// <param name="eventLog">The event log.</param>
+		private void FlushEventLog( FileEventLogWriter eventLog )
+		{
+			eventLog?.GetType( ).InvokeMember( "FlushLog", System.Reflection.BindingFlags.InvokeMethod | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic, null, eventLog, new object[ ]
+			{
+				false
+			} );
 		}
 
 		/// <summary>
@@ -319,26 +334,18 @@ namespace EDC.Diagnostics.Test
 
 		    try
 			{
-				string message = string.Format( "This is a sample error message (Tag: {0}).", Guid.NewGuid( ).ToString( "B" ) );
+				string message = $"This is a sample error message (Tag: {Guid.NewGuid( ):B}).";
 
                 // Create the event log
                 eventLogDetails = CreateEventLog(new EventLogOptions { ErrorEnabled = false });
                 IEventLog eventLog = eventLogDetails.EventLog;
-				
+
 				eventLog.WriteError( message );
 
-				EventLogEntryDictionary logEntries = null;
+				FlushEventLog( eventLogDetails.LogWriter );
 
-				// Load the current log entries (optionally wait for thread pool to write entries)
-				for ( int count = 0; count < 3; ++count )
-				{
-					logEntries = LoadLogEntries(eventLogDetails.LogWriter);
-					if ( logEntries.Count > 0 )
-					{
-						break;
-					}
-					Thread.Sleep( 500 );
-				}
+				// Load the current log entries
+				var logEntries = LoadLogEntries(eventLogDetails.LogWriter);
 
 				bool match = logEntries != null && logEntries.Keys.Any( id => logEntries[ id ].Message.Contains( message ) );
 
@@ -365,27 +372,36 @@ namespace EDC.Diagnostics.Test
 
 		    try
 			{
-				string message = string.Format( "This is a sample error message (Tag: {0}).", Guid.NewGuid( ).ToString( "B" ) );
+				string message = $"This is a sample error message (Tag: {Guid.NewGuid( ):B}).";
 
                 // Create the event log
                 eventLogDetails = CreateEventLog(new EventLogOptions { ErrorEnabled = true });
                 IEventLog eventLog = eventLogDetails.EventLog;
 
-                // Write an event                
-				eventLog.WriteError( message );
-
-				EventLogEntryDictionary logEntries = null;
-
-				// Load the current log entries (optionally wait for thread pool to write entries)
-				for ( int count = 0; count < 3; ++count )
+				using ( ManualResetEvent evt = new ManualResetEvent( false ) )
 				{
-					logEntries = LoadLogEntries(eventLogDetails.LogWriter);
-					if ( logEntries.Count > 0 )
+					EventHandler<LogWrittenEventArgs> handler = ( sender, args ) =>
 					{
-						break;
-					}
-					Thread.Sleep( 500 );
+						if ( args.EntriesWritten > 0 )
+						{
+							// ReSharper disable once AccessToDisposedClosure
+							evt.Set( );
+						}
+					};
+
+					eventLogDetails.LogWriter.LogWritten += handler;
+
+					// Write an event                
+					eventLog.WriteError( message );
+					FlushEventLog( eventLogDetails.LogWriter );
+
+					evt.WaitOne( 5000 );
+
+					eventLogDetails.LogWriter.LogWritten += handler;
 				}
+
+				// Load the current log entries
+				var logEntries = LoadLogEntries(eventLogDetails.LogWriter);
 
 				string processName = Process.GetCurrentProcess( ).MainModule.ModuleName;
 				int threadId = Thread.CurrentThread.ManagedThreadId;
@@ -414,27 +430,19 @@ namespace EDC.Diagnostics.Test
 
 		    try
 			{
-				string message = string.Format( "This is a sample information message (Tag: {0}).", Guid.NewGuid( ).ToString( "B" ) );
+				string message = $"This is a sample information message (Tag: {Guid.NewGuid( ):B}).";
 
                 // Create the event log
                 eventLogDetails = CreateEventLog(new EventLogOptions { InformationEnabled = false });
                 IEventLog eventLog = eventLogDetails.EventLog;
 
-                // Write an event                
+				// Write an event                
 				eventLog.WriteInformation( message );
 
-				EventLogEntryDictionary logEntries = null;
+				FlushEventLog( eventLogDetails.LogWriter );
 
-				// Load the current log entries (optionally wait for thread pool to write entries)
-				for ( int count = 0; count < 3; ++count )
-				{
-					logEntries = LoadLogEntries(eventLogDetails.LogWriter);
-					if ( logEntries.Count > 0 )
-					{
-						break;
-					}
-					Thread.Sleep( 500 );
-				}
+				// Load the current log entries
+				var logEntries = LoadLogEntries(eventLogDetails.LogWriter);
 
 				bool match = logEntries != null && logEntries.Keys.Any( id => logEntries[ id ].Message.Contains( message ) );
 
@@ -461,27 +469,37 @@ namespace EDC.Diagnostics.Test
 
 		    try
 			{
-				string message = string.Format( "This is a sample information message (Tag: {0}).", Guid.NewGuid( ).ToString( "B" ) );
+				string message = $"This is a sample information message (Tag: {Guid.NewGuid( ):B}).";
 
                 // Create the event log
                 eventLogDetails = CreateEventLog(new EventLogOptions { InformationEnabled = true });
                 IEventLog eventLog = eventLogDetails.EventLog;
 
-                // Write an event                
-				eventLog.WriteInformation( message );
-
-				EventLogEntryDictionary logEntries = null;
-
-				// Load the current log entries (optionally wait for thread pool to write entries)
-				for ( int count = 0; count < 3; ++count )
+				using ( ManualResetEvent evt = new ManualResetEvent( false ) )
 				{
-					logEntries = LoadLogEntries(eventLogDetails.LogWriter);
-					if ( logEntries.Count > 0 )
+					EventHandler<LogWrittenEventArgs> handler = ( sender, args ) =>
 					{
-						break;
-					}
-					Thread.Sleep( 500 );
+						if ( args.EntriesWritten > 0 )
+						{
+							// ReSharper disable once AccessToDisposedClosure
+							evt.Set( );
+						}
+					};
+
+					eventLogDetails.LogWriter.LogWritten += handler;
+
+					// Write an event                
+					eventLog.WriteInformation( message );
+
+					FlushEventLog( eventLogDetails.LogWriter );
+
+					evt.WaitOne( 5000 );
+
+					eventLogDetails.LogWriter.LogWritten += handler;
 				}
+
+				// Load the current log entries
+				var logEntries = LoadLogEntries(eventLogDetails.LogWriter);
 
 				string processName = Process.GetCurrentProcess().MainModule.ModuleName;
 				int threadId = Thread.CurrentThread.ManagedThreadId;
@@ -515,27 +533,37 @@ namespace EDC.Diagnostics.Test
 				Assert.IsTrue( string.IsNullOrEmpty( DiagnosticsRequestContext.UserName ) );
 				Assert.AreEqual( -1, DiagnosticsRequestContext.TenantId );
 
-				string message = string.Format( "This is a sample trace message (Tag: {0}).", Guid.NewGuid( ).ToString( "B" ) );
+				string message = $"This is a sample trace message (Tag: {Guid.NewGuid( ):B}).";
 
                 // Create the event log
                 eventLogDetails = CreateEventLog(new EventLogOptions { TraceEnabled = true });
                 IEventLog eventLog = eventLogDetails.EventLog;
 
-                // Write an event                
-				eventLog.WriteTrace( message );
-
-				EventLogEntryDictionary logEntries = null;
-
-				// Load the current log entries (optionally wait for thread pool to write entries)
-				for ( int count = 0; count < 3; ++count )
+				using ( ManualResetEvent evt = new ManualResetEvent( false ) )
 				{
-					logEntries = LoadLogEntries(eventLogDetails.LogWriter);
-					if ( logEntries.Count > 0 )
+					EventHandler<LogWrittenEventArgs> handler = ( sender, args ) =>
 					{
-						break;
-					}
-					Thread.Sleep( 500 );
+						if ( args.EntriesWritten > 0 )
+						{
+							// ReSharper disable once AccessToDisposedClosure
+							evt.Set( );
+						}
+					};
+
+					eventLogDetails.LogWriter.LogWritten += handler;
+
+					// Write an event                
+					eventLog.WriteTrace( message );
+
+					FlushEventLog( eventLogDetails.LogWriter );
+
+					evt.WaitOne( 5000 );
+
+					eventLogDetails.LogWriter.LogWritten += handler;
 				}
+
+				// Load the current log entries
+				var logEntries = LoadLogEntries(eventLogDetails.LogWriter);
 
 				string processName = Process.GetCurrentProcess().MainModule.ModuleName;
 				int threadId = Thread.CurrentThread.ManagedThreadId;
@@ -561,47 +589,57 @@ namespace EDC.Diagnostics.Test
 		[Test]
 		public void WriteTrace_TenantOrUserName( )
 		{
-            EventLogDetails eventLogDetails = null;
+			EventLogDetails eventLogDetails = null;
 
-		    try
+			try
 			{
 				DiagnosticsRequestContext.SetContext( 12345, "EDC", "UserName" );
 
-				string message = string.Format( "This is a sample trace message (Tag: {0}).", Guid.NewGuid( ).ToString( "B" ) );
+				string message = $"This is a sample trace message (Tag: {Guid.NewGuid( ):B}).";
 
-                // Create the event log
-                eventLogDetails = CreateEventLog(new EventLogOptions { TraceEnabled = true });
-                IEventLog eventLog = eventLogDetails.EventLog;
+				// Create the event log
+				eventLogDetails = CreateEventLog( new EventLogOptions { TraceEnabled = true } );
+				IEventLog eventLog = eventLogDetails.EventLog;
 
-                // Write an event                
-				eventLog.WriteTrace( message );
-
-				EventLogEntryDictionary logEntries = null;
-
-				// Load the current log entries (optionally wait for thread pool to write entries)
-				for ( int count = 0; count < 3; ++count )
+				using ( ManualResetEvent evt = new ManualResetEvent( false ) )
 				{
-					logEntries = LoadLogEntries(eventLogDetails.LogWriter);
-					if ( logEntries.Count > 0 )
+					EventHandler<LogWrittenEventArgs> handler = ( sender, args ) =>
 					{
-						break;
-					}
-					Thread.Sleep( 500 );
+						if ( args.EntriesWritten > 0 )
+						{
+							// ReSharper disable once AccessToDisposedClosure
+							evt.Set( );
+						}
+					};
+
+					eventLogDetails.LogWriter.LogWritten += handler;
+
+					// Write an event                
+					eventLog.WriteTrace( message );
+
+					FlushEventLog( eventLogDetails.LogWriter );
+
+					evt.WaitOne( 5000 );
+
+					eventLogDetails.LogWriter.LogWritten += handler;
 				}
+
+				// Load the current log entries
+				var logEntries = LoadLogEntries( eventLogDetails.LogWriter );
 
 				bool match = false;
 
-				string processName = Process.GetCurrentProcess().MainModule.ModuleName;
+				string processName = Process.GetCurrentProcess( ).MainModule.ModuleName;
 				int threadId = Thread.CurrentThread.ManagedThreadId;
 
 				// Check that the entry is present
 				if ( logEntries != null )
 				{
-					if ( logEntries.Keys.Any( id => logEntries[ id ].Message.Contains( message ) &&
-					                                logEntries[ id ].Process == processName &&
-					                                logEntries[ id ].ThreadId == threadId &&
-					                                logEntries[ id ].UserName == "UserName" &&
-					                                logEntries[ id ].TenantId == 12345 ) )
+					if ( logEntries.Keys.Any( id => logEntries [ id ].Message.Contains( message ) &&
+													logEntries [ id ].Process == processName &&
+													logEntries [ id ].ThreadId == threadId &&
+													logEntries [ id ].UserName == "UserName" &&
+													logEntries [ id ].TenantId == 12345 ) )
 					{
 						match = true;
 					}
@@ -613,9 +651,9 @@ namespace EDC.Diagnostics.Test
 			{
 				DiagnosticsRequestContext.FreeContext( );
 
-				if (eventLogDetails != null )
+				if ( eventLogDetails != null )
 				{
-					DeleteEventLog(eventLogDetails.LogWriter);
+					DeleteEventLog( eventLogDetails.LogWriter );
 				}
 			}
 		}
@@ -630,27 +668,19 @@ namespace EDC.Diagnostics.Test
 
 		    try
 			{
-				string message = string.Format( "This is a sample trace message (Tag: {0}).", Guid.NewGuid( ).ToString( "B" ) );
+				string message = $"This is a sample trace message (Tag: {Guid.NewGuid( ):B}).";
 
                 // Create the event log
                 eventLogDetails = CreateEventLog(new EventLogOptions { TraceEnabled = false });
                 IEventLog eventLog = eventLogDetails.EventLog;
 
-                // Write an event                
+				// Write an event                
 				eventLog.WriteTrace( message );
 
-				EventLogEntryDictionary logEntries = null;
+				FlushEventLog( eventLogDetails.LogWriter );
 
-				// Load the current log entries (optionally wait for thread pool to write entries)
-				for ( int count = 0; count < 3; ++count )
-				{
-					logEntries = LoadLogEntries(eventLogDetails.LogWriter);
-					if ( logEntries.Count > 0 )
-					{
-						break;
-					}
-					Thread.Sleep( 500 );
-				}
+				// Load the current log entries
+				var logEntries = LoadLogEntries(eventLogDetails.LogWriter);
 
 				bool match = logEntries != null && logEntries.Keys.Any( id => logEntries[ id ].Message.Contains( message ) );
 
@@ -677,27 +707,37 @@ namespace EDC.Diagnostics.Test
 
 		    try
 			{
-				string message = string.Format( "This is a sample trace message (Tag: {0}).", Guid.NewGuid( ).ToString( "B" ) );
+				string message = $"This is a sample trace message (Tag: {Guid.NewGuid( ):B}).";
 
                 // Create the event log
                 eventLogDetails = CreateEventLog(new EventLogOptions { TraceEnabled = true });
                 IEventLog eventLog = eventLogDetails.EventLog;
 
-                // Write an event
-				eventLog.WriteTrace( message );
-
-				EventLogEntryDictionary logEntries = null;
-
-				// Load the current log entries (optionally wait for thread pool to write entries)
-				for ( int count = 0; count < 3; ++count )
+				using ( ManualResetEvent evt = new ManualResetEvent( false ) )
 				{
-					logEntries = LoadLogEntries(eventLogDetails.LogWriter);
-					if ( logEntries.Count > 0 )
+					EventHandler<LogWrittenEventArgs> handler = ( sender, args ) =>
 					{
-						break;
-					}
-					Thread.Sleep( 500 );
+						if ( args.EntriesWritten > 0 )
+						{
+							// ReSharper disable once AccessToDisposedClosure
+							evt.Set( );
+						}
+					};
+
+					eventLogDetails.LogWriter.LogWritten += handler;
+
+					// Write an event
+					eventLog.WriteTrace( message );
+
+					FlushEventLog( eventLogDetails.LogWriter );
+
+					evt.WaitOne( 5000 );
+
+					eventLogDetails.LogWriter.LogWritten += handler;
 				}
+
+				// Load the current log entries
+				var logEntries = LoadLogEntries(eventLogDetails.LogWriter);
 
 				string processName = Process.GetCurrentProcess().MainModule.ModuleName;
 				int threadId = Thread.CurrentThread.ManagedThreadId;
@@ -726,84 +766,97 @@ namespace EDC.Diagnostics.Test
 
 		    try
 			{
-				string message1 = string.Format( "This is a sample trace message1 (Tag: {0}).", Guid.NewGuid( ).ToString( "B" ) );
-				string message2 = string.Format( "This is a sample trace message2 (Tag: {0}).", Guid.NewGuid( ).ToString( "B" ) );
+				string message1 = $"This is a sample trace message1 (Tag: {Guid.NewGuid( ):B}).";
+				string message2 = $"This is a sample trace message2 (Tag: {Guid.NewGuid( ):B}).";
 
                 // Create the event log
                 eventLogDetails = CreateEventLog(new EventLogOptions { TraceEnabled = true });
-                IEventLog eventLog = eventLogDetails.EventLog;                
+                IEventLog eventLog = eventLogDetails.EventLog;
 
-				var startEvent = new ManualResetEvent( false );
-
-// ReSharper disable ImplicitlyCapturedClosure
-				var t1 = new Thread( ( ) =>
-// ReSharper restore ImplicitlyCapturedClosure
-					{
-						startEvent.WaitOne( );
-
-						for ( int i = 0; i < 10; i++ )
-						{
-							eventLog.WriteTrace( message1 );
-						}
-					} )
-					{
-						IsBackground = true
-					};
-				t1.Start( );
-
-// ReSharper disable ImplicitlyCapturedClosure
-				var t2 = new Thread( ( ) =>
-// ReSharper restore ImplicitlyCapturedClosure
-					{
-						startEvent.WaitOne( );
-
-						for ( int i = 0; i < 10; i++ )
-						{
-							eventLog.WriteTrace( message2 );
-						}
-					} )
-					{
-						IsBackground = true
-					};
-				t2.Start( );
-
-				startEvent.Set( );
-
-				t1.Join( );
-				t2.Join( );
-
-				int t1Id = t1.ManagedThreadId;
-				int t2Id = t2.ManagedThreadId;
-
-				Thread.Sleep( 5000 );
-
-				// Load the current log entries (optionally wait for thread pool to write entries)
-				EventLogEntryDictionary logEntries = LoadLogEntries(eventLogDetails.LogWriter);
-
-				string processName = Process.GetCurrentProcess().MainModule.ModuleName;
-
-				int t1Count = 0;
-				int t2Count = 0;
-
-				// Check that the entries are present
-				foreach ( Guid id in logEntries.Keys )
+				using ( var startEvent = new ManualResetEvent( false ) )
+				using ( CountdownEvent counter = new CountdownEvent( 20 ) )
 				{
-					if ( logEntries[ id ].Message.Contains( message1 ) &&
-					     logEntries[ id ].Process == processName &&
-					     logEntries[ id ].ThreadId == t1Id )
+					EventHandler<LogWrittenEventArgs> handler = ( sender, args ) =>
 					{
-						t1Count++;
-					}
-					else if ( logEntries[ id ].Message.Contains( message2 ) &&
-					          logEntries[ id ].Process == processName &&
-					          logEntries[ id ].ThreadId == t2Id )
-					{
-						t2Count++;
-					}
-				}
+						// ReSharper disable once AccessToDisposedClosure
+						counter.Signal( args.EntriesWritten );
+					};
 
-				Assert.AreEqual( 10, t1Count );
-				Assert.AreEqual( 10, t2Count );
+					eventLogDetails.LogWriter.LogWritten += handler;
+
+					var t1 = new Thread( ( ) =>
+						{
+							// ReSharper disable once AccessToDisposedClosure
+							startEvent.WaitOne( );
+
+							for ( int i = 0; i < 10; i++ )
+							{
+								eventLog.WriteTrace( message1 );
+							}
+						} )
+					{
+						IsBackground = true
+					};
+					t1.Start( );
+
+					var t2 = new Thread( ( ) =>
+						{
+							// ReSharper disable once AccessToDisposedClosure
+							startEvent.WaitOne( );
+
+							for ( int i = 0; i < 10; i++ )
+							{
+								eventLog.WriteTrace( message2 );
+							}
+						} )
+					{
+						IsBackground = true
+					};
+					t2.Start( );
+
+					startEvent.Set( );
+
+					t1.Join( );
+					t2.Join( );
+
+					int t1Id = t1.ManagedThreadId;
+					int t2Id = t2.ManagedThreadId;
+
+
+					FlushEventLog( eventLogDetails.LogWriter );
+
+					counter.Wait( 5000 );
+
+					eventLogDetails.LogWriter.LogWritten += handler;
+
+					// Load the current log entries (optionally wait for thread pool to write entries)
+					EventLogEntryDictionary logEntries = LoadLogEntries( eventLogDetails.LogWriter );
+
+					string processName = Process.GetCurrentProcess( ).MainModule.ModuleName;
+
+					int t1Count = 0;
+					int t2Count = 0;
+
+					// Check that the entries are present
+					foreach ( Guid id in logEntries.Keys )
+					{
+						if ( logEntries [ id ].Message.Contains( message1 ) &&
+							 logEntries [ id ].Process == processName &&
+							 logEntries [ id ].ThreadId == t1Id )
+						{
+							t1Count++;
+						}
+						else if ( logEntries [ id ].Message.Contains( message2 ) &&
+								  logEntries [ id ].Process == processName &&
+								  logEntries [ id ].ThreadId == t2Id )
+						{
+							t2Count++;
+						}
+					}
+
+					Assert.AreEqual( 10, t1Count );
+					Assert.AreEqual( 10, t2Count );
+				}
 			}
 			finally
 			{
@@ -824,27 +877,19 @@ namespace EDC.Diagnostics.Test
 
 		    try
 			{
-				string message = string.Format( "This is a sample warning message (Tag: {0}).", Guid.NewGuid( ).ToString( "B" ) );
+				string message = $"This is a sample warning message (Tag: {Guid.NewGuid( ):B}).";
 
                 // Create the event log
                 eventLogDetails = CreateEventLog(new EventLogOptions { WarningEnabled = false });
                 IEventLog eventLog = eventLogDetails.EventLog;
 
-                // Write an event
+				// Write an event
 				eventLog.WriteWarning( message );
 
-				EventLogEntryDictionary logEntries = null;
+				FlushEventLog( eventLogDetails.LogWriter );
 
-				// Load the current log entries (optionally wait for thread pool to write entries)
-				for ( int count = 0; count < 3; ++count )
-				{
-					logEntries = LoadLogEntries(eventLogDetails.LogWriter);
-					if ( logEntries.Count > 0 )
-					{
-						break;
-					}
-					Thread.Sleep( 500 );
-				}
+				// Load the current log entries
+				var logEntries = LoadLogEntries(eventLogDetails.LogWriter);
 
 				bool match = logEntries != null && logEntries.Keys.Any( id => logEntries[ id ].Message.Contains( message ) );
 
@@ -871,27 +916,37 @@ namespace EDC.Diagnostics.Test
 
 		    try
 			{
-				string message = string.Format( "This is a sample warning message (Tag: {0}).", Guid.NewGuid( ).ToString( "B" ) );
+				string message = $"This is a sample warning message (Tag: {Guid.NewGuid( ):B}).";
 
                 // Create the event log
                 eventLogDetails = CreateEventLog(new EventLogOptions { WarningEnabled = true });
                 IEventLog eventLog = eventLogDetails.EventLog;
 
-                // Write an event                
-				eventLog.WriteWarning( message );
-
-				EventLogEntryDictionary logEntries = null;
-
-				// Load the current log entries (optionally wait for thread pool to write entries)
-				for ( int count = 0; count < 3; ++count )
+				using ( ManualResetEvent evt = new ManualResetEvent( false ) )
 				{
-					logEntries = LoadLogEntries(eventLogDetails.LogWriter);
-					if ( logEntries.Count > 0 )
+					EventHandler<LogWrittenEventArgs> handler = ( sender, args ) =>
 					{
-						break;
-					}
-					Thread.Sleep( 500 );
+						if ( args.EntriesWritten > 0 )
+						{
+							// ReSharper disable once AccessToDisposedClosure
+							evt.Set( );
+						}
+					};
+
+					eventLogDetails.LogWriter.LogWritten += handler;
+
+					// Write an event                
+					eventLog.WriteWarning( message );
+
+					FlushEventLog( eventLogDetails.LogWriter );
+
+					evt.WaitOne( 5000 );
+
+					eventLogDetails.LogWriter.LogWritten += handler;
 				}
+
+				// Load the current log entries
+				var logEntries = LoadLogEntries(eventLogDetails.LogWriter);
 
 				string processName = Process.GetCurrentProcess().MainModule.ModuleName;
 				int threadId = Thread.CurrentThread.ManagedThreadId;
@@ -915,208 +970,272 @@ namespace EDC.Diagnostics.Test
         /// Test purging log files when the max count has been exceeded.
         /// </summary>
 	    [Test]
-        [Category("ExtendedTests")]
         public void Purge_MaxCount_Test()
-	    {
-            // Setup unique log folder and file names
-            EventLogDetails eventLogDetails = null;
-            string folder = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("B"));
-            string fileNameOnly = Guid.NewGuid().ToString("B");
-            string filename = string.Format("{0}.xml", fileNameOnly);
+        {
+			for ( int ii = 0; ii < 100; ii++ )
+			{
+				int fileCount = 5;
+				int messageCount = 5;
 
-            try
-            {
+				// Setup unique log folder and file names
+				EventLogDetails eventLogDetails = null;
+				string folder = Path.Combine( Path.GetTempPath( ), Guid.NewGuid( ).ToString( "B" ) );
+				string fileNameOnly = Guid.NewGuid( ).ToString( "B" );
+				string filename = $"{fileNameOnly}.xml";
 
-                string message = string.Format("This is a sample warning message (Tag: {0}).", Guid.NewGuid().ToString("B"));
+				try
+				{
 
-                for (var i = 0; i < 1000; i++)          // make sure it is one message per file
-                    message += ".";
+					string message = $"This is a sample warning message (Tag: {Guid.NewGuid( ):B}).";
 
+					message += new string( '.', 1000 ); // make sure it is one message per file
 
-                // Initialize the event log properties                                
-                // Create the event log
-                Directory.CreateDirectory(folder);
-                eventLogDetails = CreateEventLog(folder, filename, new EventLogOptions { WarningEnabled = true });
-                IEventLog eventLog = eventLogDetails.EventLog;
+					// Initialize the event log properties                                
+					// Create the event log
+					Directory.CreateDirectory( folder );
+					eventLogDetails = CreateEventLog( folder, filename, new EventLogOptions { WarningEnabled = true } );
+					IEventLog eventLog = eventLogDetails.EventLog;
 
-                eventLogDetails.LogWriter.MaxCount = 5; // Maximum 10 files
-                eventLogDetails.LogWriter.MaxSize = 1;
+					int expectedFileCount = fileCount;
 
-                // Create 10 event logs, each a second apart
-                for (var i = 0; i < 5; i++)
-                {
-                    eventLog.WriteWarning(message);
-                    Thread.Sleep(1000);
-                }
+					using ( AutoResetEvent evt = new AutoResetEvent( false ) )
+					{
+						int fileCounter = -fileCount;
 
-                Thread.Sleep(10000);
+						EventHandler<LogWrittenEventArgs> logWrittenHandler = ( sender, args ) =>
+						{
+							if ( args.EntriesWritten > 1 )
+							{
+								expectedFileCount--;
+							}
 
-                eventLogDetails.LogWriter.Purge();
+							if ( !string.IsNullOrEmpty( args.RotateDetails?.NewFilename ) )
+							{
+								File.SetLastWriteTime( args.RotateDetails.NewFilename, DateTime.Now.AddSeconds( fileCounter++ ) );
 
-                var oldFileList = Directory.GetFiles(eventLogDetails.LogWriter.Folder, string.Format("{0}_*.xml", fileNameOnly));
+							// ReSharper disable once AccessToDisposedClosure
+							evt.Set( );
+							}
+						};
 
-                Assert.That(oldFileList.Count(), Is.EqualTo(5));
+						eventLogDetails.LogWriter.MaxCount = fileCount; // Maximum 5 files
+						eventLogDetails.LogWriter.MaxSize = 1;
+						eventLogDetails.LogWriter.LogWritten += logWrittenHandler;
 
-                var oldestFile = Directory.GetFiles(eventLogDetails.LogWriter.Folder, string.Format("{0}_*.xml", fileNameOnly)).OrderBy(f => f).First(); // files are named to be ordered by name
+						// Create 5 event logs, each a minute apart
+						for ( var i = 0; i < messageCount; i++ )
+						{
+							eventLog.WriteWarning( message );
+							FlushEventLog( eventLogDetails.LogWriter );
+							evt.WaitOne( 1000 );
+						}
 
-                // Write one more log that should purge the oldest
-                eventLog.WriteWarning(message);
+						eventLogDetails.LogWriter.LogWritten -= logWrittenHandler;
+					}
 
-                Thread.Sleep(10000);
+					eventLogDetails.LogWriter.Purge( );
 
-                eventLogDetails.LogWriter.Purge();   // force a purge
+					var oldFileList = Directory.GetFiles( eventLogDetails.LogWriter.Folder, $"{fileNameOnly}_*.xml" );
 
-                var newFileList = Directory.GetFiles(eventLogDetails.LogWriter.Folder, string.Format("{0}_*.xml", fileNameOnly));
+					Assert.That( oldFileList.Length, Is.EqualTo( expectedFileCount ) );
 
-                var lostFiles = oldFileList.Except(newFileList);
+					var oldestFile = Directory.GetFiles( eventLogDetails.LogWriter.Folder, $"{fileNameOnly}_*.xml" ).OrderBy( f => new FileInfo( f ).LastWriteTime ).First( ); // files are named to be ordered by name
 
-                Assert.That(lostFiles.Count(), Is.EqualTo(1));
+					using ( AutoResetEvent evt = new AutoResetEvent( false ) )
+					{
+						EventHandler<LogWrittenEventArgs> handler = ( sender, args ) =>
+						{
+							if ( args.EntriesWritten > 0 )
+							{
+							// ReSharper disable once AccessToDisposedClosure
+							evt.Set( );
+							}
+						};
 
-                Assert.That(lostFiles.First(), Is.EqualTo(oldestFile));
-            }
-            finally
-            {
-                if (eventLogDetails != null)
-                {
-                    DeleteEventLog(eventLogDetails.LogWriter);
+						eventLogDetails.LogWriter.LogWritten += handler;
 
-                    try
-                    {
-                        if (Directory.Exists(folder))
-                        {
-                            Directory.Delete(folder, true);
-                        }
-                    }
-                    // ReSharper disable EmptyGeneralCatchClause
-                    catch
-                    // ReSharper restore EmptyGeneralCatchClause
-                    {
+						// Write one more log that should purge the oldest
+						eventLog.WriteWarning( message );
 
-                    }
-                }
-            }
+						FlushEventLog( eventLogDetails.LogWriter );
+
+						evt.WaitOne( 5000 );
+
+						eventLogDetails.LogWriter.LogWritten -= handler;
+					}
+
+					eventLogDetails.LogWriter.Purge( );   // force a purge
+
+					var newFileList = Directory.GetFiles( eventLogDetails.LogWriter.Folder, $"{fileNameOnly}_*.xml" );
+
+					var lostFiles = oldFileList.Except( newFileList ).ToList( );
+
+					Assert.That( lostFiles.Count, Is.EqualTo( 1 ) );
+
+					Assert.That( lostFiles.First( ), Is.EqualTo( oldestFile ) );
+				}
+				finally
+				{
+					if ( eventLogDetails != null )
+					{
+						DeleteEventLog(eventLogDetails.LogWriter);
+
+						try
+						{
+							if (Directory.Exists(folder))
+							{
+							    Directory.Delete(folder, true);
+							}
+						}
+						catch ( Exception exc )
+						{
+							Trace.WriteLine( exc.Message );
+						}
+					}
+				}
+			}
 	    }
 
 
-        /// <summary>
-        /// Test purging stale log files.
-        /// </summary>
-        [Test]
-        public void Purge_MaxRetention_Test()
-        {
-            // Setup unique log folder and file names
-            EventLogDetails eventLogDetails = null;
-            string folder = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("B"));
-            string fileNameOnly = Guid.NewGuid().ToString("B");
-            string filename = string.Format("{0}.xml", fileNameOnly);
+		/// <summary>
+		/// Test purging stale log files.
+		/// </summary>
+		[Test]
+		public void Purge_MaxRetention_Test( )
+		{
+			// Setup unique log folder and file names
+			EventLogDetails eventLogDetails = null;
+			string folder = Path.Combine( Path.GetTempPath( ), Guid.NewGuid( ).ToString( "B" ) );
+			string fileNameOnly = Guid.NewGuid( ).ToString( "B" );
+			string filename = $"{fileNameOnly}.xml";
 
-            try
-            {
-                string message = string.Format("This is a sample warning message (Tag: {0}).", Guid.NewGuid().ToString("B"));
+			try
+			{
+				string message = $"This is a sample warning message (Tag: {Guid.NewGuid( ):B}).";
 
-                // Initialize the event log properties                                
-                // Create the event log
-                Directory.CreateDirectory(folder);
-                eventLogDetails = CreateEventLog(folder, filename, new EventLogOptions { WarningEnabled = true });
-                IEventLog eventLog = eventLogDetails.EventLog;
+				// Initialize the event log properties                                
+				// Create the event log
+				Directory.CreateDirectory( folder );
+				eventLogDetails = CreateEventLog( folder, filename, new EventLogOptions { WarningEnabled = true } );
+				IEventLog eventLog = eventLogDetails.EventLog;
 
-                int logEntriesWritten = 0;
+				int logEntriesWritten = 0;
 
-                eventLogDetails.LogWriter.MaxRetention = 10;
-                eventLogDetails.LogWriter.MaxSize = 1;
+				eventLogDetails.LogWriter.MaxRetention = 10;
+				eventLogDetails.LogWriter.MaxSize = 1;
 
-                // Create pre existing non-stale files
-                var preExistingFileNamesToKeep = new List<string>();
+				// Create pre existing non-stale files
+				var preExistingFileNamesToKeep = new List<string>( );
 
-                for (int i = 0; i < 5; i++)
-                {
-                    string fileName = Path.Combine(eventLogDetails.LogWriter.Folder, string.Format("{0}_nonstale_{1}.xml", fileNameOnly, Guid.NewGuid().ToString("B")));
-                    preExistingFileNamesToKeep.Add(fileName);
+				for ( int i = 0; i < 5; i++ )
+				{
+					string fileName = Path.Combine( eventLogDetails.LogWriter.Folder, $"{fileNameOnly}_nonstale_{Guid.NewGuid( ):B}.xml" );
+					preExistingFileNamesToKeep.Add( fileName );
 
-                    File.WriteAllText(fileName, message);
-                    File.SetLastWriteTime(fileName, DateTime.Now.AddDays(-5));
-                }
+					File.WriteAllText( fileName, message );
+					File.SetLastWriteTime( fileName, DateTime.Now.AddDays( -5 ) );
+				}
 
-                // Create pre existing stale files
-                var preExistingFileNamesToDelete = new List<string>();
+				// Create pre existing stale files
+				var preExistingFileNamesToDelete = new List<string>( );
 
-                for (int i = 0; i < 5; i++)
-                {
-                    string fileName = Path.Combine(eventLogDetails.LogWriter.Folder, string.Format("{0}_stale_{1}.xml", fileNameOnly, Guid.NewGuid().ToString("B")));
-                    preExistingFileNamesToDelete.Add(fileName);
+				for ( int i = 0; i < 5; i++ )
+				{
+					string fileName = Path.Combine( eventLogDetails.LogWriter.Folder, $"{fileNameOnly}_stale_{Guid.NewGuid( ):B}.xml" );
+					preExistingFileNamesToDelete.Add( fileName );
 
-                    File.WriteAllText(fileName, message);
-                    File.SetLastWriteTime(fileName, DateTime.Now.AddDays(-15));
-                }                
+					File.WriteAllText( fileName, message );
+					File.SetLastWriteTime( fileName, DateTime.Now.AddDays( -15 ) );
+				}
 
-                // Write enough log entries to cause the log files to exceed it's size and to force a rotation and purge
-                while (true)
-                {
-                    eventLog.WriteWarning(message);
-                    logEntriesWritten++;
+				using ( AutoResetEvent rotationEvent = new AutoResetEvent( false ) )
+				using ( AutoResetEvent writeEvent = new AutoResetEvent( false ) )
+				{
+					EventHandler<LogWrittenEventArgs> logWrittenHandler = ( sender, args ) =>
+					{
+						logEntriesWritten += args.EntriesWritten;
 
-                    Thread.Sleep(500);
+						if ( !string.IsNullOrEmpty( args.RotateDetails?.NewFilename ) )
+						{
+								// ReSharper disable once AccessToDisposedClosure
+								rotationEvent.Set( );
+						}
 
-                    // Get the list of all temporary log files
-                    string[] newLogFiles = Directory.GetFiles(eventLogDetails.LogWriter.Folder, string.Format("{0}_stale_*.xml", fileNameOnly));
+						if ( args.EntriesWritten > 0 )
+						{
+								// ReSharper disable once AccessToDisposedClosure
+								writeEvent.Set( );
+						}
+					};
 
-                    // Wait until a rotation has happened
-                    if (newLogFiles.Length == 0)
-                    {
-                        break;
-                    }
-                }
+					eventLogDetails.LogWriter.LogWritten += logWrittenHandler;
 
-                // Wait for the thread pool to write entries and to do a rotate and purge
-                Thread.Sleep(1000);
-                eventLogDetails.LogWriter.Purge(); // force a purge
+					WaitHandle [ ] waitHandles = {
+							rotationEvent,
+							writeEvent
+						};
 
-                EventLogEntryDictionary logEntries = LoadLogEntries(eventLogDetails.LogWriter, true);
+					// Write enough log entries to cause the log files to exceed it's size and to force a rotation and purge
+					while ( true )
+					{
+						eventLog.WriteWarning( message );
 
-                // Ensure that new logs are not purged
-                Assert.AreEqual(logEntriesWritten, logEntries.Count);
+						int handle = WaitHandle.WaitAny( waitHandles );
 
-                string processName = Process.GetCurrentProcess().MainModule.ModuleName;
-                int threadId = Thread.CurrentThread.ManagedThreadId;
+						if ( handle == 0 )
+						{
+							break;
+						}
+					}
 
-                // Ensure that new logs are not purged
-                Assert.IsTrue(logEntries.Values.All(le => le.Message == message && le.Process == processName && le.ThreadId == threadId));                
+					eventLogDetails.LogWriter.LogWritten -= logWrittenHandler;
+				}
 
-                // Ensure that all the stale log files are deleted
-                Assert.IsTrue(preExistingFileNamesToDelete.All(f => !File.Exists(f)));
+				// Wait for the thread pool to write entries and to do a rotate and purge
+				FlushEventLog( eventLogDetails.LogWriter );
 
-                // Ensure non-stale files still exist
-                Assert.IsTrue(preExistingFileNamesToKeep.All(File.Exists));                
-            }
-            finally
-            {
-                if (eventLogDetails != null)
-                {
-                    DeleteEventLog(eventLogDetails.LogWriter);
+				eventLogDetails.LogWriter.Purge( ); // force a purge
 
-                    try
-                    {
-                        if (Directory.Exists(folder))
-                        {
-                            Directory.Delete(folder, true);
-                        }
-                    }
-// ReSharper disable EmptyGeneralCatchClause
-                    catch
-// ReSharper restore EmptyGeneralCatchClause
-                    {
+				EventLogEntryDictionary logEntries = LoadLogEntries( eventLogDetails.LogWriter, true );
 
-                    }
-                }
-            }
-        }
+				// Ensure that new logs are not purged
+				Assert.AreEqual( logEntriesWritten, logEntries.Count );
 
-	    private DateTime _lastChangedTime;
+				string processName = Process.GetCurrentProcess( ).MainModule.ModuleName;
+				int threadId = Thread.CurrentThread.ManagedThreadId;
 
+				// Ensure that new logs are not purged
+				Assert.IsTrue( logEntries.Values.All( le => le.Message == message && le.Process == processName && le.ThreadId == threadId ) );
 
-	    private void OnFileChanged(object source, FileSystemEventArgs e)
+				// Ensure that all the stale log files are deleted
+				Assert.IsTrue( preExistingFileNamesToDelete.All( f => !File.Exists( f ) ) );
+
+				// Ensure non-stale files still exist
+				Assert.IsTrue( preExistingFileNamesToKeep.All( File.Exists ) );
+			}
+			finally
+			{
+				if ( eventLogDetails != null )
+				{
+					DeleteEventLog( eventLogDetails.LogWriter );
+
+					try
+					{
+						if ( Directory.Exists( folder ) )
+						{
+							Directory.Delete( folder, true );
+						}
+					}
+					catch ( Exception exc )
+					{
+						Trace.WriteLine( exc.Message );
+					}
+				}
+			}
+		}
+
+		private void OnFileChanged(object source, FileSystemEventArgs e)
 	    {
-	        _lastChangedTime = DateTime.UtcNow;
 	    }
 
         /// <summary>
@@ -1129,7 +1248,6 @@ namespace EDC.Diagnostics.Test
 
             // Setup unique log folder and file names            
             string folder = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("B"));
-            string fileNameOnly = Guid.NewGuid().ToString("B");
 
             string filename1 = "first.xml";
             string filename2 = "second.xml";
@@ -1137,80 +1255,85 @@ namespace EDC.Diagnostics.Test
 
             try
             {
-                string message = string.Format("This is a sample warning message (Tag: {0}).", Guid.NewGuid().ToString("B"));
-
                 // Initialize the event log properties                                
                 // Create the event log
                 Directory.CreateDirectory(folder);
 
-                _lastChangedTime = DateTime.UtcNow;
+				// Create a new FileSystemWatcher and set its properties.
+				using ( watcher = new FileSystemWatcher
+				{
+					Path = folder,
+					NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite | NotifyFilters.FileName,
+					Filter = "*.xml"
+				} )
+				{
 
-                // Create a new FileSystemWatcher and set its properties.
-                watcher = new FileSystemWatcher
-                {
-                    Path = folder,
-                    NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite | NotifyFilters.FileName,
-                    Filter = "*.xml"
-                };
+					watcher.Changed += OnFileChanged;
+					watcher.Created += OnFileChanged;
+					watcher.EnableRaisingEvents = true;
 
-                watcher.Changed += OnFileChanged;
-                watcher.Created += OnFileChanged;                                
-                watcher.EnableRaisingEvents = true;
+					using ( CountdownEvent evt = new CountdownEvent( 2000 ) )
+					{
+						// Create the keeper
+						eventLogDetails1 = CreateEventLog( folder, filename1, new EventLogOptions { WarningEnabled = true } );
+						IEventLog eventLog1 = eventLogDetails1.EventLog;
 
-                // Create the keeper
-                eventLogDetails1 = CreateEventLog(folder, filename1, new EventLogOptions { WarningEnabled = true });
-                IEventLog eventLog1 = eventLogDetails1.EventLog;
+						eventLogDetails1.LogWriter.MaxRetention = 10;
+						eventLogDetails1.LogWriter.MaxSize = 1;
+						eventLogDetails1.LogWriter.MaxCount = 2;
 
-                eventLogDetails1.LogWriter.MaxRetention = 10;
-                eventLogDetails1.LogWriter.MaxSize = 1;
-                eventLogDetails1.LogWriter.MaxCount = 2;
+						EventHandler<LogWrittenEventArgs> handler = ( sender, args ) =>
+						{
+							// ReSharper disable once AccessToDisposedClosure
+							evt.Signal( args.EntriesWritten );
+						};
 
-                for (int i = 0; i < 1000; i++)
-                {
-                    eventLog1.WriteWarning("FirstOne");
-                }
+						eventLogDetails1.LogWriter.LogWritten += handler;
 
-                // create the purger
-                eventLogDetails2 = CreateEventLog(folder, filename2, new EventLogOptions { WarningEnabled = true });
-                IEventLog eventLog2 = eventLogDetails2.EventLog;
+						for ( int i = 0; i < 1000; i++ )
+						{
+							eventLog1.WriteWarning( "FirstOne" );
+						}
 
-                eventLogDetails2.LogWriter.MaxRetention = 10;
-                eventLogDetails2.LogWriter.MaxSize = 1;
-                eventLogDetails2.LogWriter.MaxCount = 2;
+						// create the purger
+						eventLogDetails2 = CreateEventLog( folder, filename2, new EventLogOptions { WarningEnabled = true } );
+						IEventLog eventLog2 = eventLogDetails2.EventLog;
 
-                for (int i = 0; i < 1000; i++)
-                {
-                    eventLog2.WriteWarning("SecondOne");
-                }
-                
+						eventLogDetails2.LogWriter.MaxRetention = 10;
+						eventLogDetails2.LogWriter.MaxSize = 1;
+						eventLogDetails2.LogWriter.MaxCount = 2;
 
-                Stopwatch stopWatch1 = Stopwatch.StartNew();
-                                
-                while (true)
-                {
-                    Thread.Sleep(100);
-                    TimeSpan diff = DateTime.UtcNow - _lastChangedTime;
+						eventLogDetails2.LogWriter.LogWritten += handler;
 
-                    if (diff.TotalSeconds > 5 || stopWatch1.Elapsed.TotalSeconds > 30)
-                    {
-                        // 5 seconds have passed since the last file change event 
-                        // or 30 seconds in total then we are done waiting
-                        break;
-                    }
-                }
+						for ( int i = 0; i < 1000; i++ )
+						{
+							eventLog2.WriteWarning( "SecondOne" );
+						}
 
-                eventLogDetails1.LogWriter.Purge();
-                eventLogDetails2.LogWriter.Purge();
+						FlushEventLog( eventLogDetails1.LogWriter );
+						FlushEventLog( eventLogDetails2.LogWriter );
 
-	            var files = Directory.GetFiles( folder ).Where( f =>
-	            {
-		            FileInfo fi = new FileInfo( f );
+						evt.Wait( 5000 );
 
-		            return fi.Name.StartsWith( "first_" ) || fi.Name.StartsWith( "second_" );
-	            } ).ToList( );
+						eventLogDetails2.LogWriter.LogWritten -= handler;
+						eventLogDetails1.LogWriter.LogWritten -= handler;
+					}
 
-				
-                Assert.That(files.Count, Is.EqualTo(4));
+					eventLogDetails1.LogWriter.Purge( );
+					eventLogDetails2.LogWriter.Purge( );
+
+					var files = Directory.GetFiles( folder ).Where( f =>
+					{
+						FileInfo fi = new FileInfo( f );
+
+						return fi.Name.StartsWith( "first_" ) || fi.Name.StartsWith( "second_" );
+					} ).ToList( );
+
+					Assert.That( files.Count, Is.EqualTo( 4 ) );
+
+					watcher.Created -= OnFileChanged;
+					watcher.Changed -= OnFileChanged;
+				}
             }
             finally
             {
@@ -1233,12 +1356,12 @@ namespace EDC.Diagnostics.Test
                 {
                     if (Directory.Exists(folder))
                     {
-                        Directory.Delete(folder, true);
+                       Directory.Delete(folder, true);
                     }
                 }
-                catch
+                catch ( Exception ex )
                 {
-
+	                Trace.WriteLine( ex.Message );
                 }
             }
         }  

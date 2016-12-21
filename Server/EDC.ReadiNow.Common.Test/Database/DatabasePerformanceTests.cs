@@ -15,18 +15,18 @@ namespace EDC.ReadiNow.Test.Database
 	///     The database performance tests class.
 	/// </summary>
 	[ReadiNowTestFixture]
+	[Category( "ExtendedTests" )]
 	public class DatabasePerformanceTests
 	{
 		/// <summary>
 		///     Tests the trigger impact.
 		/// </summary>
 		[Test]
-        [Category("ExtendedTests")]
         public void TestTriggerImpact( )
 		{
-			int runCount = 3;
-			int threadCount = 10;
-			int threadIterationCount = 1000;
+			int runCount = 1;
+			int threadCount = 5;
+			int threadIterationCount = 100;
 
 			List<RunResult> results = new List<RunResult>( );
 

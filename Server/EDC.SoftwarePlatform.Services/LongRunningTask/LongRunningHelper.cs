@@ -130,7 +130,7 @@ namespace EDC.SoftwarePlatform.Services.LongRunningTask
 
 			SaveLongRunningTaskInfo( info );
 
-			var thread = new Thread( StartWorker );
+            var thread = new Thread(StartWorker) { Name = "LongRunningHelper", IsBackground = true };
 			thread.Start( new Tuple<Action<LongRunningInfo>, LongRunningInfo, RequestContext>( action, info, requestContext ) );
 
 			return info;

@@ -18,20 +18,15 @@ namespace EDC.ReadiNow.Model
 	[SuppressMessage( "Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix" )]
 	public sealed class EntityCache : DistributedMemoryManagerCache<long, IEntity, EntityCacheMessage>
 	{
-		/// <summary>
-		///     Static sync root.
-		/// </summary>
-		private static readonly object StaticSyncRoot = new object( );
+        /// <summary>
+        ///     Singleton instance.
+        /// </summary>
+        private static readonly Lazy<EntityCache> CacheInstance = new Lazy<EntityCache>( ( ) => new EntityCache( ), true );
 
-		/// <summary>
-		///     Singleton instance.
-		/// </summary>
-		private static readonly Lazy<EntityCache> CacheInstance = new Lazy<EntityCache>( ( ) => new EntityCache( ), false );
-
-		/// <summary>
-		/// The cache name
-		/// </summary>
-		public static readonly string CacheName = "Entity";
+        /// <summary>
+        /// The cache name
+        /// </summary>
+        public static readonly string CacheName = "Entity";
 
 		/// <summary>
 		///     Prevents a default instance of the <see cref="EntityCache" /> class from being created.
@@ -49,19 +44,10 @@ namespace EDC.ReadiNow.Model
             EntityAccessControlCacheInvalidators = Factory.Current.Resolve<IEnumerable<ICacheInvalidator>>();
 		}
 
-		/// <summary>
-		///     Gets the instance.
-		/// </summary>
-		public static EntityCache Instance
-		{
-			get
-			{
-				lock ( StaticSyncRoot )
-				{
-					return CacheInstance.Value;
-				}
-			}
-		}
+	    /// <summary>
+	    ///     Gets the instance.
+	    /// </summary>
+	    public static EntityCache Instance => CacheInstance.Value;
 
         /// <summary>
         /// The <see cref="ICacheInvalidator"/> used to invalidate the

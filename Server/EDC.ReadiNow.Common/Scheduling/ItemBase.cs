@@ -37,9 +37,8 @@ namespace EDC.ReadiNow.Scheduling
             stopWatch.Start();
 
             var jobRef = ScheduledItemHelper.GetScheduledItemRef(jobContext);
-            var jobName = Entity.GetName(jobRef.Id) ?? "[Unnamed]";
 
-            EDC.ReadiNow.Diagnostics.EventLog.Application.WriteTrace("Starting job '{0}'({1})", jobName, jobRef.Id);
+            Diagnostics.EventLog.Application.WriteTrace($"Starting job {jobRef.Id}.");
 
             try
             {
@@ -47,6 +46,12 @@ namespace EDC.ReadiNow.Scheduling
                 {
                     // Set the context to the owner of the scheduled item.
                     var scheduledItem = Entity.Get<ScheduledItem>(jobRef);
+
+                    if (scheduledItem == null)
+                    {
+                        Diagnostics.EventLog.Application.WriteTrace($"Attempted to start a job which references a nonexistant item. Ignoring. JobContext: {jobContext.ToString()}");
+                        return;
+                    }
 
                     if (RunAsOwner)
                     {

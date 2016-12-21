@@ -15,6 +15,11 @@ namespace EDC.SoftwarePlatform.Activities
         {
             var resource = GetArgumentEntity<Resource>(inputs, "core:createLinkResourceArgument");
 
+            if (resource == null)
+            {
+                throw new WorkflowRunException("The 'Resource' argument is empty. It must have a value.");
+            }
+
             string Url = NavigationHelper.GetResourceViewUrl(resource.Id).ToString();
 
             string anchor = string.Format("<a href='{0}'>{1}</a>", Url, XmlHelper.EscapeXmlText(resource.Name ?? "[Unnamed]"));

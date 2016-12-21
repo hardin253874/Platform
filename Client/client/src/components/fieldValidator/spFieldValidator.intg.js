@@ -264,11 +264,11 @@ describe('Entity Model|spFieldValidator|intg:', function() {
     });
     
 
-    it('Validate name length <= 200', function () {
+    it('Validate name length <= 300', function () {
         var validator = spFieldValidator.getValidator(nameField);
 
-        var maxString = (new Array(200 + 1)).join("x");    // join creates n-1 characters ni the string 
-        var overMaxString = (new Array(201 + 1)).join("x");    // join creates n-1 characters ni the string 
+        var maxString = (new Array(300 + 1)).join("x");    // join creates n-1 characters ni the string 
+        var overMaxString = (new Array(301 + 1)).join("x");    // join creates n-1 characters ni the string 
 
         expect(validator(maxString)).toHaveNoErrors();
         expect(validator(overMaxString)).toHaveErrorContaining('max');
@@ -360,14 +360,14 @@ describe('Entity Model|spFieldValidator|intg:', function() {
     });
     
 
-    it('sanitizer trims a name field to 200', function () {
+    it('sanitizer trims a name field to 300', function () {
         var trimmer = spFieldValidator.getSanitizer(nameField);
 
-        var maxString = (new Array(200 + 1)).join("x");    // join creates n-1 characters ni the string 
+        var maxString = (new Array(300 + 1)).join("x");    // join creates n-1 characters ni the string 
         var overMaxString = (new Array(2001 + 1)).join("x");    // join creates n-1 characters ni the string 
 
         expect(trimmer(maxString)).toEqual(maxString);
-        expect(trimmer(overMaxString).length).toEqual(200);
+        expect(trimmer(overMaxString).length).toEqual(300);
     });
     
 

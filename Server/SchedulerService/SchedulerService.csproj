@@ -117,9 +117,9 @@
       <Name>EDC.ReadiNow.Common</Name>
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="..\EDC.SoftwarePlatform.Activities\EDC.SoftwarePlatform.Activities.csproj">
+    <ProjectReference Include="..\ReadiNow.Activities\ReadiNow.Activities.csproj">
       <Project>{98ec024c-6439-44b1-8b1e-29e457b2201f}</Project>
-      <Name>EDC.SoftwarePlatform.Activities</Name>
+      <Name>ReadiNow.Activities</Name>
     </ProjectReference>
     <ProjectReference Include="..\ReadiNow.Interfaces\ReadiNow.Interfaces.csproj">
       <Project>{c1fc97b7-aacc-45b5-9969-7995b27093ca}</Project>

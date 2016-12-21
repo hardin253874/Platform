@@ -491,6 +491,7 @@
       <xs:element ref="valueAxis.instance" />
       <xs:element ref="chartColorMethod.instance" />
       <xs:element ref="primarySource.instance" />
+      <xs:element ref="endPrimarySource.instance" />
       <xs:element ref="valueSource.instance" />
       <xs:element ref="endValueSource.instance" />
       <xs:element ref="associateSource.instance" />
@@ -1038,7 +1039,7 @@
   <xs:element name="name">
     <xs:simpleType>
       <xs:restriction base="xs:string">
-        <xs:maxLength value="200" />
+        <xs:maxLength value="300" />
         <xs:pattern value="^[^&lt;&gt;]+$" />
       </xs:restriction>
     </xs:simpleType>
@@ -1130,7 +1131,7 @@
   <xs:element name="typeScriptName">
     <xs:simpleType>
       <xs:restriction base="xs:string">
-        <xs:maxLength value="200" />
+        <xs:maxLength value="300" />
         <xs:pattern value="^[^&lt;&gt;]+$" />
       </xs:restriction>
     </xs:simpleType>
@@ -2780,7 +2781,7 @@
   <xs:element name="fieldScriptName">
     <xs:simpleType>
       <xs:restriction base="xs:string">
-        <xs:maxLength value="200" />
+        <xs:maxLength value="300" />
         <xs:pattern value="^[^&lt;&gt;]+$" />
       </xs:restriction>
     </xs:simpleType>
@@ -2959,7 +2960,7 @@
   <xs:element name="fromName">
     <xs:simpleType>
       <xs:restriction base="xs:string">
-        <xs:maxLength value="200" />
+        <xs:maxLength value="300" />
         <xs:pattern value="^[^&lt;&gt;]+$" />
       </xs:restriction>
     </xs:simpleType>
@@ -2967,7 +2968,7 @@
   <xs:element name="toName">
     <xs:simpleType>
       <xs:restriction base="xs:string">
-        <xs:maxLength value="200" />
+        <xs:maxLength value="300" />
         <xs:pattern value="^[^&lt;&gt;]+$" />
       </xs:restriction>
     </xs:simpleType>
@@ -2975,7 +2976,7 @@
   <xs:element name="fromScriptName">
     <xs:simpleType>
       <xs:restriction base="xs:string">
-        <xs:maxLength value="200" />
+        <xs:maxLength value="300" />
         <xs:pattern value="^[^&lt;&gt;]+$" />
       </xs:restriction>
     </xs:simpleType>
@@ -2983,7 +2984,7 @@
   <xs:element name="toScriptName">
     <xs:simpleType>
       <xs:restriction base="xs:string">
-        <xs:maxLength value="200" />
+        <xs:maxLength value="300" />
         <xs:pattern value="^[^&lt;&gt;]+$" />
       </xs:restriction>
     </xs:simpleType>
@@ -5770,6 +5771,7 @@
       <xs:element minOccurs="0" maxOccurs="1" ref="valueAxis" />
       <xs:element minOccurs="0" maxOccurs="1" ref="chartColorMethod" />
       <xs:element minOccurs="0" maxOccurs="1" ref="primarySource" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="endPrimarySource" />
       <xs:element minOccurs="0" maxOccurs="1" ref="valueSource" />
       <xs:element minOccurs="0" maxOccurs="1" ref="endValueSource" />
       <xs:element minOccurs="0" maxOccurs="1" ref="associateSource" />
@@ -21856,6 +21858,7 @@
         <xs:enumeration value="funnelChart" />
         <xs:enumeration value="gaugeChart" />
         <xs:enumeration value="matrixChart" />
+        <xs:enumeration value="vectorFieldChart" />
       </xs:restriction>
     </xs:simpleType>
   </xs:element>
@@ -21943,6 +21946,28 @@
     </xs:all>
   </xs:complexType>
   <xs:element name="primarySource">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:group minOccurs="0" maxOccurs="1" ref="is_chartSource" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="endPrimarySource.instance" type="ri_endPrimarySource" />
+  <xs:complexType name="ri_endPrimarySource">
+    <xs:all>
+      <xs:element minOccurs="1" maxOccurs="1" name="from">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_chartSeries" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="to">
+        <xs:complexType mixed="true">
+          <xs:group minOccurs="0" maxOccurs="1" ref="is_chartSource" />
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:element name="endPrimarySource">
     <xs:complexType mixed="true">
       <xs:sequence>
         <xs:group minOccurs="0" maxOccurs="1" ref="is_chartSource" />

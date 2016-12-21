@@ -9,11 +9,8 @@ using EDC.ReadiNow.Model;
 using NUnit.Framework;
 using ProtoBuf;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace EDC.ReadiNow.Test.BackgroundTasks
 {
@@ -24,14 +21,15 @@ namespace EDC.ReadiNow.Test.BackgroundTasks
 
         [Test]
         [RunAsGlobalTenant]
-        public void Registeration()
+        public void Registration()
         {
             var manager = Factory.Current.Resolve<IBackgroundTaskManager>();
 
             Assert.That(manager, Is.Not.Null);
         }
 
-        static string result = "";
+        static string _result = "";
+
 		[Test]
 		[RunAsGlobalTenant]
 		public void Runs( )
@@ -39,13 +37,13 @@ namespace EDC.ReadiNow.Test.BackgroundTasks
 			var edcTenantId = TenantHelper.GetTenantId( "EDC", true );
 
 			//static string result = "";
-			result = "";
+			_result = "";
 
 			using ( CountdownEvent evt = new CountdownEvent( 1 ) )
 			{
 				Action<DummyParam> act = ( p ) =>
 				{
-					result += p.S;
+					_result += p.S;
 					// ReSharper disable once AccessToDisposedClosure
 					evt.Signal( );
 				};
@@ -59,29 +57,27 @@ namespace EDC.ReadiNow.Test.BackgroundTasks
 				{
 
 					manager.EnqueueTask( edcTenantId, BackgroundTask.Create( "DummyHandler", new DummyParam { S = "a" } ) );
-					Thread.Sleep( 100 );
-					Assert.That( result, Is.Empty );
+					Assert.That( _result, Is.Empty );
 
 					manager.Start( );
 
 					evt.Wait( DefaultTimeout );
 					evt.Reset( );
 
-					Assert.That( result, Is.EqualTo( "a" ) );
+					Assert.That( _result, Is.EqualTo( "a" ) );
 
 					manager.EnqueueTask( edcTenantId, BackgroundTask.Create( "DummyHandler", new DummyParam { S = "b" } ) );
 
 					evt.Wait( DefaultTimeout );
 					evt.Reset( );
 
-					Assert.That( result, Is.EqualTo( "ab" ) );
+					Assert.That( _result, Is.EqualTo( "ab" ) );
 
-					manager.Stop( );
+					manager.Stop( 5000 );
 
 					manager.EnqueueTask( edcTenantId, BackgroundTask.Create( "DummyHandler", new DummyParam { S = "c" } ) );
-					Thread.Sleep( 100 );
 
-					Assert.That( result, Is.EqualTo( "ab" ) );      // c not processed
+					Assert.That( _result, Is.EqualTo( "ab" ) );      // c not processed
 
 				}
 				finally

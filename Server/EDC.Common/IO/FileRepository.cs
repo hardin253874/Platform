@@ -85,16 +85,26 @@ namespace EDC.IO
         /// </summary>
         private DateTime _lastCleanupTimeUtc = DateTime.MinValue;
 
+		/// <summary>
+		/// Occurs after files have been removed.
+		/// </summary>
+		public event EventHandler<FilesRemovedEventArgs> FilesRemoved;
 
-        /// <summary>
-        ///     Constructor
-        /// </summary>
-        /// <param name="name">The name of the repository.</param>
-        /// <param name="path">The path of the repository,</param>
-        /// <param name="tokenProvider">The token provider.</param>
-        /// <param name="eventLog">The event log.</param>
-        /// <param name="retentionPeriod">The retention period for the repository</param>
-        public FileRepository(string name, string path, IFileTokenProvider tokenProvider, IEventLog eventLog, TimeSpan retentionPeriod) : this(name, path, tokenProvider, eventLog, retentionPeriod, TimeSpan.FromHours(12))
+		/// <summary>
+		/// Occurs when a cleanup task has completed.
+		/// </summary>
+		public event EventHandler CleanupComplete;
+
+
+		/// <summary>
+		///     Constructor
+		/// </summary>
+		/// <param name="name">The name of the repository.</param>
+		/// <param name="path">The path of the repository,</param>
+		/// <param name="tokenProvider">The token provider.</param>
+		/// <param name="eventLog">The event log.</param>
+		/// <param name="retentionPeriod">The retention period for the repository</param>
+		public FileRepository(string name, string path, IFileTokenProvider tokenProvider, IEventLog eventLog, TimeSpan retentionPeriod) : this(name, path, tokenProvider, eventLog, retentionPeriod, TimeSpan.FromHours(12))
         {
         }
 
@@ -188,7 +198,7 @@ namespace EDC.IO
 
             if (!File.Exists(dataFilePath))
             {
-                throw new FileNotFoundException(string.Format(@"The file with token {0} does not exist in repository {1}.", token, Name));
+                throw new FileNotFoundException( $@"The file with token {token} does not exist in repository {Name}." );
             }
 
             return File.OpenRead(dataFilePath);
@@ -296,10 +306,24 @@ namespace EDC.IO
                 {
                     _eventLog.WriteInformation("Cleanup for file repository {0} starting", Name);
 
-                    CleanupOldTempFiles();
-                    CleanupFilesExceedingRetentionPeriod();
+	                var oldFiles = CleanupOldTempFiles();
+	                var staleFiles = CleanupFilesExceedingRetentionPeriod();
 
-                    _eventLog.WriteInformation("Cleanup for file repository {0} completed.", Name);
+					var filesRemoved = FilesRemoved;
+
+					if ( filesRemoved != null && ( ( oldFiles != null && oldFiles.Count > 0 ) || ( staleFiles != null && staleFiles.Count > 0 ) ) )
+					{
+						FilesRemovedEventArgs args = new FilesRemovedEventArgs( oldFiles, staleFiles );
+
+						filesRemoved( this, args );
+					}
+
+	                _eventLog.WriteInformation("Cleanup for file repository {0} completed.", Name);
+                }).ContinueWith( t =>
+                {
+	                var cleanupComplete = CleanupComplete;
+
+	                cleanupComplete?.Invoke( this, new EventArgs( ) );
                 });
             }
             catch (Exception exception)
@@ -322,21 +346,23 @@ namespace EDC.IO
         /// <summary>
         ///     Cleans up files older than retention period.
         /// </summary>
-        private void CleanupFilesExceedingRetentionPeriod()
+        private List<string> CleanupFilesExceedingRetentionPeriod()
         {
             if (_retentionPeriod == TimeSpan.MaxValue || _retentionPeriod.TotalMilliseconds <= 0)
             {
-                return;
+                return null;
             }
 
             if (!Directory.Exists(_repositoryPath))
             {
-                return;
+                return null;
             }
 
             var directoryInfo = new DirectoryInfo(_repositoryPath);
 
-            foreach (var fileInfo in directoryInfo.EnumerateFiles("*" + DataFileExtension, SearchOption.AllDirectories))
+			List<string> results = new List<string>( );
+
+			foreach (var fileInfo in directoryInfo.EnumerateFiles("*" + DataFileExtension, SearchOption.AllDirectories))
             {
                 try
                 {
@@ -345,6 +371,9 @@ namespace EDC.IO
                     {
                         continue;
                     }
+
+	                results.Add( fileInfo.FullName );
+
                     fileInfo.Delete();
 
                     DeleteEmptyDirectoriesUpToRepositoryRoot(fileInfo.Directory);
@@ -354,20 +383,24 @@ namespace EDC.IO
                     // Ignore
                 }
             }
+
+	        return results;
         }
 
 
         /// <summary>
         ///     Cleans up old temp files.
         /// </summary>
-        private void CleanupOldTempFiles()
+        private List<string> CleanupOldTempFiles()
         {
             if (!Directory.Exists(_tempDirectoryPath))
             {
-                return;
+                return null;
             }
 
             var tempDirInfo = new DirectoryInfo(_tempDirectoryPath);
+
+	        List<string> results = new List<string>( );
 
             foreach (var fileInfo in tempDirInfo.EnumerateFiles("*" + TempFileExtension))
             {
@@ -380,6 +413,9 @@ namespace EDC.IO
                     {
                         continue;
                     }
+
+	                results.Add( fileInfo.FullName );
+	                
                     fileInfo.Delete();
                 }
                 catch
@@ -387,6 +423,8 @@ namespace EDC.IO
                     // Ignore
                 }
             }
+
+	        return results;
         }
 
 
@@ -594,7 +632,7 @@ namespace EDC.IO
         /// <returns></returns>
         private string GetDataFilePath(string token, string directoryPath)
         {
-            return Path.Combine(directoryPath, string.Format("{0}{1}", token, DataFileExtension));
+            return Path.Combine(directoryPath, $"{token}{DataFileExtension}" );
         }
 
 
@@ -604,7 +642,7 @@ namespace EDC.IO
         /// <returns></returns>
         private string GetTempDataFilePath()
         {
-            return Path.Combine(_tempDirectoryPath, string.Format("{0:N}{1}", Guid.NewGuid(), TempFileExtension));
+            return Path.Combine(_tempDirectoryPath, $"{Guid.NewGuid( ):N}{TempFileExtension}" );
         }
 
 

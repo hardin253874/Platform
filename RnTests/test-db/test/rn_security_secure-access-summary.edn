@@ -1,0 +1,63 @@
+[{:tags
+  [:nomodify :prod :regression :user/kun :desktop :area/security],
+  :tests [],
+  :name "Ensure fields of related type secured on stand alone report",
+  :steps
+  [{:script "(rn.common/start-app-and-login (:admin-creds *tc*))"}
+   {:script
+    "(rt.po.app/navigate-to-item \"Administration\" \"Security\")"}
+   {:script "(rt.po.app/select-navigator-item \"User Roles\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Deans\")"}
+   {:script "(rt.po.app/choose-context-menu \"View\")"}
+   {:script "(rt.po.view-form/select-form-tab \"Access Summary\")"}
+   {:script
+    "(expect-equals true (> (rt.po.report-view/count-report-row) 0))"}
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.app/select-navigator-item \"Record Access\")"}
+    {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script "(rt.po.access-rules/add-new-access-rule)"}
+   {:script
+    "(expect-equals true (rt.po.access-rules-new/new-dialog-visible?))"}
+   {:script
+    "(rt.po.access-rules-new/set-role \"Deans (User Role)\")"}
+   {:script "(rt.po.access-rules-new/set-object \"Herb\")"}
+   {:script "(rt.po.access-rules-new/click-ok)"}
+   {:script
+    "(rt.po.access-rules/enable-access-rule \"Deans (User Role)\" \"Herb\" \"Herb\")"}
+   {:script "(rt.po.access-rules/click-save-button)"}
+   {:script "(rt.po.app/select-navigator-item \"User Roles\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Deans\")"}
+   {:script "(rt.po.app/choose-context-menu \"View\")"}
+   {:script "(rt.po.view-form/select-form-tab \"Access Summary\")"}  
+   {:script "(rt.po.access-rules/set-access-summary-search \"Herb\")"}
+   {:script
+    "(expect-equals true (> (rt.po.report-view/count-report-row) 0))"}  
+   {:script "(rt.po.edit-form/click-back-button)"}
+   {:script "(rt.po.app/select-navigator-item \"Record Access\")"}
+    {:script "(rt.po.access-rules/click-edit-button)"}
+   {:script
+    "(rt.po.access-rules/delete-access-rule \"Deans (User Role)\" \"Herb\" \"Herb\")"}
+	{:script "(rt.po.access-rules/click-save-button)"}
+	{:script "(rt.po.app/select-navigator-item \"User Roles\")"}
+   {:script
+    "(rt.po.report-view/right-click-row-by-text \"Deans\")"}
+   {:script "(rt.po.app/choose-context-menu \"View\")"}
+   {:script "(rt.po.view-form/select-form-tab \"Access Summary\")"}  
+   {:script "(rt.po.access-rules/set-access-summary-search \"Herb\")"}
+   {:script
+    "(rt.po.view-form/expect-report-row-count 0)"}  
+   ],
+  :type :test,
+  :source "./test-db",
+  :modified "20161220-101533",
+  :setup [],
+  :fixtures
+  [:common/fixture/test-account-creds
+   :rn/fixture/admin-creds
+   :rn/fixture/user-creds],
+  :id :rn/security/secure-access-summary,
+  :teardown
+  [],
+  :modified-by "not-implemented"}]

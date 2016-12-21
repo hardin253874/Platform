@@ -45,7 +45,8 @@ angular.module('mod.common.spTenantSettings', ['mod.common.spEntityService', 'sp
             'k:consoleHeaderBackgroundImageRepeat,' +
             'k:consoleTopBackgroundImageRepeat,' +
             'k:consoleLeftBackgroundImageRepeat,' +
-            'k:consoleGeneralContentAreaReportHeaderFontColor';
+            'k:consoleGeneralContentAreaReportHeaderFontColor,' +
+            'k:actionButtonBackgroundColor';
 
         var requestString = 'finYearStartMonth.id, tenantCurrencySymbol, k:tenantConsoleThemeSettings.{' + themeRequestString + '}';
         var solutionRequestString = 'name, alias, k:solutionConsoleTheme.{' + themeRequestString + '}';

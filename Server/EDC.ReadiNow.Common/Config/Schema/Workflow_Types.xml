@@ -265,7 +265,7 @@ A way of marking a transition as being the default transition.
       <class>
         <alias>workflowActivityClass</alias>
         <typeName>EDC.SoftwarePlatform.Activities.WorkflowImplementation</typeName>
-        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+        <assemblyName>ReadiNow.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
       </class>
     </activityExecutionClass>
     <runtimeProperties>
@@ -440,7 +440,7 @@ A way of marking a transition as being the default transition.
   <target>
     <alias>workflowSaveHelperClass</alias>
     <typeName>EDC.SoftwarePlatform.Activities.WorkflowSaveHelper</typeName>
-    <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+    <assemblyName>ReadiNow.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
   </target>
   <type>
     <alias>swimlane</alias>
@@ -1392,19 +1392,19 @@ will determine which actual type - which field or relationship - is in effect.
   <target>
     <alias>userTaskTargetClass</alias>
     <typeName>EDC.SoftwarePlatform.Activities.Tasks.UserTaskTarget</typeName>
-    <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+    <assemblyName>ReadiNow.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
     <ordinal>10</ordinal>
   </target>
   <target>
     <alias>displayFormTaskTargetClass</alias>
     <typeName>EDC.SoftwarePlatform.Activities.Tasks.DisplayFormTaskTarget</typeName>
-    <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+    <assemblyName>ReadiNow.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
     <ordinal>20</ordinal>
   </target>
   <target>
     <alias>promptUserTaskTargetClass</alias>
     <typeName>EDC.SoftwarePlatform.Activities.Tasks.PromptUserTaskTarget</typeName>
-    <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+    <assemblyName>ReadiNow.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
     <ordinal>30</ordinal>
   </target>
   <!--~~~~~~~~~~~~~~~~-->
@@ -1792,7 +1792,7 @@ will determine which actual type - which field or relationship - is in effect.
           <class>
             <alias>timeoutEventClass</alias>
             <typeName>EDC.SoftwarePlatform.Activities.Engine.Events.TimeoutEvent</typeName>
-            <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+            <assemblyName>ReadiNow.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
           </class>
         </eventBackingClass>
       </workflowEventEnum>
@@ -1804,7 +1804,7 @@ will determine which actual type - which field or relationship - is in effect.
           <class>
             <alias>userCompletesTaskEventClass</alias>
             <typeName>EDC.SoftwarePlatform.Activities.Engine.Events.UserCompletesTaskEvent</typeName>
-            <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+            <assemblyName>ReadiNow.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
           </class>
         </eventBackingClass>
       </workflowEventEnum>
@@ -1816,7 +1816,7 @@ will determine which actual type - which field or relationship - is in effect.
           <class>
             <alias>childWorkflowCompletedTaskEventClass</alias>
             <typeName>EDC.SoftwarePlatform.Activities.Engine.Events.ChildWorkflowCompletedEvent</typeName>
-            <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+            <assemblyName>ReadiNow.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
           </class>
         </eventBackingClass>
       </workflowEventEnum>
@@ -1828,7 +1828,7 @@ will determine which actual type - which field or relationship - is in effect.
           <class>
             <alias>promptUserTaskCompletedEventClass</alias>
             <typeName>EDC.SoftwarePlatform.Activities.Engine.Events.PromptUserTaskCompletedEvent</typeName>
-            <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+            <assemblyName>ReadiNow.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
           </class>
         </eventBackingClass>
       </workflowEventEnum>
@@ -1845,7 +1845,7 @@ will determine which actual type - which field or relationship - is in effect.
         <alias>cleanUpWorkflowRunsActionClass</alias>
         <name>cleanUpWorkflowRunsAction</name>
         <typeName>EDC.SoftwarePlatform.Activities.Engine.CleanUpWorkflowRunsAction</typeName>
-        <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+        <assemblyName>ReadiNow.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
       </class>
     </onScheduleFire>
   </scheduleAction>

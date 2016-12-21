@@ -28,7 +28,7 @@
         <name>Name</name>
         <description>The 'name' field of every resource.</description>
         <alias>name</alias>
-        <maxLength>200</maxLength>
+        <maxLength>300</maxLength>
         <pattern>namePattern</pattern>
         <fieldInGroup>default</fieldInGroup>
       </stringField>
@@ -230,7 +230,7 @@
       <stringField>
         <alias>typeScriptName</alias>
         <name>Script name</name>
-        <maxLength>200</maxLength>
+        <maxLength>300</maxLength>
         <pattern>scriptNamePattern</pattern>
         <description>The name to use when referring to this object or type in scripts.</description>
         <fieldInGroup>typeDetails</fieldInGroup>

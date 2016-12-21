@@ -13,36 +13,22 @@ namespace EDC.ReadiNow.Model
 	internal class FieldEntityCache : DistributedMemoryManagerCache<long, ISet<long>, FieldEntityCacheMessage>
 	{
         /// <summary>
-        ///     Static sync root.
-        /// </summary>
-        private static readonly object InnerStaticSyncRoot = new object( );
-
-		/// <summary>
 		///     Represents the singleton instance of the cache.
 		/// </summary>
-		private static readonly Lazy<FieldEntityCache> InstanceMemberInner = new Lazy<FieldEntityCache>( ( ) => new FieldEntityCache( ), false );
+		private static readonly Lazy<FieldEntityCache> InstanceMemberInner = new Lazy<FieldEntityCache>( ( ) => new FieldEntityCache( ), true );
 
-		/// <summary>
-		///     Initializes a new instance of the <see cref="FieldEntityCache" /> class.
-		/// </summary>
-		private FieldEntityCache( )
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="FieldEntityCache" /> class.
+        /// </summary>
+        private FieldEntityCache( )
 			: base( "FieldEntity" )
 		{
 		}
 
-		/// <summary>
-		///     Gets the instance.
-		/// </summary>
-		public static FieldEntityCache InstanceInner
-		{
-			get
-			{
-				lock ( InnerStaticSyncRoot )
-				{
-					return InstanceMemberInner.Value;
-				}
-			}
-		}
+	    /// <summary>
+	    ///     Gets the instance.
+	    /// </summary>
+	    public static FieldEntityCache InstanceInner => InstanceMemberInner.Value;
 
 		/// <summary>
 		///     Handles the MessageReceived event of the channel.

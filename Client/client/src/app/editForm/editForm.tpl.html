@@ -42,8 +42,9 @@
                     ng-if="showActionButtons()"
                     ng-disabled="ab.disabled"
                     ng-click="ab.execute()"
+                    ng-style="model.actionButtonStyle"
                     title="{{ab.name || ab.displayname}}">
-                <img ng-src="{{ab.icon}}" width="16" height="16" /><span ng-show="ab.action.state === 'createForm' || ab.action.method === 'run' || ab.action.method === 'generate'">{{ab.nameshort}}</span>
+                    <span ng-show="ab.action.state === 'createForm' || ab.action.method === 'run' || ab.action.method === 'generate'">{{ab.nameshort}}</span>
             </button>
         </div>
     </div>

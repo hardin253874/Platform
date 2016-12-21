@@ -55,21 +55,22 @@ namespace EDC.ReadiNow.Core.Cache.Providers
         {
 			if ( string.IsNullOrEmpty( cacheName ) )
 			{
-				throw new ArgumentNullException( "cacheName" );
+				throw new ArgumentNullException( nameof( cacheName ) );
 			}
 
             _innerCache = innerCache;
 			CacheName = cacheName;
             CacheFactory factory = new CacheFactory { ExpirationInterval = expirationInterval, IsolateTenants = false };
             _recentCache = factory.Create<TKey, Tuple<TValue,DateTime>>(CacheName + " Delayed Invalidation Recent Cache");
-            _recentUpdatingUsers = factory.Create<Tuple<long, TKey>, bool>(CacheName + " Delayed Invalidation Recent Updating Users Cache");
+			_recentCache.ItemsRemoved += CacheOnItemsRemoved;
+			_recentUpdatingUsers = factory.Create<Tuple<long, TKey>, bool>(CacheName + " Delayed Invalidation Recent Updating Users Cache");
             _globalThresholdTicks = globalThresholdTicks;
         }
 
-        /// <summary>
-        /// Finalizer.
-        /// </summary>
-        ~DelayedInvalidateCache()
+		/// <summary>
+		/// Finalizer.
+		/// </summary>
+		~DelayedInvalidateCache()
         {
             Dispose(false);
         }
@@ -92,8 +93,7 @@ namespace EDC.ReadiNow.Core.Cache.Providers
 	    public string CacheName
 	    {
 		    get;
-		    private set;
-	    }
+		}
 
         /// <summary>
         /// Dispose managed and unmanaged resources.
@@ -103,7 +103,8 @@ namespace EDC.ReadiNow.Core.Cache.Providers
         /// </param>
         protected virtual void Dispose(bool disposing)
         {
-        }
+			_recentCache.ItemsRemoved -= CacheOnItemsRemoved;
+		}
 
         /// <summary>
         /// Access a cache entry.
@@ -146,7 +147,7 @@ namespace EDC.ReadiNow.Core.Cache.Providers
         public bool TryGetOrAdd(TKey key, out TValue value, Func<TKey, TValue> valueFactory)
         {
             if (valueFactory == null)
-                throw new ArgumentNullException("valueFactory");
+                throw new ArgumentNullException(nameof( valueFactory ));
 
             Tuple<TValue, DateTime> entry;
             bool fromCache = _recentCache.TryGetOrAdd( key, out entry, key1 =>
@@ -194,6 +195,7 @@ namespace EDC.ReadiNow.Core.Cache.Providers
         public void Clear()
         {
             _recentCache.Clear();
+	        _recentUpdatingUsers.Clear( );
             _innerCache.Clear();
         }
 
@@ -217,7 +219,7 @@ namespace EDC.ReadiNow.Core.Cache.Providers
         public IReadOnlyCollection<TKey> Remove(IEnumerable<TKey> keys)
         {
             if (keys == null)
-                throw new ArgumentNullException("keys");
+                throw new ArgumentNullException(nameof( keys ));
 
 	        var list = keys as IList<TKey> ?? keys.ToList( );
 
@@ -371,12 +373,9 @@ namespace EDC.ReadiNow.Core.Cache.Providers
         ///     Returns the number of entries in the cache.
         ///     Caution: Cost is O(N)
         /// </summary>
-        public int Count
-        {
-            get { return _innerCache.Count(); }
-        }
+        public int Count => _innerCache.Count();
 
-        /// <summary>
+	    /// <summary>
         /// Raised when items are removed from the set. Note, this may be called
         /// after the items are already removed.
         /// </summary>
@@ -392,23 +391,19 @@ namespace EDC.ReadiNow.Core.Cache.Providers
 	    {
 		    var handler = ItemsRemoved;
 
-		    if ( handler != null )
-		    {
-			    handler( this, args );
-		    }
+		    handler?.Invoke( this, args );
 	    }
 
-	    /// <summary>
-        /// Called when an item is removed from the inner cache.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="itemsRemovedEventArgs"></param>
-        private void CacheOnItemsRemoved(object sender, ItemsRemovedEventArgs<Tuple<int, TKey>> itemsRemovedEventArgs)
-        {
-            RaiseItemsRemoved(new ItemsRemovedEventArgs<TKey>(itemsRemovedEventArgs.Items.Select(i => i.Item2)));
-        }
-
-    }
+		/// <summary>
+		/// Called when an item is removed from the inner cache.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="itemsRemovedEventArgs"></param>
+		private void CacheOnItemsRemoved( object sender, ItemsRemovedEventArgs<TKey> itemsRemovedEventArgs )
+		{
+			RaiseItemsRemoved( new ItemsRemovedEventArgs<TKey>( itemsRemovedEventArgs.Items ) );
+		}
+	}
 
 
     /// <summary>
@@ -428,12 +423,9 @@ namespace EDC.ReadiNow.Core.Cache.Providers
         /// <summary>
         /// Is this cache thread-safe.
         /// </summary>
-        public bool ThreadSafe
-        {
-            get { return Inner.ThreadSafe; }
-        }
+        public bool ThreadSafe => Inner.ThreadSafe;
 
-        /// <summary>
+	    /// <summary>
         ///  How long to wait before invalidations are processed.
         /// </summary>
         public TimeSpan ExpirationInterval { get; set;}

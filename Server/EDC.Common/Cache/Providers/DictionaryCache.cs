@@ -192,7 +192,8 @@ namespace EDC.Cache.Providers
             if ( keys == null )
                 throw new ArgumentNullException( nameof( keys ) );
 
-	        TKey[] keyArray = keys.ToArray( );
+
+	        TKey[] keyArray = keys as TKey[ ] ?? keys.ToArray( );
 
 	        if ( InnerCache != null )
 	        {

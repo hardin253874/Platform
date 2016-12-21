@@ -267,7 +267,7 @@
   <target>
     <alias>sendRecordEventTarget</alias>
     <typeName>EDC.SoftwarePlatform.Activities.EventTarget.SendRecordEventTarget</typeName>
-    <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+    <assemblyName>ReadiNow.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
   </target>
 
   <managedType>
@@ -305,7 +305,7 @@
   <target>
     <alias>replyRecordEventTarget</alias>
     <typeName>EDC.SoftwarePlatform.Activities.EventTarget.ReplyRecordEventTarget</typeName>
-    <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+    <assemblyName>ReadiNow.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
   </target>
 
   <managedType>

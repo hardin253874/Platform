@@ -655,6 +655,7 @@
     <Content Include="src\app\chart\chartTypes\scatterChart.js" />
     <Content Include="src\app\chart\chartTypes\sunburstChart.js" />
     <Content Include="src\app\chart\chartTypes\treeMapChart.js" />
+    <Content Include="src\app\chart\chartTypes\vectorFieldChart.js" />
     <Content Include="src\app\chart\spChart.js" />
     <Content Include="src\app\chart\spChart.tpl.html" />
     <Content Include="src\app\chart\spChartActionService.js" />

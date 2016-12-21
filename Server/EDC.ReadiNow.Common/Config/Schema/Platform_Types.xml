@@ -169,7 +169,7 @@
   <target>
     <alias>workflowUpgradeEventTarget</alias>
     <typeName>EDC.SoftwarePlatform.Activities.Engine.Upgrade.WorkflowUpgradeEventTarget</typeName>
-    <assemblyName>EDC.SoftwarePlatform.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
+    <assemblyName>ReadiNow.Activities, Version=1.0.0.0, Culture=neutral</assemblyName>
     <ordinal>1</ordinal>
   </target>
 

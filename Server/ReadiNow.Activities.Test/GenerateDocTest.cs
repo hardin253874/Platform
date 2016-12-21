@@ -93,7 +93,7 @@ namespace EDC.SoftwarePlatform.Activities.Test
         private Stream GetTestDocStream(string fileName)
         {
             var assembly = Assembly.GetExecutingAssembly();
-            var stream = assembly.GetManifestResourceStream("EDC.SoftwarePlatform.Activities.Test.Files." + fileName);
+            var stream = assembly.GetManifestResourceStream("ReadiNow.Activities.Test.Files." + fileName);
             return stream;
         }
     }
